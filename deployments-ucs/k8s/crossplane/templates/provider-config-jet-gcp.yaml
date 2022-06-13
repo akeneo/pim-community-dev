@@ -1,0 +1,12 @@
+apiVersion: gcp.jet.crossplane.io/v1alpha1
+kind: ProviderConfig
+metadata:
+  name: provider-config-jet-gcp
+spec:
+  projectID: null
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: gcp-account-creds
+      key: credentials

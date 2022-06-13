@@ -1,0 +1,23 @@
+pim_table_attribute:
+  form:
+    attribute:
+      tab:
+        table_structure: Taulukon rakenne
+      empty_title: Taulukon rakenne on tyhjä
+      import_from_existing_attribute: Tuo olemassa olevalta attribuutilta
+      option_count: "{0,1}{{ count }} vaihtoehto|]1, Inf[{{ count }} vaihtoehtoa"
+      measurement_family: Mittaperhe
+      measurement_default_unit: Oletusyksikkö
+    product:
+      no_rows_title: "Sinun {{ attributeLabel }} taulukko on tyhjä."
+      no_rows_subtitle: Lisää rivejä tietojen tallentamiseksi
+  properties:
+    data_type:
+      measurement: Mitta
+  product_edit_form:
+    add_rows: Lisää rivejä
+batch_jobs:
+  default_steps.clean: Ei-olemassaolevien taulukon vaihtoehtojen arvojen poistaminen
+akeneo_job_process_tracker:
+  type_filter:
+    clean_table_values_following_deleted_options: Poista muut kuin olemassa olevat taulukon vaihtoehdot tuotteilta ja tuotemalleilta

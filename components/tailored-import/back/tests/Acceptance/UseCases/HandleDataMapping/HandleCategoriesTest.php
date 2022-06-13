@@ -131,7 +131,7 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                         ),
                         ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([
-                            new SplitOperation(','),
+                            new SplitOperation('00000000-0000-0000-0000-000000000000', ','),
                         ]),
                         [],
                     ),
@@ -158,7 +158,7 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c', '2d9e967a-4efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([
-                            new SplitOperation(','),
+                            new SplitOperation('00000000-0000-0000-0000-000000000000', ','),
                         ]),
                         [],
                     ),
@@ -166,7 +166,7 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                 'expected' => new UpsertProductCommand(
                     userId: 1,
                     productIdentifier: 'this-is-a-sku',
-                    categoryUserIntent: new SetCategories(['shoes','women','clothing','men']),
+                    categoryUserIntent: new SetCategories(['shoes', 'women', 'clothing', 'men']),
                 ),
             ],
         ];

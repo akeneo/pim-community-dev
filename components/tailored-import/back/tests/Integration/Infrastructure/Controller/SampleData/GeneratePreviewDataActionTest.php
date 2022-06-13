@@ -41,7 +41,10 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
             [
                 'sample_data' => ['<b>Produit 1</b>', 'Produit 4', 'Produit 3'],
                 'operations' => [
-                    ['type' => 'clean_html_tags']
+                    [
+                        'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                        'type' => 'clean_html_tags'
+                    ]
                 ],
                 'target' => [
                     'code' => 'name',
@@ -60,7 +63,7 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $decodedResponse = \json_decode($response->getContent(), true);
-        $expectedResponse = ['preview_data' => ['Produit 1', 'Produit 4', 'Produit 3']];
+        $expectedResponse = ['preview_data' => ['ad4e2d5c-2830-4ba8-bf83-07f9935063d6' => ['Produit 1', 'Produit 4', 'Produit 3']]];
 
         $this->assertSame($expectedResponse, $decodedResponse);
     }

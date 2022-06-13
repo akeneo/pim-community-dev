@@ -25,6 +25,8 @@ use PhpSpec\ObjectBehavior;
 
 class BooleanReplacementOperationApplierSpec extends ObjectBehavior
 {
+    private $uuid = '00000000-0000-0000-0000-000000000000';
+
     public function it_supports_boolean_replacement_operation(): void
     {
         $this->supports(new BooleanReplacementOperation([
@@ -74,7 +76,7 @@ class BooleanReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_operation_type_is_invalid(): void
     {
-        $operation = new CleanHTMLTagsOperation();
+        $operation = new CleanHTMLTagsOperation($this->uuid);
         $value = new StringValue('0');
 
         $this->shouldThrow(new UnexpectedValueException($operation, BooleanReplacementOperation::class, BooleanReplacementOperationApplier::class))

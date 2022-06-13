@@ -228,6 +228,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRequiredValueKeyCollectionForChannelAndLocales
         arguments:
             - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels'
 
     akeneo_referenceentity.infrastructure.persistence.query.generate_empty_values:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlGenerateEmptyValues

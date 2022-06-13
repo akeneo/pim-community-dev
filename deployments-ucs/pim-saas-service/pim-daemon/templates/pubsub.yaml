@@ -1,0 +1,95 @@
+apiVersion: pubsub.gcp.jet.crossplane.io/v1alpha1
+kind: Topic
+metadata:
+ name: srnt-business-event
+spec:
+ forProvider:
+   name: srnt-business-event
+ providerConfigRef:
+   name: provider-config-jet-gcp
+---
+apiVersion: pubsub.gcp.jet.crossplane.io/v1alpha1
+kind: Topic
+metadata:
+ name: srnt-job-queue-ui
+spec:
+ forProvider:
+   name: srnt-job-queue-ui
+ providerConfigRef:
+   name: provider-config-jet-gcp
+---
+apiVersion: pubsub.gcp.jet.crossplane.io/v1alpha1
+kind: Topic
+metadata:
+ name: srnt-job-queue-import-export
+spec:
+ forProvider:
+   name: srnt-job-queue-import-export
+ providerConfigRef:
+   name: provider-config-jet-gcp
+---
+apiVersion: pubsub.gcp.jet.crossplane.io/v1alpha1
+kind: Topic
+metadata:
+ name: srnt-job-queue-data-maintenance
+spec:
+ forProvider:
+   name: srnt-job-queue-data-maintenance
+ providerConfigRef:
+   name: provider-config-jet-gcp
+---
+apiVersion: pubsub.gcp.jet.crossplane.io/v1alpha1
+kind: Subscription
+metadata:
+ name: srnt-webhook
+spec:
+ forProvider:
+   ackDeadlineSeconds: 600
+   labels:
+     subscription_type: "pim_webhook"
+   name: srnt-webhook
+   topic: srnt-business-event
+ providerConfigRef:
+   name: provider-config-jet-gcp
+---
+apiVersion: pubsub.gcp.jet.crossplane.io/v1alpha1
+kind: Subscription
+metadata:
+ name: srnt-job-queue-ui
+spec:
+ forProvider:
+   ackDeadlineSeconds: 600
+   labels:
+     subscription_type: "pim_job_ui"
+   name: srnt-job-queue-ui
+   topic: srnt-job-queue-ui
+ providerConfigRef:
+   name: provider-config-jet-gcp
+---
+apiVersion: pubsub.gcp.jet.crossplane.io/v1alpha1
+kind: Subscription
+metadata:
+ name: srnt-job-queue-import-export
+spec:
+ forProvider:
+   ackDeadlineSeconds: 600
+   labels:
+     subscription_type: "pim_job_import_export"
+   name: srnt-job-queue-import-export
+   topic: srnt-job-queue-import-export
+ providerConfigRef:
+   name: provider-config-jet-gcp
+---
+apiVersion: pubsub.gcp.jet.crossplane.io/v1alpha1
+kind: Subscription
+metadata:
+ name: srnt-job-queue-data-maintenance
+spec:
+ forProvider:
+   ackDeadlineSeconds: 600
+   labels:
+     subscription_type: "pim_job_data_maintenance"
+   name: srnt-job-queue-data-maintenance
+   topic: srnt-job-queue-data-maintenance
+ providerConfigRef:
+   name: provider-config-jet-gcp

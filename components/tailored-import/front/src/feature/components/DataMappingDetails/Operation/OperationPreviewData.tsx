@@ -26,7 +26,7 @@ const AnimatedPreview = styled(Preview)<{isDisplayed: boolean}>`
 type PreviewDataProps = {
   isOpen: boolean;
   isLoading: boolean;
-  previewData: PreviewData[];
+  previewData: PreviewData[] | undefined;
   hasErrors: boolean;
 };
 
@@ -40,7 +40,7 @@ const OperationPreviewData = ({isLoading, previewData, isOpen, hasErrors}: Previ
           {translate('akeneo.tailored_import.data_mapping.preview.unable_to_generate_preview_data')}
         </PreviewRowData>
       ) : (
-        previewData.map((data, key) => (
+        previewData?.map((data, key: number) => (
           <PreviewRowData key={key} hasError={false} isLoading={isLoading} isEmpty={null === data}>
             {Array.isArray(data) ? (
               <Tags>

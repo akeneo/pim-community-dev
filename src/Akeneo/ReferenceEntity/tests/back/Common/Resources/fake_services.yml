@@ -268,9 +268,6 @@ services:
             - { name: kernel.event_subscriber }
 
     # File system
-    akeneo_file_storage.file_storage.filesystem_provider:
-        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub
-
     akeneo_file_storage.file_storage.file.file_storer:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFileStorer
 

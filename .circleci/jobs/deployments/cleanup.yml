@@ -1,5 +1,7 @@
 envVarsDeployDev: &envVarsDeployDev
+envVarsDeployUCS: &envVarsDeployUCS
 dockerCloudDeployerNext: &dockerCloudDeployerNext
+  dockerCloudDeployerUCS: &dockerCloudDeployerUCS
 executor-machine: &executor-machine
 
 jobs:
@@ -58,6 +60,81 @@ jobs:
                       UNCOMMIT_INSTANCE_STATUS_CODE=0
                       for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
                       exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
+
+    delete_tenant:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: ""
+            INSTANCE_NAME:
+                type: string
+                default: ""
+        environment:
+            <<: *envVarsDeployUCS
+        <<: *dockerCloudDeployerUCS
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - add_ssh_keys:
+                  fingerprints:
+                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+            - set_gcloud_config_ucs
+            - restore_persisted_env_vars
+            - run:
+                  name: Get information from firestore
+                  command: |
+                      unset DEPLOYMENT_HASH
+                      DEPLOYMENT_HASH=$(cd deployments-ucs/timmy && go run timmy-read.go ${TYPE}-${INSTANCE_NAME})
+                      echo ${DEPLOYMENT_HASH}
+                      echo export DEPLOYMENT_HASH=${DEPLOYMENT_HASH} >> $BASH_ENV
+            - run:
+                  name: Get template for the corresponding tenant
+                  command: |
+                      rm -r ./deployments-ucs
+                      BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-blackhawk-sandbox-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/deployments-ucs/ .
+            - run:
+                  name: Delete environments
+                  no_output_timeout: 30m
+                  command: |
+                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      DELETE_TENANT_STATUS_CODE=0
+                      for i in 1 2 3; do make -C deployments-ucs/ delete_tenant && DELETE_TENANT_STATUS_CODE=0 && break || DELETE_TENANT_STATUS_CODE=1; done
+                      exit ${DELETE_TENANT_STATUS_CODE}
+
+    delete_pim:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: ""
+            INSTANCE_NAME:
+                type: string
+                default: ""
+        environment:
+            <<: *envVarsDeployUCS
+        <<: *dockerCloudDeployerUCS
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - add_ssh_keys:
+                  fingerprints:
+                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+            - set_gcloud_config_ucs
+            - restore_persisted_env_vars
+            - run:
+                  name: Delete environments
+                  command: |
+                      CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
+
+                      kubectl delete app ${CIRCLE_BRANCH_LOWER}-pim-web -n argocd
+                      kubectl delete app ${CIRCLE_BRANCH_LOWER}-pim-api -n argocd
+                      kubectl delete app ${CIRCLE_BRANCH_LOWER}-pim-daemon -n argocd
+
+                      kubectl delete ns ${CIRCLE_BRANCH_LOWER}-pim-web
+                      kubectl delete ns ${CIRCLE_BRANCH_LOWER}-pim-api
+                      kubectl delete ns ${CIRCLE_BRANCH_LOWER}-pim-daemon
 
     delete_environments_hourly:
         <<: *dockerCloudDeployerNext

@@ -34,8 +34,6 @@ $rules = [
     $builder->only(
         [
             'Symfony\Component',
-            'Symfony\Contracts',
-            'Akeneo\Tool\Component\Batch\Job',
 
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
             'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure',

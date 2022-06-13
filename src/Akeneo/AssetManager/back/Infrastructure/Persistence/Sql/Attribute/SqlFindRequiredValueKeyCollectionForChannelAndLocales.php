@@ -19,89 +19,154 @@ use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\FindChannels;
+use Akeneo\Channel\API\Query\FindLocales;
+use Akeneo\Channel\API\Query\Locale;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
 /**
- * This SQL implementation keeps a cache of the fetched masks indexed by their asset family identifier.
- *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class SqlFindRequiredValueKeyCollectionForChannelAndLocales implements FindRequiredValueKeyCollectionForChannelAndLocalesInterface
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private FindChannels $findChannels,
+    ) {
     }
 
     public function find(
         AssetFamilyIdentifier $assetFamilyIdentifier,
         ChannelIdentifier $channelIdentifier,
-        LocaleIdentifierCollection $localeIdentifierCollectionCollection
+        LocaleIdentifierCollection $localeIdentifierCollection
     ): ValueKeyCollection {
-        Assert::false($localeIdentifierCollectionCollection->isEmpty(), 'The list of locales should not be empty.');
+        Assert::false($localeIdentifierCollection->isEmpty(), 'The list of locales should not be empty.');
 
+        $attributes = $this->findRequiredAttributes($assetFamilyIdentifier);
+        $channel = $this->getChannel($channelIdentifier);
+        $channelLocaleCodes = array_map(fn (string $localeCode) => strtolower($localeCode), $channel->getLocaleCodes());
+
+        $localeIdentifiers = array_filter($localeIdentifierCollection->normalize(), function (string $localeIdentifier) use ($channelLocaleCodes) {
+            return in_array(strtolower($localeIdentifier), $channelLocaleCodes);
+        });
+
+        $valueKeys = $this->generateValueKeys($attributes, $channel, $localeIdentifiers);
+
+        return ValueKeyCollection::fromValueKeys($valueKeys);
+    }
+
+    private function getChannel(ChannelIdentifier $channelIdentifier): Channel
+    {
+        $channels = $this->findChannels->findAll();
+
+        foreach ($channels as $channel) {
+            if (strtolower($channel->getCode()) === strtolower($channelIdentifier->normalize())) {
+                return $channel;
+            }
+        }
+
+        throw new \Exception(sprintf('Channel with code "%s" can\'t be found', $channelIdentifier->normalize()));
+    }
+
+    private function findRequiredAttributes(AssetFamilyIdentifier $assetFamilyIdentifier): array
+    {
         $query = <<<SQL
-            SELECT
-                CONCAT(
-                    mask.identifier,
-                    IF(mask.value_per_channel, CONCAT('_', mask.channel_code), ''),
-                    IF(mask.value_per_locale, CONCAT('_', mask.locale_code), '')
-                 ) as `key`
-            FROM (
-                SELECT
-                    a.identifier,
-                    a.value_per_channel,
-                    a.value_per_locale,
-                    COALESCE(c.code, locale_channel.channel_code) as channel_code,
-                    COALESCE(l.code, locale_channel.locale_code) as locale_code
-                FROM
-                    (
-                        SELECT identifier, value_per_channel, value_per_locale
-                        FROM akeneo_asset_manager_attribute 
-                        WHERE asset_family_identifier = :asset_family_identifier
-                        AND is_required = 1 
-                    ) as a
-                    LEFT JOIN (SELECT code FROM pim_catalog_channel WHERE code = :channel_code) c ON value_per_channel = 1 AND value_per_locale = 0
-                    LEFT JOIN (SELECT code FROM pim_catalog_locale WHERE code IN (:locale_codes) AND is_activated = 1) l ON value_per_channel = 0 AND value_per_locale = 1
-                    LEFT JOIN (
-                        SELECT
-                            c.code as channel_code,
-                            l.code as locale_code
-                        FROM
-                            pim_catalog_channel c
-                            JOIN pim_catalog_channel_locale cl ON cl.channel_id = c.id
-                            JOIN pim_catalog_locale l ON l.id = locale_id
-                        WHERE c.code = :channel_code  AND l.code IN (:locale_codes)
-                    ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
-            ) as mask
-        WHERE (mask.value_per_channel = 0 OR mask.channel_code IS NOT NULL)
-          AND (mask.value_per_locale = 0 OR mask.locale_code IS NOT NULL)
-SQL;
+            SELECT 
+                attribute.identifier,
+                attribute.value_per_channel,
+                attribute.value_per_locale
+            FROM akeneo_asset_manager_attribute as attribute
+            WHERE asset_family_identifier = :asset_family_identifier
+            AND is_required = 1 
+        SQL;
+
         $statement = $this->sqlConnection->executeQuery(
             $query,
             [
-                'asset_family_identifier' => $assetFamilyIdentifier,
-                'channel_code'                => $channelIdentifier->normalize(),
-                'locale_codes'                => $localeIdentifierCollectionCollection->normalize(),
+                'asset_family_identifier' => $assetFamilyIdentifier->normalize(),
             ],
-            [
-                'locale_codes' => Connection::PARAM_STR_ARRAY
-            ]
         );
 
-        $rows = $statement->fetchFirstColumn();
-
-        return $this->createValueKeyCollection($rows);
+        return $statement->fetchAllAssociative();
     }
 
-    private function createValueKeyCollection($rows): ValueKeyCollection
+    /**
+     * @param string[] $localeCodes
+     *
+     * @return ValueKey[]
+     */
+    private function generateScopableAndLocalizableValueKeys(string $attributeIdentifier, Channel $channel, array $localeCodes): array
     {
         $valueKeys = [];
-        foreach ($rows as $row) {
-            $valueKeys[] = ValueKey::createFromNormalized($row);
+
+        foreach ($localeCodes as $localeCode) {
+            $valueKeys[] = ValueKey::createFromNormalized(
+                sprintf('%s_%s_%s', $attributeIdentifier, $channel->getCode(), $localeCode)
+            );
         }
 
-        return ValueKeyCollection::fromValueKeys($valueKeys);
+        return $valueKeys;
+    }
+
+    /**
+     * @param string[] $localeCodes
+     *
+     * @return ValueKey[]
+     */
+    private function generateLocalizableValueKeys(string $attributeIdentifier, array $localeCodes): array
+    {
+        $valueKeys = [];
+
+        foreach ($localeCodes as $localeCode) {
+            $valueKeys[] = ValueKey::createFromNormalized(
+                sprintf('%s_%s', $attributeIdentifier, $localeCode)
+            );
+        }
+
+        return $valueKeys;
+    }
+
+    /**
+     * @param string[] $localeIdentifiers
+     *
+     * @return ValueKey[]
+     */
+    private function generateValueKeys(array $attributes, Channel $channel, array $localeIdentifiers): array
+    {
+        $valueKeys = [];
+
+        foreach ($attributes as $attribute) {
+            $scopable = '1' === $attribute['value_per_channel'];
+            $localizable = '1' === $attribute['value_per_locale'];
+            $generatedValueKeys = [];
+
+            if ($scopable && $localizable) {
+                $generatedValueKeys = $this->generateScopableAndLocalizableValueKeys(
+                    $attribute['identifier'],
+                    $channel,
+                    $localeIdentifiers,
+                );
+            } elseif ($scopable && !$localizable) {
+                $generatedValueKeys[] = ValueKey::createFromNormalized(
+                    sprintf('%s_%s', $attribute['identifier'], $channel->getCode())
+                );
+            } elseif (!$scopable && $localizable) {
+                $generatedValueKeys = $this->generateLocalizableValueKeys(
+                    $attribute['identifier'],
+                    $localeIdentifiers
+                );
+            } else {
+                $generatedValueKeys[] = ValueKey::createFromNormalized(
+                    $attribute['identifier']
+                );
+            }
+
+            $valueKeys = array_merge($valueKeys, $generatedValueKeys);
+        }
+
+        return $valueKeys;
     }
 }
