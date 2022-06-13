@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
 import {CategoryReplacementModal} from "./CategoryReplacementModal";
 
+const operationUuid = 'b26bcde7-1231-47cc-84ba-e014bb08fbd5';
 const categoryTrees = [
   {
     id: 1,
@@ -45,6 +46,7 @@ test('it can update a replacement mapping', async () => {
 
   await renderWithProviders(
     <CategoryReplacementModal
+      operationUuid={operationUuid}
       initialMapping={{}}
       onConfirm={handleConfirm}
       onCancel={jest.fn()}
@@ -76,6 +78,7 @@ test('it validates replacement mapping before confirming', async () => {
 
   await renderWithProviders(
     <CategoryReplacementModal
+      operationUuid={operationUuid}
       initialMapping={{}}
       onConfirm={handleConfirm}
       onCancel={jest.fn()}
@@ -101,6 +104,7 @@ test('it can change mapping on another category tree', async () => {
 
   await renderWithProviders(
     <CategoryReplacementModal
+      operationUuid={operationUuid}
       initialMapping={{
         shoes: ['CHAUSSURE'],
       }}

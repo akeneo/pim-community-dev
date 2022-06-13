@@ -56,6 +56,7 @@ const CategoryReplacementOperationBlock = ({operation, onChange, onRemove}: Oper
           </Button>
           {isReplacementModalOpen && (
             <CategoryReplacementModal
+              operationUuid={operation.uuid}
               initialMapping={operation.mapping}
               onConfirm={handleConfirm}
               onCancel={handleCancel}

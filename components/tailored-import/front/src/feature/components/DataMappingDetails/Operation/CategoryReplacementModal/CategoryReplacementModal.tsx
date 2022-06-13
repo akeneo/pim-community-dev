@@ -30,12 +30,14 @@ const Content = styled.div`
 `;
 
 type CategoryReplacementModalProps = {
+  operationUuid: string;
   initialMapping: ReplacementValues;
   onConfirm: (updatedReplacementValues: ReplacementValues) => void;
   onCancel: () => void;
 };
 
 const CategoryReplacementModal = ({
+  operationUuid,
   initialMapping,
   onConfirm,
   onCancel,
@@ -59,6 +61,7 @@ const CategoryReplacementModal = ({
     setValidationErrors([]);
     const response = await fetch(validateReplacementOperationRoute, {
       body: JSON.stringify({
+        uuid: operationUuid,
         type: CATEGORY_REPLACEMENT_OPERATION_TYPE,
         mapping,
       }),
