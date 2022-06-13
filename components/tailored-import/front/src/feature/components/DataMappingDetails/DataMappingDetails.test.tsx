@@ -22,6 +22,7 @@ const attributeDataMapping: DataMapping = {
   uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
   target: {
     code: 'name',
+    attribute_type: 'pim_catalog_text',
     type: 'attribute',
     channel: null,
     locale: null,
@@ -52,6 +53,7 @@ const attributeDataMappingWithoutSource: DataMapping = {
   uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
   target: {
     code: 'name',
+    attribute_type: 'pim_catalog_text',
     type: 'attribute',
     channel: null,
     locale: null,
@@ -94,6 +96,12 @@ jest.mock('../../hooks/useRefreshedSampleDataFetcher', () => ({
   useRefreshedSampleDataFetcher: () => async () => {
     return 'product_4';
   },
+}));
+
+const mockUuid = 'uuid';
+jest.mock('akeneo-design-system', () => ({
+  ...jest.requireActual('akeneo-design-system'),
+  uuid: () => mockUuid,
 }));
 
 test('it displays a property data mapping', async () => {
@@ -142,6 +150,7 @@ test('it can change attribute target parameters', async () => {
   const attributeTarget: AttributeTarget = {
     code: 'name',
     type: 'attribute',
+    attribute_type: 'pim_catalog_text',
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
     channel: 'print',
@@ -271,6 +280,7 @@ test('it can add an operation', async () => {
     ...attributeDataMapping,
     operations: [
       {
+        uuid: mockUuid,
         type: 'clean_html_tags',
       },
     ],

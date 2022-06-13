@@ -1,6 +1,9 @@
 envVarsDeployDev: &envVarsDeployDev
+envVarsDeployUCS: &envVarsDeployUCS
 dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent
 dockerCloudDeployerNext: &dockerCloudDeployerNext
+dockerCloudDeployerUCS: &dockerCloudDeployerUCS
+executor-machine: &executor-machine
 
 jobs:
     # Description :
@@ -117,6 +120,9 @@ jobs:
             - run:
                   name: Get latest release & export variables
                   command: |
+                      TYPE=<<parameters.PRODUCT_TYPE>>
+                      echo export TYPE=${TYPE} >> $BASH_ENV
+
                       LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
                       if [[ -z "${LATEST_RELEASE}" ]]; then
                           echo "Could not retrieve latest deployed release"
@@ -138,8 +144,16 @@ jobs:
             - run:
                   name: Pull Terraform modules from last release
                   command: |
+                      case ${TYPE} in
+                        srnt) BUCKET="serenity-edition-dev" ;;
+                        grth) BUCKET="growth-edition-dev" ;;
+                        tria) BUCKET="trial-edition-dev"  ;;
+                      esac
+
+                      echo "Terraform Bucket Folder: gs://akecld-terraform-modules/${BUCKET}/"
+
                       rm -r ./deployments
-                      BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${LATEST_RELEASE}/deployments/ .
+                      BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${BUCKET}/${LATEST_RELEASE}/deployments/ .
             - run:
                   name: Deploy instance with latest release
                   command: |
@@ -155,6 +169,7 @@ jobs:
             - run:
                   name: Persist env vars for next jobs
                   command: |
+                      echo export TYPE=${TYPE} >> persisted_env_vars
                       echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
             - run:
                   name: Remove env on kubernetes
@@ -258,3 +273,527 @@ jobs:
                   when: on_fail
             - store_artifacts:
                   path: ~/artifacts/infra
+
+    # Description :
+    #    Deploy k8s environment with the release (IMAGE_TAG) define in previous jobs
+    #    Adaptation of test_deploy for deployment with edition flags
+    #    With EditionFlag we build only a srnt image so we have to migrate editions specific values that were  previously setup and persisted at the builds stage.
+    #    These values are set at the begining of the job at "Define value for cloud-customer files creation" step , with also active EditionFlags with yq
+    test_deploy_with_flags:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+            CLUSTER_NEXT:
+                type: boolean
+                default: false
+        environment:
+            <<: *envVarsDeployDev
+        <<: *dockerCloudDeployerNext
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - add_ssh_keys:
+                  fingerprints:
+                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+            - when:
+                  condition:
+                      equal: [true, << parameters.CLUSTER_NEXT >> ]
+                  steps:
+                      - modify_cluster
+            - set_gcloud_config_dev
+            - install_yq
+            - restore_persisted_env_vars
+            - run:
+                  name: Define values for cloud-customers files creation
+                  command: |
+                      TYPE=<< parameters.PRODUCT_TYPE >>
+                      case ${TYPE} in
+                        srnt) TYPE_LONG="serenity" ;;
+                        grth) TYPE_LONG="growth_edition" ;;
+                        tria) TYPE_LONG="pim_trial" ;;
+                      esac
+
+                      PRODUCT_REFERENCE_TYPE="${TYPE_LONG}_instance"
+                      PRODUCT_REFERENCE_CODE="${TYPE_LONG}_${ENV_NAME}"
+
+                      echo export TYPE=${TYPE} >> $BASH_ENV
+                      echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
+                      echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                      echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+
+                      echo "Type: ${TYPE}"
+                      echo "Type long: ${TYPE_LONG}"
+                      echo "Product reference type: ${PRODUCT_REFERENCE_TYPE}"
+                      echo "Product reference code: ${PRODUCT_REFERENCE_CODE}"
+            - run:
+                  name: Define instance name
+                  command: |
+                      INSTANCE_NAME_PREFIX=pimci
+                      INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+
+                      echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                      echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+
+                      echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                      echo "Instance name: ${INSTANCE_NAME}"
+                      echo "Image tag: ${IMAGE_TAG}"
+            - run:
+                  name: Check Edition Flag for next deployment
+                  command: |
+                        echo "USE_EDITION_FLAG=${USE_EDITION_FLAG}"
+
+                        echo "[DEBUG] Check deployments/terraform/pim/values.yaml -> editionFlag.enabled=$(yq r deployments/terraform/pim/values.yaml editionFlag.enabled)"
+                        echo "[DEBUG]editionFlag.enabled must equal false, it will be set to true by terraform at the next step"
+                        echo "[DEBUG] Check PIM_EDITION env vars value that will be set in K8S env-configmap.yaml (by HELM < values.yaml ) -> PIM_EDITION: $(yq r deployments/terraform/pim/values.yaml editionFlag.$TYPE)"
+            - show_datadog_logs_links:
+                pfid: ${TYPE}-${INSTANCE_NAME}
+            - run:
+                  name: Deploy PIM on kubernetes
+                  command: |
+                      NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      make -C deployments/ deploy-instance
+                      make -C deployments/ commit-instance
+            - get_datadog_migration_logs:
+                pfid: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                path: /tmp/migration-logs.json
+                destination: migration-logs.json
+            - run:
+                  name: Test PIM connexion on kubernetes
+                  command: make -C deployments/ test-prod
+            - run:
+                  name: Display Deployment Errors
+                  command: cat deployment.log
+                  when: on_fail
+            - run:
+                  name: Prepare infrastructure artifacts
+                  command: make -C deployments/ prepare-infrastructure-artifacts
+                  when: on_fail
+            - store_artifacts:
+                  path: ~/artifacts/infra
+            - store_artifacts:
+                  path: deployment.log
+                  destination: test_deploy_<<parameters.PRODUCT_TYPE>>_deployment.log
+            - run:
+                  name: Remove env on kubernetes
+                  command: |
+                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      UNCOMMIT_INSTANCE_STATUS_CODE=0
+                      for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                      exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
+                  when: always
+            - run:
+                  name: Persist env vars for next jobs
+                  command: |
+                      echo export TYPE="${TYPE}" >> persisted_env_vars
+                      echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
+                      echo export INSTANCE_NAME_PREFIX="${INSTANCE_NAME_PREFIX}" >> persisted_env_vars
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - upgrades.tfplan.json
+
+    deploy_pr_environment_with_flags:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+        environment:
+            <<: *envVarsDeployDev
+        <<: *dockerCloudDeployerNext
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - add_ssh_keys:
+                  fingerprints:
+                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+            - set_gcloud_config_dev
+            - restore_persisted_env_vars
+            - run:
+                  name: Define value for cloud-customer files creation for next step
+                  command: |
+                      TYPE=<< parameters.PRODUCT_TYPE >>
+
+                      case ${TYPE} in
+                        srnt) TYPE_LONG="serenity" ;;
+                        grth) TYPE_LONG="growth_edition" ;;
+                        tria) TYPE_LONG="pim_trial" ;;
+                      esac
+
+                      PRODUCT_REFERENCE_TYPE="${TYPE_LONG}_instance"
+                      PRODUCT_REFERENCE_CODE="${TYPE_LONG}_${ENV_NAME}"
+
+                      echo export TYPE=${TYPE} >> $BASH_ENV
+                      echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
+                      echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                      echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+
+                      echo "Type: ${TYPE}"
+                      echo "Type long: ${TYPE_LONG}"
+                      echo "Product reference type: ${PRODUCT_REFERENCE_TYPE}"
+                      echo "Product reference code: ${PRODUCT_REFERENCE_CODE}"
+            - run:
+                  name: Define instance name
+                  command: |
+                      TYPE="<<parameters.PRODUCT_TYPE>>"
+                      case ${TYPE} in
+                        srnt) INSTANCE_NAME_PREFIX=pimci-pr ;;
+                        grth) INSTANCE_NAME_PREFIX="pimci-pr-ge" ;;
+                        tria) INSTANCE_NAME_PREFIX=pimci-pr-ft ;;
+                      esac
+
+                      INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
+                      ACTIVATE_MONITORING=true
+
+                      echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                      echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                      echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                      echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
+
+                      echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                      echo "Instance name: ${INSTANCE_NAME}"
+                      echo "Image tag: ${IMAGE_TAG}"
+            - run:
+                  name: Check Edition Flag for next deployment
+                  command: |
+                        echo "USE_EDITION_FLAG=$USE_EDITION_FLAG"
+
+                        echo "[DEBUG] Check deployments/terraform/pim/values.yaml -> editionFlag.enabled=$(yq r deployments/terraform/pim/values.yaml editionFlag.enabled)"
+                        echo "[DEBUG]editionFlag.enabled must equal false, it will be set to true by terraform at the next step"
+                        echo "[DEBUG] Check PIM_EDITION env vars value that will be set in K8S env-configmap.yaml (by HELM < values.yaml ) -> PIM_EDITION: $(yq r deployments/terraform/pim/values.yaml editionFlag.$TYPE)"
+            - show_datadog_logs_links:
+                pfid: ${TYPE}-${INSTANCE_NAME}
+            - run:
+                  name: Check Circle CI PR
+                  command: |
+                      if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
+                      echo "This environment will be available at https://${INSTANCE_NAME}.dev.cloud.akeneo.com once deployed :)"
+            - run:
+                  name: Deploy PR environment
+                  command: |
+                      NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      make -C deployments/ deploy-instance
+                      make -C deployments/ commit-instance
+            - get_datadog_migration_logs:
+                pfid: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                path: /tmp/migration-logs.json
+                destination: migration-logs.json
+            - run:
+                  name: Persist env vars for next jobs
+                  command: |
+                      echo export TYPE="${TYPE}" >> persisted_env_vars
+                      echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
+                      echo export INSTANCE_NAME_PREFIX="${INSTANCE_NAME_PREFIX}" >> persisted_env_vars
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - project/persisted_env_vars
+            - run:
+                  name: Prepare infrastructure artifacts
+                  command: make -C deployments/ prepare-infrastructure-artifacts
+                  when: on_fail
+            - run:
+                  name: Remove env on kubernetes
+                  command: |
+                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      UNCOMMIT_INSTANCE_STATUS_CODE=0
+                      for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                      exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
+                  when: on_fail
+            - store_artifacts:
+                  path: ~/artifacts/infra
+
+    deploy_ucs_pim:
+      parameters:
+        PRODUCT_TYPE:
+          type: string
+          default: "srnt"
+      environment:
+          <<: *envVarsDeployUCS
+      <<: *dockerCloudDeployerUCS
+      resource_class: small
+      steps:
+        - attach_workspace:
+            at: ~/
+        - add_ssh_keys:
+            fingerprints:
+              - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+        - set_gcloud_config_ucs
+        - restore_persisted_env_vars
+        - install_yq
+        - run:
+            name: Prepare the variables
+            command: |
+              CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
+
+              INSTANCE_NAME_PREFIX=ucs
+              INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+
+              GOOGLE_CLOUD_PROJECT=${GOOGLE_PROJECT_ID}
+              GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
+              PIM_MASTER_DOMAIN="${INSTANCE_NAME}.bh.akeneo.ch"
+              SERVICE_ACCOUNT_KEY=$(echo ${GCLOUD_SERVICE_KEY_UCS} | base64 | tr -d '\n')
+
+              TOPIC_BUSINESS_EVENT="${INSTANCE_NAME}-business-event"
+              TOPIC_JOB_QUEUE_UI="${INSTANCE_NAME}-job-queue-ui"
+              TOPIC_JOB_QUEUE_IMPORT_EXPORT="${INSTANCE_NAME}-job-queue-import-export"
+              TOPIC_JOB_QUEUE_DATA_MAINTENANCE="${INSTANCE_NAME}-job-queue-data-maintenance"
+              SUBSCRIPTION_WEBHOOK="${INSTANCE_NAME}-webhook"
+              SUBSCRIPTION_JOB_QUEUE_UI="${INSTANCE_NAME}-job-queue-ui"
+              SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT="${INSTANCE_NAME}-job-queue-import-export"
+              SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE="${INSTANCE_NAME}-job-queue-data-maintenance"
+
+              echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
+              echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+              echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+              echo export GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT} >> $BASH_ENV
+              echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
+              echo export PIM_MASTER_DOMAIN=${PIM_MASTER_DOMAIN} >> $BASH_ENV
+              echo export SERVICE_ACCOUNT_KEY=${SERVICE_ACCOUNT_KEY} >> $BASH_ENV
+              echo export TOPIC_BUSINESS_EVENT=${TOPIC_BUSINESS_EVENT} >> $BASH_ENV
+              echo export TOPIC_JOB_QUEUE_UI=${TOPIC_JOB_QUEUE_UI} >> $BASH_ENV
+              echo export TOPIC_JOB_QUEUE_IMPORT_EXPORT=${TOPIC_JOB_QUEUE_IMPORT_EXPORT} >> $BASH_ENV
+              echo export TOPIC_JOB_QUEUE_DATA_MAINTENANCE=${TOPIC_JOB_QUEUE_DATA_MAINTENANCE} >> $BASH_ENV
+              echo export SUBSCRIPTION_WEBHOOK=${SUBSCRIPTION_WEBHOOK} >> $BASH_ENV
+              echo export SUBSCRIPTION_JOB_QUEUE_UI=${SUBSCRIPTION_JOB_QUEUE_UI} >> $BASH_ENV
+              echo export SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT=${SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT} >> $BASH_ENV
+              echo export SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE=${SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE} >> $BASH_ENV
+        - run:
+            name: Create branch deployement # Better use other repository
+            command: |
+              ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+              export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+              git config --global user.email "pim_ci@akeneo.com"
+              git config --global user.name "pim_ci_deployment"
+
+              cd /tmp
+              git clone -b ${CIRCLE_BRANCH} --depth 1 git@github.com:akeneo/pim-enterprise-dev.git ee-branch
+              git clone -b ${CIRCLE_BRANCH}-deployment git@github.com:akeneo/pim-enterprise-dev.git ee-deployment && cd ee-deployment || { git clone -b BH-1161-deployment git@github.com:akeneo/pim-enterprise-dev.git ee-deployment && cd ee-deployment && git checkout -b ${CIRCLE_BRANCH}-deployment; }
+              rm -rf /tmp/ee-deployment/deployments-ucs/pim-saas-service
+              mv /tmp/ee-branch/deployments-ucs/pim-saas-service /tmp/ee-deployment/deployments-ucs/pim-saas-service
+
+              ## values.yaml
+              yq m -x -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml /tmp/ee-deployment/deployments-ucs/config/ci-values.yaml
+
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml global.extraLabels.instanceName "${INSTANCE_NAME}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.gcpProjectID "${GOOGLE_CLOUD_PROJECT}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.googleZone "${GOOGLE_ZONE}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.pimMasterDomain "${PIM_MASTER_DOMAIN}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml image.pim.tag "${IMAGE_TAG}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.serviceAccountKey "${SERVICE_ACCOUNT_KEY}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_business_event "${TOPIC_BUSINESS_EVENT}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_job_queue_ui "${TOPIC_JOB_QUEUE_UI}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_job_queue_import_export "${TOPIC_JOB_QUEUE_IMPORT_EXPORT}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_job_queue_data_maintenance "${TOPIC_JOB_QUEUE_DATA_MAINTENANCE}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_webhook "${SUBSCRIPTION_WEBHOOK}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_ui "${SUBSCRIPTION_JOB_QUEUE_UI}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_import_export "${SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_data_maintenance "${SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE}"
+
+              ## Pubsub
+              sed -i "s#srnt-business-event#srnt-business-event-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
+              sed -i "s#srnt-job-queue-ui#srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
+              sed -i "s#srnt-job-queue-import-export#srnt-job-queue-import-export-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
+              sed -i "s#srnt-job-queue-data-maintenance#srnt-job-queue-data-maintenance-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
+              sed -i "s#srnt-webhook#srnt-webhook-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
+
+              ## Charts
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/Chart.yaml version 0.0.0-${IMAGE_TAG}
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/Chart.yaml appVersion ${IMAGE_TAG}
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/Chart.yaml version 0.0.0-${IMAGE_TAG}
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/Chart.yaml appVersion ${IMAGE_TAG}
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/Chart.yaml version 0.0.0-${IMAGE_TAG}
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/Chart.yaml appVersion ${IMAGE_TAG}
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-job/Chart.yaml version 0.0.0-${IMAGE_TAG}
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-job/Chart.yaml appVersion ${IMAGE_TAG}
+
+              ## ArgoCD
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/pim-web-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/pim-web-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-web
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/pim-web-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-web
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/pim-web-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-web
+
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-api
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-api
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-api
+
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pim-daemon-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pim-daemon-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-daemon
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pim-daemon-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-daemon
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pim-daemon-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-daemon
+
+              mv /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/pim-web-application.yaml /tmp/pim-web-application.yaml
+              mv /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-application.yaml /tmp/pim-api-application.yaml
+              mv /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pim-daemon-application.yaml /tmp/pim-daemon-application.yaml
+
+              git add deployments-ucs/pim-saas-service
+              git commit -m "Update release version"
+              git push --set-upstream origin ${CIRCLE_BRANCH}-deployment
+        - run:
+            name: Deploy PIM
+            command: |
+              kubectl apply -f /tmp/pim-web-application.yaml -n argocd
+              kubectl apply -f /tmp/pim-api-application.yaml -n argocd
+              kubectl apply -f /tmp/pim-daemon-application.yaml -n argocd
+
+              # Better to store the password in CircleCI or other mecanisme
+              ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+
+              # Login to argocd
+              argocd login --insecure argocd.bh.akeneo.ch --username admin --password ${ARGOCD_PASSWORD}
+
+              # Force synchro
+              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-web --hard-refresh
+              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-api --hard-refresh
+              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-daemon --hard-refresh
+              # TODO fix this error
+              # FATA[0002] rpc error: code = FailedPrecondition desc = another operation is already in progress
+              # argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-web --async
+              # argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-api --async
+              # argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-daemon --async
+
+              echo "============================"
+              echo "url : https://argocd.bh.akeneo.ch"
+              echo "user : admin"
+              echo "password : ${ARGOCD_PASSWORD}"
+              echo "============================"
+
+    deploy_tenant:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+            CLUSTER_NEXT:
+                type: boolean
+                default: false
+        environment:
+            <<: *envVarsDeployUCS
+        <<: *dockerCloudDeployerUCS
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - add_ssh_keys:
+                  fingerprints:
+                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+            - when:
+                  condition:
+                      equal: [true, << parameters.CLUSTER_NEXT >> ]
+                  steps:
+                      - modify_cluster
+            - set_gcloud_config_ucs
+            - restore_persisted_env_vars
+            - run:
+                  name: Define value for next steps
+                  command: |
+                      INSTANCE_NAME_PREFIX=ucs
+                      INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+
+                      echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                      echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+
+                      echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                      echo "Instance name: ${INSTANCE_NAME}"
+                      echo "Image tag: ${IMAGE_TAG}"
+            - run:
+                  name: DATADOG deployment Livetail logs page
+                  command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+            - run:
+                  name: Deploy PIM on kubernetes
+                  command: |
+                      NS=${TYPE}-${INSTANCE_NAME} PHASE=install bash deployments-ucs/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
+                      make -C deployments-ucs/ deploy_tenant
+            - run:
+                  name: Persist env vars for next jobs
+                  command: |
+                      echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - project/persisted_env_vars
+                      - project/deployments-ucs/instances/${TYPE}-${INSTANCE_NAME}/.kubeconfig
+            - run:
+                  name: Display Deployment Errors
+                  command: cat deployment.log
+                  when: on_fail
+            - run:
+                  name: Remove env on kubernetes
+                  command: |
+                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      DELETE_TENANT_STATUS_CODE=0
+                      for i in 1 2 3; do make -C deployments-ucs/ delete_tenant && DELETE_TENANT_STATUS_CODE=0 && break || DELETE_TENANT_STATUS_CODE=1; done
+                      exit ${DELETE_TENANT_STATUS_CODE}
+                  when: on_fail
+
+    test_ucs_deploy:
+      parameters:
+        PRODUCT_TYPE:
+          type: string
+          default: "srnt"
+      environment:
+          <<: *envVarsDeployUCS
+      <<: *dockerCloudDeployerUCS
+      resource_class: small
+      steps:
+        - attach_workspace:
+            at: ~/
+        - add_ssh_keys:
+            fingerprints:
+              - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+        - set_gcloud_config_ucs
+        - restore_persisted_env_vars
+        - run:
+            name: Add ingresses (pim-web and pim-api)
+            command: |
+              ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+              export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+              git config --global user.email "pim_ci@akeneo.com"
+              git config --global user.name "pim_ci_deployment"
+
+              cd /tmp
+              git clone -b ${CIRCLE_BRANCH}-deployment git@github.com:akeneo/pim-enterprise-dev.git ee-deployment
+              cd ee-deployment
+
+              cp /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/pim-web-ingress.yaml /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
+              cp /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-ingress.yaml /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
+
+              ## {INSTANCE_NAME}-pim-web-ingress.yaml
+              sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.bh\.akeneo\.ch#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
+              sed -i "s#pim-external-{{ \.Values\.global\.extraLabels\.instanceName }}#pim-external-${INSTANCE_NAME}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
+              ## {INSTANCE_NAME}-pim-api-ingress.yaml
+              sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.bh\.akeneo\.ch#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
+              sed -i "s#pim-api-external-{{ \.Values\.global\.extraLabels\.instanceName }}#pim-api-external-${INSTANCE_NAME}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
+
+              git add deployments-ucs/pim-saas-service
+              git commit -m "Add ingresses for ${INSTANCE_NAME}"
+
+              COMMIT_INGRESS_STATUS_CODE=0
+              for i in 1 2 3; do (git pull --no-edit && git push) && COMMIT_INGRESS_STATUS_CODE=0 && break || COMMIT_INGRESS_STATUS_CODE=1; done
+              if [[ "${COMMIT_INGRESS_STATUS_CODE}" = 1 ]] ; then exit ${COMMIT_INGRESS_STATUS_CODE} ; fi
+
+              CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
+              # Better to store the password in CircleCI or other mecanisme
+              ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+
+              # Login to argocd
+              argocd login --insecure argocd.bh.akeneo.ch --username admin --password ${ARGOCD_PASSWORD}
+
+              # Force synchro
+              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-web --hard-refresh
+              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-api --hard-refresh
+        - run:
+            name: Test PIM connexion on kubernetes
+            command: |
+              make -C deployments-ucs/ test-prod

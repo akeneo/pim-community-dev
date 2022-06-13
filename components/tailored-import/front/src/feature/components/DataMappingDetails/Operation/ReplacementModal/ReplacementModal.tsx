@@ -28,8 +28,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import {MappedFilterDropdown, MappedFilterValue} from './MappedFilterDropdown';
 import {isDefaultReplacementValueFilter, ReplacementValueFilter} from './ReplacementValueFilter';
-import {filterEmptyValues, ReplacementValues} from '../ReplacementValues';
-import {OperationType} from '../../../../models/Operation';
+import {filterEmptyValues, OperationType, ReplacementValues} from '../../../../models';
 
 const Container = styled.div`
   width: 100%;
@@ -94,6 +93,7 @@ type Value = {
 type ReplacementModalProps = {
   title: string;
   operationType: OperationType;
+  operationUuid: string;
   initialMapping: ReplacementValues;
   values: Value[];
   totalItems: number;
@@ -109,6 +109,7 @@ type ReplacementModalProps = {
 const ReplacementModal = ({
   title,
   operationType,
+  operationUuid,
   initialMapping,
   values,
   totalItems,
@@ -164,6 +165,7 @@ const ReplacementModal = ({
   const handleConfirm = async () => {
     const response = await fetch(validateReplacementOperationRoute, {
       body: JSON.stringify({
+        uuid: operationUuid,
         type: operationType,
         mapping,
       }),

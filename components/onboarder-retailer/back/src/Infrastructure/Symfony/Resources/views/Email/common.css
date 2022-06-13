@@ -1,0 +1,156 @@
+/* /\/\/\/\/\/\/\/\/ CLIENT-SPECIFIC STYLES /\/\/\/\/\/\/\/\/ */
+#outlook a{padding:0;} /* Force Outlook to provide a "view in browser" message */
+.ReadMsgBody{width:100%;} .ExternalClass{width:100%;} /* Force Hotmail to display emails at full width */
+.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;} /* Force Hotmail to display normal line spacing */
+body, table, td, p, a, li, blockquote{-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;} /* Prevent WebKit and Windows mobile changing default text sizes */
+table, td{mso-table-lspace:0pt; mso-table-rspace:0pt;} /* Remove spacing between tables in Outlook 2007 and up */
+img{-ms-interpolation-mode:bicubic;} /* Allow smoother rendering of resized image in Internet Explorer */
+
+/* /\/\/\/\/\/\/\/\/ RESET STYLES /\/\/\/\/\/\/\/\/ */
+body{margin:0; padding:0;}
+img{border:0; height:auto; line-height:100%; outline:none; text-decoration:none;}
+table{border-collapse:collapse !important;}
+body, #bodyTable, #bodyCell{height:100% !important; margin:0; padding:0; width:100% !important;}
+
+/* /\/\/\/\/\/\/\/\/ TEMPLATE STYLES /\/\/\/\/\/\/\/\/ */
+.templateContainer{width:600px;}
+
+/* ========== Page Styles ========== */
+body, #bodyTable{
+    background-color:#FFFFFF;
+}
+.OnboarderHeaderContainer-logo {
+    height:auto;
+    max-width:290px;
+}
+.AknButton {
+    font-family:'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #FFFFFF;
+    height: 32px;
+    line-height: 30px;
+    font-size: 13px;
+    min-width: 32px;
+    display: inline-block;
+    padding: 0 16px;
+    border-radius: 100px;
+    cursor: pointer;
+    text-align: left;
+    white-space: nowrap;
+    transition: background 0.1s ease, color 0.1s ease, border-color 0.1s ease;
+    position: relative;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+.AknButton--blue {
+    background-color: #4CA8E0;
+    border: 1px solid #4CA8E0;
+    color: #FFFFFF !important;
+}
+.AknButton--white {
+    font-family:'Lato-Heavy', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    color: #4CA8E0 !important;
+    margin: 25px 0;
+}
+.AknGreyBlock {
+    background-color: #F7F7F7;
+}
+.AknGreyBlock p:first-child,
+.AknWhiteBlock p:first-child {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.AknGreyBlock td {
+    font-family:'Lato-Medium', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    padding: 30px 40px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.AknFooter {
+    background-color: #4CA8E0;
+    font-size: 12px;
+    color:#FFFFFF;
+}
+.AknFooter td {
+    font-family:'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 20px 40px 0 40px;
+}
+.AknFooter p.title {
+    font-family: 'Lato',"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 100%;
+    letter-spacing: normal;
+    margin: 0;
+    color: #FFFFFF;
+    mso-line-height-rule:exactly;
+}
+.AknFooter p {
+    margin-bottom: 25px;
+}
+.AknFooter .questions {
+    font-size: 12px;
+    margin-top: 0;
+}
+.AknFooter .address {
+    font-size: 9px;
+    color:#FFFFFF;
+    margin:0 0 30px 0;
+}
+.AknWhiteBlock {
+    background-color: #FFFFFF;
+    font-family:'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    border-radius: 11px;
+    text-align: center;
+    width: 100%;
+    color: #11324D;
+}
+.AknWhiteBlock td {
+    text-align: center;
+    font-size: 20px;
+    padding-top: 25px;
+}
+.AknOnboarderGrey120 {
+    color: #67768A;
+}
+.expiration-date {
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+.AknOnboarderBlue {
+    color: #4CA8E0;
+}
+.helpCenter {
+    color: #FFFFFF;
+}
+.footerLogo {
+    height: auto;
+}
+.smallText {
+    font-size: 9px;
+}
+
+@media only screen and (max-width: 480px){
+    body, table, td, p, a, li, blockquote{-webkit-text-size-adjust:none !important;} /* Prevent Webkit platforms from changing default text sizes */
+    body{width:100% !important; min-width:100% !important;} /* Prevent iOS Mail from adding padding to the body */
+
+    #bodyCell{padding:10px !important;}
+
+    .templateContainer{
+        max-width: 600px !important;
+        width: 100% !important;
+    }
+    .templateContainer td {
+        border-spacing: 0 !important;
+        border-collapse: collapse !important;
+        padding: 0 !important;
+    }
+    .AknGreyBlock td {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        padding-top: 10px !important;
+    }
+}

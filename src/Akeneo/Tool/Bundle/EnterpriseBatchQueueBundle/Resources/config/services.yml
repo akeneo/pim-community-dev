@@ -8,3 +8,4 @@ services:
                 'Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage': [ 'import' ]
                 'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': [ 'export', 'quick_export' ]
             - 'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage'
+            - '%env(default::string:APP_TENANT_ID)%'

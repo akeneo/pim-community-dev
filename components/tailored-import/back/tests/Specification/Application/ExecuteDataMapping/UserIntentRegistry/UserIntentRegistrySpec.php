@@ -28,6 +28,7 @@ class UserIntentRegistrySpec extends ObjectBehavior
         $unsupportedUserIntentFactory->supports($target)->willReturn(false);
         $supportedUserIntentFactory->supports($target)->willReturn(true);
         $anotherSupportedUserIntentFactory->supports($target)->willReturn(true);
+        $target->getActionIfEmpty()->willReturn(TargetInterface::IF_EMPTY_CLEAR);
 
         $this->beConstructedWith([
             $unsupportedUserIntentFactory,

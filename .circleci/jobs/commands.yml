@@ -31,6 +31,22 @@ commands:
                       export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
                       gcloud auth configure-docker --quiet
 
+    set_gcloud_config_ucs:
+        description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
+        steps:
+            - run:
+                  name: "Set Gcloud Config."
+                  shell: "/bin/bash -eo pipefail"
+                  command: |
+                      echo ${GCLOUD_SERVICE_KEY_DEV} | gcloud auth activate-service-account --key-file=-
+                      gcloud config set project ${GOOGLE_PROJECT_ID}
+                      gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+                      gcloud container clusters get-credentials ${CLUSTER_NAME} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_COMPUTE_ZONE}
+                      echo ${GCLOUD_SERVICE_KEY_DEV} > ${HOME}/gcloud-service-key.json
+                      echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
+                      export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
+                      gcloud auth configure-docker --quiet
+
     restore_persisted_env_vars:
         description: "Restore env vars that have been persisted by the previous job."
         steps:
@@ -98,6 +114,7 @@ commands:
         - run:
             name: DATADOG deployment Livetail logs page
             command: |
+              if [ "$USE_EDITION_FLAG" = true ] ; then TYPE=srnt ; fi
               echo "Instance logs :"
               echo "<<parameters.dd_domain>>/logs/livetail?query=kube_namespace%3A<<parameters.pfid>>"
               <<# parameters.display_migration_link >>
@@ -123,6 +140,7 @@ commands:
         - run:
             name: DATADOG migration logs
             command: |
+              if [ "$USE_EDITION_FLAG" = true ] ; then TYPE=srnt ; fi
               FROM_TS="$(date -d '1 hour ago' '+%Y-%m-%dT%H:%M:%S%z' | cut -c1-22):00"
               TO_TS="$(date -d '3 hours' '+%Y-%m-%dT%H:%M:%S%z' | cut -c1-22):00"
               LOGS=$(curl --location -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request POST "<<parameters.dd_domain>>/api/v2/logs/events/search" --data-raw '{"filter": {"query": "kube_namespace:'"<<parameters.pfid>>"' component:hook-upgrader container_name:pim-upgrade took","indexes": ["main"],"from": "'"${FROM_TS}"'","to": "'"${TO_TS}"'"},"sort": "timestamp","page": {"limit": 100}}')

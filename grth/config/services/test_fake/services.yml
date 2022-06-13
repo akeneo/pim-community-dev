@@ -19,6 +19,8 @@ imports:
     - { resource: ../../../components/tailored-import/back/tests/Acceptance/Resources/config/services.yml }
     # Table Attribute
     - { resource: ../../../src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/Resources/config/services.yml }
+    # Job Automation
+    - { resource: ../../../components/job-automation/back/tests/Acceptance/Resources/config/services.yml }
 
 services:
     akeneo_integration_tests.doctrine.connection.connection_closer:

@@ -1,12 +1,4 @@
-parameters:
-  akeneo.job_automation.validation.storage_constraint_classes:
-    none: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\None\NoneStorage'
-    local: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Local\LocalStorage'
-    sftp: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage'
-
 services:
-  Akeneo\Platform\JobAutomation\Infrastructure\Validation\StorageValidator:
-    arguments:
-      - '%akeneo.job_automation.validation.storage_constraint_classes%'
+  Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage:
     tags:
-      - { name: validator.constraint_validator }
+      - { name: 'akeneo.import_export.validation.storage_constraint', key: 'sftp' }

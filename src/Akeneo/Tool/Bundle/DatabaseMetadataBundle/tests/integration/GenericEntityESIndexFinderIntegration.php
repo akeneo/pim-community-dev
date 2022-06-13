@@ -44,7 +44,13 @@ class GenericEntityESIndexFinderIntegration extends TestCase
      */
     public function test_request_filter_with_order_by(EntityIndexConfiguration $entityIndexConfiguration): void
     {
-        $fixtures = [['product_1', null], ['product_2', null], ['product_3', null], ['product_4', null]];
+        $fixtures = [
+            ['product_' . $this->findProductUuidFromId(1), null],
+            ['product_' . $this->findProductUuidFromId(2), null],
+            ['product_' . $this->findProductUuidFromId(3), null],
+            ['product_' . $this->findProductUuidFromId(4), null],
+        ];
+        \usort($fixtures, static fn (array $array1, array $array2): int => \strcmp($array1[0], $array2[0]));
         $tests = new \ArrayIterator($fixtures);
         foreach ($tests as $test) {
             $resultsFormat[] = IndexResultsFactory::initIndexFormatDataResults($test[0], $test[1]);
@@ -101,5 +107,15 @@ class GenericEntityESIndexFinderIntegration extends TestCase
         }
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+    }
+
+    private function findProductUuidFromId(int $productId): string
+    {
+        $uuid = $this->get('database_connection')->executeQuery(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE id = ?',
+            [$productId]
+        )->fetchOne();
+
+        return $uuid;
     }
 }

@@ -140,6 +140,7 @@ class FileReaderTest extends AcceptanceTestCase
                 'first_column' => 0,
                 'first_product_row' => 2,
                 'sheet_name' => $sheetName,
+                'unique_identifier_column' => 0,
             ],
             'filePath' => 'components/tailored-import/back/tests/Common/simple_import.xlsx',
             'import_structure' => [

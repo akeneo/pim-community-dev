@@ -65,6 +65,7 @@ return [
     Akeneo\Pim\Enrichment\Product\Infrastructure\Symfony\AkeneoPimEnrichmentProductBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Category\Infrastructure\Symfony\AkeneoPimEnrichmentCategoryBundle::class => ['all' => true],
     Akeneo\Catalogs\Infrastructure\Symfony\AkeneoCatalogsBundle::class => ['all' => true],
+    Akeneo\Platform\Bundle\PimVersionBundle\PimVersionBundle::class => ['all' => true],
 
     // PIM Growth bundle
     Akeneo\Pim\TableAttribute\Infrastructure\Symfony\AkeneoPimTableAttributeBundle::class => ['all' => true],
@@ -96,7 +97,8 @@ return [
     Akeneo\Platform\TailoredImport\Infrastructure\Symfony\AkeneoTailoredImportBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FrameworkBundle\PimEnterpriseFrameworkBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\EnterpriseBatchQueueBundle\AkeneoEnterpriseBatchQueueBundle::class => ['all' => true],
-    Akeneo\OnboarderSerenity\Infrastructure\Symfony\AkeneoOnboarderSerenityBundle::class => ['all' => true],
+    Akeneo\OnboarderSerenity\Retailer\Infrastructure\Symfony\AkeneoOnboarderSerenityRetailerBundle::class => ['all' => true],
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Symfony\AkeneoOnboarderSerenitySupplierBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\DatabaseMetadataBundle\AkeneoDatabaseMetadataBundle::class => ['all' => true],
     Akeneo\Platform\JobAutomation\Infrastructure\Symfony\AkeneoJobAutomationBundle::class => ['all' => true],
 

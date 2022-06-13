@@ -28,6 +28,7 @@ akeneo_onboarder_message | BASE TABLE
 akeneo_onboarder_nice_to_have_attribute | BASE TABLE
 akeneo_onboarder_pre_ref_product | BASE TABLE
 akeneo_onboarder_retailer_contact | BASE TABLE
+akeneo_onboarder_serenity_contributor_account | BASE TABLE
 akeneo_onboarder_serenity_supplier | BASE TABLE
 akeneo_onboarder_serenity_supplier_contributor | BASE TABLE
 akeneo_onboarder_supplier | BASE TABLE
@@ -210,7 +211,7 @@ akeneo_batch_job_execution | job_instance_id | NO | int | MUL
 akeneo_batch_job_execution | pid | YES | int |
 akeneo_batch_job_execution | user | YES | varchar(255) | MUL
 akeneo_batch_job_execution | status | NO | int | MUL
-akeneo_batch_job_execution | start_time | YES | datetime |
+akeneo_batch_job_execution | start_time | YES | datetime | MUL
 akeneo_batch_job_execution | end_time | YES | datetime |
 akeneo_batch_job_execution | create_time | YES | datetime |
 akeneo_batch_job_execution | updated_time | YES | datetime |
@@ -257,6 +258,7 @@ akeneo_batch_warning | item | NO | longtext |
 akeneo_catalog | id | NO | binary(16) | PRI
 akeneo_catalog | name | NO | varchar(255) |
 akeneo_catalog | owner_id | NO | int | MUL
+akeneo_catalog | is_enabled | NO | tinyint |
 akeneo_catalog | created | NO | datetime |
 akeneo_catalog | updated | NO | datetime |
 akeneo_communication_channel_viewed_announcements | announcement_id | NO | varchar(100) | PRI
@@ -340,6 +342,13 @@ akeneo_onboarder_pre_ref_product | created_at | NO | datetime |
 akeneo_onboarder_pre_ref_product | is_rejected | NO | tinyint(1) |
 akeneo_onboarder_retailer_contact | supplier_id | NO | char(36) | PRI
 akeneo_onboarder_retailer_contact | user_id | NO | int | PRI
+akeneo_onboarder_serenity_contributor_account | id | NO | varchar(36) | PRI
+akeneo_onboarder_serenity_contributor_account | email | NO | varchar(255) | UNI
+akeneo_onboarder_serenity_contributor_account | password | YES | varchar(255) |
+akeneo_onboarder_serenity_contributor_account | access_token | YES | varchar(255) |
+akeneo_onboarder_serenity_contributor_account | access_token_created_at | YES | datetime |
+akeneo_onboarder_serenity_contributor_account | created_at | NO | datetime |
+akeneo_onboarder_serenity_contributor_account | last_logged_at | YES | datetime |
 akeneo_onboarder_serenity_supplier | identifier | NO | char(36) | PRI
 akeneo_onboarder_serenity_supplier | code | NO | varchar(200) | UNI
 akeneo_onboarder_serenity_supplier | label | NO | varchar(200) |
@@ -480,14 +489,14 @@ pim_api_access_token | client | YES | int | MUL
 pim_api_access_token | user | YES | int | MUL
 pim_api_access_token | token | NO | varchar(255) | UNI
 pim_api_access_token | expires_at | YES | int |
-pim_api_access_token | scope | YES | varchar(255) |
+pim_api_access_token | scope | YES | varchar(1000) |
 pim_api_auth_code | id | NO | int | PRI
 pim_api_auth_code | client_id | YES | int | MUL
 pim_api_auth_code | user_id | YES | int | MUL
 pim_api_auth_code | token | NO | varchar(255) | UNI
 pim_api_auth_code | redirect_uri | NO | longtext |
 pim_api_auth_code | expires_at | YES | int |
-pim_api_auth_code | scope | YES | varchar(255) |
+pim_api_auth_code | scope | YES | varchar(1000) |
 pim_api_client | id | NO | int | PRI
 pim_api_client | random_id | NO | varchar(255) |
 pim_api_client | redirect_uris | NO | longtext |
@@ -500,7 +509,7 @@ pim_api_refresh_token | client | YES | int | MUL
 pim_api_refresh_token | user | YES | int | MUL
 pim_api_refresh_token | token | NO | varchar(255) | UNI
 pim_api_refresh_token | expires_at | YES | int |
-pim_api_refresh_token | scope | YES | varchar(255) |
+pim_api_refresh_token | scope | YES | varchar(1000) |
 pim_catalog_association | id | NO | int | PRI
 pim_catalog_association | association_type_id | NO | int | MUL
 pim_catalog_association | owner_id | NO | int | MUL
@@ -972,6 +981,7 @@ INDEX | akeneo_batch_job_execution | IDX_62738477593D6954 | job_instance_id
 INDEX | akeneo_batch_job_execution | is_visible_idx | is_visible
 INDEX | akeneo_batch_job_execution | job_instance_id_user_status_is_visible_idx | job_instance_id, user, status, is_visible
 INDEX | akeneo_batch_job_execution | PRIMARY | id
+INDEX | akeneo_batch_job_execution | start_time_idx | start_time
 INDEX | akeneo_batch_job_execution | status_idx | status
 INDEX | akeneo_batch_job_execution | user_idx | user
 INDEX | akeneo_batch_job_instance | code_idx | code
@@ -1011,6 +1021,8 @@ INDEX | akeneo_onboarder_pre_ref_product | supplier_supplier_reference | supplie
 INDEX | akeneo_onboarder_retailer_contact | PRIMARY | supplier_id, user_id
 INDEX | akeneo_onboarder_retailer_contact | supplier_id | supplier_id
 INDEX | akeneo_onboarder_retailer_contact | user_id | user_id
+INDEX | akeneo_onboarder_serenity_contributor_account | PRIMARY | id
+INDEX | akeneo_onboarder_serenity_contributor_account | UC_contributor_account_email | email
 INDEX | akeneo_onboarder_serenity_supplier | PRIMARY | identifier
 INDEX | akeneo_onboarder_serenity_supplier | UC_supplier_code | code
 INDEX | akeneo_onboarder_serenity_supplier_contributor | PRIMARY | id
@@ -1579,6 +1591,7 @@ UNIQUE CONSTRAINT | client_id | akeneo_connectivity_connection | client_id
 UNIQUE CONSTRAINT | UNIQ_F19B3719A5D32530 | akeneo_file_storage_file_info | file_key
 UNIQUE CONSTRAINT | code | akeneo_measurement | code
 UNIQUE CONSTRAINT | supplier_supplier_reference | akeneo_onboarder_pre_ref_product | supplier_reference, supplier_id
+UNIQUE CONSTRAINT | UC_contributor_account_email | akeneo_onboarder_serenity_contributor_account | email
 UNIQUE CONSTRAINT | UC_supplier_code | akeneo_onboarder_serenity_supplier | code
 UNIQUE CONSTRAINT | UC_supplier_contributor_email | akeneo_onboarder_serenity_supplier_contributor | email
 UNIQUE CONSTRAINT | UNIQ_4BA928F877153098 | akeneo_onboarder_supplier | code

@@ -1,0 +1,6 @@
+services:
+    # Controllers
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAccount\UpdatePasswordHandler'

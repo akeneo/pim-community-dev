@@ -2,7 +2,7 @@ import React from 'react';
 import {Field, Helper, SelectInput} from 'akeneo-design-system';
 import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {isDateTarget, DateSourceConfiguration, isDateFormat, availableDateFormats} from './model';
-import {AttributeDataMappingConfiguratorProps} from '../../../../models';
+import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources, ClearIfEmpty} from '../../../../components';
 
@@ -35,7 +35,7 @@ const DateConfigurator = ({
         validationErrors={filterErrors(validationErrors, '[target]')}
         onTargetChange={onTargetChange}
       >
-        <ClearIfEmpty target={target} onTargetChange={onTargetChange} />
+        <ClearIfEmpty<AttributeTarget> target={target} onTargetChange={onTargetChange} />
         <Field label={translate('akeneo.tailored_import.data_mapping.target.parameters.date_format')}>
           <SelectInput
             invalid={0 < dateFormatErrors.length}

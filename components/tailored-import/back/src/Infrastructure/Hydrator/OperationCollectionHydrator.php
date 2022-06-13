@@ -19,7 +19,9 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToDateOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SplitOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
@@ -45,16 +47,19 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
 
     private function hydrateProperty(string $propertyCode, array $normalizedOperations): OperationCollection
     {
-        // TODO
-        return OperationCollection::create([]);
+        $configuredOperations = $this->getConfiguredOperations($normalizedOperations);
+
+        return OperationCollection::create($configuredOperations);
     }
 
     private function getConfiguredOperations(array $normalizedOperations): array
     {
         return \array_map(
             static fn (array $normalizedOperation) => match ($normalizedOperation['type']) {
-                CleanHTMLTagsOperation::TYPE => new CleanHTMLTagsOperation(),
-                SplitOperation::TYPE => new SplitOperation($normalizedOperation['separator']),
+                CleanHTMLTagsOperation::TYPE => new CleanHTMLTagsOperation($normalizedOperation['uuid']),
+                SplitOperation::TYPE => new SplitOperation($normalizedOperation['uuid'], $normalizedOperation['separator']),
+                SimpleSelectReplacementOperation::TYPE => new SimpleSelectReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
+                MultiSelectReplacementOperation::TYPE => new MultiSelectReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" Operation type', $normalizedOperation['type'])),
             },
             $normalizedOperations,

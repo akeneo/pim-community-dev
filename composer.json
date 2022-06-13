@@ -23,7 +23,8 @@
             ],
             "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/",
             "Akeneo\\Platform\\TailoredImport\\": "components/tailored-import/back/src",
-            "Akeneo\\OnboarderSerenity\\": "components/onboarder/back/src",
+            "Akeneo\\OnboarderSerenity\\Retailer\\": "components/onboarder-retailer/back/src",
+            "Akeneo\\OnboarderSerenity\\Supplier\\": "components/onboarder-supplier/back/src",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Pim\\Upgrade\\": "upgrades/",
@@ -71,10 +72,12 @@
             "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Product/back/Test",
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Category/back/Test",
             "AkeneoEnterprise\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test",
-            "Akeneo\\OnboarderSerenity\\Test\\": "components/onboarder/back/tests",
+            "Akeneo\\OnboarderSerenity\\Retailer\\Test\\": "components/onboarder-retailer/back/tests",
+            "Akeneo\\OnboarderSerenity\\Supplier\\Test\\": "components/onboarder-supplier/back/tests",
             "Akeneo\\Test\\Channel\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Channel/back/tests",
             "AkeneoEnterprise\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
             "Akeneo\\Platform\\JobAutomation\\Test\\": "components/job-automation/back/tests",
+            "Specification\\Akeneo\\Platform\\JobAutomation\\": "components/job-automation/back/tests/Specification",
             "Akeneo\\Catalogs\\Test\\": "vendor/akeneo/pim-community-dev/components/catalogs/back/tests"
         }
     },
@@ -87,7 +90,9 @@
         "jfcherng/php-diff": "^6.10",
         "justinrainbow/json-schema": "^5.2.11",
         "league/flysystem-google-cloud-storage": "^2.3.0",
+        "league/flysystem-sftp": "^3.0",
         "phpseclib/phpseclib": "2.0.31",
+        "symfony/password-hasher": "5.4.*",
         "tigitz/php-spellchecker": "0.4.0"
     },
     "require-dev": {
@@ -111,6 +116,7 @@
         "phpstan/phpstan-symfony": "^1.1.0",
         "phpstan/phpstan-webmozart-assert": "^1.1.0",
         "phpunit/phpunit": "^9.5",
+        "psr/simple-cache": "^2.0",
         "sebastian/exporter": "^4.0.0",
         "sensiolabs/behat-page-object-extension": "^2.3.3",
         "symfony/debug-bundle": "^5.4.0",

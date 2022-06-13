@@ -1,0 +1,11 @@
+services:
+    akeneo.onboarder_serenity.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_ONBOARDER_SERENITY_ENABLED)%'
+        public: true
+
+    Akeneo\OnboarderSerenity\Retailer\Infrastructure\Mailer\SendSwiftmailerEmail:
+        arguments:
+            - '@mailer'
+            - '@monolog.logger.onboarder_serenity'

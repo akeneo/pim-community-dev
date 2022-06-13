@@ -2,9 +2,10 @@ import {isTextTarget, TextTarget} from './model';
 import {NumberTarget} from '../Number/model';
 
 test('it returns true if it is a text target', () => {
-  const numberTarget: TextTarget = {
+  const textTarget: TextTarget = {
     code: 'response_time',
     type: 'attribute',
+    attribute_type: 'pim_catalog_text',
     locale: null,
     channel: null,
     source_configuration: null,
@@ -12,13 +13,14 @@ test('it returns true if it is a text target', () => {
     action_if_empty: 'skip',
   };
 
-  expect(isTextTarget(numberTarget)).toEqual(true);
+  expect(isTextTarget(textTarget)).toEqual(true);
 });
 
 test('it returns false if it is not a number target', () => {
-  const textTarget: NumberTarget = {
+  const numberTarget: NumberTarget = {
     code: 'name',
     type: 'attribute',
+    attribute_type: 'pim_catalog_number',
     locale: null,
     channel: null,
     source_configuration: {decimal_separator: ','},
@@ -26,5 +28,5 @@ test('it returns false if it is not a number target', () => {
     action_if_empty: 'skip',
   };
 
-  expect(isTextTarget(textTarget)).toEqual(false);
+  expect(isTextTarget(numberTarget)).toEqual(false);
 });

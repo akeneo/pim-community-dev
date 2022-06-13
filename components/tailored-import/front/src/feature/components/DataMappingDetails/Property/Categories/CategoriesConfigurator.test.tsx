@@ -28,6 +28,9 @@ test('it displays a categories configurator', async () => {
   expect(screen.getByLabelText('akeneo.tailored_import.data_mapping.target.clear_if_empty')).toBeInTheDocument();
   expect(screen.getByText('Sources')).toBeInTheDocument();
   expect(screen.getByText('Operations')).toBeInTheDocument();
+  expect(
+    screen.getByLabelText('akeneo.tailored_import.data_mapping.target.action_if_not_empty.title')
+  ).toBeInTheDocument();
 });
 
 test('it defines if the property should be cleared when empty', async () => {
@@ -51,6 +54,31 @@ test('it defines if the property should be cleared when empty', async () => {
   expect(onTargetChange).toHaveBeenCalledWith({
     ...dataMapping.target,
     action_if_empty: 'clear',
+  });
+});
+
+test('it can change the assignation mode to use when the value is not empty', async () => {
+  const dataMapping = createPropertyDataMapping('categories');
+  const onTargetChange = jest.fn();
+
+  await renderWithProviders(
+    <CategoriesConfigurator
+      columns={[]}
+      dataMapping={dataMapping}
+      onOperationsChange={jest.fn()}
+      onRefreshSampleData={jest.fn()}
+      onSourcesChange={jest.fn()}
+      onTargetChange={onTargetChange}
+      validationErrors={[]}
+    />
+  );
+
+  userEvent.click(screen.getByTitle('pim_common.open'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.target.action_if_not_empty.add'));
+
+  expect(onTargetChange).toHaveBeenCalledWith({
+    ...dataMapping.target,
+    action_if_not_empty: 'add',
   });
 });
 

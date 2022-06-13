@@ -126,3 +126,16 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_catalog.completeness.calculator'
             - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
+
+    pim_catalog.tasklet.compute_family_variant_structure_changes:
+        class: '%pim_catalog.tasklet.compute_family_variant_structure_changes.class%'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory.without_permission'
+            - '@pim_catalog.saver.product_without_permission'
+            - '@pim_catalog.saver.product_model_without_permission'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '@event_dispatcher'
+            - '%pim_job_product_batch_size%'
+        public: false

@@ -30,6 +30,9 @@ jobs:
                     name: Install database
                     command: APP_ENV=test make database
             -   run:
+                    name: Launch PHP static analyzer & check Sf services
+                    command: PIM_CONTEXT=test make static-back
+            -   run:
                     name: Run tests for Onboarder Serenity
                     command: PIM_CONTEXT=onboarder-serenity make tests-back-onboarder
             - store_test_results:

@@ -87,7 +87,7 @@ services:
 
   mysql:
     image: 'mysql:8.0.26'
-    command: '--default-authentication-plugin=mysql_native_password'
+    command: '--default-authentication-plugin=mysql_native_password --log_bin_trust_function_creators=1'
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_USER: '${APP_DATABASE_USER}'
@@ -151,6 +151,13 @@ services:
   firestore-emulator:
     image: 'google/cloud-sdk:375.0.0-emulators'
     command: 'gcloud --user-output-enabled --log-http beta emulators firestore start --host-port=0.0.0.0:8086'
+    networks:
+      - 'pim'
+
+  mailcatcher:
+    image: 'schickling/mailcatcher'
+    ports:
+      - '1080:1080'
     networks:
       - 'pim'
 

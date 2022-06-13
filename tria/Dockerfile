@@ -2,7 +2,7 @@
 # This first image will be use as a base
 # for production and development images
 #
-FROM debian:buster-slim AS base
+FROM debian:bullseye-slim AS base
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PHP_CONF_DATE_TIMEZONE=UTC \
@@ -32,7 +32,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         libcurl4-openssl-dev \
         libssl-dev && \
      wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg &&\
-        sh -c 'echo "deb https://packages.sury.org/php/ buster main" > /etc/apt/sources.list.d/php.list' &&\
+        sh -c 'echo "deb https://packages.sury.org/php/ bullseye main" > /etc/apt/sources.list.d/php.list' &&\
     apt-get update && \
     apt-get clean && \
     apt-get --yes autoremove --purge && \
@@ -41,7 +41,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     apt-get --yes install \
         ca-certificates \
         imagemagick \
-        libmagickcore-6.q16-2-extra \
+        libmagickcore-6.q16-6-extra \
         php8.0-fpm \
         php8.0-cli \
         php8.0-intl \
@@ -123,8 +123,8 @@ ARG COMPOSER_AUTH
 
 # Install NodeJS 14 and Yarn
 RUN sh -c 'wget -q -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add -' && \
-    sh -c 'echo "deb https://deb.nodesource.com/node_14.x buster main" > /etc/apt/sources.list.d/nodesource.list' && \
-    sh -c 'echo "deb-src https://deb.nodesource.com/node_14.x buster main" >> /etc/apt/sources.list.d/nodesource.list' && \
+    sh -c 'echo "deb https://deb.nodesource.com/node_14.x bullseye main" > /etc/apt/sources.list.d/nodesource.list' && \
+    sh -c 'echo "deb-src https://deb.nodesource.com/node_14.x bullseye main" >> /etc/apt/sources.list.d/nodesource.list' && \
     sh -c 'wget -q -O - https://dl.yarnpkg.com/debian/pubkey.gpg | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add -' && \
     sh -c 'echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list' && \
     apt-get update && \
@@ -144,7 +144,7 @@ COPY components components
 COPY grth grth
 COPY tria/upgrades upgrades
 COPY tria/front-packages front-packages
-COPY tria/composer.json tria/package.json tria/yarn.lock tria/.env tria/tsconfig.json tria/*.js .
+COPY tria/composer.json tria/package.json tria/yarn.lock tria/.env tria/tsconfig.json tria/*.js tria/version.txt .
 
 ENV APP_ENV=prod
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
@@ -194,6 +194,7 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/templates templates
 COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod
 COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
 COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php /srv/pim/composer.lock .
+COPY --from=builder --chown=www-data:www-data /srv/pim/version.txt .
 
 # Prepare the application
 RUN mkdir -p public/media && chown -R www-data:www-data public/media var && \

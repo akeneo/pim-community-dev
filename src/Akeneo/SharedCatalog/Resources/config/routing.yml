@@ -1,9 +1,9 @@
 akeneo_shared_catalog_catalog_index_rest:
     path: '/api/rest/v1/shared-catalogs'
-    defaults: { _controller: Akeneo\SharedCatalog\Controller\SharedCatalogListAction }
+    defaults: { _controller: Akeneo\SharedCatalog\Controller\SharedCatalogListAction, _list_in_root_endpoint: false }
     methods: [GET]
 
 akeneo_shared_catalog_product_list_rest:
     path: '/api/rest/v1/shared-catalogs/{sharedCatalogCode}/products'
-    defaults: { _controller: Akeneo\SharedCatalog\Controller\ProductListAction }
+    defaults: { _controller: Akeneo\SharedCatalog\Controller\ProductListAction, _list_in_root_endpoint: false }
     methods: [GET]

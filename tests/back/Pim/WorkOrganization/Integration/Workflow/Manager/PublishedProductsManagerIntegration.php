@@ -45,6 +45,7 @@ class PublishedProductsManagerIntegration extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('published_product');
 
         $productBuilder = $this->get('akeneo_integration_tests.catalog.product.builder');
 

@@ -1,3 +1,0 @@
-onboarder_serenity_supplier:
-    resource: '@AkeneoOnboarderSerenityBundle/Resources/config/routing/supplier.yml'
-    prefix: /supplier

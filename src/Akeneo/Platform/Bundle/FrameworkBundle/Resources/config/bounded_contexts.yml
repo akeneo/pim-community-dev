@@ -8,8 +8,8 @@ parameters:
 
         'Akeneo\FreeTrial': 'FreeTrial'
 
-        'Akeneo\Onboarder': 'Onboarder'
         'Akeneo\OnboarderSerenity': 'Onboarder Serenity'
+        'Akeneo\Onboarder': 'Onboarder'
 
         'Akeneo\Pim\Automation\DataQualityInsights': 'Data Quality Insights'
         'Akeneo\Pim\Automation\RuleEngine': 'Rule Engine'
@@ -25,7 +25,8 @@ parameters:
         'Akeneo\Pim\WorkOrganization\Workflow': 'Workflow'
         'Akeneo\Pim\WorkOrganization\ProductRevert': 'Workflow'
 
-        'Akeneo\Platform\Bundle\ImportExportBundle': 'Enrichment'
+        'Akeneo\Platform\Bundle\DashboardBundle': 'Dashboard'
+        'Akeneo\Platform\Bundle\ImportExportBundle': 'Import Export'
         'Akeneo\Platform\Bundle\UIBundle': 'Enrichment'
         'Akeneo\Platform\CommunicationChannel': 'CommunicationChannel'
         'Akeneo\Platform\Job': 'Job'

@@ -18,6 +18,7 @@ const attribute: Attribute = {
 const attributeTarget: AttributeTarget = {
   code: attribute.code,
   type: 'attribute',
+  attribute_type: attribute.type,
   action_if_not_empty: 'set',
   action_if_empty: 'skip',
   source_configuration: null,

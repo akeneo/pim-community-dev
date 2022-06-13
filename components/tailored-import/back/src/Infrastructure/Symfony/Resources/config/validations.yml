@@ -1,20 +1,23 @@
 parameters:
   akeneo.tailored_import.validation.attribute_target_constraints:
-    pim_catalog_identifier: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Identifier\Identifier'
-    pim_catalog_metric: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Measurement\Measurement'
-    pim_catalog_number: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Number\Number'
-    pim_catalog_simpleselect: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\SimpleSelect\SimpleSelect'
-    pim_catalog_multiselect: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\MultiSelect\MultiSelect'
-    pim_catalog_text: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Text\Text'
-    pim_catalog_textarea: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Text\Text'
-    pim_catalog_date: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Date\Date'
+    pim_catalog_identifier: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Identifier\Identifier'
+    pim_catalog_metric: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Measurement\Measurement'
+    pim_catalog_number: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Number\Number'
+    pim_catalog_simpleselect: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\SimpleSelect\SimpleSelect'
+    pim_catalog_multiselect: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\MultiSelect\MultiSelect'
+    pim_catalog_text: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Text\Text'
+    pim_catalog_textarea: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Text\Text'
+    pim_catalog_date: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Date\Date'
 
-  akeneo.tailored_import.validation.property_target_constraints: []
+  akeneo.tailored_import.validation.property_target_constraints:
+    categories: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Categories\Categories'
+    family: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Family\Family'
 
   akeneo.tailored_import.validation.operation_constraints:
     clean_html_tags: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\CleanHTMLTagsOperation'
     split: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\SplitOperation'
     simple_select_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
+    multi_select_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
 
 services:
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidAttributeValidator:
@@ -69,7 +72,7 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
-  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\SourceConfiguration\DecimalSeparatorValidator:
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\SourceConfiguration\DecimalSeparatorValidator:
     arguments:
       - [',', '.', '٫‎']
     tags:
@@ -81,7 +84,7 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
-  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Measurement\UnitValidator:
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Measurement\UnitValidator:
     arguments:
       - '@akeneo_measurement.public_api.find_unit'
     tags:

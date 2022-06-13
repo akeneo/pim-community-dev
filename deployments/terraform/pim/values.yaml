@@ -1,3 +1,9 @@
+editionFlag:
+  enabled: false
+  srnt: "SERENITY_EDITION"
+  grth: "GROWTH_EDITION"
+  tria: "TRIAL"
+
 nameOverride: ""
 global:
   extraLabels:
@@ -339,10 +345,17 @@ pim:
         requests:
           cpu: "100m"
           memory: "256Mi"
+    migrate-id-to-uuid:
+      enabled: true
+      pimCommand: "pim:product:migrate-to-uuid --no-interaction"
+      schedule: "45 * * * *"
+      resources:
+        requests:
+          cpu: "350m"
+          memory: "350Mi"
   onboarder_serenity:
     settings:
       enabled: false
-
 
 # Onboarder
 onboarder:

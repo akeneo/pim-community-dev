@@ -20,6 +20,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterfa
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\UnpublisherInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -28,6 +29,7 @@ use Doctrine\ORM\Exception\MissingIdentifierField;
 use Doctrine\Persistence\ObjectManager;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Published product manager
@@ -49,6 +51,7 @@ class PublishedProductManager
         protected RemoverInterface $remover,
         private BulkRemoverInterface $bulkRemover,
         private PublishedProductRepositoryInterface $publishedRepositoryWithoutPermission,
+        private FeatureFlags $featureFlags,
         private array $timingsInMicroseconds = [1000000, 2000000, 5000000]
     ) {
     }
@@ -123,6 +126,8 @@ class PublishedProductManager
      */
     public function publish(ProductInterface $product, array $publishOptions = [])
     {
+        Assert::true($this->featureFlags->isEnabled('published_product'));
+
         $originalProduct = $this->findOriginalProduct($product->getId());
         $this->dispatchEvent(PublishedProductEvents::PRE_PUBLISH, $originalProduct);
 
@@ -151,6 +156,8 @@ class PublishedProductManager
      */
     public function unpublish(PublishedProductInterface $published)
     {
+        Assert::true($this->featureFlags->isEnabled('published_product'));
+
         $originalPublished = $this->publishedRepositoryWithoutPermission->find($published->getId());
         $product = $originalPublished->getOriginalProduct();
         $this->dispatchEvent(PublishedProductEvents::PRE_UNPUBLISH, $product, $originalPublished);
@@ -167,6 +174,8 @@ class PublishedProductManager
      */
     public function publishAll(array $products)
     {
+        Assert::true($this->featureFlags->isEnabled('published_product'));
+
         $publishedProducts = [];
         foreach ($products as $product) {
             $published = $this->publish($product, ['with_associations' => false, 'flush' => false]);
@@ -193,6 +202,8 @@ class PublishedProductManager
      */
     public function unpublishAll(array $publishedProducts)
     {
+        Assert::true($this->featureFlags->isEnabled('published_product'));
+
         $publishedProductsWithoutPermission = [];
         foreach ($publishedProducts as $published) {
             $publishedProductWithoutPermission = $this->publishedRepositoryWithoutPermission->find($published->getId());

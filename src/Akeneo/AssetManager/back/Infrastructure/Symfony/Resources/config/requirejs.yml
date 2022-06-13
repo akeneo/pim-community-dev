@@ -4,10 +4,13 @@ config:
             controllers:
                 akeneo_asset_manager_asset_family_index:
                     module: pim/controller/asset-family/list
+                    feature: asset_manager
                 akeneo_asset_manager_asset_family_edit:
                     module: pim/controller/asset-family/edit
+                    feature: asset_manager
                 akeneo_asset_manager_asset_edit:
                     module: pim/controller/asset/edit
+                    feature: asset_manager
 
         akeneoassetmanager/application/configuration/value:
             media_file:

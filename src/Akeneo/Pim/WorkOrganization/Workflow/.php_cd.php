@@ -19,6 +19,7 @@ $rules = [
         'Akeneo\Pim\WorkOrganization\Workflow\Component',
         'Twig',
 
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
         'Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenciesInterface',
 
         'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',

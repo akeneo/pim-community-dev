@@ -1,7 +1,7 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {isBooleanTarget} from './model';
-import {AttributeDataMappingConfiguratorProps} from '../../../../models';
+import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources, ClearIfEmpty} from '../../..';
 
@@ -29,7 +29,7 @@ const BooleanConfigurator = ({
         validationErrors={filterErrors(validationErrors, '[target]')}
         onTargetChange={onTargetChange}
       >
-        <ClearIfEmpty target={target} onTargetChange={onTargetChange} />
+        <ClearIfEmpty<AttributeTarget> target={target} onTargetChange={onTargetChange} />
       </AttributeTargetParameters>
       <Sources
         isMultiSource={false}

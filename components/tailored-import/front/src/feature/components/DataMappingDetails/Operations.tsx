@@ -16,9 +16,10 @@ import {
   CleanHTMLTagsOperationBlock,
   SplitOperationBlock,
   OperationBlockProps,
-  OperationPreviewData,
   OperationSampleData,
   CLEAN_HTML_TAGS_OPERATION_TYPE,
+  MultiSelectReplacementOperationBlock,
+  MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
   SPLIT_OPERATION_TYPE,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   SimpleSelectReplacementOperationBlock,
@@ -43,6 +44,7 @@ const operationBlocks: {
   [CLEAN_HTML_TAGS_OPERATION_TYPE]: CleanHTMLTagsOperationBlock,
   [SPLIT_OPERATION_TYPE]: SplitOperationBlock,
   [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,
+  [MULTI_SELECT_REPLACEMENT_OPERATION_TYPE]: MultiSelectReplacementOperationBlock,
 };
 
 type OperationsProps = {
@@ -97,7 +99,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
             onRefreshSampleData={handleRefreshSampleData}
             loadingSampleData={loadingSampleData}
           />
-          {dataMapping.operations.map(operation => {
+          {dataMapping.operations.map((operation, index) => {
             const OperationBlock = operationBlocks[operation.type] ?? null;
 
             if (null === OperationBlock) {
@@ -111,6 +113,12 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
                 key={operation.type}
                 targetCode={dataMapping.target.code}
                 operation={operation}
+                previewData={{
+                  data: previewData,
+                  isLoading: previewDataIsLoading,
+                  hasError: previewDataHasError,
+                }}
+                isLastOperation={index === dataMapping.operations.length - 1}
                 onChange={handleOperationChange}
                 onRemove={handleOperationRemove}
               />
@@ -130,7 +138,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
               </Helper>
             )}
             {isDropdownOpen && (
-              <Dropdown.Overlay onClose={closeDropdown} fullWidth={true}>
+              <Dropdown.Overlay dropdownOpenerVisible={true} onClose={closeDropdown} fullWidth={true}>
                 <Dropdown.ItemCollection
                   noResultTitle={translate('akeneo.tailored_import.data_mapping.operations.no_result')}
                   noResultIllustration={<SettingsIllustration />}
@@ -147,13 +155,6 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
               </Dropdown.Overlay>
             )}
           </Dropdown>
-          {dataMapping.operations.length > 0 && (
-            <OperationPreviewData
-              isLoading={previewDataIsLoading}
-              previewData={previewData}
-              hasErrors={previewDataHasError}
-            />
-          )}
         </OperationBlocksContainer>
       )}
     </OperationsContainer>

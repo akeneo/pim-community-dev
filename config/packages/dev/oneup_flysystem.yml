@@ -24,3 +24,6 @@ oneup_flysystem:
             awss3v3:
                 client: 'Aws\S3\S3Client'
                 bucket: 'tailoredimport'
+        local_storage_adapter:
+            local:
+                location: '/'

@@ -12,6 +12,7 @@ const LocalStorageConfigurator = ({storage, validationErrors, onStorageChange}: 
   return (
     <>
       <TextField
+        required={true}
         value={storage.file_path}
         label={translate('akeneo.automation.storage.file_path.label')}
         onChange={file_path => onStorageChange({...storage, file_path})}

@@ -19,6 +19,9 @@ data:
   LC_ALL: C.UTF-8
   MAILER_URL: {{ .Values.mailer.base_mailer_url }}?encryption=tls&auth_mode=login&username={{ .Values.mailer.login }}&password={{ .Values.mailer.password }}&sender_address=no-reply%40{{ .Values.common.pimMasterDomain }}
   MEMCACHED_SVC:  {{ .Values.memcached.fullnameOverride | quote}}
+  {{- if .Values.editionFlag.enabled }}
+  PIM_EDITION: {{ index .Values.editionFlag (index .Values.global.extraLabels "tags.akeneo.com/instance_type")}}
+  {{- end }}
   APP_DATABASE_HOST: {{ .Values.mysql.mysql.serviceName | quote }}
   APP_DATABASE_NAME: {{ .Values.mysql.mysql.defaultDatabase | quote }}
   APP_DATABASE_PORT: "3306"
@@ -104,6 +107,7 @@ data:
   FLAG_MARKETPLACE_FAKE_APPS_ENABLED: "1"
   FLAG_APP_DEVELOPER_MODE_ENABLED: "1"
   FLAG_ONBOARDER_SERENITY_ENABLED: "1"
+  FLAG_ONBOARDER_SERENITY_CONTRIBUTOR_AUTHENTICATION_ENABLED: "1"
   FLAG_TAILORED_IMPORT_ENABLED: "1"
   FLAG_JOB_AUTOMATION_REMOTE_STORAGE_ENABLED: "1"
   {{- end }}

@@ -152,6 +152,10 @@ akeneo_channel:
     resource: "@AkeneoChannelBundle/Resources/config/routing.yml"
     prefix:   /
 
-onboarder_serenity:
-    resource: "@AkeneoOnboarderSerenityBundle/Resources/config/routing.yml"
-    prefix: /onboarder/v2
+onboarder_serenity_retailer:
+    resource: "@AkeneoOnboarderSerenityRetailerBundle/Resources/config/routing.yml"
+    prefix: /onboarder-retailer/v2
+
+onboarder_serenity_supplier:
+    resource: "@AkeneoOnboarderSerenitySupplierBundle/Resources/config/routing.yml"
+    prefix: /onboarder-supplier/v2

@@ -38,6 +38,7 @@ class FileIteratorFactorySpec extends ObjectBehavior
             'first_column' => 0,
             'first_product_row' => 2,
             'sheet_name' => 'Products',
+            'unique_identifier_column' => 0
         ]);
 
         $this->create('xlsx', $filePath, $fileStructure)->shouldBeAnInstanceOf(XlsxFileIterator::class);
@@ -51,6 +52,7 @@ class FileIteratorFactorySpec extends ObjectBehavior
             'first_column' => 0,
             'first_product_row' => 2,
             'sheet_name' => 'Products',
+            'unique_identifier_column' => 0
         ]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('create', ['ods', $filePath, $fileStructure]);

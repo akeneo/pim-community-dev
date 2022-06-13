@@ -58,11 +58,22 @@ abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
-    protected function generateImage(int $size, int $quality): string
+    protected function generateJpegImage(int $size, int $quality): string
     {
         $imageFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my_image.jpg';
         $image = imagecreate($size, $size);
         self::assertTrue(imagejpeg($image, $imageFilename, $quality));
+        $fileInfo = $this->fileStorer->store(new \SplFileInfo($imageFilename), Storage::FILE_STORAGE_ALIAS);
+
+        return base64_encode($fileInfo->getKey());
+    }
+
+    protected function generatePngImage(int $size, int $quality): string
+    {
+        $imageFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my_image.png';
+        $image = imagecreate($size, $size);
+        imagecolorallocate($image, 255, 255, 255);
+        self::assertTrue(imagepng($image, $imageFilename, $quality));
         $fileInfo = $this->fileStorer->store(new \SplFileInfo($imageFilename), Storage::FILE_STORAGE_ALIAS);
 
         return base64_encode($fileInfo->getKey());

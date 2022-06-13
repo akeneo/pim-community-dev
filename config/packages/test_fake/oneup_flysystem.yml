@@ -12,3 +12,5 @@ oneup_flysystem:
             memory: ~
         tailored_import_storage_adapter:
             memory: ~
+        local_storage_adapter:
+            memory: ~

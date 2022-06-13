@@ -1,52 +1,70 @@
 DOCKER_COMPOSE_RUN_PHP_TEST_ENV = $(DOCKER_COMPOSE) run --rm -e APP_ENV=test php
 DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV = $(DOCKER_COMPOSE) run --rm -e APP_ENV=test_fake php
 
+.PHONY: lint-back-retailer
+lint-back-retailer: #Doc: Run PHPStan and PHPCSFixer for the retailer part of Onboarder Serenity
+	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/onboarder-retailer/back/tests/phpstan.neon
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/onboarder-retailer/back/tests/.php_cs.php components/onboarder-retailer/back
+
 .PHONY: lint-back
-lint-back: #Doc: Run PHPStan and PHPCSFixer for Onboarder Serenity
-	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/onboarder/back/tests/phpstan.neon
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/onboarder/back/tests/.php_cs.php components/onboarder/back
+lint-back: lint-back-retailer #Doc: Run PHPStan and PHPCSFixer for Onboarder Serenity
+
+.PHONY: fix-phpcs-retailer
+fix-phpcs-retailer: #Doc: Run PHP-CS-Fixer for the retailer part of Onboarder Serenity
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/onboarder-retailer/back/tests/.php_cs.php components/onboarder-retailer/back
 
 .PHONY: fix-phpcs
-fix-phpcs: #Doc: Run PHP-CS-Fixer for Onboarder Serenity
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/onboarder/back/tests/.php_cs.php components/onboarder/back
+fix-phpcs: fix-phpcs-retailer #Doc: Run PHP-CS-Fixer for Onboarder Serenity
 
-lint-front: #Doc: Run Prettier and Eslint for Onboarder Serenity
-	$(YARN_RUN) run --cwd=components/onboarder/front lint:check
+.PHONY: lint-front-retailer
+lint-front-retailer: #Doc: Run Prettier and Eslint for the retailer part of Onboarder Serenity
+	$(YARN_RUN) run --cwd=components/onboarder-retailer/front lint:check
 
-fix-frontcs: #Doc: Fix front CS for Onboarder Serenity
-	$(YARN_RUN) run --cwd=components/onboarder/front lint:fix
+lint-front: lint-front-retailer #Doc: Run Prettier and Eslint for Onboarder Serenity
+
+.PHONY: fix-frontcs-retailer
+fix-frontcs-retailer: #Doc: Run front fix code style for the retailer part of Onboarder Serenity
+	$(YARN_RUN) run --cwd=components/onboarder-retailer/front lint:fix
+
+fix-frontcs: fix-frontcs-retailer #Doc: Fix front CS for Onboarder Serenity
+
+.PHONY: coupling-retailer
+coupling-retailer: #Doc: Run coupling detector for the retailer part of Onboarder Serenity
+	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=components/onboarder-retailer/back/tests/.php_cd.php components/onboarder-retailer/back
 
 .PHONY: coupling
-coupling: #Doc: Run coupling detector for Onboarder Serenity
-	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=components/onboarder/back/tests/.php_cd.php components/onboarder/back
+coupling: coupling-retailer #Doc: Run coupling detector for Onboarder Serenity
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
 
+.PHONY: coupling-list-unused-requirements-retailer
+coupling-list-unused-requirements-retailer: #Doc: List unused coupling detector requirements for the retailer part of Onboarder Serenity
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=components/onboarder-retailer/back/tests/.php_cd.php components/onboarder-retailer/back
+
 .PHONY: coupling-list-unused-requirements
-coupling-list-unused-requirements: #Doc: List unused coupling detector requirements for Onboarder Serenity
-	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=components/onboarder/back/tests/.php_cd.php components/onboarder/back
+coupling-list-unused-requirements: coupling-list-unused-requirements-retailer #Doc: List unused coupling detector requirements for Onboarder Serenity
 
 .PHONY: unit-back
 unit-back: #Doc: Run unit back tests for Onboarder Serenity
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Unit_Test --configuration components/onboarder/back/tests/phpunit.xml.dist ${ARGS}
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Retailer_Unit_Test --configuration components/onboarder-retailer/back/tests/phpunit.xml.dist ${ARGS}
 
 .PHONY: unit-front
 unit-front: #Doc: Run unit front tests for Onboarder Serenity
-	$(YARN_RUN) run --cwd=components/onboarder/front test:unit:run
+	$(YARN_RUN) run --cwd=components/onboarder-retailer/front test:unit:run
 
 .PHONY: acceptance-back
 acceptance-back: #Doc: Run Behat acceptance back tests for Onboarder Serenity
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder/back/tests/behat.yml --profile acceptance --format pim --out var/tests/behat/onboarder-serenity-acceptance --format progress --out std --colors $(O)
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder-retailer/back/tests/behat.yml --profile acceptance --format pim --out var/tests/behat/onboarder-serenity-acceptance --format progress --out std --colors $(O)
 else
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder/back/tests/behat.yml --profile acceptance ${ARGS}
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder-retailer/back/tests/behat.yml --profile acceptance ${ARGS}
 endif
 
 .PHONY: integration-back
 integration-back: #Doc: Run integration back tests for Onboarder Serenity
 ifeq ($(CI),true)
-	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Onboarder_Serenity_Integration_Test
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Onboarder_Serenity_Retailer_Integration_Test
 else
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Integration_Test --configuration components/onboarder/back/tests/phpunit.xml.dist ${ARGS}
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Retailer_Integration_Test --configuration components/onboarder-retailer/back/tests/phpunit.xml.dist ${ARGS}
 endif
 
 .PHONY: lint

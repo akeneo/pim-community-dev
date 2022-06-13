@@ -1,7 +1,23 @@
 import React from 'react';
-import {Placeholder, RulesIllustration, TableInput} from 'akeneo-design-system';
+import styled from 'styled-components';
+import {getColor, Placeholder, RulesIllustration, TableInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {FileStructure, FileTemplateInformation, getRowAtPosition, getRowsFromPosition} from '../../models';
+import {
+  FileStructure,
+  FileTemplateInformation,
+  generateExcelColumnLetter,
+  getRowAtPosition,
+  getRowsFromPosition,
+} from '../../models';
+
+const RowNumberCell = styled(TableInput.Cell)`
+  min-width: 40px;
+  width: 40px;
+  text-align: center;
+  font-weight: bold;
+  color: ${getColor('grey', 140)};
+  background-color: ${getColor('grey', 40)} !important;
+`;
 
 type FileTemplatePreviewProps = {
   fileTemplateInformation: FileTemplateInformation;
@@ -17,7 +33,7 @@ const FileTemplatePreview = ({fileTemplateInformation, fileStructure}: FileTempl
     fileStructure.first_column
   );
 
-  if (fileTemplateInformation.rows.length === 0) {
+  if (0 === fileTemplateInformation.rows.length) {
     return (
       <Placeholder
         title={translate('akeneo.tailored_import.validation.file_preview.empty_sheet.title')}
@@ -32,26 +48,30 @@ const FileTemplatePreview = ({fileTemplateInformation, fileStructure}: FileTempl
   return (
     <TableInput>
       <TableInput.Header>
-        <TableInput.HeaderCell>{isNaN(fileStructure.header_row) ? 0 : fileStructure.header_row}</TableInput.HeaderCell>
-        {headerCells.map((headerCell, index) => (
-          <TableInput.HeaderCell key={index}>{headerCell}</TableInput.HeaderCell>
+        <RowNumberCell />
+        {[...Array(headerCells.length)].map((_, index) => (
+          <TableInput.HeaderCell key={index}>
+            {generateExcelColumnLetter(index + fileStructure.first_column)}
+          </TableInput.HeaderCell>
         ))}
       </TableInput.Header>
       <TableInput.Body>
+        <TableInput.Row>
+          <RowNumberCell>{isNaN(fileStructure.header_row) ? 0 : fileStructure.header_row}</RowNumberCell>
+          {headerCells.map((headerCell, index) => (
+            <TableInput.Cell key={index}>
+              <TableInput.CellContent rowTitle={true}>{headerCell}</TableInput.CellContent>
+            </TableInput.Cell>
+          ))}
+        </TableInput.Row>
         {productRows.map((row, rowIndex) => (
           <TableInput.Row key={rowIndex}>
-            <TableInput.Cell>
-              <TableInput.CellContent>
-                {isNaN(fileStructure.first_product_row) ? 0 + rowIndex : fileStructure.first_product_row + rowIndex}
-              </TableInput.CellContent>
-            </TableInput.Cell>
+            <RowNumberCell>
+              {isNaN(fileStructure.first_product_row) ? 0 + rowIndex : fileStructure.first_product_row + rowIndex}
+            </RowNumberCell>
             {row.map((cell, cellIndex) => (
               <TableInput.Cell key={cellIndex}>
-                <TableInput.CellContent
-                  rowTitle={fileStructure.first_column + cellIndex === fileStructure.unique_identifier_column}
-                >
-                  {cell}
-                </TableInput.CellContent>
+                <TableInput.CellContent>{cell}</TableInput.CellContent>
               </TableInput.Cell>
             ))}
           </TableInput.Row>

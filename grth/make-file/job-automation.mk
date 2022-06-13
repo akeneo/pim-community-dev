@@ -1,11 +1,11 @@
 .PHONY: lint-back
 lint-back: #Doc: launch PHPStan for job automation
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/job-automation/back/tests/phpstan-grth.neon
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/job-automation/back/tests/.php_cs.php components/job-automation/back
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/job-automation/back/tests/.php_cs.php
 
 .PHONY: lint-fix-back
 lint-fix-back: #Doc: launch PHP CS fixer for job automation
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/job-automation/back/tests/.php_cs.php components/job-automation/back
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/job-automation/back/tests/.php_cs.php
 
 .PHONY: coupling-back
 coupling-back: #Doc: launch coupling detector for job automation

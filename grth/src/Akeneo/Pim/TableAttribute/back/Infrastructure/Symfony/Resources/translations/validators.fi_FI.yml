@@ -1,0 +1,14 @@
+pim_table_configuration:
+  validation:
+    table_configuration:
+      measurement_family_should_exist: Varmista, että "{{ measurement_family_code }}" mittaperhe on olemassa ennen kuin lisäät sen taulukkoon
+      measurement_unit_should_exist: Varmista, että "{{ measurement_unit_code }}" yksikkö on olemassa "{{ measurement_family_code }}" mittaaperheessä ennen kuin lisäät sen taulukkoon
+      measurement_family_code_must_be_filled: Mittaperheen koodi on täytettävä
+      measurement_default_unit_code_must_be_filled: Oletusyksikön koodi on täytettävä
+      measurement_family_code_cannot_be_set: Mittaperheen koodia ei voi asettaa "{{ data_type }}" -tyyppille
+      measurement_default_unit_code_cannot_be_set: Oletusyksikön koodia ei voi asettaa "{{ data_type }}" -tyyppille
+      measurement_family_should_not_be_linked: 'Tätä mittaperhettä käytetään tuotteen attribuutilla, joten sitä ei voida poistaa.'
+      measurement_family_unit_should_not_be_linked: 'Tätä yksikköä käytetään tuotteen attribuutissa. Voit muokata vain yksikön käännettyjä otsikoita ja symbolia.'
+    product_value:
+      unexpected_data_type_for_measurement: 'Sarake "{{ columnCode }}" edellyttää merkkimuotoista yksikön koodia ja numeerista määrää. {{ given }} annettu'
+      measurement_unit_should_exist: 'Yksikköä "{{ measurement_unit_code }}" ei ole mittaperheellä "{{ measurement_family_code }}"'

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Field, Helper, SelectInput} from 'akeneo-design-system';
 import {filterErrors, useTranslate, getLabel, useUserContext} from '@akeneo-pim-community/shared';
-import {AttributeDataMappingConfiguratorProps} from '../../../../models';
+import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
 import {isMeasurementTarget, MeasurementSourceConfiguration} from './model';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {useMeasurementFamily} from '../../../../hooks';
@@ -52,7 +52,7 @@ const MeasurementConfigurator = ({
         validationErrors={filterErrors(validationErrors, '[target]')}
         onTargetChange={onTargetChange}
       >
-        <ClearIfEmpty target={target} onTargetChange={onTargetChange} />
+        <ClearIfEmpty<AttributeTarget> target={target} onTargetChange={onTargetChange} />
         <Field label={translate('akeneo.tailored_import.data_mapping.target.parameters.measurement_unit.title')}>
           {null !== measurementFamily && (
             <SelectInput

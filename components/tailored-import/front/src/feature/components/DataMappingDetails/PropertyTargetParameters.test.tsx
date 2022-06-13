@@ -3,7 +3,6 @@ import {screen} from '@testing-library/react';
 import {PropertyTargetParameters} from './PropertyTargetParameters';
 import {PropertyTarget} from '../../models';
 import {renderWithProviders} from 'feature/tests';
-import userEvent from '@testing-library/user-event';
 
 const propertyTarget: PropertyTarget = {
   code: 'description',
@@ -12,15 +11,14 @@ const propertyTarget: PropertyTarget = {
   action_if_empty: 'skip',
 };
 
-test('it can change the if_empty case when hitting the checkbox', async () => {
+test('it can render children elements', async () => {
   const handleTargetChange = jest.fn();
 
-  await renderWithProviders(<PropertyTargetParameters target={propertyTarget} onTargetChange={handleTargetChange} />);
+  await renderWithProviders(
+    <PropertyTargetParameters target={propertyTarget} onTargetChange={handleTargetChange}>
+      <div>Hello</div>
+    </PropertyTargetParameters>
+  );
 
-  userEvent.click(screen.getByLabelText('akeneo.tailored_import.data_mapping.target.clear_if_empty'));
-
-  expect(handleTargetChange).toHaveBeenCalledWith({
-    ...propertyTarget,
-    action_if_empty: 'clear',
-  });
+  expect(screen.getByText('Hello')).toBeInTheDocument();
 });

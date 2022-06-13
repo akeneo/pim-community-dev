@@ -120,6 +120,8 @@ $rules = [
             'PhpSpellcheck\MisspellingInterface',
             'PhpSpellcheck\Spellchecker\SpellcheckerInterface',
             'League\Flysystem',
+            'Ramsey\Uuid\Uuid',
+            'Ramsey\Uuid\UuidInterface',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Tool\Component\FileStorage\FilesystemProvider',

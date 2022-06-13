@@ -18,3 +18,6 @@ oneup_flysystem:
         tailored_import_storage:
             adapter: tailored_import_storage_adapter
             mount: tailoredImport
+        local_storage:
+            adapter: local_storage_adapter
+            mount: localFilesystem

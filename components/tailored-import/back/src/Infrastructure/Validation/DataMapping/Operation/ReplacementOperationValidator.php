@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class ReplacementOperationValidator extends ConstraintValidator
@@ -29,9 +32,10 @@ class ReplacementOperationValidator extends ConstraintValidator
 
         $violations = $validator->validate($operation, new Collection([
             'fields' => [
+                'uuid' => [new Uuid(), new NotBlank()],
                 'type' => new Choice([
-                    // TODO replace with SimpleSelectReplacementOperation::TYPE when back is merged
-                    'simple_select_replacement',
+                    SimpleSelectReplacementOperation::TYPE,
+                    MultiSelectReplacementOperation::TYPE,
                 ]),
                 'mapping' => new All([
                     new NotBlank([

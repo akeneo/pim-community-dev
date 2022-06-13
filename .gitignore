@@ -38,6 +38,9 @@ deployments/instances
 deployments/logs
 deployments/terraform/pim/Chart.lock
 deployments/cloud-customers-dev
+deployments-ucs/instances
+deployments-ucs/tenant/charts/*
+deployments-ucs/tenant/Chart.lock
 /pim-enterprise-cloud
 connectors/*
 .terraform*

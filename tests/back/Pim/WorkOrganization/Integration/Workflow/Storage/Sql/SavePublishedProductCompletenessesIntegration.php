@@ -23,6 +23,12 @@ use PHPUnit\Framework\Assert;
  */
 class SavePublishedProductCompletenessesIntegration extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->get('feature_flags')->enable('published_product');
+    }
+
     public function test_that_it_clears_existing_completenesses_and_missing_attributes_if_provided_completenesses_are_empty(
     )
     {

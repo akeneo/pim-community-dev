@@ -1,5 +1,17 @@
 # 6.0.x
 
+# 6.0.30 (2022-06-08)
+
+# 6.0.29 (2022-05-25)
+
+## Bug fixes
+
+- PIM-10451: Fix reference schema in order to take into account the index on start_time
+
+# 6.0.29
+
+- PIM-10450 remove DQI deprecated table pimee_data_quality_insights_dictionary_depr
+
 # 6.0.28 (2022-05-13)
 
 # 6.0.27 (2022-05-10)

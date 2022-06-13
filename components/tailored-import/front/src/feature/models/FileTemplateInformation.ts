@@ -10,8 +10,8 @@ const getRowAtPosition = (
   fileTemplateInformation: FileTemplateInformation,
   rowPosition: number,
   columnStart: number = 0
-) => {
-  const emptyRow = Array(fileTemplateInformation.column_count).fill('');
+): RowInformation => {
+  const emptyRow: RowInformation = Array(fileTemplateInformation.column_count).fill('');
   if (columnStart < 0) {
     return emptyRow;
   }
@@ -25,7 +25,7 @@ const getRowsFromPosition = (
   fileTemplateInformation: FileTemplateInformation,
   rowStart: number,
   columnStart: number = 0
-) => {
+): RowInformation[] => {
   if (rowStart < 1 || columnStart < 0) {
     return [];
   }

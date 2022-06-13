@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Pim\Upgrade\test_schema;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\Platform\EnterpriseVersion;
+use Akeneo\Platform\SerenityVersion;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Elasticsearch\Client;
@@ -42,7 +42,7 @@ final class Version_5_0_20210119135130_reindex_assets_Integration extends TestCa
         $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
 
         $indexNameAfterMigration = $this->getIndexNameFromAlias($client, $assetAliasName);
-        if (EnterpriseVersion::EDITION === 'Serenity') {
+        if (getenv('PIM_EDITION') === 'SERENITY_EDITION') {
             self::assertNotNull($indexNameBeforeMigration);
             self::assertEquals($indexNameBeforeMigration, $indexNameAfterMigration);
         } else {

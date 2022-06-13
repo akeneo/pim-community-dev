@@ -220,12 +220,15 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ValueKey\SqlGetValueKeyForAttributeChannelAndLocale
         arguments:
-            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel.find_locales'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRequiredValueKeyCollectionForChannelAndLocales
         arguments:
             - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels'
 
     akeneo_referenceentity.infrastructure.persistence.query.generate_empty_values:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlGenerateEmptyValues
@@ -242,6 +245,8 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysByAttributeType
         arguments:
             - '@database_connection'
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales'
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
 
     # attribute hydrators
     akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry:

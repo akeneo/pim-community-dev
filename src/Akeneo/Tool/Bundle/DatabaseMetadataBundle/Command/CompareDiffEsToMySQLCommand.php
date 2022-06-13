@@ -48,7 +48,6 @@ class CompareDiffEsToMySQLCommand extends Command
         $clientBuilder = new ClientBuilder();
         $esClient = $clientBuilder->setHosts($this->hosts)->build();
         $this->searchEs = new GenericEntityESIndexFinder($esClient);
-        $this->storeFiles = $storeFiles;
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
