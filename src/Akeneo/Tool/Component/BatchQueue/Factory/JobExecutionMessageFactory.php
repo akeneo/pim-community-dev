@@ -1,12 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\BatchQueue\Factory;
 
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
-use Doctrine\Persistence\ObjectRepository;
 use Webmozart\Assert\Assert;
 
 /**
@@ -16,7 +15,6 @@ use Webmozart\Assert\Assert;
  */
 class JobExecutionMessageFactory
 {
-    private ObjectRepository $jobExecutionRepository;
     private string $jobMessageTypeFallback;
 
     /**
@@ -30,7 +28,6 @@ class JobExecutionMessageFactory
     private array $mappingJobMessageTypes;
 
     public function __construct(
-        ObjectRepository $jobExecutionRepository,
         array $mappingJobMessageTypes,
         string $jobMessageTypeFallback,
         private ?string $tenantId
@@ -40,13 +37,15 @@ class JobExecutionMessageFactory
         Assert::allClassExists(array_keys($mappingJobMessageTypes));
         Assert::allSubclassOf(array_keys($mappingJobMessageTypes), JobExecutionMessageInterface::class);
 
-        $this->jobExecutionRepository = $jobExecutionRepository;
         $this->mappingJobMessageTypes = $mappingJobMessageTypes;
         $this->jobMessageTypeFallback = $jobMessageTypeFallback;
     }
 
-    public function buildFromJobInstance(JobInstance $jobInstance, int $jobExecutionId, array $options): JobExecutionMessageInterface
-    {
+    public function buildFromJobInstance(
+        JobInstance $jobInstance,
+        int $jobExecutionId,
+        array $options
+    ): JobExecutionMessageInterface {
         /** @var string|JobExecutionMessageInterface $class */
         $class = $this->getJobMessageClass($jobInstance->getType() ?? '');
 
@@ -57,17 +56,10 @@ class JobExecutionMessageFactory
     {
         Assert::integer($normalized['job_execution_id'] ?? null);
 
-        // TODO UCS: we should not fetch the class and only rely on the $jobExecutionClass parameter
-        if (null === $jobMessageClass) {
-            $jobExecution = $this->jobExecutionRepository->find($normalized['job_execution_id']);
+        /** @var string|JobExecutionMessageInterface $class */
+        $class = $jobMessageClass ?? $this->jobMessageTypeFallback;
 
-            /** @var string|JobExecutionMessageInterface $jobMessageClass */
-            $jobMessageClass = null !== $jobExecution
-                ? $this->getJobMessageClass($jobExecution->getJobInstance()->getType() ?? '')
-                : $this->jobMessageTypeFallback;
-        }
-
-        return $jobMessageClass::createJobExecutionMessageFromNormalized($normalized);
+        return $class::createJobExecutionMessageFromNormalized($normalized);
     }
 
     private function getJobMessageClass(string $type): string

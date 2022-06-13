@@ -11,16 +11,14 @@ use Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage;
-use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 
 class JobExecutionMessageFactorySpec extends ObjectBehavior
 {
-    function let(ObjectRepository $jobExecutionRepository)
+    function let()
     {
         $this->beConstructedWith(
-            $jobExecutionRepository,
             [
                 UiJobExecutionMessage::class => ['mass_edit', 'mass_delete'],
                 ImportJobExecutionMessage::class => ['import'],
@@ -64,11 +62,8 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage->getJobExecutionId()->shouldBe(3);
     }
 
-    function it_builds_an_ui_job_execution_message_from_normalized(
-        ObjectRepository $jobExecutionRepository,
-    ) {
-        $jobExecutionRepository->find(10)->shouldNotBeCalled();
-
+    function it_builds_an_ui_job_execution_message_from_normalized()
+    {
         $jobExecutionMessage = $this->buildFromNormalized(
             [
                 'id' => '30e8008d-48dc-4430-97e1-6f67a5c420e9',
@@ -89,11 +84,8 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage->getOptions()->shouldBe(['option1' => 'value1']);
     }
 
-    function it_builds_an_import_job_execution_message_from_normalized(
-        ObjectRepository $jobExecutionRepository,
-    ) {
-        $jobExecutionRepository->find(10)->shouldNotBeCalled();
-
+    function it_builds_an_import_job_execution_message_from_normalized()
+    {
         $jobExecutionMessage = $this->buildFromNormalized(
             [
                 'id' => 'a57380fc-ee3b-4bd2-94e6-c3ead13c32a7',
@@ -115,11 +107,9 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
     }
 
     function it_builds_a_backend_job_execution_message_from_normalized(
-        ObjectRepository $jobExecutionRepository,
         JobExecution $jobExecution,
         JobInstance $jobInstance
     ) {
-        $jobExecutionRepository->find(10)->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getType()->willReturn('other');
 
