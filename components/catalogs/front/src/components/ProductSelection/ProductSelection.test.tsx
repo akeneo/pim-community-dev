@@ -24,18 +24,20 @@ test('it renders the empty message', () => {
 test('it renders a list of criteria', () => {
     (useCatalogCriteria as unknown as jest.MockedFunction<typeof useCatalogCriteria>).mockImplementation(() => [
         {
-            id: 'foo',
-            module: () => <div>[FooCriteria]</div>,
-            field: 'foo',
-            operator: Operator.EQUALS,
-            value: '',
+            id: 'da23',
+            module: () => <div>[FooCriterion]</div>,
+            state: {
+                field: 'foo',
+                operator: Operator.IS_EMPTY,
+            },
         },
         {
-            id: 'bar',
-            module: () => <div>[BarCriteria]</div>,
-            field: 'bar',
-            operator: Operator.EQUALS,
-            value: '',
+            id: '4dbe',
+            module: () => <div>[BarCriterion]</div>,
+            state: {
+                field: 'bar',
+                operator: Operator.IS_EMPTY,
+            },
         },
     ]);
 
@@ -45,29 +47,33 @@ test('it renders a list of criteria', () => {
         </ThemeProvider>
     );
 
-    expect(screen.getByText('[FooCriteria]')).toBeInTheDocument();
-    expect(screen.getByText('[BarCriteria]')).toBeInTheDocument();
+    expect(screen.getByText('[FooCriterion]')).toBeInTheDocument();
+    expect(screen.getByText('[BarCriterion]')).toBeInTheDocument();
 });
 
 test('it updates the state when a criterion changes', () => {
-    const FakeCriterionModule = jest.fn(({onChange}) => (
-        <button onClick={() => onChange({operator: '=', value: 'bar'})}>[FakeCriterionButton]</button>
+    const FooCriterionModule = jest.fn(({onChange}) => (
+        <button onClick={() => onChange({field: 'foo', operator: Operator.IS_NOT_EMPTY})}>
+            [ToggleFooCriterionValue]
+        </button>
     ));
 
     (useCatalogCriteria as unknown as jest.MockedFunction<typeof useCatalogCriteria>).mockImplementation(() => [
         {
             id: 'foo',
-            module: FakeCriterionModule,
-            field: 'foo',
-            operator: Operator.EQUALS,
-            value: '',
+            module: FooCriterionModule,
+            state: {
+                field: 'foo',
+                operator: Operator.IS_EMPTY,
+            },
         },
         {
             id: 'bar',
-            module: () => <div>[BarCriteria]</div>,
-            field: 'bar',
-            operator: Operator.EQUALS,
-            value: '',
+            module: () => <div>[BarCriterion]</div>,
+            state: {
+                field: 'bar',
+                operator: Operator.IS_EMPTY,
+            },
         },
     ]);
 
@@ -77,26 +83,26 @@ test('it updates the state when a criterion changes', () => {
         </ThemeProvider>
     );
 
-    expect(FakeCriterionModule).toHaveBeenCalledWith(
+    expect(FooCriterionModule).toHaveBeenCalledWith(
         {
             onChange: expect.any(Function),
-            value: expect.objectContaining({
-                operator: Operator.EQUALS,
-                value: '',
-            }),
+            state: {
+                field: 'foo',
+                operator: Operator.IS_EMPTY,
+            },
         },
         {}
     );
 
-    act(() => userEvent.click(screen.getByText('[FakeCriterionButton]')));
+    act(() => userEvent.click(screen.getByText('[ToggleFooCriterionValue]')));
 
-    expect(FakeCriterionModule).toHaveBeenCalledWith(
+    expect(FooCriterionModule).toHaveBeenCalledWith(
         {
             onChange: expect.any(Function),
-            value: expect.objectContaining({
-                operator: Operator.EQUALS,
-                value: 'bar',
-            }),
+            state: {
+                field: 'foo',
+                operator: Operator.IS_NOT_EMPTY,
+            },
         },
         {}
     );

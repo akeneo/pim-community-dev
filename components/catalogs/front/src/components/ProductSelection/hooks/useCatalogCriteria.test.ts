@@ -3,10 +3,10 @@ jest.unmock('./useCatalogCriteria');
 import {renderHook} from '@testing-library/react-hooks';
 import {useCatalogCriteria} from './useCatalogCriteria';
 import {Operator} from '../models/Operator';
-import StatusCriteria from '../criteria/StatusCriteria';
+import StatusCriterion from '../criteria/StatusCriterion';
 
 test("it fetches a catalog's criteria", () => {
-    (StatusCriteria as jest.Mock).mockImplementation(() => ({
+    (StatusCriterion as jest.Mock).mockImplementation(() => ({
         operator: Operator.EQUALS,
         value: true,
     }));

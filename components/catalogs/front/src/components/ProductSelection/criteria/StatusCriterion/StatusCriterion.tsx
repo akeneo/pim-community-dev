@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
 import {List, SelectInput} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
-import {CriteriaModule} from '../../models/Criteria';
-import {StatusCriteriaOperator} from './types';
+import {CriterionModule} from '../../models/Criterion';
+import {StatusCriterionOperator} from './types';
 import styled from 'styled-components';
 import {useOperatorTranslator} from '../../hooks/useOperatorTranslator';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -12,12 +12,13 @@ const Inputs = styled.div`
     gap: 20px;
 `;
 
-type Values = {
-    operator: StatusCriteriaOperator;
+type State = {
+    field: 'status';
+    operator: StatusCriterionOperator;
     value: boolean;
 };
 
-const StatusCriteria: FC<CriteriaModule<Values>> = ({value, onChange}) => {
+const StatusCriterion: FC<CriterionModule<State>> = ({state, onChange}) => {
     const translateOperator = useOperatorTranslator();
     const translate = useTranslate();
 
@@ -31,8 +32,8 @@ const StatusCriteria: FC<CriteriaModule<Values>> = ({value, onChange}) => {
                     <SelectInput
                         emptyResultLabel=''
                         openLabel=''
-                        value={value.operator}
-                        onChange={v => onChange({...value, operator: v as StatusCriteriaOperator})}
+                        value={state.operator}
+                        onChange={v => onChange({...state, operator: v as StatusCriterionOperator})}
                         clearable={false}
                         data-testid='operator'
                     >
@@ -46,8 +47,8 @@ const StatusCriteria: FC<CriteriaModule<Values>> = ({value, onChange}) => {
                     <SelectInput
                         emptyResultLabel=''
                         openLabel=''
-                        value={value.value.toString()}
-                        onChange={v => onChange({...value, value: v === 'true'})}
+                        value={state.value.toString()}
+                        onChange={v => onChange({...state, value: v === 'true'})}
                         clearable={false}
                         data-testid='value'
                     >
@@ -64,4 +65,4 @@ const StatusCriteria: FC<CriteriaModule<Values>> = ({value, onChange}) => {
     );
 };
 
-export {StatusCriteria};
+export {StatusCriterion};

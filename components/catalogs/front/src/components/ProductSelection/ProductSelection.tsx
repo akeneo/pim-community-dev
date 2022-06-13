@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
 import {List} from 'akeneo-design-system';
-import {Criteria} from './models/Criteria';
+import {Criterion, CriterionState} from './models/Criterion';
 import {useCatalogCriteria} from './hooks/useCatalogCriteria';
 import {Empty} from './components/Empty';
 
@@ -11,7 +11,7 @@ type Props = {
 const ProductSelection: FC<Props> = ({id}) => {
     const backend = useCatalogCriteria(id);
 
-    const [criteria, setCriteria] = useState<Criteria[]>(backend);
+    const [criteria, setCriteria] = useState<Criterion<any>[]>(backend);
 
     if (0 === criteria.length) {
         return <Empty />;
@@ -22,20 +22,20 @@ const ProductSelection: FC<Props> = ({id}) => {
             {criteria.map(criterion => {
                 const Module = criterion.module;
 
-                const handleChange = (values: object) => {
+                const handleChange = (criterionState: CriterionState) => {
                     setCriteria(state =>
                         state.map(old =>
                             criterion.id !== old.id
                                 ? old
                                 : {
                                       ...old,
-                                      ...values,
+                                      state: criterionState,
                                   }
                         )
                     );
                 };
 
-                return <Module key={criterion.id} value={criterion} onChange={handleChange} />;
+                return <Module key={criterion.id} state={criterion.state} onChange={handleChange} />;
             })}
         </List>
     );

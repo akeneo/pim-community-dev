@@ -1,10 +1,10 @@
-import {Criteria} from '../models/Criteria';
+import {Criterion} from '../models/Criterion';
 import {Operator} from '../models/Operator';
-import StatusCriteria from '../criteria/StatusCriteria';
+import StatusCriterion from '../criteria/StatusCriterion';
 
-export const useCatalogCriteria = (_id: string): Criteria[] => {
+export const useCatalogCriteria = (_id: string): Criterion<any>[] => {
     return [
-        StatusCriteria({
+        StatusCriterion({
             operator: Operator.EQUALS,
             value: true,
         }),
