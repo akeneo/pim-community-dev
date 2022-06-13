@@ -19,7 +19,7 @@ final class GetProductQuantifiedAssociationsByProductUuids
 
     /**
      * Executes SQL query to get product quantified associations from a set of product uuids.
-     * @param Uuid[] $productUuids
+     * @param UuidInterface[] $productUuids
      * @return array
      * Returns an array like:
      * [
@@ -44,7 +44,7 @@ final class GetProductQuantifiedAssociationsByProductUuids
     }
 
     /**
-     * @param Uuid[] $productUuids
+     * @param UuidInterface[] $productUuids
      * @return array
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
@@ -64,7 +64,7 @@ SQL;
 
         $rows = $this->connection->executeQuery(
             $query,
-            ['productUuids' => \array_map(fn (UuidInterface $uuid): string => Uuid::fromString($uuid)->getBytes(), $productUuids)],
+            ['productUuids' => \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids)],
             ['productUuids' => Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
@@ -97,6 +97,16 @@ SQL;
         array $allQuantifiedAssociationsWithProductUuid,
         array $validQuantifiedAssociationTypeCodes
     ) {
+        $productUuids = [];
+        foreach ($allQuantifiedAssociationsWithProductUuid as $quantifiedAssociationWithUuid) {
+            if (empty($quantifiedAssociationWithUuid)) {
+                continue;
+            }
+            $productUuids = array_merge($productUuids, $this->productUuids($quantifiedAssociationWithUuid));
+        }
+
+        $productUuidMapping = $this->getExistingProductUuidsByUuids($productUuids);
+
         $result = [];
         foreach ($allQuantifiedAssociationsWithProductUuid as $associationTypeCode => $associationWithUuids) {
             if (empty($associationWithUuids) || !is_string($associationTypeCode)) {
@@ -109,10 +119,13 @@ SQL;
 
             $uniqueQuantifiedAssociations = [];
             foreach ($associationWithUuids['products'] as $associationWithProductUuid) {
-                $productUuid = $associationWithProductUuid['uuid'];
-
-                $uniqueQuantifiedAssociations[$productUuid] = [
-                    'uuid' => $productUuid,
+                if (\in_array($associationWithProductUuid['uuid'], $productUuidMapping)) {
+                    $uuid = $associationWithProductUuid['uuid'];
+                } else {
+                    continue;
+                }
+                $uniqueQuantifiedAssociations[$uuid] = [
+                    'uuid' => $uuid,
                     'quantity' => (int)$associationWithProductUuid['quantity']
                 ];
             }
@@ -122,5 +135,44 @@ SQL;
         }
 
         return $result;
+    }
+
+    /**
+     * @param array $quantifiedAssociationWithProductUuid
+     * @return UuidInterface[]
+     */
+    private function productUuids(array $quantifiedAssociationWithProductUuid): array
+    {
+        return array_map(
+            function (array $quantifiedAssociations) {
+                return Uuid::fromString($quantifiedAssociations['uuid']);
+            },
+            $quantifiedAssociationWithProductUuid['products'] ?? []
+        );
+    }
+
+    /**
+     * @param UuidInterface[] $uuids
+     * @return string[]
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function getExistingProductUuidsByUuids(array $uuids): array
+    {
+        if (empty($uuids)) {
+            return [];
+        }
+
+        $query = <<<SQL
+        SELECT BIN_TO_UUID(uuid) as uuid from pim_catalog_product WHERE uuid IN (:product_uuids)
+SQL;
+
+        $existingUuids = $this->connection->executeQuery(
+            $query,
+            ['product_uuids' => \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['product_uuids' => Connection::PARAM_STR_ARRAY]
+        )->fetchFirstColumn();
+
+        return \array_values($existingUuids);
     }
 }

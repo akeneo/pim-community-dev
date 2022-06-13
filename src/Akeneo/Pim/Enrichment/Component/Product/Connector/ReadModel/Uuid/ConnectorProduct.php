@@ -274,7 +274,6 @@ final class ConnectorProduct
         );
     }
 
-    //todo rename with uuids
     public function associatedProductUuids(): array
     {
         $associatedProducts = [];
@@ -295,7 +294,6 @@ final class ConnectorProduct
         return !empty($associatedProductModels) ? array_unique(array_merge(...$associatedProductModels)) : [];
     }
 
-    //todo rename with uuids
     public function associatedWithQuantityProductUuids()
     {
         $associatedWithQuantityProducts = array_map(function ($quantifiedAssociations) {
@@ -387,7 +385,6 @@ final class ConnectorProduct
         );
     }
 
-    //todo rename with uuids
     public function filterAssociatedWithQuantityProductsByProductUuids(array $productUuidsToFilter): ConnectorProduct
     {
         $filteredQuantifiedAssociations = [];
@@ -422,14 +419,13 @@ final class ConnectorProduct
         );
     }
 
-    //todo rename with uuids
-    public function filterAssociatedProductsByProductUuids(array $productIdentifiersToFilter): ConnectorProduct
+    public function filterAssociatedProductsByProductUuids(array $productUuidsToFilter): ConnectorProduct
     {
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
             $filteredAssociations[$associationType]['products'] = array_values(array_intersect(
                 $association['products'],
-                $productIdentifiersToFilter
+                $productUuidsToFilter
             ));
             $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
