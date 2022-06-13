@@ -10,7 +10,7 @@ class ValidateSftpStorageTest extends AbstractValidationTest
     /**
      * @dataProvider validSftpStorage
      */
-    public function testItDoesNotBuildViolationsWhenSftpStorageAreValid(array $value): void
+    public function testItDoesNotBuildViolationsWhenSftpStorageIsValid(array $value): void
     {
         $violations = $this->getValidator()->validate($value, new SftpStorage(['xlsx', 'xls']));
 
@@ -20,7 +20,7 @@ class ValidateSftpStorageTest extends AbstractValidationTest
     /**
      * @dataProvider invalidSftpStorage
      */
-    public function testItBuildViolationsWhenSftpStorageAreInvalid(
+    public function testItBuildViolationsWhenSftpStorageIsInvalid(
         string $expectedErrorMessage,
         string $expectedErrorPath,
         array $value,
