@@ -32,6 +32,7 @@ final class GetProductUuidsHandler
         private ValidatorInterface $validator,
         private FeatureFlags $featureFlags,
         private UserRepositoryInterface $userRepository,
+        /* @phpstan-ignore-next-line */
         private ?GetGrantedCategoryCodes $getGrantedCategoryCodes
     ) {
     }
@@ -45,6 +46,7 @@ final class GetProductUuidsHandler
 
         Assert::implementsInterface($this->pqb, LegacyProductQueryBuilderInterface::class);
         $this->applyPermissionsOnPQB($this->pqb, $getProductUuidsQuery->userId());
+        Assert::implementsInterface($this->pqb, LegacyProductQueryBuilderInterface::class);
         $this->applyProductSearchQueryParametersToPQB->apply(
             $this->pqb,
             $getProductUuidsQuery->searchFilters(),
@@ -59,13 +61,20 @@ final class GetProductUuidsHandler
 
     private function applyPermissionsOnPQB(LegacyProductQueryBuilderInterface $pqb, int $userId): void
     {
-        if ($this->featureFlags->isEnabled('permission')) {
+        try {
+            $isEnabled = $this->featureFlags->isEnabled('permission');
+        } catch (\InvalidArgumentException) {
+            $isEnabled = false;
+        }
+
+        if (!$isEnabled) {
             return;
         }
 
         Assert::notNull($this->getGrantedCategoryCodes);
         $user = $this->userRepository->findOneBy(['id' => $userId]);
         Assert::notNull($user);
+        /* @phpstan-ignore-next-line */
         $grantedCategories = $this->getGrantedCategoryCodes->forGroupIds($user->getGroupsIds());
 
         $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, $grantedCategories, ['type_checking' => false]);
