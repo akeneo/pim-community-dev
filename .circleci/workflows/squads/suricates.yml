@@ -89,6 +89,7 @@ workflows:
       - deploy_pr_environment:
             name: "Deploy Onboarder PR environment"
             requires:
+                - build_onboarder_supplier
                 - "Build srnt Prod for deploy PR"
       - delete_pr_environment?:
             name: "Delete Onboarder PR environment?"
