@@ -32,7 +32,7 @@ class QueryMessageBusSpec extends ObjectBehavior
 
     function it_executes_the_correct_handler(DummyHandler $handler1, DummyHandler $handler2)
     {
-        $query = new GetProductUuidsQuery([]);
+        $query = new GetProductUuidsQuery([], 1);
         $handler1->__invoke(Argument::any())->shouldNotBeCalled();
         $result = new \stdClass();
         $handler2->__invoke($query)->shouldBeCalledOnce()->willReturn($result);

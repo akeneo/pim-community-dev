@@ -213,7 +213,7 @@ abstract class EnrichmentProductTestCase extends TestCase
         SQL;
         $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
         $id = $stmt->fetchOne();
-        Assert::assertNotNull($id);
+        Assert::assertNotFalse($id, \sprintf('The "%s" user does not exist', $username));
 
         return \intval($id);
     }

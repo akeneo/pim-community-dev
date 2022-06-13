@@ -87,6 +87,19 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
     }
 
     /** @test */
+    public function it_throws_an_exception_when_the_user_does_not_exist(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The "0" user does not exist');
+
+        $dateInTheFuture = (new \DateTime('now'))->modify("+ 30 minutes")->format('Y-m-d H:i:s');
+        $this->queryMessageBus->dispatch(new GetProductUuidsQuery(
+            ['updated' => [['operator' => '>', 'value' => $dateInTheFuture]]],
+            0
+        ));
+    }
+
+    /** @test */
     public function it_throws_an_exception_when_the_search_filters_are_not_valid(): void
     {
         $this->expectException(ViolationsException::class);
@@ -98,7 +111,7 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
 
     private function launchPQBCommand(array $search): ProductUuidCursor
     {
-        $envelope = $this->queryMessageBus->dispatch(new GetProductUuidsQuery($search));
+        $envelope = $this->queryMessageBus->dispatch(new GetProductUuidsQuery($search, $this->getUserId('admin')));
         $handledStamp = $envelope->last(HandledStamp::class);
         Assert::assertNotNull($handledStamp, 'The bus does not return any result');
 

@@ -23,7 +23,7 @@ final class GetProductUuidsQuery
      *      ],
      *  ]
      */
-    public function __construct(private array $searchFilters)
+    public function __construct(private array $searchFilters, private int $userId)
     {
     }
 
@@ -33,5 +33,10 @@ final class GetProductUuidsQuery
     public function searchFilters(): array
     {
         return $this->searchFilters;
+    }
+
+    public function userId(): int
+    {
+        return $this->userId;
     }
 }

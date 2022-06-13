@@ -70,7 +70,7 @@ class GetProductUuidsHandlerSpec extends ObjectBehavior
         ConstraintViolationList $constraintViolationList,
         ProductUuidQueryFetcher $productUuidQueryFetcher
     ) {
-        $query = new GetProductUuidsQuery([]);
+        $query = new GetProductUuidsQuery([], 1);
         $constraintViolationList->count()->willReturn(0);
         $validator->validate($query)->willReturn($constraintViolationList);
 
@@ -83,7 +83,7 @@ class GetProductUuidsHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ConstraintViolationList $constraintViolationList
     ) {
-        $query = new GetProductUuidsQuery([]);
+        $query = new GetProductUuidsQuery([], 1);
         $constraintViolationList->count()->willReturn(5);
         $constraintViolationList->__toString()->willReturn('message');
         $validator->validate($query)->willReturn($constraintViolationList);

@@ -17,5 +17,8 @@ services:
             - '@akeneo.pim.enrichment.use_cases.apply_product_search_query_parameters_to_pqb'
             - '@Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductUuidQueryFetcher'
             - '@validator'
+            - '@feature_flags'
+            - '@pim_user.repository.user'
+            - '@?akeneo.pim.enrichment.category.get_viewable_category_codes'
         tags:
             - { name: 'akeneo.pim.enrichment.product.query_handler', query: 'Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery' }
