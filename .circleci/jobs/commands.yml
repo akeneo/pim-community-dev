@@ -31,6 +31,22 @@ commands:
                       export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
                       gcloud auth configure-docker --quiet
 
+    set_gcloud_config_ucs:
+        description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
+        steps:
+            - run:
+                  name: "Set Gcloud Config."
+                  shell: "/bin/bash -eo pipefail"
+                  command: |
+                      echo ${GCLOUD_SERVICE_KEY_DEV} | gcloud auth activate-service-account --key-file=-
+                      gcloud config set project ${GOOGLE_PROJECT_ID}
+                      gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+                      gcloud container clusters get-credentials ${CLUSTER_NAME} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_COMPUTE_ZONE}
+                      echo ${GCLOUD_SERVICE_KEY_DEV} > ${HOME}/gcloud-service-key.json
+                      echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
+                      export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
+                      gcloud auth configure-docker --quiet
+
     restore_persisted_env_vars:
         description: "Restore env vars that have been persisted by the previous job."
         steps:

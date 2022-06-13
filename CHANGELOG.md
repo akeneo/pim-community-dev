@@ -47,6 +47,7 @@
 - PIM-10444: Fix thumbnail generation http queue and cancel request when leaving the page
 - PIM-10463: Fix textarea stringifier for rich textarea on source and target
 - PIM-10473: Fix record codes filter by comparing lowercase
+- GRF-63: Fix calculation on TWA projects with completeness filter
 
 ## Improvements
 

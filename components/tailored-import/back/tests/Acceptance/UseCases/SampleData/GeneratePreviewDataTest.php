@@ -29,10 +29,10 @@ class GeneratePreviewDataTest extends AcceptanceTestCase
             'attribute_type' => 'pim_catalog_text',
             'source_configuration' => null,
         ];
-        $query->operations = [['type' => 'clean_html_tags']];
+        $query->operations = [['uuid' => '00000000-0000-0000-0000-000000000000', 'type' => 'clean_html_tags']];
         $query->sampleData = ['<b>product1</b>', '<i>product2</i>', 'product3'];
 
-        $expected = GeneratePreviewDataResult::create(['product1', 'product2', 'product3']);
+        $expected = GeneratePreviewDataResult::create(['00000000-0000-0000-0000-000000000000' => ['product1', 'product2', 'product3']]);
         $this->assertEquals($expected, $this->getHandler()->handle($query));
     }
 
@@ -48,7 +48,7 @@ class GeneratePreviewDataTest extends AcceptanceTestCase
         $query->operations = [];
         $query->sampleData = ['<b>product1</b>', '<i>product2</i>', 'product3'];
 
-        $expected = GeneratePreviewDataResult::create(['<b>product1</b>', '<i>product2</i>', 'product3']);
+        $expected = GeneratePreviewDataResult::create([]);
         $this->assertEquals($expected, $this->getHandler()->handle($query));
     }
 
@@ -61,7 +61,7 @@ class GeneratePreviewDataTest extends AcceptanceTestCase
             'attribute_type' => 'pim_catalog_text',
             'source_configuration' => null,
         ];
-        $query->operations = [['type' => 'clean_html_tags']];
+        $query->operations = [['uuid' => '00000000-0000-0000-0000-000000000000', 'type' => 'clean_html_tags']];
         $query->sampleData = [];
 
         $expected = GeneratePreviewDataResult::create([]);

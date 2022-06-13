@@ -82,7 +82,7 @@ test('it displays compatible operation when present in data mapping', async () =
       dataMapping={{
         ...dataMapping,
         operations: [
-          {type: 'clean_html_tags'},
+          {uuid: expect.any(String), type: 'clean_html_tags'},
           // @ts-expect-error unknown operation
           {type: 'unknown_operation'},
         ],
@@ -115,7 +115,7 @@ test('it can add a compatible operation in data mapping', async () => {
   userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.add'));
   userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags.title'));
 
-  expect(handleOperationsChange).toHaveBeenCalledWith([{type: 'clean_html_tags'}]);
+  expect(handleOperationsChange).toHaveBeenCalledWith([{uuid: expect.any(String), type: 'clean_html_tags'}]);
 });
 
 test('it can remove an operation from data mapping', async () => {
@@ -125,7 +125,7 @@ test('it can remove an operation from data mapping', async () => {
     <Operations
       dataMapping={{
         ...dataMapping,
-        operations: [{type: 'clean_html_tags'}],
+        operations: [{uuid: expect.any(String), type: 'clean_html_tags'}],
       }}
       compatibleOperations={['clean_html_tags']}
       onOperationsChange={handleOperationsChange}
@@ -144,7 +144,7 @@ test('it tells when there are no more available operations and hides the add but
     <Operations
       dataMapping={{
         ...dataMapping,
-        operations: [{type: 'clean_html_tags'}],
+        operations: [{uuid: expect.any(String), type: 'clean_html_tags'}],
       }}
       compatibleOperations={['clean_html_tags']}
       onOperationsChange={jest.fn()}
@@ -190,7 +190,7 @@ test('it can handle an operation change', async () => {
     <Operations
       dataMapping={{
         ...dataMapping,
-        operations: [{type: 'split', separator: ','}],
+        operations: [{uuid: expect.any(String), type: 'split', separator: ','}],
       }}
       compatibleOperations={['split']}
       onOperationsChange={handleOperationsChange}
@@ -202,5 +202,5 @@ test('it can handle an operation change', async () => {
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(screen.getByTitle('semicolon'));
 
-  expect(handleOperationsChange).toHaveBeenCalledWith([{type: 'split', separator: ';'}]);
+  expect(handleOperationsChange).toHaveBeenCalledWith([{uuid: expect.any(String), type: 'split', separator: ';'}]);
 });

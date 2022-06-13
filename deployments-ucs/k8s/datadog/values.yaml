@@ -1,0 +1,55 @@
+# helm repo add datadog https://helm.datadoghq.com
+# helm repo update
+# kubectx gke_akecld-blackhawk-sandbox_europe-west1-b_bh-cluster-sandbox && helm3 upgrade --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 20m --create-namespace --namespace default datadog-agent datadog/datadog -f datadog/values.yaml
+agents:
+  rbac:
+    create: true
+datadog:
+  apiKey: null
+  site: datadoghq.eu
+  clusterName: null
+  logsEnabled: true
+  logsConfigContainerCollectAll: true
+  containerExclude: "name:datadog-agent"
+  apmEnabled: false
+  collectEvents: true
+  leaderElection: true # mandatory to collect events
+  processAgentEnabled: true
+  dogstatsd:
+    port: 8125
+    useHostPort: true
+    nonLocalTraffic: true
+  tags: "cloud_env:blackhawk-sandbox cloud_service:ucs"
+# Refer to tagging strategy:
+# https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+  podLabelsAsTags: # Provide a mapping of Kubernetes Labels to Datadog Tags: cf https://raw.githubusercontent.com/helm/charts/master/stable/datadog/values.yaml
+    app.kubernetes.io/name: app
+    app.kubernetes.io/component: component
+    helm.sh/chart: helm_chart
+    chart: helm_chart # (deprecated)
+    type: type # (deprecated) Ex: srnt,akob,askf
+    release: helm_release # (deprecated)
+    role: role # (deprecated)
+  podAnnotationsAsTags: # Provide a mapping of Kubernetes Annotations to Datadog Tags: cf https://raw.githubusercontent.com/helm/charts/master/stable/datadog/values.yaml
+    # <POD_ANNOTATION>: <TAG_KEY>
+    app.kubernetes.io/name: app
+    app.kubernetes.io/component: component
+    helm.sh/chart: helm_chart
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: 400m
+      memory: 1024Mi
+env:
+  - name: DD_AGENT_HOST
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+  - name: DD_DOGSTATSD_NON_LOCAL_TRAFFIC
+    value: 'true'
+daemonset:
+  useHostPort: true
+clusterAgent:
+  enabled: true

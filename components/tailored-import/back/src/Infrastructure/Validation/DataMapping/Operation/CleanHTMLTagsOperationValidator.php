@@ -18,6 +18,8 @@ use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operati
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -33,6 +35,7 @@ final class CleanHTMLTagsOperationValidator extends ConstraintValidator
             ->inContext($this->context)
             ->validate($value, new Collection([
                 'fields' => [
+                    'uuid' => [new Uuid(), new NotBlank()],
                     'type' => new EqualTo(['value' => CleanHTMLTagsOperation::TYPE]),
                 ],
             ]));

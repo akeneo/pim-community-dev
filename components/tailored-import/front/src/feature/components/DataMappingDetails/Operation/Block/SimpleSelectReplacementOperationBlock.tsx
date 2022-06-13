@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Block, Button, CloseIcon, IconButton, useBooleanState} from 'akeneo-design-system';
+import {Block, Button, CloseIcon, IconButton, useBooleanState, uuid} from 'akeneo-design-system';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {isReplacementValues, ReplacementValues} from '../../../../models';
 import {OPTION_COLLECTION_PAGE_SIZE, useAttributeOptions} from '../../../../hooks';
@@ -9,6 +9,7 @@ import {getDefaultReplacementValueFilter, ReplacementModal, ReplacementValueFilt
 const SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE = 'simple_select_replacement';
 
 type SimpleSelectReplacementOperation = {
+  uuid: string;
   type: typeof SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE;
   mapping: ReplacementValues;
 };
@@ -21,6 +22,7 @@ const isSimpleSelectReplacementOperation = (operation?: any): operation is Simpl
   isReplacementValues(operation.mapping);
 
 const getDefaultSimpleSelectReplacementOperation = (): SimpleSelectReplacementOperation => ({
+  uuid: uuid(),
   type: SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   mapping: {},
 });
@@ -77,6 +79,7 @@ const SimpleSelectReplacementOperationBlock = ({targetCode, operation, onChange,
               itemsPerPage={OPTION_COLLECTION_PAGE_SIZE}
               totalItems={totalItems}
               operationType={SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE}
+              operationUuid={operation.uuid}
               initialMapping={operation.mapping}
               onConfirm={handleConfirm}
               onCancel={handleCancel}

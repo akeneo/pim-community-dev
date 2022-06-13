@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
-use Doctrine\DBAL\Connection;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -20,8 +21,8 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysTo
     private array $cachedResult = [];
 
     public function __construct(
-        private Connection $sqlConnection,
-        private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels
+        private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
+        private AttributeRepositoryInterface $attributeRepository,
     ) {
     }
 
@@ -37,11 +38,16 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysTo
     private function generateSearchMatrixWithValueKeys(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $matrixLocalesPerChannels = $this->findActivatedLocalesPerChannels->findAll();
+        $attributes = $this->attributeRepository->findByReferenceEntity($referenceEntityIdentifier);
+        $textAttributes = array_filter($attributes, function (AbstractAttribute $attribute) {
+            return $attribute->getType() === 'text';
+        });
+
         $matrix = [];
         foreach ($matrixLocalesPerChannels as $channelCode => $locales) {
             foreach ($locales as $localeCode) {
-                $valueKeys = $this->fetchValueKeys(
-                    $referenceEntityIdentifier,
+                $valueKeys = $this->generateValueKeys(
+                    $textAttributes,
                     ChannelIdentifier::fromCode($channelCode),
                     LocaleIdentifier::fromCode($localeCode)
                 );
@@ -52,49 +58,33 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysTo
         return $matrix;
     }
 
-    private function fetchValueKeys(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
+    /**
+     * @param AbstractAttribute[] $attributes
+     *
+     * @return string[]
+     */
+    private function generateValueKeys(
+        array $attributes,
         ChannelIdentifier $channelIdentifier,
         LocaleIdentifier $localeIdentifier
     ): array {
-        $query = <<<SQL
-            SELECT
-                CONCAT(
-                    mask.identifier,
-                    IF(mask.value_per_channel, CONCAT('_', mask.channel_code), ''),
-                    IF(mask.value_per_locale, CONCAT('_', mask.locale_code), '')
-                 ) as `key`
-            FROM (
-                SELECT
-                    a.identifier,
-                    a.value_per_channel,
-                    a.value_per_locale,
-                    COALESCE(c.code, locale_channel.channel_code) as channel_code,
-                    COALESCE(l.code, locale_channel.locale_code) as locale_code
-                FROM
-                    (SELECT * FROM akeneo_reference_entity_attribute WHERE attribute_type = 'text') as a
-                    LEFT JOIN (SELECT * FROM pim_catalog_channel WHERE code = :channel_code) c ON value_per_channel = 1 AND value_per_locale = 0
-                    LEFT JOIN (SELECT * FROM pim_catalog_locale WHERE code = :locale_code) l ON value_per_channel = 0 AND value_per_locale = 1 AND is_activated = 1
-                    LEFT JOIN (
-                        SELECT
-                            c.code as channel_code,
-                            l.code as locale_code
-                        FROM
-                            pim_catalog_channel c
-                            JOIN pim_catalog_channel_locale cl ON cl.channel_id = c.id
-                            JOIN pim_catalog_locale l ON l.id = locale_id
-                        WHERE c.code = :channel_code  AND l.code = :locale_code
-                    ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
-                WHERE
-                    reference_entity_identifier = :reference_entity_identifier
-            ) as mask;
-SQL;
-        $statement = $this->sqlConnection->executeQuery($query, [
-            'reference_entity_identifier' => $referenceEntityIdentifier,
-            'channel_code'                => $channelIdentifier->normalize(),
-            'locale_code'                 => $localeIdentifier->normalize(),
-        ]);
+        $valueKeys = [];
 
-        return $statement->fetchFirstColumn();
+        foreach ($attributes as $attribute) {
+            $scopable = $attribute->hasValuePerChannel();
+            $localizable = $attribute->hasValuePerLocale();
+
+            if ($scopable && $localizable) {
+                $valueKeys[] = sprintf('%s_%s_%s', $attribute->getIdentifier()->stringValue(), $channelIdentifier->normalize(), $localeIdentifier->normalize());
+            } elseif ($scopable && !$localizable) {
+                $valueKeys[] = sprintf('%s_%s', $attribute->getIdentifier()->stringValue(), $channelIdentifier->normalize());
+            } elseif (!$scopable && $localizable) {
+                $valueKeys[] = sprintf('%s_%s', $attribute->getIdentifier()->stringValue(), $localeIdentifier->normalize());
+            } else {
+                $valueKeys[] = $attribute->getIdentifier()->stringValue();
+            }
+        }
+
+        return $valueKeys;
     }
 }

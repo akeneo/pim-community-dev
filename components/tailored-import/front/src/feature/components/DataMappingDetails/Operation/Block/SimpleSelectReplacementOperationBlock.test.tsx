@@ -46,23 +46,28 @@ jest.mock('../../../../hooks/useAttributeOptions', () => ({
 
 test('it can get the default simple select replacement operation', () => {
   expect(getDefaultSimpleSelectReplacementOperation()).toEqual({
+    uuid: expect.any(String),
     type: 'simple_select_replacement',
     mapping: {},
   });
 });
 
 test('it displays a simple_select_replacement operation block', () => {
+  const previewData = {
+    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
+  };
+
   renderWithProviders(
     <SimpleSelectReplacementOperationBlock
       targetCode="brand"
-      operation={{type: 'simple_select_replacement', mapping: {}}}
+      operation={{uuid: expect.any(String), type: 'simple_select_replacement', mapping: {}}}
       onChange={jest.fn()}
       onRemove={jest.fn()}
       isLastOperation={false}
       previewData={{
         isLoading: false,
         hasError: false,
-        data: ['<p>Hello</p>', '<p>World</p>'],
+        data: previewData,
       }}
     />
   );
@@ -74,18 +79,21 @@ test('it displays a simple_select_replacement operation block', () => {
 
 test('it can be removed using the remove button', () => {
   const handleRemove = jest.fn();
+  const previewData = {
+    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
+  };
 
   renderWithProviders(
     <SimpleSelectReplacementOperationBlock
       targetCode="brand"
-      operation={{type: 'simple_select_replacement', mapping: {}}}
+      operation={{uuid: expect.any(String), type: 'simple_select_replacement', mapping: {}}}
       onChange={jest.fn()}
       onRemove={handleRemove}
       isLastOperation={false}
       previewData={{
         isLoading: false,
         hasError: false,
-        data: ['<p>Hello</p>', '<p>World</p>'],
+        data: previewData,
       }}
     />
   );
@@ -101,6 +109,9 @@ test('it can be removed using the remove button', () => {
 
 test('it opens a replacement modal and handles change', async () => {
   const handleChange = jest.fn();
+  const previewData = {
+    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
+  };
 
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: true,
@@ -110,14 +121,14 @@ test('it opens a replacement modal and handles change', async () => {
   renderWithProviders(
     <SimpleSelectReplacementOperationBlock
       targetCode="brand"
-      operation={{type: 'simple_select_replacement', mapping: {}}}
+      operation={{uuid: expect.any(String), type: 'simple_select_replacement', mapping: {}}}
       onChange={handleChange}
       onRemove={jest.fn()}
       isLastOperation={false}
       previewData={{
         isLoading: false,
         hasError: false,
-        data: ['<p>Hello</p>', '<p>World</p>'],
+        data: previewData,
       }}
     />
   );
@@ -139,6 +150,7 @@ test('it opens a replacement modal and handles change', async () => {
   });
 
   expect(handleChange).toHaveBeenCalledWith({
+    uuid: expect.any(String),
     type: 'simple_select_replacement',
     mapping: {
       black: ['noir', 'noir foncé'],
@@ -148,18 +160,21 @@ test('it opens a replacement modal and handles change', async () => {
 
 test('it does not call handler when cancelling', () => {
   const handleChange = jest.fn();
+  const previewData = {
+    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
+  };
 
   renderWithProviders(
     <SimpleSelectReplacementOperationBlock
       targetCode="brand"
-      operation={{type: 'simple_select_replacement', mapping: {}}}
+      operation={{uuid: expect.any(String), type: 'simple_select_replacement', mapping: {}}}
       onChange={handleChange}
       onRemove={jest.fn()}
       isLastOperation={false}
       previewData={{
         isLoading: false,
         hasError: false,
-        data: ['<p>Hello</p>', '<p>World</p>'],
+        data: previewData,
       }}
     />
   );
@@ -172,19 +187,22 @@ test('it does not call handler when cancelling', () => {
 
 test('it throws an error if the operation is not a simple select replacement operation', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+  const previewData = {
+    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
+  };
 
   expect(() => {
     renderWithProviders(
       <SimpleSelectReplacementOperationBlock
         targetCode="brand"
-        operation={{type: 'clean_html_tags'}}
+        operation={{uuid: expect.any(String), type: 'clean_html_tags'}}
         onChange={jest.fn()}
         onRemove={jest.fn()}
         isLastOperation={false}
         previewData={{
           isLoading: false,
           hasError: false,
-          data: ['<p>Hello</p>', '<p>World</p>'],
+          data: previewData,
         }}
       />
     );

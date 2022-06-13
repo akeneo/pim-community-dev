@@ -1,5 +1,6 @@
 import {channels} from 'feature/tests';
 import {Attribute} from './Attribute';
+import {Column} from './Column';
 import {
   DataMapping,
   updateDataMapping,
@@ -7,13 +8,8 @@ import {
   createDefaultDataMapping,
   addSourceToDataMapping,
   createAttributeDataMapping,
+  filterOnColumnLabels,
 } from './DataMapping';
-
-const mockUuid = 'uuid';
-jest.mock('akeneo-design-system', () => ({
-  ...jest.requireActual('akeneo-design-system'),
-  uuid: () => mockUuid,
-}));
 
 const attribute: Attribute = {
   code: 'description',
@@ -38,7 +34,7 @@ test('it creates a default data mapping', () => {
   };
 
   expect(createDefaultDataMapping(identifierAttribute, columnIdentifier, [])).toEqual({
-    uuid: mockUuid,
+    uuid: expect.any(String),
     operations: [],
     sample_data: [],
     sources: ['columnUuid'],
@@ -69,7 +65,7 @@ test('it creates a default data mapping with sample data', () => {
   const sampleData = ['value1', 'value2', 'value3'];
 
   expect(createDefaultDataMapping(identifierAttribute, columnIdentifier, sampleData)).toEqual({
-    uuid: mockUuid,
+    uuid: expect.any(String),
     operations: [],
     sample_data: sampleData,
     sources: ['columnUuid'],
@@ -88,7 +84,7 @@ test('it creates a default data mapping with sample data', () => {
 
 test('it creates an attribute data mapping', () => {
   expect(createAttributeDataMapping(attribute, [])).toEqual({
-    uuid: mockUuid,
+    uuid: expect.any(String),
     operations: [],
     sample_data: [],
     sources: [],
@@ -117,7 +113,7 @@ test('it creates a localizable & locale-specific attribute data mapping', () => 
       channels
     )
   ).toEqual({
-    uuid: mockUuid,
+    uuid: expect.any(String),
     operations: [],
     sample_data: [],
     sources: [],
@@ -136,7 +132,7 @@ test('it creates a localizable & locale-specific attribute data mapping', () => 
 
 test('it creates a property data mapping', () => {
   expect(createPropertyDataMapping('family')).toEqual({
-    uuid: mockUuid,
+    uuid: expect.any(String),
     operations: [],
     sample_data: [],
     sources: [],
@@ -151,7 +147,7 @@ test('it creates a property data mapping', () => {
 
 test('it adds a source to data mapping', () => {
   const dataMapping: DataMapping = {
-    uuid: mockUuid,
+    uuid: expect.any(String),
     operations: [],
     sample_data: [],
     sources: [],
@@ -231,4 +227,32 @@ test('it updates a data mapping', () => {
   expect(updateDataMapping([], updatedDataMapping)).toEqual([]);
   expect(updateDataMapping(dataMappings, updatedDataMapping)).toEqual([dataMappings[0], updatedDataMapping]);
   expect(updateDataMapping(dataMappings, nonExistentDataMapping)).toEqual(dataMappings);
+});
+
+test('it can filter data mappings based on column labels', () => {
+  const columns: Column[] = [
+    {uuid: 'uuid-IDEnTiFier', index: 0, label: 'IDEnTiFier'},
+    {uuid: 'uuid-Name', index: 1, label: 'Name'},
+    {uuid: 'uuid-idendescrip tion', index: 2, label: 'idendescrip tion'},
+    {uuid: 'uuid-catego1', index: 2, label: 'catego1'},
+    {uuid: 'uuid-catego2', index: 2, label: 'catego2 tion'},
+  ];
+
+  const identifierDataMapping = {...createAttributeDataMapping(attribute, []), sources: ['uuid-IDEnTiFier']};
+  const nameDataMapping = {...createAttributeDataMapping(attribute, []), sources: ['uuid-Name']};
+  const descriptionDataMapping = {...createAttributeDataMapping(attribute, []), sources: ['uuid-idendescrip tion']};
+  const categoriesDataMapping = {...createPropertyDataMapping('categories'), sources: ['uuid-catego1', 'uuid-catego2']};
+
+  const dataMappings: DataMapping[] = [
+    identifierDataMapping,
+    nameDataMapping,
+    descriptionDataMapping,
+    categoriesDataMapping,
+  ];
+
+  expect(filterOnColumnLabels(dataMappings, columns, '')).toEqual(dataMappings);
+  expect(filterOnColumnLabels(dataMappings, columns, 'iden')).toEqual([identifierDataMapping, descriptionDataMapping]);
+  expect(filterOnColumnLabels(dataMappings, columns, 'cat')).toEqual([categoriesDataMapping]);
+  expect(filterOnColumnLabels(dataMappings, columns, ' TION')).toEqual([descriptionDataMapping, categoriesDataMapping]);
+  expect(filterOnColumnLabels(dataMappings, columns, 'not found')).toEqual([]);
 });

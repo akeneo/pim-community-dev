@@ -56,10 +56,10 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
     {
         return \array_map(
             static fn (array $normalizedOperation) => match ($normalizedOperation['type']) {
-                CleanHTMLTagsOperation::TYPE => new CleanHTMLTagsOperation(),
-                SplitOperation::TYPE => new SplitOperation($normalizedOperation['separator']),
-                SimpleSelectReplacementOperation::TYPE => new SimpleSelectReplacementOperation($normalizedOperation['mapping']),
-                MultiSelectReplacementOperation::TYPE => new MultiSelectReplacementOperation($normalizedOperation['mapping']),
+                CleanHTMLTagsOperation::TYPE => new CleanHTMLTagsOperation($normalizedOperation['uuid']),
+                SplitOperation::TYPE => new SplitOperation($normalizedOperation['uuid'], $normalizedOperation['separator']),
+                SimpleSelectReplacementOperation::TYPE => new SimpleSelectReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
+                MultiSelectReplacementOperation::TYPE => new MultiSelectReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" Operation type', $normalizedOperation['type'])),
             },
             $normalizedOperations,

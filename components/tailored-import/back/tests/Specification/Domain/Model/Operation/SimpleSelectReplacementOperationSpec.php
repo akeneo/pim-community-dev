@@ -22,6 +22,7 @@ class SimpleSelectReplacementOperationSpec extends ObjectBehavior
     public function let()
     {
         $this->beConstructedWith(
+            '00000000-0000-0000-0000-000000000000',
             [
                 'adidas' => ['nike', 'reebok'],
                 6 => ['foo', 'bar'],
@@ -39,6 +40,11 @@ class SimpleSelectReplacementOperationSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(OperationInterface::class);
     }
 
+    public function it_returns_uuid(): void
+    {
+        $this->getUuid()->shouldReturn('00000000-0000-0000-0000-000000000000');
+    }
+
     public function it_returns_mapping(): void
     {
         $this->getMapping()->shouldReturn([
@@ -50,6 +56,7 @@ class SimpleSelectReplacementOperationSpec extends ObjectBehavior
     public function it_normalizes_operation(): void
     {
         $this->normalize()->shouldReturn([
+            'uuid' => '00000000-0000-0000-0000-000000000000',
             'type' => 'simple_select_replacement',
             'mapping' => [
                 'adidas' => ['nike', 'reebok'],
@@ -68,7 +75,7 @@ class SimpleSelectReplacementOperationSpec extends ObjectBehavior
 
     public function it_returns_null_when_not_mapped(): void
     {
-        $this->beConstructedWith([]);
+        $this->beConstructedWith('00000000-0000-0000-0000-000000000000', []);
         $this->getMappedValue('unknown')->shouldReturn(null);
     }
 }

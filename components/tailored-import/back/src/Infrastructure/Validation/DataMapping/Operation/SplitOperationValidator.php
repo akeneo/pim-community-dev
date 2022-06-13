@@ -19,6 +19,8 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -39,6 +41,7 @@ final class SplitOperationValidator extends ConstraintValidator
             ->inContext($this->context)
             ->validate($value, new Collection([
                 'fields' => [
+                    'uuid' => [new Uuid(), new NotBlank()],
                     'type' => new EqualTo(['value' => SplitOperation::TYPE]),
                     'separator' => new Choice($this->availableSeparators),
                 ],

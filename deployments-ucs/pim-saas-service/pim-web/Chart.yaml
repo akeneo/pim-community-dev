@@ -1,0 +1,6 @@
+apiVersion: v2
+name: pim-web
+description: Akeneo PIM WEB - Enterprise Cloud Edition
+icon: https://raw.githubusercontent.com/akeneo/pim-community-dev/master/public/favicon.ico
+version: 0.0.0
+appVersion: 0.0.0

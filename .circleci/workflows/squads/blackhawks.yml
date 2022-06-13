@@ -287,3 +287,143 @@ workflows:
                   requires:
                       - "[srnt] prepare_perf-sanity_checks-<< matrix.SOURCE_PFID >>"
                       - "[srnt] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+
+    ucs:
+      when:
+          not:
+              equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+      jobs:
+          - ready_to_build?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                            - /SDO-.*/
+          - checkout:
+                requires:
+                    - ready_to_build?
+          - build_ucs:
+                requires:
+                    - checkout
+          - deploy_ucs_pim:
+                requires:
+                    - build_ucs
+          - deploy_tenant:
+                name: "deploy_tenant_1"
+                requires:
+                    - build_ucs
+          - deploy_tenant:
+                name: "deploy_tenant_2"
+                requires:
+                    - build_ucs
+          - test_ucs_deploy:
+                name: "test_ucs_deploy_1"
+                requires:
+                    - deploy_ucs_pim
+                    - deploy_tenant_1
+          - test_ucs_deploy:
+                name: "test_ucs_deploy_2"
+                requires:
+                    - deploy_ucs_pim
+                    - deploy_tenant_2
+          - delete_pim?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                requires:
+                    - deploy_ucs_pim
+          - delete_pim:
+                requires:
+                    - delete_pim?
+          - delete_tenant1?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                requires:
+                    - deploy_tenant_1
+          - delete_tenant:
+                name: "delete_tenant1"
+                requires:
+                    - delete_tenant1?
+          - delete_tenant2?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                requires:
+                    - deploy_tenant_2
+          - delete_tenant:
+                name: "delete_tenant2"
+                requires:
+                    - delete_tenant2?
+
+          - ready_to_build_wb?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                            - /SDO-.*/
+          - checkout:
+                name: checkout_wb
+                requires:
+                    - ready_to_build_wb?
+          - build_ucs_env_vars:
+                name: build_ucs_wb
+                requires:
+                    - checkout_wb
+          - deploy_ucs_pim:
+                name: deploy_ucs_pim_wb
+                requires:
+                    - build_ucs_wb
+          - deploy_tenant:
+                name: "deploy_tenant_1_wb"
+                requires:
+                    - build_ucs_wb
+          - deploy_tenant:
+                name: "deploy_tenant_2_wb"
+                requires:
+                    - build_ucs_wb
+          - test_ucs_deploy:
+                name: "test_ucs_deploy_1_wb"
+                requires:
+                    - deploy_ucs_pim_wb
+                    - deploy_tenant_1_wb
+          - test_ucs_deploy:
+                name: "test_ucs_deploy_2_wb"
+                requires:
+                    - deploy_ucs_pim_wb
+                    - deploy_tenant_2_wb
+          - delete_pim_wb?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                requires:
+                    - deploy_ucs_pim_wb
+          - delete_pim:
+                requires:
+                    - delete_pim_wb?
+          - delete_tenant:
+                name: "delete_tenant1_wb"
+                requires:
+                    - test_ucs_deploy_1_wb
+          - delete_tenant2_wb?:
+                type: approval
+                filters:
+                    branches:
+                        only:
+                            - /BH-.*/
+                requires:
+                    - deploy_tenant_2_wb
+          - delete_tenant:
+                name: "delete_tenant2_wb"
+                requires:
+                    - delete_tenant2_wb?
