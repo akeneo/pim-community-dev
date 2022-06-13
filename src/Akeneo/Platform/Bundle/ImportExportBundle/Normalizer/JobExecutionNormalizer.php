@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Normalizer of JobExecution instance
+ * Normalizer of JobExecution instance.
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -47,31 +47,30 @@ class JobExecutionNormalizer implements NormalizerInterface, NormalizerAwareInte
         $isStoppable = $isRunning && $job instanceof StoppableJobInterface && $job->isStoppable();
 
         return [
-            'failures'       => array_map(
+            'failures' => array_map(
                 function ($exception) {
                     return $this->translator->trans($exception['message'], $exception['messageParameters']);
                 },
                 $jobExecution->getFailureExceptions()
             ),
             'stepExecutions' => $this->normalizeStepExecutions($jobExecution->getStepExecutions(), $format, $context),
-            'isRunning'      => $isRunning,
-            'isStoppable'    => $isStoppable,
-            'status'         => $this->translator->trans(
+            'isRunning' => $isRunning,
+            'isStoppable' => $isStoppable,
+            'status' => $this->translator->trans(
                 sprintf('pim_import_export.batch_status.%d', $jobExecution->getStatus()->getValue())
             ),
-            'jobInstance'    => $this->jobInstanceNormalizer->normalize($jobInstance, 'standard', $context)
+            'jobInstance' => $this->jobInstanceNormalizer->normalize($jobInstance, 'standard', $context),
         ];
     }
 
     /**
-     * Normalizes the step executions collection
+     * Normalizes the step executions collection.
      *
      * As JobExecution::getStepExecutions() might return something else than an array,
      * (like a PersistentCollection) we use a foreach instead of an array_map
      *
-     * @param array $stepExecutions
-     * @param string            $format
-     * @param array             $context
+     * @param array  $stepExecutions
+     * @param string $format
      *
      * @return array
      */

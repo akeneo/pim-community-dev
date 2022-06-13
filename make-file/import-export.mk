@@ -5,7 +5,7 @@ import-export-lint-back: #Doc: launch PHPStan for ImportExport bounded context
 
 .PHONY: import-export-lint-fix-back
 import-export-lint-fix-back: #Doc: launch PHPStan for ImportExport bounded context
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=src/Akeneo/Platform/Bundle/ImportExportBundle/Test/.php_cs.ph
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=src/Akeneo/Platform/Bundle/ImportExportBundle/Test/.php_cs.php
 
 .PHONY: import-export-coupling-back
 import-export-coupling-back: #Doc: launch coupling detector for ImportExport bounded context

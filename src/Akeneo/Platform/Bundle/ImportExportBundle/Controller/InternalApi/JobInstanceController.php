@@ -41,7 +41,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * JobInstance rest controller
+ * JobInstance rest controller.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -139,10 +139,9 @@ class JobInstanceController
     }
 
     /**
-     * Launch an import job
+     * Launch an import job.
      *
-     * @param Request $request
-     * @param string  $code
+     * @param string $code
      *
      * @AclAncestor("pim_importexport_import_profile_launch")
      *
@@ -158,10 +157,9 @@ class JobInstanceController
     }
 
     /**
-     * Launch an export job
+     * Launch an export job.
      *
-     * @param Request $request
-     * @param string  $code
+     * @param string $code
      *
      * @AclAncestor("pim_importexport_export_profile_launch")
      *
@@ -177,7 +175,7 @@ class JobInstanceController
     }
 
     /**
-     * Get a job profile
+     * Get a job profile.
      *
      * @param string $identifier
      *
@@ -194,10 +192,9 @@ class JobInstanceController
     }
 
     /**
-     * Edit a job profile
+     * Edit a job profile.
      *
-     * @param Request $request
-     * @param string  $identifier
+     * @param string $identifier
      *
      * @return Response
      */
@@ -288,14 +285,14 @@ class JobInstanceController
                 foreach ($violations as $violation) {
                     $errors[$violation->getPropertyPath()] = [
                         'message' => $violation->getMessage(),
-                        'invalid_value' => $violation->getInvalidValue()
+                        'invalid_value' => $violation->getInvalidValue(),
                     ];
                 }
 
                 return new JsonResponse($errors, 400);
             }
 
-            $jobFileLocation = new JobFileLocation($code . DIRECTORY_SEPARATOR . $file->getClientOriginalName(), true);
+            $jobFileLocation = new JobFileLocation($code.DIRECTORY_SEPARATOR.$file->getClientOriginalName(), true);
 
             if ($this->filesystem->fileExists($jobFileLocation->path())) {
                 $this->filesystem->delete($jobFileLocation->path());
@@ -319,7 +316,7 @@ class JobInstanceController
             $jobInstance->setRawParameters($rawParameters);
         }
 
-        /** TODO remove it when we will migrate to storage unification */
+        /* TODO remove it when we will migrate to storage unification */
         if ($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
             $rawParameters = $jobInstance->getRawParameters();
             $rawParameters['filePath'] = 'fake_path.zip';
@@ -339,10 +336,10 @@ class JobInstanceController
         }
 
         return new JsonResponse([
-            'redirectUrl' => '#' . $this->router->generate(
+            'redirectUrl' => '#'.$this->router->generate(
                 'akeneo_job_process_tracker_details',
                 ['id' => $jobExecution->getId()]
-            )
+            ),
         ], 200);
     }
 
@@ -357,18 +354,7 @@ class JobInstanceController
         }
 
         if (!$this->jobRegistry->has($jobInstance->getJobName())) {
-            throw new NotFoundHttpException(
-                sprintf(
-                    'The following %s does not exist anymore. Please check configuration:<br />' .
-                    'Connector: %s<br />' .
-                    'Type: %s<br />' .
-                    'Alias: %s',
-                    $jobInstance->getType(),
-                    $jobInstance->getConnector(),
-                    $jobInstance->getType(),
-                    $jobInstance->getJobName()
-                )
-            );
+            throw new NotFoundHttpException(sprintf('The following %s does not exist anymore. Please check configuration:<br />'.'Connector: %s<br />'.'Type: %s<br />'.'Alias: %s', $jobInstance->getType(), $jobInstance->getConnector(), $jobInstance->getType(), $jobInstance->getJobName()));
         }
 
         return $jobInstance;
@@ -404,12 +390,12 @@ class JobInstanceController
         $accessor = PropertyAccess::createPropertyAccessorBuilder()->getPropertyAccessor();
         if (count($parametersViolations) > 0) {
             foreach ($parametersViolations as $error) {
-                $accessor->setValue($errors, '[configuration]' . $error->getPropertyPath(), $error->getMessage());
+                $accessor->setValue($errors, '[configuration]'.$error->getPropertyPath(), $error->getMessage());
                 $errors['normalized_errors'][] = $this->constraintViolationNormalizer->normalize(
                     $error,
                     'internal_api',
                     [
-                        'translate' => false
+                        'translate' => false,
                     ]
                 );
             }
@@ -423,7 +409,7 @@ class JobInstanceController
                     $error,
                     'internal_api',
                     [
-                        'translate' => false
+                        'translate' => false,
                     ]
                 );
             }
@@ -439,17 +425,13 @@ class JobInstanceController
         return array_merge($normalizedJobInstance, [
             'meta' => [
                 'form' => $this->formProvider->getForm($jobInstance),
-                'id'   => $jobInstance->getId()
-            ]
+                'id' => $jobInstance->getId(),
+            ],
         ]);
     }
 
     /**
-     * Allow to validate and run the job
-     *
-     * @param JobInstance $jobInstance
-     *
-     * @return JobExecution
+     * Allow to validate and run the job.
      */
     protected function launchJob(JobInstance $jobInstance): JobExecution
     {
