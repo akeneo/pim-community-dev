@@ -57,9 +57,10 @@ workflows:
             - checkout
       - build_onboarder_supplier:
           requires:
-            - build_srnt_dev
+            - checkout
       - test_front_onboarder:
           requires:
+            - build_srnt_dev
             - build_onboarder_supplier
       - test_back_onboarder:
           requires:
