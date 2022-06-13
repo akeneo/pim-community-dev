@@ -71,7 +71,7 @@ class IndexProductCommand extends Command
                 'diff',
                 'd',
                 InputOption::VALUE_NONE,
-                'Display diff between MySQL and Elasticsearch'
+                'Resolve differences between MySQL and Elasticsearch'
             )
             ->addOption(
                 'batch-size',
@@ -96,13 +96,6 @@ class IndexProductCommand extends Command
             $chunkedProductIdentifiers = $this->getAllProductIdentifiers($batchSize);
             $productCount = 0;
         } elseif(true === $input->getOption('diff')) {
-            /*foreach($this->getDiffProductIdentifiers($batchSize) as $identifiers => $arrayIds){
-                if(!empty($arrayIds)){
-                    foreach($arrayIds as $id){
-                        $output->write($id.',');
-                    }
-                }
-            }*/
             $chunkedProductIdentifiers = $this->getDiffProductIdentifiers($batchSize);
             $productCount = 0;
         } elseif (!empty($input->getArgument('identifiers'))) {
