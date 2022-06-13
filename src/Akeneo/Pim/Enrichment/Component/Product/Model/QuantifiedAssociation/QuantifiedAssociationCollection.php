@@ -172,11 +172,27 @@ class QuantifiedAssociationCollection
         return self::createFromNormalized($mergedQuantifiedAssociationsNormalized);
     }
 
-    public function normalizeWithMapping(IdMapping $mappedProductIdentifiers, IdMapping $mappedProductModelIdentifiers)
-    {
-        $result = [];
+    /**
+     * @param IdMapping $mappedProductIdentifiers
+     * @param UuidMapping $uuidMappedProductIdentifiers
+     * @param IdMapping $mappedProductModelIdentifiers
+     * @return array
+     */
+    public function normalizeWithMapping(
+        IdMapping $mappedProductIdentifiers,
+        UuidMapping $uuidMappedProductIdentifiers,
+        IdMapping $mappedProductModelIdentifiers
+    ) {
+        $resultWithoutUuid = [];
+        $resultWithUuid = [];
+        $atLeastOneUuidWasNotFound = false;
+
         foreach ($this->quantifiedAssociations as $associationType => $associations) {
-            $result[$associationType] = [
+            $resultWithoutUuid[$associationType] = [
+                self::PRODUCTS_QUANTIFIED_LINKS_KEY => [],
+                self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY => [],
+            ];
+            $resultWithUuid[$associationType] = [
                 self::PRODUCTS_QUANTIFIED_LINKS_KEY => [],
                 self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY => [],
             ];
@@ -184,23 +200,41 @@ class QuantifiedAssociationCollection
             /** @var QuantifiedLink $quantifiedLink */
             foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
                 $normalizedQuantifiedLink = $quantifiedLink->normalize();
-                $result[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = [
+                $resultWithoutUuid[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = [
                     'id' => $mappedProductIdentifiers->getId($normalizedQuantifiedLink['identifier']),
                     'quantity' => $normalizedQuantifiedLink['quantity']
                 ];
+                if ($uuidMappedProductIdentifiers->hasUuid($normalizedQuantifiedLink['identifier'])) {
+                    $uuid = $uuidMappedProductIdentifiers->getUuid($normalizedQuantifiedLink['identifier']);
+                    $resultWithUuid[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = [
+                        'id' => $mappedProductIdentifiers->getId($normalizedQuantifiedLink['identifier']),
+                        'uuid' => $uuid->toString(),
+                        'quantity' => $normalizedQuantifiedLink['quantity']
+                    ];
+                } else {
+                    $atLeastOneUuidWasNotFound = true;
+                }
             }
 
             /** @var QuantifiedLink $quantifiedLink */
             foreach ($associations[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
                 $normalizedQuantifiedLink = $quantifiedLink->normalize();
-                $result[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY][] = [
+                $resultWithoutUuid[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY][] = [
+                    'id' => $mappedProductModelIdentifiers->getId($normalizedQuantifiedLink['identifier']),
+                    'quantity' => $normalizedQuantifiedLink['quantity']
+                ];
+                $resultWithUuid[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY][] = [
                     'id' => $mappedProductModelIdentifiers->getId($normalizedQuantifiedLink['identifier']),
                     'quantity' => $normalizedQuantifiedLink['quantity']
                 ];
             }
         }
 
-        return $result;
+        if ($atLeastOneUuidWasNotFound) {
+            return $resultWithoutUuid;
+        }
+
+        return $resultWithUuid;
     }
 
     public function normalize(): array

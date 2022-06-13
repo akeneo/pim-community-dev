@@ -138,7 +138,6 @@ akeneo_connectivity.connection:
           not_listed_on_the_appstore: App nicht mehr im Akeneo App Store aufgelistet. Bitte kontaktieren Sie den App-Support.
           manage_app: Apps verwalten
           open_app: App öffnen
-          pending: App nicht verbunden. Das Öffnen der App sollte das Problem beheben.
         flash:
           error: Beim Abrufen der Liste der verbundenen Apps ist ein Fehler aufgetreten.
       edit:
@@ -153,6 +152,7 @@ akeneo_connectivity.connection:
           authorizations:
             title: Autorisierungen
             information: 'Um mehr über App-Autorisierungen zu erfahren, schauen Sie sich unseren {{ link }} an.'
+            no_access_to_product_information: 'Diese verbundene App hat keinen Zugriff auf Ihre Produktinformationen.'
             information_link_anchor: Hilfe-Center-Artikel
             no_scope: Es wurden keine spezifischen Berechtigungen angefordert.
           authentication:
@@ -257,9 +257,9 @@ akeneo_connectivity.connection:
           reference_entity_record: Referenz Entitäten Datensätze
           asset_families: Asset-Familien
           assets: Assets
+          catalogs: Kataloge
         new: NEU
       error:
-        sub_text: Bitte kontaktieren Sie den App-Entwickler oder den Akeneo-Support
         app_not_found: Die client_id stimmt nicht mit einer existierenden App überein.
       constraint:
         client_id:

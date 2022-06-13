@@ -32,6 +32,7 @@ class GetConnectedAppAuthenticationScopesActionSpec extends ObjectBehavior
                 'app_logo',
                 'app_author',
                 'app_123456abcdef',
+                'an_username',
             )
         );
 

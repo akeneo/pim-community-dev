@@ -26,6 +26,7 @@ class FlagAppContainingOutdatedScopesCommandSpec extends ObjectBehavior
             'a/path/to/a/logo',
             'an_author',
             'a_group',
+            'an_username',
             [],
             false,
             null,

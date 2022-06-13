@@ -120,6 +120,7 @@ $rules = [
             'Akeneo\Connectivity\Connection\Application',
 
             // Exceptions
+            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\Constraint',
             'Symfony\Component\Validator\ConstraintValidator',
@@ -140,6 +141,7 @@ $rules = [
             'Akeneo\UserManagement\Component\Model\RoleInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
             'Akeneo\Platform\Component\EventQueue\BulkEventInterface',
             'Akeneo\Platform\Component\EventQueue\EventInterface',
@@ -147,7 +149,7 @@ $rules = [
             'Akeneo\Platform\Component\Webhook\EventDataBuilderInterface',
             'Akeneo\Platform\Component\Webhook\EventDataCollection',
             'Akeneo\Platform\Component\EventQueue\BulkEvent',
-            'Akeneo\Platform\VersionProviderInterface',
+            'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
 
             'Psr\Log\LoggerInterface',
             'Psr\Http\Message\ResponseInterface',
@@ -178,7 +180,6 @@ $rules = [
             'Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App',
             'Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface',
 
-            'Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface',
             'Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteClientInterface',
             'Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteUserInterface',
             'Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface',
@@ -186,7 +187,11 @@ $rules = [
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface',
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry',
 
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+
             'Akeneo\UserManagement\Component\Model\RoleInterface',
+
+            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Apps'),
 
@@ -231,7 +236,7 @@ $rules = [
             'Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface',
 
             'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
-            'Akeneo\Platform\VersionProviderInterface',
+            'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Marketplace'),
 

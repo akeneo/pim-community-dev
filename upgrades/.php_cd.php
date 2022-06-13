@@ -40,6 +40,7 @@ $rules = [
             'Akeneo\Tool\Component\Batch\Job',
             'Akeneo\Tool\Component\Batch\Job\BatchStatus',
             'Akeneo\Tool\Component\Batch\Job\ExitStatus',
+            'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
             'Doctrine\Common\Collections\ArrayCollection',
             'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
             'Oro\Bundle\SecurityBundle\Model\AclPermission',

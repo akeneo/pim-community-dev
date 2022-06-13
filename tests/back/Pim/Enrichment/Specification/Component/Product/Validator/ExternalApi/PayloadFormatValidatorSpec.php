@@ -49,12 +49,16 @@ class PayloadFormatValidatorSpec extends ObjectBehavior
                 'price' => [
                     ['locale' => null, 'scope' => null, 'data' => [['amount' => 100, 'currency' => 'USD']]],
                 ],
+                '5g_enabled' => [
+                    ['locale' => null, 'scope' => null, 'data' => true],
+                ],
             ],
         ];
 
-        $attributeRepository->getAttributeTypeByCodes(['sku', 'price'])->shouldBeCalledOnce()->willReturn([
+        $attributeRepository->getAttributeTypeByCodes(['sku', 'price', '5g_enabled'])->shouldBeCalledOnce()->willReturn([
             'sku' => AttributeTypes::IDENTIFIER,
             'price' => AttributeTypes::PRICE_COLLECTION,
+            '5g_enabled' => AttributeTypes::BOOLEAN,
         ]);
 
         $context->getValidator()->shouldBeCalledOnce()->willReturn($validator);

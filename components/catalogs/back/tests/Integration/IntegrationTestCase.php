@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration;
 
-use Akeneo\Connectivity\Connection\PublicApi\Service\ConnectedAppFactory;
-use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -53,14 +53,17 @@ abstract class IntegrationTestCase extends WebTestCase
         $this->ensureKernelShutdown();
     }
 
-    protected function logAs(string $username): void
+    protected function logAs(string $username): TokenInterface
     {
         $user = self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier($username);
+        \assert(null !== $user);
         $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         self::getContainer()->get('security.token_storage')->setToken($token);
+
+        return $token;
     }
 
-    protected function getAuthenticatedClient(array $scopes = []): KernelBrowser
+    protected function getAuthenticatedPublicApiClient(array $scopes = []): KernelBrowser
     {
         $connectedAppFactory = self::getContainer()->get(ConnectedAppFactory::class);
         $connectedApp = $connectedAppFactory->createFakeConnectedAppWithValidToken(
@@ -71,11 +74,29 @@ abstract class IntegrationTestCase extends WebTestCase
 
         /** @var KernelBrowser $client */
         $client = self::getContainer()->get(KernelBrowser::class);
-        $client->setServerParameter('AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
+        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
 
         // The connected user is not derivated from the access token when in `test` env
         // We need to explicitly log in with it
         $this->logAs($connectedApp->getUsername());
+
+        return $client;
+    }
+
+    protected function getAuthenticatedInternalApiClient(string $username = 'admin'): KernelBrowser
+    {
+        /** @var KernelBrowser $client */
+        $client = self::getContainer()->get(KernelBrowser::class);
+
+        $this->createUser($username);
+        $token = $this->logAs($username);
+
+        $session = self::getContainer()->get('session');
+        $session->set('_security_main', \serialize($token));
+        $session->save();
+
+        $cookie = new Cookie($session->getName(), $session->getId());
+        $client->getCookieJar()->set($cookie);
 
         return $client;
     }

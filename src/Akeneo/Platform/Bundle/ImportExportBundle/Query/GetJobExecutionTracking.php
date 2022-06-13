@@ -78,7 +78,7 @@ class GetJobExecutionTracking
         $jobExecutionTracking = new JobExecutionTracking();
         $jobExecutionTracking->status = (string)$jobExecution->getStatus();
         $jobExecutionTracking->currentStep = count($jobExecution->getStepExecutions());
-        $jobExecutionTracking->totalSteps = count($job->getSteps());
+        $jobExecutionTracking->totalSteps = $job instanceof JobWithStepsInterface ? count($job->getSteps()) : 0;
         $jobExecutionTracking->steps = $this->createStepExecutionsTrackingWithJob($job, $stepExecutions);
 
         return $jobExecutionTracking;

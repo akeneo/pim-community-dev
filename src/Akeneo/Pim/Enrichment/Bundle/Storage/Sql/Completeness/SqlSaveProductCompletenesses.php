@@ -60,15 +60,41 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
         $channelIdsFromCode = $this->channelIdsIndexedByChannelCodes();
 
         $deleteAndInsertFunction = function () use ($productCompletenessCollections, $localeIdsFromCode, $channelIdsFromCode) {
-            $productIds = array_unique(array_map(function (ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) {
-                return $productCompletenessCollection->productId();
-            }, $productCompletenessCollections));
+            // Clean completeness rows that do not concern existing channels or activated locales anymore
+            foreach ($productCompletenessCollections as $productCompletenessCollection) {
+                $conditions = [];
+                $productId = $productCompletenessCollection->productId();
+                $values = [$productId];
+                foreach ($productCompletenessCollection as $productCompleteness) {
+                    $conditions[] = '(?, ?)';
+                    $values[] = $localeIdsFromCode[$productCompleteness->localeCode()];
+                    $values[] = $channelIdsFromCode[$productCompleteness->channelCode()];
+                }
 
-            $this->connection->executeQuery(
-                'DELETE FROM pim_catalog_completeness WHERE product_id IN (:product_ids)',
-                ['product_ids' => $productIds],
-                ['product_ids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-            );
+                if ([] !== $conditions) {
+                    /**
+                     * Increasing the range_optimizer_max_mem_size allows to mitigate the full table scan. See
+                     * https://dev.mysql.com/doc/refman/8.0/en/range-optimization.html
+                     */
+                    $sql = <<<SQL
+                    DELETE /*+ SET_VAR( range_optimizer_max_mem_size = 50000000) */
+                    FROM pim_catalog_completeness
+                    WHERE product_id = ? AND (locale_id, channel_id) NOT IN ({conditions})
+                    SQL;
+
+                    $this->connection->executeQuery(
+                        \strtr($sql, [
+                            '{conditions}' => \implode(',', $conditions),
+                        ]),
+                        $values
+                    );
+                } else {
+                    $this->connection->executeQuery(
+                        'DELETE FROM pim_catalog_completeness WHERE product_id = ?',
+                        [$productId]
+                    );
+                }
+            }
 
             $numberCompletenessRow = 0;
             foreach ($productCompletenessCollections as $productCompletenessCollection) {
@@ -81,11 +107,12 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
             }
 
             $insert = <<<SQL
-                        INSERT INTO pim_catalog_completeness
-                            (locale_id, channel_id, product_id, missing_count, required_count)
-                        VALUES
-                            $placeholders
-        SQL;
+                INSERT INTO pim_catalog_completeness
+                    (locale_id, channel_id, product_id, missing_count, required_count)
+                VALUES
+                    $placeholders
+                ON DUPLICATE KEY UPDATE missing_count = VALUES(missing_count), required_count = VALUES(required_count)
+            SQL;
 
             $stmt = $this->connection->prepare($insert);
 

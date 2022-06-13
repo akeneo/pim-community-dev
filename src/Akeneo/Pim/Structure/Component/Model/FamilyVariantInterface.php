@@ -13,6 +13,12 @@ use Doctrine\Common\Collections\Collection;
 interface FamilyVariantInterface extends TranslatableInterface
 {
     /**
+     * For now the events are a list of strings, but they can be converted to object when needed.
+     */
+    public const AXES_WERE_UPDATED_ON_LEVEL = 'AXES_WAS_UPDATED_ON_LEVEL';
+    public const ATTRIBUTES_WERE_UPDATED_ON_LEVEL = 'AXES_WAS_UPDATED_ON_LEVEL';
+
+    /**
      * @return null|int
      */
     public function getId(): ?int;
@@ -96,4 +102,19 @@ interface FamilyVariantInterface extends TranslatableInterface
      * @return array
      */
     public static function getAvailableAxesAttributeTypes(): array;
+
+    /**
+     * @param AttributeInterface[] $axes
+     */
+    public function updateAxesForLevel(int $level, array $axes): void;
+
+    /**
+     * @param AttributeInterface[] $attributes
+     */
+    public function updateAttributesForLevel(int $level, array $attributes): void;
+
+    /**
+     * @return string[]
+     */
+    public function releaseEvents(): array;
 }

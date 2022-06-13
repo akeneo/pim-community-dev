@@ -34,12 +34,13 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
         $owner = $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
 
-        $this->query->execute(new Catalog($id, 'Store US', $owner->getId()));
+        $this->query->execute($id, 'Store US', 'test', false);
 
         $this->assertCatalogExists([
             'id' => $id,
             'name' => 'Store US',
             'owner_id' => $owner->getId(),
+            'is_enabled' => '0',
         ]);
     }
 
@@ -48,13 +49,14 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
         $owner = $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
 
-        $this->query->execute(new Catalog($id, 'Store US', $owner->getId()));
-        $this->query->execute(new Catalog($id, 'Store US [NEW]', $owner->getId()));
+        $this->query->execute($id, 'Store US', 'test', false);
+        $this->query->execute($id, 'Store US [NEW]', 'test', false);
 
         $this->assertCatalogExists([
             'id' => $id,
             'name' => 'Store US [NEW]',
             'owner_id' => $owner->getId(),
+            'is_enabled' => '0',
         ]);
         $this->assertCountCatalogs(1);
     }
@@ -77,7 +79,8 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
         SELECT
             BIN_TO_UUID(catalog.id) AS id,
             catalog.name,
-            catalog.owner_id
+            catalog.owner_id,
+            catalog.is_enabled
         FROM akeneo_catalog catalog
         WHERE id = :id
         SQL;

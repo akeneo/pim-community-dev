@@ -23,9 +23,9 @@ class CreateCatalogActionTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItFindsTheCatalog(): void
+    public function testItCreatesTheCatalog(): void
     {
-        $this->client = $this->getAuthenticatedClient(['write_catalogs']);
+        $this->client = $this->getAuthenticatedPublicApiClient(['write_catalogs']);
 
         $this->client->request(
             'POST',
@@ -51,7 +51,7 @@ class CreateCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsUnprocessableEntityWhenInvalid(): void
     {
-        $this->client = $this->getAuthenticatedClient(['write_catalogs']);
+        $this->client = $this->getAuthenticatedPublicApiClient(['write_catalogs']);
 
         $this->client->request(
             'POST',
@@ -76,7 +76,7 @@ class CreateCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedClient([]);
+        $this->client = $this->getAuthenticatedPublicApiClient([]);
 
         $this->client->request(
             'POST',

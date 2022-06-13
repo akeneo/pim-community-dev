@@ -425,6 +425,7 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
             'http://www.example.com/path/to/logo',
             'author',
             'userGroup_random',
+            'an_username',
             [],
             false,
             'partner'

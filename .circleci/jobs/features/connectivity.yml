@@ -18,6 +18,9 @@ jobs:
                     name: Pull docker image for node
                     command: docker-compose pull node
             -   run:
+                    name: Build other front libraries
+                    command: docker-compose run -u node --rm node yarn catalogs:build
+            -   run:
                     name: Lint front
                     command: make connectivity-connection-lint-front
 
@@ -37,6 +40,9 @@ jobs:
             -   run:
                     name: Pull docker image for node
                     command: docker-compose pull node
+            -   run:
+                    name: Build other front libraries
+                    command: docker-compose run -u node --rm node yarn catalogs:build
             -   run:
                     name: Unit front
                     command: make connectivity-connection-unit-front
@@ -190,10 +196,10 @@ jobs:
             - run:
                   name: Store results in environment variables
                   command: |
-                      echo "export PHPINSIGHTS_SCORE_QUALITY=$(sed -n 's/^\[CODE[^m]*m\([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
-                      echo "export PHPINSIGHTS_SCORE_COMPLEXITY=$(sed -n 's/^\[COMPLEXITY[^m]*m\([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
-                      echo "export PHPINSIGHTS_SCORE_ARCHITECTURE=$(sed -n 's/^\[ARCHITECTURE[^m]*m\([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
-                      echo "export PHPINSIGHTS_SCORE_STYLE=$(sed -n 's/^\[MISC[^m]*m\([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
+                      echo "export PHPINSIGHTS_SCORE_QUALITY=$(sed -n 's/^\[CODE\] \([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
+                      echo "export PHPINSIGHTS_SCORE_COMPLEXITY=$(sed -n 's/^\[COMPLEXITY\] \([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
+                      echo "export PHPINSIGHTS_SCORE_ARCHITECTURE=$(sed -n 's/^\[ARCHITECTURE\] \([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
+                      echo "export PHPINSIGHTS_SCORE_STYLE=$(sed -n 's/^\[MISC\] \([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
                       echo "export PHPCD_UNUSED_RULES=$(cat unused-rules.txt | grep -c '<warning>' | awk '{if ($1==0) print ":white_check_mark:"; else print ":warning:"}')" >> $BASH_ENV
             -   slack-app/notify:
                     custom: |

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Boolean;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -102,6 +103,8 @@ final class PayloadFormatValidator extends ConstraintValidator
                         ]),
                     ]),
                 ];
+            } elseif (AttributeTypes::BOOLEAN === $attributeType) {
+                $dataConstraints = [new Boolean(['attributeCode' => $attributeCode])];
             }
 
             $constraintsByAttribute[$attributeCode] = [

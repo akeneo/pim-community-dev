@@ -138,7 +138,6 @@ akeneo_connectivity.connection:
           not_listed_on_the_appstore: アプリが Akeneo App Store に表示されなくなりました。アプリのサポートにお問い合わせください。
           manage_app: アプリの管理
           open_app: アプリを開く
-          pending: アプリが接続されていません。アプリを開くと接続問題は解決されるはずです。
         flash:
           error: 申し訳ございません、接続されたアプリリストを取得中にエラーが発生しました。
       edit:
@@ -259,7 +258,6 @@ akeneo_connectivity.connection:
           assets: アセット
         new: 新規
       error:
-        sub_text: アプリ開発者またはAkeneoサポートに問い合わせてください
         app_not_found: client_id が既存のアプリと一致しません。
       constraint:
         client_id:

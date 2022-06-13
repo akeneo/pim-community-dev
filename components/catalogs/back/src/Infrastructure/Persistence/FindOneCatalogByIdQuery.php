@@ -13,7 +13,7 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FindOneCatalogByIdQuery implements FindOneCatalogByIdQueryInterface
+final class FindOneCatalogByIdQuery implements FindOneCatalogByIdQueryInterface
 {
     public function __construct(private Connection $connection)
     {
@@ -25,12 +25,14 @@ class FindOneCatalogByIdQuery implements FindOneCatalogByIdQueryInterface
         SELECT
             BIN_TO_UUID(catalog.id) AS id,
             catalog.name,
-            catalog.owner_id
+            catalog.is_enabled,
+            oro_user.username AS owner_username
         FROM akeneo_catalog catalog
-        WHERE id = :id
+        JOIN oro_user ON oro_user.id = catalog.owner_id
+        WHERE catalog.id = :id
         SQL;
 
-        /** @var array{id: string, name: string, owner_id: string}|false $row */
+        /** @var array{id: string, name: string, owner_username: string, is_enabled: string}|false $row */
         $row = $this->connection->executeQuery($query, [
             'id' => Uuid::fromString($id)->getBytes(),
         ])->fetchAssociative();
@@ -42,7 +44,8 @@ class FindOneCatalogByIdQuery implements FindOneCatalogByIdQueryInterface
         return new Catalog(
             $row['id'],
             $row['name'],
-            (int) $row['owner_id'],
+            $row['owner_username'],
+            (bool) $row['is_enabled'],
         );
     }
 }

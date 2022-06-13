@@ -12,6 +12,8 @@ Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest:
                 message: 'invalid_request'
             - Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\AuthorizationCodeMustBeValid:
                 message: 'invalid_grant'
+            - Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\AuthorizationCodeMustNotBeExpired:
+                message: 'invalid_grant'
         grantType:
             - IdenticalTo:
                 value: 'authorization_code'

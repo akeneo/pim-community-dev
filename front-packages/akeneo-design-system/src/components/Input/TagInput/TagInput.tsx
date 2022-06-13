@@ -117,18 +117,20 @@ const TagInput: FC<TagInputProps> = ({
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
+      const inputCurrentValue = inputRef?.current?.value.trim() ?? '';
+
       if (Key.Enter === event.key && !isLastTagSelected && !readOnly) {
-        onSubmit?.();
+        '' === inputCurrentValue ? onSubmit?.() : createTags([...value, ...[inputCurrentValue]]);
 
         return;
       }
 
       const isDeleteKeyPressed = [Key.Backspace.toString(), Key.Delete.toString()].includes(event.key);
       const tagsAreEmpty = value.length === 0;
-      const inputFieldIsNotEmpty = inputRef && inputRef.current && inputRef.current.value.trim() !== '';
 
-      if (!isDeleteKeyPressed || tagsAreEmpty || inputFieldIsNotEmpty) {
+      if (!isDeleteKeyPressed || tagsAreEmpty || '' !== inputCurrentValue) {
         setLastTagAsSelected(false);
+
         return;
       }
 
@@ -159,7 +161,7 @@ const TagInput: FC<TagInputProps> = ({
             readOnly={readOnly}
           >
             {!readOnly && <RemoveTagIcon onClick={() => removeTag(index)} data-testid={`remove-${index}`} />}
-            {tag}
+            <TagText>{tag}</TagText>
           </Tag>
         );
       })}
@@ -218,6 +220,14 @@ const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boolea
   align-items: center;
   height: 30px;
   box-sizing: border-box;
+  max-width: 100%;
+`;
+
+const TagText = styled.span`
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const InputContainer = styled.li<AkeneoThemedProps>`

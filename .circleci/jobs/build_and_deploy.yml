@@ -169,30 +169,31 @@ jobs:
             -   attach_workspace:
                     at: ~/
             -   run:
-                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
-                    command: sudo chown -R 1000:1000 ../project
-            -   run:
-                    name: Change permissions on project dir
-                    command: sudo chmod -R 777 ../project
-            -   run:
-                    name: Creating cache key for front dependencies
-                    command: cat yarn.lock > ~/front-dependency.hash && date +%F >> ~/front-dependency.hash
+                    name: Create cache hashes
+                    command: |
+                        cat yarn.lock > ~/front-dependency.hash && date +%F >> ~/front-dependency.hash
+                        find << parameters.path_to_front_packages >>/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+                        echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash
+                        find << parameters.path_to_front_packages >>/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
+                        echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/shared.hash
             -   restore_cache:
                     name: Restore cache - front dependencies
-                    keys:
-                        - frontend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/front-dependency.hash" }}
-            -   run:
-                    name: Create hash for front packages
-                    command: |
-                        find << parameters.path_to_front_packages >>/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
-                        find << parameters.path_to_front_packages >>/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
-                        echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash
+                    key: frontend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/front-dependency.hash" }}
             -   restore_cache:
                     name: Restore cache - front library DSM
                     key: front-packages-dsm-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/akeneo-design-system.hash" }}
             -   restore_cache:
                     name: Restore cache - front library Shared
                     key: front-packages-shared-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/shared.hash" }}
+            -   run:
+                    name: Setup missing directories
+                    command: mkdir -p ~/.cache/yarn ~/.cache/Cypress
+            -   run:
+                    name: Change owner on project directories (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project ~/.cache/yarn ~/.cache/Cypress
+            -   run:
+                    name: Change permissions on project directories
+                    command: sudo chmod -R 777 ../project ~/.cache/yarn ~/.cache/Cypress
             -   run:
                     name: Pull docker image for node
                     command: docker-compose pull node
@@ -202,8 +203,8 @@ jobs:
             -   run:
                     name: Build front libraries
                     command: |
-                        docker-compose run -u node --rm node yarn dsm:build
-                        docker-compose run -u node --rm node yarn shared:build
+                        [ ! -d "~/project/front-packages/akeneo-design-system/lib" ] && docker-compose run -u node --rm node yarn dsm:build
+                        [ ! -d "~/project/front-packages/shared/lib" ] && docker-compose run -u node --rm node yarn shared:build
             -   persist_to_workspace:
                     root: ~/
                     paths:
@@ -256,8 +257,8 @@ jobs:
                       - run:
                             name: Save the CE image as a tar
                             command: |
-                                docker pull akeneo/pim-php-dev:6.0
-                                docker save -o php-pim-image.tar akeneo/pim-php-dev:6.0
+                                docker pull akeneo/pim-php-dev:master
+                                docker save -o php-pim-image.tar akeneo/pim-php-dev:master
             - run:
                   name: Setup tests results folder and log folder
                   command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.cache/Cypress ~/.composer
@@ -610,22 +611,22 @@ jobs:
                   at: ~/
             - run:
                   name: Build Akeneo PHP image
-                  command: docker build -t akeneo/pim-php-dev:6.0 .
+                  command: docker build -t akeneo/pim-php-dev:master .
             - run:
                   name: Display PHP version
                   command: |
-                      docker-compose run --rm php php -v
+                      docker run --rm akeneo/pim-php-dev:master php -v
             - run:
                   name: Build Akeneo Node image
-                  command: docker build -t akeneo/node:18 -f docker/Dockerfile_node .
+                  command: docker build -t akeneo/node:16 -f docker/Dockerfile_node .
             - run:
                   name: Display Node and Yarn versions
                   command: |
-                      docker-compose run --rm node node --version
-                      docker-compose run --rm node yarn --version
+                      docker run --rm akeneo/node:16 node --version
+                      docker run --rm akeneo/node:16 yarn --version
             - run:
                   name: Push images to Dockerhub
                   command: |
                       docker login -u="$DOCKERHUB_USER" -p="$DOCKERHUB_PWD"
-                      docker push akeneo/pim-php-dev:6.0
-                      docker push akeneo/node:18
+                      docker push akeneo/pim-php-dev:master
+                      docker push akeneo/node:16

@@ -88,7 +88,8 @@ class LRUCachedGetExistingAttributeOptions implements GetExistingAttributeOption
     {
         $optionsIndexedByAttributeCode = [];
         foreach ($cacheKeys as $cacheKey) {
-            [$attributeCode, $optionCode] = explode('.', $cacheKey);
+            $attributeCode = \strstr($cacheKey, '.', true);
+            $optionCode = \substr(\strstr($cacheKey, '.', false), 1);
             $optionsIndexedByAttributeCode[$attributeCode][] = $optionCode;
         }
 

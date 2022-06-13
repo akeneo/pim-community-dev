@@ -10,6 +10,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
+            - '@event_dispatcher'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler:
         arguments:

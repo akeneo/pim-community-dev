@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\Internal;
@@ -148,6 +149,7 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
                 'http://www.example.com/path/to/logo',
                 'author',
                 'userGroup_'.$appPublicId,
+                'username_'.$appPublicId,
                 [],
                 false,
                 'partner'

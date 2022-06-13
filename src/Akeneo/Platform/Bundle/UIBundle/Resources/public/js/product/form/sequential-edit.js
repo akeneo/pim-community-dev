@@ -36,7 +36,7 @@ define([
   sequentialEditProvider
 ) {
   const findObjectIndex = (objects, id, type) => {
-    return objects.findIndex(item => item.id === id && item.type === type);
+    return objects.findIndex(item => item.id + '' === id + '' && item.type === type);
   };
 
   const getObjectViewParams = object => {

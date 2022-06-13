@@ -53,6 +53,10 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $basePathname,
         $maxLinesPerFile = -1
     ) {
+        if (0 === $buffer->count()) {
+            return [];
+        }
+
         if ($this->areSeveralFilesNeeded($buffer, $maxLinesPerFile)) {
             $writtenFiles = $this->writeIntoSeveralFiles(
                 $buffer,

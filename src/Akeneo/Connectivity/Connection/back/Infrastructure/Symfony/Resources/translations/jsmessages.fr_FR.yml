@@ -134,10 +134,11 @@ akeneo_connectivity.connection:
           link: Consultez notre Help Center pour plus d'informations.
         card:
           developed_by: 'Développée par {{ author }}'
+          new_access_authorization_required: Nouvelles autorisations requises.
           not_listed_on_the_appstore: Cette app n'est plus listée sur l'Akeneo App Store. Veuillez contacter le support de l'app.
           manage_app: Gérer l'app
           open_app: Ouvrir l'app
-          pending: App non connectée. L'ouverture de l'app devrait résoudre le problème de la connexion.
+          pending: App non connectée. L'ouverture de l'app devrait résoudre le problème.
         flash:
           error: Désolé, une erreur s'est produite lors de la récupération de la liste des apps.
       edit:
@@ -145,6 +146,7 @@ akeneo_connectivity.connection:
         tabs:
           settings: Général
           permissions: Permissions
+          catalogs: Catalogues
           error_monitoring: Surveillance des erreurs
         settings:
           monitoring:
@@ -152,10 +154,14 @@ akeneo_connectivity.connection:
           authorizations:
             title: Autorisations
             information: 'Pour en savoir plus sur les autorisations liées aux apps, consultez notre article: {{ link }}.'
+            no_access_to_product_information: 'Cette app connectée n''a pas accès aux informations de vos produits.'
             information_link_anchor: Article sur le Help Center
             no_scope: Aucune autorisation spécifique n'a été demandée.
           authentication:
+            title: Authentification
+            information: 'Pour en savoir plus sur les autorisations liées aux apps, consultez notre article: {{ link }}.'
             information_link_anchor: Article sur le Help Center
+            openid_only: Cette app utilise l'authentification Akeneo App sans utiliser vos données personnelles.
           pending: Cette app n'est pas connectée à votre PIM. Ouvrir l'app devrait résoudre le problème de connexion. Si le problème persiste, veuillez contacter le support de l'app.
         error_monitoring:
           error: Oups, quelque chose a mal tourné !
@@ -183,6 +189,9 @@ akeneo_connectivity.connection:
         flash:
           success: App supprimée avec succès.
           error: Désolé, une erreur s'est produite lors de la suppression de l'app.
+      open:
+        flash:
+          error: Désolé, une erreur s'est produite lors de l'ouverture de l'app.
     apps:
       loader:
         message: Chargement...
@@ -222,6 +231,7 @@ akeneo_connectivity.connection:
           no_scope: Aucune autorisation spécifique n'a été demandée.
           helper: Pour en savoir plus sur les autorisations accordées aux apps,
           helper_link: consultez notre Help Center.
+          is_allowed_to: 'Est déjà autorisée à:'
         flash:
           success: App configurée avec succès.
           error: Désolé, une erreur s'est produite lors de la connexion à l'app.
@@ -249,8 +259,10 @@ akeneo_connectivity.connection:
           reference_entity_record: les enregistrements des entités référentielles
           asset_families: les familles de ressources
           assets: les ressources
+          catalogs: catalogues
+        new: NOUVEAU
       error:
-        sub_text: Veuillez contacter le développeur de l'application ou le support d'Akeneo
+        sub_text: Veuillez contacter le support de l'App.
         app_not_found: Le "client_id" ne correspond à aucune app connue.
       constraint:
         client_id:
@@ -263,6 +275,8 @@ akeneo_connectivity.connection:
         redirect_uri:
           not_blank: La "redirect_uri" est requise.
           must_be_url: Le "redirect_uri" n'est pas une URL valide.
+        scope:
+          too_long: La liste des scopes ne peut pas dépasser 1000 caractères.
   connections: Connexions
   secondary_actions:
     title: Autres actions
@@ -557,5 +571,7 @@ pim_permissions:
       view: Voir
     all: Toutes
 pim_notification:
+  types:
+    connected_app_authorizations: Autorisations accordées
   connected_app_authorizations:
     button_label: Ouvrir l'app

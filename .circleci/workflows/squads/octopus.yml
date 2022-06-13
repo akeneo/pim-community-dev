@@ -6,25 +6,83 @@ orbs:
 workflows:
     version: 2
 
-    octopus_pull_request:
+    octopus_deploy_pull_request:
         when:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
         jobs:
-            - checkout_ce:
-                  name: checkout
+            - deploy_pr_environment?:
+                  type: approval
                   filters:
-                      branches:
-                          only:
-                              - /^(CXP|OCT)-.*/
+                    branches:
+                      only:
+                        - /^(CXP|OCT)-.*/
+            - checkout_ee:
+                  name: checkout_deploy
+                  requires:
+                      - deploy_pr_environment?
+            - build_prod:
+                  requires:
+                      - checkout_deploy
+            - deploy_pr_environment:
+                  name: deploy_octopus_pr
+                  requires:
+                    - build_prod
+                  context:
+                    - octopus-slack
+                  post-steps:
+                    - slack-app/notify:
+                        custom: |
+                            {
+                              "blocks": [
+                                {
+                                  "type": "section",
+                                  "text": {
+                                    "type": "mrkdwn",
+                                    "text": "<@megane.lepalud> :ziggymoji-hello:"
+                                  }
+                                },
+                                {
+                                  "type": "section",
+                                  "text": {
+                                    "type": "mrkdwn",
+                                    "text": "<https://akeneo.atlassian.net/browse/${CIRCLE_BRANCH}|${CIRCLE_BRANCH}> has been deployed here https://${INSTANCE_NAME}.dev.cloud.akeneo.com"
+                                  }
+                                },
+                                {
+                                  "type": "section",
+                                  "text": {
+                                    "type": "mrkdwn",
+                                    "text": "Logs are available <https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3Asrnt-${INSTANCE_NAME}|here>."
+                                  }
+                                }
+                              ]
+                            }
+                        event: pass
+
+    octopus_connectivity_pull_request:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - start_connectivity?:
+                  type: approval
+                  filters:
+                    branches:
+                      only:
+                        - /^(CXP|OCT)-.*/
+            - checkout_ce:
+                  name: checkout_connectivity
+                  requires:
+                    - start_connectivity?
             - install_ce_front_dependencies:
                   name: install_front_dependencies
                   requires:
-                      - checkout
+                      - checkout_connectivity
             - install_ce_back_dependencies:
                   name: install_back_dependencies
                   requires:
-                      - checkout
+                      - checkout_connectivity
             - build_dev:
                   name: build
                   is_ee_built: false
@@ -55,6 +113,38 @@ workflows:
                   name: test_cxp_back_behat
                   requires:
                       - build
+            - pull_request_success:
+                  requires:
+                      - test_cxp_front_lint
+                      - test_cxp_front_unit
+                      - test_cxp_back_unit
+                      - test_cxp_back_integration
+                      - test_cxp_back_e2e
+                      - test_cxp_back_behat
+
+    octopus_catalogs_pull_request:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - start_catalogs?:
+                  type: approval
+                  filters:
+                    branches:
+                      only:
+                        - /^(CXP|OCT)-.*/
+            - checkout_ce:
+                  name: checkout_catalogs
+                  requires:
+                    - start_catalogs?
+            - install_ce_front_dependencies:
+                  name: install_front_dependencies
+                  requires:
+                      - checkout_catalogs
+            - install_ce_back_dependencies:
+                  name: install_back_dependencies
+                  requires:
+                      - checkout_catalogs
             - test_front_catalogs:
                   name: test_cat_front
                   requires:
@@ -65,12 +155,6 @@ workflows:
                       - install_back_dependencies
             - pull_request_success:
                   requires:
-                      - test_cxp_front_lint
-                      - test_cxp_front_unit
-                      - test_cxp_back_unit
-                      - test_cxp_back_integration
-                      - test_cxp_back_e2e
-                      - test_cxp_back_behat
                       - test_cat_front
                       - test_cat_back
 

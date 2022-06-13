@@ -10,10 +10,12 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedAppIn
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Event\AppUserGroupCreated;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -32,6 +34,7 @@ class CreateConnectedAppWithAuthorizationHandler
         private AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
         private ClientProviderInterface $clientProvider,
         private CreateConnectedAppInterface $createConnectedApp,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -90,8 +93,11 @@ class CreateConnectedAppWithAuthorizationHandler
             $marketplaceApp,
             $appAuthorization->getAuthorizationScopes()->getScopes(),
             $connection->code(),
-            $group->getName()
+            $group->getName(),
+            $randomCode
         );
+
+        $this->eventDispatcher->dispatch(new AppUserGroupCreated($group->getName()), AppUserGroupCreated::class);
     }
 
     private function generateRandomCode(int $maxLength = 30, string $prefix = ''): string

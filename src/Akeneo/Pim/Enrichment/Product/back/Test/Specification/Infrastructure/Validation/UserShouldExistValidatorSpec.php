@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
+use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserShouldExist;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserShouldExistValidator;
 use Akeneo\UserManagement\Component\Model\User;
@@ -52,6 +53,7 @@ class UserShouldExistValidatorSpec extends ObjectBehavior
     ) {
         $constraint = new UserShouldExist();
         $context->buildViolation($constraint->message, ['{{ user_id }}' => 2])->shouldBeCalledOnce()->willReturn($violationBuilder);
+        $violationBuilder->setCode((string) ViolationCode::PERMISSION)->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate(2, $constraint);

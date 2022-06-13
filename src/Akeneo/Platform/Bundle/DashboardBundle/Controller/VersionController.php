@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\DashboardBundle\Controller;
 
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

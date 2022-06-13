@@ -17,6 +17,8 @@ class Boolean extends Constraint
 
     public string $message = 'pim_catalog.constraint.boolean.boolean_value_is_required';
 
+    public ?string $attributeCode;
+
     /**
      * {@inheritdoc}
      */

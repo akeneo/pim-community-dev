@@ -1,0 +1,38 @@
+services:
+  ## Job constraint
+  akeneo.job_automation.job.job_parameters.xlsx_product_import_constraint_collection_provider:
+    class: 'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Connector\ConstraintCollectionProvider'
+    arguments:
+      - '@pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_import'
+      -
+        - 'xlsx_product_import'
+    tags:
+      - { name: akeneo_batch.job.job_parameters.constraint_collection_provider, priority: 10 }
+
+  akeneo.job_automation.job.job_parameters.xlsx_product_export_constraint_collection_provider:
+    class: 'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Connector\ConstraintCollectionProvider'
+    arguments:
+      - '@pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_export'
+      -
+        - 'xlsx_product_export'
+    tags:
+      - { name: akeneo_batch.job.job_parameters.constraint_collection_provider, priority: 10 }
+
+  ## Job default value
+  akeneo.job_automation.job.job_parameters.xlsx_product_import_default_values_provider:
+    class: 'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Connector\DefaultValueProvider'
+    arguments:
+      - '@pim_connector.job.job_parameters.default_values_provider.product_xlsx_import'
+      -
+        - 'xlsx_product_import'
+    tags:
+      - { name: akeneo_batch.job.job_parameters.default_values_provider, priority: 10 }
+
+  akeneo.job_automation.job.job_parameters.xlsx_product_export_default_values_provider:
+    class: 'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Connector\DefaultValueProvider'
+    arguments:
+      - '@pim_connector.job.job_parameters.default_values_provider.product_xlsx_export'
+      -
+        - 'xlsx_product_export'
+    tags:
+      - { name: akeneo_batch.job.job_parameters.default_values_provider, priority: 10 }

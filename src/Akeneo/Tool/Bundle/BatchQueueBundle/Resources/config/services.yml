@@ -71,6 +71,14 @@ services:
         tags:
             - { name: console.command }
 
+    Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobExecutionWatchdogCommand:
+        arguments:
+            - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '@logger'
+            - '%kernel.project_dir%'
+        tags:
+            - { name: console.command }
+
     Akeneo\Tool\Bundle\BatchQueueBundle\Command\MigrateJobMessagesFromOldQueueCommand:
         arguments:
             - '@akeneo_batch_queue.factory.job_execution_message'
@@ -89,6 +97,7 @@ services:
                 'Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage': ['import']
                 'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': ['export', 'quick_export']
             - 'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage'
+            - '%env(default::string:APP_TENANT_ID)%'
 
     akeneo_batch_queue.messenger.serializer:
         class: Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer
@@ -104,8 +113,6 @@ services:
 
     Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler\JobExecutionMessageHandler:
         arguments:
-            - '@akeneo_batch.query.get_job_instance_code'
-            - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@logger'
             - '%kernel.project_dir%'
         tags:

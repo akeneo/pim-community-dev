@@ -90,11 +90,17 @@ class InMemoryProductRepository implements
     {
         Assert::count($criteria, 1);
         $criteriaKey = \current(\array_keys($criteria));
-        Assert::same($criteriaKey, 'id', 'The criteria only implements `id`');
+        Assert::inArray($criteriaKey, ['id', 'uuid'], 'The criteria only implements `id` and `uuid`');
         $criteriaValue = \current($criteria);
+        if ($criteriaValue instanceof UuidInterface) {
+            $criteriaValue = $criteriaValue->toString();
+        }
 
         foreach ($this->products as $product) {
-            $productValue = $product->getId();
+            $productValue = 'uuid' === $criteriaKey ? $product->getUuid() : $product->getId();
+            if ($productValue instanceof UuidInterface) {
+                $productValue = $productValue->toString();
+            }
             if ($productValue === $criteriaValue) {
                 return $product;
             }

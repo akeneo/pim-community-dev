@@ -89,8 +89,8 @@ CSV;
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;a_multi_select
 product_option_A;;1;a_family;;optionA
-product_option_B;;1;a_family;;optionB
 product_option_A_B;;1;a_family;;optionA,optionB
+product_option_B;;1;a_family;;optionB
 
 CSV;
 

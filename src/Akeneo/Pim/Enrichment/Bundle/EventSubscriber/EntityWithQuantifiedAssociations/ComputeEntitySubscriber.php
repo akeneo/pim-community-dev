@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssoc
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductModelCodesQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingFromProductIdentifiersQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -19,22 +20,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class ComputeEntitySubscriber implements EventSubscriberInterface
 {
-    /** @var GetIdMappingFromProductIdentifiersQueryInterface */
-    protected $getIdMappingFromProductIdentifiers;
-
-    /** @var GetIdMappingFromProductModelCodesQueryInterface */
-    protected $getIdMappingFromProductModelCodes;
-
-    /**
-     * @param GetIdMappingFromProductIdentifiersQueryInterface $getIdMappingFromProductIdentifiers
-     * @param GetIdMappingFromProductModelCodesQueryInterface $getIdMappingFromProductModelCodes
-     */
     public function __construct(
-        GetIdMappingFromProductIdentifiersQueryInterface $getIdMappingFromProductIdentifiers,
-        GetIdMappingFromProductModelCodesQueryInterface $getIdMappingFromProductModelCodes
+        protected GetIdMappingFromProductIdentifiersQueryInterface $getIdMappingFromProductIdentifiers,
+        protected GetUuidMappingFromProductIdentifiersQueryInterface $getUuidMappingFromProductIdentifiers,
+        protected GetIdMappingFromProductModelCodesQueryInterface $getIdMappingFromProductModelCodes
     ) {
-        $this->getIdMappingFromProductIdentifiers = $getIdMappingFromProductIdentifiers;
-        $this->getIdMappingFromProductModelCodes = $getIdMappingFromProductModelCodes;
     }
 
     /**
@@ -61,8 +51,13 @@ final class ComputeEntitySubscriber implements EventSubscriberInterface
         $productModelCodes = $subject->getQuantifiedAssociationsProductModelCodes();
 
         $mappedProductIdentifiers = $this->getIdMappingFromProductIdentifiers->execute($productIdentifiers);
+        $uuidMappedProductIdentifiers = $this->getUuidMappingFromProductIdentifiers->execute($productIdentifiers);
         $mappedProductModelCodes = $this->getIdMappingFromProductModelCodes->execute($productModelCodes);
 
-        $subject->updateRawQuantifiedAssociations($mappedProductIdentifiers, $mappedProductModelCodes);
+        $subject->updateRawQuantifiedAssociations(
+            $mappedProductIdentifiers,
+            $uuidMappedProductIdentifiers,
+            $mappedProductModelCodes
+        );
     }
 }

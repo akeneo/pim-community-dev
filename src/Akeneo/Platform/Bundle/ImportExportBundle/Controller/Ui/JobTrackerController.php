@@ -7,10 +7,12 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutio
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobWithStepsInterface;
 use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use League\Flysystem\FilesystemReader;
@@ -174,15 +176,19 @@ class JobTrackerController
     {
         $jobInstance = $jobExecution->getJobInstance();
         $job = $this->jobRegistry->get($jobInstance->getJobName());
+        if (!$job instanceof JobWithStepsInterface) {
+            return 'archive.zip';
+        }
+
         foreach ($job->getSteps() as $step) {
             if ($step instanceof ItemStep) {
                 $writer = $step->getWriter();
-                if ($writer instanceof ArchivableWriterInterface) {
+                if ($writer instanceof ArchivableWriterInterface && $writer instanceof StepExecutionAwareInterface) {
                     foreach ($jobExecution->getStepExecutions() as $stepExecution) {
                         if ($stepExecution->getStepName() === $step->getName()) {
-                            $step->getWriter()->setStepExecution($stepExecution);
+                            $writer->setStepExecution($stepExecution);
 
-                            return \sprintf('%s.zip', pathinfo($step->getWriter()->getPath(), PATHINFO_FILENAME));
+                            return \sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME));
                         }
                     }
                 }
