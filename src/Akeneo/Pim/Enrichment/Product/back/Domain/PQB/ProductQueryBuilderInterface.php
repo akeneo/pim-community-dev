@@ -13,5 +13,5 @@ interface ProductQueryBuilderInterface
     /**
      * @return array<string, mixed>
      */
-    public function buildQuery(): array;
+    public function buildQuery(int $userId): array;
 }

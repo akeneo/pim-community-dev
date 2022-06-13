@@ -12,3 +12,6 @@ services:
             - '@pim_catalog.query.filter.product_registry'
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.query.product_query_builder_resolver'
+            - '@feature_flags'
+            - '@pim_user.repository.user'
+            - '@?akeneo.pim.enrichment.category.get_viewable_category_codes'

@@ -12,8 +12,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
 use Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductQueryBuilderInterface;
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * This class is an adapter between the former implementation of PQB and the new one.
@@ -27,7 +31,11 @@ final class ProductQueryBuilderAdapter extends AbstractEntityWithValuesQueryBuil
         AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
-        ProductQueryBuilderOptionsResolverInterface $optionResolver
+        ProductQueryBuilderOptionsResolverInterface $optionResolver,
+        private FeatureFlags $featureFlags,
+        private UserRepositoryInterface $userRepository,
+        /* @phpstan-ignore-next-line */
+        private ?GetGrantedCategoryCodes $getGrantedCategoryCodes
     ) {
         $cursorFactory = new class implements CursorFactoryInterface {
             /**
@@ -55,10 +63,32 @@ final class ProductQueryBuilderAdapter extends AbstractEntityWithValuesQueryBuil
         $this->setQueryBuilder(new SearchQueryBuilder());
     }
 
-    public function buildQuery(): array
+    public function buildQuery(int $userId): array
     {
+        $this->applyPermissions($userId);
         $this->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
 
         return $this->getQueryBuilder()->getQuery();
+    }
+
+    private function applyPermissions(int $userId): void
+    {
+        try {
+            $isEnabled = $this->featureFlags->isEnabled('permission');
+        } catch (\InvalidArgumentException) {
+            $isEnabled = false;
+        }
+
+        if (!$isEnabled) {
+            return;
+        }
+
+        Assert::notNull($this->getGrantedCategoryCodes);
+        $user = $this->userRepository->findOneBy(['id' => $userId]);
+        Assert::notNull($user);
+        /* @phpstan-ignore-next-line */
+        $grantedCategories = $this->getGrantedCategoryCodes->forGroupIds($user->getGroupsIds());
+
+        $this->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, $grantedCategories, ['type_checking' => false]);
     }
 }
