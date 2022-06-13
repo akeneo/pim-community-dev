@@ -28,6 +28,7 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
         $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
             'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
             'job_execution_id' => $jobExecution->getId(),
+            'tenant_id' => 'foo_tenant_id',
             'created_time' => '2021-03-08T15:37:23+01:00',
             'updated_time' => null,
             'options' => ['option1' => 'value1'],
@@ -38,6 +39,7 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
         self::assertEquals(new \DateTime('2021-03-08T15:37:23+01:00'), $jobExecutionMessage->getCreateTime());
         self::assertNull($jobExecutionMessage->getUpdatedTime());
         self::assertEquals(['option1' => 'value1'], $jobExecutionMessage->getOptions());
+        self::assertEquals('foo_tenant_id', $jobExecutionMessage->tenantId());
     }
 
     public function test_it_returns_an_import_job_message(): void
@@ -56,6 +58,7 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
         self::assertEquals(new \DateTime('2021-03-08T15:37:23+01:00'), $jobExecutionMessage->getCreateTime());
         self::assertEquals(new \DateTime('2021-03-10T15:37:23+01:00'), $jobExecutionMessage->getUpdatedTime());
         self::assertEquals(['option1' => 'value1', 'option2' => 'value2'], $jobExecutionMessage->getOptions());
+        self::assertNull($jobExecutionMessage->tenantId());
     }
 
     public function test_it_returns_an_export_job_message(): void

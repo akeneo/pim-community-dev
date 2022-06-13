@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\FetchRemoteFilesAfterExport;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
@@ -30,9 +31,20 @@ class FetchRemoteFilesAfterExportSpec extends ObjectBehavior
         VersionProviderInterface $versionProvider,
         FilesystemProvider $filesystemProvider,
         FileFetcherInterface $fileFetcher,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        RemoteStorageFeatureFlag $remoteStorageFeatureFlag,
+        JobExecutionEvent $event,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance
     ) {
-        $this->beConstructedWith($jobRegistry, $versionProvider, $filesystemProvider, $fileFetcher, $logger);
+        $event->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getJobName()->willReturn('job_name');
+
+        $versionProvider->isSaaSVersion()->willReturn(false);
+        $remoteStorageFeatureFlag->isEnabled('job_name')->willReturn(false);
+
+        $this->beConstructedWith($jobRegistry, $versionProvider, $filesystemProvider, $fileFetcher, $logger, $remoteStorageFeatureFlag);
     }
 
     function it_is_an_event_subscriber()
@@ -53,7 +65,7 @@ class FetchRemoteFilesAfterExportSpec extends ObjectBehavior
     function it_does_nothing_for_saas_editions(
         VersionProviderInterface $versionProvider,
         FileFetcherInterface $fileFetcher,
-        JobExecutionEvent $event
+        JobExecutionEvent $event,
     ) {
         $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(true);
         $fileFetcher->fetch(Argument::cetera())->shouldNotBeCalled();
@@ -61,56 +73,55 @@ class FetchRemoteFilesAfterExportSpec extends ObjectBehavior
         $this->fetchRemoteFiles($event);
     }
 
+    function it_does_nothing_when_job_support_remote_storage(
+        RemoteStorageFeatureFlag $remoteStorageFeatureFlag,
+        FileFetcherInterface $fileFetcher,
+        JobExecutionEvent $event,
+    ) {
+        $remoteStorageFeatureFlag->isEnabled('job_name')->willReturn(true);
+        $fileFetcher->fetch(Argument::cetera())->shouldNotBeCalled();
+
+        $this->fetchRemoteFiles($event);
+    }
+
     function it_does_nothing_when_steps_are_not_item_steps(
         JobRegistry $jobRegistry,
-        VersionProviderInterface $versionProvider,
         FileFetcherInterface $fileFetcher,
         Job $job,
-        JobInstance $jobInstance,
-        JobExecution $jobExecution,
+        JobExecutionEvent $event,
         StepInterface $step
     ) {
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobInstance->getJobName()->willReturn('job_name');
         $job->getSteps()->willReturn([$step]);
 
-        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
         $jobRegistry->get('job_name')->shouldBeCalled()->willReturn($job);
         $fileFetcher->fetch(Argument::cetera())->shouldNotBeCalled();
 
-        $this->fetchRemoteFiles(new JobExecutionEvent($jobExecution->getWrappedObject()));
+        $this->fetchRemoteFiles($event);
     }
 
     function it_does_nothing_for_a_non_archivable_writer(
         JobRegistry $jobRegistry,
-        VersionProviderInterface $versionProvider,
         FileFetcherInterface $fileFetcher,
         Job $job,
-        JobInstance $jobInstance,
-        JobExecution $jobExecution,
+        JobExecutionEvent $event,
         ItemStep $step,
         ItemWriterInterface $writer
     ) {
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobInstance->getJobName()->willReturn('job_name');
         $step->getWriter()->willReturn($writer);
         $job->getSteps()->willReturn([$step]);
 
-        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
         $jobRegistry->get('job_name')->shouldBeCalled()->willReturn($job);
         $fileFetcher->fetch(Argument::cetera())->shouldNotBeCalled();
 
-        $this->fetchRemoteFiles(new JobExecutionEvent($jobExecution->getWrappedObject()));
+        $this->fetchRemoteFiles($event);
     }
 
     function it_fetches_remote_files_into_the_export_directory(
         JobRegistry $jobRegistry,
-        VersionProviderInterface $versionProvider,
         FilesystemProvider $filesystemProvider,
         FileFetcherInterface $fileFetcher,
         Job $job,
-        JobInstance $jobInstance,
-        JobExecution $jobExecution,
+        JobExecutionEvent $event,
         ItemStep $step,
         FilesystemOperator $catalogFilesystem,
         FilesystemOperator $assetFilesystem
@@ -132,12 +143,9 @@ class FetchRemoteFilesAfterExportSpec extends ObjectBehavior
             }
         };
 
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobInstance->getJobName()->willReturn('job_name');
         $step->getWriter()->willReturn($writer);
         $job->getSteps()->willReturn([$step]);
 
-        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
         $jobRegistry->get('job_name')->shouldBeCalled()->willReturn($job);
 
         $filesystemProvider->getFilesystem('catalogStorage')->shouldBeCalled()->willReturn($catalogFilesystem);
@@ -154,18 +162,16 @@ class FetchRemoteFilesAfterExportSpec extends ObjectBehavior
             ['filePath' => '/my/export/path/files/sku2/notice', 'filename' => 'notice.pdf']
         )->shouldBeCalled();
 
-        $this->fetchRemoteFiles(new JobExecutionEvent($jobExecution->getWrappedObject()));
+        $this->fetchRemoteFiles($event);
     }
 
     function it_does_not_throw_any_exception_if_the_fetch_is_unsuccessful(
         JobRegistry $jobRegistry,
-        VersionProviderInterface $versionProvider,
         FilesystemProvider $filesystemProvider,
         FileFetcherInterface $fileFetcher,
         LoggerInterface $logger,
         Job $job,
-        JobInstance $jobInstance,
-        JobExecution $jobExecution,
+        JobExecutionEvent $event,
         ItemStep $step,
         FilesystemOperator $catalogFilesystem
     ) {
@@ -185,12 +191,9 @@ class FetchRemoteFilesAfterExportSpec extends ObjectBehavior
             }
         };
 
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobInstance->getJobName()->willReturn('job_name');
         $step->getWriter()->willReturn($writer);
         $job->getSteps()->willReturn([$step]);
 
-        $versionProvider->isSaaSVersion()->shouldBeCalled()->willReturn(false);
         $jobRegistry->get('job_name')->shouldBeCalled()->willReturn($job);
 
         $filesystemProvider->getFilesystem('catalogStorage')->shouldBeCalled()->willReturn($catalogFilesystem);
@@ -215,11 +218,7 @@ class FetchRemoteFilesAfterExportSpec extends ObjectBehavior
 
         $this->shouldNotThrow(\Exception::class)->during(
             'fetchRemoteFiles',
-            [
-                new JobExecutionEvent(
-                    $jobExecution->getWrappedObject()
-                ),
-            ]
+            [$event]
         );
     }
 }

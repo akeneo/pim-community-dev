@@ -11,15 +11,18 @@ namespace Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi;
  */
 class CategoryTree
 {
+    public const ID = 'id';
     public const CODE = 'code';
     public const LABELS = 'labels';
 
+    public int $id;
     public string $code;
     public array $labels = [];
 
     public function normalize(): array
     {
         return [
+            self::ID => $this->id,
             self::CODE => $this->code,
             self::LABELS => $this->labels
         ];

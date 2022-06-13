@@ -3,12 +3,8 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2022 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 namespace AkeneoTest\Platform\Acceptance\ImportExport;
@@ -36,23 +32,16 @@ class TransferFilesToLocalStorageTest extends AcceptanceTestCase
 
         $this->getHandler()->handle(new TransferFilesToStorageCommand($filesToTransfer, $storage));
 
-        $this->assertTrue($this->getStorageFileSystem()->fileExists('filename1.csv'));
-        $this->assertTrue($this->getStorageFileSystem()->fileExists('filename2.csv'));
+        $this->assertTrue($this->getLocalFilesystem()->fileExists('filename1.csv'));
+        $this->assertTrue($this->getLocalFilesystem()->fileExists('filename2.csv'));
 
-        $this->assertEquals('file1 content', $this->getStorageFileSystem()->read('filename1.csv'));
-        $this->assertEquals('file2 content', $this->getStorageFileSystem()->read('filename2.csv'));
+        $this->assertEquals('file1 content', $this->getLocalFilesystem()->read('filename1.csv'));
+        $this->assertEquals('file2 content', $this->getLocalFilesystem()->read('filename2.csv'));
     }
 
     private function getHandler(): TransferFilesToStorageHandler
     {
         return $this->get('Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler');
-    }
-
-    private function getStorageFileSystem(): Filesystem
-    {
-        $clientProvider = $this->get('Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\Local\LocalStorageClientProvider');
-
-        return $clientProvider->getFilesystem();
     }
 
     private function getCatalogFilesystem(): Filesystem

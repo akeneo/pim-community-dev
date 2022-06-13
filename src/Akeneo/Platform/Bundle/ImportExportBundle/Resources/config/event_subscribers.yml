@@ -3,7 +3,15 @@ services:
     arguments:
       - '@akeneo_batch.job.job_registry'
       - '@Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler'
-      - '@feature_flags'
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag'
+      - '@event_dispatcher'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscriber\DownloadFileFromStorageBeforeImportSubscriber:
+    arguments:
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageHandler'
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag'
       - '@event_dispatcher'
     tags:
       - { name: kernel.event_subscriber }

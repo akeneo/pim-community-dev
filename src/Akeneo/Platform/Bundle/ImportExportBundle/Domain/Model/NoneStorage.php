@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model;
 
-final class NoneStorage implements StorageInterface
+final class NoneStorage
 {
     public const TYPE = 'none';
 }

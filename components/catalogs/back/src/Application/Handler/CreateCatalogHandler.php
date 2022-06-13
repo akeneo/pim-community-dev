@@ -6,7 +6,6 @@ namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -21,13 +20,11 @@ final class CreateCatalogHandler
 
     public function __invoke(CreateCatalogCommand $command): void
     {
-        $catalog = new Catalog(
+        $this->upsertCatalogQuery->execute(
             $command->getId(),
             $command->getName(),
-            $command->getOwnerId(),
-            false
+            $command->getOwnerUsername(),
+            false,
         );
-
-        $this->upsertCatalogQuery->execute($catalog);
     }
 }

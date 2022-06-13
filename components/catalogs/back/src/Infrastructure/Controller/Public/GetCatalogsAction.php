@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
-use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUserIdTrait;
+use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
-use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogsByOwnerIdQuery;
+use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogsByOwnerUsernameQuery;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class GetCatalogsAction
 {
-    use GetCurrentUserIdTrait;
+    use GetCurrentUsernameTrait;
     use DenyAccessUnlessGrantedTrait;
 
     public function __construct(
@@ -44,10 +44,10 @@ final class GetCatalogsAction
         $page = (int) $request->query->get('page', 1);
         $limit = (int) $request->query->get('limit', 100);
 
-        $ownerId = $this->getCurrentUserId();
+        $ownerUsername = $this->getCurrentUsername();
 
         try {
-            $catalogs = $this->queryBus->execute(new GetCatalogsByOwnerIdQuery($ownerId, $page, $limit));
+            $catalogs = $this->queryBus->execute(new GetCatalogsByOwnerUsernameQuery($ownerUsername, $page, $limit));
         } catch (ValidationFailedException $e) {
             throw new BadRequestHttpException();
         }
@@ -62,7 +62,7 @@ final class GetCatalogsAction
     private function paginate(array $catalogs, int $page, int $limit): array
     {
         /** @var array<mixed> $items */
-        $items = $this->normalizer->normalize($catalogs, 'external_api');
+        $items = $this->normalizer->normalize($catalogs, 'public');
 
         return $this->offsetPaginator->paginate($items, [
             'query_parameters' => [

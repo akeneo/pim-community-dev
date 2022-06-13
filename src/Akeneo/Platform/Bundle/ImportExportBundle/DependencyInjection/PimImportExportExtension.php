@@ -25,6 +25,7 @@ class PimImportExportExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('connector.yml');
         $loader->load('controllers.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('event_subscribers.yml');
@@ -37,6 +38,7 @@ class PimImportExportExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('services.yml');
         $loader->load('storage_client.yml');
+        $loader->load('validations.yml');
         $loader->load('widget.yml');
 
         if ($config['record_mails']) {

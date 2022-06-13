@@ -270,17 +270,84 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
         );
     }
 
-    public function testItDoesNotRunBackgroundJobWhenAFamilyVariantHasNotChanged()
+    public function testItDoesNotRunBackgroundJobWhenAttributesHaveNotChanged(): void
     {
+        $this->assertCount(
+            0,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
+
         $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size_color');
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
+        $this->get('doctrine.orm.default_entity_manager')->clear();
+        $this->assertCount(
+            0,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
+
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size_color');
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'labels' => ['en_US' => 'test'],
+        ]);
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
+
+        $this->get('doctrine.orm.default_entity_manager')->clear();
+        $this->assertCount(
+            0,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
+    }
+
+    public function testItDoesNotRunBackgroundJobWhenAJobIsAlreadyCreated(): void
+    {
+        $this->assertCount(
+            0,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
+
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size');
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'variant_attribute_sets' => [
+                    [
+                        'level' => 1,
+                        'attributes' => ['size'],
+                        'axes' => ['eu_shoes_size'],
+                    ],
+                ],
+            ]
+        );
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
+
+        $this->get('doctrine.orm.default_entity_manager')->clear();
+        $this->assertCount(
+            1,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
+
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size');
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'variant_attribute_sets' => [
+                    [
+                        'level' => 1,
+                        'attributes' => ['size', 'weight'],
+                        'axes' => ['eu_shoes_size'],
+                    ],
+                ],
+            ]
+        );
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
+        $this->get('doctrine.orm.default_entity_manager')->clear();
         $this->assertCount(
             1,
             $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
         );
     }
 
-    public function testBulkMoveAnAttributeFromItsLevelDoesNotRunBackgroundJobs()
+    public function testBulkMoveAnAttributeFromItsLevelRunBackgroundJobs(): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('1111111287');
         $this->assertInstanceOf(ValueInterface::class, $product->getValuesForVariation()->getByCodes('weight'));
@@ -293,38 +360,29 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
             [
                 'variant_attribute_sets' => [
                     [
-                        'level'      => 1,
-                        'attributes' => [
-                            'size',
-                        ],
-                        'axes'       => [
-                            'eu_shoes_size',
-                        ],
+                        'level' => 1,
+                        'attributes' => ['size'],
+                        'axes' => ['eu_shoes_size'],
                     ],
                 ],
             ]
         );
 
         $violationList = $this->get('validator')->validate($familyVariant);
-        if (0 !== $violationList->count()) {
-            throw new \LogicException('The family is not valid');
-        }
-
+        self::assertCount(0, $violationList, (string) $violationList);
         $this->get('pim_catalog.saver.family_variant')->saveAll([$familyVariant]);
+
+        $this->assertCount(
+            1,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
 
         $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
-        $product = $this->get('pim_catalog.repository.product')
-            ->findOneByIdentifier('1111111287');
-
-        $this->assertNotNull($product->getValuesForVariation()->getByCodes('weight'));
-
-        $this->assertCount(
-            0,
-            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
-        );
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('1111111287');
+        $this->assertNull($product->getValuesForVariation()->getByCodes('weight'));
     }
 
     protected function setUp(): void

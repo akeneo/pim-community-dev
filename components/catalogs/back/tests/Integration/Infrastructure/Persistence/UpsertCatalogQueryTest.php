@@ -34,7 +34,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
         $owner = $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
 
-        $this->query->execute(new Catalog($id, 'Store US', $owner->getId(), false));
+        $this->query->execute($id, 'Store US', 'test', false);
 
         $this->assertCatalogExists([
             'id' => $id,
@@ -49,8 +49,8 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
         $owner = $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
 
-        $this->query->execute(new Catalog($id, 'Store US', $owner->getId(), false));
-        $this->query->execute(new Catalog($id, 'Store US [NEW]', $owner->getId(), false));
+        $this->query->execute($id, 'Store US', 'test', false);
+        $this->query->execute($id, 'Store US [NEW]', 'test', false);
 
         $this->assertCatalogExists([
             'id' => $id,

@@ -13,7 +13,7 @@ final class Catalog
     public function __construct(
         private string $id,
         private string $name,
-        private int $ownerId,
+        private string $ownerUsername,
         private bool $enabled,
     ) {
     }
@@ -28,23 +28,13 @@ final class Catalog
         return $this->name;
     }
 
-    public function getOwnerId(): int
+    public function getOwnerUsername(): string
     {
-        return $this->ownerId;
+        return $this->ownerUsername;
     }
 
     public function isEnabled(): bool
     {
         return $this->enabled;
-    }
-
-    public function withNewName(string $name): self
-    {
-        return new self(
-            $this->id,
-            $name,
-            $this->ownerId,
-            $this->enabled,
-        );
     }
 }

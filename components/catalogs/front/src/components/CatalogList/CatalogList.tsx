@@ -1,13 +1,17 @@
 import React, {FC, PropsWithChildren} from 'react';
-import {Badge} from 'akeneo-design-system';
+import {List} from './components/List';
+import {ErrorBoundary} from '../ErrorBoundary';
 
-type Props = {};
+type Props = {
+    owner: string;
+    onCatalogClick: (catalogId: string) => void;
+};
 
-const CatalogList: FC<PropsWithChildren<Props>> = () => {
+const CatalogList: FC<PropsWithChildren<Props>> = ({owner, onCatalogClick}) => {
     return (
-        <>
-            <Badge level='primary'>CatalogList</Badge>
-        </>
+        <ErrorBoundary>
+            <List owner={owner} onCatalogClick={onCatalogClick} />
+        </ErrorBoundary>
     );
 };
 

@@ -34,7 +34,15 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
                 [$pathFinder->find(), $console, 'akeneo:batch:watchdog', '--quiet'],
                 $this->extractArgumentsFromMessage($jobExecutionMessage)
             );
-            $process = new Process($arguments);
+
+            $env = [
+                'SYMFONY_DOTENV_VARS' => false,
+            ];
+            if (null !== $jobExecutionMessage->tenantId()) {
+                $env['APP_TENANT_ID'] = $jobExecutionMessage->tenantId();
+            };
+
+            $process = new Process($arguments, null, $env);
             $process->setTimeout(null);
 
             $this->logger->notice('Launching job watchdog for ID "{job_execution_id}".', [
@@ -42,7 +50,9 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
             ]);
             $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
-            $process->run();
+            $process->run(function ($type, $buffer): void {
+                \fwrite(Process::ERR === $type ? \STDERR : \STDOUT, $buffer);
+            });
         } catch (\Throwable $t) {
             $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()));
             $this->logger->error($t->getTraceAsString());

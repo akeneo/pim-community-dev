@@ -255,10 +255,11 @@ class CreateConnectedAppWithAuthorizationHandlerSpec extends ObjectBehavior
             'random_connection_code',
             'a/path/to/a/logo',
             'an_author',
-            'a_group'
+            'a_group',
+            'an_username',
         );
         $createApp
-            ->execute($app, ['a_scope'], 'random_connection_code', 'a_group')
+            ->execute($app, ['a_scope'], 'random_connection_code', 'a_group', Argument::any())
             ->willReturn($connectedApp)
             ->shouldBeCalled();
 

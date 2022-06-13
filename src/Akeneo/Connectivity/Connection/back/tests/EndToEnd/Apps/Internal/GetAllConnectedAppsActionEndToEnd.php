@@ -40,7 +40,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
         $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
 
-        $this->getConnectionLoader()->createConnection('connectionCodeB', 'Connector B', FlowType::DATA_DESTINATION, false);
+        $connectionB = $this->getConnectionLoader()->createConnection('connectionCodeB', 'Connector B', FlowType::DATA_DESTINATION, false);
         $this->getUserGroupLoader()->create(['name' => 'app_7891011ghijkl']);
         $this->getConnectedAppLoader()->createConnectedApp(
             '2677e764-f852-4956-bf9b-1a1ec1b0d145',
@@ -55,7 +55,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
             null
         );
 
-        $this->getConnectionLoader()->createConnection('connectionCodeA', 'Connector A', FlowType::DATA_DESTINATION, false);
+        $connectionA = $this->getConnectionLoader()->createConnection('connectionCodeA', 'Connector A', FlowType::DATA_DESTINATION, false);
         $this->getUserGroupLoader()->create(['name' => 'app_123456abcdef']);
         $this->getConnectedAppLoader()->createConnectedApp(
             '0dfce574-2238-4b13-b8cc-8d257ce7645b',
@@ -79,6 +79,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
                 'logo' => 'http://www.example.com/path/to/logo/a',
                 'author' => 'author A',
                 'user_group_name' => 'app_123456abcdef',
+                'connection_username' => $connectionA->username(),
                 'categories' => ['category A1', 'category A2'],
                 'certified' => false,
                 'partner' => 'partner A',
@@ -94,6 +95,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
                 'logo' => 'http://www.example.com/path/to/logo/b',
                 'author' => 'author B',
                 'user_group_name' => 'app_7891011ghijkl',
+                'connection_username' => $connectionB->username(),
                 'categories' => ['category B1'],
                 'certified' => true,
                 'partner' => null,

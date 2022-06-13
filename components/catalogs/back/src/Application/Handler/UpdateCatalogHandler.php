@@ -28,8 +28,11 @@ final class UpdateCatalogHandler
             throw new \LogicException('Catalog must exist');
         }
 
-        $catalog = $catalog->withNewName($command->getName());
-
-        $this->upsertCatalogQuery->execute($catalog);
+        $this->upsertCatalogQuery->execute(
+            $catalog->getId(),
+            $command->getName(),
+            $catalog->getOwnerUsername(),
+            $catalog->isEnabled(),
+        );
     }
 }

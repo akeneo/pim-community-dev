@@ -49,7 +49,7 @@ class CatalogFixtureCommand extends Command
 
         try {
             $this->connectedAppRemover->remove('555d7447-2dab-474e-9026-f5d33c401b74');
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
         }
 
         $connectedApp = $this->connectedAppFactory->createFakeConnectedAppWithValidToken(
@@ -70,13 +70,13 @@ class CatalogFixtureCommand extends Command
         $this->commandBus->execute(new CreateCatalogCommand(
             Uuid::uuid4()->toString(),
             'Store US',
-            (int) $user->getId(),
+            $user->getUserIdentifier(),
         ));
 
         $this->commandBus->execute(new CreateCatalogCommand(
             Uuid::uuid4()->toString(),
             'Store FR',
-            (int) $user->getId(),
+            $user->getUserIdentifier(),
         ));
 
         return self::SUCCESS;

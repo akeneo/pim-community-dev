@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnec
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Connection as DbalConnection;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -18,6 +19,7 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
 {
     private FindOneConnectedAppByConnectionCodeQuery $query;
     private ConnectedAppLoader $connectedAppLoader;
+    private DbalConnection $dbalConnection;
 
     protected function getConfiguration(): Configuration
     {
@@ -30,6 +32,7 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
 
         $this->query = $this->get(FindOneConnectedAppByConnectionCodeQuery::class);
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
+        $this->dbalConnection = $this->get('database_connection');
     }
 
     public function test_it_retrieves_an_app_by_connection_code(): void
@@ -43,6 +46,7 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
             'name' => 'connected_app',
             'connection_code' => 'connected_app',
             'user_group_name' => 'app_connected_app',
+            'connection_username' => $this->findConnectionUsername('connected_app'),
             'logo' => 'http://example.com/logo.png',
             'author' => 'Akeneo',
             'categories' => ['ecommerce'],
@@ -73,6 +77,7 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
             'author' => 'Akeneo',
             'logo' => null,
             'user_group_name' => 'app_connected_test_app',
+            'connection_username' => $this->findConnectionUsername('connected_test_app'),
             'categories' => [],
             'partner' => null,
             'certified' => false,
@@ -103,6 +108,7 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
             'logo' => 'http://example.com/logo.png',
             'author' => 'Akeneo',
             'user_group_name' => 'app_pending_app',
+            'connection_username' => $this->findConnectionUsername('pending_app'),
             'categories' => ['ecommerce'],
             'certified' => false,
             'partner' => null,
@@ -113,5 +119,19 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
         $pendingApp = $this->query->execute('pending_app');
 
         Assert::assertEquals($expectedPendingApp, $pendingApp->normalize());
+    }
+
+    private function findConnectionUsername(string $code): string
+    {
+        $query = <<<SQL
+SELECT oro_user.username
+FROM akeneo_connectivity_connection
+JOIN oro_user ON oro_user.id = akeneo_connectivity_connection.user_id
+WHERE code = :code
+SQL;
+
+        return $this->dbalConnection->fetchOne($query, [
+            'code' => $code,
+        ]);
     }
 }
