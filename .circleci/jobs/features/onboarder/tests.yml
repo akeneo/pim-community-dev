@@ -52,14 +52,6 @@ jobs:
                     command: |
                         sudo chown -R 1000:1000 ../project
                         sudo chown -R 1000:1000 ~/.cache/yarn
-#            -   run:
-#                    name: Recreate Docker network
-#                    command: |
-#                        docker network prune -f
-#                        docker network create project_pim
-            -   run:
-                    name: Pull docker image for node
-                    command: docker-compose pull node
             - run:
                     name: Install supplier front dependencies
                     command:  |

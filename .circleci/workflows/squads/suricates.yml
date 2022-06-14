@@ -1,34 +1,6 @@
 executor-machine: &executor-machine
 
 jobs:
-#    install_onboarder_supplier_front_dependencies:
-#        machine:
-#            image: *executor-machine
-#        resource_class: medium
-#        steps:
-#            -   attach_workspace:
-#                    at: ~/
-#            -   run:
-#                    name: Setup tests results folder and log folder
-#                    command: mkdir -p ~/.cache/yarn
-#            -   run:
-#                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
-#                    command: |
-#                        sudo chown -R 1000:1000 ../project
-#                        sudo chown -R 1000:1000 ~/.cache/
-#            -   run:
-#                    name: Set front packages directories owner to docker
-#                    command: sudo chown -R 1000:1000 components/onboarder-supplier/front/
-#            -   run:
-#                    name: Pull docker image for node
-#                    command: docker-compose pull node
-#            -   run:
-#                    name: Install supplier front dependencies
-#                    command: PIM_CONTEXT=onboarder-serenity make front-dependencies-supplier
-#            -   persist_to_workspace:
-#                    root: ~/
-#                    paths:
-#                        - project/components/onboarder-supplier/front/node_modules
     build_onboarder_supplier_front:
         machine:
             image: *executor-machine
@@ -83,14 +55,9 @@ workflows:
       - build_srnt_dev:
           requires:
             - checkout
-#      - install_onboarder_supplier_front_dependencies:
-#          requires:
-#            - checkout
       - test_front_onboarder:
           requires:
             - build_srnt_dev
-            - checkout
-#            - install_onboarder_supplier_front_dependencies
       - test_back_onboarder:
           requires:
             - build_srnt_dev
