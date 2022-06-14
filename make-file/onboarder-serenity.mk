@@ -1,8 +1,8 @@
 DOCKER_COMPOSE_RUN_PHP_TEST_ENV = $(DOCKER_COMPOSE) run --rm -e APP_ENV=test php
 DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV = $(DOCKER_COMPOSE) run --rm -e APP_ENV=test_fake php
 
-.PHONY: front-dependencies-supplier
-front-dependencies-supplier:
+.PHONY: install-front-dependencies-supplier
+install-front-dependencies-supplier: #Doc: Install front dependencies for the Supplier part of Onboarder Serenity
 	$(YARN_RUN) --cwd=components/onboarder-supplier/front install
 
 .PHONY: lint-back-retailer

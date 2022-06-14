@@ -45,9 +45,17 @@ jobs:
             -   attach_workspace:
                     at: ~/
             -   run:
+                    name: Create Yarn cache directory
+                    command: mkdir -p ~/.cache/yarn
+            -   run:
+                    name: Change owner on project dir and yarn cache dir (docker needs uid 1000, circleci can be another uid)
+                    command: |
+                        sudo chown -R 1000:1000 ../project
+                        sudo chown -R 1000:1000 ~/.cache/yarn
+            -   run:
                     name: Install supplier front dependencies
                     command:  |
-                        PIM_CONTEXT=onboarder-serenity make front-dependencies-supplier
+                        PIM_CONTEXT=onboarder-serenity make install-front-dependencies-supplier
             -   run:
                     name: Run tests front for Onboarder Serenity
                     command: PIM_CONTEXT=onboarder-serenity make tests-front-onboarder
