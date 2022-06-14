@@ -52,6 +52,7 @@
 - Improvement: Use Debian Bullseye (v11) in Dockerfiles for akeneo/pim-php-dev:master
 - BH-1159: Refactor BatchCommand to use execution ID without batch code
 - BH-1159: Add tenant ID for batch processing
+- BH-1159: Use available JobMessage class for denormalization
 
 ## New features
 
