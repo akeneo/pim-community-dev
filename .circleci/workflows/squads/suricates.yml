@@ -1,38 +1,3 @@
-executor-machine: &executor-machine
-
-jobs:
-    build_onboarder_supplier_front:
-        machine:
-            image: *executor-machine
-        resource_class: medium
-        steps:
-            -   attach_workspace:
-                    at: ~/
-            -   run:
-                    name: Create Yarn cache directory
-                    command: mkdir -p ~/.cache/yarn
-            -   run:
-                    name: Change owner on project dir and yarn cache dir (docker needs uid 1000, circleci can be another uid)
-                    command: |
-                        sudo chown -R 1000:1000 ../project
-                        sudo chown -R 1000:1000 ~/.cache/
-            -   run:
-                    name: Set front packages directories owner to docker
-                    command: sudo chown -R 1000:1000 components/onboarder-supplier/front/
-            -   run:
-                    name: Pull docker image for node
-                    command: docker-compose pull node
-            -   run:
-                    name: Install supplier app front dependencies
-                    command: PIM_CONTEXT=onboarder-serenity make install-front-dependencies-supplier
-            -   run:
-                    name: Build Onboarder Supplier frontend application
-                    command: PIM_CONTEXT=onboarder-serenity make build-onboarder-supplier-front-app
-            -   persist_to_workspace:
-                    root: ~/
-                    paths:
-                        - project/components/onboarder-supplier/front/build
-
 workflows:
   version: 2
 
