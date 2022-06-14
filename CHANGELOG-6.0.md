@@ -1,5 +1,11 @@
 # 6.0.x
 
+# 6.0.30 (2022-06-08)
+
+## Bug fixes
+
+- PIM-10470: Refresh process tracker job detail page when job execution id param changes
+
 # 6.0.29 (2022-05-25)
 
 ## Bug fixes
