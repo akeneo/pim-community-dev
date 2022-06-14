@@ -3,7 +3,7 @@ const FeatureFlags = require('pim/feature-flags');
 
 class CreateUserButton extends CreateButton {
   public render() {
-    if (FeatureFlags.isEnabled('free_trial') && this.code === 'pim-user-index-create-button') {
+    if (FeatureFlags.isEnabled('free_trial')) {
       this.$el.remove();
 
       return this;
