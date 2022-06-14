@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -20,10 +21,10 @@ class StatusSorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        $this->createProduct('foo', ['enabled' => false]);
-        $this->createProduct('bar', ['enabled' => true]);
-        $this->createProduct('baz', ['enabled' => false]);
-        $this->createProduct('foobar', ['enabled' => true]);
+        $this->createProduct('foo', [new SetEnabled(false)]);
+        $this->createProduct('bar', [new SetEnabled(true)]);
+        $this->createProduct('baz', [new SetEnabled(false)]);
+        $this->createProduct('foobar', [new SetEnabled(true)]);
         $this->createProduct('foobaz', []);
     }
 
