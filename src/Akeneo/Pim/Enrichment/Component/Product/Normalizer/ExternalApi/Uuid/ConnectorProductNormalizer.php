@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\Uuid;
 
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\Uuid\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\Uuid\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
@@ -29,7 +29,12 @@ final class ConnectorProductNormalizer
 
     public function normalizeConnectorProductList(ConnectorProductList $connectorProducts): array
     {
-        throw new \LogicException('Not implemented yet');
+        $normalizedProducts = [];
+        foreach ($connectorProducts->connectorProducts() as $connectorProduct) {
+            $normalizedProducts[] = $this->normalizeConnectorProduct($connectorProduct);
+        }
+
+        return $normalizedProducts;
     }
 
     public function normalizeConnectorProduct(ConnectorProduct $connectorProduct): array

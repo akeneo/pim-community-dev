@@ -310,7 +310,7 @@ final class ConnectorProduct
     public function associatedWithQuantityProductModelCodes()
     {
         $associatedWithQuantityProductModels = array_map(function ($quantifiedAssociations) {
-            return array_column($quantifiedAssociations['product_models'], 'uuid');
+            return array_column($quantifiedAssociations['product_models'], 'identifier');
         }, array_values($this->quantifiedAssociations));
 
         if (empty($associatedWithQuantityProductModels)) {
@@ -358,7 +358,7 @@ final class ConnectorProduct
             $filteredProductModelQuantifiedAssociations = array_filter(
                 $quantifiedAssociation['product_models'],
                 function ($quantifiedLink) use ($productModelCodesToFilter) {
-                    return in_array($quantifiedLink['uuid'], $productModelCodesToFilter);
+                    return in_array($quantifiedLink['identifier'], $productModelCodesToFilter);
                 }
             );
 
