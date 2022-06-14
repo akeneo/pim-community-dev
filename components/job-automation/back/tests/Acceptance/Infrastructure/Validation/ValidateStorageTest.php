@@ -7,7 +7,7 @@ use AkeneoTest\Platform\Acceptance\ImportExport\Infrastructure\Validation\Abstra
 
 class ValidateStorageTest extends AbstractValidationTest
 {
-    public function testItDoesNotBuildViolationsWhenStorageIsValid(): void
+    public function test_it_does_not_build_violations_when_storage_is_valid(): void
     {
         $violations = $this->getValidator()->validate(
             [
@@ -24,7 +24,7 @@ class ValidateStorageTest extends AbstractValidationTest
         $this->assertNoViolation($violations);
     }
 
-    public function testItBuildViolationsWhenStorageIsInvalid(): void
+    public function test_it_build_violations_when_storage_is_invalid(): void
     {
         $violations = $this->getValidator()->validate(
             [
