@@ -65,8 +65,8 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
             ]
         );
 
-        $this->productList['productA'] = $this->createProduct('productA', [new SetFamily('aFamily'), new SetCategories(['men', 'shop_2019'])]);
-        $this->productList['productB'] = $this->createProduct('productB', [new SetFamily('aFamily')]);
+        $this->productList['productA'] = $this->createProductFromUserIntents('productA', [new SetFamily('aFamily'), new SetCategories(['men', 'shop_2019'])]);
+        $this->productList['productB'] = $this->createProductFromUserIntents('productB', [new SetFamily('aFamily')]);
 
         $rootProductModel = $this->entityBuilder->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, ['categories' => ['men']]);
         $this->entityBuilder->createProductModel('sub_product_model_1', 'familyVariantWithTwoLevels', $rootProductModel, ['categories' => ['watch', 'famous']]);
@@ -75,7 +75,7 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
             ? $this->getUserId('admin')
             : $this->createAdminUser()->getId();
 
-        $this->productList['variant_product_1'] = $this->createProduct(
+        $this->productList['variant_product_1'] = $this->createProductFromUserIntents(
             'variant_product_1',
             [
                 new SetFamily('aFamily'),
@@ -85,7 +85,7 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
             ],
             $userId
         );
-        $this->productList['variant_product_2'] = $this->createProduct(
+        $this->productList['variant_product_2'] = $this->createProductFromUserIntents(
             'variant_product_2',
             [
                 new SetFamily('aFamily'),

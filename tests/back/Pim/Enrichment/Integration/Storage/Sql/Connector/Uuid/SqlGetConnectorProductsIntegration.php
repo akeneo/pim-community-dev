@@ -73,7 +73,7 @@ class SqlGetConnectorProductsIntegration extends TestCase
             ]
         );
 
-        $this->productA = $this->createProduct(
+        $this->productA = $this->createProductFromUserIntents(
             'apollon_A_false',
             [
                 new SetCategories(['categoryB', 'categoryC']),
@@ -84,7 +84,7 @@ class SqlGetConnectorProductsIntegration extends TestCase
             ]
         );
 
-        $this->productB = $this->createProduct(
+        $this->productB = $this->createProductFromUserIntents(
             'apollon_B_false',
             [
                 new SetCategories(['categoryA1']),

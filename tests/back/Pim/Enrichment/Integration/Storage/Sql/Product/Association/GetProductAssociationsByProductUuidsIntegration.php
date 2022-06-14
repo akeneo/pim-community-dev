@@ -52,16 +52,16 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
             ]
         );
 
-        $this->productList['productA'] = $this->createProduct('productA', [new SetFamily('aFamily')]);
-        $this->productList['productB'] = $this->createProduct('productB',[new SetFamily('aFamily')]);
-        $this->productList['productC'] = $this->createProduct(
+        $this->productList['productA'] = $this->createProductFromUserIntents('productA', [new SetFamily('aFamily')]);
+        $this->productList['productB'] = $this->createProductFromUserIntents('productB',[new SetFamily('aFamily')]);
+        $this->productList['productC'] = $this->createProductFromUserIntents(
             'productC',
             [
                 new SetFamily('aFamily'),
                 new AssociateProducts('UPSELL', ['productA'])
             ]
         );
-        $this->productList['productD'] = $this->createProduct(
+        $this->productList['productD'] = $this->createProductFromUserIntents(
             'productD',
             [
                 new SetFamily('aFamily'),
@@ -69,14 +69,14 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
                 new AssociateProducts('PACK', ['productC'])
             ]
         );
-        $this->productList['productE'] = $this->createProduct('productE', [new SetFamily('aFamily')]);
-        $this->productList['productF'] = $this->createProduct('productF', [new SetFamily('aFamily')]);
-        $this->productList['productG'] = $this->createProduct('productG', [new SetFamily('aFamily')]);
+        $this->productList['productE'] = $this->createProductFromUserIntents('productE', [new SetFamily('aFamily')]);
+        $this->productList['productF'] = $this->createProductFromUserIntents('productF', [new SetFamily('aFamily')]);
+        $this->productList['productG'] = $this->createProductFromUserIntents('productG', [new SetFamily('aFamily')]);
 
         $rootProductModel = $entityBuilder->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, $this->getAssociationsFormatted(['productF'], ['productA', 'productC']));
         $entityBuilder->createProductModel('sub_product_model_1', 'familyVariantWithTwoLevels', $rootProductModel, $this->getAssociationsFormatted(['productD'], [], ['productB']));
 
-        $this->productList['variant_product_1'] = $this->createProduct(
+        $this->productList['variant_product_1'] = $this->createProductFromUserIntents(
             'variant_product_1',
             [
                 new SetFamily('aFamily'),

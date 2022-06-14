@@ -50,15 +50,15 @@ class GetProductModelAssociationsByProductUuidsIntegration extends TestCase
             'productModelG'
         );
 
-        $this->productList['productA'] = $this->createProduct('productA', [new SetFamily('aFamily')]);
-        $this->productList['productB'] = $this->createProduct(
+        $this->productList['productA'] = $this->createProductFromUserIntents('productA', [new SetFamily('aFamily')]);
+        $this->productList['productB'] = $this->createProductFromUserIntents(
             'productB',
             [
                 new SetFamily('aFamily'),
                 new AssociateProductModels('UPSELL', ['productModelA']),
             ]
         );
-        $this->productList['productC'] = $this->createProduct(
+        $this->productList['productC'] = $this->createProductFromUserIntents(
             'productC',
             [
                 new SetFamily('aFamily'),
@@ -75,7 +75,7 @@ class GetProductModelAssociationsByProductUuidsIntegration extends TestCase
             'sub_product_model' => ['X_SELL' => ['productModelD'], 'SUBSTITUTION' => ['productModelB']]
         ]);
 
-        $this->productList['variant_product_1'] = $this->createProduct(
+        $this->productList['variant_product_1'] = $this->createProductFromUserIntents(
             'variant_product_1',
             [
                 new SetFamily('aFamily'),

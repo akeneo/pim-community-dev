@@ -59,7 +59,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ? $this->getUserId('admin')
             : $this->createAdminUser()->getId();
 
-        $product = $this->createProduct(
+        $product = $this->createProductFromUserIntents(
             'productC',
             [
                 new SetFamily('aFamily'),
@@ -118,7 +118,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ? $this->getUserId('admin')
             : $this->createAdminUser()->getId();
 
-        $product = $this->createProduct(
+        $product = $this->createProductFromUserIntents(
             'productA',
             [
                 new SetFamily('aFamily'),
@@ -161,7 +161,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ? $this->getUserId('admin')
             : $this->createAdminUser()->getId();
 
-        $productC = $this->createProduct(
+        $productC = $this->createProductFromUserIntents(
             'productC',
             [
                 new SetFamily('aFamily'),
@@ -176,7 +176,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             $userId
         );
 
-        $productD = $this->createProduct(
+        $productD = $this->createProductFromUserIntents(
             'productD',
             [
                 new SetFamily('aFamily'),
@@ -210,7 +210,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ]
         ]);
 
-        $variantProduct = $this->createProduct(
+        $variantProduct = $this->createProductFromUserIntents(
             'variant_product_1',
             [
                 new SetFamily('aFamily'),
@@ -271,7 +271,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ? $this->getUserId('admin')
             : $this->createAdminUser()->getId();
 
-        $productA = $this->createProduct(
+        $productA = $this->createProductFromUserIntents(
             'productA',
             [
                 new SetFamily('aFamily'),
@@ -279,9 +279,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             $userId
         );
 
-//        $this->getEntityBuilder()->createProduct('productA', 'aFamily', []);
-
-        $productB = $this->createProduct(
+        $productB = $this->createProductFromUserIntents(
             'productB',
             [
                 new SetFamily('aFamily'),
@@ -289,16 +287,6 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
             $userId
         );
-
-//        $this->getEntityBuilder()->createProduct('productB', 'aFamily', [
-//            'quantified_associations' => [
-//                'PRODUCT_SET' => [
-//                    'product_models' => [
-//                        ['identifier' => 'productModelA', 'quantity' => 3],
-//                    ],
-//                ],
-//            ],
-//        ]);
 
         $actual = $this->getQuery()->fromProductUuids([$productA->getUuid(), $productB->getUuid()]);
         $expected = [
@@ -326,7 +314,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ? $this->getUserId('admin')
             : $this->createAdminUser()->getId();
 
-        $productA = $this->createProduct(
+        $this->createProductFromUserIntents(
             'productA',
             [
                 new SetFamily('aFamily'),
@@ -334,9 +322,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             $userId
         );
 
-//        $this->getEntityBuilder()->createProduct('productA', 'aFamily', []);
-
-        $productB = $this->createProduct(
+        $productB = $this->createProductFromUserIntents(
             'productB',
             [
                 new SetFamily('aFamily'),
@@ -348,20 +334,6 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
             $userId
         );
-
-//        $this->getEntityBuilder()->createProduct('productB', 'aFamily', [
-//            'quantified_associations' => [
-//                'PRODUCT_SET' => [
-//                    'products' => [
-//                        ['identifier' => 'productA', 'quantity' => 3],
-//                    ],
-//                    'product_models' => [
-//                        ['identifier' => 'root_product_model', 'quantity' => 6],
-//                        ['identifier' => 'sub_product_model_1', 'quantity' => 2]
-//                    ],
-//                ],
-//            ],
-//        ]);
 
         $actual = $this->getQuery()->fromProductUuids([$productB->getUuid()]);
         $expected = [
@@ -387,7 +359,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ? $this->getUserId('admin')
             : $this->createAdminUser()->getId();
 
-        $productA = $this->createProduct(
+        $productA = $this->createProductFromUserIntents(
             'productA',
             [
                 new SetFamily('aFamily')
@@ -395,7 +367,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             $userId
         );
 
-        $productB = $this->createProduct(
+        $productB = $this->createProductFromUserIntents(
             'productB',
             [
                 new SetFamily('aFamily'),
@@ -423,7 +395,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
 
         $productModelA = $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, []);
 
-        $productB = $this->createProduct(
+        $productB = $this->createProductFromUserIntents(
             'productB',
             [
                 new SetFamily('aFamily'),
@@ -449,7 +421,7 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
 
         $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, []);
 
-        $productB = $this->createProduct(
+        $productB = $this->createProductFromUserIntents(
             'productB',
             [
                 new SetFamily('aFamily'),
@@ -457,16 +429,6 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
             $userId
         );
-
-//        $this->getEntityBuilder()->createProduct('productB', 'aFamily', [
-//            'quantified_associations' => [
-//                'PRODUCT_SET' => [
-//                    'product_models' => [
-//                        ['identifier' => 'productModelA', 'quantity' => 3],
-//                    ],
-//                ],
-//            ],
-//        ]);
 
         $associationType = $this->getAssociationTypeRepository()->findOneBy(['code' => 'PRODUCT_SET']);
         $this->getAssociationTypeRemover()->remove($associationType);

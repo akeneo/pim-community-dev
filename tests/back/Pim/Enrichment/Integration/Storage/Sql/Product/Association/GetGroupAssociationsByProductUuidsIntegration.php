@@ -56,15 +56,15 @@ class GetGroupAssociationsByProductUuidsIntegration extends TestCase
             ]
         );
 
-        $this->productA = $this->createProduct('productA', [new SetFamily('aFamily')]);
-        $this->productB = $this->createProduct(
+        $this->productA = $this->createProductFromUserIntents('productA', [new SetFamily('aFamily')]);
+        $this->productB = $this->createProductFromUserIntents(
             'productB',
             [
                 new SetFamily('aFamily'),
                 new AssociateGroups('UPSELL', ['groupA'])
             ]
         );
-        $this->productC = $this->createProduct(
+        $this->productC = $this->createProductFromUserIntents(
             'productC',
             [
                 new SetFamily('aFamily'),
@@ -76,7 +76,7 @@ class GetGroupAssociationsByProductUuidsIntegration extends TestCase
         $rootProductModel = $entityBuilder->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, $this->getAssociationsFormatted(['groupF'], ['groupA', 'groupC']));
         $entityBuilder->createProductModel('sub_product_model_1', 'familyVariantWithTwoLevels', $rootProductModel, $this->getAssociationsFormatted(['groupD'], [], ['groupB']));
 
-        $this->productVariant = $this->createProduct(
+        $this->productVariant = $this->createProductFromUserIntents(
             'variant_product_1',
             [
                 new SetFamily('aFamily'),

@@ -185,7 +185,7 @@ abstract class TestCase extends KernelTestCase
         return $user;
     }
 
-    protected function createProduct(string $identifier, array $userIntents, int $userId = null): ProductInterface
+    protected function createProductFromUserIntents(string $identifier, array $userIntents, int $userId = null): ProductInterface
     {
         if ($userId === null) {
             $userId = ($this->getUserId('peter') !== 0)

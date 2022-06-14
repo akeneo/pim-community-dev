@@ -73,7 +73,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             ]
         );
 
-        $this->productA = $this->createProduct(
+        $this->productA = $this->createProductFromUserIntents(
             'apollon_A_false',
             [
                 new SetCategories(['categoryB', 'categoryC']),
@@ -84,7 +84,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             ]
         );
 
-        $this->productB = $this->createProduct(
+        $this->productB = $this->createProductFromUserIntents(
             'apollon_B_false',
             [
                 new SetCategories(['categoryA1']),
@@ -346,7 +346,14 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
      */
     protected function createVariantProduct($identifier, array $data = []) : ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
+        $userId = $this->getUserId('admin');
+
+        $product = $this->createProductFromUserIntents(
+            $identifier,
+            [],
+            $userId
+        );
+
         $this->get('pim_catalog.updater.product')->update($product, $data);
 
         $errors = $this->get('pim_catalog.validator.product')->validate($product);

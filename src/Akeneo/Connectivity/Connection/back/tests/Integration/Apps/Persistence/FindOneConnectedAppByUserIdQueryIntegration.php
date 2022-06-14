@@ -61,11 +61,4 @@ class FindOneConnectedAppByUserIdQueryIntegration extends TestCase
 
         self::assertNull($connectedApp, 'Should return null for non associated users');
     }
-
-    private function getUserId(string $firstName): int
-    {
-        $query = 'SELECT id FROM oro_user WHERE first_name = :firstname';
-
-        return (int) $this->connection->fetchOne($query, ['firstname' => $firstName]);
-    }
 }

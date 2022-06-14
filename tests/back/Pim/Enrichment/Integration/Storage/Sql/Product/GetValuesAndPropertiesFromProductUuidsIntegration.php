@@ -77,7 +77,7 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
             ? $this->getUserId('admin')
             : $this->createAdminUser()->getId();
 
-        $this->productList['productA'] = $this->createProduct(
+        $this->productList['productA'] = $this->createProductFromUserIntents(
             'productA',
             [
                 new SetFamily('family'),
@@ -85,7 +85,7 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
             $userId
         );
 
-        $this->productList['productB'] = $this->createProduct(
+        $this->productList['productB'] = $this->createProductFromUserIntents(
             'productB',
             [
                 new SetFamily('family'),
@@ -95,7 +95,7 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
             $userId
         );
 
-        $this->productList['VariantProductA'] = $this->createProduct(
+        $this->productList['VariantProductA'] = $this->createProductFromUserIntents(
             'VariantProductA',
             [
                 new SetFamily('FamilyWithVariant'),
@@ -206,7 +206,7 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
             []
         );
 
-        $variantProduct = $this->createProduct(
+        $variantProduct = $this->createProductFromUserIntents(
             'VariantProductWithEmptyValuesFromPM',
             [
                 new SetFamily('FamilyWithVariant'),
