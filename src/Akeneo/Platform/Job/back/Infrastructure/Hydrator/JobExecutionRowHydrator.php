@@ -15,7 +15,6 @@ class JobExecutionRowHydrator
 {
     public function __construct(
         private JobExecutionTrackingHydrator $jobExecutionTrackingHydrator,
-        private JobExecutionHealthCheckHydrator $jobExecutionRowHydrator,
     ) {
     }
 

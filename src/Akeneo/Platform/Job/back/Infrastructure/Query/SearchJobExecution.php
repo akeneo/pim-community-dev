@@ -77,6 +77,15 @@ SQL;
         %s
         LIMIT :offset, :limit
     )
+    WITH realStatus as (
+        SELECT id,
+        CASE TIMESTAMPDIFF(SECOND,health_check_time, CURRENT_TIME()) > 10
+        and status in (2, 3, 4)
+        and health_check_time is not null
+        WHEN TRUE THEN 6 ELSE status
+        END AS status
+        FROM akeneo_batch_job_execution
+    )
     SELECT
         job_execution.*,
         COUNT(step_execution.job_execution_id) AS current_step_number,
@@ -88,7 +97,7 @@ SQL;
             'has_error', IF(IFNULL(step_execution.failure_exceptions, 'a:0:{}') <> 'a:0:{}' OR IFNULL(step_execution.errors, 'a:0:{}') <> 'a:0:{}', 1, 0),
             'total_items', JSON_EXTRACT(step_execution.tracking_data, '$.totalItems'),
             'processed_items', JSON_EXTRACT(step_execution.tracking_data, '$.processedItems'),
-            'status', step_execution.status,
+            'status', realStatus.status,
             'is_trackable', step_execution.is_trackable
         )) AS steps
     FROM job_executions job_execution
