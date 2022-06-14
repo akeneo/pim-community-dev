@@ -76,6 +76,7 @@ services:
             - '@validator'
 
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
+        public: true
         arguments:
             - '@pim_api.repository.product'
             - '@event_dispatcher'

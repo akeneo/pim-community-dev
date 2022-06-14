@@ -26,10 +26,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class DeleteProductByUuidController
 {
     public function __construct(
-        protected ProductRepositoryInterface $productRepository,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected SecurityFacade $security,
-        protected RemoverInterface $remover
+        private ProductRepositoryInterface $productRepository,
+        private EventDispatcherInterface $eventDispatcher,
+        private SecurityFacade $security,
+        private RemoverInterface $remover
     ) {
     }
 
