@@ -32,26 +32,27 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
     public function test_it_returns_a_ui_job_message_for_an_execute_rules_job(): void
     {
         $jobExecution = $this->createJobExecution('rule_engine_execute_rules');
-        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
-            'id' => 'f8516634-1907-45f0-af75-58eeabba9a32',
-            'job_execution_id' => $jobExecution->getId(),
-            'consumer' => null,
-            'created_time' => '2021-03-08T15:37:23+01:00',
-            'updated_time' => null,
-            'options' => ['option1' => 'value1'],
-        ]);
+        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized(
+            [
+                'id' => 'f8516634-1907-45f0-af75-58eeabba9a32',
+                'job_execution_id' => $jobExecution->getId(),
+                'consumer' => null,
+                'created_time' => '2021-03-08T15:37:23+01:00',
+                'updated_time' => null,
+                'options' => ['option1' => 'value1'],
+            ],
+            UiJobExecutionMessage::class
+        );
         self::assertInstanceOf(UiJobExecutionMessage::class, $jobExecutionMessage);
     }
 
-    private function createJobExecution(
-        string $jobInstanceCode,
-        array $configuration = []
-    ) : JobExecution {
+    private function createJobExecution(string $jobInstanceCode): JobExecution
+    {
         $jobInstance = $this->get('pim_enrich.repository.job_instance')->findOneBy(['code' => $jobInstanceCode]);
         self::assertNotNull($jobInstance);
 
         $job = $this->get('akeneo_batch.job.job_registry')->get($jobInstanceCode);
-        $configuration = array_merge($jobInstance->getRawParameters(), $configuration);
+        $configuration = $jobInstance->getRawParameters();
         $jobParameters = $this->get('akeneo_batch.job_parameters_factory')->create($job, $configuration);
 
         return $this->get('akeneo_batch.job_repository')->createJobExecution($job, $jobInstance, $jobParameters);
