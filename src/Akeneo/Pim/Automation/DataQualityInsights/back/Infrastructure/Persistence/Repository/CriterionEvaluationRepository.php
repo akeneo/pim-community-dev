@@ -17,9 +17,10 @@ use Doctrine\DBAL\Exception\DeadlockException;
 class CriterionEvaluationRepository
 {
     public function __construct(
-        private Connection $dbConnection, 
+        private Connection $dbConnection,
         private TransformCriterionEvaluationResultCodes $transformCriterionEvaluationResult
-    ) {}
+    ) {
+    }
 
     public function createCriterionEvaluationsForProducts(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
