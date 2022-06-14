@@ -21,8 +21,8 @@ final class BuildTwigWelcomeEmailTest extends TestCase
             ->expects($this->once())
             ->method('generate')
             ->with(
-                'onboarder_serenity_supplier_contributor_set_up_password',
-                ['token' => 'foo'],
+                'onboarder_serenity_supplier_contributor_get_contributor_account',
+                ['accessToken' => 'foo'],
                 UrlGeneratorInterface::ABSOLUTE_URL,
             )
             ->willReturn('http://wwww.example.com');
