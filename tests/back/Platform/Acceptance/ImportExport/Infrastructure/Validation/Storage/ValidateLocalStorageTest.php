@@ -10,7 +10,7 @@ class ValidateLocalStorageTest extends AbstractValidationTest
     /**
      * @dataProvider validLocalStorage
      */
-    public function testItDoesNotBuildViolationsWhenLocalStorageAreValid(array $value): void
+    public function test_it_does_not_build_violations_when_local_storage_are_valid(array $value): void
     {
         $violations = $this->getValidator()->validate($value, new LocalStorage(['xlsx', 'xls']));
 
@@ -20,7 +20,7 @@ class ValidateLocalStorageTest extends AbstractValidationTest
     /**
      * @dataProvider invalidLocalStorage
      */
-    public function testItBuildViolationsWhenLocalStorageAreInvalid(
+    public function test_it_build_violations_when_local_storage_are_invalid(
         string $expectedErrorMessage,
         string $expectedErrorPath,
         array $value,

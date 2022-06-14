@@ -354,7 +354,14 @@ class JobInstanceController
         }
 
         if (!$this->jobRegistry->has($jobInstance->getJobName())) {
-            throw new NotFoundHttpException(sprintf('The following %s does not exist anymore. Please check configuration:<br />'.'Connector: %s<br />'.'Type: %s<br />'.'Alias: %s', $jobInstance->getType(), $jobInstance->getConnector(), $jobInstance->getType(), $jobInstance->getJobName()));
+            $message = sprintf(
+                'The following %s does not exist anymore. Please check configuration:<br />Connector: %s<br />Type: %s<br />Alias: %s',
+                $jobInstance->getType(),
+                $jobInstance->getConnector(),
+                $jobInstance->getType(),
+                $jobInstance->getJobName()
+            );
+            throw new NotFoundHttpException($message);
         }
 
         return $jobInstance;
