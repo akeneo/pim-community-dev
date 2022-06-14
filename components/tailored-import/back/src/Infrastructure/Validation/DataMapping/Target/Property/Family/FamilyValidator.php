@@ -9,6 +9,7 @@ use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Propert
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\SampleData;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Sources;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -28,7 +29,10 @@ class FamilyValidator extends ConstraintValidator
                 'uuid' => new DataMappingUuid(),
                 'target' => new PropertyTarget([
                     'action_if_not_empty' => new EqualTo(TargetInterface::ACTION_SET),
-                    'action_if_empty' => new EqualTo(TargetInterface::IF_EMPTY_SKIP),
+                    'action_if_empty' => new Choice([
+                        TargetInterface::IF_EMPTY_CLEAR,
+                        TargetInterface::IF_EMPTY_SKIP,
+                    ]),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
                 'operations' => new Operations([]),
