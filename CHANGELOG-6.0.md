@@ -15,6 +15,7 @@
 - PIM-10451: Add migration to add an index on start_time on the job_execution table
 - MW-373: Prepare the marketplace migration to another subdomain
 - PIM-10452, PIM-10454, PIM-10455, PIM-10456 : Fix migration to set some fields to NOT NULL on job & step execution tables 
+- PIM-10453: Add migration to add an index on updated on pim_catalog_category table
 
 # 6.0.28 (2022-05-13)
 
