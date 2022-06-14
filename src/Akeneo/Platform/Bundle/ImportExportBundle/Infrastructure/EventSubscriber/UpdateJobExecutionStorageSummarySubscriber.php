@@ -16,9 +16,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UpdateJobExecutionStorageSummarySubscriber implements EventSubscriberInterface
 {
-    public function __construct(
-        private JobExecution $jobExecution,
-    ) {
+    public function __construct()
+    {
     }
 
     /**
@@ -34,7 +33,7 @@ class UpdateJobExecutionStorageSummarySubscriber implements EventSubscriberInter
 
     public function onFileCannotBeExported(FileCannotBeExported $event): void
     {
-        $this->jobExecution->addFailureException(new \RuntimeException($event->getReason()));
+        throw new \RuntimeException($event->getReason());
     }
 
     public function onFileCannotBeImported(FileCannotBeImported $event): void

@@ -319,7 +319,7 @@ class JobInstanceController
         /* TODO remove it when we will migrate to storage unification */
         if ($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
             $rawParameters = $jobInstance->getRawParameters();
-            $rawParameters['filePath'] = 'fake_path.zip';
+            $rawParameters['filePath'] = '/tmp/fake_path.xlsx';
             $jobInstance->setRawParameters($rawParameters);
         }
 
