@@ -74,11 +74,6 @@ final class UpsertProductIntegration extends TestCase
         $this->productRepository = $this->get('pim_catalog.repository.product');
     }
 
-    private function clearDoctrineUoW(): void
-    {
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
-    }
-
     /** @test */
     public function it_creates_an_empty_product(): void
     {
@@ -1247,14 +1242,6 @@ final class UpsertProductIntegration extends TestCase
             ]
         );
         $this->messageBus->dispatch($command);
-    }
-
-    private function getUserId(string $username): int
-    {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        return $user->getId();
     }
 
     private function loadAssetFixtures(): void

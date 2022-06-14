@@ -206,7 +206,7 @@ abstract class TestCase extends KernelTestCase
         return $product;
     }
 
-    protected function createUser(string $username, array $stringRoles, array $groupNames): UserInterface
+    protected function createUserWithRolesAndGroups(string $username, array $stringRoles, array $groupNames): UserInterface
     {
         $user = $this->get('pim_user.factory.user')->create();
         $user->setUsername($username);
