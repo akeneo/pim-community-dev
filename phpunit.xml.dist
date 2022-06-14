@@ -73,10 +73,6 @@
             <directory suffix="EndToEnd.php">src</directory>
         </testsuite>
 
-        <testsuite name="OroSecurityBundle">
-            <file>src/Oro/Bundle/SecurityBundle/Tests/Unit/Acl/Dbal/MutableAclProviderTest.php</file>
-        </testsuite>
-
         <testsuite name="Enrichment_Product">
             <directory suffix="Integration.php">src/Akeneo/Pim/Enrichment/Product/back/Test/Integration</directory>
         </testsuite>
