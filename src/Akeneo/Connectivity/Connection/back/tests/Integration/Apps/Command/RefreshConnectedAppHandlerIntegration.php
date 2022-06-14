@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -20,6 +21,7 @@ use PHPUnit\Framework\Assert;
  */
 class RefreshConnectedAppHandlerIntegration extends TestCase
 {
+    private Connection $connection;
     private ConnectedAppLoader $connectedAppLoader;
     private RefreshConnectedAppHandler $refreshConnectedAppHandler;
     private FindOneConnectedAppByIdQuery $findOneConnectedAppByIdQuery;

@@ -29,7 +29,7 @@ ON DUPLICATE KEY UPDATE authentication_date = NOW()
 SQL;
 
         $stmt = $this->dbalConnection->prepare($insertSQL);
-        $stmt->execute([
+        $stmt->executeQuery([
             'connection_code' => $wrongCredentialsCombination->connectionCode(),
             'username' => $wrongCredentialsCombination->username(),
         ]);

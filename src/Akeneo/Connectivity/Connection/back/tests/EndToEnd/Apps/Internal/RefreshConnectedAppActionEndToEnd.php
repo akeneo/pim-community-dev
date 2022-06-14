@@ -7,6 +7,8 @@ namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\Internal;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
@@ -20,6 +22,8 @@ use Symfony\Component\HttpFoundation\Response;
 class RefreshConnectedAppActionEndToEnd extends WebTestCase
 {
     private FakeFeatureFlag $featureFlagMarketplaceActivate;
+    private ConnectionLoader $connectionLoader;
+    private UserGroupLoader $userGroupLoader;
     private ConnectedAppLoader $connectedAppLoader;
     private FakeWebMarketplaceApi $webMarketplaceApi;
 

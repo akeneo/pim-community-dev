@@ -52,7 +52,7 @@ final class FindAllConnectedAppsQuery implements FindAllConnectedAppsQueryInterf
         ORDER BY connected_app.name ASC
         SQL;
 
-        $dataRows = $this->connection->executeQuery($selectSQL)->fetchAll();
+        $dataRows = $this->connection->executeQuery($selectSQL)->fetchAllAssociative();
 
         $connectedApps = \array_map(
             fn ($dataRow) => $this->denormalizeRow($dataRow),
