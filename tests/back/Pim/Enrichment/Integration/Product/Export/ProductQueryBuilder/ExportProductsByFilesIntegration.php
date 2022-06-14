@@ -17,7 +17,7 @@ class ExportProductsByFilesIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('product_2', [
-            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.png')))
+            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')))
         ]);
     }
 

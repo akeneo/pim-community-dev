@@ -9,10 +9,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
-use Cassandra\Set;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -78,7 +76,7 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
             ]
         );
         $this->createProductModel(['code' => 'a_shirt', 'family_variant' => 'shirt_size_color']);
-        $mediumShirtProductModel = $this->createProductModel(
+        $this->createProductModel(
             [
                 'code' => 'a_medium_shirt',
                 'family_variant' => 'shirt_size_color',
@@ -235,12 +233,10 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
-            userIntents: \array_merge(
-                [
-                    new SetFamily($familyCode),
-                    new ChangeParent($parentCode)
-                ]
-            )
+            userIntents: [
+                new SetFamily($familyCode),
+                new ChangeParent($parentCode)
+            ]
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
@@ -248,5 +244,23 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->createAdminUser();
     }
 }

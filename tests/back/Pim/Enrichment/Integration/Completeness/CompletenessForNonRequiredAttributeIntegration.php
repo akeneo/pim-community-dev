@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -31,7 +32,7 @@ class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenes
             [
                 new SetFamily('family_without_any_attribute_requirements'),
                 new SetTextValue('a_text', null, null, 'This is some text'),
-                new SetNumberValue('a_number', null, null, null)
+                new ClearValue('a_number', null, null)
             ]
         );
 
@@ -83,5 +84,11 @@ class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenes
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->createAdminUser();
     }
 }

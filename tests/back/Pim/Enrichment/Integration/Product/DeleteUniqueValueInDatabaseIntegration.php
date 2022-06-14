@@ -79,8 +79,6 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     private function deleteUniqueValueForAttribute(string $attributeCode): void
@@ -111,5 +109,11 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
         Assert::assertNotNull($id);
 
         return \intval($id);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->createAdminUser();
     }
 }

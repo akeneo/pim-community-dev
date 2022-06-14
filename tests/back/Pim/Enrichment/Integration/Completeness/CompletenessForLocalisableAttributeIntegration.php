@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -32,7 +33,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
      */
     public function testLocalisable()
     {
-        $family = $this->createFamilyWithRequirement(
+        $this->createFamilyWithRequirement(
             'another_family',
             'ecommerce',
             'a_text',
@@ -45,7 +46,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
             [
                 new SetFamily('another_family'),
                 new SetTextValue('a_text', null, 'en_US', 'just a text'),
-                new SetTextValue('a_text', null, 'fr_FR', null),
+                new ClearValue('a_text', null, 'fr_FR'),
             ]
         );
 
@@ -93,7 +94,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
             'product_locale_specific_locale_empty',
             [
                 new SetFamily('another_family'),
-                new SetTextValue('a_text', null, 'fr_FR', null)
+                new ClearValue('a_text', null, 'fr_FR')
             ]
         );
         $this->assertNotComplete($productLocaleSpecificLocaleEmpty, 'fr_FR', 2);
@@ -132,6 +133,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
     {
         parent::setUp();
 
+        $this->createAdminUser();
         $fr = $this->get('pim_catalog.repository.locale')->findOneByIdentifier('fr_FR');
         $ecommerce = $this->get('pim_catalog.repository.channel')->findOneByIdentifier('ecommerce');
         $ecommerce->addLocale($fr);

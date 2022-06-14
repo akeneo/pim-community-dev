@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
@@ -30,7 +31,7 @@ class ExportProductsBySimpleSelectReferenceDataIntegration extends AbstractExpor
 
         $this->createProduct('product_without_option', [
             new SetFamily('a_family'),
-            new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null, null, null),
+            new ClearValue('a_ref_data_simple_select', null, null),
         ]);
 
         $this->createProduct('product_without_option_attribute',[new SetFamily('a_family')]);

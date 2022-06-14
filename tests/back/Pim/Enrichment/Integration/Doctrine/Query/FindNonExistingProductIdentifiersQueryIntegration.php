@@ -16,6 +16,7 @@ class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->createAdminUser();
         $this->findNonExistingProductIdentifiersQuery = $this->get(
             'akeneo.pim.enrichment.product.query.find_non_existing_product_identifiers_query'
         );

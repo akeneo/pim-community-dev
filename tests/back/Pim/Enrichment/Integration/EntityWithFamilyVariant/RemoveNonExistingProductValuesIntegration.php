@@ -6,6 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\EntityWithFamilyVariant;
 
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Test\Integration\TestCase;
@@ -39,12 +40,14 @@ final class RemoveNonExistingProductValuesIntegration extends TestCase
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: '1111111184',
-            userIntents: [new SetSimpleSelectValue('brand', null, null, 'akeneo')]
+            userIntents: [
+                new SetFamily('shoes'),
+                new SetSimpleSelectValue('brand', null, null, 'akeneo')
+            ]
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('doctrine.orm.default_entity_manager')->clear();
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
         $this->removeOption('brand', 'akeneo');
         $this->assertNotNull($this->getDataValueForProduct('1111111184', 'brand'));

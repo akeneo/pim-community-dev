@@ -46,8 +46,6 @@ class RemovingProductIntegration extends TestCase
             userIntents: []
         );
         $this->messageBus->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->clearDoctrineUoW();
 
         $product = $this->productRepository->findOneByIdentifier('bat');
         $productUuid = $product->getUuid();
@@ -100,5 +98,17 @@ class RemovingProductIntegration extends TestCase
             $found = false;
         }
         $this->assertFalse($found);
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }

@@ -31,45 +31,28 @@ abstract class AbstractCompletenessTestCase extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    /**
-     * @param ProductInterface $product
-     *
-     * @return ProductCompleteness
-     */
-    protected function getCurrentCompleteness(ProductInterface $product)
+    protected function getCurrentCompleteness(ProductInterface $product): ProductCompleteness
     {
         $completenesses = $this->getProductCompletenesses()->fromProductUuid($product->getUuid());
 
         return $completenesses->getIterator()->current();
     }
 
-    /**
-     * @param ProductInterface $product
-     * @param int              $expectedNumberOfCompletenesses
-     */
-    protected function assertCompletenessesCount(ProductInterface $product, $expectedNumberOfCompletenesses)
+    protected function assertCompletenessesCount(ProductInterface $product, int $expectedNumberOfCompletenesses)
     {
         $completenesses = $this->getProductCompletenesses()->fromProductUuid($product->getUuid());
         $this->assertCount($expectedNumberOfCompletenesses, $completenesses);
     }
 
-    /**
-     * @param string $code
-     * @param string $type
-     * @param bool   $localisable
-     * @param bool   $scopable
-     * @param array  $localesSpecific
-     *
-     * @return AttributeInterface
-     */
     protected function createAttribute(
-        $code,
-        $type,
-        $localisable = false,
-        $scopable = false,
+        string $code,
+        string $type,
+        bool $localisable = false,
+        bool $scopable = false,
         array $localesSpecific = [],
         AttributeGroup $group = null
-    ) {
+    ): AttributeInterface
+    {
         if (null === $group) {
             $group = $this->get('pim_api.repository.attribute_group')->findOneByIdentifier('other');
         }
@@ -103,30 +86,35 @@ abstract class AbstractCompletenessTestCase extends TestCase
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
+    }
+
     /**
-     * @param string            $familyCode
-     * @param string            $channelCode
-     * @param string            $attributeCode
-     * @param string            $attributeType
-     * @param bool              $localisable
-     * @param bool              $scopable
      * @param LocaleInterface[] $localesSpecific
      *
      * @return FamilyInterface
      */
     protected function createFamilyWithRequirement(
-        $familyCode,
-        $channelCode,
-        $attributeCode,
-        $attributeType,
-        $localisable = false,
-        $scopable = false,
+        string $familyCode,
+        string $channelCode,
+        string $attributeCode,
+        string $attributeType,
+        bool $localisable = false,
+        bool $scopable = false,
         array $localesSpecific = []
     ) {
         $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($channelCode);

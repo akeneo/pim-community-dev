@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
@@ -76,6 +77,7 @@ class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompleten
     protected function setUp(): void
     {
         parent::setUp();
+        $adminUserId = $this->createAdminUser()->getId();
         $family = $this->get('pim_catalog.factory.family')->create();
         $family->setCode('family');
         $this->get('pim_catalog.saver.family')->save($family);
@@ -84,50 +86,38 @@ class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompleten
             'my_product1',
             [
                 new SetFamily('family'),
-                new SetTextValue('a_text', null, null, true)
-            ]
+                new SetBooleanValue('a_text', null, null, true)
+            ],
+            $adminUserId
         );
         $this->createProduct(
             'my_product2',
             [
                 new SetFamily('family'),
-                new SetTextValue('a_text', null, null, true)
-            ]
+                new SetBooleanValue('a_text', null, null, true)
+            ],
+            $adminUserId
         );
         $this->createProduct(
             'my_product3',
             [
                 new SetFamily('family'),
-                new SetTextValue('a_text', null, null, true)
-            ]
+                new SetBooleanValue('a_text', null, null, true)
+            ],
+            $adminUserId
         );
     }
 
     /**
      * @param UserIntent[] $userIntents
      */
-    private function createProduct(string $identifier, array $userIntents): void
+    private function createProduct(string $identifier, array $userIntents, int $userId): void
     {
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
+            userId: $userId,
             productIdentifier: $identifier,
             userIntents: $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
-    }
-
-    protected function getUserId(string $username): int
-    {
-        $query = <<<SQL
-            SELECT id FROM oro_user WHERE username = :username
-        SQL;
-        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
-        $id = $stmt->fetchOne();
-        Assert::assertNotNull($id);
-
-        return \intval($id);
     }
 }

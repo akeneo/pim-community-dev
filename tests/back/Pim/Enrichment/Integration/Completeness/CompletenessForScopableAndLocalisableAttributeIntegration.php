@@ -2,8 +2,10 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -26,10 +28,10 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
 
         $sandals = $this->createProductWithStandardValues(
             'sandals',
-            \array_merge([
-                new SetFamily('sandals'),
+            \array_merge(
+                [new SetFamily('sandals')],
                 $this->getSandalStandardValues()
-            ])
+            )
         );
 
         $completenesses = $this->getProductCompletenesses()->fromProductUuid($sandals->getUuid());
@@ -155,18 +157,10 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
             new SetSimpleSelectValue('color', null, null, 'blue'),
             new SetTextValue('name', null, 'en_US', 'Sneakers'),
             new SetTextValue('name', null, 'fr_FR', 'Espadrilles'),
-            // TODO : use SetPriceValue when ready
-            /*'price' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => [
-                        ['amount' => 69, 'currency' => 'EUR'],
-                        ['amount' => 99, 'currency' => 'USD'],
-                    ]
-
-                ],
-            ],*/
+            new SetPriceCollectionValue('price', null, null, [
+                new PriceValue('69', 'EUR'),
+                new PriceValue('99', 'USD'),
+            ]),
             new SetSimpleSelectValue('rating', null, null, '4'),
             new SetSimpleSelectValue('size', null, null, '43'),
             new SetSimpleSelectValue('lace_color', null, null, 'laces_white'),

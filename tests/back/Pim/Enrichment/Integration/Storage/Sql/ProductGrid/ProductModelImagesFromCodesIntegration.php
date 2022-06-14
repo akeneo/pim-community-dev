@@ -146,9 +146,6 @@ class ProductModelImagesFromCodesIntegration extends TestCase
             userIntents: $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     protected function getUserId(string $username): int
@@ -161,5 +158,11 @@ class ProductModelImagesFromCodesIntegration extends TestCase
         Assert::assertNotNull($id);
 
         return \intval($id);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->createAdminUser();
     }
 }

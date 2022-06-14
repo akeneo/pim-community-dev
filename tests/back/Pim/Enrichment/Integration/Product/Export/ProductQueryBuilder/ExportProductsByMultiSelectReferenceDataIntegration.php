@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
@@ -35,7 +36,7 @@ class ExportProductsByMultiSelectReferenceDataIntegration extends AbstractExport
 
         $this->createProduct('product_without_option', [
             new SetFamily('a_family'),
-            new SetMultiReferenceEntityValue('a_ref_data_multi_select', null, null, [])
+            new ClearValue('a_ref_data_multi_select', null, null)
         ]);
 
         $this->createProduct('product_without_option_attribute', [new SetFamily('a_family')]);

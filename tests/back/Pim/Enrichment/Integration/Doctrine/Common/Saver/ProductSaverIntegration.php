@@ -23,7 +23,6 @@ class ProductSaverIntegration extends TestCase
 
         $product = $this->createVariantProduct($productModel, 'just-a-variant-product-with-a-few-values', 'familyVariantA1');
         $standardValues = $this->getStandardValuesWithFewAttributes();
-        // TODO: don't touch
         $this->updateProduct($product, $standardValues);
         $this->saveProduct($product);
 

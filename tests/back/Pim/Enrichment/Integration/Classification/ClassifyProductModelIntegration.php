@@ -35,8 +35,6 @@ class ClassifyProductModelIntegration extends TestCase
         $this->get('pim_catalog.validator.product_model')->validate($childrenProductModel);
         $this->get('pim_catalog.saver.product_model')->save($childrenProductModel);
 
-
-
         $parentProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('model-tee');
         $this->assertCount(1, $parentProductModel->getCategories());
         $category = $parentProductModel->getCategories()->first();
@@ -138,6 +136,8 @@ class ClassifyProductModelIntegration extends TestCase
             $subProductModel,
             ['values' => ['size' => [['data' => 's', 'locale' => null, 'scope' => null]]]]
         );
+        $this->get('pim_catalog.validator.product')->validate($variantProduct);
+        $this->get('pim_catalog.saver.product')->save($variantProduct);
 
         $this->get('akeneo_integration_tests.launcher.job_launcher')->launchConsumerUntilQueueIsEmpty();
     }
@@ -161,9 +161,6 @@ class ClassifyProductModelIntegration extends TestCase
             userIntents: $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }

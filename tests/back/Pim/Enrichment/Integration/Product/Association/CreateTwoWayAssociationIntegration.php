@@ -38,7 +38,6 @@ class CreateTwoWayAssociationIntegration extends TestCase
             ]
         );
 
-        $this->clearUnitOfWork();
         $this->assertAssociations(
             $this->get('pim_catalog.repository.product')->findOneByIdentifier('test'),
             'COMPATIBILITY',
@@ -303,7 +302,7 @@ class CreateTwoWayAssociationIntegration extends TestCase
         );
         $this->messageBus->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->clearDoctrineUoW();
+        $this->clearUnitOfWork();
 
         return $this->productRepository->findOneByIdentifier($identifier);
     }
@@ -376,11 +375,6 @@ class CreateTwoWayAssociationIntegration extends TestCase
     }
 
     private function clearUnitOfWork(): void
-    {
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
-    }
-
-    protected function clearDoctrineUoW(): void
     {
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
