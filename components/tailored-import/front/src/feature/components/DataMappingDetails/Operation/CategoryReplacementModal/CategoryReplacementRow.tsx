@@ -13,6 +13,7 @@ type CategoryTreeModel = {
   loading?: boolean;
   isOpen: boolean;
   children?: CategoryTreeModel[];
+  isLeaf: boolean;
 };
 
 
@@ -32,6 +33,13 @@ const Field = styled.div`
 
 const CategoryCell = styled(Table.Cell) < {level: number} >`
   padding-left: ${({level}) => (level * 20)}px;
+`;
+
+const InnerCategoryCell = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
 `;
 
 type CategoryReplacementRowProps = {
@@ -63,7 +71,6 @@ const CategoryReplacementRow = ({
       setCategoryState((categoryState) => ({...categoryState, isOpen: false}));
     } else {
       setCategoryState((categoryState) => ({...categoryState, isOpen: true, loading: true}));
-      // load category
       const children = await categoryFetcher(tree.id);
       const categoryTreeModels = children.map((child) => ({
           code: child.code,
@@ -72,6 +79,7 @@ const CategoryReplacementRow = ({
           loading: false,
           id: child.id,
           isOpen: false,
+          isLeaf: child.isLeaf,
       }));
 
       setCategoryState((categoryState) => ({
@@ -85,11 +93,15 @@ const CategoryReplacementRow = ({
     <>
       <Table.Row>
         <CategoryCell level={level} onClick={handleOpenCategory}>
-          <TreeArrowIcon size={14} $isFolderOpen={categoryState.isOpen} />
+          <InnerCategoryCell>
+          {!categoryState.isLeaf && (
+            <TreeArrowIcon size={14} $isFolderOpen={categoryState.isOpen} />
+          )}
           {categoryState.loading && (
             <LoaderIcon />
           )}
           {categoryState.label}
+          </InnerCategoryCell>
         </CategoryCell>
         <Table.Cell>
           <Field>
