@@ -29,18 +29,24 @@ const Field = styled.div`
   gap: 5px;
 `;
 
+const CategoryCell = styled(Table.Cell) < {level: number} >`
+  padding-left: ${({level}) => (level * 20)}px;
+`;
+
 type CategoryReplacementRowProps = {
   mapping: ReplacementValues;
   onMappingChange: (mapping: ReplacementValues) => void;
   tree: CategoryTreeModel;
   validationErrors: ValidationError[];
+  level: number;
 };
 
 const CategoryReplacementRow = ({
   mapping,
   onMappingChange,
   tree,
-  validationErrors
+  validationErrors,
+  level,
 }: CategoryReplacementRowProps) => {
   const translate = useTranslate();
   const [categoryState, setCategoryState] = useState<CategoryTreeModel>(tree);
@@ -74,13 +80,13 @@ const CategoryReplacementRow = ({
   return (
     <>
       <Table.Row>
-        <Table.Cell onClick={handleOpenCategory}>
+        <CategoryCell level={level} onClick={handleOpenCategory}>
           <TreeArrowIcon size={14} $isFolderOpen={categoryState.isOpen} />
           {categoryState.loading && (
             <LoaderIcon />
           )}
           {categoryState.label}
-        </Table.Cell>
+        </CategoryCell>
         <Table.Cell>
           <Field>
             <TagInput
@@ -107,6 +113,7 @@ const CategoryReplacementRow = ({
           mapping={mapping}
           validationErrors={validationErrors}
           onMappingChange={onMappingChange}
+          level={level + 1}
         />
       ))}
     </>

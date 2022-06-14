@@ -148,6 +148,7 @@ const CategoryReplacementModal = ({
                 mapping={mapping}
                 onMappingChange={setMapping}
                 validationErrors={filterErrors(validationErrors, '[mapping]')}
+                level={0}
               />
             </Table.Body>
           </Table>
