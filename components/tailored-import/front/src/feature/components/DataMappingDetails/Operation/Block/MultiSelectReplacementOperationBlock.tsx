@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Block, Button, CloseIcon, IconButton, useBooleanState} from 'akeneo-design-system';
+import {Block, Button, CloseIcon, IconButton, useBooleanState, uuid} from 'akeneo-design-system';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {isReplacementValues, ReplacementValues} from '../../../../models';
 import {OPTION_COLLECTION_PAGE_SIZE, useAttributeOptions} from '../../../../hooks';
@@ -9,6 +9,7 @@ import {getDefaultReplacementValueFilter, ReplacementModal, ReplacementValueFilt
 const MULTI_SELECT_REPLACEMENT_OPERATION_TYPE = 'multi_select_replacement';
 
 type MultiSelectReplacementOperation = {
+  uuid: string;
   type: typeof MULTI_SELECT_REPLACEMENT_OPERATION_TYPE;
   mapping: ReplacementValues;
 };
@@ -21,6 +22,7 @@ const isMultiSelectReplacementOperation = (operation?: any): operation is MultiS
   isReplacementValues(operation.mapping);
 
 const getDefaultMultiSelectReplacementOperation = (): MultiSelectReplacementOperation => ({
+  uuid: uuid(),
   type: MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
   mapping: {},
 });
@@ -77,6 +79,7 @@ const MultiSelectReplacementOperationBlock = ({targetCode, operation, onChange, 
               itemsPerPage={OPTION_COLLECTION_PAGE_SIZE}
               totalItems={totalItems}
               operationType={MULTI_SELECT_REPLACEMENT_OPERATION_TYPE}
+              operationUuid={operation.uuid}
               initialMapping={operation.mapping}
               onConfirm={handleConfirm}
               onCancel={handleCancel}

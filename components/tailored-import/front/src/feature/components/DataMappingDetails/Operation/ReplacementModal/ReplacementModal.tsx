@@ -93,6 +93,7 @@ type Value = {
 type ReplacementModalProps = {
   title: string;
   operationType: OperationType;
+  operationUuid: string;
   initialMapping: ReplacementValues;
   values: Value[];
   totalItems: number;
@@ -108,6 +109,7 @@ type ReplacementModalProps = {
 const ReplacementModal = ({
   title,
   operationType,
+  operationUuid,
   initialMapping,
   values,
   totalItems,
@@ -163,6 +165,7 @@ const ReplacementModal = ({
   const handleConfirm = async () => {
     const response = await fetch(validateReplacementOperationRoute, {
       body: JSON.stringify({
+        uuid: operationUuid,
         type: operationType,
         mapping,
       }),

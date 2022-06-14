@@ -1,14 +1,4 @@
-parameters:
-  #TODO: move validation to CE (except for sftp)
-  akeneo.job_automation.validation.storage_constraint_classes:
-    none: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\None\NoneStorage'
-    local: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Local\LocalStorage'
-    sftp: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage'
-    manual_upload: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\ManualUpload\ManualUploadStorage'
-
 services:
-  Akeneo\Platform\JobAutomation\Infrastructure\Validation\StorageValidator:
-    arguments:
-      - '%akeneo.job_automation.validation.storage_constraint_classes%'
+  Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage:
     tags:
-      - { name: validator.constraint_validator }
+      - { name: 'akeneo.import_export.validation.storage_constraint', key: 'sftp' }

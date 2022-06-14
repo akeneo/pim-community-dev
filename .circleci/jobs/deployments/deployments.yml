@@ -544,14 +544,14 @@ jobs:
               PIM_MASTER_DOMAIN="${INSTANCE_NAME}.bh.akeneo.ch"
               SERVICE_ACCOUNT_KEY=$(echo ${GCLOUD_SERVICE_KEY_UCS} | base64 | tr -d '\n')
 
-              TOPIC_BUSINESS_EVENT="${INSTANCE_NAME}-business-event"
-              TOPIC_JOB_QUEUE_UI="${INSTANCE_NAME}-job-queue-ui"
-              TOPIC_JOB_QUEUE_IMPORT_EXPORT="${INSTANCE_NAME}-job-queue-import-export"
-              TOPIC_JOB_QUEUE_DATA_MAINTENANCE="${INSTANCE_NAME}-job-queue-data-maintenance"
-              SUBSCRIPTION_WEBHOOK="${INSTANCE_NAME}-webhook"
-              SUBSCRIPTION_JOB_QUEUE_UI="${INSTANCE_NAME}-job-queue-ui"
-              SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT="${INSTANCE_NAME}-job-queue-import-export"
-              SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE="${INSTANCE_NAME}-job-queue-data-maintenance"
+              TOPIC_BUSINESS_EVENT="srnt-business-event-${CIRCLE_BRANCH_LOWER}"
+              TOPIC_JOB_QUEUE_UI="srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}"
+              TOPIC_JOB_QUEUE_IMPORT_EXPORT="srnt-job-queue-import-export-${CIRCLE_BRANCH_LOWER}"
+              TOPIC_JOB_QUEUE_DATA_MAINTENANCE="srnt-job-queue-data-maintenance-${CIRCLE_BRANCH_LOWER}"
+              SUBSCRIPTION_WEBHOOK="srnt-webhook-${CIRCLE_BRANCH_LOWER}"
+              SUBSCRIPTION_JOB_QUEUE_UI="srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}"
+              SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT="srnt-job-queue-import-export-${CIRCLE_BRANCH_LOWER}"
+              SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE="srnt-job-queue-data-maintenance-${CIRCLE_BRANCH_LOWER}"
 
               echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
               echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
@@ -601,11 +601,11 @@ jobs:
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_data_maintenance "${SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE}"
 
               ## Pubsub
-              sed -i "s#srnt-business-event#srnt-business-event-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-              sed -i "s#srnt-job-queue-ui#srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-              sed -i "s#srnt-job-queue-import-export#srnt-job-queue-import-export-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-              sed -i "s#srnt-job-queue-data-maintenance#srnt-job-queue-data-maintenance-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-              sed -i "s#srnt-webhook#srnt-webhook-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
+              sed -i "s#srnt-business-event#${TOPIC_BUSINESS_EVENT}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
+              sed -i "s#srnt-job-queue-ui#${TOPIC_JOB_QUEUE_UI}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
+              sed -i "s#srnt-job-queue-import-export#${TOPIC_JOB_QUEUE_IMPORT_EXPORT}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
+              sed -i "s#srnt-job-queue-data-maintenance#${TOPIC_JOB_QUEUE_DATA_MAINTENANCE}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
+              sed -i "s#srnt-webhook#${SUBSCRIPTION_WEBHOOK}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
 
               ## Charts
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/Chart.yaml version 0.0.0-${IMAGE_TAG}

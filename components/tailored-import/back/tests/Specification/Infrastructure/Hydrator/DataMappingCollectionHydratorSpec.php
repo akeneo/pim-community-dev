@@ -88,7 +88,7 @@ class DataMappingCollectionHydratorSpec extends ObjectBehavior
 
         $emptyOperationCollection = OperationCollection::create([]);
         $operationCollection = OperationCollection::create([
-            new CleanHTMLTagsOperation(),
+            new CleanHTMLTagsOperation('00000000-0000-0000-0000-000000000000'),
         ]);
 
         $operationCollectionHydrator->hydrate($nameTarget->normalize(), [])->willReturn($emptyOperationCollection);

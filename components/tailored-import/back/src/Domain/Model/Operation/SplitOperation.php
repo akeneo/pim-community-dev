@@ -23,9 +23,16 @@ final class SplitOperation implements OperationInterface
      * @param non-empty-string $separator
      */
     public function __construct(
+        private string $uuid,
         private string $separator,
     ) {
+        Assert::uuid($uuid);
         Assert::stringNotEmpty($this->separator);
+    }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
     }
 
     /**
@@ -39,6 +46,7 @@ final class SplitOperation implements OperationInterface
     public function normalize(): array
     {
         return [
+            'uuid' => $this->uuid,
             'type' => self::TYPE,
             'separator' => $this->separator,
         ];

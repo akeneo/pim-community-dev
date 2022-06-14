@@ -13,12 +13,27 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
+use Webmozart\Assert\Assert;
+
 final class CleanHTMLTagsOperation implements OperationInterface
 {
     public const TYPE = 'clean_html_tags';
 
+    public function __construct(private string $uuid)
+    {
+        Assert::uuid($uuid);
+    }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
     public function normalize(): array
     {
-        return ['type' => self::TYPE];
+        return [
+            'uuid' => $this->uuid,
+            'type' => self::TYPE,
+        ];
     }
 }

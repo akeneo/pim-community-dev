@@ -18,8 +18,14 @@ final class MultiSelectReplacementOperation implements OperationInterface
     public const TYPE = 'multi_select_replacement';
 
     public function __construct(
+        private string $uuid,
         private array $mapping,
     ) {
+    }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
     }
 
     public function getMapping(): array
@@ -30,6 +36,7 @@ final class MultiSelectReplacementOperation implements OperationInterface
     public function normalize(): array
     {
         return [
+            'uuid' => $this->uuid,
             'type' => self::TYPE,
             'mapping' => $this->mapping,
         ];
