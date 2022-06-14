@@ -5,10 +5,10 @@ import {useCategoryTrees} from "../../../../hooks/useCategoryTrees";
 import {Button, Modal, TabBar, Table} from "akeneo-design-system";
 import styled from "styled-components";
 import {CategoryTree} from "../../../../models/Category";
-import {CategoryReplacementList} from "./CategoryReplacementList";
 import {CATEGORY_REPLACEMENT_OPERATION_TYPE} from "../Block";
 import {useRoute} from "@akeneo-pim-community/shared/lib/hooks/useRoute";
 import {filterErrors} from "@akeneo-pim-community/shared/lib/models/validation-error";
+import {CategoryReplacementRow} from "./CategoryReplacementRow";
 
 const Container = styled.div`
   width: 100%;
@@ -135,8 +135,16 @@ const CategoryReplacementModal = ({
               </Table.HeaderCell>
             </Table.Header>
             <Table.Body>
-              <CategoryReplacementList
-                categoryTree={displayedCategoryTree}
+              <CategoryReplacementRow
+                key={displayedCategoryTree.code}
+                tree={{
+                  code: displayedCategoryTree.code,
+                  children: undefined,
+                  label: getLabel(displayedCategoryTree.labels, catalogLocale, `[${displayedCategoryTree.code}]`),
+                  loading: false,
+                  id: displayedCategoryTree.id,
+                  isOpen: false
+                }}
                 mapping={mapping}
                 onMappingChange={setMapping}
                 validationErrors={filterErrors(validationErrors, '[mapping]')}
