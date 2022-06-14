@@ -1,5 +1,13 @@
 import {ReplacementValues} from "../../../../models";
-import {formatParameters, getLabel, NotificationLevel, useNotify, useTranslate, useUserContext, ValidationError} from "@akeneo-pim-community/shared";
+import {
+  formatParameters,
+  getLabel,
+  NotificationLevel,
+  useNotify,
+  useTranslate,
+  useUserContext,
+  ValidationError
+} from "@akeneo-pim-community/shared";
 import React, {useEffect, useState} from "react";
 import {useCategoryTrees} from "../../../../hooks/useCategoryTrees";
 import {Button, Modal, TabBar, Table} from "akeneo-design-system";

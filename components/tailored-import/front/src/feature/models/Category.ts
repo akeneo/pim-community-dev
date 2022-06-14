@@ -6,5 +6,11 @@ type CategoryTree = {
   labels: LabelCollection,
 };
 
-export type {CategoryTree};
+type Category = {
+  id: number,
+  code: string,
+  label: string,
+  isLeaf: boolean,
+}
 
+export type {CategoryTree, Category};

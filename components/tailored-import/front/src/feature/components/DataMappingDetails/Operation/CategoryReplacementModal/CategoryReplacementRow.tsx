@@ -4,6 +4,7 @@ import {useTranslate, ValidationError, filterErrors} from "@akeneo-pim-community
 import styled from "styled-components";
 import {ReplacementValues} from "../../../../models";
 import {ArrowRightIcon} from "akeneo-design-system";
+import {useCategoryFetcher} from "../../../../hooks/useCategoryFetcher";
 
 type CategoryTreeModel = {
   id: number;
@@ -51,28 +52,31 @@ const CategoryReplacementRow = ({
   const translate = useTranslate();
   const [categoryState, setCategoryState] = useState<CategoryTreeModel>(tree);
   const valueErrors = filterErrors(validationErrors, `[${tree.code}]`);
+  const categoryFetcher = useCategoryFetcher();
 
   const handleMappingChange = (categoryTreeCode: string, newValues: string[]) => {
     onMappingChange({...mapping, [categoryTreeCode]: newValues});
   }
 
-  const handleOpenCategory = () => {
+  const handleOpenCategory = async () => {
     if (categoryState.isOpen) {
       setCategoryState((categoryState) => ({...categoryState, isOpen: false}));
     } else {
       setCategoryState((categoryState) => ({...categoryState, isOpen: true, loading: true}));
       // load category
+      const children = await categoryFetcher(tree.id);
+      const categoryTreeModels = children.map((child) => ({
+          code: child.code,
+          children: [],
+          label: child.label,
+          loading: false,
+          id: child.id,
+          isOpen: false,
+      }));
 
-      setCategoryState((categoryState) => ({...categoryState, loading: false, children: [
-          {
-            code: 'test',
-            children: undefined,
-            label: 'test',
-            loading: false,
-            id: 12,
-            isOpen: false,
-          }
-        ]})
+      setCategoryState((categoryState) => ({
+          ...categoryState, loading: false, children: categoryTreeModels
+        })
       );
     }
   }
