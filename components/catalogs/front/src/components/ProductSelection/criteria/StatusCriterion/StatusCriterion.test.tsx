@@ -11,7 +11,11 @@ import {Operator} from '../../models/Operator';
 test('it renders without error', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <StatusCriterion state={{field: 'status', operator: Operator.EQUALS, value: true}} onChange={jest.fn()} />
+            <StatusCriterion
+                state={{field: 'status', operator: Operator.EQUALS, value: true}}
+                onChange={jest.fn()}
+                onRemove={jest.fn()}
+            />
         </ThemeProvider>
     );
 
@@ -25,7 +29,11 @@ test('it calls onChange when the operator changes', () => {
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <StatusCriterion state={{field: 'status', operator: Operator.EQUALS, value: true}} onChange={onChange} />
+            <StatusCriterion
+                state={{field: 'status', operator: Operator.EQUALS, value: true}}
+                onChange={onChange}
+                onRemove={jest.fn()}
+            />
         </ThemeProvider>
     );
 
@@ -46,7 +54,11 @@ test('it calls onChange when the value changes', () => {
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <StatusCriterion state={{field: 'status', operator: Operator.EQUALS, value: true}} onChange={onChange} />
+            <StatusCriterion
+                state={{field: 'status', operator: Operator.EQUALS, value: true}}
+                onChange={onChange}
+                onRemove={jest.fn()}
+            />
         </ThemeProvider>
     );
 

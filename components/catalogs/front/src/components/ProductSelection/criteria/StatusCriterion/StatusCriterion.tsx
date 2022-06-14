@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {List, SelectInput} from 'akeneo-design-system';
+import {CloseIcon, IconButton, List, SelectInput} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
 import {CriterionModule} from '../../models/Criterion';
 import {StatusCriterionOperator, StatusCriterionState} from './types';
@@ -12,7 +12,7 @@ const Inputs = styled.div`
     gap: 20px;
 `;
 
-const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onChange}) => {
+const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onChange, onRemove}) => {
     const translateOperator = useOperatorTranslator();
     const translate = useTranslate();
 
@@ -55,6 +55,9 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                     </SelectInput>
                 </Inputs>
             </List.Cell>
+            <List.RemoveCell>
+                <IconButton ghost='borderless' level='tertiary' icon={<CloseIcon />} title='' onClick={onRemove} />
+            </List.RemoveCell>
         </List.Row>
     );
 };

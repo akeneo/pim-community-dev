@@ -4,6 +4,7 @@ import {FC} from 'react';
 export type CriterionModule<State> = {
     state: State;
     onChange: (state: State) => void;
+    onRemove: () => void;
 };
 
 export type CriterionState = {
