@@ -15,7 +15,7 @@ define([
   'pim/template/form/index/create-button',
   'routing',
   'pim/dialogform',
-  'pim/form-builder',
+  'pim/form-builder'
 ], function ($, _, __, BaseForm, template, Routing, DialogForm, FormBuilder) {
   return BaseForm.extend({
     template: _.template(template),
