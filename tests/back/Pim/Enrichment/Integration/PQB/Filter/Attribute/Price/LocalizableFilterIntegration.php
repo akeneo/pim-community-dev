@@ -3,6 +3,10 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Price;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -35,26 +39,26 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_price' => [
-                    ['data' => [['amount' => 20, 'currency' => 'EUR']], 'locale' => 'en_US', 'scope' => null],
-                    ['data' => [['amount' => 21, 'currency' => 'EUR']], 'locale' => 'fr_FR', 'scope' => null],
-                ],
-            ],
+            new SetFamily('a_family'),
+            new SetPriceCollectionValue('a_localizable_price', null, 'en_US',
+                [new PriceValue(20, 'EUR')]
+            ),
+            new SetPriceCollectionValue('a_localizable_price', null, 'fr_FR',
+                [new PriceValue(21, 'EUR')]
+            ),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_price' => [
-                    ['data' => [['amount' => 10, 'currency' => 'EUR']], 'locale' => 'en_US', 'scope' => null],
-                    ['data' => [['amount' => 1, 'currency' => 'EUR']], 'locale' => 'fr_FR', 'scope' => null],
-                ],
-            ],
+            new SetFamily('a_family'),
+            new SetPriceCollectionValue('a_localizable_price', null, 'en_US',
+                [new PriceValue(10, 'EUR')]
+            ),
+            new SetPriceCollectionValue('a_localizable_price', null, 'fr_FR',
+                [new PriceValue(1, 'EUR')]
+            ),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorInferior()

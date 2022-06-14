@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Option;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -46,30 +48,22 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_scopable_simple_select' => [
-                    ['data' => 'orange', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'orange', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 'black', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'black', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetSimpleSelectValue('a_localizable_scopable_simple_select', 'ecommerce', 'en_US', 'orange'),
+            new SetSimpleSelectValue('a_localizable_scopable_simple_select', 'ecommerce', 'fr_FR', 'orange'),
+            new SetSimpleSelectValue('a_localizable_scopable_simple_select', 'tablet', 'en_US', 'black'),
+            new SetSimpleSelectValue('a_localizable_scopable_simple_select', 'tablet', 'fr_FR', 'black'),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_scopable_simple_select' => [
-                    ['data' => 'black', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'black', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 'black', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'black', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetSimpleSelectValue('a_localizable_scopable_simple_select', 'ecommerce', 'en_US', 'black'),
+            new SetSimpleSelectValue('a_localizable_scopable_simple_select', 'ecommerce', 'fr_FR', 'black'),
+            new SetSimpleSelectValue('a_localizable_scopable_simple_select', 'tablet', 'en_US', 'black'),
+            new SetSimpleSelectValue('a_localizable_scopable_simple_select', 'tablet', 'fr_FR', 'black'),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorIn()
