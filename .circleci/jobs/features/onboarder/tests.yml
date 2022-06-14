@@ -62,7 +62,9 @@ jobs:
                     command: docker-compose pull node
             - run:
                     name: Install front dependencies
-                    command: make node_modules
+                    command:  |
+                        make node_modules
+                        PIM_CONTEXT=onboarder-serenity make front-dependencies-supplier
             -   run:
                     name: Run tests front for Onboarder Serenity
                     command: PIM_CONTEXT=onboarder-serenity make tests-front-onboarder
