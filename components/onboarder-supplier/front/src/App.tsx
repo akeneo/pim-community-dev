@@ -2,7 +2,7 @@ import React from 'react';
 import styled, {ThemeProvider} from 'styled-components';
 import {CommonStyle, onboarderTheme} from 'akeneo-design-system';
 import {QueryClientProvider} from 'react-query';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {HashRouter, Route, Switch} from 'react-router-dom';
 import {Authentication} from './Authentication';
 import {UserContextProvider} from './contexts';
 import {queryClient} from './api';
@@ -14,7 +14,7 @@ function App() {
             <IntlProvider locale="en" defaultLocale="en" messages={{}}>
                 <UserContextProvider>
                     <QueryClientProvider client={queryClient}>
-                        <BrowserRouter>
+                        <HashRouter>
                             <Switch>
                                 <Route path={`/(set-up-password|login)/`}>
                                     <Container>
@@ -22,7 +22,7 @@ function App() {
                                     </Container>
                                 </Route>
                             </Switch>
-                        </BrowserRouter>
+                        </HashRouter>
                     </QueryClientProvider>
                 </UserContextProvider>
             </IntlProvider>

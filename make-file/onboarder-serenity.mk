@@ -1,6 +1,10 @@
 DOCKER_COMPOSE_RUN_PHP_TEST_ENV = $(DOCKER_COMPOSE) run --rm -e APP_ENV=test php
 DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV = $(DOCKER_COMPOSE) run --rm -e APP_ENV=test_fake php
 
+.PHONY: install-front-dependencies-supplier
+install-front-dependencies-supplier: #Doc: Install front dependencies for the Supplier part of Onboarder Serenity
+	$(YARN_RUN) --cwd=components/onboarder-supplier/front install
+
 .PHONY: lint-back-retailer
 lint-back-retailer: #Doc: Run PHPStan and PHPCSFixer for the retailer part of Onboarder Serenity
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/onboarder-retailer/back/tests/phpstan.neon
@@ -22,7 +26,7 @@ lint-front-retailer: #Doc: Run Prettier and Eslint for the retailer part of Onbo
 
 .PHONY: lint-front-supplier
 lint-front-supplier: #Doc: Run Prettier and Eslint for the supplier part of Onboarder Serenity
-	$(YARN_RUN) run --cwd=components/onboarder-supplier/front lint:check
+	$(NODE_RUN) /bin/sh -c "cd components/onboarder-supplier/front" && $(YARN_RUN) --cwd=components/onboarder-supplier/front lint:check
 
 lint-front: lint-front-retailer lint-front-supplier #Doc: Run Prettier and Eslint for Onboarder Serenity
 
@@ -61,7 +65,7 @@ unit-front-retailer: #Doc: Run unit front tests for the retailer part of Onboard
 
 .PHONY: unit-front-supplier
 unit-front-supplier: #Doc: Run unit front tests for the supplier part of Onboarder Serenity
-	$(YARN_RUN) run --cwd=components/onboarder-supplier/front test:unit:run
+	$(NODE_RUN) /bin/sh -c "cd components/onboarder-supplier/front" && $(YARN_RUN) run --cwd=components/onboarder-supplier/front test:unit:run
 
 .PHONY: unit-front
 unit-front: unit-front-retailer unit-front-supplier #Doc: Run unit front tests for Onboarder Serenity
@@ -97,3 +101,7 @@ tests-front-onboarder: lint-front unit-front #Doc: Run front tests for Onboarder
 .PHONY: extract-front-translations
 extract-front-translations: #Doc: Extract translations for Crowdin
 	$(YARN_RUN) run --cwd=components/onboarder-supplier/front i18n-extract 'src/**/*.{ts,tsx}' --ignore '**/*.{test,d}.{ts,tsx}' --format simple --out-file src/translations/messages.en.json
+
+.PHONY: build-onboarder-supplier-front-app
+build-onboarder-supplier-front-app: #Doc: Build Onboarder supplier frontend application
+	$(YARN_RUN) run --cwd=components/onboarder-supplier/front app:build
