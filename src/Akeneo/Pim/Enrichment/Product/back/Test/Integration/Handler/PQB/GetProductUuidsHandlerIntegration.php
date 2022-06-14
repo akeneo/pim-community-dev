@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Test\Integration\Handler\PQB;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
@@ -15,6 +16,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
+use Webmozart\Assert\Assert as WebmozartAssert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -125,6 +127,7 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
     {
         $product = $this->productRepository->findOneByIdentifier($productIdentifier);
         Assert::assertNotNull($product);
+        WebmozartAssert::isInstanceOf($product, Product::class);
 
         return $product->getUuid()->toString();
     }
