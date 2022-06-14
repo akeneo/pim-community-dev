@@ -45,6 +45,7 @@ $rules = [
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface',
+            'Symfony\Component\Validator\Exception\UnexpectedTypeException',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
@@ -123,8 +124,6 @@ $rules = [
             'Symfony\Component\Routing\Generator\UrlGeneratorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
-            'Symfony\Component\Validator\Context\ExecutionContextInterface',
-            'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
             'Twig\Environment',
         ],
     )->in('Akeneo\OnboarderSerenity\Retailer\Test\Unit'),
@@ -133,6 +132,9 @@ $rules = [
         [
             // Onboarder coupling
             'Akeneo\OnboarderSerenity\Retailer\Domain',
+            'Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAccount\Exception\InvalidPassword',
+            'Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAccount\UpdatePassword',
+            'Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAccount\UpdatePasswordHandler',
             'Akeneo\OnboarderSerenity\Retailer\Application\Supplier',
             'Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier',
             'Akeneo\OnboarderSerenity\Retailer\Infrastructure\Authentication',

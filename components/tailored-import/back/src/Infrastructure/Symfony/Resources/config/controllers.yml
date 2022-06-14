@@ -67,3 +67,9 @@ services:
     arguments:
       - '@validator'
       - '@serializer'
+
+  akeneo.tailored_import.controller.get_category_trees_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetCategoryTreesAction
+    public: true
+    arguments:
+      - '@akeneo.tailored_import.infrastructure.public_api.find_category_trees'
