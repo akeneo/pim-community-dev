@@ -236,6 +236,27 @@ abstract class TestCase extends KernelTestCase
         return $user;
     }
 
+    protected function createUserAllRoles(string $username, array $groups): User
+    {
+        $user = $this->get('pim_user.factory.user')->create();
+        $user->setUsername($username);
+        $user->setEmail(sprintf('%s@example.com', uniqid()));
+        $user->setPassword('fake');
+
+        foreach ($groups as $group) {
+            $user->addGroup($group);
+        }
+
+        $roles = $this->get('pim_user.repository.role')->findAll();
+        foreach ($roles as $role) {
+            $user->addRole($role);
+        }
+
+        $this->get('pim_user.saver.user')->save($user);
+
+        return $user;
+    }
+
     protected function getUserId(string $username): int
     {
         $query = <<<SQL

@@ -65,8 +65,7 @@ final class SqlGetConnectorProducts implements GetConnectorProducts
         ?array $attributesToFilterOn,
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
-    ): ConnectorProductList
-    {
+    ): ConnectorProductList {
         $rows = array_replace_recursive(
             $this->getValuesAndPropertiesFromProductUuids->fetchByProductUuids($productUuids),
             $this->fetchAssociationsIndexedByProductUuids($productUuids),
@@ -200,7 +199,6 @@ final class SqlGetConnectorProducts implements GetConnectorProducts
     {
         $associations = array_replace_recursive(
             $this->getProductAssociationsByProductUuids->fetchByProductUuids($productUuids),
-
             $this->getProductModelAssociationsByProductUuids->fetchByProductUuids($productUuids),
             $this->getGroupAssociationsByProductUuids->fetchByProductUuids($productUuids)
         );

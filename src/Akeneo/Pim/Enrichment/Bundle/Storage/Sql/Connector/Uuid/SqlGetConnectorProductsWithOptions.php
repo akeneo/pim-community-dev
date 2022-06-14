@@ -16,7 +16,7 @@ use Ramsey\Uuid\UuidInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlGetConnectorProductsWithOptions  implements GetConnectorProducts
+class SqlGetConnectorProductsWithOptions implements GetConnectorProducts
 {
     public function __construct(
         private GetConnectorProducts $getConnectorProducts,
