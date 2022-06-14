@@ -52,19 +52,18 @@ jobs:
                     command: |
                         sudo chown -R 1000:1000 ../project
                         sudo chown -R 1000:1000 ~/.cache/yarn
-            -   run:
-                    name: Recreate Docker network
-                    command: |
-                        docker network prune -f
-                        docker network create project_pim
+#            -   run:
+#                    name: Recreate Docker network
+#                    command: |
+#                        docker network prune -f
+#                        docker network create project_pim
             -   run:
                     name: Pull docker image for node
                     command: docker-compose pull node
             - run:
-                    name: Install front dependencies
+                    name: Install supplier front dependencies
                     command:  |
                         PIM_CONTEXT=onboarder-serenity make front-dependencies-supplier
-                        make node_modules
             -   run:
                     name: Run tests front for Onboarder Serenity
                     command: PIM_CONTEXT=onboarder-serenity make tests-front-onboarder

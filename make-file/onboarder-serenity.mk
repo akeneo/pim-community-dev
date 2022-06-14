@@ -26,7 +26,7 @@ lint-front-retailer: #Doc: Run Prettier and Eslint for the retailer part of Onbo
 
 .PHONY: lint-front-supplier
 lint-front-supplier: #Doc: Run Prettier and Eslint for the supplier part of Onboarder Serenity
-	$(YARN_RUN) run --cwd=components/onboarder-supplier/front lint:check
+	$(NODE_RUN) /bin/sh -c "cd components/onboarder-supplier/front" && $(YARN_RUN) --cwd=components/onboarder-supplier/front lint:check
 
 lint-front: lint-front-retailer lint-front-supplier #Doc: Run Prettier and Eslint for Onboarder Serenity
 
@@ -65,7 +65,7 @@ unit-front-retailer: #Doc: Run unit front tests for the retailer part of Onboard
 
 .PHONY: unit-front-supplier
 unit-front-supplier: #Doc: Run unit front tests for the supplier part of Onboarder Serenity
-	$(YARN_RUN) run --cwd=components/onboarder-supplier/front test:unit:run
+	$(NODE_RUN) /bin/sh -c "cd components/onboarder-supplier/front" && $(YARN_RUN) run --cwd=components/onboarder-supplier/front test:unit:run
 
 .PHONY: unit-front
 unit-front: unit-front-retailer unit-front-supplier #Doc: Run unit front tests for Onboarder Serenity

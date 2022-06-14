@@ -88,7 +88,7 @@ workflows:
 #            - checkout
       - test_front_onboarder:
           requires:
-#            - build_srnt_dev
+            - build_srnt_dev
             - checkout
 #            - install_onboarder_supplier_front_dependencies
       - test_back_onboarder:
