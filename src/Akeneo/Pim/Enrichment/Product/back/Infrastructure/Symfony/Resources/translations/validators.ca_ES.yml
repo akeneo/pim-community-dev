@@ -1,0 +1,10 @@
+pim_enrich.product:
+  validation:
+    upsert:
+      set_value:
+        no_locale_code_provided_for_localizable_attribute: 'L''atribut {{ attributeCode }} requereix una configuració regional'
+        locale_code_provided_for_non_localizable_attribute: 'L''atribut {{ attributeCode }} no requereix cap localització, s''ha detectat "{{ localeCode }}"'
+        invalid_locale_code_for_locale_specific_attribute: 'El {{ attributeCode }} requereix una de les configuracions regionals següents: {{ availableLocales }}; S''ha detectat "{{ localeCode }}".'
+        channel_does_not_exist: 'El canal {{ channelCode }} no existeix'
+        locale_is_not_active: 'La configuració regional {{ localeCode }} no existeix o no està activa'
+        locale_not_activated_for_channel: 'La configuració regional {{ localeCode }} no està activada per al canal {{ channelCode }}'
