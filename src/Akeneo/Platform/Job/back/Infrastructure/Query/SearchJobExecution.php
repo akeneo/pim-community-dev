@@ -68,8 +68,7 @@ SQL;
             job_execution.user,
             job_execution.status,
             job_execution.is_stoppable,
-            job_execution.step_count,
-            job_execution.health_check_time
+            job_execution.step_count
         FROM akeneo_batch_job_execution job_execution
         JOIN akeneo_batch_job_instance job_instance ON job_execution.job_instance_id = job_instance.id
         WHERE job_execution.is_visible = 1

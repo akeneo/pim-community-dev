@@ -2,16 +2,11 @@ services:
   Akeneo\Platform\Job\Infrastructure\Hydrator\JobExecutionRowHydrator:
     arguments:
       - '@Akeneo\Platform\Job\Infrastructure\Hydrator\JobExecutionTrackingHydrator'
-      - '@Akeneo\Platform\Job\Infrastructure\Hydrator\JobExecutionHealthCheckHydrator'
 
   Akeneo\Platform\Job\Infrastructure\Hydrator\JobExecutionTrackingHydrator:
     arguments:
       - '@Akeneo\Platform\Job\Infrastructure\Hydrator\StepExecutionTrackingHydrator'
 
   Akeneo\Platform\Job\Infrastructure\Hydrator\StepExecutionTrackingHydrator:
-    arguments:
-      - '@Akeneo\Platform\Job\Infrastructure\Clock\ClockInterface'
-
-  Akeneo\Platform\Job\Infrastructure\Hydrator\JobExecutionHealthCheckHydrator:
     arguments:
       - '@Akeneo\Platform\Job\Infrastructure\Clock\ClockInterface'

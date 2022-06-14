@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionHealthCheck;
 use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTracking;
 use Akeneo\Platform\Job\Application\SearchJobExecution\Model\StepExecutionTracking;
@@ -392,7 +391,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'user' => 'julia',
             'status' => Status::COMPLETED,
             'is_stoppable' => false,
-            'health_check_time' => '2020-01-02T01:00:05+01:00',
         ]);
 
         $this->jobExecutionIds[] = $this->fixturesJobHelper->createJobExecution([
@@ -473,7 +471,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     'import',
                     new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
                     'julia',
-                    new JobExecutionHealthCheck(Status::fromLabel('COMPLETED'), new \DateTimeImmutable('2020-01-02T00:00:05+00:00'), new \DateTimeImmutable('2020-01-02 01:00:00')),
+                    Status::fromLabel('COMPLETED'),
                     false,
                     new JobExecutionTracking(3, 3, [
                         new StepExecutionTracking(
@@ -514,7 +512,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     'import',
                     new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
                     'peter',
-                    new JobExecutionHealthCheck(Status::fromLabel('IN_PROGRESS'), null, new \DateTimeImmutable('2020-01-02 01:00:00')),
+                    Status::fromLabel('IN_PROGRESS'),
                     true,
                     new JobExecutionTracking(1, 3, [
                         new StepExecutionTracking(
@@ -535,7 +533,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     'import',
                     null,
                     null,
-                    new JobExecutionHealthCheck(Status::fromLabel('STARTING'), null, new \DateTimeImmutable('2020-01-02 01:00:00')),
+                    Status::fromLabel('STARTING'),
                     true,
                     new JobExecutionTracking(0, 3, []),
                 ),
@@ -545,7 +543,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     'export',
                     null,
                     null,
-                    new JobExecutionHealthCheck(Status::fromLabel('STARTING'), null, new \DateTimeImmutable('2020-01-02 01:00:00')),
+                    Status::fromLabel('STARTING'),
                     true,
                     new JobExecutionTracking(0, 3, []),
                 ),

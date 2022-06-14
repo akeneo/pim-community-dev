@@ -6,5 +6,5 @@ namespace Akeneo\Platform\Job\Infrastructure\Clock;
 
 interface ClockInterface
 {
-    public function now(): \DateTimeImmutable;
+    public function now(): \DateTimeInterface;
 }
