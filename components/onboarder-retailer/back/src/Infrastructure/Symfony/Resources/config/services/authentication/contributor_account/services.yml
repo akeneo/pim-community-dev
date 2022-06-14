@@ -21,6 +21,7 @@ services:
     arguments:
       - '@Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
       - '@security.user_password_hasher'
+      - '@validator'
       - '@logger'
 
   #Repositories
@@ -55,3 +56,8 @@ services:
     arguments:
       - '@router'
       - '@twig'
+
+  # Validators
+  Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAccount\Validation\PasswordValidator:
+    tags:
+      - { name: validator.constraint_validator }
