@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Text;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -31,21 +32,13 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_scopable_text' => [
-                    ['data' => 'cat is beautiful', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => 'dog is wonderful', 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetTextValue('a_scopable_text', 'ecommerce', null, 'cat is beautiful'),
+            new SetTextValue('a_scopable_text', 'tablet', null, 'dog is wonderful'),
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_scopable_text' => [
-                    ['data' => 'dog is wonderful', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => 'cat is beautiful', 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetTextValue('a_scopable_text', 'ecommerce', null, 'dog is wonderful'),
+            new SetTextValue('a_scopable_text', 'tablet', null, 'cat is beautiful'),
         ]);
 
         $this->createProduct('empty_product', []);
