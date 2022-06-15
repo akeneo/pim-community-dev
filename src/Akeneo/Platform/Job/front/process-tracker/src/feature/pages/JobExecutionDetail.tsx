@@ -112,7 +112,7 @@ const JobExecutionDetail = ({jobExecutionId}: JobExecutionDetailProps) => {
     return (
       <FullScreenError
         title={translate('error.exception', {status_code: error.statusCode.toString()})}
-        message={error.statusMessage}
+        message={error.message}
         code={error.statusCode}
       />
     );

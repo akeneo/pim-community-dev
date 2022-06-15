@@ -1,28 +1,21 @@
-import {useEffect, useState} from 'react';
-import {useRoute, useIsMounted} from '@akeneo-pim-community/shared';
+import {useRoute} from '@akeneo-pim-community/shared';
+import {useQuery} from "react-query";
 
-const useJobExecutionTypes = (): string[] | null => {
-  const [jobExecutionTypes, setJobExecutionTypes] = useState<string[] | null>(null);
+const useJobExecutionTypes = (): string[] => {
   const route = useRoute('akeneo_job_get_job_type_action');
-  const isMounted = useIsMounted();
+  const fetchJobExecutionTypes = async () => {
+    const response = await fetch(route, {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    });
 
-  useEffect(() => {
-    const fetchJobExecutionTypes = async () => {
-      const response = await fetch(route, {
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-      });
+    return await response.json();
+  };
 
-      if (isMounted()) {
-        setJobExecutionTypes(await response.json());
-      }
-    };
+  const {data} = useQuery<string[]>('process_tracker_job_execution_type', fetchJobExecutionTypes);
 
-    fetchJobExecutionTypes();
-  }, [route, isMounted]);
-
-  return jobExecutionTypes;
+  return data ?? [];
 };
 
 export {useJobExecutionTypes};

@@ -1,59 +1,46 @@
-import {useCallback, useEffect, useState} from 'react';
-import {useRoute, useIsMounted, useDocumentVisibility} from '@akeneo-pim-community/shared';
-import {isJobFinished, JobExecution} from '../models/JobExecutionDetail';
+import {useRoute} from '@akeneo-pim-community/shared';
+import {useQuery} from "react-query";
+import {isJobFinished, JobExecution} from "../models";
+import {useState} from "react";
 
-type Error = {
-  statusMessage: string;
-  statusCode: number;
-};
+class QueryError extends Error {
+  public statusCode: number;
+
+  constructor(statusMessage: string, statusCode: number) {
+    super(statusMessage);
+    this.statusCode = statusCode;
+  }
+}
 
 const useJobExecution = (jobExecutionId: string) => {
-  const isMounted = useIsMounted();
-  const [jobExecution, setJobExecution] = useState<JobExecution | null>(null);
-  const [error, setError] = useState<Error | null>(null);
+  const [willRefresh, setWillRefresh] = useState(true);
   const route = useRoute('pim_enrich_job_execution_rest_get', {identifier: jobExecutionId});
-  const isDocumentVisible = useDocumentVisibility();
-  const willRefresh = isDocumentVisible && !isJobFinished(jobExecution);
-  const [isFetching, setIsFetching] = useState<boolean>(false);
-
-  const fetchJobExecution = useCallback(async () => {
-    if (isFetching) {
-      return;
-    }
-    if (isMounted()) {
-      setIsFetching(true);
-    }
+  const fetchJobExecution = async () => {
     const response = await fetch(route);
-    if (isMounted()) {
-      setIsFetching(false);
-    }
     if (!response.ok) {
-      setError({
-        statusMessage: response.statusText,
-        statusCode: response.status,
-      });
-
-      return;
+      throw new QueryError(response.statusText, response.status);
     }
 
     const jobExecution = await response.json();
-
-    if (isMounted()) {
-      setJobExecution(jobExecution);
+    if (isJobFinished(jobExecution)) {
+      setWillRefresh(false);
     }
-  }, [route, isFetching, isMounted]);
 
-  useEffect(() => {
-    if (!willRefresh) return;
+    return jobExecution;
+  };
 
-    const interval = setInterval(fetchJobExecution, 1000);
+  const {data, error, refetch} = useQuery<JobExecution, QueryError>(
+    'process_tracker_job_execution',
+    fetchJobExecution,
+    {
+      /** TODO fix it */
+      enabled: willRefresh,
+      refetchInterval: 1000,
+      refetchOnWindowFocus: true
+    }
+  );
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [willRefresh, isFetching, fetchJobExecution]);
-
-  return [jobExecution, error, fetchJobExecution, willRefresh] as const;
+  return [data ?? null, error, refetch, willRefresh] as const;
 };
 
 export {useJobExecution};

@@ -45,26 +45,25 @@ const UserFilter = ({userFilterValue, onUserFilterChange}: UserFilterProps) => {
               <Checkbox checked={0 === userFilterValue.length} onChange={() => onUserFilterChange([])} />
               {translate('akeneo_job_process_tracker.user_filter.all')}
             </Dropdown.Item>
-            {users &&
-              users
-                .filter(user => user.indexOf(searchValue) !== -1)
-                .map(user => (
-                  <Dropdown.Item key={user}>
-                    <Checkbox
-                      checked={userFilterValue.includes(user)}
-                      onChange={checked => {
-                        if (checked) {
-                          onUserFilterChange([...userFilterValue, user]);
-                        } else {
-                          onUserFilterChange(
-                            userFilterValue.filter(userFilterValueType => userFilterValueType !== user)
-                          );
-                        }
-                      }}
-                    />
-                    {user}
-                  </Dropdown.Item>
-                ))}
+            {users
+              .filter(user => user.indexOf(searchValue) !== -1)
+              .map(user => (
+                <Dropdown.Item key={user}>
+                  <Checkbox
+                    checked={userFilterValue.includes(user)}
+                    onChange={checked => {
+                      if (checked) {
+                        onUserFilterChange([...userFilterValue, user]);
+                      } else {
+                        onUserFilterChange(
+                          userFilterValue.filter(userFilterValueType => userFilterValueType !== user)
+                        );
+                      }
+                    }}
+                  />
+                  {user}
+                </Dropdown.Item>
+              ))}
           </Dropdown.ItemCollection>
         </Dropdown.Overlay>
       )}

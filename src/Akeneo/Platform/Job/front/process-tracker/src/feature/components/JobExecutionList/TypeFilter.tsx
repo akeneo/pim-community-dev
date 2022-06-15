@@ -39,22 +39,21 @@ const TypeFilter = ({typeFilterValue, onTypeFilterChange}: TypeFilterProps) => {
               <Checkbox checked={0 === typeFilterValue.length} onChange={() => onTypeFilterChange([])} />
               {translate('akeneo_job_process_tracker.type_filter.all')}
             </Dropdown.Item>
-            {types &&
-              types.map(type => (
-                <Dropdown.Item key={type}>
-                  <Checkbox
-                    checked={typeFilterValue.includes(type)}
-                    onChange={checked => {
-                      if (checked) {
-                        onTypeFilterChange([...typeFilterValue, type]);
-                      } else {
-                        onTypeFilterChange(typeFilterValue.filter(typeFilterValueType => typeFilterValueType !== type));
-                      }
-                    }}
-                  />
-                  {translate(`akeneo_job_process_tracker.type_filter.${type}`)}
-                </Dropdown.Item>
-              ))}
+            {types.map(type => (
+              <Dropdown.Item key={type}>
+                <Checkbox
+                  checked={typeFilterValue.includes(type)}
+                  onChange={checked => {
+                    if (checked) {
+                      onTypeFilterChange([...typeFilterValue, type]);
+                    } else {
+                      onTypeFilterChange(typeFilterValue.filter(typeFilterValueType => typeFilterValueType !== type));
+                    }
+                  }}
+                />
+                {translate(`akeneo_job_process_tracker.type_filter.${type}`)}
+              </Dropdown.Item>
+            ))}
           </Dropdown.ItemCollection>
         </Dropdown.Overlay>
       )}
