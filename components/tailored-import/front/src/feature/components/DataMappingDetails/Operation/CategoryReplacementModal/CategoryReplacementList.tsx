@@ -1,6 +1,6 @@
 import {Helper, Table, TagInput} from "akeneo-design-system";
 import React from "react";
-import {CategoryTree} from "../../../../models/Category";
+import {CategoryTree} from "../../../../models";
 import {getLabel, useTranslate, useUserContext, ValidationError, filterErrors} from "@akeneo-pim-community/shared";
 import {ReplacementValues} from "../../../../models";
 import styled from "styled-components";

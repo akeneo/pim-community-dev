@@ -3,6 +3,7 @@ export * from './AttributeOption';
 export * from './AvailableTarget';
 export * from './BooleanReplacementValues';
 export * from './Column';
+export * from './Category';
 export * from './Configuration';
 export * from './Configurator';
 export * from './DataMapping';
