@@ -26,15 +26,20 @@ teamwork_assistant:
   create_project_modal:
     saved: El projecte s'ha guardat, se li notificarà quan hagi finalitzat el càlcul.
     title: Projecte
+    label_already_used: Aquest valor ja s'utilitza per a un projecte.
   widget:
     no_project: No té cap projecte
     no_project_create: crear un nou projecte
     description: Descripció
     due_date: Data límit
+    todo: Pendent
+    in_progress: En procés
+    done: Fet
     all_contributors: Tots els col·laboradors
     you: Tú
     display_products: Mostrar productes
     projects: Projectes
+    contributors: Col·laboradors
     placeholder:
       contributor_selector: Buscar col·laborador
       project_selector: Buscar projecte
@@ -42,6 +47,8 @@ teamwork_assistant:
       to_start: PRODUCTES A COMENÇAR
       in_progress: Productes en progrés
       done: Productes acabats
+    searching: cercant...
+    no_search_results: Ho sentim, no hi ha resultats.
 pim_datagrid:
   view_selector:
     project: Projectes
@@ -59,3 +66,6 @@ pim_notification:
     project_finished: Projecte acabat
     project_calculation: Càlcul de projecte
     project_due_date: Data de finalització del projecte
+pim_analytics:
+  info_type:
+    nb_projects: Número de projectes

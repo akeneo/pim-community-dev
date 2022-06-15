@@ -76,6 +76,7 @@ pim_reference_entity:
       confirm: Desar
     delete:
       message: Esteu segur que voleu suprimir l'entitat "{{ referenceEntityLabel }}"?
+      title: Entitat de referència
     notification:
       save:
         success: Entitat de referència actualitzada correctament.
@@ -97,7 +98,11 @@ pim_reference_entity:
       link: Clic aquí per afegir el teu primer grup usuari
   record:
     mass_delete:
+      confirm: '[0,1]Confirmeu que voleu suprimir el {{ count }} registre seleccionat?|]1,Inf]Esteu segur que voleu suprimir el {{ count }} registres seleccionats?'
+      extra_information: Si estan enllaçats a productes, s'eliminaran els enllaços als productes.
+      confirm_label: Escriviu "{{ referenceEntityIdentifier }}"
       title: Registres
+    record_selected: '{0} {{ count }} registre seleccionat|{1} {{ count }} registre seleccionat|]1,Inf] {{ count }} registres seleccionats'
     validation:
       limit_reached: 'Vostè no pot crear el registre "{{ %record_label% }}" perquè vostè ha arribat al límit de registres {{ %limit% }} per a aquesta entitat de referència'
       code:
@@ -120,7 +125,10 @@ pim_reference_entity:
     button:
       save: Desar
       create: Afegir nou
+      delete: Suprimeix el registre
       back: Torna a la llista
+      edit: Editar el registre
+      view: Veure registre
     product:
       attribute: Atribut de producte
       counter: '{{ totalCount }} resultat|{{ totalCount }} resultats'
@@ -199,6 +207,9 @@ pim_reference_entity:
       delete:
         success: Registre "{{ code }}" correctament eliminat.
         fail: S'ha produït un error durant l'eliminació del registre
+      mass_delete:
+        success: S'ha llançat l'acció massiva "Supressió massiva". Se us notificarà quan s'hagi completat.
+        fail: "S'ha produït un error durant l'inici de la tasca d'eliminació massiva: {{ error }}"
     completeness:
       label: Complet
   attribute:
@@ -323,6 +334,39 @@ pim_catalog_volume:
     count_reference_entity: Entitats de referència
     average_max_records_per_reference_entity: Registres per entitat de referencia
     average_max_attributes_per_reference_entity: Atributs per entitat de referencia
+batch_jobs:
+  default_steps:
+    mass_delete_records: Executar l'eliminació massiva de registres
+  reference_entity_label: Entitat de referència
+  csv_reference_entity_record_export:
+    label: Exportació de registres d'entitat de referència en CSV
+    export.label: Exportar registres
+  xlsx_reference_entity_record_export:
+    label: Exportació de registres d'entitat de referència en XLSX
+    export.label: Exportar registres
+  csv_reference_entity_record_import:
+    label: Importació de registres d'entitat de referència en CSV
+    import.label: Importar registres
+  xlsx_reference_entity_record_import:
+    label: Importació de registres d'entitat de referència a XLSX
+    import.label: Importar registres
 job_execution:
   summary:
     records: Registres
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Supressió massiva de registres
+akeneo_job_process_tracker:
+  type_filter:
+    reference_entity_mass_delete_records: Supressió massiva de registres
+pim_analytics:
+  info_type:
+    nb_reference_entities: Nombre d'entitats de referència
+    max_number_of_records_per_reference_entity: Nombre màxim de registres per entitat de referència
+    average_number_of_values_per_records: Mitjana de valors per registre en totes les entitats de referència
+    average_number_of_records_per_reference_entity: Mitjana de registres per entitat de referència
+    max_number_of_attributes_per_reference_entity: Nombre màxim d'atributs per entitat de referència
+    average_number_of_attributes_per_reference_entity: Nombre mitjà d'atributs per entitat de referència
+    average_percentage_localizable_only_attributes: Percentatge mitjà d'atributs només localitzables per entitat de referència
+    average_percentage_scopable_only_attributes: Percentatge mitjà d'atributs només abastables per entitat de referència
+    average_percentage_scopable_and_localizable_attributes: Percentatge mitjà d'atributs localitzables i abastables per entitat de referència
