@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {Button, Field, getColor, TextInput} from 'akeneo-design-system';
 import {PasswordInput} from './components/PasswordInput';
@@ -8,9 +8,14 @@ import {FormattedMessage, useIntl} from 'react-intl';
 const SetUpPassword = () => {
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
+    const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
     const intl = useIntl();
 
-    const isSubmitButtonDisabled = '' === password || '' === passwordConfirmation || password !== passwordConfirmation;
+    useEffect(() => {
+        const isPasswordValid =
+            password.match(/(^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,255})$/) && password === passwordConfirmation;
+        setIsSubmitButtonDisabled(!isPasswordValid);
+    }, [password, passwordConfirmation, setIsSubmitButtonDisabled]);
 
     return (
         <UnauthenticatedContainer>
@@ -42,7 +47,7 @@ const SetUpPassword = () => {
                         defaultMessage: 'Password',
                     })}
                 >
-                    <PasswordInput onChange={setPassword} value={password} />
+                    <PasswordInput data-testid="password-input" onChange={setPassword} value={password} />
                 </StyledField>
                 <StyledField
                     label={intl.formatMessage({
@@ -50,7 +55,12 @@ const SetUpPassword = () => {
                         defaultMessage: 'Confirm your password',
                     })}
                 >
-                    <TextInput type="password" onChange={setPasswordConfirmation} value={passwordConfirmation} />
+                    <TextInput
+                        data-testid="confirm-password-input"
+                        type="password"
+                        onChange={setPasswordConfirmation}
+                        value={passwordConfirmation}
+                    />
                 </StyledField>
                 <PasswordRequirements>
                     <p>
@@ -60,7 +70,7 @@ const SetUpPassword = () => {
                         />
                     </p>
                     <p>
-                        <FormattedMessage defaultMessage="At least 8 caracters" id="OF6NrW" />
+                        <FormattedMessage defaultMessage="At least 8 characters" id="YwMziN" />
                     </p>
                     <p>
                         <FormattedMessage defaultMessage="At least an upper-case letter" id="ek9x6P" />
@@ -75,7 +85,7 @@ const SetUpPassword = () => {
                         <FormattedMessage defaultMessage="Correct confirmation" id="XurM/d" />
                     </p>
                 </PasswordRequirements>
-                <Button type="button" disabled={isSubmitButtonDisabled}>
+                <Button data-testid="submit-button" type="button" disabled={isSubmitButtonDisabled}>
                     <FormattedMessage defaultMessage="Create My password" id="d8nJr6" />
                 </Button>
             </SetUpPasswordForm>
