@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
-import styled from "styled-components";
-import {Helper, LoaderIcon, Table, TagInput, ArrowRightIcon} from "akeneo-design-system";
-import {useTranslate, ValidationError, filterErrors} from "@akeneo-pim-community/shared";
-import {Category, ReplacementValues} from "../../../../models";
-import {useCategoryFetcher} from "../../../../hooks";
+import React, {useCallback, useEffect, useState} from 'react';
+import styled from 'styled-components';
+import {Helper, LoaderIcon, Table, TagInput, ArrowRightIcon} from 'akeneo-design-system';
+import {useTranslate, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
+import {Category, ReplacementValues} from '../../../../models';
+import {useCategoryFetcher} from '../../../../hooks';
 
 type CategoryTreeState = {
   loading?: boolean;
@@ -22,11 +22,12 @@ const Field = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
 `;
 
-const CategoryCell = styled(Table.Cell) < {level: number} >`
-  padding-left: ${({level}) => (level * 20)}px;
+const CategoryCell = styled(Table.Cell)<{level: number; isLeaf: boolean}>`
+  padding-left: ${({level}) => level * 20}px;
+  cursor: ${({isLeaf}) => (isLeaf ? 'default' : 'pointer')};
 `;
 
 const InnerCategoryCell = styled.div`
@@ -62,7 +63,7 @@ const CategoryReplacementRow = ({
 
   const handleMappingChange = (categoryTreeCode: string, newValues: string[]) => {
     onMappingChange({...mapping, [categoryTreeCode]: newValues});
-  }
+  };
 
   const handleOpenCategory = async () => {
     if (categoryState.isOpen) {
@@ -88,18 +89,18 @@ const CategoryReplacementRow = ({
   return (
     <>
       <Table.Row>
-        <CategoryCell level={level} onClick={handleOpenCategory}>
+        <CategoryCell level={level} isLeaf={tree.isLeaf} onClick={tree.isLeaf ? undefined : handleToggleCategory}>
           <InnerCategoryCell>
-          {!tree.isLeaf && (
-            <TreeArrowIcon size={14} $isFolderOpen={categoryState.isOpen} />
-          )}
-          {categoryState.loading && (
-            <LoaderIcon />
-          )}
-          {tree.label}
+            <TreeArrowIcon
+              color={tree.isLeaf ? 'transparent' : 'currentColor'}
+              size={14}
+              $isFolderOpen={categoryState.isOpen}
+            />
+            {categoryState.loading && <LoaderIcon />}
+            {tree.label}
           </InnerCategoryCell>
         </CategoryCell>
-        <Table.Cell>
+        <Table.Cell width="40%">
           <Field>
             <TagInput
               invalid={0 < valueErrors.length}
@@ -118,18 +119,19 @@ const CategoryReplacementRow = ({
           </Field>
         </Table.Cell>
       </Table.Row>
-      {categoryState.isOpen && categoryState.children.map((child) => (
-        <CategoryReplacementRow
-          key={child.id}
-          tree={child}
-          mapping={mapping}
-          validationErrors={validationErrors}
-          onMappingChange={onMappingChange}
-          level={level + 1}
-        />
-      ))}
+      {categoryState.isOpen &&
+        categoryState.children.map(child => (
+          <CategoryReplacementRow
+            key={child.id}
+            tree={child}
+            mapping={mapping}
+            validationErrors={validationErrors}
+            onMappingChange={onMappingChange}
+            level={level + 1}
+          />
+        ))}
     </>
-  )
-}
+  );
+};
 
 export {CategoryReplacementRow};

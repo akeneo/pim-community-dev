@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
-import styled from "styled-components";
-import {Button, Modal, TabBar, Table} from "akeneo-design-system";
+import React, {useEffect, useState} from 'react';
+import styled from 'styled-components';
+import {Button, Modal, TabBar, Table} from 'akeneo-design-system';
 import {
   formatParameters,
   getLabel,
@@ -10,12 +10,12 @@ import {
   useUserContext,
   ValidationError,
   useRoute,
-  filterErrors
-} from "@akeneo-pim-community/shared";
-import {ReplacementValues, CategoryTree} from "../../../../models";
-import {useCategoryTrees} from "../../../../hooks";
-import {CATEGORY_REPLACEMENT_OPERATION_TYPE} from "../Block";
-import {CategoryReplacementRow} from "./CategoryReplacementRow";
+  filterErrors,
+} from '@akeneo-pim-community/shared';
+import {ReplacementValues, CategoryTree} from '../../../../models';
+import {useCategoryTrees} from '../../../../hooks';
+import {CATEGORY_REPLACEMENT_OPERATION_TYPE} from '../Block';
+import {CategoryReplacementRow} from './CategoryReplacementRow';
 
 const Container = styled.div`
   width: 100%;
@@ -54,7 +54,7 @@ const CategoryReplacementModal = ({
   const validateReplacementOperationRoute = useRoute('pimee_tailored_import_validate_replacement_operation_action');
   const catalogLocale = useUserContext().get('catalogLocale');
   const categoryTrees = useCategoryTrees();
-  const [activeCategoryTree, setActiveCategoryTree] = useState<number|null>(null);
+  const [activeCategoryTree, setActiveCategoryTree] = useState<number | null>(null);
   const [mapping, setMapping] = useState(initialMapping);
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
 
@@ -93,13 +93,13 @@ const CategoryReplacementModal = ({
         translate('akeneo.tailored_import.data_mapping.operations.replacement.modal.validation_error')
       );
     }
-  }
+  };
 
   function handleActiveCategoryTreeChange(tree: CategoryTree) {
     setActiveCategoryTree(tree.id);
   }
 
-  const displayedCategoryTree = categoryTrees.find((categoryTree) => categoryTree.id === activeCategoryTree);
+  const displayedCategoryTree = categoryTrees.find(categoryTree => categoryTree.id === activeCategoryTree);
   if (!displayedCategoryTree) {
     return null;
   }
@@ -115,9 +115,11 @@ const CategoryReplacementModal = ({
         <Modal.SectionTitle color="brand">
           {translate('akeneo.tailored_import.data_mapping.operations.replacement.modal.subtitle')}
         </Modal.SectionTitle>
-        <Modal.Title>{translate('akeneo.tailored_import.data_mapping.operations.category_replacement.modal.title')}</Modal.Title>
+        <Modal.Title>
+          {translate('akeneo.tailored_import.data_mapping.operations.category_replacement.modal.title')}
+        </Modal.Title>
         <Content>
-          <TabBar moreButtonTitle={translate('pim_common.more')}>
+          <TabBar sticky={0} moreButtonTitle={translate('pim_common.more')}>
             {categoryTrees.map(tree => (
               <TabBar.Tab
                 isActive={activeCategoryTree === tree.id}
@@ -129,7 +131,7 @@ const CategoryReplacementModal = ({
             ))}
           </TabBar>
           <Table>
-            <Table.Header sticky={0}>
+            <Table.Header sticky={44}>
               <Table.HeaderCell>
                 {translate(
                   'akeneo.tailored_import.data_mapping.operations.category_replacement.modal.table.header.replacement'
