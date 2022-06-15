@@ -155,11 +155,11 @@ SQL;
 
     private function buildStatusSubQuery(): string
     {
-        return "CASE TIMESTAMPDIFF(SECOND, job_execution.health_check_time, CURRENT_TIME()) > 10
+        return 'CASE TIMESTAMPDIFF(SECOND, job_execution.health_check_time, CURRENT_TIME()) > 10
                 AND job_execution.status in (2, 3, 4)
                 AND job_execution.health_check_time is not null
                 WHEN TRUE THEN 6 ELSE job_execution.status
-                END";
+                END';
     }
 
     private function fetchJobExecutionRows(string $sql, SearchJobExecutionQuery $query): array
