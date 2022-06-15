@@ -153,6 +153,11 @@ SQL;
         return sprintf('ORDER BY %s', $orderByColumn);
     }
 
+    /**
+     * this query part is here to prevent wrong status from being displayed when a job has been interrupted
+     * by a major crash (deamon failing, sql pod error during process etc...). Since such error is not manageable
+     * we got job with an non updated status in db (mostly IN_PROGRESS).
+     */
     private function buildStatusSubQuery(): string
     {
         return 'CASE TIMESTAMPDIFF(SECOND, job_execution.health_check_time, CURRENT_TIME()) > 10
