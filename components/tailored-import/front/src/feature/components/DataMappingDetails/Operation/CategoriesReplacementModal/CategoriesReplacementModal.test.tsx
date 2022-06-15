@@ -3,7 +3,7 @@ import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
 import {CategoriesReplacementModal} from './CategoriesReplacementModal';
-import {Category} from "../../../../models";
+import {Category} from '../../../../models';
 
 const operationUuid = 'b26bcde7-1231-47cc-84ba-e014bb08fbd5';
 const categoryTrees = [
@@ -32,7 +32,7 @@ const categoryTrees = [
 
 const categoryChildrenFetcher = (): Category[] => {
   return [];
-}
+};
 
 jest.mock('../../../../hooks/useCategoryChildrenFetcher', () => ({
   useCategoryChildrenFetcher: () => categoryChildrenFetcher,

@@ -5,7 +5,7 @@ import {renderWithProviders} from 'feature/tests';
 import {CategoryReplacementRow} from './CategoryReplacementRow';
 import {ValidationError} from '@akeneo-pim-community/shared';
 import {Table} from 'akeneo-design-system';
-import {Category} from "../../../../models";
+import {Category} from '../../../../models';
 
 const categoryTree = {
   id: 1,
@@ -29,7 +29,7 @@ const categoryChildrenFetcher = (categoryId: number): Category[] => {
           label: 'Botte',
           code: 'botte',
           isLeaf: false,
-        }
+        },
       ];
     case 3:
       return [
@@ -37,13 +37,13 @@ const categoryChildrenFetcher = (categoryId: number): Category[] => {
           id: 4,
           code: 'bottine',
           label: 'Bottine',
-          isLeaf: true
-        }
+          isLeaf: true,
+        },
       ];
     default:
       throw new Error('Unexpected call');
   }
-}
+};
 
 jest.mock('../../../../hooks/useCategoryChildrenFetcher', () => ({
   useCategoryChildrenFetcher: () => categoryChildrenFetcher,

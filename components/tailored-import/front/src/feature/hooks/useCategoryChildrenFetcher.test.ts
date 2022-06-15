@@ -11,7 +11,7 @@ test('It fetch the category children', async () => {
           'data-code': 'mono_pompe',
         },
         data: 'Pompe toutes seules',
-        state: 'leaf'
+        state: 'leaf',
       },
       {
         attr: {
@@ -19,8 +19,8 @@ test('It fetch the category children', async () => {
           'data-code': 'godasses',
         },
         data: 'Godasses',
-        state: 'closed'
-      }
+        state: 'closed',
+      },
     ],
   }));
 
@@ -34,13 +34,13 @@ test('It fetch the category children', async () => {
       id: 1,
       code: 'mono_pompe',
       label: 'Pompe toutes seules',
-      isLeaf: true
+      isLeaf: true,
     },
     {
       id: 2,
       code: 'godasses',
       label: 'Godasses',
-      isLeaf: false
+      isLeaf: false,
     },
   ]);
 });

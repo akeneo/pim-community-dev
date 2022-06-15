@@ -1,20 +1,26 @@
 import React from 'react';
-import {screen, act} from '@testing-library/react';
+import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {
   getDefaultCategoriesReplacementOperation,
   CategoriesReplacementOperationBlock,
 } from './CategoriesReplacementOperationBlock';
-import {ReplacementValues} from "../../../../models";
+import {ReplacementValues} from '../../../../models';
 
 jest.mock('../CategoriesReplacementModal/CategoriesReplacementModal', () => ({
-  CategoriesReplacementModal: ({onConfirm, onCancel}: {onConfirm: (replacementValues: ReplacementValues) => void, onCancel: () => void}) => (
+  CategoriesReplacementModal: ({
+    onConfirm,
+    onCancel,
+  }: {
+    onConfirm: (replacementValues: ReplacementValues) => void;
+    onCancel: () => void;
+  }) => (
     <>
       <button onClick={() => onConfirm({shoes: ['chaussure', 'chaussures en daim']})}>Confirm</button>
       <button onClick={onCancel}>Cancel</button>
     </>
-  )
+  ),
 }));
 
 test('it can get the default categories replacement operation', () => {
