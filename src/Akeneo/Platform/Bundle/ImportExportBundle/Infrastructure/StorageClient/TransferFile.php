@@ -23,7 +23,12 @@ final class TransferFile
             throw new \RuntimeException(sprintf('The file "%s" is not present in the storage.', $sourceFilePath));
         }
 
-        $stream = $sourceFilesystem->readStream($sourceFilePath);
+        try {
+            $stream = $sourceFilesystem->readStream($sourceFilePath);
+        } catch (\Exception) {
+            throw new \RuntimeException('File is not readable.');
+        }
+
         $destinationFilesystem->writeStream($destinationFilePath, $stream);
     }
 }
