@@ -55,6 +55,16 @@ class ReplacementOperationValidatorTest extends AbstractValidationTest
                     ],
                 ],
             ],
+            'a categories replacement' => [
+                [
+                    'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d7',
+                    'type' => 'categories_replacement',
+                    'mapping' => [
+                        'tshirt' => ['T SHIRT', 'Tee-shirt'],
+                        'godasse' => ['SHOES', 'Chaussures'],
+                    ],
+                ],
+            ],
         ];
     }
 

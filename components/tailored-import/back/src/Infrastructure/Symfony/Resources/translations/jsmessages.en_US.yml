@@ -61,6 +61,14 @@ akeneo.tailored_import:
         title: Simple select replacement
       multi_select_replacement:
         title: Multi select replacement
+      categories_replacement:
+        title: Categories replacement
+        modal:
+            title: Manage categories
+            table:
+              header:
+                replacement: PIM Categories
+                source_values: Sources categories
       no_result: No operation available
       no_source: First, select a source, then you will have access to operations
       no_available:

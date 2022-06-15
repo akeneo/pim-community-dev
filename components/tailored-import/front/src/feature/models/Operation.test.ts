@@ -13,6 +13,11 @@ test('it can get the default operation for each type', () => {
     type: 'multi_select_replacement',
     mapping: {},
   });
+  expect(getDefaultOperation('categories_replacement')).toEqual({
+    uuid: expect.any(String),
+    type: 'categories_replacement',
+    mapping: {},
+  });
   // @ts-expect-error invalid type
   expect(() => getDefaultOperation('unknown')).toThrowError('Invalid operation type: "unknown"');
 });
