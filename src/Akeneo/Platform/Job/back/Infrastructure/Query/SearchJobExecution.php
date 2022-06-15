@@ -161,9 +161,9 @@ SQL;
     private function buildStatusSubQuery(): string
     {
         return 'CASE TIMESTAMPDIFF(SECOND, job_execution.health_check_time, CURRENT_TIME()) > 10
-                AND job_execution.status in (2, 3, 4)
+                AND job_execution.status in (:starting_status_code, :in_progress_status_code, :stopping_status_code)
                 AND job_execution.health_check_time is not null
-                WHEN TRUE THEN 6 ELSE job_execution.status
+                WHEN TRUE THEN :failed_status_code ELSE job_execution.status
                 END';
     }
 
@@ -200,6 +200,10 @@ SQL;
             'status' => array_map(static fn (string $status) => Status::fromLabel($status)->getStatus(), $query->status),
             'user' => $query->user,
             'code' => $query->code,
+            'starting_status_code' => Status::STARTING,
+            'in_progress_status_code' => Status::IN_PROGRESS,
+            'stopping_status_code' => Status::STOPPING,
+            'failed_status_code' => Status::FAILED
         ];
 
         $searchParts = explode(' ', $query->search);
