@@ -3,9 +3,9 @@ import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {
-  getDefaultCategoryReplacementOperation,
-  CategoryReplacementOperationBlock,
-} from './CategoryReplacementOperationBlock';
+  getDefaultCategoriesReplacementOperation,
+  CategoriesReplacementOperationBlock,
+} from './CategoriesReplacementOperationBlock';
 
 jest.mock('../../../../hooks/useCategoryTrees', () => ({
   useCategoryTrees: () => [
@@ -34,20 +34,20 @@ jest.mock('../../../../hooks/useCategoryTrees', () => ({
 }));
 
 test('it can get the default category replacement operation', () => {
-  expect(getDefaultCategoryReplacementOperation()).toEqual({
+  expect(getDefaultCategoriesReplacementOperation()).toEqual({
     uuid: expect.any(String),
-    type: 'category_replacement',
+    type: 'categories_replacement',
     mapping: {},
   });
 });
 
-test('it displays a category_replacement operation block', () => {
+test('it displays a categories_replacement operation block', () => {
   const previewData = ['<p>TSHIRT</p>', '<p>TeeShirt</p>'];
 
   renderWithProviders(
-    <CategoryReplacementOperationBlock
+    <CategoriesReplacementOperationBlock
       targetCode="category"
-      operation={{uuid: expect.any(String), type: 'category_replacement', mapping: {}}}
+      operation={{uuid: expect.any(String), type: 'categories_replacement', mapping: {}}}
       onChange={jest.fn()}
       onRemove={jest.fn()}
       isLastOperation={false}
@@ -60,7 +60,7 @@ test('it displays a category_replacement operation block', () => {
   );
 
   expect(
-    screen.getByText('akeneo.tailored_import.data_mapping.operations.category_replacement.title')
+    screen.getByText('akeneo.tailored_import.data_mapping.operations.categories_replacement.title')
   ).toBeInTheDocument();
 });
 
@@ -69,9 +69,9 @@ test('it can be removed using the remove button', () => {
   const previewData = ['<p>Hello</p>', '<p>World</p>'];
 
   renderWithProviders(
-    <CategoryReplacementOperationBlock
+    <CategoriesReplacementOperationBlock
       targetCode="category"
-      operation={{uuid: expect.any(String), type: 'category_replacement', mapping: {}}}
+      operation={{uuid: expect.any(String), type: 'categories_replacement', mapping: {}}}
       onChange={jest.fn()}
       onRemove={handleRemove}
       isLastOperation={false}
@@ -89,7 +89,7 @@ test('it can be removed using the remove button', () => {
 
   userEvent.click(screen.getByText('pim_common.delete'));
 
-  expect(handleRemove).toHaveBeenCalledWith('category_replacement');
+  expect(handleRemove).toHaveBeenCalledWith('categories_replacement');
 });
 
 test('it opens a replacement modal and handles change', async () => {
@@ -102,9 +102,9 @@ test('it opens a replacement modal and handles change', async () => {
   }));
 
   renderWithProviders(
-    <CategoryReplacementOperationBlock
+    <CategoriesReplacementOperationBlock
       targetCode="category"
-      operation={{uuid: expect.any(String), type: 'category_replacement', mapping: {}}}
+      operation={{uuid: expect.any(String), type: 'categories_replacement', mapping: {}}}
       onChange={handleChange}
       onRemove={jest.fn()}
       isLastOperation={false}
@@ -119,7 +119,7 @@ test('it opens a replacement modal and handles change', async () => {
   userEvent.click(screen.getByText('pim_common.edit'));
 
   expect(
-    screen.getByText('akeneo.tailored_import.data_mapping.operations.category_replacement.modal.title')
+    screen.getByText('akeneo.tailored_import.data_mapping.operations.categories_replacement.modal.title')
   ).toBeInTheDocument();
 
   const [shoesMapping] = screen.getAllByPlaceholderText(
@@ -134,7 +134,7 @@ test('it opens a replacement modal and handles change', async () => {
 
   expect(handleChange).toHaveBeenCalledWith({
     uuid: expect.any(String),
-    type: 'category_replacement',
+    type: 'categories_replacement',
     mapping: {
       shoes: ['chaussure', 'chaussures en daim'],
     },
@@ -146,9 +146,9 @@ test('it does not call handler when cancelling', () => {
   const previewData = ['<p>Cape</p>', '<p>Cape en velour</p>'];
 
   renderWithProviders(
-    <CategoryReplacementOperationBlock
+    <CategoriesReplacementOperationBlock
       targetCode="category"
-      operation={{uuid: expect.any(String), type: 'category_replacement', mapping: {}}}
+      operation={{uuid: expect.any(String), type: 'categories_replacement', mapping: {}}}
       onChange={handleChange}
       onRemove={jest.fn()}
       isLastOperation={false}
@@ -172,7 +172,7 @@ test('it throws an error if the operation is not a category replacement operatio
 
   expect(() => {
     renderWithProviders(
-      <CategoryReplacementOperationBlock
+      <CategoriesReplacementOperationBlock
         targetCode="category"
         operation={{uuid: expect.any(String), type: 'clean_html_tags'}}
         onChange={jest.fn()}
@@ -185,7 +185,7 @@ test('it throws an error if the operation is not a category replacement operatio
         }}
       />
     );
-  }).toThrowError('CategoryReplacementOperationBlock can only be used with CategoryReplacementOperation');
+  }).toThrowError('CategoriesReplacementOperationBlock can only be used with CategoriesReplacementOperation');
 
   mockedConsole.mockRestore();
 });

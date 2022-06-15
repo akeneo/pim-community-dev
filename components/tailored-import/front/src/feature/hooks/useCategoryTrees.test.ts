@@ -1,7 +1,7 @@
 import {act} from '@testing-library/react-hooks';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
-import {CategoryTree} from "../models/Category";
-import {useCategoryTrees} from "./useCategoryTrees";
+import {CategoryTree} from '../models/Category';
+import {useCategoryTrees} from './useCategoryTrees';
 
 test('It fetches category trees', async () => {
   const response: CategoryTree[] = [
@@ -33,9 +33,7 @@ test('It fetches category trees', async () => {
     json: async () => response,
   }));
 
-  const {result, waitForNextUpdate} = renderHookWithProviders(() =>
-    useCategoryTrees()
-  );
+  const {result, waitForNextUpdate} = renderHookWithProviders(() => useCategoryTrees());
 
   await act(async () => {
     await waitForNextUpdate();

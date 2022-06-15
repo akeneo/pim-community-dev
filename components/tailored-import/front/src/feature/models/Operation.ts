@@ -5,7 +5,7 @@ import {
   getDefaultMultiSelectReplacementOperation,
   getDefaultSimpleSelectReplacementOperation,
   getDefaultSplitOperation,
-  getDefaultCategoryReplacementOperation,
+  getDefaultCategoriesReplacementOperation,
   MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
   MultiSelectReplacementOperation,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
@@ -14,8 +14,8 @@ import {
   SplitOperation,
   BooleanReplacementOperation,
   getDefaultBooleanReplacementOperation,
-  CATEGORY_REPLACEMENT_OPERATION_TYPE,
-  CategoryReplacementOperation,
+  CATEGORIES_REPLACEMENT_OPERATION_TYPE,
+  CategoriesReplacementOperation,
 } from '../components/DataMappingDetails/Operation';
 import {Attribute} from './Attribute';
 
@@ -25,7 +25,7 @@ type Operation =
   | SimpleSelectReplacementOperation
   | SplitOperation
   | BooleanReplacementOperation
-  | CategoryReplacementOperation;
+  | CategoriesReplacementOperation;
 
 type OperationType = Operation['type'];
 
@@ -48,8 +48,8 @@ const getDefaultOperation = (operationType: OperationType): Operation => {
       return getDefaultSimpleSelectReplacementOperation();
     case MULTI_SELECT_REPLACEMENT_OPERATION_TYPE:
       return getDefaultMultiSelectReplacementOperation();
-    case CATEGORY_REPLACEMENT_OPERATION_TYPE:
-      return getDefaultCategoryReplacementOperation();
+    case CATEGORIES_REPLACEMENT_OPERATION_TYPE:
+      return getDefaultCategoriesReplacementOperation();
     default:
       throw new Error(`Invalid operation type: "${operationType}"`);
   }

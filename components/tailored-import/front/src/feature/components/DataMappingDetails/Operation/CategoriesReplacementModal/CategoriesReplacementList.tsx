@@ -1,9 +1,9 @@
-import {Helper, Table, TagInput} from "akeneo-design-system";
-import React from "react";
-import {CategoryTree} from "../../../../models";
-import {getLabel, useTranslate, useUserContext, ValidationError, filterErrors} from "@akeneo-pim-community/shared";
-import {ReplacementValues} from "../../../../models";
-import styled from "styled-components";
+import {Helper, Table, TagInput} from 'akeneo-design-system';
+import React from 'react';
+import {CategoryTree} from '../../../../models';
+import {getLabel, useTranslate, useUserContext, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
+import {ReplacementValues} from '../../../../models';
+import styled from 'styled-components';
 
 const Field = styled.div`
   width: 100%;
@@ -12,26 +12,26 @@ const Field = styled.div`
   gap: 5px;
 `;
 
-type CategoryReplacementListProps = {
-  categoryTree: CategoryTree,
-  onMappingChange: (mapping: ReplacementValues) => void,
-  mapping: ReplacementValues,
+type CategoriesReplacementListProps = {
+  categoryTree: CategoryTree;
+  onMappingChange: (mapping: ReplacementValues) => void;
+  mapping: ReplacementValues;
   validationErrors: ValidationError[];
 };
 
-const CategoryReplacementList = ({
+const CategoriesReplacementList = ({
   categoryTree,
   onMappingChange,
   mapping,
   validationErrors,
-}: CategoryReplacementListProps) => {
+}: CategoriesReplacementListProps) => {
   const translate = useTranslate();
   const catalogLocale = useUserContext().get('catalogLocale');
   const valueErrors = filterErrors(validationErrors, `[${categoryTree.code}]`);
 
   const handleMappingChange = (categoryTreeCode: string, newValues: string[]) => {
     onMappingChange({...mapping, [categoryTreeCode]: newValues});
-  }
+  };
 
   return (
     <Table.Row>
@@ -55,7 +55,7 @@ const CategoryReplacementList = ({
         </Field>
       </Table.Cell>
     </Table.Row>
-  )
-}
+  );
+};
 
-export {CategoryReplacementList};
+export {CategoriesReplacementList};

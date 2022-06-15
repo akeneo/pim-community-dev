@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
-final class CategoryReplacementOperation implements OperationInterface
+final class CategoriesReplacementOperation implements OperationInterface
 {
-    public const TYPE = 'category_replacement';
+    public const TYPE = 'categories_replacement';
 
     public function normalize(): array
     {

@@ -2,9 +2,9 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
-import {CategoryReplacementList} from "./CategoryReplacementList";
-import {ValidationError} from "@akeneo-pim-community/shared";
-import { Table } from 'akeneo-design-system';
+import {CategoriesReplacementList} from './CategoriesReplacementList';
+import {ValidationError} from '@akeneo-pim-community/shared';
+import {Table} from 'akeneo-design-system';
 
 test('it can update a replacement mapping', async () => {
   const handleMappingChange = jest.fn();
@@ -14,13 +14,13 @@ test('it can update a replacement mapping', async () => {
     code: 'shoes',
     labels: {
       en_US: 'Shoes',
-    }
+    },
   };
 
   await renderWithProviders(
     <Table>
       <Table.Body>
-        <CategoryReplacementList
+        <CategoriesReplacementList
           categoryTree={categoryTree}
           onMappingChange={handleMappingChange}
           mapping={{}}
@@ -47,7 +47,7 @@ test('it displays error on validation', async () => {
     code: 'shoes',
     labels: {
       en_US: 'Shoes',
-    }
+    },
   };
 
   const validationErrors: ValidationError[] = [
@@ -70,7 +70,7 @@ test('it displays error on validation', async () => {
   await renderWithProviders(
     <Table>
       <Table.Body>
-        <CategoryReplacementList
+        <CategoriesReplacementList
           categoryTree={categoryTree}
           onMappingChange={jest.fn()}
           mapping={{}}
