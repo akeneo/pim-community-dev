@@ -34,12 +34,13 @@
     "tailored-import:build": "yarn workspace @akeneo-pim-enterprise/tailored-import lib:build",
     "job-automation:build": "yarn workspace @akeneo-pim-enterprise/job-automation lib:build",
     "onboarder:build": "yarn workspace @akeneo-pim-enterprise/onboarder-retailer lib:build",
+    "free-trial:build": "yarn workspace akeneo-pim-free-trial lib:build",
     "generate-models": "yarn generate-asset-manager-models && yarn workspace @akeneo-pim-community/communication-channel generate-models",
     "packages:build": "yarn workspace pim-community-dev packages:build && yarn enterprise-packages:build",
     "packages:unit": "yarn workspace pim-community-dev packages:unit && yarn enterprise-packages:unit",
     "enterprise-packages:unit": "yarn workspace @akeneo-pim-enterprise/tailored-export test:unit:run && yarn workspace @akeneo-pim-enterprise/tailored-import test:unit:run && yarn workspace @akeneo-pim-enterprise/job-automation test:unit:run",
     "packages:lint:check": "yarn workspace @akeneo-pim-enterprise/tailored-export lint:check && yarn workspace @akeneo-pim-enterprise/tailored-import lint:check && yarn workspace @akeneo-pim-enterprise/job-automation lint:check",
-    "enterprise-packages:build": "yarn tailored-export:build && yarn tailored-import:build && yarn onboarder:build && yarn job-automation:build",
+    "enterprise-packages:build": "yarn tailored-export:build && yarn tailored-import:build && yarn onboarder:build && yarn job-automation:build && yarn free-trial:build",
     "dsm:build": "yarn workspace pim-community-dev dsm:build"
   },
   "devDependencies": {
@@ -102,6 +103,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker",
     "vendor/akeneo/pim-community-dev/src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui",
-    "vendor/akeneo/pim-community-dev/components/catalogs/front"
+    "vendor/akeneo/pim-community-dev/components/catalogs/front",
+    "tria/front-packages/free-trial"
   ]
 }
