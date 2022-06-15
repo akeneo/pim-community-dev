@@ -66,24 +66,15 @@ SQL;
             job_instance.type,
             job_execution.start_time,
             job_execution.user,
-            job_execution.status,
             job_execution.is_stoppable,
-            job_execution.step_count
+            job_execution.step_count,
+            %s AS calculated_status
         FROM akeneo_batch_job_execution job_execution
         JOIN akeneo_batch_job_instance job_instance ON job_execution.job_instance_id = job_instance.id
         WHERE job_execution.is_visible = 1
         %s
         %s
         LIMIT :offset, :limit
-    )
-    WITH realStatus as (
-        SELECT id,
-        CASE TIMESTAMPDIFF(SECOND,health_check_time, CURRENT_TIME()) > 10
-        and status in (2, 3, 4)
-        and health_check_time is not null
-        WHEN TRUE THEN 6 ELSE status
-        END AS status
-        FROM akeneo_batch_job_execution
     )
     SELECT
         job_execution.*,
@@ -96,7 +87,7 @@ SQL;
             'has_error', IF(IFNULL(step_execution.failure_exceptions, 'a:0:{}') <> 'a:0:{}' OR IFNULL(step_execution.errors, 'a:0:{}') <> 'a:0:{}', 1, 0),
             'total_items', JSON_EXTRACT(step_execution.tracking_data, '$.totalItems'),
             'processed_items', JSON_EXTRACT(step_execution.tracking_data, '$.processedItems'),
-            'status', realStatus.status,
+            'status', step_execution.status,
             'is_trackable', step_execution.is_trackable
         )) AS steps
     FROM job_executions job_execution
@@ -108,7 +99,7 @@ SQL;
         $whereSqlPart = $this->buildSqlWherePart($query);
         $orderBySqlPart = $this->buildSqlOrderByPart($query);
 
-        return sprintf($sql, $whereSqlPart, $orderBySqlPart, str_replace('job_instance', 'job_execution', $orderBySqlPart));
+        return sprintf($sql, $this->buildStatusSubQuery(), $whereSqlPart, $orderBySqlPart, str_replace('job_instance', 'job_execution', $orderBySqlPart));
     }
 
     private function buildSqlWherePart(SearchJobExecutionQuery $query): string
@@ -129,7 +120,7 @@ SQL;
         }
 
         if (!empty($status)) {
-            $sqlWhereParts[] = 'job_execution.status IN (:status)';
+            $sqlWhereParts[] = $this->buildStatusSubQuery().' IN (:status)';
         }
 
         if (!empty($user)) {
@@ -155,11 +146,20 @@ SQL;
             'type' => sprintf('job_instance.type %s', $sortDirection),
             'started_at' => sprintf('job_execution.start_time %s', $sortDirection),
             'username' => sprintf('job_execution.user %s', $sortDirection),
-            'status' => sprintf('job_execution.status %s', $sortDirection),
+            'status' => sprintf('calculated_status %s', $sortDirection),
             default => throw new \InvalidArgumentException(sprintf('Unknown sort column "%s"', $query->sortColumn)),
         };
 
         return sprintf('ORDER BY %s', $orderByColumn);
+    }
+
+    private function buildStatusSubQuery(): string
+    {
+        return "CASE TIMESTAMPDIFF(SECOND, job_execution.health_check_time, CURRENT_TIME()) > 10
+                AND job_execution.status in (2, 3, 4)
+                AND job_execution.health_check_time is not null
+                WHEN TRUE THEN 6 ELSE job_execution.status
+                END";
     }
 
     private function fetchJobExecutionRows(string $sql, SearchJobExecutionQuery $query): array

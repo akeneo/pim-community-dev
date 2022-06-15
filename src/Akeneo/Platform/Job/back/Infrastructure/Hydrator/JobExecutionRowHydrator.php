@@ -37,7 +37,7 @@ class JobExecutionRowHydrator
             $jobExecution['type'],
             $startTime,
             $jobExecution['user'],
-            Status::fromStatus((int) $jobExecution['status']),
+            Status::fromStatus((int) $jobExecution['calculated_status']),
             (bool) $jobExecution['is_stoppable'],
             $tracking,
         );
