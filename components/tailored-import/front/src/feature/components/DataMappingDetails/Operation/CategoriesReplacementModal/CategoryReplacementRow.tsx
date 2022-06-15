@@ -5,7 +5,7 @@ import {useTranslate, ValidationError, filterErrors} from '@akeneo-pim-community
 import {Category, ReplacementValues} from '../../../../models';
 import {useCategoryFetcher} from '../../../../hooks';
 
-type CategoryTreeState = {
+type CategoryState = {
   loading?: boolean;
   isOpen: boolean;
   children: Category[];
@@ -53,7 +53,7 @@ const CategoryReplacementRow = ({
   level,
 }: CategoryReplacementRowProps) => {
   const translate = useTranslate();
-  const [categoryState, setCategoryState] = useState<CategoryTreeState>({
+  const [categoryState, setCategoryState] = useState<CategoryState>({
     loading: false,
     isOpen: false,
     children: [],
