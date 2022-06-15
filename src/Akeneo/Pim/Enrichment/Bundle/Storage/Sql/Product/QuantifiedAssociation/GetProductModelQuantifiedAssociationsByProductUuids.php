@@ -95,10 +95,8 @@ SQL;
                 $validQuantifiedAssociationTypeCodes
             );
             if (!empty($associationWithIdentifiers)) {
-                // TODO which line to keep ?
-                $productModelIdentifier = $row['uuid'];
-//                $productModelIdentifier = $row['identifier'];
-                $results[$productModelIdentifier] = $associationWithIdentifiers;
+                $productUuid = $row['uuid'];
+                $results[$productUuid] = $associationWithIdentifiers;
             }
         }
 

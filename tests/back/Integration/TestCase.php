@@ -190,7 +190,7 @@ abstract class TestCase extends KernelTestCase
         if ($userId === null) {
             $userId = ($this->getUserId('peter') !== 0)
                 ? $this->getUserId('peter')
-                : $this->createUser('peter', ['ROLE_USER'], ['IT support'])->getId();
+                : $this->createUserWithRolesAndGroups('peter', ['ROLE_USER'], ['IT support'])->getId();
         }
 
         $command = UpsertProductCommand::createFromCollection(

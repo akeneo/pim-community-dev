@@ -139,21 +139,21 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
     public function testOnMultipleWithProductModels()
     {
         $expected = [
-            'productE' => $this->getAssociationsFormattedAfterFetch(),
-            'productC' => $this->getAssociationsFormattedAfterFetch(
+            $this->productList['productE']->getUuid()->toString() => $this->getAssociationsFormattedAfterFetch(),
+            $this->productList['productC']->getUuid()->toString() => $this->getAssociationsFormattedAfterFetch(
                 [],
                 [],
                 [],
                 [$this->productList['productA']->getUuid()->toString()]
             ),
-            'productD' => $this->getAssociationsFormattedAfterFetch(
+            $this->productList['productD']->getUuid()->toString() => $this->getAssociationsFormattedAfterFetch(
                 [
                     $this->productList['productA']->getUuid()->toString(),
                     $this->productList['productB']->getUuid()->toString()
                 ],
                 [$this->productList['productC']->getUuid()->toString()]
             ),
-            'variant_product_1' => $this->getAssociationsFormattedAfterFetch(
+            $this->productList['variant_product_1']->getUuid()->toString() => $this->getAssociationsFormattedAfterFetch(
                 [
                     $this->productList['productF']->getUuid()->toString(),
                     $this->productList['productD']->getUuid()->toString()

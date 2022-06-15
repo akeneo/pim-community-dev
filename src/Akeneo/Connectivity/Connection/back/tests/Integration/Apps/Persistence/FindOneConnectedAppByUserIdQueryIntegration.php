@@ -40,7 +40,7 @@ class FindOneConnectedAppByUserIdQueryIntegration extends TestCase
             'outdated_app_id',
             'outdated_app_code',
         );
-        $userId = $this->getUserId('outdated_app_code');
+        $userId = $this->getUserIdFromFirstname('outdated_app_code');
 
         $connectedApp = $this->query->execute($userId);
 
@@ -60,5 +60,12 @@ class FindOneConnectedAppByUserIdQueryIntegration extends TestCase
         $connectedApp = $this->query->execute($adminUser->getId());
 
         self::assertNull($connectedApp, 'Should return null for non associated users');
+    }
+
+    private function getUserIdFromFirstname(string $firstName): int
+    {
+        $query = 'SELECT id FROM oro_user WHERE first_name = :firstname';
+
+        return (int) $this->connection->fetchOne($query, ['firstname' => $firstName]);
     }
 }

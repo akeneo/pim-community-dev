@@ -61,8 +61,6 @@ SQL;
                 $this->hydrateScores($row['scores']),
                 $this->hydrateScores($row['scores_partial_criteria'] ?? '{}'),
             );
-
-            $test = 'this is a stop line to debug above value content'; // @todo remove
         }
 
         return $productsScores;
