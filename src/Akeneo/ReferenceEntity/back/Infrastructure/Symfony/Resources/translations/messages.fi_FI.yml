@@ -49,5 +49,13 @@ pim_mass_edit:
 akeneo_reference_entity: Viitetiedot yksinkertainen valinta
 akeneo_reference_entity_collection: Viitetiedot monivalinta
 pim_api:
+  acl:
+    reference_entity:
+      create: Luo ja päivitä viitetietoja
+      list: Listaa viitetiedot
+    record:
+      create: Luo ja päivitä viitetietojen tietueita
+      list: Listaa viitetiedon tietueet
+      remove: Poista viitetiedon tietueet
   acl_group:
     reference_entity: Viitetiedot

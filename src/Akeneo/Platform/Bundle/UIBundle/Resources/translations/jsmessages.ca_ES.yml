@@ -7,3 +7,11 @@ pimee_enrich.entity.product:
     flash:
       success: El producte {{ product_identifier }} s'ha duplicat correctament.
       success_with_attribute_codes: El producte {{ product_identifier }} s'ha duplicat correctament. Necessita enriquir els {{ unique_attribute_codes }} amb valors únics
+pim_dashboard:
+  widget:
+    teamwork_assistant:
+      title: Projectes
+      helper: Per obtenir més informació sobre els projectes i com podeu millorar-ne la integritat, <a href="{{ link }}" target="_blank">consulteu el nostre centre d'ajuda</a>.
+      no_project:
+        title: Els projectes us poden ajudar a fer un seguiment del progrés d'enriquiment de la selecció de productes.
+        subtitle: Crea el teu primer projecte.

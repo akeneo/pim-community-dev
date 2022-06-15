@@ -3,7 +3,7 @@ import {Channel, getLocalesFromChannel} from '@akeneo-pim-community/shared';
 import {Column, ColumnIdentifier} from './Column';
 import {Attribute} from './Attribute';
 import {AttributeTarget, createPropertyTarget, createAttributeTarget, PropertyTarget} from './Target';
-import {Operation} from './Operation';
+import {getRequiredOperations, Operation} from './Operation';
 import {SampleData} from './SampleData';
 
 type DataMapping = AttributeDataMapping | PropertyDataMapping;
@@ -63,7 +63,7 @@ const createAttributeDataMapping = (attribute: Attribute, channels: Channel[]): 
     uuid: uuid(),
     target: createAttributeTarget(attribute, channel, locale),
     sources: [],
-    operations: [],
+    operations: getRequiredOperations(attribute),
     sample_data: [],
   };
 };

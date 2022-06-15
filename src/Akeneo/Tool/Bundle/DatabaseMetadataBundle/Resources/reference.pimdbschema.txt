@@ -603,7 +603,7 @@ pim_catalog_category | id | NO | int | PRI
 pim_catalog_category | parent_id | YES | int | MUL
 pim_catalog_category | code | NO | varchar(100) | UNI
 pim_catalog_category | created | NO | datetime |
-pim_catalog_category | updated | NO | datetime |
+pim_catalog_category | updated | NO | datetime | MUL
 pim_catalog_category | root | NO | int |
 pim_catalog_category | lvl | NO | int |
 pim_catalog_category | lft | NO | int | MUL
@@ -1164,6 +1164,7 @@ INDEX | pim_catalog_category | IDX_350D8339727ACA70 | parent_id
 INDEX | pim_catalog_category | left_idx | lft
 INDEX | pim_catalog_category | pim_category_code_uc | code
 INDEX | pim_catalog_category | PRIMARY | id
+INDEX | pim_catalog_category | updated_idx | updated
 INDEX | pim_catalog_category_product | IDX_512179C112469DE2 | category_id
 INDEX | pim_catalog_category_product | IDX_512179C14584665A | product_id
 INDEX | pim_catalog_category_product | PRIMARY | product_id, category_id

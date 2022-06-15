@@ -1,6 +1,7 @@
 export * from './Attribute';
 export * from './AttributeOption';
 export * from './AvailableTarget';
+export * from './BooleanReplacementValues';
 export * from './Column';
 export * from './Configuration';
 export * from './Configurator';

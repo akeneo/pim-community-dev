@@ -38,6 +38,7 @@ pim_asset_manager:
   asset:
     validation:
       mass_edit:
+        updater_cannot_be_empty: 'Muunnoksissa tai vain luku -tilassa käytettäviä attribuutteja ei voi valita.'
         updater_must_be_unique: 'Varmista, että tätä attribuuttia ja sen kanavaa ja lokaalia ei ole valittu.'
       code:
         pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
@@ -61,6 +62,9 @@ pim_asset_manager:
         should_be_numeric: 'Arvon on oltava numero, jossa on oikea desimaalierotin'
       main_media:
         not_main_media_attribute: 'Odotettu attribuutin päämedia on "%main_media_attribute%", "%attribute%" annettu.'
+      media_link:
+        protocol_not_allowed: 'Tämän kentän pitäisi alkaa kelvollisella protokolla. Sallitut protokollat ovat: %allowed_protocols%.'
+        domain_not_allowed: 'Tämä URL-osoite ei ole sallittu.'
   attribute:
     validation:
       options:
@@ -83,6 +87,7 @@ pim_asset_manager:
         should_exist: 'Attribuuttia ei löydy'
       prefix:
         should_not_be_empty: 'Etuliite ei voi olla tyhjä merkkijono.'
+        protocol_not_allowed: 'Tämän kentän pitäisi alkaa kelvollisella protokolla. Sallitut protokollat ovat: %allowed_protocols%.'
       suffix:
         should_not_be_empty: 'Jälkiliite ei voi olla tyhjä merkkijono.'
       media_file:
