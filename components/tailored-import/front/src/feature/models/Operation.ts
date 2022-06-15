@@ -25,7 +25,6 @@ type Operation =
   | SimpleSelectReplacementOperation
   | SplitOperation
   | BooleanReplacementOperation
-  | SplitOperation
   | CategoryReplacementOperation;
 
 type OperationType = Operation['type'];
