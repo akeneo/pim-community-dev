@@ -10,3 +10,4 @@ export * from './useReadColumns';
 export * from './useRefreshedSampleDataFetcher';
 export * from './useSampleDataFetcher';
 export * from './useCategoryTrees';
+export * from './useCategoryFetcher';

@@ -1,10 +1,9 @@
-import {Helper, LoaderIcon, Table, TagInput} from "akeneo-design-system";
 import React, {useState} from "react";
-import {useTranslate, ValidationError, filterErrors} from "@akeneo-pim-community/shared";
 import styled from "styled-components";
+import {Helper, LoaderIcon, Table, TagInput, ArrowRightIcon} from "akeneo-design-system";
+import {useTranslate, ValidationError, filterErrors} from "@akeneo-pim-community/shared";
 import {ReplacementValues} from "../../../../models";
-import {ArrowRightIcon} from "akeneo-design-system";
-import {useCategoryFetcher} from "../../../../hooks/useCategoryFetcher";
+import {useCategoryFetcher} from "../../../../hooks";
 
 type CategoryTreeModel = {
   id: number;
