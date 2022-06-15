@@ -12,11 +12,16 @@ pim_datagrid:
     proposal: No hi ha cap proposta per revisar. Intentar canviar els criteris de cerca.
     product_draft: No hi ha cap projecte de producte per revisar. Intentar canviar els criteris de cerca.
   workflow:
+    by: per
+    at: a
     status:
       in_progress: En procés
       ready: En espera d'aprovació
     status_message:
       ready: En espera d'aprovació
+    new_value: 'Nou valor:'
+    old_value: 'Valor antic:'
+    see_more: Veure més
 pimee_datagrid:
   cells:
     expand:
@@ -31,6 +36,7 @@ pimee_workflow:
       modal.title: Deixa un comentari (opcional - 255 caràcters màx.)
   proposal:
     overview: "]-Inf, 1]{{ count }} proposta|]1, Inf[{{ count }} propostes"
+    selected: "]-Inf, 1]{{ count }} proposta seleccionada|]1, Inf[{{ count }} propostes seleccionades"
     mass_action_group:
       review:
         label: Acció massiva
@@ -87,6 +93,9 @@ batch_jobs:
     perform.label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx
   publish_product:
     perform.label: Publicar productes
+  default_steps:
+    clean_attribute:
+      clean_draft: Propostes de neteja
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Nova proposta
@@ -106,6 +115,7 @@ pimee_dashboard:
       product: Producte
       review: Revisar
       empty: No hi ha propostes per revisar
+      view_all: Veure totes les propostes
     header.view_all: Veure tots
 pimee_enrich.entity.product:
   module:
@@ -202,3 +212,6 @@ pim_title:
   pimee_workflow_proposal_index: Propostes
   pimee_workflow_published_product_index: Productes publicats
   pimee_workflow_published_product_view: Producte publicat {{ product.label }} | Veure
+pim_analytics:
+  info_type:
+    nb_product_drafts: Nombre d'esborranys de productes

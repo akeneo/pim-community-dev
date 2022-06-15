@@ -1,0 +1,6 @@
+pim_catalog_table: Taulukko
+pim_table:
+  export_with_label:
+    product: Tuote
+    product_model: Tuotemalli
+    attribute: Attribuutti

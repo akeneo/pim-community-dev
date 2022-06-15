@@ -1,4 +1,13 @@
 akeneo_data_quality_insights:
   axis:
     consistency: Consistència
+  attribute_grid:
+    quality_column_label: Qualitat
+    to_improve_locale: Per millorar en {{ locale }}
+  product_grid:
+    filter_label:
+      spelling_quality: Qualitat ortogràfica
+  dictionary:
+    title: Diccionari
 Consistency: Consistència
+akeneo_data_quality_insights_dictionary: Diccionari
