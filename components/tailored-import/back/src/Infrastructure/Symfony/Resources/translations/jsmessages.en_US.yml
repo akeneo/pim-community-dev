@@ -62,7 +62,7 @@ akeneo.tailored_import:
       multi_select_replacement:
         title: Multi select replacement
       categories_replacement:
-        title: Category replacement
+        title: Categories replacement
         modal:
             title: Manage categories
             table:

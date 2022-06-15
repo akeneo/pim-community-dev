@@ -33,7 +33,7 @@ jest.mock('../../../../hooks/useCategoryTrees', () => ({
   ],
 }));
 
-test('it can get the default category replacement operation', () => {
+test('it can get the default categories replacement operation', () => {
   expect(getDefaultCategoriesReplacementOperation()).toEqual({
     uuid: expect.any(String),
     type: 'categories_replacement',
@@ -46,7 +46,7 @@ test('it displays a categories_replacement operation block', () => {
 
   renderWithProviders(
     <CategoriesReplacementOperationBlock
-      targetCode="category"
+      targetCode="categories"
       operation={{uuid: expect.any(String), type: 'categories_replacement', mapping: {}}}
       onChange={jest.fn()}
       onRemove={jest.fn()}
@@ -70,7 +70,7 @@ test('it can be removed using the remove button', () => {
 
   renderWithProviders(
     <CategoriesReplacementOperationBlock
-      targetCode="category"
+      targetCode="categories"
       operation={{uuid: expect.any(String), type: 'categories_replacement', mapping: {}}}
       onChange={jest.fn()}
       onRemove={handleRemove}
@@ -103,7 +103,7 @@ test('it opens a replacement modal and handles change', async () => {
 
   renderWithProviders(
     <CategoriesReplacementOperationBlock
-      targetCode="category"
+      targetCode="categories"
       operation={{uuid: expect.any(String), type: 'categories_replacement', mapping: {}}}
       onChange={handleChange}
       onRemove={jest.fn()}
@@ -147,7 +147,7 @@ test('it does not call handler when cancelling', () => {
 
   renderWithProviders(
     <CategoriesReplacementOperationBlock
-      targetCode="category"
+      targetCode="categories"
       operation={{uuid: expect.any(String), type: 'categories_replacement', mapping: {}}}
       onChange={handleChange}
       onRemove={jest.fn()}
@@ -166,14 +166,14 @@ test('it does not call handler when cancelling', () => {
   expect(handleChange).not.toHaveBeenCalled();
 });
 
-test('it throws an error if the operation is not a category replacement operation', () => {
+test('it throws an error if the operation is not a categories replacement operation', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
   const previewData = ['<p>Chaussettes</p>', '<p>Sandalettes</p>'];
 
   expect(() => {
     renderWithProviders(
       <CategoriesReplacementOperationBlock
-        targetCode="category"
+        targetCode="categories"
         operation={{uuid: expect.any(String), type: 'clean_html_tags'}}
         onChange={jest.fn()}
         onRemove={jest.fn()}
