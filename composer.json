@@ -31,7 +31,8 @@
             "AkeneoEnterprise\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back",
             "AkeneoEnterprise\\Channel\\": "src/Akeneo/Channel/back",
             "Akeneo\\Platform\\JobAutomation\\": "components/job-automation/back/src",
-            "Akeneo\\Catalogs\\": "vendor/akeneo/pim-community-dev/components/catalogs/back/src"
+            "Akeneo\\Catalogs\\": "vendor/akeneo/pim-community-dev/components/catalogs/back/src",
+            "Akeneo\\FreeTrial\\": "tria/src/Akeneo/FreeTrial/back"
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -78,11 +79,12 @@
             "AkeneoEnterprise\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
             "Akeneo\\Platform\\JobAutomation\\Test\\": "components/job-automation/back/tests",
             "Specification\\Akeneo\\Platform\\JobAutomation\\": "components/job-automation/back/tests/Specification",
-            "Akeneo\\Catalogs\\Test\\": "vendor/akeneo/pim-community-dev/components/catalogs/back/tests"
+            "Akeneo\\Catalogs\\Test\\": "vendor/akeneo/pim-community-dev/components/catalogs/back/tests",
+            "Akeneo\\FreeTrial\\Test\\": "tria/src/Akeneo/FreeTrial/tests/back"
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-master",
+        "akeneo/pim-community-dev": "dev-GRF-65-bis",
         "akeneo/pim-onboarder": "^7.0.0",
         "google/cloud-firestore": "^1.22",
         "grpc/grpc": "^1.42.0",
@@ -134,6 +136,10 @@
         "grth": {
             "type": "path",
             "url": "grth/"
+        },
+        "tria": {
+            "type": "path",
+            "url": "tria/"
         }
     },
     "suggest": {
