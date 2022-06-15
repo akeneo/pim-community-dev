@@ -406,10 +406,8 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
         $this->assertSame([], $actual);
     }
 
-    /**
-     * @test
-     */
-    public function itDoesNotReturnQuantifiedAssociationWithDeletedProduct()
+    // TODO make this works (cf comment on test itDoesNotReturnQuantifiedAssociationWithDeletedProduct)
+    public function SKIPPEDitDoesNotReturnQuantifiedAssociationWithDeletedProduct()
     {
         $userId = ($this->getUserId('admin') !== 0)
             ? $this->getUserId('admin')
@@ -433,6 +431,31 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
             ],
             $userId
         );
+
+        $this->getProductRemover()->remove($productA);
+        $actual = $this->getQuery()->fromProductUuids([$productB->getUuid()]);
+
+        $this->assertSame([], $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function itDoesNotReturnQuantifiedAssociationWithDeletedProduct()
+    {
+        // (TODO) FIX: when we try to use the upsertProduct command to create products,
+        // (TODO) there is a detached entity productA cannot be removed error
+        // (TODO) during $this->getProductRemover()->remove($productA);
+        $productA = $this->getEntityBuilder()->createProduct('productA', 'aFamily', []);
+        $productB = $this->getEntityBuilder()->createProduct('productB', 'aFamily', [
+            'quantified_associations' => [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        ['identifier' => 'productA', 'quantity' => 3],
+                    ],
+                ],
+            ],
+        ]);
 
         $this->getProductRemover()->remove($productA);
         $actual = $this->getQuery()->fromProductUuids([$productB->getUuid()]);
