@@ -11,15 +11,10 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscrib
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Event\FileCannotBeExported;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Event\FileCannotBeImported;
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UpdateJobExecutionStorageSummarySubscriber implements EventSubscriberInterface
 {
-    public function __construct()
-    {
-    }
-
     /**
      * @return array<string, string>
      */
