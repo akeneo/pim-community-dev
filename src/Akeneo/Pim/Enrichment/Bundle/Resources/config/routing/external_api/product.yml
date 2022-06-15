@@ -33,3 +33,10 @@ pim_api_product_delete:
     methods: [DELETE]
     requirements:
         code: (.+$)(?<!/draft|/proposal)
+
+pim_api_product_uuid_delete:
+    path: /products-uuid/{uuid}
+    defaults: { _controller: Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController, _format: json }
+    methods: [DELETE]
+    requirements:
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
