@@ -95,7 +95,7 @@ class IndexProductCommand extends Command
         if (true === $input->getOption('all')) {
             $chunkedProductIdentifiers = $this->getAllProductIdentifiers($batchSize);
             $productCount = 0;
-        } elseif(true === $input->getOption('diff')) {
+        } elseif (true === $input->getOption('diff')) {
             $chunkedProductIdentifiers = $this->getDiffProductIdentifiers($batchSize);
             $productCount = 0;
         } elseif (!empty($input->getArgument('identifiers'))) {
@@ -211,7 +211,7 @@ SQL;
 
     private function getDiffProductIdentifiers(int $batchSize)
     {
-        $formerId = NULL;
+        $formerId = null;
         $sql = <<< SQL
 SELECT CONCAT('product_',BIN_TO_UUID(uuid)) AS _id, BIN_TO_UUID(uuid) AS uuid, identifier, DATE_FORMAT(updated, '%Y-%m-%dT%TZ') AS updated
 FROM pim_catalog_product
@@ -260,16 +260,20 @@ SQL;
                 'size' => $batchSize
             ]);
 
-            $esIdentifiers = array_map(function($doc) {
+            $esIdentifiers = array_map(function ($doc) {
                 return $doc['_id'];
             }, $results["hits"]["hits"]);
 
-            $diff = array_reduce($rows,function($carry,$item) use($esIdentifiers){
-                if(!in_array($item['_id'],$esIdentifiers)){
-                    $carry[] = $item['identifier'];
-                }
-                return $carry;
-            },[]);
+            $diff = array_reduce(
+                $rows,
+                function ($carry, $item) use ($esIdentifiers): array {
+                    if (!in_array($item['_id'], $esIdentifiers)) {
+                        $carry[] = $item['identifier'];
+                    }
+                    return $carry;
+                },
+                []
+            );
 
             yield $diff;
         }
