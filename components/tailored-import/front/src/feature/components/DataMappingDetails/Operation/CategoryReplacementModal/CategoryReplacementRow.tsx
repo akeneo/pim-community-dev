@@ -65,26 +65,33 @@ const CategoryReplacementRow = ({
     onMappingChange({...mapping, [categoryTreeCode]: newValues});
   };
 
-  const handleOpenCategory = async () => {
-    if (categoryState.isOpen) {
-      setCategoryState((categoryState) => ({...categoryState, isOpen: false}));
-    } else if (categoryState.children.length > 0) {
-      setCategoryState((categoryState) => ({...categoryState, isOpen: true}));
+  const handleOpenCategory = useCallback(async () => {
+    if (categoryState.children.length > 0) {
+      setCategoryState(categoryState => ({...categoryState, isOpen: true}));
     } else {
-      setCategoryState((categoryState) => ({...categoryState, isOpen: true, loading: true}));
+      setCategoryState(categoryState => ({...categoryState, isOpen: true, loading: true}));
       const children = await categoryFetcher(tree.id);
-      setCategoryState((categoryState) => ({
-          ...categoryState, loading: false, children
-        })
-      );
+      setCategoryState(categoryState => ({
+        ...categoryState,
+        loading: false,
+        children,
+      }));
     }
-  }
+  }, [categoryState.children, tree, categoryFetcher]);
+
+  const handleToggleCategory = async () => {
+    if (categoryState.isOpen) {
+      setCategoryState(categoryState => ({...categoryState, isOpen: false}));
+    } else {
+      await handleOpenCategory();
+    }
+  };
 
   useEffect(() => {
     if (level === 0) {
-      handleOpenCategory();
+      void handleOpenCategory();
     }
-  }, [tree.id, level]);
+  }, [tree.id, level, handleOpenCategory]);
 
   return (
     <>
