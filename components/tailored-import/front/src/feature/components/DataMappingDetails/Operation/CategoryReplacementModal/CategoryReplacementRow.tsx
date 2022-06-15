@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import {Helper, LoaderIcon, Table, TagInput, ArrowRightIcon} from "akeneo-design-system";
 import {useTranslate, ValidationError, filterErrors} from "@akeneo-pim-community/shared";
@@ -11,10 +11,9 @@ type CategoryTreeModel = {
   label: string;
   loading?: boolean;
   isOpen: boolean;
-  children?: CategoryTreeModel[];
+  children: CategoryTreeModel[];
   isLeaf: boolean;
 };
-
 
 const TreeArrowIcon = styled(ArrowRightIcon)<{$isFolderOpen: boolean}>`
   transform: rotate(${({$isFolderOpen}) => ($isFolderOpen ? '90' : '0')}deg);
@@ -68,6 +67,8 @@ const CategoryReplacementRow = ({
   const handleOpenCategory = async () => {
     if (categoryState.isOpen) {
       setCategoryState((categoryState) => ({...categoryState, isOpen: false}));
+    } else if (categoryState.children.length > 0) {
+      setCategoryState((categoryState) => ({...categoryState, isOpen: true}));
     } else {
       setCategoryState((categoryState) => ({...categoryState, isOpen: true, loading: true}));
       const children = await categoryFetcher(tree.id);
@@ -87,6 +88,12 @@ const CategoryReplacementRow = ({
       );
     }
   }
+
+  useEffect(() => {
+    if (level === 0) {
+      handleOpenCategory();
+    }
+  }, [tree.id, level]);
 
   return (
     <>
@@ -121,7 +128,7 @@ const CategoryReplacementRow = ({
           </Field>
         </Table.Cell>
       </Table.Row>
-      {categoryState.isOpen && categoryState.children && categoryState.children.map((child) => (
+      {categoryState.isOpen && categoryState.children.map((child) => (
         <CategoryReplacementRow
           key={child.id}
           tree={child}
