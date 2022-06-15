@@ -1,8 +1,8 @@
 import {useCallback} from 'react';
-import {Category} from '../models/Category';
 import {useRouter} from '@akeneo-pim-community/shared';
+import {Category} from '../models';
 
-const useCategoryFetcher = () => {
+const useCategoryChildrenFetcher = () => {
   const router = useRouter();
 
   return useCallback(
@@ -23,7 +23,7 @@ const useCategoryFetcher = () => {
 
       return children.map((child: any): Category => {
         return {
-          id: child.attr.id.replace('node_', ''),
+          id: parseInt(child.attr.id.replace('node_', '')),
           code: child.attr['data-code'],
           label: child.data,
           isLeaf: child.state === 'leaf',
@@ -34,4 +34,4 @@ const useCategoryFetcher = () => {
   );
 };
 
-export {useCategoryFetcher};
+export {useCategoryChildrenFetcher};

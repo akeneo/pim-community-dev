@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import {Helper, LoaderIcon, Table, TagInput, ArrowRightIcon} from 'akeneo-design-system';
 import {useTranslate, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
 import {Category, ReplacementValues} from '../../../../models';
-import {useCategoryFetcher} from '../../../../hooks';
+import {useCategoryChildrenFetcher} from '../../../../hooks';
 
 type CategoryState = {
-  loading?: boolean;
+  loading: boolean;
   isOpen: boolean;
-  children: Category[];
+  children: Category[] | null;
 };
 
 const TreeArrowIcon = styled(ArrowRightIcon)<{$isFolderOpen: boolean}>`
@@ -56,28 +56,28 @@ const CategoryReplacementRow = ({
   const [categoryState, setCategoryState] = useState<CategoryState>({
     loading: false,
     isOpen: false,
-    children: [],
+    children: null,
   });
   const valueErrors = filterErrors(validationErrors, `[${tree.code}]`);
-  const categoryFetcher = useCategoryFetcher();
+  const categoryChildrenFetcher = useCategoryChildrenFetcher();
 
   const handleMappingChange = (categoryTreeCode: string, newValues: string[]) => {
     onMappingChange({...mapping, [categoryTreeCode]: newValues});
   };
 
   const handleOpenCategory = useCallback(async () => {
-    if (categoryState.children.length > 0) {
+    if (categoryState.children !== null) {
       setCategoryState(categoryState => ({...categoryState, isOpen: true}));
     } else {
       setCategoryState(categoryState => ({...categoryState, isOpen: true, loading: true}));
-      const children = await categoryFetcher(tree.id);
+      const children = await categoryChildrenFetcher(tree.id);
       setCategoryState(categoryState => ({
         ...categoryState,
         loading: false,
         children,
       }));
     }
-  }, [categoryState.children, tree, categoryFetcher]);
+  }, [categoryState.children, tree, categoryChildrenFetcher]);
 
   const handleToggleCategory = async () => {
     if (categoryState.isOpen) {
@@ -127,7 +127,7 @@ const CategoryReplacementRow = ({
         </Table.Cell>
       </Table.Row>
       {categoryState.isOpen &&
-        categoryState.children.map(child => (
+        categoryState.children?.map(child => (
           <CategoryReplacementRow
             key={child.id}
             tree={child}
