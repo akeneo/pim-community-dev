@@ -146,7 +146,7 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                 'row' => [
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
                     '2d9e967a-5efa-4a31-a254-99f7c50a145c' => 'shoes,women',
-                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'shoes,clothing,men',
+                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'shoes     ,clothing,    men ',
                 ],
                 'data_mappings' => [
                     DataMapping::create(

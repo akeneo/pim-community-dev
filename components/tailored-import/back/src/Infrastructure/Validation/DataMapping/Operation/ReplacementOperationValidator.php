@@ -65,10 +65,6 @@ class ReplacementOperationValidator extends ConstraintValidator
                 ->addViolation();
         }
 
-        if (0 < $violations->count()) {
-            return;
-        }
-
         $this->validateSourceValuesAreUnique($operation['mapping']);
     }
 
