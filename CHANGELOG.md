@@ -34,6 +34,7 @@
 - PIM-10421: Add missing translation key for delete button
 - PIM-10418: Simple and multi select values not showing if not imported with the correct letter case
 - PIM-10426: Fix empty array should be normalized as empty JSON object in Measurement Family API
+- PIM-10420: Handle status resolving when job crashes due to external issue (mysql crashes for example)
 - PIM-10416: Fix letter case issue when importing families
 - PIM-10427: Fix display of boolean value in variant axis
 - PIM-10435: Fix search_after requests with codes using uppercase accented characters
@@ -44,6 +45,7 @@
 - PIM-10471: Do not generate 2 files when making a quick export of 1 type of products
 - PIM-10475: Fix option existence validation for numeric option codes
 - PIM-10483: Fix slow loading products when filtering by variants
+- PIM-10484: Fix job filter on status being incoherent with job interupted by deamon crash
 
 ## Improvements
 
