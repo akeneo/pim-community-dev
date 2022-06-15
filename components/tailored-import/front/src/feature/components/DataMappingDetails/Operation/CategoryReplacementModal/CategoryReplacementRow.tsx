@@ -2,17 +2,13 @@ import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import {Helper, LoaderIcon, Table, TagInput, ArrowRightIcon} from "akeneo-design-system";
 import {useTranslate, ValidationError, filterErrors} from "@akeneo-pim-community/shared";
-import {ReplacementValues} from "../../../../models";
+import {Category, ReplacementValues} from "../../../../models";
 import {useCategoryFetcher} from "../../../../hooks";
 
-type CategoryTreeModel = {
-  id: number;
-  code: string;
-  label: string;
+type CategoryTreeState = {
   loading?: boolean;
   isOpen: boolean;
-  children: CategoryTreeModel[];
-  isLeaf: boolean;
+  children: Category[];
 };
 
 const TreeArrowIcon = styled(ArrowRightIcon)<{$isFolderOpen: boolean}>`
@@ -43,7 +39,7 @@ const InnerCategoryCell = styled.div`
 type CategoryReplacementRowProps = {
   mapping: ReplacementValues;
   onMappingChange: (mapping: ReplacementValues) => void;
-  tree: CategoryTreeModel;
+  tree: Category;
   validationErrors: ValidationError[];
   level: number;
 };
@@ -56,7 +52,11 @@ const CategoryReplacementRow = ({
   level,
 }: CategoryReplacementRowProps) => {
   const translate = useTranslate();
-  const [categoryState, setCategoryState] = useState<CategoryTreeModel>(tree);
+  const [categoryState, setCategoryState] = useState<CategoryTreeState>({
+    loading: false,
+    isOpen: false,
+    children: [],
+  });
   const valueErrors = filterErrors(validationErrors, `[${tree.code}]`);
   const categoryFetcher = useCategoryFetcher();
 
@@ -72,18 +72,8 @@ const CategoryReplacementRow = ({
     } else {
       setCategoryState((categoryState) => ({...categoryState, isOpen: true, loading: true}));
       const children = await categoryFetcher(tree.id);
-      const categoryTreeModels = children.map((child) => ({
-          code: child.code,
-          children: [],
-          label: child.label,
-          loading: false,
-          id: child.id,
-          isOpen: false,
-          isLeaf: child.isLeaf,
-      }));
-
       setCategoryState((categoryState) => ({
-          ...categoryState, loading: false, children: categoryTreeModels
+          ...categoryState, loading: false, children
         })
       );
     }
@@ -100,13 +90,13 @@ const CategoryReplacementRow = ({
       <Table.Row>
         <CategoryCell level={level} onClick={handleOpenCategory}>
           <InnerCategoryCell>
-          {!categoryState.isLeaf && (
+          {!tree.isLeaf && (
             <TreeArrowIcon size={14} $isFolderOpen={categoryState.isOpen} />
           )}
           {categoryState.loading && (
             <LoaderIcon />
           )}
-          {categoryState.label}
+          {tree.label}
           </InnerCategoryCell>
         </CategoryCell>
         <Table.Cell>
@@ -117,7 +107,7 @@ const CategoryReplacementRow = ({
               placeholder={translate(
                 'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.field.to_placeholder'
               )}
-              value={mapping[categoryState.code] ?? []}
+              value={mapping[tree.code] ?? []}
               onChange={newValue => handleMappingChange(tree.code, newValue)}
             />
             {valueErrors.map((error, index) => (

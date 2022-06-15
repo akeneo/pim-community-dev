@@ -146,11 +146,8 @@ const CategoryReplacementModal = ({
                 key={displayedCategoryTree.code}
                 tree={{
                   code: displayedCategoryTree.code,
-                  children: undefined,
                   label: getLabel(displayedCategoryTree.labels, catalogLocale, `[${displayedCategoryTree.code}]`),
-                  loading: false,
                   id: displayedCategoryTree.id,
-                  isOpen: false,
                   isLeaf: false,
                 }}
                 mapping={mapping}
