@@ -11,15 +11,28 @@ import {
   SimpleSelectReplacementOperation,
   SPLIT_OPERATION_TYPE,
   SplitOperation,
+  BooleanReplacementOperation,
+  getDefaultBooleanReplacementOperation,
 } from '../components/DataMappingDetails/Operation';
+import {Attribute} from './Attribute';
 
 type Operation =
   | CleanHTMLTagsOperation
   | MultiSelectReplacementOperation
   | SimpleSelectReplacementOperation
-  | SplitOperation;
+  | SplitOperation
+  | BooleanReplacementOperation;
 
 type OperationType = Operation['type'];
+
+const getRequiredOperations = (attribute: Attribute): Array<Operation> => {
+  switch (attribute.type) {
+    case 'pim_catalog_boolean':
+      return [getDefaultBooleanReplacementOperation()];
+    default:
+      return [];
+  }
+};
 
 const getDefaultOperation = (operationType: OperationType): Operation => {
   switch (operationType) {
@@ -36,5 +49,5 @@ const getDefaultOperation = (operationType: OperationType): Operation => {
   }
 };
 
-export {getDefaultOperation};
+export {getDefaultOperation, getRequiredOperations};
 export type {Operation, OperationType};

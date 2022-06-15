@@ -89,6 +89,13 @@ akeneo.tailored_import:
               field:
                 to_placeholder: Define the source values in your file.
             validation_error: Some replacement values are invalid, please refer to the error messages below each field.
+      boolean_replacement:
+        title: Boolean replacement
+        collapse: Collapse
+        field:
+          yes_value: Yes value
+          no_value: No value
+          null_value: Null value
     sources:
       title: Source(s)
       add:
