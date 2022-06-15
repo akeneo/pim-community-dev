@@ -1,7 +1,5 @@
 services:
-    Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory:
-        arguments:
-            - '%env(string:SRNT_GOOGLE_APPLICATION_CREDENTIALS)%'
+    Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory: ~
 
     Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\GpsTransportFactory:
         arguments:
