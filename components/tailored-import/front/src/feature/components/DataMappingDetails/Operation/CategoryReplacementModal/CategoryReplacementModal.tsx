@@ -1,21 +1,10 @@
-import {ReplacementValues} from "../../../../models";
-import {
-  formatParameters,
-  getLabel,
-  NotificationLevel,
-  useNotify,
-  useTranslate,
-  useUserContext,
-  ValidationError
-} from "@akeneo-pim-community/shared";
 import React, {useEffect, useState} from "react";
-import {useCategoryTrees} from "../../../../hooks/useCategoryTrees";
-import {Button, Modal, TabBar, Table} from "akeneo-design-system";
 import styled from "styled-components";
-import {CategoryTree} from "../../../../models/Category";
+import {Button, Modal, TabBar, Table} from "akeneo-design-system";
+import {formatParameters, getLabel, NotificationLevel, useNotify, useTranslate, useUserContext, ValidationError, useRoute, filterErrors} from "@akeneo-pim-community/shared";
+import {ReplacementValues, CategoryTree} from "../../../../models";
+import {useCategoryTrees} from "../../../../hooks";
 import {CATEGORY_REPLACEMENT_OPERATION_TYPE} from "../Block";
-import {useRoute} from "@akeneo-pim-community/shared/lib/hooks/useRoute";
-import {filterErrors} from "@akeneo-pim-community/shared/lib/models/validation-error";
 import {CategoryReplacementRow} from "./CategoryReplacementRow";
 
 const Container = styled.div`

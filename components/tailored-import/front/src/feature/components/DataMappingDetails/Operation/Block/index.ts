@@ -1,3 +1,4 @@
+export * from './BooleanReplacementOperationBlock';
 export * from './CleanHTMLTagsOperationBlock';
 export * from './MultiSelectReplacementOperationBlock';
 export * from './OperationBlockProps';

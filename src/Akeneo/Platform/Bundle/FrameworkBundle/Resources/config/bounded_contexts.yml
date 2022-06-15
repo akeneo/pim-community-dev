@@ -2,6 +2,8 @@ parameters:
     pimee.bounded_contexts:
         'Akeneo\AssetManager': 'Asset Manager'
 
+        'Akeneo\Catalogs': 'Catalogs'
+
         'Akeneo\Channel': 'Channel'
 
         'Akeneo\Connectivity': 'Connectivity'
