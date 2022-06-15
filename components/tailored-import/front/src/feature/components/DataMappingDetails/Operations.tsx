@@ -25,8 +25,8 @@ import {
   SimpleSelectReplacementOperationBlock,
   BOOLEAN_REPLACEMENT_OPERATION_TYPE,
   BooleanReplacementOperationBlock,
-  CATEGORY_REPLACEMENT_OPERATION_TYPE,
-  CategoryReplacementOperationBlock,
+  CATEGORIES_REPLACEMENT_OPERATION_TYPE,
+  CategoriesReplacementOperationBlock,
 } from './Operation';
 import {usePreviewData} from '../../hooks';
 
@@ -50,7 +50,7 @@ const operationBlocks: {
   [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,
   [MULTI_SELECT_REPLACEMENT_OPERATION_TYPE]: MultiSelectReplacementOperationBlock,
   [BOOLEAN_REPLACEMENT_OPERATION_TYPE]: BooleanReplacementOperationBlock,
-  [CATEGORY_REPLACEMENT_OPERATION_TYPE]: CategoryReplacementOperationBlock,
+  [CATEGORIES_REPLACEMENT_OPERATION_TYPE]: CategoriesReplacementOperationBlock,
 };
 
 type OperationsProps = {

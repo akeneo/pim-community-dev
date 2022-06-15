@@ -3,36 +3,36 @@ import {Block, Button, CloseIcon, IconButton, useBooleanState, uuid} from 'akene
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {isReplacementValues, ReplacementValues} from '../../../../models';
 import {OperationBlockProps} from './OperationBlockProps';
-import {CategoryReplacementModal} from '../CategoryReplacementModal/CategoryReplacementModal';
+import {CategoriesReplacementModal} from '../CategoriesReplacementModal/CategoriesReplacementModal';
 
-const CATEGORY_REPLACEMENT_OPERATION_TYPE = 'category_replacement';
+const CATEGORIES_REPLACEMENT_OPERATION_TYPE = 'categories_replacement';
 
-type CategoryReplacementOperation = {
+type CategoriesReplacementOperation = {
   uuid: string;
-  type: typeof CATEGORY_REPLACEMENT_OPERATION_TYPE;
+  type: typeof CATEGORIES_REPLACEMENT_OPERATION_TYPE;
   mapping: ReplacementValues;
 };
 
-const isCategoryReplacementOperation = (operation?: any): operation is CategoryReplacementOperation =>
+const isCategoriesReplacementOperation = (operation?: any): operation is CategoriesReplacementOperation =>
   undefined !== operation &&
   'type' in operation &&
-  CATEGORY_REPLACEMENT_OPERATION_TYPE === operation.type &&
+  CATEGORIES_REPLACEMENT_OPERATION_TYPE === operation.type &&
   'mapping' in operation &&
   isReplacementValues(operation.mapping);
 
-const getDefaultCategoryReplacementOperation = (): CategoryReplacementOperation => ({
+const getDefaultCategoriesReplacementOperation = (): CategoriesReplacementOperation => ({
   uuid: uuid(),
-  type: CATEGORY_REPLACEMENT_OPERATION_TYPE,
+  type: CATEGORIES_REPLACEMENT_OPERATION_TYPE,
   mapping: {},
 });
 
-const CategoryReplacementOperationBlock = ({operation, onChange, onRemove}: OperationBlockProps) => {
+const CategoriesReplacementOperationBlock = ({operation, onChange, onRemove}: OperationBlockProps) => {
   const translate = useTranslate();
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState(false);
   const [isReplacementModalOpen, openReplacementModal, closeReplacementModal] = useBooleanState(false);
 
-  if (!isCategoryReplacementOperation(operation)) {
-    throw new Error('CategoryReplacementOperationBlock can only be used with CategoryReplacementOperation');
+  if (!isCategoriesReplacementOperation(operation)) {
+    throw new Error('CategoriesReplacementOperationBlock can only be used with CategoriesReplacementOperation');
   }
 
   const handleCancel = () => {
@@ -48,14 +48,14 @@ const CategoryReplacementOperationBlock = ({operation, onChange, onRemove}: Oper
 
   return (
     <Block
-      title={translate(`akeneo.tailored_import.data_mapping.operations.category_replacement.title`)}
+      title={translate(`akeneo.tailored_import.data_mapping.operations.categories_replacement.title`)}
       actions={
         <>
           <Button level="tertiary" ghost={true} size="small" onClick={openReplacementModal}>
             {translate('pim_common.edit')}
           </Button>
           {isReplacementModalOpen && (
-            <CategoryReplacementModal
+            <CategoriesReplacementModal
               operationUuid={operation.uuid}
               initialMapping={operation.mapping}
               onConfirm={handleConfirm}
@@ -85,5 +85,9 @@ const CategoryReplacementOperationBlock = ({operation, onChange, onRemove}: Oper
   );
 };
 
-export {CategoryReplacementOperationBlock, getDefaultCategoryReplacementOperation, CATEGORY_REPLACEMENT_OPERATION_TYPE};
-export type {CategoryReplacementOperation};
+export {
+  CategoriesReplacementOperationBlock,
+  getDefaultCategoriesReplacementOperation,
+  CATEGORIES_REPLACEMENT_OPERATION_TYPE,
+};
+export type {CategoriesReplacementOperation};

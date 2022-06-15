@@ -2,7 +2,7 @@ import React from 'react';
 import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
-import {CategoryReplacementModal} from './CategoryReplacementModal';
+import {CategoriesReplacementModal} from './CategoriesReplacementModal';
 
 const operationUuid = 'b26bcde7-1231-47cc-84ba-e014bb08fbd5';
 const categoryTrees = [
@@ -45,7 +45,7 @@ test('it can update a replacement mapping', async () => {
   global.fetch = jest.fn().mockImplementation(async () => validResponse);
 
   await renderWithProviders(
-    <CategoryReplacementModal
+    <CategoriesReplacementModal
       operationUuid={operationUuid}
       initialMapping={{}}
       onConfirm={handleConfirm}
@@ -77,7 +77,7 @@ test('it validates replacement mapping before confirming', async () => {
   }));
 
   await renderWithProviders(
-    <CategoryReplacementModal
+    <CategoriesReplacementModal
       operationUuid={operationUuid}
       initialMapping={{}}
       onConfirm={handleConfirm}
@@ -103,7 +103,7 @@ test('it can change mapping on another category tree', async () => {
   global.fetch = jest.fn().mockImplementation(async () => validResponse);
 
   await renderWithProviders(
-    <CategoryReplacementModal
+    <CategoriesReplacementModal
       operationUuid={operationUuid}
       initialMapping={{
         shoes: ['CHAUSSURE'],

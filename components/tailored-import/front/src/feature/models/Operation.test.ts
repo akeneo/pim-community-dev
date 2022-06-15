@@ -13,9 +13,9 @@ test('it can get the default operation for each type', () => {
     type: 'multi_select_replacement',
     mapping: {},
   });
-  expect(getDefaultOperation('category_replacement')).toEqual({
+  expect(getDefaultOperation('categories_replacement')).toEqual({
     uuid: expect.any(String),
-    type: 'category_replacement',
+    type: 'categories_replacement',
     mapping: {},
   });
   // @ts-expect-error invalid type
