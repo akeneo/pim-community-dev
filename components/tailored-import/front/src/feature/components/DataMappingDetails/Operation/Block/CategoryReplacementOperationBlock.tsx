@@ -3,7 +3,7 @@ import {Block, Button, CloseIcon, IconButton, useBooleanState, uuid} from 'akene
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {isReplacementValues, ReplacementValues} from '../../../../models';
 import {OperationBlockProps} from './OperationBlockProps';
-import {CategoryReplacementModal} from "../CategoryReplacementModal/CategoryReplacementModal";
+import {CategoryReplacementModal} from '../CategoryReplacementModal/CategoryReplacementModal';
 
 const CATEGORY_REPLACEMENT_OPERATION_TYPE = 'category_replacement';
 
@@ -85,9 +85,5 @@ const CategoryReplacementOperationBlock = ({operation, onChange, onRemove}: Oper
   );
 };
 
-export {
-  CategoryReplacementOperationBlock,
-  getDefaultCategoryReplacementOperation,
-  CATEGORY_REPLACEMENT_OPERATION_TYPE,
-};
+export {CategoryReplacementOperationBlock, getDefaultCategoryReplacementOperation, CATEGORY_REPLACEMENT_OPERATION_TYPE};
 export type {CategoryReplacementOperation};

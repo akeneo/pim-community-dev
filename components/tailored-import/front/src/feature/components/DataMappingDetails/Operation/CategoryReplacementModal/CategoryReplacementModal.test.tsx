@@ -2,7 +2,7 @@ import React from 'react';
 import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
-import {CategoryReplacementModal} from "./CategoryReplacementModal";
+import {CategoryReplacementModal} from './CategoryReplacementModal';
 
 const operationUuid = 'b26bcde7-1231-47cc-84ba-e014bb08fbd5';
 const categoryTrees = [
@@ -30,9 +30,9 @@ const categoryTrees = [
 ];
 
 jest.mock('../../../../hooks/useCategoryTrees', () => {
-  return ({
+  return {
     useCategoryTrees: () => categoryTrees,
-  });
+  };
 });
 
 const validResponse = {

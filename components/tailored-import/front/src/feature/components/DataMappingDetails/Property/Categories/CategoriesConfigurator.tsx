@@ -5,7 +5,7 @@ import {PropertyDataMappingConfiguratorProps, PropertyTarget} from '../../../../
 import {InvalidPropertyTargetError} from '../error/InvalidPropertyTargetError';
 import {PropertyTargetParameters, Operations, Sources, ActionIfNotEmpty, ClearIfEmpty} from '../../../../components';
 import {SPLIT_OPERATION_TYPE} from '../../Operation';
-import {CATEGORY_REPLACEMENT_OPERATION_TYPE} from "../../Operation/Block/CategoryReplacementOperationBlock";
+import {CATEGORY_REPLACEMENT_OPERATION_TYPE} from '../../Operation/Block/CategoryReplacementOperationBlock';
 
 const CategoriesConfigurator = ({
   dataMapping,

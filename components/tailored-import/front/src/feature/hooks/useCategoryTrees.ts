@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
-import {CategoryTree} from "../models/Category";
-import {useRoute} from "@akeneo-pim-community/shared";
+import {useEffect, useState} from 'react';
+import {CategoryTree} from '../models/Category';
+import {useRoute} from '@akeneo-pim-community/shared';
 
 const useCategoryTrees = (): CategoryTree[] => {
   const [categoryTrees, setCategoryTrees] = useState<CategoryTree[]>([]);
@@ -18,12 +18,12 @@ const useCategoryTrees = (): CategoryTree[] => {
       const result = await response.json();
 
       setCategoryTrees(result);
-    }
+    };
 
     fetchCategoryTrees();
   }, [categoryTreesRoute]);
 
   return categoryTrees;
-}
+};
 
 export {useCategoryTrees};
