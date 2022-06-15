@@ -1,7 +1,17 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import {Button, Modal, TabBar, Table} from "akeneo-design-system";
-import {formatParameters, getLabel, NotificationLevel, useNotify, useTranslate, useUserContext, ValidationError, useRoute, filterErrors} from "@akeneo-pim-community/shared";
+import {
+  formatParameters,
+  getLabel,
+  NotificationLevel,
+  useNotify,
+  useTranslate,
+  useUserContext,
+  ValidationError,
+  useRoute,
+  filterErrors
+} from "@akeneo-pim-community/shared";
 import {ReplacementValues, CategoryTree} from "../../../../models";
 import {useCategoryTrees} from "../../../../hooks";
 import {CATEGORY_REPLACEMENT_OPERATION_TYPE} from "../Block";
