@@ -6,6 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product\Association;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductIdentifiers;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductUuids;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
@@ -384,8 +385,10 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
         $this->assertSame([], $actual);
     }
 
-    // TODO make this works (cf comment on test itDoesNotReturnQuantifiedAssociationWithDeletedProductModel)
-    public function SKIPPEDitDoesNotReturnQuantifiedAssociationWithDeletedProductModel()
+    /**
+     * @test
+     */
+    public function itDoesNotReturnQuantifiedAssociationWithDeletedProductModel()
     {
         $userId = ($this->getUserId('admin') !== 0)
             ? $this->getUserId('admin')
@@ -393,39 +396,16 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
 
         $productModelA = $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, []);
 
-        $productB = $this->createProductFromUserIntents(
-            'productB',
-            [
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $userId,
+            productIdentifier: 'productB',
+            userIntents: [
                 new SetFamily('aFamily'),
                 new AssociateQuantifiedProductModels('PRODUCT_SET', [new QuantifiedEntity('productModelA', 3)]),
-            ],
-            $userId
+            ]
         );
-
-        $this->getProductModelRemover()->remove($productModelA);
-        $actual = $this->getQuery()->fromProductUuids([$productB->getUuid()]);
-
-        $this->assertSame([], $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function itDoesNotReturnQuantifiedAssociationWithDeletedProductModel()
-    {
-        // (TODO) FIX: when we try to use the upsertProduct command to create product B,
-        // (TODO) there is a detached entity Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueData@22261 cannot be removed error
-        // (TODO) during $this->getProductModelRemover()->remove($productModelA);
-        $productModelA = $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, []);
-        $productB = $this->getEntityBuilder()->createProduct('productB', 'aFamily', [
-            'quantified_associations' => [
-                'PRODUCT_SET' => [
-                    'product_models' => [
-                        ['identifier' => 'productModelA', 'quantity' => 3],
-                    ],
-                ],
-            ],
-        ]);
+        $this->messageBus->dispatch($command);
+        $productB = $this->get('pim_catalog.repository.product')->findOneByIdentifier('productB');
 
         $this->getProductModelRemover()->remove($productModelA);
         $actual = $this->getQuery()->fromProductUuids([$productB->getUuid()]);

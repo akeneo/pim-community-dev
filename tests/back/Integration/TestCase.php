@@ -201,7 +201,7 @@ abstract class TestCase extends KernelTestCase
         $this->messageBus->dispatch($command);
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->clearDoctrineUoW();
+//        $this->clearDoctrineUoW();
 
         return $product;
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product\Association;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductUuids;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
@@ -406,21 +407,27 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
         $this->assertSame([], $actual);
     }
 
-    // TODO make this works (cf comment on test itDoesNotReturnQuantifiedAssociationWithDeletedProduct)
-    public function SKIPPEDitDoesNotReturnQuantifiedAssociationWithDeletedProduct()
+    /**
+     * @test
+     */
+    public function itDoesNotReturnQuantifiedAssociationWithDeletedProduct()
     {
         $userId = ($this->getUserId('admin') !== 0)
             ? $this->getUserId('admin')
             : $this->createAdminUser()->getId();
 
-        $productA = $this->createProductFromUserIntents(
-            'productA',
-            [new SetFamily('aFamily')],
-            $userId
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $userId,
+            productIdentifier: 'productA',
+            userIntents: [new SetFamily('aFamily')]
         );
-        $productB = $this->createProductFromUserIntents(
-            'productB',
-            [
+        $this->messageBus->dispatch($command);
+        $productA = $this->get('pim_catalog.repository.product')->findOneByIdentifier('productA');
+
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $userId,
+            productIdentifier: 'productB',
+            userIntents: [
                 new SetFamily('aFamily'),
                 new AssociateQuantifiedProducts(
                     'PRODUCT_SET',
@@ -428,34 +435,10 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
                         new QuantifiedEntity('productA', 3),
                     ]
                 ),
-            ],
-            $userId
+            ]
         );
-
-        $this->getProductRemover()->remove($productA);
-        $actual = $this->getQuery()->fromProductUuids([$productB->getUuid()]);
-
-        $this->assertSame([], $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function itDoesNotReturnQuantifiedAssociationWithDeletedProduct()
-    {
-        // (TODO) FIX: when we try to use the upsertProduct command to create products,
-        // (TODO) there is a detached entity productA cannot be removed error
-        // (TODO) during $this->getProductRemover()->remove($productA);
-        $productA = $this->getEntityBuilder()->createProduct('productA', 'aFamily', []);
-        $productB = $this->getEntityBuilder()->createProduct('productB', 'aFamily', [
-            'quantified_associations' => [
-                'PRODUCT_SET' => [
-                    'products' => [
-                        ['identifier' => 'productA', 'quantity' => 3],
-                    ],
-                ],
-            ],
-        ]);
+        $this->messageBus->dispatch($command);
+        $productB = $this->get('pim_catalog.repository.product')->findOneByIdentifier('productB');
 
         $this->getProductRemover()->remove($productA);
         $actual = $this->getQuery()->fromProductUuids([$productB->getUuid()]);
