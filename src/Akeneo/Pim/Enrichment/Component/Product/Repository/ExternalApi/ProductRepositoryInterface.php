@@ -2,7 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Repository interface for product resources
@@ -13,4 +15,8 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  */
 interface ProductRepositoryInterface extends IdentifiableObjectRepositoryInterface
 {
+    /**
+     * Find a product from it's Uuid
+     */
+    public function findOneByUuid(UuidInterface $uuid): ?ProductInterface;
 }
