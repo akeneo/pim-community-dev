@@ -32,7 +32,7 @@ class RemoveCategoriesApplier implements UserIntentApplier
         Assert::isInstanceOf($removeCategories, RemoveCategories::class);
         $productIdentifier = ProductIdentifier::fromString($product->getIdentifier());
 
-        $categoryCodes = $this->getCategoryCodes->forProductVariantFromProductIdentifiers([$productIdentifier]);
+        $categoryCodes = $this->getCategoryCodes->fromProductIdentifiers([$productIdentifier]);
         $categoryCodes = $categoryCodes[$product->getIdentifier()] ?? [];
 
         $this->productUpdater->update($product, [

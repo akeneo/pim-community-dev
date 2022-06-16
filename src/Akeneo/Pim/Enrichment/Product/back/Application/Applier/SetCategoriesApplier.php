@@ -32,7 +32,8 @@ class SetCategoriesApplier implements UserIntentApplier
         Assert::isInstanceOf($setCategories, SetCategories::class);
         $productIdentifier = ProductIdentifier::fromString($product->getIdentifier());
 
-        $nonViewableCategories = $this->getNonViewableCategories->forProductVariantFromProductIdentifiers([$productIdentifier], $userId);
+        $product->getCategoryCodes();
+        $nonViewableCategories = $this->getNonViewableCategories->fromProductIdentifiers([$productIdentifier], $userId);
         $nonViewableCategoriesForProduct = $nonViewableCategories[$productIdentifier->asString()] ?? [];
 
         $this->productUpdater->update($product, [

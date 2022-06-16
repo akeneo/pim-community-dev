@@ -82,6 +82,7 @@ final class UpsertProductHandler
         $userIntents = \array_filter(
             array_merge(
                 [
+                    // parent user intent should always be applied first
                     'parentUserIntent' => $command->parentUserIntent(),
                 ],
                 $indexedValueUserIntents,

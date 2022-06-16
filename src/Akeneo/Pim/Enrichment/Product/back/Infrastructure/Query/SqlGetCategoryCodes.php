@@ -34,6 +34,27 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
             $productIdentifiers
         );
 
+        $productCategories = $this->getProductCategoriesFromProductIdentifiers($stringProductIdentifiers);
+        $productModelCategories = $this->getProductModelCategoriesFromProductIdentifiers($stringProductIdentifiers);
+
+        $indexedResults = [];
+        foreach (\array_keys(\array_merge($productModelCategories, $productCategories)) as $productIdentifier) {
+            $productModelCategoryList = $productModelCategories[$productIdentifier] ?? [];
+            $productCategoryList = $productCategories[$productIdentifier] ?? [];
+            $indexedResults[(string) $productIdentifier] = \array_values(\array_merge($productModelCategoryList, $productCategoryList));
+        }
+
+        return $indexedResults;
+    }
+
+    /**
+     * @param string[] $productIdentifiers
+     * @return array
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function getProductModelCategoriesFromProductIdentifiers(array $productIdentifiers): array
+    {
         $sql = <<<SQL
         WITH
         existing_product AS (
@@ -43,12 +64,6 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
         FROM 
             existing_product p
             LEFT JOIN (
-                SELECT
-                    p.identifier, c.code AS category_code
-                FROM existing_product p
-                    INNER JOIN pim_catalog_category_product cp ON cp.product_id = p.id
-                    INNER JOIN pim_catalog_category c ON c.id = cp.category_id
-                UNION ALL
                 SELECT
                     p.identifier, c.code AS category_code
                 FROM existing_product p
@@ -69,7 +84,7 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
 
         $results = $this->connection->executeQuery(
             $sql,
-            ['product_identifiers' => $stringProductIdentifiers],
+            ['product_identifiers' => $productIdentifiers],
             ['product_identifiers' => Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
@@ -84,20 +99,13 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
     }
 
     /**
-     * {@inheritDoc}
+     * @param string[] $productIdentifiers
+     * @return array
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Doctrine\DBAL\Exception
      */
-    public function forProductVariantFromProductIdentifiers(array $productIdentifiers): array
+    private function getProductCategoriesFromProductIdentifiers(array $productIdentifiers): array
     {
-        if ([] === $productIdentifiers) {
-            return [];
-        }
-
-        Assert::allIsInstanceOf($productIdentifiers, ProductIdentifier::class);
-        $stringProductIdentifiers = \array_map(
-            static fn (ProductIdentifier $productIdentifier): string => $productIdentifier->asString(),
-            $productIdentifiers
-        );
-
         $sql = <<<SQL
         WITH
             existing_product AS (
@@ -118,7 +126,7 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
 
         $results = $this->connection->executeQuery(
             $sql,
-            ['product_identifiers' => $stringProductIdentifiers],
+            ['product_identifiers' => $productIdentifiers],
             ['product_identifiers' => Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Query;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes as GetNonViewableCategoryCodesInterface;
 
@@ -27,26 +26,6 @@ class GetNonViewableCategoryCodes implements GetNonViewableCategoryCodesInterfac
     public function fromProductIdentifiers(array $productIdentifiers, int $userId): array
     {
         $categoryCodesPerProductIdentifier = $this->getCategoryCodes->fromProductIdentifiers($productIdentifiers);
-        $categoryCodes = [];
-        foreach ($categoryCodesPerProductIdentifier as $categoryCodesForProduct) {
-            $categoryCodes = \array_merge($categoryCodes, $categoryCodesForProduct);
-        }
-        $categoryCodes = \array_values(\array_unique($categoryCodes));
-
-        $viewableCategoryCodes = $this->getViewableCategories->forUserId($categoryCodes, $userId);
-
-        return \array_map(
-            static fn (array $categoryCodes): array => \array_values(\array_diff($categoryCodes, $viewableCategoryCodes)),
-            $categoryCodesPerProductIdentifier
-        );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function forProductVariantFromProductIdentifiers(array $productIdentifiers, int $userId): array
-    {
-        $categoryCodesPerProductIdentifier = $this->getCategoryCodes->forProductVariantFromProductIdentifiers($productIdentifiers);
         $categoryCodes = [];
         foreach ($categoryCodesPerProductIdentifier as $categoryCodesForProduct) {
             $categoryCodes = \array_merge($categoryCodes, $categoryCodesForProduct);

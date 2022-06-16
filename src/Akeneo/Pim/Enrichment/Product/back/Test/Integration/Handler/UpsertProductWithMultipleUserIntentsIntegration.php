@@ -138,7 +138,7 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
 
         Assert::assertNotNull($product);
         Assert::assertEquals('newParent', $product->getParent()->getCode());
-        Assert::assertEqualsCanonicalizing(['sales', 'samples'], $product->getCategoryCodes());
+        Assert::assertEqualsCanonicalizing(['sales', 'samples', 'suppliers'], $product->getCategoryCodes());
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('peter'),
@@ -152,7 +152,7 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
         $product = $this->productRepository->findOneByIdentifier('variant_product');
         Assert::assertNotNull($product);
         Assert::assertFalse($product->isVariant());
-        Assert::assertEqualsCanonicalizing([], $product->getCategoryCodes());
+        Assert::assertEqualsCanonicalizing(['samples', 'suppliers'], $product->getCategoryCodes());
     }
 
     /** @test */
@@ -197,7 +197,7 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
         $product = $this->productRepository->findOneByIdentifier('variant_product');
         Assert::assertNotNull($product);
         Assert::assertEqualsCanonicalizing('newParent', $product->getParent()->getCode());
-        Assert::assertEqualsCanonicalizing(['print', 'samples'], $product->getCategoryCodes());
+        Assert::assertEqualsCanonicalizing(['print', 'samples', 'suppliers'], $product->getCategoryCodes());
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('peter'),
@@ -211,7 +211,7 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
         $product = $this->productRepository->findOneByIdentifier('variant_product');
         Assert::assertNotNull($product);
         Assert::assertFalse($product->isVariant());
-        Assert::assertEqualsCanonicalizing(['print', 'sales'], $product->getCategoryCodes());
+        Assert::assertEqualsCanonicalizing(['print', 'samples', 'suppliers', 'sales'], $product->getCategoryCodes());
     }
 
     /** @test */
