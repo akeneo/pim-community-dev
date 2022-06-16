@@ -17,3 +17,9 @@ services:
             - '@monolog.logger.api_requests'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ValidateApiRequestQueryParametersSubscriber:
+        arguments:
+            - '@security.firewall.map'
+        tags:
+            - { name: kernel.event_subscriber }
