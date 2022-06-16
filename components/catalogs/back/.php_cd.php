@@ -68,7 +68,7 @@ $rules = [
             'Akeneo\Catalogs\ServiceAPI',
 
             // Constraints as Attributes
-            'Symfony\Component\Validator\Constraint',
+            'Symfony\Component\Validator\Constraints',
             'Akeneo\Catalogs\Infrastructure\Validation',
 
             // Message Bus
