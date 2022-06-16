@@ -11,7 +11,9 @@
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller;
 
+use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
 use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees;
+use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\GetCategoryChildrenCodesPerTreeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +23,7 @@ final class GetCategoryTreesAction
 {
     public function __construct(
         private FindCategoryTrees $findCategoryTrees,
+        private GetCategoryChildrenCodesPerTreeInterface $getCategoryChildrenCodesPerTree,
     ) {
     }
 
@@ -30,9 +33,24 @@ final class GetCategoryTreesAction
             return new RedirectResponse('/');
         }
 
+        $categoryCodesWithError = $request->get('category_codes_with_error', []);
         $trees = $this->findCategoryTrees->execute();
-        $normalizedTrees = array_map(static fn ($tree) => $tree->normalize(), $trees);
 
-        return new JsonResponse($normalizedTrees);
+        return new JsonResponse($this->normalizeCategoryTrees($trees, $categoryCodesWithError));
+    }
+
+    private function normalizeCategoryTrees(array $trees, array $categoryCodesWithError): array
+    {
+        $categoriesWithErrorPerTree = $this->getCategoryChildrenCodesPerTree->executeWithoutChildren($categoryCodesWithError);
+
+        return array_map(
+            static function (CategoryTree $categoryTree) use ($categoriesWithErrorPerTree) {
+                $result = $categoryTree->normalize();
+                $result['has_error'] = !empty($categoriesWithErrorPerTree[$categoryTree->code]);
+
+                return $result;
+            },
+            $trees
+        );
     }
 }

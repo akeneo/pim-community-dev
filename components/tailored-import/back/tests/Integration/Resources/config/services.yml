@@ -26,3 +26,6 @@ parameters:
 services:
   akeneo.tailored_import.infrastructure.public_api.find_category_trees:
     class: Akeneo\Platform\TailoredImport\Test\Integration\FakePublicApi\FakeFindCategoryTrees
+
+  akeneo.tailored_import.infrastructure.public_api.get_category_children_codes_per_tree:
+    class: Akeneo\Platform\TailoredImport\Test\Integration\FakePublicApi\FakeGetCategoryChildrenCodesPerTree

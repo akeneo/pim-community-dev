@@ -4,6 +4,7 @@ type CategoryTree = {
   id: number;
   code: string;
   labels: LabelCollection;
+  has_error: boolean;
 };
 
 type Category = {
