@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration;
 
+use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -158,5 +160,15 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_user.saver.user')->save($user);
 
         return $user;
+    }
+
+    protected function createCatalog(string $id, string $name, string $ownerUsername): void
+    {
+        $commandBus = self::getContainer()->get(CommandBus::class);
+        $commandBus->execute(new CreateCatalogCommand(
+            $id,
+            $name,
+            $ownerUsername,
+        ));
     }
 }
