@@ -46,7 +46,7 @@ class GetProductByUuidController
      * @param string $uuid
      * @return JsonResponse
      */
-    public function getAction(Request $request, string $uuid): JsonResponse
+    public function __invoke(Request $request, string $uuid): JsonResponse
     {
         $this->denyAccessUnlessAclIsGranted('pim_api_product_list');
 
@@ -90,10 +90,6 @@ class GetProductByUuidController
         switch ($acl) {
             case 'pim_api_product_list':
                 return 'Access forbidden. You are not allowed to list products.';
-            case 'pim_api_product_edit':
-                return 'Access forbidden. You are not allowed to create or update products.';
-            case 'pim_api_product_remove':
-                return 'Access forbidden. You are not allowed to delete products.';
             default:
                 return 'Access forbidden.';
         }

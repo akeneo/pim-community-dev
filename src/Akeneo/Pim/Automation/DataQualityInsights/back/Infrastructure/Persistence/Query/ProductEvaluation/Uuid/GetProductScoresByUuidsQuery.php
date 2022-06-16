@@ -45,7 +45,7 @@ INNER JOIN pim_data_quality_insights_product_score AS latest_score ON latest_sco
 LEFT JOIN pim_data_quality_insights_product_score AS younger_score
     ON younger_score.product_uuid = latest_score.product_uuid
     AND younger_score.evaluated_at > latest_score.evaluated_at
-WHERE product.uuid IN(:product_uuids) 
+WHERE product.uuid IN (:product_uuids) 
   AND younger_score.evaluated_at IS NULL;
 SQL;
 

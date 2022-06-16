@@ -15,7 +15,6 @@ use Ramsey\Uuid\Uuid;
 
 final class ProductUuidSpec extends ObjectBehavior
 {
-    // TODO tests kos
     public function it_can_be_construct_from_a_string()
     {
         $this->beConstructedThrough('fromString', ['6d125b99-d971-41d9-a264-b020cd486aee']);
