@@ -203,7 +203,7 @@ SQL;
             'starting_status_code' => Status::STARTING,
             'in_progress_status_code' => Status::IN_PROGRESS,
             'stopping_status_code' => Status::STOPPING,
-            'failed_status_code' => Status::FAILED
+            'failed_status_code' => Status::FAILED,
         ];
 
         $searchParts = explode(' ', $query->search);
