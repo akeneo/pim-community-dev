@@ -119,9 +119,7 @@ test('it displays the data mappings', async () => {
   );
 
   expect(screen.getByText('pim_common.categories')).toBeInTheDocument();
-  expect(
-    screen.getByText('akeneo.tailored_import.data_mapping.sources.title: catego 1 (B) catego 2 (C)')
-  ).toBeInTheDocument();
+  expect(screen.getByText('catego 1 (B), catego 2 (C)')).toBeInTheDocument();
 });
 
 test('it calls handler when row is selected', async () => {

@@ -22,7 +22,7 @@ const Container = styled.div`
 `;
 
 const SpacedSearch = styled(Search)`
-  margin-top: 10px;
+  margin: 20px 0;
 `;
 
 type DataMappingListProps = {
@@ -84,6 +84,11 @@ const DataMappingList = ({
         />
       ) : (
         <Table>
+          <Table.Header sticky={88}>
+            <Table.HeaderCell>{translate('akeneo.tailored_import.data_mapping.target.title')}</Table.HeaderCell>
+            <Table.HeaderCell>{translate('akeneo.tailored_import.data_mapping.sources.title')}</Table.HeaderCell>
+            <Table.HeaderCell />
+          </Table.Header>
           <Table.Body>
             {filteredDataMappings.map(dataMapping => (
               <DataMappingRow
