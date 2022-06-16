@@ -36,7 +36,7 @@ fix-frontcs-retailer: #Doc: Run front fix code style for the retailer part of On
 
 .PHONY: fix-frontcs-supplier
 fix-frontcs-supplier: #Doc: Run front fix code style for the supplier part of Onboarder Serenity
-	$(YARN_RUN) run --cwd=components/onboarder-supplier/front lint:fix
+	$(NODE_RUN) /bin/sh -c "cd components/onboarder-supplier/front" && $(YARN_RUN) run --cwd=components/onboarder-supplier/front lint:fix
 
 fix-frontcs: fix-frontcs-retailer fix-frontcs-supplier #Doc: Fix front CS for Onboarder Serenity
 
