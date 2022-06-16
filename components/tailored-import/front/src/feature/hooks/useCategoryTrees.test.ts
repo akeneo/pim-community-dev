@@ -79,29 +79,31 @@ test('It extract category codes from validation error in order to know it catego
     json: async () => response,
   }));
 
-  const {waitForNextUpdate} = renderHookWithProviders(() => useCategoryTrees([
-    {
-      messageTemplate: 'error.global.an_error',
-      invalidValue: '',
-      message: 'this is a global error',
-      parameters: {},
-      propertyPath: '',
-    },
-    {
-      messageTemplate: 'error.shoes.an_error',
-      invalidValue: '',
-      message: 'this is a shoes error',
-      parameters: {},
-      propertyPath: '[mapping][shoes]',
-    },
-    {
-      messageTemplate: 'error.sandal.an_error',
-      invalidValue: '',
-      message: 'this is a sandal error',
-      parameters: {},
-      propertyPath: '[mapping][sandal]',
-    },
-  ]));
+  const {waitForNextUpdate} = renderHookWithProviders(() =>
+    useCategoryTrees([
+      {
+        messageTemplate: 'error.global.an_error',
+        invalidValue: '',
+        message: 'this is a global error',
+        parameters: {},
+        propertyPath: '',
+      },
+      {
+        messageTemplate: 'error.shoes.an_error',
+        invalidValue: '',
+        message: 'this is a shoes error',
+        parameters: {},
+        propertyPath: '[mapping][shoes]',
+      },
+      {
+        messageTemplate: 'error.sandal.an_error',
+        invalidValue: '',
+        message: 'this is a sandal error',
+        parameters: {},
+        propertyPath: '[mapping][sandal]',
+      },
+    ])
+  );
 
   await act(async () => {
     await waitForNextUpdate();
@@ -111,10 +113,10 @@ test('It extract category codes from validation error in order to know it catego
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest'
+      'X-Requested-With': 'XMLHttpRequest',
     },
     body: JSON.stringify({
-      category_codes_with_error: ['shoes', 'sandal']
-    })
+      category_codes_with_error: ['shoes', 'sandal'],
+    }),
   });
 });

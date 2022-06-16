@@ -50,7 +50,7 @@ final class GetCategoryTreesAction
 
                 return $result;
             },
-            $trees
+            $trees,
         );
     }
 }
