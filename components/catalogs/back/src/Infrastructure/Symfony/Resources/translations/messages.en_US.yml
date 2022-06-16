@@ -5,6 +5,3 @@ akeneo_catalogs:
         catalog_list: List catalogs
         catalog_edit: Create and update catalogs
         catalog_remove: Delete catalogs
-
-    validation:
-        max_number_of_catalogs_per_user_message: You can create up to 15 catalogs

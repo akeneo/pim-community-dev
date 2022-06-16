@@ -93,6 +93,6 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
             )
         );
 
-        $this->assertViolationsListContains($violations, 'akeneo_catalogs.validation.max_number_of_catalogs_per_user_message');
+        $this->assertViolationsListContains($violations, 'You can create up to 15 catalogs');
     }
 }
