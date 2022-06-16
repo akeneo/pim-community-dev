@@ -51,7 +51,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
 
         $expectedJobExecutions = [
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[4]),
-            $this->getExpectedJobExecutionRow($this->jobExecutionIds[3]),
+            $this->getExpectedJobExecutionRow($this->jobExecutionIds[2]),
         ];
 
         $this->assertEquals($expectedJobExecutions, $this->query->search($query));
