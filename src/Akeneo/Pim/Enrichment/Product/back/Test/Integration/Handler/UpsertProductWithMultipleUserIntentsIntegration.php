@@ -215,7 +215,7 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
     }
 
     /** @test */
-    public function it_can_create_a_product_with_change_parent_and_set_family_user_intents()
+    public function it_can_create_a_variant_product_with_change_parent_and_set_family_user_intents()
     {
         $this->createProductModel('root', 'color_variant_accessories', []);
 
@@ -239,7 +239,7 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
     }
 
     /** @test */
-    public function it_throws_an_exception_when_updating_product_by_changing_family_and_parent_even_if_parents_have_same_family_variant()
+    public function it_cannot_change_the_family_of_a_variant_product()
     {
         $this->createAttribute('size', ['type' => AttributeTypes::OPTION_SIMPLE_SELECT]);
         $this->createAttributeOptions('size', ['S', 'M', 'L', 'XL']);
@@ -292,7 +292,7 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
     }
 
     /** @test */
-    public function it_throws_an_exception_when_updating_product_by_changing_family_and_changing_parent_with_different_family_variant()
+    public function it_cannot_change_the_parent_with_different_family()
     {
         $this->createAttribute('size', ['type' => AttributeTypes::OPTION_SIMPLE_SELECT]);
         $this->createAttributeOptions('size', ['S', 'M', 'L', 'XL']);
