@@ -61,7 +61,7 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
             return;
         }
 
-        $this->eventDispatcher->addSubscriber(new UpdateJobExecutionStorageSummarySubscriber($jobExecution));
+        $this->eventDispatcher->addSubscriber(new UpdateJobExecutionStorageSummarySubscriber());
         $command = new TransferFilesToStorageCommand(
             $this->extractFileToTransfer($jobExecution),
             $jobParameters[self::STORAGE_KEY],

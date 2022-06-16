@@ -54,7 +54,7 @@ final class DownloadFileFromStorageBeforeImportSubscriber implements EventSubscr
             return;
         }
 
-        $this->eventDispatcher->addSubscriber(new UpdateJobExecutionStorageSummarySubscriber($jobExecution));
+        $this->eventDispatcher->addSubscriber(new UpdateJobExecutionStorageSummarySubscriber());
 
         $command = new DownloadFileFromStorageCommand(
             $jobParameters[self::STORAGE_KEY],
