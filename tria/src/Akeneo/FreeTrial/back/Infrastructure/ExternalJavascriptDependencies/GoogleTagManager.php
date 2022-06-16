@@ -4,25 +4,27 @@ declare(strict_types=1);
 
 namespace Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator;
 use Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\ExternalDependencyProviderInterface;
 
 final class GoogleTagManager implements ExternalDependencyProviderInterface, ContentSecurityPolicyProviderInterface
 {
-    private ScriptNonceGenerator $nonceGenerator;
-    private string $googleTagManagerId;
-    private string $googleAnalyticsId;
-
-    public function __construct(ScriptNonceGenerator $nonceGenerator, string $googleTagManagerId, $googleAnalyticsId)
-    {
-        $this->nonceGenerator = $nonceGenerator;
-        $this->googleTagManagerId = $googleTagManagerId;
-        $this->googleAnalyticsId = $googleAnalyticsId;
+    public function __construct(
+        private ScriptNonceGenerator $nonceGenerator,
+        private string $googleTagManagerId,
+        private string $googleAnalyticsId,
+        private FeatureFlags $featureFlags
+    ) {
     }
 
-    public function getScript(): string
+    public function getScript(): ?string
     {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
+            return null;
+        }
+
         $nonce = $this->nonceGenerator->getGeneratedNonce();
 
         $javascript = <<<JS
@@ -47,8 +49,12 @@ JS;
     /**
      * https://developers.heap.io/docs/web#content-security-policy-csp
      */
-    public function getContentSecurityPolicy(): array
+    public function getContentSecurityPolicy(): ?array
     {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
+            return null;
+        }
+
         return [
             'script-src'  => ["https://www.googletagmanager.com", "'unsafe-inline'"],
             'img-src'     => ["www.googletagmanager.com"],

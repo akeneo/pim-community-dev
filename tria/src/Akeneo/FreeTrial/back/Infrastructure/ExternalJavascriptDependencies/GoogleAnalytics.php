@@ -4,23 +4,26 @@ declare(strict_types=1);
 
 namespace Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator;
 use Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\ExternalDependencyProviderInterface;
 
 final class GoogleAnalytics implements ExternalDependencyProviderInterface, ContentSecurityPolicyProviderInterface
 {
-    private ScriptNonceGenerator $nonceGenerator;
-    private string $googleAnalyticsId;
-
-    public function __construct(ScriptNonceGenerator $nonceGenerator, string $googleAnalyticsId)
-    {
-        $this->nonceGenerator = $nonceGenerator;
-        $this->googleAnalyticsId = $googleAnalyticsId;
+    public function __construct(
+        private ScriptNonceGenerator $nonceGenerator,
+        private string $googleAnalyticsId,
+        private FeatureFlags $featureFlags
+    ) {
     }
 
-    public function getScript(): string
+    public function getScript(): ?string
     {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
+            return null;
+        }
+
         $nonce = $this->nonceGenerator->getGeneratedNonce();
 
         $javascript = <<<JS
@@ -41,8 +44,12 @@ JS;
      * @see https://developers.google.com/tag-manager/web/csp
      * @see https://rapidsec.com/csp-packages/google_analytics
      */
-    public function getContentSecurityPolicy(): array
+    public function getContentSecurityPolicy(): ?array
     {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
+            return null;
+        }
+
         return [
             'script-src' => ["https://www.googletagmanager.com", "'unsafe-inline'"],
             'img-src' => ["www.googletagmanager.com", "www.google-analytics.com", "ssl.google-analytics.com", "www.google.com", "analytics.google.com"],
