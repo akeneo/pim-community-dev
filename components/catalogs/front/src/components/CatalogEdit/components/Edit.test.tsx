@@ -13,6 +13,9 @@ import {Edit} from './Edit';
 jest.mock('../../ProductSelection', () => ({
     ProductSelection: () => <>[ProductSelection]</>,
 }));
+jest.mock('./Settings', () => ({
+    Settings: () => <>[Settings]</>,
+}));
 
 // todo : find a way to unmock useSessionStorageState to remove these lines
 type StateType = any;
@@ -43,17 +46,23 @@ test('it renders without error', () => {
         </ThemeProvider>
     );
 
-    expect(screen.getByText('[ProductSelection]')).toBeInTheDocument();
+    expect(screen.getByText('[Settings]')).toBeInTheDocument();
 });
 
-test('it switch between tabs', () => {
+test('it switches between tabs', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <Edit id={'123e4567-e89b-12d3-a456-426614174000'} />
         </ThemeProvider>
     );
 
-    // @todo click on another tab
+    expect(screen.getByText('[Settings]')).toBeInTheDocument();
+
     act(() => userEvent.click(screen.getByText('akeneo_catalogs.catalog_edit.tabs.product_selection')));
+
     expect(screen.getByText('[ProductSelection]')).toBeInTheDocument();
+
+    act(() => userEvent.click(screen.getByText('akeneo_catalogs.catalog_edit.tabs.settings')));
+
+    expect(screen.getByText('[Settings]')).toBeInTheDocument();
 });
