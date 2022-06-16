@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Widget;
@@ -10,7 +11,6 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -51,9 +51,6 @@ class LastOperationsFetcher
         $this->jobExecutionTrackingNormalizer = $jobExecutionTrackingNormalizer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function fetch(): array
     {
         $user = $this->getUser();

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Platform\Integration\ImportExport\Repository\InternalApi;
+namespace AkeneoTest\Platform\Integration\ImportExport\Persistence\Filesystem;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Persistence\Filesystem\DeleteOrphanJobExecutionDirectories;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;

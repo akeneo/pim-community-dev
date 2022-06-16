@@ -25,7 +25,7 @@ final class DownloadFileFromStorage implements DownloadFileFromStorageInterface
         $destinationStorageClient = $this->storageClientProvider->getLocalStorageClient();
 
         $sourceFilePath = $sourceStorage->getFilePath();
-        $destinationFilePath = $workingDirectory . basename($sourceFilePath);
+        $destinationFilePath = $workingDirectory.basename($sourceFilePath);
 
         try {
             $this->validateFileBeforeDownload($sourceStorageClient, $sourceFilePath);

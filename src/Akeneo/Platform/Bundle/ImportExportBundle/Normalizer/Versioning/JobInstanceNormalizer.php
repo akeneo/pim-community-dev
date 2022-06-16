@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * A normalizer to transform a job instance entity into a array
+ * A normalizer to transform a job instance entity into a array.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /**  @var string[] */
+    /** @var string[] */
     protected $supportedFormats = ['flat'];
 
     /**
@@ -28,11 +28,11 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
     public function normalize($jobInstance, $format = null, array $context = [])
     {
         $results = [
-            'code'          => $jobInstance->getCode(),
-            'job_name'      => $jobInstance->getJobName(),
-            'label'         => $jobInstance->getLabel(),
-            'connector'     => $jobInstance->getConnector(),
-            'type'          => $jobInstance->getType(),
+            'code' => $jobInstance->getCode(),
+            'job_name' => $jobInstance->getJobName(),
+            'label' => $jobInstance->getLabel(),
+            'connector' => $jobInstance->getConnector(),
+            'type' => $jobInstance->getType(),
             'configuration' => json_encode($jobInstance->getRawParameters()),
         ];
 
