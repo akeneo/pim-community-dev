@@ -64,7 +64,7 @@ final class OptionValueStringifier extends AbstractValueStringifier implements V
         $localeCode = $options[static::LABEL_LOCALE_KEY] ?? null;
         $strings = [];
         foreach ($optionCodes as $optionCode) {
-            $key = sprintf('%s.%s', $attributeCode, \strtolower($optionCode));
+            $key = \strtolower(sprintf('%s.%s', $attributeCode, $optionCode));
             if (!array_key_exists($key, $valuesByKeys)) {
                 continue;
             }
