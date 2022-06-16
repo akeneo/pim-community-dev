@@ -9,7 +9,7 @@ type Props = {
     id: string;
 };
 
-const Edit: FC<PropsWithChildren<Props>> = () => {
+const Edit: FC<PropsWithChildren<Props>> = ({id}) => {
     const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.SETTINGS, 'pim_catalog_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
 
@@ -26,7 +26,7 @@ const Edit: FC<PropsWithChildren<Props>> = () => {
             <TabBar isCurrent={isCurrent} switchTo={handleSwitchTo} />
 
             {isCurrent(Tabs.SETTINGS) && <Settings />}
-            {isCurrent(Tabs.PRODUCT_SELECTION) && <ProductSelection />}
+            {isCurrent(Tabs.PRODUCT_SELECTION) && <ProductSelection id={id} />}
         </>
     );
 };

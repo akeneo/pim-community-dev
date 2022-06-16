@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Job execution controller
+ * Job execution controller.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -43,11 +43,12 @@ class JobExecutionController
     }
 
     /**
-     * Download the log file of the job execution
+     * Download the log file of the job execution.
      *
      * @param int $id
      *
      * @return Response
+     *
      * @throws UnableToReadFile
      */
     public function downloadLogFileAction($id)
@@ -73,7 +74,7 @@ class JobExecutionController
     }
 
     /**
-     * Download an archived file
+     * Download an archived file.
      *
      * @param int    $id
      * @param string $archiver

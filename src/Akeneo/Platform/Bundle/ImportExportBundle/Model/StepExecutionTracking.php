@@ -20,13 +20,13 @@ class StepExecutionTracking
     /** @var string */
     public $status;
 
-    /** @var boolean */
+    /** @var bool */
     public $isTrackable = false;
 
-    /** @var boolean */
-    public $hasWarning  = false;
+    /** @var bool */
+    public $hasWarning = false;
 
-    /** @var boolean */
+    /** @var bool */
     public $hasError = false;
 
     /** @var int */

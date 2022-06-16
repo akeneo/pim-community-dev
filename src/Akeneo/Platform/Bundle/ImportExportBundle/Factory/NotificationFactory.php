@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Util\ClassUtils;
 
 /**
- * Factory that creates a notification from a job instance
+ * Factory that creates a notification from a job instance.
  *
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -23,7 +23,6 @@ class NotificationFactory extends AbstractNotificationFactory implements Notific
     protected $notificationClass;
 
     /**
-     * @param array  $notificationTypes
      * @param string $notificationClass
      */
     public function __construct(array $notificationTypes, $notificationClass)
@@ -38,12 +37,7 @@ class NotificationFactory extends AbstractNotificationFactory implements Notific
     public function create($jobExecution)
     {
         if (!$jobExecution instanceof JobExecution) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Akeneo\Tool\Component\Batch\Model\JobExecution, "%s" provided',
-                    ClassUtils::getClass($jobExecution)
-                )
-            );
+            throw new \InvalidArgumentException(sprintf('Expects a Akeneo\Tool\Component\Batch\Model\JobExecution, "%s" provided', ClassUtils::getClass($jobExecution)));
         }
 
         $notification = new $this->notificationClass();

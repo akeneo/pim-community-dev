@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Util\ClassUtils;
 
 /**
- * Factory that creates a notification for mass edit from a job instance
+ * Factory that creates a notification for mass edit from a job instance.
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -38,12 +38,7 @@ class MassEditNotificationFactory extends AbstractNotificationFactory implements
     public function create($jobExecution)
     {
         if (!$jobExecution instanceof JobExecution) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Akeneo\Tool\Component\Batch\Model\JobExecution, "%s" provided',
-                    ClassUtils::getClass($jobExecution)
-                )
-            );
+            throw new \InvalidArgumentException(sprintf('Expects a Akeneo\Tool\Component\Batch\Model\JobExecution, "%s" provided', ClassUtils::getClass($jobExecution)));
         }
 
         $notification = new $this->notificationClass();
