@@ -285,3 +285,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ProductKeyIndicatorsByFeatureRegistry:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.all_criteria.feature'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Hydrator\hydrateCriterionEvaluationResult:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds'
