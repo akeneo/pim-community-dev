@@ -57,8 +57,8 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             ->create(['code' => 'pant', 'attributes' => ['boolean_attribute', 'text_attribute']]);
 
         $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $this->dbalConnection = self::$container->get('database_connection');
-        $this->productLoader = self::$container->get('akeneo_connectivity.connection.fixtures.enrichment.product');
+        $this->dbalConnection = static::getContainer()->get('database_connection');
+        $this->productLoader = static::getContainer()->get('akeneo_connectivity.connection.fixtures.enrichment.product');
 
         $this->tshirtProduct = $this->productLoader->create(
             'blue-t-shirt',

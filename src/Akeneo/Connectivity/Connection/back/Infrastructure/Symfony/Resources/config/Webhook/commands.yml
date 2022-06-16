@@ -8,9 +8,9 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\Command\SendBusinessEventToWebhooks:
         arguments:
+            - '@Akeneo\Platform\Component\EventQueue\BulkEventNormalizer'
             - '@Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler'
             - '@event_dispatcher'
-            - '@logger'
         tags:
             - { name: console.command }
 
