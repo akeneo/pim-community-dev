@@ -50,9 +50,11 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $query->page = 2;
 
         $expectedJobExecutions = [
-            $this->getExpectedJobExecutionRow($this->jobExecutionIds[2]),
+            $this->getExpectedJobExecutionRow($this->jobExecutionIds[4]),
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[3]),
         ];
+
+        $result = $this->query->search($query);
 
         $this->assertEquals($expectedJobExecutions, $this->query->search($query));
     }
@@ -141,7 +143,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
 
         $query = new SearchJobExecutionQuery();
 
-        $this->assertEquals(4, $this->query->count($query));
+        $this->assertEquals(5, $this->query->count($query));
     }
 
     /**
@@ -226,8 +228,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $query->sortDirection = 'ASC';
 
         $expectedJobExecutions = [
+            $this->getExpectedJobExecutionRow($this->jobExecutionIds[4]),
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[3]),
-            $this->getExpectedJobExecutionRow($this->jobExecutionIds[0]),
         ];
 
         $this->assertEquals($expectedJobExecutions, $this->query->search($query));
@@ -412,6 +414,21 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'status' => Status::STARTING,
         ]);
 
+        $crashedJobInstance = $this->fixturesJobHelper->createJobInstance([
+            'code' => 'a_crashed_job',
+            'job_name' => 'a_crashed_job',
+            'label' => 'A crashed job',
+            'type' => 'import',
+        ]);
+
+        $this->jobExecutionIds[] = $this->fixturesJobHelper->createJobExecution([
+            'job_instance_id' => $crashedJobInstance,
+            'start_time' => '2019-01-02T00:00:00+00:00',
+            'health_check_time' => '2019-01-02 01:00:00',
+            'user' => null,
+            'status' => Status::IN_PROGRESS,
+        ]);
+
         $this->stepExecutionIds[] = $this->fixturesJobHelper->createStepExecution([
             'job_execution_id' => $this->jobExecutionIds[0],
             'status' => Status::COMPLETED,
@@ -547,6 +564,16 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     true,
                     new JobExecutionTracking(0, 3, []),
                 ),
+                $this->jobExecutionIds[4] => new JobExecutionRow(
+                    $this->jobExecutionIds[4],
+                    'A crashed job',
+                    'import',
+                    new \DateTimeImmutable('2019-01-02T00:00:00+00:00'),
+                    null,
+                    Status::fromLabel('FAILED'),
+                    true,
+                    new JobExecutionTracking(0, 3, []),
+                )
             ];
         }
 
