@@ -4,24 +4,26 @@ declare(strict_types=1);
 
 namespace Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator;
 use Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\ExternalDependencyProviderInterface;
 
 final class Heap implements ExternalDependencyProviderInterface, ContentSecurityPolicyProviderInterface
 {
-    private ScriptNonceGenerator $nonceGenerator;
-
-    private string $heapId;
-
-    public function __construct(ScriptNonceGenerator $nonceGenerator, string $heapId)
-    {
-        $this->nonceGenerator = $nonceGenerator;
-        $this->heapId = $heapId;
+    public function __construct(
+        private ScriptNonceGenerator $nonceGenerator,
+        private string $heapId,
+        private FeatureFlags $featureFlags
+    ){
     }
 
-    public function getScript(): string
+    public function getScript(): ?string
     {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
+            return null;
+        }
+
         $nonce = $this->nonceGenerator->getGeneratedNonce();
 
         $javascript = <<<JS
@@ -37,8 +39,12 @@ JS;
     /**
      * https://developers.heap.io/docs/web#content-security-policy-csp
      */
-    public function getContentSecurityPolicy(): array
+    public function getContentSecurityPolicy(): ?array
     {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
+            return null;
+        }
+
         return [
             'script-src'  => ["https://cdn.heapanalytics.com", "https://heapanalytics.com", "'unsafe-inline'", "'unsafe-eval'"],
             'img-src'     => ["https://heapanalytics.com", "https://logo.clearbit.com"],
