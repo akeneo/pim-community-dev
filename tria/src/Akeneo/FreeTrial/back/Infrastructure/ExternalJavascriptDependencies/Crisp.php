@@ -14,8 +14,7 @@ final class Crisp implements ExternalDependencyProviderInterface, ContentSecurit
         private ScriptNonceGenerator $nonceGenerator,
         private string $crispWebsiteId,
         private FeatureFlags $featureFlags
-    )
-    {
+    ) {
     }
 
     /**

@@ -15,7 +15,7 @@ final class Heap implements ExternalDependencyProviderInterface, ContentSecurity
         private ScriptNonceGenerator $nonceGenerator,
         private string $heapId,
         private FeatureFlags $featureFlags
-    ){
+    ) {
     }
 
     public function getScript(): ?string
