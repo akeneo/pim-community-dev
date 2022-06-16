@@ -246,8 +246,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $query->sortDirection = 'ASC';
 
         $expectedJobExecutions = [
+            $this->getExpectedJobExecutionRow($this->jobExecutionIds[4]),
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[3]),
-            $this->getExpectedJobExecutionRow($this->jobExecutionIds[0]),
         ];
 
         $this->assertEquals($expectedJobExecutions, $this->query->search($query));
@@ -416,7 +416,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'code' => 'a_crashed_job',
             'job_name' => 'a_crashed_job',
             'label' => 'A crashed job',
-            'type' => 'import',
+            'type' => 'crashed',
         ]);
 
         $this->jobExecutionIds[] = $this->fixturesJobHelper->createJobExecution([
@@ -565,7 +565,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 $this->jobExecutionIds[4] => new JobExecutionRow(
                     $this->jobExecutionIds[4],
                     'A crashed job',
-                    'import',
+                    'crashed',
                     new \DateTimeImmutable('2019-01-02T00:00:00+00:00'),
                     null,
                     Status::fromLabel('FAILED'),
