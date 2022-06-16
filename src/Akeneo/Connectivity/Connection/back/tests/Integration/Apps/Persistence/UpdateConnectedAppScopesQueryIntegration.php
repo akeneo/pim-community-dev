@@ -45,7 +45,7 @@ class UpdateConnectedAppScopesQueryIntegration extends TestCase
 
     public function test_it_updates_connected_app_scopes(): void
     {
-        $this->connectionLoader->createConnection('someConnectionCode', 'My Connector', FlowType::DATA_DESTINATION, false);
+        $connection = $this->connectionLoader->createConnection('someConnectionCode', 'My Connector', FlowType::DATA_DESTINATION, false);
         $this->userGroupLoader->create(['name' => 'app_7891011ghijkl']);
         $connectedApp = new ConnectedApp(
             '2677e764-f852-4956-bf9b-1a1ec1b0d145',
@@ -55,6 +55,7 @@ class UpdateConnectedAppScopesQueryIntegration extends TestCase
             'http://www.example.com/path/to/logo',
             'author',
             'app_7891011ghijkl',
+            $connection->username(),
             ['category A'],
             true,
             null

@@ -12,6 +12,9 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
         left_idx:
             columns:
                 - lft
+        updated_idx:
+            columns:
+                - updated
     gedmo:
         tree:
             type: nested
@@ -20,7 +23,7 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
             type: integer
             id: true
             generator:
-                 strategy: AUTO
+                strategy: AUTO
         code:
             type: string
             length: 100

@@ -1,10 +1,22 @@
 # 5.0.x
 
+# 5.0.98 (2022-06-08)
+
+## Bug fixes
+
+- PIM-10477: [Backport PIM-10220] Fixed issues where association has NaN error
+- PIM-10472: Fix attributes list limit in the family mass edit
+
+# 5.0.97 (2022-05-30)
+
+# 5.0.96 (2022-05-24)
+
 # 5.0.95 (2022-05-13)
 
 ## Bug fixes
 
 - PIM-10428: [Backport PIM-10049] Add custom strip filter to avoid segmentation fault
+- PIM-10439: Add CLI command in order to fix broken order on categories
 
 # 5.0.94 (2022-05-11)
 

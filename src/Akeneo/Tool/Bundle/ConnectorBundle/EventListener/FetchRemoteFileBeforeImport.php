@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -20,11 +21,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
 {
-    private FilesystemReader $filesystem;
-
-    public function __construct(FilesystemReader $filesystem)
-    {
-        $this->filesystem = $filesystem;
+    public function __construct(
+        private FilesystemReader $filesystem,
+        private RemoteStorageFeatureFlag $remoteStorageFeatureFlag,
+    ) {
     }
 
     /**
@@ -43,6 +43,11 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
     public function fetchRemoteFile(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
+
+        if ($this->remoteStorageFeatureFlag->isEnabled($jobExecution->getJobInstance()->getJobName())) {
+            return;
+        }
+
         $jobParameters = $jobExecution->getJobParameters();
 
         if (null === $jobParameters ||

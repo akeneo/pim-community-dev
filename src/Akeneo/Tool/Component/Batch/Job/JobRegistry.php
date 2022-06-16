@@ -63,17 +63,17 @@ class JobRegistry
         return $this->jobs[$jobName]['job'];
     }
 
+    public function has(string $jobName): bool
+    {
+        return isset($this->jobs[$jobName]);
+    }
+
     /**
      * @return JobInterface[]
      */
     public function all()
     {
-        return array_map(
-            function ($job) {
-                return $job['job'];
-            },
-            $this->getAllEnabledJobs()
-        );
+        return array_map(static fn (array $job) => $job['job'], $this->getAllEnabledJobs());
     }
 
     /**
@@ -81,7 +81,7 @@ class JobRegistry
      *
      * @throws UndefinedJobException
      *
-     * @return JobInterface
+     * @return JobInterface[]
      */
     public function allByType($jobType)
     {
@@ -98,12 +98,7 @@ class JobRegistry
             );
         }
 
-        return array_map(
-            function ($job) {
-                return $job['job'];
-            },
-            $jobs
-        );
+        return array_map(static fn (array $job) => $job['job'], $jobs);
     }
 
     /**
@@ -111,16 +106,11 @@ class JobRegistry
      *
      * @throws UndefinedJobException
      *
-     * @return JobInterface[]
+     * @return JobInterface[][]
      */
     public function allByTypeGroupByConnector($jobType)
     {
-        $jobs = array_filter(
-            $this->getAllEnabledJobs(),
-            function ($job) use ($jobType) {
-                return $job['type'] === $jobType;
-            }
-        );
+        $jobs = array_filter($this->getAllEnabledJobs(), fn ($job) => $job['type'] === $jobType);
 
         if (empty($jobs)) {
             throw new UndefinedJobException(
@@ -144,23 +134,14 @@ class JobRegistry
      */
     public function getConnectors()
     {
-        return array_unique(
-            array_map(
-                function ($job) {
-                    return $job['connector'];
-                },
-                $this->getAllEnabledJobs()
-            )
-        );
+        return array_unique(array_map(static fn (array $job) => $job['connector'], $this->getAllEnabledJobs()));
     }
 
     private function getAllEnabledJobs()
     {
         return array_filter(
             $this->jobs,
-            function ($job) {
-                return null === $job['feature'] || $this->featureFlags->isEnabled($job['feature']);
-            }
+            fn (array $job) => null === $job['feature'] || $this->featureFlags->isEnabled($job['feature'])
         );
     }
 }

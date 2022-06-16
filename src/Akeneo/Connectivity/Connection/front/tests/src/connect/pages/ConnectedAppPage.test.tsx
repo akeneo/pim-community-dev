@@ -14,11 +14,6 @@ beforeEach(() => {
     jest.clearAllMocks();
 });
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useParams: jest.fn().mockReturnValue({connectionCode: 'some_connection_code'}),
-}));
-
 jest.mock('@src/connect/components/ConnectedApp/ConnectedAppContainer', () => ({
     ConnectedAppContainer: jest.fn(() => null),
 }));
@@ -66,7 +61,7 @@ test('The connected app page renders with a connected app', async () => {
     expect(ConnectedAppContainer).toHaveBeenCalledWith({connectedApp: connectedApp}, {});
 });
 
-test('The connected app page renders with internal api errors', async () => {
+test('The connected app page renders with connected app not found', async () => {
     (useConnectedApp as jest.Mock).mockImplementation(() => ({loading: false, error: 'NOT_FOUND', payload: null}));
 
     renderWithProviders(<ConnectedAppPage />);

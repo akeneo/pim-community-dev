@@ -83,6 +83,7 @@ class GetAllConnectedAppScopeMessagesActionSpec extends ObjectBehavior
             'a/path/to/a/logo',
             'an_author',
             'a_group',
+            'an_username',
         );
         $findOneConnectedAppByConnectionCodeQuery->execute('foo')->willReturn($connectedApp);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
@@ -108,6 +109,7 @@ class GetAllConnectedAppScopeMessagesActionSpec extends ObjectBehavior
             'a/path/to/a/logo',
             'an_author',
             'a_group',
+            'an_username',
             [],
             false,
             null,

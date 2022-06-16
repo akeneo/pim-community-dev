@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\TextArea;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -34,36 +36,24 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('cat', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_text_area' => [
-                    ['data' => 'black cat', 'locale' => 'en_US', 'scope' => null],
-                    ['data' => 'chat <b>noir</b>', 'locale' => 'fr_FR', 'scope' => null],
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetTextareaValue('a_localizable_text_area', null, 'en_US', 'black cat'),
+            new SetTextareaValue('a_localizable_text_area', null, 'fr_FR', 'chat <b>noir</b>'),
         ]);
 
         $this->createProduct('cattle', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_text_area' => [
-                    ['data' => 'cattle', 'locale' => 'en_US', 'scope' => null],
-                    ['data' => '<h1>cattle</h1>', 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetTextareaValue('a_localizable_text_area', null, 'en_US', 'cattle'),
+            new SetTextareaValue('a_localizable_text_area', null, 'fr_FR', '<h1>cattle</h1>'),
         ]);
 
         $this->createProduct('dog', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_text_area' => [
-                    ['data' => 'just a dog...', 'locale' => 'en_US', 'scope' => null],
-                    ['data' => 'juste un chien', 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetTextareaValue('a_localizable_text_area', null, 'en_US', 'just a dog...'),
+            new SetTextareaValue('a_localizable_text_area', null, 'fr_FR', 'juste un chien'),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorStartsWith()

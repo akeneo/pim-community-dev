@@ -61,6 +61,7 @@ class SqlFindCategoryTrees implements FindCategoryTrees
                 $categoryTree = new CategoryTree();
                 $categoryTree->code = $category->getCode();
                 $categoryTree->labels = $translationNormalizer->normalize($category, 'standard');
+                $categoryTree->id = $category->getId();
 
                 return $categoryTree;
             },

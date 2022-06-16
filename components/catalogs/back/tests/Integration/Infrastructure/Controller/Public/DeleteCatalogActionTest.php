@@ -33,7 +33,7 @@ class DeleteCatalogActionTest extends IntegrationTestCase
 
     public function testItDeletesTheCatalog(): void
     {
-        $this->client = $this->getAuthenticatedClient([
+        $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
@@ -41,7 +41,7 @@ class DeleteCatalogActionTest extends IntegrationTestCase
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $this->tokenStorage->getToken()->getUser()->getId(),
+            $this->tokenStorage->getToken()->getUser()->getUserIdentifier(),
         ));
 
         $this->client->request(
@@ -55,11 +55,11 @@ class DeleteCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedClient([]);
+        $this->client = $this->getAuthenticatedPublicApiClient([]);
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $this->tokenStorage->getToken()->getUser()->getId(),
+            $this->tokenStorage->getToken()->getUser()->getUserIdentifier(),
         ));
 
         $this->client->request(
@@ -73,7 +73,7 @@ class DeleteCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
-        $this->client = $this->getAuthenticatedClient([
+        $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
@@ -90,14 +90,14 @@ class DeleteCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsNotFoundWhenCatalogDoesNotBelongToCurrentUser(): void
     {
-        $anotherUserId = $this->createUser('willy-mesnage')->getId();
+        $this->createUser('willy-mesnage');
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $anotherUserId,
+            'willy-mesnage',
         ));
 
-        $this->client = $this->getAuthenticatedClient([
+        $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',

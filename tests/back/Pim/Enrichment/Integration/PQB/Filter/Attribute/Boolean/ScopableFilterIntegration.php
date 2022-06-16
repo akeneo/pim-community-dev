@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Boolean;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -29,21 +30,13 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_scopable_yes_no' => [
-                    ['data' => true, 'scope' => 'ecommerce', 'locale' => null],
-                    ['data' => false, 'scope' => 'tablet', 'locale' => null]
-                ]
-            ]
+            new SetBooleanValue('a_scopable_yes_no', 'ecommerce', null, true),
+            new SetBooleanValue('a_scopable_yes_no', 'tablet', null, false),
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_scopable_yes_no' => [
-                    ['data' => true, 'scope' => 'ecommerce', 'locale' => null],
-                    ['data' => true, 'scope' => 'tablet', 'locale' => null],
-                ]
-            ]
+            new SetBooleanValue('a_scopable_yes_no', 'ecommerce', null, true),
+            new SetBooleanValue('a_scopable_yes_no', 'tablet', null, true),
         ]);
     }
 

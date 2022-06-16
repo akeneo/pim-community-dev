@@ -23,6 +23,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC',
             'Akeneo',
             'app_123456abcdef',
+            'an_username',
             ['E-commerce', 'print'],
             true,
             'Akeneo partner',
@@ -72,6 +73,11 @@ class ConnectedAppSpec extends ObjectBehavior
         $this->getUserGroupName()->shouldBe('app_123456abcdef');
     }
 
+    public function it_returns_the_connection_username(): void
+    {
+        $this->getConnectionUsername()->shouldBe('an_username');
+    }
+
     public function it_returns_the_categories(): void
     {
         $this->getCategories()->shouldBe(['E-commerce', 'print']);
@@ -102,6 +108,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC',
             'Akeneo',
             'app_123456abcdef',
+            'an_username',
             ['E-commerce', 'print'],
             true,
             'Akeneo partner',
@@ -121,6 +128,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'logo' => 'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC',
             'author' => 'Akeneo',
             'user_group_name' => 'app_123456abcdef',
+            'connection_username' => 'an_username',
             'categories' => ['E-commerce', 'print'],
             'certified' => true,
             'partner' => 'Akeneo partner',
@@ -140,6 +148,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC',
             'Akeneo',
             'app_123456abcdef',
+            'an_username',
             ['E-commerce', 'print'],
             true,
             'Akeneo partner',
@@ -153,6 +162,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'logo' => 'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC',
             'author' => 'Akeneo',
             'user_group_name' => 'app_123456abcdef',
+            'connection_username' => 'an_username',
             'categories' => ['E-commerce', 'print'],
             'certified' => true,
             'partner' => 'Akeneo partner',
@@ -181,6 +191,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'logo' => 'http://example.com/new-logo.png',
             'author' => 'New Author',
             'user_group_name' => 'app_123456abcdef',
+            'connection_username' => 'an_username',
             'categories' => ['new category'],
             'certified' => true,
             'partner' => 'Akeneo Premium Partner',
@@ -200,6 +211,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC',
             'Akeneo',
             'app_123456abcdef',
+            'an_username',
             ['E-commerce', 'print'],
             true,
             'Akeneo partner',
@@ -213,6 +225,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'logo' => 'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC',
             'author' => 'Akeneo',
             'user_group_name' => 'app_123456abcdef',
+            'connection_username' => 'an_username',
             'categories' => ['E-commerce', 'print'],
             'certified' => true,
             'partner' => 'Akeneo partner',

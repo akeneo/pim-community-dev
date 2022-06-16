@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
 
@@ -18,7 +19,7 @@ final class StorageHydrator implements StorageHydratorInterface
     {
     }
 
-    public function hydrate(array $normalizedStorage): StorageInterface
+    public function hydrate(array $normalizedStorage): StorageInterface|NoneStorage
     {
         foreach ($this->storageHydrators as $storageHydrator) {
             if ($storageHydrator->supports($normalizedStorage)) {

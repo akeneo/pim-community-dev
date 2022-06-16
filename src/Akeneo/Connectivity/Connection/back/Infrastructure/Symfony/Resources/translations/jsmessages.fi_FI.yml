@@ -171,7 +171,7 @@ akeneo_connectivity.connection:
         message: Jos olet unohtanut salasanasi, voit luoda uuden salasanan täältä.
         link: Lisätietoa...
       clear_password_helper:
-        message: Varmista, että tallennat tämän salasanas jonnekin, koska emme näytä sitä sinulle enää uudestaan.
+        message: Varmista, että tallennat tämän salasanan jonnekin, koska emme näytä sitä sinulle enää uudestaan.
         link: Lisätietoa...
       action:
         copy: Kopioi leikepöydälle

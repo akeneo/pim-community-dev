@@ -91,6 +91,7 @@ class UpdateConnectedAppMonitoringSettingsActionSpec extends ObjectBehavior
             'a/path/to/a/logo',
             'an_author',
             'a_group',
+            'an_username',
         );
         $findOneConnectedAppByConnectionCodeQuery->execute('foo')->willReturn($connectedApp);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
@@ -116,6 +117,7 @@ class UpdateConnectedAppMonitoringSettingsActionSpec extends ObjectBehavior
             'a/path/to/a/logo',
             'an_author',
             'a_group',
+            'an_username',
             [],
             false,
             null,
@@ -146,6 +148,7 @@ class UpdateConnectedAppMonitoringSettingsActionSpec extends ObjectBehavior
             'a/path/to/a/logo',
             'an_author',
             'a_group',
+            'an_username',
         );
         $findOneConnectedAppByConnectionCodeQuery->execute('foo')->willReturn($connectedApp);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
@@ -174,6 +177,7 @@ class UpdateConnectedAppMonitoringSettingsActionSpec extends ObjectBehavior
             'a/path/to/a/logo',
             'an_author',
             'a_group',
+            'an_username',
         );
         $findOneConnectedAppByConnectionCodeQuery->execute('foo')->willReturn($connectedApp);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
@@ -210,6 +214,7 @@ class UpdateConnectedAppMonitoringSettingsActionSpec extends ObjectBehavior
             'a/path/to/a/logo',
             'an_author',
             'a_group',
+            'an_username',
         );
         $findOneConnectedAppByConnectionCodeQuery->execute('foo')->willReturn($connectedApp);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);

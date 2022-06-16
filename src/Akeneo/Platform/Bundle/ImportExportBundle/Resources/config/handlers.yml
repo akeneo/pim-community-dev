@@ -3,3 +3,8 @@ services:
     arguments:
       - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\StorageHydrator'
       - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\TransferFilesToStorage'
+
+  Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageHandler:
+    arguments:
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\StorageHydrator'
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\DownloadFileFromStorage'

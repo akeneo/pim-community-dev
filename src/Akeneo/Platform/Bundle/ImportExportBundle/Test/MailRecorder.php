@@ -3,7 +3,7 @@
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Test;
 
 /**
- * Mail recorder for test purpose
+ * Mail recorder for test purpose.
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -43,7 +43,7 @@ class MailRecorder implements \Swift_Events_SendListener
     }
 
     /**
-     * Return all recorded mails
+     * Return all recorded mails.
      *
      * @return array
      */
@@ -59,7 +59,7 @@ class MailRecorder implements \Swift_Events_SendListener
     }
 
     /**
-     * Clear the stored mails
+     * Clear the stored mails.
      */
     public function clear()
     {
@@ -69,7 +69,7 @@ class MailRecorder implements \Swift_Events_SendListener
     }
 
     /**
-     * Get the mails sent to a specific email
+     * Get the mails sent to a specific email.
      *
      * @param string $email
      *

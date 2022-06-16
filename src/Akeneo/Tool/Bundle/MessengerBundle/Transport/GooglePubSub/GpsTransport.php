@@ -18,23 +18,11 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
  */
 final class GpsTransport implements TransportInterface, SetupableTransportInterface
 {
-    /** @var Client */
-    private $client;
-
-    /** @var GpsSender */
-    private $sender;
-
-    /** @var ?GpsReceiver */
-    private $receiver;
-
     public function __construct(
-        Client $client,
-        SenderInterface $sender,
-        ?ReceiverInterface $receiver
+        private Client $client,
+        private SenderInterface $sender,
+        private ?ReceiverInterface $receiver
     ) {
-        $this->client = $client;
-        $this->sender = $sender;
-        $this->receiver = $receiver;
     }
 
     public function setup(): void

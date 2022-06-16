@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient;
@@ -20,10 +20,15 @@ final class TransferFile
         string $destinationFilePath
     ): void {
         if (!$sourceFilesystem->fileExists($sourceFilePath)) {
-            throw new \RuntimeException(sprintf('The file "%s" is not present on the source filesystem.', $sourceFilePath));
+            throw new \RuntimeException(sprintf('The file "%s" is not present in the storage.', $sourceFilePath));
         }
 
-        $stream = $sourceFilesystem->readStream($sourceFilePath);
+        try {
+            $stream = $sourceFilesystem->readStream($sourceFilePath);
+        } catch (\Exception) {
+            throw new \RuntimeException('File is not readable.');
+        }
+
         $destinationFilesystem->writeStream($destinationFilePath, $stream);
     }
 }

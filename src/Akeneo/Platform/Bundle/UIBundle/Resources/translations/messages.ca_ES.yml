@@ -57,17 +57,22 @@ pim_common:
   delete: Suprimir
   edit: Editar
   enabled: Habilitat
+  family_variant: Variants familiars
   family: Família
   groups: Grups
   label: Etiqueta
   name: Nom
   no: "No"
+  parent: Pare
   permissions: Permisos
   product_models: Models de producte
   products: Productes
   properties: Propietats
+  quality_score: Puntuació de qualitat
+  quantity: Quantitat
   remove: Eliminar
   save: Desar
+  unit: Unitat
   update: Actualitzar
   updated: Actualitzat
   view: Vista
@@ -97,11 +102,13 @@ pim_enrich:
       comment: Comentar productes
       download: Descarregar el producte en format PDF
       history: Veure l'històric del producte
+      convert_variant_to_simple: Convertir un producte variant en un producte simple
     product_model:
       create: Crear un model de producte
       edit_attributes: Editar els atributs d'un model de producte
       categories_view: Consultar les categories d'un model de producte
       history: Veure l'històric del model de producte
+      remove: Eliminar un model de producte (inclosos els fills)
     category:
       list: Llistar categories
       create: Crear una categoria
@@ -164,6 +171,8 @@ pim_enrich:
       remove: Eliminar associacions d'un producte
     job_tracker:
       index: Veure seguiment del procés
+      view_all_jobs: Veure totes les feines en seguiment de processos
+      stop_job: Aturar una feina en curs
   acl_group:
     association_type: Tipus d'associació
     attribute: Atributs
@@ -355,6 +364,8 @@ Decimals allowed: Permetre decimals
 Negative allowed: Permetre valors negatius
 Date min: Data mínima
 Date max: Data màxima
+Metric family: Família de mètrica
+Default metric unit: Unitat de mesura per defecte
 Max file size: Mida màxima de l'arxiu (MB)
 Allowed extensions: Extensions permeses
 None: Cap
@@ -379,6 +390,7 @@ pim_catalog_file: Arxiu
 pim_catalog_image: Imatge
 pim_catalog_boolean: "Sí/No"
 pim_catalog_date: Data
+pim_catalog_metric: Mètrica
 pim_reference_data_simpleselect: Selecció simple de dades de referència
 pim_reference_data_multiselect: Selecció múltiple de dades de referència
 #Locales
@@ -427,6 +439,8 @@ Disabled: Deshabilitat
 Status: Estat
 pim_datagrid:
   filters:
+    product_typology:
+      label: Tipologia de producte
     entity_type:
       label: Variant
     family:
@@ -443,6 +457,10 @@ pim_datagrid:
       label: Creat
     updated:
       label: Actualitzat
+    label_or_identifier:
+      label: Etiqueta o identificador
+    parent:
+      label: Pare
     identifier:
       label: Identificador
 #Versioning / history
@@ -529,3 +547,9 @@ job_tracker:
     title: Seguiment del procés
   filter:
     started_at: Va començar a
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Funciona amb
+    powered_image_title: logotip Akeneo
+pim_system.acl_group.developer_mode: Mode desenvolupador

@@ -4,7 +4,6 @@ namespace Specification\Akeneo\Pim\Structure\Component\Updater;
 
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\CommonAttributeCollection;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
@@ -17,7 +16,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -57,11 +55,7 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         AttributeInterface $color,
         AttributeInterface $description,
         AttributeInterface $sku,
-        AttributeInterface $other,
-        Collection $axes1,
-        Collection $axes2,
-        CommonAttributeCollection $commonAttributes,
-        \Iterator $commonAttributesIterator
+        AttributeInterface $other
     ) {
         $familyRepository->findOneByIdentifier('t-shirt')->willReturn($family);
 
@@ -86,21 +80,11 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
 
         $attributeSetFactory->create()->willReturn($attributeSet1, $attributeSet2, $commonAttributeSet);
 
-        $familyVariant->addVariantAttributeSet($attributeSet1)->shouldBeCalled();
-        $attributeSet1->setAttributes([$description])->shouldBeCalled();
-        $attributeSet1->setAxes([$color])->shouldBeCalled();
-        $attributeSet1->setLevel(1)->shouldBeCalled();
-        $attributeSet1->getAxes()->willReturn($axes1);
-        $axes1->isEmpty()->willReturn(true);
-        $axes1->map(Argument::any())->shouldNotBeCalled();
+        $familyVariant->updateAxesForLevel(1, [$color])->shouldBeCalledOnce();
+        $familyVariant->updateAttributesForLevel(1, [$description])->shouldBeCalledOnce();
 
-        $familyVariant->addVariantAttributeSet($attributeSet2)->shouldBeCalled();
-        $attributeSet2->setAttributes([$size, $sku])->shouldBeCalled();
-        $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
-        $attributeSet2->setLevel(2)->shouldBeCalled();
-        $attributeSet2->getAxes()->willReturn($axes2);
-        $axes2->isEmpty()->willReturn(true);
-        $axes2->map(Argument::any())->shouldNotBeCalled();
+        $familyVariant->updateAxesForLevel(2, [$size, $other])->shouldBeCalledOnce();
+        $familyVariant->updateAttributesForLevel(2, [$size, $sku])->shouldBeCalledOnce();
 
         $this->update($familyVariant, [
             'code' => 'my-tshirt',
@@ -137,13 +121,7 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         AttributeInterface $color,
         AttributeInterface $description,
         AttributeInterface $sku,
-        AttributeInterface $other,
-        Collection $axes1,
-        Collection $axes2,
-        Collection $axisCodes1,
-        Collection $axisCodes2,
-        Collection $attributes1,
-        \Iterator $attributesIterator1
+        AttributeInterface $other
     ) {
         $familyRepository->findOneByIdentifier('t-shirt')->willReturn($family);
 
@@ -169,25 +147,11 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
 
         $attributeSetFactory->create()->shouldNotBeCalled();
 
-        $axes1->isEmpty()->willReturn(false);
-        $axes1->map(Argument::any())->willReturn($axisCodes1);
-        $axisCodes1->toArray()->willReturn(['color']);
+        $familyVariant->updateAxesForLevel(1, [$color])->shouldBeCalledOnce();
+        $familyVariant->updateAttributesForLevel(1, [$description])->shouldBeCalledOnce();
 
-        $attributeSet1->setAttributes([$description])->shouldBeCalled();
-        $attributeSet1->setAxes([$color])->shouldBeCalled();
-        $attributeSet1->setLevel(Argument::any())->shouldNotBeCalled();
-        $attributeSet1->getAxes()->willReturn($axes1);
-        $attributeSet1->getAttributes()->willReturn($attributes1);
-
-        $attributeSet2->getAxes()->willReturn($axes2);
-        $axes2->isEmpty()->willReturn(false);
-        $axes2->map(Argument::any())->willReturn($axisCodes2);
-        $axisCodes2->toArray()->willReturn(['size', 'other']);
-        $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
-
-        $attributeSet2->setAttributes([$size, $sku])->shouldBeCalled();
-        $attributeSet2->setLevel(Argument::any())->shouldNotBeCalled();
-        $familyVariant->addVariantAttributeSet(Argument::any())->shouldNotBeCalled();
+        $familyVariant->updateAxesForLevel(2, [$size, $other])->shouldBeCalledOnce();
+        $familyVariant->updateAttributesForLevel(2, [$size, $sku])->shouldBeCalledOnce();
 
         $this->update($familyVariant, [
             'code' => 'my-tshirt',

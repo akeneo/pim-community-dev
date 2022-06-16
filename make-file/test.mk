@@ -6,7 +6,7 @@ find-legacy-translations:
 	.circleci/find_legacy_translations.sh
 
 .PHONY: coupling-back
-coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back job-coupling-back data-quality-insights-coupling-back enrichment-product-coupling-back
+coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back import-export-coupling-back job-coupling-back data-quality-insights-coupling-back enrichment-product-coupling-back
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
 
 ### Static tests
@@ -32,6 +32,7 @@ lint-back:
 	$(MAKE) communication-channel-lint-back
 	$(MAKE) data-quality-insights-lint-back
 	$(MAKE) data-quality-insights-phpstan
+	$(MAKE) import-export-lint-back
 	$(MAKE) job-lint-back
 	$(MAKE) enrichment-product-lint-back
 	$(MAKE) channel-lint-back
@@ -62,6 +63,7 @@ unit-front:
 .PHONY: acceptance-back
 acceptance-back:
 	APP_ENV=behat ${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
+	$(MAKE) import-export-acceptance-back
 	$(MAKE) job-acceptance-back
 	$(MAKE) channel-acceptance-back
 ifeq ($(CI),true)

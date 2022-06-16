@@ -22,6 +22,7 @@ final class ConnectedApp
         private ?string $logo,
         private ?string $author,
         private string $userGroupName,
+        private string $connectionUsername,
         private array $categories = [],
         private bool $certified = false,
         private ?string $partner = null,
@@ -69,6 +70,11 @@ final class ConnectedApp
         return $this->userGroupName;
     }
 
+    public function getConnectionUsername(): string
+    {
+        return $this->connectionUsername;
+    }
+
     public function getPartner(): ?string
     {
         return $this->partner;
@@ -111,6 +117,7 @@ final class ConnectedApp
      *  logo: string|null,
      *  author: string|null,
      *  user_group_name: string,
+     *  connection_username: string,
      *  categories: array<string>,
      *  certified: bool,
      *  partner: string|null,
@@ -129,6 +136,7 @@ final class ConnectedApp
             'logo' => $this->logo,
             'author' => $this->author,
             'user_group_name' => $this->userGroupName,
+            'connection_username' => $this->connectionUsername,
             'categories' => $this->categories,
             'certified' => $this->certified,
             'partner' => $this->partner,
@@ -157,6 +165,7 @@ final class ConnectedApp
             $logo,
             $author,
             $this->userGroupName,
+            $this->connectionUsername,
             $categories,
             $certified,
             $partner,

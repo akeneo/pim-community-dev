@@ -35,10 +35,12 @@ class FindOneConnectedAppByUserIdQuery implements FindOneConnectedAppByUserIdQue
             connected_app.connection_code,
             connected_app.user_group_name,
             connected_app.has_outdated_scopes,
+            oro_user.username AS connection_username,
             IF(test_app.client_id IS NULL, FALSE, TRUE) AS is_test_app
         FROM akeneo_connectivity_connected_app connected_app
-        LEFT JOIN akeneo_connectivity_test_app test_app ON test_app.client_id = connected_app.id
         JOIN akeneo_connectivity_connection connection ON connection.code = connected_app.connection_code
+        JOIN oro_user ON oro_user.id = connection.user_id
+        LEFT JOIN akeneo_connectivity_test_app test_app ON test_app.client_id = connected_app.id
         WHERE connection.user_id = :id
         SQL;
 

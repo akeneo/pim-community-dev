@@ -38,4 +38,9 @@ final class FileSystemStorageClient implements StorageClientInterface
     {
         $this->filesystemOperator->writeStream($filePath, $content);
     }
+
+    public function getFileSize(string $filePath): int
+    {
+        return $this->filesystemOperator->fileSize($filePath);
+    }
 }

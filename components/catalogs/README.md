@@ -28,5 +28,8 @@ in the root directory of the PIM, execute the following commands:
 ```shell
 make catalogs-fixtures
 yarn workspace @akeneo-pim-community/catalogs start
+
+# or with docker compose 
+docker-compose run -p 3000:3000 --rm node yarn workspace @akeneo-pim-community/catalogs start
 ```
 It will automatically open your browser.

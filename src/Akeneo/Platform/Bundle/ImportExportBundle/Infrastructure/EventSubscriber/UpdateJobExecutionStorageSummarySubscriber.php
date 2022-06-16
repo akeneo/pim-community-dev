@@ -10,28 +10,29 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscriber;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Event\FileCannotBeExported;
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Event\FileCannotBeImported;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UpdateJobExecutionStorageSummarySubscriber implements EventSubscriberInterface
 {
-    public function __construct(
-        private JobExecution $jobExecution,
-    ) {
-    }
-
     /**
      * @return array<string, string>
      */
     public static function getSubscribedEvents(): array
     {
         return [
-            FileCannotBeExported::class => 'onfileCannotBeExported',
+            FileCannotBeExported::class => 'onFileCannotBeExported',
+            FileCannotBeImported::class => 'onFileCannotBeImported',
         ];
     }
 
     public function onFileCannotBeExported(FileCannotBeExported $event): void
     {
-        $this->jobExecution->addFailureException(new \Exception($event->getReason()));
+        throw new \RuntimeException($event->getReason());
+    }
+
+    public function onFileCannotBeImported(FileCannotBeImported $event): void
+    {
+        throw new \RuntimeException($event->getReason());
     }
 }
