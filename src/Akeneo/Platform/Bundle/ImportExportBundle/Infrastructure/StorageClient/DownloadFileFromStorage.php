@@ -1,9 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\DownloadFileFromStorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Event\FileCannotBeImported;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -15,7 +23,7 @@ final class DownloadFileFromStorage implements DownloadFileFromStorageInterface
     public function __construct(
         private StorageClientProvider $storageClientProvider,
         private TransferFile $transferFile,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -28,13 +36,13 @@ final class DownloadFileFromStorage implements DownloadFileFromStorageInterface
         $destinationFilePath = $workingDirectory.basename($sourceFilePath);
 
         try {
-            $this->validateFileBeforeDownload($sourceStorageClient, $sourceFilePath);
+            $this->validateFileBeforeDownload($sourceStorage, $sourceStorageClient, $sourceFilePath);
 
             $this->transferFile->transfer(
                 $sourceStorageClient,
                 $destinationStorageClient,
                 $sourceFilePath,
-                $destinationFilePath
+                $destinationFilePath,
             );
         } catch (\Exception $exception) {
             $message = $exception->getPrevious() ? $exception->getPrevious()->getMessage() : $exception->getMessage();
@@ -44,9 +52,20 @@ final class DownloadFileFromStorage implements DownloadFileFromStorageInterface
         return $destinationFilePath;
     }
 
-    private function validateFileBeforeDownload(StorageClientInterface $storageClient, string $filePath): void
-    {
-        $fileExists = $storageClient->fileExists($filePath);
+    private function validateFileBeforeDownload(
+        StorageInterface $sourceStorage,
+        StorageClientInterface $storageClient,
+        string $filePath,
+    ): void {
+        try {
+            $fileExists = $storageClient->fileExists($filePath);
+        } catch (\Exception $exception) {
+            if (!$sourceStorage instanceof LocalStorage) {
+                throw new \RuntimeException('Check your connection settings and try again.');
+            }
+
+            throw $exception;
+        }
 
         if (!$fileExists) {
             throw new \RuntimeException(sprintf('The file "%s" is not present in the storage.', $filePath));
