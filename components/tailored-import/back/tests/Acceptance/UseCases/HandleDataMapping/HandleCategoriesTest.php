@@ -169,6 +169,30 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     categoryUserIntent: new SetCategories(['shoes', 'women', 'clothing', 'men']),
                 ),
             ],
+            'it handles clear if empty on categories target' => [
+                'row' => [
+                    '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
+                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => '',
+                ],
+                'data_mappings' => [
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
+                        PropertyTarget::create(
+                            'categories',
+                            'set',
+                            'clear',
+                        ),
+                        ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
+                        OperationCollection::create([]),
+                        [],
+                    ),
+                ],
+                'expected' => new UpsertProductCommand(
+                    userId: 1,
+                    productIdentifier: 'this-is-a-sku',
+                    categoryUserIntent: new SetCategories([]),
+                ),
+            ],
         ];
     }
 }
