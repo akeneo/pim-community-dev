@@ -6,7 +6,7 @@ use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 
 /**
- * Form provider for job instance
+ * Form provider for job instance.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

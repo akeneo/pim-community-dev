@@ -75,6 +75,7 @@ endif
 		--level=5 \
 		--configuration src/Akeneo/Connectivity/Connection/back/tests/phpstan.neon \
 		src/Akeneo/Connectivity/Connection/back/Infrastructure
+	$(PHP_RUN) bin/console lint:container
 
 connectivity-connection-lint-back_fix:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=src/Akeneo/Connectivity/Connection/back/tests/.php_cs.php

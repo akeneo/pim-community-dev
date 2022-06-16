@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Normalizer of StepExecution instance
+ * Normalizer of StepExecution instance.
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -41,15 +41,15 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
         }
 
         return [
-            'label'     => $stepExecution->getStepName(),
-            'job'       => $stepExecution->getJobExecution()->getJobInstance()->getJobName(),
-            'status'    => $this->normalizeStatus($stepExecution->getStatus()->getValue()),
-            'summary'   => $this->normalizeSummary($stepExecution->getSummary()),
+            'label' => $stepExecution->getStepName(),
+            'job' => $stepExecution->getJobExecution()->getJobInstance()->getJobName(),
+            'status' => $this->normalizeStatus($stepExecution->getStatus()->getValue()),
+            'summary' => $this->normalizeSummary($stepExecution->getSummary()),
             'startedAt' => $this->presenter->present($stepExecution->getStartTime(), $context),
-            'endedAt'   => $this->presenter->present($stepExecution->getEndTime(), $context),
-            'warnings'  => $normalizedWarnings,
-            'errors'    => $stepExecution->getErrors(),
-            'failures'  => array_map(
+            'endedAt' => $this->presenter->present($stepExecution->getEndTime(), $context),
+            'warnings' => $normalizedWarnings,
+            'errors' => $stepExecution->getErrors(),
+            'failures' => array_map(
                 function ($failure) {
                     return $this->translator->trans($failure['message'], $failure['messageParameters']);
                 },
@@ -72,10 +72,7 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
     }
 
     /**
-     * Normalizes the warnings
-     *
-     * @param Collection $warnings
-     * @param array      $context
+     * Normalizes the warnings.
      *
      * @return array
      */
@@ -93,7 +90,7 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
         foreach ($selectedWarnings as $warning) {
             $result[] = [
                 'reason' => $this->translator->trans($warning->getReason(), $warning->getReasonParameters()),
-                'item'   => $warning->getItem(),
+                'item' => $warning->getItem(),
             ];
         }
 
@@ -101,9 +98,7 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
     }
 
     /**
-     * Normalizes the summary
-     *
-     * @param array $summary
+     * Normalizes the summary.
      *
      * @return array
      */
@@ -119,7 +114,7 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
     }
 
     /**
-     * Normalizes the status
+     * Normalizes the status.
      *
      * @param int $status
      *
