@@ -22,7 +22,7 @@ final class CreateCatalogCommand implements CommandInterface
         #[Assert\NotBlank]
         #[Assert\Length(min: 1, max: 255)]
         private string $name,
-        private int $ownerId,
+        private string $ownerUsername,
     ) {
     }
 
@@ -36,8 +36,8 @@ final class CreateCatalogCommand implements CommandInterface
         return $this->name;
     }
 
-    public function getOwnerId(): int
+    public function getOwnerUsername(): string
     {
-        return $this->ownerId;
+        return $this->ownerUsername;
     }
 }

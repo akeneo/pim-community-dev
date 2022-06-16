@@ -1,5 +1,13 @@
 # 6.0.x
 
+# 6.0.31 (2022-06-14)
+
+# 6.0.30 (2022-06-08)
+
+## Bug fixes
+
+- PIM-10470: Refresh process tracker job detail page when job execution id param changes
+
 # 6.0.29 (2022-05-25)
 
 ## Bug fixes
@@ -8,6 +16,8 @@
 - PIM-10449: Remove old table related to old queue system
 - PIM-10451: Add migration to add an index on start_time on the job_execution table
 - MW-373: Prepare the marketplace migration to another subdomain
+- PIM-10452, PIM-10454, PIM-10455, PIM-10456 : Fix migration to set some fields to NOT NULL on job & step execution tables 
+- PIM-10453: Add migration to add an index on updated on pim_catalog_category table
 
 # 6.0.28 (2022-05-13)
 

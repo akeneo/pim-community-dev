@@ -1,18 +1,26 @@
 executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
 
 jobs:
-    test_catalogs:
+    test_catalogs_ee:
         machine:
             image: *executor-machine
         steps:
             -   attach_workspace:
                     at: ~/
             -   run:
+                    name: Define environment variables
+                    command: echo export PIM_CONTEXT=catalogs >> $BASH_ENV
+            -   run:
                     name: Create yarn cache folder
                     command: mkdir -p  ~/.cache/yarn
             -   run:
                     name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                     command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+            -   run:
+                    name: Symlink node_modules
+                    command: |
+                      rm -r vendor/akeneo/pim-community-dev/node_modules
+                      ln -s ~/project/node_modules ~/project/vendor/akeneo/pim-community-dev/node_modules
             -   run:
                     name: Pull docker image for node
                     command: docker-compose pull node
@@ -23,8 +31,8 @@ jobs:
                     name: Unit front
                     command: make catalogs-unit-front
             -   run:
-                    name: Pull docker image for php
-                    command: docker-compose pull php
+                    name: Load php image
+                    command: docker load -i php-pim-image.tar
             -   run:
                     name: Coupling back
                     command: make catalogs-coupling-back
@@ -36,7 +44,7 @@ jobs:
                     command: make catalogs-unit-back
             -   run:
                     name: Pull docker images
-                    command: docker-compose pull php fpm mysql elasticsearch object-storage pubsub-emulator
+                    command: docker-compose pull mysql elasticsearch object-storage pubsub-emulator
             -   run:
                     name: Start containers
                     command: |

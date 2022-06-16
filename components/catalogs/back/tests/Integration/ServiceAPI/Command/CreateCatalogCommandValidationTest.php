@@ -50,7 +50,7 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
                 'command' => new CreateCatalogCommand(
                     id: '',
                     name: 'foo',
-                    ownerId: 42,
+                    ownerUsername: 'shopifi',
                 ),
                 'error' => 'This value should not be blank.',
             ],
@@ -58,7 +58,7 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
                 'command' => new CreateCatalogCommand(
                     id: 'not an uuid',
                     name: 'foo',
-                    ownerId: 42,
+                    ownerUsername: 'shopifi',
                 ),
                 'error' => 'This is not a valid UUID.',
             ],
@@ -66,7 +66,7 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
                 'command' => new CreateCatalogCommand(
                     id: '43c74e94-0074-4316-ac66-93cd0ca71a6b',
                     name: '',
-                    ownerId: 42,
+                    ownerUsername: 'shopifi',
                 ),
                 'error' => 'This value is too short. It should have 1 character or more.',
             ],
@@ -74,7 +74,7 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
                 'command' => new CreateCatalogCommand(
                     id: '43c74e94-0074-4316-ac66-93cd0ca71a6b',
                     name: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus placerat ante id dui ornare feugiat. Nulla egestas neque eu lectus interdum congue nec at diam. Phasellus ac magna lorem. Praesent non lectus sit amet lectus sollicitudin consectetur sed non.',
-                    ownerId: 42,
+                    ownerUsername: 'shopifi',
                 ),
                 'error' => 'This value is too long. It should have 255 characters or less.',
             ],
@@ -89,7 +89,7 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
             new CreateCatalogCommand(
                 id: '43c74e94-0074-4316-ac66-93cd0ca71a6b',
                 name: 'Store US',
-                ownerId: 42,
+                ownerUsername: 'shopifi',
             )
         );
 

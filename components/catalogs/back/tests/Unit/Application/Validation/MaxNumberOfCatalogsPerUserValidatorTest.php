@@ -37,7 +37,7 @@ class MaxNumberOfCatalogsPerUserValidatorTest extends ConstraintValidatorTestCas
         $command = new CreateCatalogCommand(
             id: '43c74e94-0074-4316-ac66-93cd0ca71a6b',
             name: 'foo',
-            ownerId: 42,
+            ownerUsername: 'shopifi',
         );
 
         $this->validator->validate($command, new MaxNumberOfCatalogsPerUser());
@@ -52,7 +52,7 @@ class MaxNumberOfCatalogsPerUserValidatorTest extends ConstraintValidatorTestCas
         $command = new CreateCatalogCommand(
             id: '43c74e94-0074-4316-ac66-93cd0ca71a6b',
             name: 'foo',
-            ownerId: 42,
+            ownerUsername: 'shopifi',
         );
 
         $this->validator->validate($command, new MaxNumberOfCatalogsPerUser());

@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Metric;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -38,26 +40,18 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_metric' => [
-                    ['data' => ['amount' => '10.55', 'unit' => 'CENTIMETER'], 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => ['amount' => '25', 'unit' => 'CENTIMETER'], 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMeasurementValue('a_scopable_metric', 'ecommerce', null, '10.55', 'CENTIMETER'),
+            new SetMeasurementValue('a_scopable_metric', 'tablet', null, '25', 'CENTIMETER'),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_metric' => [
-                    ['data' => ['amount' => '2', 'unit' => 'CENTIMETER'], 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => ['amount' => '30', 'unit' => 'CENTIMETER'], 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMeasurementValue('a_scopable_metric', 'ecommerce', null, '2', 'CENTIMETER'),
+            new SetMeasurementValue('a_scopable_metric', 'tablet', null, '30', 'CENTIMETER'),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorInferior()

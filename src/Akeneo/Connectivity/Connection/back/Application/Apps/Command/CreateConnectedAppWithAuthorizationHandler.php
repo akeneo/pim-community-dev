@@ -93,7 +93,8 @@ class CreateConnectedAppWithAuthorizationHandler
             $marketplaceApp,
             $appAuthorization->getAuthorizationScopes()->getScopes(),
             $connection->code(),
-            $group->getName()
+            $group->getName(),
+            $randomCode
         );
 
         $this->eventDispatcher->dispatch(new AppUserGroupCreated($group->getName()), AppUserGroupCreated::class);

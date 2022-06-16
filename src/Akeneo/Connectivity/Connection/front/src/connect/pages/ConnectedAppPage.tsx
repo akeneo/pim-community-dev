@@ -5,6 +5,7 @@ import {ConnectedAppContainerIsLoading} from '../components/ConnectedApp/Connect
 import {ConnectedAppContainer} from '../components/ConnectedApp/ConnectedAppContainer';
 import {useParams} from 'react-router-dom';
 import {useConnectedApp} from '../hooks/use-connected-app';
+import {HttpError} from '../../model/http-error.enum';
 
 export const ConnectedAppPage: FC = () => {
     const translate = useTranslate();
@@ -15,14 +16,14 @@ export const ConnectedAppPage: FC = () => {
     return (
         <>
             {loading && <ConnectedAppContainerIsLoading />}
-            {'FORBIDDEN' === error && (
+            {HttpError.Forbidden === error && (
                 <FullScreenError
                     title={translate('error.exception', {status_code: '403'})}
                     message={translate('error.forbidden')}
                     code={403}
                 />
             )}
-            {'NOT_FOUND' === error && (
+            {HttpError.NotFound === error && (
                 <FullScreenError
                     title={translate('error.exception', {status_code: '404'})}
                     message={translate('akeneo_connectivity.connection.connect.connected_apps.edit.not_found')}

@@ -2,12 +2,11 @@
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Serialization;
 
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\MessageDecodingFailedException;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use UnexpectedValueException;
 
@@ -19,7 +18,7 @@ use UnexpectedValueException;
  */
 class JsonSerializer implements SerializerInterface
 {
-    private $serializer;
+    private Serializer $serializer;
 
     /**
      * @param (NormalizerInterface|DenormalizerInterface)[] $normalizers
@@ -27,9 +26,11 @@ class JsonSerializer implements SerializerInterface
     public function __construct(iterable $normalizers)
     {
         $this->serializer = new Serializer(
-            iterator_to_array((function () use ($normalizers) {
-                yield from $normalizers;
-            })()),
+            iterator_to_array(
+                (function () use ($normalizers) {
+                    yield from $normalizers;
+                })()
+            ),
             [new JsonEncoder()]
         );
     }
@@ -66,16 +67,28 @@ class JsonSerializer implements SerializerInterface
             );
         }
 
-        return new Envelope($message);
+        $tenantId = $encodedEnvelope['headers']['tenant_id'] ?? null;
+
+        return null !== $tenantId ? new Envelope($message, [new TenantIdStamp($tenantId)]) : new Envelope($message);
     }
 
     public function encode(Envelope $envelope): array
     {
+        $body = $this->serializer->serialize($envelope->getMessage(), 'json');
+        $headers = [
+            'class' => $envelope->getMessage()::class,
+        ];
+
+        /** @var TenantIdStamp|null $tenantIdStamp */
+        $tenantIdStamp = $envelope->last(TenantIdStamp::class);
+
+        if (null !== $tenantId = $tenantIdStamp?->pimTenantId()) {
+            $headers['tenant_id'] = $tenantId;
+        }
+
         return [
-            'body' => $this->serializer->serialize($envelope->getMessage(), 'json'),
-            'headers' => [
-                'class' => \get_class($envelope->getMessage())
-            ],
+            'body' => $body,
+            'headers' => $headers,
         ];
     }
 }

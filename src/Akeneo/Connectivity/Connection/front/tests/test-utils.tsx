@@ -7,6 +7,8 @@ import {theme} from '@src/common/styled-with-theme';
 import fetchMock from 'jest-fetch-mock';
 import {Router} from 'react-router-dom';
 import {createMemoryHistory} from 'history';
+import {DependenciesContext} from '@akeneo-pim-community/shared';
+import {QueryClientProvider, QueryClient} from 'react-query';
 
 export const historyMock = {
     history: createMemoryHistory(),
@@ -35,12 +37,22 @@ const UserProvider: FC = ({children}) => {
 };
 
 const DefaultProviders: FC = ({children}) => {
+    const client = new QueryClient();
+
     return (
-        <ThemeProvider theme={theme}>
-            <UserProvider>
-                <Router history={historyMock.history}>{children}</Router>
-            </UserProvider>
-        </ThemeProvider>
+        <QueryClientProvider client={client}>
+            <DependenciesContext.Provider
+                value={{
+                    translate: (id: string) => id,
+                }}
+            >
+                <ThemeProvider theme={theme}>
+                    <UserProvider>
+                        <Router history={historyMock.history}>{children}</Router>
+                    </UserProvider>
+                </ThemeProvider>
+            </DependenciesContext.Provider>
+        </QueryClientProvider>
     );
 };
 

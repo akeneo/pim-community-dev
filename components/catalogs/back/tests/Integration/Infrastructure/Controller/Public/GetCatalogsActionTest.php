@@ -31,26 +31,26 @@ class GetCatalogsActionTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItGetsPaginatedCatalogsByOwnerId(): void
+    public function testItGetsPaginatedCatalogsByOwnerUsnermae(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
         $user = $this->tokenStorage->getToken()->getUser();
-        $userId = $user->getId();
+        $username = $user->getUserIdentifier();
 
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $userId,
+            $username,
         ));
         $this->commandBus->execute(new CreateCatalogCommand(
             'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             'Store FR',
-            $userId,
+            $username,
         ));
         $this->commandBus->execute(new CreateCatalogCommand(
             '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
             'Store UK',
-            $userId,
+            $username,
         ));
 
         $this->client->request(
@@ -81,7 +81,7 @@ class GetCatalogsActionTest extends IntegrationTestCase
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedClient([]);
+        $this->client = $this->getAuthenticatedPublicApiClient([]);
 
         $this->client->request(
             'GET',
@@ -100,14 +100,14 @@ class GetCatalogsActionTest extends IntegrationTestCase
 
     public function testItGetsBadRequestWithWrongPagination(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
         $user = $this->tokenStorage->getToken()->getUser();
-        $userId = $user->getId();
+        $username = $user->getUserIdentifier();
 
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $userId,
+            $username,
         ));
 
         $this->client->request(

@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\ReferenceData;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -25,22 +26,14 @@ class ReferenceDataSimpleSelectSorterIntegration extends AbstractProductQueryBui
         $this->createProduct(
             'product_one',
             [
-                'values' => [
-                    'a_ref_data_simple_select' => [
-                        ['data' => 'acid-green', 'scope' => null, 'locale' => null],
-                    ],
-                ],
+                new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null, null, 'acid-green')
             ]
         );
 
         $this->createProduct(
             'product_two',
             [
-                'values' => [
-                    'a_ref_data_simple_select' => [
-                        ['data' => 'blue', 'scope' => null, 'locale' => null],
-                    ],
-                ],
+                new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null, null, 'blue')
             ]
         );
 

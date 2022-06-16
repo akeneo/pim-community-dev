@@ -35,11 +35,11 @@ class DeleteCatalogQueryTest extends IntegrationTestCase
     public function testItDeletesACatalog(): void
     {
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $ownerId = $this->createUser('test')->getId();
+        $this->createUser('test');
         $this->commandBus->execute(new CreateCatalogCommand(
             $id,
             'Store US',
-            $ownerId,
+            'test',
         ));
 
         $this->assertCatalogExists($id);

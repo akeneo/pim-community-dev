@@ -33,19 +33,19 @@ class IsCatalogsNumberLimitReachedQueryTest extends IntegrationTestCase
 
     public function testItReturnsTrueWhenTheCatalogsNumberLimitIsReached(): void
     {
-        $ownerId = $this->createUser('owner')->getId();
+        $this->createUser('shopifi');
 
-        $this->assertFalse($this->query->execute($ownerId));
+        $this->assertFalse($this->query->execute('shopifi'));
 
         for ($i = 0; $i < $this->catalogsNumberMaxLimit + 1; $i++) {
-            $this->upsertQuery->execute(new Catalog(
+            $this->upsertQuery->execute(
                 Uuid::uuid4()->toString(),
                 'Store US',
-                (int) $ownerId,
+                'shopifi',
                 false
-            ));
+            );
         }
 
-        $this->assertTrue($this->query->execute($ownerId));
+        $this->assertTrue($this->query->execute('shopifi'));
     }
 }

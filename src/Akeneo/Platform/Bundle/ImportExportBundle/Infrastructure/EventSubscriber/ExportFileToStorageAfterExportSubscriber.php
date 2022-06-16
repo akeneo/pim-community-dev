@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscriber;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageCommand;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobWithStepsInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
@@ -31,7 +32,7 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
     public function __construct(
         private JobRegistry $jobRegistry,
         private TransferFilesToStorageHandler $transferFilesToStorageHandler,
-        private FeatureFlags $featureFlags,
+        private RemoteStorageFeatureFlag $remoteStorageFeatureFlag,
         private EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -45,16 +46,17 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
 
     public function exportFileToStorage(JobExecutionEvent $event): void
     {
-        if (!$this->featureFlags->isEnabled('job_automation_remote_storage')) {
+        $jobExecution = $event->getJobExecution();
+
+        if (!$this->remoteStorageFeatureFlag->isEnabled($jobExecution->getJobInstance()->getJobName())) {
             return;
         }
 
-        $jobExecution = $event->getJobExecution();
         if (JobInstance::TYPE_EXPORT !== $jobExecution->getJobInstance()->getType()) {
             return;
         }
 
-        $jobParameters = $jobExecution->getJobInstance()->getRawParameters();
+        $jobParameters = $jobExecution->getRawParameters();
         if (!array_key_exists(self::STORAGE_KEY, $jobParameters)) {
             return;
         }
@@ -72,6 +74,13 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
     {
         $writtenFiles = [];
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
+        if (!$job instanceof JobWithStepsInterface) {
+            return [];
+        }
+
+        if (!$job instanceof JobWithStepsInterface) {
+            return [];
+        }
 
         foreach ($job->getSteps() as $step) {
             if (!$step instanceof ItemStep) {

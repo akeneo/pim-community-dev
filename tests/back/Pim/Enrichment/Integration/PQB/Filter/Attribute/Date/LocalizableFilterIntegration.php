@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Date;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -34,26 +36,18 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_date' => [
-                    ['data' => '2016-04-23', 'locale' => 'en_US', 'scope' => null],
-                    ['data' => '2016-05-23', 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetDateValue('a_localizable_date', null, 'en_US', new \DateTime('2016-04-23')),
+            new SetDateValue('a_localizable_date', null, 'fr_FR', new \DateTime('2016-05-23')),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_date' => [
-                    ['data' => '2016-09-23', 'locale' => 'en_US', 'scope' => null],
-                    ['data' => '2016-09-23', 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetDateValue('a_localizable_date', null, 'en_US', new \DateTime('2016-09-23')),
+            new SetDateValue('a_localizable_date', null, 'fr_FR', new \DateTime('2016-09-23')),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorInferior()
@@ -124,14 +118,14 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $result = $this->executeFilter([['a_localizable_date', Operators::NOT_BETWEEN, [new \DateTime('2016-04-23T00:00:00'), '2016-09-23'], ['locale' => 'en_US']]]);
         $this->assert($result, []);
     }
-    
+
     public function testErrorMetricLocalizable()
     {
         $this->expectException(InvalidPropertyException::class);
         $this->expectExceptionMessage('Attribute "a_localizable_date" expects a locale, none given.');
         $this->executeFilter([['a_localizable_date', Operators::NOT_EQUAL, 250]]);
     }
-    
+
     public function testLocaleNotFound()
     {
         $this->expectException(InvalidPropertyException::class);

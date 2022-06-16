@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Option;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -44,25 +46,17 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_select_scopable_simple_select' => [
-                    ['data' => 'orange', 'locale' => null, 'scope' => 'ecommerce']
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetSimpleSelectValue('a_select_scopable_simple_select', 'ecommerce', null, 'orange'),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_select_scopable_simple_select' => [
-                    ['data' => 'black', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => 'black', 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetSimpleSelectValue('a_select_scopable_simple_select', 'ecommerce', null, 'black'),
+            new SetSimpleSelectValue('a_select_scopable_simple_select', 'tablet', null, 'black'),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorIn()

@@ -41,6 +41,10 @@
 - PIM-10443: Search for system product grid filters in System > Users > Additional is now case insensitive
 - PIM-10459: Fix product grid selection
 - PIM-10447: Do not hydrate product/model in UniqueEntityValidator
+- PIM-10467: Fix create and delete quickly product models via API create indexation issue
+- PIM-10471: Do not generate 2 files when making a quick export of 1 type of products
+- PIM-10475: Fix option existence validation for numeric option codes
+- PIM-10483: Fix slow loading products when filtering by variants
 
 ## Improvements
 
@@ -48,6 +52,8 @@
 - PIM-10229: Enforce strict samesite policy for session cookies
 - Improvement: Use Debian Bullseye (v11) in Dockerfiles for akeneo/pim-php-dev:master
 - BH-1159: Refactor BatchCommand to use execution ID without batch code
+- BH-1159: Add tenant ID for batch processing
+- BH-1159: Use available JobMessage class for denormalization
 
 ## New features
 

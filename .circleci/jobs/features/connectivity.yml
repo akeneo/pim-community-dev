@@ -18,6 +18,9 @@ jobs:
                     name: Pull docker image for node
                     command: docker-compose pull node
             -   run:
+                    name: Build other front libraries
+                    command: docker-compose run -u node --rm node yarn catalogs:build
+            -   run:
                     name: Lint front
                     command: make connectivity-connection-lint-front
 
@@ -37,6 +40,9 @@ jobs:
             -   run:
                     name: Pull docker image for node
                     command: docker-compose pull node
+            -   run:
+                    name: Build other front libraries
+                    command: docker-compose run -u node --rm node yarn catalogs:build
             -   run:
                     name: Unit front
                     command: make connectivity-connection-unit-front

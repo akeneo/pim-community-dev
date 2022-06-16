@@ -6,5 +6,5 @@ namespace Akeneo\Catalogs\Application\Persistence;
 
 interface IsCatalogsNumberLimitReachedQueryInterface
 {
-    public function execute(int $ownerId): bool;
+    public function execute(string $ownerUsername): bool;
 }

@@ -1,0 +1,41 @@
+akeneo_catalogs:
+    catalog_list:
+        catalogs_name: Catalog name
+        status: Status
+        enabled: enabled
+        disabled: disabled
+        empty: There is no catalog
+        more_information: Check out our Help center for more information.
+    catalog_edit:
+        tabs:
+            product_selection: Product selection
+            more: More
+    product_selection:
+        empty: Add selection criteria to create your product selection
+        more_information: Check out our Help center for more information.
+        criteria:
+            status:
+                label: Status
+                enabled: Enabled
+                disabled: Disabled
+        operators:
+            "STARTS WITH": starts with
+            "ENDS WITH": ends with
+            "CONTAINS": contains
+            "DOES NOT CONTAIN": does not contain
+            "EMPTY": is empty
+            "NOT EMPTY": is not empty
+            "IN": in
+            "NOT IN": not in
+            "IN CHILDREN": in children
+            "NOT IN CHILDREN": not in children
+            "UNCLASSIFIED": is unclassified
+            "IN OR UNCLASSIFIED": is unclassified or in
+            "BETWEEN": between
+            "NOT BETWEEN": not between
+            "=": equals
+            "!=": does not equal
+            ">": greater than
+            ">=": equals or greater than
+            "<": less than
+            "<=": equals or less than

@@ -35,7 +35,7 @@ class MaxNumberOfCatalogsPerUserValidator extends ConstraintValidator
             );
         }
 
-        if ($this->isCatalogsNumberLimitReachedQuery->execute($value->getOwnerId())) {
+        if ($this->isCatalogsNumberLimitReachedQuery->execute($value->getOwnerUsername())) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }

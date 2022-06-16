@@ -19,15 +19,16 @@ class IsCatalogsNumberLimitReachedQuery implements IsCatalogsNumberLimitReachedQ
     ) {
     }
 
-    public function execute(int $ownerId): bool
+    public function execute(string $ownerUsername): bool
     {
         $sql = <<<SQL
             SELECT COUNT(*) as count
-            FROM akeneo_catalog
-            WHERE owner_id = :owner_id;
+            FROM akeneo_catalog catalog
+            JOIN oro_user user ON user.id = catalog.owner_id
+            WHERE user.username = :owner_username;
         SQL;
 
-        $catalogCount = (int) $this->connection->executeQuery($sql, ['owner_id' => $ownerId])->fetchOne();
+        $catalogCount = (int) $this->connection->executeQuery($sql, ['owner_username' => $ownerUsername])->fetchOne();
 
         return $catalogCount >= $this->limit;
     }

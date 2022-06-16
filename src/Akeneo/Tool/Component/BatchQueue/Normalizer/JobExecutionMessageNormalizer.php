@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\BatchQueue\Normalizer;
@@ -16,11 +17,8 @@ use Webmozart\Assert\Assert;
  */
 final class JobExecutionMessageNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    private JobExecutionMessageFactory $jobExecutionMessageFactory;
-
-    public function __construct(JobExecutionMessageFactory $jobExecutionMessageFactory)
+    public function __construct(private JobExecutionMessageFactory $jobExecutionMessageFactory)
     {
-        $this->jobExecutionMessageFactory = $jobExecutionMessageFactory;
     }
 
     public function supportsNormalization($data, $format = null): bool
@@ -28,6 +26,9 @@ final class JobExecutionMessageNormalizer implements NormalizerInterface, Denorm
         return $data instanceof JobExecutionMessageInterface;
     }
 
+    /**
+     * @param JobExecutionMessageInterface $jobExecutionMessage
+     */
     public function normalize($jobExecutionMessage, $format = null, array $context = []): array
     {
         Assert::implementsInterface($jobExecutionMessage, JobExecutionMessageInterface::class);
@@ -35,6 +36,7 @@ final class JobExecutionMessageNormalizer implements NormalizerInterface, Denorm
         return [
             'id' => $jobExecutionMessage->getId()->toString(),
             'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
+            'tenant_id' => $jobExecutionMessage->tenantId(),
             'created_time' => $jobExecutionMessage->getCreateTime()->format('c'),
             'updated_time' => null !== $jobExecutionMessage->getUpdatedTime() ?
                 $jobExecutionMessage->getUpdatedTime()->format('c')
@@ -48,8 +50,18 @@ final class JobExecutionMessageNormalizer implements NormalizerInterface, Denorm
         return is_subclass_of($type, JobExecutionMessageInterface::class);
     }
 
-    public function denormalize($data, $type, $format = null, array $context = []): JobExecutionMessageInterface
-    {
-        return $this->jobExecutionMessageFactory->buildFromNormalized($data);
+    /**
+     * @param array       $data The normalized JobExecution message
+     * @param string      $type The JobMessage class
+     * @param string|null $format
+     * @param array       $context
+     */
+    public function denormalize(
+        $data,
+        string $type,
+        ?string $format = null,
+        array $context = []
+    ): JobExecutionMessageInterface {
+        return $this->jobExecutionMessageFactory->buildFromNormalized($data, $type);
     }
 }

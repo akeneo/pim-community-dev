@@ -55,7 +55,7 @@ class GetConnectedAppActionEndToEnd extends WebTestCase
             null
         );
 
-        $this->getConnectionLoader()->createConnection('connectionCodeA', 'Connector A', FlowType::DATA_DESTINATION, false);
+        $connectionA = $this->getConnectionLoader()->createConnection('connectionCodeA', 'Connector A', FlowType::DATA_DESTINATION, false);
         $this->getUserGroupLoader()->create(['name' => 'app_123456abcdef']);
         $this->getConnectedAppLoader()->createConnectedApp(
             '0dfce574-2238-4b13-b8cc-8d257ce7645b',
@@ -78,6 +78,7 @@ class GetConnectedAppActionEndToEnd extends WebTestCase
             'logo' => 'http://www.example.com/path/to/logo/a',
             'author' => 'author A',
             'user_group_name' => 'app_123456abcdef',
+            'connection_username' => $connectionA->username(),
             'categories' => ['category A1', 'category A2'],
             'certified' => false,
             'partner' => 'partner A',

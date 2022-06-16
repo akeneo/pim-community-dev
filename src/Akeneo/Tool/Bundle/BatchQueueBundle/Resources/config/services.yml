@@ -79,24 +79,15 @@ services:
         tags:
             - { name: console.command }
 
-    Akeneo\Tool\Bundle\BatchQueueBundle\Command\MigrateJobMessagesFromOldQueueCommand:
-        arguments:
-            - '@akeneo_batch_queue.factory.job_execution_message'
-            - '@akeneo_batch_queue.queue.job_execution_queue'
-            - '@pim_connector.doctrine.cache_clearer'
-            - '@database_connection'
-        tags:
-            - { name: console.command }
-
     akeneo_batch_queue.factory.job_execution_message:
         class: Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory
         arguments:
-            - '@pim_enrich.repository.job_execution'
             -
                 'Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage': ['mass_edit', 'mass_delete']
                 'Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage': ['import']
                 'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': ['export', 'quick_export']
             - 'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage'
+            - '%env(default::string:APP_TENANT_ID)%'
 
     akeneo_batch_queue.messenger.serializer:
         class: Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer
