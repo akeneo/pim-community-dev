@@ -34,6 +34,10 @@ class AddContentSecurityPolicyListener implements EventSubscriberInterface
     {
         $policy = $this->contentSecurityPolicyProvider->getPolicy();
 
+        if (null === $policy) {
+            return;
+        }
+
         $response = $event->getResponse();
         $response->headers->set('Content-Security-Policy', $policy);
         $response->headers->set('X-Content-Security-Policy', $policy);

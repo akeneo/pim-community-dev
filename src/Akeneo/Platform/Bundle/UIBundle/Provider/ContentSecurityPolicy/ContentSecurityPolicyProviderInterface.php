@@ -6,5 +6,5 @@ namespace Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy;
 
 interface ContentSecurityPolicyProviderInterface
 {
-    public function getContentSecurityPolicy(): array;
+    public function getContentSecurityPolicy(): ?array;
 }
