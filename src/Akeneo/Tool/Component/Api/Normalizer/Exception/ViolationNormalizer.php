@@ -108,13 +108,13 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
      */
     protected function normalizeViolation(ConstraintViolationInterface $violation): array
     {
-        $error = [
-            'message'  => $violation->getMessage(),
-        ];
+        $error = [];
 
         if ('' !== $property = $this->getErrorField($violation)) {
             $error['property'] = $property;
         }
+
+        $error['message'] = $violation->getMessage();
 
         $propertyPath = $violation->getPropertyPath();
         $violationMessage = $violation->getMessageTemplate();
