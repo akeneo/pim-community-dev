@@ -6,9 +6,21 @@ export interface AppcuesAgentInterface {
   loadLaunchpad: (element: string, options: object) => void;
 }
 
+const FeatureFlags = require('pim/feature-flags');
+
 const getAppcuesAgent = async (): Promise<AppcuesAgentInterface | null> => {
+  if (!FeatureFlags.isEnabled('free_trial')) {
+    return null;
+  }
+
   // @ts-ignore
-  return window.Appcues ? (window.Appcues as AppcuesAgent) : null;
+  if (!window.Appcues || typeof window.Appcues === 'undefined') {
+    throw new Error('Appcues library is not installed');
+  }
+
+  // @ts-ignore
+  return window.Appcues;
+
 };
 
 export {getAppcuesAgent};

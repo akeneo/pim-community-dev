@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\ExternalDependencyProviderInterface;
 
 final class Appcues implements ExternalDependencyProviderInterface, ContentSecurityPolicyProviderInterface
 {
-    private string $appcuesId;
-
-    public function __construct(string $appcuesId)
+    public function __construct(private string $appcuesId, private FeatureFlags $featureFlags)
     {
-        $this->appcuesId = $appcuesId;
     }
 
-    public function getScript(): string
+    public function getScript(): ?string
     {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
+            return null;
+        }
+
         return sprintf(
             '<script src="https://fast.appcues.com/%s.js"></script>',
             $this->appcuesId
@@ -27,8 +29,12 @@ final class Appcues implements ExternalDependencyProviderInterface, ContentSecur
     /**
      * https://docs.appcues.com/article/234-content-security-policies
      */
-    public function getContentSecurityPolicy(): array
+    public function getContentSecurityPolicy(): ?array
     {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
+            return null;
+        }
+
         return [
             'frame-src'   => ["'self'", "https://*.appcues.com"],
             'style-src'   => ["'self'", "https://*.appcues.com", "https://*.appcues.net", "https://fonts.googleapis.com", "'unsafe-inline'"],

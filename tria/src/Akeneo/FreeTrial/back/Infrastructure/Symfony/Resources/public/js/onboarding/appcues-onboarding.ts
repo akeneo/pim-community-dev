@@ -391,7 +391,7 @@ const AppcuesOnboarding: PimOnboarding = {
   init: async () => {
     const appcues = await getAppcuesAgent();
     if (appcues === null) {
-      throw new Error('Appcues should be initialized');
+      return;
     }
 
     Mediator.on('route_complete', async () => {
