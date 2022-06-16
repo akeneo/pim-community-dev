@@ -21,6 +21,14 @@ services:
       - '@validator'
       - '@serializer'
 
+  akeneo.tailored_import.controller.search_attributes_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\SearchAttributesAction
+    public: true
+    arguments:
+      - '@akeneo.tailored_import.handler.search_attributes'
+      - '@validator'
+      - '@serializer'
+
   akeneo.tailored_import.controller.get_file_template_information_action:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetFileTemplateInformationAction
     public: true

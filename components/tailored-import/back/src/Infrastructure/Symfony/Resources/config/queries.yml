@@ -32,6 +32,11 @@ services:
             - '@security.token_storage'
             - '%akeneo.tailored_import.supported_attribute_types%'
 
+    akeneo.tailored_import.query.attribute.find_attribute_translations:
+        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\Attribute\FindAttributeTranslations
+        arguments:
+            - '@akeneo.pim.structure.query.get_attribute_translations'
+
     akeneo.tailored_import.query.attribute.get_identifier_attribute_code:
         class: Akeneo\Platform\TailoredImport\Infrastructure\Query\Attribute\GetIdentifierAttributeCode
         arguments:

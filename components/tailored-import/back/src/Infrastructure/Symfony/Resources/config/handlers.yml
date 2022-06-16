@@ -15,6 +15,11 @@ services:
       - '@akeneo.tailored_import.spout.remote_file_reader.factory'
       - '@akeneo.tailored_import.ramsey.uuid_generator'
 
+  akeneo.tailored_import.handler.search_attributes:
+    class: Akeneo\Platform\TailoredImport\Application\SearchAttributes\SearchAttributesHandler
+    arguments:
+      - '@akeneo.tailored_import.query.attribute.find_attribute_translations'
+
   akeneo.tailored_import.handler.execute_data_mapping:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler
     arguments:
