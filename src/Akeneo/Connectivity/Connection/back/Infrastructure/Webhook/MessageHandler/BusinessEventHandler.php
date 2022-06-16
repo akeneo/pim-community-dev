@@ -7,7 +7,6 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Command\SendBusinessEventToWebhooks;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\BulkEventNormalizer;
-use Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use Symfony\Component\Process\Process;
@@ -37,17 +36,21 @@ class BusinessEventHandler implements MessageSubscriberInterface
                 'SYMFONY_DOTENV_VARS' => false,
             ];
 
+            if ($event->getTenantId()) {
+                $env['APP_TENANT_ID'] = $event->getTenantId();
+            }
+
             $process = new Process($processArguments, null, $env);
             $process->setTimeout(null);
 
-            $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
+            $this->logger->debug(\sprintf('Command line: "%s"', $process->getCommandLine()));
 
             $process->run(function ($type, $buffer): void {
                 \fwrite(Process::ERR === $type ? \STDERR : \STDOUT, $buffer);
             });
         } catch (\Throwable $t) {
             $this->logger->error(
-                sprintf('An error occurred: %s', $t->getMessage()),
+                \sprintf('An error occurred: %s', $t->getMessage()),
                 ['exception' => $t]
             );
         }
@@ -55,15 +58,11 @@ class BusinessEventHandler implements MessageSubscriberInterface
 
     private function buildBatchCommand(BulkEventInterface $event): array
     {
-        $message = $this->normalizer->normalize($event);
-        $processArguments = [
-            sprintf('%s/bin/console', $this->projectDir),
-            '--quiet',
+        $message = \json_encode($this->normalizer->normalize($event));
+        return [
+            \sprintf('%s/bin/console', $this->projectDir),
             SendBusinessEventToWebhooks::getDefaultName(),
             $message,
         ];
-
-        return $processArguments;
     }
-
 }
