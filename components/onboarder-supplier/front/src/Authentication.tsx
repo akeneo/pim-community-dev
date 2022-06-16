@@ -6,7 +6,7 @@ import {SetUpPassword} from './pages';
 const Authentication = () => {
     return (
         <Switch>
-            <Route privateRoute={false} path="/set-up-password">
+            <Route privateRoute={false} path="/set-up-password/:accessToken">
                 <SetUpPassword />
             </Route>
         </Switch>

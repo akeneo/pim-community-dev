@@ -1,15 +1,25 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {Button, Field, getColor, TextInput} from 'akeneo-design-system';
+import {Button, Field, getColor, Helper, TextInput} from 'akeneo-design-system';
 import {PasswordInput} from './components/PasswordInput';
 import {OnboarderLogo, UnauthenticatedContainer} from '../../components';
 import {FormattedMessage, useIntl} from 'react-intl';
+import {useParams} from 'react-router-dom';
+import {NotFoundError} from '../../api/NotFoundError';
+import {NotFound} from '../NotFound';
+import {useContributorAccount} from './hooks';
+
+type Params = {
+    accessToken: string;
+};
 
 const SetUpPassword = () => {
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
     const intl = useIntl();
+    const {accessToken} = useParams<Params>();
+    const {loadingError, contributorAccount, submitPassword, passwordHasErrors} = useContributorAccount(accessToken);
 
     useEffect(() => {
         const isPasswordValid =
@@ -17,16 +27,24 @@ const SetUpPassword = () => {
         setIsSubmitButtonDisabled(!isPasswordValid);
     }, [password, passwordConfirmation, setIsSubmitButtonDisabled]);
 
+    if (loadingError instanceof NotFoundError) {
+        return <NotFound />;
+    }
+
+    if (!contributorAccount) {
+        return null;
+    }
+
     return (
         <UnauthenticatedContainer>
             <OnboarderLogo />
             <WelcomeText>
                 <p>
                     <FormattedMessage
-                        id="QjSrIv"
-                        defaultMessage="Hello {name} !"
+                        id="YxvL5F"
+                        defaultMessage="Hello {contributorEmail} !"
                         values={{
-                            name: <SupplierEmail>jimmy@megasupplier.com</SupplierEmail>,
+                            contributorEmail: <ContributorEmail>{contributorAccount.email}</ContributorEmail>,
                         }}
                     />
                 </p>
@@ -47,7 +65,17 @@ const SetUpPassword = () => {
                         defaultMessage: 'Password',
                     })}
                 >
-                    <PasswordInput data-testid="password-input" onChange={setPassword} value={password} />
+                    <PasswordInput
+                        data-testid="password-input"
+                        onChange={setPassword}
+                        value={password}
+                        invalid={passwordHasErrors}
+                    />
+                    {passwordHasErrors && (
+                        <Helper level="error">
+                            <FormattedMessage id="KpExEC" defaultMessage="Your password is invalid." />
+                        </Helper>
+                    )}
                 </StyledField>
                 <StyledField
                     label={intl.formatMessage({
@@ -85,7 +113,12 @@ const SetUpPassword = () => {
                         <FormattedMessage defaultMessage="Correct confirmation" id="XurM/d" />
                     </p>
                 </PasswordRequirements>
-                <Button data-testid="submit-button" type="button" disabled={isSubmitButtonDisabled}>
+                <Button
+                    data-testid="submit-button"
+                    type="button"
+                    disabled={isSubmitButtonDisabled}
+                    onClick={async () => await submitPassword(password)}
+                >
                     <FormattedMessage defaultMessage="Create My password" id="d8nJr6" />
                 </Button>
             </SetUpPasswordForm>
@@ -97,7 +130,7 @@ const WelcomeText = styled.div`
     margin-bottom: 30px;
     color: ${getColor('grey140')};
 `;
-const SupplierEmail = styled.span`
+const ContributorEmail = styled.span`
     color: ${getColor('brand100')};
     font-weight: bold;
 `;

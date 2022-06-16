@@ -3,6 +3,15 @@ import {fireEvent, screen} from '@testing-library/react';
 import {renderWithProviders} from '../../tests';
 import {SetUpPassword} from './SetUpPassword';
 
+jest.mock('./hooks/useContributorAccount', () => ({
+    useContributorAccount: () => ({
+        loadingError: false,
+        contributorAccount: {},
+        submitPassword: () => {},
+        passwordHasErrors: false,
+    }),
+}));
+
 test('it renders the password input with its confirmation input', async () => {
     renderWithProviders(<SetUpPassword />);
 
