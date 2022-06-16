@@ -38,8 +38,8 @@
     "generate-models": "yarn generate-asset-manager-models && yarn workspace @akeneo-pim-community/communication-channel generate-models",
     "packages:build": "yarn workspace pim-community-dev packages:build && yarn enterprise-packages:build",
     "packages:unit": "yarn workspace pim-community-dev packages:unit && yarn enterprise-packages:unit",
-    "enterprise-packages:unit": "yarn workspace @akeneo-pim-enterprise/tailored-export test:unit:run && yarn workspace @akeneo-pim-enterprise/tailored-import test:unit:run && yarn workspace @akeneo-pim-enterprise/job-automation test:unit:run",
-    "packages:lint:check": "yarn workspace @akeneo-pim-enterprise/tailored-export lint:check && yarn workspace @akeneo-pim-enterprise/tailored-import lint:check && yarn workspace @akeneo-pim-enterprise/job-automation lint:check",
+    "enterprise-packages:unit": "yarn workspace @akeneo-pim-enterprise/tailored-export test:unit:run && yarn workspace @akeneo-pim-enterprise/tailored-import test:unit:run && yarn workspace @akeneo-pim-enterprise/job-automation test:unit:run && yarn workspace akeneo-pim-free-trial test:unit:run",
+    "packages:lint:check": "yarn workspace @akeneo-pim-enterprise/tailored-export lint:check && yarn workspace @akeneo-pim-enterprise/tailored-import lint:check && yarn workspace @akeneo-pim-enterprise/job-automation lint:check && yarn workspace akeneo-pim-free-trial lint:check",
     "enterprise-packages:build": "yarn tailored-export:build && yarn tailored-import:build && yarn onboarder:build && yarn job-automation:build && yarn free-trial:build",
     "dsm:build": "yarn workspace pim-community-dev dsm:build"
   },
