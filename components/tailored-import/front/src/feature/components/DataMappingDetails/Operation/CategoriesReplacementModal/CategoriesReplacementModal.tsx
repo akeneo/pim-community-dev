@@ -14,8 +14,8 @@ import {
 } from '@akeneo-pim-community/shared';
 import {ReplacementValues, CategoryTree} from '../../../../models';
 import {useCategoryTrees} from '../../../../hooks';
-import {CategoriesReplacementList} from './CategoriesReplacementList';
 import {CATEGORIES_REPLACEMENT_OPERATION_TYPE} from '../Block';
+import {CategoryReplacementRow} from './CategoryReplacementRow';
 
 const Container = styled.div`
   width: 100%;
@@ -119,7 +119,7 @@ const CategoriesReplacementModal = ({
           {translate('akeneo.tailored_import.data_mapping.operations.categories_replacement.modal.title')}
         </Modal.Title>
         <Content>
-          <TabBar moreButtonTitle={translate('pim_common.more')}>
+          <TabBar sticky={0} moreButtonTitle={translate('pim_common.more')}>
             {categoryTrees.map(tree => (
               <TabBar.Tab
                 isActive={activeCategoryTree === tree.id}
@@ -131,7 +131,7 @@ const CategoriesReplacementModal = ({
             ))}
           </TabBar>
           <Table>
-            <Table.Header sticky={0}>
+            <Table.Header sticky={44}>
               <Table.HeaderCell>
                 {translate(
                   'akeneo.tailored_import.data_mapping.operations.categories_replacement.modal.table.header.replacement'
@@ -144,11 +144,18 @@ const CategoriesReplacementModal = ({
               </Table.HeaderCell>
             </Table.Header>
             <Table.Body>
-              <CategoriesReplacementList
-                categoryTree={displayedCategoryTree}
+              <CategoryReplacementRow
+                key={displayedCategoryTree.code}
+                tree={{
+                  code: displayedCategoryTree.code,
+                  label: getLabel(displayedCategoryTree.labels, catalogLocale, `[${displayedCategoryTree.code}]`),
+                  id: displayedCategoryTree.id,
+                  isLeaf: false,
+                }}
                 mapping={mapping}
                 onMappingChange={setMapping}
                 validationErrors={filterErrors(validationErrors, '[mapping]')}
+                level={0}
               />
             </Table.Body>
           </Table>

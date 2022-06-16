@@ -1,36 +1,26 @@
 import React from 'react';
-import {screen, act} from '@testing-library/react';
+import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {
   getDefaultCategoriesReplacementOperation,
   CategoriesReplacementOperationBlock,
 } from './CategoriesReplacementOperationBlock';
+import {ReplacementValues} from '../../../../models';
 
-jest.mock('../../../../hooks/useCategoryTrees', () => ({
-  useCategoryTrees: () => [
-    {
-      id: 1,
-      code: 'shoes',
-      labels: {
-        en_US: 'Shoes',
-      },
-    },
-    {
-      id: 2,
-      code: 'tshirt',
-      labels: {
-        en_US: 'T-Shirt',
-      },
-    },
-    {
-      id: 3,
-      code: 'ceinturon',
-      labels: {
-        en_US: 'Ceinturone',
-      },
-    },
-  ],
+jest.mock('../CategoriesReplacementModal/CategoriesReplacementModal', () => ({
+  CategoriesReplacementModal: ({
+    onConfirm,
+    onCancel,
+  }: {
+    onConfirm: (replacementValues: ReplacementValues) => void;
+    onCancel: () => void;
+  }) => (
+    <>
+      <button onClick={() => onConfirm({shoes: ['chaussure', 'chaussures en daim']})}>Confirm</button>
+      <button onClick={onCancel}>Cancel</button>
+    </>
+  ),
 }));
 
 test('it can get the default categories replacement operation', () => {
@@ -117,20 +107,7 @@ test('it opens a replacement modal and handles change', async () => {
   );
 
   userEvent.click(screen.getByText('pim_common.edit'));
-
-  expect(
-    screen.getByText('akeneo.tailored_import.data_mapping.operations.categories_replacement.modal.title')
-  ).toBeInTheDocument();
-
-  const [shoesMapping] = screen.getAllByPlaceholderText(
-    'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.field.to_placeholder'
-  );
-
-  userEvent.type(shoesMapping, 'chaussure;chaussures en daim;');
-
-  await act(async () => {
-    userEvent.click(screen.getByText('pim_common.confirm'));
-  });
+  userEvent.click(screen.getByText('Confirm'));
 
   expect(handleChange).toHaveBeenCalledWith({
     uuid: expect.any(String),
@@ -161,7 +138,7 @@ test('it does not call handler when cancelling', () => {
   );
 
   userEvent.click(screen.getByText('pim_common.edit'));
-  userEvent.click(screen.getByTitle('pim_common.close'));
+  userEvent.click(screen.getByText('Cancel'));
 
   expect(handleChange).not.toHaveBeenCalled();
 });
