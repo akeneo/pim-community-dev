@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\ServiceAPI\Command;
 
-use Akeneo\Catalogs\ServiceAPI\Validation\GetOwnerIdInterface;
-use Akeneo\Catalogs\ServiceAPI\Validation\MaxNumberOfCatalogsPerUser;
+use Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUser;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -14,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 
 #[MaxNumberOfCatalogsPerUser]
-final class CreateCatalogCommand implements CommandInterface, GetOwnerIdInterface
+final class CreateCatalogCommand implements CommandInterface
 {
     public function __construct(
         #[Assert\NotBlank]

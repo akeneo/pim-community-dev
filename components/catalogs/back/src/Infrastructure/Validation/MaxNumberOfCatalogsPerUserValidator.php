@@ -1,8 +1,11 @@
 <?php
 
-namespace Akeneo\Catalogs\ServiceAPI\Validation;
+declare(strict_types=1);
 
-use Akeneo\Catalogs\ServiceAPI\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
+namespace Akeneo\Catalogs\Infrastructure\Validation;
+
+use Akeneo\Catalogs\Application\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
+use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -23,8 +26,13 @@ class MaxNumberOfCatalogsPerUserValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, MaxNumberOfCatalogsPerUser::class);
         }
 
-        if (!$value instanceof GetOwnerIdInterface) {
-            throw new \LogicException('$value must implements components/catalogs/back/src/Domain/Validation/GetOwnerIdInterface.php');
+        if (!$value instanceof CreateCatalogCommand) {
+            throw new \LogicException(
+                \sprintf(
+                    'MaxNumberOfCatalogsPerUserValidator can only be used on instances of "%s"',
+                    CreateCatalogCommand::class,
+                )
+            );
         }
 
         if ($this->isCatalogsNumberLimitReachedQuery->execute($value->getOwnerId())) {

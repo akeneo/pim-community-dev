@@ -1,6 +1,8 @@
 <?php
 
-namespace Akeneo\Catalogs\ServiceAPI\Validation;
+declare(strict_types=1);
+
+namespace Akeneo\Catalogs\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
 

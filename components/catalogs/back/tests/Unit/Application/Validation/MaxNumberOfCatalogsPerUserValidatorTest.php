@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Validation;
+namespace Akeneo\Catalogs\Test\Unit\Application\Validation;
 
-use Akeneo\Catalogs\ServiceAPI\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
-use Akeneo\Catalogs\ServiceAPI\Validation\GetOwnerIdInterface;
-use Akeneo\Catalogs\ServiceAPI\Validation\MaxNumberOfCatalogsPerUser;
-use Akeneo\Catalogs\ServiceAPI\Validation\MaxNumberOfCatalogsPerUserValidator;
+use Akeneo\Catalogs\Application\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUser;
+use Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUserValidator;
+use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
@@ -34,14 +34,13 @@ class MaxNumberOfCatalogsPerUserValidatorTest extends ConstraintValidatorTestCas
     {
         $this->isCatalogsNumberLimitReachedQuery->method('execute')->willReturn(false);
 
-        $classWithOwnerIdGetter = new class implements GetOwnerIdInterface {
-            public function getOwnerId(): int
-            {
-                return 42;
-            }
-        };
+        $command = new CreateCatalogCommand(
+            id: '43c74e94-0074-4316-ac66-93cd0ca71a6b',
+            name: 'foo',
+            ownerId: 42,
+        );
 
-        $this->validator->validate($classWithOwnerIdGetter, new MaxNumberOfCatalogsPerUser());
+        $this->validator->validate($command, new MaxNumberOfCatalogsPerUser());
 
         $this->assertNoViolation();
     }
@@ -50,29 +49,28 @@ class MaxNumberOfCatalogsPerUserValidatorTest extends ConstraintValidatorTestCas
     {
         $this->isCatalogsNumberLimitReachedQuery->method('execute')->willReturn(true);
 
-        $classWithOwnerIdGetter = new class implements GetOwnerIdInterface {
-            public function getOwnerId(): int
-            {
-                return 42;
-            }
-        };
+        $command = new CreateCatalogCommand(
+            id: '43c74e94-0074-4316-ac66-93cd0ca71a6b',
+            name: 'foo',
+            ownerId: 42,
+        );
 
-        $this->validator->validate($classWithOwnerIdGetter, new MaxNumberOfCatalogsPerUser());
+        $this->validator->validate($command, new MaxNumberOfCatalogsPerUser());
 
         $this->buildViolation('akeneo_catalogs.validation.max_number_of_catalogs_per_user_message')
             ->assertRaised();
     }
 
-    public function testItThrowsAnExceptionIfValueNotImplementsGetOwnerIdInterface(): void
+    public function testItThrowsAnExceptionIfValueNotCreateCatalogCommand(): void
     {
         $this->isCatalogsNumberLimitReachedQuery->method('execute')->willReturn(false);
 
-        $classWithoutOwnerIdGetter = new class {
-        };
-
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('$value must implements components/catalogs/back/src/Domain/Validation/GetOwnerIdInterface.php');
+        $this->expectExceptionMessage(\sprintf(
+            'MaxNumberOfCatalogsPerUserValidator can only be used on instances of "%s"',
+            CreateCatalogCommand::class,
+        ));
 
-        $this->validator->validate($classWithoutOwnerIdGetter, new MaxNumberOfCatalogsPerUser());
+        $this->validator->validate(new \stdClass(), new MaxNumberOfCatalogsPerUser());
     }
 }

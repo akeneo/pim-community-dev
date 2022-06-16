@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence;
 
-use Akeneo\Catalogs\ServiceAPI\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**

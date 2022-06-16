@@ -21,6 +21,9 @@ class GetCatalogsByOwnerIdQuery implements GetCatalogsByOwnerIdQueryInterface
     ) {
     }
 
+    /**
+     * @return array<Catalog>
+     */
     public function execute(int $ownerId, int $offset = 0, int $limit = 100): array
     {
         $query = <<<SQL
@@ -44,7 +47,7 @@ class GetCatalogsByOwnerIdQuery implements GetCatalogsByOwnerIdQueryInterface
             ]
         )->fetchAllAssociative();
 
-        return \array_map(fn ($row) => new Catalog(
+        return \array_map(static fn ($row) => new Catalog(
             (string) $row['id'],
             (string) $row['name'],
             (int) $row['owner_id'],
