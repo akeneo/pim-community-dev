@@ -34,3 +34,7 @@ services:
   Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\MultiSelectReplacementOperationApplier:
     tags:
       - { name: akeneo.tailored_import.operation_applier, priority: 101 }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\CategoriesReplacementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier, priority: 101 }
