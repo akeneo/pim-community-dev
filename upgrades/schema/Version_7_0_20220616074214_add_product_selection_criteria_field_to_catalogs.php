@@ -13,11 +13,6 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version_7_0_20220616074214_add_product_selection_criteria_field_to_catalogs extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
     public function up(Schema $schema): void
     {
         if ($schema->getTable('akeneo_catalog')->hasColumn('product_selection_criteria')) {
