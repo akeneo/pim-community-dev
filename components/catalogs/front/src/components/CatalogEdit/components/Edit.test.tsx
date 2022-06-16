@@ -9,6 +9,7 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {Edit} from './Edit';
+import {CatalogEdit, CatalogEditRef} from '../CatalogEdit';
 
 jest.mock('../../ProductSelection', () => ({
     ProductSelection: () => <>[ProductSelection]</>,
@@ -65,4 +66,25 @@ test('it switches between tabs', () => {
     act(() => userEvent.click(screen.getByText('akeneo_catalogs.catalog_edit.tabs.settings')));
 
     expect(screen.getByText('[Settings]')).toBeInTheDocument();
+});
+
+test('it calls save from parent component', () => {
+    const logger = jest.spyOn(console, 'log');
+    logger.mockImplementation(() => {});
+
+    const ref: {current: CatalogEditRef | null} = {
+        current: null,
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} ref={ref} />
+        </ThemeProvider>
+    );
+
+    expect(ref.current).not.toBeUndefined();
+
+    ref.current && ref.current.save();
+
+    expect(logger).toHaveBeenCalledWith('Catalog 123e4567-e89b-12d3-a456-426614174000 saved.');
 });
