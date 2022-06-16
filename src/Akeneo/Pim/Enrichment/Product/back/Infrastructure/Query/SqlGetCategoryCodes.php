@@ -49,7 +49,12 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
 
     /**
      * @param string[] $productIdentifiers
-     * @return array
+     * @return array<string, string[]> example:
+     *  {
+     *      "product1": ["categoryA", "categoryB"],
+     *      "product2": ["categoryA"],
+     *      ...
+     *  }
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */
@@ -100,7 +105,12 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
 
     /**
      * @param string[] $productIdentifiers
-     * @return array
+     * @return array<string, string[]> example:
+     *  {
+     *      "product1": ["categoryA", "categoryB"],
+     *      "product2": ["categoryA"],
+     *      ...
+     *  }
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */

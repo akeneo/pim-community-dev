@@ -55,7 +55,7 @@ class GetNonViewableCategoryCodesSpec extends ObjectBehavior
         $productIdentifier2 = ProductIdentifier::fromString('id2');
         $productIdentifier3 = ProductIdentifier::fromString('id3');
 
-        $getCategoryCodes->forProductVariantFromProductIdentifiers([$productIdentifier1, $productIdentifier2, $productIdentifier3])
+        $getCategoryCodes->fromProductIdentifiers([$productIdentifier1, $productIdentifier2, $productIdentifier3])
             ->willReturn([
                 'id1' => ['categoryA', 'categoryB', 'categoryC'],
                 'id2' => ['categoryA', 'categoryD', 'categoryE'],
@@ -63,7 +63,7 @@ class GetNonViewableCategoryCodesSpec extends ObjectBehavior
         $getViewableCategories->forUserId(['categoryA', 'categoryB', 'categoryC', 'categoryD', 'categoryE'], 10)
             ->willReturn(['categoryA', 'categoryB', 'categoryC', 'categoryD']);
 
-        $this->forProductVariantFromProductIdentifiers([$productIdentifier1, $productIdentifier2, $productIdentifier3], 10)
+        $this->fromProductIdentifiers([$productIdentifier1, $productIdentifier2, $productIdentifier3], 10)
             ->shouldreturn([
                 'id1' => [],
                 'id2' => ['categoryE'],
