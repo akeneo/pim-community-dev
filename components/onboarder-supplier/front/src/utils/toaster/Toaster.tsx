@@ -1,10 +1,5 @@
-import React, { ReactElement, ReactNode } from 'react';
-import {
-  IconProps,
-  MessageBar,
-  MessageBarLevel,
-  uuid,
-} from 'akeneo-design-system';
+import React, {ReactElement, ReactNode} from 'react';
+import {IconProps, MessageBar, MessageBarLevel, uuid} from 'akeneo-design-system';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -17,34 +12,34 @@ const Container = styled.div`
 `;
 
 type Toast = {
-  title: string;
-  level?: MessageBarLevel;
-  icon?: ReactElement<IconProps>;
-  message?: ReactNode;
+    title: string;
+    level?: MessageBarLevel;
+    icon?: ReactElement<IconProps>;
+    message?: ReactNode;
 };
 
 type Props = {
-  toasts: Toast[];
+    toasts: Toast[];
 };
 
-const Toaster = ({ toasts }: Props) => {
-  return (
-    <Container>
-      {toasts.map((toast) => (
-        <MessageBar
-          icon={toast.icon}
-          key={uuid()}
-          level={toast.level}
-          title={toast.title}
-          dismissTitle=''
-          onClose={function doNothing() {}}
-        >
-          {toast.message}
-        </MessageBar>
-      ))}
-    </Container>
-  );
+const Toaster = ({toasts}: Props) => {
+    return (
+        <Container>
+            {toasts.map(toast => (
+                <MessageBar
+                    icon={toast.icon}
+                    key={uuid()}
+                    level={toast.level}
+                    title={toast.title}
+                    dismissTitle=""
+                    onClose={function doNothing() {}}
+                >
+                    {toast.message}
+                </MessageBar>
+            ))}
+        </Container>
+    );
 };
 
-export { Toaster };
-export type { Toast };
+export {Toaster};
+export type {Toast};

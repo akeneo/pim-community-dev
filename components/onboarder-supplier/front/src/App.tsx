@@ -7,7 +7,7 @@ import {Authentication} from './Authentication';
 import {UserContextProvider} from './contexts';
 import {queryClient} from './api';
 import {IntlProvider} from 'react-intl';
-import {ToastProvider} from "./utils/toaster";
+import {ToastProvider} from './utils/toaster';
 
 function App() {
     return (
