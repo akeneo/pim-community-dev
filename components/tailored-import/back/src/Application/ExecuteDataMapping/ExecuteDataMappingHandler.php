@@ -77,8 +77,9 @@ class ExecuteDataMappingHandler
         }
 
         return UpsertProductCommand::createFromCollection(
+            // TODO RAB-767: use actual userId
             1,
-            $productIdentifier->getValue(),
+            $productIdentifier->getValue() ?? '',
             $userIntents,
         );
     }
