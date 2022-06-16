@@ -83,4 +83,119 @@ services:
         synthetic: true
     pim_catalog.updater.group:
         synthetic: true
-
+    pim_connector.processor.denormalization.family_variant:
+        synthetic: true
+    pim_connector.processor.denormalization.attribute_group:
+        synthetic: true
+    pim_connector.processor.normalization.group:
+        synthetic: true
+    pim_connector.processor.normalization.category:
+        synthetic: true
+    pim_connector.reader.file.csv_group:
+        synthetic: true
+    pim_connector.reader.file.xlsx_group:
+        synthetic: true
+    pim_connector.writer.database.group:
+        synthetic: true
+    pim_connector.writer.database.association_type:
+        synthetic: true
+    pim_connector.writer.database.group_type:
+        synthetic: true
+    pim_connector.writer.file.csv_category:
+        synthetic: true
+    pim_connector.writer.file.csv_group:
+        synthetic: true
+    pim_connector.writer.file.xlsx_group:
+        synthetic: true
+    pim_connector.writer.file.xlsx_category:
+        synthetic: true
+    pim_catalog.updater.family_variant:
+        synthetic: true
+    pim_catalog.normalizer.standard.attribute:
+        synthetic: true
+    pim_api.normalizer.attribute:
+        synthetic: true
+    pim_enrich.normalizer.attribute:
+        synthetic: true
+    pim_versioning.serializer.normalizer.flat.attribute:
+        synthetic: true
+    pim_enrich.normalizer.attribute.versioned:
+        synthetic: true
+    pim_enrich.normalizer.structured.attribute_option:
+        synthetic: true
+    pim_enrich.normalizer.attribute_option:
+        synthetic: true
+    pim_enrich.normalizer.family:
+        synthetic: true
+    pim_versioning.serializer.normalizer.flat.family:
+        synthetic: true
+    pim_catalog.normalizer.standard.family:
+        synthetic: true
+    pim_catalog.normalizer.indexing_product.product.family:
+        synthetic: true
+    pim_enrich.normalizer.family_variant:
+        synthetic: true
+    pim_catalog.normalizer.standard.family_variant:
+        synthetic: true
+    pim_enrich.normalizer.attribute_group:
+        synthetic: true
+    pim_versioning.serializer.normalizer.flat.attribute_group:
+        synthetic: true
+    pim_catalog.normalizer.standard.attribute_group:
+        synthetic: true
+    pim_enrich.normalizer.group_type:
+        synthetic: true
+    pim_catalog.normalizer.standard.group_type:
+        synthetic: true
+    pim_enrich.normalizer.association_type:
+        synthetic: true
+    pim_versioning.serializer.normalizer.flat.association_type:
+        synthetic: true
+    pim_catalog.normalizer.standard.association_type:
+        synthetic: true
+    pim_catalog.remover.family:
+        synthetic: true
+    pim_catalog.remover.family_variant:
+        synthetic: true
+    pim_catalog.event_subscriber.attribute_option_removal:
+        synthetic: true
+    Akeneo\Pim\Structure\Bundle\Datagrid\Attribute\FamilyFilter:
+        synthetic: true
+    pim_api.controller.attribute:
+        synthetic: true
+    pim_api.controller.attribute_group:
+        synthetic: true
+    pim_api.controller.attribute_option:
+        synthetic: true
+    pim_api.controller.family:
+        synthetic: true
+    pim_api.controller.family_variant:
+        synthetic: true
+    pim_api.controller.association_type:
+        synthetic: true
+    pim_enrich.controller.rest.attribute:
+        synthetic: true
+    pim_enrich.controller.rest.attribute_group:
+        synthetic: true
+    pim_enrich.controller.rest.family_variant:
+        synthetic: true
+    pim_enrich.controller.attribute_option:
+        synthetic: true
+    pim_enrich.controller.rest.association_type:
+        synthetic: true
+    pim_enrich.controller.rest.group_type:
+        synthetic: true
+    pim_catalog.validator.constraint.valid_metric:
+        synthetic: true
+    pim_connector.step.csv_family.compute_data_related_to_family_root_product_models:
+        synthetic: true
+    pim_connector.step.csv_family.compute_data_related_to_family_sub_product_models:
+        synthetic: true
+    pim_connector.step.csv_family.compute_data_related_to_family_products:
+        synthetic: true
+    pim_connector.step.xlsx_family.compute_data_related_to_family_root_product_models:
+        synthetic: true
+#    pi:
+#        synthetic: true
+#    pi:
+#        synthetic: true
