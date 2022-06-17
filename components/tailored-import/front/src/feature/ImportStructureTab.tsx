@@ -19,6 +19,7 @@ import {useFetchers} from './contexts';
 import {useSampleDataFetcher} from './hooks';
 
 const Container = styled.div`
+  padding-top: 10px;
   display: flex;
   flex-direction: row;
   gap: 40px;

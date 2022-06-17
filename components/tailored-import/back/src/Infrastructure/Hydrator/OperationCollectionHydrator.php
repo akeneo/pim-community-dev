@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 
 use Akeneo\Platform\TailoredImport\Domain\Hydrator\OperationCollectionHydratorInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CategoriesReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToDateOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
@@ -60,6 +61,7 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
                 SplitOperation::TYPE => new SplitOperation($normalizedOperation['uuid'], $normalizedOperation['separator']),
                 SimpleSelectReplacementOperation::TYPE => new SimpleSelectReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 MultiSelectReplacementOperation::TYPE => new MultiSelectReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
+                CategoriesReplacementOperation::TYPE => new CategoriesReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" Operation type', $normalizedOperation['type'])),
             },
             $normalizedOperations,

@@ -18,6 +18,7 @@ parameters:
     split: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\SplitOperation'
     simple_select_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
     multi_select_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
+    categories_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
 
 services:
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidAttributeValidator:
@@ -45,6 +46,10 @@ services:
     arguments:
       - '@akeneo_file_storage.file_storage.filesystem_provider'
       - '@akeneo.tailored_import.spout.remote_file_reader.factory'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SearchAttributesQueryValidator:
     tags:
       - { name: validator.constraint_validator }
 

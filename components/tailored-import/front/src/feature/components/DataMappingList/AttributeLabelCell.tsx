@@ -18,7 +18,7 @@ const AttributeLabelCell = ({attributeCode}: AttributeLabelCellProps) => {
   const attributeLabel = getLabel(attribute?.labels ?? {}, catalogLocale, attributeCode);
 
   return (
-    <AttributeLabel>
+    <AttributeLabel rowTitle={true}>
       {isFetching ? <SkeletonPlaceholder>{attributeLabel}</SkeletonPlaceholder> : attributeLabel}
     </AttributeLabel>
   );

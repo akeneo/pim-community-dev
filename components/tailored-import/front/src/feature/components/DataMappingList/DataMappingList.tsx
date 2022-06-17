@@ -10,10 +10,10 @@ import {
   useDebounce,
 } from 'akeneo-design-system';
 import {getErrorsForPath, filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {Column, DataMapping, filterOnColumnLabels, MAX_DATA_MAPPING_COUNT} from '../../models';
+import {Column, DataMapping, MAX_DATA_MAPPING_COUNT} from '../../models';
 import {AddDataMappingDropdown} from '../AddDataMappingDropdown';
 import {DataMappingRow} from './DataMappingRow';
-import {useIdentifierAttribute} from '../../hooks';
+import {useIdentifierAttribute, useSearchDataMappings} from '../../hooks';
 
 const Container = styled.div`
   flex: 1;
@@ -22,7 +22,7 @@ const Container = styled.div`
 `;
 
 const SpacedSearch = styled(Search)`
-  margin-top: 10px;
+  margin: 20px 0;
 `;
 
 type DataMappingListProps = {
@@ -49,9 +49,9 @@ const DataMappingList = ({
   const globalErrors = getErrorsForPath(validationErrors, '');
   const [, identifierAttribute] = useIdentifierAttribute();
   const [searchValue, setSearchValue] = useState<string>('');
-  const debouncedSearchValue = useDebounce(searchValue);
+  const debouncedSearchValue = useDebounce(searchValue).trim();
+  const filteredDataMappings = useSearchDataMappings(dataMappings, columns, debouncedSearchValue);
 
-  const filteredDataMappings = filterOnColumnLabels(dataMappings, columns, debouncedSearchValue);
   const shouldDisplayNoResults = 0 === filteredDataMappings.length && '' !== debouncedSearchValue;
 
   return (
@@ -84,6 +84,11 @@ const DataMappingList = ({
         />
       ) : (
         <Table>
+          <Table.Header sticky={88}>
+            <Table.HeaderCell>{translate('akeneo.tailored_import.data_mapping.target.title')}</Table.HeaderCell>
+            <Table.HeaderCell>{translate('akeneo.tailored_import.data_mapping.sources.title')}</Table.HeaderCell>
+            <Table.HeaderCell />
+          </Table.Header>
           <Table.Body>
             {filteredDataMappings.map(dataMapping => (
               <DataMappingRow

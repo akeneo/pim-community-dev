@@ -76,21 +76,12 @@ const addSourceToDataMapping = (dataMapping: DataMapping, column: Column): DataM
   sources: [...dataMapping.sources, column.uuid],
 });
 
-const filterOnColumnLabels = (dataMappings: DataMapping[], columns: Column[], value: string) => {
-  const matchingColumnUuids = columns
-    .filter(({label}) => label.toLowerCase().includes(value.toLowerCase()))
-    .map(({uuid}) => uuid);
-
-  return dataMappings.filter(({sources}) => sources.some(columnUuid => matchingColumnUuids.includes(columnUuid)));
-};
-
 export type {AttributeDataMapping, DataMapping, DataMappingType, PropertyDataMapping};
 export {
   addSourceToDataMapping,
   createAttributeDataMapping,
   createDefaultDataMapping,
   createPropertyDataMapping,
-  filterOnColumnLabels,
   MAX_DATA_MAPPING_COUNT,
   MAX_SOURCE_COUNT_FOR_COLLECTION_TARGETS,
   updateDataMapping,

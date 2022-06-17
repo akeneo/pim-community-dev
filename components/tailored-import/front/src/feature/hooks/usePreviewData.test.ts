@@ -8,6 +8,7 @@ const dataMapping: AttributeDataMapping = {
   target: {
     code: 'description',
     type: 'attribute',
+    attribute_type: 'pim_catalog_textarea',
     channel: null,
     locale: null,
     action_if_not_empty: 'set',
@@ -15,7 +16,7 @@ const dataMapping: AttributeDataMapping = {
     source_configuration: null,
   },
   sources: ['a9a2db9d-d150-4297-8265-d2e52394979f'],
-  operations: [{type: 'clean_html_tags'}],
+  operations: [{uuid: 'uuid', type: 'clean_html_tags'}],
   sample_data: ['<b>product_1</b>', 'product_2', null],
 };
 
@@ -51,17 +52,9 @@ test('It returns the preview data', async () => {
       'X-Requested-With': 'XMLHttpRequest',
     },
     body: JSON.stringify({
-      sample_data: ['<b>product_1</b>', 'product_2', null],
-      operations: [{type: 'clean_html_tags'}],
-      target: {
-        code: 'description',
-        type: 'attribute',
-        channel: null,
-        locale: null,
-        action_if_not_empty: 'set',
-        action_if_empty: 'skip',
-        source_configuration: null,
-      },
+      sample_data: dataMapping.sample_data,
+      operations: dataMapping.operations,
+      target: dataMapping.target,
     }),
     method: 'POST',
   });
@@ -105,17 +98,9 @@ test('It returns the error when an error occurred during the generation', async 
       'X-Requested-With': 'XMLHttpRequest',
     },
     body: JSON.stringify({
-      sample_data: ['<b>product_1</b>', 'product_2', null],
-      operations: [{type: 'clean_html_tags'}],
-      target: {
-        code: 'description',
-        type: 'attribute',
-        channel: null,
-        locale: null,
-        action_if_not_empty: 'set',
-        action_if_empty: 'skip',
-        source_configuration: null,
-      },
+      sample_data: dataMapping.sample_data,
+      operations: dataMapping.operations,
+      target: dataMapping.target,
     }),
     method: 'POST',
   });

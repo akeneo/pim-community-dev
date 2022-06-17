@@ -13,6 +13,11 @@ pimee_tailored_import_read_columns_action:
     defaults: { _controller: akeneo.tailored_import.controller.read_columns_action }
     methods: [POST]
 
+pimee_tailored_import_search_attributes_action:
+    path: /rest/tailored-import/search-attributes
+    defaults: { _controller: akeneo.tailored_import.controller.search_attributes_action }
+    methods: [POST]
+
 pimee_tailored_import_get_file_template_information_action:
     path: /rest/tailored-import/file-template
     defaults: { _controller: akeneo.tailored_import.controller.get_file_template_information_action }
@@ -46,4 +51,4 @@ pimee_tailored_import_validate_replacement_operation_action:
 pimee_tailored_import_get_category_trees_action:
     path: /rest/tailored-import/get-category-trees
     defaults: { _controller: akeneo.tailored_import.controller.get_category_trees_action }
-    methods: [GET]
+    methods: [POST]

@@ -55,16 +55,16 @@ final class OptionValueStringifier extends AbstractValueStringifier implements V
         // If a label is not provided in options we must use the code, so we can think
         // we don't have to call the query. We decide to do the query in any case in order to filter
         // the non existing options.
-        $valuesByKeys = $this->getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
+        $valuesByKeys = \array_change_key_case($this->getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
             array_map(function (string $optionCode) use ($attributeCode): string {
                 return sprintf('%s.%s', $attributeCode, $optionCode);
             }, $optionCodes)
-        );
+        ), CASE_LOWER);
 
         $localeCode = $options[static::LABEL_LOCALE_KEY] ?? null;
         $strings = [];
         foreach ($optionCodes as $optionCode) {
-            $key = sprintf('%s.%s', $attributeCode, $optionCode);
+            $key = \strtolower(sprintf('%s.%s', $attributeCode, $optionCode));
             if (!array_key_exists($key, $valuesByKeys)) {
                 continue;
             }

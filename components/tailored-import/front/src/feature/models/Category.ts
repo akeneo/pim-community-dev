@@ -4,6 +4,14 @@ type CategoryTree = {
   id: number;
   code: string;
   labels: LabelCollection;
+  has_error: boolean;
 };
 
-export type {CategoryTree};
+type Category = {
+  id: number;
+  code: string;
+  label: string;
+  isLeaf: boolean;
+};
+
+export type {CategoryTree, Category};

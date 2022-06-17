@@ -198,7 +198,7 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
             'it handles a multi select attribute target with single source and split operation' => [
                 'row' => [
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
-                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'long_sleeve,short_sleeve',
+                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'long_sleeve,   short_sleeve',
                 ],
                 'data_mappings' => [
                     DataMapping::create(
