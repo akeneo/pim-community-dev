@@ -26,6 +26,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacemen
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SplitOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
+use Ramsey\Uuid\Uuid;
 
 class OperationCollectionHydrator implements OperationCollectionHydratorInterface
 {
@@ -57,6 +58,7 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
     {
         return \array_map(
             static fn (array $normalizedOperation) => match ($normalizedOperation['type']) {
+                BooleanReplacementOperation::TYPE => new BooleanReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 CleanHTMLTagsOperation::TYPE => new CleanHTMLTagsOperation($normalizedOperation['uuid']),
                 SplitOperation::TYPE => new SplitOperation($normalizedOperation['uuid'], $normalizedOperation['separator']),
                 SimpleSelectReplacementOperation::TYPE => new SimpleSelectReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
@@ -71,7 +73,6 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
     private function getAttributeRequiredOperations(array $normalizedTarget): array
     {
         return match ($normalizedTarget['attribute_type']) {
-            'pim_catalog_boolean' => $this->getBooleanRequiredOperations(),
             'pim_catalog_metric' => $this->getMeasurementRequiredOperations($normalizedTarget['source_configuration']),
             'pim_catalog_number' => $this->getNumberRequiredOperations($normalizedTarget['source_configuration']),
             'pim_catalog_date' => $this->getDateRequiredOperations($normalizedTarget['source_configuration']),
@@ -79,20 +80,11 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
         };
     }
 
-    private function getBooleanRequiredOperations(): array
-    {
-        return [
-            new BooleanReplacementOperation([
-                '1' => true,
-                '0' => false,
-            ]),
-        ];
-    }
-
     private function getMeasurementRequiredOperations(array $sourceConfiguration): array
     {
         return [
             new ConvertToMeasurementOperation(
+                Uuid::uuid4()->toString(),
                 $sourceConfiguration['decimal_separator'],
                 $sourceConfiguration['unit'],
             ),
@@ -102,14 +94,20 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
     private function getNumberRequiredOperations(array $sourceConfiguration): array
     {
         return [
-            new ConvertToNumberOperation($sourceConfiguration['decimal_separator']),
+            new ConvertToNumberOperation(
+                Uuid::uuid4()->toString(),
+                $sourceConfiguration['decimal_separator'],
+            ),
         ];
     }
 
     private function getDateRequiredOperations(array $sourceConfiguration): array
     {
         return [
-            new ConvertToDateOperation($sourceConfiguration['date_format']),
+            new ConvertToDateOperation(
+                Uuid::uuid4()->toString(),
+                $sourceConfiguration['date_format'],
+            ),
         ];
     }
 }

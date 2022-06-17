@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\ApplyOperationException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
@@ -68,7 +69,11 @@ final class OperationApplier
             }
 
             foreach ($values->getValue() as $value) {
-                $operationValues[$operation->normalize()['uuid']][] = null === $value ? null : $applier->applyOperation($operation, new StringValue($value))->getValue();
+                try {
+                    $operationValues[$operation->getUuid()][] = null === $value ? null : $applier->applyOperation($operation, new StringValue($value))->getValue();
+                } catch (ApplyOperationException) {
+                    continue;
+                }
             }
         }
 

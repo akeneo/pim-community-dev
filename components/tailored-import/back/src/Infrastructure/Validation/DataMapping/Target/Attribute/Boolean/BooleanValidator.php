@@ -48,7 +48,10 @@ final class BooleanValidator extends ConstraintValidator
                     ]),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
-                'operations' => new Operations([]),
+                'operations' => new Operations(
+                    ['boolean_replacement'],
+                    ['boolean_replacement'],
+                ),
                 'sample_data' => new SampleData(),
             ],
         ]));

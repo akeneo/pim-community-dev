@@ -29,7 +29,6 @@ final class GeneratePreviewDataHandler
     {
         $operations = $this->operationCollectionHydrator->hydrate($getRefreshedSampleDataQuery->target, $getRefreshedSampleDataQuery->operations);
         $sampleData = new ArrayValue($getRefreshedSampleDataQuery->sampleData);
-        $previewData = [];
 
         $previewData = $this->operationApplier->applyOperationWithIndexedResults($operations, $sampleData);
 

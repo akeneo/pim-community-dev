@@ -1,7 +1,6 @@
 type BooleanReplacementValues = {
   true: string[];
   false: string[];
-  null: string[];
 };
 
 const isBooleanReplacementValues = (values: any): values is BooleanReplacementValues =>
@@ -10,9 +9,7 @@ const isBooleanReplacementValues = (values: any): values is BooleanReplacementVa
   'true' in values &&
   Array.isArray(values.true) &&
   'false' in values &&
-  Array.isArray(values.false) &&
-  'null' in values &&
-  Array.isArray(values.null);
+  Array.isArray(values.false);
 
 export {isBooleanReplacementValues};
 export type {BooleanReplacementValues};

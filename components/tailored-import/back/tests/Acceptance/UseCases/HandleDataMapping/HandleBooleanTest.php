@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapp
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PHPUnit\Framework\Assert;
@@ -58,7 +59,9 @@ final class HandleBooleanTest extends HandleDataMappingTestCase
                             null,
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
-                        OperationCollection::create([]),
+                        OperationCollection::create([
+                            new BooleanReplacementOperation('00000000-0000-0000-0000-000000000000', ['true' => ['1'], 'false' => ['0']]),
+                        ]),
                         [],
                     ),
                     DataMapping::create(
@@ -73,7 +76,9 @@ final class HandleBooleanTest extends HandleDataMappingTestCase
                             null,
                         ),
                         ['2d9e967a-4efa-4a31-a254-99f7c50a145d'],
-                        OperationCollection::create([]),
+                        OperationCollection::create([
+                            new BooleanReplacementOperation('00000000-0000-0000-0000-000000000000', ['true' => ['1'], 'false' => ['0']]),
+                        ]),
                         [],
                     ),
                 ],

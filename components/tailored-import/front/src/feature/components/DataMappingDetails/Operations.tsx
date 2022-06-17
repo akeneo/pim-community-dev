@@ -10,7 +10,7 @@ import {
   SettingsIllustration,
   useBooleanState,
 } from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {DataMapping, getDefaultOperation, Operation, OperationType} from '../../models';
 import {
   CleanHTMLTagsOperationBlock,
@@ -58,9 +58,16 @@ type OperationsProps = {
   compatibleOperations: OperationType[];
   onOperationsChange: (operations: Operation[]) => void;
   onRefreshSampleData: (index: number) => Promise<void>;
+  validationErrors: ValidationError[];
 };
 
-const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRefreshSampleData}: OperationsProps) => {
+const Operations = ({
+  dataMapping,
+  compatibleOperations,
+  onOperationsChange,
+  onRefreshSampleData,
+  validationErrors,
+}: OperationsProps) => {
   const translate = useTranslate();
   const [loadingSampleData, setLoadingSampleData] = useState<number[]>([]);
   const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
@@ -127,6 +134,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
                 isLastOperation={index === dataMapping.operations.length - 1}
                 onChange={handleOperationChange}
                 onRemove={handleOperationRemove}
+                validationErrors={filterErrors(validationErrors, `[${operation.uuid}]`)}
               />
             );
           })}

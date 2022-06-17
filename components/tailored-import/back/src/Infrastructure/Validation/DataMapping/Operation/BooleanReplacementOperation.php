@@ -11,11 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation;
 
-interface OperationInterface
+final class BooleanReplacementOperation extends OperationConstraint
 {
-    public function getUuid(): string;
-
-    public function normalize(): array;
 }

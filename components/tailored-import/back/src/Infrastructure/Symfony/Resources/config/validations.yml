@@ -8,6 +8,7 @@ parameters:
     pim_catalog_text: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Text\Text'
     pim_catalog_textarea: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Text\Text'
     pim_catalog_date: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Date\Date'
+    pim_catalog_boolean: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Boolean\Boolean'
 
   akeneo.tailored_import.validation.property_target_constraints:
     categories: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Categories\Categories'
@@ -19,6 +20,7 @@ parameters:
     simple_select_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
     multi_select_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
     categories_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
+    boolean_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\BooleanReplacementOperation'
 
 services:
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidAttributeValidator:

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\Operation;
+namespace Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\DataMapping\Operation;
 
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\AbstractValidationTest;
@@ -94,7 +94,7 @@ class ReplacementOperationValidatorTest extends AbstractValidationTest
                 ],
             ],
             'source values are not unique' => [
-                'akeneo.tailored_import.validation.operation.replacement.source_values_should_be_unique',
+                'akeneo.tailored_import.validation.source_values_should_be_unique',
                 '[mapping][code_2]',
                 [
                     'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
