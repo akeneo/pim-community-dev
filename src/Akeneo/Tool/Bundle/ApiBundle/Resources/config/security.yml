@@ -21,3 +21,8 @@ services:
             - '@fos_oauth_server.storage'
             - '@event_dispatcher'
             - '%fos_oauth_server.server.options%'
+
+    Akeneo\Tool\Bundle\ApiBundle\Security\Firewall:
+        arguments:
+            - '@security.firewall.map'
+            - '@request_stack'

@@ -12,7 +12,7 @@ services:
 
     Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiRequestLogSubscriber:
         arguments:
-            - '@security.firewall.map'
+            - '@Akeneo\Tool\Bundle\ApiBundle\Security\Firewall'
             - '@security.token_storage'
             - '@monolog.logger.api_requests'
         tags:
@@ -20,6 +20,6 @@ services:
 
     Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ValidateApiRequestQueryParametersSubscriber:
         arguments:
-            - '@security.firewall.map'
+            - '@Akeneo\Tool\Bundle\ApiBundle\Security\Firewall'
         tags:
             - { name: kernel.event_subscriber }
