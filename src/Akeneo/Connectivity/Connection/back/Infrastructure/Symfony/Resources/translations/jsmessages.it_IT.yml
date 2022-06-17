@@ -41,6 +41,7 @@ pim_title:
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Crea un'app di prova
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: Elimina app di prova
   akeneo_connectivity_connection_connect_connected_apps_open: Apri app
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Modifica catalogo
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -138,6 +139,7 @@ akeneo_connectivity.connection:
           not_listed_on_the_appstore: L'app non è più elencata nell'App Store di Akeneo. Contatta il supporto dell'app.
           manage_app: Gestisci app
           open_app: Apri app
+          pending: App non connessa. L'apertura dell'app dovrebbe risolvere i problemi di connessione.
         flash:
           error: Spiacenti, si è verificato un errore durante il recupero dell'elenco delle app connesse.
       edit:
@@ -145,6 +147,7 @@ akeneo_connectivity.connection:
         tabs:
           settings: Impostazioni
           permissions: Permessi
+          catalogs: Cataloghi
           error_monitoring: Monitoraggio errori
         settings:
           monitoring:
@@ -152,6 +155,7 @@ akeneo_connectivity.connection:
           authorizations:
             title: autorizzazioni
             information: 'Per scoprire di più sulle autorizzazioni delle app, consulta il nostro {{ link }}.'
+            no_access_to_product_information: 'Questa app connessa non accede alle informazioni di prodotto.'
             information_link_anchor: Articolo dell'Help Center
             no_scope: Nessuna autorizzazione specifica richiesta.
           authentication:
@@ -171,6 +175,9 @@ akeneo_connectivity.connection:
               1: Per monitorare gli errori di questa app,
               2: attivare il monitoraggio
               3: nelle impostazioni.
+        catalogs:
+          edit:
+            not_found: Catalogo non trovato
         flash:
           load_permissions_error.title: 'I permessi salvati su {{ entity }} non possono essere caricati.'
           load_permissions_error.description: Riprova più tardi.
@@ -256,8 +263,10 @@ akeneo_connectivity.connection:
           reference_entity_record: registri dell'entità di riferimento
           asset_families: famiglie di asset
           assets: asset
+          catalogs: cataloghi
         new: NOVITÀ
       error:
+        sub_text: Contatta il supporto dell'app.
         app_not_found: Il client_id non corrisponde ad alcuna app esistente.
       constraint:
         client_id:
@@ -270,6 +279,8 @@ akeneo_connectivity.connection:
         redirect_uri:
           not_blank: Redirect_uri obbligatorio.
           must_be_url: Il redirect_uri non è un url valido.
+        scope:
+          too_long: L'elenco ambiti non deve contenere più di 1000 caratteri.
   connections: Connessioni
   secondary_actions:
     title: Altre azioni

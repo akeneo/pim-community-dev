@@ -41,6 +41,7 @@ pim_title:
   akeneo_connectivity_connection_connect_marketplace_test_app_create: 创建测试应用
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: 删除测试应用
   akeneo_connectivity_connection_connect_connected_apps_open: 打开应用
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: 编辑目录
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -138,6 +139,7 @@ akeneo_connectivity.connection:
           not_listed_on_the_appstore: 应用不再在 Akeneo App Store 上提供。请联系应用支持人员。
           manage_app: 管理应用
           open_app: 打开应用
+          pending: 应用未连接。打开应用后应该会修复该连接问题。
         flash:
           error: 抱歉，获取已连接应用的列表时出现错误。
       edit:
@@ -145,6 +147,7 @@ akeneo_connectivity.connection:
         tabs:
           settings: 设置 
           permissions: 权限
+          catalogs: 目录
           error_monitoring: 错误监测
         settings:
           monitoring:
@@ -152,6 +155,7 @@ akeneo_connectivity.connection:
           authorizations:
             title: 授权
             information: '要了解更多有关应用授权的信息，请查阅我们的 {{ link }}。'
+            no_access_to_product_information: '该连接应用无法访问您的产品信息。'
             information_link_anchor: 帮助中心文章
             no_scope: 未请求特定的授权。
           authentication:
@@ -171,6 +175,9 @@ akeneo_connectivity.connection:
               1: 要跟踪此应用上的错误，
               2: 请在设置中
               3: 激活监测。
+        catalogs:
+          edit:
+            not_found: 找不到目录
         flash:
           load_permissions_error.title: '无法加载 {{ entity }} 上保存的权限。'
           load_permissions_error.description: 请稍后重试。
@@ -256,8 +263,10 @@ akeneo_connectivity.connection:
           reference_entity_record: 参考实体记录
           asset_families: 资产品类
           assets: 资产
+          catalogs: 目录
         new: 新
       error:
+        sub_text: 请联系应用支持。
         app_not_found: client_id 与任何现有的应用都不匹配。
       constraint:
         client_id:
@@ -270,6 +279,8 @@ akeneo_connectivity.connection:
         redirect_uri:
           not_blank: redirect_uri 为必填项。
           must_be_url: redirect_uri 不是有效的 URL。
+        scope:
+          too_long: 该范围列表包含的字符不得超过 1000 个。
   connections: 连接
   secondary_actions:
     title: 其他操作
