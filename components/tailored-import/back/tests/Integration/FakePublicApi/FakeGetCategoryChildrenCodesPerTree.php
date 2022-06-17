@@ -33,14 +33,14 @@ class FakeGetCategoryChildrenCodesPerTree implements GetCategoryChildrenCodesPer
 
     public function executeWithChildren(array $categoryCodes): array
     {
-        return array_map(
-            static fn ($categoryTree) => array_intersect($categoryTree, $categoryCodes),
-            self::CATEGORY_TREES
-        );
+        throw new NotImplementedException(__METHOD__);
     }
 
     public function executeWithoutChildren(array $categoryCodes): array
     {
-        throw new NotImplementedException(__METHOD__);
+        return array_map(
+            static fn ($categoryTree) => array_intersect($categoryTree, $categoryCodes),
+            self::CATEGORY_TREES
+        );
     }
 }
