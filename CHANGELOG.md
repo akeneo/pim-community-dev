@@ -48,6 +48,7 @@
 - PIM-10463: Fix textarea stringifier for rich textarea on source and target
 - PIM-10473: Fix record codes filter by comparing lowercase
 - GRF-63: Fix calculation on TWA projects with completeness filter
+- PIM-10479: Fix Rule engine concatenate action does not handle properly case-sensitivity for option codes
 
 ## Improvements
 
