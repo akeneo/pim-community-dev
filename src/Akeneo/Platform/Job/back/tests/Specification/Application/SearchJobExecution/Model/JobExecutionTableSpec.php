@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Job\Application\SearchJobExecution\Model;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionHealthCheck;
 use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTable;
 use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTracking;
@@ -29,7 +28,7 @@ class JobExecutionTableSpec extends ObjectBehavior
                     'export',
                     new \DateTimeImmutable('2021-11-02T11:20:27+02:00'),
                     'admin',
-                    new JobExecutionHealthCheck(Status::fromLabel('COMPLETED'), null, new \DateTimeImmutable('2021-11-02T11:20:28+02:00')),
+                    Status::fromLabel('COMPLETED'),
                     true,
                     new JobExecutionTracking(1, 2, []),
                 ),
