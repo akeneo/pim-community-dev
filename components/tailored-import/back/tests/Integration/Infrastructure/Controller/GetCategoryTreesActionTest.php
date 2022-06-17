@@ -33,7 +33,12 @@ class GetCategoryTreesActionTest extends ControllerIntegrationTestCase
 
     public function test_it_returns_all_category_trees()
     {
-        $this->webClientHelper->callApiRoute($this->client, self::ROUTE);
+        $this->webClientHelper->callApiRoute(
+            $this->client,
+            self::ROUTE,
+            [],
+            'POST',
+        );
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $response = \json_decode($response->getContent(), true);
@@ -46,6 +51,7 @@ class GetCategoryTreesActionTest extends ControllerIntegrationTestCase
                     'fr_FR' => 'Master',
                     'de_DE' => 'Master',
                 ],
+                'has_error' => false,
             ],
             [
                 'id' => 23,
@@ -55,6 +61,7 @@ class GetCategoryTreesActionTest extends ControllerIntegrationTestCase
                     'fr_FR' => 'Print',
                     'de_DE' => 'Print',
                 ],
+                'has_error' => false,
             ],
             [
                 'id' => 27,
@@ -64,6 +71,59 @@ class GetCategoryTreesActionTest extends ControllerIntegrationTestCase
                     'fr_FR' => 'Suppliers',
                     'de_DE' => 'Suppliers',
                 ],
+                'has_error' => false,
+            ]
+        ];
+
+        $this->assertEqualsCanonicalizing($expectedResponse, $response);
+    }
+
+    public function test_it_returns_if_category_trees_has_error()
+    {
+        $this->webClientHelper->callApiRoute(
+            $this->client,
+            self::ROUTE,
+            [],
+            'POST',
+            [],
+            json_encode([
+                'category_codes_with_error' => ['shoes', 'sandal'],
+            ]),
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $response = \json_decode($response->getContent(), true);
+        $expectedResponse = [
+            [
+                'id' => 2,
+                'code' => 'master',
+                'labels' => [
+                    'en_US' => 'Master',
+                    'fr_FR' => 'Master',
+                    'de_DE' => 'Master',
+                ],
+                'has_error' => true,
+            ],
+            [
+                'id' => 23,
+                'code' => 'print',
+                'labels' => [
+                    'en_US' => 'Print',
+                    'fr_FR' => 'Print',
+                    'de_DE' => 'Print',
+                ],
+                'has_error' => false,
+            ],
+            [
+                'id' => 27,
+                'code' => 'suppliers',
+                'labels' => [
+                    'en_US' => 'Suppliers',
+                    'fr_FR' => 'Suppliers',
+                    'de_DE' => 'Suppliers',
+                ],
+                'has_error' => false
             ]
         ];
 

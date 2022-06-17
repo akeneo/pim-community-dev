@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {Button, Modal, TabBar, Table} from 'akeneo-design-system';
+import {Button, Modal, Pill, TabBar, Table} from 'akeneo-design-system';
 import {
   formatParameters,
   getLabel,
@@ -53,10 +53,10 @@ const CategoriesReplacementModal = ({
   const notify = useNotify();
   const validateReplacementOperationRoute = useRoute('pimee_tailored_import_validate_replacement_operation_action');
   const catalogLocale = useUserContext().get('catalogLocale');
-  const categoryTrees = useCategoryTrees();
+  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
+  const categoryTrees = useCategoryTrees(validationErrors);
   const [activeCategoryTree, setActiveCategoryTree] = useState<number | null>(null);
   const [mapping, setMapping] = useState(initialMapping);
-  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
 
   useEffect(() => {
     if (categoryTrees.length > 0) {
@@ -127,6 +127,7 @@ const CategoriesReplacementModal = ({
                 onClick={() => handleActiveCategoryTreeChange(tree)}
               >
                 {getLabel(tree.labels, catalogLocale, tree.code)}
+                {tree.has_error && <Pill level="danger" />}
               </TabBar.Tab>
             ))}
           </TabBar>

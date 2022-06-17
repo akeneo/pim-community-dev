@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Categories;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CategoriesReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SplitOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\DataMappingUuid;
@@ -49,7 +50,7 @@ final class CategoriesValidator extends ConstraintValidator
                     ]),
                 ]),
                 'sources' => new Sources(true, $constraint->getColumnUuids()),
-                'operations' => new Operations([SplitOperation::TYPE]),
+                'operations' => new Operations([CategoriesReplacementOperation::TYPE, SplitOperation::TYPE]),
                 'sample_data' => new SampleData(),
             ],
         ]));

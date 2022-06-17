@@ -3,16 +3,17 @@ import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
 import {CategoriesReplacementModal} from './CategoriesReplacementModal';
-import {Category} from '../../../../models';
+import {Category, CategoryTree} from '../../../../models';
 
 const operationUuid = 'b26bcde7-1231-47cc-84ba-e014bb08fbd5';
-const categoryTrees = [
+const categoryTrees: CategoryTree[] = [
   {
     id: 1,
     code: 'shoes',
     labels: {
       en_US: 'Shoes',
     },
+    has_error: true,
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ const categoryTrees = [
     labels: {
       en_US: 'T-Shirt',
     },
+    has_error: false,
   },
   {
     id: 3,
@@ -27,6 +29,7 @@ const categoryTrees = [
     labels: {
       en_US: 'Ceinturone',
     },
+    has_error: false,
   },
 ];
 
