@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
+use Akeneo\Catalogs\Domain\ProductSelection\Criterion;
 use Akeneo\Catalogs\Infrastructure\Persistence\UpdateCatalogProductSelectionCriteriaQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Doctrine\DBAL\Connection;
@@ -36,16 +37,8 @@ class UpdateCatalogProductSelectionCriteriaQueryTest extends IntegrationTestCase
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
 
         $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            [
-                'field' => 'status',
-                'operator' => '=',
-                'value' => true,
-            ],
-            [
-                'field' => 'status',
-                'operator' => '=',
-                'value' => false,
-            ],
+            new Criterion('status', '=', true),
+            new Criterion('status', '=', false),
         ]);
 
         $this->assertCatalogHasProductSelectionCriteria('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
