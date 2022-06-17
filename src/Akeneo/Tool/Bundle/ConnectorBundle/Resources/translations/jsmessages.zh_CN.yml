@@ -15,6 +15,7 @@ batch_jobs:
     compute_completeness_of_products_family: 计算产品品类的完成度
     index_family_products: 指数品类产品和产品模型
     delete_products_and_product_models: 批量删除产品
+    ensure_attribute_group_order: 检查属性组排序顺序
     clean_attribute:
       register_clean_job: 将代码添加到黑名单
       clean_product_model: 清理产品模型
