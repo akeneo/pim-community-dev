@@ -9,7 +9,7 @@ class ValidateStorageTest extends AbstractValidationTest
     /**
      * @dataProvider validStorage
      */
-    public function testItDoesNotBuildViolationsWhenStorageAreValid(array $value): void
+    public function test_it_does_not_build_violations_when_storage_is_valid(array $value): void
     {
         $violations = $this->getValidator()->validate($value, new Storage(['xlsx', 'xls']));
 
@@ -19,7 +19,7 @@ class ValidateStorageTest extends AbstractValidationTest
     /**
      * @dataProvider invalidStorage
      */
-    public function testItBuildViolationsWhenStorageAreInvalid(
+    public function test_it_build_violations_when_storage_is_invalid(
         string $expectedErrorMessage,
         string $expectedErrorPath,
         array $value,
@@ -41,16 +41,6 @@ class ValidateStorageTest extends AbstractValidationTest
                 [
                     'type' => 'local',
                     'file_path' => '/tmp/file.xlsx',
-                ],
-            ],
-            'valid sftp storage' => [
-                [
-                    'type' => 'sftp',
-                    'file_path' => '/tmp/file.xlsx',
-                    'host' => 'example.com',
-                    'port' => 22,
-                    'username' => 'ziggy',
-                    'password' => 'MySecretPassword',
                 ],
             ],
         ];

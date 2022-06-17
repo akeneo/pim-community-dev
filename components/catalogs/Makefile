@@ -45,6 +45,7 @@ endif
 	$(PHP_RUN) vendor/bin/phpinsights analyse $(PHPINSIGHTS_ARGS) --no-interaction \
 		--config-path=$(CATALOGS_PATH)/back/phpinsights.php \
 		$(CATALOGS_PATH)/back/src/
+	$(PHP_RUN) bin/console lint:container
 
 .PHONY: catalogs-coupling-back
 catalogs-coupling-back:

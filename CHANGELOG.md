@@ -45,6 +45,7 @@
 - PIM-10471: Do not generate 2 files when making a quick export of 1 type of products
 - PIM-10475: Fix option existence validation for numeric option codes
 - PIM-10483: Fix slow loading products when filtering by variants
+- PIM-10484: Fix job filter on status being incoherent with job interrupted by demon crash
 
 ## Improvements
 

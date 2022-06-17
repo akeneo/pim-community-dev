@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Infrastructure\Hydrator;
 
 use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionRow;
+use Akeneo\Platform\Job\Domain\Model\Status;
 
 /**
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>
@@ -15,7 +16,6 @@ class JobExecutionRowHydrator
 {
     public function __construct(
         private JobExecutionTrackingHydrator $jobExecutionTrackingHydrator,
-        private JobExecutionHealthCheckHydrator $jobExecutionRowHydrator,
     ) {
     }
 
@@ -31,18 +31,13 @@ class JobExecutionRowHydrator
             json_decode($jobExecution['steps'], true),
         );
 
-        $healthCheck = $this->jobExecutionRowHydrator->hydrate(
-            (int) $jobExecution['status'],
-            $jobExecution['health_check_time'],
-        );
-
         return new JobExecutionRow(
             (int) $jobExecution['id'],
             $jobExecution['label'],
             $jobExecution['type'],
             $startTime,
             $jobExecution['user'],
-            $healthCheck,
+            Status::fromStatus((int) $jobExecution['calculated_status']),
             (bool) $jobExecution['is_stoppable'],
             $tracking,
         );

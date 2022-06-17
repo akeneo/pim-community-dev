@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
- * Purge Jobs Execution history
+ * Purge Jobs Execution history.
  *
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -21,7 +21,7 @@ class PurgeJobExecutionCommand extends Command
 {
     protected static $defaultName = 'akeneo:batch:purge-job-execution';
 
-    const DEFAULT_NUMBER_OF_DAYS = 90;
+    private const DEFAULT_NUMBER_OF_DAYS = 90;
 
     /** @var PurgeJobExecution */
     private $purgeJobExecution;
@@ -61,6 +61,7 @@ class PurgeJobExecutionCommand extends Command
             $output->writeln(
                 sprintf('<error>Option --days must be a number, "%s" given.</error>', $input->getOption('days'))
             );
+
             return Command::FAILURE;
         }
 
@@ -70,6 +71,7 @@ class PurgeJobExecutionCommand extends Command
             $confirmation = new ConfirmationQuestion('This will delete ALL job executions. Do you confirm? ', false);
             if (!$helper->ask($input, $output, $confirmation)) {
                 $output->write("Operation aborted\n");
+
                 return Command::FAILURE;
             }
             $this->purgeJobExecution->all();

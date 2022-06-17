@@ -18,7 +18,6 @@ use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use League\Flysystem\FilesystemReader;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,7 +28,7 @@ use ZipStream\Option\Archive;
 use ZipStream\ZipStream;
 
 /**
- * Job execution tracker controller
+ * Job execution tracker controller.
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -70,9 +69,9 @@ class JobTrackerController
     }
 
     /**
-     * Download an archived file
+     * Download an archived file.
      *
-     * @param int $id
+     * @param int    $id
      * @param string $archiver
      * @param string $key
      */
@@ -139,10 +138,10 @@ class JobTrackerController
     }
 
     /**
-     * Returns if a user has read permission on an import or export
+     * Returns if a user has read permission on an import or export.
      *
      * @param JobExecution $jobExecution
-     * @param mixed $object The object
+     * @param mixed        $object
      */
     protected function isJobGranted($jobExecution, $object = null): bool
     {
@@ -155,7 +154,7 @@ class JobTrackerController
     }
 
     /**
-     * Set the Job status to Stopping
+     * Set the Job status to Stopping.
      */
     public function stopJobAction(int $id): JsonResponse
     {
