@@ -113,6 +113,7 @@ akeneo.tailored_import:
     target:
       title: Target
       identifier: No settings available for the identifier attribute used as a target.
+      enabled: No settings available for the enabled property used as a target.
       locale_specific: This attribute is locale specific
       action_if_not_empty:
         title: Assign
