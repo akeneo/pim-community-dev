@@ -13,6 +13,7 @@ batch_jobs:
     compute_data_related_to_family_products: Calcular les dades de productes
     compute_family_variant_structure_changes: Calcular els canvis d'estructura de la variant familiar
     compute_completeness_of_products_family: Calcular la completesa de la família de productes
+    index_family_products: Productes de la família d'índexs i models de productes
     delete_products_and_product_models: Esborrat massiu de productes
     clean_attribute:
       register_clean_job: Afegir codi a la llista negre
@@ -47,8 +48,13 @@ batch_jobs:
     label: Exportar variant de família a CSV
     export.label: Exportar variant de família
   csv_user_group_export:
+    label: Exportació de grups d'usuaris en CSV
     export.label: Exportar grup d'usuaris
+  csv_user_role_export:
+    label: Exportació de rols d'usuari al CSV
+    export.label: Exportació de rols d'usuari
   csv_user_export:
+    label: Exportació d'usuari en CSV
     export.label: Exportació d'usuaris
   csv_product_import:
     label: Importar producte en CSV
@@ -90,6 +96,15 @@ batch_jobs:
   csv_group_type_import:
     label: Importació de tipus de grup en CSV
     import.label: Importació de tipus de grup
+  csv_user_group_import:
+    label: Importació de grups d'usuaris en CSV
+    import.label: Importació de grups d'usuaris
+  csv_user_import:
+    label: Importació d'usuari en CSV
+    import.label: Importació d'usuaris
+  csv_user_role_import:
+    label: Importació de rols d'usuari al CSV
+    import.label: Importació de rols d'usuari
   xlsx_category_import:
     label: Importació de categoria en XLSX
     import.label: Importar categories
@@ -150,7 +165,14 @@ batch_jobs:
   xlsx_group_type_export:
     label: Exportació de tipus de grup en XLSX
     export.label: Exportació de tipus de grup
+  xlsx_user_group_export:
+    label: Exportació de grups d'usuaris a XLSX
+    export.label: Exportar grup d'usuaris
+  xlsx_user_role_export:
+    label: Exportació de rols d'usuari al XLSX
+    export.label: Exportació de rols d'usuari
   xlsx_user_export:
+    label: Exportació d'usuari a XLSX
     export.label: Exportació d'usuaris
   xlsx_attribute_group_import:
     label: Impoftació de grup d'atributs en XLSX
@@ -158,5 +180,12 @@ batch_jobs:
   xlsx_group_type_import:
     label: Importació de tipus de grup en XLSX
     import.label: Importació de tipus de grup
+  xlsx_user_group_import:
+    label: Importació de grups d'usuaris a XLSX
+    import.label: Importació de grups d'usuaris
   xlsx_user_import:
+    label: Importació d'usuari a XLSX
     import.label: Importació d'usuaris
+  xlsx_user_role_import:
+    label: Importació de rols d'usuari a XLSX
+    import.label: Importació de rols d'usuari

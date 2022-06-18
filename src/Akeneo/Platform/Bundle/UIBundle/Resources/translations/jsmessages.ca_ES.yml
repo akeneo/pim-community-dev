@@ -159,6 +159,7 @@ pim_common:
   before: Abans
   by: per
   cancel: Cancel·lar
+  characters_left: ']-Inf, 1]{{ count }} caràcters restants|]1, Inf[{{ count }} caràcters restants'
   clear_value: Esborra el valor
   close: Tancar
   code: Codi
@@ -195,6 +196,7 @@ pim_common:
   ok: OK
   open: Obre
   no_result: No s'han trobat resultats
+  no_search_result: Ho sentim, no hi ha cap resultat de la cerca.
   other_actions: Altres accions
   permissions: Permisos
   previous: Anterior
@@ -209,6 +211,7 @@ pim_common:
     search: Cercar...
     no_match: No s’han trobat coincidències
     load_more: Carregant més resultats...
+  selected: "{0}Cap seleccionat|{1}Un seleccionat|]1, Inf[{{ itemsCount }} seleccionat"
   status: Estat
   to: fins a
   type: Tipus
@@ -273,6 +276,8 @@ pim_enrich.entity.fallback:
       discard_changes: Perdreu els canvis a la {{ entity }} si sortiu de la pàgina.
       discard_changes_title: Estàs segur?
 pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} feines|]1, Inf[{{ count }} feines"
   module:
     create:
       upload: Deixeu anar el fitxer {{ type }} aquí, o clic per buscar en el disc
@@ -358,6 +363,7 @@ pim_menu:
     system: Sistema de navegació
     user: Navegació de gestió d'usuaris
     settings:
+      product: Configuració de producte
       catalog: Configuració del catàleg
       collapsed_label: Navegació de configuració
     product: Navegació de producte
@@ -375,13 +381,33 @@ pim_settings:
   settings_menu: Menú de configuració
   catalog_settings: Configuració del catàleg
   product_settings: Configuració de producte
+  count:
+    category_trees: '{0}Tens 0 arbres |{1}Tens 1 arbre |]1, Inf[Tens {{ count }} arbres'
+    categories: '{0}i 0 categories|{1}i 1 categoria|]1, Inf[i {{ count }} categories'
+    channels: '{0}Tens 0 canals|{1}Tens 1 canal|]1, Inf[Tens {{ count }} canals'
+    locales: '{0}Tens 0 configuracions regionals activades|{1}Tens 1 configuració regional activada|]1, Inf[Teniu {{ count }} configuracions regionals activades'
+    currencies: '{0}Tens 0 monedes activades|{1}Tens 1 moneda activada|]1, Inf[Teniu {{ count }} monedes activades'
+    attribute_groups: '{0}Tens 0 grups d''atributs|{1}Tens 1 grup d''atributs|]1, Inf[Tens {{ count }} grups d''atributs'
+    attributes: '{0}Tens 0 atributs|{1}Tens 1 atribut|]1, Inf[Teniu {{ count }} atributs'
+    families: '{0}Tens 0 famílies|{1}Tens 1 família|]1, Inf[Tens {{ count }} famílies'
+    measurements: '{0}Tens 0 mesures|{1}Tens 1 mesura|]1, Inf[Teniu {{ count }} mesures'
+    association_types: '{0}Tens 0 tipus d''associació|{1}Teniu 1 tipus d''associació|]1, Inf[Teniu {{ count }} tipus d''associació'
+    group_types: '{0}Tens 0 tipus de grup|{1}Tens 1 tipus de grup|]1, Inf[Teniu {{ count }} tipus de grup'
+    groups: '{0}Tens 0 grups|{1}Tens 1 grup|]1, Inf[Tens {{ count }} grups'
+    rules: '{0}Tens 0 regles activades|{1}Teniu 1 regla activada|]1, Inf[Teniu {{ count }} regles activades'
 pim_system:
   system_menu: Menú del sistema
   system_navigation: Sistema de navegació
   users_management_navigation: Navegació de gestió d'usuaris
+  count:
+    product_values: '{0}Tens 0 valors de producte|{1}Tens 1 valor de producte|]1, Inf[Tens {{ count }} valors de producte'
+    users: '{0}Tens 0 usuaris|{1}Tens 1 usuari|]1, Inf[Tens {{ count }} usuaris'
+    user_groups: '{0}Tens 0 grups d''usuaris|{1}Tens 1 grup d''usuaris|]1, Inf[Tens {{ count }} grups d''usuaris'
+    roles: '{0}Tens 0 rols|{1}Tens 1 rol|]1, Inf[Teniu {{ count }} rols'
   sso:
     enabled: Activat SSO
     disabled: Desactivat SSO
+    title: SAML-basat en l'inici de sessió únic
 pim_datagrid:
   mass_action:
     default:

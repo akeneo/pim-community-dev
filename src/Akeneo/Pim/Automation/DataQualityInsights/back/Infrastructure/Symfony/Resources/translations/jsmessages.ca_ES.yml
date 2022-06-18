@@ -73,10 +73,17 @@ akeneo_data_quality_insights:
               message1: Una manera de millorar aquesta ràtio és assegurar-se de definir acuradament els atributs més rellevants. <a href="{{ link }}" target="_blank">Fes una ullada al nostre centre d'ajuda</a>.
               message2: El teu PIM encara és massa misteriós per a tu? <a href="{{ link }}" target="_blank">Aprèn a treure'n el màxim profit</a>.
               message3: Els nostres equips van desenvolupar el PIM, dóna-li a la vida!
+              message4: La informació detallada del producte marca una diferència real per als vostres clients. Pots ser un canviador de jocs!
+            second_step:
+              message1: Intentem apuntar una mica més amunt! Els teus clients estaran agraïts.
+              message2: Estàs a mig camí! Espera i els teus productes s'enriquiran molt bé.
+              message3: El diable està en els detalls, fins i tot en la vostra indústria!
+              message4: Necessites una mà per polir l'enriquiment del teu producte? Obteniu informació sobre com seleccionar acuradament els atributs més rellevants <a href="{{ link }}" target="_blank">aquí</a>.
             third_step:
               message1: Fins aquí tot va bé, ara podeu anar una mica més enllà!
               message2: Aquesta és una proporció molt bona, però no es veuria bé al 100%?
               message3: Alguns dels vostres productes encara necessiten una mica d'ajuda per completar-los! Gairebé ho tens!
+              message4: Només unes quantes Is a punt i Ts per creuar i serà perfecte.
             perfect_score_step:
               message1: Els vostres productes es vendran ells mateixos! Bona feina.
               message2: Quina aventura, pots estar orgullós de la teva feina.
@@ -93,15 +100,35 @@ akeneo_data_quality_insights:
       no_catalog_score: No hem pogut calcular el teu nivell de qualitat actual.
   product_evaluation:
     criteria:
+      completeness_of_required_attributes:
+        recommendation: Atributs requerits amb valors que falten
+      completeness_of_non_required_attributes:
+        recommendation: Atributs no requerits amb valors que falten
       enrichment_image:
         recommendation: Falta la imatge
     axis:
       enrichment:
         title: Enriquiment
         attributes_link: Mostrar tots els atributs que falten
+        success: Les dades del vostre producte estan totalment enriquides. Felicitats!
     messages:
+      error:
+        axis_error: A causa d'un error, la nota no s'ha pogut calcular completament. Torna-ho a provar més tard.
+        criterion_error: No s'ha pogut calcular la nota.
       success:
         criterion: Tot va bé.
+      grading_in_progress: Classificació en curs.
+      axis_grading_in_progress: Qualificació en curs. Si us plau, torneu més tard.
+      too_many_attributes: Teniu {{ count }} atributs per millorar.
+      no_attribute_groups:
+        title: Ho sentim, no hem pogut calcular el vostre nivell de qualitat.
+        subtitle: "No es pot calcular la puntuació de qualitat: cap dels grups d'atributs d'aquest producte està activat."
+        help_center_link: Descobriu com les estadístiques de qualitat de les dades us poden ajudar a millorar la qualitat de les vostres dades al nostre centre d'ajuda.
+      add_image_attribute_recommendation: Una imatge val més que mil paraules. Hauríeu d'afegir un atribut d'imatge per millorar la qualitat de les dades d'aquest producte.
+      fill_image_attribute_recommendation: Segons la nostra experiència, les imatges realment marquen la diferència. Heu d'afegir almenys una imatge per millorar la qualitat de les dades d'aquest producte.
+      not_applicable:
+        message: Aquest criteri no és aplicable al vostre context.
+        help_center_link: Descobriu per què al nostre Centre d'ajuda.
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Tots els atributs que falten
@@ -109,8 +136,10 @@ akeneo_data_quality_insights:
   attribute_group:
     helper_dqi_link: Més informació en el centre d'ajuda.
     activation: Habilitat
+    dqi_status: Estat de Data Quality Insights
     activated: Habilitat
     disabled: Deshabilitat
+    used_groups_helper: "Els grups d'atributs següents es tenen en compte en el càlcul de Data Quality Insights:"
   product_grid:
     filter_label:
       quality_score: Puntuació de qualitat
@@ -120,3 +149,5 @@ akeneo_data_quality_insights:
       to_improve: A millorar
       "yes": "Sí"
       "no": "No"
+pim_title:
+  akeneo_data_quality_insights_dashboard: Informació de la qualitat de dades

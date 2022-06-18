@@ -61,6 +61,7 @@ pim_enrich.entity.product:
     history:
       version: Versió
       author: Autor/a
+      logged_at: Data/hora
       from: Des de
       modified: Modificat
       old_value: Valor antic
@@ -169,6 +170,7 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'eix de variant'
       create: Afegir nou
+      title_create_label: "]-Inf, 1]Afegeix un nou {{ axes }}|]1, Inf[Afegeix un nou {{ axes }}"
       required_label: '(eix variant)'
     completeness:
       variant_product: "[]-Inf, 1]{{ complete }} / {{ total }} variant de producte |] 1, Inf [{{ complete }} / {{ total }} variants de productes"
@@ -206,15 +208,45 @@ pim_enrich.entity.category:
   label: categoria
   uppercase_label: Categoria
   plural_label: Categories
+  page_title:
+    index: "]-Inf, 1]{{ count }} arbre|]1, Inf[{{ count }} arbres"
   content:
+    empty_tree_list:
+      title: No tens cap arbre
+      hint: Crea el teu primer.
     tree_list:
       columns:
         label: Etiqueta de l'arbre
         number_of_categories: Nombre de categories
+        count_categories: ']-Inf, 1]{{ count }} categoria|]1, Inf[{{ count }} categories'
+    tree:
+      not_found: No s'ha trobat l'arbre de categories
     edit:
+      not_found: Categoria no trobada
       default_tree_label: Arbre
+      success: Categoria actualitzada correctament
+      fail: La categoria no s'ha pogut actualitzar
   new_category: Nova categoria
   new_category_tree: Nou arbre de categories
+  category_created: La categoria "{{ code }}" s'ha creat correctament
+  category_creation_error: No s'ha pogut crear la categoria "{{ code }}".
+  category_tree_creation:
+    success: L'arbre "{{ code }}" s'ha creat correctament
+    error: No s'ha pogut crear l'arbre "{{ code }}".
+  category_tree_deletion:
+    success: L'arbre "{{ tree }}" s'ha suprimit correctament
+    error: L'arbre "{{ tree }}" no s'ha pogut suprimir
+    confirmation: Esteu segur que voleu suprimir l'arbre {{ name }}? Totes les categories d'aquest arbre se suprimiran i els productes s'eliminaran de totes aquestes categories.
+    products_limit_exceeded:
+      title: Aquest arbre no es pot suprimir
+      message: L'arbre "{{ tree }}" conté més de {{ limit }} productes i, per tant, no es pot suprimir.
+  category_deletion:
+    success: La categoria "{{ name }}" s'ha suprimit correctament
+    error: La categoria "{{ name }}" no s'ha pogut suprimir
+    confirmation: Esteu segur que voleu suprimir la categoria {{ name }}? Els productes d'aquesta categoria no s'eliminaran.
+    products_limit_exceeded:
+      title: Aquesta categoria no es pot suprimir
+      message: La categoria "{{ name }}" conté més de {{ limit }} productes i, per tant, no es pot suprimir.
 pim_enrich.export.product:
   data:
     title: Filtrar els productes
@@ -290,13 +322,21 @@ pim_enrich.export.product:
         NOT BETWEEN: No entre
     quality-score:
       title: Puntuació de qualitat
+      operator_choice_title: Exporta els nivells de qualitat per a
+      empty_selection: No hi ha cap condició sobre el nivell de qualitat
+      operators:
+        IN AT LEAST ONE LOCALE: Almenys un local
+        IN ALL LOCALES: Totes les localitzacions seleccionades
   global_settings:
     title: Configuració global
 pim_enrich.mass_edit.product:
+  title: Acció en massa del producte
+  confirm: "{0}Esteu a punt d'actualitzar alguns productes amb la informació següent; els valors anteriors se substituiran. Confirmeu.|{1}Esteu a punt d'actualitzar un producte amb la informació següent, els valors anteriors se substituiran. Si us plau, confirmeu.|]1, Inf[Esteu a punt d'actualitzar {{ itemsCount }} productes amb la informació següent, els valors anteriors seran substituïts. Siusplau confirma."
   step:
     select:
       label: Triar productes
     choose:
+      title: Accions en massa dels productes
       label_count: "]0, Inf[Selecciona l'acció"
     configure:
       label: Configurar
@@ -315,7 +355,14 @@ pim_enrich.mass_edit.product:
       description: Els productes seleccionats seran activats o desactivats.
       field: Per activar
     edit_common:
+      label: Edita els valors dels atributs
+      label_count: "{0}Edita els valors d'atribut d'alguns <span class=\"AknFullPage-title--highlight\">productes</span>|{1}Edita els valors d'atribut d'<span class=\"AknFullPage-title--highlight\">1 producte< /span>|]1, Inf[Edita els valors dels atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
+      description: Només s'editaran els atributs pertanyents a les famílies dels productes seleccionats amb les dades següents per a la configuració regional {{ locale }} i el canal {{ scope }}. Els valors anteriors es substituiran.
       no_update: Si us plau, seleccioneu almenys un camp per actualitzar
+    add_attribute_value:
+      label: Afegeix valors d'atribut
+      label_count: "{0}Afegiu valors d'atribut per a alguns <span class=\"AknFullPage-title--highlight\">productes</span>|{1}Afegiu valors d'atribut per a <span class=\"AknFullPage-title--highlight\">1 producte< /span>|]1, Inf[Afegeix valors d'atribut per a <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
+      description: Només s'editaran els atributs multivalors que pertanyen a les famílies dels productes amb les dades següents per a la configuració regional {{ locale }} i el canal {{ scope }}. S'afegeixen els valors dels atributs, es mantenen els valors anteriors.
     change_family:
       label: Canviar família
       label_count: "{0}Canviar la família d'alguns <span class=\"AknFullPage-title--highlight\">productes</span>|{1}Canviar la família d'<span class=\"AknFullPage-title--highlight\">1 producte< /span>|]1, Inf[Canviar la família de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
@@ -328,31 +375,41 @@ pim_enrich.mass_edit.product:
       no_update: Si us plau, seleccioneu un grup abans de continuar
     add_to_category:
       label: Afegir a categories
+      label_count: "{0}Afegiu alguns <span class=\"AknFullPage-title--highlight\">productes</span> a les categories|{1}Afegiu <span class=\"AknFullPage-title--highlight\">1 producte</span> a categories|]1, Inf[Afegeix <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a les categories"
       description: Els productes es classificaran en les següents categories. Es manté la classificació existent.
     move_to_category:
       label: Moure entre categories
+      label_count: "{0}Mou alguns <span class=\"AknFullPage-title--highlight\">productes</span> entre categories|{1}Mou <span class=\"AknFullPage-title--highlight\">1 producte</span> entre categories categories|]1, Inf[Mou <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> entre categories"
       description: Els productes es classificaran en les següents categories. Es perd la classificació existent.
       no_update: Si us plau, selecciona una categoria
     remove_from_category:
       label: Eliminar de les categories
+      label_count: "{0}Elimineu alguns <span class=\"AknFullPage-title--highlight\">productes</span> de les categories|{1}Elimineu <span class=\"AknFullPage-title--highlight\">1 producte</span> de categories|]1, Inf[Elimina <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> de les categories"
       description: Els productes s'eliminaran de les següents categories.
       no_update: No hi ha cap categoria seleccionada de la que suprimir els productes.
     add_to_existing_product_model:
       label: Afegir a un model de producte existent
+      label_count: "{0}Afegiu alguns <span class=\"AknFullPage-title--highlight\">productes</span> a un model de producte existent|{1}Afegiu <span class=\"AknFullPage-title--highlight\">1 producte</span> span> a un model de producte existent|]1, Inf[Afegeix <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a un model de producte existent"
       description: El model de producte seleccionat reunirà els productes i permetrà l'enriquiment de les propietats en comú.
       no_update: Si us plau, seleccioneu un model de producte abans de continuar
     convert_to_simple_products:
       label: Convertir a producte simple
+      label_count: "{0}Convertir alguns <span class=\"AknFullPage-title--highlight\">productes</span> en productes senzills|{1}Convertir <span class=\"AknFullPage-title--highlight\">1 producte</span> a un producte senzill|]1, Inf[Convert <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> en productes senzills"
       description: Es desaran tots els valors, categories i associacions anteriors.
     associate_to_product_and_product_model:
+      label: Productes associats
+      label_count: "{0}Associa alguns <span class=\"AknFullPage-title--highlight\">productes</span> a productes o models de producte|{1}Associa <span class=\"AknFullPage-title--highlight\">1 producte</span> span> a productes o models de producte|]1, Inf[Associar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a productes o models de producte"
       description: Els productes seleccionats a la quadrícula s'associaran als productes seleccionats i models de producte per el tipus d'associació escollit
       validate: Si us plau, afegiu una associació abans de seguir amb el següent pas
     change_parent_product_model:
       label: Canviar el model de producte del pare
+      label_count: "{0}Canviar el model de producte principal d'alguns <span class=\"AknFullPage-title--highlight\">productes</span>|{1}Canviar el model de producte principal de <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Canviar el model de producte principal de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
       description: El pare de les variants o models de subproducte seleccionats a la quadrícula es canviarà al model de producte escollits.
 pim_datagrid:
   no_entities: "No {{ entityHint }} trobat"
   no_entities.product: "Cap producte trobat" #Custom translation for product grid
+  no_results: "Ho sentim, no hi ha cap {{ entityHint }} per a la teva cerca."
+  no_results.product: "Ho sentim, no hi ha cap producte per a la teva cerca." #Custom translation for product grid
   mass_action_group:
     bulk_actions:
       label: Accions massives
@@ -373,6 +430,7 @@ pim_datagrid:
         title: Selecciona l'acció
         csv: CSV
         xlsx: XLSX
+        grid_context: Context de la quadrícula
         all_attributes: Tots els atributs
         with_codes: Amb codis
         with_labels: Amb etiquetes
@@ -388,6 +446,7 @@ pim_datagrid:
       product: "]-Inf, 1]{{ count }} resultat seleccionat|]1, Inf[{{ count }} resultats seleccionats"
   view_selector:
     view: Vistes
+    choose_type: Vull crear una vista privada
   actions:
     edit_product_attributes: Editar els atributs del producte
     classify_product: Classificar el producte
