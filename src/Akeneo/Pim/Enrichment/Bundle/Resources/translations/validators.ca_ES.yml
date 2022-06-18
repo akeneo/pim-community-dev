@@ -14,7 +14,9 @@ This value should not be blank: Aquest valor no es pot deixar en blanc
 Option code may contain only letters, numbers and underscores: El codi d'opció només pot contenir lletres, nombres i guions baixos
 Option code may contain only letters (at least one), numbers and underscores: El codi d'opció només pot contenir lletres (una com a mínim), nombres i guions baixos
 This value should not be a decimal.: Aquest valor no ha de ser un decimal.
+"The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": L'atribut %attribute% requereix un valor no decimal i %value% no és un valor vàlid.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Aquesta extensió d''arxiu no està permesa (extensions permeses: %extensions%).'
+"The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": L'atribut {{ attribute_code }} no pot tenir el mateix valor més d'una vegada. El valor {{ value }} ja està establert en un altre producte.
 The same identifier is already set on another product: L'identificador ja està utilitzat per un altre producte
 regex.comma_or_semicolon_or_surrounding_space.message: Aquest camp no hauria de contenir cap coma ni punt i coma i ni espais
 file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extensions permeses: %extensions%).'
@@ -25,14 +27,32 @@ file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extension
 "This type of value expects the use of the format {{ date_format }} for dates.": 'Aquest tipus de valor espera l''ús d''aquest format per dates: {{ date_format }}.'
 "The category \"%category%\" has to be a root category.": La categoria "%category%" ha de ser una categoria d'arrel.
 "The attribute \"%attributeCode%\" does not exist.": L'atribut "%attributeCode%" no existeix.
+"The attribute \"%attributeCode%\" is not a metric attribute.": L'atribut "%attributeCode%" no és un atribut de mesura.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": La unitat "%unitCode%" no existeix o no pertany a la família de mesura per defecte de l'atribut donat "%attributeCode%".
 "The currency \"%currency%\" has to be activated.": La moneda "%currency%" ha de ser activada.
 product_model.code.not_blank.message: El codi de model de producte no pot ser buit.
 product_model.code.unique.message: El codi ja està utilitzat per un altre model de producte.
 product_model.family_variant.not_blank.message: La variant de família del model de producte no pot ser buit.
+"The %attribute% attribute requires a string, a %givenType% was detected.": L'atribut %attribute% requereix una cadena, s'ha detectat un %givenType%.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": L'atribut {{ attribute_code }} requereix una data que hauria de ser {{ limit }} o posterior.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": L'atribut {{ attribute_code }} requereix una data que hauria de ser {{ limit }} o anterior.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": L'atribut {{ attribute }} requereix un número, i el valor {{ value }} enviat no ho és.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": L'atribut %attribute% no ha de contenir més de %limit% caràcters. El valor enviat és massa llarg.
+"The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": L'extensió de fitxer %type% no està permesa per a l'atribut %attribute%. Les extensions permeses són %extensions%.
+"The %attribute% attribute requires a url link.": L'atribut %attribute% requereix un enllaç URL.
+"The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": L'atribut %attribute% requereix una data vàlida. Si us plau, utilitzeu el següent format %date_format% per a les dates.
+"The %locale% locale is not available on the %attribute% attribute.": La configuració regional %locale% no està disponible a l'atribut %attribute%.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'L''atribut {{ attribute_code }} ha de coincidir amb l''expressió regular següent: {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'L''atribut {{ attribute_code }} no pot estar buit.'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': El fitxer %file_name% és massa gran (%file_size% %suffix%). L'atribut %attribute% no pot superar %max_file_size% %suffix%.
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'L''atribut %attribute_code% requereix una configuració regional vàlida. La configuració regional %invalid_locale% no existeix.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'L''atribut %attribute_code% requereix una configuració regional vàlida. La configuració regional %invalid_locale% no està vinculada al canal %channel_code%.'
+"The %attribute% attribute requires an e-mail address.": 'L''atribut %attribute% requereix una adreça de correu electrònic.'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': 'L''atribut %attribute% requereix un valor igual o superior a %min_value%.'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'L''atribut %attribute% requereix un valor igual o inferior a %max_value%.'
+"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": 'L''atribut %attribute_code% requereix un valor per canal. El canal %channel% (abast) ha d''existir al vostre PIM'
+"The %identifier% identifier is already used for another product.": 'L''identificador %identifier% ja s''utilitza per a un altre producte.'
+'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.': 'Especifiqueu una moneda vàlida per a l''atribut %attribute_code%; s''ha enviat el codi %currency_code%.'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'L''atribut "%attribute%" no pot ser buit, ja que es defineix com un eix per a aquesta entitat'
@@ -44,6 +64,7 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'L''atribut "%attribute%" no pertany a la família "%family%"'
     variant_product_invalid_family: 'La variant de la família de producte ha de ser igual que el seu pare'
     php_int_max_reached: 'El nombre màxim ha de ser inferior a %php_int_max%.'
+    not_null_family: La família no pot ser "nul·la" perquè el vostre producte amb l'identificador %sku% és un producte variant.
     variant_product_has_parent: 'La variant de producte "%variant_product%" ha de tenir un pare'
     invalid_variant_product_parent: 'La variant de producte %variant_product% no pot tenir model de producte %product_model% com a pare (aquest model de producte només pot tenir un altre model de producte com a fill)'
     modified_variant_axis_value: 'Els variants d''eixos "%variant_axis%" no poden ser modificats, "%provided_value%" donats'
@@ -64,6 +85,7 @@ pim_catalog:
     product_identifier: Aquests identificadors "%s" no existeixen.
     blacklisted_attribute_code: Codi bloquejat temporalment fins que s'hagi completat la tasca de neteja en curs.
     blacklisted_attribute_code_with_link: "Codi bloquejat temporalment fins que s'hagi completat la tasca de neteja en curs. Per saber-ne més, consulteu <a href='{{ link }}' target='_blank'>detall de la tasca</a>."
+    duplicate_options: '{1} L''opció següent s''ha utilitzat diverses vegades: "{{ duplicate_options }}". Si us plau, torneu a comprovar la vostra llista d''opcions.|]1, +Inf] Les opcions següents s''han utilitzat diverses vegades: "{{ duplicate_options }}". Si us plau, torneu a comprovar la vostra llista d''opcions.'
     0: S'ha produït un error inesperat.
     100: Valor inesperat
     101: Aquest camp espera un valor booleà.
@@ -96,3 +118,20 @@ pim_catalog:
 mass_edit:
   edit_common_attributes:
     invalid_values: Hi ha errors en el formulari d'atributs
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: L'etiqueta ha de ser única
+#TODO: move elsewhere?
+pim_enrich.product:
+  validation:
+    upsert:
+      set_value:
+        no_channel_code_provided_for_scopable_attribute: 'L''atribut {{ attributeCode }} requereix un canal'
+        channel_code_provided_for_non_scopable_attribute: 'L''atribut {{ attributeCode }} no requereix cap canal, s''ha detectat "{{ channelCode }}"'
+        no_locale_code_provided_for_localizable_attribute: 'L''atribut {{ attributeCode }} requereix una configuració regional'
+        locale_code_provided_for_non_localizable_attribute: 'L''atribut {{ attributeCode }} no requereix cap localització, s''ha detectat "{{ localeCode }}"'
+        invalid_locale_code_for_locale_specific_attribute: 'El {{ attributeCode }} requereix una de les configuracions regionals següents: {{ availableLocales }}; S''ha detectat "{{ localeCode }}"'
+        channel_does_not_exist: 'El canal {{ channelCode }} no existeix'
+        locale_is_not_active: 'La configuració regional {{ localeCode }} no existeix o no està activa'
+        locale_not_activated_for_channel: 'La configuració regional {{ localeCode }} no està activada per al canal {{ channelCode }}'

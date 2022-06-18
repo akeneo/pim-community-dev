@@ -41,6 +41,11 @@ pim_user:
       active: Actiu
       inactive: Inactiu
     fields_errors:
+      new_password:
+        minimum_length: La contrasenya ha de contenir com a mínim 8 caràcters
+        maximum_length: La contrasenya ha de contenir menys de 4096 caràcters
+      new_password_repeat:
+        not_match: Les contrassenyes no coincideixen
       current_password:
         wrong: Contrasenya incorrecta
     tabs:

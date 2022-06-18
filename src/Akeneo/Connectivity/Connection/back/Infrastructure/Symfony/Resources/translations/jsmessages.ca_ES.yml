@@ -115,26 +115,69 @@ akeneo_connectivity.connection:
         apps:
           title: Aplicacions connectades
           total: '{0} Cap aplicació|{1} 1 aplicació|[2,Inf] {{ total }} aplicacions'
+          empty: No hi ha aplicacions connectades
+          check_marketplace: 'Comproveu {{ marketplaceLink }} per explorar tot el contingut disponible i instal·lar la vostra primera aplicació.'
           marketplace_link_anchor: Marketplace
+        test_apps:
+          title: Les meves aplicacions de prova
+          removed_user: Usuari suprimit
+        helper:
+          title: '[0,1] El vostre PIM està connectat amb l''aplicació {{ count }}.|[2,Inf] El vostre PIM està connectat amb {{ count }} aplicacions.'
+          description_1: Les noves aplicacions es desenvolupen regularment, així que estigueu atents i consulteu la nostra pàgina del mercat amb freqüència per descobrir com connectar el vostre PIM.
+          description_2: Vols saber més sobre les aplicacions?
+          link: Consulteu el nostre Centre d'ajuda per obtenir més informació.
         card:
+          developed_by: 'Desenvolupat per {{ author }}'
           manage_app: Administra l'aplicació
+          open_app: Obre l'aplicació
+        flash:
+          error: Ho sentim, s'ha produït un error en obtenir la llista d'aplicacions connectades.
       edit:
+        not_found: No s'ha trobat l'aplicació
         tabs:
           settings: Preferències
           permissions: Permisos
+          error_monitoring: Monitorització d'errors
+        settings:
+          monitoring:
+            title: Configuració general
+          authorizations:
+            title: autoritzacions
+            information: 'Per obtenir més informació sobre les autoritzacions d''aplicacions, consulteu el nostre {{ link }}.'
+            information_link_anchor: Article del Centre d'ajuda
+            no_scope: No s'han demanat autoritzacions específiques.
         error_monitoring:
+          error: Ups, alguna cosa va fallar!
+          helper:
+            description: Aquí podeu veure el detall de cada error d'aquesta aplicació durant els darrers 7 dies. El nombre d'error està limitat a 100 errors.
+          not_data_source: De moment, la pàgina de supervisió només està disponible per a l'aplicació d'origen.
           not_auditable:
+            title: Aplicació sense supervisió
             description:
-              1: To track errors on this app,
+              1: Per fer un seguiment dels errors en aquesta aplicació,
               2: activar el seguiment
               3: a la configuració.
+        flash:
+          load_permissions_error.title: 'No s''han pogut carregar els permisos desats a {{ entity }}.'
+          load_permissions_error.description: Si us plau, torna-ho a provar més tard.
+          save_permissions_error.title: 'Els permisos a {{ entity }} no s''han pogut actualitzar.'
+          save_permissions_error.description: Comproveu la configuració dels permisos de l'aplicació.
+          success: La configuració de l'aplicació s'ha actualitzat correctament.
+          monitoring_settings_error.description: Ho sentim, s'ha produït un error en editar l'aplicació.
       delete:
         subtitle: Aplicacions
         title: Confirmar l'eliminació
+        description: Esteu segur que voleu suprimir l'aplicació? No estàs segur dels impactes?
         link: Això passarà.
+        flash:
+          success: L'aplicació s'ha suprimit correctament.
+          error: Ho sentim, s'ha produït un error en suprimir l'aplicació.
     apps:
       loader:
         message: Carregant ...
+      flash:
+        permissions_error.title: 'Els permisos a {{ entity }} no s''han pogut desar.'
+        permissions_error.description: Comproveu la configuració dels permisos de l'aplicació.
       wizard:
         title: Connectar
         action:
@@ -142,11 +185,31 @@ akeneo_connectivity.connection:
           cancel: Cancel·lar
           previous: Anterior
           next: Següent
+          allow_and_next: Permetre i continuar
+          allow_and_finish: Permetre i acabar
         progress:
           authentication: Autentificació
           authorizations: Autoritzacions
           permissions: Permisos
           summary: Ben fet!
+        authentication:
+          title: '{{ app_name }} necessita'
+          helper: Per obtenir més informació sobre l'autenticació d'aplicacions, consulteu el nostre article
+          helper_link: Com connecto el meu PIM amb les aplicacions?
+          scope_profile: Consulta el teu nom i cognom
+          scope_email: Consulta la teva adreça de correu electrònic
+        authorize:
+          title: '{{ app_name }} necessita'
+          no_scope_title: '{{ app_name }} vol accedir al vostre PIM.'
+          no_scope: No s'han demanat autoritzacions específiques.
+          helper: Per obtenir més informació sobre l'autorització d'aplicacions,
+          helper_link: Consulteu l'article del nostre Centre d'ajuda.
+        flash:
+          success: L'aplicació s'ha configurat correctament.
+          error: Ho sentim, s'ha produït un error al intentar connectar l'aplicació.
+        permission:
+          helper: Si necessiteu ajuda, consulteu el nostre article
+          helper_link: Com configurar els permisos de l'aplicació?
       title: Connecta
       activate:
         flash:
@@ -190,6 +253,7 @@ akeneo_connectivity.connection:
     label: Etiqueta
     flow_type: Tipus de flux
     image: Imatge
+    auditable: Seguiment al tauler de control de fluxos de dades
     client_id: ID de client
     secret: Secret
     username: Nom d’usuari
@@ -212,6 +276,9 @@ akeneo_connectivity.connection:
         invalid: El tipus de flux de connexió només pot ser 'data_source', 'data_destination' o 'other'.
       image:
         must_exist: No s'ha trobat la imatge. Provi de nou.
+      type:
+        required: El tipus de connexió és obligatori.
+        too_long: El tipus de connexió és massa llarg. Ha de tenir 30 caràcters o menys.
   flow_type:
     data_source: Font de la dada | Font de les dades
     data_destination: Destinació de la dada | Destinació de les dades
@@ -293,7 +360,9 @@ akeneo_connectivity.connection:
     flash:
       success: Connexió eliminada correctament.
   helper:
+    title: "{0} De moment, no teniu cap connexió per enllaçar el vostre PIM amb aplicacions de tercers.|{1} Teniu 1 connexió que enllaça el vostre PIM amb aplicacions de tercers. Ben fet, d'aquesta manera el vostre PIM està ben integrat al seu ecosistema.|]1,Inf] Teniu {{ count }} connexions que vinculen el vostre PIM a aplicacions de tercers. Ben fet, d'aquesta manera el teu PIM està ben integrat al seu ecosistema.\n"
     description: Un PIM sense integracions de tercers és inútil, no? Gràcies a les connexions pot indicar tots els fluxos que entraran i sortiran del seu PIM.
+    link: Per obtenir més informació sobre Connexions, consulteu aquesta pàgina
   flow_type_helper:
     message: Quin tipus de flux és?
     link: Et podem ajudar aquí mateix!
@@ -310,6 +379,8 @@ akeneo_connectivity.connection:
   dashboard:
     helper:
       title: '👋 Benvingut al flux de dades!'
+      description: Aquí podeu fer un seguiment del flux de dades entre el vostre PIM i tercers.
+      link: Voleu saber més sobre el menú Connectar i els fluxos de dades? Aquí ho tens!
     user_survey:
       title: Vols més dades sobre aquest panell?
       content: Els seus comentaris són realment valuosos per a nosaltres. Ajuda'ns a escollir el proper widget responent aquesta enquesta de només una pregunta.
@@ -331,10 +402,12 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
+          title: Errors a les fonts de dades
           helper: Aquí podeu veure el nombre total d'errors, inclosos els errors comercials.
         chart:
           title: Nombre d'errors al dia
       widget:
+        title: Errors de negoci per font de dades
         over_the_last_seven_days: En els últims 7 dies
         business_errors: Errors empresarials
     no_connection:
@@ -353,7 +426,9 @@ akeneo_connectivity.connection:
     event_subscription: Subscripció d'esdeveniment
     download_logs: Descarregar registres
     helper:
+      message: Podeu rebre notificacions dels esdeveniments que succeeixen al PIM per als productes sincronitzats amb aquesta aplicació connectada. Només heu de definir un URL.
       link: Més informació sobre la configuració de la subscripció d'esdeveniments...
+      url.test_disabled: Si us plau, feu clic al botó Desar per poder provar l'URL.
     form:
       url: URL
       secret: Secret
@@ -364,6 +439,7 @@ akeneo_connectivity.connection:
       required: Aquest camp és obligatori.
       not_found: Està intentant actualitzar una connexió que no existeix.
       limit_reached: Ha arribat al límit de subscripcions a esdeveniment.
+      not_allowed_url: Aquest URL no està permès.
     flash:
       success: La subscripció a l'esdeveniment s'ha actualitzat.
       error: Ho sentim, s'ha produït un error a l'editar la subscripció a l'esdeveniment.
@@ -378,8 +454,17 @@ akeneo_connectivity.connection:
         error: Ho sentim, s'ha produït un error en regenerar el secret del webhook.
     active_event_subscriptions_limit_reached:
       message: Pot connectar fins a {{ limit }} connexions a la funció de subscripció d'esdeveniments. Has arribat a aquest límit.
+      link: Més informació sobre la configuració de la subscripció d'esdeveniments.
     event_logs:
       title: Registre d'esdeveniments
+      event_subscription_disabled:
+        title: La subscripció a l'esdeveniment no està activada per a aquesta connexió.
+        link: Activa la subscripció a l'esdeveniment
+      no_event_logs:
+        title: No hi ha registre de moment.
+      no_event_logs_with_those_filters:
+        title: Ho sentim, no hi ha cap registre per a la teva cerca.
+        caption: Torna-ho a provar amb nous criteris de cerca.
       level:
         info: Informació
         notice: Avís
@@ -398,6 +483,10 @@ akeneo_connectivity.connection:
           from: Des de
           to: fins
           all: Tot
+        info:
+          title: Aquests són els registres relacionats amb totes les sol·licituds d'esdeveniments enviades a aquesta connexió.
+          content: Aquesta pàgina mostra els registres d'errors i avisos de les últimes 72 hores, i els darrers 100 registres d'informació i notificacions.
+          link: Més informació sobre els registres d'esdeveniments.
         headers:
           datetime: Data i hora
           level: Nivell
@@ -444,6 +533,7 @@ pim_permissions:
       all: Tot
       clear: Esborra
     level:
+      own: Propi
       edit: Editar
       view: Vista
     all: Tot

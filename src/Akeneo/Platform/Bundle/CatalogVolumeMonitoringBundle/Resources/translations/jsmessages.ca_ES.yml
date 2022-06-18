@@ -38,6 +38,7 @@ pim_catalog_volume:
       product: Producte
       catalog: Catàleg
       product_structure: Estructura del producte
+      variant_modeling: Model de variant
       reference_entities: Entitas de referència
       assets: Recursos
   mean: 'Mitjana:'
