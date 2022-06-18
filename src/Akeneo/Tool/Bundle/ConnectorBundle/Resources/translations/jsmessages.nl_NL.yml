@@ -15,6 +15,7 @@ batch_jobs:
     compute_completeness_of_products_family: Berekenen van de volledigheid van de producten-familie
     index_family_products: Familieproducten en productmodellen worden berekend
     delete_products_and_product_models: Groepsgewijs producten verwijderen
+    ensure_attribute_group_order: Controleer sorteervolgorde van attribuutgroep 
     clean_attribute:
       register_clean_job: Code toevoegen aan zwarte lijst
       clean_product_model: Opschonen productmodellen
