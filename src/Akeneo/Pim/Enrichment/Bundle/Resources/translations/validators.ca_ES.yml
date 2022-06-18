@@ -14,7 +14,9 @@ This value should not be blank: Aquest valor no es pot deixar en blanc
 Option code may contain only letters, numbers and underscores: El codi d'opció només pot contenir lletres, nombres i guions baixos
 Option code may contain only letters (at least one), numbers and underscores: El codi d'opció només pot contenir lletres (una com a mínim), nombres i guions baixos
 This value should not be a decimal.: Aquest valor no ha de ser un decimal.
+"The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": L'atribut %attribute% requereix un valor no decimal i %value% no és un valor vàlid.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Aquesta extensió d''arxiu no està permesa (extensions permeses: %extensions%).'
+"The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": L'atribut {{ attribute_code }} no pot tenir el mateix valor més d'una vegada. El valor {{ value }} ja està establert en un altre producte.
 The same identifier is already set on another product: L'identificador ja està utilitzat per un altre producte
 regex.comma_or_semicolon_or_surrounding_space.message: Aquest camp no hauria de contenir cap coma ni punt i coma i ni espais
 file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extensions permeses: %extensions%).'
@@ -25,10 +27,15 @@ file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extension
 "This type of value expects the use of the format {{ date_format }} for dates.": 'Aquest tipus de valor espera l''ús d''aquest format per dates: {{ date_format }}.'
 "The category \"%category%\" has to be a root category.": La categoria "%category%" ha de ser una categoria d'arrel.
 "The attribute \"%attributeCode%\" does not exist.": L'atribut "%attributeCode%" no existeix.
+"The attribute \"%attributeCode%\" is not a metric attribute.": L'atribut "%attributeCode%" no és un atribut de mesura.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": La unitat "%unitCode%" no existeix o no pertany a la família de mesura per defecte de l'atribut donat "%attributeCode%".
 "The currency \"%currency%\" has to be activated.": La moneda "%currency%" ha de ser activada.
 product_model.code.not_blank.message: El codi de model de producte no pot ser buit.
 product_model.code.unique.message: El codi ja està utilitzat per un altre model de producte.
 product_model.family_variant.not_blank.message: La variant de família del model de producte no pot ser buit.
+"The %attribute% attribute requires a string, a %givenType% was detected.": L'atribut %attribute% requereix una cadena, s'ha detectat un %givenType%.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": L'atribut {{ attribute_code }} requereix una data que hauria de ser {{ limit }} o posterior.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": L'atribut {{ attribute_code }} requereix una data que hauria de ser {{ limit }} o anterior.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": L'atribut {{ attribute }} requereix un número, i el valor {{ value }} enviat no ho és.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": L'atribut %attribute% no ha de contenir més de %limit% caràcters. El valor enviat és massa llarg.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'L''atribut {{ attribute_code }} ha de coincidir amb l''expressió regular següent: {{ pattern }}.'

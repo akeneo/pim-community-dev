@@ -329,27 +329,34 @@ pim_enrich.mass_edit.product:
       no_update: Si us plau, seleccioneu un grup abans de continuar
     add_to_category:
       label: Afegir a categories
+      label_count: "{0}Afegiu alguns <span class=\"AknFullPage-title--highlight\">productes</span> a les categories|{1}Afegiu <span class=\"AknFullPage-title--highlight\">1 producte</span> a categories|]1, Inf[Afegeix <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a les categories"
       description: Els productes es classificaran en les següents categories. Es manté la classificació existent.
     move_to_category:
       label: Moure entre categories
+      label_count: "{0}Mou alguns <span class=\"AknFullPage-title--highlight\">productes</span> entre categories|{1}Mou <span class=\"AknFullPage-title--highlight\">1 producte</span> entre categories categories|]1, Inf[Mou <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> entre categories"
       description: Els productes es classificaran en les següents categories. Es perd la classificació existent.
     remove_from_category:
       label: Eliminar de les categories
+      label_count: "{0}Elimineu alguns <span class=\"AknFullPage-title--highlight\">productes</span> de les categories|{1}Elimineu <span class=\"AknFullPage-title--highlight\">1 producte</span> de categories|]1, Inf[Elimina <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> de les categories"
       description: Els productes s'eliminaran de les següents categories.
       no_update: No hi ha cap categoria seleccionada de la que suprimir els productes.
     add_to_existing_product_model:
       label: Afegir a un model de producte existent
+      label_count: "{0}Afegiu alguns <span class=\"AknFullPage-title--highlight\">productes</span> a un model de producte existent|{1}Afegiu <span class=\"AknFullPage-title--highlight\">1 producte</span> span> a un model de producte existent|]1, Inf[Afegeix <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a un model de producte existent"
       description: El model de producte seleccionat reunirà els productes i permetrà l'enriquiment de les propietats en comú.
       no_update: Si us plau, seleccioneu un model de producte abans de continuar
     convert_to_simple_products:
       label: Convertir a producte simple
+      label_count: "{0}Convertir alguns <span class=\"AknFullPage-title--highlight\">productes</span> en productes senzills|{1}Convertir <span class=\"AknFullPage-title--highlight\">1 producte</span> a un producte senzill|]1, Inf[Convert <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> en productes senzills"
       description: Es desaran tots els valors, categories i associacions anteriors.
     associate_to_product_and_product_model:
       label: Associa
+      label_count: "{0}Associa alguns <span class=\"AknFullPage-title--highlight\">productes</span> a productes o models de producte|{1}Associa <span class=\"AknFullPage-title--highlight\">1 producte</span> span> a productes o models de producte|]1, Inf[Associar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a productes o models de producte"
       description: Els productes seleccionats a la quadrícula s'associaran als productes seleccionats i models de producte per el tipus d'associació escollit
       validate: Si us plau, afegiu una associació abans de seguir amb el següent pas
     change_parent_product_model:
       label: Canviar el model de producte del pare
+      label_count: "{0}Canviar el model de producte principal d'alguns <span class=\"AknFullPage-title--highlight\">productes</span>|{1}Canviar el model de producte principal de <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Canviar el model de producte principal de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
       description: El pare de les variants o models de subproducte seleccionats a la quadrícula es canviarà al model de producte escollits.
 pim_datagrid:
   no_entities: "No {{ entityHint }} trobat"
@@ -373,6 +380,7 @@ pim_datagrid:
         title: Selecciona l'acció
         csv: CSV
         xlsx: XLSX
+        grid_context: Context de la quadrícula
         all_attributes: Tots els atributs
         with_codes: Amb codis
         with_labels: Amb etiquetes
