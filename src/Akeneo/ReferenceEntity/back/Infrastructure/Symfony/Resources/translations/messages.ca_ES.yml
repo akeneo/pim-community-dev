@@ -19,6 +19,10 @@ akeneo_referenceentity:
     option:
       edit: Edita les opcions
       delete: Elimina una opció
+  jobs:
+    reference_entity_mass_delete:
+      error: 'La supressió massiva ha fallat als registres "{{ records }}" amb l''error: "{{ error }}"'
+      used_as_product_variant_axis: 'No podeu suprimir aquests registres, ja que s''utilitzen com a eix de variant en una o diverses variants de producte'
 pim_analytics:
   info_type:
     nb_reference_entities: Nombre d'entitats de referència
@@ -29,8 +33,25 @@ pim_analytics:
 job_execution:
   summary:
     records: Registres
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Supressió massiva de registres
+pim_mass_edit:
+  notification:
+    reference_entity_mass_delete_records:
+      warning: Els registres s'han suprimit correctament amb advertiments
+      success: Els registres s'han suprimit correctament
+      error: No s'ha pogut suprimir el registre
 akeneo_reference_entity: Enllaç simple de l'entitat de referència
 akeneo_reference_entity_collection: Enllaç múltiple d'entitat de referència
 pim_api:
+  acl:
+    reference_entity:
+      create: Crear i actualitzar entitats de referència
+      list: Llista les entitats de referència
+    record:
+      create: Crear i actualitzar registres d'entitats de referència
+      list: Llista els registres d'entitats de referència
+      remove: Suprimeix els registres d'entitats de referència
   acl_group:
     reference_entity: Entitats de referència

@@ -1,0 +1,58 @@
+pim_table_configuration:
+  validation:
+    table_configuration:
+      must_be_filled: S'ha d'omplir la configuració de l'atribut de la taula
+      must_contain_at_least_two_columns: L'atribut de la taula ha de contenir almenys 2 columnes
+      max_columns_reached: Heu assolit el nombre màxim de columnes de la vostra taula (10)
+      missing_column: La columna {{ field }} s'ha d'omplir
+      missing_option_field: El {{ field }} és obligatori
+      column_code_must_be_filled: Cal omplir el codi de columna
+      option_code_must_be_filled: Cal omplir el codi d'opció
+      invalid_code: El codi de columna només pot contenir lletres, números i guions baixos
+      not_available_code: Aquest codi de columna no està disponible
+      invalid_option_code: El codi d'opció només pot contenir lletres, números i guions baixos
+      too_long_code: "El codi de columna és massa llarg: ha de tenir 100 caràcters o menys"
+      too_long_label: "L'etiqueta de la columna és massa llarga: ha de tenir 250 caràcters o menys"
+      too_long_option_code: "El codi d'opció és massa llarg: ha de tenir 100 caràcters o menys"
+      too_long_option_label: "L'etiqueta de l'opció és massa llarga: ha de tenir 255 caràcters o menys"
+      duplicated_column_code: '[0,1]Cada columna requereix un codi únic. "%duplicateCodes%" ja s''utilitza|]1,Inf[Cada columna requereix un codi únic. "%duplicateCodes%" ja s''utilitzen'
+      column_type_must_be_a_string: El tipus de dades de la columna ha de ser una cadena
+      unknown_data_type: 'Es desconeix el tipus de dades de la columna. Si us plau, trieu una de les opcions següents: {{ allow_data_types }}'
+      column_label_must_be_a_string: L'etiqueta de la columna ha de ser una cadena
+      option_label_must_be_a_string: L'etiqueta de l'opció ha de ser una cadena
+      label_locale_does_not_exist_or_is_not_activated: La configuració regional "{{ locale_code }}" no existeix o no està activada
+      invalid_labels_format: Les etiquetes de columna han de ser un objecte clau/valor
+      invalid_option_labels_format: Les etiquetes d'opció han de ser un objecte clau/valor
+      must_not_be_filled: El tipus %type% no permet table_configuration
+      first_column_should_be_valid: '{1}El primer tipus de columna sempre ha de ser "{{ allow_data_types }}", el tipus actual és "{{ data_type }}".|]1,Inf[El primer tipus de columna pot ser {{ allow_data_types_except_last }} o " {{ last_allowed_data_types }}", el tipus actual és "{{ data_type }}".'
+      first_column_code_cannot_be_changed: El codi de la primera columna no es pot canviar.
+      unknown_field: 'Assegureu-vos que feu servir només els camps esperats, camp actual: {{ field }}'
+      attribute_does_not_exist: L'atribut "{{ attribute }}" no existeix
+      not_table_attribute: L'atribut "{{ attribute }}" no és un atribut de taula
+      column_does_not_exist: La columna "{{ column }}" no existeix per a l'atribut "{{ attribute }}"
+      not_select_column: La columna "{{ column }}" de l'atribut "{{ attribute }}" no és una "selecciona"
+      max_should_be_greater_than_min: El valor màxim ha de ser superior al valor mínim.
+      options_cannot_be_set: No es poden establir opcions per a un tipus de columna "{{ data_type }}".
+      reference_entity_identifier_cannot_be_set: L'identificador d'entitat de referència no es pot establir per a un tipus de columna "{{ data_type }}".
+      reference_entity_identifier_must_be_filled: S'ha d'omplir l'identificador de l'entitat de referència
+      reference_entity_identifier_should_exist: Assegureu-vos que l'entitat de referència "{{ reference_entity_identifier }}" existeix abans d'afegir-la a la taula
+      reference_entity_identifier_is_immutable: El reference_entity_identifier no es pot actualitzar
+      no_validations_allowed: 'No utilitzeu validacions en una columna "{{ columnType }}", tipus de columna actual: "{{ given }}"'
+      invalid_validation_key: 'Les validacions "{{ given }}" no funcionen en una columna "{{ columnType }}", permeses: "{{ expected }}"'
+      too_many_table_attributes: Heu assolit el nombre màxim d'atributs de taula dins del vostre PIM ({{ limit }})
+    product_value:
+      non_existing_columns: '[0,1]La columna "{{ no_existing_columns }}" no existeix|]1,Inf[Les columnes "{{ non_existing_columns }}" no existeixen'
+      unexpected_data_type: 'La columna "{{ columnCode }}" espera un {{ expected }}, {{ given }} donat'
+      first_column_required: 'La columna "{{ columnCode }}" és obligatòria'
+      unknown_option: 'Assegureu-vos que només feu servir codis d''opció existents, valor actual: "{{ optionCode }}"'
+      integer_required: 'Aquest valor hauria de ser un nombre enter: {{ invalid_value }}'
+      min_validation: Aquest valor hauria de ser {{ limit }} o més.
+      max_validation: Aquest valor hauria de ser {{ limit }} o menys.
+      value_integer_required: 'El valor requerit és un nombre enter'
+      max_length_validation: Aquest valor ha de contenir {{ limit }} caràcters o menys.
+      too_many_rows: Heu assolit el nombre màxim de files de la vostra taula ({{ limit }}).
+      record_should_exist: 'El registre "{{ recordCode }}" a l''entitat de referència "{{ referenceEntityIdentifier }}" no existeix'
+    product_value_collection:
+      too_many_cells: Heu assolit el nombre màxim de cel·les de la taula del vostre producte ({{ count }} cel·les, només {{ limit }} permesos).
+    reference_entity:
+      should_not_be_linked: 'Aquesta entitat de referència s''utilitza en un atribut de producte i, per tant, no es pot eliminar.'

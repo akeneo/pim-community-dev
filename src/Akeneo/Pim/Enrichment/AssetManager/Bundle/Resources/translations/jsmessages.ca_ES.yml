@@ -5,6 +5,8 @@ batch_jobs:
   asset_manager_xlsx_asset_export:
     label: Exportació de recursos en XLSX
     export.label: Exportació de recursos
+  asset_manager_csv_asset_import:
+    label: Importació de recurs a CSV
   asset_manager_xlsx_asset_import:
     import.label: Importar recursos
 akeneo_assetmanager.export.assets.filter.asset_family: Families de recursos
