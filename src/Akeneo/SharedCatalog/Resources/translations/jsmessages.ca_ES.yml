@@ -1,3 +1,4 @@
+batch_jobs.akeneo_shared_catalog.label: Enviar a catàlegs compartits
 pim_common:
   recipients: Destinataris
   branding: Marca
@@ -9,5 +10,14 @@ shared_catalog:
     placeholder: betty@akeneo.com
     email: Adreça email
     invalid_email: L'adreça de correu electrònic no és vàlida.
+    duplicates: Ja ho has compartit amb aquest destinatari
+    helper: "Afegiu destinataris per donar-los accés al vostre nou catàleg compartit. Podeu omplir una llista d'adreces amb separadors: espai, coma, punt i coma i salt de línia."
+    no_result: Ho sentim, no hi ha cap correu electrònic que coincideixi amb la teva cerca
+    no_data: Encara no s'ha declarat cap adreça de correu electrònic
+    max_limit_reached: Heu arribat al límit de 500 destinataris.
+  branding:
+    upload: "Carregueu el vostre logotip (mida màxima: 2 MB; format de fitxer: PNG o JPG)"
+    invalid_extension: "L'extensió de fitxer no és vàlida, les extensions permeses són: {{ allowed_extensions }}"
+    filesize_too_large: El fitxer que heu proporcionat és massa gran, la mida màxima és de 2 MB
   button:
     save: Desar i compartir

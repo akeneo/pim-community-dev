@@ -338,10 +338,14 @@ pim_catalog_volume:
 batch_jobs:
   reference_entity_label: Entitat de referència
   csv_reference_entity_record_export:
+    label: Exportació de registres d'entitat de referència en CSV
     export.label: Exportar registres
   xlsx_reference_entity_record_export:
+    label: Exportació de registres d'entitat de referència en XLSX
     export.label: Exportar registres
   csv_reference_entity_record_import:
+    label: Importació de registres d'entitat de referència en CSV
     import.label: Importar registres
   xlsx_reference_entity_record_import:
+    label: Importació de registres d'entitat de referència a XLSX
     import.label: Importar registres

@@ -11,8 +11,11 @@ pim_asset_manager:
         should_not_be_linked: 'No pots eliminar aquesta família perquè els actius de la família d''atributs estan relacionades amb aquesta família'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Com a mínim un grup d''usuaris té que tenir permisos d''edició sobre a aquesta família'
+      product_attributes:
+        should_not_be_linked: 'No podeu suprimir aquesta família perquè hi ha enllaçada una col·lecció d''actius.'
       should_exist: 'La família de recurs "%asset_family_code%" no s''ha trobat.'
       rule_template:
+        limit_reached: 'Heu assolit el límit de regles d''enllaç de producte %limit% per a la família de recursos "%asset_family_identifier%".'
         product_selection_cannot_be_empty: 'Té que especificar com a mínim una selecció de productes a la regla d''enllaç de productes'
         product_assignment_cannot_be_empty: 'Té que especificar com a mínim una assignació de productes a la regla d''enllaç de productes'
         extrapolated_attribute_should_exist: 'L''atribut "%attribute_code%" no existeix per a aquesta família de recursos fixes'
@@ -35,6 +38,8 @@ pim_asset_manager:
         same_operation_twice: 'L''operació "%operation_type%" no és pot definir dos cops en una transformació'
         attribute_reference_should_exist: 'L''atribut "%attribute_code%" no existeix per a aquesta família de recursos fixes'
         unknown_extra_field: 'La propietat {{ field }} no s''esperava.'
+      naming_convention:
+        not_main_media_attribute_code: 'La propietat ha de coincidir amb el codi de l''atribut definit com a mitjà principal'
   asset:
     validation:
       code:
