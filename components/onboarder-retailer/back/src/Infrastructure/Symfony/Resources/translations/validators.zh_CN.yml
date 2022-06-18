@@ -1,0 +1,11 @@
+onboarder:
+  supplier:
+    contributor:
+      email_already_exists: 该电子邮件已经用于另一个供应商，我们不支持多个具有相同贡献者的供应商。很抱歉给您带来不便。
+    contributor_account:
+      validation:
+        min_password_length: 密码长度应至少为 8 个字符。
+        max_password_length: 密码不应超过 255 个字符。
+        must_contain_an_uppercase_letter: 密码必须至少包含 1 个大写字母。
+        must_contain_a_lowercase_letter: 密码必须至少包含 1 个小写字母。
+        must_contain_a_digit: 密码应至少包含 1 个数字。
