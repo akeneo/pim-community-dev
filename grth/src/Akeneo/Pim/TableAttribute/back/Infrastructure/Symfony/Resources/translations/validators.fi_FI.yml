@@ -1,0 +1,6 @@
+pim_table_configuration:
+  validation:
+    product_value:
+      min_validation: Tämän arvon pitäisi olla {{ limit }} tai enemmän.
+      max_validation: Tämän arvon pitäisi olla enintään {{ limit }}.
+      value_integer_required: 'Vaadittu arvo on kokonaisluku'

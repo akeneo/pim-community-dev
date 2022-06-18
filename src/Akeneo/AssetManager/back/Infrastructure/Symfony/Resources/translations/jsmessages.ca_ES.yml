@@ -10,6 +10,7 @@ pim_asset_manager:
         message: Ho sentim, no podem mostrar aquest article tot i ser guardat correctament
   result_counter: '{0} Sense resultat|{1}{{ count }} resultat|]1,Inf] {{ count }} resultats'
   asset_counter: '{0} No actiu|{1} {{ count }} actiu|]1,Inf] {{ count }} actius'
+  asset_selected: '{0} {{ assetCount }} actiu seleccionat|{1} {{ assetCount }} actiu seleccionat|]1,Inf] {{ assetCount }} actius seleccionats'
   asset_collection:
     add_asset: 'Afegeix actiu'
     upload_asset: 'Penjar recurs'
@@ -17,6 +18,7 @@ pim_asset_manager:
     no_asset_in_collection: 'Ho sentim, no hi ha cap actiu en aquesta col·lecció.'
     helper:
       title: 'Benvingut al seu nou espai de gestió de recursos de productes!'
+      text: 'No hi ha cap recollida d''actius per a aquesta família. Per participar d''aquesta nova experiència, només cal que afegiu un atribut de col·lecció de recursos a la vostra configuració.'
       link: 'Com afegir una col·lecció de recursos?'
     no_asset:
       title: 'Ho sentim, no hi ha recurs per a aquest producte.'
@@ -92,8 +94,13 @@ pim_asset_manager:
         unknown_extra_field: 'La propietat {{ {{ field }} }} no s''esperava.'
       naming_convention:
         property_should_exist: 'La propietat "{{ %property% }}" no existeix per a aquesta família de recursos'
+        not_main_media_attribute_code: 'La propietat ha de coincidir amb el codi de l''atribut definit com a mitjà principal'
       rule_template:
+        limit_reached: 'Heu assolit el límit de {{ %limit% }} regles d''enllaç de producte per a la família de recursos "{{ %asset_family_identifier% }}".'
+        product_selection_cannot_be_empty: 'Heu d''especificar almenys una selecció de producte a la vostra regla d''enllaç de producte'
+        product_assignment_cannot_be_empty: 'Té que especificar com a mínim una assignació de productes a la regla d''enllaç de productes'
         extrapolated_attribute_should_exist: 'L''atribut "{{ %attribute_code% }}" no existeix per a aquesta família d''actius'
+        extrapolated_attribute_type_should_be_supported: 'L''atribut "{{ %attribute_code% }}" del tipus "{{ %attribute_type% }}" no s''admet, només s''admeten els tipus d''atributs següents per a aquest camp: {{ %supported_attribute_type% }}'
         channel_should_exist: 'El canal "{{ %channel_code% }}" no existeix'
         locale_should_exist: 'El local "{{ %locale_code% }}" no està activat o no existeix'
         channel_not_supported_for_field: 'No pots especificar un canal per a cada camp "{{ %product_field% }}"'
@@ -121,14 +128,24 @@ pim_asset_manager:
       transformations: Transformacions
       product_link_rules: Regles d'enllaç del producte
     transformations:
+      help:
+        description: Aquí podeu definir aquí fins a 10 transformacions per família d'actius.
+        link: Si voleu aprofundir en les transformacions d'actius, feu clic aquí.
       subsection: 'Propietats de transformació'
     product_link_rules:
       product_link_rules_subsection: 'Propietats de les regles d''enllaç del producte'
+      help:
+        description: 'Aquí podeu definir fins a 2 regles d''enllaç de producte per a cada família d''actius.'
+        link: 'Si vol profunditzar en la funció de Regles d''enllaç de producte, cliqueu aquí.'
       execute_rules:
         confirm_title: Confirmar l'execució
         execute_rules: Executar regles
       execute_naming_convention:
         confirm_title: Confirmar l'execució
+    naming_convention:
+      help:
+        description: Aquí és on podeu definir les propietats de la convenció de nomenclatura.
+        link: Apreneu tot el que necessiteu saber sobre el seu format.
     properties:
       title: Propietats de les families de recursos
       identifier: Codi
@@ -182,9 +199,15 @@ pim_asset_manager:
       execute_product_link_rules:
         success: Les regles d'enllaç dels productes han sigut llençats
         fail: S'ha produït un error al provar de llençar les regles d'enllaços de productes
+      execute_naming_convention:
+        success: S'ha posat en marxa la convenció de nomenclatura
+        fail: S'ha produït un error en intentar iniciar la convenció de nomenclatura
     helper:
       title: Benvingut a Gestor de Recursos!
+      no_asset:
+        text: No hi ha cap actiu a la família {{ family }}. Feu clic a "Crea" i trieu si voleu crear un actiu buit o bé carregar-los en massa.
       no_asset_family:
+        text: Una biblioteca que recull els vostres actius (imatges, vídeos, documents...), filtrats per famílies d'actius. Creeu la vostra primera família d'actius, configureu-ne els atributs i pengeu-ne!
         link: Per a més detalls, us convidem a consultar aquest article.
     no_data:
       no_asset:
@@ -211,6 +234,7 @@ pim_asset_manager:
       code:
         pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
         should_be_unique: 'Aquest codi ja existeix per a un altre recurs.'
+      server_error: 'S''ha produït un error durant la creació de l''actiu'
     no_data:
       title: No hi ha cap recurs per {{ entityLabel }}
       subtitle: Feu clic al botó "Afegeix nou" per crear el primer actiu
@@ -222,6 +246,7 @@ pim_asset_manager:
       error:
         value: Vaja, sembla que la representació del camp "{{ fieldName }}" ha fallat. Consulteu la consola de desenvolupadors per obtenir més detalls.
     button:
+      save_and_execute_naming_convention: Desa i executa la convenció de nomenclatura
       save: Desar
       create: Crear un recurs
       mass_upload: Carregar en massa
@@ -240,31 +265,89 @@ pim_asset_manager:
         subtitle: 'Per començar a enllaçar productes a aquesta família d''actius, en podeu crear-ne una de nova:'
         link: Creeu un nou atribut de producte
       not_enough_items:
+        title: Només podeu veure {{ productCount }}/{{ totalCount }} productes.
+        subtitle:
+          usable_in_grid: Per descobrir tots els productes enllaçats, feu clic a sota!
+          not_usable_in_grid: Per descobrir tots els productes enllaçats, l'atribut del producte s'ha d'establir com a "utilitzable a la graella".
         button: Veure tots els productes
+      no_product:
+        title: Aquest recurs no està enllaçat a cap producte mitjançant l'atribut de producte "{{ entityLabel }}"
+        subtitle: 'Comença a enllaçar productes a aquest atribut per veure''ls aquí'
+    no_linked_products: Aquest actiu no està vinculat als productes
     enrich:
+      title: Atributs de recursos
       code: Codi
       label: Etiqueta
       edit_subsection: Editar recurs
+      product_subsection: Productes vinculats
+      main_media_preview: Previsualització del multimèdia principal
     title: Recursos
     create:
       header:
         title: Crear
       subtitle: Families de recursos
+      title: Afegeix un actiu nou a {{ entityLabel }}
       input:
         label: Etiqueta
         code: Codi (requerit)
         create_another: Crear un altre recurs
     upload:
+      line_count: '[0,1]{{ count }} fitxer|]1,Inf] {{ count }} fitxers'
+      title: Penjar actius
       lines: Arxius
       retry: Torna-ho a provar
+      remove: Eliminar
       remove_all: Eliminar tot
+      confirm: Crear
       add_to_product: Afegir a producte
+      drop_or_click_here: Arrossegueu i deixeu anar els vostres fitxers o feu clic aquí
+      will_appear_here: Penja recursos i apareixeran aquí!
+      files_limit: Esteu provant de pujar massa fitxers, només es carregarà el primer {{ limit }}.
+      discard_changes: Perdreu els vostres actius si tanqueu aquest modal sense crear-los.
+      disabled_for_media_link: No podeu penjar recursos d'aquesta família, ja que l'atribut utilitzat com a mitjà principal és un atribut d'enllaç multimèdia
       upload_failure: S'ha produït un error al pujar l'arxiu.
       cannot_retry: S'ha produït un error al intentar pujar el fitxer.
+      list:
+        asset: Actiu
+        filename: Nom del fitxer
+        code: Codi (requerit)
+        locale: Local (requerit)
+        channel: Canal (requerit)
+        status: Estat
+      status:
+        waiting_for_upload: no carregat
+        upload_in_progress: en progrés
+        uploaded: carregat
+        valid: preparat per crear
+        invalid: error
+        created: creat
     delete:
+      message: Esteu segur que voleu suprimir el recurs "{{ assetLabel }}"? Si està enllaçat a productes, els enllaços s'eliminaran.
       title: Recurs
     mass_delete:
+      confirm: '[0,1]Esteu segur que voleu suprimir el {{ assetCount }} actiu seleccionat?|]1,Inf]Esteu segur que voleu suprimir el {{ assetCount }} actiu seleccionat?'
+      extra_information: Si estan enllaçats a productes, s'eliminaran els enllaços als productes.
+      confirm_label: Escriviu "{{ assetFamilyIdentifier }}"
       title: Recursos
+    mass_edit:
+      subtitle: Acció massiva d'actius
+      title: "[0, 1]Edita els valors d'atribut de {{ count }} actiu|]1,Inf] Edita els valors d'atribut de {{ count }} actius"
+      attribute_selected: "{0}Cap atribut seleccionat|{1}Un atribut seleccionat|]1,Inf]{{ count }} atributs seleccionats"
+      empty_selection:
+        title: La vostra selecció d'atributs està buida, afegiu-hi atributs per editar.
+        body: No saps què és una acció massiva?
+        link: Fes una ullada a aquest article.
+      action:
+        append: Afegir
+        replace: Substitueix
+      select:
+        channel: Seleccioneu un canal
+        locale: Seleccioneu un local
+        action: Seleccioneu una acció
+      helper:
+        content: Tingueu en compte que és possible afegir el mateix atribut diverses vegades, així que assegureu-vos de seleccionar els vostres atributs amb cura.
+        link: Podeu consultar la nostra documentació per evitar problemes.
+      unsupported_attribute: Aquest tipus d'atribut "{{ attributeType }}" no és compatible
     grid:
       search: Cerca a l'etiqueta, el codi i el text dels atributs
       filter:
@@ -289,6 +372,8 @@ pim_asset_manager:
         action: Accions
       completeness:
         title_no_required: Cap atribut requerit
+        title_non_complete: 0 dels atributs {{ required }} complets
+        title_ongoing: '{{ complete }} de {{ required }} atributs complets'
         title_complete: Tots els atributs complets {{ required }}
     tab:
       enrich: Enriquir
@@ -296,12 +381,31 @@ pim_asset_manager:
     notification:
       save:
         success: Recurs actualitzat correctament.
+        fail: S'ha produït un error durant el desat de l'actiu
         validation_error: El recurs no s'ha pogut actualitzar
       create:
         success: Recurs creat correctament.
+        fail: S'ha produït un error durant la creació de l'actiu
+      delete:
+        success: Recurs "{{ code }}" correctament eliminat.
+        fail: S'ha produït un error durant la supressió de l'actiu
+      mass_delete:
+        success: S'ha llançat l'acció massiva "Supressió massiva". Se us notificarà quan s'hagi completat.
+        fail: S'ha produït un error durant l'inici de la tasca d'eliminació massiva
+      mass_edit:
+        launch:
+          success: S'ha llançat l'acció massiva "Mass edit". Se us notificarà quan s'hagi completat.
+          fail: S'ha produït un error durant l'inici de la tasca d'edició massiva
+        validation:
+          fail: S'ha produït un error durant la validació de l'edició massiva
+      execute_naming_convention:
+        success: La convenció de nomenclatura s'ha executat correctament
+        fail: S'ha produït un error durant l'execució de la convenció de nomenclatura
     completeness:
       label: Complet
   attribute:
+    validation:
+      limit_reached: 'No podeu crear l''atribut "{{ %attribute_label% }}" perquè heu assolit el límit de {{ %limit% }} atributs per a aquesta família d''actius'
     default:
       code: Codi
       label: Etiqueta
@@ -309,22 +413,35 @@ pim_asset_manager:
     type:
       text: Text
       media_file: Arxiu multimèdia
+      asset: Enllaç únic d'actiu
+      asset_collection: Col·lecció d'actius
       option: Única opció
       option_collection: Múltiples opcions
       number: Número
       media_link: Enllaç multimèdia
     is_required: necessari per la integritat
+    is_read_only: Només lectura a la interfície d'usuari
+    media_type_preview: Vista prèvia del tipus de suport
+    no_data:
+      title: No hi ha atributs personalitzats per {{ entityLabel }}
+      subtitle: Feu clic al botó "Afegeix un atribut" per configurar el primer atribut personalitzat
     button:
       add: Afegeix un atribut
     create:
       header:
         title: Crear
       subtitle: Families de recursos
+      title: Afegir un nou atribut de recurs
+      description: Els següents paràmetres, excepte l'etiqueta, no poden actualitzar-se desprès de la creació de l'atribut
       input:
+        code: Codi (requerit)
         label: Etiqueta
         type: Tipus d'atribut
+        asset_type: Família d'actius a enllaçar (requerit)
         value_per_locale: Valor per local
         value_per_channel: Valor per canal
+      placeholder:
+        asset_type: Seleccioneu la vostra família d'actius enllaçats
     edit:
       delete: Eliminar l'atribut
       title: Editar atribut {{ code }}
@@ -353,6 +470,19 @@ pim_asset_manager:
             discard_changes: Perdreu els canvis realitzats en la llista d'opcions si sortiu de la pàgina
           quick_edit:
             label: Administrar opcions
+          option:
+            label:
+              placeholder: Escriu una nova etiqueta d'opció aquí
+        options:
+          validation_rule:
+            none: Cap
+            email: Correu electrònic
+            regular_expression: Expressió regular
+            url: URL
+        decimals_allowed: Valors decimals permesos
+        prefix: Prefix
+        suffix: Sufix
+        media_type: Tipus de multimèdia
     delete:
       message: Esteu segur que voleu suprimir l'atribut "{{ attributeLabel }}"?
       title: Atribut
@@ -370,8 +500,15 @@ pim_asset_manager:
       sub_title: Families de recursos
       helper:
         title: Traduccions d'etiquetes
+    media_link:
+      placeholder: Posa el teu enllaç multimèdia aquí
+      read_only: Aquest enllaç multimèdia és només de lectura
     media_file:
+      read_only: Aquest fitxer multimèdia és només de lectura
       uploading: Pujant...
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'La convenció de nomenclatura ha fallat al recurs "{{ asset }}"'
 pim_enrich:
   confirmation:
     discard_changes: 'Perdreu els canvis a la "{{ entity }}" entitat si sortiu de la pàgina.'
@@ -385,6 +522,26 @@ pim_enrich:
           default_label: Si us plau trieu un recurs de família
 permission:
   mass_action: Aplicar {{ rightLevel }} regles en tots els grups
+pim_import_export:
+  form:
+    job_instance:
+      tab:
+        properties:
+          with_prefix_suffix:
+            title: Exporta el prefix i el sufix
+            help: Exporta el prefix i el sufix dels atributs dels actius d'enllaç multimèdia
+akeneo_job_process_tracker:
+  type_filter:
+    asset_manager_execute_naming_convention: Executar la convenció de nomenclatura de la família d'actius
+    asset_manager_mass_delete_assets: Supressió massiva de recursos
+    asset_manager_mass_edit_assets: Editar en massa els recursos
+batch_jobs:
+  default_steps:
+    execute_naming_convention: Executar la convenció de nomenclatura de la família d'actius
+    mass_delete_assets: Executeu la supressió massiva d'actius
+    mass_edit_assets: Executa l'edició massiva d'actius
 job_execution:
   summary:
     assets: Recursos
+pim_notification.types.asset_manager_mass_delete_assets: Supressió massiva de recursos
+pim_notification.types.asset_manager_mass_edit_assets: Editar en massa els recursos

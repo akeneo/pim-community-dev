@@ -10,10 +10,13 @@ akeneo_assetmanager:
       manage_transformation: Administrar les transformacions de la família de recursos
       manage_product_link_rule: Administrar les regles del enllaç de productes de la família d'actius
       execute_product_link_rule: Executar les regles d'enllaç de productes a tots els recursos d'una família de recursos
+      execute_naming_conventions: Executar convencions de nomenclatura als actius
     asset:
       create: Crear un recurs
       edit: Editar recursos
+      delete: Esborrar recursos
       list_product: Llista de d'enllaços de productes de recursos
+      execute_naming_conventions: Executar convencions de denominació
     attribute:
       create: Afegir un atribut a una família de recursos
       edit: Editar un atribut d'una família de recursos
@@ -21,16 +24,61 @@ akeneo_assetmanager:
     option:
       edit: Editar opcions
       delete: Eliminar una opció
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'La convenció de nomenclatura ha fallat al recurs "{{ asset }}"'
+    asset_manager_mass_delete:
+      error: 'La supressió massiva ha fallat als recursos "{{ assets }}" amb l''error: "{{ error }}"'
+    asset_manager_mass_edit:
+      error: 'L''edició massiva ha fallat als recursos "{{ assets }}" amb l''error: "{{ error }}"'
+pim_analytics:
+  info_type:
+    api_connection: Nombre de connexions API
+    nb_asset_families: Nombre de families de recursos
+    max_number_of_assets_per_asset_family: Nombre màxim d'actius per família d'actius
+    average_number_of_values_per_assets: Nombre mitjà de valors per actiu
+    average_number_of_assets_per_asset_family: Nombre mitjà d'actius per família d'actius
+    max_number_of_attributes_per_asset_family: Nombre màxim d'atributs per família d'actius
+    average_number_of_attributes_per_asset_family: Nombre mitjà d'atributs per família d'actius
+    data_source:
+      tracked: Destinació de dades rastrejada
+      untracked: Destinació de dades sense seguiment
+    data_destination:
+      tracked: Font de dades rastrejada
+      untracked: Font de dades sense seguiment
+    other:
+      tracked: Altres rastrejades
+      untracked: Altres sense rastrejar
 #average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
 pim_catalog_asset_collection: Col·lecció de recursos
 batch_jobs:
   default_steps:
+    execute_naming_convention: Executar la convenció de nomenclatura de la família d'actius
     link_assets_to_products: Enllaçar els recursos dels productes
+    compute_transformations: Calcular les transformacions dels actius
 job_execution:
   summary:
     assets: Recursos
+    transformations: Transformacions de recurs
+    skipped: Omès
+pim_mass_edit.notification.asset_manager_mass_delete_assets:
+  warning: Els recursos s'han suprimit correctament amb advertiments
+  success: Els recursos s'han suprimit correctament
+  error: No s'ha pogut suprimir el recurs
+pim_mass_edit.notification.asset_manager_mass_edit_assets:
+  warning: Els recursos s'han editat correctament amb advertiments
+  success: Els recursos s'han editat correctament
+  error: L'edició de recursos ha fallat
 pim_api:
+  acl:
+    asset_family:
+      create: Crear i actualitzar famílies d'actius
+      list: Llista les famílies d'actius
+    asset:
+      create: Crear i actualitzar actius
+      list: Llistar actius
+      remove: Esborrar recursos
   acl_group:
     asset: Recursos

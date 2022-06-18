@@ -1,11 +1,186 @@
+table_attribute_template:
+  nutrition-europe:
+    average_nutritional_values:
+      label: Ravintosisältö keskimäärin
+      options:
+        energy: Energia
+        fat: Rasva
+        saturated_fat: Tyydyttynyt rasva
+        carbohydrate: Hiilihydraatit
+        sugars: Sokerit
+        protein: Proteiini
+        salt: Suola
+    per_100g:
+      label: '100g'
+  nutrition-unitedstates:
+    nutrition_facts:
+      options:
+        total_fat: Kokonaisrasva (g)
+        saturated_fat: Tyydyttynyt rasva (g)
+        cholesterol: Kolesteroli (g)
+        sodium: Natrium (g)
+        dietary_fiber: Ravintokuitu
+        protein: Proteiini (g)
+  nutrition-unitedkingdom:
+    nutrition:
+      options:
+        energy: Energia
+        fat: Rasva
+        fibre: Kuitu
+        protein: Proteiini
+        salt: Suola
+    per_100g:
+      label: 100g
+    your_reference_intake:
+      label: 'Aikuisen keskivertokäyttäjän saannin vertailuarvo (8400 kJ / 2000 kcal).'
+  food_composition:
+    composition:
+      options:
+        wheat_flour: Vehnäjauho
+        butter: Voi
+        water: Vesi
+        sugar: Sokeri
+    percentage:
+      label: '%'
+    allergen:
+      label: Allergeeni
+  clothing_composition:
+    composition:
+      options:
+        cotton: Puuvilla
+        polyester: Polyesteri
+        elastane: Elastaani
+    percentage:
+      label: '%'
+  dimensions-metric:
+    dimensions:
+      label: Mitat
+      options:
+        length: Pituus (cm)
+        width: Leveys (cm)
+        height: Korkeus (cm)
+        weight: Paino (kg)
+    value:
+      label: Arvo
+  dimensions-imperial:
+    dimensions:
+      label: Mitat
+      options:
+        length: Pituus (tuumaa)
+        width: Leveys (tuumaa)
+        height: Korkeus (tuumaa)
+        weight: Paino (paunaa)
+    value:
+      label: Arvo
+  packaging-metric:
+    parcel:
+      label: Paketti
+      options:
+        parcel1: Paketti 1
+        parcel2: Paketti 2
+        parcel3: Paketti 3
+        parcel4: Paketti 4
+    width:
+      label: Leveys (cm)
+    length:
+      label: Pituus (cm)
+    height:
+      label: Korkeus (cm)
+  packaging-imperial:
+    parcel:
+      label: Paketti
+      options:
+        parcel1: Paketti 1
+        parcel2: Paketti 2
+        parcel3: Paketti 3
+        parcel4: Paketti 4
+    width:
+      label: Leveys (tuumaa)
+    length:
+      label: Pituus (tuumaa)
+    height:
+      label: Korkeus (tuumaa)
 pim_table_attribute:
   form:
     attribute:
       tab:
         table_structure: Taulukon rakenne
+      table_attribute: Taulukkoattribuutti
+      add_column: Lisää uusia sarakkeita
+      select_type: Valitse tyyppi
+      data_type: Sarakkeen tyyppi
+      labels: Otsikoiden käännökset
+      column_management: Sarakkeiden hallinta
+      please_type: Kirjoita "{{ text }}"
+      confirm_column_delete: Oletko varma, että haluat poistaa tämän sarakkeen?
+      confirm_option_delete: Oletko varma, että haluat poistaa tämän vaihtoehdon?
       empty_title: Taulukon rakenne on tyhjä
+      empty_subtitle: Määrittele ensin sarakkeet.
+      unique_title: Taulukkoattribuutti on melkein valmis.
+      unique_subtitle: Määritä vähintään 2 saraketta aloittaaksesi taulukon käytön.
+      new_option_placeholder: Kirjoita uusi vaihtoehdon nimi
+      manage_options: Määritä vaihtoehdot
+      column_code: Sarakkeen koodi
+      no_options: Vaihtoehtoja ei löytynyt
+      please_try_again: Yritä uudelleen
+      first_column_type_helper: Taulukon ensimmäinen sarake on aina tyypiltään valintalista.
+      first_column_type_helper_with_reference_entity: Taulukon ensimmäinen sarake on tyypiltään joko valintalista tai viitetieto.
+      discard_changes: Menetät muutokset valittuihin vaihtoehtoihin, jos poistut sivulta.
+      completeness: Valmistumisaste
+      required_for_completeness: Vaadittu täyteen valmiusasteeseen
+      completeness_helper_text: "Selvittääksesi, miten valmiusaste toimii taulukkoattribuutin osalta,"
+      completeness_helper_link: tutustu ohjeisiimme.
+      reference_entity: Viitetieto
     product:
       no_rows_title: "Sinun {{ attributeLabel }} taulukko on tyhjä."
       no_rows_subtitle: Lisää rivejä tietojen tallentamiseksi
+      no_results: Ei tuloksia
+      no_options: Vaihtoehtoja ei ole
+      no_records: Tietueita ei ole
+      manage_records: Hallinnoi tietueita
+      actions:
+        delete_row: Poista tämä rivi
+        clear_row: Tyhjennä tämä rivi
+        move_first: Siirrä ensimmäiseksi
+        move_last: Siirrä viimeiseksi
+      save_options_success: Vaihtoehdot tallennettu onnistuneesti
+  properties:
+    data_type:
+      text: Teksti
+      number: Numero
+      boolean: Kyllä/ei
+      select: Valintalista
+      reference_entity: Viitetieto
+  validations:
+    column_code_must_be_filled: Koodi on annettava
+    column_data_type_must_be_filled: Tietotyyppi on annettava
+    max_greater_than_min: Maksimiarvon pitäisi olla suurempi kuin minimiarvo
+    min: Pienin mahdollinen arvo
+    max: Suurin mahdollinen arvo
+    decimals_allowed: Desimaaliarvot sallittu
+  templates:
+    choose_template: Valitse mallipohja
+    choose_template_subtitle: Nämä mallit ovat vain esimerkkejä, eivät säädeltyjä. Voit muokata niitä ennen kuin tallennat taulukkorakenteen.
+    empty_table: Tyhjä taulukko
+    dimensions: Tuotteen mitat
+    dimensions-metric: Mitat (Metrinen järjestelmä)
+    dimensions-imperial: Mitat (Imperiaalinen järjestelmä)
+    packaging: Pakkauksen mitat
+    packaging-metric: Pakkausten mitat (Metrinen järjestelmä)
+    packaging-imperial: Pakkausten mitat (Imperiaalinen järjestelmä)
   product_edit_form:
     add_rows: Lisää rivejä
+    search: Etsi
+  datagrid:
+    placeholder: Esikatselu ei käytettävissä, avaa tuotesivu nähdäksesi taulun attribuutin arvot
+    select_your_column: Valitse sarake
+    select_your_row: Valitse rivi
+    select_your_operator: Valitse operaattori
+    select_your_value: Valitse arvo
+    any_row: Mikä tahansa rivi
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_table: Taulukko

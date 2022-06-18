@@ -1,0 +1,3 @@
+pimee_workflow:
+  check_removal:
+    product_model_error: Aquest model de producte té una variant de producte que s'ha publicat. Si us plau, cancel·leu la publicació i torneu-ho a provar.
