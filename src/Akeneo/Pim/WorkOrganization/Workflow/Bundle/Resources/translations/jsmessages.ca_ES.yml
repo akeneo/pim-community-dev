@@ -25,6 +25,7 @@ pimee_workflow:
       modal.title: Deixa un comentari (opcional - 255 caràcters màx.)
   proposal:
     overview: "]-Inf, 1]{{ count }} proposta|]1, Inf[{{ count }} propostes"
+    selected: "]-Inf, 1]{{ count }} proposta seleccionada|]1, Inf[{{ count }} propostes seleccionades"
     mass_action_group:
       review:
         label: Acció massiva
@@ -84,6 +85,9 @@ batch_jobs:
     perform.label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx
   publish_product:
     perform.label: Publicar productes
+  default_steps:
+    clean_attribute:
+      clean_draft: Propostes de neteja
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Nova proposta
@@ -110,6 +114,7 @@ pimee_enrich.entity.product:
       published: Publicat
       revert: Restaurar
     attribute:
+      can_be_updated_by_a_rule: "]-Inf, 1]Aquest atribut es pot actualitzar mitjançant una regla:|]1, +Inf[Aquest atribut es pot actualitzar mitjançant les regles:"
       value_updated: Aquest valor s'actualitzarà pel projecte actual
     meta:
       published_version: Versió publicada

@@ -3,6 +3,12 @@ pim_enrich:
     attribute:
       property:
         is_read_only: Només de lectura
+pimee_import_export:
+  entity:
+    job_instance:
+      flash:
+        update:
+          fail_empty_permission: Heu de seleccionar almenys un treball autoritzat per editar
 pimee_enrich.entity.category:
   module:
     permissions:

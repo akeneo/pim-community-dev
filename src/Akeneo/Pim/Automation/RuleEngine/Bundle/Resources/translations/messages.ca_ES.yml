@@ -6,11 +6,16 @@ pimee_catalog_rule:
       title: Regles
       column:
         label: Etiqueta
+        impacted_product_count:
+          label: Productes afectats
+          count: '{0,1}%count% producte afectat|]1,Inf[%count% productes afectats'
+          no_yet_calculated: Encara no s'ha calculat
         tags:
           label: Accions
         priority: Prioritat
         status: Estat
       mass_edit_action:
+        impacted_product_count: Calcula els productes afectats
         execute: Executar
         delete: Suprimir
   condition:
@@ -36,6 +41,7 @@ pimee_catalog_rule:
       edit_permissions: Edita les regles
       view_permissions: Veure regles
       delete_permissions: Eliminar regles
+      impacted_product_count_permissions: Calcula el nombre de productes afectats per les normes
       create_permissions: Crear regles
       execute_permissions: Executar regles
   attribute:
@@ -48,12 +54,41 @@ pimee_catalog_rule:
   product:
     history: Regla "%rule%" aplicada
   steps:
+    product_rule_definition_reader.title: "\nLector d'importació de normes de producte"
+    rule_definition_processor.title: Processador d'importació de normes de producte
+    product_rule_definition_writer.title: Escriptor d'importació de regles de producte
     rules_execution.title: Execució de les regles
+  notification:
+    execute_rules:
+      success: S'ha completat l'execució de les regles
+      warning: Execució de la regla(s) completa amb advertiment(s)
+      error: S'ha produït un error durant l'execució de les regles.
+    mass_edit_rule:
+      success: Càlcul dels productes afectats per les normes acabades
+      error: S'ha produït un error durant el càlcul del nombre de productes afectats per les normes
+  datetime:
+    now: ara
+    relative_date:
+      minute: ']-Inf, -1[%absolute_count% fa minuts|{-1}Fa 1 minut|{1}en 1 minut|]1, +Inf[en %absolute_count% minuts'
+      hour: ']-Inf, -1[%absolute_count% fa hores|{-1}Fa 1 hora|{1}en 1 hora|]1, +Inf[en %absolute_count% hores'
+      day: ']-Inf, -1[%absolute_count% fa dies|{-1}Fa 1 dia|{1}en 1 dia|]1, +Inf[en %absolute_count% dies'
+      week: ']-Inf, -1[%absolute_count% fa setmanes|{-1}Fa 1 setmana|{1}en 1 setmana|]1, +Inf[en %absolute_count% setmanes'
+      month: ']-Inf, -1[%absolute_count% fa mesos|{-1}Fa 1 mes|{1}en 1 mes|]1, +Inf[en %absolute_count% mesos'
+      year: ']-Inf, -1[%absolute_count% anys enrere|{-1}Fa 1 any|{1}en 1 any|]1, +Inf[en %absolute_count% anys'
+  status:
+    enabled: Habilitat
+    disabled: Deshabilitat
 btn:
   Execute rules: Executar regles
 job_execution:
   summary:
     rule_calculated: Quantitat de regles
+    read_rules: llegir regles
+    selected_entities: productes /models de productes seleccionats
+    skipped_invalid: productes / models de producte omès (no vàlid)
+    updated_entities: productes / models de producte actualitzats
+    executed_rules: regles executades amb èxit
+    errored_rules: regles omeses (no vàlides)
 pim_datagrid:
   cells:
     type:
