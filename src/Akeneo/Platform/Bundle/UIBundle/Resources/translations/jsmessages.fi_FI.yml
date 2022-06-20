@@ -158,6 +158,7 @@ pim_common:
   before: Ennen
   by: tehnyt
   cancel: Peruuta
+  characters_left: ']-Inf, 1]{{ count }} merkki jäljellä|]1, Inf[{{ count }} merkkiä jäljellä'
   clear_value: Tyhjennä arvo
   close: Sulje
   code: Koodi
@@ -199,6 +200,7 @@ pim_common:
   permissions: Käyttöoikeudet
   previous: Edellinen
   properties: Ominaisuudet
+  quality_score: Laatupisteytys
   remove: Poista
   required_label: (vaadittu)
   result_count: "{0}0 tulosta|{1}1 tulos|]1, Inf[{{ itemsCount }} tulosta"
@@ -208,6 +210,7 @@ pim_common:
     search: Hae...
     no_match: Ei hakutuloksia
     load_more: Ladataan lisää tuloksia...
+  selected: "{0}Ei valittu{1}Yksi valittu]1, Inf[{{ itemsCount }} valittu"
   status: Status
   to: mihin
   type: Tyyppi
@@ -228,6 +231,8 @@ pim_common:
     DOES NOT CONTAIN: Ei sisällä
     STARTS WITH: Alkaa
     ENDS WITH: Päättyy
+    IN: Luettelossa
+    "NOT IN": Ei luettelossa
   read_more: Lue lisää
   channel: Kanava
   locale: Lokaali
@@ -270,6 +275,8 @@ pim_enrich.entity.fallback:
       discard_changes: Käsittelemäsi {{ entity }} on muuttunut. Menetät muutokset siihen, jos poistut sivulta.
       discard_changes_title: Oletko varma?
 pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} työ|]1, Inf[{{ count }} työtä"
   module:
     create:
       upload: Pudota {{ type }}-tiedosto tähän tai klikkaa selataksesi tiedostoja
