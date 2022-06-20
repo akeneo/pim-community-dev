@@ -61,7 +61,7 @@ final class DownloadFileFromStorage implements DownloadFileFromStorageInterface
             $fileExists = $storageClient->fileExists($filePath);
         } catch (\Exception $exception) {
             if (!$sourceStorage instanceof LocalStorage) {
-                throw new \RuntimeException('Check your connection settings and try again.');
+                throw new \RuntimeException('Cannot connect to the server, pleae check your connection settings and try again.');
             }
 
             throw $exception;

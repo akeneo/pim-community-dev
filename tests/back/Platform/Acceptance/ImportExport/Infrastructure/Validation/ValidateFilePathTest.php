@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AkeneoTest\Platform\Acceptance\ImportExport\Infrastructure\Validation;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\FilePath;
@@ -47,7 +49,7 @@ class ValidateFilePathTest extends AbstractValidationTest
                 '',
             ],
             'file path with bad extension' => [
-                'akeneo.job_automation.validation.file_path.unsupported_extension',
+                'akeneo.automation.validation.file_path.unsupported_extension',
                 '',
                 '/tmp/file.csv',
             ],

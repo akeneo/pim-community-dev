@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
 
 class FilePath extends Constraint
 {
-    public const UNSUPPORTED_EXTENSION = 'akeneo.job_automation.validation.file_path.unsupported_extension';
+    public const UNSUPPORTED_EXTENSION = 'akeneo.automation.validation.file_path.unsupported_extension';
 
     public function __construct(
         /** @var string[] */

@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\File;
 
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Box\Spout\Common\Entity\Row;
+use Box\Spout\Common\Exception\IOException;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\Common\Type;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
@@ -59,7 +60,13 @@ class FlatFileIterator implements FileIteratorInterface
         if (isset($options['reader_options'])) {
             $this->setReaderOptions($options['reader_options']);
         }
-        $this->reader->open($this->filePath);
+
+        try {
+            $this->reader->open($this->filePath);
+        } catch (IOException) {
+            throw new \RuntimeException('File is not readable.');
+        }
+
         $this->reader->getSheetIterator()->rewind();
 
         $sheet = $this->reader->getSheetIterator()->current();
