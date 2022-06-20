@@ -18,18 +18,12 @@ final class ContentSecurityPolicyProvider
         $this->contentSecurityPolicyProviders = $contentSecurityPolicyProviders;
     }
 
-    public function getPolicy(): ?string
+    public function getPolicy(): string
     {
         $policies = [];
         foreach ($this->contentSecurityPolicyProviders as $contentSecurityPolicyProvider) {
-            if (!empty($contentSecurityPolicyProvider->getContentSecurityPolicy())) {
-                $policies = array_merge_recursive($policies, $contentSecurityPolicyProvider->getContentSecurityPolicy());
-            }
+            $policies = array_merge_recursive($policies, $contentSecurityPolicyProvider->getContentSecurityPolicy());
         }
-
-//        if (empty($policies)) {
-//            return null;
-//        }
 
         $policiesAsString = [];
         foreach ($policies as $directive => $policy) {
