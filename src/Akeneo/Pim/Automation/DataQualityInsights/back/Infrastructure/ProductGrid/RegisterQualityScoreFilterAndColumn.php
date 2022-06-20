@@ -20,7 +20,6 @@ final class RegisterQualityScoreFilterAndColumn
 {
     private FeatureFlag $featureFlag;
 
-    // @phpstan-ignore-next-line
     private RequestParameters $requestParams;
 
     public function __construct(FeatureFlag $featureFlag, RequestParameters $requestParams)

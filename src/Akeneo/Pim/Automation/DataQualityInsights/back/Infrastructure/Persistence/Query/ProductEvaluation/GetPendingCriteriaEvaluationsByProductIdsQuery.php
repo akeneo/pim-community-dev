@@ -22,7 +22,6 @@ final class GetPendingCriteriaEvaluationsByProductIdsQuery implements GetPending
     private $dbConnection;
 
     /** @var Clock */
-    // @phpstan-ignore-next-line
     private $clock;
 
     /** @var string */

@@ -17,7 +17,6 @@ use Webmozart\Assert\Assert;
 
 final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistributionFromProductScoresQueryInterface
 {
-    // @phpstan-ignore-next-line
     private Connection $connection;
 
     private Client $elasticsearchClient;
