@@ -24,9 +24,6 @@ final class CriterionEvaluationResult
     /** @var CriterionEvaluationResultStatusCollection */
     private $statusCollection;
 
-    /** @var ChannelLocaleDataCollection */
-    private $improvableAttributes;
-
     /** @var ChannelLocaleDataCollection[] */
     private $data;
 
@@ -34,7 +31,6 @@ final class CriterionEvaluationResult
     {
         $this->rates = new CriterionRateCollection();
         $this->statusCollection = new CriterionEvaluationResultStatusCollection();
-        $this->improvableAttributes = new ChannelLocaleDataCollection();
         $this->data = [];
     }
 

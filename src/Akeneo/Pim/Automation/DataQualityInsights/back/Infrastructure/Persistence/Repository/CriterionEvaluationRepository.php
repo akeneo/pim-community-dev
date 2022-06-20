@@ -122,7 +122,7 @@ SQL;
     private function executeWithLock(string $query, array $queryParametersValues, array $queryParametersTypes): void
     {
         $value = $this->dbConnection->executeQuery('SELECT @@autocommit')->fetchAssociative();
-        if (!isset($value['@@autocommit']) && ((int) $value['@@autocommit'] !== 1 || (int) $value['@@autocommit'] !== 0)) {
+        if (!isset($value['@@autocommit']) || ((int) $value['@@autocommit'] !== 1 && (int) $value['@@autocommit'] !== 0)) {
             throw new \LogicException('Error when getting autocommit parameter from Mysql.');
         }
 

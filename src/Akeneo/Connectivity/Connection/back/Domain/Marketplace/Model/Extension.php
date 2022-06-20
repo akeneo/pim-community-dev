@@ -36,14 +36,14 @@ class Extension
 
     /**
      * @param array{
-     *     id: string,
-     *     name: string,
-     *     logo: string,
+     *     id?: string,
+     *     name?: string,
+     *     logo?: string,
      *     author: string,
      *     partner?: string,
      *     description?: string,
-     *     url: string,
-     *     categories: array<string>,
+     *     url?: string,
+     *     categories?: array<string>,
      *     certified?: bool,
      * } $values
      */
@@ -54,6 +54,19 @@ class Extension
                 throw new \InvalidArgumentException(sprintf('Missing property "%s" in given extension', $key));
             }
         }
+
+        /** @phpstan-var array{
+         *     id: string,
+         *     name: string,
+         *     logo: string,
+         *     author: string,
+         *     partner?: string,
+         *     description?: string,
+         *     url: string,
+         *     categories: array<string>,
+         *     certified?: bool,
+         * } $values
+         */
 
         $self = new self();
 

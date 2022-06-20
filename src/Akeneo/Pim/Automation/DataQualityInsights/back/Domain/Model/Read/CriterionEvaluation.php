@@ -29,12 +29,6 @@ final class CriterionEvaluation
     /** @var CriterionEvaluationResult|null */
     private $result;
 
-    /** @var \DateTimeImmutable|null */
-    private $startedAt;
-
-    /** @var \DateTimeImmutable|null */
-    private $endedAt;
-
     public function __construct(
         CriterionCode $criterionCode,
         ProductId $productId,

@@ -56,7 +56,7 @@ final class GetAllExtensionsResult
     }
 
     /**
-     * @return array{total:int, extensions:array}
+     * @return array{total:int, extensions:mixed[]}
      */
     public function normalize(): array
     {
