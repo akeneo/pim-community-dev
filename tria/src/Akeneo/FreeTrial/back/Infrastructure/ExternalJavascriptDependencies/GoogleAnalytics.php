@@ -44,10 +44,10 @@ JS;
      * @see https://developers.google.com/tag-manager/web/csp
      * @see https://rapidsec.com/csp-packages/google_analytics
      */
-    public function getContentSecurityPolicy(): ?array
+    public function getContentSecurityPolicy(): array
     {
         if (!$this->featureFlags->isEnabled('free_trial')) {
-            return null;
+            return [];
         }
 
         return [

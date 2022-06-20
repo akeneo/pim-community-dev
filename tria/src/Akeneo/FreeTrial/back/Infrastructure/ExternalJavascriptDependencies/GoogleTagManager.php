@@ -49,10 +49,10 @@ JS;
     /**
      * https://developers.heap.io/docs/web#content-security-policy-csp
      */
-    public function getContentSecurityPolicy(): ?array
+    public function getContentSecurityPolicy(): array
     {
         if (!$this->featureFlags->isEnabled('free_trial')) {
-            return null;
+            return [];
         }
 
         return [

@@ -29,10 +29,10 @@ final class Appcues implements ExternalDependencyProviderInterface, ContentSecur
     /**
      * https://docs.appcues.com/article/234-content-security-policies
      */
-    public function getContentSecurityPolicy(): ?array
+    public function getContentSecurityPolicy(): array
     {
         if (!$this->featureFlags->isEnabled('free_trial')) {
-            return null;
+            return [];
         }
 
         return [

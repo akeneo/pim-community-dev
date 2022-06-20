@@ -54,10 +54,10 @@ JS;
     /**
      * https://help.hotjar.com/hc/en-us/articles/115011640307
      */
-    public function getContentSecurityPolicy(): ?array
+    public function getContentSecurityPolicy(): array
     {
         if (!$this->featureFlags->isEnabled('free_trial')) {
-            return null;
+            return [];
         }
 
         return [

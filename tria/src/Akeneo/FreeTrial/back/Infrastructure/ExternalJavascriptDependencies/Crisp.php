@@ -20,10 +20,10 @@ final class Crisp implements ExternalDependencyProviderInterface, ContentSecurit
     /**
      * @see https://help.crisp.chat/en/article/how-to-adjust-my-csp-policy-for-crisp-content-security-policy-bs2jjq/
      */
-    public function getContentSecurityPolicy(): ?array
+    public function getContentSecurityPolicy(): array
     {
         if (!$this->featureFlags->isEnabled('free_trial')) {
-            return null;
+            return [];
         }
 
         return [
