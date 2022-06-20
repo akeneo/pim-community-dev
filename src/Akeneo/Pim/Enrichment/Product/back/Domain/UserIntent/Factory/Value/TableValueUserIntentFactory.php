@@ -27,6 +27,9 @@ class TableValueUserIntentFactory implements ValueUserIntentFactory
     public function create(string $attributeType, string $attributeCode, mixed $data): ValueUserIntent
     {
         $this->validateValueStructure($attributeCode, $data);
+        if (!\is_array($data['data'])) {
+            throw InvalidPropertyTypeException::arrayExpected($attributeCode, static::class, $data['data']);
+        }
 
         if (!is_array($data['data'])) {
             throw InvalidPropertyTypeException::arrayExpected($attributeCode, static::class, $data['data']);

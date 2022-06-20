@@ -30,6 +30,91 @@ Feature: Convert standard format to user intents
     Then there is no exception
     And I obtain all expected user intents
 
+  Scenario: Convert a change parent user intent
+    When I ask to convert standard format with a new parent
+    Then there is no exception
+    And I obtain the expected user intent
+
+  Scenario: Error when bad parent data
+    When I ask to convert standard format with an invalid parent data
+    Then there is an exception with message: Property "parent" expects a string as data, "array" given.
+
   Scenario: Error when bad family data
     When I ask to convert standard format with an invalid family data
     Then there is an exception with message: Property "family" expects a string as data, "array" given.
+
+  Scenario: Error when bad categories data
+    When I ask to convert standard format with an invalid categories data
+    Then there is an exception with message: Property "categories" expects an array as data, "string" given.
+
+  Scenario: Error when bad enabled data
+    When I ask to convert standard format with an invalid enabled data
+    Then there is an exception with message: Property "enabled" expects a boolean as data, "NULL" given.
+
+  Scenario: Error when bad associations data
+    When I ask to convert standard format with an invalid associations data
+    Then there is an exception with message: Property "associations" expects an array as data, "string" given.
+
+  Scenario: Error when bad groups data
+    When I ask to convert standard format with an invalid groups data
+    Then there is an exception with message: Property "groups" expects an array as data, "string" given.
+
+  Scenario: Error when bad boolean attribute value
+    When I ask to convert standard format with an invalid boolean attribute value
+    Then there is an exception with message: Property "a_boolean" expects a boolean as data, "string" given.
+
+  Scenario: Error when bad text attribute value
+    When I ask to convert standard format with an invalid text attribute value
+    Then there is an exception with message: Property "name" expects a string as data, "array" given.
+
+  Scenario: Error when bad textarea attribute value
+    When I ask to convert standard format with an invalid textarea attribute value
+    Then there is an exception with message: Property "a_textarea" expects a string as data, "array" given.
+
+  Scenario: Error when bad date attribute value
+    When I ask to convert standard format with an invalid date attribute value
+    Then there is an exception with message: Property "a_date" expects a string with the format "yyyy-mm-dd" as data, "september 10th" given.
+
+  Scenario: Error when bad file attribute value
+    When I ask to convert standard format with an invalid file attribute value
+    Then there is an exception with message: Property "a_file" expects a string as data, "array" given.
+
+  Scenario: Error when bad image attribute value
+    When I ask to convert standard format with an invalid image attribute value
+    Then there is an exception with message: Property "an_image" expects a string as data, "array" given.
+
+  Scenario: Error when bad metric attribute value
+    When I ask to convert standard format with an invalid measurement attribute value
+    Then there is an exception with message: Property "a_metric" expects an array as data, "integer" given.
+
+  Scenario: Error when bad metric attribute value
+    When I ask to convert standard format with a measurement without unit
+    Then there is an exception with message: Property "a_metric" expects an array with the key "unit".
+
+  Scenario: Error when bad multiselect attribute value
+    When I ask to convert standard format with an invalid simpleselect attribute value
+    Then there is an exception with message: Property "a_simpleselect" expects a string as data, "array" given.
+
+  Scenario: Error when bad multiselect attribute value
+    When I ask to convert standard format with an invalid multiselect attribute value
+    Then there is an exception with message: Property "a_multiselect" expects an array as data, "string" given.
+
+  Scenario: Error when bad price attribute value
+    When I ask to convert standard format with an invalid price attribute value
+    Then there is an exception with message: Property "a_price" expects an array as data, "integer" given.
+
+  Scenario: Error when bad table attribute value
+    When I ask to convert standard format with an invalid table attribute value
+    Then there is an exception with message: Property "a_table" expects an array as data, "string" given.
+
+  Scenario: Error when bad simple reference entity attribute value
+    When I ask to convert standard format with an invalid simple reference entity attribute value
+    Then there is an exception with message: Property "a_record" expects a string as data, "array" given.
+
+  Scenario: Error when bad multi reference entity attribute value
+    When I ask to convert standard format with an invalid multi reference entity attribute value
+    Then there is an exception with message: Property "a_record_collection" expects an array as data, "string" given.
+
+  Scenario: Error when bad multi reference entity attribute value
+    When I ask to convert standard format with an invalid asset collection attribute value
+    Then there is an exception with message: Property "an_asset_collection" expects an array as data, "string" given.
