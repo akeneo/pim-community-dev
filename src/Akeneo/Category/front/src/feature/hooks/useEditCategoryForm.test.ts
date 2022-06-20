@@ -1,11 +1,13 @@
 import {act} from 'react-test-renderer';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
-import {useCategory, useEditCategoryForm} from '@akeneo-pim-community/settings-ui';
-import {aCategory} from '../../../utils/provideCategoryHelper';
-import {saveEditCategoryForm} from '@akeneo-pim-community/settings-ui/src/infrastructure/savers';
+import { useCategory } from './useCategory';
+import { useEditCategoryForm } from './useEditCategoryForm';
+import { saveEditCategoryForm} from '../infrastructure';
+import { aCategory } from 'tests/provideCategoryHelper';
 
-jest.mock('@akeneo-pim-community/settings-ui/src/hooks/categories/useCategory');
-jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/savers/saveEditCategoryForm');
+
+jest.mock('./useCategory');
+jest.mock('../infrastructure');
 
 describe('useEditCategoryForm', () => {
   beforeEach(() => {

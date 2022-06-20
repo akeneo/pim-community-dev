@@ -3,16 +3,13 @@ import {renderHook, act} from '@testing-library/react-hooks';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {
-  BackendCategoryTree,
-  CategoryTreeModel,
-  CategoryTreeProvider,
-  useCategoryTreeNode,
-} from '@akeneo-pim-community/settings-ui';
-import {aBackendCategoryTree, aCategoryTree} from '../../../utils/provideCategoryHelper';
-import {moveCategory} from '@akeneo-pim-community/settings-ui/src/infrastructure/savers';
+import { BackendCategoryTree, CategoryTreeModel } from 'feature/models';
+import { CategoryTreeProvider } from 'feature/components';
+import { useCategoryTreeNode } from './useCategoryTreeNode';
+import { aBackendCategoryTree, aCategoryTree } from 'tests/provideCategoryHelper';
+import { moveCategory } from 'feature/infrastructure';
 
-jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/savers/moveCategory');
+jest.mock('../infrastructure');
 
 const DefaultProviders: FC<{root: CategoryTreeModel}> = ({children, root}) => (
   <DependenciesProvider>

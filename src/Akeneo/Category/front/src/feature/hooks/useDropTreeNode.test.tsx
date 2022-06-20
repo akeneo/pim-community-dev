@@ -1,15 +1,13 @@
 import React, {FC, useContext, useEffect} from 'react';
-import {DraggedNode, ReorderOnDropHandler, TreeNode, useDropTreeNode} from '../../../../../src';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {renderHook} from '@testing-library/react-hooks';
-import {
-  OrderableTreeContext,
-  OrderableTreeProvider,
-} from '../../../../../src/components/shared/providers/OrderableTreeProvider';
-import {aDraggedNode, aTreeNode} from '../../../utils/provideTreeNodeHelper';
 import {act} from 'react-test-renderer';
+import { DraggedNode, TreeNode } from 'feature/models';
+import { OrderableTreeContext, OrderableTreeProvider } from 'feature/components';
+import { ReorderOnDropHandler, useDropTreeNode } from './useDropTreeNode';
+import { aDraggedNode, aTreeNode } from 'tests/provideTreeNodeHelper';
 
 const InitDraggedNodeWrapper: FC<{draggedNode: DraggedNode | null}> = ({children, draggedNode}) => {
   const {setDraggedNode} = useContext(OrderableTreeContext);

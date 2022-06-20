@@ -1,5 +1,5 @@
-import {BackendCategoryTree, Category, CategoryTreeModel} from '@akeneo-pim-community/settings-ui';
 import {LabelCollection} from '@akeneo-pim-community/shared';
+import { BackendCategoryTree, Category, CategoryTreeModel } from 'feature/models';
 
 const aCategory = (
   code: string = 'a_category',

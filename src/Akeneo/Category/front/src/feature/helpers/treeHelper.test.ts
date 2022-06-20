@@ -1,9 +1,14 @@
-import {
-  buildNodesFromCategoryTree,
-  findLoadedDescendantsIdentifiers,
-} from '@akeneo-pim-community/settings-ui/src/helpers';
-import {aTreeNode} from '../../utils/provideTreeNodeHelper';
-import {aCategory, aCategoryTree, aCategoryTreeWithChildren} from '../../utils/provideCategoryHelper';
+// import {
+//   buildNodesFromCategoryTree,
+//   findLoadedDescendantsIdentifiers,
+// } from '@akeneo-pim-community/settings-ui/src/helpers';
+// import {aTreeNode} from '../../utils/provideTreeNodeHelper';
+// import {aCategory, aCategoryTree, aCategoryTreeWithChildren} from '../../utils/provideCategoryHelper';
+
+import { Category } from "feature/models";
+import { aCategory, aCategoryTree, aCategoryTreeWithChildren } from "tests/provideCategoryHelper";
+import { aTreeNode } from "tests/provideTreeNodeHelper";
+import { buildNodesFromCategoryTree, findLoadedDescendantsIdentifiers } from "./treeHelper";
 
 describe('treeHelper', () => {
   test('it can build a list of nodes from a root category tree', () => {
