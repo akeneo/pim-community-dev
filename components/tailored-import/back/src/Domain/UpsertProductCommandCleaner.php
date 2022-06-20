@@ -16,12 +16,14 @@ namespace Akeneo\Platform\TailoredImport\Domain;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\FamilyUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 
 class UpsertProductCommandCleaner
 {
     private const VALUE_USER_INTENTS_PATH = 'valueUserIntents';
     private const CATEGORY_USER_INTENT_PATH = 'categoryUserIntent';
     private const FAMILY_USER_INTENT_PATH = 'familyUserIntent';
+    private const ENABLED_USER_INTENT_PATH = 'enabledUserIntent';
 
     public static function removeInvalidUserIntents(
         array $violationPropertyPaths,
@@ -30,12 +32,14 @@ class UpsertProductCommandCleaner
         $valueUserIntents = self::processValueUserIntents($violationPropertyPaths, $upsertProductCommand->valueUserIntents());
         $categoryUserIntent = self::processCategoryUserIntent($violationPropertyPaths, $upsertProductCommand->categoryUserIntent());
         $familyUserIntent = self::processFamilyUserIntent($violationPropertyPaths, $upsertProductCommand->familyUserIntent());
+        $enabledUserIntent = self::processEnabledUserIntent($violationPropertyPaths, $upsertProductCommand->enabledUserIntent());
 
         return new UpsertProductCommand(
             userId: $upsertProductCommand->userId(),
             productIdentifier: $upsertProductCommand->productIdentifier(),
             familyUserIntent: $familyUserIntent,
             categoryUserIntent: $categoryUserIntent,
+            enabledUserIntent: $enabledUserIntent,
             valueUserIntents: $valueUserIntents,
         );
     }
@@ -81,5 +85,20 @@ class UpsertProductCommandCleaner
         }
 
         return $familyUserIntent;
+    }
+
+    private static function processEnabledUserIntent(array $violationPropertyPaths, ?SetEnabled $enabledUserIntent): ?SetEnabled
+    {
+        if (null === $enabledUserIntent) {
+            return null;
+        }
+
+        foreach ($violationPropertyPaths as $propertyPath) {
+            if (str_starts_with($propertyPath, self::ENABLED_USER_INTENT_PATH)) {
+                return null;
+            }
+        }
+
+        return $enabledUserIntent;
     }
 }

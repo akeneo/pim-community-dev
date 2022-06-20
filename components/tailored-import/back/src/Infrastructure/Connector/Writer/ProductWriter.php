@@ -163,11 +163,13 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
 
     private function getUserIntentCount(RowPayload $rowPayload): int
     {
-        $valueUserIntentCount = count($rowPayload->getUpsertProductCommand()->valueUserIntents());
-        $categoryUserIntentCount = null === $rowPayload->getUpsertProductCommand()->categoryUserIntent() ? 0 : 1;
-        $familyUserIntentCount = null === $rowPayload->getUpsertProductCommand()->familyUserIntent() ? 0 : 1;
+        $command = $rowPayload->getUpsertProductCommand();
+        $valueUserIntentCount = count($command->valueUserIntents());
+        $categoryUserIntentCount = null === $command->categoryUserIntent() ? 0 : 1;
+        $familyUserIntentCount = null === $command->familyUserIntent() ? 0 : 1;
+        $enabledUserIntentCount = null === $command->enabledUserIntent() ? 0 : 1;
 
-        return $valueUserIntentCount + $categoryUserIntentCount + $familyUserIntentCount;
+        return $valueUserIntentCount + $categoryUserIntentCount + $familyUserIntentCount + $enabledUserIntentCount;
     }
 
     private function calculateSkippedNoDiff(StepExecution $stepExecution): int
