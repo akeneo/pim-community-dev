@@ -19,7 +19,7 @@ const FakeCatalogEditContainer: FC<PropsWithChildren<Props>> = () => {
     return (
         <>
             <SaveButton
-                level="primary"
+                level='primary'
                 onClick={() => {
                     catalogEditRef.current && catalogEditRef.current.save();
                 }}
