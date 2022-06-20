@@ -45,6 +45,7 @@ $rules = [
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\HttpKernel',
             'Symfony\Component\Messenger',
+            'Symfony\Component\Routing',
             'Symfony\Component\Security',
             'Symfony\Component\Serializer',
             'Symfony\Component\Validator',
@@ -59,6 +60,12 @@ $rules = [
 
             // @todo remove
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+            // @todo remove CXP-1186
+            'Akeneo\Pim\Enrichment\Component\Product\Query',
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch',
+            'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
+            'Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface',
+            'Symfony\Component\OptionsResolver',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 

@@ -7,7 +7,11 @@ namespace Akeneo\Catalogs\Test\Integration;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
@@ -15,6 +19,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -162,6 +167,28 @@ abstract class IntegrationTestCase extends WebTestCase
         return $user;
     }
 
+    /**
+     * @param array<UserIntent> $intents
+     */
+    protected function createProduct(string $identifier, array $intents = [], ?int $userId = null): void
+    {
+        $bus = self::getContainer()->get('pim_enrich.product.message_bus');
+
+        if (null === $userId) {
+            $user = self::getContainer()->get('security.token_storage')->getToken()?->getUser();
+            \assert($user instanceof UserInterface);
+            $userId = $user->getId();
+        }
+
+        Assert::notNull($userId);
+
+        $command = UpsertProductCommand::createFromCollection($userId, $identifier, $intents);
+
+        $bus->dispatch($command);
+
+        self::getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+    }
+
     protected function createCatalog(string $id, string $name, string $ownerUsername): void
     {
         $commandBus = self::getContainer()->get(CommandBus::class);
@@ -170,5 +197,19 @@ abstract class IntegrationTestCase extends WebTestCase
             $name,
             $ownerUsername,
         ));
+    }
+
+    /**
+     * @todo call the command bus when there will be a command/handler for this
+     */
+    protected function enableCatalog(string $id): void
+    {
+        $connection = self::getContainer()->get(Connection::class);
+        $connection->executeQuery(
+            'UPDATE akeneo_catalog SET is_enabled = 1 WHERE id = :id',
+            [
+                'id' => Uuid::fromString($id)->getBytes(),
+            ]
+        );
     }
 }
