@@ -39,6 +39,7 @@ akeneo_data_quality_insights:
       aria_label: "Suggeriments ortogràfics per a: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
+      attributes_to_work_on: '{1}Tens <button>1 atribut</button> per treballar.|]1, 200[Teniu <button>{{ count }} atributs</button> per treballar.|[200, Inf[You tenen més de <button>{{ count }} atributs</button> per treballar.'
       list:
         has_image:
           no_data: Les col·leccions d'actius i els atributs d'imatge semblen buits, hauríeu de penjar imatges d'aquest indicador clau per destacar la qualitat dels vostres productes.
