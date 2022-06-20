@@ -78,5 +78,9 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Webhook/validators.yml');
 
         $loader->load('services.yml');
+
+        if ('test' === $container->getParameter('kernel.environment')) {
+            $loader->load('Webhook/services_test.yml');
+        }
     }
 }
