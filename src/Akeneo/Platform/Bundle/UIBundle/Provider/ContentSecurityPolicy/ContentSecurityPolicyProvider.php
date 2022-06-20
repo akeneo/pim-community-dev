@@ -22,14 +22,14 @@ final class ContentSecurityPolicyProvider
     {
         $policies = [];
         foreach ($this->contentSecurityPolicyProviders as $contentSecurityPolicyProvider) {
-            if ($contentSecurityPolicyProvider->getContentSecurityPolicy() !== null) {
+            if (!empty($contentSecurityPolicyProvider->getContentSecurityPolicy())) {
                 $policies = array_merge_recursive($policies, $contentSecurityPolicyProvider->getContentSecurityPolicy());
             }
         }
 
-        if (empty($policies)) {
-            return null;
-        }
+//        if (empty($policies)) {
+//            return null;
+//        }
 
         $policiesAsString = [];
         foreach ($policies as $directive => $policy) {
