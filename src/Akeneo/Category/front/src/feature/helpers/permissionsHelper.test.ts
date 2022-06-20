@@ -60,6 +60,7 @@ const formData: EditCategoryForm = {
   },
   errors: [],
   _token: {
+    //label: 'token',
     value: 'XFC_DnwJvzF5TsnB2-MbiPUjKqmUtZTJt0O1CTQLqMs',
     fullName: 'pim_category[_token]',
   },
@@ -80,6 +81,7 @@ const formData: EditCategoryForm = {
       choices: [],
     },
     apply_on_children: {
+      //label: '',
       value: '1',
       fullName: 'pim_category[permissions][apply_on_children]',
     },
