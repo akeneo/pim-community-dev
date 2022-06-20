@@ -58,7 +58,7 @@ abstract class IntegrationTestCase extends WebTestCase
     protected function logAs(string $username): TokenInterface
     {
         $user = self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier($username);
-        \assert(null !== $user);
+        Assert::notNull($user);
         $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         self::getContainer()->get('security.token_storage')->setToken($token);
 
@@ -155,7 +155,7 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_user.updater.user')->update($user, $userPayload);
 
         $violations = self::getContainer()->get('validator')->validate($user);
-        \assert(0 === $violations->count());
+        Assert::count($violations, 0);
 
         self::getContainer()->get('pim_user.saver.user')->save($user);
 

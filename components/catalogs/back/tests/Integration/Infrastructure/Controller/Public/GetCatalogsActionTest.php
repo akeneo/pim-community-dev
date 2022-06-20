@@ -9,7 +9,6 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -22,14 +21,12 @@ class GetCatalogsActionTest extends IntegrationTestCase
 {
     private ?KernelBrowser $client;
     private ?CommandBus $commandBus;
-    private ?TokenStorageInterface $tokenStorage;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->commandBus = self::getContainer()->get(CommandBus::class);
-        $this->tokenStorage = self::getContainer()->get(TokenStorageInterface::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
@@ -37,23 +34,20 @@ class GetCatalogsActionTest extends IntegrationTestCase
     public function testItGetsPaginatedCatalogsByOwnerUsnermae(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
-        $user = $this->tokenStorage->getToken()->getUser();
-        $username = $user->getUserIdentifier();
-
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $username,
+            'shopifi',
         ));
         $this->commandBus->execute(new CreateCatalogCommand(
             'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             'Store FR',
-            $username,
+            'shopifi',
         ));
         $this->commandBus->execute(new CreateCatalogCommand(
             '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
             'Store UK',
-            $username,
+            'shopifi',
         ));
 
         $this->client->request(
@@ -104,13 +98,10 @@ class GetCatalogsActionTest extends IntegrationTestCase
     public function testItGetsBadRequestWithWrongPagination(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
-        $user = $this->tokenStorage->getToken()->getUser();
-        $username = $user->getUserIdentifier();
-
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $username,
+            'shopifi',
         ));
 
         $this->client->request(
@@ -125,6 +116,7 @@ class GetCatalogsActionTest extends IntegrationTestCase
                 'CONTENT_TYPE' => 'application/json',
             ],
         );
+
         $response = $this->client->getResponse();
 
         Assert::assertEquals(400, $response->getStatusCode());
