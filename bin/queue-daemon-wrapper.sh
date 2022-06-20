@@ -4,10 +4,9 @@
 set -e
 
 log_as_monolog() {
-    currentDate=$(date +"%G-%m-%d %T.%N")
-    msg=$(echo "$1" | sed 's/"/\\"/g')
-    logWithMessage=$(printf '{"channel": "queue-daemon-wrapper","context": {"message": "%s"},"datetime": {"date": "%s","timezone": "Etc/UTC","timezone_type": "3"},"level": "250","level_name": "INFO"}' "${msg}" "${currentDate}")
-    echo "${logWithMessage}" >&2
+    export currentDate=$(date +"%G-%m-%d %T.%N")
+    export msg="$1"
+    php bin/json_handler.php >&2
 }
 
 catch() {
@@ -19,7 +18,7 @@ catch() {
 }
 
 start_job() {
-  bin/console $@ 2>&1 | while read line
+  bin/console $@ 2>&1 | while read -r line
   do
     log_as_monolog "$line"
   done
