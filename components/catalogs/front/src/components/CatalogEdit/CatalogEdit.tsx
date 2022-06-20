@@ -1,4 +1,4 @@
-import React, {forwardRef, PropsWithRef, useImperativeHandle} from 'react';
+import React, {forwardRef, PropsWithRef} from 'react';
 import {Edit} from './components/Edit';
 import {ErrorBoundary} from '../ErrorBoundary';
 
@@ -10,15 +10,9 @@ type Props = {
 };
 
 const CatalogEdit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id}, ref) => {
-    useImperativeHandle(ref, () => ({
-        save() {
-            console.log('Catalog ' + id + ' saved.');
-        },
-    }));
-
     return (
         <ErrorBoundary>
-            <Edit id={id} />
+            <Edit id={id} ref={ref} />
         </ErrorBoundary>
     );
 });

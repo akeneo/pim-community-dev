@@ -1,8 +1,7 @@
-import React, {FC, useCallback, useState} from 'react';
+import React, {Dispatch, FC, SetStateAction, useCallback} from 'react';
 import {getColor} from 'akeneo-design-system';
 import {Criterion, CriterionState} from './models/Criterion';
 import {Criteria} from './models/Criteria';
-import {useCatalogCriteria} from './hooks/useCatalogCriteria';
 import {AddCriterionDropdown} from './components/AddCriterionDropdown';
 import styled from 'styled-components';
 import {Empty} from './components/Empty';
@@ -15,25 +14,22 @@ const Header = styled.div`
 `;
 
 type Props = {
-    id: string;
+    criteria: Criteria;
+    setCriteria: (criteria: Criteria) => void;
 };
 
-const ProductSelection: FC<Props> = ({id}) => {
-    const backend = useCatalogCriteria(id);
-
-    const [criteria, setCriteria] = useState<Criteria>(backend);
-
+const ProductSelection: FC<Props> = ({criteria, setCriteria}) => {
     const addCriterion = useCallback(
         (criterion: Criterion<CriterionState>) => {
-            setCriteria(state => [...state, criterion]);
+            setCriteria([...criteria, criterion]);
         },
-        [setCriteria]
+        [criteria, setCriteria]
     );
 
     const updateCriterion = useCallback(
         (criterion: Criterion<CriterionState>, newState: CriterionState) => {
-            setCriteria(state =>
-                state.map(old =>
+            setCriteria(
+                criteria.map(old =>
                     criterion.id !== old.id
                         ? old
                         : {
@@ -43,14 +39,14 @@ const ProductSelection: FC<Props> = ({id}) => {
                 )
             );
         },
-        [setCriteria]
+        [criteria, setCriteria]
     );
 
     const removeCriterion = useCallback(
         (criterion: Criterion<CriterionState>) => {
-            setCriteria(state => state.filter(old => old.id !== criterion.id));
+            setCriteria(criteria.filter(old => old.id !== criterion.id));
         },
-        [setCriteria]
+        [criteria, setCriteria]
     );
 
     const list = criteria.map(criterion => {
