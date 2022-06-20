@@ -41,6 +41,7 @@ pim_title:
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Utwórz aplikację testową
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: Usuń aplikację testową
   akeneo_connectivity_connection_connect_connected_apps_open: Otwórz aplikację
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Edytuj katalog
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -138,6 +139,7 @@ akeneo_connectivity.connection:
           not_listed_on_the_appstore: Aplikacja nie jest już dostępna w sklepie z aplikacjami Akeneo. Skontaktuj się z pomocą techniczną aplikacji.
           manage_app: Zarządzaj aplikacją
           open_app: Otwórz aplikację
+          pending: Aplikacja nie jest połączona. Otwarcie aplikacji powinno rozwiązać problemy z połączeniem.
         flash:
           error: Przepraszamy, podczas pobierania listy połączonych aplikacji wystąpił błąd.
       edit:
@@ -145,6 +147,7 @@ akeneo_connectivity.connection:
         tabs:
           settings: Ustawienia
           permissions: Uprawnienia
+          catalogs: Katalogi
           error_monitoring: Monitorowanie błędu
         settings:
           monitoring:
@@ -152,6 +155,7 @@ akeneo_connectivity.connection:
           authorizations:
             title: autoryzacje
             information: 'Aby dowiedzieć się więcej o autoryzacjach aplikacji, przejdź na stronę {{ link }}.'
+            no_access_to_product_information: 'Ta połączona aplikacja nie ma dostępu do informacji o produktach.'
             information_link_anchor: Artykuł w Centrum Pomocy
             no_scope: Nie zażądano żadnych określonych autoryzacji.
           authentication:
@@ -171,6 +175,9 @@ akeneo_connectivity.connection:
               1: Aby śledzić błędy w tej aplikacji,
               2: aktywuj monitorowanie
               3: w ustawieniach.
+        catalogs:
+          edit:
+            not_found: Nie znaleziono katalogu
         flash:
           load_permissions_error.title: 'Nie można załadować zapisanych uprawnień dotyczących obiektu {{ entity }}.'
           load_permissions_error.description: Spróbuj ponownie później.
@@ -256,8 +263,10 @@ akeneo_connectivity.connection:
           reference_entity_record: rekordy obiektów referencyjnych
           asset_families: rodziny zasobów
           assets: zasoby
+          catalogs: katalogi
         new: NOWOŚĆ
       error:
+        sub_text: Skontaktuj się ze wsparciem technicznym aplikacji.
         app_not_found: Atrybut client_id nie odpowiada żadnej istniejącej aplikacji.
       constraint:
         client_id:
@@ -270,6 +279,8 @@ akeneo_connectivity.connection:
         redirect_uri:
           not_blank: Atrybut redirect_uri jest wymagany.
           must_be_url: Atrybut redirect_uri nie jest prawidłowym adresem URL.
+        scope:
+          too_long: Lista zakresu może zawierać maksymalnie 1000 znaków.
   connections: Połączenia
   secondary_actions:
     title: Inne działania
