@@ -18,9 +18,9 @@ class ProductCompletenessNormalizer implements NormalizerInterface, CacheableSup
     /**
      * {@inheritdoc}
      *
-     * @var ProductCompletenessWithMissingAttributeCodes $completeness
+     * @param  ProductCompletenessWithMissingAttributeCodes $completeness
      */
-    public function normalize($completeness, $format = null, array $context = [])
+    public function normalize($completeness, $format = null, array $context = []): array
     {
         return [
             'required' => $completeness->requiredCount(),
@@ -34,7 +34,7 @@ class ProductCompletenessNormalizer implements NormalizerInterface, CacheableSup
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductCompletenessWithMissingAttributeCodes && $format === 'internal_api';
     }
