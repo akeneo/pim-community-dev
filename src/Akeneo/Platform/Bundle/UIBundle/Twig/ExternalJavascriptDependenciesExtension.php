@@ -26,14 +26,8 @@ final class ExternalJavascriptDependenciesExtension extends \Twig\Extension\Abst
         ];
     }
 
-    public function getExternalJavascriptDependencies(): ?string
+    public function getExternalJavascriptDependencies(): string
     {
-        $scripts = $this->dependenciesProvider->getScripts();
-
-        if (null === $scripts) {
-            return null;
-        }
-
-        return join("\n", $scripts);
+        return join("\n", $this->dependenciesProvider->getScripts());
     }
 }
