@@ -26,7 +26,7 @@ class JobExecutionRowHydrator
             : null;
 
         $tracking = $this->jobExecutionTrackingHydrator->hydrate(
-            (int) $jobExecution['current_step_number'] ?? 0,
+            (int) ($jobExecution['current_step_number'] ?? 0),
             (int) $jobExecution['step_count'],
             json_decode($jobExecution['steps'], true),
         );

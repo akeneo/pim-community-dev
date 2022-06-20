@@ -21,7 +21,7 @@ interface EventsApiDebugRepository
      *  level: string,
      *  message: string,
      *  connection_code: ?string,
-     *  context: array
+     *  context: mixed[]
      * } $log
      */
     public function persist(array $log): void;

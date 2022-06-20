@@ -51,7 +51,7 @@ class UniqueValueValidator extends ConstraintValidator
      *
      * The constraint guesser should be re-worked in a future version to avoid such behavior
      *
-     * @param ValueInterface $value
+     * @param ?ValueInterface $value
      * @param Constraint     $constraint
      *
      * @see \Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\UniqueValueGuesser

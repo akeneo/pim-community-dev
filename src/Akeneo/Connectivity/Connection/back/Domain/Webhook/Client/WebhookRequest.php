@@ -53,7 +53,7 @@ class WebhookRequest
      *      author: string,
      *      author_type: string,
      *      pim_source: string,
-     *      data: array
+     *      data: mixed[]
      *  }>
      * }
      */

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
@@ -119,6 +120,7 @@ class ReferenceDataRepository extends EntityRepository implements
      */
     private function getReferenceDataLabelProperty()
     {
+        /** @var ReferenceDataInterface $referenceDataClass */
         $referenceDataClass = $this->getEntityName();
 
         return $referenceDataClass::getLabelProperty();
