@@ -20,7 +20,6 @@ define([
   'akeneo/communication-channel',
   'pim/media-url-generator',
   'pim/template/menu/user-navigation',
-  'pim/free-trial/template/menu/user-navigation',
   'pim/feature-flags',
 ], function (
   _,
@@ -32,12 +31,11 @@ define([
   CommunicationChannel,
   MediaUrlGenerator,
   template,
-  templateFreeTrial,
   FeatureFlags
 ) {
   return BaseForm.extend({
     className: 'AknTitleContainer-userMenu',
-    template: _.template(!FeatureFlags.isEnabled('free_trial') ? template : templateFreeTrial),
+    template: _.template(template),
     events: {
       'click .logout': 'logout',
       'click .user-account': 'userAccount',
@@ -48,6 +46,11 @@ define([
      */
     initialize: function (config) {
       this.config = config.config;
+
+      if (FeatureFlags.isEnabled('free_trial')) {
+        const freeTrialTemplate = require('pim/free-trial/template/menu/user-navigation');
+        this.template = _.template(freeTrialTemplate);
+      }
 
       BaseForm.prototype.initialize.apply(this, arguments);
     },
