@@ -13,6 +13,8 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Catalogs\Infrastructure\Persistence\FindOneCatalogByIdQuery
  */
 class FindOneCatalogByIdQueryTest extends IntegrationTestCase
 {
