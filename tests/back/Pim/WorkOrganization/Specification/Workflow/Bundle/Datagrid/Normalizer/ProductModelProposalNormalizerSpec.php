@@ -45,7 +45,8 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
         ProductModelDraft $productModelProposal,
         WriteValueCollection $valueCollection,
         ProductModelInterface $productModel,
-        ValueInterface $value
+        ValueInterface $value,
+        ValueInterface $value2
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
@@ -57,7 +58,8 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
         $created = new \DateTime('2017-01-01T01:03:34+01:00');
         $changes = [
             'values' => [
-                'text' => [['locale' => null, 'scope' => null, 'data' => 'my text']]
+                'text' => [['locale' => null, 'scope' => null, 'data' => 'my text']],
+                12345 => [['locale' => null, 'scope' => null, 'data' => 'my text with int attribute code']]
             ]
         ];
         $datagridNormalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01');
@@ -71,16 +73,28 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
         $productModelProposal->getEntityWithValue()->willReturn($productModel);
         $productModelProposal->getCreatedAt()->willReturn($created);
         $productModelProposal->getValues()->willReturn($valueCollection);
-
         $productModelProposal->getChanges()->willReturn($changes);
-        $attribute = new Attribute('text', 'pim_catalog_text', [], false, false, null, null, true, 'pim_catalog_text', []);
-        $getAttributesQuery->forCode('text')->willReturn($attribute);
-        $valueFactory->createByCheckingData($attribute, null, null, 'my text')->willReturn($value);
+
+        $attributeText = new Attribute('text', 'pim_catalog_text', [], false, false, null, null, true, 'pim_catalog_text', []);
+        $textAttributeWithIntCode = new Attribute('12345', 'pim_catalog_text', [], false, false, null, null, true, 'pim_catalog_text', []);
+
+        $getAttributesQuery->forCode('text')->willReturn($attributeText);
+        $getAttributesQuery->forCode('12345')->willReturn($textAttributeWithIntCode);
+
+        $valueFactory->createByCheckingData($attributeText, null, null, 'my text')->willReturn($value);
         $value->getAttributeCode()->willReturn('text');
         $value->getScopeCode()->willReturn(null);
         $value->getLocaleCode()->willReturn(null);
+
+        $valueFactory->createByCheckingData($textAttributeWithIntCode, null, null, 'my text with int attribute code')->willReturn($value2);
+        $value2->getAttributeCode()->willReturn('12345');
+        $value2->getScopeCode()->willReturn(null);
+        $value2->getLocaleCode()->willReturn(null);
+
         $valueCollection = new WriteValueCollection();
         $valueCollection->add($value->getWrappedObject());
+        $valueCollection->add($value2->getWrappedObject());
+
         $standardNormalizer->normalize(
             $valueCollection,
             'standard',
@@ -91,6 +105,13 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
                         'locale' => null,
                         'scope'  => null,
                         'data'   => 'my text',
+                    ],
+                ],
+                '12345' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'my text with int attribute code',
                     ],
                 ]
             ]
@@ -106,6 +127,13 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
                             'locale' => null,
                             'scope'  => null,
                             'data'   => 'my text',
+                        ],
+                    ],
+                    '12345' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => 'my text with int attribute code',
                         ],
                     ],
                 ],

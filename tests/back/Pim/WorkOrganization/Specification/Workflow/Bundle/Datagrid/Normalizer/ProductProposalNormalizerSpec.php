@@ -42,7 +42,8 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         ProductDraft $productProposal,
         WriteValueCollection $valueCollection,
         ProductInterface $product,
-        ValueInterface $value
+        ValueInterface $value,
+        ValueInterface $value2
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
@@ -55,12 +56,14 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $changes = [
             'values' => [
                 'text' => [['locale' => null, 'scope' => null, 'data' => 'my text']],
+                12345 => [['locale' => null, 'scope' => null, 'data' => 'my text with int attribute code']],
                 'description' => [['locale' => null, 'scope' => null, 'data' => null]]
             ]
         ];
         $datagridNormalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01');
 
         $productProposal->getReviewStatusForChange('text', null, null)->willReturn('to_review');
+        $productProposal->getReviewStatusForChange(12345, null, null)->willReturn('to_review');
         $productProposal->getId()->willReturn(1);
         $productProposal->getAuthor()->willReturn('Mary');
         $productProposal->getAuthorLabel()->willReturn('Mary Smith');
@@ -73,31 +76,45 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $productProposal->getChanges()->willReturn($changes);
 
         $textAttribute = new Attribute('text', 'pim_catalog_text', [], false, false, null, null, false, 'pim_catalog_text', []);
+        $textAttributeWithIntCode = new Attribute('12345', 'pim_catalog_text', [], false, false, null, null, false, 'pim_catalog_text', []);
         $descriptionAttribute = new Attribute('description', 'pim_catalog_text', [], false, false, null, null, false, 'pim_catalog_text', []);
 
         $getAttributes->forCode('text')->willReturn($textAttribute);
+        $getAttributes->forCode('12345')->willReturn($textAttributeWithIntCode);
         $getAttributes->forCode('description')->willReturn($descriptionAttribute);
 
         $valueFactory->createByCheckingData($textAttribute, null, null, 'my text')->willReturn($value);
-        $valueFactory->createByCheckingData($descriptionAttribute, Argument::cetera())->shouldNotBeCalled();
         $value->getAttributeCode()->willReturn('text');
         $value->getScopeCode()->willReturn(null);
         $value->getLocaleCode()->willReturn(null);
+
+        $valueFactory->createByCheckingData($textAttributeWithIntCode, null, null, 'my text with int attribute code')->willReturn($value2);
+        $value2->getAttributeCode()->willReturn('12345');
+        $value2->getScopeCode()->willReturn(null);
+        $value2->getLocaleCode()->willReturn(null);
+
+        $valueFactory->createByCheckingData($descriptionAttribute, Argument::cetera())->shouldNotBeCalled();
+
         $product->getIdentifier()->willReturn(2);
+
         $valueCollection = new WriteValueCollection();
         $valueCollection->add($value->getWrappedObject());
+        $valueCollection->add($value2->getWrappedObject());
+
         $standardNormalizer->normalize(
             $valueCollection,
             'standard',
             $context
         )->willReturn([
             'text' => [['locale' => null, 'scope'  => null, 'data'   => 'my text']],
+            '12345' => [['locale' => null, 'scope'  => null, 'data'   => 'my text with int attribute code']],
         ]);
 
         $this->normalize($productProposal, 'datagrid', $context)->shouldReturn(
             [
                 'changes' => [
                     'text' => [['locale' => null, 'scope'  => null, 'data'   => 'my text']],
+                    '12345' => [['locale' => null, 'scope'  => null, 'data'   => 'my text with int attribute code']],
                     'description' => [['data' => null, 'locale' => null, 'scope' => null]],
                 ],
                 'createdAt' => '2017-01-01',
