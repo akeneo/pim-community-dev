@@ -1,7 +1,4 @@
-import React, {FC, useContext, useEffect} from 'react';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {ThemeProvider} from 'styled-components';
-import {pimTheme} from 'akeneo-design-system';
+import {FC, useContext, useEffect} from 'react';
 import {renderHook} from '@testing-library/react-hooks';
 import {act} from 'react-test-renderer';
 import { DraggedNode, TreeNode } from 'feature/models';
@@ -17,14 +14,11 @@ const InitDraggedNodeWrapper: FC<{draggedNode: DraggedNode | null}> = ({children
 
   return <>{children}</>;
 };
+
 const DefaultProviders: FC<{draggedNode: DraggedNode | null}> = ({children, ...context}) => (
-  <DependenciesProvider>
-    <ThemeProvider theme={pimTheme}>
-      <OrderableTreeProvider isActive={true}>
-        <InitDraggedNodeWrapper {...context}>{children}</InitDraggedNodeWrapper>
-      </OrderableTreeProvider>
-    </ThemeProvider>
-  </DependenciesProvider>
+  <OrderableTreeProvider isActive={true}>
+    <InitDraggedNodeWrapper {...context}>{children}</InitDraggedNodeWrapper>
+  </OrderableTreeProvider>
 );
 
 const renderUseDropTreeNode = (

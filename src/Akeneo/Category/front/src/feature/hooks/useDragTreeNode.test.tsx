@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import {FC} from 'react';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {renderHook} from '@testing-library/react-hooks';
@@ -7,22 +7,11 @@ import { OrderableTreeProvider } from 'feature/components';
 import { TreeNode } from 'feature/models';
 import { useDragTreeNode } from './useDragTreeNode';
 import { aTreeNode } from 'tests/provideTreeNodeHelper';
-import { MicroFrontendDependenciesProvider, Routes, Translations } from '@akeneo-pim-community/shared';
-// import {routes} from '../../routes.json';
-// import translations from '../../translations.json';
-
-const routes: Routes = {
-  pim_user_user_rest_get_current: {tokens: []},
-  pim_user_security_rest_get: {tokens: []},
-}
 
 const DefaultProviders: FC<{orderable: boolean}> = ({children, orderable}) => (
-//  <MicroFrontendDependenciesProvider  routes={routes as Routes} translations={translations as Translations}>
-<MicroFrontendDependenciesProvider  routes={routes} translations={{locale:'en-US', messages: {}}}>
-<ThemeProvider theme={pimTheme}>
-      <OrderableTreeProvider isActive={orderable}>{children}</OrderableTreeProvider>
-    </ThemeProvider>
-  </MicroFrontendDependenciesProvider>
+  <ThemeProvider theme={pimTheme}>
+    <OrderableTreeProvider isActive={orderable}>{children}</OrderableTreeProvider>
+  </ThemeProvider>
 );
 
 const renderUseDragTreeNode = (node: TreeNode<any> | undefined, index: number, orderable: boolean) => {
