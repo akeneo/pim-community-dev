@@ -19,4 +19,5 @@ const useCategory = (
   return [categoryData, load, status, error];
 };
 
-export {useCategory, EditCategoryForm};
+export {useCategory};
+export type {EditCategoryForm};

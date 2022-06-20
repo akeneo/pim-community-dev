@@ -3,3 +3,5 @@ coverage
 routes.json
 translations.json
 .eslintcache
+lib
+tsconfig.build.tsbuildinfo

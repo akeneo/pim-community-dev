@@ -43,7 +43,7 @@
     "category:unit": "yarn workspace @akeneo-pim-community/category test:unit:run",
     "packages:unit": "yarn workspace @akeneo-pim-community/shared test:unit:run && yarn workspace @akeneo-pim-community/measurement test:unit:run && yarn workspace @akeneo-pim-community/process-tracker test:unit:run && yarn workspace @akeneo-pim-community/catalog-volume-monitoring test:unit:run && yarn workspace @akeneo-pim-community/category test:unit:run",
     "packages:lint:check": "yarn shared:lint:check && yarn measurement:lint:check && yarn process-tracker:lint:check && yarn catalog-volume-monitoring:lint:check && yarn config:lint:check",
-    "packages:build": "yarn dsm:build && yarn shared:build && yarn measurement:build && yarn catalog-volume-monitoring:build && yarn config:build && yarn process-tracker:build  && yarn catalogs:build",
+    "packages:build": "yarn dsm:build && yarn shared:build && yarn measurement:build && yarn catalog-volume-monitoring:build && yarn category:build && yarn config:build && yarn process-tracker:build  && yarn catalogs:build",
     "test:e2e:open": "cypress open",
     "test:e2e:run": "cypress run"
   },
