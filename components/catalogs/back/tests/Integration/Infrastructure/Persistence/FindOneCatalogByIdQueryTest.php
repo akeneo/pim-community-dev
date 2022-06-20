@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Infrastructure\Persistence\FindOneCatalogByIdQuery;
-use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
@@ -19,7 +17,6 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 class FindOneCatalogByIdQueryTest extends IntegrationTestCase
 {
     private ?FindOneCatalogByIdQuery $query;
-    private ?CommandBus $commandBus;
 
     public function setUp(): void
     {
@@ -28,17 +25,25 @@ class FindOneCatalogByIdQueryTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
 
         $this->query = self::getContainer()->get(FindOneCatalogByIdQuery::class);
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
     }
 
     public function testItFindsTheCatalog(): void
     {
         $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $this->commandBus->execute(new CreateCatalogCommand($id, 'Store US', 'test'));
+
+        $this->createCatalog($id, 'Store US', 'test');
+        $defaultCriteria = [
+            [
+                'field' => 'status',
+                'operator' => '=',
+                'value' => true,
+            ],
+        ];
 
         $result = $this->query->execute($id);
-        $expected = new Catalog($id, 'Store US', 'test', false);
+
+        $expected = new Catalog($id, 'Store US', 'test', false, $defaultCriteria);
 
         $this->assertEquals($expected, $result);
     }

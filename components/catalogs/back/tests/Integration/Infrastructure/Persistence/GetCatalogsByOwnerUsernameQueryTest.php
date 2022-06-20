@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogsByOwnerUsernameQuery;
-use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
@@ -19,7 +17,6 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 class GetCatalogsByOwnerUsernameQueryTest extends IntegrationTestCase
 {
     private ?GetCatalogsByOwnerUsernameQuery $query;
-    private ?CommandBus $commandBus;
 
     public function setUp(): void
     {
@@ -28,7 +25,6 @@ class GetCatalogsByOwnerUsernameQueryTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
 
         $this->query = self::getContainer()->get(GetCatalogsByOwnerUsernameQuery::class);
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
     }
 
     public function testItGetsPaginatedCatalogsByOwnerUsername(): void
@@ -39,37 +35,29 @@ class GetCatalogsByOwnerUsernameQueryTest extends IntegrationTestCase
         $idFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
         $idUK = '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d';
         $idJP = '34478398-d77b-44d6-8a71-4d9ba4cb2c3b';
-        $this->commandBus->execute(new CreateCatalogCommand(
-            $idUS,
-            'Store US',
-            'owner',
-        ));
-        $this->commandBus->execute(new CreateCatalogCommand(
-            $idFR,
-            'Store FR',
-            'owner',
-        ));
-        $this->commandBus->execute(new CreateCatalogCommand(
-            $idJP,
-            'Store JP',
-            'another_user',
-        ));
-        $this->commandBus->execute(new CreateCatalogCommand(
-            $idUK,
-            'Store UK',
-            'owner',
-        ));
+
+        $this->createCatalog($idUS, 'Store US', 'owner');
+        $this->createCatalog($idFR, 'Store FR', 'owner');
+        $this->createCatalog($idJP, 'Store JP', 'another_user');
+        $this->createCatalog($idUK, 'Store UK', 'owner');
+        $defaultCriteria = [
+            [
+                'field' => 'status',
+                'operator' => '=',
+                'value' => true,
+            ],
+        ];
 
         $resultFirstPage = $this->query->execute('owner', 0, 2);
         $expectedFirstPage = [
-            new Catalog($idUK, 'Store UK', 'owner', false),
-            new Catalog($idUS, 'Store US', 'owner', false),
+            new Catalog($idUK, 'Store UK', 'owner', false, $defaultCriteria),
+            new Catalog($idUS, 'Store US', 'owner', false, $defaultCriteria),
         ];
         $this->assertEquals($expectedFirstPage, $resultFirstPage);
 
         $resultSecondPage = $this->query->execute('owner', 2, 2);
         $expectedSecondPage = [
-            new Catalog($idFR, 'Store FR', 'owner', false),
+            new Catalog($idFR, 'Store FR', 'owner', false, $defaultCriteria),
         ];
         $this->assertEquals($expectedSecondPage, $resultSecondPage);
     }

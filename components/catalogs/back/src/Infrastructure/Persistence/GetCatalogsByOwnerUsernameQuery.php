@@ -12,6 +12,7 @@ use Doctrine\DBAL\Types\Types;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @phpstan-import-type ProductSelectionCriterion from Catalog
  */
 class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQueryInterface
 {
@@ -30,6 +31,7 @@ class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQuery
                 BIN_TO_UUID(catalog.id) AS id,
                 catalog.name,
                 catalog.is_enabled,
+                catalog.product_selection_criteria,
                 oro_user.username AS owner_username
             FROM akeneo_catalog catalog
             JOIN oro_user ON oro_user.id = catalog.owner_id
@@ -38,7 +40,7 @@ class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQuery
             LIMIT :offset, :limit
         SQL;
 
-        /** @var array<array{id: string, name: string, owner_username: string, is_enabled: string}> $rows */
+        /** @var array<array{id: string, name: string, owner_username: string, is_enabled: string, product_selection_criteria: string}> $rows */
         $rows = $this->connection->executeQuery(
             $query,
             [
@@ -57,6 +59,8 @@ class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQuery
             $row['name'],
             $row['owner_username'],
             (bool) $row['is_enabled'],
+            /** @var array<ProductSelectionCriterion> $criteria */
+            $criteria = \json_decode($row['product_selection_criteria'], true),
         ), $rows);
     }
 }
