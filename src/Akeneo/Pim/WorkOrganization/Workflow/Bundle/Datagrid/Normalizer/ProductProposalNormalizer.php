@@ -108,6 +108,7 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
         $valueCollection = new WriteValueCollection();
 
         foreach ($changes['values'] as $code => $changeset) {
+            $code = (string) $code;
             $attribute = $this->getAttributesQuery->forCode($code);
             foreach ($changeset as $index => $change) {
                 if (true === $this->isChangeDataNull($change['data'])) {
