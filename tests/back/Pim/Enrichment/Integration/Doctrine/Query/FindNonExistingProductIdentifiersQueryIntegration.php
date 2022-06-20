@@ -2,7 +2,6 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Test\Integration\TestCase;
@@ -40,17 +39,11 @@ class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
      */
     public function it_returns_the_product_identifiers_that_does_not_exists()
     {
-        $existingProductIdentifiers = [
-            'product_1',
-            'product_2',
-            'product_3',
-            'product_4',
-            'product_5',
-        ];
-
-        foreach ($existingProductIdentifiers as $productIdentifier) {
-            $this->createProduct($productIdentifier);
-        }
+        $this->createProduct('product_1');
+        $this->createProduct('product_2');
+        $this->createProduct('product_3');
+        $this->createProduct('product_4');
+        $this->createProduct('product_5');
 
         $lookupProductIdentifiers = [
             'product_1',
@@ -80,9 +73,6 @@ class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
             userIntents: []
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     protected function getUserId(string $username): int

@@ -99,7 +99,6 @@ class MediaAttributeSetterIntegration extends TestCase
     {
         $attributeName = 'a_localizable_scopable_image';
 
-        //The value for attribute a_localizable_scopable_image is being updated multiple times
         $userIntents = [
             new SetImageValue($attributeName, 'tablet', 'fr_FR', $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png')),
             new SetImageValue($attributeName, 'tablet', 'fr_FR', $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png')),
@@ -112,6 +111,9 @@ class MediaAttributeSetterIntegration extends TestCase
                 'data'   => 'd/5/e/1/d5e1aeb5149a8a721e567952c895d20ffef8c6d9_SNKRS_1R.png',
             ],
         ];
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('The value for attribute a_localizable_scopable_image is being updated multiple times');
 
         $this->assertCommandMedia($userIntents, $result, $attributeName);
     }

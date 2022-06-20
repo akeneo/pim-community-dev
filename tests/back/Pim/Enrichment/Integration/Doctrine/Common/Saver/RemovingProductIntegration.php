@@ -2,13 +2,11 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Common\Saver;
 
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -23,8 +21,6 @@ class RemovingProductIntegration extends TestCase
 
     /** @var Client */
     private $esProductAndProductModelClient;
-    private ProductRepositoryInterface $productRepository;
-    protected MessageBusInterface $messageBus;
 
     /**
      * {@inheritdoc}
@@ -34,20 +30,11 @@ class RemovingProductIntegration extends TestCase
         parent::setUp();
 
         $this->esProductAndProductModelClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
-        $this->messageBus = $this->get('pim_enrich.product.message_bus');
-        $this->productRepository = $this->get('pim_catalog.repository.product');
     }
 
     public function testRemovingProductOnUnitaryRemove()
     {
-        $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: 'bat',
-            userIntents: []
-        );
-        $this->messageBus->dispatch($command);
-
-        $product = $this->productRepository->findOneByIdentifier('bat');
+        $product = $this->createProduct('bat');
         $productUuid = $product->getUuid();
 
         $this->get('pim_catalog.remover.product')->remove($product);
@@ -57,16 +44,10 @@ class RemovingProductIntegration extends TestCase
 
     public function testRemovingProductsOnBulkRemove()
     {
-        $products = [];
-        foreach (['foo', 'bar', 'baz'] as $identifier) {
-            $products[] = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        }
 
-        $this->get('pim_catalog.saver.product')->saveAll($products);
-
-        $productFoo = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
-        $productBar = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bar');
-        $productBaz = $this->get('pim_catalog.repository.product')->findOneByIdentifier('baz');
+        $productFoo = $this->createProduct('foo');
+        $productBar = $this->createProduct('bar');
+        $productBaz = $this->createProduct('baz');
         $productFooUuid = $productFoo->getUuid();
         $productBarUuid = $productBar->getUuid();
         $productBazUuid = $productBaz->getUuid();
@@ -110,5 +91,17 @@ class RemovingProductIntegration extends TestCase
         Assert::assertNotNull($id);
 
         return \intval($id);
+    }
+
+    private function createProduct(string $identifier)
+    {
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier, //'bat',
+            userIntents: []
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 }

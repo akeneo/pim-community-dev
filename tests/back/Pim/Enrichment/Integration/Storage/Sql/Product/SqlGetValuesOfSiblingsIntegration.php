@@ -52,7 +52,10 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
 
     public function test_that_it_gets_the_siblings_values_of_a_new_variant_product()
     {
-        $variantProduct = $this->createProduct('new_identifier', [new ChangeParent('sub_sweat_option_a')]);
+        $variantProduct = $this->createProduct('new_identifier', [
+            new ChangeParent('sub_sweat_option_a'),
+            new SetBooleanValue('a_yes_no', null, null, false)
+        ]);
 
         $valuesOfSiblings = $this->getValuesOfSiblings($variantProduct);
         Assert::assertCount(2, $valuesOfSiblings);
@@ -179,9 +182,6 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
             userIntents: $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }

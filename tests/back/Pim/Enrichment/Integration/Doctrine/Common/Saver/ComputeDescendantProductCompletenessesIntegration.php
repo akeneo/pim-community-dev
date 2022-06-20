@@ -9,6 +9,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use AkeneoTest\Pim\Enrichment\Integration\Completeness\AbstractCompletenessTestCase;
@@ -25,13 +28,34 @@ class ComputeDescendantProductCompletenessesIntegration extends AbstractComplete
 {
     public function test_completeness_is_updated_after_product_model_save()
     {
-        $productModel = $this->createProductModel([
-            'code' => 'pm',
-            'family_variant' => 'familyVariantA1',
-        ]);
+        $productModel = $this->createProductModel(
+            [
+                'code' => 'root_pm',
+                'family_variant' => 'familyVariantA1',
+                'values' => []
+            ]
+        );
+        $this->createProductModel(
+            [
+                'code' => 'sub_pm_A',
+                'family_variant' => 'familyVariantA1',
+                'parent' => 'root_pm',
+                'values' => [
+                    'a_simple_select' => [
+                        'data' => [
+                            'data' => 'optionA',
+                            'locale' => null,
+                            'scope' => null,
+                        ],
+                    ],
+                ],
+            ]
+        );
+
         $product = $this->createProduct('p', [
-            new ChangeParent('pm'),
-            new SetTextValue('a_text', null, null, 'pouet')
+            new SetFamily('familyA'),
+            new ChangeParent('sub_pm_A'),
+            new SetBooleanValue('a_yes_no', null, null, true),
         ]);
         $completenessBeforeSave = $this->getCompletenessByLocaleCode($product, 'en_US');
 
@@ -60,13 +84,34 @@ class ComputeDescendantProductCompletenessesIntegration extends AbstractComplete
             'code' => 'pm1',
             'family_variant' => 'familyVariantA1',
         ]);
-        $productModel2 = $this->createProductModel([
-            'code' => 'pm2',
-            'family_variant' => 'familyVariantA1',
-        ]);
+
+        $productModel2 = $this->createProductModel(
+            [
+                'code' => 'root_pm',
+                'family_variant' => 'familyVariantA1',
+                'values' => []
+            ]
+        );
+        $this->createProductModel(
+            [
+                'code' => 'sub_pm_A',
+                'family_variant' => 'familyVariantA1',
+                'parent' => 'root_pm',
+                'values' => [
+                    'a_simple_select' => [
+                        'data' => [
+                            'data' => 'optionA',
+                            'locale' => null,
+                            'scope' => null,
+                        ],
+                    ],
+                ],
+            ]
+        );
         $product = $this->createProduct('p', [
-            new ChangeParent('pm1'),
-            new SetTextValue('a_text', null, null, 'pouet')
+            new SetFamily('familyA'),
+            new ChangeParent('sub_pm_A'),
+            new SetBooleanValue('a_yes_no', null, null, true),
         ]);
         $completenessBeforeSave = $this->getCompletenessByLocaleCode($product, 'en_US');
 
@@ -123,7 +168,6 @@ class ComputeDescendantProductCompletenessesIntegration extends AbstractComplete
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }

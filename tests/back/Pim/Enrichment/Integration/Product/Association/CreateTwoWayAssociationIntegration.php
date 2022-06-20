@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
@@ -17,13 +16,9 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateP
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class CreateTwoWayAssociationIntegration extends TestCase
 {
-    private ProductRepositoryInterface $productRepository;
-    protected MessageBusInterface $messageBus;
-
     /**
      * @test
      */
@@ -251,8 +246,6 @@ class CreateTwoWayAssociationIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->messageBus = $this->get('pim_enrich.product.message_bus');
-        $this->productRepository = $this->get('pim_catalog.repository.product');
         $associationType = $this->get('pim_catalog.factory.association_type')->create();
         $this->get('pim_catalog.updater.association_type')->update(
             $associationType,
@@ -300,11 +293,11 @@ class CreateTwoWayAssociationIntegration extends TestCase
             productIdentifier: $identifier,
             userIntents: $userIntents
         );
-        $this->messageBus->dispatch($command);
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->clearUnitOfWork();
 
-        return $this->productRepository->findOneByIdentifier($identifier);
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     private function createProductModel(array $data): ProductModelInterface

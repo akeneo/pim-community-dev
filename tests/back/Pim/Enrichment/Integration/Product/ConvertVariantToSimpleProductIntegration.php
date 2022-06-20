@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\A
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
@@ -98,8 +99,8 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
         $associationType->setIsQuantified(true);
         $this->get('pim_catalog.saver.association_type')->save($associationType);
 
-        $this->upsertProduct('random', ['family' => 'familyA']);
-        $this->upsertProduct('other', ['family' => 'familyA1']);
+        $this->upsertProduct('random', [new SetFamily('familyA')]);
+        $this->upsertProduct('other', [new SetFamily('familyA1')]);
         $this->createProductModel(['code' => 'pm_1', 'family_variant' => 'familyVariantA1']);
         $this->createProductModel(['code' => 'pm_2', 'family_variant' => 'familyVariantA2']);
 
@@ -242,7 +243,10 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
             $product,
             ['parent' => null]
         );
-        $this->upsertProduct($product->getIdentifier());
+        $violations = $this->get('pim_catalog.validator.product')->validate($product);
+        Assert::assertCount(0, $violations, sprintf('The product is not valid: %s', $violations));
+
+        $this->get('pim_catalog.saver.product')->save($product);
     }
 
     private function createProductModel(array $data): void
@@ -267,9 +271,6 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
             userIntents: $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }

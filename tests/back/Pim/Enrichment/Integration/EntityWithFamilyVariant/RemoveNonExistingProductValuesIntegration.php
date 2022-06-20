@@ -39,7 +39,7 @@ final class RemoveNonExistingProductValuesIntegration extends TestCase
 
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
-            productIdentifier: '1111111184',
+            productIdentifier: 'hiking_shoes',
             userIntents: [
                 new SetFamily('shoes'),
                 new SetSimpleSelectValue('brand', null, null, 'akeneo')
@@ -50,13 +50,13 @@ final class RemoveNonExistingProductValuesIntegration extends TestCase
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $this->removeOption('brand', 'akeneo');
-        $this->assertNotNull($this->getDataValueForProduct('1111111184', 'brand'));
+        $this->assertNotNull($this->getDataValueForProduct('hiking_shoes', 'brand'));
 
         $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
-        $this->assertNull($this->getDataValueForProduct('1111111184', 'brand'));
+        $this->assertNull($this->getDataValueForProduct('hiking_shoes', 'brand'));
     }
 
     public function test_it_removes_the_non_existing_values_from_product_model()
