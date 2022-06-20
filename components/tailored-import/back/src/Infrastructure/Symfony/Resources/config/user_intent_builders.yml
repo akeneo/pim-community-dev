@@ -48,3 +48,8 @@ services:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\FamilyUserIntentFactory
     tags:
       - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.enabled:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\EnabledUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }

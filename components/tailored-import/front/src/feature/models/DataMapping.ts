@@ -41,15 +41,13 @@ const createDefaultDataMapping = (attribute: Attribute, identifierColumn: Column
   return identifierColumn ? addSourceToDataMapping(defaultDataMapping, identifierColumn) : defaultDataMapping;
 };
 
-const createPropertyDataMapping = (code: string): DataMapping => {
-  return {
-    uuid: uuid(),
-    target: createPropertyTarget(code),
-    sources: [],
-    operations: [],
-    sample_data: [],
-  };
-};
+const createPropertyDataMapping = (code: string): PropertyDataMapping => ({
+  uuid: uuid(),
+  target: createPropertyTarget(code),
+  sources: [],
+  operations: [],
+  sample_data: [],
+});
 
 const createAttributeDataMapping = (attribute: Attribute, channels: Channel[]): AttributeDataMapping => {
   const channel = attribute.scopable ? channels[0].code : null;
