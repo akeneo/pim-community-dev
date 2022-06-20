@@ -1,6 +1,28 @@
 batch_jobs:
-  xlsx_locale_export:
+  csv_currency_export:
+    label: Währungs-Export als CSV-Datei
+    export.label: Währungs-Export
+  csv_currency_import:
+    label: Währungs-Import aus CSV-Datei
+    import.label: Währungs-Import
+  xlsx_currency_export:
+    label: Währungs-Export als XLSX-Datei
+    export.label: Währungs-Export
+  xlsx_currency_import:
+    label: Währungs-Import aus XLSX-Datei
+    import.label: Währungs-Import
+  csv_locale_export:
+    label: Gebietsschema-Export als CSV-Datei
     export.label: Gebietsschema-Export
+  csv_locale_import:
+    label: Gebietsschema-Import aus CSV-Datei
+    import.label: Gebietsschema-Import
+  xlsx_locale_export:
+    label: Gebietsschema-Export als XLSX-Datei
+    export.label: Gebietsschema-Export
+  xlsx_locale_import:
+    label: Gebietsschema-Import aus XLSX-Datei
+    import.label: Gebietsschema-Import
   csv_channel_export:
     label: Ausgabekanal-Export als CSV-Datei
     export.label: Ausgabekanal-Export
@@ -15,6 +37,7 @@ batch_jobs:
     import.label: Ausgabekanal-Import
 pim_enrich.entity.channel:
   label: Ausgabekanal
+  uppercase_label: Kanal
   flash:
     update:
       success: Ausgabekanal erfolgreich aktualisiert.
