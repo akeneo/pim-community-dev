@@ -18,10 +18,10 @@ final class GoogleAnalytics implements ExternalDependencyProviderInterface, Cont
     ) {
     }
 
-    public function getScript(): ?string
+    public function getScript(): string
     {
         if (!$this->featureFlags->isEnabled('free_trial')) {
-            return null;
+            return '';
         }
 
         $nonce = $this->nonceGenerator->getGeneratedNonce();

@@ -14,10 +14,10 @@ final class Appcues implements ExternalDependencyProviderInterface, ContentSecur
     {
     }
 
-    public function getScript(): ?string
+    public function getScript(): string
     {
         if (!$this->featureFlags->isEnabled('free_trial')) {
-            return null;
+            return '';
         }
 
         return sprintf(

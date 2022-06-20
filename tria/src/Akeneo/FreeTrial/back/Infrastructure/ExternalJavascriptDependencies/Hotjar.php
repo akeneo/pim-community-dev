@@ -27,10 +27,10 @@ final class Hotjar implements ExternalDependencyProviderInterface, ContentSecuri
     ) {
     }
 
-    public function getScript(): ?string
+    public function getScript(): string
     {
         if (!$this->featureFlags->isEnabled('free_trial')) {
-            return null;
+            return '';
         }
 
         $javascript = <<<JS
