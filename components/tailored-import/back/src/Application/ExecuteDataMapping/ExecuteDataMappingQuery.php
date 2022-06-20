@@ -19,9 +19,15 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 class ExecuteDataMappingQuery
 {
     public function __construct(
+        private int $userId,
         private Row $row,
         private DataMappingCollection $dataMappingCollection,
     ) {
+    }
+
+    public function getUserId(): int
+    {
+        return $this->userId;
     }
 
     public function getRow(): Row
