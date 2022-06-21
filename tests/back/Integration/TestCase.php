@@ -78,11 +78,11 @@ abstract class TestCase extends KernelTestCase
      */
     protected function setUp(): void
     {
-        $localeRepository = $this->createMock(LocaleRepository::class);
-        $localeRepository
-            ->method('getActivatedLocales')
-            ->willReturn([]);
-        self::getContainer()->set('pim_catalog.repository.locale', $localeRepository);
+//        $localeRepository = $this->createMock(LocaleRepository::class);
+//        $localeRepository
+//            ->method('getActivatedLocales')
+//            ->willReturn([]);
+//        self::getContainer()->set('pim_catalog.repository.locale', $localeRepository);
 
         $this->testKernel = static::bootKernel(['debug' => false]);
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
@@ -94,14 +94,6 @@ abstract class TestCase extends KernelTestCase
             ->willReturn([]);
         self::getContainer()->set('pim_catalog.repository.category', $categoryRepository);
 
-
-//        self::getContainer()->set(LocaleInterface::class, $this->createMock(LocaleInterface::class));
-//dd(LocaleInterface::class);
-//        $userUpdater = $this->createMock(UserUpdater::class);
-//        $userUpdater
-//            ->method('findGroup')
-//            ->willReturn(new Group('default'));
-//        self::getContainer()->set('pim_catalog.repository.category', $userUpdater);
 
         self::getContainer()->set('pim_catalog.repository.channel', $this->createMock(ChannelRepository::class));
         self::getContainer()->set('pim_catalog.elasticsearch.indexer.product', $this->createMock(ProductIndexer::class));

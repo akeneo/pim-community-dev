@@ -134,15 +134,15 @@ services:
     channel.updater.translatable:
         class: 'Akeneo\Tool\Component\Localization\TranslatableUpdater'
 
-    pim_catalog.remover.channel:
-        class: 'Akeneo\Channel\Infrastructure\Doctrine\Remover\ChannelRemover'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '@pim_catalog.repository.channel'
-            - '@translator'
-            - '@Akeneo\Channel\Infrastructure\Query\Sql\IsChannelUsedInProductProductExportJob'
-            - '%pim_catalog.entity.channel.class%'
+#    pim_catalog.remover.channel:
+#        class: 'Akeneo\Channel\Infrastructure\Doctrine\Remover\ChannelRemover'
+#        arguments:
+#            - '@doctrine.orm.entity_manager'
+#            - '@event_dispatcher'
+#            - '@pim_catalog.repository.channel'
+#            - '@translator'
+#            - '@Akeneo\Channel\Infrastructure\Query\Sql\IsChannelUsedInProductProductExportJob'
+#            - '%pim_catalog.entity.channel.class%'
 
     pim_enrich.normalizer.channel:
         class: 'Akeneo\Channel\Infrastructure\Component\Normalizer\InternalApi\ChannelNormalizer'

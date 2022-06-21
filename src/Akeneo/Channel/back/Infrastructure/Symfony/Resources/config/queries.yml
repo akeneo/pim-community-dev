@@ -15,17 +15,17 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Channel\Infrastructure\Query\Sql\IsChannelUsedInProductProductExportJob:
-        arguments:
-            - '@database_connection'
-            -
-                - '%pim_connector.job_name.xlsx_product_export%'
-                - '%pim_connector.job_name.xlsx_product_model_export%'
-                - '%pim_connector.job_name.csv_product_export%'
-                - '%pim_connector.job_name.csv_product_model_export%'
-                - 'akeneo_shared_catalog'
-                - 'csv_published_product_export'
-                - 'xlsx_published_product_export'
+#    Akeneo\Channel\Infrastructure\Query\Sql\IsChannelUsedInProductProductExportJob:
+#        arguments:
+#            - '@database_connection'
+#            -
+#                - '%pim_connector.job_name.xlsx_product_export%'
+#                - '%pim_connector.job_name.xlsx_product_model_export%'
+#                - '%pim_connector.job_name.csv_product_export%'
+#                - '%pim_connector.job_name.csv_product_model_export%'
+#                - 'akeneo_shared_catalog'
+#                - 'csv_published_product_export'
+#                - 'xlsx_published_product_export'
 
     pimee_security.query.get_all_viewable_locales_for_user:
         class: 'Akeneo\Channel\Infrastructure\Query\Sql\SqlGetAllViewableLocalesForUser'

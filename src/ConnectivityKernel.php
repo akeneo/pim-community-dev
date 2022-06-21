@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
+use PHPUnit\Framework\MockObject\MockBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -67,6 +71,57 @@ $loader->load($confDir.'/{packages}/test/security.yml' , 'glob');
 
         $loader->load($confDir.'/{services}/*.yml', 'glob');
         $loader->load($confDir.'/{services}/'.$this->environment.'/**/*.yml', 'glob');
+    }
+
+    protected function initializeContainer()
+    {
+        parent::initializeContainer();
+
+
+        $this->getContainer()->set('pim_catalog.repository.locale', new class() implements LocaleRepositoryInterface  {
+            public function getActivatedLocales() {
+                return [];
+            }
+            public function getActivatedLocaleCodes() {}
+            public function getActivatedLocalesQB() {}
+            public function getDeletedLocalesForChannel(ChannelInterface $channel){}
+            public function countAllActivated() {}
+
+            public function getIdentifierProperties()
+            {
+                // TODO: Implement getIdentifierProperties() method.
+            }
+
+            public function findOneByIdentifier($identifier)
+            {
+                // TODO: Implement findOneByIdentifier() method.
+            }
+
+            public function find($id)
+            {
+                // TODO: Implement find() method.
+            }
+
+            public function findAll()
+            {
+                // TODO: Implement findAll() method.
+            }
+
+            public function findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
+            {
+                // TODO: Implement findBy() method.
+            }
+
+            public function findOneBy(array $criteria)
+            {
+                // TODO: Implement findOneBy() method.
+            }
+
+            public function getClassName()
+            {
+                // TODO: Implement getClassName() method.
+            }
+        });
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
