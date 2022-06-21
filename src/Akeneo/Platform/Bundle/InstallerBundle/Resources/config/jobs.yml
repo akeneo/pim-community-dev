@@ -216,17 +216,17 @@ services:
 #        tags:
 #            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 #
-#    pim_installer.job.fixtures_user_group_csv:
-#        class: '%pim_connector.job.simple_job.class%'
-#        arguments:
-#            - '%pim_installer.job_name.fixtures_user_group_csv%'
-#            - '@event_dispatcher'
-#            - '@akeneo_batch.job_repository'
-#            -
-#                - '@pim_connector.step.charset_validator'
-#                - '@pim_installer.step.fixtures_user_group_csv.import'
-#        tags:
-#            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
+    pim_installer.job.fixtures_user_group_csv:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_installer.job_name.fixtures_user_group_csv%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_installer.step.fixtures_user_group_csv.import'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 #
 #    pim_installer.job.fixtures_group_csv:
 #        class: '%pim_connector.job.simple_job.class%'

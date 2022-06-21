@@ -2,10 +2,10 @@ parameters: ~
 
 services:
     # Default parameters depending on Job
-#    pim_installer.job_parameters.defaults.simple_csv_import:
-#        class: '%pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class%'
-#        arguments:
-#            -
+    pim_installer.job_parameters.defaults.simple_csv_import:
+        class: '%pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class%'
+        arguments:
+            -
 #                - 'fixtures_category_csv'
 #                - 'fixtures_attribute_group_csv'
 #                - 'fixtures_channel_csv'
@@ -19,10 +19,10 @@ services:
 #                - 'fixtures_family_variant_csv'
 #                - 'fixtures_user_csv'
 #                - 'fixtures_user_role_csv'
-#                - 'fixtures_user_group_csv'
+                - 'fixtures_user_group_csv'
 #                - 'fixtures_group_csv'
-#        tags:
-#            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
 #
 #    pim_installer.job_parameters.defaults.product_csv_import:
 #        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport'

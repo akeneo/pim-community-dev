@@ -84,17 +84,17 @@ services:
 #            - 100
 #            - '@akeneo_batch.job.job_stopper'
 #
-#    pim_installer.step.fixtures_user_group_csv.import:
-#        class: '%pim_connector.step.item_step.class%'
-#        arguments:
-#            - 'import'
-#            - '@event_dispatcher'
-#            - '@akeneo_batch.job_repository'
-#            - '@pim_connector.reader.file.csv_user_group'
-#            - '@pim_connector.processor.denormalization.user_group'
-#            - '@pim_connector.writer.database.user_group'
-#            - 100
-#            - '@akeneo_batch.job.job_stopper'
+    pim_installer.step.fixtures_user_group_csv.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_user_group'
+            - '@pim_connector.processor.denormalization.user_group'
+            - '@pim_connector.writer.database.user_group'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 #
 #    pim_installer.step.fixtures_job_yml.import:
 #       class: '%pim_connector.step.item_step.class%'

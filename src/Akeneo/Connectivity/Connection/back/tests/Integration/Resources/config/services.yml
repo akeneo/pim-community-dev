@@ -1,3 +1,14 @@
+parameters:
+    pim_catalog.localization.decimal_separators: ''
+    pim_catalog.entity.product.class: Akeneo\Pim\Enrichment\Component\Product\Model\Product
+    pim_enrich.job.mass_edit_type: ''
+    pim_enrich.connector_name.mass_edit: ''
+    pim_catalog.compute_family_variant_structure_changes.job_name: ''
+    pim_catalog.entity.category.class: Akeneo\Pim\Enrichment\Component\Category\Model\Category
+    pim_catalog.job.remove_non_existing_product_values.job_name: ''
+    pim_enrich.job.name.set_attribute_requirements: ''
+    pim_reference_data.model.reference_data.interface: ''
+
 services:
     Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock:
         class: Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock
@@ -195,7 +206,23 @@ services:
         synthetic: true
     pim_connector.step.xlsx_family.compute_data_related_to_family_root_product_models:
         synthetic: true
-#    pi:
-#        synthetic: true
-#    pi:
-#        synthetic: true
+    pim_connector.step.xlsx_family.compute_data_related_to_family_sub_product_models:
+        synthetic: true
+    pim_connector.step.xlsx_family.compute_data_related_to_family_products:
+        synthetic: true
+    pim_connector.step.csv_association_type.import:
+        synthetic: true
+    pim_connector.step.xlsx_association_type.import:
+        synthetic: true
+    pim_connector.step.csv_attribute_group_import.ensure_attribute_group_order:
+        synthetic: true
+    pim_connector.step.xlsx_attribute_group_import.ensure_attribute_group_order:
+        synthetic: true
+    pim_connector.step.csv_group_type_export.export:
+        synthetic: true
+    pim_connector.step.xlsx_group_type_export.export:
+        synthetic: true
+    pim_connector.step.mass_edit_family.compute_data_related_to_family_products:
+        synthetic: true
+    pim_connector.step.mass_edit_family.index_family_products_and_product_models:
+        synthetic: true

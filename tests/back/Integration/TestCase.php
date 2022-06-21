@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Integration;
 
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Doctrine\Repository\ChannelRepository;
 use Akeneo\Channel\Infrastructure\Doctrine\Repository\LocaleRepository;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver;
@@ -20,14 +21,24 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalize
 use Akeneo\Pim\Enrichment\Component\Product\Updater\GroupUpdater;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Normalizer\Standard\AssociationTypeNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeGroupNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyVariantNormalizer;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
+use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifier;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
-use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository;
 use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
-use Akeneo\Tool\Component\FileStorage\File\FileStorer;
+use Akeneo\Tool\Component\Batch\Step\ItemStep;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Connector\Processor\Denormalization\Processor;
+use Akeneo\Tool\Component\Connector\Step\TaskletStep;
+use Akeneo\Tool\Component\Connector\Writer\Database\Writer;
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactory;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -35,9 +46,10 @@ use Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
+use Akeneo\UserManagement\Component\Updater\UserUpdater;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -66,8 +78,91 @@ abstract class TestCase extends KernelTestCase
      */
     protected function setUp(): void
     {
+        $localeRepository = $this->createMock(LocaleRepository::class);
+        $localeRepository
+            ->method('getActivatedLocales')
+            ->willReturn([]);
+        self::getContainer()->set('pim_catalog.repository.locale', $localeRepository);
+
         $this->testKernel = static::bootKernel(['debug' => false]);
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
+
+
+        $categoryRepository = $this->createMock(CategoryRepositoryInterface::class);
+        $categoryRepository
+            ->method('getTrees')
+            ->willReturn([]);
+        self::getContainer()->set('pim_catalog.repository.category', $categoryRepository);
+
+
+//        self::getContainer()->set(LocaleInterface::class, $this->createMock(LocaleInterface::class));
+//dd(LocaleInterface::class);
+//        $userUpdater = $this->createMock(UserUpdater::class);
+//        $userUpdater
+//            ->method('findGroup')
+//            ->willReturn(new Group('default'));
+//        self::getContainer()->set('pim_catalog.repository.category', $userUpdater);
+
+        self::getContainer()->set('pim_catalog.repository.channel', $this->createMock(ChannelRepository::class));
+        self::getContainer()->set('pim_catalog.elasticsearch.indexer.product', $this->createMock(ProductIndexer::class));
+        self::getContainer()->set('pim_catalog.elasticsearch.indexer.product', $this->createMock(ProductIndexer::class));
+        self::getContainer()->set('pim_catalog.elasticsearch.indexer.product_model', $this->createMock(ProductModelIndexer::class));
+        self::getContainer()->set('akeneo_measure.installer.measurement_installer', $this->createMock(MeasurementInstaller::class));
+        self::getContainer()->set('akeneo_integration_tests.launcher.job_launcher',  $this->createMock(JobLauncher::class));
+        self::getContainer()->set('pim_datagrid.repository.datagrid_view', $this->createMock(DatagridViewRepository::class));
+        self::getContainer()->set('pim_catalog.factory.attribute_option', $this->createMock(SimpleFactory::class));
+        self::getContainer()->set('pim_connector.processor.denormalization.attribute_group', $this->createMock(Processor::class));
+        self::getContainer()->set('pim_connector.step.csv_attribute_group_import.ensure_attribute_group_order', $this->createMock(TaskletStep::class));
+        self::getContainer()->set('pim_catalog.normalizer.standard.attribute', $this->createMock(AttributeNormalizer::class));
+        self::getContainer()->set('pim_catalog.repository.cached_locale', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.normalizer.standard.attribute_group', $this->createMock(AttributeGroupNormalizer::class));
+        self::getContainer()->set('pim_connector.step.csv_association_type.import', $this->createMock(ItemStep::class));
+        self::getContainer()->set('pim_catalog.normalizer.standard.association_type', $this->createMock(AssociationTypeNormalizer::class));
+        self::getContainer()->set('pim_connector.step.xlsx_association_type.import', $this->createMock(ItemStep::class));
+        self::getContainer()->set('pim_catalog.repository.attribute_requirement', $this->createMock(AttributeRequirementRepositoryInterface::class));
+        self::getContainer()->set('pim_connector.step.csv_family.compute_data_related_to_family_root_product_models', $this->createMock(TaskletStep::class));
+        self::getContainer()->set('pim_connector.step.csv_family.compute_data_related_to_family_sub_product_models', $this->createMock(TaskletStep::class));
+        self::getContainer()->set('pim_connector.step.csv_family.compute_data_related_to_family_products', $this->createMock(TaskletStep::class));
+        self::getContainer()->set('pim_connector.processor.denormalization.family_variant', $this->createMock(Processor::class));
+        self::getContainer()->set('pim_catalog.normalizer.standard.family', $this->createMock(FamilyNormalizer::class));
+        self::getContainer()->set('pim_catalog.normalizer.standard.family_variant', $this->createMock(FamilyVariantNormalizer::class));
+        self::getContainer()->set('pim_connector.step.xlsx_family.compute_data_related_to_family_root_product_models', $this->createMock(TaskletStep::class));
+        self::getContainer()->set('pim_connector.step.xlsx_family.compute_data_related_to_family_sub_product_models', $this->createMock(TaskletStep::class));
+        self::getContainer()->set('pim_connector.step.xlsx_family.compute_data_related_to_family_products', $this->createMock(TaskletStep::class));
+        self::getContainer()->set('pim_connector.writer.database.group_type', $this->createMock(Writer::class));
+        self::getContainer()->set('pim_connector.step.csv_group_type_export.export', $this->createMock(ItemStep::class));
+        self::getContainer()->set('pim_connector.step.xlsx_group_type_export.export', $this->createMock(ItemStep::class));
+        self::getContainer()->set('pim_connector.step.mass_edit_family.compute_data_related_to_family_products', $this->createMock(TaskletStep::class));
+        self::getContainer()->set('pim_connector.step.mass_edit_family.index_family_products_and_product_models', $this->createMock(TaskletStep::class));
+        self::getContainer()->set('pim_catalog.repository.cached_attribute', $this->createMock(BaseCachedObjectRepository::class));
+
+        self::getContainer()->set('pim_catalog.validator.product', $this->createMock(ValidatorInterface::class));
+        self::getContainer()->set('pim_catalog.factory.category', $this->createMock(SimpleFactoryInterface::class));
+        self::getContainer()->set('pim_catalog.updater.category', $this->createMock(SimpleFactoryInterface::class));
+        self::getContainer()->set('pim_catalog.saver.category', $this->createMock(CategorySaver::class));
+        self::getContainer()->set('pim_internal_api_serializer', self::getContainer()->get('serializer'));
+        self::getContainer()->set('pim_enrich.normalizer.violation', $this->createMock(ConstraintViolationNormalizer::class));
+        self::getContainer()->set('pim_catalog.localization.factory.number', $this->createMock(NumberFactory::class));
+        self::getContainer()->set('pim_enrich.normalizer.file', $this->createMock(FileNormalizer::class));
+        self::getContainer()->set('pim_notification.email.email_notifier', $this->createMock(MailNotifier::class));
+        self::getContainer()->set('pim_enrich.repository.job_execution', $this->createMock(JobExecutionRepository::class));
+        self::getContainer()->set('pim_catalog.repository.cached_locale', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.repository.cached_category', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.repository.cached_attribute_option', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.repository.cached_family', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.repository.cached_channel', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.repository.cached_currency', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.validator.unique_value_set', $this->createMock(UniqueValuesSet::class));
+        self::getContainer()->set('pim_catalog.factory.association_type', $this->createMock(SimpleFactory::class));
+        self::getContainer()->set('pim_catalog.factory.group', $this->createMock(SimpleFactory::class));
+        self::getContainer()->set('pim_catalog.updater.group', $this->createMock(GroupUpdater::class));
+
+//        $fixtureJobLoader = $this->createMock(FixtureJobLoader::class);
+//        $fixtureJobLoader
+//            ->method('getLoadedJobInstances')
+//            ->willReturn([]);
+//        self::getContainer()->set('pim_installer.fixture_loader.job_loader', $fixtureJobLoader);
+
 
         if (null !== $this->getConfiguration()) {
             $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
@@ -132,36 +227,7 @@ abstract class TestCase extends KernelTestCase
                 throw new \Exception();
             }
         });
-        self::getContainer()->set('pim_catalog.validator.product', $this->createMock(ValidatorInterface::class));
-        self::getContainer()->set('pim_catalog.factory.category', $this->createMock(SimpleFactoryInterface::class));
-        self::getContainer()->set('pim_catalog.updater.category', $this->createMock(SimpleFactoryInterface::class));
-        self::getContainer()->set('pim_catalog.saver.category', $this->createMock(CategorySaver::class));
-        self::getContainer()->set('pim_catalog.elasticsearch.indexer.product', $this->createMock(ProductIndexer::class));
-        self::getContainer()->set('pim_catalog.elasticsearch.indexer.product_model', $this->createMock(ProductModelIndexer::class));
-        self::getContainer()->set('akeneo_measure.installer.measurement_installer', $this->createMock(MeasurementInstaller::class));
-        self::getContainer()->set('akeneo_integration_tests.launcher.job_launcher', $this->createMock(JobLauncher::class));
-        self::getContainer()->set('pim_catalog.repository.locale', $this->createMock(LocaleRepository::class));
-        self::getContainer()->set('pim_catalog.repository.channel', $this->createMock(ChannelRepository::class));
-        self::getContainer()->set('pim_internal_api_serializer', self::getContainer()->get('serializer'));
-        self::getContainer()->set('pim_enrich.normalizer.violation', $this->createMock(ConstraintViolationNormalizer::class));
-        self::getContainer()->set('pim_catalog.localization.factory.number', $this->createMock(NumberFactory::class));
-        self::getContainer()->set('pim_enrich.normalizer.file', $this->createMock(FileNormalizer::class));
-        self::getContainer()->set('pim_notification.email.email_notifier', $this->createMock(MailNotifier::class));
-        self::getContainer()->set('pim_enrich.repository.job_execution', $this->createMock(JobExecutionRepository::class));
-        self::getContainer()->set('pim_datagrid.repository.datagrid_view', $this->createMock(DatagridViewRepository::class));
-        self::getContainer()->set('pim_catalog.repository.cached_locale', $this->createMock(BaseCachedObjectRepository::class));
-        self::getContainer()->set('pim_catalog.repository.cached_attribute', $this->createMock(BaseCachedObjectRepository::class));
-        self::getContainer()->set('pim_catalog.repository.cached_category', $this->createMock(BaseCachedObjectRepository::class));
-        self::getContainer()->set('pim_catalog.repository.cached_attribute_option', $this->createMock(BaseCachedObjectRepository::class));
-        self::getContainer()->set('pim_catalog.repository.cached_family', $this->createMock(BaseCachedObjectRepository::class));
-        self::getContainer()->set('pim_catalog.repository.cached_channel', $this->createMock(BaseCachedObjectRepository::class));
-        self::getContainer()->set('pim_catalog.repository.cached_currency', $this->createMock(BaseCachedObjectRepository::class));
-        self::getContainer()->set('pim_catalog.validator.unique_value_set', $this->createMock(UniqueValuesSet::class));
-        self::getContainer()->set('pim_catalog.factory.attribute_option', $this->createMock(SimpleFactory::class));
-        self::getContainer()->set('pim_catalog.factory.association_type', $this->createMock(SimpleFactory::class));
-        self::getContainer()->set('pim_catalog.factory.group', $this->createMock(SimpleFactory::class));
-        self::getContainer()->set('pim_catalog.repository.group', $this->createMock(GroupRepository::class));
-        self::getContainer()->set('pim_catalog.updater.group', $this->createMock(GroupUpdater::class));
+
     }
 
     /**
