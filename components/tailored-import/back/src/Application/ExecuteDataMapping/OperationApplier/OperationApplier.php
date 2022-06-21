@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\ApplyOperationException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
@@ -51,29 +50,31 @@ final class OperationApplier
         return $value;
     }
 
+    /**
+     * @param array<string> $normalizedValues
+     *
+     * @return array<string, array<ValueInterface>>
+     */
     public function applyOperationWithIndexedResults(
         OperationCollection $operationCollection,
-        ValueInterface $values,
+        array $normalizedValues,
     ): array {
         $operationValues = [];
 
-        if (empty($operationCollection->normalize())) {
-            return $operationValues;
-        }
+        foreach ($normalizedValues as $normalizedValue) {
+            $value = null === $normalizedValue ? new NullValue() : new StringValue($normalizedValue);
 
-        foreach ($operationCollection as $operation) {
-            $applier = $this->getApplier($operation);
-
-            if (!$applier instanceof OperationApplierInterface) {
-                continue;
-            }
-
-            foreach ($values->getValue() as $value) {
-                try {
-                    $operationValues[$operation->getUuid()][] = null === $value ? null : $applier->applyOperation($operation, new StringValue($value))->getValue();
-                } catch (ApplyOperationException) {
+            foreach ($operationCollection as $operation) {
+                $applier = $this->getApplier($operation);
+                if (!$applier instanceof OperationApplierInterface) {
                     continue;
                 }
+
+                if (!$value instanceof NullValue) {
+                    $value = $applier->applyOperation($operation, $value);
+                }
+
+                $operationValues[$operation->getUuid()][] = $value;
             }
         }
 
