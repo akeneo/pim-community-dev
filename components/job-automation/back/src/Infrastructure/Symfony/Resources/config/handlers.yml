@@ -1,4 +1,6 @@
 services:
   akeneo.job_automation.handler.storage_connection_check:
     class: Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck\StorageConnectionCheckHandler
+    arguments:
+      - !tagged pim_import_export.storage_client_provider
     

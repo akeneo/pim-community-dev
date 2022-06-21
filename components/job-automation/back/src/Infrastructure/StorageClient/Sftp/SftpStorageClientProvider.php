@@ -19,6 +19,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileS
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
 use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage;
 use League\Flysystem\Filesystem;
+use League\Flysystem\PhpseclibV2\ConnectionProvider;
 use League\Flysystem\PhpseclibV2\SftpAdapter;
 use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
 
@@ -54,5 +55,20 @@ final class SftpStorageClientProvider implements StorageClientProviderInterface
     public function supports(StorageInterface $storage): bool
     {
         return $storage instanceof SftpStorage;
+    }
+
+    public function getConnectionProvider(StorageInterface $storage): ConnectionProvider
+    {
+        return new SftpConnectionProvider(
+            $storage->getHost(),
+            $storage->getUsername(),
+            $storage->getPassword(),
+            null,
+            null,
+            $storage->getPort(),
+            self::USE_AGENT,
+            self::TIMEOUT,
+            self::MAX_RETRIES,
+        );
     }
 }

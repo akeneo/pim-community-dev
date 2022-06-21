@@ -17,6 +17,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck\StorageConnectionCheckHandler;
 use Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck\StorageConnectionCheckQuery;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,8 +49,19 @@ final class GetStorageConnectionCheckAction
 
         $storage = $this->storageHydrator->hydrate($data);
 
-        $this->storageConnectionCheckHandler->handle(new StorageConnectionCheckQuery(
-            $storage
-        ));
+        try {
+            $this->storageConnectionCheckHandler->handle(new StorageConnectionCheckQuery(
+                $storage
+            ));
+
+            return new JsonResponse([
+                'is_connection_healthy' => true,
+            ]);
+        } catch (\Exception $exception) {
+            return new JsonResponse([
+                'is_connection_healthy' => false,
+                'error_message' => $exception->getMessage(),
+            ]);
+        }
     }
 }
