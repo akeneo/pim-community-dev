@@ -49,7 +49,6 @@ $rules = [
             'Symfony\Component\Serializer',
             'Symfony\Component\Validator',
             'Doctrine\DBAL',
-            'JsonSchema\Validator',
             'Ramsey\Uuid\Uuid',
             'Akeneo\Platform\Bundle\InstallerBundle',
             'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',

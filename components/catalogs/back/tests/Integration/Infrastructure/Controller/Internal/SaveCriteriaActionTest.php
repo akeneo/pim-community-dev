@@ -52,7 +52,7 @@ class SaveCriteriaActionTest extends IntegrationTestCase
             ],
             \json_encode([
                 [
-                    'field' => 'status',
+                    'field' => 'enabled',
                     'operator' => '!=',
                     'value' => true,
                 ],
@@ -65,7 +65,7 @@ class SaveCriteriaActionTest extends IntegrationTestCase
 
         $this->assertCatalogHasProductSelectionCriteria('ed30425c-d9cf-468b-8bc7-fa346f41dd07', [
             [
-                'field' => 'status',
+                'field' => 'enabled',
                 'operator' => '!=',
                 'value' => true,
             ],
@@ -82,7 +82,7 @@ class SaveCriteriaActionTest extends IntegrationTestCase
             [
                 'json' => [
                     [
-                        'field' => 'status',
+                        'field' => 'enabled',
                         'operator' => '!=',
                         'value' => true,
                     ]

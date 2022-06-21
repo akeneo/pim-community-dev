@@ -6,7 +6,6 @@ namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
-use Akeneo\Catalogs\Domain\ProductSelection\Criterion;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 
 /**
@@ -32,7 +31,13 @@ final class CreateCatalogHandler
 
         $this->updateCatalogProductSelectionCriteriaQuery->execute(
             $command->getId(),
-            [new Criterion('status', '=', true)],
+            [
+                [
+                    'field' => 'enabled',
+                    'operator' => '=',
+                    'value' => true,
+                ],
+            ],
         );
     }
 }
