@@ -416,9 +416,9 @@ mysql:
       enabled: false
     resources:
       limits:
-        memory: 3072Mi
+        memory: 3584Mi
       requests:
-        memory: 3072Mi
+        memory: 3584Mi
         cpu: "100m"
     readinessProbe:
       initialDelaySeconds: 30
