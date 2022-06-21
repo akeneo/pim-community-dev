@@ -47,6 +47,7 @@
 - PIM-10483: Fix slow loading products when filtering by variants
 - PIM-10484: Fix job filter on status being incoherent with job interrupted by demon crash
 - PIM-10495: Fix product datagrid by increasing sort_buffer_size
+- PIM-10499: Fix MySQL's out of sort memory errors on variant product and product model edit form
 
 ## Improvements
 
