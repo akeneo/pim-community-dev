@@ -19,7 +19,7 @@ security:
 
     firewalls:
         onboarder-serenity-supplier:
-            pattern: ^/onboarder-supplier/v2/authentication
+            pattern: ^/onboarder-supplier/authentication
             security: false
             anonymous: true
 
@@ -123,7 +123,7 @@ security:
         - { path: ^/saml-idp/resume, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/onboarder-supplier/v2/authentication, roles: PUBLIC_ACCESS }
+        - { path: ^/onboarder-supplier/authentication, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
 
     password_hashers:
