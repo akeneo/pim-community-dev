@@ -54,8 +54,8 @@ services:
   Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail:
     class: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Authentication\ContributorAccount\BuildTwigWelcomeEmail
     arguments:
-      - '@router'
       - '@twig'
+      - '%env(AKENEO_PIM_URL)%'
 
   # Validators
   Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAccount\Validation\PasswordValidator:
