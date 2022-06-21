@@ -47,11 +47,6 @@ define([
     initialize: function (config) {
       this.config = config.config;
 
-      if (FeatureFlags.isEnabled('free_trial')) {
-        const freeTrialTemplate = require('pim/free-trial/template/menu/user-navigation');
-        this.template = _.template(freeTrialTemplate);
-      }
-
       BaseForm.prototype.initialize.apply(this, arguments);
     },
 
@@ -66,6 +61,7 @@ define([
           avatar: this.getAvatar(),
           logoutLabel: __(this.config.logout),
           userAccountLabel: __(this.config.userAccount),
+          freeTrialEnabled: FeatureFlags.isEnabled('free_trial')
         })
       );
 
