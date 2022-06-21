@@ -33,17 +33,10 @@ class FindOneCatalogByIdQueryTest extends IntegrationTestCase
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
 
         $this->createCatalog($id, 'Store US', 'test');
-        $defaultCriteria = [
-            [
-                'field' => 'status',
-                'operator' => '=',
-                'value' => true,
-            ],
-        ];
 
         $result = $this->query->execute($id);
 
-        $expected = new Catalog($id, 'Store US', 'test', false, $defaultCriteria);
+        $expected = new Catalog($id, 'Store US', 'test', false);
 
         $this->assertEquals($expected, $result);
     }

@@ -40,24 +40,17 @@ class GetCatalogsByOwnerUsernameQueryTest extends IntegrationTestCase
         $this->createCatalog($idFR, 'Store FR', 'owner');
         $this->createCatalog($idJP, 'Store JP', 'another_user');
         $this->createCatalog($idUK, 'Store UK', 'owner');
-        $defaultCriteria = [
-            [
-                'field' => 'status',
-                'operator' => '=',
-                'value' => true,
-            ],
-        ];
 
         $resultFirstPage = $this->query->execute('owner', 0, 2);
         $expectedFirstPage = [
-            new Catalog($idUK, 'Store UK', 'owner', false, $defaultCriteria),
-            new Catalog($idUS, 'Store US', 'owner', false, $defaultCriteria),
+            new Catalog($idUK, 'Store UK', 'owner', false),
+            new Catalog($idUS, 'Store US', 'owner', false),
         ];
         $this->assertEquals($expectedFirstPage, $resultFirstPage);
 
         $resultSecondPage = $this->query->execute('owner', 2, 2);
         $expectedSecondPage = [
-            new Catalog($idFR, 'Store FR', 'owner', false, $defaultCriteria),
+            new Catalog($idFR, 'Store FR', 'owner', false),
         ];
         $this->assertEquals($expectedSecondPage, $resultSecondPage);
     }
