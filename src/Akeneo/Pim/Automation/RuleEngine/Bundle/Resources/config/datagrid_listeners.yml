@@ -15,3 +15,9 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.rule-grid, method: configure }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.attribute-rule-grid, method: configure }
+
+    Akeneo\Pim\Automation\RuleEngine\Bundle\EventListener\Datagrid\IncreaseSortBufferSizeGridListener:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.rule-grid, method: configure }
