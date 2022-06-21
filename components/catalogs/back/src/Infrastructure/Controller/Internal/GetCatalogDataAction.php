@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\FindCatalogProductSelectionCriteriaQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class GetCatalogDataAction
 {
     public function __construct(
-        private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
+        private FindCatalogProductSelectionCriteriaQueryInterface $findCatalogProductSelectionCriteriaQuery,
     ) {
     }
 
@@ -28,13 +28,13 @@ class GetCatalogDataAction
             return new RedirectResponse('/');
         }
 
-        $catalog = $this->findOneCatalogByIdQuery->execute($catalogId);
-        if (null === $catalog) {
+        $productSelectionCriteria = $this->findCatalogProductSelectionCriteriaQuery->execute($catalogId);
+        if (null === $productSelectionCriteria) {
             throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
         }
 
         return new JsonResponse([
-            'product_selection_criteria' => $catalog->getProductSelectionCriteria(),
+            'product_selection_criteria' => $productSelectionCriteria,
         ]);
     }
 }
