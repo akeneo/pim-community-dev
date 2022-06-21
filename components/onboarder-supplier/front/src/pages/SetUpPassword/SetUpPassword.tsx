@@ -101,10 +101,10 @@ const SetUpPassword = () => {
                         <FormattedMessage defaultMessage="At least 8 characters" id="YwMziN" />
                     </p>
                     <p>
-                        <FormattedMessage defaultMessage="At least an upper-case letter" id="ek9x6P" />
+                        <FormattedMessage defaultMessage="At least an uppercase letter" id="67ZuXt" />
                     </p>
                     <p>
-                        <FormattedMessage defaultMessage="At least a lower-case letter" id="1GYZg/" />
+                        <FormattedMessage defaultMessage="At least a lowercase letter" id="PTGASZ" />
                     </p>
                     <p>
                         <FormattedMessage defaultMessage="At least a number" id="nAsEaE" />

@@ -32,7 +32,7 @@ test('it renders password type inputs', async () => {
     expect(confirmPasswordInput).toHaveAttribute('type', 'password');
 });
 
-test('it does not enable submit button if the password does not contains 8 characters', async () => {
+test('it does not enable submit button if the password does not contain 8 characters', async () => {
     renderWithProviders(<SetUpPassword />);
 
     let passwordInput = screen.getByTestId('password-input');
@@ -45,7 +45,7 @@ test('it does not enable submit button if the password does not contains 8 chara
     expect(submitButton).toBeDisabled();
 });
 
-test('it does not enable submit button if the password does not contains at least an upper-case letter', async () => {
+test('it does not enable submit button if the password does not contain at least an uppercase letter', async () => {
     renderWithProviders(<SetUpPassword />);
 
     let passwordInput = screen.getByTestId('password-input');
@@ -58,7 +58,7 @@ test('it does not enable submit button if the password does not contains at leas
     expect(submitButton).toBeDisabled();
 });
 
-test('it does not enable submit button if the password does not contains at least a lower-case letter', async () => {
+test('it does not enable submit button if the password does not contain at least a lowercase letter', async () => {
     renderWithProviders(<SetUpPassword />);
 
     let passwordInput = screen.getByTestId('password-input');
@@ -71,7 +71,7 @@ test('it does not enable submit button if the password does not contains at leas
     expect(submitButton).toBeDisabled();
 });
 
-test('it does not enable submit button if the password does not contains at least a number', async () => {
+test('it does not enable submit button if the password does not contain at least a number', async () => {
     renderWithProviders(<SetUpPassword />);
 
     let passwordInput = screen.getByTestId('password-input');
@@ -84,7 +84,7 @@ test('it does not enable submit button if the password does not contains at leas
     expect(submitButton).toBeDisabled();
 });
 
-test('it enables submit button if passwords are equals and matches requirements', async () => {
+test('it enables submit button if passwords are equal and match requirements', async () => {
     renderWithProviders(<SetUpPassword />);
 
     let passwordInput = screen.getByTestId('password-input');
