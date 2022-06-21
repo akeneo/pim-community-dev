@@ -43,7 +43,7 @@ class GetCatalogDataActionTest extends IntegrationTestCase
         Assert::assertEquals([
             'product_selection_criteria' => [
                 [
-                    'field' => 'status',
+                    'field' => 'enabled',
                     'operator' => '=',
                     'value' => true,
                 ],

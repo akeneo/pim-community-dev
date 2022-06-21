@@ -39,7 +39,7 @@ class Criteria extends Compound
                     'allowMissingFields' => false,
                     'allowExtraFields' => false,
                 ])
-            )
+            ),
         ];
     }
 }

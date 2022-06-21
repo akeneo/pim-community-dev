@@ -44,7 +44,7 @@ class FindCatalogProductSelectionCriteriaQueryTest extends IntegrationTestCase
 
         $expectedCriteria = [
             [
-                'field' => 'status',
+                'field' => 'enabled',
                 'operator' => '=',
                 'value' => true,
             ],

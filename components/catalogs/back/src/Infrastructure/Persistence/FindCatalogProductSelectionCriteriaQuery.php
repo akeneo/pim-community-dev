@@ -21,7 +21,6 @@ class FindCatalogProductSelectionCriteriaQuery implements FindCatalogProductSele
 
     /**
      * @inheritDoc
-     * @psalm-suppress MixedReturnTypeCoercion
      */
     public function execute(string $id): ?array
     {
@@ -41,6 +40,7 @@ class FindCatalogProductSelectionCriteriaQuery implements FindCatalogProductSele
             return null;
         }
 
+        /** @var array<array-key,array{field: string, operator: string, value?: mixed}>|null $criteria */
         $criteria = \json_decode($result, true, 512, JSON_THROW_ON_ERROR);
         if (!\is_array($criteria)) {
             throw new \LogicException('Invalid JSON in product_selection_criteria column');
