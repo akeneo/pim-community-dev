@@ -67,7 +67,7 @@
         "aws/aws-sdk-php": "3.172",
         "box/spout": "^3.3.0",
         "doctrine/annotations": "^1.13.2",
-        "doctrine/cache": "^1.12.1",
+        "doctrine/cache": "^2.2.0",
         "doctrine/collections": "^v1.6.2",
         "doctrine/common": "^3.2.0",
         "doctrine/data-fixtures": "^1.4.2",
