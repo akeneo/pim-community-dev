@@ -5,8 +5,9 @@
 >
     <projectFiles>
         <directory name="src" />
-        <ignoreFiles>
+        <ignoreFiles allowMissingFiles="true">
             <directory name="../../../vendor" />
+            <directory name="../../../../../../vendor" />
         </ignoreFiles>
     </projectFiles>
 </psalm>
