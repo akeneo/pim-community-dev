@@ -77,6 +77,7 @@ class ValueCollectionWithoutEmptyValuesProvider
         $valueCollection = new WriteValueCollection();
 
         foreach ($changes['values'] as $code => $changeset) {
+            $code = (string) $code;
             $attribute = $this->getAttributes->forCode($code);
             foreach ($changeset as $index => $change) {
                 if (true === $this->isChangeDataNull($change['data'])) {

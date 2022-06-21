@@ -68,6 +68,7 @@ class ProposalChangesNormalizer
         $proposalChanges = [];
         $changesWithEmptyValues = $this->valueCollectionWithoutEmptyValuesProvider->getChanges($entityWithValuesDraft, $context);
         foreach ($changesWithEmptyValues as $attributeCode => $changes) {
+            $attributeCode = (string) $attributeCode;
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
             $canViewAttribute = $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute);
             if (!$canViewAttribute) {
