@@ -1,0 +1,4 @@
+services:
+  akeneo.job_automation.handler.storage_connection_check:
+    class: Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck\StorageConnectionCheckHandler
+    

@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Controller;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\StorageValidator;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck\StorageConnectionCheckHandler;
 use Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck\StorageConnectionCheckQuery;
-use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +29,7 @@ final class GetStorageConnectionCheckAction
         private StorageConnectionCheckHandler $storageConnectionCheckHandler,
         private ValidatorInterface $validator,
         private NormalizerInterface $normalizer,
+        private StorageHydratorInterface $storageHydrator
     ) {
     }
 
@@ -44,8 +44,10 @@ final class GetStorageConnectionCheckAction
             return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
+        $storage = $this->storageHydrator->hydrate($request->getContent());
+
         $this->storageConnectionCheckHandler->handle(new StorageConnectionCheckQuery(
-            $request->getContent()
+            $storage
         ));
     }
 }

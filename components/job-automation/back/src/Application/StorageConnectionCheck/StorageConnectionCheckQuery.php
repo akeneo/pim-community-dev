@@ -13,15 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
+
 final class StorageConnectionCheckQuery
 {
     public function __construct(
-        private array $storageParams
+        private StorageInterface $storage
     ) {
     }
 
-    public function getStorageParams(): array
+    public function getStorage(): array
     {
-        return $this->storageParams;
+        return $this->storage;
     }
 }

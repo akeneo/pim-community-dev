@@ -17,6 +17,5 @@ final class StorageConnectionCheckHandler
 {
     public function handle(StorageConnectionCheckQuery $storageConnectionCheckQuery): void
     {
-
     }
 }
