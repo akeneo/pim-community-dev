@@ -39,12 +39,14 @@ final class GetStorageConnectionCheckAction
             return new RedirectResponse('/');
         }
 
-        $violations = $this->validator->validate($request, new Storage(['xlsx', 'xls']));
+        $data = json_decode($request->getContent(), true);
+
+        $violations = $this->validator->validate($data, new Storage(['xlsx', 'xls']));
         if (0 < $violations->count()) {
             return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
-        $storage = $this->storageHydrator->hydrate($request->getContent());
+        $storage = $this->storageHydrator->hydrate($data);
 
         $this->storageConnectionCheckHandler->handle(new StorageConnectionCheckQuery(
             $storage
