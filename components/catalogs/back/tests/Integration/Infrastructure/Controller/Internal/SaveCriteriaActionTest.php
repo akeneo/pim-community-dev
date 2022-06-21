@@ -10,8 +10,6 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -21,7 +19,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class SaveCriteriaActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client;
     private ?CommandBus $commandBus;
     private ?Connection $connection;
 
@@ -30,7 +27,6 @@ class SaveCriteriaActionTest extends IntegrationTestCase
         parent::setUp();
 
         $this->commandBus = self::getContainer()->get(CommandBus::class);
-        $this->tokenStorage = self::getContainer()->get(TokenStorageInterface::class);
         $this->connection = self::getContainer()->get(Connection::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
@@ -38,7 +34,7 @@ class SaveCriteriaActionTest extends IntegrationTestCase
 
     public function testItSavesCriteria(): void
     {
-        $this->client = $this->getAuthenticatedInternalApiClient('admin');
+        $client = $this->getAuthenticatedInternalApiClient('admin');
 
         $this->commandBus->execute(new CreateCatalogCommand(
             'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
@@ -46,7 +42,7 @@ class SaveCriteriaActionTest extends IntegrationTestCase
             'admin',
         ));
 
-        $this->client->request(
+        $client->request(
             'POST',
             '/rest/catalogs/ed30425c-d9cf-468b-8bc7-fa346f41dd07/save-criteria',
             [],
@@ -63,7 +59,7 @@ class SaveCriteriaActionTest extends IntegrationTestCase
             ]),
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(204, $response->getStatusCode());
 
@@ -78,9 +74,9 @@ class SaveCriteriaActionTest extends IntegrationTestCase
 
     public function testItGetsNotFoundResponseWithWrongId(): void
     {
-        $this->client = $this->getAuthenticatedInternalApiClient('admin');
+        $client = $this->getAuthenticatedInternalApiClient('admin');
 
-        $this->client->request(
+        $client->request(
             'POST',
             '/rest/catalogs/ed30425c-d9cf-468b-8bc7-fa346f41dd07/save-criteria',
             [
@@ -97,14 +93,14 @@ class SaveCriteriaActionTest extends IntegrationTestCase
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ],
         );
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(404, $response->getStatusCode());
     }
 
     public function testItGetsUnprocessableEntityWithWrongCriteria(): void
     {
-        $this->client = $this->getAuthenticatedInternalApiClient('admin');
+        $client = $this->getAuthenticatedInternalApiClient('admin');
 
         $this->commandBus->execute(new CreateCatalogCommand(
             'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
@@ -112,7 +108,7 @@ class SaveCriteriaActionTest extends IntegrationTestCase
             'admin',
         ));
 
-        $this->client->request(
+        $client->request(
             'POST',
             '/rest/catalogs/ed30425c-d9cf-468b-8bc7-fa346f41dd07/save-criteria',
             [],
@@ -123,13 +119,11 @@ class SaveCriteriaActionTest extends IntegrationTestCase
             \json_encode([
                 [
                     'field' => 'wrong-criteria',
-                    'operator' => '!=',
-                    'value' => true,
                 ],
             ]),
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true);
 
         Assert::assertEquals(422, $response->getStatusCode());

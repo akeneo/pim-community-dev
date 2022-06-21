@@ -6,15 +6,13 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductSelectionCriteriaQueryInterface;
-use Akeneo\Catalogs\Domain\ProductSelection\Criterion;
-use Akeneo\Catalogs\Infrastructure\Validation\CriteriaJson;
+use Akeneo\Catalogs\Infrastructure\Validation\Criteria;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -27,7 +25,7 @@ final class SaveCriteriaAction
         private ValidatorInterface $validator,
         private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
         private UpdateCatalogProductSelectionCriteriaQueryInterface $updateCatalogProductSelectionCriteriaQuery,
-        private DenormalizerInterface $denormalizer,
+        private NormalizerInterface $normalizer,
     ) {
     }
 
@@ -43,43 +41,28 @@ final class SaveCriteriaAction
             throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
         }
 
-        /** @var array<int, array{field: string, operator: string, value?: mixed}> $criteria */
-        $criteria = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        /** @var array<int, array{field: string, operator: string, value?: mixed}> $payload */
+        $payload = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        $constraintViolationList = $this->validator->validate($criteria, [
-            new CriteriaJson(),
+        $violations = $this->validator->validate($payload, [
+            new Criteria(),
         ]);
 
-        if ($constraintViolationList->count() > 0) {
-            $errorList = $this->buildViolationResponse($constraintViolationList);
-
+        if ($violations->count() > 0) {
             return new JsonResponse(
-                ['errors' => $errorList, 'message' => 'Criteria are not valid.'],
+                [
+                    'errors' => $this->normalizer->normalize($violations),
+                    'message' => 'Criteria are not valid.',
+                ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
 
         $this->updateCatalogProductSelectionCriteriaQuery->execute(
             $catalogId,
-            $this->denormalizer->denormalize($criteria, Criterion::class . '[]', 'internal'),
+            $payload,
         );
 
         return new JsonResponse(null, 204);
-    }
-
-    /**
-     * @return array<int, array{name: string, reason: string}>
-     */
-    private function buildViolationResponse(ConstraintViolationListInterface $constraintViolationList): array
-    {
-        $errors = [];
-        foreach ($constraintViolationList as $constraintViolation) {
-            $errors[] = [
-                'name' => $constraintViolation->getPropertyPath(),
-                'reason' => (string) $constraintViolation->getMessage(),
-            ];
-        }
-
-        return $errors;
     }
 }

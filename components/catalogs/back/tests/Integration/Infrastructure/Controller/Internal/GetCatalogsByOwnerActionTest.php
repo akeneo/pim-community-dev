@@ -8,7 +8,6 @@ use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -19,7 +18,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class GetCatalogsByOwnerActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client;
     private ?CommandBus $commandBus;
 
     public function setUp(): void
@@ -34,7 +32,7 @@ class GetCatalogsByOwnerActionTest extends IntegrationTestCase
 
     public function testItGetsCatalogsByOwner(): void
     {
-        $this->client = $this->getAuthenticatedInternalApiClient('admin');
+        $client = $this->getAuthenticatedInternalApiClient('admin');
 
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -52,7 +50,7 @@ class GetCatalogsByOwnerActionTest extends IntegrationTestCase
             'admin',
         ));
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/rest/catalogs',
             [
@@ -64,7 +62,7 @@ class GetCatalogsByOwnerActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true);
 
         Assert::assertEquals(200, $response->getStatusCode());
@@ -81,7 +79,7 @@ class GetCatalogsByOwnerActionTest extends IntegrationTestCase
 
     public function testItDoesNotGetCatalogsOfOtherUsers(): void
     {
-        $this->client = $this->getAuthenticatedInternalApiClient('admin');
+        $client = $this->getAuthenticatedInternalApiClient('admin');
 
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -89,7 +87,7 @@ class GetCatalogsByOwnerActionTest extends IntegrationTestCase
             'admin',
         ));
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/rest/catalogs',
             [
@@ -101,7 +99,7 @@ class GetCatalogsByOwnerActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true);
 
         Assert::assertEquals(200, $response->getStatusCode());
@@ -110,9 +108,9 @@ class GetCatalogsByOwnerActionTest extends IntegrationTestCase
 
     public function testItGetsBadRequestWithMissingOwnerParameter(): void
     {
-        $this->client = $this->getAuthenticatedInternalApiClient('admin');
+        $client = $this->getAuthenticatedInternalApiClient('admin');
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/rest/catalogs',
             [],
@@ -121,7 +119,7 @@ class GetCatalogsByOwnerActionTest extends IntegrationTestCase
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ],
         );
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(400, $response->getStatusCode());
     }
