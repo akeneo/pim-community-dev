@@ -7,10 +7,13 @@ import Translator from '../../legacy/translator';
 
 const initTranslator = {
   fetch: async () => {
+    if (Translator.locale === 'en_US') {
+      return Promise.resolve();
+    }
+
     const response = await fetch('js/translation/' + 'en_US' + '.js');
     const messages = await response.json();
 
-    console.log(Translator);
     Translator.fromJSON(messages);
   }
 }
