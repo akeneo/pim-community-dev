@@ -15,6 +15,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileSystemStorageClient;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
 use League\Flysystem\FilesystemOperator;
+use League\Flysystem\PhpseclibV2\ConnectionProvider;
 
 final class ManualUploadStorageClientProvider implements StorageClientProviderInterface
 {
@@ -35,5 +36,10 @@ final class ManualUploadStorageClientProvider implements StorageClientProviderIn
     public function supports(StorageInterface $storage): bool
     {
         return $storage instanceof ManualUploadStorage;
+    }
+
+    public function getConnectionProvider(StorageInterface $storage): ConnectionProvider|null
+    {
+        return null;
     }
 }

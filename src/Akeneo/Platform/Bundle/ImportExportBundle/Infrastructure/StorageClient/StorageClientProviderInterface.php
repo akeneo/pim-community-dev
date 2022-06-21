@@ -11,10 +11,13 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
+use League\Flysystem\PhpseclibV2\ConnectionProvider;
 
 interface StorageClientProviderInterface
 {
     public function supports(StorageInterface $storage): bool;
 
     public function getFromStorage(StorageInterface $storage): StorageClientInterface;
+    
+    public function getConnectionProvider(StorageInterface $storage): ConnectionProvider|null;
 }

@@ -16,6 +16,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileS
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\PhpseclibV2\ConnectionProvider;
 
 final class LocalStorageClientProvider implements StorageClientProviderInterface
 {
@@ -33,5 +34,10 @@ final class LocalStorageClientProvider implements StorageClientProviderInterface
     public function supports(StorageInterface $storage): bool
     {
         return $storage instanceof LocalStorage;
+    }
+
+    public function getConnectionProvider(StorageInterface $storage): ConnectionProvider|null
+    {
+        return null;
     }
 }
