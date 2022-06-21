@@ -4,38 +4,38 @@ import {useTranslate, Section, filterErrors} from '@akeneo-pim-community/shared'
 import {isBooleanReplacementValues, BooleanReplacementValues} from '../../../../models';
 import {OperationBlockProps} from './OperationBlockProps';
 
-const BOOLEAN_REPLACEMENT_OPERATION_TYPE = 'boolean_replacement';
+const ENABLED_REPLACEMENT_OPERATION_TYPE = 'enabled_replacement';
 
-type BooleanReplacementOperation = {
+type EnabledReplacementOperation = {
   uuid: string;
-  type: typeof BOOLEAN_REPLACEMENT_OPERATION_TYPE;
+  type: typeof ENABLED_REPLACEMENT_OPERATION_TYPE;
   mapping: BooleanReplacementValues;
 };
 
-const getDefaultBooleanReplacementOperation = (): BooleanReplacementOperation => ({
+const getDefaultEnabledReplacementOperation = (): EnabledReplacementOperation => ({
   uuid: uuid(),
-  type: BOOLEAN_REPLACEMENT_OPERATION_TYPE,
+  type: ENABLED_REPLACEMENT_OPERATION_TYPE,
   mapping: {
     false: ['0'],
     true: ['1'],
   },
 });
 
-const isBooleanReplacementOperation = (operation?: any): operation is BooleanReplacementOperation =>
+const isEnabledReplacementOperation = (operation?: any): operation is EnabledReplacementOperation =>
   undefined !== operation &&
   'type' in operation &&
-  BOOLEAN_REPLACEMENT_OPERATION_TYPE === operation.type &&
+  ENABLED_REPLACEMENT_OPERATION_TYPE === operation.type &&
   'mapping' in operation &&
   isBooleanReplacementValues(operation.mapping);
 
-const BooleanReplacementOperationBlock = ({
+const EnabledReplacementOperationBlock = ({
   operation,
   isLastOperation,
   onChange,
   validationErrors,
 }: OperationBlockProps) => {
-  if (!isBooleanReplacementOperation(operation)) {
-    throw new Error('BooleanReplacementOperationBlock can only be used with BooleanReplacementOperation');
+  if (!isEnabledReplacementOperation(operation)) {
+    throw new Error('EnabledReplacementOperationBlock can only be used with EnabledReplacementOperation');
   }
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(isLastOperation);
@@ -52,13 +52,15 @@ const BooleanReplacementOperationBlock = ({
       collapseButtonLabel={translate('akeneo.tailored_import.data_mapping.operations.common.collapse')}
       onCollapse={isOpen ? close : open}
       isOpen={isOpen}
-      title={translate('akeneo.tailored_import.data_mapping.operations.boolean_replacement.title')}
+      title={translate('akeneo.tailored_import.data_mapping.operations.enabled_replacement.title')}
     >
       <Section>
-        <Field label={translate('akeneo.tailored_import.data_mapping.operations.boolean_replacement.field.yes_value')}>
+        <Field
+          label={translate('akeneo.tailored_import.data_mapping.operations.enabled_replacement.field.enabled_value')}
+        >
           <TagInput
             value={operation.mapping.true}
-            onChange={yesValues => handleMappingChange('true', yesValues)}
+            onChange={enabledValues => handleMappingChange('true', enabledValues)}
             invalid={0 < trueErrors.length}
             placeholder={translate('akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder')}
           />
@@ -68,10 +70,12 @@ const BooleanReplacementOperationBlock = ({
             </Helper>
           ))}
         </Field>
-        <Field label={translate('akeneo.tailored_import.data_mapping.operations.boolean_replacement.field.no_value')}>
+        <Field
+          label={translate('akeneo.tailored_import.data_mapping.operations.enabled_replacement.field.disabled_value')}
+        >
           <TagInput
             value={operation.mapping.false}
-            onChange={noValues => handleMappingChange('false', noValues)}
+            onChange={disabledValues => handleMappingChange('false', disabledValues)}
             invalid={0 < falseErrors.length}
             placeholder={translate('akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder')}
           />
@@ -86,5 +90,5 @@ const BooleanReplacementOperationBlock = ({
   );
 };
 
-export {BOOLEAN_REPLACEMENT_OPERATION_TYPE, BooleanReplacementOperationBlock, getDefaultBooleanReplacementOperation};
-export type {BooleanReplacementOperation};
+export {ENABLED_REPLACEMENT_OPERATION_TYPE, EnabledReplacementOperationBlock, getDefaultEnabledReplacementOperation};
+export type {EnabledReplacementOperation};

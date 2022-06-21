@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Enabled;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\DataMappingUuid;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operations;
@@ -42,7 +43,10 @@ final class EnabledValidator extends ConstraintValidator
                     'action_if_empty' => new EqualTo(TargetInterface::IF_EMPTY_SKIP),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
-                'operations' => new Operations([]),
+                'operations' => new Operations(
+                    [EnabledReplacementOperation::TYPE],
+                    [EnabledReplacementOperation::TYPE],
+                ),
                 'sample_data' => new SampleData(),
             ],
         ]));

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use PhpSpec\ObjectBehavior;
 
-class BooleanReplacementOperationSpec extends ObjectBehavior
+class EnabledReplacementOperationSpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -32,7 +32,7 @@ class BooleanReplacementOperationSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(BooleanReplacementOperation::class);
+        $this->shouldHaveType(EnabledReplacementOperation::class);
     }
 
     public function it_implements_operation_interface(): void
@@ -61,7 +61,7 @@ class BooleanReplacementOperationSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
             'uuid' => '00000000-0000-0000-0000-000000000000',
-            'type' => 'boolean_replacement',
+            'type' => 'enabled_replacement',
             'mapping' => [
                 'true' => ['oui'],
                 'false' => ['non'],

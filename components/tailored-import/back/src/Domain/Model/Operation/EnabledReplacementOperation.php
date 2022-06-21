@@ -15,9 +15,9 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
 use Webmozart\Assert\Assert;
 
-final class BooleanReplacementOperation implements OperationInterface
+final class EnabledReplacementOperation implements OperationInterface
 {
-    public const TYPE = 'boolean_replacement';
+    public const TYPE = 'enabled_replacement';
 
     public function __construct(
         private string $uuid,

@@ -27,6 +27,8 @@ import {
   BooleanReplacementOperationBlock,
   CATEGORIES_REPLACEMENT_OPERATION_TYPE,
   CategoriesReplacementOperationBlock,
+  EnabledReplacementOperationBlock,
+  ENABLED_REPLACEMENT_OPERATION_TYPE,
 } from './Operation';
 import {usePreviewData} from '../../hooks';
 
@@ -45,12 +47,13 @@ const OperationBlocksContainer = styled.div`
 const operationBlocks: {
   [operationType in OperationType]: FunctionComponent<OperationBlockProps>;
 } = {
-  [CLEAN_HTML_TAGS_OPERATION_TYPE]: CleanHTMLTagsOperationBlock,
-  [SPLIT_OPERATION_TYPE]: SplitOperationBlock,
-  [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,
-  [MULTI_SELECT_REPLACEMENT_OPERATION_TYPE]: MultiSelectReplacementOperationBlock,
   [BOOLEAN_REPLACEMENT_OPERATION_TYPE]: BooleanReplacementOperationBlock,
   [CATEGORIES_REPLACEMENT_OPERATION_TYPE]: CategoriesReplacementOperationBlock,
+  [CLEAN_HTML_TAGS_OPERATION_TYPE]: CleanHTMLTagsOperationBlock,
+  [ENABLED_REPLACEMENT_OPERATION_TYPE]: EnabledReplacementOperationBlock,
+  [MULTI_SELECT_REPLACEMENT_OPERATION_TYPE]: MultiSelectReplacementOperationBlock,
+  [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,
+  [SPLIT_OPERATION_TYPE]: SplitOperationBlock,
 };
 
 type OperationsProps = {

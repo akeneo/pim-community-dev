@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapp
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
 use PHPUnit\Framework\Assert;
@@ -53,7 +54,9 @@ final class HandleEnabledTest extends HandleDataMappingTestCase
                             'skip',
                         ),
                         ['11111111-1111-1111-1111-111111111111'],
-                        OperationCollection::create([]),
+                        OperationCollection::create([
+                            new EnabledReplacementOperation('00000000-0000-0000-0000-000000000000', ['true' => ['1'], 'false' => ['0']]),
+                        ]),
                         [],
                     ),
                 ],
@@ -67,7 +70,7 @@ final class HandleEnabledTest extends HandleDataMappingTestCase
             'it handles disable property targets' => [
                 'row' => [
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
-                    '00000000-0000-0000-0000-000000000000' => '0',
+                    '00000000-0000-0000-0000-000000000000' => 'NON',
                 ],
                 'data_mappings' => [
                     DataMapping::create(
@@ -78,7 +81,9 @@ final class HandleEnabledTest extends HandleDataMappingTestCase
                             'skip',
                         ),
                         ['00000000-0000-0000-0000-000000000000'],
-                        OperationCollection::create([]),
+                        OperationCollection::create([
+                            new EnabledReplacementOperation('00000000-0000-0000-0000-000000000000', ['true' => ['1'], 'false' => ['NON']]),
+                        ]),
                         [],
                     ),
                 ],

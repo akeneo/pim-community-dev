@@ -74,7 +74,7 @@ final class BooleanReplacementOperationValidatorTest extends AbstractValidationT
                 ],
             ],
             'a boolean replacement with wrong type' => [
-                'This value should be equal to "boolean_replacement".',
+                'The value you selected is not a valid choice.',
                 '[type]',
                 [
                     'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
@@ -91,7 +91,7 @@ final class BooleanReplacementOperationValidatorTest extends AbstractValidationT
                 [
                     'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
                     'type' => 'boolean_replacement',
-                    'mapping' => 'invalid'
+                    'mapping' => 'invalid',
                 ],
             ],
             'a boolean replacement with mapping missing true' => [

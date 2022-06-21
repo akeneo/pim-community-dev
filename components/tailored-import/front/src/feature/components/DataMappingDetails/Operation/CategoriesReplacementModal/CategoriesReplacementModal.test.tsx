@@ -66,7 +66,7 @@ test('it can update a replacement mapping', async () => {
   );
 
   const [shoesInput] = screen.getAllByPlaceholderText(
-    'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.field.to_placeholder'
+    'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
   );
 
   userEvent.type(shoesInput, 'CHAUSSURE;');
@@ -98,7 +98,7 @@ test('it validates replacement mapping before confirming', async () => {
   );
 
   const [shoesInput] = screen.getAllByPlaceholderText(
-    'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.field.to_placeholder'
+    'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
   );
 
   userEvent.type(shoesInput, 'invalid_mapping');
@@ -128,7 +128,7 @@ test('it can change mapping on another category tree', async () => {
   userEvent.click(screen.getByText('T-Shirt'));
 
   const [tshirtInput] = screen.getAllByPlaceholderText(
-    'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.field.to_placeholder'
+    'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
   );
 
   userEvent.type(tshirtInput, 'MAILLOT DE CORPS;');
