@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation;
 
-use Symfony\Component\Validator\Constraints\Compound;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Compound;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
@@ -13,6 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[\Attribute]
 class Criteria extends Compound
 {
+    /**
+     * @param array<array-key, mixed> $options
+     *
+     * @return array<Constraint>
+     */
     protected function getConstraints(array $options): array
     {
         return [
