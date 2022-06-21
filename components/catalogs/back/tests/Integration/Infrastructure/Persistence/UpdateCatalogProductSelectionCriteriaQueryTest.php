@@ -37,12 +37,12 @@ class UpdateCatalogProductSelectionCriteriaQueryTest extends IntegrationTestCase
 
         $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
             [
-                'field' => 'status',
+                'field' => 'enabled',
                 'operator' => '=',
                 'value' => true,
             ],
             [
-                'field' => 'status',
+                'field' => 'enabled',
                 'operator' => '=',
                 'value' => false,
             ],
@@ -50,12 +50,12 @@ class UpdateCatalogProductSelectionCriteriaQueryTest extends IntegrationTestCase
 
         $this->assertCatalogHasProductSelectionCriteria('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
             [
-                'field' => 'status',
+                'field' => 'enabled',
                 'operator' => '=',
                 'value' => true,
             ],
             [
-                'field' => 'status',
+                'field' => 'enabled',
                 'operator' => '=',
                 'value' => false,
             ],

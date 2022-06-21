@@ -33,11 +33,11 @@ final class CreateCatalogHandler
             $command->getId(),
             [
                 [
-                    'field' => 'status',
+                    'field' => 'enabled',
                     'operator' => '=',
                     'value' => true,
                 ],
-            ]
+            ],
         );
     }
 }

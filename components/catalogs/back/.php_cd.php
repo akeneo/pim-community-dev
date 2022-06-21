@@ -47,6 +47,7 @@ $rules = [
             'Symfony\Component\Messenger',
             'Symfony\Component\Security',
             'Symfony\Component\Serializer',
+            'Symfony\Component\Validator',
             'Doctrine\DBAL',
             'Ramsey\Uuid\Uuid',
             'Akeneo\Platform\Bundle\InstallerBundle',

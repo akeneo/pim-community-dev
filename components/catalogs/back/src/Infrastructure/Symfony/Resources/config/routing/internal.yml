@@ -9,3 +9,10 @@ akeneo_catalogs_internal_get_catalog:
     methods: [ GET ]
     requirements:
         catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+
+akeneo_catalogs_internal_save_criteria:
+    path: '/rest/catalogs/{catalogId}/save-criteria'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\SaveCriteriaAction
+    methods: [ POST ]
+    requirements:
+        catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
