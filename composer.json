@@ -100,7 +100,7 @@
         "oneup/flysystem-bundle": "^4.0.0",
         "phpseclib/phpseclib": "2.0.31",
         "psr/event-dispatcher": "^1.0.0",
-        "ramsey/uuid": "^3.7",
+        "ramsey/uuid": "^4.3",
         "ramsey/uuid-doctrine": "^1.8",
         "sensio/framework-extra-bundle": "^5.4",
         "symfony/acl-bundle": "^2.1.0",
