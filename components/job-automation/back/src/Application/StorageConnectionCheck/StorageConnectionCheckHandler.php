@@ -28,7 +28,7 @@ final class StorageConnectionCheckHandler
         foreach ($this->storageClientProviders as $storageClientProvider) {
             if ($storageClientProvider->supports($storageConnectionCheckQuery->getStorage())) {
                 $connection = $storageClientProvider->getConnectionProvider($storageConnectionCheckQuery->getStorage());
-                $connection->provideConnection();
+                $connection?->provideConnection();
             }
         }
     }

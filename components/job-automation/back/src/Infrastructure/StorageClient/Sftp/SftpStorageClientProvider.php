@@ -57,7 +57,7 @@ final class SftpStorageClientProvider implements StorageClientProviderInterface
         return $storage instanceof SftpStorage;
     }
 
-    public function getConnectionProvider(StorageInterface $storage): ConnectionProvider
+    public function getConnectionProvider(StorageInterface $storage): ConnectionProvider|null
     {
         return new SftpConnectionProvider(
             $storage->getHost(),
