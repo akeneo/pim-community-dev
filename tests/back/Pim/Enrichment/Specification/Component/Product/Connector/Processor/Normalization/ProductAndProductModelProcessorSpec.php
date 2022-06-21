@@ -5,8 +5,9 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Proces
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\GetNormalizedProductModelQualityScores;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\GetNormalizedProductQualityScores;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductAndProductModelProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
@@ -22,9 +23,10 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductProcessorSpec extends ObjectBehavior
+class ProductAndProductModelProcessorSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $normalizer,
@@ -32,6 +34,7 @@ class ProductProcessorSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         FillMissingValuesInterface $fillMissingProductModelValues,
         GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
+        GetNormalizedProductModelQualityScores $getNormalizedProductModelQualityScores,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -39,7 +42,8 @@ class ProductProcessorSpec extends ObjectBehavior
             $channelRepository,
             $attributeRepository,
             $fillMissingProductModelValues,
-            $getNormalizedProductQualityScores
+            $getNormalizedProductQualityScores,
+            $getNormalizedProductModelQualityScores
         );
 
         $this->setStepExecution($stepExecution);
@@ -48,7 +52,7 @@ class ProductProcessorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(
-            ProductProcessor::class
+            ProductAndProductModelProcessor::class
         );
     }
 
@@ -201,7 +205,8 @@ class ProductProcessorSpec extends ObjectBehavior
         JobParameters $jobParameters,
         AttributeInterface $attribute
     ) {
-        $product->getIdentifier()->willReturn('a_product');
+        $productUuid = Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
+        $product->getUuid()->willReturn($productUuid);
         $attributeRepository->findMediaAttributeCodes()->willReturn(['picture']);
         $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
         $attribute->isLocaleSpecific()->willReturn(false);
@@ -263,7 +268,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $getNormalizedProductQualityScores->__invoke('a_product','mobile', ['en_US', 'fr_FR'])
+        $getNormalizedProductQualityScores->__invoke($productUuid,'mobile', ['en_US', 'fr_FR'])
             ->willReturn($normalizedProductWithQualityScores['quality_scores']);
 
         $this->process($product)->shouldBeLike($normalizedProductWithQualityScores);

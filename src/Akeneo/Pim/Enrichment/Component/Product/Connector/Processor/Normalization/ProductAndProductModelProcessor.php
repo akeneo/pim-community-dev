@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -22,7 +21,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
+class ProductAndProductModelProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     protected ?StepExecution $stepExecution = null;
 
@@ -31,7 +30,8 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         protected IdentifiableObjectRepositoryInterface $channelRepository,
         protected AttributeRepositoryInterface $attributeRepository,
         protected FillMissingValuesInterface $fillMissingProductModelValues,
-        private GetNormalizedQualityScoresInterface $getNormalizedQualityScores
+        private GetNormalizedProductQualityScoresInterface $getNormalizedProductQualityScores,
+        private GetNormalizedProductModelQualityScoresInterface $getNormalizedProductModelQualityScores
     ) {
     }
 
@@ -74,11 +74,19 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         }
 
         if ($this->hasFilterOnQualityScore($parameters)) {
-            $productStandard['quality_scores'] = ($this->getNormalizedQualityScores)(
-                $product instanceof ProductModelInterface ? $product->getCode() : $product->getIdentifier(),
-                $structure['scope'] ?? null,
-                $structure['locales'] ?? []
-            );
+            if($product instanceof ProductModelInterface) {
+                $productStandard['quality_scores'] = ($this->getNormalizedProductModelQualityScores)(
+                    $product->getCode(),
+                    $structure['scope'] ?? null,
+                    $structure['locales'] ?? []
+                );
+            } else {
+                $productStandard['quality_scores'] = ($this->getNormalizedProductQualityScores)(
+                    $product->getUuid(),
+                    $structure['scope'] ?? null,
+                    $structure['locales'] ?? []
+                );
+            }
         }
 
         return $productStandard;

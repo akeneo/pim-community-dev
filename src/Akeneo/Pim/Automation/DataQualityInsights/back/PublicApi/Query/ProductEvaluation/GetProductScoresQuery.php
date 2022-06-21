@@ -9,8 +9,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresByIdentifiersQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\Uuid\GetProductScoresByUuidsQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -19,27 +21,32 @@ use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollec
 class GetProductScoresQuery implements GetProductScoresQueryInterface
 {
     public function __construct(
-        private GetProductScoresByIdentifiersQuery $getProductScoresByIdentifiersQuery,
+        private GetProductScoresByUuidsQuery $getProductScoresByUuidsQuery,
         private GetScoresByCriteriaStrategy $getScoresByCriteria,
     ) {
     }
 
     /**
-     * {@inheritdoc}
+     * @param UuidInterface[] $productUuids
+     * @return QualityScoreCollection[]
      */
-    public function byProductIdentifiers(array $productIdentifiers): array
+    public function byProductUuids(array $productUuids): array
     {
-        $scoresByIdentifiers = $this->getProductScoresByIdentifiersQuery->byProductIdentifiers($productIdentifiers);
+        $scoresByUuids = $this->getProductScoresByUuidsQuery->byProductUuids($productUuids);
 
-        return array_map(
+        return \array_map(
             fn (Read\Scores $scores) => $this->qualityScoreCollection(($this->getScoresByCriteria)($scores)),
-            $scoresByIdentifiers
+            $scoresByUuids
         );
     }
 
-    public function byProductIdentifier(string $productIdentifier): QualityScoreCollection
+    /**
+     * @param UuidInterface $productUuid
+     * @return QualityScoreCollection
+     */
+    public function byProductUuid(UuidInterface $productUuid): QualityScoreCollection
     {
-        $scores = $this->getProductScoresByIdentifiersQuery->byProductIdentifier($productIdentifier);
+        $scores = $this->getProductScoresByUuidsQuery->byProductUuid($productUuid);
 
         return $this->qualityScoreCollection(($this->getScoresByCriteria)($scores));
     }

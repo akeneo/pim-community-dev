@@ -9,7 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollec
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
-class GetNormalizedProductModelQualityScores implements GetNormalizedQualityScoresInterface
+class GetNormalizedProductModelQualityScores implements GetNormalizedProductModelQualityScoresInterface
 {
     public function __construct(
         private GetProductModelScoresQueryInterface $getProductModelScoresQuery,
