@@ -273,7 +273,8 @@ SQL;
 
                     return $carry;
                 },
-                []);
+                []
+            );
 
             yield $diff;
         }
