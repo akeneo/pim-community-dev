@@ -22,9 +22,9 @@ const StorageForm = ({jobType, storage, validationErrors, onStorageChange}: Stor
   return (
     <Section>
       <SectionTitle>
-        <SectionTitle.Title>{translate('akeneo.automation.storage.title')}</SectionTitle.Title>
+        <SectionTitle.Title>{translate('akeneo.job_automation.storage.title')}</SectionTitle.Title>
       </SectionTitle>
-      <Field label={translate('akeneo.automation.storage.connection.label')}>
+      <Field label={translate('akeneo.job_automation.storage.connection.label')}>
         <SelectInput
           value={storage.type}
           onChange={handleTypeChange}
@@ -34,7 +34,7 @@ const StorageForm = ({jobType, storage, validationErrors, onStorageChange}: Stor
         >
           {STORAGE_TYPES.map(storageType => (
             <SelectInput.Option value={storageType} key={storageType}>
-              {translate(`akeneo.automation.storage.connection.${storageType}`)}
+              {translate(`akeneo.job_automation.storage.connection.${storageType}`)}
             </SelectInput.Option>
           ))}
         </SelectInput>
