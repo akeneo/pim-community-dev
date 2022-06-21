@@ -22,7 +22,7 @@ final class StorageConnectionCheckQuery
     ) {
     }
 
-    public function getStorage(): array
+    public function getStorage(): StorageInterface
     {
         return $this->storage;
     }
