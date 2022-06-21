@@ -4,7 +4,7 @@ services:
         decoration_inner_name: akeneo_authentication.sso.user.factory.base
         arguments:
             - '@akeneo_authentication.sso.user.factory.base'
-            - '@akeneo.feature_flag.service.only_free_trial_feature'
+            - '@feature_flags'
             - '@pim_user.factory.user'
             - '@pim_user.saver.user'
             - '@pim_user.updater.user'
