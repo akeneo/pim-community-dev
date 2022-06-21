@@ -130,7 +130,7 @@ services:
     akeneo.pim.enrichment.use_cases.uuid.get_products_with_quality_scores:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Uuid\GetProductsWithQualityScores
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\Uuid\GetProductScoresQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQuery'
             - '@akeneo.pim.automation.data_quality_insights.feature'
 
     akeneo.pim.enrichment.use_cases.get_products_with_completenesses:
