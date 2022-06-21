@@ -5,7 +5,6 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAccount\UpdatePasswordHandler'
 
-
     Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\GetContributorAccount:
         public: true
         arguments:
