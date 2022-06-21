@@ -50,7 +50,8 @@
     "tslint-react": "^4.0.0"
   },
   "dependencies": {
-    "akeneo-pim-free-trial": "link:front-packages/free-trial",
+    "@akeneo-pim-community/shared": "link:../vendor/akeneo/pim-community-dev/front-packages/shared",
+    "akeneo-design-system": "link:../vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "html-to-draftjs": "^1.4.0",
@@ -68,6 +69,7 @@
     "jest/**/ip-regex": "2.1.0"
   },
   "workspaces": [
+    "front-packages/free-trial",
     "components/tailored-export/front",
     "vendor/akeneo/pim-community-dev",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker",

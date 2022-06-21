@@ -84,7 +84,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-master",
+        "akeneo/pim-community-dev": "dev-GRF-65-bis",
         "akeneo/pim-onboarder": "^7.0.0",
         "google/cloud-firestore": "^1.22",
         "grpc/grpc": "^1.42.0",

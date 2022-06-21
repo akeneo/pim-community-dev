@@ -2,6 +2,9 @@
   "name": "akeneo-pim-free-trial",
   "version": "0.1.0",
   "private": true,
+  "config": {
+    "front_packages_path": "../../../vendor/akeneo/pim-community-dev/front-packages"
+  },
   "peerDependencies": {
     "babel-loader": "8.1.0",
     "eslint": "^7.11.0",
@@ -22,8 +25,6 @@
     "prettier": "^2.2.1"
   },
   "dependencies": {
-    "@akeneo-pim-community/shared": "link:../../vendor/akeneo/pim-community-dev/front-packages/shared",
-    "akeneo-design-system": "link:../../vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
@@ -38,7 +39,7 @@
     "lib:build": "tsc -p ./tsconfig.build.json",
     "translation:build": "cp ../../public/js/translation/en_US.js ./src/translations.json",
     "route:build": "cp ../../public/js/fos_js_routes.json ./src/routes.json",
-    "packages:build": "yarn --cwd=../akeneo-design-system run lib:build && yarn --cwd=../shared run lib:build",
+    "packages:build": "yarn --cwd=$npm_package_config_front_packages_path/akeneo-design-system lib:build && yarn workspace @akeneo-pim-community/shared lib:build",
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
     "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
   },
