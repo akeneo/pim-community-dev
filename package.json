@@ -34,7 +34,7 @@
     "tailored-import:build": "yarn workspace @akeneo-pim-enterprise/tailored-import lib:build",
     "job-automation:build": "yarn workspace @akeneo-pim-enterprise/job-automation lib:build",
     "onboarder:build": "yarn workspace @akeneo-pim-enterprise/onboarder-retailer lib:build",
-    "free-trial:build": "yarn workspace akeneo-pim-free-trial lib:build",
+    "free-trial:build": "yarn workspace akeneo-pim-free-trial install --frozen-lockfile && yarn workspace akeneo-pim-free-trial lib:build",
     "generate-models": "yarn generate-asset-manager-models && yarn workspace @akeneo-pim-community/communication-channel generate-models",
     "packages:build": "yarn workspace pim-community-dev packages:build && yarn enterprise-packages:build",
     "packages:unit": "yarn workspace pim-community-dev packages:unit && yarn enterprise-packages:unit",
