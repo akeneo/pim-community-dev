@@ -733,11 +733,10 @@ jobs:
                       TYPE_LONG=serenity
                       PRODUCT_REFERENCE_TYPE="${TYPE_LONG}_instance"
                       PRODUCT_REFERENCE_CODE="${TYPE_LONG}_${ENV_NAME}"
-                      # TODO : FIND A WAY TO GET THE LAST IMAGE
-                      IMAGE_TAG=d3aa671c587f83eb319450ea64501c6d1781015c
-                      IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
-                      IMAGE_TAG_DATE=20220606095005
-                      RELEASE_NAME=v20220606095005
+                      IMAGE_TAG=$(gcloud container images list-tags eu.gcr.io/${GOOGLE_PROJECT_ID_PROD}/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                      IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
+                      IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
+                      RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
                       DEPLOYMENT_HASH=$(find deployments-ucs -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -d' ' -f1)
 
                       echo export TYPE=${TYPE} >> $BASH_ENV
@@ -756,6 +755,12 @@ jobs:
                       echo "Product reference type: ${PRODUCT_REFERENCE_TYPE}"
                       echo "Product reference code: ${PRODUCT_REFERENCE_CODE}"
                       echo "Deployement hash: ${DEPLOYMENT_HASH}"
+            - run:
+                  name: Docker pull and push image on registry
+                  command: |
+                      docker pull eu.gcr.io/${GOOGLE_PROJECT_ID_PROD}/pim-enterprise-dev:${IMAGE_TAG}
+                      docker tag eu.gcr.io/${GOOGLE_PROJECT_ID_PROD}/pim-enterprise-dev:${IMAGE_TAG} eu.gcr.io/${GOOGLE_PROJECT_ID}/pim-enterprise-dev:${IMAGE_TAG}
+                      docker push eu.gcr.io/${GOOGLE_PROJECT_ID}/pim-enterprise-dev:${IMAGE_TAG}
             - run:
                   name: Push Terraform modules to GCS
                   command: |

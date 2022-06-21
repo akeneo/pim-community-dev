@@ -6,7 +6,7 @@ namespace Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAcc
 
 final class ContributorAccount
 {
-    public function __construct(public string $id, public string $accessToken, public bool $isAccessTokenValid)
+    public function __construct(public string $id, public string $email, public string $accessToken, public bool $isAccessTokenValid)
     {
     }
 
@@ -14,6 +14,7 @@ final class ContributorAccount
     {
         return [
             'id' => $this->id,
+            'email' => $this->email,
             'accessToken' => $this->accessToken,
             'isAccessTokenValid' => $this->isAccessTokenValid,
         ];

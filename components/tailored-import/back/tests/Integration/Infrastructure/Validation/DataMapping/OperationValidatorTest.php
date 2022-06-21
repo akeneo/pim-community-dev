@@ -24,9 +24,10 @@ class OperationValidatorTest extends AbstractValidationTest
      */
     public function test_it_does_not_build_violations_when_operation_is_valid(
         array $compatibleOperations,
+        array $requiredOperations,
         array $value,
     ): void {
-        $violations = $this->getValidator()->validate($value, new Operations($compatibleOperations));
+        $violations = $this->getValidator()->validate($value, new Operations($compatibleOperations, $requiredOperations));
 
         $this->assertNoViolation($violations);
     }
@@ -38,9 +39,10 @@ class OperationValidatorTest extends AbstractValidationTest
         string $expectedErrorMessage,
         string $expectedErrorPath,
         array $compatibleOperations,
+        array $requiredOperations,
         array $value,
     ): void {
-        $violations = $this->getValidator()->validate($value, new Operations($compatibleOperations));
+        $violations = $this->getValidator()->validate($value, new Operations($compatibleOperations, $requiredOperations));
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }
@@ -48,16 +50,33 @@ class OperationValidatorTest extends AbstractValidationTest
     public function validOperation(): array
     {
         return [
-            'an supported operation' => [
+            'a supported operation' => [
                 ['clean_html_tags'],
+                [],
                 [
                     [
+                        'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
                         'type' => 'clean_html_tags'
                     ],
                 ],
             ],
-            'empty operations' => [
+            'a supported and required operation' => [
+                ['boolean_replacement'],
+                ['boolean_replacement'],
+                [
+                    [
+                        'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                        'type' => 'boolean_replacement',
+                        'mapping' => [
+                            'true' => ['Yes'],
+                            'false' => ['No'],
+                        ],
+                    ],
+                ],
+            ],
+            'an empty operation' => [
                 ['clean_html_tags'],
+                [],
                 [],
             ],
         ];
@@ -70,6 +89,7 @@ class OperationValidatorTest extends AbstractValidationTest
                 'akeneo.tailored_import.validation.operations.incompatible_operation_type',
                 '[0][type]',
                 [],
+                [],
                 [
                     [
                         'type' => 'clean_html_tags'
@@ -80,12 +100,26 @@ class OperationValidatorTest extends AbstractValidationTest
                 'akeneo.tailored_import.validation.operations.operation_type_does_not_exist',
                 '[0][type]',
                 ['non_existent_operation'],
+                [],
                 [
                     [
                         'type' => 'non_existent_operation'
                     ],
                 ]
             ],
+            'a missing required operation' => [
+                'akeneo.tailored_import.validation.operations.missing_required_operation',
+                '',
+                ['split', 'boolean_replacement'],
+                ['boolean_replacement'],
+                [
+                    [
+                        'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                        'type' => 'split',
+                        'separator' => ';',
+                    ],
+                ]
+            ]
         ];
     }
 

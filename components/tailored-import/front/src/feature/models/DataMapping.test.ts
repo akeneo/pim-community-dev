@@ -9,12 +9,6 @@ import {
   createAttributeDataMapping,
 } from './DataMapping';
 
-const mockUuid = 'uuid';
-jest.mock('akeneo-design-system', () => ({
-  ...jest.requireActual('akeneo-design-system'),
-  uuid: () => mockUuid,
-}));
-
 const attribute: Attribute = {
   code: 'description',
   localizable: false,
@@ -38,7 +32,7 @@ test('it creates a default data mapping', () => {
   };
 
   expect(createDefaultDataMapping(identifierAttribute, columnIdentifier, [])).toEqual({
-    uuid: mockUuid,
+    uuid: expect.any(String),
     operations: [],
     sample_data: [],
     sources: ['columnUuid'],
@@ -69,7 +63,7 @@ test('it creates a default data mapping with sample data', () => {
   const sampleData = ['value1', 'value2', 'value3'];
 
   expect(createDefaultDataMapping(identifierAttribute, columnIdentifier, sampleData)).toEqual({
-    uuid: mockUuid,
+    uuid: expect.any(String),
     operations: [],
     sample_data: sampleData,
     sources: ['columnUuid'],
@@ -88,7 +82,7 @@ test('it creates a default data mapping with sample data', () => {
 
 test('it creates an attribute data mapping', () => {
   expect(createAttributeDataMapping(attribute, [])).toEqual({
-    uuid: mockUuid,
+    uuid: expect.any(String),
     operations: [],
     sample_data: [],
     sources: [],
@@ -117,7 +111,7 @@ test('it creates a localizable & locale-specific attribute data mapping', () => 
       channels
     )
   ).toEqual({
-    uuid: mockUuid,
+    uuid: expect.any(String),
     operations: [],
     sample_data: [],
     sources: [],
@@ -136,7 +130,7 @@ test('it creates a localizable & locale-specific attribute data mapping', () => 
 
 test('it creates a property data mapping', () => {
   expect(createPropertyDataMapping('family')).toEqual({
-    uuid: mockUuid,
+    uuid: expect.any(String),
     operations: [],
     sample_data: [],
     sources: [],
@@ -151,7 +145,7 @@ test('it creates a property data mapping', () => {
 
 test('it adds a source to data mapping', () => {
   const dataMapping: DataMapping = {
-    uuid: mockUuid,
+    uuid: expect.any(String),
     operations: [],
     sample_data: [],
     sources: [],

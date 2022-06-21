@@ -13,13 +13,22 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
+use Webmozart\Assert\Assert;
+
 final class SimpleSelectReplacementOperation implements OperationInterface
 {
     public const TYPE = 'simple_select_replacement';
 
     public function __construct(
+        private string $uuid,
         private array $mapping,
     ) {
+        Assert::uuid($uuid);
+    }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
     }
 
     public function getMapping(): array
@@ -30,6 +39,7 @@ final class SimpleSelectReplacementOperation implements OperationInterface
     public function normalize(): array
     {
         return [
+            'uuid' => $this->uuid,
             'type' => self::TYPE,
             'mapping' => $this->mapping,
         ];

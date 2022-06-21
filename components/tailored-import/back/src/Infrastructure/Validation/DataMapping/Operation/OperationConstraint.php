@@ -17,4 +17,7 @@ use Symfony\Component\Validator\Constraint;
 
 abstract class OperationConstraint extends Constraint
 {
+    public const SOURCE_VALUES_SHOULD_BE_UNIQUE = 'akeneo.tailored_import.validation.source_values_should_be_unique';
+    public const REQUIRED = 'akeneo.tailored_import.validation.required';
+    public const MAX_LENGTH_REACHED = 'akeneo.tailored_import.validation.max_length_reached';
 }

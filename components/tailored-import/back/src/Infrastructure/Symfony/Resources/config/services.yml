@@ -18,3 +18,9 @@ services:
         class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
         arguments:
             - '%env(bool:FLAG_TAILORED_IMPORT_ENABLED)%'
+
+    akeneo.tailored_import.infrastructure.public_api.find_category_trees:
+        alias: akeneo.enrichment.public_api.find_category_trees
+
+    akeneo.tailored_import.infrastructure.public_api.get_category_children_codes_per_tree:
+        alias: akeneo.enrichment.public_api.get_category_children_codes_per_tree

@@ -1,10 +1,15 @@
 # 6.0.x
 
+# 6.0.31 (2022-06-14)
+
+# 6.0.30 (2022-06-08)
+
 # 6.0.29 (2022-05-25)
 
 ## Bug fixes
 
 - PIM-10451: Fix reference schema in order to take into account the index on start_time
+- PIM-10453: Fix reference schema in order to take into account the index on updated in pim_catalog_category table
 
 # 6.0.29
 

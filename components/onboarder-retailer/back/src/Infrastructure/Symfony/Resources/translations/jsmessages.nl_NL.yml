@@ -1,0 +1,80 @@
+onboarder:
+  menu_block_title: Onboarder
+  supplier:
+    breadcrumb:
+      root: Onboarder
+      suppliers: Leveranciers
+    supplier_create:
+      modal:
+        title: Leverancier
+        code:
+          label: Code
+        label:
+          label: Label
+      create_button:
+        label: Maak uw eerste leverancier aan
+      notification:
+        title: De leverancier is aangemaakt
+        content: U kunt dit nu bewerken in de sectie leveranciersbeheer.
+      error:
+        unknown_error: Er is een fout opgetreden tijdens het aanmaken van de leverancier.
+        supplier_already_exists: 'Er bestaat al een leverancier met code "{{ supplierCode }}".'
+    supplier_list:
+      menu_item: Leveranciers
+      title: "]-Inf, 1]{{ count }} leverancier|]1, Inf[{{ count }} leveranciers"
+      no_supplier: Er zijn nog geen leveranciers.
+      search_by_supplier: Zoeken op leverancier
+      no_search_result: Er zijn geen leveranciers die aan uw zoekcriteria voldoen.
+      notification:
+        error:
+          title: We kunnen de leverancierslijst niet weergeven.
+          content: Excuses voor dit ongemak. Probeer het over enkele ogenblikken opnieuw.
+      dropdown:
+        export_suppliers: Leveranciers exporteren
+        download_template: Sjabloon downloaden
+        import_suppliers: Leveranciers importeren
+      columns:
+        supplier: Leverancier
+        number_of_contributors: Aantal medewerkers
+        actions: Acties
+    supplier_delete:
+      sucess_message: De leverancier is verwijderd
+      modal:
+        title: Leverancier
+        confirmation_question: Weet u zeker dat u deze leverancier wilt verwijderen?
+        warning: Als u deze leverancier verwijdert, verliest u een niet opgeslagen verrijking.
+        unknown_error: Er is een fout opgetreden bij het verwijderen van de leverancier.
+    supplier_edit:
+      tabs:
+        configuration: Configuratie
+        contributors: Medewerkers
+        product_files: Productbestanden
+      configuration_form:
+        code: Code
+        label: Leverancierslabel (verplicht)
+      contributors_form:
+        info: 'Voeg medewerkers toe om hen toegang te geven tot Akeneo Onboarder. U kunt een adreslijst invullen met scheidingstekens: spatie, komma, puntkomma & regeleinde.'
+        invalid_emails_warning: Sommige e-mailadressen zijn ongeldig en worden niet toegevoegd.
+        emails_belonging_to_other_suppliers_warning: Een medewerker kan slechts tot één leverancier behoren. Wanneer u deze leverancier opslaat, worden alle e-mailadressen die als waarschuwingen worden weergegeven, verwijderd.
+        add_contributors: Medewerkers toevoegen
+        add_button: Toevoegen
+        search_by_email_address: Zoeken op e-mailadres
+        columns:
+          email: E-mailadres
+        no_contributor: Er zijn nog geen medewerkers.
+        result_counter: '{0} Geen resultaten|{1} {{ count }} resultaat|]1,Inf] {{ count }} resultaten'
+        notification:
+          email_error:
+            title: We kunnen deze medewerker niet toevoegen.
+            content: "Het e-mailadres {{ emailAddress }} is ongeldig: {{ message }}"
+          contributor_email_already_exists:
+            title: We kunnen deze medewerker niet toevoegen.
+            content: Het e-mailadres {{ emailAddress }} wordt al gebruikt voor een andere leverancier en we ondersteunen nog niet dat meerdere leveranciers dezelfde medewerker hebben. Excuses voor het ongemak.
+      loading_error: Er is een fout opgetreden tijdens het laden van de leverancier.
+      success_message: De leverancier is bijgewerkt
+      update_error: Er is een fout opgetreden tijdens het bijwerken van de leverancier.
+      delete_label: Deze leverancier verwijderen
+pim_title:
+  onboarder_serenity_retailer_supplier_list: Leveranciers
+  onboarder_serenity_retailer_supplier_edit: Een leverancier bewerken
+batch_jobs.onboarder_serenity_xlsx_supplier_import.label: Leveranciers importeren in Onboarder Serenity in XLSX

@@ -32,6 +32,7 @@ final class DatabaseGetContributorAccountByAccessTokenIntegration extends SqlInt
         static::assertSame(
             [
                 'id' => '9f4c017c-7682-4f83-9099-dd9afcada1a2',
+                'email' => 'test@test.test',
                 'accessToken' => 'access-token',
                 'isAccessTokenValid' => true,
             ],
@@ -62,6 +63,7 @@ final class DatabaseGetContributorAccountByAccessTokenIntegration extends SqlInt
         static::assertSame(
             [
                 'id' => '9f4c017c-7682-4f83-9099-dd9afcada1a2',
+                'email' => 'test@test.test',
                 'accessToken' => 'access-token',
                 'isAccessTokenValid' => false,
             ],

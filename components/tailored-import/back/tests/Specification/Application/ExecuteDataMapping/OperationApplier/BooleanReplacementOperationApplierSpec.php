@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\NoMappedValueFound;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\BooleanReplacementOperationApplier;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
@@ -25,20 +26,16 @@ use PhpSpec\ObjectBehavior;
 
 class BooleanReplacementOperationApplierSpec extends ObjectBehavior
 {
+    private $uuid = '00000000-0000-0000-0000-000000000000';
+
     public function it_supports_boolean_replacement_operation(): void
     {
-        $this->supports(new BooleanReplacementOperation([
-            '1' => true,
-            '0' => false,
-        ]))->shouldReturn(true);
+        $this->supports(new BooleanReplacementOperation($this->uuid, ['true' => ['1'], 'false' => ['0']]))->shouldReturn(true);
     }
 
     public function it_applies_boolean_replacement_operation(): void
     {
-        $booleanReplacementOperation = new BooleanReplacementOperation([
-            '1' => true,
-            '0' => false,
-        ]);
+        $booleanReplacementOperation = new BooleanReplacementOperation($this->uuid, ['true' => ['1'], 'false' => ['0']]);
         $falseValue = new StringValue('0');
         $trueValue = new StringValue('1');
 
@@ -48,24 +45,18 @@ class BooleanReplacementOperationApplierSpec extends ObjectBehavior
             ->shouldBeLike(new BooleanValue(true));
     }
 
-    public function it_returns_a_null_value_when_the_value_is_not_mapped(): void
+    public function it_throws_an_exception_when_the_value_is_not_mapped(): void
     {
-        $booleanReplacementOperation = new BooleanReplacementOperation([
-            '1' => true,
-            '0' => false,
-        ]);
+        $booleanReplacementOperation = new BooleanReplacementOperation($this->uuid, ['true' => ['1'], 'false' => ['0']]);
         $unmappedValue = new StringValue('something');
 
-        $this->applyOperation($booleanReplacementOperation, $unmappedValue)
-            ->shouldBeLike(new NullValue);
+        $this->shouldThrow(new NoMappedValueFound($unmappedValue->getValue()))
+            ->during('applyOperation', [$booleanReplacementOperation, $unmappedValue]);
     }
 
     public function it_throws_an_exception_when_value_type_is_invalid(): void
     {
-        $operation = new BooleanReplacementOperation([
-            '1' => true,
-            '0' => false,
-        ]);
+        $operation = new BooleanReplacementOperation($this->uuid, ['true' => ['1'], 'false' => ['0']]);
         $value = new NumberValue('18');
 
         $this->shouldThrow(new UnexpectedValueException($value, StringValue::class, BooleanReplacementOperationApplier::class))
@@ -74,7 +65,7 @@ class BooleanReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_operation_type_is_invalid(): void
     {
-        $operation = new CleanHTMLTagsOperation();
+        $operation = new CleanHTMLTagsOperation($this->uuid);
         $value = new StringValue('0');
 
         $this->shouldThrow(new UnexpectedValueException($operation, BooleanReplacementOperation::class, BooleanReplacementOperationApplier::class))

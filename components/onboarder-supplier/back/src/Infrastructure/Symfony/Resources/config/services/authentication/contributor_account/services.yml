@@ -67,3 +67,8 @@ services:
         arguments:
             - '@router'
             - '@twig'
+
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\GetContributorAccount:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken'

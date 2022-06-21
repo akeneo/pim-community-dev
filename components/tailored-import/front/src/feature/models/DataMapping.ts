@@ -3,7 +3,7 @@ import {Channel, getLocalesFromChannel} from '@akeneo-pim-community/shared';
 import {Column, ColumnIdentifier} from './Column';
 import {Attribute} from './Attribute';
 import {AttributeTarget, createPropertyTarget, createAttributeTarget, PropertyTarget} from './Target';
-import {Operation} from './Operation';
+import {getRequiredOperations, Operation} from './Operation';
 import {SampleData} from './SampleData';
 
 type DataMapping = AttributeDataMapping | PropertyDataMapping;
@@ -41,15 +41,13 @@ const createDefaultDataMapping = (attribute: Attribute, identifierColumn: Column
   return identifierColumn ? addSourceToDataMapping(defaultDataMapping, identifierColumn) : defaultDataMapping;
 };
 
-const createPropertyDataMapping = (code: string): DataMapping => {
-  return {
-    uuid: uuid(),
-    target: createPropertyTarget(code),
-    sources: [],
-    operations: [],
-    sample_data: [],
-  };
-};
+const createPropertyDataMapping = (code: string): PropertyDataMapping => ({
+  uuid: uuid(),
+  target: createPropertyTarget(code),
+  sources: [],
+  operations: [],
+  sample_data: [],
+});
 
 const createAttributeDataMapping = (attribute: Attribute, channels: Channel[]): AttributeDataMapping => {
   const channel = attribute.scopable ? channels[0].code : null;
@@ -63,7 +61,7 @@ const createAttributeDataMapping = (attribute: Attribute, channels: Channel[]): 
     uuid: uuid(),
     target: createAttributeTarget(attribute, channel, locale),
     sources: [],
-    operations: [],
+    operations: getRequiredOperations(attribute),
     sample_data: [],
   };
 };
@@ -78,11 +76,11 @@ const addSourceToDataMapping = (dataMapping: DataMapping, column: Column): DataM
 
 export type {AttributeDataMapping, DataMapping, DataMappingType, PropertyDataMapping};
 export {
+  addSourceToDataMapping,
+  createAttributeDataMapping,
+  createDefaultDataMapping,
+  createPropertyDataMapping,
   MAX_DATA_MAPPING_COUNT,
   MAX_SOURCE_COUNT_FOR_COLLECTION_TARGETS,
-  createAttributeDataMapping,
-  createPropertyDataMapping,
   updateDataMapping,
-  createDefaultDataMapping,
-  addSourceToDataMapping,
 };

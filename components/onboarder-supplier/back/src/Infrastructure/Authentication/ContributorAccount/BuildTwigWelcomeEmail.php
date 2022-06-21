@@ -6,24 +6,21 @@ namespace Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\Contri
 
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\ValueObject\EmailContent;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 class BuildTwigWelcomeEmail implements BuildWelcomeEmail
 {
+    private const SET_UP_PASSWORD_URL = '%s/onboarder/supplier/index.html#/set-up-password/%s';
+
     public function __construct(
-        private UrlGeneratorInterface $urlGenerator,
         private Environment $twig,
+        private string $domain,
     ) {
     }
 
     public function __invoke(string $accessToken, string $email): EmailContent
     {
-        $setUpPasswordUrl = $this->urlGenerator->generate(
-            'onboarder_serenity_supplier_contributor_set_up_password',
-            ['token' => $accessToken],
-            UrlGeneratorInterface::ABSOLUTE_URL,
-        );
+        $setUpPasswordUrl = sprintf(self::SET_UP_PASSWORD_URL, $this->domain, $accessToken);
 
         $htmlContent = $this->twig->render(
             '@AkeneoOnboarderSerenitySupplier/Email/contributor-invitation.html.twig',

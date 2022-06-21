@@ -6,7 +6,6 @@ namespace Akeneo\OnboarderSerenity\Supplier\Test\Unit\Infrastructure\Authenticat
 
 use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigWelcomeEmail;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 final class BuildTwigWelcomeEmailTest extends TestCase
@@ -15,17 +14,7 @@ final class BuildTwigWelcomeEmailTest extends TestCase
     public function itBuildsAWelcomeEmail(): void
     {
         $contributorEmail = 'jeanjacques@example.com';
-
-        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator
-            ->expects($this->once())
-            ->method('generate')
-            ->with(
-                'onboarder_serenity_supplier_contributor_set_up_password',
-                ['token' => 'foo'],
-                UrlGeneratorInterface::ABSOLUTE_URL,
-            )
-            ->willReturn('http://wwww.example.com');
+        $domain = 'http://wwww.example.com';
 
         $twig = $this->createMock(Environment::class);
         $twig
@@ -36,14 +25,14 @@ final class BuildTwigWelcomeEmailTest extends TestCase
                     '@AkeneoOnboarderSerenitySupplier/Email/contributor-invitation.html.twig',
                     [
                         'contributorEmail' => $contributorEmail,
-                        'url' => 'http://wwww.example.com',
+                        'url' => 'http://wwww.example.com/onboarder/supplier/index.html#/set-up-password/foo',
                     ],
                 ],
                 [
                     '@AkeneoOnboarderSerenitySupplier/Email/contributor-invitation.txt.twig',
                     [
                         'contributorEmail' => $contributorEmail,
-                        'url' => 'http://wwww.example.com',
+                        'url' => 'http://wwww.example.com/onboarder/supplier/index.html#/set-up-password/foo',
                     ],
                 ],
             )
@@ -52,7 +41,7 @@ final class BuildTwigWelcomeEmailTest extends TestCase
                 'textContent',
             );
 
-        $sut = new BuildTwigWelcomeEmail($urlGenerator, $twig);
+        $sut = new BuildTwigWelcomeEmail($twig, $domain);
         $emailContent = ($sut)('foo', $contributorEmail);
 
         static::assertSame('htmlContent', $emailContent->htmlContent);

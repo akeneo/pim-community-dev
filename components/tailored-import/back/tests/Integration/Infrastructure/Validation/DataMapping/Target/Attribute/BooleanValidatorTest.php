@@ -66,7 +66,16 @@ final class BooleanValidatorTest extends AbstractValidationTest
                         'source_configuration' => null,
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    'operations' => [],
+                    'operations' => [
+                        [
+                            'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                            'type' => 'boolean_replacement',
+                            'mapping' => [
+                                'true' => ['Yes'],
+                                'false' => ['No'],
+                            ],
+                        ],
+                    ],
                     'sample_data' => [],
                 ]
             ],
@@ -84,7 +93,16 @@ final class BooleanValidatorTest extends AbstractValidationTest
                         'source_configuration' => null,
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    'operations' => [],
+                    'operations' => [
+                        [
+                            'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                            'type' => 'boolean_replacement',
+                            'mapping' => [
+                                'true' => ['Yes'],
+                                'false' => ['No'],
+                            ],
+                        ],
+                    ],
                     'sample_data' => [],
                 ]
             ],
@@ -102,7 +120,16 @@ final class BooleanValidatorTest extends AbstractValidationTest
                         'source_configuration' => null,
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    'operations' => [],
+                    'operations' => [
+                        [
+                            'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                            'type' => 'boolean_replacement',
+                            'mapping' => [
+                                'true' => ['Yes'],
+                                'false' => ['No'],
+                            ],
+                        ],
+                    ],
                     'sample_data' => ['1', 'sample_2', 'sample_3'],
                 ]
             ]
@@ -128,7 +155,16 @@ final class BooleanValidatorTest extends AbstractValidationTest
                         'source_configuration' => null
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    'operations' => [],
+                    'operations' => [
+                        [
+                            'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                            'type' => 'boolean_replacement',
+                            'mapping' => [
+                                'true' => ['Yes'],
+                                'false' => ['No'],
+                            ],
+                        ],
+                    ],
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
@@ -148,7 +184,16 @@ final class BooleanValidatorTest extends AbstractValidationTest
                         'source_configuration' => null
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    'operations' => [],
+                    'operations' => [
+                        [
+                            'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                            'type' => 'boolean_replacement',
+                            'mapping' => [
+                                'true' => ['Yes'],
+                                'false' => ['No'],
+                            ],
+                        ],
+                    ],
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
@@ -192,7 +237,16 @@ final class BooleanValidatorTest extends AbstractValidationTest
                         'source_configuration' => null
                     ],
                     'sources' => [],
-                    'operations' => [],
+                    'operations' => [
+                        [
+                            'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                            'type' => 'boolean_replacement',
+                            'mapping' => [
+                                'true' => ['Yes'],
+                                'false' => ['No'],
+                            ],
+                        ],
+                    ],
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
@@ -212,7 +266,16 @@ final class BooleanValidatorTest extends AbstractValidationTest
                         'source_configuration' => null
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529', '71480f22-f811-4261-b0fe-d93ad11666a9'],
-                    'operations' => [],
+                    'operations' => [
+                        [
+                            'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                            'type' => 'boolean_replacement',
+                            'mapping' => [
+                                'true' => ['Yes'],
+                                'false' => ['No'],
+                            ],
+                        ],
+                    ],
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
@@ -232,8 +295,37 @@ final class BooleanValidatorTest extends AbstractValidationTest
                         'source_configuration' => null
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    'operations' => [],
+                    'operations' => [
+                        [
+                            'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                            'type' => 'boolean_replacement',
+                            'mapping' => [
+                                'true' => ['Yes'],
+                                'false' => ['No'],
+                            ],
+                        ],
+                    ],
                     'sample_data' => [12],
+                ]
+            ],
+            'a boolean data mapping without required operation' => [
+                'akeneo.tailored_import.validation.operations.missing_required_operation',
+                '[operations]',
+                [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
+                        'code' => 'a_boolean',
+                        'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_boolean',
+                        'channel' => null,
+                        'locale' => null,
+                        'action_if_not_empty' => 'set',
+                        'action_if_empty' => 'skip',
+                        'source_configuration' => null,
+                    ],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => [],
                 ]
             ],
         ];

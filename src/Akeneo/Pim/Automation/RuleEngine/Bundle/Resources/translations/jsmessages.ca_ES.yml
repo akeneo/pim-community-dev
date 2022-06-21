@@ -1,17 +1,25 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} regla|]1, Inf[{{ count }} regles"
   execution_button: Executar regles
+  selected: "]-Inf, 1]{{ count }} regla seleccionada|]1, Inf[{{ count }} regles seleccionades"
+  dropdown:
+    title: Altres accions
   popin:
     execute_rules:
       confirm_title: Confirmar l'execució
+      confirm_content: Esteu segur que voleu executar les regles? (Podria trigar una estona)
   notification:
+    fail: Acció no realitzada
     launched: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
   attribute:
     list:
       code.label: Codi
       condition.label: Condició
       action.label: Acció
+      no_rule_yet.label: Cap regla de moment
   rule:
+    value: Valor
+    include_children: Inclou fills
     condition:
       if.label: si
     action:
@@ -30,9 +38,11 @@ pimee_catalog_rule:
           confirm_content: Esteu segur que voleu executar la regla?
       mass_edit_action:
         confirm_title: Confirmar el càlcul
+        confirm_content: Esteu segur que voleu calcular el nombre de productes afectats per les normes?
       mass_action:
         execute:
           confirm_title: Confirmar l'execució
+          confirm_content: Esteu segur que voleu executar les regles? (Podria trigar una estona)
           success: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
           error: S'ha produït un error durant l'execució de les regles.
           empty_selection: No hi ha cap regla seleccionada.
@@ -42,26 +52,341 @@ pimee_catalog_rule:
           success: Heu suprimit les regles correctament.
           error: S'ha produït un error durant la supressió de les regles.
           empty_selection: No hi ha cap regla seleccionada.
+      tags:
+        set: Configurar
+        calculate: Calcula
+        clear: Netejar
+        concatenate: Concatena
+        copy: Copiar
+        remove: Eliminar
   form:
+    category:
+      catalog: Catàleg
+      select: Selecciona una categoria
+      open_tree: Obrir arbre de categories
+      tree: Arbre de Categories
+      menu: Selecciona un arbre de categories
+      folder:
+        selected: Carpeta seleccionada
+        not_selected: Carpeta
+      folders:
+        selected: Carpetes seleccionades
+        not_selected: Carpetes
+      arrow:
+        open: Obrir branca de categoria
+        close: Tancar branca de categoria
+    tab:
+      list: Creador de regles i pestanyes de propietats
+      rule_builder: Constructor de regles
     attribute:
       tab:
         rules:
           title: Regles
+    creation:
+      helper: El motor de regles pot augmentar radicalment la vostra productivitat al PIM automatitzant accions,
+      english_flag: Etiqueta per l'Anglès
+      title: Crear una nova regla
+      notification:
+        success: Regla creada correctament
+        failed: Error al crear la regla
+      constraint:
+        code:
+          required: És requereix un codi de regla
+          too_short: "El codi de regla és massa curt. Requereix {{ characterLimit }} caràcters o més."
+          allowed_characters: El codi de regla només pot contenir caràcters alfanumèrics i de guió baix.
+          unique: Aquest codi ja s'utilitza.
+      cross_link: Deixeu crear un formulari de regla
+    edit:
+      header:
+        welcome: Benvingut a la vostra nova àrea del motor de regles!
+        description: Per crear una regla, heu de definir la vostra selecció de producte i després afegir una o diverses accions.
+        documentation_link: Feu clic aquí per descobrir l'abast complet de les capacitats del motor de regles.
+      properties:
+        section:
+          general: Paràmetres generals
+          labels: Traduccions d'etiquetes
+      character_left: "]-Inf, 1]{{ count }} Caràcter restant|]1, +Inf[{{ count }} Caràcters restants"
+      priority:
+        label: Prioritat
+      status:
+        label: Estat
+        enabled: Habilitat
+        disabled: Deshabilitat
+      add_to_category: Afegir a la categoria
+      add_conditions: Afegir condicions
+      products_count:
+        products: "]-Inf, 1]{{ count }} producte|]1, +Inf[{{ count }} productes"
+        product_models: "]-Inf, 1]{{ count }} model de producte|]1, +Inf[{{ count }} models de producte"
+        products_and_product_models: "{{ products }} i {{ product_models }}"
+        pending: Càlcul de productes i models de producte
+        error: Impossible calcular productes i models de producte
+      product_selection: Selecció de producte
+      preview: Vista prèvia
+      fields:
+        family: Família
+        family_variant: Variants familiars
+        category: Categoria
+        identifier: Identificador
+        attribute: Atribut
+        groups: Grups
+        parent: Pare
+        measurement_unit: Unitat de mesura
+        measurement_default_unit: "Unitat per defecte ({{ unit }})"
+        currency: Moneda
+        operator: operador
+        entity_type:
+          label: Tipus d'entitat
+          placeholder: Seleccioneu un tipus d'entitat
+      execute:
+        button: Guarda i executa
+        title: Guarda i executa la regla
+        description: Desaràs la regla actual i l'executaràs en segon pla. Quan estigui fet, se us notificarà.
+      duplicate:
+        button: Guarda i duplica
+        title: Duplica la regla "{{ originalRuleCode }}".
+      actions:
+        add_action: Afegir acció
+        add_category:
+          title: Afegir categoria
+          helper: Per afegir la vostra selecció de productes a una o més categories, comenceu seleccionant els vostres arbres de categories i després les vostres categories
+        add_groups:
+          title: Afegir productes a grups
+          helper: Per afegir productes als grups, seleccioneu un o diversos grups
+          subtitle: Selecciona els teus grups
+        set_groups:
+          title: Configurar Grups de productes
+          helper: Per definir els grups de productes, seleccioneu un o diversos grups
+          subtitle: Selecciona els teus grups
+        set_category:
+          title: Configurar categories
+          helper: Per establir la vostra selecció de productes en una o més categories, comenceu seleccionant els vostres arbres de categories i després les vostres categories
+        category:
+          select_category_trees: Seleccioneu els vostres arbres de categories
+          select_category_tree: Seleccioneu el vostre arbre de categories
+          select_categories: Seleccioneu les vostres categories
+          select_category: Seleccioneu la vostra categoria
+          category_tree: Arbre de categories
+          categories_selected: "]-Inf, 1]{{ count }} categoria seleccionada|]1, +Inf[{{ count }} categories seleccionades"
+          no_category_tree: Seleccioneu primer un arbre de categories, si us plau
+          remove_unknown_category: "Feu clic aquí per eliminar aquesta categoria."
+        set_family:
+          title: ESTABLIR Família
+          subtitle: Selecciona la teva família
+        set_attribute:
+          title: ESTABLIR valor de l'atribut
+          helper: Per establir valors al vostre atribut, comenceu seleccionant l'atribut objectiu i, a continuació, el valor que voleu establir
+          target_subtitle: Selecciona el teu objectiu
+          value_subtitle: Defineix el teu valor
+          attribute_label: Atribut
+          attribute_placeholder: Seleccioneu el vostre atribut objectiu
+          select_reference_entity: Seleccioneu les vostres entitats de referència
+          select_asset: Seleccioneu els vostres actius
+          select_measurement_unit: Selecciona la teva unitat
+          table_attribute_helper: Els valors anteriors d'aquest atribut es substituiran en tota la selecció de productes
+        set_quantified_associations:
+          title: CONFIGURA Associacions quantificades
+          helper: Per establir associacions quantificades, seleccioneu els vostres tipus d'associació i, a continuació, els productes, models de productes o grups que voleu associar a la vostra selecció de productes.
+        set_associations:
+          title: ESTABLIR Associacions
+          helper: Per establir associacions, seleccioneu els vostres tipus d'associació i, a continuació, els productes, models de productes o grups que voleu associar a la vostra selecció de productes.
+          select_association_type: Selecciona el teu tipus d'associació
+          association_types: Tipus d'associació
+          add_group: Afegir un grup
+          add_product: Afegir un producte
+          add_product_model: Afegir un model de producte
+          add_association_type: Afegeix un tipus d'associació
+          select_title:
+            products: Seleccioneu els vostres productes
+            product_models: Seleccioneu els vostres models de producte
+            groups: Selecciona els teus grups
+          select:
+            products: Productes
+            product_models: Models de producte
+            groups: Grups
+          counts:
+            products: ']-Inf, 1]{{ count }} producte|]1, +Inf[{{ count }} productes'
+            product_models: ']-Inf, 1]{{ count }} model de producte|]1, +Inf[{{ count }} models de producte'
+            groups: ']-Inf, 1]{{ count }} grup|]1, +Inf[{{ count }} grups'
+        add_associations:
+          title: Afegir associacions
+          helper: Per afegir associacions, seleccioneu els vostres tipus d'associació i, a continuació, els productes, models de productes o grups que voleu associar a la vostra selecció de productes.
+        clear_attribute:
+          title: ESBORRA Valor de l'atribut
+          subtitle: Seleccioneu l'atribut que voleu esborrar
+          attribute_label: Atribut
+        clear_associations:
+          title: ESBORRAR Associacions
+          helper: S'esborraran totes les associacions dels productes seleccionats.
+        clear_quantified_associations:
+          title: ESBORAR Associacions quantificades
+          helper: S'esborraran totes les associacions quantificades dels productes seleccionats.
+        clear_categories:
+          title: ESBORAR Categories
+        clear_groups:
+          title: ESBORRAR Grups
+        remove_category:
+          title: ELIMINA Categories
+          helper: Per eliminar la selecció de productes d'una o més categories, comenceu seleccionant els arbres de categories i després les vostres categories
+        remove_attribute_value:
+          title: ELIMINAR el valor de l'atribut
+          helper: Per eliminar valors del vostre atribut, comenceu seleccionant el vostre atribut objectiu i, a continuació, els valors que voleu eliminar.
+          value_subtitle: Definiu els vostres valors per eliminar
+        add_attribute_value:
+          title: AFEGIR valor d'atribut
+          helper: Per afegir valors al vostre atribut, comenceu seleccionant l'atribut objectiu i, a continuació, els valors que voleu afegir.
+          value_subtitle: Definiu els vostres valors a afegir
+        copy:
+          title: COPIA Valor de l'atribut
+          helper: Per copiar valors d'un atribut a un altre, comenceu seleccionant l'atribut d'origen i, a continuació, l'atribut de destinació.
+          select_source: Seleccioneu la vostra font
+          select_target: Selecciona el teu objectiu
+          no_source: Si us plau, seleccioneu primer l'atribut d'origen
+        delete:
+          label: Eliminar acció
+          description: Esteu segur que voleu eliminar aquesta acció?
+        set_status:
+          title: CONFIGURA Estat
+          subtitle: Definiu el vostre estat
+          helper: Per establir un estat als productes, seleccioneu un estat a la llista següent
+          placeholder: Seleccioneu el vostre estat
+        remove_groups:
+          title: ELIMINAR productes dels grups
+          helper: Per eliminar productes dels grups, seleccioneu un o diversos grups
+        calculate:
+          operator:
+            subtract: Treu
+            multiply: Multiplicar
+            divide: Dividir
+            choose: Tria el teu operador
+        concatenate:
+          title: CONCATENAR valors
+          helper: Per concatenar els valors dels atributs, si us plau, afegiu els atributs i, a continuació, seleccioneu l'atribut objectiu.
+          select_target: Selecciona el teu objectiu
+          attribute_placeholder: Seleccioneu el vostre atribut objectiu
+          add_text: Afegir text
+          add_attribute: Afegir atribut
+          add_new_line: "\nAfegeix un salt de línia"
+          line_break: Salt de línia
+          date_format: Seleccioneu un format de data
+          label_locale: Etiqueta local
+          unit_label_locale: Localització de la unitat
+          remove_new_line_confirm:
+            label: Elimina el salt de línia de la llista d'operacions
+            description: El nou atribut target no accepta salts de línia. Aquest canvi eliminarà tots els salts de línia.
+      conditions:
+        delete:
+          label: Esborra la condició
+          description: Esteu segur que voleu eliminar aquesta condició?
+        operators:
+          "STARTS WITH": comença amb
+          "ENDS WITH": acaba amb
+          "CONTAINS": conté
+          "DOES NOT CONTAIN": no conté
+          "EMPTY": està buit
+          "NOT EMPTY": no és buit
+          "IN": en
+          "NOT IN": no en
+          "IN CHILDREN": als fills
+          "NOT IN CHILDREN": no als fills
+          "UNCLASSIFIED": està sense classificar
+          "IN OR UNCLASSIFIED": està sense classificar o en
+          "BETWEEN": entre
+          "NOT BETWEEN": no entre
+          "=": és igual a
+          "!=": no és igual
+          ">": més gran que
+          ">=": és igual o superior a
+          "<": menys que
+          "<=": és igual o menor que
+      notification:
+        success: La regla s'ha actualitzat correctament
+        failed: L'actualització de la regla ha fallat
+        execute_success: La regla s'ha actualitzat i executat correctament
+        execute_failed: La regla s'ha desat però hi ha hagut un error durant l'execució
+      discard_changes: Els vostres canvis es perdran si abandoneu la pàgina.
+      please_select_attribute: Seleccioneu primer un atribut d'objectiu.
+      unhandled_attribute_type: Ho sentim, aquest tipus d'atribut encara no està gestionat. Si us plau, utilitzeu la importació de regles.
+      empty_section:
+        set_up_action: Ben fet! Heu definit la vostra selecció de productes. Ara és el moment de configurar la teva acció.
+        set_up_condition: Si no voleu afectar tot el vostre catàleg, afegiu almenys una condició.
+        add_action: A continuació, afegiu una o diverses accions per aplicar als vostres productes/models de producte.
+        doc: No saps què és una acció?
+        doc_link: Aquest article us pot ajudar.
+    delete:
+      description: Esteu segur que voleu suprimir aquesta norma? No us en podreu fer enrera.
+      notification:
+        failed: No s'ha pogut suprimir la regla
+        success: La regla s'ha suprimit correctament
+    helper:
+      add_to_category: Per afegir la vostra selecció de productes a una o més categories, comenceu seleccionant els vostres arbres de categories i després les vostres categories.
+      clear_attribute: Per esborrar el valor de l'atribut, comenceu seleccionant l'atribut que voleu esborrar.
+      clear_categories: S'esborraran totes les categories dels productes seleccionats.
+      clear_groups: S'esborraran tots els grups dels productes seleccionats.
+      product_selection: "Heu de definir la vostra selecció de productes per crear la vostra regla. Si no saps com,"
+      product_selection_doc_link: fes una ullada a aquest article.
+      set_attribute_info_clear: Heu de definir el valor a establir. Si voleu esborrar el valor de l'atribut, utilitzeu l'acció Esborra el valor de l'atribut.
+    legend:
+      add_to_category: Crea una acció
+      product_selection: Crea una condició
+    tree:
+      item:
+        selected: Element seleccionat
+        not_selected: Seleccioneu l'element
+    date:
+      operators:
+        specific_date: Data específica
+      label:
+        date_present: Ara
+  exceptions:
+    unknown_scope: 'El canal "{{ scopeCode }}" no existeix'
+    scope_on_unscopable_attribute: Aquest atribut no és abastable. Si us plau, elimina el canal abans de continuar.
+    unknown_families: "{1}La família {{ familyCodes }} no existeix|]1,+Inf[Les {{ familyCodes }} famílies no existeixen"
+    unknown_family_variants: "{1}La variant familiar {{ familyVariantCodes }} no existeix|]1,+Inf[Les variants familiars {{ familyVariantCodes }} no existeixen"
+    unknown_attribute_options: "{1}L'opció {{ attributeOptionCodes }} no existeix|]1,+Inf[Les opcions {{ attributeOptionCodes }} no existeixen"
+    unknown_attribute_code: "L'atribut {{ attributeCode }} no existeix"
+    unknown_categories: "{1}La categoria {{ categoryCodes }} no existeix.|]1, +Inf[Les {{ categorieCodes }} categories no existeixen"
+    unknown_attribute: "Aquest atribut no existeix."
+    unknown_groups: "{1} El grup {{ groupCodes }} no existeix|]1, +Inf[Els grups següents no existeixen: {{ groupCodes }}"
+    select_another_attribute_or_remove_action: "Seleccioneu un altre atribut o suprimiu aquesta acció."
+    select_another_attribute: "Seleccioneu un altre atribut"
+    or: o
+    create_attribute_link: feu clic aquí per crear l'atribut
+    edit_unauthorize: No teniu permís per editar regles
+    wrong_date_timespan: Per definir un període de temps vàlid, assegureu-vos que la data de finalització no estigui establerta abans de la data d'inici.
+    measurement_family_not_found: La família de mesures "{{ measurement_code }}" no existeix
+    unit_not_found: La unitat "{{ unitCode }}" no s'ha trobat a la família de mesures "{{ measurement_code }}"
+    empty_association_warning: Si deixeu aquesta llista buida, aquesta regla esborrarà aquest tipus d'associació.
 pim_enrich:
   entity:
     rule:
       module:
         delete:
           confirm: Esteu segur que voleu suprimir aquesta norma? No us en podreu fer enrera
+      flash:
+        delete:
+          success: La regla s'ha suprimit correctament
 flash:
   rule:
+    impacted_product_count: S'ha posat en marxa l'acció massiva per calcular el nombre de productes afectats. Se us notificarà quan estigui fet.
     executed: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
+    enabled: La regla s'ha habilitat
+    disabled: La regla s'ha desactivat
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Execució de les regles
   default_steps:
+    export_rules: Exportar regles
+    import_rules: Importar regles
+    calculate_affected_products: Calcula els productes afectats
     execute_rules: Execució de les regles
+  yml_rule_import:
+    label: Importació de regles a YAML
+    import.label: Importar regles
+  yml_rule_export:
+    label: Exportació de regles a YAML
+    export.label: Exportar regles
   rule_impacted_product_count:
+    label: Nombre de productes afectats
     perform.label: Comptar productes afectats
   csv_product_import_with_rules:
     label: Importació de productes amb regles a CSV
@@ -79,10 +404,14 @@ pim_notification:
     mass_edit_rule: Editar en massa les regles
     execute_rules: Execució de les regles
 pim_menu:
+  navigation:
+    settings:
+      automation: Automatització
   item:
     rule: Regles
 pim_title:
   pimee_catalog_rule_rule_index: Regles
+  pimee_catalog_rule_edit: Editar regla
   pimee_catalog_rule_new: Regles
 akeneo_job_process_tracker:
   type_filter:

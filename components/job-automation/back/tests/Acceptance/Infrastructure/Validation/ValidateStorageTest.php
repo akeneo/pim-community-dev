@@ -2,48 +2,32 @@
 
 namespace Akeneo\Platform\JobAutomation\Test\Acceptance\Infrastructure\Validation;
 
-use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
+use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage;
+use AkeneoTest\Platform\Acceptance\ImportExport\Infrastructure\Validation\AbstractValidationTest;
 
 class ValidateStorageTest extends AbstractValidationTest
 {
     /**
-     * @dataProvider validStorage
+     * @dataProvider validSftpStorage
      */
-    public function testItDoesNotBuildViolationsWhenStorageAreValid(array $value): void
+    public function test_it_does_not_build_violations_when_sftp_storage_is_valid(array $value): void
     {
         $violations = $this->getValidator()->validate($value, new Storage(['xlsx', 'xls']));
 
         $this->assertNoViolation($violations);
     }
 
-    /**
-     * @dataProvider invalidStorage
-     */
-    public function testItBuildViolationsWhenStorageAreInvalid(
-        string $expectedErrorMessage,
-        string $expectedErrorPath,
-        array $value,
-    ): void {
-        $violations = $this->getValidator()->validate($value, new Storage(['xlsx', 'xls']));
-
-        $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
-    }
-
-    public function validStorage(): array
+    public function validSftpStorage(): array
     {
         return [
-            'valid none storage' => [
-                [
-                    'type' => 'none',
-                ],
-            ],
-            'valid local storage' => [
+            'Valid local storage configuration' => [
                 [
                     'type' => 'local',
                     'file_path' => '/tmp/file.xlsx',
                 ],
             ],
-            'valid sftp storage' => [
+            'Valid sftp storage configuration' => [
                 [
                     'type' => 'sftp',
                     'file_path' => '/tmp/file.xlsx',
@@ -56,16 +40,19 @@ class ValidateStorageTest extends AbstractValidationTest
         ];
     }
 
-    public function invalidStorage(): array
+    public function test_it_build_violations_when_storage_is_invalid(): void
     {
-        return [
-            'invalid storage type' => [
-                'akeneo.job_automation.validation.storage.unavailable_type',
-                '[type]',
-                [
-                    'type' => 'invalid',
-                ],
+        $violations = $this->getValidator()->validate(
+            [
+                'type' => 'invalid',
             ],
-        ];
+            new Storage(['xlsx', 'xls'])
+        );
+
+        $this->assertHasValidationError(
+            'akeneo.job_automation.validation.storage.unavailable_type',
+            '[type]',
+            $violations
+        );
     }
 }

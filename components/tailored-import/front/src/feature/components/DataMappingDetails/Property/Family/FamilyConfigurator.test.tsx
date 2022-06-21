@@ -4,6 +4,7 @@ import {FamilyConfigurator} from './FamilyConfigurator';
 import {createAttributeDataMapping, createPropertyDataMapping} from '../../../../models';
 import {ValidationError} from '@akeneo-pim-community/shared';
 import {renderWithProviders} from 'feature/tests';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('../../Operations');
 jest.mock('../../Sources');
@@ -95,4 +96,28 @@ test('it should display validation errors', async () => {
 
   expect(screen.getByText('error.key.sources')).toBeInTheDocument();
   expect(screen.queryByText('error.key.global')).not.toBeInTheDocument();
+});
+
+test('it defines if the property should be cleared when empty', async () => {
+  const dataMapping = createPropertyDataMapping('family');
+  const onTargetChange = jest.fn();
+
+  await renderWithProviders(
+    <FamilyConfigurator
+      columns={[]}
+      dataMapping={dataMapping}
+      onOperationsChange={jest.fn()}
+      onRefreshSampleData={jest.fn()}
+      onSourcesChange={jest.fn()}
+      onTargetChange={onTargetChange}
+      validationErrors={[]}
+    />
+  );
+
+  userEvent.click(screen.getByLabelText('akeneo.tailored_import.data_mapping.target.clear_if_empty'));
+
+  expect(onTargetChange).toHaveBeenCalledWith({
+    ...dataMapping.target,
+    action_if_empty: 'clear',
+  });
 });

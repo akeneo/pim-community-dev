@@ -1,6 +1,6 @@
 services:
   akeneo.job_automation.job.job_parameters.xlsx_tailored_product_import_constraint_collection_provider:
-    class: 'Akeneo\Platform\JobAutomation\Infrastructure\Connector\ConstraintCollectionProvider'
+    class: 'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Connector\ConstraintCollectionProvider'
     arguments:
       - '@akeneo.tailored_import.job.job_parameters.xlsx_constraint_collection_provider'
       -
@@ -9,28 +9,10 @@ services:
       - { name: akeneo_batch.job.job_parameters.constraint_collection_provider, priority: 10 }
 
   akeneo.job_automation.job.job_parameters.xlsx_tailored_product_export_constraint_collection_provider:
-    class: 'Akeneo\Platform\JobAutomation\Infrastructure\Connector\ConstraintCollectionProvider'
+    class: 'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Connector\ConstraintCollectionProvider'
     arguments:
       - '@akeneo.tailored_export.job.job_parameters.xlsx_constraint_collection_provider'
       -
         - '%akeneo.tailored_export.connector.xlsx_product.code%'
-    tags:
-      - { name: akeneo_batch.job.job_parameters.constraint_collection_provider, priority: 10 }
-
-  akeneo.job_automation.job.job_parameters.xlsx_product_import_constraint_collection_provider:
-    class: 'Akeneo\Platform\JobAutomation\Infrastructure\Connector\ConstraintCollectionProvider'
-    arguments:
-      - '@pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_import'
-      -
-        - 'xlsx_product_import'
-    tags:
-      - { name: akeneo_batch.job.job_parameters.constraint_collection_provider, priority: 10 }
-
-  akeneo.job_automation.job.job_parameters.xlsx_product_export_constraint_collection_provider:
-    class: 'Akeneo\Platform\JobAutomation\Infrastructure\Connector\ConstraintCollectionProvider'
-    arguments:
-      - '@pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_export'
-      -
-        - 'xlsx_product_export'
     tags:
       - { name: akeneo_batch.job.job_parameters.constraint_collection_provider, priority: 10 }

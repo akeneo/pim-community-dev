@@ -86,6 +86,7 @@ job_execution:
     read_rules: lue säännöt
     selected_entities: valitut tuotteet / tuotemallit
     skipped_invalid: ohitetut tuotteet / tuotemallit (virheellinen)
+    skipped_no_diff: ohitetut tuotteet / tuotemallit (ei eroja)
     updated_entities: päivitetyt tuotteet / tuotemallit
     executed_rules: onnistuneesti suoritetut säännöt
     errored_rules: ohitetut säännöt (virheellinen)

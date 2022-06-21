@@ -43,6 +43,7 @@ const BooleanConfigurator = ({
         compatibleOperations={[]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
+        validationErrors={filterErrors(validationErrors, '[operations]')}
       />
     </>
   );

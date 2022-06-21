@@ -20,6 +20,7 @@ final class DatabaseGetContributorAccountByAccessToken implements GetContributor
     {
         $sql = <<<SQL
             SELECT id, 
+                   email,
                    access_token, 
                    access_token_created_at >= NOW()-INTERVAL :tokenValidityInDays DAY as is_valid_access_token
             FROM akeneo_onboarder_serenity_contributor_account
@@ -40,6 +41,6 @@ final class DatabaseGetContributorAccountByAccessToken implements GetContributor
 
         $isValidAccessToken = (bool) $result['is_valid_access_token'];
 
-        return new ContributorAccount($result['id'], $result['access_token'], $isValidAccessToken);
+        return new ContributorAccount($result['id'], $result['email'], $result['access_token'], $isValidAccessToken);
     }
 }

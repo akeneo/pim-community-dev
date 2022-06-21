@@ -6,6 +6,7 @@ import {getDefaultSplitOperation, SplitOperationBlock} from './SplitOperationBlo
 
 test('it can get the default split operation', () => {
   expect(getDefaultSplitOperation()).toEqual({
+    uuid: expect.any(String),
     type: 'split',
     separator: ',',
   });
@@ -15,7 +16,7 @@ test('it displays a split operation block', () => {
   renderWithProviders(
     <SplitOperationBlock
       targetCode="brand"
-      operation={{type: 'split', separator: ','}}
+      operation={{uuid: expect.any(String), type: 'split', separator: ','}}
       onChange={jest.fn()}
       onRemove={jest.fn()}
       isLastOperation={false}
@@ -36,7 +37,7 @@ test('it can be removed using the remove button', () => {
   renderWithProviders(
     <SplitOperationBlock
       targetCode="brand"
-      operation={{type: 'split', separator: ','}}
+      operation={{uuid: expect.any(String), type: 'split', separator: ','}}
       onChange={jest.fn()}
       onRemove={handleRemove}
       isLastOperation={false}
@@ -63,7 +64,7 @@ test('it can change the separator', () => {
   renderWithProviders(
     <SplitOperationBlock
       targetCode="brand"
-      operation={{type: 'split', separator: ','}}
+      operation={{uuid: expect.any(String), type: 'split', separator: ','}}
       onChange={handleChange}
       onRemove={jest.fn()}
       isLastOperation={false}
@@ -75,11 +76,11 @@ test('it can change the separator', () => {
     />
   );
 
-  userEvent.click(screen.getByTitle('akeneo.tailored_import.data_mapping.operations.split.collapse'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_import.data_mapping.operations.common.collapse'));
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(screen.getByTitle('semicolon'));
 
-  expect(handleChange).toHaveBeenCalledWith({type: 'split', separator: ';'});
+  expect(handleChange).toHaveBeenCalledWith({uuid: expect.any(String), type: 'split', separator: ';'});
 });
 
 test('it throws an error if the operation is not a split operation', () => {
@@ -89,7 +90,7 @@ test('it throws an error if the operation is not a split operation', () => {
     renderWithProviders(
       <SplitOperationBlock
         targetCode="brand"
-        operation={{type: 'clean_html_tags'}}
+        operation={{uuid: expect.any(String), type: 'clean_html_tags'}}
         onChange={jest.fn()}
         onRemove={jest.fn()}
         isLastOperation={false}

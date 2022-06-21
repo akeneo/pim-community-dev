@@ -24,6 +24,7 @@ test('it displays preview if sample data is provided', async () => {
       compatibleOperations={[]}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
@@ -44,6 +45,7 @@ test('it does not display preview if no source is set', async () => {
       compatibleOperations={[]}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
@@ -64,6 +66,7 @@ test('it calls refresh sample data handler when user refreshes a data', async ()
       compatibleOperations={[]}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={handleRefreshSampleData}
+      validationErrors={[]}
     />
   );
 
@@ -82,7 +85,7 @@ test('it displays compatible operation when present in data mapping', async () =
       dataMapping={{
         ...dataMapping,
         operations: [
-          {type: 'clean_html_tags'},
+          {uuid: expect.any(String), type: 'clean_html_tags'},
           // @ts-expect-error unknown operation
           {type: 'unknown_operation'},
         ],
@@ -90,6 +93,7 @@ test('it displays compatible operation when present in data mapping', async () =
       compatibleOperations={['clean_html_tags']}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
@@ -109,13 +113,14 @@ test('it can add a compatible operation in data mapping', async () => {
       compatibleOperations={['clean_html_tags']}
       onOperationsChange={handleOperationsChange}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.add'));
   userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags.title'));
 
-  expect(handleOperationsChange).toHaveBeenCalledWith([{type: 'clean_html_tags'}]);
+  expect(handleOperationsChange).toHaveBeenCalledWith([{uuid: expect.any(String), type: 'clean_html_tags'}]);
 });
 
 test('it can remove an operation from data mapping', async () => {
@@ -125,11 +130,12 @@ test('it can remove an operation from data mapping', async () => {
     <Operations
       dataMapping={{
         ...dataMapping,
-        operations: [{type: 'clean_html_tags'}],
+        operations: [{uuid: expect.any(String), type: 'clean_html_tags'}],
       }}
       compatibleOperations={['clean_html_tags']}
       onOperationsChange={handleOperationsChange}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
@@ -144,11 +150,12 @@ test('it tells when there are no more available operations and hides the add but
     <Operations
       dataMapping={{
         ...dataMapping,
-        operations: [{type: 'clean_html_tags'}],
+        operations: [{uuid: expect.any(String), type: 'clean_html_tags'}],
       }}
       compatibleOperations={['clean_html_tags']}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
@@ -172,6 +179,7 @@ test('it tells when the operation block is not found', async () => {
       compatibleOperations={['unknown_operation']}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
@@ -190,17 +198,18 @@ test('it can handle an operation change', async () => {
     <Operations
       dataMapping={{
         ...dataMapping,
-        operations: [{type: 'split', separator: ','}],
+        operations: [{uuid: expect.any(String), type: 'split', separator: ','}],
       }}
       compatibleOperations={['split']}
       onOperationsChange={handleOperationsChange}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
-  userEvent.click(screen.getByTitle('akeneo.tailored_import.data_mapping.operations.split.collapse'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_import.data_mapping.operations.common.collapse'));
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(screen.getByTitle('semicolon'));
 
-  expect(handleOperationsChange).toHaveBeenCalledWith([{type: 'split', separator: ';'}]);
+  expect(handleOperationsChange).toHaveBeenCalledWith([{uuid: expect.any(String), type: 'split', separator: ';'}]);
 });

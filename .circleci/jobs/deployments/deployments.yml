@@ -544,14 +544,14 @@ jobs:
               PIM_MASTER_DOMAIN="${INSTANCE_NAME}.bh.akeneo.ch"
               SERVICE_ACCOUNT_KEY=$(echo ${GCLOUD_SERVICE_KEY_UCS} | base64 | tr -d '\n')
 
-              TOPIC_BUSINESS_EVENT="${INSTANCE_NAME}-business-event"
-              TOPIC_JOB_QUEUE_UI="${INSTANCE_NAME}-job-queue-ui"
-              TOPIC_JOB_QUEUE_IMPORT_EXPORT="${INSTANCE_NAME}-job-queue-import-export"
-              TOPIC_JOB_QUEUE_DATA_MAINTENANCE="${INSTANCE_NAME}-job-queue-data-maintenance"
-              SUBSCRIPTION_WEBHOOK="${INSTANCE_NAME}-webhook"
-              SUBSCRIPTION_JOB_QUEUE_UI="${INSTANCE_NAME}-job-queue-ui"
-              SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT="${INSTANCE_NAME}-job-queue-import-export"
-              SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE="${INSTANCE_NAME}-job-queue-data-maintenance"
+              TOPIC_BUSINESS_EVENT="srnt-business-event-${CIRCLE_BRANCH_LOWER}"
+              TOPIC_JOB_QUEUE_UI="srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}"
+              TOPIC_JOB_QUEUE_IMPORT_EXPORT="srnt-job-queue-import-export-${CIRCLE_BRANCH_LOWER}"
+              TOPIC_JOB_QUEUE_DATA_MAINTENANCE="srnt-job-queue-data-maintenance-${CIRCLE_BRANCH_LOWER}"
+              SUBSCRIPTION_WEBHOOK="srnt-webhook-${CIRCLE_BRANCH_LOWER}"
+              SUBSCRIPTION_JOB_QUEUE_UI="srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}"
+              SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT="srnt-job-queue-import-export-${CIRCLE_BRANCH_LOWER}"
+              SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE="srnt-job-queue-data-maintenance-${CIRCLE_BRANCH_LOWER}"
 
               echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
               echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
@@ -600,13 +600,6 @@ jobs:
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_import_export "${SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_data_maintenance "${SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE}"
 
-              ## Pubsub
-              sed -i "s#srnt-business-event#srnt-business-event-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-              sed -i "s#srnt-job-queue-ui#srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-              sed -i "s#srnt-job-queue-import-export#srnt-job-queue-import-export-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-              sed -i "s#srnt-job-queue-data-maintenance#srnt-job-queue-data-maintenance-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-              sed -i "s#srnt-webhook#srnt-webhook-${CIRCLE_BRANCH_LOWER}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-
               ## Charts
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/Chart.yaml version 0.0.0-${IMAGE_TAG}
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/Chart.yaml appVersion ${IMAGE_TAG}
@@ -618,24 +611,25 @@ jobs:
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-job/Chart.yaml appVersion ${IMAGE_TAG}
 
               ## ArgoCD
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/pim-web-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/pim-web-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-web
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/pim-web-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-web
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/pim-web-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-web
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-web-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-web-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-web
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-web-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-web
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-web-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-web
 
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-api
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-api
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-api
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-api-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-api-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-api
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-api-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-api
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-api-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-api
 
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pim-daemon-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pim-daemon-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-daemon
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pim-daemon-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-daemon
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pim-daemon-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-daemon
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-daemon-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-daemon-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-daemon
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-daemon-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-daemon
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-daemon-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-daemon
 
-              mv /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/pim-web-application.yaml /tmp/pim-web-application.yaml
-              mv /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-application.yaml /tmp/pim-api-application.yaml
-              mv /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pim-daemon-application.yaml /tmp/pim-daemon-application.yaml
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd/pim-applications.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd/pim-applications.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-argocd
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd/pim-applications.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-argocd
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd/pim-applications.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-argocd
 
               git add deployments-ucs/pim-saas-service
               git commit -m "Update release version"
@@ -643,9 +637,7 @@ jobs:
         - run:
             name: Deploy PIM
             command: |
-              kubectl apply -f /tmp/pim-web-application.yaml -n argocd
-              kubectl apply -f /tmp/pim-api-application.yaml -n argocd
-              kubectl apply -f /tmp/pim-daemon-application.yaml -n argocd
+              kubectl apply -f /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd/pim-applications.yaml -n argocd
 
               # Better to store the password in CircleCI or other mecanisme
               ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
@@ -654,9 +646,11 @@ jobs:
               argocd login --insecure argocd.bh.akeneo.ch --username admin --password ${ARGOCD_PASSWORD}
 
               # Force synchro
-              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-web --hard-refresh
-              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-api --hard-refresh
-              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-daemon --hard-refresh
+              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-argocd --hard-refresh
+              argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-argocd --async
+              # argocd app get ${CIRCLE_BRANCH_LOWER}-pim-web --hard-refresh
+              # argocd app get ${CIRCLE_BRANCH_LOWER}-pim-api --hard-refresh
+              # argocd app get ${CIRCLE_BRANCH_LOWER}-pim-daemon --hard-refresh
               # TODO fix this error
               # FATA[0002] rpc error: code = FailedPrecondition desc = another operation is already in progress
               # argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-web --async
@@ -791,6 +785,8 @@ jobs:
               argocd login --insecure argocd.bh.akeneo.ch --username admin --password ${ARGOCD_PASSWORD}
 
               # Force synchro
+              argocd app get ${CIRCLE_BRANCH_LOWER}-pim-argocd --hard-refresh
+              # argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-argocd --async
               argocd app get ${CIRCLE_BRANCH_LOWER}-pim-web --hard-refresh
               argocd app get ${CIRCLE_BRANCH_LOWER}-pim-api --hard-refresh
         - run:

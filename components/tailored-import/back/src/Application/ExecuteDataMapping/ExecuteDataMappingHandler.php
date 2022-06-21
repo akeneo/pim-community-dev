@@ -15,11 +15,15 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
@@ -53,17 +57,17 @@ class ExecuteDataMappingHandler
 
             $value = $this->applyOperations($row, $sources, $dataMapping->getOperations());
 
-            if (!$value instanceof NullValue) {
+            if ($value instanceof NullValue && TargetInterface::IF_EMPTY_SKIP === $target->getActionIfEmpty()) {
+                continue;
+            }
+
+            if ($value instanceof NullValue) {
+                $userIntents[] = $this->getClearIfEmptyUserIntent($target);
+            } else {
                 $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target);
                 $userIntents[] = $userIntentFactory->create(
                     $target,
                     $value,
-                );
-            } elseif ($target instanceof AttributeTarget && AttributeTarget::IF_EMPTY_CLEAR === $target->getActionIfEmpty()) {
-                $userIntents[] = new ClearValue(
-                    $target->getCode(),
-                    $target->getChannel(),
-                    $target->getLocale(),
                 );
             }
         }
@@ -73,8 +77,8 @@ class ExecuteDataMappingHandler
         }
 
         return UpsertProductCommand::createFromCollection(
-            1,
-            $productIdentifier->getValue(),
+            $executeDataMappingQuery->getUserId(),
+            $productIdentifier->getValue() ?? '',
             $userIntents,
         );
     }
@@ -111,5 +115,22 @@ class ExecuteDataMappingHandler
         $uniqueValue = array_values(array_unique($value));
 
         return new ArrayValue($uniqueValue);
+    }
+
+    private function getClearIfEmptyUserIntent(TargetInterface $target): UserIntent
+    {
+        if ($target instanceof AttributeTarget) {
+            return new ClearValue(
+                $target->getCode(),
+                $target->getChannel(),
+                $target->getLocale(),
+            );
+        }
+
+        return match ($target->getCode()) {
+            'family' => new RemoveFamily(),
+            'categories' => new SetCategories([]),
+            default => throw new \Exception(sprintf('Unhandled "Clear if empty" action on property target "%s"', $target->getCode())),
+        };
     }
 }

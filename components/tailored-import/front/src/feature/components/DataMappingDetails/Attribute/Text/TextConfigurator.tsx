@@ -45,6 +45,7 @@ const TextConfigurator = ({
         compatibleOperations={[CLEAN_HTML_TAGS_OPERATION_TYPE]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
+        validationErrors={filterErrors(validationErrors, '[operations]')}
       />
     </>
   );

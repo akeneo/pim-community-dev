@@ -1,4 +1,5 @@
 import React, {FunctionComponent} from 'react';
+import {Helper} from 'akeneo-design-system';
 import {getErrorsForPath, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {
   Column,
@@ -8,8 +9,7 @@ import {
   PropertyDataMapping,
   PropertyTarget,
 } from '../../models';
-import {CategoriesConfigurator, FamilyConfigurator} from './Property';
-import {Helper} from 'akeneo-design-system';
+import {CategoriesConfigurator, EnabledConfigurator, FamilyConfigurator} from './Property';
 import {PropertyNotValid} from './PropertyNotValid';
 
 const propertyDataMappingConfigurators: {
@@ -17,6 +17,7 @@ const propertyDataMappingConfigurators: {
 } = {
   categories: CategoriesConfigurator,
   family: FamilyConfigurator,
+  enabled: EnabledConfigurator,
 };
 
 type PropertyDataMappingDetailsProps = {

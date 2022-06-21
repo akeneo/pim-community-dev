@@ -110,7 +110,7 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([
-                            new CleanHTMLTagsOperation(),
+                            new CleanHTMLTagsOperation('00000000-0000-0000-0000-000000000000'),
                         ]),
                         [],
                     ),

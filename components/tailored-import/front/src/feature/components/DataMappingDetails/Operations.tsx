@@ -10,7 +10,7 @@ import {
   SettingsIllustration,
   useBooleanState,
 } from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {DataMapping, getDefaultOperation, Operation, OperationType} from '../../models';
 import {
   CleanHTMLTagsOperationBlock,
@@ -23,6 +23,10 @@ import {
   SPLIT_OPERATION_TYPE,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   SimpleSelectReplacementOperationBlock,
+  BOOLEAN_REPLACEMENT_OPERATION_TYPE,
+  BooleanReplacementOperationBlock,
+  CATEGORIES_REPLACEMENT_OPERATION_TYPE,
+  CategoriesReplacementOperationBlock,
 } from './Operation';
 import {usePreviewData} from '../../hooks';
 
@@ -45,6 +49,8 @@ const operationBlocks: {
   [SPLIT_OPERATION_TYPE]: SplitOperationBlock,
   [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,
   [MULTI_SELECT_REPLACEMENT_OPERATION_TYPE]: MultiSelectReplacementOperationBlock,
+  [BOOLEAN_REPLACEMENT_OPERATION_TYPE]: BooleanReplacementOperationBlock,
+  [CATEGORIES_REPLACEMENT_OPERATION_TYPE]: CategoriesReplacementOperationBlock,
 };
 
 type OperationsProps = {
@@ -52,9 +58,16 @@ type OperationsProps = {
   compatibleOperations: OperationType[];
   onOperationsChange: (operations: Operation[]) => void;
   onRefreshSampleData: (index: number) => Promise<void>;
+  validationErrors: ValidationError[];
 };
 
-const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRefreshSampleData}: OperationsProps) => {
+const Operations = ({
+  dataMapping,
+  compatibleOperations,
+  onOperationsChange,
+  onRefreshSampleData,
+  validationErrors,
+}: OperationsProps) => {
   const translate = useTranslate();
   const [loadingSampleData, setLoadingSampleData] = useState<number[]>([]);
   const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
@@ -121,6 +134,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
                 isLastOperation={index === dataMapping.operations.length - 1}
                 onChange={handleOperationChange}
                 onRemove={handleOperationRemove}
+                validationErrors={filterErrors(validationErrors, `[${operation.uuid}]`)}
               />
             );
           })}

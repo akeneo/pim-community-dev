@@ -121,7 +121,6 @@ $rules = [
             'Ramsey\Uuid\Uuid',
             'Symfony\Component\EventDispatcher\EventDispatcher',
             'Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher',
-            'Symfony\Component\Routing\Generator\UrlGeneratorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Twig\Environment',

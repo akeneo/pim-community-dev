@@ -138,7 +138,7 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                         ),
                         ['11111111-1111-1111-1111-111111111111'],
                         OperationCollection::create([
-                            new MultiSelectReplacementOperation([
+                            new MultiSelectReplacementOperation('00000000-0000-0000-0000-000000000000', [
                                 'adidas' => ['vneck', 'long_sleeve'],
                                 'puma' => ['short_sleeve'],
                             ]),
@@ -179,7 +179,7 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                             '33333333-3333-3333-3333-333333333333',
                         ],
                         OperationCollection::create([
-                            new MultiSelectReplacementOperation([
+                            new MultiSelectReplacementOperation('00000000-0000-0000-0000-000000000000', [
                                 'adidas' => ['vneck', 'long_sleeve'],
                                 'puma' => ['short_sleeve'],
                             ]),
@@ -198,7 +198,7 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
             'it handles a multi select attribute target with single source and split operation' => [
                 'row' => [
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
-                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'long_sleeve,short_sleeve',
+                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'long_sleeve,   short_sleeve',
                 ],
                 'data_mappings' => [
                     DataMapping::create(
@@ -214,7 +214,7 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                         ),
                         ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([
-                            new SplitOperation(','),
+                            new SplitOperation('00000000-0000-0000-0000-000000000000', ','),
                         ]),
                         [],
                     ),
@@ -247,7 +247,7 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c', '2d9e967a-4efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([
-                            new SplitOperation(','),
+                            new SplitOperation('00000000-0000-0000-0000-000000000000', ','),
                         ]),
                         [],
                     ),
@@ -285,8 +285,8 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                             '33333333-3333-3333-3333-333333333333',
                         ],
                         OperationCollection::create([
-                            new SplitOperation(','),
-                            new MultiSelectReplacementOperation([
+                            new SplitOperation('00000000-0000-0000-0000-000000000000', ','),
+                            new MultiSelectReplacementOperation('00000000-0000-0000-0000-000000000000', [
                                 'adidas' => ['slim_fit', 'wide_sleeve'],
                                 'puma' => ['another_one', 'men'],
                                 'broussaille' => ['boy'],

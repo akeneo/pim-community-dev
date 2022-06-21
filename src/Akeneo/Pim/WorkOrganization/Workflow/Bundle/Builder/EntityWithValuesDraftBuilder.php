@@ -60,7 +60,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
 
         $values = [];
         foreach ($newValuesWithNullData as $code => $newValue) {
-            $attribute = $this->getAttributes->forCode($code);
+            $attribute = $this->getAttributes->forCode((string) $code);
 
             if (null === $attribute) {
                 throw new \LogicException(sprintf('Cannot find attribute with code "%s".', $code));
