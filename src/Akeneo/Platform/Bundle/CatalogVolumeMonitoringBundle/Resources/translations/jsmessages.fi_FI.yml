@@ -37,4 +37,12 @@ pim_catalog_volume:
     title:
       product: Tuote
       catalog: Katalogi
+      product_structure: Tuotteiden rakenne
+      variant_modeling: Variantit
+      reference_entities: Viitetiedot
+      assets: Assetit
+  mean: 'Keskiarvo:'
   max: 'Maksimi:'
+  error:
+    generic_title: Valitettavasti on tapahtunut virhe.
+    generic_message: Yritä uudelleen hetken kuluttua.
