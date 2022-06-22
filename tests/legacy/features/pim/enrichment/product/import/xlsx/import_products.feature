@@ -41,7 +41,7 @@ Feature: Import XLSX products
     When the products are imported via the job xlsx_footwear_product_import
     Then there should be 2 products
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6085
+  # @jira https://akeneo.atlassian.net/browse/PIM-6085
   @javascript
   Scenario: Successfully import product associations with modified column name
     Given I am logged in as "Julia"

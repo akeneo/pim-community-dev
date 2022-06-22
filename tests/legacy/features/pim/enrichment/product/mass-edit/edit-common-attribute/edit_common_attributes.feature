@@ -26,7 +26,7 @@ Feature: Edit common attributes of many products at once
       | blue_highheels | high_heels | blue  | 12 CENTIMETER |        |
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6273
+  # @jira https://akeneo.atlassian.net/browse/PIM-6273
   Scenario: Successfully remove product attribute fields
     Given I am on the products grid
     And I select rows boots, sandals and sneakers

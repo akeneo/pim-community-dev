@@ -4,8 +4,8 @@ Feature: Delete an attribute
   As a product manager
   I need to delete a text attribute
 
+  # @jira https://akeneo.atlassian.net/browse/PIM-7199
   @critical
-  @jira https://akeneo.atlassian.net/browse/PIM-7199
   Scenario: An identifier attribute cannot be deleted
     Given the "default" catalog configuration
     And I am logged in as "Julia"

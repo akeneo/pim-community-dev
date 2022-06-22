@@ -8,7 +8,8 @@ Feature: Filter products by boolean field
     Given the "apparel" catalog configuration
     And I am logged in as "Mary"
 
-  @critical  @jira https://akeneo.atlassian.net/browse/PIM-3406
+  # @jira https://akeneo.atlassian.net/browse/PIM-3406
+  @critical
   Scenario: Successfully filter products by boolean value for boolean attributes
     Given the following products:
       | sku   |

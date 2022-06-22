@@ -12,7 +12,7 @@ Feature: Apply ACL permissions on mass edit actions
       | hiking_shoes | sandals |
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5171
+  # @jira https://akeneo.atlassian.net/browse/PIM-5171
   Scenario: View only the mass edit operations I have permissions on
     Given I edit the "Catalog manager" Role
     And I visit the "Permissions" tab

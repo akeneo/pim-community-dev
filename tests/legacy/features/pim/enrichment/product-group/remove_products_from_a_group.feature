@@ -16,7 +16,7 @@ Feature: Remove products from a group
       | sandal-white-39 | CROSS_SELL | sandals | winter_collection | 39   | white |
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3736
+  # @jira https://akeneo.atlassian.net/browse/PIM-3736
   Scenario: Successfully remove a product from the group
     Given I am on the "CROSS_SELL" product group page
     Then the grid should contain 3 elements

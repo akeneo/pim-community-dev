@@ -23,7 +23,7 @@ Feature: Execute a job
       | type   | product_models   |
       | UPSELL | brookspink      |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-7852
+  # @jira https://akeneo.atlassian.net/browse/PIM-7852
   Scenario: Successfully import a csv file of products with product model associations using a job with comparison disabled
     Given the following CSV file to import:
       """

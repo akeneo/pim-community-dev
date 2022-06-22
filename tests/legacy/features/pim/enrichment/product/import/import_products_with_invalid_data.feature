@@ -11,7 +11,7 @@ Feature: Execute a job
       | CROSS | Bag Cross   | RELATED |
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3266
+  # @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing products with invalid prices during an import
     Given the following products:
       | sku     | price  |
@@ -60,7 +60,7 @@ Feature: Execute a job
       | price |  |
     And I should see the text "The price attribute requires a number, and the submitted gruik value is not.: gruik EUR"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3266
+  # @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing products with invalid metrics during an import
     Given the following products:
       | sku     | length        |
@@ -84,7 +84,7 @@ Feature: Execute a job
     And the product "SKU-002" should have the following value:
       | length | 2.0000 KILOMETER |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3266
+  # @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing products with invalid number during an import
     Given the following products:
       | sku     | number_in_stock |
@@ -108,7 +108,7 @@ Feature: Execute a job
     And the product "SKU-002" should have the following value:
       | number_in_stock | 100 |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3266
+  # @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new products with non-existing media attributes during an import
     Given the following attributes:
       | label-en_US | type              | allowed_extensions | group | code       |
@@ -138,7 +138,7 @@ Feature: Execute a job
       | frontView  | fanatic-freewave-76.gif |
       | userManual | fanatic-freewave-76.txt |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3311
+  # @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip products with a SKU that has just been created
     Given the following CSV file to import:
       """

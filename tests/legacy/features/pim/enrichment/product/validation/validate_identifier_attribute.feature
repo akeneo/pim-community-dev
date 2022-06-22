@@ -33,7 +33,7 @@ Feature: Validate identifier attribute of a product
     Then I should see validation tooltip "The sku attribute must match the following regular expression: /^sku-\d*$/."
     And there should be 1 error in the "Other" tab
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3447
+  # @jira https://akeneo.atlassian.net/browse/PIM-3447
   Scenario: Validate the max database value length of identifier attribute
     Given I am on the "bar" product page
     When I change the SKU to an invalid value

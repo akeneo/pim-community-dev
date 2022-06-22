@@ -59,7 +59,7 @@ Feature: Validate values for unique attributes when importing products
     Then I should see the text "The text attribute can not have the same value more than once. The foo value is already set on another product."
     And there should be 1 product
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3309
+  # @jira https://akeneo.atlassian.net/browse/PIM-3309
   Scenario: Import a file with same value in unique attribute and with existing product with this value
     Given the following products:
       | sku         | test_unique_attribute |

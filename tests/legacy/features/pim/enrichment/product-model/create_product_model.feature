@@ -132,7 +132,7 @@ Feature: Create a product model
     And I press the "Create product and product models" button
     Then I should see the SKU and Family fields
 
-  @jira https://akeneo.atlassian.net/browse/PIM-7299
+  # @jira https://akeneo.atlassian.net/browse/PIM-7299
   Scenario: Search family variants in the product model create form
     Given the following family:
       | code                      | label-en_US   | attributes      |

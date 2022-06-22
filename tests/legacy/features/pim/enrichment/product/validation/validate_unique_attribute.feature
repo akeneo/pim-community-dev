@@ -36,7 +36,7 @@ Feature: Validate unique attribute of a product
     Then I should see validation tooltip "The text attribute can not have the same value more than once. The my-text value is already set on another product."
     And there should be 1 error in the "Other" tab
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3961
+  # @jira https://akeneo.atlassian.net/browse/PIM-3961
   Scenario: Validate the unique constraint of text attribute with an empty text
     Given I am on the "text1" product page
     And I change the Text to ""
@@ -46,7 +46,7 @@ Feature: Validate unique attribute of a product
     And I save the product
     Then I should not see validation tooltip "The text attribute can not have the same value more than once. The  value is already set on another product."
 
-  @jira https://akeneo.atlassian.net/browse/PIM-7323
+  # @jira https://akeneo.atlassian.net/browse/PIM-7323
   Scenario: Validate the unique constraint of text attribute with an removed value
     Given I am on the "text1" product page
     And I change the Text to "my-text"
@@ -69,7 +69,7 @@ Feature: Validate unique attribute of a product
     And I should see validation tooltip "The number attribute can not have the same value more than once. The 12 value is already set on another product."
     And there should be 1 error in the "Other" tab
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3961
+  # @jira https://akeneo.atlassian.net/browse/PIM-3961
   Scenario: Validate the unique constraint of number attribute with an empty number
     Given I am on the "number1" product page
     And I change the Number to ""
@@ -79,7 +79,8 @@ Feature: Validate unique attribute of a product
     And I save the product
     Then I should not see validation tooltip "The number attribute can not have the same value more than once. The  value is already set on another product."
 
-  @skip @info date picker does not work properly on CI
+  # @info date picker does not work properly on CI
+  @skip
   Scenario: Validate the unique constraint of date attribute with a provided date
     Given the following product values:
       | product | attribute | value      |
@@ -90,7 +91,7 @@ Feature: Validate unique attribute of a product
     And I should see validation tooltip "The date attribute can not have the same value more than once. The 2015-01-01 value is already set on another product."
     And there should be 1 error in the "Other" tab
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3961
+  # @jira https://akeneo.atlassian.net/browse/PIM-3961
   Scenario: Validate the unique constraint of date attribute with an empty date
     Given I am on the "date1" product page
     And I save the product
