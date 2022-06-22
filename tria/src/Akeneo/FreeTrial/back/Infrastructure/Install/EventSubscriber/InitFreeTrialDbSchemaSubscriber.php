@@ -37,7 +37,7 @@ class InitFreeTrialDbSchemaSubscriber implements EventSubscriberInterface
     public function initDbSchema(InstallerEvent $event): void
     {
         $query = <<<'SQL'
-CREATE TABLE akeneo_free_trial_invited_user (
+CREATE TABLE IF NOT EXISTS akeneo_free_trial_invited_user (
     email VARCHAR(255) NOT NULL PRIMARY KEY,
     status VARCHAR(15) NOT NULL,
     created_at DATETIME NOT NULL

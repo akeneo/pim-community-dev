@@ -23,6 +23,7 @@ akeneo_connectivity_revoked_app_token | BASE TABLE
 akeneo_connectivity_test_app | BASE TABLE
 akeneo_connectivity_user_consent | BASE TABLE
 akeneo_file_storage_file_info | BASE TABLE
+akeneo_free_trial_invited_user | BASE TABLE
 akeneo_measurement | BASE TABLE
 akeneo_onboarder_message | BASE TABLE
 akeneo_onboarder_nice_to_have_attribute | BASE TABLE
@@ -321,6 +322,9 @@ akeneo_file_storage_file_info | size | YES | int |
 akeneo_file_storage_file_info | extension | NO | varchar(10) |
 akeneo_file_storage_file_info | hash | YES | varchar(100) |
 akeneo_file_storage_file_info | storage | YES | varchar(255) |
+akeneo_free_trial_invited_user | email | NO | varchar(255) | PRI
+akeneo_free_trial_invited_user | status | NO | varchar(15) |
+akeneo_free_trial_invited_user | created_at | NO | datetime |
 akeneo_measurement | code | NO | varchar(100) | PRI
 akeneo_measurement | labels | NO | json |
 akeneo_measurement | standard_unit | NO | varchar(100) |
@@ -1011,6 +1015,7 @@ INDEX | akeneo_connectivity_test_app | PRIMARY | client_id
 INDEX | akeneo_connectivity_user_consent | PRIMARY | user_id, app_id
 INDEX | akeneo_file_storage_file_info | PRIMARY | id
 INDEX | akeneo_file_storage_file_info | UNIQ_F19B3719A5D32530 | file_key
+INDEX | akeneo_free_trial_invited_user | PRIMARY | email
 INDEX | akeneo_measurement | code | code
 INDEX | akeneo_measurement | PRIMARY | code
 INDEX | akeneo_onboarder_message | PRIMARY | identifier
