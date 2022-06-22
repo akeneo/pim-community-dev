@@ -127,7 +127,7 @@
         "symfony/property-access": "^5.4.0",
         "symfony/proxy-manager-bridge": "^5.4.0",
         "symfony/requirements-checker": "^2.0.0",
-        "symfony/routing": "^5.4.0",
+        "symfony/routing": "^6.0.8",
         "symfony/security-acl": "^3.1.1",
         "symfony/security-bundle": "^5.4.0",
         "symfony/security-core": "^5.4.0",
