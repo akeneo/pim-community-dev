@@ -40,10 +40,6 @@ class GetProductScoresQuery implements GetProductScoresQueryInterface
         );
     }
 
-    /**
-     * @param UuidInterface $productUuid
-     * @return QualityScoreCollection
-     */
     public function byProductUuid(UuidInterface $productUuid): QualityScoreCollection
     {
         $scores = $this->getProductScoresByUuidsQuery->byProductUuid($productUuid);

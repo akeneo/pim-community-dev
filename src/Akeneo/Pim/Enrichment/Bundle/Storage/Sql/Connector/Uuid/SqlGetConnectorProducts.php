@@ -73,9 +73,10 @@ final class SqlGetConnectorProducts implements GetConnectorProducts
             $this->fetchCategoryCodesIndexedByProductUuids($productUuids)
         );
 
-        $identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
         $rawValuesIndexedByProductUuid = [];
         foreach ($productUuids as $uuid) {
+            $rawValues = $rows[$uuid->toString()]['raw_values'];
+
             if (null !== $attributesToFilterOn) {
                 $rawValues = $this->filterByAttributeCodes($rawValues, $attributesToFilterOn);
             }

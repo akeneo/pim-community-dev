@@ -38,17 +38,17 @@ class ProductAndProductModelProcessor implements ItemProcessorInterface, StepExe
     /**
      * {@inheritdoc}
      */
-    public function process($product): array
+    public function process($entity): array
     {
         $parameters = $this->stepExecution->getJobParameters();
         $structure = $parameters->get('filters')['structure'];
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
 
-        $productStandard = $this->normalizer->normalize($product, 'standard');
+        $productStandard = $this->normalizer->normalize($entity, 'standard');
 
         // not done for product as it fill missing product values at the end for performance purpose
         // not done yet for product model export so we have to do it
-        if ($product instanceof ProductModelInterface) {
+        if ($entity instanceof ProductModelInterface) {
             $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($productStandard);
         }
 
@@ -74,15 +74,15 @@ class ProductAndProductModelProcessor implements ItemProcessorInterface, StepExe
         }
 
         if ($this->hasFilterOnQualityScore($parameters)) {
-            if($product instanceof ProductModelInterface) {
+            if ($entity instanceof ProductModelInterface) {
                 $productStandard['quality_scores'] = ($this->getNormalizedProductModelQualityScores)(
-                    $product->getCode(),
+                    $entity->getCode(),
                     $structure['scope'] ?? null,
                     $structure['locales'] ?? []
                 );
             } else {
                 $productStandard['quality_scores'] = ($this->getNormalizedProductQualityScores)(
-                    $product->getUuid(),
+                    $entity->getUuid(),
                     $structure['scope'] ?? null,
                     $structure['locales'] ?? []
                 );
