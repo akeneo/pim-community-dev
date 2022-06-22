@@ -38,9 +38,9 @@ jobs:
       -   run:
             name: Coupling back
             command: make catalogs-coupling-back
-#      -   run:
-#            name: Lint back
-#            command: make catalogs-lint-back
+      -   run:
+            name: Lint back
+            command: make catalogs-lint-back
       -   run:
             name: Unit back
             command: make catalogs-unit-back
