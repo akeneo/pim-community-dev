@@ -1,6 +1,6 @@
 import React, {FC, useRef, useState} from 'react';
 import {Button, Field, Helper, Modal, ProductCategoryIllustration, TextInput, useAutoFocus} from 'akeneo-design-system';
-import {NotificationLevel, Router, TextField, useNotify, useRouter,
+import {NotificationLevel, TextField, useNotify, useRouter,
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
