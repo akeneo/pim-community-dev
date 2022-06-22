@@ -142,6 +142,7 @@ COPY frontend frontend
 COPY src src
 COPY components components
 COPY grth grth
+COPY tria tria
 COPY upgrades upgrades
 COPY composer.json package.json yarn.lock .env tsconfig.json *.js version.txt .
 
