@@ -47,6 +47,7 @@ $rules = [
             'Symfony\Component\Messenger',
             'Symfony\Component\Security',
             'Symfony\Component\Serializer',
+            'Symfony\Component\Validator',
             'Doctrine\DBAL',
             'Ramsey\Uuid\Uuid',
             'Akeneo\Platform\Bundle\InstallerBundle',
@@ -61,13 +62,15 @@ $rules = [
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 
-    // ServiceAPI layer should only use classes from itself or symfony/messenger
+    // ServiceAPI layer should only use classes from itself, constraints annotations or symfony/messenger
     $builder->only(
         [
             'Akeneo\Catalogs\ServiceAPI',
 
             // Constraints as Attributes
             'Symfony\Component\Validator\Constraints',
+            'Akeneo\Catalogs\Infrastructure\Validation',
+
             // Message Bus
             'Symfony\Component\Messenger',
         ]

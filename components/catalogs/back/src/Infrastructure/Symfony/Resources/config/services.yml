@@ -1,3 +1,6 @@
+parameters:
+    akeneo_catalog.max_number_of_catalogs_per_user: 15
+
 services:
     _defaults:
         autowire: true
@@ -44,3 +47,7 @@ services:
 
     Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator:
         alias: 'pim_api.pagination.offset_hal_paginator'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\IsCatalogsNumberLimitReachedQuery:
+        arguments:
+            $limit: '%akeneo_catalog.max_number_of_catalogs_per_user%'

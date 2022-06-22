@@ -41,6 +41,7 @@ pim_title:
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Crear una aplicación de prueba
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: Eliminar aplicación de prueba
   akeneo_connectivity_connection_connect_connected_apps_open: Abrir aplicación
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Editar catálogo
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -138,6 +139,7 @@ akeneo_connectivity.connection:
           not_listed_on_the_appstore: La aplicación ya no aparece en la App Store de Akeneo. Póngase en contacto con el servicio de asistencia de la aplicación.
           manage_app: Administrar aplicación
           open_app: Abrir aplicación
+          pending: La aplicación no está conectada. Abrir la aplicación debería solucionar los problemas de conexión.
         flash:
           error: Lo sentimos, se ha producido un error al obtener la lista de aplicaciones conectadas.
       edit:
@@ -145,6 +147,7 @@ akeneo_connectivity.connection:
         tabs:
           settings: Configuración
           permissions: Permisos
+          catalogs: Catálogos
           error_monitoring: Monitorización de errores
         settings:
           monitoring:
@@ -152,6 +155,7 @@ akeneo_connectivity.connection:
           authorizations:
             title: authorizaciones
             information: 'Para saber más sobre las autorizaciones de aplicaciones, consulta nuestro {{ link }}.'
+            no_access_to_product_information: 'Esta aplicación conectada no accede a la información de sus productos.'
             information_link_anchor: Artículo del Centro de ayuda
             no_scope: No se han solicitado autorizaciones específicas.
           authentication:
@@ -171,6 +175,9 @@ akeneo_connectivity.connection:
               1: Para hacer un seguimiento de los errores en esta aplicación,
               2: activar monitoreo
               3: en la configuración.
+        catalogs:
+          edit:
+            not_found: Catálogo no encontrado
         flash:
           load_permissions_error.title: 'No se pudieron cargar los permisos guardados en {{ entity }}.'
           load_permissions_error.description: Vuelva a intentarlo más tarde.
@@ -256,8 +263,10 @@ akeneo_connectivity.connection:
           reference_entity_record: registros de entidad de referencia
           asset_families: familias de activos
           assets: activos
+          catalogs: catálogos
         new: NUEVO
       error:
+        sub_text: Póngase en contacto con el servicio de asistencia de la aplicación.
         app_not_found: El client_id no coincide con ninguna aplicación existente.
       constraint:
         client_id:
@@ -270,6 +279,8 @@ akeneo_connectivity.connection:
         redirect_uri:
           not_blank: El redirect_uri es obligatorio.
           must_be_url: El redirect_uri no es una url válida.
+        scope:
+          too_long: La lista de objetivo no debe contener más de 1000 caracteres.
   connections: Conexiones
   secondary_actions:
     title: Otras acciones

@@ -37,6 +37,8 @@ return [
         SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff::class,
         SlevomatCodingStandard\Sniffs\Functions\UnusedParameterSniff::class,
         SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff::class,
+        SlevomatCodingStandard\Sniffs\Classes\ForbiddenPublicPropertySniff::class,
+        SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff::class,
         PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\EmptyStatementSniff::class,
 
         /**

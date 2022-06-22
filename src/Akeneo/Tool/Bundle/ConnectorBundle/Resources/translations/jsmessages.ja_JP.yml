@@ -15,6 +15,7 @@ batch_jobs:
     compute_completeness_of_products_family: 商品ファミリーの完全性を検算
     index_family_products: 製品ファミリーと商品モデルのインデックスを作成
     delete_products_and_product_models: 製品を一括削除
+    ensure_attribute_group_order: 属性グループのソート順をチェックする
     clean_attribute:
       register_clean_job: ブラックリストにコードを追加中
       clean_product_model: 商品モデルを消去中

@@ -11,16 +11,19 @@ pim_menu:
     connection_audit: Yhteyksien hallinta
     connection_settings: Yhteydet
     connection_settings_edit: API-yhteyksien asetukset
+    connection_monitoring: Virheiden monitorointi
     connection_webhook_edit: Tapahtumatilaus
     connection_webhook_event_logs: Tapahtumalokit
     data_flows: Tietovirrat
     connect_connection_settings: API-yhteyksien asetukset
     marketplace: Marketplace
+    connected_apps: Sovellukset
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marketplace
   akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
   akeneo_connectivity_connection_connect_apps_activate: Yhdistä
   akeneo_connectivity_connection_connect_apps_authorize: Yhdistä
+  akeneo_connectivity_connection_connect_apps_authenticate: Yhdistä
   akeneo_connectivity_connection_settings_index: Yhteysasetukset
   akeneo_connectivity_connection_settings_edit: API-yhteyksien asetukset
   akeneo_connectivity_connection_settings_any: API-yhteyksien asetukset
@@ -32,6 +35,10 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Tapahtumatilaus
   akeneo_connectivity_connection_webhook_event_logs: Tapahtumalokit
   akeneo_connectivity_connection_settings_redirect: Yhteydet
+  akeneo_connectivity_connection_connect_connected_apps: Sovellukset
+  akeneo_connectivity_connection_connect_connected_apps_edit: Sovellusasetukset
+  akeneo_connectivity_connection_connect_marketplace_test_app_create: Luo testisovellus
+  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Poista testisovellus
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -44,9 +51,11 @@ akeneo_connectivity.connection:
         description: Tämä on vain yleiskatsaus. Katso lisätietoja kauppapaikaltamme.
         link: Siirry kauppapaikkaan
       card:
+        developed_by: 'Kehittäjä {{ author }}'
         read_more: lue lisää
         more_info: Lisätietoa
         connect: Yhdistä
+        connected: Yhdistetty
       extensions:
         title: Konnektorit
         total: '{0} Ei konnektoreita|{1} 1 konnektori|[2,Inf] {{ total }} konnektoria'
@@ -58,26 +67,109 @@ akeneo_connectivity.connection:
       unreachable: Emme pääse nyt kauppapaikkaan. Ole hyvä ja yritä myöhemmin uudelleen.
       scroll_to_top: Siirry ylös
       test_apps:
+        title: Minun testisovellukseni
+        removed_user: Poistettu käyttäjä
+        create_a_test_app: Luo testisovellus
         modal:
+          subtitle: Luo testisovellus
+          app_information:
+            title: Sovelluksen tiedot
+            description: Jos tarvitset apua, tarkista artikkeli
+            link: Kuinka testata sovellukseni ennen sen julkaisua?
+            fields:
+              name: Nimi
+              activate_url: Aktivointi url
+              callback_url: Takaisinkutsu-URL
           credentials:
             title: Tunnistetiedot
+            warning: Varmista, että tallennat nämä tiedot jonnekin, koska näytämme ne vain kerran täällä.
+            client_id: Asiakkaan tunnus
+            client_secret: Asiakkaan salausavain (Client secret)
+        errors:
+          creation:
+            name:
+              max_length: Testisovelluksen nimi on liian pitkä. Siinä on oltava 255 merkkiä tai vähemmän.
+              not_blank: Testisovelluksen nimi on pakollinen.
+            client_id:
+              max_length: Testisovelluksen asiakastunnus on liian pitkä. Siinä on oltava 36 merkkiä tai vähemmän.
+              not_blank: Asiakkaan tunnus on pakollinen.
+            activate_url:
+              max_length: Testisovelluksen aktivointi URL-osoite on liian pitkä. Siinä on oltava 255 merkkiä tai vähemmän.
+              must_be_url: Aktivointi URL-osoitteen on oltava kelvollinen URL.
+              not_blank: Aktivointi URL on pakollinen.
         delete:
+          subtitle: Sovellukset
           title: Vahvista poisto
+          description: Olet aikeissa poistaa testisovelluksesi tästä PIM:stä.
+          warning: Vahvistamalla poistamisen voit poistaa testisovelluksen markkinapaikan sivulta ja siihen liittyvästä yhdistetystä sovelluksesta.
+          flash:
+            success: Testisovellus poistettiin onnistuneesti.
+            error: Valitettavasti testisovellusta poistettaessa tapahtui virhe.
     connected_apps:
+      list:
+        apps:
+          title: Yhdistetyt sovellukset
+          total: '{0} Ei sovelluksia|{1} 1 sovellus|[2,Inf] {{ total }} sovellusta'
+          empty: Ei yhdistettyjä sovelluksia
+          check_marketplace: 'Tarkista {{ marketplaceLink }} selataksesi kaiken käytettävissä olevan sisällön ja asenna ensimmäinen sovellus.'
+          marketplace_link_anchor: Sovelluskauppa
+        test_apps:
+          title: Minun testisovellukseni
+          removed_user: Poistettu käyttäjä
+        helper:
+          title: '[0,1] PIM on yhteydessä {{ count }} sovellukseen.|[2,Inf] PIM on yhteydessä {{ count }} sovellukseen.'
+          description_1: Uusia sovelluksia kehitetään säännöllisesti, joten pysy kuulolla ja tarkista Sovelluskauppa-sivumme usein löytääksesi uusia sovelluksia.
+          description_2: Haluaa tietää lisää Sovelluksista?
+          link: Katso lisätietoja ohjekeskuksestamme.
+        card:
+          developed_by: 'Kehittäjä {{ author }}'
+          manage_app: Hallinnoi sovelluksia
+          open_app: Avaa sovellus
+        flash:
+          error: Pahoittelut, tapahtui virhe haettaessa yhdistettyjä sovelluksia.
       edit:
+        not_found: Sovellusta ei löydy
         tabs:
           settings: Asetukset
           permissions: Käyttöoikeudet
+          error_monitoring: Virheiden monitorointi
+        settings:
+          monitoring:
+            title: Yleiset asetukset
+          authorizations:
+            title: valtuutukset
+            information: 'Jos haluat tietää lisää sovelluksen valtuutuksista, tutustu osoitteeseen {{ link }}.'
+            information_link_anchor: Ohje Keskuksen artikkeli
+            no_scope: Erityisiä valtuutuksia ei ole pyydetty.
         error_monitoring:
+          error: Hups, jokin meni pieleen!
+          helper:
+            description: Täällä, näet yksityiskohtaisesti tämän sovelluksen kunkin virheen viimeisten 7 päivän aikana. Virhemäärä on rajoitettu 100 virheeseen.
+          not_data_source: Tällä hetkellä monitorointisivu on saatavilla vain lähdesovellukselle.
           not_auditable:
+            title: Monitoroimaton sovellus
             description:
-              1: To track errors on this app,
+              1: Seurataksesi virheitä tässä sovelluksessa,
               2: aktivoi seuranta
               3: asetuksissa.
+        flash:
+          load_permissions_error.description: Yritä myöhemmin uudelleen.
+          save_permissions_error.description: Ole hyvä ja tarkista sovelluksen käyttöoikeusasetukset.
+          success: Sovelluksen asetukset päivitetty onnistuneesti.
+          monitoring_settings_error.description: Valitettavasti sovellusta muokattaessa tapahtui virhe.
       delete:
+        subtitle: Sovellukset
         title: Vahvista poisto
+        description: Oletko varma, että haluat poistaa sovelluksen? Etkö ole varma vaikutuksista?
         link: Tässä on mitä tapahtuu.
+        flash:
+          success: Sovellus poistettu onnistuneesti.
+          error: Valitettavasti sovellusta poistettaessa tapahtui virhe.
     apps:
+      loader:
+        message: Ladataan...
+      flash:
+        permissions_error.description: Ole hyvä ja tarkista sovelluksen käyttöoikeusasetukset.
       wizard:
         title: Yhdistä
         action:
@@ -86,10 +178,33 @@ akeneo_connectivity.connection:
           previous: Edellinen
           next: Seuraava
           allow_and_next: Salli ja seuraava
+          allow_and_finish: Salli ja lopeta
         progress:
+          authentication: Todennus
           authorizations: Tunnistautumiset
           permissions: Käyttöoikeudet
+          summary: Hyvin tehty!
+        authentication:
+          title: '{{ app_name }} tarvitsee'
+          helper: Jos haluat tietää lisää sovelluksen todennuksesta, tarkista meidän artikkeli
+          helper_link: Miten yhdistän PIMin sovelluksiin?
+          scope_profile: Näytä etunimi ja sukunimi
+          scope_email: Näytä sähköpostiosoitteesi
+        authorize:
+          title: '{{ app_name }} tarvitsee'
+          no_scope_title: '{{ app_name }} haluaisi käyttää PIM:iäsi.'
+          helper: Jos haluat tietää lisää sovelluksen valtuutuksesta,
+          helper_link: tutustu ohjeisiimme.
+        flash:
+          success: Sovellus konfiguroitu onnistuneesti.
+          error: Valitettavasti sovellusta yhdistettäessä tapahtui virhe.
+        permission:
+          helper: Jos tarvitset apua, tarkista artikkeli
+          helper_link: Miten sovelluksen käyttöoikeudet asetetaan?
       title: Yhdistä
+      activate:
+        flash:
+          error: Valitettavasti sovellusta yhdistettäessä tapahtui virhe.
       scope:
         type:
           view: 'Näytä {{ entities }}'
@@ -103,11 +218,19 @@ akeneo_connectivity.connection:
           channel_settings: kanavat
           association_types: tuoteliitostyypit
           products: tuotteet ja tuotemallit
+          reference_entity: viitetiedot
+          reference_entity_record: viitetiedon tietueet
+          asset_families: assettiperheet
+          assets: assetit
       error:
         sub_text: Ota yhteyttä sovelluksen kehittäjään tai Akeneo-tukeen
+      constraint:
+        client_id:
+          not_blank: Asiakkastunnus on pakollinen.
   connections: Yhteydet
   secondary_actions:
     title: Muut toiminnot
+  developer_mode: Kehittäjätila
   connection:
     code: Koodi
     label: Nimike
@@ -306,14 +429,18 @@ akeneo_connectivity.connection:
           all: Kaikki
         headers:
           datetime: Aika
+          level: Taso
+          message: Viesti
   error_management:
     connection_monitoring:
+      title: Virheiden monitorointi
       helper:
         title: '{0} Sinulla on {{ count }} virhe |[1,Inf] Sinulla on {{ count }} virhettä'
         description: Täällä näet yksityiskohtaisesti kunkin virheen tämän yhteyden osalta viimeisten 7 päivän aikana. Virhemäärä on rajoitettu 100 virheeseen.
         link: Jos haluat ratkaista tämän, vieraile API-yhteyksien ohjekeskuksessamme
       search_filter:
         placeholder: Etsi virheviesteistä
+        result_count: '{0} Ei tuloksia|{1} 1 tulos|[2,Inf] {{ count }} tulosta'
       error_list:
         date_time_column:
           title: Päivämäärä ja kellonaika
@@ -344,4 +471,8 @@ pim_permissions:
   widget:
     action:
       all: Kaikki
+    level:
+      own: Omistus
+      edit: Muokkaus
+      view: Näyttäminen
     all: Kaikki

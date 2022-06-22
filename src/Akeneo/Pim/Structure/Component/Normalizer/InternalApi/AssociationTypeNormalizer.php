@@ -16,26 +16,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var array */
-    protected $supportedFormats = ['internal_api'];
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var VersionManager */
-    protected $versionManager;
-
-    /** @var NormalizerInterface */
-    protected $versionNormalizer;
+    protected array $supportedFormats = ['internal_api'];
 
     public function __construct(
-        NormalizerInterface $normalizer,
-        VersionManager $versionManager,
-        NormalizerInterface $versionNormalizer
+        protected NormalizerInterface $normalizer,
+        protected VersionManager $versionManager,
+        protected NormalizerInterface $versionNormalizer
     ) {
-        $this->normalizer = $normalizer;
-        $this->versionManager = $versionManager;
-        $this->versionNormalizer = $versionNormalizer;
     }
 
     /**

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\ServiceAPI\Command;
 
+use Akeneo\Catalogs\Application\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUserValidator;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -15,10 +17,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateCatalogCommandValidationTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
+    private ?IsCatalogsNumberLimitReachedQueryInterface $isCatalogsNumberLimitReachedQuery;
 
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->isCatalogsNumberLimitReachedQuery = $this->createMock(IsCatalogsNumberLimitReachedQueryInterface::class);
+
+        self::getContainer()->set(
+            MaxNumberOfCatalogsPerUserValidator::class,
+            new MaxNumberOfCatalogsPerUserValidator($this->isCatalogsNumberLimitReachedQuery),
+        );
 
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
@@ -69,5 +79,20 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
                 'error' => 'This value is too long. It should have 255 characters or less.',
             ],
         ];
+    }
+
+    public function testItValidatesThatTheLimitOfCatalogsByUserIsNotReached(): void
+    {
+        $this->isCatalogsNumberLimitReachedQuery->method('execute')->willReturn(true);
+
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
+            new CreateCatalogCommand(
+                id: '43c74e94-0074-4316-ac66-93cd0ca71a6b',
+                name: 'Store US',
+                ownerUsername: 'shopifi',
+            )
+        );
+
+        $this->assertViolationsListContains($violations, 'You can create up to 15 catalogs');
     }
 }
