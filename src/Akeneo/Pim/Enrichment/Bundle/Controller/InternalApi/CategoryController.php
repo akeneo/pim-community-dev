@@ -17,35 +17,19 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CategoryController
 {
-    /** @var CategoryRepositoryInterface */
-    protected $repository;
-
-    /** @var CategoryExtension */
-    protected $twigExtension;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var CollectionFilterInterface */
-    protected $collectionFilter;
-
     public function __construct(
-        CategoryRepositoryInterface $repository,
-        CategoryExtension $twigExtension,
-        NormalizerInterface $normalizer,
-        CollectionFilterInterface $collectionFilter
+        protected CategoryRepositoryInterface $repository,
+        protected CategoryExtension           $twigExtension,
+        protected NormalizerInterface         $normalizer,
+        protected CollectionFilterInterface   $collectionFilter
     ) {
-        $this->repository = $repository;
-        $this->twigExtension = $twigExtension;
-        $this->normalizer = $normalizer;
-        $this->collectionFilter = $collectionFilter;
     }
 
     /**
      * List children categories
      *
-     * @param Request $request    The request object
-     * @param int     $identifier The parent category identifier
+     * @param Request $request The request object
+     * @param int $identifier The parent category identifier
      *
      * @return JsonResponse
      */
@@ -83,7 +67,7 @@ class CategoryController
      *
      * @return JsonResponse
      */
-    public function listAction()
+    public function listAction(): JsonResponse
     {
         $categories = $this->repository->findBy(
             [
@@ -98,12 +82,7 @@ class CategoryController
         );
     }
 
-    /**
-     * @param string $identifier
-     *
-     * @return JsonResponse
-     */
-    public function getAction($identifier)
+    public function getAction(string $identifier): JsonResponse
     {
         $category = $this->repository->findOneByIdentifier($identifier);
 

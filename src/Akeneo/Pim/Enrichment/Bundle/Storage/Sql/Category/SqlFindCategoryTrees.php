@@ -18,26 +18,25 @@ use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
  */
 class SqlFindCategoryTrees implements FindCategoryTrees
 {
-    private CategoryRepositoryInterface $categoryRepository;
-    private TranslationNormalizer $translationNormalizer;
-    private CollectionFilterInterface $collectionFilter;
-
     public function __construct(
-        CategoryRepositoryInterface $categoryRepository,
-        TranslationNormalizer $translationNormalizer,
-        CollectionFilterInterface $collectionFilter
+        private CategoryRepositoryInterface $categoryRepository,
+        private TranslationNormalizer       $translationNormalizer,
+        private CollectionFilterInterface   $collectionFilter
     ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->translationNormalizer = $translationNormalizer;
-        $this->collectionFilter = $collectionFilter;
     }
 
-    public function execute(): array
+    /**
+     * @return CategoryTree[]
+     */
+    public function execute(bool $applyPermission = true): array
     {
         $categories = $this->categoryRepository->findBy(['parent' => null]);
-        $categoriesWithPermissions = $this->applyPermissions($categories);
 
-        return $this->categoryTrees($categoriesWithPermissions);
+        if ($applyPermission) {
+            $categories = $this->applyPermissions($categories);
+        }
+
+        return $this->categoryTrees($categories);
     }
 
     /**
@@ -53,7 +52,8 @@ class SqlFindCategoryTrees implements FindCategoryTrees
      */
     private function categoryTrees(
         array $categoriesWithPermissions
-    ): array {
+    ): array
+    {
         $translationNormalizer = $this->translationNormalizer;
 
         return array_map(

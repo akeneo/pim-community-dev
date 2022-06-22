@@ -4,6 +4,8 @@ namespace Akeneo\Channel\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
+use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -30,14 +32,16 @@ class ChannelController
 {
     public function __construct(
         private ChannelRepositoryInterface $channelRepository,
-        private NormalizerInterface $normalizer,
-        private ObjectUpdaterInterface $updater,
-        private SaverInterface $saver,
-        private RemoverInterface $remover,
-        private SimpleFactoryInterface $channelFactory,
-        private ValidatorInterface $validator,
-        private SecurityFacadeInterface $securityFacade,
-    ) {
+        private NormalizerInterface        $normalizer,
+        private ObjectUpdaterInterface     $updater,
+        private SaverInterface             $saver,
+        private RemoverInterface           $remover,
+        private SimpleFactoryInterface     $channelFactory,
+        private ValidatorInterface         $validator,
+        private SecurityFacadeInterface    $securityFacade,
+        private FindCategoryTrees          $findCategoryTrees
+    )
+    {
     }
 
     /**
@@ -72,6 +76,18 @@ class ChannelController
                 ['filter_locales' => $filterLocales]
             )
         );
+    }
+
+    /**
+     * Gets Category tree without user right filter
+     * @return JsonResponse
+     */
+    public function listCategoryTreeAction(): JsonResponse
+    {
+        $categoryTrees = $this->findCategoryTrees->execute(false);
+        $normalizeCategoryTrees = array_map(fn(CategoryTree $categoryTree) => $categoryTree->normalize(), $categoryTrees);
+
+        return new JsonResponse($normalizeCategoryTrees);
     }
 
     /**

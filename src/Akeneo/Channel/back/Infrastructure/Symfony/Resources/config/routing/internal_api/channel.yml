@@ -4,6 +4,11 @@ pim_enrich_channel_index:
 pim_enrich_channel_create:
     path: /create
 
+pim_enrich_channel_category_tree_get:
+    path: /category-tree
+    defaults: { _controller: pim_enrich.controller.rest.channel:listCategoryTreeAction}
+    methods:  [GET]
+
 pim_enrich_channel_edit:
     path: /{code}/edit
     requirements:

@@ -128,11 +128,12 @@ config:
             urls:
               get: pim_enrich_family_variant_rest_get
         channel:
-          module: pim/base-fetcher
+          module: pim/channel-fetcher
           options:
             urls:
               list: pim_enrich_channel_rest_index
               get: pim_enrich_channel_rest_get
+              list_channel_category_tree: pim_enrich_channel_category_tree_get
         locale:
           module: pim/locale-fetcher
           options:
@@ -576,6 +577,7 @@ config:
     pim/product-fetcher:         pimui/js/fetcher/product-fetcher
     pim/product-model-fetcher:   pimui/js/fetcher/product-model-fetcher
     pim/family-fetcher:          pimui/js/fetcher/family-fetcher
+    pim/channel-fetcher:         pimui/js/fetcher/channel-fetcher
 
     # Remover
     pim/remover/base:                pimui/js/remover/base-remover
