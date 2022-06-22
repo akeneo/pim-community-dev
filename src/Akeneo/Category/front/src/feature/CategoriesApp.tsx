@@ -13,7 +13,7 @@ const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
       <Switch>
         <Route path="/:treeId/tree">
           <CategoriesTreePage />
-        </Route> 
+        </Route>
         <Route path="/:categoryId/edit">
           <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
             <CategoryEditPage />

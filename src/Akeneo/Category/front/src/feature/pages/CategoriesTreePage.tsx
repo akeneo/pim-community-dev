@@ -94,7 +94,7 @@ const CategoriesTreePage: FC = () => {
 
   useEffect(() => {
     loadTree();
-  }, [treeId]);
+  }, [loadTree, treeId]);
 
   useEffect(() => {
     setTreeLabel(tree ? tree.label : '');

@@ -51,5 +51,5 @@ const createCategory = async (
   return {};
 };
 
-export {createCategory}
+export {createCategory};
 export type {ValidationErrors};

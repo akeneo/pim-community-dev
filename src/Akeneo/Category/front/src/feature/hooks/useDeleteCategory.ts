@@ -52,4 +52,4 @@ const useDeleteCategory = () => {
 };
 
 export {useDeleteCategory};
-export type { CategoryToDelete };
+export type {CategoryToDelete};

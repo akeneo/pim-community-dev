@@ -3,7 +3,7 @@ import {CategoryTreeModel} from '../../models';
 import {Node} from './Node';
 import {CategoryTreeProvider} from '../providers';
 import {OrderableTreeProvider} from '../providers';
-import { Tree} from './base';
+import {Tree} from './base';
 
 type Props = {
   root: CategoryTreeModel | null;

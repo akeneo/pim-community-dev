@@ -7,15 +7,9 @@ const findRoot = <T>(treeNodes: TreeNode<T>[]): TreeNode<T> | undefined => {
 const findByIdentifiers = <T>(treeNodes: TreeNode<T>[], identifiers: number[]): TreeNode<T>[] => {
   const nodes = treeNodes.filter(treeNode => identifiers.includes(treeNode.identifier));
 
-  const result: TreeNode<T>[] = [];
-  identifiers.map(identifier => {
-    const node = nodes.find(node => node.identifier === identifier);
-    if (node !== undefined) {
-      result.push(node);
-    }
-  });
-
-  return result;
+  return identifiers
+    .map(identifier => nodes.find(n => n.identifier === identifier))
+    .filter(node => !!node) as TreeNode<T>[];
 };
 
 const findOneByIdentifier = <T>(treeNodes: TreeNode<T>[], identifier: number): TreeNode<T> | undefined => {
@@ -41,7 +35,7 @@ const findLoadedDescendantsIdentifiers = <T>(treeNodes: TreeNode<T>[], parent: T
   }
 
   let descendantsIdentifiers: number[] = [];
-  parent.childrenIds.map((childId: number) => {
+  parent.childrenIds.forEach((childId: number) => {
     descendantsIdentifiers.push(childId);
 
     const child = findOneByIdentifier(treeNodes, childId);

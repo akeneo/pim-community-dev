@@ -25,7 +25,7 @@ const useDragTreeNode = <T>(node: TreeNode<T> | undefined, index: number) => {
       parentId: node.parentId,
       position: index,
     });
-  }, [node]);
+  }, [node, index, setDraggedNode]);
 
   return {
     draggedNode,

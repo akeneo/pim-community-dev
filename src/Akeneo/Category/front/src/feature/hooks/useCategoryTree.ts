@@ -50,7 +50,7 @@ const useCategoryTree = (treeId: number, lastSelectedCategoryId: string) => {
     setTree(tree);
     setLoadingStatus(fetchStatus);
     setError(fetchError);
-  }, [data, fetchError, fetchStatus]);
+  }, [data, fetchError, fetchStatus, treeId]);
 
   return {
     tree,

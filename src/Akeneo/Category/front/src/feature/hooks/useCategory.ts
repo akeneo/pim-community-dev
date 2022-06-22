@@ -1,6 +1,6 @@
 import {FetchStatus, useFetch, useRoute} from '@akeneo-pim-community/shared';
 import {Category} from '../models';
-import type { EditCategoryForm } from '../models/Category'
+import type {EditCategoryForm} from '../models/Category';
 
 type EditCategoryData = {
   category: Category;

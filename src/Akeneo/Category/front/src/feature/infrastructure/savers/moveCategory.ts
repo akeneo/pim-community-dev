@@ -1,4 +1,4 @@
-import { Router } from "@akeneo-pim-community/shared";
+import {Router} from '@akeneo-pim-community/shared';
 
 type MovedCategory = {
   identifier: number;

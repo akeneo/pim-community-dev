@@ -25,7 +25,7 @@ const useDropTreeNode = <T>(node: TreeNode<T> | undefined, reorder: ReorderOnDro
       setDropTarget(null);
       setDraggedNode(null);
     });
-  }, [draggedNode, dropTarget, node]);
+  }, [draggedNode, dropTarget, node, reorder, setDraggedNode]);
 
   const onDragOver = useCallback(
     (target: Element, cursorPosition: CursorPosition) => {
@@ -57,7 +57,7 @@ const useDropTreeNode = <T>(node: TreeNode<T> | undefined, reorder: ReorderOnDro
             : 'after',
       };
 
-      if (!dropTarget || JSON.stringify(dropTarget) != JSON.stringify(newDropTarget)) {
+      if (!dropTarget || JSON.stringify(dropTarget) !== JSON.stringify(newDropTarget)) {
         setDropTarget(newDropTarget);
       }
     },
@@ -68,15 +68,15 @@ const useDropTreeNode = <T>(node: TreeNode<T> | undefined, reorder: ReorderOnDro
     setOveringCount(0);
     setDropTarget(null);
     setDraggedNode(null);
-  }, []);
+  }, [setDraggedNode]);
 
   const onDragEnter = useCallback(() => {
     setOveringCount(count => count + 1);
-  }, [overingCount, node]);
+  }, []);
 
   const onDragLeave = useCallback(() => {
     setOveringCount(count => count - 1);
-  }, [overingCount, node]);
+  }, []);
 
   useEffect(() => {
     if (overingCount === 0 || !dropTarget || !node || dropTarget.identifier !== node.identifier) {

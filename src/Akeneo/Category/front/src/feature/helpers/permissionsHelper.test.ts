@@ -1,6 +1,5 @@
-import { EditCategoryForm } from "feature/models";
-import { computeNewEditPermissions, computeNewOwnPermissions, computeNewViewPermissions } from "./permissionsHelper";
-
+import {EditCategoryForm} from 'feature/models';
+import {computeNewEditPermissions, computeNewOwnPermissions, computeNewViewPermissions} from './permissionsHelper';
 
 describe('permissionsHelper', () => {
   //This test is only to have a better idea of the default state before each test
@@ -61,7 +60,6 @@ const formData: EditCategoryForm = {
   },
   errors: [],
   _token: {
-    //label: 'token',
     value: 'XFC_DnwJvzF5TsnB2-MbiPUjKqmUtZTJt0O1CTQLqMs',
     fullName: 'pim_category[_token]',
   },
@@ -82,7 +80,6 @@ const formData: EditCategoryForm = {
       choices: [],
     },
     apply_on_children: {
-      //label: '',
       value: '1',
       fullName: 'pim_category[permissions][apply_on_children]',
     },

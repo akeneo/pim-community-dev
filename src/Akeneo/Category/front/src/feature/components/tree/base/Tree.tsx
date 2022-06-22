@@ -15,7 +15,7 @@ import {ArrowButton, DragInitiator, RowActionsContainer, RowInnerContainer, Tree
 import {TreeActions} from './TreeActions';
 import {TreeIcon} from './TreeIcon';
 import {TreeSkeleton} from './TreeSkeleton';
-import { MouseEventHandler } from 'react';
+import {MouseEventHandler} from 'react';
 
 const placeholderPositionStyles = css<{placeholderPosition?: PlaceholderPosition} & AkeneoThemedProps>`
   &:after {
@@ -127,7 +127,7 @@ const Tree = <T,>({
   const [timer, setTimer] = useState<number | null>(null);
   const [ticking, setTicking] = useState<boolean>(false);
 
-  const handleArrowClick  : MouseEventHandler<HTMLButtonElement> = useCallback(
+  const handleArrowClick: MouseEventHandler<HTMLButtonElement> = useCallback(
     event => {
       event.stopPropagation();
 
@@ -140,8 +140,8 @@ const Tree = <T,>({
     [isOpen, close, open, isLeaf]
   );
 
-  const handleClick : MouseEventHandler<HTMLButtonElement>= useCallback(
-    event=> {
+  const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
+    event => {
       if (onClick) {
         onClick(value);
       } else {

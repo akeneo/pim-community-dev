@@ -3,13 +3,7 @@ import {Button} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Tree} from './base';
 import {CategoryTreeModel} from '../../models';
-import {
-  useCategoryTreeNode,
-  useDragTreeNode,
-  useDropTreeNode,
-  useCountProductsBeforeDeleteCategory
-} from '../../hooks';
-
+import {useCategoryTreeNode, useDragTreeNode, useDropTreeNode, useCountProductsBeforeDeleteCategory} from '../../hooks';
 
 type Props = {
   id: number;

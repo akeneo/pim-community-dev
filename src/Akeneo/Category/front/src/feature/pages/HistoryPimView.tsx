@@ -32,7 +32,7 @@ const HistoryPimView = ({viewName, className, onBuild}: Props) => {
           setView(view);
         }
       });
-  }, [viewBuilder, viewName]);
+  }, [viewBuilder, viewName, isMounted, onBuild]);
 
   useEffect(
     () => () => {

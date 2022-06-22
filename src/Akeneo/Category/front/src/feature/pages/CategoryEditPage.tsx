@@ -26,12 +26,7 @@ import {
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {
-  CategoryToDelete,
-  useDeleteCategory,
-  useEditCategoryForm,
-  useCountProductsBeforeDeleteCategory,
-} from '../hooks';
+import {CategoryToDelete, useDeleteCategory, useEditCategoryForm, useCountProductsBeforeDeleteCategory} from '../hooks';
 import {Category} from '../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
@@ -107,7 +102,7 @@ const CategoryEditPage: FC = () => {
     setTree(rootCategory);
     sessionStorage.setItem(
       'lastSelectedCategory',
-      JSON.stringify({treeId: rootCategory.id.toString(), categoryId: categoryId})
+      JSON.stringify({treeId: rootCategory.id.toString(), categoryId: category.id})
     );
   }, [category, userContext]);
 

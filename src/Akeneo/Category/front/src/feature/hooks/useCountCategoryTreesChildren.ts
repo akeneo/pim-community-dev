@@ -14,7 +14,7 @@ const useCountCategoryTreesChildren = (): CountCategoryTreesChildren | null => {
       const response = await fetch(url);
       setCountChildren(await response.json());
     })();
-  }, []);
+  }, [url]);
 
   return countChildren;
 };

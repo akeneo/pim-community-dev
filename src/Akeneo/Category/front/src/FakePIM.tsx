@@ -30,8 +30,12 @@ const FakePIM = ({children}) => {
   const deps = useDependenciesContext();
 
   useEffect(() => {
+    const router = deps.router;
+    if (!router) {
+      return;
+    }
     deps.router = {
-      ...deps.router,
+      ...router,
 
       redirect: fragment => {
         const normalizedFragment = fragment.indexOf('#') === 0 ? fragment : '#' + fragment;
@@ -39,10 +43,10 @@ const FakePIM = ({children}) => {
       },
 
       redirectToRoute: function (route, routeParams, options) {
-        return deps.router.redirect(deps.router.generate(route, routeParams), options);
+        return router.redirect(router.generate(route, routeParams), options);
       },
     } as typeof deps.router;
-  }, [deps.router]);
+  }, [deps, deps.router]);
 
   return (
     <Container>

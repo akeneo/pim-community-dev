@@ -1,8 +1,8 @@
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
-import { CategoryTreeModel } from 'feature/models';
+import {CategoryTreeModel} from 'feature/models';
 import {act} from 'react-test-renderer';
-import { aBackendCategoryTree, aCategoryTree } from 'tests/provideCategoryHelper';
-import { useCategoryTree } from './useCategoryTree';
+import {aBackendCategoryTree, aCategoryTree} from 'tests/provideCategoryHelper';
+import {useCategoryTree} from './useCategoryTree';
 
 describe('useCategoryTree', () => {
   const renderUseCategoryTree = (treeId: number) => {

@@ -30,12 +30,15 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
 
-  const followCategoryTree = useCallback((tree: CategoryTreeModel): void => {
-    const url = router.generate('pim_enrich_categorytree_tree', {id: tree.id});
-    router.redirect(url);
+  const followCategoryTree = useCallback(
+    (tree: CategoryTreeModel): void => {
+      const url = router.generate('pim_enrich_categorytree_tree', {id: tree.id});
+      router.redirect(url);
 
-    return;
-  }, []);
+      return;
+    },
+    [router]
+  );
 
   const search = useCallback(
     (searchString: string) => {

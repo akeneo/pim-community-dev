@@ -1,10 +1,9 @@
 import {act} from 'react-test-renderer';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
-import { useCategory } from './useCategory';
-import { useEditCategoryForm } from './useEditCategoryForm';
-import { saveEditCategoryForm} from '../infrastructure';
-import { aCategory } from 'tests/provideCategoryHelper';
-
+import {useCategory} from './useCategory';
+import {useEditCategoryForm} from './useEditCategoryForm';
+import {saveEditCategoryForm} from '../infrastructure';
+import {aCategory} from 'tests/provideCategoryHelper';
 
 jest.mock('./useCategory');
 jest.mock('../infrastructure');

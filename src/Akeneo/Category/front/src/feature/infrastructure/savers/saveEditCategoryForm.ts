@@ -1,8 +1,7 @@
-import { Router } from "@akeneo-pim-community/shared";
+import {Router} from '@akeneo-pim-community/shared';
 
 import {EditCategoryForm} from '../../hooks';
 import {Category} from '../../models';
-
 
 type EditCategoryResponse = {
   success: boolean;

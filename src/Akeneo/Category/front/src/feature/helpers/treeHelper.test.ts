@@ -1,6 +1,6 @@
-import { aCategory, aCategoryTree, aCategoryTreeWithChildren } from "tests/provideCategoryHelper";
-import { aTreeNode } from "tests/provideTreeNodeHelper";
-import { buildNodesFromCategoryTree, findLoadedDescendantsIdentifiers } from "./treeHelper";
+import {aCategory, aCategoryTree, aCategoryTreeWithChildren} from 'tests/provideCategoryHelper';
+import {aTreeNode} from 'tests/provideTreeNodeHelper';
+import {buildNodesFromCategoryTree, findLoadedDescendantsIdentifiers} from './treeHelper';
 
 describe('treeHelper', () => {
   test('it can build a list of nodes from a root category tree', () => {

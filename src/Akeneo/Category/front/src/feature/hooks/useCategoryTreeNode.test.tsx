@@ -2,12 +2,12 @@ import {FC} from 'react';
 import {renderHook, act} from '@testing-library/react-hooks';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import { BackendCategoryTree, CategoryTreeModel } from 'feature/models';
-import { CategoryTreeProvider } from 'feature/components';
-import { useCategoryTreeNode } from './useCategoryTreeNode';
-import { aBackendCategoryTree, aCategoryTree } from 'tests/provideCategoryHelper';
-import { moveCategory } from 'feature/infrastructure';
-import { DependenciesContext, mockedDependencies } from '@akeneo-pim-community/shared';
+import {BackendCategoryTree, CategoryTreeModel} from 'feature/models';
+import {CategoryTreeProvider} from 'feature/components';
+import {useCategoryTreeNode} from './useCategoryTreeNode';
+import {aBackendCategoryTree, aCategoryTree} from 'tests/provideCategoryHelper';
+import {moveCategory} from 'feature/infrastructure';
+import {DependenciesContext, mockedDependencies} from '@akeneo-pim-community/shared';
 
 jest.mock('../infrastructure');
 
@@ -98,7 +98,7 @@ describe('useCategoryTreeNode > load children', () => {
     expect(result.current.children.length).toBe(3);
   });
 
-  test(' it returns an empty list of children when the loading failed', async () => {
+  test('it returns an empty list of children when the loading failed', async () => {
     // @ts-ignore
     jest.spyOn(global, 'fetch').mockReject(new Error('An unexpected server error'));
     const root = aCategoryTree('a_root', [], true, false, 1234);
@@ -140,14 +140,11 @@ describe('useCategoryTreeNode > move category', () => {
     });
     expect(result.current.node?.childrenIds).toEqual([2, 1, 3]);
     expect(moveCallback).toHaveBeenCalled();
-    expect(moveCategory).toHaveBeenCalledWith(
-      mockedDependencies.router, 
-      {
-        identifier: 1,
-        parentId: 1234,
-        previousCategoryId: 2
-      }
-    );
+    expect(moveCategory).toHaveBeenCalledWith(mockedDependencies.router, {
+      identifier: 1,
+      parentId: 1234,
+      previousCategoryId: 2,
+    });
   });
 
   test('it moves a category after', () => {
@@ -164,13 +161,11 @@ describe('useCategoryTreeNode > move category', () => {
     });
     expect(result.current.node?.childrenIds).toEqual([2, 3, 1]);
     expect(moveCallback).toHaveBeenCalled();
-    expect(moveCategory).toHaveBeenCalledWith(
-      mockedDependencies.router,
-      {
-        identifier: 1,
-        parentId: 1234,
-        previousCategoryId: 3,
-      });
+    expect(moveCategory).toHaveBeenCalledWith(mockedDependencies.router, {
+      identifier: 1,
+      parentId: 1234,
+      previousCategoryId: 3,
+    });
   });
 
   test('it moves a category in leaf', () => {
@@ -193,13 +188,11 @@ describe('useCategoryTreeNode > move category', () => {
     expect(result.current.children[0].type).toBe('node');
     expect(result.current.children[0].identifier).toBe(2);
     expect(moveCallback).toHaveBeenCalled();
-    expect(moveCategory).toHaveBeenCalledWith(
-      mockedDependencies.router,
-      {
-        identifier: 1,
-        parentId: 2,
-        previousCategoryId: null,
-      });
+    expect(moveCategory).toHaveBeenCalledWith(mockedDependencies.router, {
+      identifier: 1,
+      parentId: 2,
+      previousCategoryId: null,
+    });
   });
 
   test('it moves a category in parent category', async () => {
@@ -249,13 +242,11 @@ describe('useCategoryTreeNode > move category', () => {
     expect(result.current.node?.childrenIds).toEqual([1, 1111, 2222]);
     expect(result.current.node?.type).toBe('node');
     expect(moveCallback).toHaveBeenCalled();
-    expect(moveCategory).toHaveBeenCalledWith(
-      mockedDependencies.router,
-      {
-        identifier: 1,
-        parentId: 3,
-        previousCategoryId: null,
-      });
+    expect(moveCategory).toHaveBeenCalledWith(mockedDependencies.router, {
+      identifier: 1,
+      parentId: 3,
+      previousCategoryId: null,
+    });
 
     act(() => {
       rerender({categoryId: 1234});
