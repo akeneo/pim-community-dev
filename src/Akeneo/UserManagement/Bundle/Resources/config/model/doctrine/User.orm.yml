@@ -149,18 +149,6 @@ Akeneo\UserManagement\Component\Model\User:
                     group_id:
                         referencedColumnName: id
                         onDelete: CASCADE
-#        defaultGridViews:
-#            targetEntity: Oro\Bundle\PimDataGridBundle\Entity\DatagridView
-#            joinTable:
-#                name: pim_user_default_datagrid_view
-#                joinColumns:
-#                    user_id:
-#                        referencedColumnName: id
-#                        onDelete: CASCADE
-#                inverseJoinColumns:
-#                    view_id:
-#                        referencedColumnName: id
-#                        onDelete: CASCADE
     manyToOne:
         catalogLocale:
             targetEntity: Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface
@@ -170,12 +158,6 @@ Akeneo\UserManagement\Component\Model\User:
             joinColumn:
               name: ui_locale_id
               nullable: false
-#        catalogScope:
-#            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface
-#            nullable: false
-#        defaultTree:
-#            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
-#            nullable: false
     oneToOne:
         avatar:
             targetEntity: Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface

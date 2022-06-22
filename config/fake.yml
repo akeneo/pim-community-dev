@@ -2,6 +2,7 @@ parameters:
   pim_catalog.entity.product.class: Akeneo\Pim\Enrichment\Component\Product\Model\Product
   pim_catalog.entity.product_model.class: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel
   pim_catalog.entity.locale.class: Akeneo\Channel\Infrastructure\Component\Model\Locale
+  pim_catalog.remover.base.class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover
 
   pim_catalog.localization.factory.date.class:     Akeneo\Tool\Component\Localization\Factory\DateFactory
   pim_catalog.localization.factory.datetime.class: Akeneo\Tool\Component\Localization\Factory\DateTimeFactory
@@ -101,6 +102,14 @@ services:
     class: '%akeneo_storage_utils.repository.base_cached_object.class%'
     arguments:
       - '@pim_catalog.repository.locale'
+  pim_catalog.repository.cached_attribute:
+    class: '%akeneo_storage_utils.repository.base_cached_object.class%'
+    arguments:
+      - '@pim_catalog.repository.attribute'
+  pim_catalog.repository.cached_category:
+    class: '%akeneo_storage_utils.repository.base_cached_object.class%'
+    arguments:
+      - '@pim_catalog.repository.category'
   pim_catalog.repository.locale:
     class: 'Akeneo\Channel\Infrastructure\Doctrine\Repository\LocaleRepository'
     factory: [ '@doctrine.orm.entity_manager', 'getRepository' ]
@@ -146,6 +155,8 @@ services:
     synthetic: true
   pim_catalog.saver.category:
     synthetic: true
+  pim_catalog.repository.attribute:
+    synthetic: true
   oro_security.acl.manager:
     synthetic: true
   akeneo_batch.job_repository:
@@ -159,10 +170,6 @@ services:
   akeneo_measure.installer.measurement_installer:
     synthetic: true
   oro_security.security_facade:
-    synthetic: true
-  pim_catalog.repository.cached_attribute:
-    synthetic: true
-  pim_catalog.repository.cached_category:
     synthetic: true
   pim_catalog.repository.channel:
     synthetic: true
@@ -178,4 +185,3 @@ services:
     synthetic: true
   oro_security.link.sid_manager:
     synthetic: true
-

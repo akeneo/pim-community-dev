@@ -69,7 +69,7 @@ class ConnectivityKernel extends BaseKernel
 //            Oro\Bundle\FilterBundle\OroFilterBundle::class => ['all' => true],
 //            Oro\Bundle\PimDataGridBundle\PimDataGridBundle::class => ['all' => true],
 //            Oro\Bundle\PimFilterBundle\PimFilterBundle::class => ['all' => true],
-//            Oro\Bundle\SecurityBundle\OroSecurityBundle::class => ['all' => true],
+            Oro\Bundle\SecurityBundle\OroSecurityBundle::class => ['all' => true],
 //            Oro\Bundle\TranslationBundle\OroTranslationBundle::class => ['all' => true],
             Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
             Symfony\Bundle\AclBundle\AclBundle::class => ['all' => true],
@@ -104,8 +104,6 @@ class ConnectivityKernel extends BaseKernel
         $container->setParameter('container.dumper.inline_class_loader', true);
         $confDir = $this->getProjectDir().'/config';
 
-//        $loader->load($confDir.'/{packages}/*.yml', 'glob');
-//        $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*.yml', 'glob');
         $loader->load($confDir.'/packages/akeneo_api.yml');
         $loader->load($confDir.'/packages/akeneo_elasticsearch.yml');
         $loader->load($confDir.'/packages/akeneo_feature_flag.yml');

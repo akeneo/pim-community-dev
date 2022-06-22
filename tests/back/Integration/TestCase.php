@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Integration;
 
-use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Channel\Infrastructure\Doctrine\Repository\ChannelRepository;
-use Akeneo\Channel\Infrastructure\Doctrine\Repository\LocaleRepository;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
@@ -19,8 +17,6 @@ use Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepo
 use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepository;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

@@ -27,13 +27,11 @@ class PimUserExtension extends Extension
         $loader->load('context.yml');
         $loader->load('controllers.yml');
         $loader->load('datagrid_actions.yml');
-//        $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
         $loader->load('form.yml');
         $loader->load('form_types.yml');
-//        $loader->load('jobs.yml');
         $loader->load('normalizers.yml');
         $loader->load('providers.yml');
         $loader->load('queries.yml');
@@ -43,16 +41,8 @@ class PimUserExtension extends Extension
         $loader->load('twig.yml');
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
-//        $loader->load('view_elements.yml');
-//        $loader->load('view_elements/user.yml');
-//        $loader->load('view_elements/group.yml');
-//        $loader->load('readers.yml');
         $loader->load('services.yml');
-//        $loader->load('steps.yml');
-//        $loader->load('writers.yml');
-//        $loader->load('array_converters.yml');
         $loader->load('commands.yml');
-//        $loader->load('processors.yml');
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);

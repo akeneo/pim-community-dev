@@ -119,13 +119,6 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->generateAsymmetricKeysHandler = $generateAsymmetricKeysHandler;
     }
 
-    public function __destruct()
-    {
-        // close the connection created specifically for this repository
-        // TODO: to remove when TIP-385 will be done
-//        $this->doctrineJobRepository->getJobManager()->getConnection()->close();
-    }
-
     public function load(Configuration $configuration): void
     {
         $this->deleteAllDocumentsInElasticsearch();
