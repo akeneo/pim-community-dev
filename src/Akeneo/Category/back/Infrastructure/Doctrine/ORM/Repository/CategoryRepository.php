@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Repository;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -77,7 +77,7 @@ class CategoryRepository extends NestedTreeRepository implements
      */
     public function getTreeFromParents(array $parentsIds)
     {
-        if (count($parentsIds) === 0) {
+        if (\count($parentsIds) === 0) {
             return [];
         }
 
@@ -316,7 +316,7 @@ class CategoryRepository extends NestedTreeRepository implements
             $nodeIds = array_keys($vectorMap);
             $nodesByLevel = [];
 
-            while ($nodeIt < count($nodeIds) && !$foundItemLess) {
+            while ($nodeIt < \count($nodeIds) && !$foundItemLess) {
                 $nodeId = $nodeIds[$nodeIt];
                 $nodeEntry = $vectorMap[$nodeId];
 

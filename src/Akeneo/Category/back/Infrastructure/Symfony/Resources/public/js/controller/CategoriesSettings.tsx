@@ -1,9 +1,10 @@
 import React from 'react';
-import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
-import {CategoriesApp} from '@akeneo-pim-community/category';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
+import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {CategoriesApp} from '../../../../../../../front';
+
 
 const __ = require('oro/translator');
 

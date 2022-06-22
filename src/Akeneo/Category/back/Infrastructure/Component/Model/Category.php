@@ -1,7 +1,13 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Category\Model;
+namespace Akeneo\Category\Infrastructure\Component\Model;
 
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Classification\Model\Category as BaseCategory;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,11 +22,12 @@ use Doctrine\Common\Collections\Collection;
  */
 class Category extends BaseCategory implements CategoryInterface
 {
-    /** @var Collection of ProductInterface */
-    protected $products;
+    /** @var Collection<int, ProductInterface> */
+    protected Collection $products;
 
-    /** @var Collection of ProductModelInterface */
-    protected $productModels;
+    /** @var Collection<int, ProductModelInterface> */
+    protected Collection $productModels;
+
 
     /**
      * Used locale to override Translation listener's locale
@@ -30,10 +37,10 @@ class Category extends BaseCategory implements CategoryInterface
      */
     protected $locale;
 
-    /** @var ArrayCollection of CategoryTranslation */
+    /** @var Collection<int, TranslationInterface> */
     protected $translations;
 
-    /** @var ArrayCollection of Channel */
+    /** @var Collection<int, Channel> */
     protected $channels;
 
     /** @var \DateTime */

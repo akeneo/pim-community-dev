@@ -1,8 +1,8 @@
-Akeneo\Pim\Enrichment\Component\Category\Model\Category:
+Akeneo\Category\Infrastructure\Component\Model\Category:
     type: entity
     table: pim_catalog_category
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
+    repositoryClass: Akeneo\Category\Infrastructure\Doctrine\ORM\Repository\CategoryRepository
     uniqueConstraints:
         pim_category_code_uc:
             columns:
@@ -12,9 +12,6 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
         left_idx:
             columns:
                 - lft
-        updated_idx:
-            columns:
-                - updated
     gedmo:
         tree:
             type: nested
@@ -23,7 +20,7 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
             type: integer
             id: true
             generator:
-                strategy: AUTO
+                 strategy: AUTO
         code:
             type: string
             length: 100
@@ -63,17 +60,17 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
                 - treeRight
     oneToMany:
         translations:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist
                 - detach
             orphanRemoval: true
         channels:
-            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface
+            targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
             mappedBy: category
         children:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
             mappedBy: parent
             cascade:
                 - persist
@@ -81,7 +78,7 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
                 left: ASC
     manyToOne:
         parent:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
             inversedBy: children
             joinColumns:
                 parent_id:
