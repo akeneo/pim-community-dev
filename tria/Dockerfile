@@ -163,7 +163,7 @@ RUN mkdir var && \
         --optimize-autoloader && \
     composer dump-env prod && \
     bin/console pim:installer:assets --clean && \
-    yarnpkg install --frozen-lockfile && \
+    yarnpkg install && \
     yarnpkg run update-extensions && \
     yarnpkg run less && \
     yarnpkg run packages:build && \
