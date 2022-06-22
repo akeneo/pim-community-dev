@@ -10,7 +10,7 @@ use Twig\Environment;
 
 class BuildTwigWelcomeEmail implements BuildWelcomeEmail
 {
-    private const SET_UP_PASSWORD_URL = '%s/onboarder/supplier/index.html/#/set-up-password/%s';
+    private const SET_UP_PASSWORD_URL = '%s/onboarder/supplier/index.html#/set-up-password/%s';
 
     public function __construct(
         private Environment $twig,
