@@ -32,13 +32,19 @@ final class Version_7_0_20220429132029_remove_temporary_indexes_from_uuid_migrat
                             ['{tableName}' => $tableName, '{newIndexName}' => 'UNIQ_91CD19C0BF396750', '{indexName}' => $indexName]
                         ));
                     } else {
-                        if ($tableName === 'pim_data_quality_insights_product_criteria_evaluation') {
+                        if (
+                            $tableName === 'pim_data_quality_insights_product_criteria_evaluation'
+                            && $this->fkExists('pim_data_quality_insights_product_criteria_evaluation', 'FK_dqi_product_criteria_evaluation')
+                        ) {
                             $this->addSql(\strtr(
                                 'ALTER TABLE {tableName} DROP FOREIGN KEY {foreignKeyName};',
                                 ['{tableName}' => $tableName, '{foreignKeyName}' => 'FK_dqi_product_criteria_evaluation']
                             ));
                         }
-                        if ($tableName === 'pim_data_quality_insights_product_score') {
+                        if (
+                            $tableName === 'pim_data_quality_insights_product_score'
+                            && $this->fkExists('pim_data_quality_insights_product_score', 'FK_dqi_product_score')
+                        ) {
                             $this->addSql(\strtr(
                                 'ALTER TABLE {tableName} DROP FOREIGN KEY {foreignKeyName};',
                                 ['{tableName}' => $tableName, '{foreignKeyName}' => 'FK_dqi_product_score']
@@ -74,6 +80,28 @@ final class Version_7_0_20220429132029_remove_temporary_indexes_from_uuid_migrat
                 'schema' => $this->connection->getDatabase(),
                 'table_name' => $tableName,
                 'index_name' => $indexName,
+            ]
+        )->fetchOne();
+    }
+
+    private function fkExists(string $tableName, string $fkName): bool
+    {
+        $sql = <<<SQL
+            SELECT EXISTS (
+                SELECT TABLE_SCHEMA, CONSTRAINT_NAME, TABLE_NAME
+                FROM information_schema.TABLE_CONSTRAINTS
+                    WHERE TABLE_SCHEMA = :schema
+                        TABLE_NAME = :table_name
+                        AND CONSTRAINT_NAME = :fk_name
+            ) as is_existing
+        SQL;
+
+        return (bool) $this->connection->executeQuery(
+            $sql,
+            [
+                'schema' => $this->connection->getDatabase(),
+                'table_name' => $tableName,
+                'fk_name' => $fkName,
             ]
         )->fetchOne();
     }
