@@ -15,7 +15,7 @@ use Ramsey\Uuid\Uuid;
 
 final class ProductUuidSpec extends ObjectBehavior
 {
-    public function it_can_be_construct_from_a_string()
+    public function it_can_be_constructed_from_a_string()
     {
         $this->beConstructedThrough('fromString', ['6d125b99-d971-41d9-a264-b020cd486aee']);
         $this->shouldBeAnInstanceOf(ProductUuid::class);
@@ -23,21 +23,19 @@ final class ProductUuidSpec extends ObjectBehavior
         $this->__toString()->shouldReturn('6d125b99-d971-41d9-a264-b020cd486aee');
     }
 
-    public function it_can_be_construct_from_a_uuid()
+    public function it_can_be_constructed_from_a_uuid()
     {
-        $id = Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
+        $uuid = Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
-        $this->beConstructedThrough('fromUuid', [$id]);
+        $this->beConstructedThrough('fromUuid', [$uuid]);
         $this->shouldBeAnInstanceOf(ProductUuid::class);
-        $this->toBytes()->shouldReturn($id->getBytes());
+        $this->toBytes()->shouldReturn($uuid->getBytes());
         $this->__toString()->shouldReturn('df470d52-7723-4890-85a0-e79be625e2ed');
     }
 
-    public function it_throws_an_exception_if_the_product_id_is_not_string_when_using_fromString()
+    public function it_throws_an_exception_if_the_product_uuid_is_not_string_when_using_fromString()
     {
-        $id = 12;
-
-        $this->beConstructedThrough('fromString', [$id]);
+        $this->beConstructedThrough('fromString', [12]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

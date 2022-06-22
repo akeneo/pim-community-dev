@@ -15,7 +15,7 @@ pim_api_product_get_by_uuid:
     defaults: { _controller: pim_api.controller.get_product_by_uuid, _format: json }
     methods: [GET]
     requirements:
-        code: (.+$)(?<!/draft|/proposal)
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
 
 pim_api_product_create:
     path: /products

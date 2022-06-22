@@ -39,11 +39,12 @@ class DeleteProductByUuidController
             throw new AccessDeniedHttpException('Access forbidden. You are not allowed to delete products');
         }
 
-        try {
-            $product = $this->productRepository->findOneByUuid(Uuid::fromString($uuid));
-        } catch (InvalidUuidStringException) {
-            throw new BadRequestException("The provided uuid is not valid");
+        $productUuid = Uuid::fromString($uuid);
+        if ($productUuid->getVersion() != 4) {
+            throw new BadRequestException("Invalid UUID4 received");
         }
+
+        $product = $this->productRepository->findOneByUuid($productUuid);
 
         if (null === $product) {
             $exception = new UnknownProductException($uuid);

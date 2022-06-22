@@ -15,6 +15,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -48,11 +49,16 @@ class GetProductByUuidController
      */
     public function __invoke(Request $request, string $uuid): JsonResponse
     {
-        $this->denyAccessUnlessAclIsGranted('pim_api_product_list');
+        if (!$this->security->isGranted('pim_api_product_list')) {
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to list products.');
+        }
 
         $productUuid = Uuid::fromString($uuid);
+        if ($productUuid->getVersion() != 4) {
+            throw new BadRequestException("Invalid UUID4 received");
+        }
 
-        $connectorProductsQuery = 'true' === $request->query->get('with_attribute_options', "false") ?
+        $connectorProductsQuery = 'true' === $request->query->get('with_attribute_options', 'false') ?
             $this->getConnectorProductsWithOptions :
             $this->getConnectorProducts;
 
@@ -76,22 +82,5 @@ class GetProductByUuidController
         $normalizedProduct = $this->connectorProductNormalizer->normalizeConnectorProduct($product);
 
         return new JsonResponse($normalizedProduct);
-    }
-
-    private function denyAccessUnlessAclIsGranted(string $acl): void
-    {
-        if (!$this->security->isGranted($acl)) {
-            throw new AccessDeniedHttpException($this->deniedAccessMessage($acl));
-        }
-    }
-
-    private function deniedAccessMessage(string $acl): string
-    {
-        switch ($acl) {
-            case 'pim_api_product_list':
-                return 'Access forbidden. You are not allowed to list products.';
-            default:
-                return 'Access forbidden.';
-        }
     }
 }

@@ -76,11 +76,6 @@ final class SqlGetConnectorProducts implements GetConnectorProducts
         $identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
         $rawValuesIndexedByProductUuid = [];
         foreach ($productUuids as $uuid) {
-            if (!isset($rows[$uuid->toString()]['identifier'])) {
-                continue;
-            }
-
-            $rawValues = $this->removeIdentifierValue($rows[$uuid->toString()]['raw_values'], $identifierAttributeCode);
             if (null !== $attributesToFilterOn) {
                 $rawValues = $this->filterByAttributeCodes($rawValues, $attributesToFilterOn);
             }
@@ -124,13 +119,6 @@ final class SqlGetConnectorProducts implements GetConnectorProducts
         }
 
         return new ConnectorProductList(count($products), $products);
-    }
-
-    private function removeIdentifierValue(array $rawValues, string $identifierAttributeCode): array
-    {
-        unset($rawValues[$identifierAttributeCode]);
-
-        return $rawValues;
     }
 
     private function filterByAttributeCodes(array $rawValues, array $attributeCodes): array
