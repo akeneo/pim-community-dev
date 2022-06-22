@@ -1,3 +1,4 @@
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {Operation, OperationType, PreviewData} from '../../../../models';
 
 type OperationBlockProps = {
@@ -11,6 +12,7 @@ type OperationBlockProps = {
   isLastOperation: boolean;
   onChange: (operation: Operation) => void;
   onRemove: (operationType: OperationType) => void;
+  validationErrors: ValidationError[];
 };
 
 export type {OperationBlockProps};

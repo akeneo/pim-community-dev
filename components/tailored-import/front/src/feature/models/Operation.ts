@@ -16,23 +16,35 @@ import {
   getDefaultBooleanReplacementOperation,
   CATEGORIES_REPLACEMENT_OPERATION_TYPE,
   CategoriesReplacementOperation,
+  EnabledReplacementOperation,
+  getDefaultEnabledReplacementOperation,
 } from '../components/DataMappingDetails/Operation';
 import {Attribute} from './Attribute';
 
 type Operation =
+  | BooleanReplacementOperation
+  | CategoriesReplacementOperation
   | CleanHTMLTagsOperation
+  | EnabledReplacementOperation
   | MultiSelectReplacementOperation
   | SimpleSelectReplacementOperation
-  | SplitOperation
-  | BooleanReplacementOperation
-  | CategoriesReplacementOperation;
+  | SplitOperation;
 
 type OperationType = Operation['type'];
 
-const getRequiredOperations = (attribute: Attribute): Array<Operation> => {
+const getAttributeRequiredOperations = (attribute: Attribute): Operation[] => {
   switch (attribute.type) {
     case 'pim_catalog_boolean':
       return [getDefaultBooleanReplacementOperation()];
+    default:
+      return [];
+  }
+};
+
+const getPropertyRequiredOperations = (propertyCode: string): Operation[] => {
+  switch (propertyCode) {
+    case 'enabled':
+      return [getDefaultEnabledReplacementOperation()];
     default:
       return [];
   }
@@ -55,5 +67,5 @@ const getDefaultOperation = (operationType: OperationType): Operation => {
   }
 };
 
-export {getDefaultOperation, getRequiredOperations};
+export {getDefaultOperation, getAttributeRequiredOperations, getPropertyRequiredOperations};
 export type {Operation, OperationType};

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
+use Webmozart\Assert\Assert;
+
 final class CategoriesReplacementOperation implements OperationInterface
 {
     public const TYPE = 'categories_replacement';
@@ -21,6 +23,7 @@ final class CategoriesReplacementOperation implements OperationInterface
         private string $uuid,
         private array $mapping,
     ) {
+        Assert::uuid($uuid);
     }
 
     public function getUuid(): string

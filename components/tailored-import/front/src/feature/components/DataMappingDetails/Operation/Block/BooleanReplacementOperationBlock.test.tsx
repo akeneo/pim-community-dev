@@ -1,6 +1,6 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
 import {
   BooleanReplacementOperation,
   BooleanReplacementOperationBlock,
@@ -15,7 +15,6 @@ test('it can get the default boolean replacement operation', () => {
     mapping: {
       false: ['0'],
       true: ['1'],
-      null: ['N/A'],
     },
   });
 });
@@ -30,7 +29,6 @@ test('it displays a boolean_replacement operation block', () => {
         mapping: {
           false: ['0'],
           true: ['1'],
-          null: ['N/A'],
         },
       }}
       onChange={jest.fn()}
@@ -41,6 +39,7 @@ test('it displays a boolean_replacement operation block', () => {
         hasError: false,
         data: [],
       }}
+      validationErrors={[]}
     />
   );
 
@@ -57,7 +56,6 @@ test('it updates mapping value', () => {
     mapping: {
       false: ['0'],
       true: ['1'],
-      null: ['N/A'],
     },
   };
 
@@ -73,6 +71,7 @@ test('it updates mapping value', () => {
         hasError: false,
         data: [],
       }}
+      validationErrors={[]}
     />
   );
 
@@ -84,9 +83,8 @@ test('it updates mapping value', () => {
   expect(onChange).toHaveBeenCalledWith({
     ...operation,
     mapping: {
-      false: ['0'],
       true: ['1', 'oui'],
-      null: ['N/A'],
+      false: ['0'],
     },
   });
 
@@ -98,23 +96,8 @@ test('it updates mapping value', () => {
   expect(onChange).toHaveBeenCalledWith({
     ...operation,
     mapping: {
-      false: ['0'],
-      true: ['1', 'oui'],
-      null: ['N/A'],
-    },
-  });
-
-  const inputNull = screen.getByLabelText(
-    'akeneo.tailored_import.data_mapping.operations.boolean_replacement.field.null_value'
-  );
-  userEvent.type(inputNull, 'neant{enter}');
-
-  expect(onChange).toHaveBeenCalledWith({
-    ...operation,
-    mapping: {
-      false: ['0'],
       true: ['1'],
-      null: ['N/A', 'neant'],
+      false: ['0', 'non'],
     },
   });
 });
@@ -138,9 +121,55 @@ test('it throws an error if the operation is not a boolean replacement operation
           hasError: false,
           data: [],
         }}
+        validationErrors={[]}
       />
     );
   }).toThrowError('BooleanReplacementOperationBlock can only be used with BooleanReplacementOperation');
 
   mockedConsole.mockRestore();
+});
+
+test('it displays validation errors', () => {
+  const validationErrors: ValidationError[] = [
+    {
+      messageTemplate: 'error.key.true_error',
+      invalidValue: '',
+      message: 'this is a true error',
+      parameters: {},
+      propertyPath: '[mapping][true]',
+    },
+    {
+      messageTemplate: 'error.key.false_error',
+      invalidValue: '',
+      message: 'this is a false error',
+      parameters: {},
+      propertyPath: '[mapping][false]',
+    },
+  ];
+
+  renderWithProviders(
+    <BooleanReplacementOperationBlock
+      targetCode="auto_exposure"
+      operation={{
+        uuid: 'an-uuid',
+        type: 'boolean_replacement',
+        mapping: {
+          false: ['0'],
+          true: ['1'],
+        },
+      }}
+      onChange={jest.fn()}
+      onRemove={jest.fn()}
+      isLastOperation={false}
+      previewData={{
+        isLoading: false,
+        hasError: false,
+        data: [],
+      }}
+      validationErrors={validationErrors}
+    />
+  );
+
+  expect(screen.getByText('error.key.true_error')).toBeInTheDocument();
+  expect(screen.getByText('error.key.false_error')).toBeInTheDocument();
 });

@@ -112,9 +112,7 @@ const CategoryReplacementRow = ({
             <TagInput
               invalid={0 < valueErrors.length}
               separators={[',', ';']}
-              placeholder={translate(
-                'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.field.to_placeholder'
-              )}
+              placeholder={translate('akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder')}
               value={mapping[tree.code] ?? []}
               onChange={newValue => handleMappingChange(tree.code, newValue)}
             />

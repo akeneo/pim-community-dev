@@ -23,6 +23,8 @@ use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\DataMappingCollection
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
@@ -33,6 +35,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         private ExecuteDataMappingHandler $executeDataMappingHandler,
         private GetAttributes $getAttributes,
         private DataMappingCollectionHydrator $dataMappingHydrator,
+        private TokenStorageInterface $tokenStorage,
     ) {
     }
 
@@ -42,9 +45,13 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             throw new \RuntimeException('Invalid type of item');
         }
 
-        $query = new ExecuteDataMappingQuery($item->getRow(), $this->getDataMappingCollection());
-
-        $item->setUpsertProductCommand($this->executeDataMappingHandler->handle($query));
+        $query = new ExecuteDataMappingQuery(
+            $this->getUserId(),
+            $item->getRow(),
+            $this->getDataMappingCollection(),
+        );
+        $upsertProductCommand = $this->executeDataMappingHandler->handle($query);
+        $item->setUpsertProductCommand($upsertProductCommand);
 
         return $item;
     }
@@ -79,5 +86,16 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    private function getUserId(): int
+    {
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        if (!$user instanceof UserInterface) {
+            throw new \RuntimeException('User not properly set');
+        }
+
+        return $user->getId();
     }
 }

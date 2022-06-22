@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
+use Webmozart\Assert\Assert;
+
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -36,11 +38,19 @@ class ConvertToDateOperation implements OperationInterface
     }
 
     public function __construct(
+        private string $uuid,
         private string $dateFormat,
     ) {
+        Assert::uuid($uuid);
+
         if (!array_key_exists($dateFormat, self::DATE_FORMAT_TO_PHP_DATE_FORMAT_MAPPING)) {
             throw new \InvalidArgumentException(sprintf('Date format "%s" is not supported', $dateFormat));
         }
+    }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
     }
 
     public function getDateFormat(): string
@@ -51,6 +61,7 @@ class ConvertToDateOperation implements OperationInterface
     public function normalize(): array
     {
         return [
+            'uuid' => $this->uuid,
             'date_format' => $this->dateFormat,
             'type' => self::TYPE,
             'available_date_format' => self::DATE_FORMAT_TO_PHP_DATE_FORMAT_MAPPING,

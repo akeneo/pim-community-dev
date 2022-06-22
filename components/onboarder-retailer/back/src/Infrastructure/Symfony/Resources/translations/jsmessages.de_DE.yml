@@ -1,0 +1,80 @@
+onboarder:
+  menu_block_title: Onboarder
+  supplier:
+    breadcrumb:
+      root: Onboarder
+      suppliers: Lieferanten
+    supplier_create:
+      modal:
+        title: Lieferant
+        code:
+          label: Code
+        label:
+          label: Label
+      create_button:
+        label: Erstelle Sie Ihren ersten Lieferanten
+      notification:
+        title: Der Lieferant wurde erstellt.
+        content: Sie können ihn nun im Abschnitt Lieferantenverwaltung bearbeiten.
+      error:
+        unknown_error: Beim Erstellen des Lieferanten ist ein Fehler aufgetreten.
+        supplier_already_exists: 'Ein Lieferant mit dem Code "{{ supplierCode }}" existiert bereits.'
+    supplier_list:
+      menu_item: Lieferanten
+      title: "]-Inf, 1]{{ count }} Lieferant|]1, Inf[{{ count }} Lieferanten"
+      no_supplier: Es sind noch keine Lieferanten vorhanden.
+      search_by_supplier: Nach Lieferanten suchen
+      no_search_result: Es gibt keine Lieferanten, die dieser Suche entsprechen.
+      notification:
+        error:
+          title: Die Lieferantenliste kann nicht angezeigt werden.
+          content: Entschuldigen Sie diese Unannehmlichkeiten, bitte versuchen Sie es erneut in ein paar Augenblicken.
+      dropdown:
+        export_suppliers: Lieferanten exportieren
+        download_template: Vorlage herunterladen
+        import_suppliers: Lieferanten importieren
+      columns:
+        supplier: Lieferant
+        number_of_contributors: Anzahl der Beitragenden
+        actions: Aktionen
+    supplier_delete:
+      sucess_message: Der Lieferant wurde erfolgreich gelöscht
+      modal:
+        title: Lieferant
+        confirmation_question: Sind Sie sicher, dass Sie diesen Lieferanten löschen möchten?
+        warning: Durch das Löschen dieses Lieferanten geht jede nicht gespeicherte Anreicherung verloren.
+        unknown_error: Beim Löschen des Lieferanten ist ein Fehler aufgetreten.
+    supplier_edit:
+      tabs:
+        configuration: Konfiguration
+        contributors: Beitragende
+        product_files: Produktdateien
+      configuration_form:
+        code: Code
+        label: Lieferantenlabel (erforderlich)
+      contributors_form:
+        info: 'Fügen Sie Beitragende hinzu, um ihnen den Zugriff auf Akeneo Onboarder zu ermöglichen. Sie können eine Adressliste mit Trennzeichen ausfüllen: Leerzeichen, Komma, Semikolon & Zeilenumbrüche.'
+        invalid_emails_warning: Einige E-Mail-Adressen sind ungültig und werden nicht hinzugefügt.
+        emails_belonging_to_other_suppliers_warning: Ein Beitragender kann nur zu einem Lieferanten gehören. Wenn Sie diesen Lieferanten speichern, werden alle E-Mails, die als Warnungen angezeigt werden, gelöscht.
+        add_contributors: Beitragende hinzufügen
+        add_button: Hinzufügen
+        search_by_email_address: Nach E-Mail-Adresse suchen
+        columns:
+          email: E‐Mail‐Adresse
+        no_contributor: Es gibt noch keine Beitragenden.
+        result_counter: '{0} Kein Ergebnis|{1} {{ count }} Ergebnis|]1,Inf] {{ count }} Ergebnisse'
+        notification:
+          email_error:
+            title: Wir konnten diesen Beitragenden nicht hinzufügen.
+            content: "Die E-Mail-Adresse {{ emailAddress }} ist ungültig: {{ message }}"
+          contributor_email_already_exists:
+            title: Wir konnten diesen Beitragenden nicht hinzufügen.
+            content: Die E-Mail-Adresse {{ emailAddress }} wird bereits für einen anderen Lieferanten verwendet und wir unterstützen mehrere Lieferanten mit dem gleichen Beitragenden noch nicht. Entschuldigen Sie die Unannehmlichkeiten.
+      loading_error: Beim Laden des Lieferanten ist ein Fehler aufgetreten.
+      success_message: Der Lieferant wurde erfolgreich aktualisiert.
+      update_error: Beim Aktualisieren des Lieferanten ist ein Fehler aufgetreten.
+      delete_label: Diesen Lieferanten löschen
+pim_title:
+  onboarder_serenity_retailer_supplier_list: Lieferanten
+  onboarder_serenity_retailer_supplier_edit: Einen Lieferanten bearbeiten
+batch_jobs.onboarder_serenity_xlsx_supplier_import.label: Onboarder Serenity Lieferanten Import in XLSX

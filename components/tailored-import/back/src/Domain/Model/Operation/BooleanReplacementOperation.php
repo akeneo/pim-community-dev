@@ -13,25 +13,44 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
+use Webmozart\Assert\Assert;
+
 final class BooleanReplacementOperation implements OperationInterface
 {
     public const TYPE = 'boolean_replacement';
 
     public function __construct(
+        private string $uuid,
         private array $mapping,
     ) {
+        Assert::uuid($uuid);
     }
 
-    public function getMapping(): array
+    public function getUuid(): string
     {
-        return $this->mapping;
+        return $this->uuid;
     }
 
     public function normalize(): array
     {
         return [
+            'uuid' => $this->uuid,
             'type' => self::TYPE,
             'mapping' => $this->mapping,
         ];
+    }
+
+    public function hasMappedValue(string $value): bool
+    {
+        return in_array($value, $this->mapping['true']) || in_array($value, $this->mapping['false']);
+    }
+
+    public function getMappedValue(string $value): bool
+    {
+        return match (true) {
+            in_array($value, $this->mapping['true']) => true,
+            in_array($value, $this->mapping['false']) => false,
+            default => throw new \InvalidArgumentException(sprintf('Value "%s" is not mapped', $value)),
+        };
     }
 }

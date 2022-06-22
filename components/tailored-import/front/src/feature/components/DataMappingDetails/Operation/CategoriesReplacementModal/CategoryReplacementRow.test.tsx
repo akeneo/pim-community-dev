@@ -89,7 +89,7 @@ test('it can update a replacement mapping', async () => {
   );
 
   const [shoesInput] = screen.getAllByPlaceholderText(
-    'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.field.to_placeholder'
+    'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
   );
 
   userEvent.type(shoesInput, 'Chaussure;');

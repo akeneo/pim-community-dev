@@ -600,13 +600,6 @@ jobs:
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_import_export "${SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_data_maintenance "${SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE}"
 
-              ## Pubsub
-              sed -i "s#srnt-business-event#${TOPIC_BUSINESS_EVENT}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-              sed -i "s#srnt-job-queue-ui#${TOPIC_JOB_QUEUE_UI}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-              sed -i "s#srnt-job-queue-import-export#${TOPIC_JOB_QUEUE_IMPORT_EXPORT}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-              sed -i "s#srnt-job-queue-data-maintenance#${TOPIC_JOB_QUEUE_DATA_MAINTENANCE}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-              sed -i "s#srnt-webhook#${SUBSCRIPTION_WEBHOOK}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/templates/pubsub.yaml
-
               ## Charts
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/Chart.yaml version 0.0.0-${IMAGE_TAG}
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/Chart.yaml appVersion ${IMAGE_TAG}

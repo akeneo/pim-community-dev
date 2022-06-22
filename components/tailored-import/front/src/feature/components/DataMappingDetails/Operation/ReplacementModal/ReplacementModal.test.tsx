@@ -50,7 +50,7 @@ test('it can update a replacement mapping', async () => {
   );
 
   const [blackInput] = screen.getAllByPlaceholderText(
-    'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.field.to_placeholder'
+    'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
   );
 
   userEvent.type(blackInput, 'Noir;');
@@ -88,7 +88,7 @@ test('it validates replacement mapping before confirming', async () => {
   );
 
   const [blackInput] = screen.getAllByPlaceholderText(
-    'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.field.to_placeholder'
+    'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
   );
 
   userEvent.type(blackInput, 'invalid_mapping');

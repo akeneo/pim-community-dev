@@ -40,6 +40,7 @@ const CategoriesConfigurator = ({
         compatibleOperations={[SPLIT_OPERATION_TYPE, CATEGORIES_REPLACEMENT_OPERATION_TYPE]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
+        validationErrors={filterErrors(validationErrors, '[operations]')}
       />
     </>
   );

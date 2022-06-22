@@ -1,0 +1,11 @@
+onboarder:
+  supplier:
+    contributor:
+      email_already_exists: このメールアドレスはすでに別のサプライヤーに使用されており、同じ参加者を持つ複数のサプライヤーは今のところサポートされていません。ご不便をおかけして申し訳ありません。
+    contributor_account:
+      validation:
+        min_password_length: パスワードには8文字以上必要です。
+        max_password_length: パスワードは255文字を超えてはいけません。
+        must_contain_an_uppercase_letter: パスワードには少なくとも1つの大文字を含める必要があります。
+        must_contain_a_lowercase_letter: パスワードには少なくとも1つの小文字を含める必要があります。
+        must_contain_a_digit: パスワードには数字が1つ以上必要です。

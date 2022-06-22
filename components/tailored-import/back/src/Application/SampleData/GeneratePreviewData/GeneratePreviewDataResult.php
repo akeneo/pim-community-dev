@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\SampleData\GeneratePreviewData;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
+
 final class GeneratePreviewDataResult
 {
     private function __construct(
@@ -28,7 +30,13 @@ final class GeneratePreviewDataResult
     public function normalize(): array
     {
         return [
-            'preview_data' => $this->previewData,
+            'preview_data' => array_map(
+                static fn (array $operationValue) => array_map(
+                    static fn (ValueInterface $value) => $value->getValue(),
+                    $operationValue,
+                ),
+                $this->previewData,
+            ),
         ];
     }
 }
