@@ -152,7 +152,7 @@ ENV SRNT_GOOGLE_APPLICATION_CREDENTIALS="/srv/pim/config/fake_credentials_gcp.js
 ENV SRNT_GOOGLE_BUCKET_NAME="srnt_google_bucket_dummy"
 
 RUN mkdir var && \
-    composer config repositories.grth '{"type": "path", "url": "grth/", "options": {"symlink": false }}' \
+    composer config repositories.grth '{"type": "path", "url": "grth/", "options": {"symlink": false }}' && \
     composer config repositories.tria '{"type": "path", "url": "tria/", "options": {"symlink": false }}' && \
     composer install \
         --no-scripts \
