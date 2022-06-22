@@ -291,7 +291,6 @@ services:
             - '@akeneo.pim.enrichment.product.query.get_product_model_quantified_associations_by_product_uuids'
             - '@akeneo.pim.enrichment.product.query.category_codes_by_product_uuids'
             - '@akeneo.pim.enrichment.factory.read_value_collection'
-            - '@pim_catalog.repository.attribute'
 
     akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductsWithOptions'

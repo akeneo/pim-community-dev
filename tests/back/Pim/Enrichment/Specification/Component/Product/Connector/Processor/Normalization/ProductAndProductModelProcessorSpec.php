@@ -29,7 +29,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductAndProductModelProcessorSpec extends ObjectBehavior
 {
     function let(
-        NormalizerInterface $normalizer,
+        NormalizerInterface $productNormalizer,
+        NormalizerInterface $productModelNormalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         FillMissingValuesInterface $fillMissingProductModelValues,
@@ -38,7 +39,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
-            $normalizer,
+            $productNormalizer,
+            $productModelNormalizer,
             $channelRepository,
             $attributeRepository,
             $fillMissingProductModelValues,
@@ -62,7 +64,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
     }
 
     function it_processes_product_without_media(
-        NormalizerInterface $normalizer,
+        NormalizerInterface $productNormalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         StepExecution $stepExecution,
@@ -91,7 +93,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $normalizer->normalize($product, 'standard')
+        $productNormalizer->normalize($product, 'standard')
             ->willReturn([
                 'enabled'    => true,
                 'categories' => ['cat1', 'cat2'],
@@ -129,7 +131,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
     }
 
     function it_processes_a_product_with_media(
-        NormalizerInterface $normalizer,
+        NormalizerInterface $productNormalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         StepExecution $stepExecution,
@@ -188,13 +190,13 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'standard')->willReturn($productStandard);
+        $productNormalizer->normalize($product, 'standard')->willReturn($productStandard);
 
         $this->process($product)->shouldReturn($productStandard);
     }
 
     public function it_processes_product_with_filter_on_quality_score(
-        NormalizerInterface $normalizer,
+        NormalizerInterface $productNormalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
@@ -227,7 +229,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $normalizer->normalize($product, 'standard')->willReturn([
+        $productNormalizer->normalize($product, 'standard')->willReturn([
             'enabled'    => true,
             'categories' => ['cat1', 'cat2'],
             'values' => [

@@ -83,6 +83,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductAndProductModelProcessor'
         arguments:
             - '@pim_catalog.normalizer.standard.product'
+            - '@pim_catalog.normalizer.standard.product_model'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.product_model.fill_missing_values'

@@ -53,7 +53,7 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
         );
 
         $this->productList['productA'] = $this->createProductFromUserIntents('productA', [new SetFamily('aFamily')]);
-        $this->productList['productB'] = $this->createProductFromUserIntents('productB',[new SetFamily('aFamily')]);
+        $this->productList['productB'] = $this->createProductFromUserIntents('productB', [new SetFamily('aFamily')]);
         $this->productList['productC'] = $this->createProductFromUserIntents(
             'productC',
             [
@@ -178,7 +178,7 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
             $this->productList['variant_product_1']->getUuid()
         ]);
 
-        $this->assertEqualsCanonicalizing($expected, $actual);
+        $this->assertEqualsCanonicalizingRecursive($expected, $actual);
     }
 
     private function getQuery(): GetProductAssociationsByProductUuids
@@ -263,6 +263,18 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
             'UPSELL' => ['products' => $upsell],
             'A_NEW_TYPE' => ['products' => $aNewType]
         ];
+    }
+
+    private function assertEqualsCanonicalizingRecursive(array $expected, array $actual)
+    {
+        if (array_is_list($expected)) {
+            $this->assertEqualsCanonicalizing($expected, $actual);
+        } else {
+            $this->assertEqualsCanonicalizing(array_keys($expected), array_keys($actual));
+            foreach (array_keys($expected) as $key) {
+                $this->assertEqualsCanonicalizingRecursive($expected[$key], $actual[$key]);
+            }
+        }
     }
 
     protected function getConfiguration()

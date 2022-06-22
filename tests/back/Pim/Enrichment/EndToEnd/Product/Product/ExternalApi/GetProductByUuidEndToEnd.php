@@ -57,6 +57,13 @@ class GetProductByUuidEndToEnd extends AbstractProductTestCase
                         ],
                     ],
                 ],
+                'sku' => [
+                    [
+                        'data' => 'product',
+                        'locale' => null,
+                        'scope' => null,
+                    ]
+                ],
             ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
@@ -117,6 +124,13 @@ class GetProductByUuidEndToEnd extends AbstractProductTestCase
                         ],
                     ],
                 ],
+                'sku' => [
+                    [
+                        'data' => 'product',
+                        'locale' => null,
+                        'scope' => null,
+                    ]
+                ],
             ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
@@ -162,6 +176,13 @@ class GetProductByUuidEndToEnd extends AbstractProductTestCase
             'values' => [
                 'a_date' => [
                     ['data' => '2016-06-28T00:00:00+02:00', 'locale' => null, 'scope' => null]
+                ],
+                'sku' => [
+                    [
+                        'data' => 'product',
+                        'locale' => null,
+                        'scope' => null,
+                    ]
                 ],
             ],
             'created' => '2016-06-14T13:12:50+02:00',
@@ -213,7 +234,15 @@ class GetProductByUuidEndToEnd extends AbstractProductTestCase
             'groups' => [],
             'categories' => [],
             'enabled' => true,
-            'values' => [],
+            'values' => [
+                'sku' => [
+                    [
+                        'data' => 'product',
+                        'locale' => null,
+                        'scope' => null,
+                    ]
+                ],
+            ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [
@@ -264,6 +293,13 @@ class GetProductByUuidEndToEnd extends AbstractProductTestCase
                         'locale' => null,
                         'scope' => null,
                     ],
+                ],
+                'sku' => [
+                    [
+                        'data' => 'product',
+                        'locale' => null,
+                        'scope' => null,
+                    ]
                 ],
             ],
             'created' => '2016-06-14T13:12:50+02:00',
@@ -360,6 +396,13 @@ class GetProductByUuidEndToEnd extends AbstractProductTestCase
                         'locale' => null,
                         'scope' => null,
                     ],
+                ],
+                'sku' => [
+                    [
+                        'data' => 'product',
+                        'locale' => null,
+                        'scope' => null,
+                    ]
                 ],
             ],
             'created' => '2016-06-14T13:12:50+02:00',

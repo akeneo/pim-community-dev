@@ -26,7 +26,8 @@ class ProductAndProductModelProcessor implements ItemProcessorInterface, StepExe
     protected ?StepExecution $stepExecution = null;
 
     public function __construct(
-        protected NormalizerInterface $normalizer,
+        protected NormalizerInterface $productNormalizer,
+        protected NormalizerInterface $productModelNormalizer,
         protected IdentifiableObjectRepositoryInterface $channelRepository,
         protected AttributeRepositoryInterface $attributeRepository,
         protected FillMissingValuesInterface $fillMissingProductModelValues,
@@ -44,12 +45,13 @@ class ProductAndProductModelProcessor implements ItemProcessorInterface, StepExe
         $structure = $parameters->get('filters')['structure'];
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
 
-        $productStandard = $this->normalizer->normalize($entity, 'standard');
-
         // not done for product as it fill missing product values at the end for performance purpose
         // not done yet for product model export so we have to do it
         if ($entity instanceof ProductModelInterface) {
+            $productStandard = $this->productModelNormalizer->normalize($entity, 'standard');
             $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($productStandard);
+        } else {
+            $productStandard = $this->productNormalizer->normalize($entity, 'standard');
         }
 
         $attributeCodes = $this->areAttributesToFilter($parameters) ? $this->getAttributesCodesToFilter($parameters) : [];

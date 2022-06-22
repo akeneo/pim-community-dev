@@ -35,8 +35,7 @@ final class SqlGetConnectorProducts implements GetConnectorProducts
         private GetProductQuantifiedAssociationsByProductUuids $getProductQuantifiedAssociationsByProductUuids,
         private GetProductModelQuantifiedAssociationsByProductUuids $getProductModelQuantifiedAssociationsByProductUuids,
         private GetCategoryCodesByProductUuids $getCategoryCodesByProductUuids,
-        private ReadValueCollectionFactory $readValueCollectionFactory,
-        private AttributeRepositoryInterface $attributeRepository
+        private ReadValueCollectionFactory $readValueCollectionFactory
     ) {
     }
 
@@ -75,6 +74,10 @@ final class SqlGetConnectorProducts implements GetConnectorProducts
 
         $rawValuesIndexedByProductUuid = [];
         foreach ($productUuids as $uuid) {
+            if (!array_key_exists('raw_values', $rows[$uuid->toString()])) {
+                continue;
+            }
+
             $rawValues = $rows[$uuid->toString()]['raw_values'];
 
             if (null !== $attributesToFilterOn) {
