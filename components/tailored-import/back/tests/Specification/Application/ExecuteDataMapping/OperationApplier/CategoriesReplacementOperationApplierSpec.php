@@ -24,7 +24,7 @@ use PhpSpec\ObjectBehavior;
 
 class CategoriesReplacementOperationApplierSpec extends ObjectBehavior
 {
-    private $uuid = '00000000-0000-0000-0000-000000000000';
+    private string $uuid = '00000000-0000-0000-0000-000000000000';
 
     public function it_supports_categories_replacement_operation(): void
     {

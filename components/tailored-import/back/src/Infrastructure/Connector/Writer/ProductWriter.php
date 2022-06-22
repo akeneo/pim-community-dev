@@ -66,6 +66,11 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
 
     private function upsertProduct(RowPayload $rowPayload): void
     {
+        if (0 < count($rowPayload->getInvalidValues())) {
+            $this->stepExecution->incrementSummaryInfo('skip');
+            $this->addInvalidValuesWarning($rowPayload);
+        }
+
         try {
             if (null === $rowPayload->getUpsertProductCommand()) {
                 throw new \RuntimeException('RowPayload wrongly formed missing UpsertCommand');
@@ -73,7 +78,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
 
             $this->messageBus->dispatch($rowPayload->getUpsertProductCommand());
         } catch (LegacyViolationsException|ViolationsException $violationsException) {
-            $this->addWarning($violationsException->violations(), $rowPayload);
+            $this->addViolationsWarning($violationsException->violations(), $rowPayload);
 
             if ($this->shouldSkipProduct($violationsException)) {
                 $this->stepExecution->incrementSummaryInfo('skip');
@@ -85,12 +90,23 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
         }
     }
 
-    private function addWarning(ConstraintViolationListInterface $violationList, RowPayload $rowPayload): void
+    private function addViolationsWarning(ConstraintViolationListInterface $violationList, RowPayload $rowPayload): void
     {
         foreach ($violationList as $violation) {
             $this->stepExecution->addWarning(
                 $violation->getMessage(),
                 $violation->getParameters(),
+                new FileInvalidItem($this->getFormattedCells($rowPayload), $rowPayload->getRowPosition()),
+            );
+        }
+    }
+
+    private function addInvalidValuesWarning(RowPayload $rowPayload): void
+    {
+        foreach ($rowPayload->getInvalidValues() as $invalidValue) {
+            $this->stepExecution->addWarning(
+                $invalidValue->getErrorMessage(),
+                [],
                 new FileInvalidItem($this->getFormattedCells($rowPayload), $rowPayload->getRowPosition()),
             );
         }

@@ -25,6 +25,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 use Akeneo\Platform\TailoredImport\Domain\Query\Attribute\GetIdentifierAttributeCodeInterface;
@@ -38,11 +39,12 @@ class ExecuteDataMappingHandler
     ) {
     }
 
-    public function handle(ExecuteDataMappingQuery $executeDataMappingQuery): UpsertProductCommand
+    public function handle(ExecuteDataMappingQuery $executeDataMappingQuery): ExecuteDataMappingResult
     {
         $row = $executeDataMappingQuery->getRow();
         $identifierAttributeCode = $this->getIdentifierAttributeCode->execute();
         $userIntents = [];
+        $invalidValues = [];
         $productIdentifier = null;
 
         foreach ($executeDataMappingQuery->getDataMappingCollection() as $dataMapping) {
@@ -61,6 +63,11 @@ class ExecuteDataMappingHandler
                 continue;
             }
 
+            if ($value instanceof InvalidValue) {
+                $invalidValues[] = $value;
+                continue;
+            }
+
             if ($value instanceof NullValue) {
                 $userIntents[] = $this->getClearIfEmptyUserIntent($target);
             } else {
@@ -76,10 +83,13 @@ class ExecuteDataMappingHandler
             throw new \LogicException('Missing data mapping targeting the identifier attribute');
         }
 
-        return UpsertProductCommand::createFromCollection(
-            $executeDataMappingQuery->getUserId(),
-            $productIdentifier->getValue() ?? '',
-            $userIntents,
+        return new ExecuteDataMappingResult(
+            UpsertProductCommand::createFromCollection(
+                $executeDataMappingQuery->getUserId(),
+                $productIdentifier->getValue() ?? '',
+                $userIntents,
+            ),
+            $invalidValues,
         );
     }
 

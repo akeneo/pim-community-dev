@@ -17,6 +17,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\Unex
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ConvertToNumberOperationApplier;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use PhpSpec\ObjectBehavior;
@@ -37,6 +38,15 @@ class ConvertToNumberOperationApplierSpec extends ObjectBehavior
 
         $this->applyOperation($operation, $value)
             ->shouldBeLike(new NumberValue('1.234'));
+    }
+
+    public function it_returns_an_invalid_value_object_when_the_decimal_separator_is_not_found(): void
+    {
+        $operation = new ConvertToNumberOperation($this->uuid, ',');
+        $value = new StringValue('1.234');
+
+        $this->applyOperation($operation, $value)
+            ->shouldBeLike(new InvalidValue(''));
     }
 
     public function it_throws_an_exception_when_value_type_is_invalid(): void

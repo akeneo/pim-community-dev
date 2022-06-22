@@ -74,7 +74,7 @@ final class OperationApplier
                     $value = $applier->applyOperation($operation, $value);
                 }
 
-                $operationValues[$operation->getUuid()][] = $value;
+                $operationValues[$operation->getUuid()][] = $value instanceof InvalidValue ? 'INVALID' : $value;
             }
         }
 
