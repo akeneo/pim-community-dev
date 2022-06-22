@@ -69,6 +69,10 @@
             <directory suffix="EndToEnd.php">grth/src/Akeneo/Pim/TableAttribute/tests/back/Enterprise/EndToEnd</directory>
         </testsuite>
 
+        <testsuite name="FreeTrial_Integration_EE">
+            <directory suffix="Integration.php">tria/src/Akeneo/FreeTrial/tests/back/Integration</directory>
+        </testsuite>
+
         <testsuite name="Enrichment_Product_EE">
             <directory suffix="Integration.php">vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Product/back/Test/Integration</directory>
         </testsuite>
