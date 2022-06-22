@@ -24,7 +24,7 @@ Feature: Review a product draft
       | datasheet                |                   |
       | side_view                |                   |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully display the original value in the copy panel
     Given Mary proposed the following change to "my-jacket":
       | field | value       | tab                 |
@@ -49,7 +49,7 @@ Feature: Review a product draft
     When I visit the "Proposals" column tab
     Then I should see the text "The value \"your-jacket\" is the same between the proposal and the working copy."
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6935
+  # @jira https://akeneo.atlassian.net/browse/PIM-6935
   Scenario: Successfully got to a product from proposal grid
     Given Mary proposed the following change to "my-jacket":
       | field | value       | tab                 |

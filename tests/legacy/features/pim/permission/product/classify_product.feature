@@ -39,7 +39,8 @@ Feature: Classify a product in the trees I have access
     Then I should see the text "Shoes (2)"
     And I should not see the text "Slippers"
 
-  @critical @jira https://akeneo.atlassian.net/browse/PIM-5402
+  # @jira https://akeneo.atlassian.net/browse/PIM-5402
+  @critical
   Scenario: Display only granted categories in the PEF
     Given the following product category accesses:
       | product category | user group | access |

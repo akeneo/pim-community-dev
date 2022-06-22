@@ -14,7 +14,7 @@ Feature: Save only filled fields after a save
       | sport-sock | socks  | summer_collection | Socks      |
     And I am logged in as "Mary"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5597
+  # @jira https://akeneo.atlassian.net/browse/PIM-5597
   Scenario: Successfully display only updated fields by redactor
     Given I edit the "sport-sock" product
     And I visit the "Attributes" column tab

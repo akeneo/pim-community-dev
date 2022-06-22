@@ -30,7 +30,7 @@ Feature: Review a product draft
       | side_view                |                   |
     And I logout
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully remove an in progress product draft
     Given Mary started to propose the following change to "my-jacket":
       | field | value |
@@ -44,7 +44,7 @@ Feature: Review a product draft
     When I visit the "Attributes" column tab
     Then the product Name should be "Jacket"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Not being able to delete a draft with values I can't edit
     Given Mary started to propose the following change to "my-jacket":
       | field                          | value                                | tab                        |

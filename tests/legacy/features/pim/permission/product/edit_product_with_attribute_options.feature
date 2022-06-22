@@ -104,7 +104,7 @@ Feature: Edit a product with attribute options
     And I wait for the "csv_footwear_option_import" job to finish
     And I logout
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5993
+  # @jira https://akeneo.atlassian.net/browse/PIM-5993
   Scenario: I edit a multiselect attribute with localized options
     Given the following product values:
       | product    | attribute | value      |
@@ -126,7 +126,7 @@ Feature: Edit a product with attribute options
     And I should see the text "DE19"
     But I should not see the text "DE30"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5993
+  # @jira https://akeneo.atlassian.net/browse/PIM-5993
   Scenario: I edit a simpleselect attribute with localized options
     Given the following product values:
       | product    | attribute | value  |

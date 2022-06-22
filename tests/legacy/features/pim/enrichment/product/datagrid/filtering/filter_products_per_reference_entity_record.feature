@@ -1,4 +1,4 @@
-@javascript
+@javascript @reference-entity-feature-enabled
 Feature: Filter products per reference entity record
   In order to enrich my catalog
   As a regular user
@@ -10,7 +10,7 @@ Feature: Filter products per reference entity record
     And a product with a value for this reference entity simple link attribute
     And I am logged in as "Julia"
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-9092 Skip to remove once https://akeneo.atlassian.net/browse/PIM-9092 fixed
+  # @jira https://akeneo.atlassian.net/browse/PIM-9092
   Scenario: Successfully filter products by a single reference entity link attribute
     Given I am on the products grid
     And the grid should contain 1 elements

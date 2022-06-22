@@ -23,7 +23,7 @@ Feature: View the completeness of a published product
     And I publish the product "sneakers"
     And I publish the product "sandals"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5136
+  # @jira https://akeneo.atlassian.net/browse/PIM-5136
   Scenario: Successfully display the completeness of the products
     Given I am on the "sneakers" published product show page
     When I visit the "Completeness" column tab

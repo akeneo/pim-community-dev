@@ -13,7 +13,7 @@ Feature: Display proposals in datagrid
       | price      | 45 USD,75 EUR |
       | name-en_US | Jackets       |
 
-  @github https://github.com/akeneo/pim-community-dev/issues/10083
+  # @github https://github.com/akeneo/pim-community-dev/issues/10083
   Scenario: Successfully display removed data in the proposal datagrid
     Given Mary proposed the following change to "my-jacket":
       | field | value |

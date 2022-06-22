@@ -11,7 +11,8 @@ Feature: Ensure that a published product is safe
       | my-jacket | jackets    | jackets | similar_jackets | 1        | Volcom       | dry                |
     And I am logged in as "Julia"
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
+  # @jira https://akeneo.atlassian.net/browse/PIM-6314
+  @skip
   Scenario: Fail to remove a product that has been published
     Given I am on the "my-jacket" product page
     And I press the secondary action "Delete"
@@ -86,7 +87,7 @@ Feature: Ensure that a published product is safe
     Then I should see the text "Entities linked to published products cannot be removed."
     And the Options section should contain 5 options
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4600
+  # @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully remove a multi-option not linked to a published product
     Given I am on the "weather_conditions" attribute page
     And I visit the "Options" tab

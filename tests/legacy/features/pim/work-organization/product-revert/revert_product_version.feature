@@ -126,7 +126,8 @@ Feature: Revert a product to a previous version
     When I revert the product version number 2
     Then the category of the product "sandals" should be "winter_collection"
 
-  @skip-nav @jira https://akeneo.atlassian.net/browse/PIM-5796
+  # @jira https://akeneo.atlassian.net/browse/PIM-5796
+  @skip-nav
   Scenario: Hide revert button if user cannot revert a product
     Given the following product:
       | sku     |

@@ -13,7 +13,7 @@ Feature: Review a product draft with reference data
       | sole_color  | cyan             |
       | sole_fabric | kevlar, neoprene |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept from a product draft with simple and multi select reference data
     Given Mary proposed the following change to "my-vans":
       | tab   | field       | value                 |

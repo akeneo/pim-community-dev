@@ -10,7 +10,8 @@ Feature: Edit attribute group with all permissions
       | sku    | price  |
       | socket | 20 USD |
 
-  @critical @jira https://akeneo.atlassian.net/browse/PIM-5478
+  # @jira https://akeneo.atlassian.net/browse/PIM-5478
+  @critical
   Scenario: Successfully edit an attribute group with 'all' permission
     Given I am logged in as "Peter"
     And I am on the "marketing" attribute group page

@@ -13,7 +13,7 @@ Feature: Send a product draft with reference data for approval
     And I am logged in as "Mary"
     And I edit the "my-jean" product
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4597
+  # @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully send my product draft with simple and multiple select reference data for approval
     Given I visit the "Other" group
     Then I fill in the following information:

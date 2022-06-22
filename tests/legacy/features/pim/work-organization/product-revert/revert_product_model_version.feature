@@ -8,7 +8,7 @@ Feature: Revert a product model to a previous version
     Given a "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
 
-  @todo PIM-6907: Revert will be possible eventually
+  # @todo PIM-6907: Revert will be possible eventually
   Scenario: Do not display restore button in product model history panel
     Given I am on the "1111111111" product page
     When I visit the "History" column tab

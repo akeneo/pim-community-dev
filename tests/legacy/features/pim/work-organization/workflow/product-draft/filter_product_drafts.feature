@@ -26,8 +26,7 @@ Feature: Filter product drafts
       | Name  | Autumn jacket | General |
       | Price | 10 USD        | Sales   |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
-
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario Outline: Successfully filter product drafts
     Given I am logged in as "Peter"
     And I edit the "tshirt" product

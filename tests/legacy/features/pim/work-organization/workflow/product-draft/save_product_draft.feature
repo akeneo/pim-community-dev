@@ -14,7 +14,7 @@ Feature: Save a product draft
       | jacket | jackets | jackets    |
     And I am logged in as "Mary"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4604
+  # @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully save an empty product draft value
     Given I edit the "tshirt" product
     And I visit the "Attributes" column tab
@@ -22,7 +22,7 @@ Feature: Save a product draft
     When I save the product
     Then the product Name should be "Dark Tshirt"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4604
+  # @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully save an existing product draft value
     Given I edit the "tshirt" product
     And I visit the "Attributes" column tab
@@ -30,7 +30,7 @@ Feature: Save a product draft
     When I save the product
     Then the product Description should be "Yes I can"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4597
+  # @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully show the product draft status
     Given I edit the "tshirt" product
     Then I should see the text "Draft status Working copy"

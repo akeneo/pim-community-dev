@@ -24,7 +24,7 @@ Feature: Review a product draft
       | datasheet                |                   |
       | side_view                |                   |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3980
+  # @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept a boolean attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field    | value      |

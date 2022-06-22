@@ -80,7 +80,7 @@ Feature: List proposals
       | product | author | attribute          | original | new  |
       | tshirt  | Mary   | weather_conditions |          | Blue |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5825
+  # @jira https://akeneo.atlassian.net/browse/PIM-5825
   Scenario: Successfully display a proposal even when an attribute has been deleted
     Given I am logged in as "Julia"
     And I am on the attributes page
@@ -93,7 +93,7 @@ Feature: List proposals
       | product | author | attribute   | original | new    |
       | tshirt  | Mary   | price       |          | $10.00 |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5825
+  # @jira https://akeneo.atlassian.net/browse/PIM-5825
   Scenario: Does not display a proposal when all of its attributes have been deleted
     Given I am logged in as "Julia"
     And I am on the attributes page
