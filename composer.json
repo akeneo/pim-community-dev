@@ -125,7 +125,7 @@
         "symfony/polyfill-apcu": "^1.23.0",
         "symfony/process": "^5.4.0",
         "symfony/property-access": "^5.4.0",
-        "symfony/proxy-manager-bridge": "^5.4.0",
+        "symfony/proxy-manager-bridge": "^6.0.6",
         "symfony/requirements-checker": "^2.0.0",
         "symfony/routing": "^5.4.0",
         "symfony/security-acl": "^3.1.1",

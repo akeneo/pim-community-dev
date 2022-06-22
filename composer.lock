@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b923ba96ab3af0d4f3cb74a3e181c37",
+    "content-hash": "4eaa6bec03497d882c91def7f95c3adf",
     "packages": [
         {
             "name": "akeneo/oauth-server-bundle",
@@ -9263,26 +9263,25 @@
         },
         {
             "name": "symfony/proxy-manager-bridge",
-            "version": "v5.4.6",
+            "version": "v6.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/proxy-manager-bridge.git",
-                "reference": "e6936de1cc8f4e6e3b2264aef186ca21695aee8e"
+                "reference": "aa68a86bc7df5ee9ff39107f122ebf1931d98ff8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/proxy-manager-bridge/zipball/e6936de1cc8f4e6e3b2264aef186ca21695aee8e",
-                "reference": "e6936de1cc8f4e6e3b2264aef186ca21695aee8e",
+                "url": "https://api.github.com/repos/symfony/proxy-manager-bridge/zipball/aa68a86bc7df5ee9ff39107f122ebf1931d98ff8",
+                "reference": "aa68a86bc7df5ee9ff39107f122ebf1931d98ff8",
                 "shasum": ""
             },
             "require": {
                 "friendsofphp/proxy-manager-lts": "^1.0.2",
-                "php": ">=7.2.5",
-                "symfony/dependency-injection": "^5.0|^6.0",
-                "symfony/polyfill-php80": "^1.16"
+                "php": ">=8.0.2",
+                "symfony/dependency-injection": "^5.4|^6.0"
             },
             "require-dev": {
-                "symfony/config": "^4.4|^5.0|^6.0"
+                "symfony/config": "^5.4|^6.0"
             },
             "type": "symfony-bridge",
             "autoload": {
@@ -9310,7 +9309,7 @@
             "description": "Provides integration for ProxyManager with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/proxy-manager-bridge/tree/v5.4.6"
+                "source": "https://github.com/symfony/proxy-manager-bridge/tree/v6.0.6"
             },
             "funding": [
                 {
@@ -9326,7 +9325,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-02T12:42:23+00:00"
+            "time": "2022-03-02T12:58:14+00:00"
         },
         {
             "name": "symfony/redis-messenger",
@@ -18155,5 +18154,5 @@
         "ext-zip": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
