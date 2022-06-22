@@ -52,8 +52,7 @@ class SqlFindCategoryTrees implements FindCategoryTrees
      */
     private function categoryTrees(
         array $categoriesWithPermissions
-    ): array
-    {
+    ): array {
         $translationNormalizer = $this->translationNormalizer;
 
         return array_map(
