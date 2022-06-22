@@ -34,7 +34,9 @@ final class ConvertToNumberOperationApplier implements OperationApplierInterface
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
-        return new NumberValue(str_replace($operation->getDecimalSeparator(), static::DEFAULT_DECIMAL_SEPARATOR, $value->getValue()));
+        return new NumberValue(
+            str_replace($operation->getDecimalSeparator(), static::DEFAULT_DECIMAL_SEPARATOR, $value->getValue()),
+        );
     }
 
     public function supports(OperationInterface $operation): bool

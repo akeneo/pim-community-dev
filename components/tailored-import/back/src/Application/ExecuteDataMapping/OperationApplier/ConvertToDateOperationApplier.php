@@ -2,19 +2,25 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToDateOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\DateValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
-/**
- * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
- * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class ConvertToDateOperationApplier implements OperationApplierInterface
 {
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
@@ -31,9 +37,17 @@ class ConvertToDateOperationApplier implements OperationApplierInterface
             $operation::DATE_FORMAT_TO_PHP_DATE_FORMAT_MAPPING[$operation->getDateFormat()],
             $value->getValue(),
             new \DateTimeZone('UTC'),
-        )->setTime(0, 0);
+        );
 
-        return new DateValue($date);
+        if (false === $date) {
+            return new InvalidValue(sprintf(
+                'Cannot format date "%s" with provided format "%s"',
+                $value->getValue(),
+                $operation->getDateFormat(),
+            ));
+        }
+
+        return new DateValue($date->setTime(0, 0));
     }
 
     public function supports(OperationInterface $operation): bool
