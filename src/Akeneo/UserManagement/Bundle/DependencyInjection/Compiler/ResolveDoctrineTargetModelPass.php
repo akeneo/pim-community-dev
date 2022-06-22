@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\DependencyInjection\Compiler;
 
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 
@@ -21,6 +22,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     {
         return [
             UserInterface::class => 'pim_user.entity.user.class',
+            LocaleInterface::class => 'pim_catalog.entity.locale.class',
         ];
     }
 }

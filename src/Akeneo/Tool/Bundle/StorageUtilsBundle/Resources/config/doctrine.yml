@@ -5,6 +5,7 @@ parameters:
     akeneo_storage_utils.event_subscriber.resolve_target_repository.class:  Akeneo\Tool\Bundle\StorageUtilsBundle\EventSubscriber\ResolveTargetRepositorySubscriber
     akeneo_storage_utils.doctrine.orm_mappings_override_configurator.class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\MappingsOverrideConfigurator
     akeneo_storage_utils.event_subscriber.configure_orm_mappings.class:     Akeneo\Tool\Bundle\StorageUtilsBundle\EventSubscriber\ConfigureMappingsSubscriber
+    pim_catalog.remover.base.class:                  Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover
 
 services:
     akeneo_storage_utils.event_subscriber.resolve_target_repository:

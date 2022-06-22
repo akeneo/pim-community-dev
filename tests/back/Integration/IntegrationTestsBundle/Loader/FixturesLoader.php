@@ -123,7 +123,7 @@ class FixturesLoader implements FixturesLoaderInterface
     {
         // close the connection created specifically for this repository
         // TODO: to remove when TIP-385 will be done
-        $this->doctrineJobRepository->getJobManager()->getConnection()->close();
+//        $this->doctrineJobRepository->getJobManager()->getConnection()->close();
     }
 
     public function load(Configuration $configuration): void

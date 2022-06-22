@@ -1,0 +1,181 @@
+parameters:
+  pim_catalog.entity.product.class: Akeneo\Pim\Enrichment\Component\Product\Model\Product
+  pim_catalog.entity.product_model.class: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel
+  pim_catalog.entity.locale.class: Akeneo\Channel\Infrastructure\Component\Model\Locale
+
+  pim_catalog.localization.factory.date.class:     Akeneo\Tool\Component\Localization\Factory\DateFactory
+  pim_catalog.localization.factory.datetime.class: Akeneo\Tool\Component\Localization\Factory\DateTimeFactory
+  pim_catalog.localization.factory.number.class:   Akeneo\Tool\Component\Localization\Factory\NumberFactory
+
+  pim_catalog.localization.factory.date.formats:
+    en_US: 'MM/dd/yyyy'
+    fr_FR: 'dd/MM/yyyy'
+    it_IT: 'dd/MM/yyyy'
+  pim_catalog.localization.factory.datetime.formats:
+    en_US: 'MM/dd/yyyy hh:mm a'
+    fr_FR: 'dd/MM/yyyy HH:mm'
+    it_IT: 'dd/MM/yyyy HH:mm'
+  pim_catalog.localization.factory.currency.formats:
+    en_US: '¤#,##0.00'
+    fr_FR: '#,##0.00 ¤'
+
+services:
+  _defaults:
+    public: true
+
+  pim_connector.doctrine.cache_clearer:
+    class: Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - [ ]
+  pim_external_api_serializer:
+    class: 'Symfony\Component\Serializer\Serializer'
+  pim_standard_format_serializer:
+    class: 'Symfony\Component\Serializer\Serializer'
+  pim_indexing_serializer:
+    class: 'Symfony\Component\Serializer\Serializer'
+  pim_storage_serializer:
+    class: 'Symfony\Component\Serializer\Serializer'
+  pim_datagrid_serializer:
+    class: 'Symfony\Component\Serializer\Serializer'
+  pim_internal_api_serializer:
+    class: 'Symfony\Component\Serializer\Serializer'
+  pim_serializer:
+    class: 'Symfony\Component\Serializer\Serializer'
+  pim_domain_error_serializer:
+    class: 'Symfony\Component\Serializer\Serializer'
+  pim_enrich.messenger.serializer.business_event:
+    class: Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer
+    arguments:
+      - !tagged pim_enrich.messenger.normalizer
+  Akeneo\Platform\Component\EventQueue\EventNormalizer:
+    tags:
+      - { name: pim_enrich.messenger.normalizer, priority: 0 }
+  Akeneo\Platform\Component\EventQueue\BulkEventNormalizer:
+    arguments:
+      - '@Akeneo\Platform\Component\EventQueue\EventNormalizer'
+    tags:
+      - { name: pim_enrich.messenger.normalizer, priority: 10 }
+  akeneo_batch_queue.messenger.serializer:
+    class: Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer
+    arguments:
+      - !tagged akeneo_batch_queue.messenger.normalizer
+  pim_catalog.normalizer.standard.file:
+    class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\FileNormalizer'
+    tags:
+      - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+  pim_catalog.validator.unique_value_set:
+    class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet'
+    public: true
+  pim_enrich.normalizer.violation:
+    class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ConstraintViolationNormalizer'
+    tags:
+      - { name: pim_internal_api_serializer.normalizer, priority: 100 }
+  pim_catalog.localization.factory.currency:
+    class: '%pim_catalog.localization.factory.number.class%'
+    arguments:
+      - '%pim_catalog.localization.factory.currency.formats%'
+  pim_catalog.localization.factory.number:
+    class: '%pim_catalog.localization.factory.number.class%'
+    arguments:
+      - [ ]
+  pim_catalog.localization.factory.date:
+    class: '%pim_catalog.localization.factory.date.class%'
+    arguments:
+      - '%pim_catalog.localization.factory.date.formats%'
+  pim_catalog.localization.factory.datetime:
+    class: '%pim_catalog.localization.factory.datetime.class%'
+    arguments:
+      - '%pim_catalog.localization.factory.datetime.formats%'
+  pim_enrich.version_strategy:
+    class: 'Akeneo\Platform\Bundle\UIBundle\VersionStrategy\CacheBusterVersionStrategy'
+    arguments:
+      - '@pim_catalog.version_provider'
+  pim_catalog.validator.constraint.activated_locale:
+    class: 'Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocaleValidator'
+    arguments:
+      - '@pim_catalog.repository.cached_locale'
+    tags:
+      - { name: validator.constraint_validator, alias: pim_activated_locale_validator }
+  pim_catalog.repository.cached_locale:
+    class: '%akeneo_storage_utils.repository.base_cached_object.class%'
+    arguments:
+      - '@pim_catalog.repository.locale'
+  pim_catalog.repository.locale:
+    class: 'Akeneo\Channel\Infrastructure\Doctrine\Repository\LocaleRepository'
+    factory: [ '@doctrine.orm.entity_manager', 'getRepository' ]
+    arguments: [ '%pim_catalog.entity.locale.class%' ]
+    tags:
+      - { name: 'channel_repository' }
+
+  pim_catalog.factory.attribute:
+    synthetic: true
+  pim_catalog.updater.attribute:
+    synthetic: true
+  pim_catalog.saver.attribute:
+    synthetic: true
+  pim_catalog.factory.family:
+    synthetic: true
+  pim_catalog.updater.family:
+    synthetic: true
+  pim_catalog.saver.family:
+    synthetic: true
+  pim_catalog.factory.family_variant:
+    synthetic: true
+  pim_catalog.updater.family_variant:
+    synthetic: true
+  pim_catalog.saver.family_variant:
+    synthetic: true
+  pim_catalog.builder.product:
+    synthetic: true
+  pim_catalog.updater.product:
+    synthetic: true
+  pim_catalog.saver.product:
+    synthetic: true
+  pim_catalog.factory.product_model:
+    synthetic: true
+  pim_catalog.updater.product_model:
+    synthetic: true
+  pim_catalog.saver.product_model:
+    synthetic: true
+  pim_catalog.validator.product:
+    synthetic: true
+  pim_catalog.factory.category:
+    synthetic: true
+  pim_catalog.updater.category:
+    synthetic: true
+  pim_catalog.saver.category:
+    synthetic: true
+  oro_security.acl.manager:
+    synthetic: true
+  akeneo_batch.job_repository:
+    synthetic: true
+  pim_installer.fixture_loader.job_loader:
+    synthetic: true
+  pim_catalog.elasticsearch.indexer.product:
+    synthetic: true
+  pim_catalog.elasticsearch.indexer.product_model:
+    synthetic: true
+  akeneo_measure.installer.measurement_installer:
+    synthetic: true
+  oro_security.security_facade:
+    synthetic: true
+  pim_catalog.repository.cached_attribute:
+    synthetic: true
+  pim_catalog.repository.cached_category:
+    synthetic: true
+  pim_catalog.repository.channel:
+    synthetic: true
+  pim_catalog.repository.category:
+    synthetic: true
+  oro_security.acl.annotation_provider:
+    synthetic: true
+  oro_security.acl.sid_manager:
+    synthetic: true
+  pim_datagrid.repository.datagrid_view:
+    synthetic: true
+  oro_security.normalizer.acl_privilege:
+    synthetic: true
+  oro_security.link.sid_manager:
+    synthetic: true
+

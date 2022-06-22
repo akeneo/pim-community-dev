@@ -4,12 +4,25 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Integration;
 
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Doctrine\Repository\ChannelRepository;
+use Akeneo\Channel\Infrastructure\Doctrine\Repository\LocaleRepository;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
+use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
+use Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository;
+use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
+use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepository;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -37,6 +50,9 @@ abstract class TestCase extends KernelTestCase
     protected function setUp(): void
     {
         $this->testKernel = static::bootKernel(['debug' => false]);
+
+        $this->setUpMocks();
+
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
 
         if (null !== $this->getConfiguration()) {
@@ -56,6 +72,27 @@ abstract class TestCase extends KernelTestCase
         /** @var FilePersistedFeatureFlags $featureFlags*/
         $featureFlags = $this->get('feature_flags');
         $featureFlags->deleteFile();
+    }
+
+    protected function setUpMocks(): void
+    {
+        self::getContainer()->set('pim_catalog.repository.channel', $this->createMock(ChannelRepository::class));
+        self::getContainer()->set('pim_catalog.repository.category', $this->createMock(CategoryRepository::class));
+        self::getContainer()->set('akeneo_batch.job_repository', $this->createMock(DoctrineJobRepository::class));
+        self::getContainer()->set('pim_installer.fixture_loader.job_loader', $this->createMock(FixtureJobLoader::class));
+        self::getContainer()->set('oro_security.acl.manager', $this->createMock(AclManager::class));
+        self::getContainer()->set('pim_catalog.elasticsearch.indexer.product', $this->createMock(ProductIndexer::class));
+        self::getContainer()->set('pim_catalog.elasticsearch.indexer.product_model', $this->createMock(ProductModelIndexer::class));
+        self::getContainer()->set('akeneo_measure.installer.measurement_installer', $this->createMock(MeasurementInstaller::class));
+        self::getContainer()->set('pim_datagrid.repository.datagrid_view', $this->createMock(DatagridViewRepository::class));
+
+        self::getContainer()->get('pim_installer.fixture_loader.job_loader')
+            ->method('getLoadedJobInstances')
+            ->willReturn([]);
+
+        self::getContainer()->get('pim_catalog.repository.category')
+            ->method('getTrees')
+            ->willReturn([]);
     }
 
     /**
