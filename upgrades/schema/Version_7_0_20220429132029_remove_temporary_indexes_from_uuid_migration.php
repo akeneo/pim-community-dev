@@ -26,10 +26,29 @@ final class Version_7_0_20220429132029_remove_temporary_indexes_from_uuid_migrat
 
             foreach ($indexNamesToDelete as $indexName) {
                 if ($this->indexExists($tableName, $indexName)) {
-                    $this->addSql(\strtr(
-                        'ALTER TABLE {tableName} DROP INDEX {indexName};',
-                        ['{tableName}' => $tableName, '{indexName}' => $indexName]
-                    ));
+                    if ($tableName === 'pim_catalog_product') {
+                        $this->addSql(\strtr(
+                            'ALTER TABLE {tableName} RENAME INDEX {indexName} TO {newIndexName};',
+                            ['{tableName}' => $tableName, '{newIndexName}' => 'UNIQ_91CD19C0BF396750', '{indexName}' => $indexName]
+                        ));
+                    } else {
+                        if ($tableName === 'pim_data_quality_insights_product_criteria_evaluation') {
+                            $this->addSql(\strtr(
+                                'ALTER TABLE {tableName} DROP FOREIGN KEY {foreignKeyName};',
+                                ['{tableName}' => $tableName, '{foreignKeyName}' => 'FK_dqi_product_criteria_evaluation']
+                            ));
+                        }
+                        if ($tableName === 'pim_data_quality_insights_product_score') {
+                            $this->addSql(\strtr(
+                                'ALTER TABLE {tableName} DROP FOREIGN KEY {foreignKeyName};',
+                                ['{tableName}' => $tableName, '{foreignKeyName}' => 'FK_dqi_product_score']
+                            ));
+                        }
+                        $this->addSql(\strtr(
+                            'ALTER TABLE {tableName} DROP INDEX {indexName};',
+                            ['{tableName}' => $tableName, '{indexName}' => $indexName]
+                        ));
+                    }
                 }
             }
         }
