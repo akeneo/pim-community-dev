@@ -66,7 +66,6 @@ class AkeneoPimEnrichmentBundle extends Bundle
 
         $mappings = [
             realpath(__DIR__ . '/Resources/config/doctrine/Product') => 'Akeneo\Pim\Enrichment\Component\Product\Model',
-            realpath(__DIR__ . '/Resources/config/doctrine/Category') => 'Akeneo\Pim\Enrichment\Component\Category\Model',
             realpath(__DIR__ . '/Resources/config/doctrine/Comment') => 'Akeneo\Pim\Enrichment\Component\Comment\Model',
         ];
 

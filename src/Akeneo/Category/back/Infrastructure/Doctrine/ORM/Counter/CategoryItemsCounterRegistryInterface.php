@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter;
+namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Counter;
 
 /**
  * Category items counter registry interface
