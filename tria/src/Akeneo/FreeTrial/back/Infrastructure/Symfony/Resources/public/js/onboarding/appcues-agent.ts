@@ -20,7 +20,6 @@ const getAppcuesAgent = async (): Promise<AppcuesAgentInterface | null> => {
 
   // @ts-ignore
   return window.Appcues;
-
 };
 
 export {getAppcuesAgent};
