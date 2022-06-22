@@ -50,8 +50,6 @@
     "tslint-react": "^4.0.0"
   },
   "dependencies": {
-    "@akeneo-pim-community/shared": "link:../vendor/akeneo/pim-community-dev/front-packages/shared",
-    "akeneo-design-system": "link:../vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "html-to-draftjs": "^1.4.0",
