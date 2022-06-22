@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollec
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -28,7 +29,7 @@ final class GetNormalizedProductQualityScoresSpec extends ObjectBehavior
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(false);
 
-        $this->__invoke('a_product')->shouldReturn([]);
+        $this->__invoke(Uuid::uuid4())->shouldReturn([]);
     }
 
     public function it_gets_normalized_quality_scores_without_filters_for_a_product(
@@ -37,14 +38,16 @@ final class GetNormalizedProductQualityScoresSpec extends ObjectBehavior
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
-        $getProductScoresQuery->byProductIdentifier('a_product')->willReturn(new QualityScoreCollection([
+        $uuid = Uuid::uuid4();
+
+        $getProductScoresQuery->byProductUuid($uuid)->willReturn(new QualityScoreCollection([
             'ecommerce' => [
                 'en_US' => new QualityScore('A', 98),
                 'fr_FR' => new QualityScore('B', 87),
             ]
         ]));
 
-        $this->__invoke('a_product')->shouldBeLike([
+        $this->__invoke($uuid)->shouldBeLike([
             'ecommerce' => [
                 'en_US' => 'A',
                 'fr_FR' => 'B',
@@ -57,8 +60,9 @@ final class GetNormalizedProductQualityScoresSpec extends ObjectBehavior
         $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+        $uuid = Uuid::uuid4();
 
-        $getProductScoresQuery->byProductIdentifier('a_product')->willReturn(new QualityScoreCollection([
+        $getProductScoresQuery->byProductUuid($uuid)->willReturn(new QualityScoreCollection([
             'ecommerce' => [
                 'en_US' => new QualityScore('A', 98),
                 'fr_FR' => new QualityScore('B', 87),
@@ -69,7 +73,7 @@ final class GetNormalizedProductQualityScoresSpec extends ObjectBehavior
             ]
         ]));
 
-        $this->__invoke('a_product', 'ecommerce', ['en_US', 'fr_FR'])->shouldBeLike([
+        $this->__invoke($uuid, 'ecommerce', ['en_US', 'fr_FR'])->shouldBeLike([
             'ecommerce' => [
                 'en_US' => 'A',
                 'fr_FR' => 'B',
