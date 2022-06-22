@@ -2,33 +2,39 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PHPUnit\Framework\Assert;
 
-/**
- * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
- * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class HandleDateTest extends HandleDataMappingTestCase
 {
     /**
-     * @dataProvider provider("it handles date attribute targets")
+     * @dataProvider provider
      */
     public function testItCanHandleADateDataMappingValue(
         array $row,
         array $dataMappings,
-        UpsertProductCommand $expected,
+        ExecuteDataMappingResult $expected,
     ): void {
         $executeDataMappingQuery = $this->getExecuteDataMappingQuery($row, '25621f5a-504f-4893-8f0c-9f1b0076e53e', $dataMappings);
-        $upsertProductCommand = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
+        $result = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
 
-        Assert::assertEquals($expected, $upsertProductCommand);
+        Assert::assertEquals($expected, $result);
     }
 
     public function provider(): array
@@ -72,21 +78,24 @@ class HandleDateTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new SetDateValue('release_date', null, null, \DateTimeImmutable::createFromFormat(
-                            'Y-m-d\TH:i:s.uP',
-                            '2022-02-22T00:00:00.000000+0000',
-                            new \DateTimeZone('UTC'),
-                        )),
-                        new SetDateValue('end_date', null, null, \DateTimeImmutable::createFromFormat(
-                            'Y-m-d\TH:i:s.uP',
-                            '2022-03-04T00:00:00.000000+0000',
-                            new \DateTimeZone('UTC'),
-                        )),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetDateValue('release_date', null, null, \DateTimeImmutable::createFromFormat(
+                                'Y-m-d\TH:i:s.uP',
+                                '2022-02-22T00:00:00.000000+0000',
+                                new \DateTimeZone('UTC'),
+                            )),
+                            new SetDateValue('end_date', null, null, \DateTimeImmutable::createFromFormat(
+                                'Y-m-d\TH:i:s.uP',
+                                '2022-03-04T00:00:00.000000+0000',
+                                new \DateTimeZone('UTC'),
+                            )),
+                        ],
+                    ),
+                    [],
                 ),
             ],
         ];

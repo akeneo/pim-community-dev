@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapp
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
@@ -29,12 +30,12 @@ final class HandleSimpleSelectTest extends HandleDataMappingTestCase
     public function test_it_can_handle_a_simple_select_data_mapping_value(
         array $row,
         array $dataMappings,
-        UpsertProductCommand $expected,
+        ExecuteDataMappingResult $expected,
     ): void {
         $executeDataMappingQuery = $this->getExecuteDataMappingQuery($row, '25621f5a-504f-4893-8f0c-9f1b0076e53e', $dataMappings);
-        $upsertProductCommand = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
+        $result = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
 
-        Assert::assertEquals($expected, $upsertProductCommand);
+        Assert::assertEquals($expected, $result);
     }
 
     public function provider(): array
@@ -79,13 +80,16 @@ final class HandleSimpleSelectTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new SetSimpleSelectValue('brand', null, null, 'this is a brand'),
-                        new SetSimpleSelectValue('color', 'ecommerce', 'fr_FR', 'this is a color'),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetSimpleSelectValue('brand', null, null, 'this is a brand'),
+                            new SetSimpleSelectValue('color', 'ecommerce', 'fr_FR', 'this is a color'),
+                        ],
+                    ),
+                    [],
                 ),
             ],
             'it handles simple select attribute targets with replacement operation' => [
@@ -116,12 +120,15 @@ final class HandleSimpleSelectTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new SetSimpleSelectValue('brand', null, null, 'adidas'),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetSimpleSelectValue('brand', null, null, 'adidas'),
+                        ],
+                    ),
+                    [],
                 ),
             ],
         ];

@@ -34,7 +34,7 @@ final class BooleanReplacementOperationApplier implements OperationApplierInterf
         }
 
         if (!$operation->hasMappedValue($value->getValue())) {
-            return new InvalidValue(sprintf('There is no mapped value for this source value : "%s"', $value->getValue()));
+            return new InvalidValue(sprintf('There is no mapped value for this source value: "%s"', $value->getValue()));
         }
 
         $mappedValue = $operation->getMappedValue($value->getValue());

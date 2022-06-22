@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapp
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
@@ -28,12 +29,12 @@ final class HandleMeasurementTest extends HandleDataMappingTestCase
     public function test_it_can_handle_a_measurement_data_mapping_value(
         array $row,
         array $dataMappings,
-        UpsertProductCommand $expected,
+        ExecuteDataMappingResult $expected,
     ): void {
         $executeDataMappingQuery = $this->getExecuteDataMappingQuery($row, '25621f5a-504f-4893-8f0c-9f1b0076e53e', $dataMappings);
-        $upsertProductCommand = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
+        $result = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
 
-        Assert::assertEquals($expected, $upsertProductCommand);
+        Assert::assertEquals($expected, $result);
     }
 
     public function provider(): array
@@ -102,14 +103,17 @@ final class HandleMeasurementTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new SetMeasurementValue('size', null, null, '10', 'METER'),
-                        new SetMeasurementValue('weight', 'ecommerce', 'fr_FR', '60.5', 'GRAM'),
-                        new SetMeasurementValue('frequency', 'ecommerce', null, '6', 'HERTZ'),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetMeasurementValue('size', null, null, '10', 'METER'),
+                            new SetMeasurementValue('weight', 'ecommerce', 'fr_FR', '60.5', 'GRAM'),
+                            new SetMeasurementValue('frequency', 'ecommerce', null, '6', 'HERTZ'),
+                        ],
+                    ),
+                    [],
                 ),
             ],
         ];

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\NoMappedValueFound;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\BooleanReplacementOperationApplier;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
@@ -51,7 +50,7 @@ class BooleanReplacementOperationApplierSpec extends ObjectBehavior
         $unmappedValue = new StringValue('something');
 
         $this->applyOperation($booleanReplacementOperation, $unmappedValue)
-            ->shouldBeLike(new InvalidValue('There is no mapped value for this source value : "something"'));
+            ->shouldBeLike(new InvalidValue('There is no mapped value for this source value: "something"'));
     }
 
     public function it_throws_an_exception_when_value_type_is_invalid(): void

@@ -15,12 +15,10 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapp
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
-use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
-use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PHPUnit\Framework\Assert;
 
@@ -32,12 +30,12 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
     public function test_it_can_handle_a_textarea_data_mapping_value(
         array $row,
         array $dataMappings,
-        UpsertProductCommand $expected,
+        ExecuteDataMappingResult $expected,
     ): void {
         $executeDataMappingQuery = $this->getExecuteDataMappingQuery($row, '25621f5a-504f-4893-8f0c-9f1b0076e53e', $dataMappings);
-        $upsertProductCommand = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
+        $result = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
 
-        Assert::assertEquals($expected, $upsertProductCommand);
+        Assert::assertEquals($expected, $result);
     }
 
     public function provider(): array
@@ -81,13 +79,16 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new SetTextareaValue('textarea_attribute', null, null, 'this is a textarea attribute'),
-                        new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'this is a description'),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetTextareaValue('textarea_attribute', null, null, 'this is a textarea attribute'),
+                            new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'this is a description'),
+                        ],
+                    ),
+                    [],
                 ),
             ],
             'it handles text area attribute targets with Clean HTML Tags operation' => [
@@ -130,13 +131,16 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new SetTextareaValue('name', null, null, 'i want this cleaned'),
-                        new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetTextareaValue('name', null, null, 'i want this cleaned'),
+                            new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),
+                        ],
+                    ),
+                    [],
                 ),
             ],
         ];
