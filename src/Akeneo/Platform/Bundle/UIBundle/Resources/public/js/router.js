@@ -58,7 +58,10 @@ define([
      * @return {String}
      */
     index: function () {
-      return this.defaultRoute(this.generate(this.indexRoute));
+      return this.defaultRoute(this.generate(
+        this.indexRoute,
+        {freeTrialEnabled: FeatureFlags.isEnabled('free_trial')}
+      ));
     },
 
     /**
