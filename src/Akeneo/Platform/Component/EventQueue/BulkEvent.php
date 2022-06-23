@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\EventQueue;
 
+use Akeneo\Tool\Component\Messenger\Tenant\TenantAwareInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -13,6 +14,7 @@ use Webmozart\Assert\Assert;
 class BulkEvent implements BulkEventInterface
 {
     private array $events;
+    private ?string $tenantId = null;
 
     /**
      * @param array<EventInterface> $events
@@ -30,5 +32,15 @@ class BulkEvent implements BulkEventInterface
     public function getEvents(): array
     {
         return $this->events;
+    }
+
+    public function getTenantId(): ?string
+    {
+        return $this->tenantId;
+    }
+
+    public function setTenantId(string $tenantId): void
+    {
+        $this->tenantId = $tenantId;
     }
 }

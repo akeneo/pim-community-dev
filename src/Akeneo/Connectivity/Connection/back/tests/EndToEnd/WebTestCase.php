@@ -30,7 +30,7 @@ abstract class WebTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->client = self::$container->get('test.client');
+        $this->client = static::getContainer()->get('test.client');
     }
 
     protected function createConnection(string $code, string $label, string $flowType, bool $auditable): ConnectionWithCredentials

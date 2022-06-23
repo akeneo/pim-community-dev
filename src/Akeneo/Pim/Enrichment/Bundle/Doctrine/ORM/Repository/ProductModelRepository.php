@@ -94,10 +94,21 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      */
     public function findFirstCreatedVariantProductModel(ProductModelInterface $productModel): ?ProductModelInterface
     {
-        return $this->findOneBy(
-            ['parent' => $productModel],
-            ['created' => 'ASC', 'code' => 'ASC']
-        );
+        $qb = $this->createQueryBuilder('pm')
+            ->select('pm.code')
+            ->where('pm.parent = :parent')
+            ->setParameter('parent', $productModel->getId())
+            ->orderBy('pm.created', 'ASC')
+            ->addOrderBy('pm.code', 'ASC')
+            ->setMaxResults(1);
+
+        $results = $qb->getQuery()->getOneOrNullResult();
+
+        if (null === $results || !isset($results['code'])) {
+            return null;
+        }
+
+        return $this->findOneByIdentifier($results['code']);
     }
 
     /**

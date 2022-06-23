@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler;
+use Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleMockHandlerStack;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
@@ -19,6 +20,7 @@ use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Message;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
@@ -40,11 +42,8 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
 
     public function test_it_sends_a_product_model_created_webhook_event()
     {
-        $container = [];
+        /** @var GuzzleMockHandlerStack $handlerStack */
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([new Response(200)]));
-        $history = Middleware::history($container);
-        $handlerStack->push($history);
 
         $message = new BulkEvent(
             [
@@ -61,10 +60,9 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        $this->assertCount(1, $container);
+        $this->assertCount(1, $handlerStack->historyContainer());
 
-        /** @var Request $request */
-        $request = $container[0]['request'];
+        $request = Message::parseRequest($handlerStack->historyContainer()[0]['request']);
         $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
@@ -73,11 +71,8 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
 
     public function test_it_sends_a_product_model_updated_webhook_event()
     {
-        $container = [];
+        /** @var GuzzleMockHandlerStack $handlerStack */
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([new Response(200)]));
-        $history = Middleware::history($container);
-        $handlerStack->push($history);
 
         $message = new BulkEvent(
             [
@@ -94,10 +89,9 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        $this->assertCount(1, $container);
+        $this->assertCount(1, $handlerStack->historyContainer());
 
-        /** @var Request $request */
-        $request = $container[0]['request'];
+        $request = Message::parseRequest($handlerStack->historyContainer()[0]['request']);
         $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
@@ -106,12 +100,8 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
 
     public function test_it_sends_a_product_model_removed_webhook_event()
     {
-        $container = [];
-        /** @var HandlerStack $handlerStack */
+        /** @var GuzzleMockHandlerStack $handlerStack */
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([new Response(200)]));
-        $history = Middleware::history($container);
-        $handlerStack->push($history);
 
         $message = new BulkEvent(
             [
@@ -131,10 +121,9 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        $this->assertCount(1, $container);
+        $this->assertCount(1, $handlerStack->historyContainer());
 
-        /** @var $request */
-        $request = $container[0]['request'];
+        $request = Message::parseRequest($handlerStack->historyContainer()[0]['request']);
         $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
 
         $this->assertEquals($this->expectedProductModelRemovedPayload(), $requestContent);
@@ -230,7 +219,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         return [
             'action' => 'product_model.updated',
             'event_id' => '0d931d13-8eae-4f4a-bf37-33d3a932b8c9',
-            'event_datetime' => '2020-12-04T16:02:47+01:00',
+            'event_datetime' => '2020-12-04T15:02:47+00:00',
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
@@ -243,7 +232,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         return [
             'action' => 'product_model.created',
             'event_id' => '0d931d13-8eae-4f4a-bf37-33d3a932b8c9',
-            'event_datetime' => '2020-12-04T16:02:47+01:00',
+            'event_datetime' => '2020-12-04T15:02:47+00:00',
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
@@ -256,7 +245,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         return [
             'action' => 'product_model.removed',
             'event_id' => '0d931d13-8eae-4f4a-bf37-33d3a932b8c9',
-            'event_datetime' => '2020-12-04T16:02:47+01:00',
+            'event_datetime' => '2020-12-04T15:02:47+00:00',
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',

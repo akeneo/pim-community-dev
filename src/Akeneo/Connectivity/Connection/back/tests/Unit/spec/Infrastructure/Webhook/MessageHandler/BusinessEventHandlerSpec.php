@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksCommand;
-use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
+use Akeneo\Platform\Component\EventQueue\BulkEventNormalizer;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 
 /**
@@ -22,11 +19,10 @@ use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 class BusinessEventHandlerSpec extends ObjectBehavior
 {
     public function let(
-        SendBusinessEventToWebhooksHandler $commandHandler,
-        EventDispatcherInterface $eventDispatcher
+        LoggerInterface $logger,
+        BulkEventNormalizer $normalizer
     ): void {
-        $eventDispatcher->dispatch(Argument::type('object'))->willReturn(Argument::type('object'));
-        $this->beConstructedWith($commandHandler, $eventDispatcher);
+        $this->beConstructedWith('project_dir', $logger, $normalizer);
     }
 
     public function it_is_initializable(): void
@@ -41,27 +37,20 @@ class BusinessEventHandlerSpec extends ObjectBehavior
             ->shouldYield(new \ArrayIterator([BulkEventInterface::class => ['from_transport' => 'webhook']]));
     }
 
-    public function it_executes_a_command_to_process_the_message($commandHandler): void
+    public function it_debugs_the_launched_command(LoggerInterface $logger, BulkEventNormalizer $normalizer): void
     {
         $event = new BulkEvent([]);
 
-        $commandHandler->handle(new SendBusinessEventToWebhooksCommand($event))
-            ->shouldBeCalled();
+        $normalizer->normalize($event)->willReturn([
+            ['normalized_event1'],
+            ['normalized_event2'],
+        ]);
 
-        $this->__invoke($event);
-    }
+        $commandLine = <<<'EOS'
+            Command line: "'project_dir/bin/console' 'akeneo:connectivity:send-business-event' '[["normalized_event1"],["normalized_event2"]]'"
+        EOS;
 
-    public function it_dispatches_a_message_processed_event_once_the_message_has_been_treated(
-        $commandHandler,
-        $eventDispatcher
-    ): void {
-        $event = new BulkEvent([]);
-
-        $commandHandler->handle(new SendBusinessEventToWebhooksCommand($event))
-            ->shouldBeCalled();
-
-        $eventDispatcher->dispatch(new MessageProcessedEvent())
-            ->shouldBeCalled();
+        $logger->debug(\trim($commandLine))->shouldBeCalled();
 
         $this->__invoke($event);
     }
