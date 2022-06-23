@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
+namespace Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
 
@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
 class RootCategory
 {
     /**
-     * @param ReadModel\RootCategory[] $rootCategories
+     * @param \Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory[] $rootCategories
      *
      * @return array
      */

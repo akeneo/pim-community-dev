@@ -2,22 +2,22 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
 
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCount;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCount;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory;
 
 class ListChildrenCategoriesWithCountHandlerSpec extends ObjectBehavior
 {
     function let(
-        CategoryRepositoryInterface $categoryRepository,
-        UserContext $userContext,
-        Query\ListChildrenCategoriesWithCountIncludingSubCategories $listIncludingSubCategories,
-        Query\ListChildrenCategoriesWithCountNotIncludingSubCategories $listNotIncludingSubCategories
+        CategoryRepositoryInterface                                                                                   $categoryRepository,
+        UserContext                                                                                                   $userContext,
+        \Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountIncludingSubCategories    $listIncludingSubCategories,
+        \Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountNotIncludingSubCategories $listNotIncludingSubCategories
     ) {
         $this->beConstructedWith(
             $categoryRepository,

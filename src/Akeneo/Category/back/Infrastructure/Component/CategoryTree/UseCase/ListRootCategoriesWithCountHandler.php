@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
+namespace Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase;
 
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
+use Akeneo\Category\Domain\Component\CategoryTree\Query\ListRootCategoriesWithCountIncludingSubCategories;
+use Akeneo\Category\Domain\Component\CategoryTree\Query\ListRootCategoriesWithCountNotIncludingSubCategories;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 
@@ -21,24 +22,25 @@ class ListRootCategoriesWithCountHandler
     /** @var UserContext */
     private $userContext;
 
-    /** @var Query\ListRootCategoriesWithCountIncludingSubCategories */
+    /** @var ListRootCategoriesWithCountIncludingSubCategories */
     private $listAndCountIncludingSubCategories;
 
-    /** @var Query\ListRootCategoriesWithCountNotIncludingSubCategories */
+    /** @var ListRootCategoriesWithCountNotIncludingSubCategories */
     private $listAndCountNotIncludingSubCategories;
 
     /**
-     * @param CategoryRepositoryInterface                                $categoryRepository
-     * @param UserContext                                                $userContext
-     * @param Query\ListRootCategoriesWithCountIncludingSubCategories    $listAndCountIncludingSubCategories
-     * @param Query\ListRootCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param UserContext $userContext
+     * @param ListRootCategoriesWithCountIncludingSubCategories $listAndCountIncludingSubCategories
+     * @param ListRootCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
      */
     public function __construct(
-        CategoryRepositoryInterface $categoryRepository,
-        UserContext $userContext,
-        Query\ListRootCategoriesWithCountIncludingSubCategories $listAndCountIncludingSubCategories,
-        Query\ListRootCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
-    ) {
+        CategoryRepositoryInterface                          $categoryRepository,
+        UserContext                                          $userContext,
+        ListRootCategoriesWithCountIncludingSubCategories    $listAndCountIncludingSubCategories,
+        ListRootCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
+    )
+    {
         $this->categoryRepository = $categoryRepository;
         $this->userContext = $userContext;
         $this->listAndCountIncludingSubCategories = $listAndCountIncludingSubCategories;
@@ -48,7 +50,7 @@ class ListRootCategoriesWithCountHandler
     /**
      * @param ListRootCategoriesWithCount $query
      *
-     * @return ReadModel\RootCategory[]
+     * @return RootCategory[]
      */
     public function handle(ListRootCategoriesWithCount $query): array
     {

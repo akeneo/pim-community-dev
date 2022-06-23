@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
 
+use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCount;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCount;
 
 class ListRootCategoriesWithCountSpec extends ObjectBehavior
 {

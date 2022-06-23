@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
+namespace Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel;
 
 /**
  * DTO representing the root categories in the category tree.

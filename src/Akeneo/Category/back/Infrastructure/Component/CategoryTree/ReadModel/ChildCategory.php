@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
+namespace Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel;
 
 /**
  * DTO representing a category to expand in the tree, with all the children to expand as well.

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\CategoryTree;
 
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
@@ -14,7 +14,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ListChildrenCategoriesWithCountIncludingSubCategories implements Query\ListChildrenCategoriesWithCountIncludingSubCategories
+class ListChildrenCategoriesWithCountIncludingSubCategories implements \Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountIncludingSubCategories
 {
     /** @var Connection */
     private $connection;

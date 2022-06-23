@@ -2,22 +2,22 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
 
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCount;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCountHandler;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCount;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCountHandler;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory;
 
 class ListRootCategoriesWithCountHandlerSpec extends ObjectBehavior
 {
     function let(
-        CategoryRepositoryInterface $categoryRepository,
-        UserContext $userContext,
-        Query\ListRootCategoriesWithCountIncludingSubCategories $listIncludingSubCategories,
-        Query\ListRootCategoriesWithCountNotIncludingSubCategories $listNotIncludingSubCategories
+        CategoryRepositoryInterface                                                                               $categoryRepository,
+        UserContext                                                                                               $userContext,
+        \Akeneo\Category\Domain\Component\CategoryTree\Query\ListRootCategoriesWithCountIncludingSubCategories    $listIncludingSubCategories,
+        \Akeneo\Category\Domain\Component\CategoryTree\Query\ListRootCategoriesWithCountNotIncludingSubCategories $listNotIncludingSubCategories
     ) {
         $this->beConstructedWith(
             $categoryRepository,
