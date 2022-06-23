@@ -13,7 +13,7 @@ define([
   'pim/form',
   'pim/template/product/start-copy',
   'pim/analytics',
-  'pim/feature-flags'
+  'pim/feature-flags',
 ], function ($, _, __, BaseForm, template, analytics, FeatureFlags) {
   return BaseForm.extend({
     template: _.template(template),

@@ -61,7 +61,7 @@ define([
           avatar: this.getAvatar(),
           logoutLabel: __(this.config.logout),
           userAccountLabel: __(this.config.userAccount),
-          freeTrialEnabled: FeatureFlags.isEnabled('free_trial')
+          freeTrialEnabled: FeatureFlags.isEnabled('free_trial'),
         })
       );
 
