@@ -12,20 +12,26 @@ import {StatusCriterionState} from '../../ProductSelection/criteria/StatusCriter
 
 type Props = {
     id: string;
+    onChange: (isDirty: boolean) => void;
 };
 
-const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id}, ref) => {
+const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, ref) => {
     const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.SETTINGS, 'pim_catalog_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
     const catalogCriteria = useCatalogCriteria(id);
     const [criteria, setCriteria] = useState<Criteria>(catalogCriteria);
-    const saveCriteria = useSaveCriteria(id);
+    const saveCriteria = useSaveCriteria(
+        id,
+        () => { onChange(false) },
+        () => { onChange(true) },
+    );
 
     useImperativeHandle(ref, () => ({
-        save() {
+        save: () => {
             const criteriaStates: StatusCriterionState[] = criteria.map((value) => value.state);
             saveCriteria.mutate(criteriaStates);
-        },
+            onChange(false);
+        }
     }));
 
     const handleSwitchTo = useCallback(
@@ -41,7 +47,9 @@ const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id}, ref) => {
             <TabBar isCurrent={isCurrent} switchTo={handleSwitchTo} />
 
             {isCurrent(Tabs.SETTINGS) && <Settings />}
-            {isCurrent(Tabs.PRODUCT_SELECTION) && <ProductSelection criteria={criteria} setCriteria={setCriteria} />}
+            {isCurrent(Tabs.PRODUCT_SELECTION) &&
+            <ProductSelection criteria={criteria} setCriteria={setCriteria} onChange={onChange} />
+            }
         </>
     );
 });

@@ -10,15 +10,23 @@ type Result = {
     error: Error;
     mutate: UseMutateFunction<undefined | void, Error, CriterionStates[]>;
 };
-
-export const useSaveCriteria = (catalogId: string): Result => {
-    return useMutation<undefined | void, Error, CriterionStates[]>(async (criteria: CriterionStates[]) => {
-        await fetch('/rest/catalogs/' + catalogId + '/save-criteria', {
-            method: 'POST',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-            body: JSON.stringify(criteria),
-        });
-    });
+export const useSaveCriteria = (catalogId: string, onSuccess: () => void, onError: () => void): Result => {
+    return useMutation<undefined | void, Error, CriterionStates[]>(
+        async (criteria: CriterionStates[]) => {
+            const response = await fetch('/rest/catalogs/' + catalogId + '/save-criteria', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify(criteria),
+            });
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+        },
+        {
+            onError: (error: Error, variables: CriterionStates[]) => {onError()},
+            onSuccess: (data: undefined | void, variables: CriterionStates[]) => {onSuccess()}
+        }
+    );
 };

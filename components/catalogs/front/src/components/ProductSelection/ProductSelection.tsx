@@ -16,14 +16,16 @@ const Header = styled.div`
 type Props = {
     criteria: Criteria;
     setCriteria: (criteria: Criteria) => void;
+    onChange: (isDirty: boolean) => void;
 };
 
-const ProductSelection: FC<Props> = ({criteria, setCriteria}) => {
+const ProductSelection: FC<Props> = ({criteria, setCriteria, onChange}) => {
     const addCriterion = useCallback(
         (criterion: Criterion<CriterionStates>) => {
             setCriteria([...criteria, criterion]);
+            onChange(true);
         },
-        [criteria, setCriteria]
+        [criteria, setCriteria, onChange]
     );
 
     const updateCriterion = useCallback(
@@ -38,15 +40,17 @@ const ProductSelection: FC<Props> = ({criteria, setCriteria}) => {
                           }
                 )
             );
+            onChange(true);
         },
-        [criteria, setCriteria]
+        [criteria, setCriteria, onChange]
     );
 
     const removeCriterion = useCallback(
         (criterion: Criterion<CriterionStates>) => {
             setCriteria(criteria.filter(old => old.id !== criterion.id));
+            onChange(true);
         },
-        [criteria, setCriteria]
+        [criteria, setCriteria, onChange]
     );
 
     const list = criteria.map(criterion => {
