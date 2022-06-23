@@ -7,6 +7,8 @@ namespace Akeneo\Catalogs\Test\Integration;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -170,7 +172,7 @@ abstract class IntegrationTestCase extends WebTestCase
     /**
      * @param array<UserIntent> $intents
      */
-    protected function createProduct(string $identifier, array $intents = [], ?int $userId = null): void
+    protected function createProduct(string $identifier, array $intents = [], ?int $userId = null): AbstractProduct
     {
         $bus = self::getContainer()->get('pim_enrich.product.message_bus');
 
@@ -187,6 +189,8 @@ abstract class IntegrationTestCase extends WebTestCase
         $bus->dispatch($command);
 
         self::getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        return self::getContainer()->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     protected function createCatalog(string $id, string $name, string $ownerUsername): void

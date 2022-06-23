@@ -29,7 +29,7 @@ class GetProductIdentifiersActionTest extends IntegrationTestCase
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
         $this->createProduct('blue');
-        $this->createProduct('green');
+        $green = $this->createProduct('green');
 
         $this->client->request(
             'GET',
@@ -48,6 +48,10 @@ class GetProductIdentifiersActionTest extends IntegrationTestCase
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertEquals(['blue', 'green'], $payload['_embedded']['items']);
+        Assert::assertEquals(\sprintf(
+            'http://localhost/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/product-identifiers?search_after=%s&limit=2',
+            $green->getUuid(),
+        ), $payload['_links']['next']['href']);
     }
 
     public function testItReturnsAnEmptyListWhenTheCatalogIsDisabled(): void

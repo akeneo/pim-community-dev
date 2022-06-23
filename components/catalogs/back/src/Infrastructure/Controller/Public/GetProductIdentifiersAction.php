@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
+use Akeneo\Catalogs\Infrastructure\Persistence\GetProductUuidFromIdentifierQuery;
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
@@ -34,6 +35,7 @@ class GetProductIdentifiersAction
         private TokenStorageInterface $tokenStorage,
         private SecurityFacadeInterface $security,
         private RouterInterface $router,
+        private GetProductUuidFromIdentifierQuery $getProductUuidFromIdentifierQuery,
     ) {
     }
 
@@ -47,9 +49,9 @@ class GetProductIdentifiersAction
         $this->denyAccessUnlessOwnerOfCatalog($catalog, $this->getCurrentUsername());
 
         [$searchAfter, $limit] = $this->getParameters($request);
-        $uuids = $this->getProductUuids($catalog, $searchAfter, $limit);
+        $identifiers = $this->getProductIdentifiers($catalog, $searchAfter, $limit);
 
-        return new JsonResponse($this->paginate($catalog, $uuids, $searchAfter, $limit), Response::HTTP_OK);
+        return new JsonResponse($this->paginate($catalog, $identifiers, $searchAfter, $limit), Response::HTTP_OK);
     }
 
     private function getCatalog(string $id): Catalog
@@ -85,31 +87,31 @@ class GetProductIdentifiersAction
     /**
      * @return array<string>
      */
-    private function getProductUuids(Catalog $catalog, ?string $searchAfter, int $limit): array
+    private function getProductIdentifiers(Catalog $catalog, ?string $searchAfter, int $limit): array
     {
         if (!$catalog->isEnabled()) {
             return [];
         }
 
         try {
-            return $this->queryBus->execute(new GetProductIdentifiersQuery(
-                $catalog->getId(),
-                $searchAfter,
-                $limit,
-            ));
+            return $this->queryBus->execute(
+                new GetProductIdentifiersQuery(
+                    $catalog->getId(),
+                    $searchAfter,
+                    $limit,
+                )
+            );
         } catch (ValidationFailedException $e) {
             throw new BadRequestHttpException();
         }
     }
 
     /**
-     * @param array<string> $uuids
+     * @param array<string> $identifiers
      * @return array<array-key, mixed>
      */
-    private function paginate(Catalog $catalog, array $uuids, ?string $searchAfter, int $limit): array
+    private function paginate(Catalog $catalog, array $identifiers, ?string $searchAfter, int $limit): array
     {
-        $last = \end($uuids);
-
         $result = [
             '_links' => [
                 'self' => [
@@ -117,27 +119,35 @@ class GetProductIdentifiersAction
                         'id' => $catalog->getId(),
                         'search_after' => $searchAfter,
                         'limit' => $limit,
-                    ]),
+                    ], RouterInterface::ABSOLUTE_URL),
                 ],
                 'first' => [
                     'href' => $this->router->generate('akeneo_catalogs_public_get_product_identifiers', [
                         'id' => $catalog->getId(),
                         'limit' => $limit,
-                    ]),
+                    ], RouterInterface::ABSOLUTE_URL),
                 ],
             ],
             '_embedded' => [
-                'items' => $uuids,
+                'items' => $identifiers,
             ],
         ];
 
-        if (\count($uuids) >= $limit) {
+        $lastIdentifier = \end($identifiers);
+
+        if (false !== $lastIdentifier && \count($identifiers) >= $limit) {
+            try {
+                $lastUuid = $this->getProductUuidFromIdentifierQuery->execute($lastIdentifier);
+            } catch (\Exception $e) {
+                return $result;
+            }
+
             $result['_links']['next'] = [
                 'href' => $this->router->generate('akeneo_catalogs_public_get_product_identifiers', [
                     'id' => $catalog->getId(),
-                    'search_after' => $last,
+                    'search_after' => $lastUuid,
                     'limit' => $limit,
-                ]),
+                ], RouterInterface::ABSOLUTE_URL),
             ];
         }
 
