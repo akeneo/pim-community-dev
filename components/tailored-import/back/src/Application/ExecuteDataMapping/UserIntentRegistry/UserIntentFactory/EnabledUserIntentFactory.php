@@ -18,7 +18,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\Unex
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 final class EnabledUserIntentFactory implements UserIntentFactoryInterface
@@ -32,16 +32,11 @@ final class EnabledUserIntentFactory implements UserIntentFactoryInterface
             throw new \InvalidArgumentException('The target must be a PropertyTarget and be of type "enabled"');
         }
 
-        // TODO replace with BooleanValue when having EnabledReplacementOperation
-        if (!$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, StringValue::class, self::class);
+        if (!$value instanceof BooleanValue) {
+            throw new UnexpectedValueException($value, BooleanValue::class, self::class);
         }
 
-        if (!\in_array($value->getValue(), ['1', '0'], true)) {
-            throw new \InvalidArgumentException('Enabled property can only be set with "1" or "0"');
-        }
-
-        return new SetEnabled((bool) $value->getValue());
+        return new SetEnabled($value->getValue());
     }
 
     public function supports(TargetInterface $target): bool

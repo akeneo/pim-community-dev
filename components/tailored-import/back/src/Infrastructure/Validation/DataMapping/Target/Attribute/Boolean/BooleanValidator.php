@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Boolean;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\DataMappingUuid;
@@ -49,8 +50,8 @@ final class BooleanValidator extends ConstraintValidator
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
                 'operations' => new Operations(
-                    ['boolean_replacement'],
-                    ['boolean_replacement'],
+                    [BooleanReplacementOperation::TYPE],
+                    [BooleanReplacementOperation::TYPE],
                 ),
                 'sample_data' => new SampleData(),
             ],

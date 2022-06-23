@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation;
 
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOperation;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\BooleanReplacementOperation as BooleanReplacementOperationConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Uuid;
@@ -51,7 +52,10 @@ class BooleanReplacementOperationValidator extends ConstraintValidator
         $this->context->getValidator()->inContext($this->context)->validate($operation, new Collection([
             'fields' => [
                 'uuid' => [new Uuid(), new NotBlank()],
-                'type' => new EqualTo(BooleanReplacementOperation::TYPE),
+                'type' => new Choice([
+                    BooleanReplacementOperation::TYPE,
+                    EnabledReplacementOperation::TYPE,
+                ]),
                 'mapping' => new Collection([
                     'true' => $fieldConstraint,
                     'false' => $fieldConstraint,

@@ -31,11 +31,6 @@ final class BooleanReplacementOperation implements OperationInterface
         return $this->uuid;
     }
 
-    public function getMapping(): array
-    {
-        return $this->mapping;
-    }
-
     public function normalize(): array
     {
         return [

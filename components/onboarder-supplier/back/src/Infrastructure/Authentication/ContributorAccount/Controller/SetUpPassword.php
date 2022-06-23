@@ -21,17 +21,15 @@ final class SetUpPassword
 
     public function __invoke(Request $request): JsonResponse
     {
-        $decodedRequest = \json_decode($request->getContent(), true);
-        if (!array_key_exists('contributorAccountIdentifier', $decodedRequest)
-            || !array_key_exists('plainTextPassword', $decodedRequest)) {
+        if (!$request->request->has('contributorAccountIdentifier') || !$request->request->has('plainTextPassword')) {
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
 
         try {
             ($this->updatePasswordHandler)(
                 new UpdatePassword(
-                    $decodedRequest['contributorAccountIdentifier'],
-                    $decodedRequest['plainTextPassword'],
+                    $request->get('contributorAccountIdentifier'),
+                    $request->get('plainTextPassword'),
                 )
             );
         } catch (InvalidPassword $e) {

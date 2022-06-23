@@ -12,16 +12,14 @@ type BooleanReplacementOperation = {
   mapping: BooleanReplacementValues;
 };
 
-const getDefaultBooleanReplacementOperation = (): BooleanReplacementOperation => {
-  return {
-    uuid: uuid(),
-    type: BOOLEAN_REPLACEMENT_OPERATION_TYPE,
-    mapping: {
-      false: ['0'],
-      true: ['1'],
-    },
-  };
-};
+const getDefaultBooleanReplacementOperation = (): BooleanReplacementOperation => ({
+  uuid: uuid(),
+  type: BOOLEAN_REPLACEMENT_OPERATION_TYPE,
+  mapping: {
+    false: ['0'],
+    true: ['1'],
+  },
+});
 
 const isBooleanReplacementOperation = (operation?: any): operation is BooleanReplacementOperation =>
   undefined !== operation &&
@@ -54,17 +52,15 @@ const BooleanReplacementOperationBlock = ({
       collapseButtonLabel={translate('akeneo.tailored_import.data_mapping.operations.common.collapse')}
       onCollapse={isOpen ? close : open}
       isOpen={isOpen}
-      title={translate(`akeneo.tailored_import.data_mapping.operations.boolean_replacement.title`)}
+      title={translate('akeneo.tailored_import.data_mapping.operations.boolean_replacement.title')}
     >
       <Section>
-        <Field label={translate(`akeneo.tailored_import.data_mapping.operations.boolean_replacement.field.yes_value`)}>
+        <Field label={translate('akeneo.tailored_import.data_mapping.operations.boolean_replacement.field.yes_value')}>
           <TagInput
             value={operation.mapping.true}
             onChange={yesValues => handleMappingChange('true', yesValues)}
             invalid={0 < trueErrors.length}
-            placeholder={translate(
-              `akeneo.tailored_import.data_mapping.operations.boolean_replacement.field.to_placeholder`
-            )}
+            placeholder={translate('akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder')}
           />
           {trueErrors.map((error, index) => (
             <Helper key={index} level="error">
@@ -72,14 +68,12 @@ const BooleanReplacementOperationBlock = ({
             </Helper>
           ))}
         </Field>
-        <Field label={translate(`akeneo.tailored_import.data_mapping.operations.boolean_replacement.field.no_value`)}>
+        <Field label={translate('akeneo.tailored_import.data_mapping.operations.boolean_replacement.field.no_value')}>
           <TagInput
             value={operation.mapping.false}
             onChange={noValues => handleMappingChange('false', noValues)}
             invalid={0 < falseErrors.length}
-            placeholder={translate(
-              `akeneo.tailored_import.data_mapping.operations.boolean_replacement.field.to_placeholder`
-            )}
+            placeholder={translate('akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder')}
           />
           {falseErrors.map((error, index) => (
             <Helper key={index} level="error">

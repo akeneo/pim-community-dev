@@ -19,40 +19,52 @@ use PhpSpec\ObjectBehavior;
 
 class BooleanReplacementOperationSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith(
             '00000000-0000-0000-0000-000000000000',
-            ['yes' => true, 'no' => false],
+            [
+                'true' => ['oui'],
+                'false' => ['non'],
+            ],
         );
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(BooleanReplacementOperation::class);
     }
 
-    public function it_implements_operation_interface()
+    public function it_implements_operation_interface(): void
     {
         $this->shouldBeAnInstanceOf(OperationInterface::class);
     }
 
-    public function it_returns_mapping()
+    public function it_can_tell_if_a_value_is_mapped(): void
     {
-        $this->getMapping()->shouldReturn([
-            'yes' => true,
-            'no' => false,
-        ]);
+        $this->hasMappedValue('oui')->shouldReturn(true);
+        $this->hasMappedValue('non')->shouldReturn(true);
+
+        $this->hasMappedValue('ja')->shouldReturn(false);
+        $this->hasMappedValue('nein')->shouldReturn(false);
     }
 
-    public function it_normalize_operation()
+    public function it_can_get_the_mapped_value(): void
+    {
+        $this->getMappedValue('oui')->shouldReturn(true);
+        $this->getMappedValue('non')->shouldReturn(false);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('getMappedValue', ['not found']);
+    }
+
+    public function it_normalizes_operation(): void
     {
         $this->normalize()->shouldReturn([
             'uuid' => '00000000-0000-0000-0000-000000000000',
             'type' => 'boolean_replacement',
             'mapping' => [
-                'yes' => true,
-                'no' => false,
+                'true' => ['oui'],
+                'false' => ['non'],
             ],
         ]);
     }

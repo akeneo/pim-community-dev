@@ -77,6 +77,7 @@ akeneo.tailored_import:
         link: Click here to check our Help Center.
       remove: Are you sure you want to remove this operation?
       replacement:
+        to_placeholder: Define the source values in your file.
         modal:
             options: Manage options
             subtitle: Replacement
@@ -95,15 +96,17 @@ akeneo.tailored_import:
               header:
                 replacement: Options labels
                 source_values: Source values
-              field:
-                to_placeholder: Define the source values in your file.
             validation_error: Some replacement values are invalid, please refer to the error messages below each field.
       boolean_replacement:
         title: Boolean replacement
         field:
           yes_value: Yes value
           no_value: No value
-          to_placeholder: Define the source value in your file.
+      enabled_replacement:
+        title: Enabled replacement
+        field:
+          enabled_value: Enabled value
+          disabled_value: Disabled value
     sources:
       title: Source(s)
       add:

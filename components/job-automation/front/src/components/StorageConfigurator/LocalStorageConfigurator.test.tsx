@@ -27,7 +27,9 @@ test('it allows user to fill local storage file_path field', () => {
     <LocalStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
   );
 
-  const file_pathInput = screen.getByLabelText('akeneo.automation.storage.file_path.label pim_common.required_label');
+  const file_pathInput = screen.getByLabelText(
+    'akeneo.job_automation.storage.file_path.label pim_common.required_label'
+  );
   userEvent.type(file_pathInput, 'x');
 
   expect(onStorageChange).toHaveBeenLastCalledWith({

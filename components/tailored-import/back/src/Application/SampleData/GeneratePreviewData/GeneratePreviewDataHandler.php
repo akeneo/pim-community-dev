@@ -15,7 +15,6 @@ namespace Akeneo\Platform\TailoredImport\Application\SampleData\GeneratePreviewD
 
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
 use Akeneo\Platform\TailoredImport\Domain\Hydrator\OperationCollectionHydratorInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
 
 final class GeneratePreviewDataHandler
 {
@@ -27,10 +26,14 @@ final class GeneratePreviewDataHandler
 
     public function handle(GeneratePreviewDataQuery $getRefreshedSampleDataQuery): GeneratePreviewDataResult
     {
-        $operations = $this->operationCollectionHydrator->hydrate($getRefreshedSampleDataQuery->target, $getRefreshedSampleDataQuery->operations);
-        $sampleData = new ArrayValue($getRefreshedSampleDataQuery->sampleData);
-
-        $previewData = $this->operationApplier->applyOperationWithIndexedResults($operations, $sampleData);
+        $operations = $this->operationCollectionHydrator->hydrate(
+            $getRefreshedSampleDataQuery->target,
+            $getRefreshedSampleDataQuery->operations,
+        );
+        $previewData = $this->operationApplier->applyOperationWithIndexedResults(
+            $operations,
+            $getRefreshedSampleDataQuery->sampleData,
+        );
 
         return GeneratePreviewDataResult::create($previewData);
     }

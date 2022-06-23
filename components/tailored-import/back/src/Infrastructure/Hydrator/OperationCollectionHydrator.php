@@ -20,6 +20,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToDateOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
@@ -59,6 +60,7 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
         return \array_map(
             static fn (array $normalizedOperation) => match ($normalizedOperation['type']) {
                 BooleanReplacementOperation::TYPE => new BooleanReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
+                EnabledReplacementOperation::TYPE => new EnabledReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 CleanHTMLTagsOperation::TYPE => new CleanHTMLTagsOperation($normalizedOperation['uuid']),
                 SplitOperation::TYPE => new SplitOperation($normalizedOperation['uuid'], $normalizedOperation['separator']),
                 SimpleSelectReplacementOperation::TYPE => new SimpleSelectReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
