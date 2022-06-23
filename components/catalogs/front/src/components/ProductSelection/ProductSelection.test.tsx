@@ -7,7 +7,6 @@ import {fireEvent, render, screen} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {ProductSelection} from './ProductSelection';
-import {useCatalogCriteria} from './hooks/useCatalogCriteria';
 import {Operator} from './models/Operator';
 import {Criterion, CriterionState} from './models/Criterion';
 import {AddCriterionDropdown} from './components/AddCriterionDropdown';
