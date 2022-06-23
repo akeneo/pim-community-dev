@@ -266,7 +266,7 @@ ifeq ($(INSTANCE_NAME_PREFIX),pimci)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
 endif
 # Tricks to use OR like statement in ifeq -> https://stackoverflow.com/questions/7656425/makefile-ifeq-logical-or
-ifneq (,$(filter $(INSTANCE_NAME_PREFIX),pimup pimci-pr pimci-pr-ge pimci-pr-ft))
+ifneq (,$(filter $(INSTANCE_NAME_PREFIX),pimup pimci-pr pimci-pr-ge))
 	echo "[DEGUG ADAM] Enter in ifneq trick"
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
