@@ -8,7 +8,6 @@ import {useCatalogCriteria} from '../../ProductSelection/hooks/useCatalogCriteri
 import {CatalogEditRef} from '../CatalogEdit';
 import {Criteria} from '../../ProductSelection/models/Criteria';
 import {useSaveCriteria} from '../../ProductSelection/hooks/useSaveCriteria';
-import {Operator} from '../../ProductSelection/models/Operator';
 import {StatusCriterionState} from '../../ProductSelection/criteria/StatusCriterion';
 
 type Props = {
@@ -18,21 +17,16 @@ type Props = {
 const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id}, ref) => {
     const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.SETTINGS, 'pim_catalog_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
+    const catalogCriteria = useCatalogCriteria(id);
+    const [criteria, setCriteria] = useState<Criteria>(catalogCriteria);
     const saveCriteria = useSaveCriteria(id);
 
     useImperativeHandle(ref, () => ({
         save() {
-            const criteria: StatusCriterionState[] = [{
-                field: 'status',
-                operator: Operator.EQUALS,
-                value: false
-            }];
-            saveCriteria.mutate(criteria);
+            const criteriaStates: StatusCriterionState[] = criteria.map((value) => value.state);
+            saveCriteria.mutate(criteriaStates);
         },
     }));
-
-    const catalogCriteria = useCatalogCriteria(id);
-    const [criteria, setCriteria] = useState<Criteria>(catalogCriteria);
 
     const handleSwitchTo = useCallback(
         (tab: string) => {
