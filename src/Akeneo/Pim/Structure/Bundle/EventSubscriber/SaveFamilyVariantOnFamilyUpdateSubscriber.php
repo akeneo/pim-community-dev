@@ -41,8 +41,8 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     /**
      * Validates and saves the family variants belonging to a family whenever it is updated.
      *
-     * As we are not in an import context, the `compute_family_variant_structure_changes` job is triggered
-     * by the bulkFamilyVariantSaver->saveAll() only when the family variant structure has been updated.
+     * When the family variant are saved, we disable the launch of the 'compute_family_variant_structure_changes' job
+     * because the compute is already done by the ComputeCompletenessOfProductsFamilyTasklet job
      *
      * hence, updating the catalog asynchronously.
      *
@@ -59,15 +59,13 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
             return;
         }
 
-        $shouldComputeFamilyVariantStructureChanges = \in_array(FamilyInterface::ATTRIBUTES_WERE_UPDATED, $subject->releaseEvents());
-
         $validationResponse = $this->validateFamilyVariants($subject);
         $validFamilyVariants = $validationResponse['valid_family_variants'];
         $allViolations = $validationResponse['violations'];
 
         Assert::isArray($validFamilyVariants);
         $this->bulkFamilyVariantSaver->saveAll($validFamilyVariants, [
-            ComputeFamilyVariantStructureChangesSubscriber::FORCE_JOB_LAUNCHING => $shouldComputeFamilyVariantStructureChanges,
+            ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true,
         ]);
 
         if (!empty($allViolations)) {
@@ -102,11 +100,9 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         $validFamilyVariants = $validationResponse['valid_family_variants'];
         $allViolations = $validationResponse['violations'];
 
-        $shouldComputeFamilyVariantStructureChanges = \in_array(FamilyInterface::ATTRIBUTES_WERE_UPDATED, $subject->releaseEvents());
-
         $this->bulkFamilyVariantSaver->saveAll(
             $validFamilyVariants,
-            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => $shouldComputeFamilyVariantStructureChanges]
+            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]
         );
 
         if (!empty($allViolations)) {

@@ -3,15 +3,14 @@
 namespace Specification\Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Structure\Bundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber;
-use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Collections\Collection;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Bundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Doctrine\Common\Collections\Collection;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -65,7 +64,6 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariants2,
         ConstraintViolationList $constraintViolationList
     ) {
-        $family->releaseEvents()->willReturn([FamilyInterface::ATTRIBUTES_WERE_UPDATED]);
         $family->getFamilyVariants()->willReturn($familyVariants);
 
         $familyVariants->getIterator()->willReturn($familyVariantsIterator);
@@ -101,7 +99,6 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariants2,
         FamilyVariantInterface $familyVariants3
     ) {
-        $family->releaseEvents()->willReturn([FamilyInterface::ATTRIBUTES_WERE_UPDATED]);
         $family->getFamilyVariants()->willReturn($familyVariants);
 
         $familyVariants->getIterator()->willReturn($familyVariantsIterator);
@@ -163,7 +160,6 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariants2,
         ConstraintViolationList $constraintViolationList
     ) {
-        $family->releaseEvents()->willReturn([FamilyInterface::ATTRIBUTES_WERE_UPDATED]);
         $family->getFamilyVariants()->willReturn($familyVariants);
 
         $familyVariants->getIterator()->willReturn($familyVariantsIterator);
@@ -199,7 +195,6 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariants2,
         FamilyVariantInterface $familyVariants3
     ) {
-        $family->releaseEvents()->willReturn([FamilyInterface::ATTRIBUTES_WERE_UPDATED]);
         $family->getFamilyVariants()->willReturn($familyVariants);
 
         $familyVariants->getIterator()->willReturn($familyVariantsIterator);
@@ -264,8 +259,6 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($family);
         $event->hasArgument('unitary')->willReturn(true);
         $event->getArgument('unitary')->willReturn(true);
-
-        $family->releaseEvents()->willReturn([]);
 
         $family->getFamilyVariants()->willReturn($familyVariants);
         $familyVariants->getIterator()->willReturn($familyVariantsIterator);

@@ -22,11 +22,6 @@ interface FamilyInterface extends
     TimestampableInterface
 {
     /**
-     * For now the events are a list of strings, but they can be converted to object when needed.
-     */
-    public const ATTRIBUTES_WERE_UPDATED = 'ATTRIBUTES_WERE_UPDATED';
-
-    /**
      * Get id
      *
      * @return int
@@ -204,9 +199,4 @@ interface FamilyInterface extends
      * @param AttributeInterface[] $attributes
      */
     public function updateAttributes(array $attributes): void;
-
-    /**
-     * @return string[]
-     */
-    public function releaseEvents(): array;
 }
