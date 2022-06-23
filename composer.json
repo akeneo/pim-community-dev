@@ -135,7 +135,7 @@
         "symfony/security-http": "^5.4.0",
         "symfony/swiftmailer-bundle": "^3.5.2",
         "symfony/templating": "^5.4.0",
-        "symfony/translation": "^5.4.0",
+        "symfony/translation": "^6.0.9",
         "symfony/twig-bundle": "^5.4.0",
         "symfony/validator": "^5.4.0",
         "symfony/yaml": "^5.4.0",
