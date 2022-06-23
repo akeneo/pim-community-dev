@@ -11,7 +11,7 @@ import {
 import {findByIdentifiers, findLoadedDescendantsIdentifiers, findOneByIdentifier, update} from '../helpers';
 import {useFetch, useRoute, useRouter} from '@akeneo-pim-community/shared';
 import {arrayUnique, useBooleanState} from 'akeneo-design-system';
-import { moveCategory } from '../infrastructure';
+import {moveCategory} from '../infrastructure';
 
 type Move = {
   identifier: number;
@@ -152,9 +152,7 @@ const useCategoryTreeNode = (id: number) => {
       setNodes(newNodesList);
 
       // Call to backend to persist the movement
-      const persistSuccess = await moveCategory(
-        router,
-        {
+      const persistSuccess = await moveCategory(router, {
         identifier,
         parentId: target.position === 'in' ? target.identifier : target.parentId,
         previousCategoryId: determineAfterWhichCategoryIdentifierToMove(target, targetParentNode.childrenIds),

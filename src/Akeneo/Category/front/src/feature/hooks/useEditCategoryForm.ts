@@ -49,11 +49,11 @@ const useEditCategoryForm = (categoryId: number) => {
     }
 
     return (
-      JSON.stringify(originalFormData.permissions.view.value) !=
+      JSON.stringify(originalFormData.permissions.view.value) !==
         JSON.stringify(editedFormData.permissions.view.value) ||
-      JSON.stringify(originalFormData.permissions.edit.value) !=
+      JSON.stringify(originalFormData.permissions.edit.value) !==
         JSON.stringify(editedFormData.permissions.edit.value) ||
-      JSON.stringify(originalFormData.permissions.own.value) != JSON.stringify(editedFormData.permissions.own.value)
+      JSON.stringify(originalFormData.permissions.own.value) !== JSON.stringify(editedFormData.permissions.own.value)
     );
   }, [originalFormData, editedFormData]);
 
