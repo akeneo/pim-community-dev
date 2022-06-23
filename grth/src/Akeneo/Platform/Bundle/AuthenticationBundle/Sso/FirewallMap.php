@@ -80,6 +80,8 @@ class FirewallMap extends SymfonyFirewallMap
                 return $contextService;
             }
         }
+
+        return null;
     }
 
     private function isSSOEnabled(): bool

@@ -1,14 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, {ImgHTMLAttributes} from 'react';
 import logoImage from '../assets/images/onboarderlogo.svg';
 
-const OnboarderLogo = () => {
-    return <Logo src={logoImage} />;
+const OnboarderLogo = ({...rest}: ImgHTMLAttributes<HTMLImageElement>) => {
+    return <img src={logoImage} alt="" {...rest} />;
 };
-
-const Logo = styled.img`
-    width: 213px;
-    margin-bottom: 30px;
-`;
 
 export {OnboarderLogo};

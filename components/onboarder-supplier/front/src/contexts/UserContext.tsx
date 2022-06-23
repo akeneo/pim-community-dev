@@ -4,18 +4,18 @@ type User = {
     email: string;
 };
 
-type ContextType = {
+type UserContextType = {
     user: User | null;
     updateUser: (user: User | null) => void;
     isAuthenticated: boolean;
 };
 
-const UserContext = createContext<ContextType>({user: null, updateUser: () => {}, isAuthenticated: false});
+const UserContext = createContext<UserContextType>({user: null, updateUser: () => {}, isAuthenticated: false});
 
 const UserContextProvider = ({children}: {children: ReactElement}) => {
     const [user, updateUser] = useState<User | null>(null);
 
-    const state: ContextType = {
+    const state: UserContextType = {
         user,
         updateUser,
         isAuthenticated: null !== user,

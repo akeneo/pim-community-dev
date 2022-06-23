@@ -37,7 +37,7 @@ const SetUpPassword = () => {
 
     return (
         <UnauthenticatedContainer>
-            <OnboarderLogo />
+            <OnboarderLogo width={213} />
             <WelcomeText>
                 <p>
                     <FormattedMessage
@@ -127,7 +127,7 @@ const SetUpPassword = () => {
 };
 
 const WelcomeText = styled.div`
-    margin-bottom: 30px;
+    margin: 30px 0 30px 0;
     color: ${getColor('grey140')};
 `;
 const ContributorEmail = styled.span`

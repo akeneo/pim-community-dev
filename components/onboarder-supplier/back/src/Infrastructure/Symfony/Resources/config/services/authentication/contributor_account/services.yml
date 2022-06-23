@@ -19,6 +19,12 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByEmail:
+        public: true
+        class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail
+        arguments:
+            - '@database_connection'
+
     #Event subscribers
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
         arguments:
@@ -49,6 +55,9 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken'
 
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\Security:
+        public: true
+
     #Command handlers
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler:
         arguments:
@@ -72,3 +81,8 @@ services:
         arguments:
             - '@twig'
             - '%env(AKENEO_PIM_URL)%'
+
+    #Authentication
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByEmail'
