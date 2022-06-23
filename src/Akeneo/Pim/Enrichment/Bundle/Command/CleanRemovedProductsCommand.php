@@ -10,6 +10,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CleanRemovedProductsCommand extends Command
@@ -28,7 +29,15 @@ class CleanRemovedProductsCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Erase documents present in Elasticsearch but not present in MySQL');
+        $this
+            ->addOption(
+                'batch-size',
+                false,
+                InputOption::VALUE_REQUIRED,
+                'Number of products to index per batch',
+                self::DEFAULT_BATCH_SIZE
+            )
+            ->setDescription('Erase documents present in Elasticsearch but not present in MySQL');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
