@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCred
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
+use Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleMockHandlerStack;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
@@ -18,16 +19,13 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Doctrine\DBAL\Connection as DbalConnection;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Message;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class ConsumeProductEventEndToEnd extends ApiTestCase
 {
@@ -57,8 +55,10 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             ->create(['code' => 'pant', 'attributes' => ['boolean_attribute', 'text_attribute']]);
 
         $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $this->dbalConnection = self::$container->get('database_connection');
-        $this->productLoader = self::$container->get('akeneo_connectivity.connection.fixtures.enrichment.product');
+        $this->dbalConnection = static::getContainer()->get('database_connection');
+        $this->productLoader = static::getContainer()->get(
+            'akeneo_connectivity.connection.fixtures.enrichment.product'
+        );
 
         $this->tshirtProduct = $this->productLoader->create(
             'blue-t-shirt',
@@ -96,12 +96,8 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
 
     public function test_it_sends_a_product_created_webhook_event()
     {
-        $container = [];
-        /** @var HandlerStack $handlerStack */
+        /** @var GuzzleMockHandlerStack $handlerStack */
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([new Response(200)]));
-        $history = Middleware::history($container);
-        $handlerStack->push($history);
 
         $message = new BulkEvent(
             [
@@ -124,25 +120,22 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        Assert::assertCount(1, $container);
+        Assert::assertCount(1, $handlerStack->historyContainer());
 
-        /** @var Request $request */
-        $request = $container[0]['request'];
-        $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
+        /** @var Request $requestObject */
+        $request = $handlerStack->historyContainer()[0]['request'];
+        $requestObject = Message::parseRequest($request);
+        $requestContent = \json_decode($requestObject->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
-        Assert::assertEquals(2, (int) $this->getEventCount('ecommerce'));
+        Assert::assertEquals(2, (int)$this->getEventCount('ecommerce'));
         $this->assertEquals($this->expectedProductCreatedPayload($this->tshirtProduct), $requestContent);
     }
 
     public function test_it_sends_a_product_updated_webhook_event()
     {
-        $container = [];
-        /** @var HandlerStack $handlerStack */
+        /** @var GuzzleMockHandlerStack $handlerStack */
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([new Response(200)]));
-        $history = Middleware::history($container);
-        $handlerStack->push($history);
 
         $message = new BulkEvent(
             [
@@ -159,25 +152,21 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        Assert::assertCount(1, $container);
+        Assert::assertCount(1, $handlerStack->historyContainer());
 
-        /** @var Request $request */
-        $request = $container[0]['request'];
-        $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
+        $request = $handlerStack->historyContainer()[0]['request'];
+        $requestObject = Message::parseRequest($request);
+        $requestContent = \json_decode($requestObject->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
-        Assert::assertEquals(1, (int) $this->getEventCount('ecommerce'));
+        Assert::assertEquals(1, (int)$this->getEventCount('ecommerce'));
         $this->assertEquals($this->expectedProductUpdatedPayload($this->tshirtProduct), $requestContent);
     }
 
     public function test_it_sends_a_product_removed_webhook_event()
     {
-        $container = [];
-        /** @var HandlerStack $handlerStack */
+        /** @var GuzzleMockHandlerStack $handlerStack */
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([new Response(200)]));
-        $history = Middleware::history($container);
-        $handlerStack->push($history);
 
         $message = new BulkEvent(
             [
@@ -197,21 +186,13 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        $this->assertCount(1, $container);
+        $this->assertCount(1, $handlerStack->historyContainer());
 
-        /** @var Request $request */
-        $request = $container[0]['request'];
+        $request = Message::parseRequest($handlerStack->historyContainer()[0]['request']);
         $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
 
-        Assert::assertEquals(1, (int) $this->getEventCount('ecommerce'));
+        Assert::assertEquals(1, (int)$this->getEventCount('ecommerce'));
         $this->assertEquals($this->expectedProductRemovedPayload($this->tshirtProduct), $requestContent);
-    }
-
-    private function loadReferenceProduct(string $identifier): ProductInterface
-    {
-        return $this->get('akeneo_connectivity.connection.fixtures.enrichment.product')->create(
-            $identifier,
-        );
     }
 
     private function loadConnection(): ConnectionWithCredentials
@@ -229,7 +210,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             $connection->flowType(),
             $connection->image(),
             $connection->userRoleId(),
-            (string) $this->get('pim_user.repository.group')->findOneByIdentifier('IT support')->getId(),
+            (string)$this->get('pim_user.repository.group')->findOneByIdentifier('IT support')->getId(),
             $connection->auditable(),
         );
 
@@ -253,7 +234,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         return [
             'action' => 'product.created',
             'event_id' => '0d931d13-8eae-4f4a-bf37-33d3a932b8c9',
-            'event_datetime' => '2020-12-04T16:02:47+01:00',
+            'event_datetime' => '2020-12-04T15:02:47+00:00',
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
@@ -266,7 +247,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         return [
             'action' => 'product.updated',
             'event_id' => '0d931d13-8eae-4f4a-bf37-33d3a932b8c9',
-            'event_datetime' => '2020-12-04T16:02:47+01:00',
+            'event_datetime' => '2020-12-04T15:02:47+00:00',
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
@@ -279,7 +260,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         return [
             'action' => 'product.removed',
             'event_id' => '0d931d13-8eae-4f4a-bf37-33d3a932b8c9',
-            'event_datetime' => '2020-12-04T16:02:47+01:00',
+            'event_datetime' => '2020-12-04T15:02:47+00:00',
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
@@ -342,11 +323,11 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
     private function getEventCount(string $connectionCode)
     {
         $sql = <<<SQL
-SELECT event_count
-FROM akeneo_connectivity_connection_audit_product
-WHERE connection_code = :connection_code
-AND event_type = 'product_read'
-SQL;
+        SELECT event_count
+        FROM akeneo_connectivity_connection_audit_product
+        WHERE connection_code = :connection_code
+        AND event_type = 'product_read'
+        SQL;
 
         return $this->dbalConnection->fetchOne($sql, [
             'connection_code' => $connectionCode,

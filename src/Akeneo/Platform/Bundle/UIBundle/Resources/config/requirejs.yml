@@ -133,7 +133,7 @@ config:
             urls:
               list: pim_enrich_channel_rest_index
               get: pim_enrich_channel_rest_get
-              list_channel_category_tree: pim_enrich_channel_category_tree_get
+              list_channel_category_tree: pim_enrich_channel_category_trees_get
         locale:
           module: pim/locale-fetcher
           options:

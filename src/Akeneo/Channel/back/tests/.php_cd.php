@@ -53,6 +53,10 @@ $rules = [
         // TIP-1012: Create a Measure component
         'Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager',
 
+        // PIM-10485: Get Category Tree without apply permission
+        'Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree',
+        'Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees',
+
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
     ])->in('Akeneo\Channel\Infrastructure'),
 ];

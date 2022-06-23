@@ -78,7 +78,7 @@ class ChannelController
     }
 
     /**
-     * Gets Category tree without user right filter
+     * Gets Category tree without apply user permission
      * @return JsonResponse
      */
     public function listCategoryTreeAction(): JsonResponse

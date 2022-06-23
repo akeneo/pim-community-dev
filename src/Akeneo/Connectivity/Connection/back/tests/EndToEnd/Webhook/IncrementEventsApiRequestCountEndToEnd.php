@@ -10,6 +10,7 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\CategoryLoade
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
+use Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleMockHandlerStack;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Component\EventQueue\Author;
@@ -17,10 +18,6 @@ use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -63,12 +60,8 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
 
     public function test_it_increments_events_api_request_count()
     {
-        $container = [];
-        /** @var HandlerStack $handlerStack */
+        /** @var GuzzleMockHandlerStack $handlerStack */
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([new Response(200)]));
-        $history = Middleware::history($container);
-        $handlerStack->push($history);
 
         $message = new BulkEvent(
             [
@@ -85,7 +78,7 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        Assert::assertCount(1, $container);
+        Assert::assertCount(1, $handlerStack->historyContainer());
 
         $eventsApiRequestCount = $this->getEventsApiRequestCount();
 
@@ -120,9 +113,9 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
     private function getEventsApiRequestCount(): array
     {
         $sql = <<<SQL
-SELECT event_minute, event_count, updated
-FROM akeneo_connectivity_connection_events_api_request_count
-SQL;
+        SELECT event_minute, event_count, updated
+        FROM akeneo_connectivity_connection_events_api_request_count
+        SQL;
 
         return $this->dbalConnection->executeQuery($sql)->fetchAllAssociative();
     }
