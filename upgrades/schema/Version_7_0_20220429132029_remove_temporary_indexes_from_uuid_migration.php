@@ -23,6 +23,9 @@ final class Version_7_0_20220429132029_remove_temporary_indexes_from_uuid_migrat
         foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
             $indexNamesToDelete = \array_keys($tableProperties[MigrateToUuidStep::TEMPORARY_INDEXES_INDEX] ?? []);
             $indexNamesToDelete[] = self::TEMPORARY_INDEX_NAME;
+            // The addSql() method does not execute the query directly, it means the FK is not directly dropped
+            // So we can try to drop the same FK twice => the second call fail. This variable helps to execute once.
+            $fkIsAlreadyDropped = false;
 
             foreach ($indexNamesToDelete as $indexName) {
                 if ($this->indexExists($tableName, $indexName)) {
@@ -35,20 +38,24 @@ final class Version_7_0_20220429132029_remove_temporary_indexes_from_uuid_migrat
                         if (
                             $tableName === 'pim_data_quality_insights_product_criteria_evaluation'
                             && $this->fkExists('pim_data_quality_insights_product_criteria_evaluation', 'FK_dqi_product_criteria_evaluation')
+                            && !$fkIsAlreadyDropped
                         ) {
                             $this->addSql(\strtr(
                                 'ALTER TABLE {tableName} DROP FOREIGN KEY {foreignKeyName};',
                                 ['{tableName}' => $tableName, '{foreignKeyName}' => 'FK_dqi_product_criteria_evaluation']
                             ));
+                            $fkIsAlreadyDropped = true;
                         }
                         if (
                             $tableName === 'pim_data_quality_insights_product_score'
                             && $this->fkExists('pim_data_quality_insights_product_score', 'FK_dqi_product_score')
+                            && !$fkIsAlreadyDropped
                         ) {
                             $this->addSql(\strtr(
                                 'ALTER TABLE {tableName} DROP FOREIGN KEY {foreignKeyName};',
                                 ['{tableName}' => $tableName, '{foreignKeyName}' => 'FK_dqi_product_score']
                             ));
+                            $fkIsAlreadyDropped = true;
                         }
                         $this->addSql(\strtr(
                             'ALTER TABLE {tableName} DROP INDEX {indexName};',
