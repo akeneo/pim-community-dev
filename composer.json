@@ -103,7 +103,7 @@
         "symfony/lock": "4.4.25",
         "symfony/messenger": "^4.4",
         "symfony/monolog-bundle": "^3.4",
-        "symfony/options-resolver": "4.4.25",
+        "symfony/options-resolver": "5.4.3",
         "symfony/orm-pack": "^1.0",
         "symfony/polyfill-apcu": "1.12.0",
         "symfony/process": "4.4.25",
