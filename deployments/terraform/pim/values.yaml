@@ -434,8 +434,9 @@ mysql:
       failureThreshold: 5
 
 memcached:
-  image: memcached:1.6.12
-  imagePullPolicy: IfNotPresent
+  image:
+    tag: 1.6.12
+    pullPolicy: IfNotPresent
   fullnameOverride: memcached
   replicaCount: 1
   resources:
@@ -444,9 +445,12 @@ memcached:
     requests:
       cpu: "1m"
       memory: "16Mi"
-  memcached:
-    maxItemMemory: 64
-  pdbMinAvailable: 0
+  extraEnvVars:
+    - name: MEMCACHED_MAX_ITEM_SIZE
+      value: "64"
+  pdb:
+    create: true
+    minAvailable: 0
 
 elasticsearch:
   appVersion: 7.16.2

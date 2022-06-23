@@ -5,6 +5,10 @@
 import '@testing-library/jest-dom/extend-expect';
 
 beforeEach(() => {
+    //Necessary to avoid annoying console.error() dumped in test output, even when they are expected
+    // Cf this issue : https://github.com/facebook/jest/issues/5785
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+
     const intersectionObserverMock = () => ({
         observe: jest.fn(),
         unobserve: jest.fn(),
@@ -12,3 +16,10 @@ beforeEach(() => {
 
     window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 });
+
+jest.mock('react-intl', () => ({
+    ...jest.requireActual('react-intl'),
+    useIntl: () => ({
+        formatMessage: ({id, defaultMessage}: {id: string; defaultMessage: string}) => defaultMessage,
+    }),
+}));

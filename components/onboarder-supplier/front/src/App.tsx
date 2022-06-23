@@ -7,24 +7,27 @@ import {Authentication} from './Authentication';
 import {UserContextProvider} from './contexts';
 import {queryClient} from './api';
 import {IntlProvider} from 'react-intl';
+import {ToastProvider} from './utils/toaster';
 
 function App() {
     return (
         <ThemeProvider theme={onboarderTheme}>
             <IntlProvider locale="en" defaultLocale="en" messages={{}}>
-                <UserContextProvider>
-                    <QueryClientProvider client={queryClient}>
-                        <HashRouter>
-                            <Switch>
-                                <Route path={`/(set-up-password|login)/`}>
-                                    <Container>
-                                        <Authentication />
-                                    </Container>
-                                </Route>
-                            </Switch>
-                        </HashRouter>
-                    </QueryClientProvider>
-                </UserContextProvider>
+                <ToastProvider>
+                    <UserContextProvider>
+                        <QueryClientProvider client={queryClient}>
+                            <HashRouter>
+                                <Switch>
+                                    <Route path={`/(set-up-password|login)/`}>
+                                        <Container>
+                                            <Authentication />
+                                        </Container>
+                                    </Route>
+                                </Switch>
+                            </HashRouter>
+                        </QueryClientProvider>
+                    </UserContextProvider>
+                </ToastProvider>
             </IntlProvider>
         </ThemeProvider>
     );

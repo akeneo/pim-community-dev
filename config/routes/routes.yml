@@ -158,7 +158,7 @@ onboarder_serenity_retailer:
 
 onboarder_serenity_supplier:
     resource: "@AkeneoOnboarderSerenitySupplierBundle/Resources/config/routing.yml"
-    prefix: /onboarder-supplier/v2
+    prefix: /onboarder-supplier
 
 # Free Trial
 free_trial:
