@@ -46,6 +46,7 @@
 - PIM-10475: Fix option existence validation for numeric option codes
 - PIM-10483: Fix slow loading products when filtering by variants
 - PIM-10484: Fix job filter on status being incoherent with job interrupted by demon crash
+- PIM-10485: Fix Wrong category tree is displayed in channel settings if user has no right on the linked category tree
 - PIM-10495: Fix product datagrid by increasing sort_buffer_size
 - PIM-10499: Fix MySQL's out of sort memory errors on variant product and product model edit form
 
