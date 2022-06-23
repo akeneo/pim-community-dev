@@ -1,7 +1,7 @@
-import {Criteria} from '../models/Criteria';
 import {Dispatch, SetStateAction, useEffect, useState} from 'react';
-import {useCatalogData} from '../../CatalogEdit/hooks/useCatalogData';
-import {stateToCriterion} from '../criteria/stateToCriterion';
+import {Criteria} from '../../ProductSelection/models/Criteria';
+import {useCatalogData} from './useCatalogData';
+import {stateToCriterion} from '../../ProductSelection/criteria/stateToCriterion';
 
 export const useCriteria = (id: string): [Criteria, Dispatch<SetStateAction<Criteria>>] => {
     const catalogData = useCatalogData(id);
@@ -19,7 +19,7 @@ export const useCriteria = (id: string): [Criteria, Dispatch<SetStateAction<Crit
         const mappedCriteria = catalogData.data.product_selection_criteria.map(state => stateToCriterion(state));
 
         setCriteria(mappedCriteria);
-    }, [catalogData.data, catalogData.isLoading, catalogData.isError]);
+    }, [catalogData.isLoading, catalogData.isError]);
 
     return [criteria, setCriteria];
 };
