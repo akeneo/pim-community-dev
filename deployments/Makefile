@@ -34,13 +34,14 @@ endif
 # USE_EDITION_FLAG is compute by Terraform to set editionFlag.enabled=true in tf-helm-pim-values.tpl
 # editionFlag.enabled=true in values.yml is compute by HELM to add PIM_EDITION:<editionflag> in env-configmap.yaml
 
-ifeq ($(USE_EDITION_FLAG),true)
-	TYPE := srnt
-	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/..)
-	BUCKET := serenity-edition-dev
+# @BryanS29-akeneo ->  Need to comment this part that make instances with EDITION_FLAG=true to be deploy with same infra as "srnt"
+# ifeq ($(USE_EDITION_FLAG),true)
+# 	TYPE := srnt
+# 	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/..)
+# 	BUCKET := serenity-edition-dev
 
-#We don't hardcode TYPE_LONG to keep proper edition specific PRODUCT_REFERENCE_TYPE & PRODUCT_REFERENCE_CODE 
-endif
+# #We don't hardcode TYPE_LONG to keep proper edition specific PRODUCT_REFERENCE_TYPE & PRODUCT_REFERENCE_CODE
+# endif
 
 PRODUCT_REFERENCE_TYPE ?= $(TYPE_LONG)_instance
 PRODUCT_REFERENCE_CODE ?= $(TYPE_LONG)_$(ENV_NAME)
@@ -352,7 +353,7 @@ endif
 ifeq ($(USE_EDITION_FLAG),true)
 	yq w -j -P -i  ${INSTANCE_DIR}/main.tf.json  'module.pim.use_edition_flag' true
 endif
-	
+
 .PHONY: change-terraform-source-version
 change-terraform-source-version: #Doc: change terraform pim and monitoring source to deploy infra with a custom git version
 	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform"
