@@ -8,7 +8,7 @@ services:
         class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetNonViewableCategoryCodes
         arguments:
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
-            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories'
+            - '@Akeneo\Category\Domain\Query\GetViewableCategories'
 
     Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts:
         class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetViewableProducts

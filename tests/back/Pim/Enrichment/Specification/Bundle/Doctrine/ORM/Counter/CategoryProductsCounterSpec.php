@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter;
 
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;

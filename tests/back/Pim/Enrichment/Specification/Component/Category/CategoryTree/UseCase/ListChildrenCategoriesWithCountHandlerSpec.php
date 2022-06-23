@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
 
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCount;

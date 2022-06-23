@@ -6,8 +6,8 @@ namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Counter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * Category product counter, using a PQB.

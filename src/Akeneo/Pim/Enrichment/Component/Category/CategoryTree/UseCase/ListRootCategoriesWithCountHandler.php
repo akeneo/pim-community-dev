@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
 
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 
 /**

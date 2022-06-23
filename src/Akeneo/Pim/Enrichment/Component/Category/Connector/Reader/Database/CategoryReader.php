@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Category\Connector\Reader\Database;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Component\Classification\Repository;
+namespace Akeneo\Category\Infrastructure\Component\Classification\Repository;
 
 /**
  * Item category repository interface

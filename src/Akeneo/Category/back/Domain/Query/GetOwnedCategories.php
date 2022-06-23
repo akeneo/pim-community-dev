@@ -2,18 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Category\API\Query;
+namespace Akeneo\Category\Domain\Query;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface GetViewableCategories
+interface GetOwnedCategories
 {
     /**
-     * Returns the category codes given in first parameter that the user has read access to
+     * Returns the category codes given in first parameter that are product/product model owners
+     * depending on the user group ids.
      *
      * @param string[] $categoryCodes
+     * @param int $userId
      * @return string[]
      */
     public function forUserId(array $categoryCodes, int $userId): array;

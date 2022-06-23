@@ -8,7 +8,7 @@ use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard\CategoryNormalizer;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use PHPUnit\Framework\Assert;
 

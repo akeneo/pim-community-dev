@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
 use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category;
 
 use Akeneo\Pim\Enrichment\Component\Category\Query\GetDirectChildrenCategoryCodesInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Doctrine\DBAL\Connection;
 
 /**

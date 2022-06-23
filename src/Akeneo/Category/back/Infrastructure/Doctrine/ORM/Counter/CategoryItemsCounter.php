@@ -2,9 +2,9 @@
 
 namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Counter;
 
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 
 /**
  * Count item in a category

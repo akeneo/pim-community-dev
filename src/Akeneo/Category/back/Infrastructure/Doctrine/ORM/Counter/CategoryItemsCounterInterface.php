@@ -2,7 +2,7 @@
 
 namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Counter;
 
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 
 /**
  * Count items in a category

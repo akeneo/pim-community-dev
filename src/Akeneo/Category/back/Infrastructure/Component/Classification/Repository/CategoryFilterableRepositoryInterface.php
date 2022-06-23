@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Component\Classification\Repository;
+namespace Akeneo\Category\Infrastructure\Component\Classification\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Doctrine\ORM\QueryBuilder;

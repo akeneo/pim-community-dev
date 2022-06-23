@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Category\Normalizer\InternalApi;
 
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

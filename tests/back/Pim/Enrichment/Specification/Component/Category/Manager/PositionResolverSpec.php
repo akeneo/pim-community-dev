@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Manager;
 use Akeneo\Pim\Enrichment\Component\Category\Manager\PositionResolver;
 use Akeneo\Pim\Enrichment\Component\Category\Manager\PositionResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\GetDirectChildrenCategoryCodesInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**

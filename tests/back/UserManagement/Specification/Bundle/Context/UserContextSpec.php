@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\UserManagement\Bundle\Context;
 
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;

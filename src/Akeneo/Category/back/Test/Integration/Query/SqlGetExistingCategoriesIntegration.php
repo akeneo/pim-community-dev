@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Pim\Enrichment\Category\Integration\Query;
+namespace Akeneo\Test\Category\Integration\Query;
 
-use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
+use Akeneo\Category\Domain\Query\GetViewableCategories;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;

@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;

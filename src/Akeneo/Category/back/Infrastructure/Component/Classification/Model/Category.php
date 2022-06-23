@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Component\Classification\Model;
+namespace Akeneo\Category\Infrastructure\Component\Classification\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

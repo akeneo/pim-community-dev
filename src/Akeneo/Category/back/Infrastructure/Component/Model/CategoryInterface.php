@@ -3,7 +3,7 @@
 namespace Akeneo\Category\Infrastructure\Component\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;

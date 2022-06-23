@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Channel\Infrastructure\Component\Normalizer\Standard;
 
 use Akeneo\Channel\Infrastructure\Component\Normalizer\Standard\ChannelNormalizer;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
