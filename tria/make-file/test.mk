@@ -24,7 +24,6 @@ lint-front-fix:
 unit-back: $(PIM_SRC_PATH)/var/tests/phpspec community-unit-back #Doc: launch all PHPSec unit tests
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T --rm php php vendor/bin/phpspec run --format=junit > $(PIM_SRC_PATH)/var/tests/phpspec/specs.xml
-	$(DOCKER_COMPOSE) run -T --rm php vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
 else
 	${PHP_RUN} vendor/bin/phpspec run
 endif
