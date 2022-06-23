@@ -38,8 +38,8 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
             $env = [
                 'SYMFONY_DOTENV_VARS' => false,
             ];
-            if (null !== $jobExecutionMessage->tenantId()) {
-                $env['APP_TENANT_ID'] = $jobExecutionMessage->tenantId();
+            if (null !== $jobExecutionMessage->getTenantId()) {
+                $env['APP_TENANT_ID'] = $jobExecutionMessage->getTenantId();
             };
 
             $process = new Process($arguments, null, $env);
