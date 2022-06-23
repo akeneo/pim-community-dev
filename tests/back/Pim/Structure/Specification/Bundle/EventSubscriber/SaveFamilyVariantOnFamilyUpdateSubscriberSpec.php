@@ -65,6 +65,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariants2,
         ConstraintViolationList $constraintViolationList
     ) {
+        $family->releaseEvents()->willReturn([FamilyInterface::ATTRIBUTES_WERE_UPDATED]);
         $family->getFamilyVariants()->willReturn($familyVariants);
 
         $familyVariants->getIterator()->willReturn($familyVariantsIterator);
@@ -100,6 +101,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariants2,
         FamilyVariantInterface $familyVariants3
     ) {
+        $family->releaseEvents()->willReturn([FamilyInterface::ATTRIBUTES_WERE_UPDATED]);
         $family->getFamilyVariants()->willReturn($familyVariants);
 
         $familyVariants->getIterator()->willReturn($familyVariantsIterator);
@@ -161,6 +163,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariants2,
         ConstraintViolationList $constraintViolationList
     ) {
+        $family->releaseEvents()->willReturn([FamilyInterface::ATTRIBUTES_WERE_UPDATED]);
         $family->getFamilyVariants()->willReturn($familyVariants);
 
         $familyVariants->getIterator()->willReturn($familyVariantsIterator);
@@ -196,6 +199,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariants2,
         FamilyVariantInterface $familyVariants3
     ) {
+        $family->releaseEvents()->willReturn([FamilyInterface::ATTRIBUTES_WERE_UPDATED]);
         $family->getFamilyVariants()->willReturn($familyVariants);
 
         $familyVariants->getIterator()->willReturn($familyVariantsIterator);
@@ -244,5 +248,41 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $event->getArgument('unitary')->willReturn(true);
 
         $this->onBulkSave($event);
+    }
+
+    function it_does_not_force_launch_compute_family_variant_job_when_attributes_did_not_change(
+        ValidatorInterface $validator,
+        BulkSaverInterface $bulkFamilyVariantSaver,
+        GenericEvent $event,
+        FamilyInterface $family,
+        Collection $familyVariants,
+        \ArrayIterator $familyVariantsIterator,
+        FamilyVariantInterface $familyVariants1,
+        FamilyVariantInterface $familyVariants2,
+        ConstraintViolationList $constraintViolationList
+    ) {
+        $event->getSubject()->willReturn($family);
+        $event->hasArgument('unitary')->willReturn(true);
+        $event->getArgument('unitary')->willReturn(true);
+
+        $family->releaseEvents()->willReturn([]);
+
+        $family->getFamilyVariants()->willReturn($familyVariants);
+        $familyVariants->getIterator()->willReturn($familyVariantsIterator);
+        $familyVariantsIterator->current()->willReturn($familyVariants1, $familyVariants2);
+        $familyVariantsIterator->valid()->willReturn(true, true, false);
+        $familyVariantsIterator->rewind()->shouldBeCalled();
+        $familyVariantsIterator->next()->shouldBeCalled();
+
+        $validator->validate($familyVariants1)->willReturn($constraintViolationList);
+        $constraintViolationList->count()->willReturn(0);
+        $validator->validate($familyVariants2)->willReturn($constraintViolationList);
+        $constraintViolationList->count()->willReturn(0);
+        $bulkFamilyVariantSaver->saveAll(
+            [$familyVariants1, $familyVariants2],
+            [ComputeFamilyVariantStructureChangesSubscriber::FORCE_JOB_LAUNCHING => false]
+        )->shouldBeCalled();
+
+        $this->onUnitarySave($event);
     }
 }

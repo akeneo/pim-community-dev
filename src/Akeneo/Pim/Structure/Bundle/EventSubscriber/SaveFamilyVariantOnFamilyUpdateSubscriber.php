@@ -46,14 +46,11 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         ];
     }
 
-    // TODO change explanation text
     /**
      * Validates and saves the family variants belonging to a family whenever it is updated.
      *
      * As we are not in an import context, the `compute_family_variant_structure_changes` job is triggered
-     * by the bulkFamilyVariantSaver->saveAll(). We force the launch of this job because if an attribute
-     * at the common level is removed, the family variant stays unchanged but we need to recompute the root/sub
-     * product models.
+     * by the bulkFamilyVariantSaver->saveAll() only when the family variant structure has been updated.
      *
      * hence, updating the catalog asynchronously.
      *
