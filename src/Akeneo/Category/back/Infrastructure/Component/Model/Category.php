@@ -3,9 +3,6 @@
 namespace Akeneo\Category\Infrastructure\Component\Model;
 
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Classification\Model\Category as BaseCategory;

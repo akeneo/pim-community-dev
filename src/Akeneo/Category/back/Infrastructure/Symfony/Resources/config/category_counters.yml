@@ -1,5 +1,5 @@
 services:
-    pim_enrich.doctrine.counter.category_product:
+    pim_category.doctrine.counter.category_product:
         class: 'Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryProductsCounter'
         arguments:
             - '@pim_catalog.query.product_identifier_query_builder_factory'

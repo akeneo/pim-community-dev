@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Channel\Infrastructure\Component\Validator\Constraint;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Category\CategoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsRootCategory;
 use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsRootCategoryValidator;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -78,5 +78,3 @@ class IsRootCategoryValidatorSpec extends ObjectBehavior
         $this->validate($category, $constraint);
     }
 }
-
-

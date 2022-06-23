@@ -27,7 +27,7 @@ class AkeneoCategoryExtension extends Extension
         // $loader->load('connector/flat_translators.yml');
         // $loader->load('connector/use_cases.yml');
         // $loader->load('array_converter.yml');
-        // $loader->load('category_counters.yml');
+         $loader->load('category_counters.yml');
         // $loader->load('controllers.yml');
         // $loader->load('documentation.yml');
         // $loader->load('entities.yml');
