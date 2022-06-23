@@ -19,7 +19,7 @@ export const useCriteria = (id: string): [Criteria, Dispatch<SetStateAction<Crit
         const mappedCriteria = catalogData.data.product_selection_criteria.map(state => stateToCriterion(state));
 
         setCriteria(mappedCriteria);
-    }, [catalogData.data]);
+    }, [catalogData.data, catalogData.isLoading, catalogData.isError]);
 
     return [criteria, setCriteria];
 };

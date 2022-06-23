@@ -1,15 +1,15 @@
-import userEvent from '@testing-library/user-event';
-
 jest.unmock('./Edit');
 jest.unmock('./TabBar');
 
 import React, {useEffect, useState} from 'react';
 import {act, render, screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {Edit} from './Edit';
-import {CatalogEdit, CatalogEditRef} from '../CatalogEdit';
+import {CatalogEditRef} from '../CatalogEdit';
+import {useCriteria} from '../../ProductSelection/hooks/useCriteria';
 
 jest.mock('../../ProductSelection', () => ({
     ProductSelection: () => <>[ProductSelection]</>,
@@ -41,6 +41,8 @@ const intersectionObserverMock = (callback: EntryCallback) => ({
 window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
 test('it renders without error', () => {
+    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [[], jest.fn()]);
+
     render(
         <ThemeProvider theme={pimTheme}>
             <Edit id={'123e4567-e89b-12d3-a456-426614174000'} />
@@ -51,6 +53,8 @@ test('it renders without error', () => {
 });
 
 test('it switches between tabs', () => {
+    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [[], jest.fn()]);
+
     render(
         <ThemeProvider theme={pimTheme}>
             <Edit id={'123e4567-e89b-12d3-a456-426614174000'} />
@@ -69,6 +73,8 @@ test('it switches between tabs', () => {
 });
 
 test('it calls save from parent component', () => {
+    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [[], jest.fn()]);
+
     const logger = jest.spyOn(console, 'log');
     logger.mockImplementation(() => {});
 
