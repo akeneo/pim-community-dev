@@ -235,3 +235,9 @@ services:
             - '@translator'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\InstallTWASubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
