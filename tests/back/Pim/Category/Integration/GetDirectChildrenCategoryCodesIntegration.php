@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace back\Pim\Enrichment\Integration\Category;
+namespace AkeneoTest\Pim\Category\Integration;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDirectChildrenCategoryCodes;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;

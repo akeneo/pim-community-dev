@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Category;
+namespace AkeneoTest\Pim\Category\Integration;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CategoryCodeFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlGetCategoryChildrenCodesPerTree;
@@ -217,4 +217,3 @@ class DenyAllCategoryCode implements CategoryCodeFilterInterface
         return [];
     }
 }
-
