@@ -102,7 +102,7 @@
         "psr/event-dispatcher": "^1.0.0",
         "ramsey/uuid": "^3.7",
         "ramsey/uuid-doctrine": "^1.8",
-        "sensio/framework-extra-bundle": "^5.4",
+        "sensio/framework-extra-bundle": "^6.2",
         "symfony/acl-bundle": "^2.1.0",
         "symfony/asset": "^5.4.0",
         "symfony/cache": "^5.4",
