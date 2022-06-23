@@ -108,7 +108,7 @@
         "symfony/cache": "^5.4",
         "symfony/config": "^5.4.0",
         "symfony/dependency-injection": "^5.4.0",
-        "symfony/doctrine-messenger": "^5.4.0",
+        "symfony/doctrine-messenger": "^6.0.8",
         "symfony/dotenv": "^5.4.0",
         "symfony/event-dispatcher": "^5.4.0",
         "symfony/filesystem": "^5.4.0",
