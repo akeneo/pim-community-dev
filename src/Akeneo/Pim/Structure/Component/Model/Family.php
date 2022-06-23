@@ -55,9 +55,6 @@ class Family implements FamilyInterface
     /** @var Collection */
     protected $familyVariants;
 
-    /** @var string[] */
-    private array $events = [];
-
     /**
      * Constructor
      */
@@ -482,8 +479,6 @@ class Family implements FamilyInterface
         sort($newAttributeCodes);
 
         if ($formerAttributeCodes !== $newAttributeCodes) {
-            $this->events[] = FamilyInterface::ATTRIBUTES_WERE_UPDATED;
-
             $attributeCodesToRemove = array_diff($formerAttributeCodes, $newAttributeCodes);
             $attributeCodesToAdd = array_diff($newAttributeCodes, $formerAttributeCodes);
 
@@ -503,16 +498,5 @@ class Family implements FamilyInterface
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function releaseEvents(): array
-    {
-        $events = $this->events;
-        $this->events = [];
-
-        return $events;
     }
 }

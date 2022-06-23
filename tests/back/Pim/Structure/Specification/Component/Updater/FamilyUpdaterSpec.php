@@ -2,25 +2,25 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Updater;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\FamilyTranslation;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
@@ -32,7 +32,9 @@ class FamilyUpdaterSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $attrRequiFactory,
         AttributeRequirementRepositoryInterface $attributeRequirementRepo,
-        TranslatableUpdater $translatableUpdater
+        TranslatableUpdater $translatableUpdater,
+        IdentifiableObjectRepositoryInterface $localeRepository,
+
     ) {
         $this->beConstructedWith(
             $familyRepository,
@@ -40,7 +42,8 @@ class FamilyUpdaterSpec extends ObjectBehavior
             $channelRepository,
             $attrRequiFactory,
             $attributeRequirementRepo,
-            $translatableUpdater
+            $translatableUpdater,
+            $localeRepository
         );
     }
 
@@ -131,6 +134,8 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
         $attributeRepository->findOneByIdentifier('description')->willReturn($descAttribute);
 
+        $family->updateAttributes([$skuAttribute, $nameAttribute, $descAttribute, $pictureAttribute]);
+
         $channelRepository->findOneByIdentifier('mobile')->willReturn($mobileChannel);
         $channelRepository->findOneByIdentifier('print')->willReturn($printChannel);
 
@@ -174,6 +179,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
     }
 
     function it_updates_a_family_without_changing_attributes_when_they_are_the_same(
+        AttributeRepositoryInterface $attributeRepository,
         FamilyInterface $family,
         AttributeInterface $skuAttribute,
         AttributeInterface $nameAttribute,
@@ -189,13 +195,17 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $nameAttribute->getCode()->willReturn('name');
         $descAttribute->getCode()->willReturn('description');
 
-        $family->removeAttribute(Argument::any())->shouldNotBeCalled();
-        $family->addAttribute(Argument::any())->shouldNotBeCalled();
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($skuAttribute);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($descAttribute);
+
+        $family->updateAttributes([$skuAttribute, $nameAttribute, $descAttribute])->shouldBeCalled();
 
         $this->update($family, $values, []);
     }
 
     function it_updates_a_family_by_removing_an_attribute(
+        AttributeRepositoryInterface $attributeRepository,
         FamilyInterface $family,
         AttributeInterface $skuAttribute,
         AttributeInterface $nameAttribute,
@@ -212,32 +222,11 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $descAttribute->getCode()->willReturn('description');
         $descAttribute->getType()->willReturn(AttributeTypes::TEXTAREA);
 
-        $family->removeAttribute($descAttribute)->shouldBeCalled();
-        $family->addAttribute(Argument::any())->shouldNotBeCalled();
-
-        $this->update($family, $values, []);
-    }
-
-    function it_updates_a_family_by_adding_an_attribute(
-        FamilyInterface $family,
-        AttributeInterface $skuAttribute,
-        AttributeInterface $nameAttribute,
-        AttributeInterface $descAttribute,
-        AttributeRepositoryInterface $attributeRepository
-    ) {
-        $values = [
-            'attributes' => ['sku', 'name', 'description']
-        ];
-
-        $family->getAttributes()->willReturn([$skuAttribute, $nameAttribute]);
-
-        $skuAttribute->getCode()->willReturn('sku');
-        $nameAttribute->getCode()->willReturn('name');
-
-        $family->removeAttribute(Argument::any())->shouldNotBeCalled();
-        $family->addAttribute($descAttribute)->shouldBeCalled();
-
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($skuAttribute);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
         $attributeRepository->findOneByIdentifier('description')->willReturn($descAttribute);
+
+        $family->updateAttributes([$skuAttribute, $nameAttribute])->shouldBeCalled();
 
         $this->update($family, $values, []);
     }
@@ -415,7 +404,6 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
         $family->setCode('mycode')->shouldBeCalled();
         $family->getAttributes()->willReturn([$priceAttribute]);
-        $family->removeAttribute($priceAttribute)->shouldBeCalled();
 
         $attributeRepository->findOneByIdentifier('sku')->willReturn(null);
 

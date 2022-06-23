@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
@@ -56,5 +57,44 @@ class FamilySpec extends ObjectBehavior
         $name->getCode()->willReturn('pim_catalog_text');
         $this->getAttributeAsLabel()->shouldReturn(null);
         $this->setAttributeAsLabel($name)->shouldReturn($this);
+    }
+
+    function it_updates_a_family_by_adding_an_attribute(
+        AttributeInterface $skuAttribute,
+        AttributeInterface $nameAttribute,
+        AttributeInterface $descAttribute,
+    ) {
+        $skuAttribute->getCode()->willReturn('sku');
+        $nameAttribute->getCode()->willReturn('name');
+        $descAttribute->getCode()->willReturn('description');
+        $descAttribute->getType()->willReturn(AttributeTypes::TEXTAREA);
+
+        $this->addAttribute($skuAttribute);
+        $this->addAttribute($nameAttribute);
+        $this->getAttributeCodes()->shouldReturn(['sku', 'name']);
+
+        $this->updateAttributes([$skuAttribute, $nameAttribute, $descAttribute]);
+
+        $this->getAttributeCodes()->shouldReturn(['sku', 'name', 'description']);
+    }
+
+    function it_updates_a_family_by_removing_an_attribute(
+        AttributeInterface $skuAttribute,
+        AttributeInterface $nameAttribute,
+        AttributeInterface $descAttribute,
+    ) {
+        $skuAttribute->getCode()->willReturn('sku');
+        $nameAttribute->getCode()->willReturn('name');
+        $descAttribute->getCode()->willReturn('description');
+        $descAttribute->getType()->willReturn(AttributeTypes::TEXTAREA);
+
+        $this->addAttribute($skuAttribute);
+        $this->addAttribute($nameAttribute);
+        $this->addAttribute($descAttribute);
+        $this->getAttributeCodes()->shouldReturn(['sku', 'name', 'description']);
+
+        $this->updateAttributes([$skuAttribute, $nameAttribute]);
+
+        $this->getAttributeCodes()->shouldReturn(['sku', 'name']);
     }
 }
