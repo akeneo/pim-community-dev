@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10487: Fix import of very tiny measurement values (e.g. 0.000075 GRAM)
 - PIM-10215: Fixed last operation widget job type translation key
 - PIM-10233: Fix the saved value by an empty wysiwyg
 - PIM-10232: Fix "A new entity is found through the relationship" errors in jobs
