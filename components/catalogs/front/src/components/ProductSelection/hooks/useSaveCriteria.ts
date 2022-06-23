@@ -25,8 +25,12 @@ export const useSaveCriteria = (catalogId: string, onSuccess: () => void, onErro
             }
         },
         {
-            onError: (error: Error, variables: CriterionStates[]) => {onError()},
-            onSuccess: (data: undefined | void, variables: CriterionStates[]) => {onSuccess()}
+            onError: (error: Error, variables: CriterionStates[]) => {
+                onError();
+            },
+            onSuccess: (data: undefined | void, variables: CriterionStates[]) => {
+                onSuccess();
+            },
         }
     );
 };

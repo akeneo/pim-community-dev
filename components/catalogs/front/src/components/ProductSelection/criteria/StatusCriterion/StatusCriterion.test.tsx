@@ -12,7 +12,7 @@ test('it renders without error', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <StatusCriterion
-                state={{field: 'status', operator: Operator.EQUALS, value: true}}
+                state={{field: 'enabled', operator: Operator.EQUALS, value: true}}
                 onChange={jest.fn()}
                 onRemove={jest.fn()}
             />
@@ -30,7 +30,7 @@ test('it calls onChange when the operator changes', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <StatusCriterion
-                state={{field: 'status', operator: Operator.EQUALS, value: true}}
+                state={{field: 'enabled', operator: Operator.EQUALS, value: true}}
                 onChange={onChange}
                 onRemove={jest.fn()}
             />
@@ -55,7 +55,7 @@ test('it calls onChange when the value changes', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <StatusCriterion
-                state={{field: 'status', operator: Operator.EQUALS, value: true}}
+                state={{field: 'enabled', operator: Operator.EQUALS, value: true}}
                 onChange={onChange}
                 onRemove={jest.fn()}
             />

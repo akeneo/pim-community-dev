@@ -6,9 +6,9 @@ import userEvent from '@testing-library/user-event';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {AddCriterionDropdown} from './AddCriterionDropdown';
-import StatusCriterion from '../criteria/StatusCriterion';
+import StatusCriterion, {StatusCriterionState} from '../criteria/StatusCriterion';
 import {Operator} from '../models/Operator';
-import {Criterion, CriterionState} from '../models/Criterion';
+import {Criterion} from '../models/Criterion';
 
 test('it renders without error', () => {
     render(
@@ -22,12 +22,13 @@ test('it renders without error', () => {
 
 test('it opens the dropdown and adds a criterion', () => {
     (StatusCriterion as jest.Mock).mockImplementation(
-        (): Criterion<CriterionState> => ({
+        (): Criterion<StatusCriterionState> => ({
             id: 'abc6',
             module: () => null,
             state: {
-                field: 'status',
-                operator: Operator.IS_EMPTY,
+                field: 'enabled',
+                operator: Operator.EQUALS,
+                value: true,
             },
         })
     );

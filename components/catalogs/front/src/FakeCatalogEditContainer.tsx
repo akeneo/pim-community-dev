@@ -19,7 +19,7 @@ const FakeCatalogEditContainer: FC<PropsWithChildren<Props>> = () => {
 
     const handleChange = (isDirty: boolean) => {
         setIsDirty(isDirty);
-    }
+    };
 
     return (
         <>

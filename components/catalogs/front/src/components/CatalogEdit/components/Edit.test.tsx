@@ -43,7 +43,7 @@ window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverM
 test('it renders without error', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} />
+            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} onChange={jest.fn()} />
         </ThemeProvider>
     );
 
@@ -53,7 +53,7 @@ test('it renders without error', () => {
 test('it switches between tabs', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} />
+            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} onChange={jest.fn()} />
         </ThemeProvider>
     );
 
@@ -78,7 +78,7 @@ test('it calls save from parent component', () => {
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} ref={ref} />
+            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} onChange={jest.fn()} ref={ref} />
         </ThemeProvider>
     );
 

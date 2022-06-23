@@ -6,7 +6,7 @@ import {ProductSelection} from '../../ProductSelection';
 import {Settings} from './Settings';
 import {useCatalogCriteria} from '../../ProductSelection/hooks/useCatalogCriteria';
 import {CatalogEditRef} from '../CatalogEdit';
-import {Criteria} from '../../ProductSelection/models/Criteria';
+import {Criteria, CriterionStates} from '../../ProductSelection/models/Criteria';
 import {useSaveCriteria} from '../../ProductSelection/hooks/useSaveCriteria';
 import {StatusCriterionState} from '../../ProductSelection/criteria/StatusCriterion';
 
@@ -22,16 +22,20 @@ const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, re
     const [criteria, setCriteria] = useState<Criteria>(catalogCriteria);
     const saveCriteria = useSaveCriteria(
         id,
-        () => { onChange(false) },
-        () => { onChange(true) },
+        () => {
+            onChange(false);
+        },
+        () => {
+            onChange(true);
+        }
     );
 
     useImperativeHandle(ref, () => ({
         save: () => {
-            const criteriaStates: StatusCriterionState[] = criteria.map((value) => value.state);
+            const criteriaStates: CriterionStates[] = criteria.map(value => value.state);
             saveCriteria.mutate(criteriaStates);
             onChange(false);
-        }
+        },
     }));
 
     const handleSwitchTo = useCallback(
@@ -47,9 +51,9 @@ const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, re
             <TabBar isCurrent={isCurrent} switchTo={handleSwitchTo} />
 
             {isCurrent(Tabs.SETTINGS) && <Settings />}
-            {isCurrent(Tabs.PRODUCT_SELECTION) &&
-            <ProductSelection criteria={criteria} setCriteria={setCriteria} onChange={onChange} />
-            }
+            {isCurrent(Tabs.PRODUCT_SELECTION) && (
+                <ProductSelection criteria={criteria} setCriteria={setCriteria} onChange={onChange} />
+            )}
         </>
     );
 });
