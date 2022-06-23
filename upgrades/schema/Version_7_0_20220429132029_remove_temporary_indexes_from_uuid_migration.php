@@ -91,7 +91,7 @@ final class Version_7_0_20220429132029_remove_temporary_indexes_from_uuid_migrat
                 SELECT TABLE_SCHEMA, CONSTRAINT_NAME, TABLE_NAME
                 FROM information_schema.TABLE_CONSTRAINTS
                     WHERE TABLE_SCHEMA = :schema
-                        TABLE_NAME = :table_name
+                        AND TABLE_NAME = :table_name
                         AND CONSTRAINT_NAME = :fk_name
             ) as is_existing
         SQL;
