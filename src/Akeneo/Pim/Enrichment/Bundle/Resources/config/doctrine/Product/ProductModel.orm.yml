@@ -45,8 +45,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
         productModels:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
             mappedBy: parent
-            orderBy:
-                created: ASC
         associations:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface
             mappedBy: owner

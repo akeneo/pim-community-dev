@@ -69,13 +69,15 @@ $rules = [
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 
-    // ServiceAPI layer should only use classes from itself or symfony/messenger
+    // ServiceAPI layer should only use classes from itself, constraints annotations or symfony/messenger
     $builder->only(
         [
             'Akeneo\Catalogs\ServiceAPI',
 
             // Constraints as Attributes
             'Symfony\Component\Validator\Constraints',
+            'Akeneo\Catalogs\Infrastructure\Validation',
+
             // Message Bus
             'Symfony\Component\Messenger',
         ]

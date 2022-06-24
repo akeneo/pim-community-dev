@@ -5,3 +5,12 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiErrorLogsQuery'
         tags:
             - {name: 'console.command'}
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Command\SendBusinessEventToWebhooks:
+        arguments:
+            - '@Akeneo\Platform\Component\EventQueue\BulkEventNormalizer'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler'
+            - '@event_dispatcher'
+        tags:
+            - { name: console.command }
+

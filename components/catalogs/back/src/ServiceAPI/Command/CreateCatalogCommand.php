@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\ServiceAPI\Command;
 
+use Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUser;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @codeCoverageIgnore
  */
+
+#[MaxNumberOfCatalogsPerUser]
 final class CreateCatalogCommand implements CommandInterface
 {
     public function __construct(
