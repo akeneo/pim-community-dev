@@ -7,12 +7,13 @@ type CatalogEditRef = {
 } | null;
 type Props = {
     id: string;
+    onChange: (isDirty: boolean) => void;
 };
 
-const CatalogEdit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id}, ref) => {
+const CatalogEdit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, ref) => {
     return (
         <ErrorBoundary>
-            <Edit id={id} ref={ref} />
+            <Edit id={id} onChange={onChange} ref={ref} />
         </ErrorBoundary>
     );
 });

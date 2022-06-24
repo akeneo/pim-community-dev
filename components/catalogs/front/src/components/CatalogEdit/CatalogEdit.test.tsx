@@ -13,7 +13,7 @@ jest.mock('../ErrorBoundary', () => ({
 test('it renders without error', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <CatalogEdit id={'123e4567-e89b-12d3-a456-426614174000'} />
+            <CatalogEdit id={'123e4567-e89b-12d3-a456-426614174000'} onChange={jest.fn()} />
         </ThemeProvider>
     );
 

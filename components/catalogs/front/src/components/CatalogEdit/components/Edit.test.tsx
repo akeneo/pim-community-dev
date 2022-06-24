@@ -9,6 +9,9 @@ import {pimTheme} from 'akeneo-design-system';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {Edit} from './Edit';
 import {CatalogEditRef} from '../CatalogEdit';
+import {useSaveCriteria} from '../../ProductSelection/hooks/useSaveCriteria';
+import {Operator} from '../../ProductSelection/models/Operator';
+import {StatusCriterion} from '../../ProductSelection/criteria/StatusCriterion/types';
 import {useCriteria} from '../hooks/useCriteria';
 
 jest.mock('../../ProductSelection', () => ({
@@ -45,7 +48,7 @@ test('it renders without error', () => {
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} />
+            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} onChange={jest.fn()} />
         </ThemeProvider>
     );
 
@@ -57,7 +60,7 @@ test('it switches between tabs', () => {
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} />
+            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} onChange={jest.fn()} />
         </ThemeProvider>
     );
 
@@ -73,10 +76,36 @@ test('it switches between tabs', () => {
 });
 
 test('it calls save from parent component', () => {
-    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [[], jest.fn()]);
+    const criterion1: StatusCriterion = {
+        id: 'foo',
+        module: () => <div>[FoorCriterion]</div>,
+        state: {
+            field: 'enabled',
+            operator: Operator.EQUALS,
+            value: true,
+        },
+    };
+    const criterion2: StatusCriterion = {
+        id: 'bar',
+        module: () => <div>[BarCriterion]</div>,
+        state: {
+            field: 'enabled',
+            operator: Operator.NOT_EQUAL,
+            value: false,
+        },
+    };
+    const criteria = [criterion1, criterion2];
+    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [criteria, jest.fn()]);
 
-    const logger = jest.spyOn(console, 'log');
-    logger.mockImplementation(() => {});
+    const mutate = jest.fn();
+    const saveCriteriaResult = {
+        isLoading: false,
+        isError: false,
+        data: undefined,
+        error: null,
+        mutate: mutate,
+    };
+    (useSaveCriteria as jest.Mock).mockImplementation(() => saveCriteriaResult);
 
     const ref: {current: CatalogEditRef | null} = {
         current: null,
@@ -84,7 +113,7 @@ test('it calls save from parent component', () => {
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} ref={ref} />
+            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} onChange={jest.fn()} ref={ref} />
         </ThemeProvider>
     );
 
@@ -92,5 +121,16 @@ test('it calls save from parent component', () => {
 
     ref.current && ref.current.save();
 
-    expect(logger).toHaveBeenCalledWith('Catalog 123e4567-e89b-12d3-a456-426614174000 saved.');
+    expect(mutate).toHaveBeenCalledWith([
+        {
+            field: 'enabled',
+            operator: Operator.EQUALS,
+            value: true,
+        },
+        {
+            field: 'enabled',
+            operator: Operator.NOT_EQUAL,
+            value: false,
+        },
+    ]);
 });

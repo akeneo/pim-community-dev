@@ -1,4 +1,5 @@
 import {StatusCriterionState} from '../criteria/StatusCriterion';
+import {Criterion} from './Criterion';
 
 export type AnyCriterionState = StatusCriterionState;
 

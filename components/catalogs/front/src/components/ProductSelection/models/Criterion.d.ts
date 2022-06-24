@@ -10,6 +10,7 @@ export type CriterionModule<State> = {
 export type CriterionState = {
     field: string;
     operator: Operator;
+    value?: any;
 };
 
 export type Criterion<State extends CriterionState> = {
