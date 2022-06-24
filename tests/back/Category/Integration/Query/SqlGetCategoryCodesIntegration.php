@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Query;
+namespace Akeneo\Test\Category\Integration\Query;
 
+use Akeneo\Category\Domain\Query\GetCategoryCodes;
+use Akeneo\Category\Infrastructure\Query\SqlGetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
-use Akeneo\Pim\Enrichment\Product\Infrastructure\Query\SqlGetCategoryCodes;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
 

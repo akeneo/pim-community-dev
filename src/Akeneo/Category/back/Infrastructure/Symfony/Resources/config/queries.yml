@@ -6,3 +6,14 @@ services:
         class: Akeneo\Category\Infrastructure\Query\SqlGetExistingCategories
         arguments:
             - '@database_connection'
+
+    Akeneo\Category\Domain\Query\GetCategoryCodes:
+        class: Akeneo\Category\Infrastructure\Query\SqlGetCategoryCodes
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Category\Domain\Query\GetNonViewableCategoryCodes:
+        class: Akeneo\Category\Infrastructure\Query\GetNonViewableCategoryCodes
+        arguments:
+            - '@Akeneo\Category\Domain\Query\GetCategoryCodes'
+            - '@Akeneo\Category\Domain\Query\GetViewableCategories'

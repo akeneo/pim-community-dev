@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Query;
+namespace Akeneo\Category\Infrastructure\Query;
 
+use Akeneo\Category\Domain\Query\GetCategoryCodes;
+use Akeneo\Category\Domain\Query\GetNonViewableCategoryCodes as GetNonViewableCategoryCodesInterface;
 use Akeneo\Category\Domain\Query\GetViewableCategories;
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes as GetNonViewableCategoryCodesInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

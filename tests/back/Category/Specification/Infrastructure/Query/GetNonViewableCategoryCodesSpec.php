@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Query;
+namespace Specification\Akeneo\Category\Infrastructure\Query;
 
-use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
+use Akeneo\Category\Domain\Query\GetCategoryCodes;
+use Akeneo\Category\Domain\Query\GetNonViewableCategoryCodes as GetNonViewableCategoryCodesInterface;
+use Akeneo\Category\Domain\Query\GetViewableCategories;
+use Akeneo\Category\Infrastructure\Query\GetNonViewableCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes as GetNonViewableCategoryCodesInterface;
-use Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetNonViewableCategoryCodes;
 use PhpSpec\ObjectBehavior;
 
 class GetNonViewableCategoryCodesSpec extends ObjectBehavior
@@ -24,7 +24,7 @@ class GetNonViewableCategoryCodesSpec extends ObjectBehavior
         $this->shouldImplement(GetNonViewableCategoryCodesInterface::class);
     }
 
-    function it_returns_non_viewable_category_codes_for_a_lit_of_product_identifiers(
+    function it_returns_non_viewable_category_codes_for_a_list_of_product_identifiers(
         GetCategoryCodes $getCategoryCodes,
         GetViewableCategories $getViewableCategories
     ) {
