@@ -1,4 +1,4 @@
-import {Criterion, CriterionState} from '../models/Criterion';
+import {Criterion, CriterionState} from '../models/Criteria';
 import StatusCriterion, {StatusCriterionState} from './StatusCriterion';
 import {AnyCriterionState} from '../models/Criteria';
 

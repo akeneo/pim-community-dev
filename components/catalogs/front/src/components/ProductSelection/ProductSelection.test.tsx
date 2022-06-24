@@ -7,10 +7,10 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {ProductSelection} from './ProductSelection';
 import {Operator} from './models/Operator';
-import {Criterion} from './models/Criterion';
 import {AddCriterionDropdown} from './components/AddCriterionDropdown';
 import {StatusCriterionState} from './criteria/StatusCriterion';
 import {StatusCriterion} from './criteria/StatusCriterion/types';
+import {Criterion} from './models/Criteria';
 
 test('it renders the empty message', () => {
     render(

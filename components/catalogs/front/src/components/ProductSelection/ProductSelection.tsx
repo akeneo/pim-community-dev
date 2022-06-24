@@ -1,7 +1,6 @@
 import React, {FC, useCallback} from 'react';
 import {getColor} from 'akeneo-design-system';
-import {Criterion} from './models/Criterion';
-import {AnyCriterionState, Criteria} from './models/Criteria';
+import {AnyCriterionState, Criteria, Criterion} from './models/Criteria';
 import {AddCriterionDropdown} from './components/AddCriterionDropdown';
 import styled from 'styled-components';
 import {Empty} from './components/Empty';

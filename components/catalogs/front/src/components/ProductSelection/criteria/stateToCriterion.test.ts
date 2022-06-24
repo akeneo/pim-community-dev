@@ -1,7 +1,7 @@
 jest.unmock('./stateToCriterion');
 jest.unmock('./StatusCriterion');
 
-import {CriterionState} from '../models/Criterion';
+import {CriterionState} from '../models/Criteria';
 import {stateToCriterion} from './stateToCriterion';
 import {StatusCriterionState} from './StatusCriterion';
 

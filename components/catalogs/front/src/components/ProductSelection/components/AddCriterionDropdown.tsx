@@ -2,8 +2,7 @@ import React, {FC, useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import StatusCriterion from '../criteria/StatusCriterion';
-import {Criterion} from '../models/Criterion';
-import {AnyCriterionState} from '../models/Criteria';
+import {AnyCriterionState, Criterion} from '../models/Criteria';
 
 type Factory = {
     label: string;

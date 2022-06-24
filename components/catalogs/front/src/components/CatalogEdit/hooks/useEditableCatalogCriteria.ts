@@ -1,7 +1,7 @@
 import {useState} from 'react';
-import {Criteria} from '../../ProductSelection/models/Criteria';
 import {useCatalogCriteriaState} from './useCatalogCriteriaState';
 import {stateToCriterion} from '../../ProductSelection/criteria/stateToCriterion';
+import {Criteria} from '../../ProductSelection/models/Criteria';
 
 type LoadingResult = [undefined, undefined];
 type InitializedResult = [Criteria, (criteria: Criteria) => void];

@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {CloseIcon, IconButton, List, SelectInput} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
-import {CriterionModule} from '../../models/Criterion';
+import {CriterionModule} from '../../models/Criteria';
 import {StatusCriterionOperator, StatusCriterionState} from './types';
 import styled from 'styled-components';
 import {useOperatorTranslator} from '../../hooks/useOperatorTranslator';

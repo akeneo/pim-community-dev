@@ -8,7 +8,7 @@ import {pimTheme} from 'akeneo-design-system';
 import {AddCriterionDropdown} from './AddCriterionDropdown';
 import StatusCriterion, {StatusCriterionState} from '../criteria/StatusCriterion';
 import {Operator} from '../models/Operator';
-import {Criterion} from '../models/Criterion';
+import {Criterion} from '../models/Criteria';
 
 test('it renders without error', () => {
     render(

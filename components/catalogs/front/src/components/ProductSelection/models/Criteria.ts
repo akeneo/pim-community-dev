@@ -1,5 +1,6 @@
-import {Operator} from './Operator';
 import {FC} from 'react';
+import {Operator} from './Operator';
+import {StatusCriterionState} from '../criteria/StatusCriterion';
 
 export type CriterionModule<State> = {
     state: State;
@@ -18,3 +19,7 @@ export type Criterion<State extends CriterionState> = {
     module: FC<CriterionModule<State>>;
     state: State;
 };
+
+export type AnyCriterionState = StatusCriterionState;
+
+export type Criteria = Criterion<AnyCriterionState>[];
