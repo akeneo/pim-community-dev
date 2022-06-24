@@ -38,13 +38,13 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
 };
 
 type StorageConnectionCheckerProps = {
-  storage: Storage
-}
+  storage: Storage;
+};
 
 type ConnectionCheck = {
-  'is_connection_healthy': boolean,
-  'error_message': string|null
-}
+  is_connection_healthy: boolean;
+  error_message: string | null;
+};
 
 export type {StorageConfiguratorProps, StorageConnectionCheckerProps, ConnectionCheck};
 export {isLocalStorage, isSftpStorage, getStorageConfigurator};
