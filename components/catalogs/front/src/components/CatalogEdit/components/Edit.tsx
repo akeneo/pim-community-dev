@@ -8,7 +8,6 @@ import {useCatalogCriteria} from '../../ProductSelection/hooks/useCatalogCriteri
 import {CatalogEditRef} from '../CatalogEdit';
 import {Criteria, CriterionStates} from '../../ProductSelection/models/Criteria';
 import {useSaveCriteria} from '../../ProductSelection/hooks/useSaveCriteria';
-import {StatusCriterionState} from '../../ProductSelection/criteria/StatusCriterion';
 
 type Props = {
     id: string;

@@ -1,5 +1,3 @@
-import {StatusCriterion} from './criteria/StatusCriterion/types';
-
 jest.unmock('./ProductSelection');
 
 import React from 'react';
@@ -11,6 +9,7 @@ import {Operator} from './models/Operator';
 import {Criterion} from './models/Criterion';
 import {AddCriterionDropdown} from './components/AddCriterionDropdown';
 import {StatusCriterionState} from './criteria/StatusCriterion';
+import {StatusCriterion} from './criteria/StatusCriterion/types';
 
 test('it renders the empty message', () => {
     render(
@@ -55,14 +54,14 @@ test('it renders a list of criteria', () => {
 
 test('it updates the state when a criterion changes', () => {
     const FooCriterionModule = jest.fn(({onChange}) => (
-        <button onClick={() => onChange({field: 'foo', operator: Operator.IS_NOT_EMPTY})}>
+        <button onClick={() => onChange({field: 'enabled', operator: Operator.NOT_EQUAL, value: true})}>
             [ToggleFooCriterionValue]
         </button>
     ));
 
     const criterion1: StatusCriterion = {
         id: 'foo',
-        module: () => <div>[FooCriterion]</div>,
+        module: FooCriterionModule,
         state: {
             field: 'enabled',
             operator: Operator.EQUALS,
@@ -80,10 +79,11 @@ test('it updates the state when a criterion changes', () => {
     };
     const criteria = [criterion1, criterion2];
     const setCriteria = jest.fn();
+    const onChange = jest.fn();
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <ProductSelection criteria={criteria} setCriteria={setCriteria} onChange={jest.fn()} />
+            <ProductSelection criteria={criteria} setCriteria={setCriteria} onChange={onChange} />
         </ThemeProvider>
     );
 
@@ -92,7 +92,7 @@ test('it updates the state when a criterion changes', () => {
         expect.objectContaining({
             state: {
                 field: 'enabled',
-                operator: Operator.EQUALS,
+                operator: Operator.NOT_EQUAL,
                 value: true,
             },
         }),
@@ -104,6 +104,7 @@ test('it updates the state when a criterion changes', () => {
             },
         }),
     ]);
+    expect(onChange).toHaveBeenCalledWith(true);
 });
 
 test('it updates the state when a criterion is added', () => {
@@ -120,10 +121,11 @@ test('it updates the state when a criterion is added', () => {
         ({onNewCriterion}) => <button onClick={() => onNewCriterion(FooCriterion())}>[AddCriterion]</button>
     );
     const setCriteria = jest.fn();
+    const onChange = jest.fn();
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <ProductSelection criteria={[]} setCriteria={setCriteria} onChange={jest.fn()} />
+            <ProductSelection criteria={[]} setCriteria={setCriteria} onChange={onChange} />
         </ThemeProvider>
     );
 
@@ -137,6 +139,7 @@ test('it updates the state when a criterion is added', () => {
             },
         }),
     ]);
+    expect(onChange).toHaveBeenCalledWith(true);
 });
 
 test('it updates the state when a criterion is removed', () => {
@@ -150,14 +153,16 @@ test('it updates the state when a criterion is removed', () => {
         },
     });
     const setCriteria = jest.fn();
+    const onChange = jest.fn();
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <ProductSelection criteria={[FooCriterion()]} setCriteria={setCriteria} onChange={jest.fn()} />
+            <ProductSelection criteria={[FooCriterion()]} setCriteria={setCriteria} onChange={onChange} />
         </ThemeProvider>
     );
 
     expect(screen.getByText('[RemoveFooCriteria]')).toBeInTheDocument();
     fireEvent.click(screen.getByText('[RemoveFooCriteria]'));
     expect(setCriteria).toHaveBeenCalledWith([]);
+    expect(onChange).toHaveBeenCalledWith(true);
 });

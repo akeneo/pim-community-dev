@@ -10,6 +10,7 @@ type Result = {
     error: Error;
     mutate: UseMutateFunction<undefined | void, Error, CriterionStates[]>;
 };
+
 export const useSaveCriteria = (catalogId: string, onSuccess: () => void, onError: () => void): Result => {
     return useMutation<undefined | void, Error, CriterionStates[]>(
         async (criteria: CriterionStates[]) => {
@@ -20,6 +21,7 @@ export const useSaveCriteria = (catalogId: string, onSuccess: () => void, onErro
                 },
                 body: JSON.stringify(criteria),
             });
+
             if (!response.ok) {
                 throw new Error(response.statusText);
             }

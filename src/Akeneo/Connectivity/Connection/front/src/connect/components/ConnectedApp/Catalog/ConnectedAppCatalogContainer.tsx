@@ -54,7 +54,7 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
 
     const handleChange = (isDirty: boolean) => {
         setIsDirty(isDirty);
-    }
+    };
 
     const breadcrumb = (
         <Breadcrumb>

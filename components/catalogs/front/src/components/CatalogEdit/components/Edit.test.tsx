@@ -1,15 +1,18 @@
-import userEvent from '@testing-library/user-event';
-
 jest.unmock('./Edit');
 jest.unmock('./TabBar');
 
 import React, {useEffect, useState} from 'react';
 import {act, render, screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {Edit} from './Edit';
-import {CatalogEdit, CatalogEditRef} from '../CatalogEdit';
+import {CatalogEditRef} from '../CatalogEdit';
+import {useSaveCriteria} from '../../ProductSelection/hooks/useSaveCriteria';
+import {Operator} from '../../ProductSelection/models/Operator';
+import {useCatalogCriteria} from '../../ProductSelection/hooks/useCatalogCriteria';
+import {StatusCriterion} from '../../ProductSelection/criteria/StatusCriterion/types';
 
 jest.mock('../../ProductSelection', () => ({
     ProductSelection: () => <>[ProductSelection]</>,
@@ -69,8 +72,36 @@ test('it switches between tabs', () => {
 });
 
 test('it calls save from parent component', () => {
-    const logger = jest.spyOn(console, 'log');
-    logger.mockImplementation(() => {});
+    const criterion1: StatusCriterion = {
+        id: 'foo',
+        module: () => <div>[FoorCriterion]</div>,
+        state: {
+            field: 'enabled',
+            operator: Operator.EQUALS,
+            value: true,
+        },
+    };
+    const criterion2: StatusCriterion = {
+        id: 'bar',
+        module: () => <div>[BarCriterion]</div>,
+        state: {
+            field: 'enabled',
+            operator: Operator.NOT_EQUAL,
+            value: false,
+        },
+    };
+    const criteria = [criterion1, criterion2];
+    (useCatalogCriteria as jest.Mock).mockImplementation(() => criteria);
+
+    const mutate = jest.fn();
+    const saveCriteriaResult = {
+        isLoading: false,
+        isError: false,
+        data: undefined,
+        error: null,
+        mutate: mutate,
+    };
+    (useSaveCriteria as jest.Mock).mockImplementation(() => saveCriteriaResult);
 
     const ref: {current: CatalogEditRef | null} = {
         current: null,
@@ -86,5 +117,16 @@ test('it calls save from parent component', () => {
 
     ref.current && ref.current.save();
 
-    expect(logger).toHaveBeenCalledWith('Catalog 123e4567-e89b-12d3-a456-426614174000 saved.');
+    expect(mutate).toHaveBeenCalledWith([
+        {
+            field: 'enabled',
+            operator: Operator.EQUALS,
+            value: true,
+        },
+        {
+            field: 'enabled',
+            operator: Operator.NOT_EQUAL,
+            value: false,
+        },
+    ]);
 });

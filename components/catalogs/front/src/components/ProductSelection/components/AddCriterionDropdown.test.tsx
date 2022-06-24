@@ -48,8 +48,9 @@ test('it opens the dropdown and adds a criterion', () => {
         id: 'abc6',
         module: expect.any(Function),
         state: {
-            field: 'status',
-            operator: Operator.IS_EMPTY,
+            field: 'enabled',
+            operator: Operator.EQUALS,
+            value: true,
         },
     });
 });

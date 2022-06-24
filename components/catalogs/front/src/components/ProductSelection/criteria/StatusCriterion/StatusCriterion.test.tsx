@@ -43,7 +43,7 @@ test('it calls onChange when the operator changes', () => {
     act(() => userEvent.click(screen.getByText(Operator.NOT_EQUAL)));
 
     expect(onChange).toHaveBeenCalledWith({
-        field: 'status',
+        field: 'enabled',
         operator: Operator.NOT_EQUAL,
         value: true,
     });
@@ -68,7 +68,7 @@ test('it calls onChange when the value changes', () => {
     act(() => userEvent.click(screen.getByText('akeneo_catalogs.product_selection.criteria.status.disabled')));
 
     expect(onChange).toHaveBeenCalledWith({
-        field: 'status',
+        field: 'enabled',
         operator: Operator.EQUALS,
         value: false,
     });

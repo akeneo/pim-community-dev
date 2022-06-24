@@ -4,7 +4,7 @@ import React from 'react';
 import {render, screen} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {CatalogEdit, CatalogEditRef} from './CatalogEdit';
+import {CatalogEdit} from './CatalogEdit';
 
 jest.mock('../ErrorBoundary', () => ({
     ErrorBoundary: ({children}: {children: any}) => <>{children}</>,
