@@ -50,6 +50,8 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
      */
     public function deleteFromIds(array $identifiers)
     {
+        throw new \Exception('NOPE');
+
         if (empty($identifiers)) {
             throw new \LogicException('No products to remove');
         }
