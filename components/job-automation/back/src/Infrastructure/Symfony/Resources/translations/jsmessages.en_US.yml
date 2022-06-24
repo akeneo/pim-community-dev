@@ -16,3 +16,5 @@ akeneo.job_automation:
       unavailable_type: This storage is not available, only {{ available_types }} are available.
     file_path:
       unsupported_extension: Unsupported file extension
+  connection_checker:
+    label: CHECK THE RELIABILITY

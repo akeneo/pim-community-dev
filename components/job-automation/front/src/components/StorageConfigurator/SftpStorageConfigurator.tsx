@@ -2,6 +2,7 @@ import React from 'react';
 import {Field, Helper, NumberInput} from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isSftpStorage} from './model';
+import {StorageConnectionChecker} from "./StorageConnectionChecker";
 
 const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: StorageConfiguratorProps) => {
   if (!isSftpStorage(storage)) {
@@ -58,6 +59,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         onChange={(password: string) => onStorageChange({...storage, password})}
         errors={filterErrors(validationErrors, '[password]')}
       />
+      <StorageConnectionChecker storage={storage}/>
     </>
   );
 };
