@@ -18,15 +18,19 @@ class UcsMiddleware implements MiddlewareInterface
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
-        if (!$this->pimTenantId) {
-            return $stack->next()->handle($envelope, $stack);
+        // No tenant ID in the env, but existing in the received message
+        if (null === $this->pimTenantId && null !== $envelope->last(TenantIdStamp::class)) {
+            /** @var TenantIdStamp $stamp */
+            $stamp = $envelope->last(TenantIdStamp::class);
+            $this->pimTenantId = $stamp->pimTenantId();
         }
 
-        if (null === $envelope->last(TenantIdStamp::class)) {
+        // Tenant ID exists in this env
+        if ($this->pimTenantId && null === $envelope->last(TenantIdStamp::class)) {
             $envelope = $envelope->with(new TenantIdStamp($this->pimTenantId));
         }
 
-        if ($envelope->getMessage() instanceof TenantAwareInterface) {
+        if ($this->pimTenantId && $envelope->getMessage() instanceof TenantAwareInterface) {
             $envelope->getMessage()->setTenantId($this->pimTenantId);
         }
 
