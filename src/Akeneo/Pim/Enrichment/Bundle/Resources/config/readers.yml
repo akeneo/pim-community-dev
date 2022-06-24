@@ -58,7 +58,7 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.product_model_association'
 
     pim_connector.reader.database.category:
-        class: 'Akeneo\Pim\Enrichment\Component\Category\Connector\Reader\Database\CategoryReader'
+        class: 'Akeneo\Category\Infrastructure\Component\Connector\Reader\Database\CategoryReader'
         arguments:
             - '@pim_catalog.repository.category'
 

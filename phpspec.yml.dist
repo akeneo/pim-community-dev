@@ -1,5 +1,13 @@
 ## Rename this file in phpspec.yml to customize the phpspec configuration
 suites:
+    ## Category context
+    Category:
+        namespace: Akeneo\Category
+        psr4_prefix: Akeneo\Category
+        src_path: src/Akeneo/Category/back
+        spec_path: tests/back/Category
+        spec_prefix: Specification
+
     ## Channel context
     LegacyChannel:
         namespace: Akeneo\Channel
