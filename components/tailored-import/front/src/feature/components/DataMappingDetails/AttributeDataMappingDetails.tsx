@@ -21,6 +21,7 @@ import {
   DateConfigurator,
 } from './Attribute';
 import {AttributeDoesNotExist} from './AttributeDoesNotExist';
+import {ErrorBoundary} from './ErrorBoundary';
 
 const attributeDataMappingConfigurators: {
   [attributeType: string]: FunctionComponent<AttributeDataMappingConfiguratorProps>;
@@ -83,16 +84,18 @@ const AttributeDataMappingDetails = ({
   }
 
   return (
-    <Configurator
-      dataMapping={dataMapping}
-      attribute={attribute}
-      columns={columns}
-      validationErrors={validationErrors}
-      onOperationsChange={onOperationsChange}
-      onRefreshSampleData={onRefreshSampleData}
-      onSourcesChange={onSourcesChange}
-      onTargetChange={onTargetChange}
-    />
+    <ErrorBoundary>
+      <Configurator
+        dataMapping={dataMapping}
+        attribute={attribute}
+        columns={columns}
+        validationErrors={validationErrors}
+        onOperationsChange={onOperationsChange}
+        onRefreshSampleData={onRefreshSampleData}
+        onSourcesChange={onSourcesChange}
+        onTargetChange={onTargetChange}
+      />
+    </ErrorBoundary>
   );
 };
 

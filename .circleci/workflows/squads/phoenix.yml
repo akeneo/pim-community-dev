@@ -9,6 +9,7 @@ workflows:
                 filters:
                     branches:
                         only:
+                            - /BH-.*/
                             - /PH-.*/
           - checkout:
                 requires:
@@ -42,6 +43,7 @@ workflows:
                 filters:
                     branches:
                         only:
+                            - /BH-.*/
                             - /PH-.*/
                 requires:
                     - deploy_ucs_pim
@@ -53,6 +55,7 @@ workflows:
                 filters:
                     branches:
                         only:
+                            - /BH-.*/
                             - /PH-.*/
                 requires:
                     - deploy_tenant_1
@@ -65,6 +68,7 @@ workflows:
                 filters:
                     branches:
                         only:
+                            - /BH-.*/
                             - /PH-.*/
                 requires:
                     - deploy_tenant_2
@@ -78,6 +82,7 @@ workflows:
                 filters:
                     branches:
                         only:
+                            - /BH-.*/
                             - /PH-.*/
           - checkout:
                 name: checkout_wb
@@ -114,6 +119,7 @@ workflows:
                 filters:
                     branches:
                         only:
+                            - /BH-.*/
                             - /PH-.*/
                 requires:
                     - deploy_ucs_pim_wb
@@ -129,6 +135,7 @@ workflows:
                 filters:
                     branches:
                         only:
+                            - /BH-.*/
                             - /PH-.*/
                 requires:
                     - deploy_tenant_2_wb

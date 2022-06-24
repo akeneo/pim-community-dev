@@ -11,6 +11,7 @@ import {
 } from '../../models';
 import {CategoriesConfigurator, EnabledConfigurator, FamilyConfigurator} from './Property';
 import {PropertyNotValid} from './PropertyNotValid';
+import {ErrorBoundary} from './ErrorBoundary';
 
 const propertyDataMappingConfigurators: {
   [propertyCode: string]: FunctionComponent<PropertyDataMappingConfiguratorProps>;
@@ -57,15 +58,17 @@ const PropertyDataMappingDetails = ({
   }
 
   return (
-    <Configurator
-      dataMapping={dataMapping}
-      columns={columns}
-      validationErrors={validationErrors}
-      onOperationsChange={onOperationsChange}
-      onRefreshSampleData={onRefreshSampleData}
-      onSourcesChange={onSourcesChange}
-      onTargetChange={onTargetChange}
-    />
+    <ErrorBoundary>
+      <Configurator
+        dataMapping={dataMapping}
+        columns={columns}
+        validationErrors={validationErrors}
+        onOperationsChange={onOperationsChange}
+        onRefreshSampleData={onRefreshSampleData}
+        onSourcesChange={onSourcesChange}
+        onTargetChange={onTargetChange}
+      />
+    </ErrorBoundary>
   );
 };
 

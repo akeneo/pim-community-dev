@@ -166,8 +166,9 @@ mailer:
   base_mailer_url: null
 
 memcached:
-  image: memcached:1.6.12
-  imagePullPolicy: IfNotPresent
+  image:
+    tag: 1.6.12
+    pullPolicy: IfNotPresent
   fullnameOverride: memcached
   replicaCount: 1
   resources:
@@ -176,9 +177,12 @@ memcached:
     requests:
       cpu: "1m"
       memory: "16Mi"
-  memcached:
-    maxItemMemory: 64
-  pdbMinAvailable: 0
+  extraEnvVars:
+    - name: MEMCACHED_MAX_ITEM_SIZE
+      value: "64"
+  pdb:
+    create: true
+    minAvailable: 0
 
 mysql:
   image:
@@ -201,9 +205,9 @@ mysql:
       enabled: false
     resources:
       limits:
-        memory: 3072Mi
+        memory: 3584Mi
       requests:
-        memory: 3072Mi
+        memory: 3584Mi
         cpu: "100m"
     readinessProbe:
       initialDelaySeconds: 30

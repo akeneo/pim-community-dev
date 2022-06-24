@@ -132,6 +132,9 @@ akeneo.tailored_import:
         measurement_unit:
           title: Unit
         date_format: Date format
+      invalid:
+        attribute: This attribute has been deleted and recreated with another type, please remove this data mapping and add it again.
+        property: This property is invalid, please remove this data mapping and add it again.
   form:
     job_instance:
       tab:

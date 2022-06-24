@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10492: Fix Tailored Export filter on "identifier" when exporting Product Models
 - PIM-10227: Fix filter not applied properly on the Asset manager grid
 - PIM-10215: Fixed missing translations label in process tracker for mass edit on assets and records jobs
 - PIM-10237: Order connector Assets with PHP to avoid memory issues
