@@ -138,5 +138,8 @@ catalogs-lint-back_fix:
 # BINARIES
 
 var/infection.phar:
-	$(DOCKER_COMPOSE) run -u www-data -w /srv/pim/var --rm php sh -c "wget https://github.com/infection/infection/releases/download/0.26.0/infection.phar && chmod +x infection.phar"
-	$(DOCKER_COMPOSE) run -u www-data -w /srv/pim/var --rm php sh -c "wget https://github.com/infection/infection/releases/download/0.26.0/infection.phar.asc"
+	wget -q https://github.com/infection/infection/releases/download/0.26.0/infection.phar -O var/infection.phar
+	wget -q https://github.com/infection/infection/releases/download/0.26.0/infection.phar.asc -O var/infection.phar.asc
+	echo "80b26af31585cf98f6a898c34aa961c0bd4289ad135fa6771831bcd1d47aa5cc  var/infection.phar" | sha256sum --check
+	echo "5052975aaf68cc4010b9726bd00ac2ec3c0cf0123f94044ae37aa3d892cf02c8  var/infection.phar.asc" | sha256sum --check
+	chmod +x var/infection.phar
