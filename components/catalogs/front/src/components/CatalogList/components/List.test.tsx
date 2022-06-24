@@ -3,7 +3,7 @@ jest.unmock('./List');
 import React from 'react';
 import {act, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {mocked} from 'ts-jest';
+import {mocked} from 'ts-jest/utils';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {List} from './List';

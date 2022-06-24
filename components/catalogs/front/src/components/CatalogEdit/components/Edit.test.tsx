@@ -4,7 +4,7 @@ jest.unmock('./TabBar');
 import React, {useEffect, useState} from 'react';
 import {act, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {mocked} from 'ts-jest';
+import {mocked} from 'ts-jest/utils';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';

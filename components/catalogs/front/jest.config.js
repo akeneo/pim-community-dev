@@ -5,12 +5,8 @@ module.exports = {
             tsconfig: './tsconfig.json',
         },
     },
-    moduleDirectories: [
-        '<rootDir>/../../../node_modules/',
-    ],
-    setupFilesAfterEnv: [
-        '<rootDir>/tests/setup.ts',
-    ],
+    moduleDirectories: ['<rootDir>/../../../node_modules/'],
+    setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
     automock: true,
     clearMocks: true,
     unmockedModulePathPatterns: [
@@ -19,6 +15,7 @@ module.exports = {
         'styled-components',
         '@testing-library',
         'jest-fetch-mock',
+        'ts-jest',
         'react-query',
         // Components of the DSM are not exposed individually, it's a nightmare to mock
         'akeneo-design-system',
@@ -30,9 +27,7 @@ module.exports = {
     moduleNameMapper: {
         '\\.(svg|css)$': '<rootDir>/tests/test-file-stub.ts',
     },
-    collectCoverageFrom: [
-      '<rootDir>/src/components/**/*.{ts,tsx}',
-    ],
+    collectCoverageFrom: ['<rootDir>/src/components/**/*.{ts,tsx}'],
     coverageThreshold: {
         global: {
             branches: 0,
@@ -40,5 +35,5 @@ module.exports = {
             lines: 100,
             statements: 100,
         },
-    }
+    },
 };
