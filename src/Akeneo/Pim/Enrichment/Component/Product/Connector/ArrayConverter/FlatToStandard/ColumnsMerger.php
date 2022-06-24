@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
 
 /**
@@ -145,10 +146,16 @@ class ColumnsMerger
     protected function mergeMetricData(array $resultRow, array $collectedMetrics)
     {
         foreach ($collectedMetrics as $fieldName => $metricData) {
+            $metricValue = $metricData['data'];
+
+            if (is_float($metricValue)) {
+                $metricValue = number_format($metricValue, MeasureConverter::SCALE);
+            }
+
             $resultRow[$fieldName] = trim(
                 sprintf(
                     '%s%s%s',
-                    $metricData['data'],
+                    $metricValue,
                     AttributeColumnInfoExtractor::UNIT_SEPARATOR,
                     $metricData['unit']
                 )
