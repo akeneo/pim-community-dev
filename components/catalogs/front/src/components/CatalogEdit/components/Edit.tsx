@@ -50,7 +50,7 @@ const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, re
             <TabBar isCurrent={isCurrent} switchTo={handleSwitchTo} />
 
             {isCurrent(Tabs.SETTINGS) && <Settings />}
-            {isCurrent(Tabs.PRODUCT_SELECTION) && undefined !== criteria && (
+            {isCurrent(Tabs.PRODUCT_SELECTION) && undefined !== criteria && undefined !== setCriteria && (
                 <ProductSelection criteria={criteria} setCriteria={setCriteria} onChange={onChange} />
             )}
         </>
