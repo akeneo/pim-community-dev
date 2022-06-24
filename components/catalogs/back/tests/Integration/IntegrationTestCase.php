@@ -7,7 +7,13 @@ namespace Akeneo\Catalogs\Test\Integration;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
@@ -15,6 +21,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -58,7 +65,7 @@ abstract class IntegrationTestCase extends WebTestCase
     protected function logAs(string $username): TokenInterface
     {
         $user = self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier($username);
-        \assert(null !== $user);
+        Assert::notNull($user);
         $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         self::getContainer()->get('security.token_storage')->setToken($token);
 
@@ -155,11 +162,35 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_user.updater.user')->update($user, $userPayload);
 
         $violations = self::getContainer()->get('validator')->validate($user);
-        \assert(0 === $violations->count());
+        Assert::count($violations, 0);
 
         self::getContainer()->get('pim_user.saver.user')->save($user);
 
         return $user;
+    }
+
+    /**
+     * @param array<UserIntent> $intents
+     */
+    protected function createProduct(string $identifier, array $intents = [], ?int $userId = null): AbstractProduct
+    {
+        $bus = self::getContainer()->get('pim_enrich.product.message_bus');
+
+        if (null === $userId) {
+            $user = self::getContainer()->get('security.token_storage')->getToken()?->getUser();
+            \assert($user instanceof UserInterface);
+            $userId = $user->getId();
+        }
+
+        Assert::notNull($userId);
+
+        $command = UpsertProductCommand::createFromCollection($userId, $identifier, $intents);
+
+        $bus->dispatch($command);
+
+        self::getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        return self::getContainer()->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     protected function createCatalog(string $id, string $name, string $ownerUsername): void
@@ -170,5 +201,19 @@ abstract class IntegrationTestCase extends WebTestCase
             $name,
             $ownerUsername,
         ));
+    }
+
+    /**
+     * @todo call the command bus when there will be a command/handler for this
+     */
+    protected function enableCatalog(string $id): void
+    {
+        $connection = self::getContainer()->get(Connection::class);
+        $connection->executeQuery(
+            'UPDATE akeneo_catalog SET is_enabled = 1 WHERE id = :id',
+            [
+                'id' => Uuid::fromString($id)->getBytes(),
+            ]
+        );
     }
 }
