@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValidateDataTrait;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValueUserIntentFactory;
@@ -19,19 +17,15 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StringValueUserIntentFactory implements ValueUserIntentFactory
+class FileValueUserIntentFactory implements ValueUserIntentFactory
 {
     use ValidateDataTrait;
 
     public function getSupportedAttributeTypes(): array
     {
         return [
-            AttributeTypes::TEXT,
-            AttributeTypes::TEXTAREA,
-            AttributeTypes::OPTION_SIMPLE_SELECT,
-            // TODO: Add when userIntent is ready
-//            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
-            AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT
+            AttributeTypes::FILE,
+            AttributeTypes::IMAGE,
         ];
     }
 
@@ -46,11 +40,8 @@ class StringValueUserIntentFactory implements ValueUserIntentFactory
         }
 
         return match ($attributeType) {
-            AttributeTypes::TEXT => new SetTextValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
-            AttributeTypes::TEXTAREA => new SetTextareaValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
-            AttributeTypes::OPTION_SIMPLE_SELECT => new SetSimpleSelectValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
-            AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT => new SetSimpleReferenceEntityValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
-            // TODO: Add AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT when userIntent is ready
+            AttributeTypes::FILE => new SetFileValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
+            AttributeTypes::IMAGE => new SetImageValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             default => throw new \InvalidArgumentException('Not implemented')
         };
     }

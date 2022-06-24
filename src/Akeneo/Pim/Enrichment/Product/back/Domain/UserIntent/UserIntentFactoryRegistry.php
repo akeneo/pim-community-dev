@@ -39,13 +39,13 @@ class UserIntentFactoryRegistry
     /**
      * @param string $fieldName
      * @param mixed $data
-     * @return UserIntent|UserIntent[]|null
+     * @return UserIntent[]|null
      */
-    public function fromStandardFormatField(string $fieldName, mixed $data): UserIntent | array | null
+    public function fromStandardFormatField(string $fieldName, mixed $data): array | null
     {
         $factory = $this->userIntentFactoriesWithFieldName[$fieldName] ?? null;
         if (null === $factory && \in_array($fieldName, $this->ignoredFieldNames)) {
-            return null;
+            return [];
         }
         if (null === $factory) {
             throw new \InvalidArgumentException(\sprintf('Cannot create userIntent from %s fieldName', $fieldName));

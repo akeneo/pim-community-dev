@@ -21,13 +21,17 @@ class GroupsUserIntentFactory implements UserIntentFactory
         return ['groups'];
     }
 
-    public function create(string $fieldName, mixed $data): UserIntent|array
+    /**
+     * @inheritDoc
+     */
+    public function create(string $fieldName, mixed $data): array
     {
-        if (null === $data) {
-            return new SetGroups([]);
-        }
         $this->validateScalarArray($fieldName, $data);
 
-        return new SetGroups($data);
+        if (null === $data) {
+            throw InvalidPropertyTypeException::arrayExpected($fieldName, static::class, $data);
+        }
+
+        return [new SetGroups($data)];
     }
 }

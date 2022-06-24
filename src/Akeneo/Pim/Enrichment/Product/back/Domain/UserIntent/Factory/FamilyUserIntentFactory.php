@@ -20,15 +20,18 @@ class FamilyUserIntentFactory implements UserIntentFactory
         return ['family'];
     }
 
-    public function create(string $fieldName, mixed $data): UserIntent
+    /**
+     * @inheritDoc
+     */
+    public function create(string $fieldName, mixed $data): array
     {
         if (null === $data || '' === $data) {
-            return new RemoveFamily();
+            return [new RemoveFamily()];
         }
         if (!is_string($data)) {
             throw InvalidPropertyTypeException::stringExpected($fieldName, static::class, $data);
         }
 
-        return new SetFamily($data);
+        return [new SetFamily($data)];
     }
 }

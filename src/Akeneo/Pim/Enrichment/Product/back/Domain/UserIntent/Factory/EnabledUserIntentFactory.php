@@ -20,12 +20,12 @@ class EnabledUserIntentFactory implements UserIntentFactory
         return ['enabled'];
     }
 
-    public function create(string $fieldName, mixed $data): UserIntent|array
+    public function create(string $fieldName, mixed $data): array
     {
         if (!\is_bool($data)) {
             throw InvalidPropertyTypeException::booleanExpected($fieldName, static::class, $data);
         }
 
-        return new SetEnabled($data);
+        return [new SetEnabled($data)];
     }
 }

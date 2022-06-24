@@ -17,7 +17,7 @@ class EnabledUserIntentFactorySpec extends ObjectBehavior
     function it_returns_a_set_enabled_user_intent()
     {
         $this->create('enabled', true)
-            ->shouldBeLike(new SetEnabled(true));
+            ->shouldBeLike([new SetEnabled(true)]);
     }
 
     function it_throws_an_error_when_data_is_invalid()

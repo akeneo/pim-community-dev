@@ -3,8 +3,6 @@
 namespace Specification\Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
@@ -39,15 +37,6 @@ class StringValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetTextareaValue('a_textarea', null, null, '<p>coucou</p>'));
     }
 
-    function it_returns_set_file_user_intent()
-    {
-        $this->create(AttributeTypes::FILE, 'a_file', [
-            'data' => 'coucou',
-            'locale' => null,
-            'scope' => null,
-        ])->shouldBeLike(new SetFileValue('a_file', null, null, 'coucou'));
-    }
-
     function it_returns_set_simple_select_user_intent()
     {
         $this->create(AttributeTypes::OPTION_SIMPLE_SELECT, 'a_simple_select', [
@@ -55,15 +44,6 @@ class StringValueUserIntentFactorySpec extends ObjectBehavior
             'locale' => null,
             'scope' => null,
         ])->shouldBeLike(new SetSimpleSelectValue('a_simple_select', null, null, 'coucou'));
-    }
-
-    function it_returns_set_image_user_intent()
-    {
-        $this->create(AttributeTypes::IMAGE, 'an_image', [
-            'data' => 'coucou',
-            'locale' => null,
-            'scope' => null,
-        ])->shouldBeLike(new SetImageValue('an_image', null, null, 'coucou'));
     }
 
     function it_returns_set_simple_reference_entity_user_intent()

@@ -26,7 +26,7 @@ class AssociationsUserIntentFactory implements UserIntentFactory
     /**
      * @inerhitDoc
      */
-    public function create(string $fieldName, mixed $data): UserIntent | array
+    public function create(string $fieldName, mixed $data): array
     {
         if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($fieldName, static::class, $data);

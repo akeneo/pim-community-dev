@@ -17,7 +17,7 @@ class ValueUserIntentFactoryRegistry implements UserIntentFactory
     /**
      * @var array<string, ValueUserIntentFactory>
      */
-    private array $valueUserIntentFactoriesWithAttributeType;
+    private array $valueUserIntentFactoriesByAttributeType;
 
     /**
      * @param AttributeRepositoryInterface $attributeRepository
@@ -31,7 +31,7 @@ class ValueUserIntentFactoryRegistry implements UserIntentFactory
             Assert::isInstanceOf($valueUserIntentFactory, ValueUserIntentFactory::class);
             $attributeTypes = $valueUserIntentFactory->getSupportedAttributeTypes();
             foreach ($attributeTypes as $attributeType) {
-                $this->valueUserIntentFactoriesWithAttributeType[$attributeType] = $valueUserIntentFactory;
+                $this->valueUserIntentFactoriesByAttributeType[$attributeType] = $valueUserIntentFactory;
             }
         }
     }
@@ -44,17 +44,17 @@ class ValueUserIntentFactoryRegistry implements UserIntentFactory
     /**
      * @inerhitDoc
      */
-    public function create(string $fieldName, mixed $data): UserIntent | array
+    public function create(string $fieldName, mixed $data): array
     {
         Assert::isArray($data);
 
-        $attributeTypesByCode = $this->attributeRepository->getAttributeTypeByCodes(\array_keys($data));
+        $attributeTypesByCode = \array_change_key_case($this->attributeRepository->getAttributeTypeByCodes(\array_keys($data)), \CASE_LOWER);
         $valueUserIntents = [];
         foreach ($data as $attributeCode => $values) {
-            $attributeType = $attributeTypesByCode[$attributeCode] ?? null;
-            $factory = $this->valueUserIntentFactoriesWithAttributeType[$attributeType] ?? null;
+            $attributeType = $attributeTypesByCode[\strtolower($attributeCode)] ?? null;
+            $factory = $this->valueUserIntentFactoriesByAttributeType[$attributeType] ?? null;
             if (null === $factory) {
-                throw new \InvalidArgumentException('Not implemented');
+                throw new \InvalidArgumentException(\sprintf('There is no value factory linked to the attribute type %s', $attributeType));
             }
             foreach ($values as $value) {
                 $valueUserIntents[] = $factory->create($attributeType, $attributeCode, $value);

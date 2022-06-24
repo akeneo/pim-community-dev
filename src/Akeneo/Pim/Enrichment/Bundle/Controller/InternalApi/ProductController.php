@@ -7,18 +7,14 @@ use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ConvertToSimpleProduct;
-use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -37,7 +33,6 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -75,7 +70,6 @@ class ProductController
         private Client $productAndProductModelClient,
         private MessageBusInterface $commandMessageBus,
         private FindIdentifier $findIdentifier,
-        private MessageBusInterface $queryMessageBus
     ) {
     }
 
@@ -334,47 +328,6 @@ class ProductController
         return $attribute;
     }
 
-    /**
-     * Updates product with the provided request data
-     *
-     * @param ProductInterface $product
-     * @param array            $data
-     */
-    protected function updateProduct(ProductInterface $product, array $data)
-    {
-        $values = $this->productValueConverter->convert($data['values']);
-
-        $values = $this->localizedConverter->convertToDefaultFormats($values, [
-            'locale' => $this->userContext->getUiLocale()->getCode()
-        ]);
-
-        $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $values]);
-
-        if (!empty($dataFiltered)) {
-            $data = array_replace($data, $dataFiltered);
-        } else {
-            $data['values'] = [];
-        }
-
-        // don't filter during creation, because identifier is needed
-        // but not sent by the frontend during creation (it sends the sku in the values)
-        if (null !== $product->getId() && $product->isVariant()) {
-            $data = $this->productAttributeFilter->filter($data);
-        }
-
-        $envelope = $this->queryMessageBus->dispatch(new GetUserIntentsFromStandardFormat($data));
-        $handledStamp = $envelope->last(HandledStamp::class);
-        $userIntents = $handledStamp->getResult();
-
-        $userId = $this->userContext->getUser()?->getId();
-        $command = UpsertProductCommand::createFromCollection(
-            $userId,
-            $product->getIdentifier() ?? '',
-            $userIntents
-        );
-        $this->commandMessageBus->dispatch($command);
-    }
-
     protected function createProduct(ProductInterface $product, array $data)
     {
         $values = $this->productValueConverter->convert($data['values']);
@@ -387,35 +340,6 @@ class ProductController
         } else {
             $data['values'] = [];
         }
-        // don't filter during creation, because identifier is needed
-        // but not sent by the frontend during creation (it sends the sku in the values)
-        if (null !== $product->getId() && $product->isVariant()) {
-            $data = $this->productAttributeFilter->filter($data);
-        }
-
-        $this->productUpdater->update($product, $data);
-    }
-
-    /**
-     * Updates product or draft with the provided request data. The product should be updated through the service API
-     * so this is only used for draft.
-     */
-    protected function updateDraft(ProductInterface $product, array $data): void
-    {
-        $values = $this->productValueConverter->convert($data['values']);
-
-        $values = $this->localizedConverter->convertToDefaultFormats($values, [
-            'locale' => $this->userContext->getUiLocale()->getCode()
-        ]);
-
-        $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $values]);
-
-        if (!empty($dataFiltered)) {
-            $data = array_replace($data, $dataFiltered);
-        } else {
-            $data['values'] = [];
-        }
-
         // don't filter during creation, because identifier is needed
         // but not sent by the frontend during creation (it sends the sku in the values)
         if (null !== $product->getId() && $product->isVariant()) {

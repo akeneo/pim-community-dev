@@ -27,13 +27,13 @@ class ConvertStandardFormatIntoUserIntentsHandlerSpec extends ObjectBehavior
         UserIntent $userIntent3,
     ) {
         $userIntentFactoryRegistry->fromStandardFormatField('family', 'accessories')
-            ->willReturn($userIntent1);
+            ->willReturn([$userIntent1]);
         $userIntentFactoryRegistry->fromStandardFormatField('categories', ['print'])
-            ->willReturn($userIntent2);
+            ->willReturn([$userIntent2]);
         $userIntentFactoryRegistry->fromStandardFormatField('enabled', true)
-            ->willReturn($userIntent3);
+            ->willReturn([$userIntent3]);
         $userIntentFactoryRegistry->fromStandardFormatField('identifier', 'my-identifier')
-            ->willReturn(null);
+            ->willReturn([]);
 
         $this->__invoke(new GetUserIntentsFromStandardFormat([
             'family' => 'accessories',
