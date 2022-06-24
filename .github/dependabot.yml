@@ -39,6 +39,9 @@ updates:
       interval: "daily"
     allow:
       - dependency-type: "production"
+    ignore:
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]
 
   #6.0
   - package-ecosystem: "npm"
@@ -66,6 +69,9 @@ updates:
     target-branch: "6.0"
     allow:
       - dependency-type: "production"
+    ignore:
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]
 
   #5.0
   - package-ecosystem: "npm"
@@ -93,3 +99,6 @@ updates:
     target-branch: "5.0"
     allow:
       - dependency-type: "production"
+    ignore:
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]
