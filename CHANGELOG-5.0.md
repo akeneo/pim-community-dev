@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - Fix PHP alternative to 7.4 in Dockerfile
+- PIM-10491: [Backport PIM-9871] Fix Published Product Grid takes long time to load for high number of attribute usable in grid
 
 # 5.0.99 (2022-06-21)
 
