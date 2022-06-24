@@ -1,0 +1,18 @@
+apiVersion: compute.gcp.jet.crossplane.io/v1alpha1
+kind: Disk
+metadata:
+ name: {{ .Values.global.extraLabels.pfid }}-mysql
+spec:
+ forProvider:
+   description: ""
+   labels:
+     pfid: {{ .Values.global.extraLabels.pfid }}-mysql
+     app: mysql
+     type: {{ .Values.global.extraLabels.type }}
+   name: {{ .Values.global.extraLabels.pfid }}-mysql
+   size: 10
+   snapshot: ""
+   type: pd-ssd
+   zone: {{ .Values.common.googleZone }}
+ providerConfigRef:
+   name: provider-config-jet-gcp

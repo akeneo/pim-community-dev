@@ -1,0 +1,58 @@
+apiVersion: storage.gcp.crossplane.io/v1alpha3
+kind: Bucket
+metadata:
+  name: {{ .Values.global.extraLabels.pfid }}
+  labels:
+    pfid: {{ .Values.global.extraLabels.pfid }}
+  annotations:
+    # Note that this will be the actual bucket name so it has to be globally unique/available.
+    crossplane.io/external-name: {{ .Values.global.extraLabels.pfid }}
+spec:
+  location: {{ .Values.pim.storage.location }}
+  storageClass: STANDARD
+  providerConfigRef:
+    name: provider-config-gcp
+  deletionPolicy: Delete
+---
+apiVersion: storage.gcp.crossplane.io/v1alpha1
+kind: BucketPolicyMember
+metadata:
+  name: {{ .Values.global.extraLabels.pfid }}
+spec:
+  forProvider:
+    bucketRef:
+      name: {{ .Values.global.extraLabels.pfid }}
+    member: serviceAccount:{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
+    role: roles/storage.objectAdmin
+  providerConfigRef:
+    name: provider-config-gcp
+---
+# Backup ES
+apiVersion: storage.gcp.crossplane.io/v1alpha3
+kind: Bucket
+metadata:
+  name: {{ .Values.global.extraLabels.pfid }}-es
+  labels:
+    pfid: {{ .Values.global.extraLabels.pfid }}
+  annotations:
+    # Note that this will be the actual bucket name so it has to be globally unique/available.
+    crossplane.io/external-name: {{ .Values.global.extraLabels.pfid }}-es
+spec:
+  location: {{ .Values.pim.storage.location }}
+  storageClass: STANDARD
+  providerConfigRef:
+    name: provider-config-gcp
+  deletionPolicy: Delete
+---
+apiVersion: storage.gcp.crossplane.io/v1alpha1
+kind: BucketPolicyMember
+metadata:
+  name: {{ .Values.global.extraLabels.pfid }}-es
+spec:
+  forProvider:
+    bucketRef:
+      name: {{ .Values.global.extraLabels.pfid }}-es
+    member: serviceAccount:{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
+    role: roles/storage.objectAdmin
+  providerConfigRef:
+    name: provider-config-gcp

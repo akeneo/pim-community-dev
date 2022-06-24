@@ -688,14 +688,17 @@ jobs:
                       - modify_cluster
             - set_gcloud_config_ucs
             - restore_persisted_env_vars
+            - install_yq
             - run:
                   name: Define value for next steps
                   command: |
                       INSTANCE_NAME_PREFIX=ucs
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      SERVICE_ACCOUNT_KEY=$(echo ${GCLOUD_SERVICE_KEY_UCS} | base64 | tr -d '\n')
 
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                      echo export SERVICE_ACCOUNT_KEY=${SERVICE_ACCOUNT_KEY} >> $BASH_ENV
 
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
@@ -703,6 +706,11 @@ jobs:
             - run:
                   name: DATADOG deployment Livetail logs page
                   command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+            - run:
+                  name: Use UCS service account # Workarround waiting workload identity
+                  command: |
+                      # Workarround waiting workload identity
+                      yq w -i deployments-ucs/config/ci-values.yaml pim.serviceAccountKey "${SERVICE_ACCOUNT_KEY}"
             - run:
                   name: Deploy PIM on kubernetes
                   command: |
