@@ -46,6 +46,7 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "5.0"
+    open-pull-requests-limit: 0
     allow:
       - dependency-type: "production"
     open-pull-requests-limit: 0
@@ -55,6 +56,7 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "5.0"
+    open-pull-requests-limit: 0
     allow:
       - dependency-type: "production"
     open-pull-requests-limit: 0
@@ -64,6 +66,7 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "5.0"
+    open-pull-requests-limit: 0
     allow:
       - dependency-type: "production"
 
@@ -73,6 +76,7 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "4.0"
+    open-pull-requests-limit: 0
     allow:
       - dependency-type: "production"
     open-pull-requests-limit: 0
@@ -82,5 +86,6 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "4.0"
+    open-pull-requests-limit: 0
     allow:
       - dependency-type: "production"
