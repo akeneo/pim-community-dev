@@ -1,13 +1,10 @@
-import {Criteria} from './models/Criteria';
-
 jest.unmock('./ProductSelection');
 
-import React, {useState} from 'react';
+import React from 'react';
 import {fireEvent, render, screen} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {ProductSelection} from './ProductSelection';
-import {useCatalogCriteria} from './hooks/useCatalogCriteria';
 import {Operator} from './models/Operator';
 import {Criterion, CriterionState} from './models/Criterion';
 import {AddCriterionDropdown} from './components/AddCriterionDropdown';
@@ -102,7 +99,7 @@ test('it updates the state when a criterion changes', () => {
 });
 
 test('it updates the state when a criterion is added', () => {
-    const FooCriterion = (): Criterion<CriterionState> => ({
+    const FooCriterion = (): Criterion<any> => ({
         id: (Math.random() + 1).toString(36).substring(7),
         module: () => <div>[FooCriterion]</div>,
         state: {
@@ -133,7 +130,7 @@ test('it updates the state when a criterion is added', () => {
 });
 
 test('it updates the state when a criterion is removed', () => {
-    const FooCriterion = (): Criterion<CriterionState> => ({
+    const FooCriterion = (): Criterion<any> => ({
         id: (Math.random() + 1).toString(36).substring(7),
         module: ({onRemove}) => <button onClick={onRemove}>[RemoveFooCriteria]</button>,
         state: {
