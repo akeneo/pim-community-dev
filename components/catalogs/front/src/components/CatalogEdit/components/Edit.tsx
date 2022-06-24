@@ -19,6 +19,7 @@ const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, re
     const [isCurrent, switchTo] = useTabBar(activeTab);
     const catalogCriteria = useCatalogCriteria(id);
     const [criteria, setCriteria] = useState<Criteria>(catalogCriteria);
+    /* istanbul ignore next */
     const saveCriteria = useSaveCriteria(
         id,
         () => {

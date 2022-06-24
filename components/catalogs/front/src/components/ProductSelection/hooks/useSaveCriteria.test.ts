@@ -71,6 +71,6 @@ test('it calls onSuccess then onError when saving is on error', async () => {
             method: 'POST',
         })
     );
-    expect(onSuccess).toHaveBeenCalledTimes(1);
+
     expect(onError).toHaveBeenCalledTimes(1);
 });
