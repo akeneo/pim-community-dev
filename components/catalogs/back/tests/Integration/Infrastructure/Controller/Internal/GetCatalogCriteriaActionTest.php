@@ -11,7 +11,7 @@ use PHPUnit\Framework\Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetCatalogDataActionTest extends IntegrationTestCase
+class GetCatalogCriteriaActionTest extends IntegrationTestCase
 {
     protected function setUp(): void
     {
@@ -20,14 +20,14 @@ class GetCatalogDataActionTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItGetsCatalogData(): void
+    public function testItGetsCatalogCriteria(): void
     {
         $client = $this->getAuthenticatedInternalApiClient();
         $this->createCatalog('ed30425c-d9cf-468b-8bc7-fa346f41dd07', 'Store FR', 'admin');
 
         $client->request(
             'GET',
-            '/rest/catalogs/ed30425c-d9cf-468b-8bc7-fa346f41dd07/data',
+            '/rest/catalogs/ed30425c-d9cf-468b-8bc7-fa346f41dd07/criteria',
             [],
             [],
             [
@@ -39,14 +39,11 @@ class GetCatalogDataActionTest extends IntegrationTestCase
         $payload = \json_decode($response->getContent(), true);
 
         Assert::assertEquals(200, $response->getStatusCode());
-
         Assert::assertEquals([
-            'product_selection_criteria' => [
-                [
-                    'field' => 'enabled',
-                    'operator' => '=',
-                    'value' => true,
-                ],
+            [
+                'field' => 'enabled',
+                'operator' => '=',
+                'value' => true,
             ],
         ], $payload);
     }
@@ -54,11 +51,10 @@ class GetCatalogDataActionTest extends IntegrationTestCase
     public function testItGetsNotFoundResponseWithWrongId(): void
     {
         $client = $this->getAuthenticatedInternalApiClient();
-        $this->createCatalog('ed30425c-d9cf-468b-8bc7-fa346f41dd07', 'Store FR', 'admin');
 
         $client->request(
             'GET',
-            '/rest/catalogs/wr0ngc-d9cf-468b-8bc7-fa346f41dd07/data',
+            '/rest/catalogs/ed30425c-d9cf-468b-8bc7-fa346f41dd07/criteria',
             [],
             [],
             [

@@ -1,25 +1,23 @@
-jest.unmock('./useCatalogData');
+jest.unmock('./useCatalogCriteriaState');
 
 import {renderHook} from '@testing-library/react-hooks';
-import {useCatalogData} from './useCatalogData';
+import {useCatalogCriteriaState} from './useCatalogCriteriaState';
 import fetchMock from 'jest-fetch-mock';
 import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 
 test('it fetches catalog data', async () => {
     fetchMock.mockResponseOnce(
-        JSON.stringify({
-            product_selection_criteria: [
-                {
-                    field: 'enabled',
-                    operator: '=',
-                    value: true,
-                },
-            ],
-        })
+        JSON.stringify([
+            {
+                field: 'enabled',
+                operator: '=',
+                value: true,
+            },
+        ])
     );
 
     const id = '123e4567-e89b-12d3-a456-426614174000';
-    const {result, waitForNextUpdate} = renderHook(() => useCatalogData(id), {wrapper: ReactQueryWrapper});
+    const {result, waitForNextUpdate} = renderHook(() => useCatalogCriteriaState(id), {wrapper: ReactQueryWrapper});
 
     expect(result.current).toMatchObject({
         isLoading: true,
@@ -34,15 +32,13 @@ test('it fetches catalog data', async () => {
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,
-        data: {
-            product_selection_criteria: [
-                {
-                    field: 'enabled',
-                    operator: '=',
-                    value: true,
-                },
-            ],
-        },
+        data: [
+            {
+                field: 'enabled',
+                operator: '=',
+                value: true,
+            },
+        ],
         error: null,
     });
 });

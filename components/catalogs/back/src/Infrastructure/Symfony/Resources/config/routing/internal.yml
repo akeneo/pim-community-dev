@@ -10,9 +10,9 @@ akeneo_catalogs_internal_get_catalog:
     requirements:
         catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
 
-akeneo_catalogs_internal_get_catalog_data:
-    path: '/rest/catalogs/{catalogId}/data'
-    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCatalogDataAction
+akeneo_catalogs_internal_get_catalog_criteria:
+    path: '/rest/catalogs/{catalogId}/criteria'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCatalogCriteriaAction
     methods: [ GET ]
     requirements:
         catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'

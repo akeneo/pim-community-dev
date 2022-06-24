@@ -4,7 +4,7 @@ import {useTabBar} from 'akeneo-design-system';
 import {TabBar, Tabs} from './TabBar';
 import {ProductSelection} from '../../ProductSelection';
 import {Settings} from './Settings';
-import {useCriteria} from '../hooks/useCriteria';
+import {useEditableCatalogCriteria} from '../hooks/useEditableCatalogCriteria';
 import {CatalogEditRef} from '../CatalogEdit';
 import {useSaveCriteria} from '../../ProductSelection/hooks/useSaveCriteria';
 
@@ -16,7 +16,7 @@ type Props = {
 const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, ref) => {
     const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.SETTINGS, 'pim_catalog_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
-    const [criteria, setCriteria] = useCriteria(id);
+    const [criteria, setCriteria] = useEditableCatalogCriteria(id);
     /* istanbul ignore next */
     const saveCriteria = useSaveCriteria(
         id,
@@ -30,7 +30,9 @@ const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, re
 
     useImperativeHandle(ref, () => ({
         save: () => {
-            saveCriteria.mutate(criteria.map(value => value.state));
+            if (undefined !== criteria) {
+                saveCriteria.mutate(criteria.map(value => value.state));
+            }
             onChange(false);
         },
     }));
@@ -48,7 +50,7 @@ const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, re
             <TabBar isCurrent={isCurrent} switchTo={handleSwitchTo} />
 
             {isCurrent(Tabs.SETTINGS) && <Settings />}
-            {isCurrent(Tabs.PRODUCT_SELECTION) && (
+            {isCurrent(Tabs.PRODUCT_SELECTION) && undefined !== criteria && (
                 <ProductSelection criteria={criteria} setCriteria={setCriteria} onChange={onChange} />
             )}
         </>

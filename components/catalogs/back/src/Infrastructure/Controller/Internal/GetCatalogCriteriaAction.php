@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetCatalogDataAction
+class GetCatalogCriteriaAction
 {
     public function __construct(
         private FindCatalogProductSelectionCriteriaQueryInterface $findCatalogProductSelectionCriteriaQuery,
@@ -33,8 +33,6 @@ class GetCatalogDataAction
             throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
         }
 
-        return new JsonResponse([
-            'product_selection_criteria' => $productSelectionCriteria,
-        ]);
+        return new JsonResponse($productSelectionCriteria);
     }
 }
