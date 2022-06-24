@@ -20,15 +20,18 @@ class ParentUserIntentFactory implements UserIntentFactory
         return ['parent'];
     }
 
-    public function create(string $fieldName, mixed $data): UserIntent|array
+    /**
+     * @inheritDoc
+     */
+    public function create(string $fieldName, mixed $data): array
     {
         if (null === $data || '' === $data) {
-            return new ConvertToSimpleProduct();
+            return [new ConvertToSimpleProduct()];
         }
         if (!\is_string($data)) {
             throw InvalidPropertyTypeException::stringExpected($fieldName, static::class, $data);
         }
 
-        return new ChangeParent($data);
+        return [new ChangeParent($data)];
     }
 }

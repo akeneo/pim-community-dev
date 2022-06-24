@@ -18,7 +18,7 @@ interface UserIntentFactory
     public function getSupportedFieldNames(): array;
 
     /**
-     * @return UserIntent|UserIntent[]
+     * @return UserIntent[]
      */
-    public function create(string $fieldName, mixed $data): UserIntent | array;
+    public function create(string $fieldName, mixed $data): array;
 }

@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\MessageBus;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -43,20 +44,20 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class UpdateProductController
 {
     public function __construct(
-        private ProductRepositoryInterface $productRepository,
-        private ObjectUpdaterInterface $productUpdater,
-        private SaverInterface $productSaver,
-        private NormalizerInterface $normalizer,
-        private ValidatorInterface $validator,
-        private UserContext $userContext,
-        private CollectionFilterInterface $productEditDataFilter,
-        private AttributeConverterInterface $localizedConverter,
-        private FilterInterface $emptyValuesFilter,
-        private ConverterInterface $productValueConverter,
-        private NormalizerInterface $constraintViolationNormalizer,
-        private AttributeFilterInterface $productAttributeFilter,
+        protected ProductRepositoryInterface $productRepository,
+        protected ObjectUpdaterInterface $productUpdater,
+        protected SaverInterface $productSaver,
+        protected NormalizerInterface $normalizer,
+        protected ValidatorInterface $validator,
+        protected UserContext $userContext,
+        protected CollectionFilterInterface $productEditDataFilter,
+        protected AttributeConverterInterface $localizedConverter,
+        protected FilterInterface $emptyValuesFilter,
+        protected ConverterInterface $productValueConverter,
+        protected NormalizerInterface $constraintViolationNormalizer,
+        protected AttributeFilterInterface $productAttributeFilter,
         private MessageBusInterface $commandMessageBus,
-        private MessageBusInterface $queryMessageBus
+        private MessageBusInterface $queryMessageBus,
     ) {
     }
 
@@ -156,7 +157,7 @@ final class UpdateProductController
      * Updates product with the provided request data
      *
      * @param ProductInterface $product
-     * @param array            $data
+     * @param array $data
      */
     private function updateProduct(ProductInterface $product, array $data)
     {

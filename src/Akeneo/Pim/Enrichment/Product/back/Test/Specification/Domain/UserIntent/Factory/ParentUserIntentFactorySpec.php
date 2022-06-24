@@ -17,13 +17,13 @@ class ParentUserIntentFactorySpec extends ObjectBehavior
 
     function it_returns_change_parent()
     {
-        $this->create('parent', 'new_parent')->shouldBeLike(new ChangeParent('new_parent'));
+        $this->create('parent', 'new_parent')->shouldBeLike([new ChangeParent('new_parent')]);
     }
 
     function it_returns_convert_to_simple_product()
     {
-        $this->create('parent', null)->shouldBeLike(new ConvertToSimpleProduct());
-        $this->create('parent', '')->shouldBeLike(new ConvertToSimpleProduct());
+        $this->create('parent', null)->shouldBeLike([new ConvertToSimpleProduct()]);
+        $this->create('parent', '')->shouldBeLike([new ConvertToSimpleProduct()]);
     }
 
     function it_throws_an_exception_if_data_is_not_valid()

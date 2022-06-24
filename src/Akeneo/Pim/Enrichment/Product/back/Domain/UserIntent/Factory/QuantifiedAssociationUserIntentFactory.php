@@ -28,7 +28,10 @@ class QuantifiedAssociationUserIntentFactory implements UserIntentFactory
         return ['quantified_associations'];
     }
 
-    public function create(string $fieldName, mixed $data): UserIntent|array
+    /**
+     * @inheritDoc
+     */
+    public function create(string $fieldName, mixed $data): array
     {
         $this->quantifiedAssociationsStructureValidator->validate($fieldName, $data);
         $userIntents = [];

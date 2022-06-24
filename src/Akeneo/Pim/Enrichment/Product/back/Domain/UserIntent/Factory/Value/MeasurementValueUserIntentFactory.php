@@ -38,6 +38,12 @@ class MeasurementValueUserIntentFactory implements ValueUserIntentFactory
         if (!array_key_exists('unit', $data['data'])) {
             throw InvalidPropertyTypeException::arrayKeyExpected($attributeCode, 'unit', static::class, $data);
         }
+        if (!is_string($data['data']['unit'])) {
+            throw InvalidPropertyTypeException::stringExpected($attributeCode, 'unit', $data['data']['unit']);
+        }
+        if (null !== $data['data']['amount'] && !is_scalar($data['data']['amount'])) {
+            throw InvalidPropertyTypeException::scalarExpected($attributeCode, 'amount', $data['data']['unit']);
+        }
         if (null === $data['data']['amount'] || '' === $data['data']['amount']) {
             return new ClearValue($attributeCode, $data['scope'], $data['locale']);
         }

@@ -72,3 +72,11 @@ services:
     Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\PriceCollectionValueUserIntentFactory:
         tags:
             - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\FileValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\TableValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }

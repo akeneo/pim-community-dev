@@ -21,11 +21,13 @@ class ValueUserIntentFactoryRegistrySpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ValueUserIntentFactory $valueUserIntentFactory1,
         ValueUserIntentFactory $valueUserIntentFactory2,
+        ValueUserIntentFactory $valueUserIntentFactory3,
     ) {
         $valueUserIntentFactory1->getSupportedAttributeTypes()->willReturn(['pim_catalog_text']);
         $valueUserIntentFactory2->getSupportedAttributeTypes()->willReturn(['pim_catalog_identifier']);
+        $valueUserIntentFactory3->getSupportedAttributeTypes()->willReturn(['pim_catalog_textarea']);
 
-        $this->beConstructedWith($attributeRepository, [$valueUserIntentFactory1, $valueUserIntentFactory2]);
+        $this->beConstructedWith($attributeRepository, [$valueUserIntentFactory1, $valueUserIntentFactory2, $valueUserIntentFactory3]);
         $this->shouldImplement(UserIntentFactory::class);
     }
 
@@ -33,17 +35,21 @@ class ValueUserIntentFactoryRegistrySpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ValueUserIntentFactory $valueUserIntentFactory1,
         ValueUserIntentFactory $valueUserIntentFactory2,
+        ValueUserIntentFactory $valueUserIntentFactory3,
         ValueUserIntent $valueUserIntent1,
         ValueUserIntent $valueUserIntent2,
+        ValueUserIntent $valueUserIntent3,
     ) {
         $valueUserIntentFactory1->getSupportedAttributeTypes()->willReturn(['pim_catalog_text']);
         $valueUserIntentFactory2->getSupportedAttributeTypes()->willReturn(['pim_catalog_identifier']);
+        $valueUserIntentFactory3->getSupportedAttributeTypes()->willReturn(['pim_catalog_textarea']);
 
-        $attributeRepository->getAttributeTypeByCodes(['a_text', 'sku'])
+        $attributeRepository->getAttributeTypeByCodes(['a_text', 'sku', 'A_TExtAreA'])
             ->shouldBeCalledOnce()
             ->willReturn([
                 'a_text' => 'pim_catalog_text',
                 'sku' => 'pim_catalog_identifier',
+                'A_TExtAreA' => 'pim_catalog_textarea',
             ]);
 
         $valueUserIntentFactory1->create('pim_catalog_text', 'a_text', ['data' => 'bonjour', 'locale' => null, 'scope' => null])
@@ -52,10 +58,14 @@ class ValueUserIntentFactoryRegistrySpec extends ObjectBehavior
         $valueUserIntentFactory2->create('pim_catalog_identifier', 'sku', ['data' => 'my_sku'])
             ->shouldBeCalledOnce()
             ->willReturn($valueUserIntent2);
+        $valueUserIntentFactory3->create('pim_catalog_textarea', 'A_TExtAreA', ['data' => '<p>bonjour</p>', 'locale' => null, 'scope' => null])
+            ->shouldBeCalledOnce()
+            ->willReturn($valueUserIntent3);
 
         $this->create('values', [
             'a_text' => [['data' => 'bonjour', 'locale' => null, 'scope' => null]],
             'sku' => [['data' => 'my_sku']],
-        ])->shouldReturn([$valueUserIntent1, $valueUserIntent2]);
+            'A_TExtAreA' => [['data' => '<p>bonjour</p>', 'locale' => null, 'scope' => null]],
+        ])->shouldReturn([$valueUserIntent1, $valueUserIntent2, $valueUserIntent3]);
     }
 }

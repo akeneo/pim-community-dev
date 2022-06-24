@@ -21,13 +21,13 @@ class CategoriesUserIntentFactory implements UserIntentFactory
         return ['categories'];
     }
 
-    public function create(string $fieldName, mixed $data): UserIntent|array
+    public function create(string $fieldName, mixed $data): array
     {
         if (null === $data) {
-            return new SetCategories([]);
+            throw InvalidPropertyTypeException::arrayExpected($fieldName, static::class, $data);
         }
         $this->validateScalarArray($fieldName, $data);
 
-        return new SetCategories($data);
+        return [new SetCategories($data)];
     }
 }

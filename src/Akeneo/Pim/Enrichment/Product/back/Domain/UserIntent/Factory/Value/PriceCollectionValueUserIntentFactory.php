@@ -41,6 +41,12 @@ class PriceCollectionValueUserIntentFactory implements ValueUserIntentFactory
             if (!array_key_exists('currency', $price)) {
                 throw InvalidPropertyTypeException::arrayKeyExpected($attributeCode, 'currency', static::class, $data);
             }
+            if (null !== $price['amount'] && !is_scalar($price['amount'])) {
+                throw InvalidPropertyTypeException::scalarExpected($attributeCode, 'amount', $price['amount']);
+            }
+            if (!is_string($price['currency'])) {
+                throw InvalidPropertyTypeException::stringExpected($attributeCode, 'currency', $price['currency']);
+            }
             if (null === $price['amount'] || '' === $price['amount']) {
                 continue;
             }

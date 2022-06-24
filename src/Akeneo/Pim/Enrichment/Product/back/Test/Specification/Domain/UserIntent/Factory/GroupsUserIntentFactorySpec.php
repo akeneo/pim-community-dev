@@ -16,17 +16,20 @@ class GroupsUserIntentFactorySpec extends ObjectBehavior
 
     function it_returns_set_groups_user_intent()
     {
-        $this->create('groups', ['group1'])->shouldBeLike(new SetGroups(['group1']));
+        $this->create('groups', ['group1'])->shouldBeLike([new SetGroups(['group1'])]);
     }
 
     function it_returns_empty_set_groups_user_intent()
     {
-        $this->create('groups', null)->shouldBeLike(new SetGroups([]));
+        $this->create('groups', [])->shouldBeLike([new SetGroups([])]);
     }
 
     function it_throws_an_exception_if_data_is_not_valid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', ['groups', 12]);
+
+        $this->shouldThrow(InvalidPropertyTypeException::class)
+            ->during('create', ['groups', null]);
     }
 }

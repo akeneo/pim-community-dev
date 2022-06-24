@@ -19,19 +19,21 @@ class CategoriesUserIntentFactorySpec extends ObjectBehavior
 
     function it_returns_category_user_intent() {
         $this->create('categories', ['categoryA', 'categoryA'])
-            ->shouldBeLike(new SetCategories(['categoryA', 'categoryA']));
+            ->shouldBeLike([new SetCategories(['categoryA', 'categoryA'])]);
     }
 
-    // TODO: keep?
     function it_returns_empty_set_categories_user_intent()
     {
-        $this->create('categories', null)
-            ->shouldBeLike(new SetCategories([]));
+        $this->create('categories', [])
+            ->shouldBeLike([new SetCategories([])]);
     }
 
     function it_throws_an_exception_if_data_is_not_valid()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('create', ['categories', 'categoryA']);
+
+        $this->shouldThrow(InvalidPropertyTypeException::class)
+            ->during('create', ['categories', null]);
     }
 }

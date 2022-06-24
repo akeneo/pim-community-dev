@@ -27,10 +27,10 @@ class UserIntentFactoryRegistrySpec extends ObjectBehavior
         UserIntent $userIntent,
         UserIntent $userIntent2,
     ) {
-        $userIntentFactory1->create('family', 'data')->willReturn($userIntent);
-        $this->fromStandardFormatField('family', 'data')->shouldReturn($userIntent);
-        $userIntentFactory2->create('categories', 'data')->willReturn($userIntent2);
-        $this->fromStandardFormatField('categories', 'data')->shouldReturn($userIntent2);
+        $userIntentFactory1->create('family', 'data')->willReturn([$userIntent]);
+        $this->fromStandardFormatField('family', 'data')->shouldReturn([$userIntent]);
+        $userIntentFactory2->create('categories', 'data')->willReturn([$userIntent2]);
+        $this->fromStandardFormatField('categories', 'data')->shouldReturn([$userIntent2]);
     }
 
     function it_throws_an_exception_if_fieldname_is_not_supported()
@@ -41,6 +41,6 @@ class UserIntentFactoryRegistrySpec extends ObjectBehavior
 
     function it_returns_null_if_fieldname_is_ignored()
     {
-        $this->fromStandardFormatField('identifier', 'data')->shouldReturn(null);
+        $this->fromStandardFormatField('identifier', 'data')->shouldReturn([]);
     }
 }
