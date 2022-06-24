@@ -8,7 +8,6 @@ import {useCriteria} from './useCriteria';
 import {useCatalogData} from './useCatalogData';
 import {CriteriaState} from '../../ProductSelection/models/Criteria';
 
-
 test('it returns a criteria list and a setter', () => {
     const id = '123e4567-e89b-12d3-a456-426614174000';
     const dummyState = {
@@ -19,14 +18,14 @@ test('it returns a criteria list and a setter', () => {
 
     const useCatalogsDataMock = useCatalogData as unknown as jest.MockedFunction<typeof useCatalogData>;
 
-    useCatalogsDataMock.mockImplementationOnce((id) => ({
+    useCatalogsDataMock.mockImplementationOnce(id => ({
         isLoading: true,
         isError: false,
         data: undefined,
         error: null,
     }));
 
-    useCatalogsDataMock.mockImplementation((id) => ({
+    useCatalogsDataMock.mockImplementation(id => ({
         isLoading: false,
         isError: false,
         data: {
@@ -47,9 +46,8 @@ test('it returns a criteria list and a setter', () => {
                 id: expect.any(String),
                 module: expect.any(Function),
                 state: dummyState,
-            }
+            },
         ],
-        expect.any(Function)
+        expect.any(Function),
     ]);
-
 });
