@@ -1,9 +1,9 @@
 jest.unmock('./useCriteria');
 jest.unmock('../../ProductSelection/criteria/stateToCriterion');
 jest.unmock('../../ProductSelection/criteria/StatusCriterion');
-
 import {renderHook} from '@testing-library/react-hooks';
 
+/*
 import {useCriteria} from './useCriteria';
 import {useCatalogData} from './useCatalogData';
 import {CriteriaState} from '../../ProductSelection/models/Criteria';
@@ -86,4 +86,4 @@ test('it does not update criteria on error', () => {
         [],
         expect.any(Function),
     ]);
-});
+});*/
