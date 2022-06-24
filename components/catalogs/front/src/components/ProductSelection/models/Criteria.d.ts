@@ -4,4 +4,4 @@ export type AnyCriterionState = StatusCriterionState;
 
 export type CriteriaState = AnyCriterionState[];
 
-export type Criteria = Criterion<StatusCriterionState>[];
+export type Criteria = Criterion<AnyCriterionState>[];

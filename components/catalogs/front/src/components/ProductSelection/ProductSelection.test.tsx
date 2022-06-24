@@ -1,5 +1,3 @@
-import {AnyCriterionState} from './models/Criteria';
-
 jest.unmock('./ProductSelection');
 
 import React from 'react';
