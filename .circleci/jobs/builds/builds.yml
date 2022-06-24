@@ -529,7 +529,6 @@ jobs:
                       RELEASE_NAME="trial-v$(date +%Y%m%d%H%M%S)"
                       PRODUCT_REFERENCE_TYPE="pim_trial_instance"
                       PRODUCT_REFERENCE_CODE="pim_trial_${ENV_NAME}"
-                      USE_EDITION_FLAG=true
 
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
@@ -539,7 +538,6 @@ jobs:
                       echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                      echo export USE_EDITION_FLAG=${USE_EDITION_FLAG} >> $BASH_ENV
 
                       echo "CE Branch used: ${CE_BRANCH}"
                       echo "CE Commit hash used: ${CE_COMMIT_HASH}"
