@@ -4,7 +4,7 @@ import {useTabBar} from 'akeneo-design-system';
 import {TabBar, Tabs} from './TabBar';
 import {ProductSelection} from '../../ProductSelection';
 import {Settings} from './Settings';
-import {useCriteria} from '../../ProductSelection/hooks/useCriteria';
+import {useCriteria} from '../hooks/useCriteria';
 import {CatalogEditRef} from '../CatalogEdit';
 
 type Props = {

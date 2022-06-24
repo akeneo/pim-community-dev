@@ -51,3 +51,39 @@ test('it returns a criteria list and a setter', () => {
         expect.any(Function),
     ]);
 });
+
+test('it does not update criteria on error', () => {
+    const id = '123e4567-e89b-12d3-a456-426614174000';
+    const dummyState = {
+        field: 'enabled',
+        operator: '=',
+        value: false,
+    };
+
+    const useCatalogsDataMock = useCatalogData as unknown as jest.MockedFunction<typeof useCatalogData>;
+
+    useCatalogsDataMock.mockImplementationOnce(id => ({
+        isLoading: true,
+        isError: false,
+        data: undefined,
+        error: null,
+    }));
+
+    useCatalogsDataMock.mockImplementation(id => ({
+        isLoading: false,
+        isError: true,
+        data: undefined,
+        error: null,
+    }));
+
+    const {result, rerender} = renderHook(() => useCriteria(id));
+
+    expect(result.current).toMatchObject([[], expect.any(Function)]);
+
+    rerender();
+
+    expect(result.current).toMatchObject([
+        [],
+        expect.any(Function),
+    ]);
+});

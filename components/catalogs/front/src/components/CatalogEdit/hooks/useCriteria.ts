@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {Criteria} from '../../ProductSelection/models/Criteria';
 import {useCatalogData} from './useCatalogData';
@@ -19,7 +20,7 @@ export const useCriteria = (id: string): [Criteria, Dispatch<SetStateAction<Crit
         const mappedCriteria = catalogData.data.product_selection_criteria.map(state => stateToCriterion(state));
 
         setCriteria(mappedCriteria);
-    }, [catalogData.isLoading, catalogData.isError]);
+    }, [catalogData.isLoading, catalogData.isError, catalogData.data]);
 
     return [criteria, setCriteria];
 };

@@ -9,7 +9,7 @@ import {pimTheme} from 'akeneo-design-system';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {Edit} from './Edit';
 import {CatalogEditRef} from '../CatalogEdit';
-import {useCriteria} from '../../ProductSelection/hooks/useCriteria';
+import {useCriteria} from '../hooks/useCriteria';
 
 jest.mock('../../ProductSelection', () => ({
     ProductSelection: () => <>[ProductSelection]</>,
