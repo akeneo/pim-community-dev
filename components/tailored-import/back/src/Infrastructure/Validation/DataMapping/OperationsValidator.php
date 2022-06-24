@@ -37,19 +37,21 @@ final class OperationsValidator extends ConstraintValidator
             new Type('array'),
         ]);
 
-        if (0 < $this->context->getViolations()->count() || empty($operations)) {
+        if (0 < $this->context->getViolations()->count()) {
             return;
         }
 
         foreach ($operations as $index => $operation) {
-            $this->validateOperation($constraint, sprintf('[%s]', $index), $operation);
+            $this->validateOperation($constraint, sprintf('[%s]', $operation['uuid'] ?? $index), $operation);
         }
+
+        $this->validateRequiredOperationsAreSet($constraint, $operations);
     }
 
     private function validateOperation(Operations $operationsConstraint, string $path, array $operation): void
     {
         $operationType = $operation['type'];
-        $compatibleOperationTypes = $operationsConstraint->getCompatibleOperations();
+        $compatibleOperationTypes = $operationsConstraint->getCompatibleOperationTypes();
         $constraintClass = $this->operationConstraints[$operationType] ?? null;
         if (!$this->isOperationConstraint($constraintClass)) {
             $this->context->buildViolation(Operations::OPERATION_TYPE_DOES_NOT_EXIST)
@@ -77,6 +79,20 @@ final class OperationsValidator extends ConstraintValidator
         $operationConstraint = new $constraintClass();
         $validator = $this->context->getValidator();
         $validator->inContext($this->context)->atPath($path)->validate($operation, $operationConstraint);
+    }
+
+    private function validateRequiredOperationsAreSet(Operations $operationsConstraint, array $operations): void
+    {
+        $requiredOperationTypes = $operationsConstraint->getRequiredOperationTypes();
+        $operationTypes = array_column($operations, 'type');
+
+        $missingRequiredOperationTypes = array_diff($requiredOperationTypes, $operationTypes);
+
+        if (0 < count($missingRequiredOperationTypes)) {
+            $this->context->buildViolation(Operations::MISSING_REQUIRED_OPERATION)
+                ->setParameter('{{ missing_required_operations }}', join(',', $missingRequiredOperationTypes))
+                ->addViolation();
+        }
     }
 
     private function isOperationConstraint(?string $constraintClass): bool

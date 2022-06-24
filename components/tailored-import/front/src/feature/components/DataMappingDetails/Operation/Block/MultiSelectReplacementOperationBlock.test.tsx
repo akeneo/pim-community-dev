@@ -140,7 +140,7 @@ test('it opens a replacement modal and handles change', async () => {
   ).toBeInTheDocument();
 
   const [blackMapping] = screen.getAllByPlaceholderText(
-    'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.field.to_placeholder'
+    'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
   );
 
   userEvent.type(blackMapping, 'noir;noir foncé;');

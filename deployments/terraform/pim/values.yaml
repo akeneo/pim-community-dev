@@ -1,7 +1,7 @@
 editionFlag:
   enabled: false
   srnt: "SERENITY_EDITION"
-  grth: "GROWTH_EDITION" 
+  grth: "GROWTH_EDITION"
   tria: "TRIAL"
 
 nameOverride: ""
@@ -416,9 +416,9 @@ mysql:
       enabled: false
     resources:
       limits:
-        memory: 3072Mi
+        memory: 3584Mi
       requests:
-        memory: 3072Mi
+        memory: 3584Mi
         cpu: "100m"
     readinessProbe:
       initialDelaySeconds: 30
@@ -434,8 +434,9 @@ mysql:
       failureThreshold: 5
 
 memcached:
-  image: memcached:1.6.12
-  imagePullPolicy: IfNotPresent
+  image:
+    tag: 1.6.12
+    pullPolicy: IfNotPresent
   fullnameOverride: memcached
   replicaCount: 1
   resources:
@@ -444,9 +445,12 @@ memcached:
     requests:
       cpu: "1m"
       memory: "16Mi"
-  memcached:
-    maxItemMemory: 64
-  pdbMinAvailable: 0
+  extraEnvVars:
+    - name: MEMCACHED_MAX_ITEM_SIZE
+      value: "64"
+  pdb:
+    create: true
+    minAvailable: 0
 
 elasticsearch:
   appVersion: 7.16.2
@@ -461,11 +465,11 @@ elasticsearch:
     env:
       # See chart config map: https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/configmap.yaml
       # And elasticsearch documentation: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html
-      MINIMUM_MASTER_NODES: null
-      EXPECTED_MASTER_NODES: null
-      RECOVER_AFTER_MASTER_NODES: null
-      EXPECTED_DATA_NODES: null
-      RECOVER_AFTER_DATA_NODES: null
+      MINIMUM_MASTER_NODES: 2
+      EXPECTED_MASTER_NODES: 2
+      RECOVER_AFTER_MASTER_NODES: 2
+      EXPECTED_DATA_NODES: 1
+      RECOVER_AFTER_DATA_NODES: 1
       cluster.initial_master_nodes: "elasticsearch-master-0"
       discovery.seed_hosts: "elasticsearch-discovery"
     plugins:

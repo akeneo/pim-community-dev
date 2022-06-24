@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10492: Fix Tailored Export filter on "identifier" when exporting Product Models
 - PIM-10227: Fix filter not applied properly on the Asset manager grid
 - PIM-10215: Fixed missing translations label in process tracker for mass edit on assets and records jobs
 - PIM-10237: Order connector Assets with PHP to avoid memory issues
@@ -48,6 +49,8 @@
 - PIM-10463: Fix textarea stringifier for rich textarea on source and target
 - PIM-10473: Fix record codes filter by comparing lowercase
 - GRF-63: Fix calculation on TWA projects with completeness filter
+- PIM-10479: Fix Rule engine concatenate action does not handle properly case-sensitivity for option codes
+- PIM-10493: Fix Rule engine datagrid sorting
 
 ## Improvements
 

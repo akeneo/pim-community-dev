@@ -41,15 +41,15 @@ class ReplacementOperationValidator extends ConstraintValidator
                 ]),
                 'mapping' => new All([
                     new NotBlank([
-                        'message' => 'akeneo.tailored_import.validation.required',
+                        'message' => OperationConstraint::REQUIRED,
                     ]),
                     new All([
                         new NotBlank([
-                            'message' => 'akeneo.tailored_import.validation.required',
+                            'message' => OperationConstraint::REQUIRED,
                         ]),
                         new Length([
                             'max' => 255,
-                            'maxMessage' => 'akeneo.tailored_import.validation.max_length_reached',
+                            'maxMessage' => OperationConstraint::MAX_LENGTH_REACHED,
                         ]),
                     ]),
                 ]),
@@ -74,7 +74,7 @@ class ReplacementOperationValidator extends ConstraintValidator
 
         foreach ($mapping as $code => $sourceValues) {
             if (!empty(array_intersect($sourceValues, $uniqueValues))) {
-                $this->context->buildViolation('akeneo.tailored_import.validation.operation.replacement.source_values_should_be_unique')
+                $this->context->buildViolation(OperationConstraint::SOURCE_VALUES_SHOULD_BE_UNIQUE)
                     ->atPath(sprintf('[mapping][%s]', $code))
                     ->addViolation();
             }

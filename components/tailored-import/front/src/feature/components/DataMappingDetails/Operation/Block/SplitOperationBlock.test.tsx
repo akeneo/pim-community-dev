@@ -76,7 +76,7 @@ test('it can change the separator', () => {
     />
   );
 
-  userEvent.click(screen.getByTitle('akeneo.tailored_import.data_mapping.operations.split.collapse'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_import.data_mapping.operations.common.collapse'));
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(screen.getByTitle('semicolon'));
 

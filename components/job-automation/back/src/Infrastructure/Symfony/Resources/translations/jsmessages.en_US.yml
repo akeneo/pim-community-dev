@@ -1,4 +1,4 @@
-akeneo.automation:
+akeneo.job_automation:
   storage:
     title: Storage
     connection:

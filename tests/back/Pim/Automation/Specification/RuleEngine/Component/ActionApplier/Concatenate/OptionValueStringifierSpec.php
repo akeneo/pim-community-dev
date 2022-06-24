@@ -146,4 +146,26 @@ class OptionValueStringifierSpec extends ObjectBehavior
 
         $this->stringify($value, ['label_locale' => 'en_US'])->shouldReturn('my trad1');
     }
+
+    function it_stringifies_an_option_value_as_codes_case_insensitive (
+        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+    ) {
+        $value = OptionValue::value('attribute', 'cOdE');
+
+        $getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(['attribute.cOdE'])
+            ->willReturn(['attribute.code' => ['fr_FR' => 'ma trad', 'en_US' => 'my trad']]);
+
+        $this->stringify($value, [])->shouldReturn('cOdE');
+    }
+
+    function it_stringifies_a_case_insensitive_option_value_as_codes (
+        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+    ) {
+        $value = OptionValue::value('attribute', 'code');
+
+        $getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(['attribute.code'])
+            ->willReturn(['attribute.cOdE' => ['fr_FR' => 'ma trad', 'en_US' => 'my trad']]);
+
+        $this->stringify($value, [])->shouldReturn('code');
+    }
 }

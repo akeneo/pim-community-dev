@@ -5,7 +5,6 @@ test('it can tell if something is BooleanReplacementValues', () => {
     isBooleanReplacementValues({
       true: ['oui'],
       false: ['non'],
-      null: ['n/a'],
     })
   ).toBe(true);
 
@@ -18,7 +17,6 @@ test('it can tell if something is BooleanReplacementValues', () => {
     isBooleanReplacementValues({
       true: 'oui',
       false: 'non',
-      null: 'n/a',
     })
   ).toBe(false);
 });

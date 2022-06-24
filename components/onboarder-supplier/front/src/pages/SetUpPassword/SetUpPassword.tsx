@@ -1,16 +1,39 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {Button, Field, getColor, TextInput} from 'akeneo-design-system';
+import {Button, Field, getColor, Helper, TextInput} from 'akeneo-design-system';
 import {PasswordInput} from './components/PasswordInput';
 import {OnboarderLogo, UnauthenticatedContainer} from '../../components';
 import {FormattedMessage, useIntl} from 'react-intl';
+import {useParams} from 'react-router-dom';
+import {NotFoundError} from '../../api/NotFoundError';
+import {NotFound} from '../NotFound';
+import {useContributorAccount} from './hooks';
+
+type Params = {
+    accessToken: string;
+};
 
 const SetUpPassword = () => {
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
+    const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
     const intl = useIntl();
+    const {accessToken} = useParams<Params>();
+    const {loadingError, contributorAccount, submitPassword, passwordHasErrors} = useContributorAccount(accessToken);
 
-    const isSubmitButtonDisabled = '' === password || '' === passwordConfirmation || password !== passwordConfirmation;
+    useEffect(() => {
+        const isPasswordValid =
+            password.match(/(^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,255})$/) && password === passwordConfirmation;
+        setIsSubmitButtonDisabled(!isPasswordValid);
+    }, [password, passwordConfirmation, setIsSubmitButtonDisabled]);
+
+    if (loadingError instanceof NotFoundError) {
+        return <NotFound />;
+    }
+
+    if (!contributorAccount) {
+        return null;
+    }
 
     return (
         <UnauthenticatedContainer>
@@ -18,10 +41,10 @@ const SetUpPassword = () => {
             <WelcomeText>
                 <p>
                     <FormattedMessage
-                        id="QjSrIv"
-                        defaultMessage="Hello {name} !"
+                        id="YxvL5F"
+                        defaultMessage="Hello {contributorEmail} !"
                         values={{
-                            name: <SupplierEmail>jimmy@megasupplier.com</SupplierEmail>,
+                            contributorEmail: <ContributorEmail>{contributorAccount.email}</ContributorEmail>,
                         }}
                     />
                 </p>
@@ -42,7 +65,17 @@ const SetUpPassword = () => {
                         defaultMessage: 'Password',
                     })}
                 >
-                    <PasswordInput onChange={setPassword} value={password} />
+                    <PasswordInput
+                        data-testid="password-input"
+                        onChange={setPassword}
+                        value={password}
+                        invalid={passwordHasErrors}
+                    />
+                    {passwordHasErrors && (
+                        <Helper level="error">
+                            <FormattedMessage id="KpExEC" defaultMessage="Your password is invalid." />
+                        </Helper>
+                    )}
                 </StyledField>
                 <StyledField
                     label={intl.formatMessage({
@@ -50,7 +83,12 @@ const SetUpPassword = () => {
                         defaultMessage: 'Confirm your password',
                     })}
                 >
-                    <TextInput type="password" onChange={setPasswordConfirmation} value={passwordConfirmation} />
+                    <TextInput
+                        data-testid="confirm-password-input"
+                        type="password"
+                        onChange={setPasswordConfirmation}
+                        value={passwordConfirmation}
+                    />
                 </StyledField>
                 <PasswordRequirements>
                     <p>
@@ -60,13 +98,13 @@ const SetUpPassword = () => {
                         />
                     </p>
                     <p>
-                        <FormattedMessage defaultMessage="At least 8 caracters" id="OF6NrW" />
+                        <FormattedMessage defaultMessage="At least 8 characters" id="YwMziN" />
                     </p>
                     <p>
-                        <FormattedMessage defaultMessage="At least an upper-case letter" id="ek9x6P" />
+                        <FormattedMessage defaultMessage="At least an uppercase letter" id="67ZuXt" />
                     </p>
                     <p>
-                        <FormattedMessage defaultMessage="At least a lower-case letter" id="1GYZg/" />
+                        <FormattedMessage defaultMessage="At least a lowercase letter" id="PTGASZ" />
                     </p>
                     <p>
                         <FormattedMessage defaultMessage="At least a number" id="nAsEaE" />
@@ -75,7 +113,12 @@ const SetUpPassword = () => {
                         <FormattedMessage defaultMessage="Correct confirmation" id="XurM/d" />
                     </p>
                 </PasswordRequirements>
-                <Button type="button" disabled={isSubmitButtonDisabled}>
+                <Button
+                    data-testid="submit-button"
+                    type="button"
+                    disabled={isSubmitButtonDisabled}
+                    onClick={async () => await submitPassword(password)}
+                >
                     <FormattedMessage defaultMessage="Create My password" id="d8nJr6" />
                 </Button>
             </SetUpPasswordForm>
@@ -87,7 +130,7 @@ const WelcomeText = styled.div`
     margin-bottom: 30px;
     color: ${getColor('grey140')};
 `;
-const SupplierEmail = styled.span`
+const ContributorEmail = styled.span`
     color: ${getColor('brand100')};
     font-weight: bold;
 `;

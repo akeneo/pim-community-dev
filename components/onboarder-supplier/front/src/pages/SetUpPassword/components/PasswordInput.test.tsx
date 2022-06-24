@@ -15,14 +15,14 @@ test('The password can be displayed and hidden', async () => {
 
     let showPasswordIcon = screen.getByTestId('show-password');
     await act(async () => {
-        userEvent.click(showPasswordIcon);
+        await userEvent.click(showPasswordIcon);
     });
 
     assertPasswordIsDisplayed();
 
     const hidePasswordIcon = screen.getByTestId('hide-password');
     await act(async () => {
-        userEvent.click(hidePasswordIcon);
+        await userEvent.click(hidePasswordIcon);
     });
 
     assertPasswordIsHidden();

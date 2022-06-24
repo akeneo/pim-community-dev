@@ -7,7 +7,7 @@ import {ValidationError} from '@akeneo-pim-community/shared';
 import {Table} from 'akeneo-design-system';
 import {Category} from '../../../../models';
 
-const categoryTree = {
+const category = {
   id: 1,
   code: 'shoes',
   label: 'Shoes',
@@ -55,7 +55,7 @@ test('it display category tree and first level of category', async () => {
     <Table>
       <Table.Body>
         <CategoryReplacementRow
-          tree={categoryTree}
+          tree={category}
           onMappingChange={handleMappingChange}
           mapping={{}}
           validationErrors={[]}
@@ -78,7 +78,7 @@ test('it can update a replacement mapping', async () => {
     <Table>
       <Table.Body>
         <CategoryReplacementRow
-          tree={categoryTree}
+          tree={category}
           onMappingChange={handleMappingChange}
           mapping={{}}
           validationErrors={[]}
@@ -89,7 +89,7 @@ test('it can update a replacement mapping', async () => {
   );
 
   const [shoesInput] = screen.getAllByPlaceholderText(
-    'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.field.to_placeholder'
+    'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
   );
 
   userEvent.type(shoesInput, 'Chaussure;');
@@ -105,7 +105,7 @@ test('it display category children when user click on a closed category', async 
     <Table>
       <Table.Body>
         <CategoryReplacementRow
-          tree={categoryTree}
+          tree={category}
           onMappingChange={handleMappingChange}
           mapping={{}}
           validationErrors={[]}
@@ -129,7 +129,7 @@ test('it close category children when user click on a opened category', async ()
     <Table>
       <Table.Body>
         <CategoryReplacementRow
-          tree={categoryTree}
+          tree={category}
           onMappingChange={handleMappingChange}
           mapping={{}}
           validationErrors={[]}
@@ -168,7 +168,7 @@ test('it displays error on validation', async () => {
     <Table>
       <Table.Body>
         <CategoryReplacementRow
-          tree={categoryTree}
+          tree={category}
           onMappingChange={jest.fn()}
           mapping={{}}
           validationErrors={validationErrors}

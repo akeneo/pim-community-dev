@@ -1,26 +1,17 @@
 import React from 'react';
-import {TextInput, UnviewIcon, useBooleanState, ViewIcon} from 'akeneo-design-system';
+import {TextInput, TextInputProps, UnviewIcon, useBooleanState, ViewIcon} from 'akeneo-design-system';
 import styled, {css} from 'styled-components';
 
-type Props = {
-    onChange: (value: string) => void;
-    value: string;
-};
+type Props = TextInputProps;
 
-const PasswordInput = ({onChange, value, ...rest}: Props) => {
+const PasswordInput = ({...rest}: Props) => {
     const [isPasswordVisible, display, hide] = useBooleanState(false);
 
     const togglePasswordVisibility = () => (isPasswordVisible ? hide() : display());
 
     return (
         <Container>
-            <TextInput
-                type={isPasswordVisible ? 'text' : 'password'}
-                onChange={onChange}
-                value={value}
-                {...rest}
-                data-testid="password-input"
-            />
+            <TextInput type={isPasswordVisible ? 'text' : 'password'} {...rest} data-testid="password-input" />
 
             {isPasswordVisible ? (
                 <StyledUnviewIcon size={16} onClick={togglePasswordVisibility} data-testid="hide-password" />

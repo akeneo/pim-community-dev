@@ -15,5 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
 interface OperationInterface
 {
+    public function getUuid(): string;
+
     public function normalize(): array;
 }

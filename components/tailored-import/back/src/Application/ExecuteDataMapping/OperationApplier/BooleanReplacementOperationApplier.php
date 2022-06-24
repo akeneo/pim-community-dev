@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\NoMappedValueFound;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
@@ -33,11 +33,13 @@ final class BooleanReplacementOperationApplier implements OperationApplierInterf
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
-        if (!array_key_exists($value->getValue(), $operation->getMapping())) {
-            return new NullValue();
+        if (!$operation->hasMappedValue($value->getValue())) {
+            throw new NoMappedValueFound($value->getValue());
         }
 
-        return new BooleanValue($operation->getMapping()[$value->getValue()]);
+        $mappedValue = $operation->getMappedValue($value->getValue());
+
+        return new BooleanValue($mappedValue);
     }
 
     public function supports(OperationInterface $operation): bool

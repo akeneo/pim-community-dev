@@ -21,3 +21,6 @@ services:
 
     akeneo.tailored_import.infrastructure.public_api.find_category_trees:
         alias: akeneo.enrichment.public_api.find_category_trees
+
+    akeneo.tailored_import.infrastructure.public_api.get_category_children_codes_per_tree:
+        alias: akeneo.enrichment.public_api.get_category_children_codes_per_tree

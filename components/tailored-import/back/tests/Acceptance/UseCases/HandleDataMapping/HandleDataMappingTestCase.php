@@ -72,6 +72,7 @@ abstract class HandleDataMappingTestCase extends KernelTestCase
         );
 
         return new ExecuteDataMappingQuery(
+            1,
             new Row($row),
             DataMappingCollection::create([
                 $this->createIdentifierDataMapping($uuid),

@@ -271,7 +271,7 @@ const ReplacementModal = ({
                               invalid={0 < valueErrors.length}
                               separators={[',', ';']}
                               placeholder={translate(
-                                'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.field.to_placeholder'
+                                'akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder'
                               )}
                               value={mapping[value.code] ?? []}
                               onChange={newValue => updateMappedValue(value.code, newValue)}

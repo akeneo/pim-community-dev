@@ -1,0 +1,11 @@
+onboarder:
+  supplier:
+    contributor:
+      email_already_exists: 이 이메일은 다른 제공업체에서 사용 중입니다. 여러 제공업체가 동일한 기여자를 가지는 것은 아직 지원되지 않습니다. 불편을 드려 죄송합니다.
+    contributor_account:
+      validation:
+        min_password_length: 비밀번호는 8자 이상이어야 합니다.
+        max_password_length: 비밀번호는 255자를 초과할 수 없습니다.
+        must_contain_an_uppercase_letter: 비밀번호에는 대문자가 1자 이상 포함되어야 합니다.
+        must_contain_a_lowercase_letter: 비밀번호에는 소문자가 1자 이상 포함되어야 합니다.
+        must_contain_a_digit: 비밀번호에는 숫자가 1개 이상 포함되어야 합니다.

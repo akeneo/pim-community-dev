@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Helper, LoaderIcon, Table, TagInput, ArrowRightIcon} from 'akeneo-design-system';
 import {useTranslate, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
-import {Category, ReplacementValues} from '../../../../models';
+import {Category, filterEmptyValues, ReplacementValues} from '../../../../models';
 import {useCategoryChildrenFetcher} from '../../../../hooks';
 
 type CategoryState = {
@@ -62,7 +62,7 @@ const CategoryReplacementRow = ({
   const categoryChildrenFetcher = useCategoryChildrenFetcher();
 
   const handleMappingChange = (categoryTreeCode: string, newValues: string[]) => {
-    onMappingChange({...mapping, [categoryTreeCode]: newValues});
+    onMappingChange(filterEmptyValues({...mapping, [categoryTreeCode]: newValues}));
   };
 
   const handleOpenCategory = useCallback(async () => {
@@ -112,9 +112,7 @@ const CategoryReplacementRow = ({
             <TagInput
               invalid={0 < valueErrors.length}
               separators={[',', ';']}
-              placeholder={translate(
-                'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.field.to_placeholder'
-              )}
+              placeholder={translate('akeneo.tailored_import.data_mapping.operations.replacement.to_placeholder')}
               value={mapping[tree.code] ?? []}
               onChange={newValue => handleMappingChange(tree.code, newValue)}
             />

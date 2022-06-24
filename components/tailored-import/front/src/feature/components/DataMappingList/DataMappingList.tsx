@@ -10,10 +10,10 @@ import {
   useDebounce,
 } from 'akeneo-design-system';
 import {getErrorsForPath, filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {Column, DataMapping, filterOnColumnLabels, MAX_DATA_MAPPING_COUNT} from '../../models';
+import {Column, DataMapping, MAX_DATA_MAPPING_COUNT} from '../../models';
 import {AddDataMappingDropdown} from '../AddDataMappingDropdown';
 import {DataMappingRow} from './DataMappingRow';
-import {useIdentifierAttribute} from '../../hooks';
+import {useIdentifierAttribute, useSearchDataMappings} from '../../hooks';
 
 const Container = styled.div`
   flex: 1;
@@ -49,9 +49,9 @@ const DataMappingList = ({
   const globalErrors = getErrorsForPath(validationErrors, '');
   const [, identifierAttribute] = useIdentifierAttribute();
   const [searchValue, setSearchValue] = useState<string>('');
-  const debouncedSearchValue = useDebounce(searchValue);
+  const debouncedSearchValue = useDebounce(searchValue).trim();
+  const filteredDataMappings = useSearchDataMappings(dataMappings, columns, debouncedSearchValue);
 
-  const filteredDataMappings = filterOnColumnLabels(dataMappings, columns, debouncedSearchValue);
   const shouldDisplayNoResults = 0 === filteredDataMappings.length && '' !== debouncedSearchValue;
 
   return (

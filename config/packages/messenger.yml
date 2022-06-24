@@ -4,6 +4,8 @@ framework:
         buses:
             messenger.bus.default:
                 default_middleware: true
+                middleware:
+                    - 'Akeneo\Tool\Bundle\MessengerBundle\Middleware\UcsMiddleware'
             onboarder.command.bus:
                 # Alternatively, we can define as our middlewares instead of using the default ones
                 # see Messenger middleware docs: https://symfony.com/doc/current/messenger.html#middleware

@@ -1,0 +1,9 @@
+onboarder:
+    supplier:
+        contributor_account:
+            validation:
+                min_password_length: The password should have 8 characters at least.
+                max_password_length: The password should not exceed 255 characters.
+                must_contain_an_uppercase_letter: The password must have at least one uppercase letter.
+                must_contain_a_lowercase_letter: The password must have at least one lowercase letter.
+                must_contain_a_digit: The password should have at least one number.

@@ -24,14 +24,16 @@ use PhpSpec\ObjectBehavior;
 
 class ConvertToMeasurementOperationApplierSpec extends ObjectBehavior
 {
+    private string $uuid = '00000000-0000-0000-0000-000000000000';
+
     public function it_supports_convert_to_measurement_operation(): void
     {
-        $this->supports(new ConvertToMeasurementOperation(',', 'GRAM'))->shouldReturn(true);
+        $this->supports(new ConvertToMeasurementOperation($this->uuid, ',', 'GRAM'))->shouldReturn(true);
     }
 
     public function it_applies_convert_to_measurement_operation(): void
     {
-        $operation = new ConvertToMeasurementOperation(',', 'GRAM');
+        $operation = new ConvertToMeasurementOperation($this->uuid, ',', 'GRAM');
         $value = new StringValue('1,234');
 
         $this->applyOperation($operation, $value)
@@ -40,7 +42,7 @@ class ConvertToMeasurementOperationApplierSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_value_type_is_invalid(): void
     {
-        $operation = new ConvertToMeasurementOperation('.', 'GRAM');
+        $operation = new ConvertToMeasurementOperation($this->uuid, '.', 'GRAM');
         $value = new NumberValue('18');
 
         $this->shouldThrow(new UnexpectedValueException($value, StringValue::class, ConvertToMeasurementOperationApplier::class))
@@ -49,10 +51,7 @@ class ConvertToMeasurementOperationApplierSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_operation_type_is_invalid(): void
     {
-        $operation = new BooleanReplacementOperation([
-            '1' => true,
-            '0' => false,
-        ]);
+        $operation = new BooleanReplacementOperation($this->uuid, ['true' => ['1'], 'false' => ['0']]);
         $value = new StringValue('0');
 
         $this->shouldThrow(new UnexpectedValueException($operation, ConvertToMeasurementOperation::class, ConvertToMeasurementOperationApplier::class))

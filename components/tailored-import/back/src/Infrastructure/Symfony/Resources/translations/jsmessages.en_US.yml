@@ -48,11 +48,12 @@ akeneo.tailored_import:
       title: Operation(s)
       identifier: No operation available for identifier attribute
       add: Add an operation
+      common:
+        collapse: Collapse
       clean_html_tags:
         title: Clean HTML tags
       split:
         title: Split
-        collapse: Collapse
         separator: Select the separator
         comma: Comma (,)
         semicolon: Semicolon (;)
@@ -76,6 +77,7 @@ akeneo.tailored_import:
         link: Click here to check our Help Center.
       remove: Are you sure you want to remove this operation?
       replacement:
+        to_placeholder: Define the source values in your file.
         modal:
             options: Manage options
             subtitle: Replacement
@@ -94,16 +96,17 @@ akeneo.tailored_import:
               header:
                 replacement: Options labels
                 source_values: Source values
-              field:
-                to_placeholder: Define the source values in your file.
             validation_error: Some replacement values are invalid, please refer to the error messages below each field.
       boolean_replacement:
         title: Boolean replacement
-        collapse: Collapse
         field:
           yes_value: Yes value
           no_value: No value
-          null_value: Null value
+      enabled_replacement:
+        title: Enabled replacement
+        field:
+          enabled_value: Enabled value
+          disabled_value: Disabled value
     sources:
       title: Source(s)
       add:
@@ -113,6 +116,7 @@ akeneo.tailored_import:
     target:
       title: Target
       identifier: No settings available for the identifier attribute used as a target.
+      enabled: No settings available for the enabled property used as a target.
       locale_specific: This attribute is locale specific
       action_if_not_empty:
         title: Assign
@@ -128,6 +132,9 @@ akeneo.tailored_import:
         measurement_unit:
           title: Unit
         date_format: Date format
+      invalid:
+        attribute: This attribute has been deleted and recreated with another type, please remove this data mapping and add it again.
+        property: This property is invalid, please remove this data mapping and add it again.
   form:
     job_instance:
       tab:
@@ -137,6 +144,7 @@ akeneo.tailored_import:
     required: This value is required.
     max_length_reached: This value is too long. It should contain {{ limit }} characters or less.
     missing_query_params: "Following params are missing from the query: {{ missing_params }}"
+    source_values_should_be_unique: Some of these source values are already used in another replacement, please remove them.
     columns:
       max_count_reached: Your sheet must not contain more than {{ limit }} columns.
       at_least_one_required: Your header must contain at least {{ limit }} columns.
@@ -159,9 +167,6 @@ akeneo.tailored_import:
         max_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your mapping.
         should_be_unique: This source already exists, please enter a new one.
         should_exist: One of the source does not exist anymore, please delete all sources of this mapping and retry
-    operation:
-      replacement:
-        source_values_should_be_unique: Some of these source values are already used in another replacement, please remove them.
     target:
       attribute_should_exist: The attribute {{ attribute_code }} does not exist. Please either create it or choose a different target.
       property_should_exist: The property {{ property_code }} does not exist. Please either create it or choose a different target.
@@ -193,3 +198,4 @@ akeneo.tailored_import:
         description: Please select another sheet with at least one row.
     operations:
       incompatible_operation_type: The operation type {{ operation_type }} is incompatible with your target type.
+      missing_required_operations: "Required operation(s) are missing: {{ missing_required_operations }}"

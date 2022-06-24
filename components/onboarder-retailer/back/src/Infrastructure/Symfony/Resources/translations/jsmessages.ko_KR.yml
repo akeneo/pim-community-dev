@@ -1,0 +1,80 @@
+onboarder:
+  menu_block_title: Onboarder
+  supplier:
+    breadcrumb:
+      root: Onboarder
+      suppliers: 제공업체
+    supplier_create:
+      modal:
+        title: 제공업체
+        code:
+          label: 코드
+        label:
+          label: 레이블
+      create_button:
+        label: 첫 제공업체 만들기
+      notification:
+        title: 제공업체가 생성되었습니다.
+        content: 이제 제공업체 관리 섹션에서 편집할 수 있습니다.
+      error:
+        unknown_error: 제공업체를 생성하는 동안 오류가 발생했습니다.
+        supplier_already_exists: '코드가 "{{ supplierCode }}"인 제공업체가 이미 있습니다.'
+    supplier_list:
+      menu_item: 제공업체
+      title: "]-Inf, 1]{{ count }}개 제공업체|]1, Inf[{{ count }}개 제공업체"
+      no_supplier: 제공업체가 없습니다.
+      search_by_supplier: 제공업체로 검색
+      no_search_result: 이 검색과 일치하는 제공업체가 없습니다.
+      notification:
+        error:
+          title: 제공업체 목록을 표시할 수 없습니다.
+          content: 불편을 드려 죄송합니다. 잠시 후 다시 시도해주십시오.
+      dropdown:
+        export_suppliers: 제공업체 내보내기
+        download_template: 템플릿 다운로드
+        import_suppliers: 제공업체 가져오기
+      columns:
+        supplier: 제공업체
+        number_of_contributors: 기여자 수
+        actions: 작업
+    supplier_delete:
+      sucess_message: 제공업체가 삭제되었습니다
+      modal:
+        title: 제공업체
+        confirmation_question: 이 제공업체를 정말로 삭제하시겠습니까?
+        warning: 이 제공업체를 삭제하면 저장되지 않은 보강이 손실됩니다.
+        unknown_error: 제공업체를 삭제하는 동안 오류가 발생했습니다.
+    supplier_edit:
+      tabs:
+        configuration: 구성
+        contributors: 기여자
+        product_files: 제품 파일
+      configuration_form:
+        code: 코드
+        label: 제공업체 레이블(필수)
+      contributors_form:
+        info: 'Akeneo Onboarder에 액세스할 수 있는 기여자를 추가하십시오. 주소 목록 입력 시 공백, 쉼표, 세미콜론, 줄 바꿈 구분 기호를 사용할 수 있습니다.'
+        invalid_emails_warning: 일부 이메일이 유효하지 않아 추가되지 않습니다.
+        emails_belonging_to_other_suppliers_warning: 제공업체당 하나의 기여자만 속할 수 있습니다. 이 제공업체를 저장하면 경고로 표시되는 모든 이메일이 삭제됩니다.
+        add_contributors: 기여자 추가
+        add_button: 추가
+        search_by_email_address: 이메일 주소로 검색
+        columns:
+          email: 이메일 주소
+        no_contributor: 기여자가 없습니다.
+        result_counter: '{0} 결과 없음|{1} {{ count }}개 결과|]1,Inf] {{ count }}개 결과'
+        notification:
+          email_error:
+            title: 이 기여자를 추가하지 못했습니다.
+            content: "이메일 {{ emailAddress }}이(가) 유효하지 않습니다. {{ message }}"
+          contributor_email_already_exists:
+            title: 이 기여자를 추가하지 못했습니다.
+            content: 이메일 {{ emailAddress }}은(는) 다른 제공업체에서 사용 중입니다. 여러 제공업체가 동일한 기여자를 가지는 것은 아직 지원되지 않습니다. 불편을 드려 죄송합니다.
+      loading_error: 제공업체를 로드하는 동안 오류가 발생했습니다.
+      success_message: 제공업체가 업데이트되었습니다.
+      update_error: 제공업체를 업데이트하는 동안 오류가 발생했습니다.
+      delete_label: 이 제공업체 삭제
+pim_title:
+  onboarder_serenity_retailer_supplier_list: 제공업체
+  onboarder_serenity_retailer_supplier_edit: 제공업체 편집
+batch_jobs.onboarder_serenity_xlsx_supplier_import.label: Onboarder Serenity 제공업체를 XLSX로 가져오기
