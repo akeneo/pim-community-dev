@@ -1,5 +1,5 @@
 import {useMutation} from 'react-query';
-import {CriterionStates} from '../models/Criteria';
+import {CriteriaState} from '../models/Criteria';
 import {UseMutateFunction} from 'react-query/types/react/types';
 
 type Error = string | null;
@@ -8,12 +8,12 @@ type Result = {
     isError: boolean;
     data: undefined | void;
     error: Error;
-    mutate: UseMutateFunction<undefined | void, Error, CriterionStates[]>;
+    mutate: UseMutateFunction<undefined | void, Error, CriteriaState>;
 };
 
 export const useSaveCriteria = (catalogId: string, onSuccess: () => void, onError: () => void): Result => {
-    return useMutation<undefined | void, Error, CriterionStates[]>(
-        async (criteria: CriterionStates[]) => {
+    return useMutation<undefined | void, Error, CriteriaState>(
+        async (criteria: CriteriaState) => {
             const response = await fetch('/rest/catalogs/' + catalogId + '/save-criteria', {
                 method: 'POST',
                 headers: {
@@ -27,10 +27,10 @@ export const useSaveCriteria = (catalogId: string, onSuccess: () => void, onErro
             }
         },
         {
-            onError: (error: Error, variables: CriterionStates[]) => {
+            onError: (error: Error, variables: CriteriaState) => {
                 onError();
             },
-            onSuccess: (data: undefined | void, variables: CriterionStates[]) => {
+            onSuccess: (data: undefined | void, variables: CriteriaState) => {
                 onSuccess();
             },
         }

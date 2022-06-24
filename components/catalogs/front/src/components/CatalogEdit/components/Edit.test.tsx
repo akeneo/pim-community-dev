@@ -11,8 +11,8 @@ import {Edit} from './Edit';
 import {CatalogEditRef} from '../CatalogEdit';
 import {useSaveCriteria} from '../../ProductSelection/hooks/useSaveCriteria';
 import {Operator} from '../../ProductSelection/models/Operator';
-import {useCatalogCriteria} from '../../ProductSelection/hooks/useCatalogCriteria';
 import {StatusCriterion} from '../../ProductSelection/criteria/StatusCriterion/types';
+import {useCriteria} from '../hooks/useCriteria';
 
 jest.mock('../../ProductSelection', () => ({
     ProductSelection: () => <>[ProductSelection]</>,
@@ -44,6 +44,8 @@ const intersectionObserverMock = (callback: EntryCallback) => ({
 window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
 test('it renders without error', () => {
+    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [[], jest.fn()]);
+
     render(
         <ThemeProvider theme={pimTheme}>
             <Edit id={'123e4567-e89b-12d3-a456-426614174000'} onChange={jest.fn()} />
@@ -54,6 +56,8 @@ test('it renders without error', () => {
 });
 
 test('it switches between tabs', () => {
+    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [[], jest.fn()]);
+
     render(
         <ThemeProvider theme={pimTheme}>
             <Edit id={'123e4567-e89b-12d3-a456-426614174000'} onChange={jest.fn()} />
@@ -91,7 +95,7 @@ test('it calls save from parent component', () => {
         },
     };
     const criteria = [criterion1, criterion2];
-    (useCatalogCriteria as jest.Mock).mockImplementation(() => criteria);
+    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [criteria, jest.fn()]);
 
     const mutate = jest.fn();
     const saveCriteriaResult = {

@@ -1,7 +1,7 @@
 import React, {FC, useCallback} from 'react';
 import {getColor} from 'akeneo-design-system';
 import {Criterion} from './models/Criterion';
-import {Criteria, CriterionStates} from './models/Criteria';
+import {AnyCriterionState, Criteria} from './models/Criteria';
 import {AddCriterionDropdown} from './components/AddCriterionDropdown';
 import styled from 'styled-components';
 import {Empty} from './components/Empty';
@@ -21,7 +21,7 @@ type Props = {
 
 const ProductSelection: FC<Props> = ({criteria, setCriteria, onChange}) => {
     const addCriterion = useCallback(
-        (criterion: Criterion<CriterionStates>) => {
+        (criterion: Criterion<AnyCriterionState>) => {
             setCriteria([...criteria, criterion]);
             onChange(true);
         },
@@ -29,7 +29,7 @@ const ProductSelection: FC<Props> = ({criteria, setCriteria, onChange}) => {
     );
 
     const updateCriterion = useCallback(
-        (criterion: Criterion<CriterionStates>, newState: CriterionStates) => {
+        (criterion: Criterion<AnyCriterionState>, newState: AnyCriterionState) => {
             setCriteria(
                 criteria.map(old =>
                     criterion.id !== old.id
@@ -46,7 +46,7 @@ const ProductSelection: FC<Props> = ({criteria, setCriteria, onChange}) => {
     );
 
     const removeCriterion = useCallback(
-        (criterion: Criterion<CriterionStates>) => {
+        (criterion: Criterion<AnyCriterionState>) => {
             setCriteria(criteria.filter(old => old.id !== criterion.id));
             onChange(true);
         },
@@ -56,7 +56,7 @@ const ProductSelection: FC<Props> = ({criteria, setCriteria, onChange}) => {
     const list = criteria.map(criterion => {
         const Module = criterion.module;
 
-        const handleChange = (newState: CriterionStates) => updateCriterion(criterion, newState);
+        const handleChange = (newState: AnyCriterionState) => updateCriterion(criterion, newState);
         const handleRemove = () => removeCriterion(criterion);
 
         return <Module key={criterion.id} state={criterion.state} onChange={handleChange} onRemove={handleRemove} />;

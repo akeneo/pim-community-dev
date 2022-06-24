@@ -1,12 +1,11 @@
-import React, {forwardRef, PropsWithRef, useCallback, useImperativeHandle, useState} from 'react';
+import React, {forwardRef, PropsWithRef, useCallback, useImperativeHandle} from 'react';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {useTabBar} from 'akeneo-design-system';
 import {TabBar, Tabs} from './TabBar';
 import {ProductSelection} from '../../ProductSelection';
 import {Settings} from './Settings';
-import {useCatalogCriteria} from '../../ProductSelection/hooks/useCatalogCriteria';
+import {useCriteria} from '../hooks/useCriteria';
 import {CatalogEditRef} from '../CatalogEdit';
-import {Criteria, CriterionStates} from '../../ProductSelection/models/Criteria';
 import {useSaveCriteria} from '../../ProductSelection/hooks/useSaveCriteria';
 
 type Props = {
@@ -17,8 +16,7 @@ type Props = {
 const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, ref) => {
     const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.SETTINGS, 'pim_catalog_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
-    const catalogCriteria = useCatalogCriteria(id);
-    const [criteria, setCriteria] = useState<Criteria>(catalogCriteria);
+    const [criteria, setCriteria] = useCriteria(id);
     /* istanbul ignore next */
     const saveCriteria = useSaveCriteria(
         id,
@@ -32,8 +30,7 @@ const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, re
 
     useImperativeHandle(ref, () => ({
         save: () => {
-            const criteriaStates: CriterionStates[] = criteria.map(value => value.state);
-            saveCriteria.mutate(criteriaStates);
+            saveCriteria.mutate(criteria.map(value => value.state));
             onChange(false);
         },
     }));

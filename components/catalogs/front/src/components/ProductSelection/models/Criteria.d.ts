@@ -1,5 +1,8 @@
 import {StatusCriterionState} from '../criteria/StatusCriterion';
 import {Criterion} from './Criterion';
 
-export type CriterionStates = StatusCriterionState;
-export type Criteria = Criterion<CriterionStates>[];
+export type AnyCriterionState = StatusCriterionState;
+
+export type CriteriaState = AnyCriterionState[];
+
+export type Criteria = Criterion<AnyCriterionState>[];
