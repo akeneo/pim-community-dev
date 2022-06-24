@@ -4,6 +4,7 @@ jest.unmock('./TabBar');
 import React, {useEffect, useState} from 'react';
 import {act, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {mocked} from 'ts-jest';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
@@ -44,7 +45,7 @@ const intersectionObserverMock = (callback: EntryCallback) => ({
 window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
 test('it renders without error', () => {
-    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [[], jest.fn()]);
+    mocked(useCriteria).mockImplementation(() => [[], jest.fn()]);
 
     render(
         <ThemeProvider theme={pimTheme}>
@@ -56,7 +57,7 @@ test('it renders without error', () => {
 });
 
 test('it switches between tabs', () => {
-    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [[], jest.fn()]);
+    mocked(useCriteria).mockImplementation(() => [[], jest.fn()]);
 
     render(
         <ThemeProvider theme={pimTheme}>
@@ -95,7 +96,7 @@ test('it calls save from parent component', () => {
         },
     };
     const criteria = [criterion1, criterion2];
-    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [criteria, jest.fn()]);
+    mocked(useCriteria).mockImplementation(() => [criteria, jest.fn()]);
 
     const mutate = jest.fn();
     const saveCriteriaResult = {

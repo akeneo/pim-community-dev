@@ -3,13 +3,14 @@ jest.unmock('./List');
 import React from 'react';
 import {act, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {mocked} from 'ts-jest';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {List} from './List';
 import {useCatalogs} from '../hooks/useCatalogs';
 
 test('it renders without error', () => {
-    (useCatalogs as unknown as jest.MockedFunction<typeof useCatalogs>).mockImplementation(() => ({
+    mocked(useCatalogs).mockImplementation(() => ({
         isLoading: false,
         isError: false,
         data: [
@@ -33,7 +34,7 @@ test('it renders without error', () => {
 });
 
 test('it renders with no catalogs', () => {
-    (useCatalogs as unknown as jest.MockedFunction<typeof useCatalogs>).mockImplementation(() => ({
+    mocked(useCatalogs).mockImplementation(() => ({
         isLoading: false,
         isError: false,
         data: [],
@@ -50,7 +51,7 @@ test('it renders with no catalogs', () => {
 });
 
 test('it calls onCatalogClick whena catalog is clicked', () => {
-    (useCatalogs as unknown as jest.MockedFunction<typeof useCatalogs>).mockImplementation(() => ({
+    mocked(useCatalogs).mockImplementation(() => ({
         isLoading: false,
         isError: false,
         data: [
@@ -82,7 +83,7 @@ test('it calls onCatalogClick whena catalog is clicked', () => {
 });
 
 test('it renders nothing when catalogs are in loading', () => {
-    (useCatalogs as unknown as jest.MockedFunction<typeof useCatalogs>).mockImplementation(() => ({
+    mocked(useCatalogs).mockImplementation(() => ({
         isLoading: true,
         isError: false,
         data: [],
@@ -99,7 +100,7 @@ test('it renders nothing when catalogs are in loading', () => {
 });
 
 test('it throws an error when the API call failed', () => {
-    (useCatalogs as unknown as jest.MockedFunction<typeof useCatalogs>).mockImplementation(() => ({
+    mocked(useCatalogs).mockImplementation(() => ({
         isLoading: false,
         isError: true,
         data: [],
@@ -120,7 +121,7 @@ test('it throws an error when the API call failed', () => {
 });
 
 test('it throws an error when data field is undefined', () => {
-    (useCatalogs as unknown as jest.MockedFunction<typeof useCatalogs>).mockImplementation(() => ({
+    mocked(useCatalogs).mockImplementation(() => ({
         isLoading: false,
         isError: true,
         data: undefined,

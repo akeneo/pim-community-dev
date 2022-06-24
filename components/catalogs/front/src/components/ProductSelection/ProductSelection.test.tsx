@@ -2,6 +2,7 @@ jest.unmock('./ProductSelection');
 
 import React from 'react';
 import {fireEvent, render, screen} from '@testing-library/react';
+import {mocked} from 'ts-jest';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {ProductSelection} from './ProductSelection';
@@ -117,9 +118,9 @@ test('it updates the state when a criterion is added', () => {
             value: true,
         },
     });
-    (AddCriterionDropdown as unknown as jest.MockedFunction<typeof AddCriterionDropdown>).mockImplementation(
-        ({onNewCriterion}) => <button onClick={() => onNewCriterion(FooCriterion())}>[AddCriterion]</button>
-    );
+    mocked(AddCriterionDropdown).mockImplementation(({onNewCriterion}) => (
+        <button onClick={() => onNewCriterion(FooCriterion())}>[AddCriterion]</button>
+    ));
     const setCriteria = jest.fn();
     const onChange = jest.fn();
 
