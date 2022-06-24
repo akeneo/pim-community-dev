@@ -20,7 +20,7 @@ data:
   MAILER_URL: {{ .Values.mailer.base_mailer_url }}?encryption=tls&auth_mode=login&username={{ .Values.mailer.login }}&password={{ .Values.mailer.password }}&sender_address=no-reply%40{{ .Values.common.pimMasterDomain }}
   MEMCACHED_SVC:  {{ .Values.memcached.fullnameOverride | quote}}
   {{- if eq .Values.global.extraLabels.type "tria" }}
-  PIM_EDITION: {{ index .Values.editionFlag (index .Values.global.extraLabels "tags.akeneo.com/instance_type")}}
+  PIM_EDITION: "TRIAL_EDITION"
   {{- end }}
   APP_DATABASE_HOST: {{ .Values.mysql.mysql.serviceName | quote }}
   APP_DATABASE_NAME: {{ .Values.mysql.mysql.defaultDatabase | quote }}
