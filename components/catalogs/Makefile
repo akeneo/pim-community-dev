@@ -1,5 +1,6 @@
 CATALOGS_PATH ?= components/catalogs
 CATALOGS_BOOTSTRAP_PATH ?= /srv/pim/config/bootstrap.php
+CATALOGS_YARN = $(YARN_RUN)
 
 ifeq ($(CI),true)
 	BEHAT_ARGS += --no-snippets --no-interaction
@@ -7,6 +8,11 @@ ifeq ($(CI),true)
 endif
 ifneq ($(CI),true)
 	PSALM_ARGS += --show-info=true
+endif
+ifneq ($(CI),true)
+ifneq (,$(wildcard /usr/bin/yarn))
+	CATALOGS_YARN = yarn
+endif
 endif
 
 # Main targets
@@ -101,28 +107,34 @@ catalogs-coverage-back:
 # TESTS FRONT
 
 .PHONY: catalogs-lint-front
-catalogs-lint-front:
-	cat <<- EOF | docker-compose run -u node --rm -T node sh
-		yarn workspace @akeneo-pim-community/catalogs prettier --check
-		yarn workspace @akeneo-pim-community/catalogs eslint
-		yarn workspace @akeneo-pim-community/catalogs tsc --noEmit --strict
-	@<<- EOF
+catalogs-lint-front: yarn-policies
+	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs prettier --check
+	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs eslint
+	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs tsc --noEmit --strict
 
 .PHONY: catalogs-unit-front
-catalogs-unit-front:
-	cat <<- EOF | docker-compose run -u node --rm -T node sh
-		yarn workspace @akeneo-pim-community/catalogs jest --ci --coverage
-	@<<- EOF
+catalogs-unit-front: yarn-policies
+	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs jest --ci --coverage
 
 # UTILS
 
 .PHONY: catalogs-lint-front_fix
-catalogs-lint-front_fix:
-	cat <<- EOF | docker-compose run -u node --rm -T node sh
-		yarn workspace @akeneo-pim-community/catalogs eslint --fix
-		yarn workspace @akeneo-pim-community/catalogs prettier --write
-	@<<- EOF
+catalogs-lint-front_fix: yarn-policies
+	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs eslint --fix
+	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs prettier --write
 
 .PHONY: catalogs-lint-back_fix
 catalogs-lint-back_fix:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=$(CATALOGS_PATH)/back/.php_cs.php
+
+# BINARIES
+
+.PHONY: yarn-policies
+yarn-policies: .yarn/releases/yarn-1.22.19.cjs
+
+.yarn/releases/yarn-1.22.19.cjs:
+ifneq ($(CI),true)
+ifneq (,$(wildcard /usr/bin/yarn))
+	yarn policies set-version 1.22.19
+endif
+endif
