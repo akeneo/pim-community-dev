@@ -10,8 +10,6 @@ use Doctrine\DBAL\Connection;
 
 final class DatabaseGetContributorAccountByAccessToken implements GetContributorAccountByAccessToken
 {
-    private const TOKEN_VALIDITY_IN_DAYS = 14;
-
     public function __construct(private Connection $connection)
     {
     }
@@ -22,7 +20,7 @@ final class DatabaseGetContributorAccountByAccessToken implements GetContributor
             SELECT id, 
                    email,
                    access_token, 
-                   access_token_created_at >= NOW()-INTERVAL :tokenValidityInDays DAY as is_valid_access_token
+                   access_token_created_at
             FROM akeneo_onboarder_serenity_contributor_account
             WHERE access_token = :accessToken
         SQL;
@@ -31,7 +29,6 @@ final class DatabaseGetContributorAccountByAccessToken implements GetContributor
             $sql,
             [
                 'accessToken' => $accessToken,
-                'tokenValidityInDays' => self::TOKEN_VALIDITY_IN_DAYS,
             ],
         )->fetchAssociative();
 
@@ -39,8 +36,11 @@ final class DatabaseGetContributorAccountByAccessToken implements GetContributor
             return null;
         }
 
-        $isValidAccessToken = (bool) $result['is_valid_access_token'];
-
-        return new ContributorAccount($result['id'], $result['email'], $result['access_token'], $isValidAccessToken);
+        return new ContributorAccount(
+            $result['id'],
+            $result['email'],
+            $result['access_token'],
+            $result['access_token_created_at'],
+        );
     }
 }
