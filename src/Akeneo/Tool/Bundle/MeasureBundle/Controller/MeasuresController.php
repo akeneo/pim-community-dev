@@ -8,7 +8,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInte
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * Measures controller
+ * Measures controller.
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

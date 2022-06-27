@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\SaveMeasurementFamily;
@@ -43,9 +44,9 @@ class CountValidator extends ConstraintValidator
 
         if ($count >= $this->max) {
             $this->context->buildViolation(Count::MAX_MESSAGE)
-                ->setParameter('%limit%', $this->max)
+                ->setParameter('%limit%', (string) $this->max)
                 ->setInvalidValue($saveMeasurementFamilyCommand)
-                ->setPlural((int)$this->max)
+                ->setPlural((int) $this->max)
                 ->addViolation();
         }
     }

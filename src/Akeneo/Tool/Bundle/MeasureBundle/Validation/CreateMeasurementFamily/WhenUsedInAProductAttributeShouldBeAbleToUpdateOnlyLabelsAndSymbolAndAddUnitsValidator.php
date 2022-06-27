@@ -11,10 +11,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Validator\Validation;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -36,7 +33,7 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function validate($saveMeasurementFamily, Constraint $constraint)
     {
@@ -58,8 +55,8 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
             $this->context->buildViolation(
                 WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnits::MEASUREMENT_FAMILY_UNIT_REMOVAL_NOT_ALLOWED,
                 [
-                    '%unit_code%'               => implode(',', $removedUnits),
-                    '%measurement_family_code%' => $saveMeasurementFamily->code
+                    '%unit_code%' => implode(',', $removedUnits),
+                    '%measurement_family_code%' => $saveMeasurementFamily->code,
                 ]
             )
                 ->atPath('units')
@@ -70,12 +67,12 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
             $measurementFamily,
             $saveMeasurementFamily
         );
-        if ($unitsBeingUpdated !== []) {
+        if ([] !== $unitsBeingUpdated) {
             $this->context->buildViolation(
                 WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnits::MEASUREMENT_FAMILY_OPERATION_UPDATE_NOT_ALLOWED,
                 [
-                    '%unit_code%'               => implode(',', $unitsBeingUpdated),
-                    '%measurement_family_code%' => $saveMeasurementFamily->code
+                    '%unit_code%' => implode(',', $unitsBeingUpdated),
+                    '%measurement_family_code%' => $saveMeasurementFamily->code,
                 ]
             )
                 ->addViolation();

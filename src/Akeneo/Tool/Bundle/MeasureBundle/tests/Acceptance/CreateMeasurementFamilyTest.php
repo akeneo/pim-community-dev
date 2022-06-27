@@ -79,7 +79,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
         $violations = $this->validator->validate($saveFamilyCommand);
         $this->createMeasurementFamilyHandler->handle($saveFamilyCommand);
 
-        self::assertEquals(0, $violations->count());
+        $this->assertNoViolation($violations);
         $expectedMeasurementFamily = MeasurementFamily::create(
             MeasurementFamilyCode::fromString($measurementFamilyCode),
             LabelCollection::fromArray($measurementFamilyLabels),
@@ -174,10 +174,11 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
         ];
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals('The standard unit code of the "WEIGHT" measurement family should be a multiply-by-1 operation', $violation->getMessage());
-        self::assertEquals('units[0].convert_from_standard', $violation->getPropertyPath());
+        $this->assertHasValidationError(
+            'The standard unit code of the "WEIGHT" measurement family should be a multiply-by-1 operation',
+            'units[0].convert_from_standard',
+            $violations
+        );
         self::assertEmpty($this->eventDispatcherMock->getEvents());
     }
 
@@ -200,11 +201,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
         ];
 
         $violations = $this->validator->validate($saveFamilyCommand);
-
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals('code', $violation->getPropertyPath());
+        $this->assertHasValidationError($expectedErrorMessage, 'code', $violations);
     }
 
     /**
@@ -228,10 +225,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals($propertyPath, $violation->getPropertyPath());
+        $this->assertHasValidationError($expectedErrorMessage, $propertyPath, $violations);
     }
 
     /**
@@ -253,10 +247,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals('The standard unit is required.', $violation->getMessage());
-        self::assertEquals('standard_unit_code', $violation->getPropertyPath());
+        $this->assertHasValidationError('The standard unit is required.', 'standard_unit_code', $violations);
     }
 
     /**
@@ -279,13 +270,11 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals(
+        $this->assertHasValidationError(
             'The "invalid_standard_unit_code" standard unit code does not exist in the list of units for the "WEIGHT" measurement family.',
-            $violation->getMessage()
+            'standard_unit_code',
+            $violations
         );
-        self::assertEquals('standard_unit_code', $violation->getPropertyPath());
     }
 
     /**
@@ -309,18 +298,8 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
         ];
 
         $violations = $this->validator->validate($saveFamilyCommand);
-        $actualViolation = null;
-        foreach ($violations as $violation) {
-            if ($violation->getMessage() === $expectedErrorMessage) {
-                $actualViolation = $violation;
-            }
-        }
-        self::assertNotNull(
-            $actualViolation,
-            sprintf('Expected to have a violation with message "%s" at path "%s"', $expectedErrorMessage, $expectedPropertyPath)
-        );
-        self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals($expectedPropertyPath, $violation->getPropertyPath());
+
+        $this->assertHasValidationError($expectedErrorMessage, $expectedPropertyPath, $violations);
     }
 
     /**
@@ -344,10 +323,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals($propertyPath, $violation->getPropertyPath());
+        $this->assertHasValidationError($expectedErrorMessage, $propertyPath, $violations);
     }
 
     /**
@@ -371,10 +347,11 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals('units[0][convert_from_standard][0][operator]', $violation->getPropertyPath());
+        $this->assertHasValidationError(
+            $expectedErrorMessage,
+            'units[0][convert_from_standard][0][operator]',
+            $violations
+        );
     }
 
     /**
@@ -398,10 +375,11 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals('units[0][convert_from_standard][0][value]', $violation->getPropertyPath());
+        $this->assertHasValidationError(
+            $expectedErrorMessage,
+            'units[0][convert_from_standard][0][value]',
+            $violations
+        );
     }
 
     /**
@@ -425,10 +403,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals('units[0][symbol]', $violation->getPropertyPath());
+        $this->assertHasValidationError($expectedErrorMessage, 'units[0][symbol]', $violations);
     }
 
     /**
@@ -452,10 +427,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals('units[0][convert_from_standard]', $violation->getPropertyPath());
+        $this->assertHasValidationError($expectedErrorMessage, 'units[0][convert_from_standard]', $violations);
     }
 
     /**
@@ -478,18 +450,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        $actualViolation = null;
-        foreach ($violations as $violation) {
-            if ($violation->getMessage() === $expectedErrorMessage) {
-                $actualViolation = $violation;
-            }
-        }
-        self::assertNotNull(
-            $actualViolation,
-            sprintf('Expected to have a violation with message "%s" at path "%s"', $expectedErrorMessage, $expectedPropertyPath)
-        );
-        self::assertEquals($expectedErrorMessage, $violation->getMessage());
-        self::assertEquals($expectedPropertyPath, $violation->getPropertyPath());
+        $this->assertHasValidationError($expectedErrorMessage, $expectedPropertyPath, $violations);
     }
 
     /**
@@ -530,10 +491,7 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
 
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals('You’ve reached the limit of 300 measurement families.', $violation->getMessage());
-        self::assertEquals('', $violation->getPropertyPath());
+        $this->assertHasValidationError('You’ve reached the limit of 300 measurement families.', '', $violations);
     }
 
     /**
@@ -561,10 +519,11 @@ class CreateMeasurementFamilyTest extends AcceptanceTestCase
         ];
         $violations = $this->validator->validate($saveFamilyCommand);
 
-        self::assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        self::assertEquals('We found some duplicated units in the measurement family. The measurement family requires unique units.', $violation->getMessage());
-        self::assertEquals('units', $violation->getPropertyPath());
+        $this->assertHasValidationError(
+            'We found some duplicated units in the measurement family. The measurement family requires unique units.',
+            'units',
+            $violations
+        );
     }
 
     public function invalidCodes(): array

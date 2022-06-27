@@ -33,9 +33,9 @@ class DeleteMeasurementFamilyAction
         DeleteMeasurementFamilyHandler $deleteMeasurementFamilyHandler,
         SecurityFacadeInterface $securityFacade
     ) {
-        $this->validator                      = $validator;
+        $this->validator = $validator;
         $this->deleteMeasurementFamilyHandler = $deleteMeasurementFamilyHandler;
-        $this->securityFacade                 = $securityFacade;
+        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request, string $code): Response

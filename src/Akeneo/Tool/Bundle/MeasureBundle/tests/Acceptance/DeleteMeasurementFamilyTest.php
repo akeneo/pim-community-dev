@@ -54,7 +54,7 @@ class DeleteMeasurementFamilyTest extends AcceptanceTestCase
         $violations = $this->validator->validate($deleteCommand);
         $this->deleteMeasurementFamilyHandler->handle($deleteCommand);
 
-        $this->assertEquals(0, $violations->count());
+        $this->assertNoViolation($violations);
         $this->assertMeasurementFamilyDeletedEventDispatched($measurementFamilyCode);
         $this->assertMeasurementFamilyDoesNotExists($measurementFamilyCode);
     }
@@ -90,7 +90,7 @@ class DeleteMeasurementFamilyTest extends AcceptanceTestCase
         $this->expectException(MeasurementFamilyNotFoundException::class);
         $this->deleteMeasurementFamilyHandler->handle($deleteCommand);
 
-        $this->assertEquals(0, $violations->count());
+        $this->assertNoViolation($violations);
         $this->assertEmpty($this->eventDispatcherMock->getEvents());
     }
 
@@ -140,12 +140,10 @@ class DeleteMeasurementFamilyTest extends AcceptanceTestCase
     private function assertCannotRemoveTheMeasurementFamily(
         ConstraintViolationListInterface $violations
     ): void {
-        $this->assertEquals(1, $violations->count());
-        $violation = $violations->get(0);
-        $this->assertEquals(
+        $this->assertHasValidationError(
             'pim_measurements.validation.measurement_family.measurement_family_cannot_be_removed',
-            $violation->getMessage()
+            '',
+            $violations
         );
-        $this->assertEquals('', $violation->getPropertyPath());
     }
 }

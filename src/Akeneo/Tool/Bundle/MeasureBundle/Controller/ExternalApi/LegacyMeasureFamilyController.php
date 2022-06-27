@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated Use Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\MeasurementFamilyController instead.
+ * @deprecated use Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\MeasurementFamilyController instead
  */
 class LegacyMeasureFamilyController
 {
@@ -31,13 +31,6 @@ class LegacyMeasureFamilyController
 
     private LegacyMeasurementProvider $legacyMeasurementProvider;
 
-    /**
-     * @param ArrayConverterInterface     $measureFamilyConverter
-     * @param ParameterValidatorInterface $parameterValidator
-     * @param PaginatorInterface          $paginator
-     * @param LegacyMeasurementProvider   $legacyMeasurementProvider
-     * @param array                       $apiConfiguration
-     */
     public function __construct(
         ArrayConverterInterface $measureFamilyConverter,
         ParameterValidatorInterface $parameterValidator,
@@ -53,7 +46,7 @@ class LegacyMeasureFamilyController
     }
 
     /**
-     * @param string  $code
+     * @param string $code
      *
      * @throws NotFoundHttpException
      *
@@ -78,8 +71,6 @@ class LegacyMeasureFamilyController
     }
 
     /**
-     * @param Request $request
-     *
      * @throws UnprocessableEntityHttpException
      *
      * @return JsonResponse
@@ -93,16 +84,16 @@ class LegacyMeasureFamilyController
         }
 
         $defaultParameters = [
-            'page'       => 1,
-            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+            'page' => 1,
+            'limit' => $this->apiConfiguration['pagination']['limit_by_default'],
             'with_count' => 'false',
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
         $parameters = [
             'query_parameters' => $queryParameters,
-            'list_route_name'  => 'legacy_pim_api_measure_family_list',
-            'item_route_name'  => 'legacy_pim_api_measure_family_get',
+            'list_route_name' => 'legacy_pim_api_measure_family_list',
+            'item_route_name' => 'legacy_pim_api_measure_family_get',
         ];
 
         $measuresConfig = $this->legacyMeasurementProvider->getMeasurementFamilies();
@@ -128,7 +119,7 @@ class LegacyMeasureFamilyController
 
         $measureConfig = array_slice($measuresConfig, $offset, $queryParameters['limit']);
 
-        $convertedMeasureFamilies= [];
+        $convertedMeasureFamilies = [];
         foreach ($measureConfig as $familyCode => $units) {
             $convertedMeasureFamilies[] = $this->measureFamilyConverter
                 ->convert(['family_code' => $familyCode, 'units' => $units]);

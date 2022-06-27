@@ -39,6 +39,7 @@ class CodeMustBeUniqueValidator extends ConstraintValidator
     {
         try {
             $this->measurementFamilyRepository->getByCode(MeasurementFamilyCode::fromString($code));
+
             return true;
         } catch (MeasurementFamilyNotFoundException $ex) {
             return false;

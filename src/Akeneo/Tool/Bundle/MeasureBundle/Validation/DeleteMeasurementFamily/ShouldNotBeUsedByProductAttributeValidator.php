@@ -19,7 +19,7 @@ class ShouldNotBeUsedByProductAttributeValidator extends ConstraintValidator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function validate($deleteMeasurementFamily, Constraint $constraint)
     {

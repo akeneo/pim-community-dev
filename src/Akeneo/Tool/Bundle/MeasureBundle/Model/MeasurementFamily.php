@@ -52,7 +52,7 @@ class MeasurementFamily
             'units' => array_map(
                 static fn (Unit $unit) => $unit->normalize(),
                 $this->units
-            )
+            ),
         ];
     }
 
@@ -65,6 +65,7 @@ class MeasurementFamily
             'units' => array_reduce($this->units, function (array $units, Unit $unit) {
                 $normalizedUnit = $unit->normalize();
                 $units[$normalizedUnit['code']] = $normalizedUnit;
+
                 return $units;
             }, []),
         ];

@@ -27,5 +27,8 @@
         <testsuite name="Measurement_Acceptance_Test">
             <directory>Acceptance</directory>
         </testsuite>
+        <testsuite name="Measurement_End_To_End_Test">
+            <directory suffix="EndToEnd.php">EndToEnd</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

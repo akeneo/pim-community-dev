@@ -16,7 +16,7 @@ class JsonSchemaErrorsFormatter
     {
         return array_map(static fn (array $error) => [
             'property' => $error['property'] ?? '',
-            'message'  => $error['message'] ?? '',
+            'message' => $error['message'] ?? '',
         ], $errors);
     }
 }

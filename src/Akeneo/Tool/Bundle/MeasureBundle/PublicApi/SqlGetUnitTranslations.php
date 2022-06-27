@@ -32,7 +32,7 @@ SQL;
             $sql,
             [
                 'labelPath' => sprintf('$.labels.%s', $localeCode),
-                'measurementFamilyCode' => $measurementFamilyCode
+                'measurementFamilyCode' => $measurementFamilyCode,
             ]
         )->fetchAllKeyValue();
     }

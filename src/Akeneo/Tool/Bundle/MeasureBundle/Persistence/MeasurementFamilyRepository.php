@@ -74,15 +74,13 @@ SQL;
                 'code' => $normalizedMeasurementFamily['code'],
                 'labels' => json_encode($normalizedMeasurementFamily['labels']),
                 'standard_unit' => $normalizedMeasurementFamily['standard_unit_code'],
-                'units' => json_encode($normalizedMeasurementFamily['units'])
+                'units' => json_encode($normalizedMeasurementFamily['units']),
             ]
         );
 
         // 0 if SAME, 1 if INSERT, 2 if UPDATE
-        if ($affectedRows !== 0 && $affectedRows !== 1 && $affectedRows !== 2) {
-            throw new \RuntimeException(
-                sprintf('Expected to create/update one measurement family, but %d were affected', $affectedRows)
-            );
+        if (0 !== $affectedRows && 1 !== $affectedRows && 2 !== $affectedRows) {
+            throw new \RuntimeException(sprintf('Expected to create/update one measurement family, but %d were affected', $affectedRows));
         }
 
         $this->all();
@@ -147,7 +145,7 @@ SQL;
         $code = Type::getType(Types::STRING)->convertToPhpValue($code, $platform);
         $labels = json_decode($normalizedLabels, true);
         $standardUnit = Type::getType(Types::STRING)->convertToPhpValue($standardUnit, $platform);
-        //TODO check Type:JSON
+        // TODO check Type:JSON
         $units = array_map(fn (array $normalizedUnit) => $this->hydrateUnit(
             $normalizedUnit['code'],
             $normalizedUnit['labels'],
@@ -185,8 +183,6 @@ SQL;
     }
 
     /**
-     * @return array
-     *
      * @throws \Doctrine\DBAL\DBALException
      */
     private function loadMeasurementFamiliesIndexByCodes(): array
@@ -215,7 +211,7 @@ SQL;
         return $measurementFamiliesIndexByCodes;
     }
 
-    private function loadMeasurementFamily(MeasurementFamilyCode $measurementFamilyCode): ?MeasurementFamily
+    private function loadMeasurementFamily(MeasurementFamilyCode $measurementFamilyCode): MeasurementFamily
     {
         $sql = <<<SQL
     SELECT

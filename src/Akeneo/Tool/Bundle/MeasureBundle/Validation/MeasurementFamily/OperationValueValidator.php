@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
@@ -30,7 +31,6 @@ class OperationValueValidator extends ConstraintValidator
             ]
         );
 
-
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
                 $this->context->addViolation(
@@ -43,6 +43,6 @@ class OperationValueValidator extends ConstraintValidator
 
     private function isStringNumericWithoutScientificNotation($value)
     {
-        return is_string($value) && preg_match('~^\d*\.?\d+$~', $value) === 1;
+        return is_string($value) && 1 === preg_match('~^\d*\.?\d+$~', $value);
     }
 }

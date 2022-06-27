@@ -37,16 +37,12 @@ SQL;
             $sql,
             [
                 'unitCode' => $unitCode,
-                'measurementFamilyCode' => $measurementFamilyCode
+                'measurementFamilyCode' => $measurementFamilyCode,
             ]
         )->fetchAssociative();
 
         if (!$result) {
-            throw new \Exception(sprintf(
-                'Unit code %s with family code %s was not found',
-                $unitCode,
-                $measurementFamilyCode
-            ));
+            throw new \Exception(sprintf('Unit code %s with family code %s was not found', $unitCode, $measurementFamilyCode));
         }
 
         $unit = new Unit();

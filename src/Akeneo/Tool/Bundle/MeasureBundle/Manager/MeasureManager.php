@@ -6,7 +6,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundExceptio
 use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 
 /**
- * Measure manager
+ * Measure manager.
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -22,7 +22,7 @@ class MeasureManager
     }
 
     /**
-     * Get unit symbols for a measure family
+     * Get unit symbols for a measure family.
      *
      * @param string $family the measure family
      *
@@ -40,7 +40,7 @@ class MeasureManager
     }
 
     /**
-     * Check if the unit symbol (like 'g' for GRAM) exists for the given family
+     * Check if the unit symbol (like 'g' for GRAM) exists for the given family.
      *
      * @param string $unitSymbol the unit symbol to check
      * @param string $family     the measure family
@@ -53,7 +53,7 @@ class MeasureManager
     }
 
     /**
-     * Check if the unit code (like 'GRAM' or 'KILOMETER') exists for the given family
+     * Check if the unit code (like 'GRAM' or 'KILOMETER') exists for the given family.
      *
      * @param string $unitCode the unit code to check
      * @param string $family   the measure family
@@ -66,7 +66,7 @@ class MeasureManager
     }
 
     /**
-     * Get standard unit for a measure family
+     * Get standard unit for a measure family.
      *
      * @param string $family
      *
@@ -80,7 +80,7 @@ class MeasureManager
     }
 
     /**
-     * Get unit codes for a measure family
+     * Get unit codes for a measure family.
      *
      * @param string $family the measure family
      *
@@ -94,7 +94,7 @@ class MeasureManager
     }
 
     /**
-     * Check if provided family exists
+     * Check if provided family exists.
      */
     public function familyExists(string $familyCode): bool
     {
@@ -104,20 +104,19 @@ class MeasureManager
     }
 
     /**
-     * Get the family config
+     * Get the family config.
      *
      * @param string $family
      *
      * @throws MeasurementFamilyNotFoundException
+     *
      * @return array
      */
     protected function getFamilyConfig($family)
     {
         $families = $this->legacyMeasurementProvider->getMeasurementFamilies();
         if (!isset($families[$family])) {
-            throw new MeasurementFamilyNotFoundException(
-                sprintf('Undefined measure family "%s"', $family)
-            );
+            throw new MeasurementFamilyNotFoundException(sprintf('Undefined measure family "%s"', $family));
         }
 
         return $families[$family];

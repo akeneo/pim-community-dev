@@ -67,6 +67,7 @@ class MeasurementInstallerIntegration extends SqlIntegrationTestCase
         /** @var AbstractSchemaManager $schemaManager */
         $schemaManager = $this->get('database_connection')->getSchemaManager();
         $tableColumns = $schemaManager->listTableColumns('akeneo_measurement');
+        $actualColumnsAndTypes = [];
         foreach ($tableColumns as $actualColumn) {
             $actualColumnsAndTypes[$actualColumn->getName()] =  $actualColumn->getType()->getName();
         }

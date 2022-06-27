@@ -23,13 +23,7 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
     public function validate($createMeasurementFamilyCommand, Constraint $constraint)
     {
         if (!$createMeasurementFamilyCommand instanceof CreateMeasurementFamilyCommand) {
-            throw new \LogicException(
-                sprintf(
-                    'Expect an instance of class "%s", "%s" given',
-                    CreateMeasurementFamilyCommand::class,
-                    get_class($createMeasurementFamilyCommand)
-                )
-            );
+            throw new \LogicException(sprintf('Expect an instance of class "%s", "%s" given', CreateMeasurementFamilyCommand::class, get_class($createMeasurementFamilyCommand)));
         }
         $standardUnitCode = $createMeasurementFamilyCommand->standardUnitCode;
         if (empty($standardUnitCode)) {
@@ -58,13 +52,13 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
                             ['%standard_unit_code%' => $standardUnitCode, '%measurement_family_code%' => $measurementFamilyCode]
                         )->addViolation();
                     }
-                )
+                ),
             ]
         );
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
-                /** @var ConstraintViolationInterface $violation */
+                /* @var ConstraintViolationInterface $violation */
                 $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
                     ->atPath(self::PROPERTY_PATH)

@@ -43,9 +43,9 @@ class CountValidator extends ConstraintValidator
 
         if ($count >= $this->max) {
             $this->context->buildViolation(Count::MAX_MESSAGE)
-                ->setParameter('%limit%', (string)$this->max)
+                ->setParameter('%limit%', (string) $this->max)
                 ->setInvalidValue($createMeasurementFamilyCommand)
-                ->setPlural((int)$this->max)
+                ->setPlural((int) $this->max)
                 ->addViolation();
         }
     }

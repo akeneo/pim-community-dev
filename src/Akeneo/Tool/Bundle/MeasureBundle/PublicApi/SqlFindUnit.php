@@ -37,7 +37,7 @@ SQL;
             $sql,
             [
                 'unitCode' => $unitCode,
-                'measurementFamilyCode' => $measurementFamilyCode
+                'measurementFamilyCode' => $measurementFamilyCode,
             ]
         )->fetchAssociative();
 

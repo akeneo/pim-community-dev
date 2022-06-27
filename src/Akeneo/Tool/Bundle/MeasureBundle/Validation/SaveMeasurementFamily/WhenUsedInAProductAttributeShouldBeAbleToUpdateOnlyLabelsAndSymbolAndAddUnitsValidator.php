@@ -33,7 +33,7 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function validate($saveMeasurementFamily, Constraint $constraint)
     {
@@ -55,8 +55,8 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
             $this->context->buildViolation(
                 WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnits::MEASUREMENT_FAMILY_UNIT_REMOVAL_NOT_ALLOWED,
                 [
-                    '%unit_code%'               => implode(',', $removedUnits),
-                    '%measurement_family_code%' => $saveMeasurementFamily->code
+                    '%unit_code%' => implode(',', $removedUnits),
+                    '%measurement_family_code%' => $saveMeasurementFamily->code,
                 ]
             )
                 ->atPath('units')
@@ -67,12 +67,12 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
             $measurementFamily,
             $saveMeasurementFamily
         );
-        if ($unitsBeingUpdated !== []) {
+        if ([] !== $unitsBeingUpdated) {
             $this->context->buildViolation(
                 WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnits::MEASUREMENT_FAMILY_OPERATION_UPDATE_NOT_ALLOWED,
                 [
-                    '%unit_code%'               => implode(',', $unitsBeingUpdated),
-                    '%measurement_family_code%' => $saveMeasurementFamily->code
+                    '%unit_code%' => implode(',', $unitsBeingUpdated),
+                    '%measurement_family_code%' => $saveMeasurementFamily->code,
                 ]
             )
                 ->addViolation();

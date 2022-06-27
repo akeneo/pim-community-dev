@@ -28,7 +28,7 @@ class StandardUnitCodeCannotBeChangedValidator extends ConstraintValidator
 
     /**
      * @param SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand
-     * @inheritDoc
+     *                                                                   {@inheritDoc}
      */
     public function validate($saveMeasurementFamilyCommand, Constraint $constraint)
     {

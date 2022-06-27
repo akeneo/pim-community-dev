@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\SaveMeasurementFamily;
@@ -17,13 +18,7 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
     public function validate($saveMeasurementFamilyCommand, Constraint $constraint)
     {
         if (!$saveMeasurementFamilyCommand instanceof SaveMeasurementFamilyCommand) {
-            throw new \LogicException(
-                sprintf(
-                    'Expect an instance of class "%s", "%s" given',
-                    SaveMeasurementFamilyCommand::class,
-                    get_class($saveMeasurementFamilyCommand)
-                )
-            );
+            throw new \LogicException(sprintf('Expect an instance of class "%s", "%s" given', SaveMeasurementFamilyCommand::class, get_class($saveMeasurementFamilyCommand)));
         }
         $standardUnitCode = $saveMeasurementFamilyCommand->standardUnitCode;
         if (empty($standardUnitCode)) {
@@ -52,7 +47,7 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
                             ['%standard_unit_code%' => $standardUnitCode, '%measurement_family_code%' => $measurementFamilyCode]
                         )->addViolation();
                     }
-                )
+                ),
             ]
         );
 

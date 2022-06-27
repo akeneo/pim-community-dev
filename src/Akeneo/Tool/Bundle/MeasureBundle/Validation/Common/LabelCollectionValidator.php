@@ -1,10 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\Common;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class LabelCollectionValidator extends ConstraintValidator
 {
     /**
-     * @param mixed $labels The value that should be validated
+     * @param mixed      $labels     The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
     public function validate($labels, Constraint $constraint)
@@ -41,7 +41,7 @@ class LabelCollectionValidator extends ConstraintValidator
         $violations = $validator->validate($localeCode, [
             new NotBlank(),
             new Type(['type' => 'string']),
-            new Length(['max' => 100])
+            new Length(['max' => 100]),
         ]);
 
         if ($violations->count() > 0) {

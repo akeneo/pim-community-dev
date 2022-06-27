@@ -36,10 +36,10 @@ class CreateMeasurementFamilyAction
         CreateMeasurementFamilyHandler $createMeasurementFamilyHandler,
         SecurityFacadeInterface $securityFacade
     ) {
-        $this->validator                      = $validator;
-        $this->violationNormalizer            = $violationNormalizer;
+        $this->validator = $validator;
+        $this->violationNormalizer = $violationNormalizer;
         $this->createMeasurementFamilyHandler = $createMeasurementFamilyHandler;
-        $this->securityFacade                 = $securityFacade;
+        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request): Response

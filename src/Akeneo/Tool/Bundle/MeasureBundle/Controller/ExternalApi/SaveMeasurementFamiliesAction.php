@@ -109,12 +109,12 @@ class SaveMeasurementFamiliesAction
                 $responses[] = [
                     'code' => $normalizedMeasurementFamily['code'],
                     'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                    'message' => $exception->getMessage()
+                    'message' => $exception->getMessage(),
                 ];
             } catch (ViolationHttpException $exception) {
                 $response = [
                     'code' => $normalizedMeasurementFamily['code'],
-                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY
+                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 ];
                 $response += $this->violationNormalizer->normalize($exception);
                 $responses[] = $response;
@@ -166,10 +166,7 @@ class SaveMeasurementFamiliesAction
     ) {
         $violations = $this->validator->validate($createMeasurementFamilyCommand);
         if ($violations->count() > 0) {
-            throw new ViolationHttpException(
-                $violations,
-                'The measurement family has data that does not comply with the business rules.'
-            );
+            throw new ViolationHttpException($violations, 'The measurement family has data that does not comply with the business rules.');
         }
     }
 
@@ -213,10 +210,7 @@ class SaveMeasurementFamiliesAction
     ) {
         $violations = $this->validator->validate($saveMeasurementFamilyCommand);
         if ($violations->count() > 0) {
-            throw new ViolationHttpException(
-                $violations,
-                'The measurement family has data that does not comply with the business rules.'
-            );
+            throw new ViolationHttpException($violations, 'The measurement family has data that does not comply with the business rules.');
         }
     }
 
@@ -234,10 +228,7 @@ class SaveMeasurementFamiliesAction
             ]),
         ]);
         if ($violations->count() > 0) {
-            throw new ViolationHttpException(
-                $violations,
-                'The measurement family has data that does not comply with the business rules.'
-            );
+            throw new ViolationHttpException($violations, 'The measurement family has data that does not comply with the business rules.');
         }
     }
 
@@ -254,7 +245,7 @@ class SaveMeasurementFamiliesAction
 
     private function saveMeasurementFamilyCommand(array $normalizedMeasurementFamily): SaveMeasurementFamilyCommand
     {
-        $saveMeasurementFamilyCommand = new SaveMeasurementFamilyCommand;
+        $saveMeasurementFamilyCommand = new SaveMeasurementFamilyCommand();
         $saveMeasurementFamilyCommand->code = $normalizedMeasurementFamily['code'];
         $saveMeasurementFamilyCommand->standardUnitCode = $normalizedMeasurementFamily['standard_unit_code'];
         $saveMeasurementFamilyCommand->labels = $normalizedMeasurementFamily['labels'] ?? [];

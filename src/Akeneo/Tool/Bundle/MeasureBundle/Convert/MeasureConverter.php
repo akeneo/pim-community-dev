@@ -8,7 +8,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownOperatorException;
 use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 
 /**
- * Aims to convert measures
+ * Aims to convert measures.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
@@ -27,7 +27,7 @@ class MeasureConverter
     }
 
     /**
-     * Set a family for the converter
+     * Set a family for the converter.
      *
      * @throws MeasurementFamilyNotFoundException
      */
@@ -52,11 +52,11 @@ class MeasureConverter
     }
 
     /**
-     * Convert a value from a base measure to a final measure
+     * Convert a value from a base measure to a final measure.
      *
-     * @param string $baseUnit  Base unit for value
-     * @param string $finalUnit Result unit for value
-     * @param int|float|string $value  Value to convert
+     * @param string           $baseUnit  Base unit for value
+     * @param string           $finalUnit Result unit for value
+     * @param int|float|string $value     Value to convert
      *
      * @return string
      */
@@ -68,10 +68,10 @@ class MeasureConverter
     }
 
     /**
-     * Convert a value in a base unit to the standard unit
+     * Convert a value in a base unit to the standard unit.
      *
-     * @param string $baseUnit Base unit for value
-     * @param int|float|string $value Value to convert
+     * @param string           $baseUnit Base unit for value
+     * @param int|float|string $value    Value to convert
      *
      * @return string
      *
@@ -94,13 +94,14 @@ class MeasureConverter
     }
 
     /**
-     * Apply operation between value and operand by using operator
+     * Apply operation between value and operand by using operator.
      *
-     * @param int|float|string $value Value to convert
-     * @param string $operator Operator to apply
-     * @param string $operand  Operand to use
+     * @param int|float|string $value    Value to convert
+     * @param string           $operator Operator to apply
+     * @param string           $operand  Operand to use
      *
      * @return string
+     *
      *@throws UnknownOperatorException
      */
     protected function applyOperation($value, $operator, $operand)
@@ -116,18 +117,18 @@ class MeasureConverter
         }
 
         switch ($operator) {
-            case "div":
-                if ($operand !== '0') {
+            case 'div':
+                if ('0' !== $operand) {
                     $processedValue = bcdiv($processedValue, $operand, static::SCALE);
                 }
                 break;
-            case "mul":
+            case 'mul':
                 $processedValue = bcmul($processedValue, $operand, static::SCALE);
                 break;
-            case "add":
+            case 'add':
                 $processedValue = bcadd($processedValue, $operand, static::SCALE);
                 break;
-            case "sub":
+            case 'sub':
                 $processedValue = bcsub($processedValue, $operand, static::SCALE);
                 break;
             default:
@@ -138,15 +139,15 @@ class MeasureConverter
     }
 
     /**
-     * Convert a value in a standard unit to a final unit
+     * Convert a value in a standard unit to a final unit.
      *
-     * @param string $finalUnit Final unit for value
-     * @param int|float|string $value  Value to convert
+     * @param string           $finalUnit Final unit for value
+     * @param int|float|string $value     Value to convert
      *
      * @throws UnknownOperatorException
      * @throws UnitNotFoundException
-     * @return string
      *
+     * @return string
      */
     public function convertStandardToResult($finalUnit, $value)
     {
@@ -165,13 +166,14 @@ class MeasureConverter
     }
 
     /**
-     * Apply reversed operation between value and operand by using operator
+     * Apply reversed operation between value and operand by using operator.
      *
-     * @param int|float|string $value Value to convert
-     * @param string $operator Operator to apply
-     * @param string $operand  Operand to use
+     * @param int|float|string $value    Value to convert
+     * @param string           $operator Operator to apply
+     * @param string           $operand  Operand to use
      *
      * @return string
+     *
      * @throws UnknownOperatorException
      */
     protected function applyReversedOperation($value, $operator, $operand)
@@ -179,18 +181,18 @@ class MeasureConverter
         $processedValue = (string) $value;
 
         switch ($operator) {
-            case "div":
+            case 'div':
                 $processedValue = bcmul($processedValue, $operand, static::SCALE);
                 break;
-            case "mul":
-                if ($operand !== '0') {
+            case 'mul':
+                if ('0' !== $operand) {
                     $processedValue = bcdiv($processedValue, $operand, static::SCALE);
                 }
                 break;
-            case "add":
+            case 'add':
                 $processedValue = bcsub($processedValue, $operand, static::SCALE);
                 break;
-            case "sub":
+            case 'sub':
                 $processedValue = bcadd($processedValue, $operand, static::SCALE);
                 break;
             default:
@@ -216,10 +218,6 @@ class MeasureConverter
             }
         }
 
-        throw new UnitNotFoundException(\sprintf(
-            'Could not find metric unit "%s" in family "%s"',
-            $unitCode,
-            $this->family
-        ));
+        throw new UnitNotFoundException(\sprintf('Could not find metric unit "%s" in family "%s"', $unitCode, $this->family));
     }
 }

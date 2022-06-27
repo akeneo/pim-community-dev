@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
@@ -35,19 +36,17 @@ class UnitCountValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'array|\Countable');
         }
 
-        $count = is_countable($value) ? \count($value) : 0;
-
-        if ($count > $this->max) {
+        if (count($value) > $this->max) {
             $this->context->buildViolation(UnitCount::MAX_MESSAGE)
-                ->setParameter('%limit%', (string)$this->max)
+                ->setParameter('%limit%', (string) $this->max)
                 ->setInvalidValue($value)
-                ->setPlural((int)$this->max)
+                ->setPlural($this->max)
                 ->addViolation();
         }
 
-        if ($count < MeasurementFamily::MIN_UNIT_COUNT) {
+        if (count($value) < MeasurementFamily::MIN_UNIT_COUNT) {
             $this->context->buildViolation(UnitCount::MIN_MESSAGE)
-                ->setParameter('%limit%', (string)MeasurementFamily::MIN_UNIT_COUNT)
+                ->setParameter('%limit%', (string) MeasurementFamily::MIN_UNIT_COUNT)
                 ->setInvalidValue($value)
                 ->addViolation();
         }

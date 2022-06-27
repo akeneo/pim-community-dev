@@ -29,7 +29,7 @@ class UnitsMustBeIndexedByCodeValidator extends ConstraintValidator
                 $path = sprintf('[%s]', $key);
 
                 // @see https://github.com/akeneo/pim-community-dev/blob/e166444691b7d63957cef3cac5277a74e4058ce9/src/Akeneo/Tool/Component/Api/Normalizer/Exception/ViolationNormalizer.php#L140
-                $constraint->payload['standardPropertyName'] = $this->context->getPropertyPath() . $path;
+                $constraint->payload['standardPropertyName'] = $this->context->getPropertyPath().$path;
 
                 $this->context->buildViolation($constraint->message)
                     ->atPath($path)

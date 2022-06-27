@@ -21,6 +21,10 @@ class StandardUnitCodeOperationShouldBeMultiplyByOneValidator extends Constraint
     public function validate($saveMeasurementFamily, Constraint $constraint)
     {
         $standardUnit = $this->standardUnit($saveMeasurementFamily);
+        if (null == $standardUnit) {
+            return;
+        }
+
         $hasOneOperation = 1 === (is_countable($standardUnit['convert_from_standard']) ? \count($standardUnit['convert_from_standard']) : 0);
         if (!$hasOneOperation) {
             return;
@@ -39,12 +43,14 @@ class StandardUnitCodeOperationShouldBeMultiplyByOneValidator extends Constraint
     /**
      * @param SaveMeasurementFamilyCommand $saveMeasurementFamily
      */
-    private function standardUnit($saveMeasurementFamily): array
+    private function standardUnit($saveMeasurementFamily): ?array
     {
         foreach ($saveMeasurementFamily->units as $unit) {
             if ($saveMeasurementFamily->standardUnitCode === $unit['code']) {
                 return $unit;
             }
         }
+
+        return null;
     }
 }

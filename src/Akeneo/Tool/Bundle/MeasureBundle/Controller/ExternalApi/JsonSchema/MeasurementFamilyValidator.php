@@ -24,50 +24,50 @@ class MeasurementFamilyValidator
     private function getJsonSchema(): array
     {
         return [
-            'type'                 => 'object',
-            'properties'           => [
-                '_links'             => ['type' => 'object'],
-                'code'               => ['type' => 'string'],
-                'labels'             => [
-                    'type'              => ['object', 'array'],
+            'type' => 'object',
+            'properties' => [
+                '_links' => ['type' => 'object'],
+                'code' => ['type' => 'string'],
+                'labels' => [
+                    'type' => ['object', 'array'],
                     'patternProperties' => [
                         '.+' => ['type' => 'string'],
                     ],
                 ],
                 'standard_unit_code' => ['type' => 'string'],
-                'units'              => [
-                    'type'  => 'object',
+                'units' => [
+                    'type' => 'object',
                     'patternProperties' => [
                         '.+' => [
-                            'type'       => 'object',
+                            'type' => 'object',
                             'properties' => [
-                                'code'                  => ['type' => 'string'],
-                                'labels'                => [
-                                    'type'              => ['object', 'array'],
+                                'code' => ['type' => 'string'],
+                                'labels' => [
+                                    'type' => ['object', 'array'],
                                     'patternProperties' => [
                                         '.+' => ['type' => 'string'],
                                     ],
                                 ],
                                 'convert_from_standard' => [
-                                    'type'  => 'array',
+                                    'type' => 'array',
                                     'items' => [
-                                        'type'       => 'object',
+                                        'type' => 'object',
                                         'properties' => [
                                             'operator' => ['type' => 'string'],
-                                            'value'    => ['type' => 'string']
+                                            'value' => ['type' => 'string'],
                                         ],
-                                        'required'   => ['operator', 'value'],
-                                    ]
+                                        'required' => ['operator', 'value'],
+                                    ],
                                 ],
-                                'symbol'                => ['type' => 'string']
+                                'symbol' => ['type' => 'string'],
                             ],
                             'required' => ['code', 'convert_from_standard'],
                             'additionalProperties' => false,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-            'required'             => ['code', 'units', 'standard_unit_code'],
+            'required' => ['code', 'units', 'standard_unit_code'],
             'additionalProperties' => false,
         ];
     }

@@ -37,10 +37,10 @@ class SaveMeasurementFamilyAction
         NormalizerInterface $violationNormalizer,
         SecurityFacadeInterface $securityFacade
     ) {
-        $this->validator                    = $validator;
+        $this->validator = $validator;
         $this->saveMeasurementFamilyHandler = $saveMeasurementFamilyHandler;
-        $this->violationNormalizer          = $violationNormalizer;
-        $this->securityFacade               = $securityFacade;
+        $this->violationNormalizer = $violationNormalizer;
+        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request): Response
