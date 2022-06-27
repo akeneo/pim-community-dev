@@ -206,13 +206,41 @@ SQL;
         }
     }
 
-    private function incrementWarningCount(int $stepExecutionId): void
+    public function addWarnings(StepExecution $stepExecution, array $warnings): void
+    {
+        $sql = <<<SQL
+INSERT INTO akeneo_batch_warning (step_execution_id, reason, reason_parameters, item) VALUES %s
+SQL;
+
+        $connection = $this->jobManager->getConnection();
+
+        $values = array_map(static fn (Warning $warning) =>
+            sprintf(
+                "(%s, %s, %s, %s)",
+                $connection->quote($stepExecution->getId()),
+                $connection->quote($warning->getReason()),
+                $connection->quote(serialize($warning->getReasonParameters())),
+                $connection->quote(serialize($warning->getItem())),
+        ), $warnings);
+
+        $sql = sprintf($sql, join(', ', $values));
+
+        $this->jobManager->getConnection()->executeQuery($sql);
+
+        $this->incrementWarningCount($stepExecution->getId(), count($values));
+
+        if ($stepExecution->getWarnings() instanceof PersistentCollection) {
+            $stepExecution->getWarnings()->setInitialized(false);
+        }
+    }
+
+    private function incrementWarningCount(int $stepExecutionId, int $step = 1): void
     {
         $sqlQuery = <<<SQL
     UPDATE akeneo_batch_step_execution
-    SET warning_count = warning_count + 1
+    SET warning_count = warning_count + :step
     WHERE id = :step_execution_id
 SQL;
-        $this->jobManager->getConnection()->executeQuery($sqlQuery, ['step_execution_id' => $stepExecutionId]);
+        $this->jobManager->getConnection()->executeQuery($sqlQuery, ['step_execution_id' => $stepExecutionId, 'step' => $step]);
     }
 }
