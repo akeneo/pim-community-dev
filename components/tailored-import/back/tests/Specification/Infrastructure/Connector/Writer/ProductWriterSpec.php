@@ -22,6 +22,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -77,6 +78,7 @@ class ProductWriterSpec extends ObjectBehavior
     ) {
         $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: []);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $this->rowPayload->setInvalidValues([]);
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
 
@@ -91,6 +93,7 @@ class ProductWriterSpec extends ObjectBehavior
             new SetTextValue('name', null, null, 'Produit 1'),
         ]);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $this->rowPayload->setInvalidValues([]);
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
 
@@ -103,6 +106,7 @@ class ProductWriterSpec extends ObjectBehavior
     ) {
         $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', categoryUserIntent: new AddCategories(['clothes', 'shoes']));
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $this->rowPayload->setInvalidValues([]);
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
 
@@ -115,6 +119,7 @@ class ProductWriterSpec extends ObjectBehavior
     ) {
         $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', familyUserIntent: new SetFamily('a_family'));
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $this->rowPayload->setInvalidValues([]);
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
 
@@ -129,7 +134,10 @@ class ProductWriterSpec extends ObjectBehavior
         $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
             new SetTextValue('name', null, null, 'Produit 1'),
         ]);
+
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $this->rowPayload->setInvalidValues([]);
+
         $constraintViolation->getParameters()->willReturn([]);
         $constraintViolation->getMessage()->willReturn('legacy error');
         $constraintViolation->__toString()->willReturn('legacy error');
@@ -156,7 +164,10 @@ class ProductWriterSpec extends ObjectBehavior
         $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
             new SetTextValue('name', null, null, 'Produit 1'),
         ]);
+
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $this->rowPayload->setInvalidValues([]);
+
         $constraintViolation->getParameters()->willReturn([]);
         $constraintViolation->getMessage()->willReturn('error');
         $constraintViolation->__toString()->willReturn('error');
@@ -185,7 +196,10 @@ class ProductWriterSpec extends ObjectBehavior
             new SetTextValue('name', null, null, 'Produit 1'),
             new SetTextValue('reference', null, null, 'ref1'),
         ]);
+
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $this->rowPayload->setInvalidValues([]);
+
         $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
         $constraintViolation->getParameters()->willReturn([]);
         $constraintViolation->getMessage()->willReturn('error');
@@ -222,6 +236,8 @@ class ProductWriterSpec extends ObjectBehavior
         );
 
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $this->rowPayload->setInvalidValues([]);
+
         $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
         $constraintViolation->getParameters()->willReturn([]);
         $constraintViolation->getMessage()->willReturn('error');
@@ -261,6 +277,8 @@ class ProductWriterSpec extends ObjectBehavior
         );
 
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $this->rowPayload->setInvalidValues([]);
+
         $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
         $constraintViolation->getParameters()->willReturn([]);
         $constraintViolation->getMessage()->willReturn('error');
@@ -302,6 +320,8 @@ class ProductWriterSpec extends ObjectBehavior
         );
 
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $this->rowPayload->setInvalidValues([]);
+
         $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
 
         $valueConstraintViolation->getParameters()->willReturn([]);
@@ -355,6 +375,8 @@ class ProductWriterSpec extends ObjectBehavior
         ]);
 
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $this->rowPayload->setInvalidValues([]);
+
         $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
         $constraintViolation->getParameters()->willReturn([]);
         $constraintViolation->getMessage()->willReturn('unknown error');
@@ -363,6 +385,62 @@ class ProductWriterSpec extends ObjectBehavior
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
         $stepExecution->addWarning('unknown error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1', 'Categories' => 'clothes, shoes', 'Family' => 'a_family'], 0))->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
+        $stepExecution->getSummaryInfo('create', 0)->willReturn(0);
+        $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
+
+        $this->write([$this->rowPayload]);
+    }
+
+    public function it_should_skip_product_when_there_are_invalid_values(
+        MessageBusInterface $messageBus,
+        StepExecution $stepExecution,
+    ) {
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+            new SetTextValue('name', null, null, 'Produit 1'),
+        ]);
+
+        $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $this->rowPayload->setInvalidValues([new InvalidValue('Operation error')]);
+
+        $messageBus->dispatch($upsertProductCommand)->shouldNotBeCalled();
+
+        $fileInvalidItem = new FileInvalidItem([
+            'Sku' => 'ref1',
+            'Name' => 'Produit 1',
+            'Categories' => 'clothes, shoes',
+            'Family' => 'a_family'], 0
+        );
+
+        $stepExecution->addWarning('Operation error', [], $fileInvalidItem)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
+        $stepExecution->getSummaryInfo('create', 0)->willReturn(0);
+        $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
+
+        $this->write([$this->rowPayload]);
+    }
+
+    public function it_should_add_warning_when_there_are_invalid_values(
+        MessageBusInterface $messageBus,
+        StepExecution $stepExecution,
+    ) {
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+            new SetTextValue('name', null, null, 'Produit 1'),
+        ]);
+
+        $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $this->rowPayload->setInvalidValues([new InvalidValue('Operation error')]);
+
+        $fileInvalidItem = new FileInvalidItem([
+            'Sku' => 'ref1',
+            'Name' => 'Produit 1',
+            'Categories' => 'clothes, shoes',
+            'Family' => 'a_family'], 0
+        );
+
+        $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
+        $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
+        $stepExecution->addWarning('Operation error', [], $fileInvalidItem)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
         $stepExecution->getSummaryInfo('create', 0)->willReturn(0);
         $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);

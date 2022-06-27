@@ -69,6 +69,10 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
         if (0 < count($rowPayload->getInvalidValues())) {
             $this->stepExecution->incrementSummaryInfo('skip');
             $this->addInvalidValuesWarning($rowPayload);
+
+            if ('skip_product' === $this->stepExecution->getJobParameters()->get('error_action')) {
+                return;
+            }
         }
 
         try {
