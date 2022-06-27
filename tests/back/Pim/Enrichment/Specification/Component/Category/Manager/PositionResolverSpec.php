@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Manager;
 
-use Akeneo\Pim\Enrichment\Component\Category\Manager\PositionResolver;
-use Akeneo\Pim\Enrichment\Component\Category\Manager\PositionResolverInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Query\GetDirectChildrenCategoryCodesInterface;
+use Akeneo\Category\Application\Component\Manager\PositionResolver;
+use Akeneo\Category\Domain\Component\Manager\PositionResolverInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Query\GetDirectChildrenCategoryCodesInterface;
 use PhpSpec\ObjectBehavior;
 
 /**

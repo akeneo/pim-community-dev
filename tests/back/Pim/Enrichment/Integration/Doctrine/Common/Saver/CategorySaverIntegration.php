@@ -2,13 +2,13 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Common\Saver;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Component\Model\Category;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard\CategoryNormalizer;
+use Akeneo\Category\Infrastructure\Component\Normalizer\Standard\CategoryNormalizer;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use PHPUnit\Framework\Assert;
 

@@ -2,10 +2,10 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Category\Manager\PositionResolverInterface;
+use Akeneo\Category\Domain\Component\Manager\PositionResolverInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Normalizer\ExternalApi\CategoryNormalizer;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi\CategoryNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CategoryNormalizerSpec extends ObjectBehavior

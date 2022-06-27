@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Category\Manager;
+namespace Akeneo\Category\Application\Component\Manager;
 
-use Akeneo\Pim\Enrichment\Component\Category\Query\GetDirectChildrenCategoryCodesInterface;
+use Akeneo\Category\Domain\Component\Manager\PositionResolverInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Query\GetDirectChildrenCategoryCodesInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

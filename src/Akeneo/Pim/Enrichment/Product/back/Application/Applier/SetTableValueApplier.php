@@ -35,15 +35,6 @@ final class SetTableValueApplier implements UserIntentApplier
                     ],
                 ],
             ],
-            'values' => [
-                'my_text_attribute' => [
-                    [
-                        'locale' => 'fr_FR',
-                        'scope' => $userIntent->channelCode(),
-                        'data' => $userIntent->tableValue(),
-                    ],
-                ],
-            ],
         ]);
     }
 

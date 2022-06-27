@@ -1,5 +1,5 @@
 parameters:
-    pim_serializer.normalizer.flat.category.class: Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning\CategoryNormalizer
+    pim_serializer.normalizer.flat.category.class: Akeneo\Category\Infrastructure\Component\Normalizer\Versioning\CategoryNormalizer
     pim_serializer.normalizer.flat.product.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductNormalizer
     pim_serializer.normalizer.flat.value.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ValueNormalizer
     pim_serializer.normalizer.flat.product_model.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductModelNormalizer

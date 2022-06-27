@@ -1,14 +1,14 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi;
+namespace Akeneo\Category\Infrastructure\Component\Normalizer\ExternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Category\Manager\PositionResolverInterface;
+use Akeneo\Category\Domain\Component\Manager\PositionResolverInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @author    Marie Bochu <marie.bochu@akProcessoreneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
