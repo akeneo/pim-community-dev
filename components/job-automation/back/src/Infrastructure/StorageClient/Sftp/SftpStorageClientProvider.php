@@ -59,6 +59,10 @@ final class SftpStorageClientProvider implements StorageClientProviderInterface
 
     public function getConnectionProvider(StorageInterface $storage): ConnectionProvider|null
     {
+        if (!$storage instanceof SftpStorage) {
+            throw new \InvalidArgumentException('The provider only support SftpStorage');
+        }
+
         return new SftpConnectionProvider(
             $storage->getHost(),
             $storage->getUsername(),

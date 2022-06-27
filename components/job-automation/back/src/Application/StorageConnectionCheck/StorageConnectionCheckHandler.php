@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProvider;
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
-
 final class StorageConnectionCheckHandler
 {
     public function __construct(

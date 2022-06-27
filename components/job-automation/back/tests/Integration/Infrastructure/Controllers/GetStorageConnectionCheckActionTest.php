@@ -54,7 +54,7 @@ final class GetStorageConnectionCheckActionTest extends ControllerIntegrationTes
             self::ROUTE,
             [],
             'POST',
-            [],
+            [],µ
             '{"type": "sftp","file_path": "import_%job_label%_%datetime%.xlsx","host": "127.0.0.1","port": 22, "username": "foo", "password": "bar"}'
         );
         $response = $this->client->getResponse();

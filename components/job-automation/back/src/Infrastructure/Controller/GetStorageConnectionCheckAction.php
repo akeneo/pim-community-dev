@@ -30,7 +30,7 @@ final class GetStorageConnectionCheckAction
         private StorageConnectionCheckHandler $storageConnectionCheckHandler,
         private ValidatorInterface $validator,
         private NormalizerInterface $normalizer,
-        private StorageHydratorInterface $storageHydrator
+        private StorageHydratorInterface $storageHydrator,
     ) {
     }
 
@@ -51,7 +51,7 @@ final class GetStorageConnectionCheckAction
 
         try {
             $this->storageConnectionCheckHandler->handle(new StorageConnectionCheckQuery(
-                $storage
+                $storage,
             ));
 
             return new JsonResponse([
