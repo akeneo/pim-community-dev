@@ -46,7 +46,7 @@ class GetNumberOfProductsImpactedByAttributeSpellingMistakesQuery implements Get
     private function getMainQuery(): string
     {
         return <<<SQL
-SELECT COUNT(DISTINCT(product.id)) AS impacted_products
+SELECT COUNT(DISTINCT(product.uuid)) AS impacted_products
 FROM pimee_dqi_attribute_spellcheck AS attribute_spellcheck
     INNER JOIN pim_catalog_attribute AS attribute ON attribute.code = attribute_spellcheck.attribute_code
     INNER JOIN pim_catalog_family_attribute AS family_attribute ON family_attribute.attribute_id = attribute.id

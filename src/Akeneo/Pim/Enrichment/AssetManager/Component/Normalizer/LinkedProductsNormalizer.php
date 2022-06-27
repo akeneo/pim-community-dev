@@ -36,7 +36,7 @@ class LinkedProductsNormalizer
             function (Row $row) use ($channelCode, $localeCode) {
                 return [
                     'id'                             => $row->technicalId(),
-                    'identifier'                      => $row->identifier(),
+                    'identifier'                     => $row->identifier(),
                     'label'                          => $row->label(),
                     'document_type'                  => $row->documentType(),
                     'image'                          => $this->imageNormalizer->normalize($row->image(), $localeCode, $channelCode),

@@ -14,6 +14,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Permission\Component\Connector\GetProductsWithCompletenessesWithPermissions;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -58,14 +60,14 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
             $ecommerceFR,
             $printDE,
         ];
-        $connectProduct = $this->getConnectorProduct(42);
+        $connectProduct = $this->getConnectorProduct(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'));
         $connectProductCompletenesses = $this->getConnectorProduct(
-            42,
-            new ProductCompletenessCollection(42, $completenessesWithoutPermissions)
+            Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'),
+            new ProductCompletenessCollection(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'), $completenessesWithoutPermissions)
         );
         $connectProductCompletenessesWithPermissions = $this->getConnectorProduct(
-            42,
-            new ProductCompletenessCollection(42, [$ecommerceUS, $ecommerceFR])
+            Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'),
+            new ProductCompletenessCollection(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'), [$ecommerceUS, $ecommerceFR])
         );
         $getProductsWithCompletenesses->fromConnectorProduct($connectProduct)->willReturn($connectProductCompletenesses);
 
@@ -85,10 +87,10 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
         $viewableLocales = ['en_US', 'fr_FR'];
         $getAllViewableLocalesForUser->fetchAll(42)->willReturn($viewableLocales);
 
-        $connectProduct = $this->getConnectorProduct(42);
+        $connectProduct = $this->getConnectorProduct(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'));
         $productWithEmptyCollection = $this->getConnectorProduct(
-            42,
-            new ProductCompletenessCollection(42, [])
+            Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'),
+            new ProductCompletenessCollection(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'), [])
         );
         $getProductsWithCompletenesses->fromConnectorProduct($connectProduct)->willReturn($productWithEmptyCollection);
 
@@ -112,13 +114,13 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
         $ecommerceUSComplete = new ProductCompleteness('ecommerce', 'en_US', 10, 0);
         $connectorProductList = new ConnectorProductList(
             2,
-            [$this->getConnectorProduct(15), $this->getConnectorProduct(42)]
+            [$this->getConnectorProduct(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d')), $this->getConnectorProduct(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'))]
         );
         $listWithCompletenesses = new ConnectorProductList(
             2,
             [
-                $this->getConnectorProduct(15, new ProductCompletenessCollection(15, [$ecommerceUSHalf])),
-                $this->getConnectorProduct(42, new ProductCompletenessCollection(15, [$ecommerceUSComplete])),
+                $this->getConnectorProduct(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d'), new ProductCompletenessCollection(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d'), [$ecommerceUSHalf])),
+                $this->getConnectorProduct(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'), new ProductCompletenessCollection(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'), [$ecommerceUSComplete])),
             ]
         );
         $getProductsWithCompletenesses
@@ -146,13 +148,13 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
         $printUS = new ProductCompleteness('print', 'en_US', 10, 0);
         $connectorProductList = new ConnectorProductList(
             2,
-            [$this->getConnectorProduct(15), $this->getConnectorProduct(42)]
+            [$this->getConnectorProduct(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d')), $this->getConnectorProduct(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'))]
         );
         $listWithCompletenesses = new ConnectorProductList(
             2,
             [
-                $this->getConnectorProduct(15, new ProductCompletenessCollection(15, [$ecommerceUS])),
-                $this->getConnectorProduct(42, new ProductCompletenessCollection(15, [$printUS])),
+                $this->getConnectorProduct(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d'), new ProductCompletenessCollection(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d'), [$ecommerceUS])),
+                $this->getConnectorProduct(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'), new ProductCompletenessCollection(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'), [$printUS])),
             ]
         );
         $getProductsWithCompletenesses
@@ -180,13 +182,13 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
         $printUS = new ProductCompleteness('print', 'en_US', 10, 0);
         $connectorProductList = new ConnectorProductList(
             2,
-            [$this->getConnectorProduct(15), $this->getConnectorProduct(42)]
+            [$this->getConnectorProduct(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d')), $this->getConnectorProduct(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'))]
         );
         $listWithCompletenesses = new ConnectorProductList(
             2,
             [
-                $this->getConnectorProduct(15, new ProductCompletenessCollection(15, [$ecommerceUS])),
-                $this->getConnectorProduct(42, new ProductCompletenessCollection(15, [$printUS])),
+                $this->getConnectorProduct(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d'), new ProductCompletenessCollection(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d'), [$ecommerceUS])),
+                $this->getConnectorProduct(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'), new ProductCompletenessCollection(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'), [$printUS])),
             ]
         );
         $getProductsWithCompletenesses
@@ -205,13 +207,13 @@ class GetProductsWithCompletenessesWithPermissionsSpec extends ObjectBehavior
             ->shouldThrow(
                 new \DomainException('A user must be connected to apply permissions.')
             )
-            ->during('fromConnectorProduct', [$this->getConnectorProduct(2)]);
+            ->during('fromConnectorProduct', [$this->getConnectorProduct(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d'))]);
     }
 
-    private function getConnectorProduct(int $id, ProductCompletenessCollection $collection = null): ConnectorProduct
+    private function getConnectorProduct(UuidInterface $uuid, ProductCompletenessCollection $collection = null): ConnectorProduct
     {
         return new ConnectorProduct(
-            $id,
+            $uuid,
             'blue_jean',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),

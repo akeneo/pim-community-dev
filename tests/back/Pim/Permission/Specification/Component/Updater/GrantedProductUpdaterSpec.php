@@ -58,7 +58,7 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $product->getId()->willReturn(1);
+        $product->getCreated()->willReturn(new \DateTime('2017-01-01T01:03:34+01:00'));
 
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
@@ -91,7 +91,7 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $product->getId()->willReturn(1);
+        $product->getCreated()->willReturn(new \DateTime('2017-01-01T01:03:34+01:00'));
 
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);
@@ -124,7 +124,7 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $product->getId()->willReturn(1);
+        $product->getCreated()->willReturn(new \DateTime('2017-01-01T01:03:34+01:00'));
 
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
@@ -158,7 +158,7 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $product->getId()->willReturn(1);
+        $product->getCreated()->willReturn(new \DateTime('2017-01-01T01:03:34+01:00'));
         $product->getIdentifier()->willReturn('product');
 
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
@@ -186,7 +186,7 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $data = ['enabled' => true];
-        $product->getId()->willReturn(1);
+        $product->getCreated()->willReturn(new \DateTime('2017-01-01T01:03:34+01:00'));
 
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
@@ -204,7 +204,7 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $data = ['enabled' => true];
-        $product->getId()->willReturn(null);
+        $product->getCreated()->willReturn(null);
 
         $authorizationChecker->isGranted(Attributes::OWN, $product)->shouldNotBeCalled();
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->shouldNotBeCalled();

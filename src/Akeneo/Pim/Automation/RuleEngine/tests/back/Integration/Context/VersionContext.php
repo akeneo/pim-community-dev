@@ -48,7 +48,7 @@ final class VersionContext implements Context
     public function theHistoryOfTheProductHasUpdates(string $identifier, int $expectedUpdateCount): void
     {
         $product = $this->getProduct($identifier);
-        $entries = $this->versionRepository->getLogEntries(Product::class, $product->getId());
+        $entries = $this->versionRepository->getLogEntries(Product::class, null, $product->getUuid());
         $count = null === $entries ? 0 : count($entries);
 
         Assert::same(
@@ -64,7 +64,7 @@ final class VersionContext implements Context
     public function versionOfTheProductShouldBe(string $identifier, TableNode $table): void
     {
         $product = $this->getProduct($identifier);
-        $versions = $this->versionRepository->getLogEntries(Product::class, $product->getId());
+        $versions = $this->versionRepository->getLogEntries(Product::class, null, $product->getUuid());
 
         foreach ($table->getHash() as $expectingData) {
             /** @var Version $version */

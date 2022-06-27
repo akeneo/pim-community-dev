@@ -70,7 +70,12 @@ class PublishedProductWithPermissionRepository extends EntityRepository implemen
      */
     public function findOneByOriginalProduct(ProductInterface $originalProduct)
     {
-        return $this->findOneByOriginalProductId($originalProduct->getId());
+        $publishedProduct = $this->publishedProductRepository->findOneBy(['originalProduct' => $originalProduct]);
+        if (null === $publishedProduct) {
+            return null;
+        }
+
+        return $this->getFilteredPublishedProduct($publishedProduct);
     }
 
     /**
@@ -122,9 +127,9 @@ class PublishedProductWithPermissionRepository extends EntityRepository implemen
     /**
      * {@inheritdoc}
      */
-    public function findOneByOriginalProductId($originalProductId)
+    public function findOneByOriginalProductUuid($originalProductUuid)
     {
-        $publishedProduct = $this->publishedProductRepository->findOneBy(['originalProduct' => $originalProductId]);
+        $publishedProduct = $this->publishedProductRepository->findOneBy(['originalProduct' => $originalProductUuid]);
         if (null === $publishedProduct) {
             return null;
         }
@@ -307,9 +312,9 @@ class PublishedProductWithPermissionRepository extends EntityRepository implemen
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInFamily($productId, $attributeCode)
+    public function hasAttributeInFamily($productUuidOrId, $attributeCode)
     {
-        return $this->publishedProductRepository->hasAttributeInFamily($productId, $attributeCode);
+        return $this->publishedProductRepository->hasAttributeInFamily($productUuidOrId, $attributeCode);
     }
 
     /**

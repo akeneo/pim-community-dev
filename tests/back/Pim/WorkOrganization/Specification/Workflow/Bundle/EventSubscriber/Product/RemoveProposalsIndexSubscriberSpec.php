@@ -17,10 +17,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\ProductProposalIndexer;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\Product\RemoveProposalsIndexSubscriber;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProposalIdsFromProductIdsQueryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProposalIdsFromProductUuidsQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -30,7 +31,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class RemoveProposalsIndexSubscriberSpec extends ObjectBehavior
 {
     function let(
-        SelectProposalIdsFromProductIdsQueryInterface $query,
+        SelectProposalIdsFromProductUuidsQueryInterface $query,
         ProductProposalIndexer $indexer
     ) {
         $this->beConstructedWith($query, $indexer);
@@ -54,10 +55,11 @@ class RemoveProposalsIndexSubscriberSpec extends ObjectBehavior
 
     function it_calculates_impacted_proposals_on_product_pre_remove_event($query, ProductInterface $product)
     {
-        $product->getId()->willReturn(44);
+        $uuid = Uuid::uuid4();
+        $product->getUuid()->willReturn($uuid);
         $event = new GenericEvent($product->getWrappedObject());
 
-        $query->fetch([44])->shouldBeCalled();
+        $query->fetch([$uuid])->shouldBeCalled();
 
         $this->calculateImpactedProposals($event)->shouldReturn(null);
     }
@@ -80,9 +82,10 @@ class RemoveProposalsIndexSubscriberSpec extends ObjectBehavior
 
     function it_removes_product_proposals_index_on_impacted_proposals($query, $indexer, ProductInterface $product)
     {
-        $product->getId()->willReturn(44);
+        $uuid = Uuid::uuid4();
+        $product->getUuid()->willReturn($uuid);
         $event = new GenericEvent($product->getWrappedObject());
-        $query->fetch([44])->willReturn([55, 12, 31]);
+        $query->fetch([$uuid])->willReturn([55, 12, 31]);
 
         $indexer->removeAll([55, 12, 31])->shouldBeCalled();
 

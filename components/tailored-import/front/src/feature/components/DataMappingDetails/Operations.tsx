@@ -149,7 +149,10 @@ const Operations = ({
             ) : (
               <Helper inline={true}>
                 {translate('akeneo.tailored_import.data_mapping.operations.no_available.text')}{' '}
-                <Link href="#TODO Add missing link" target="_blank">
+                <Link
+                  href="https://help.akeneo.com/pim/serenity/articles/tailored-import.html#discover-operations"
+                  target="_blank"
+                >
                   {translate('akeneo.tailored_import.data_mapping.operations.no_available.link')}
                 </Link>
               </Helper>

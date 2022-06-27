@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQua
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -74,7 +75,7 @@ class GetProductsWithQualityScoresWithPermissionsSpec extends ObjectBehavior
     private function buildConnectorProduct($identifier, $qualityScore): ConnectorProduct
     {
         return new ConnectorProduct(
-            5,
+            Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'),
             $identifier,
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),

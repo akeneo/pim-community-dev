@@ -48,7 +48,6 @@ class ProductPublisherSpec extends ObjectBehavior
         $product->getAssociations()->willReturn([]);
         $product->getValues()->willReturn([]);
         $product->getFamily()->willReturn(null);
-        $product->getId()->willReturn(1);
         $product->isEnabled()->willReturn(true);
         $product->setEnabled(Argument::any())->willReturn($product);
 

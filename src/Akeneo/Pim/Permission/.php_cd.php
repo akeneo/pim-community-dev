@@ -19,6 +19,8 @@ $rules = [
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Pim\Permission\Component',
         'Webmozart\Assert\Assert',
+        'Ramsey\Uuid\Uuid',
+        'Ramsey\Uuid\UuidInterface',
         // it implements a CE query differently for permissions
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query',
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
@@ -115,6 +117,7 @@ $rules = [
         'Liip\ImagineBundle\Imagine\Data\DataManager',
         'Liip\ImagineBundle\Imagine\Filter\FilterManager',
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper',
+        'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface',
 
         // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\AbstractFilter',
@@ -175,6 +178,7 @@ $rules = [
         'Doctrine\Common',
         'Doctrine\Persistence',
         'Akeneo\Tool',
+        'Ramsey\Uuid\UuidInterface',
 
         // Required to add quality scores into external API normalized products.
         'Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model',

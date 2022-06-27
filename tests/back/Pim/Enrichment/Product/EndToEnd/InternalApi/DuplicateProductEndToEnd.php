@@ -70,7 +70,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         $this->clearMessageBusObserver();
 
         $url = $this->router->generate('pimee_enrich_product_rest_duplicate', [
-            'id' => $productToDuplicate->getId()
+            'uuid' => $productToDuplicate->getUuid()->toString(),
         ]);
 
         $this->client->request(
@@ -137,7 +137,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         );
 
         $url = $this->router->generate('pimee_enrich_product_rest_duplicate', [
-            'id' => $productToDuplicate->getId()
+            'uuid' => $productToDuplicate->getUuid()->toString(),
         ]);
 
         $this->client->request(
@@ -167,7 +167,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         );
 
         $url = $this->router->generate('pimee_enrich_product_rest_duplicate', [
-            'id' => $productToDuplicate->getId()
+            'uuid' => $productToDuplicate->getUuid()->toString(),
         ]);
 
         $this->client->request(
@@ -193,7 +193,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
             []
         );
         $url = $this->router->generate('pimee_enrich_product_rest_duplicate', [
-            'id' => $productToDuplicate->getId()
+            'uuid' => $productToDuplicate->getUuid()->toString(),
         ]);
 
         $this->client->request(

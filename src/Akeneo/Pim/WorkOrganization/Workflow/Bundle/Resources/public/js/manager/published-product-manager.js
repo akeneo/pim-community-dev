@@ -30,14 +30,14 @@ define(['jquery', 'routing', 'oro/mediator', 'pim/cache-invalidator'], function(
     /**
      * Publish a product
      *
-     * @param  {string|int} id
+     * @param  {string} uuid
      *
      * @return {Promise}
      */
-    publish: function(id) {
+    publish: function(uuid) {
       return $.ajax({
         type: 'PUT',
-        url: Routing.generate('pimee_workflow_published_product_rest_publish', {originalId: id}),
+        url: Routing.generate('pimee_workflow_published_product_rest_publish', {originalUuid: uuid}),
         headers: {accept: 'application/json'},
       }).promise();
     },
@@ -45,14 +45,14 @@ define(['jquery', 'routing', 'oro/mediator', 'pim/cache-invalidator'], function(
     /**
      * Unpublish a product
      *
-     * @param {string|int} id
+     * @param string uuid
      *
      * @return {Promise}
      */
-    unpublish: function(id) {
+    unpublish: function(uuid) {
       return $.ajax({
         type: 'DELETE',
-        url: Routing.generate('pimee_workflow_published_product_rest_unpublish', {originalId: id}),
+        url: Routing.generate('pimee_workflow_published_product_rest_unpublish', {originalUuid: uuid}),
         headers: {accept: 'application/json'},
       }).promise();
     },

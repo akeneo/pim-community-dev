@@ -73,7 +73,7 @@ define([
       this.togglePublished(false);
     },
     togglePublished: function(publish) {
-      var productId = this.getProductId();
+      var productUuid = this.getProductUuid();
       var loadingMask = new LoadingMask();
       loadingMask
         .render()
@@ -83,7 +83,7 @@ define([
       var method = publish ? PublishedProductManager.publish : PublishedProductManager.unpublish;
 
       // TODO: We shouldn't force product fetching, we should use request response (cf. send for approval)
-      return method(productId)
+      return method(productUuid)
         .done(
           function() {
             FetcherRegistry.getFetcher('product')
@@ -122,7 +122,7 @@ define([
           loadingMask.hide().$el.remove();
         });
     },
-    getProductId: function() {
+    getProductUuid: function() {
       return this.getFormData().meta.id;
     },
   });

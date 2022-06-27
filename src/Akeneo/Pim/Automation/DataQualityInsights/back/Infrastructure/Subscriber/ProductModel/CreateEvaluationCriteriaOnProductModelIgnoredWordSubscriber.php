@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Pr
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductModelWordIgnoredEvent;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetDescendantVariantProductIdsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetDescendantVariantProductUuidsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -29,7 +29,7 @@ class CreateEvaluationCriteriaOnProductModelIgnoredWordSubscriber implements Eve
         private FeatureFlag                                  $dataQualityInsightsFeature,
         private CreateCriteriaEvaluations                    $createProductModelCriteriaEvaluations,
         private LoggerInterface                              $logger,
-        private GetDescendantVariantProductIdsQueryInterface $getDescendantVariantProductIdsQuery,
+        private GetDescendantVariantProductUuidsQueryInterface $getDescendantVariantProductUuidsQuery,
         private DescendantProductModelIdsQueryInterface      $getDescendantProductModelIdsQuery,
         private CreateCriteriaEvaluations                    $createProductsCriteriaEvaluations,
         private ProductEntityIdFactoryInterface              $productModelIdFactory,
@@ -85,7 +85,7 @@ class CreateEvaluationCriteriaOnProductModelIgnoredWordSubscriber implements Eve
 
     private function initializeCriteriaForVariantProducts(ProductEntityIdInterface $productModelId): void
     {
-        $variantProductIds = $this->getDescendantVariantProductIdsQuery->fromProductModelIds(
+        $variantProductIds = $this->getDescendantVariantProductUuidsQuery->fromProductModelIds(
             $this->productModelIdFactory->createCollection([(string)$productModelId])
         );
 

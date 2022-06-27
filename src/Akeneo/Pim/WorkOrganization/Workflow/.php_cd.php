@@ -18,6 +18,8 @@ $rules = [
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\WorkOrganization\Workflow\Component',
         'Twig',
+        'Ramsey\Uuid\Uuid',
+        'Ramsey\Uuid\UuidInterface',
 
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
         'Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenciesInterface',
@@ -100,7 +102,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException',
         'Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions',
-        'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductIdsQueryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductUuidsQueryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper',
 
@@ -171,6 +173,7 @@ $rules = [
         'Symfony\Contracts',
         'Webmozart\Assert\Assert',
         'Akeneo\Tool\Component',
+        'Ramsey\Uuid\UuidInterface',
 
         // TODO: imports should be decoupled
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer',

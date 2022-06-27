@@ -23,9 +23,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAttribut
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 
 final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuerySpec extends ObjectBehavior
@@ -69,21 +69,31 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuerySpec extends 
             $materialWoodSpellcheck
         ]));
 
-        $productIdCollectionA = ProductIdCollection::fromStrings(['12', '34', '56']);
-        $productIdCollectionB = ProductIdCollection::fromStrings(['78', '90', '99']);
-        $productIdCollectionC = ProductIdCollection::fromStrings(['42', '43']);
-        $productIdCollectionD = ProductIdCollection::fromStrings(['123']);
+        $uuid12 = Uuid::uuid4()->toString();
+        $uuid34 = Uuid::uuid4()->toString();
+        $uuid56 = Uuid::uuid4()->toString();
+        $uuid78 = Uuid::uuid4()->toString();
+        $uuid90 = Uuid::uuid4()->toString();
+        $uuid99 = Uuid::uuid4()->toString();
+        $uuid42 = Uuid::uuid4()->toString();
+        $uuid43 = Uuid::uuid4()->toString();
+        $uuid123 = Uuid::uuid4()->toString();
 
-        $filteredProductIdCollectionA = ProductIdCollection::fromStrings(['12', '34']);
-        $filteredProductIdCollectionB = ProductIdCollection::fromStrings([]);
-        $filteredProductIdCollectionC = ProductIdCollection::fromStrings(['42', '43']);
-        $filteredProductIdCollectionD = ProductIdCollection::fromStrings(['123']);
+        $productIdCollectionA = ProductUuidCollection::fromStrings([$uuid12, $uuid34, $uuid56]);
+        $productIdCollectionB = ProductUuidCollection::fromStrings([$uuid78, $uuid90, $uuid99]);
+        $productIdCollectionC = ProductUuidCollection::fromStrings([$uuid42, $uuid43]);
+        $productIdCollectionD = ProductUuidCollection::fromStrings([$uuid123]);
 
-        $expectedProductIdCollectionA = ProductIdCollection::fromStrings(['12', '34', '42']);
-        $expectedProductIdCollectionB = ProductIdCollection::fromStrings(['43', '123']);
+        $filteredProductIdCollectionA = ProductUuidCollection::fromStrings([$uuid12, $uuid34]);
+        $filteredProductIdCollectionB = ProductUuidCollection::fromStrings([]);
+        $filteredProductIdCollectionC = ProductUuidCollection::fromStrings([$uuid42, $uuid43]);
+        $filteredProductIdCollectionD = ProductUuidCollection::fromStrings([$uuid123]);
 
-        $idFactory->createCollection(['12', '34', '42'])->willReturn($expectedProductIdCollectionA);
-        $idFactory->createCollection(['43', '123'])->willReturn($expectedProductIdCollectionB);
+        $expectedProductIdCollectionA = ProductUuidCollection::fromStrings([$uuid12, $uuid34, $uuid42]);
+        $expectedProductIdCollectionB = ProductUuidCollection::fromStrings([$uuid43, $uuid123]);
+
+        $idFactory->createCollection([$uuid12, $uuid34, $uuid42])->willReturn($expectedProductIdCollectionA);
+        $idFactory->createCollection([$uuid43, $uuid123])->willReturn($expectedProductIdCollectionB);
 
         $getProductIdsByAttributeOptionCodesQuery->execute($colorRedSpellcheck->getAttributeOptionCode(), $bulkSize)->willReturn(new \ArrayIterator([
             $productIdCollectionA,

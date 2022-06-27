@@ -103,7 +103,7 @@ SQL;
     private function assertCountProductsWithConsistencyCriteria($expectedCount): void
     {
         $sql = <<<SQL
-SELECT COUNT(DISTINCT product_id)
+SELECT COUNT(DISTINCT product_uuid)
 FROM pim_data_quality_insights_product_criteria_evaluation
 WHERE criterion_code LIKE 'consistency_%';
 SQL;

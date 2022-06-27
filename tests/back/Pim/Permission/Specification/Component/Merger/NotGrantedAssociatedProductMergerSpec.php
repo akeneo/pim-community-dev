@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery;
 use Akeneo\Pim\Permission\Component\Merger\NotGrantedAssociatedProductMerger;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -72,11 +73,11 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         \ArrayIterator $productModelIterator
     ) {
         $user = new User();
-        $productB->getId()->willReturn(1);
+        $productB->getUuid()->willReturn(Uuid::fromString('b816e413-253e-4e63-ae1e-562deb93558f'));
         $productB->getIdentifier()->willReturn('product_b');
-        $productC->getId()->willReturn(2);
+        $productC->getUuid()->willReturn(Uuid::fromString('6fc5f000-2c00-4eac-899b-a85e41d6a42d'));
         $productC->getIdentifier()->willReturn('product_c');
-        $productD->getId()->willReturn(3);
+        $productD->getUuid()->willReturn(Uuid::fromString('aab1fcbf-bacb-430c-8a90-b9d34db2d676'));
         $productD->getIdentifier()->willReturn('product_d');
         $productModelA->getId()->willReturn(3);
         $productModelA->getCode()->willReturn('product_model_a');
@@ -111,7 +112,10 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         $XSELLForFullProduct->getProducts()->willReturn($productCollection);
         $XSELLForFullProduct->getProductModels()->willReturn($productModelCollection);
 
-        $productCategoryAccessQuery->getGrantedItemIds([$productB, $productC], $user)->willReturn([2 => 2]);
+        $productCategoryAccessQuery->getGrantedProductUuids([$productB, $productC], $user)->willReturn([
+            '6fc5f000-2c00-4eac-899b-a85e41d6a42d',
+            'aab1fcbf-bacb-430c-8a90-b9d34db2d676',
+        ]);
         $productModelCategoryAccessQuery->getGrantedItemIds([$productModelA, $productModelB], $user)->willReturn([4 => 4]);
 
         $filteredProduct->getAssociations()->willReturn([$XSELLForFilteredProduct]);
@@ -159,11 +163,11 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         \ArrayIterator $productModelIterator
     ) {
         $user = new User();
-        $productB->getId()->willReturn(1);
+        $productB->getUuid()->willReturn(Uuid::fromString('b816e413-253e-4e63-ae1e-562deb93558f'));
         $productB->getIdentifier()->willReturn('product_b');
-        $productC->getId()->willReturn(2);
+        $productC->getUuid()->willReturn(Uuid::fromString('6fc5f000-2c00-4eac-899b-a85e41d6a42d'));
         $productC->getIdentifier()->willReturn('product_c');
-        $productD->getId()->willReturn(3);
+        $productD->getUuid()->willReturn(Uuid::fromString('aab1fcbf-bacb-430c-8a90-b9d34db2d676'));
         $productD->getIdentifier()->willReturn('product_d');
         $productModelA->getId()->willReturn(1);
         $productModelA->getCode()->willReturn('product_model_a');
@@ -198,7 +202,10 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         $productModelIterator->current()->willReturn($productModelA, $productModelB);
         $productModelIterator->next()->shouldBeCalled();
 
-        $productCategoryAccessQuery->getGrantedItemIds([$productB, $productC, $productD], $user)->willReturn([2 => 2, 3 => 3]);
+        $productCategoryAccessQuery->getGrantedProductUuids([$productB, $productC, $productD], $user)->willReturn([
+            '6fc5f000-2c00-4eac-899b-a85e41d6a42d',
+            'aab1fcbf-bacb-430c-8a90-b9d34db2d676',
+        ]);
         $productModelCategoryAccessQuery->getGrantedItemIds([$productModelA, $productModelB], $user)->willReturn([2 => 2]);
 
         $filteredProduct->getAssociations()->willReturn([$UPSELLForFilteredProduct]);
@@ -247,9 +254,9 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         \ArrayIterator $productModelIterator
     ) {
         $user = new User();
-        $productB->getId()->willReturn(1);
+        $productB->getUuid()->willReturn(Uuid::fromString('b816e413-253e-4e63-ae1e-562deb93558f'));
         $productB->getIdentifier()->willReturn('product_b');
-        $productC->getId()->willReturn(2);
+        $productC->getUuid()->willReturn(Uuid::fromString('6fc5f000-2c00-4eac-899b-a85e41d6a42d'));
         $productC->getIdentifier()->willReturn('product_c');
         $productModelA->getId()->willReturn(1);
         $productModelA->getCode()->willReturn('product_model_a');
@@ -283,7 +290,9 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         $productModelIterator->current()->willReturn($productModelA, $productModelB);
         $productModelIterator->next()->shouldBeCalled();
 
-        $productCategoryAccessQuery->getGrantedItemIds([$productB, $productC], $user)->willReturn([2 => 2]);
+        $productCategoryAccessQuery->getGrantedProductUuids([$productB, $productC], $user)->willReturn([
+            '6fc5f000-2c00-4eac-899b-a85e41d6a42d',
+        ]);
         $productModelCategoryAccessQuery->getGrantedItemIds([$productModelA, $productModelB], $user)->willReturn([1 => 1]);
 
         $filteredProduct->getAssociations()->willReturn([$XSELLForFilteredProduct]);

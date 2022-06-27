@@ -36,11 +36,11 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     /**
      * Fetch a published product by the working copy product id
      *
-     * @param string|int $originalProductId
+     * @param string $originalProductUuid
      *
      * @return PublishedProductInterface
      */
-    public function findOneByOriginalProductId($originalProductId);
+    public function findOneByOriginalProductUuid($originalProductUuid);
 
     /**
      * Fetch a published product by the version

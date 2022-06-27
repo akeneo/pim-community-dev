@@ -16,7 +16,7 @@ namespace Akeneo\FreeTrial\Infrastructure\Install\Installer;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\MarkCriteriaToEvaluateInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\BulkUpdateProductQualityScoresInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex;
 
@@ -34,14 +34,14 @@ final class ProductEvaluationInstaller implements FixtureInstaller
 
     private BulkUpdateProductQualityScoresInterface $bulkUpdateProductQualityScores;
 
-    private GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery;
+    private GetEntityIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery;
 
     public function __construct(
         MarkCriteriaToEvaluateInterface $markProductCriteriaToEvaluate,
         EvaluatePendingCriteria $evaluatePendingProductCriteria,
         ConsolidateProductScores $consolidateProductScores,
         BulkUpdateProductQualityScoresInterface $bulkUpdateProductQualityScores,
-        GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery
+        GetEntityIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery
     ) {
         $this->markProductCriteriaToEvaluate = $markProductCriteriaToEvaluate;
         $this->evaluatePendingProductCriteria = $evaluatePendingProductCriteria;

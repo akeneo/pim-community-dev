@@ -107,7 +107,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     {
         $this->validateObject($product, ProductInterface::class);
 
-        if ($this->isOwner($product) || null === $product->getId()) {
+        if ($this->isOwner($product) || null === $product->getCreated()) {
             $this->productSaver->save($product, $options);
         } elseif ($this->canEdit($product)) {
             $this->saveProductDraft($product, $options);
@@ -127,7 +127,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         foreach ($products as $product) {
             $this->validateObject($product, ProductInterface::class);
 
-            if ($this->isOwner($product) || null === $product->getId()) {
+            if ($this->isOwner($product) || null === $product->getCreated()) {
                 $productsToCompute[] = $product;
             } elseif ($this->canEdit($product)) {
                 $this->saveProductDraft($product, $options);
@@ -222,11 +222,11 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      */
     private function getFullProduct(ProductInterface $filteredProduct): ProductInterface
     {
-        if (null === $filteredProduct->getId()) {
+        if (null === $filteredProduct->getCreated()) {
             return $this->mergeDataOnProduct->merge($filteredProduct);
         }
 
-        $fullProduct = $this->productRepository->find($filteredProduct->getId());
+        $fullProduct = $this->productRepository->find($filteredProduct->getUuid());
 
         return $this->mergeDataOnProduct->merge($filteredProduct, $fullProduct);
     }

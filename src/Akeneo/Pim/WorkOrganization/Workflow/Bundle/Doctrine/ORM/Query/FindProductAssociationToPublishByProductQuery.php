@@ -28,11 +28,11 @@ class FindProductAssociationToPublishByProductQuery implements FindProductAssoci
         $sql = <<<SQL
 SELECT pp.id as product_id , a.association_type_id
 FROM pim_catalog_association_product ap
-         JOIN pim_catalog_association a ON ap.association_id = a.id
-         JOIN pimee_workflow_published_product pp ON a.owner_id = pp.original_product_id
-WHERE ap.product_id =  :product_id
+    JOIN pim_catalog_association a ON ap.association_id = a.id
+    JOIN pimee_workflow_published_product pp ON a.owner_uuid = pp.original_product_uuid
+WHERE ap.product_uuid = :product_uuid
 SQL;
-        return $this->connection->executeQuery($sql, ['product_id' => $product->getId()])
+        return $this->connection->executeQuery($sql, ['product_uuid' => $product->getUuid()->getBytes()])
             ->fetchAllAssociative();
     }
 }

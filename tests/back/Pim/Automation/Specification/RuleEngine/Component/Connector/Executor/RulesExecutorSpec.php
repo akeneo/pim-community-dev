@@ -13,6 +13,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 class RulesExecutorSpec extends ObjectBehavior
 {
@@ -45,16 +46,28 @@ class RulesExecutorSpec extends ObjectBehavior
     ) {
         $ruleRepository->findEnabledOrderedByPriority()->willReturn([$ruleDefinition1, $ruleDefinition2]);
 
-        $productA->getId()->willReturn(42);
-        $productB->getId()->willReturn(84);
+        $productA->getUuid()->willReturn(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productA->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d', '2020-01-01'));
+        $productB->getUuid()->willReturn(Uuid::fromString('75cfd06e-9c03-44cb-93d3-b2e93d8f82b3'));
+        $productB->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d', '2020-01-01'));
         $productModelA->getId()->willReturn(42);
         $productModelB->getId()->willReturn(666);
 
         $runner->run($ruleDefinition1, [
-            'selected_entities_with_values' => ['product_42', 'product_84', 'product_model_42', 'product_model_666'],
+            'selected_entities_with_values' => [
+                'product_df470d52-7723-4890-85a0-e79be625e2ed',
+                'product_75cfd06e-9c03-44cb-93d3-b2e93d8f82b3',
+                'product_model_42',
+                'product_model_666',
+            ],
         ])->shouldBeCalled();
         $runner->run($ruleDefinition2, [
-            'selected_entities_with_values' => ['product_42', 'product_84', 'product_model_42', 'product_model_666'],
+            'selected_entities_with_values' => [
+                'product_df470d52-7723-4890-85a0-e79be625e2ed',
+                'product_75cfd06e-9c03-44cb-93d3-b2e93d8f82b3',
+                'product_model_42',
+                'product_model_666'
+            ],
         ])->shouldBeCalled();
 
         $this->write([$productA, $productB, $productModelA, $productModelB]);
@@ -69,11 +82,12 @@ class RulesExecutorSpec extends ObjectBehavior
     ) {
         $ruleRepository->findEnabledOrderedByPriority()->willReturn([$ruleDefinition]);
 
-        $product->getId()->willReturn(42);
+        $product->getUuid()->willReturn(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $product->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d', '2020-01-01'));
         $productModel->getId()->willReturn(null);
 
         $runner->run($ruleDefinition, [
-            'selected_entities_with_values' => ['product_42'],
+            'selected_entities_with_values' => ['product_df470d52-7723-4890-85a0-e79be625e2ed'],
         ])->shouldBeCalled();
 
         $this->write([$product, $productModel]);
@@ -88,7 +102,8 @@ class RulesExecutorSpec extends ObjectBehavior
     ) {
         $ruleRepository->findEnabledOrderedByPriority()->willReturn([$ruleDefinition]);
 
-        $product->getId()->willReturn(null);
+        $product->getUuid()->willReturn(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $product->getCreated()->willReturn(null);
         $productModel->getId()->willReturn(42);
 
         $runner->run($ruleDefinition, [
@@ -107,7 +122,8 @@ class RulesExecutorSpec extends ObjectBehavior
     ) {
         $ruleRepository->findEnabledOrderedByPriority()->willReturn([$ruleDefinition]);
 
-        $product->getId()->willReturn(null);
+        $product->getUuid()->willReturn(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $product->getCreated()->willReturn(null);
         $productModel->getId()->willReturn(null);
 
         $this->write([$product, $productModel]);

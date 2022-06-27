@@ -177,7 +177,7 @@ class PublishedProductNormalizer implements NormalizerInterface, CacheableSuppor
             'is_owner' => $this->authorizationChecker->isGranted(Attributes::OWN, $publishedProduct),
             'working_copy' => $this->internalApiProductNormalizer->normalize($publishedProduct->getOriginalProduct(), 'standard', $context),
             'draft_status' => null,
-            'original_product_id' => $publishedProduct->getOriginalProduct()->getId(),
+            'original_product_uuid' => $publishedProduct->getOriginalProduct()->getUuid()->toString(),
         ];
 
         return $normalizedPublishedProduct;

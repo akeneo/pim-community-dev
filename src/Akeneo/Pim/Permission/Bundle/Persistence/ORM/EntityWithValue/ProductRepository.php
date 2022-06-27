@@ -158,9 +158,9 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInFamily($productId, $attributeCode)
+    public function hasAttributeInFamily($productUuidOrId, $attributeCode)
     {
-        return $this->productRepository->hasAttributeInFamily($productId, $attributeCode);
+        return $this->productRepository->hasAttributeInFamily($productUuidOrId, $attributeCode);
     }
 
     /**

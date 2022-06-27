@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Query;
 
+use Ramsey\Uuid\UuidInterface;
+
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-interface SelectProductIdsByUserAndDraftStatusQueryInterface
+interface SelectProposalIdsFromProductUuidsQueryInterface
 {
     /**
-     * @param string $username
-     * @param array $draftStatuses
-     *
+     * @param UuidInterface[] $productUuids
      * @return int[]
      */
-    public function execute(string $username, array $draftStatuses);
+    public function fetch(array $productUuids): array;
 }

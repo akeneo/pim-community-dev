@@ -36,7 +36,7 @@ define([
     },
     goToOriginalProduct: function() {
       router.redirectToRoute(__moduleConfig.urls.product_edit, {
-        id: this.getFormData().meta.original_product_id,
+        uuid: this.getFormData().meta.original_product_uuid,
         dataLocale: UserContext.get('catalogLocale'),
       });
     },

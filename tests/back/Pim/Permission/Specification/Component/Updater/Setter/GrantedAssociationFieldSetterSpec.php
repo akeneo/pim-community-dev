@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -63,8 +64,8 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
         $token->getUser()->willReturn($user);
 
         $productRepository->getItemsFromIdentifiers(['associationA'])->willReturn([$product]);
-        $product->getId()->willReturn(1);
-        $productCategoryAccessQuery->getGrantedItemIds([$product], $user)->willReturn([1 => 1]);
+        $product->getUuid()->willReturn(Uuid::fromString('aab1fcbf-bacb-430c-8a90-b9d34db2d676'));
+        $productCategoryAccessQuery->getGrantedProductUuids([$product], $user)->willReturn(['aab1fcbf-bacb-430c-8a90-b9d34db2d676']);
 
         $this->shouldNotThrow(
             new ResourceAccessDeniedException(
@@ -92,10 +93,11 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
 
         $productRepository->getItemsFromIdentifiers(['associationA', 'associationB'])->willReturn([$associatedProductA, $associatedProductB]);
         $associationFieldSetter->setFieldData($product, 'associations', $data, [])->shouldBeCalled();
-        $associatedProductA->getId()->willReturn(1);
-        $associatedProductB->getId()->willReturn(2);
+        $associatedProductA->getUuid()->willReturn(Uuid::fromString('aab1fcbf-bacb-430c-8a90-b9d34db2d676'));
+        $associatedProductB->getUuid()->willReturn(Uuid::fromString('88d2457a-f7fb-495d-9e55-32a41159093a'));
         $associatedProductB->getIdentifier()->willReturn('associationB');
-        $productCategoryAccessQuery->getGrantedItemIds([$associatedProductA, $associatedProductB], $user)->willReturn([1 => 1]);
+        $productCategoryAccessQuery->getGrantedProductUuids([$associatedProductA, $associatedProductB], $user)
+            ->willReturn(['aab1fcbf-bacb-430c-8a90-b9d34db2d676']);
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(

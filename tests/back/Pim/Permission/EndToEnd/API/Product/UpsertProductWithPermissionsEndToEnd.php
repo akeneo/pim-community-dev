@@ -45,7 +45,7 @@ class UpsertProductWithPermissionsEndToEnd extends AbstractProductTestCase
         $sql = <<<SQL
 SELECT c.code
 FROM pim_catalog_product p
-INNER JOIN pim_catalog_category_product cp ON p.id = cp.product_id
+INNER JOIN pim_catalog_category_product cp ON p.uuid = cp.product_uuid
 INNER JOIN pim_catalog_category c ON c.id = cp.category_id
 WHERE identifier = "product_editable_by_redactor"
 ORDER BY c.code
@@ -74,10 +74,10 @@ JSON;
         $sql = <<<SQL
 SELECT t.code, associated_product.identifier
 FROM pim_catalog_product p 
-INNER JOIN pim_catalog_association a ON a.owner_id = p.id
-INNER JOIN pim_catalog_association_type t ON t.id = a.association_type_id
-INNER JOIN pim_catalog_association_product ap ON a.id = ap.association_id
-INNER JOIN pim_catalog_product associated_product ON associated_product.id = ap.product_id 
+    INNER JOIN pim_catalog_association a ON a.owner_uuid = p.uuid
+    INNER JOIN pim_catalog_association_type t ON t.id = a.association_type_id
+    INNER JOIN pim_catalog_association_product ap ON a.id = ap.association_id
+    INNER JOIN pim_catalog_product associated_product ON associated_product.uuid = ap.product_uuid
 WHERE p.identifier = "product_without_category"
 ORDER BY t.code, associated_product.identifier
 SQL;

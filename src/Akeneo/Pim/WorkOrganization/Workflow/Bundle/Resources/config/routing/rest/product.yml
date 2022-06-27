@@ -1,4 +1,4 @@
 pimee_workflow_rest_product_index:
-    path: /rest/product/{productId}
+    path: /rest/product/{productUuid}
     defaults: { _controller: pimee_workflow.controller.rest.product:indexAction }
     methods: [GET]

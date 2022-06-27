@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Elasticsearch\Query;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -67,23 +67,23 @@ abstract class AbstractGetProductIdsByAttributeOptionCodeQueryIntegration extend
         return $attributeOption;
     }
 
-    protected function createProduct(array $values): ProductId
+    protected function createProduct(array $values): ProductUuid
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct(Uuid::uuid4()->toString(), 'family_A');
 
         $this->get('pim_catalog.updater.product')->update($product, ['values' => $values]);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return $this->get(ProductIdFactory::class)->create((string)$product->getId());
+        return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }
 
-    protected function createProductVariant(string $parentCode): ProductId
+    protected function createProductVariant(string $parentCode): ProductUuid
     {
         $productVariant = $this->get('pim_catalog.builder.product')->createProduct(Uuid::uuid4()->toString(), 'family_A');
         $this->get('pim_catalog.updater.product')->update($productVariant, ['parent' => $parentCode]);
         $this->get('pim_catalog.saver.product')->save($productVariant);
 
-        return $this->get(ProductIdFactory::class)->create((string)$productVariant->getId());
+        return $this->get(ProductUuidFactory::class)->create((string)$productVariant->getUuid());
     }
 
     protected function createProductModel(string $code, array $values, ?string $parent = null): ProductModelId

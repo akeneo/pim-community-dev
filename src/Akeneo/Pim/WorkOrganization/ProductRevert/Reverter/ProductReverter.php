@@ -59,9 +59,10 @@ class ProductReverter
     public function revert(Version $version): void
     {
         $class = $version->getResourceName();
-        $resourceId = $version->getResourceId();
 
-        $currentObject = $this->registry->getRepository($class)->find($resourceId);
+        $currentObject = $this->registry->getRepository($class)->find(
+            $version->getResourceUuid() ?? $version->getResourceId()
+        );
 
         $values = $currentObject->getValues();
         $values->clear();

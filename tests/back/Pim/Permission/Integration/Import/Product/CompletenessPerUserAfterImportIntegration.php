@@ -62,7 +62,7 @@ CSV;
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
 
-        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($product->getUuid());
 
         $this->assertCompleteness('ecommerce', 'en_US', 50, $completenesses);
         $this->assertCompleteness('ecommerce_china', 'en_US', 33, $completenesses);
@@ -85,7 +85,7 @@ CSV;
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
 
-        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($product->getUuid());
 
         $this->assertCompleteness('ecommerce', 'en_US', 50, $completenesses);
         $this->assertCompleteness('ecommerce_china', 'en_US', 33, $completenesses);
@@ -107,7 +107,7 @@ CSV;
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
 
-        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($product->getUuid());
 
         $this->assertCompleteness('ecommerce', 'en_US', 50, $completenesses);
         $this->assertCompleteness('ecommerce_china', 'en_US', 66, $completenesses);
@@ -126,7 +126,7 @@ CSV;
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
 
-        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($product->getUuid());
 
         $this->assertCompleteness('ecommerce', 'en_US', 50, $completenesses);
         $this->assertCompleteness('ecommerce_china', 'en_US', 66, $completenesses);

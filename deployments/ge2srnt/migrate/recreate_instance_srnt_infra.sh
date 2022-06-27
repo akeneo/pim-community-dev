@@ -98,7 +98,12 @@ terraform plan '-out=upgrades.tfplan' "${TF_INPUT_FALSE}" -compact-warnings
 terraform show -json upgrades.tfplan > upgrades.tfplan.json
 HELM_DEBUG=true terraform apply "${TF_INPUT_FALSE}" "${TF_AUTO_APPROVE}" upgrades.tfplan
 
-## TODO - Do we need to remove "pim.hook.installPim.enabled true" after deployments ?
+echo "--- Remove minimal catalog after instance recreation ---"
+yq d -i values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+yq d -i values.yaml pim.hook.installPim.enabled true
+
+echo "--- Print values.yaml without Catalog Install Hook ---"
+cat values.yaml
 
 echo "DEBUG: Show files in $PWD  ---"
 ls -al

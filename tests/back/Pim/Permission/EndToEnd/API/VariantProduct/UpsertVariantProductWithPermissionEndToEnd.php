@@ -198,7 +198,7 @@ JSON;
         $sql = <<<SQL
             SELECT c.code
             FROM pim_catalog_product p
-            INNER JOIN pim_catalog_category_product cp ON p.id = cp.product_id
+            INNER JOIN pim_catalog_category_product cp ON p.uuid = cp.product_uuid
             INNER JOIN pim_catalog_category c ON c.id = cp.category_id
             WHERE identifier = "colored_sized_sweat_own"
 SQL;

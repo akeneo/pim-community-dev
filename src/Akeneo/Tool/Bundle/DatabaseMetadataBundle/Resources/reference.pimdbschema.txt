@@ -260,6 +260,7 @@ akeneo_catalog | id | NO | binary(16) | PRI
 akeneo_catalog | name | NO | varchar(255) |
 akeneo_catalog | owner_id | NO | int | MUL
 akeneo_catalog | is_enabled | NO | tinyint |
+akeneo_catalog | product_selection_criteria | NO | json |
 akeneo_catalog | created | NO | datetime |
 akeneo_catalog | updated | NO | datetime |
 akeneo_communication_channel_viewed_announcements | announcement_id | NO | varchar(100) | PRI
@@ -516,20 +517,17 @@ pim_api_refresh_token | expires_at | YES | int |
 pim_api_refresh_token | scope | YES | varchar(1000) |
 pim_catalog_association | id | NO | int | PRI
 pim_catalog_association | association_type_id | NO | int | MUL
-pim_catalog_association | owner_id | NO | int | MUL
-pim_catalog_association | owner_uuid | YES | binary(16) |
+pim_catalog_association | owner_uuid | NO | binary(16) | MUL
 pim_catalog_association_group | association_id | NO | int | PRI
 pim_catalog_association_group | group_id | NO | int | PRI
 pim_catalog_association_product | association_id | NO | int | PRI
-pim_catalog_association_product | product_id | NO | int | PRI
-pim_catalog_association_product | product_uuid | YES | binary(16) |
+pim_catalog_association_product | product_uuid | NO | binary(16) | PRI
 pim_catalog_association_product_model | association_id | NO | int | PRI
 pim_catalog_association_product_model | product_model_id | NO | int | PRI
 pim_catalog_association_product_model_to_group | association_id | NO | int | PRI
 pim_catalog_association_product_model_to_group | group_id | NO | int | PRI
 pim_catalog_association_product_model_to_product | association_id | NO | int | PRI
-pim_catalog_association_product_model_to_product | product_id | NO | int | PRI
-pim_catalog_association_product_model_to_product | product_uuid | YES | binary(16) |
+pim_catalog_association_product_model_to_product | product_uuid | NO | binary(16) | PRI
 pim_catalog_association_product_model_to_product_model | association_id | NO | int | PRI
 pim_catalog_association_product_model_to_product_model | product_model_id | NO | int | PRI
 pim_catalog_association_type | id | NO | int | PRI
@@ -612,9 +610,8 @@ pim_catalog_category | root | NO | int |
 pim_catalog_category | lvl | NO | int |
 pim_catalog_category | lft | NO | int | MUL
 pim_catalog_category | rgt | NO | int |
-pim_catalog_category_product | product_id | NO | int | PRI
+pim_catalog_category_product | product_uuid | NO | binary(16) | PRI
 pim_catalog_category_product | category_id | NO | int | PRI
-pim_catalog_category_product | product_uuid | YES | binary(16) |
 pim_catalog_category_product_model | product_model_id | NO | int | PRI
 pim_catalog_category_product_model | category_id | NO | int | PRI
 pim_catalog_category_translation | id | NO | int | PRI
@@ -636,10 +633,9 @@ pim_catalog_channel_translation | locale | NO | varchar(20) | MUL
 pim_catalog_completeness | id | NO | bigint | PRI
 pim_catalog_completeness | locale_id | NO | int | MUL
 pim_catalog_completeness | channel_id | NO | int | MUL
-pim_catalog_completeness | product_id | NO | int | MUL
+pim_catalog_completeness | product_uuid | NO | binary(16) | MUL
 pim_catalog_completeness | missing_count | NO | int |
 pim_catalog_completeness | required_count | NO | int |
-pim_catalog_completeness | product_uuid | YES | binary(16) |
 pim_catalog_currency | id | NO | int | PRI
 pim_catalog_currency | code | NO | varchar(3) | UNI
 pim_catalog_currency | is_activated | NO | tinyint(1) |
@@ -669,9 +665,8 @@ pim_catalog_family_variant_translation | locale | NO | varchar(20) | MUL
 pim_catalog_group | id | NO | int | PRI
 pim_catalog_group | type_id | NO | int | MUL
 pim_catalog_group | code | NO | varchar(100) | UNI
-pim_catalog_group_product | product_id | NO | int | PRI
+pim_catalog_group_product | product_uuid | NO | binary(16) | PRI
 pim_catalog_group_product | group_id | NO | int | PRI
-pim_catalog_group_product | product_uuid | YES | binary(16) |
 pim_catalog_group_translation | id | NO | int | PRI
 pim_catalog_group_translation | foreign_key | YES | int | MUL
 pim_catalog_group_translation | label | YES | varchar(100) |
@@ -685,17 +680,17 @@ pim_catalog_group_type_translation | locale | NO | varchar(20) | MUL
 pim_catalog_locale | id | NO | int | PRI
 pim_catalog_locale | code | NO | varchar(20) | UNI
 pim_catalog_locale | is_activated | NO | tinyint(1) |
-pim_catalog_product | id | NO | int | PRI
+pim_catalog_product | uuid | NO | binary(16) | PRI
 pim_catalog_product | family_id | YES | int | MUL
 pim_catalog_product | product_model_id | YES | int | MUL
 pim_catalog_product | family_variant_id | YES | int | MUL
+pim_catalog_product | id | NO | int | UNI
 pim_catalog_product | is_enabled | NO | tinyint(1) |
 pim_catalog_product | identifier | NO | varchar(255) | UNI
 pim_catalog_product | raw_values | NO | json |
 pim_catalog_product | created | NO | datetime |
 pim_catalog_product | updated | NO | datetime |
 pim_catalog_product | quantified_associations | YES | json |
-pim_catalog_product | uuid | YES | binary(16) |
 pim_catalog_product_model | id | NO | int | PRI
 pim_catalog_product_model | parent_id | YES | int | MUL
 pim_catalog_product_model | family_variant_id | YES | int | MUL
@@ -708,10 +703,9 @@ pim_catalog_product_model_association | id | NO | int | PRI
 pim_catalog_product_model_association | association_type_id | NO | int | MUL
 pim_catalog_product_model_association | owner_id | NO | int | MUL
 pim_catalog_product_unique_data | id | NO | int | PRI
-pim_catalog_product_unique_data | product_id | NO | int | MUL
+pim_catalog_product_unique_data | product_uuid | NO | binary(16) | MUL
 pim_catalog_product_unique_data | attribute_id | NO | int | MUL
 pim_catalog_product_unique_data | raw_data | NO | varchar(255) |
-pim_catalog_product_unique_data | product_uuid | YES | binary(16) |
 pim_catalog_table_column | id | NO | varchar(137) | PRI
 pim_catalog_table_column | attribute_id | NO | int | MUL
 pim_catalog_table_column | code | NO | varchar(100) |
@@ -732,7 +726,7 @@ pim_comment_comment | id | NO | int | PRI
 pim_comment_comment | parent_id | YES | int | MUL
 pim_comment_comment | author_id | YES | int | MUL
 pim_comment_comment | resource_name | NO | varchar(255) | MUL
-pim_comment_comment | resource_id | NO | varchar(24) |
+pim_comment_comment | resource_id | YES | varchar(24) |
 pim_comment_comment | body | NO | longtext |
 pim_comment_comment | created_at | NO | datetime |
 pim_comment_comment | replied_at | NO | datetime |
@@ -745,12 +739,11 @@ pim_data_quality_insights_attribute_group_activation | updated_at | NO | datetim
 pim_data_quality_insights_dashboard_scores_projection | type | NO | varchar(15) | PRI
 pim_data_quality_insights_dashboard_scores_projection | code | NO | varchar(100) | PRI
 pim_data_quality_insights_dashboard_scores_projection | scores | NO | json |
-pim_data_quality_insights_product_criteria_evaluation | product_id | NO | int | PRI
+pim_data_quality_insights_product_criteria_evaluation | product_uuid | NO | binary(16) | PRI
 pim_data_quality_insights_product_criteria_evaluation | criterion_code | NO | varchar(40) | PRI
 pim_data_quality_insights_product_criteria_evaluation | evaluated_at | YES | datetime |
 pim_data_quality_insights_product_criteria_evaluation | status | NO | varchar(15) | MUL
 pim_data_quality_insights_product_criteria_evaluation | result | YES | json |
-pim_data_quality_insights_product_criteria_evaluation | product_uuid | YES | binary(16) |
 pim_data_quality_insights_product_model_criteria_evaluation | product_id | NO | int | PRI
 pim_data_quality_insights_product_model_criteria_evaluation | criterion_code | NO | varchar(40) | PRI
 pim_data_quality_insights_product_model_criteria_evaluation | evaluated_at | YES | datetime |
@@ -760,11 +753,10 @@ pim_data_quality_insights_product_model_score | product_model_id | NO | int | PR
 pim_data_quality_insights_product_model_score | evaluated_at | NO | date |
 pim_data_quality_insights_product_model_score | scores | NO | json |
 pim_data_quality_insights_product_model_score | scores_partial_criteria | YES | json |
-pim_data_quality_insights_product_score | product_id | NO | int | PRI
+pim_data_quality_insights_product_score | product_uuid | NO | binary(16) | PRI
 pim_data_quality_insights_product_score | evaluated_at | NO | date | PRI
 pim_data_quality_insights_product_score | scores | NO | json |
 pim_data_quality_insights_product_score | scores_partial_criteria | YES | json |
-pim_data_quality_insights_product_score | product_uuid | YES | binary(16) |
 pim_datagrid_view | id | NO | int | PRI
 pim_datagrid_view | owner_id | YES | int | MUL
 pim_datagrid_view | label | NO | varchar(100) |
@@ -802,14 +794,14 @@ pim_user_default_datagrid_view | view_id | NO | int | PRI
 pim_versioning_version | id | NO | int | PRI
 pim_versioning_version | author | NO | varchar(255) |
 pim_versioning_version | resource_name | NO | varchar(255) | MUL
-pim_versioning_version | resource_id | NO | varchar(24) |
+pim_versioning_version | resource_id | YES | varchar(24) |
+pim_versioning_version | resource_uuid | YES | binary(16) |
 pim_versioning_version | snapshot | YES | longtext |
 pim_versioning_version | changeset | NO | longtext |
 pim_versioning_version | context | YES | varchar(255) |
 pim_versioning_version | version | YES | int | MUL
 pim_versioning_version | logged_at | NO | datetime | MUL
 pim_versioning_version | pending | NO | tinyint(1) | MUL
-pim_versioning_version | resource_uuid | YES | binary(16) |
 pimee_data_quality_insights_text_checker_dictionary | id | NO | int | PRI
 pimee_data_quality_insights_text_checker_dictionary | locale_code | NO | varchar(20) | MUL
 pimee_data_quality_insights_text_checker_dictionary | word | NO | varchar(250) |
@@ -858,12 +850,11 @@ pimee_sso_log | level | YES | smallint |
 pimee_sso_log | message | YES | text |
 pimee_teamwork_assistant_completeness_per_attribute_group | locale_id | NO | int | PRI
 pimee_teamwork_assistant_completeness_per_attribute_group | channel_id | NO | int | PRI
-pimee_teamwork_assistant_completeness_per_attribute_group | product_id | NO | int | PRI
 pimee_teamwork_assistant_completeness_per_attribute_group | attribute_group_id | NO | int | PRI
 pimee_teamwork_assistant_completeness_per_attribute_group | has_at_least_one_required_attribute_filled | NO | tinyint(1) |
 pimee_teamwork_assistant_completeness_per_attribute_group | is_complete | NO | tinyint(1) |
 pimee_teamwork_assistant_completeness_per_attribute_group | calculated_at | NO | datetime |
-pimee_teamwork_assistant_completeness_per_attribute_group | product_uuid | YES | binary(16) |
+pimee_teamwork_assistant_completeness_per_attribute_group | product_uuid | NO | binary(16) | PRI
 pimee_teamwork_assistant_project | id | NO | int | PRI
 pimee_teamwork_assistant_project | datagrid_view_id | NO | int | UNI
 pimee_teamwork_assistant_project | owner_id | NO | int | MUL
@@ -876,8 +867,7 @@ pimee_teamwork_assistant_project | due_date | NO | date |
 pimee_teamwork_assistant_project | productFilters | YES | longtext |
 pimee_teamwork_assistant_project | is_completeness_computed | NO | tinyint(1) |
 pimee_teamwork_assistant_project_product | project_id | NO | int | PRI
-pimee_teamwork_assistant_project_product | product_id | NO | int | PRI
-pimee_teamwork_assistant_project_product | product_uuid | YES | binary(16) |
+pimee_teamwork_assistant_project_product | product_uuid | NO | binary(16) | PRI
 pimee_teamwork_assistant_project_status | id | NO | int | PRI
 pimee_teamwork_assistant_project_status | user_id | NO | int | MUL
 pimee_teamwork_assistant_project_status | project_id | NO | int | MUL
@@ -890,7 +880,7 @@ pimee_workflow_category_published_product | category_id | NO | int | PRI
 pimee_workflow_group_published_product | product_id | NO | int | PRI
 pimee_workflow_group_published_product | group_id | NO | int | PRI
 pimee_workflow_product_draft | id | NO | int | PRI
-pimee_workflow_product_draft | product_id | NO | int | MUL
+pimee_workflow_product_draft | product_uuid | NO | binary(16) | MUL
 pimee_workflow_product_draft | created_at | NO | datetime |
 pimee_workflow_product_draft | changes | NO | json |
 pimee_workflow_product_draft | raw_values | NO | json |
@@ -899,7 +889,6 @@ pimee_workflow_product_draft | source | NO | varchar(255) |
 pimee_workflow_product_draft | source_label | NO | varchar(255) |
 pimee_workflow_product_draft | author | NO | varchar(255) | MUL
 pimee_workflow_product_draft | author_label | NO | varchar(255) |
-pimee_workflow_product_draft | product_uuid | YES | binary(16) |
 pimee_workflow_product_model_draft | id | NO | int | PRI
 pimee_workflow_product_model_draft | product_model_id | NO | int | MUL
 pimee_workflow_product_model_draft | created_at | NO | datetime |
@@ -920,7 +909,7 @@ pimee_workflow_proposal_tracking | event_date | NO | datetime |
 pimee_workflow_proposal_tracking | payload | NO | json |
 pimee_workflow_published_product | id | NO | int | PRI
 pimee_workflow_published_product | version_id | YES | int | UNI
-pimee_workflow_published_product | original_product_id | YES | int | UNI
+pimee_workflow_published_product | original_product_uuid | YES | binary(16) | UNI
 pimee_workflow_published_product | family_id | YES | int | MUL
 pimee_workflow_published_product | product_model_id | YES | int | MUL
 pimee_workflow_published_product | family_variant_id | YES | int | MUL
@@ -929,7 +918,6 @@ pimee_workflow_published_product | identifier | NO | varchar(255) | UNI
 pimee_workflow_published_product | raw_values | NO | json |
 pimee_workflow_published_product | created | NO | datetime |
 pimee_workflow_published_product | updated | NO | datetime |
-pimee_workflow_published_product | original_product_uuid | YES | binary(16) |
 pimee_workflow_published_product_association | id | NO | int | PRI
 pimee_workflow_published_product_association | association_type_id | NO | int | MUL
 pimee_workflow_published_product_association | owner_id | NO | int | MUL
@@ -1109,25 +1097,25 @@ INDEX | pim_api_refresh_token | IDX_264A45108D93D649 | user
 INDEX | pim_api_refresh_token | IDX_264A4510C7440455 | client
 INDEX | pim_api_refresh_token | PRIMARY | id
 INDEX | pim_api_refresh_token | UNIQ_264A45105F37A13B | token
-INDEX | pim_catalog_association | IDX_CC2710017E3C61F9 | owner_id
+INDEX | pim_catalog_association | IDX_CC27100147D93336 | owner_uuid
 INDEX | pim_catalog_association | IDX_CC271001B1E1C39 | association_type_id
-INDEX | pim_catalog_association | locale_foreign_key_idx | owner_id, association_type_id
+INDEX | pim_catalog_association | owner_uuid_association_type_id_idx | owner_uuid, association_type_id
 INDEX | pim_catalog_association | PRIMARY | id
 INDEX | pim_catalog_association_group | IDX_E91414DDEFB9C8A5 | association_id
 INDEX | pim_catalog_association_group | IDX_E91414DDFE54D947 | group_id
 INDEX | pim_catalog_association_group | PRIMARY | association_id, group_id
-INDEX | pim_catalog_association_product | IDX_3A3A49D44584665A | product_id
+INDEX | pim_catalog_association_product | IDX_3A3A49D45C977207 | product_uuid
 INDEX | pim_catalog_association_product | IDX_3A3A49D4EFB9C8A5 | association_id
-INDEX | pim_catalog_association_product | PRIMARY | association_id, product_id
+INDEX | pim_catalog_association_product | PRIMARY | association_id, product_uuid
 INDEX | pim_catalog_association_product_model | IDX_378B82C7B2C5DD70 | product_model_id
 INDEX | pim_catalog_association_product_model | IDX_378B82C7EFB9C8A5 | association_id
 INDEX | pim_catalog_association_product_model | PRIMARY | association_id, product_model_id
 INDEX | pim_catalog_association_product_model_to_group | IDX_16EA55AEEFB9C8A5 | association_id
 INDEX | pim_catalog_association_product_model_to_group | IDX_16EA55AEFE54D947 | group_id
 INDEX | pim_catalog_association_product_model_to_group | PRIMARY | association_id, group_id
-INDEX | pim_catalog_association_product_model_to_product | IDX_3FF3ED194584665A | product_id
+INDEX | pim_catalog_association_product_model_to_product | IDX_3FF3ED195C977207 | product_uuid
 INDEX | pim_catalog_association_product_model_to_product | IDX_3FF3ED19EFB9C8A5 | association_id
-INDEX | pim_catalog_association_product_model_to_product | PRIMARY | association_id, product_id
+INDEX | pim_catalog_association_product_model_to_product | PRIMARY | association_id, product_uuid
 INDEX | pim_catalog_association_product_model_to_product_model | IDX_12D4D59CB2C5DD70 | product_model_id
 INDEX | pim_catalog_association_product_model_to_product_model | IDX_12D4D59CEFB9C8A5 | association_id
 INDEX | pim_catalog_association_product_model_to_product_model | PRIMARY | association_id, product_model_id
@@ -1171,8 +1159,8 @@ INDEX | pim_catalog_category | pim_category_code_uc | code
 INDEX | pim_catalog_category | PRIMARY | id
 INDEX | pim_catalog_category | updated_idx | updated
 INDEX | pim_catalog_category_product | IDX_512179C112469DE2 | category_id
-INDEX | pim_catalog_category_product | IDX_512179C14584665A | product_id
-INDEX | pim_catalog_category_product | PRIMARY | product_id, category_id
+INDEX | pim_catalog_category_product | IDX_512179C15C977207 | product_uuid
+INDEX | pim_catalog_category_product | PRIMARY | product_uuid, category_id
 INDEX | pim_catalog_category_product_model | IDX_62B5D3612469DE2 | category_id
 INDEX | pim_catalog_category_product_model | IDX_62B5D36B2C5DD70 | product_model_id
 INDEX | pim_catalog_category_product_model | PRIMARY | product_model_id, category_id
@@ -1191,11 +1179,11 @@ INDEX | pim_catalog_channel_locale | PRIMARY | channel_id, locale_id
 INDEX | pim_catalog_channel_translation | IDX_8A91679D7E366551 | foreign_key
 INDEX | pim_catalog_channel_translation | locale_foreign_key_idx | locale, foreign_key
 INDEX | pim_catalog_channel_translation | PRIMARY | id
-INDEX | pim_catalog_completeness | IDX_113BA8544584665A | product_id
+INDEX | pim_catalog_completeness | channel_locale_product_unique_idx | channel_id, locale_id, product_uuid
 INDEX | pim_catalog_completeness | IDX_113BA85472F5A1AA | channel_id
 INDEX | pim_catalog_completeness | IDX_113BA854E559DFD1 | locale_id
 INDEX | pim_catalog_completeness | PRIMARY | id
-INDEX | pim_catalog_completeness | searchunique_idx | channel_id, locale_id, product_id
+INDEX | pim_catalog_completeness | product_uuid | product_uuid
 INDEX | pim_catalog_currency | PRIMARY | id
 INDEX | pim_catalog_currency | UNIQ_5A1712C777153098 | code
 INDEX | pim_catalog_family | IDX_90632072BC295696 | image_attribute_id
@@ -1221,9 +1209,9 @@ INDEX | pim_catalog_family_variant_translation | PRIMARY | id
 INDEX | pim_catalog_group | IDX_5D6997EDC54C8C93 | type_id
 INDEX | pim_catalog_group | PRIMARY | id
 INDEX | pim_catalog_group | UNIQ_5D6997ED77153098 | code
-INDEX | pim_catalog_group_product | IDX_7AC0C83A4584665A | product_id
+INDEX | pim_catalog_group_product | IDX_7AC0C83A5C977207 | product_uuid
 INDEX | pim_catalog_group_product | IDX_7AC0C83AFE54D947 | group_id
-INDEX | pim_catalog_group_product | PRIMARY | product_id, group_id
+INDEX | pim_catalog_group_product | PRIMARY | product_uuid, group_id
 INDEX | pim_catalog_group_translation | IDX_622D98DB7E366551 | foreign_key
 INDEX | pim_catalog_group_translation | locale_foreign_key_idx | locale, foreign_key
 INDEX | pim_catalog_group_translation | PRIMARY | id
@@ -1237,8 +1225,9 @@ INDEX | pim_catalog_locale | UNIQ_7405C7B177153098 | code
 INDEX | pim_catalog_product | IDX_91CD19C08A37AD0 | family_variant_id
 INDEX | pim_catalog_product | IDX_91CD19C0B2C5DD70 | product_model_id
 INDEX | pim_catalog_product | IDX_91CD19C0C35E566A | family_id
-INDEX | pim_catalog_product | PRIMARY | id
+INDEX | pim_catalog_product | PRIMARY | uuid
 INDEX | pim_catalog_product | UNIQ_91CD19C0772E836A | identifier
+INDEX | pim_catalog_product | UNIQ_91CD19C0BF396750 | id
 INDEX | pim_catalog_product_model | IDX_5943911E727ACA70 | parent_id
 INDEX | pim_catalog_product_model | IDX_5943911E8A37AD0 | family_variant_id
 INDEX | pim_catalog_product_model | PRIMARY | id
@@ -1247,7 +1236,7 @@ INDEX | pim_catalog_product_model_association | IDX_F5F4C8CA7E3C61F9 | owner_id
 INDEX | pim_catalog_product_model_association | IDX_F5F4C8CAB1E1C39 | association_type_id
 INDEX | pim_catalog_product_model_association | locale_foreign_key_idx | owner_id, association_type_id
 INDEX | pim_catalog_product_model_association | PRIMARY | id
-INDEX | pim_catalog_product_unique_data | IDX_E0768BA34584665A | product_id
+INDEX | pim_catalog_product_unique_data | IDX_E0768BA35C977207 | product_uuid
 INDEX | pim_catalog_product_unique_data | IDX_E0768BA3B6E62EFA | attribute_id
 INDEX | pim_catalog_product_unique_data | PRIMARY | id
 INDEX | pim_catalog_product_unique_data | unique_value_idx | attribute_id, raw_data
@@ -1264,16 +1253,17 @@ INDEX | pim_comment_comment | IDX_2A32D03D727ACA70 | parent_id
 INDEX | pim_comment_comment | IDX_2A32D03DF675F31B | author_id
 INDEX | pim_comment_comment | PRIMARY | id
 INDEX | pim_comment_comment | resource_name_resource_id_idx | resource_name, resource_id
+INDEX | pim_comment_comment | resource_name_resource_uuid_idx | resource_name, resource_uuid
 INDEX | pim_configuration | PRIMARY | code
 INDEX | pim_data_quality_insights_attribute_group_activation | PRIMARY | attribute_group_code
 INDEX | pim_data_quality_insights_dashboard_scores_projection | PRIMARY | type, code
-INDEX | pim_data_quality_insights_product_criteria_evaluation | PRIMARY | product_id, criterion_code
+INDEX | pim_data_quality_insights_product_criteria_evaluation | PRIMARY | product_uuid, criterion_code
 INDEX | pim_data_quality_insights_product_criteria_evaluation | status_index | status
 INDEX | pim_data_quality_insights_product_model_criteria_evaluation | PRIMARY | product_id, criterion_code
 INDEX | pim_data_quality_insights_product_model_criteria_evaluation | status_index | status
 INDEX | pim_data_quality_insights_product_model_score | PRIMARY | product_model_id
 INDEX | pim_data_quality_insights_product_score | evaluated_at_index | evaluated_at
-INDEX | pim_data_quality_insights_product_score | PRIMARY | product_id, evaluated_at
+INDEX | pim_data_quality_insights_product_score | PRIMARY | product_uuid, evaluated_at
 INDEX | pim_datagrid_view | IDX_B56B38F17E3C61F9 | owner_id
 INDEX | pim_datagrid_view | PRIMARY | id
 INDEX | pim_index_migration | migration_index | index_alias, hash
@@ -1291,6 +1281,7 @@ INDEX | pim_versioning_version | logged_at_idx | logged_at
 INDEX | pim_versioning_version | pending_idx | pending
 INDEX | pim_versioning_version | PRIMARY | id
 INDEX | pim_versioning_version | resource_name_resource_id_version_idx | resource_name, resource_id, version
+INDEX | pim_versioning_version | resource_name_resource_uuid_version_idx | resource_name, resource_uuid, version
 INDEX | pim_versioning_version | version_idx | version
 INDEX | pimee_data_quality_insights_text_checker_dictionary | PRIMARY | id
 INDEX | pimee_data_quality_insights_text_checker_dictionary | unique_locale_word | locale_code, word
@@ -1324,17 +1315,17 @@ INDEX | pimee_sso_log | time | time
 INDEX | pimee_teamwork_assistant_completeness_per_attribute_group | attr_grp_completeness_attribute_group_index | attribute_group_id
 INDEX | pimee_teamwork_assistant_completeness_per_attribute_group | attr_grp_completeness_channel_index | channel_id
 INDEX | pimee_teamwork_assistant_completeness_per_attribute_group | attr_grp_completeness_locale_index | locale_id
-INDEX | pimee_teamwork_assistant_completeness_per_attribute_group | attr_grp_completeness_product_index | product_id
-INDEX | pimee_teamwork_assistant_completeness_per_attribute_group | PRIMARY | locale_id, channel_id, product_id, attribute_group_id
+INDEX | pimee_teamwork_assistant_completeness_per_attribute_group | PRIMARY | locale_id, channel_id, product_uuid, attribute_group_id
+INDEX | pimee_teamwork_assistant_completeness_per_attribute_group | product_uuid | product_uuid
 INDEX | pimee_teamwork_assistant_project | channel_locale_label_idx | channel_id, locale_id, label
 INDEX | pimee_teamwork_assistant_project | IDX_9406D3B072F5A1AA | channel_id
 INDEX | pimee_teamwork_assistant_project | IDX_9406D3B07E3C61F9 | owner_id
 INDEX | pimee_teamwork_assistant_project | IDX_9406D3B0E559DFD1 | locale_id
 INDEX | pimee_teamwork_assistant_project | PRIMARY | id
 INDEX | pimee_teamwork_assistant_project | UNIQ_9406D3B01E2E9CAF | datagrid_view_id
-INDEX | pimee_teamwork_assistant_project_product | PRIMARY | project_id, product_id
-INDEX | pimee_teamwork_assistant_project_product | product_selection_product_index | product_id
+INDEX | pimee_teamwork_assistant_project_product | PRIMARY | project_id, product_uuid
 INDEX | pimee_teamwork_assistant_project_product | product_selection_project_index | project_id
+INDEX | pimee_teamwork_assistant_project_product | product_uuid | product_uuid
 INDEX | pimee_teamwork_assistant_project_status | IDX_8B8E20ED166D1F9C | project_id
 INDEX | pimee_teamwork_assistant_project_status | IDX_8B8E20EDA76ED395 | user_id
 INDEX | pimee_teamwork_assistant_project_status | PRIMARY | id
@@ -1347,9 +1338,9 @@ INDEX | pimee_workflow_category_published_product | PRIMARY | product_id, catego
 INDEX | pimee_workflow_group_published_product | IDX_60C37BBC4584665A | product_id
 INDEX | pimee_workflow_group_published_product | IDX_60C37BBCFE54D947 | group_id
 INDEX | pimee_workflow_group_published_product | PRIMARY | product_id, group_id
-INDEX | pimee_workflow_product_draft | IDX_6F63A25F4584665A | product_id
+INDEX | pimee_workflow_product_draft | IDX_6F63A25F5C977207 | product_uuid
 INDEX | pimee_workflow_product_draft | PRIMARY | id
-INDEX | pimee_workflow_product_draft | unique_idx | author, product_id
+INDEX | pimee_workflow_product_draft | unique_author_product_idx | author, product_uuid
 INDEX | pimee_workflow_product_model_draft | IDX_68577CF4B2C5DD70 | product_model_id
 INDEX | pimee_workflow_product_model_draft | PRIMARY | id
 INDEX | pimee_workflow_product_model_draft | unique_idx | author, product_model_id
@@ -1361,9 +1352,9 @@ INDEX | pimee_workflow_published_product | IDX_E3566E698A37AD0 | family_variant_
 INDEX | pimee_workflow_published_product | IDX_E3566E69B2C5DD70 | product_model_id
 INDEX | pimee_workflow_published_product | IDX_E3566E69C35E566A | family_id
 INDEX | pimee_workflow_published_product | PRIMARY | id
-INDEX | pimee_workflow_published_product | UNIQ_E3566E69283311CE | original_product_id
 INDEX | pimee_workflow_published_product | UNIQ_E3566E694BBC2705 | version_id
 INDEX | pimee_workflow_published_product | UNIQ_E3566E69772E836A | identifier
+INDEX | pimee_workflow_published_product | UNIQ_E3566E6987DBB431 | original_product_uuid
 INDEX | pimee_workflow_published_product_association | IDX_A3D033B47E3C61F9 | owner_id
 INDEX | pimee_workflow_published_product_association | IDX_A3D033B4B1E1C39 | association_type_id
 INDEX | pimee_workflow_published_product_association | locale_foreign_key_idx | owner_id, association_type_id
@@ -1391,17 +1382,17 @@ INDEX | supplier | UNIQ_9B2A6C7EF98F144A | logo_id
 INDEX | supplier_family | IDX_7E84F38F2ADD6D8C | supplier_id
 INDEX | supplier_family | IDX_7E84F38FC35E566A | family_id
 INDEX | supplier_family | PRIMARY | supplier_id, family_id
-FOREIGN CONSTRAINT | FK_46C8B806EA000B10 | acl_entries.class_id | acl_classes.id
 FOREIGN CONSTRAINT | FK_46C8B8063D9AB4A6 | acl_entries.object_identity_id | acl_object_identities.id
 FOREIGN CONSTRAINT | FK_46C8B806DF9183C9 | acl_entries.security_identity_id | acl_security_identities.id
+FOREIGN CONSTRAINT | FK_46C8B806EA000B10 | acl_entries.class_id | acl_classes.id
 FOREIGN CONSTRAINT | FK_9407E54977FA751A | acl_object_identities.parent_object_identity_id | acl_object_identities.id
 FOREIGN CONSTRAINT | FK_825DE2993D9AB4A6 | acl_object_identity_ancestors.object_identity_id | acl_object_identities.id
 FOREIGN CONSTRAINT | FK_825DE299C671CEA1 | acl_object_identity_ancestors.ancestor_id | acl_object_identities.id
 FOREIGN CONSTRAINT | akeneoasset_manager_asset_family_identifier_foreign_key | akeneo_asset_manager_asset.asset_family_identifier | akeneo_asset_manager_asset_family.identifier
 FOREIGN CONSTRAINT | akeneoasset_manager_attribute_as_label_foreign_key | akeneo_asset_manager_asset_family.attribute_as_label | akeneo_asset_manager_attribute.identifier
 FOREIGN CONSTRAINT | akeneoasset_manager_attribute_as_main_media_foreign_key | akeneo_asset_manager_asset_family.attribute_as_main_media | akeneo_asset_manager_attribute.identifier
-FOREIGN CONSTRAINT | permissions_asset_family_identifier_foreign_key | akeneo_asset_manager_asset_family_permissions.asset_family_identifier | akeneo_asset_manager_asset_family.identifier
 FOREIGN CONSTRAINT | asset_manager_user_group_foreign_key | akeneo_asset_manager_asset_family_permissions.user_group_identifier | oro_access_group.id
+FOREIGN CONSTRAINT | permissions_asset_family_identifier_foreign_key | akeneo_asset_manager_asset_family_permissions.asset_family_identifier | akeneo_asset_manager_asset_family.identifier
 FOREIGN CONSTRAINT | attribute_asset_family_identifier_foreign_key | akeneo_asset_manager_attribute.asset_family_identifier | akeneo_asset_manager_asset_family.identifier
 FOREIGN CONSTRAINT | FK_62738477593D6954 | akeneo_batch_job_execution.job_instance_id | akeneo_batch_job_instance.id
 FOREIGN CONSTRAINT | FK_BDE7D0925871C06B | akeneo_batch_step_execution.job_execution_id | akeneo_batch_job_execution.id
@@ -1410,21 +1401,21 @@ FOREIGN CONSTRAINT | fk_owner | akeneo_catalog.owner_id | oro_user.id
 FOREIGN CONSTRAINT | FK_COMMUNICATION_CHANNEL_VIEWED_ANNOUNCEMENTS_user_id | akeneo_communication_channel_viewed_announcements.user_id | oro_user.id
 FOREIGN CONSTRAINT | FK_CONNECTIVITY_CONNECTED_APP_connection_code | akeneo_connectivity_connected_app.connection_code | akeneo_connectivity_connection.code
 FOREIGN CONSTRAINT | FK_CONNECTIVITY_CONNECTED_APP_user_group_name | akeneo_connectivity_connected_app.user_group_name | oro_access_group.name
-FOREIGN CONSTRAINT | FK_CONNECTIVITY_CONNECTION_user_id | akeneo_connectivity_connection.user_id | oro_user.id
 FOREIGN CONSTRAINT | FK_CONNECTIVITY_CONNECTION_client_id | akeneo_connectivity_connection.client_id | pim_api_client.id
+FOREIGN CONSTRAINT | FK_CONNECTIVITY_CONNECTION_user_id | akeneo_connectivity_connection.user_id | oro_user.id
 FOREIGN CONSTRAINT | FK_TESTAPPUSERID | akeneo_connectivity_test_app.user_id | oro_user.id
 FOREIGN CONSTRAINT | FK_CONNECTIVITY_CONNECTION_user_consent_user_id | akeneo_connectivity_user_consent.user_id | oro_user.id
 FOREIGN CONSTRAINT | pim_catalog_attribute_fk_attribute | akeneo_onboarder_nice_to_have_attribute.attribute_id | pim_catalog_attribute.id
 FOREIGN CONSTRAINT | pim_catalog_family_fk_family | akeneo_onboarder_nice_to_have_attribute.family_id | pim_catalog_family.id
-FOREIGN CONSTRAINT | akeneo_onboarder_retailer_contact_ibfk_2 | akeneo_onboarder_retailer_contact.user_id | oro_user.id
 FOREIGN CONSTRAINT | akeneo_onboarder_retailer_contact_ibfk_1 | akeneo_onboarder_retailer_contact.supplier_id | supplier.id
+FOREIGN CONSTRAINT | akeneo_onboarder_retailer_contact_ibfk_2 | akeneo_onboarder_retailer_contact.user_id | oro_user.id
 FOREIGN CONSTRAINT | supplier_identifier_foreign_key | akeneo_onboarder_serenity_supplier_contributor.supplier_identifier | akeneo_onboarder_serenity_supplier.identifier
-FOREIGN CONSTRAINT | akeneo_onboarder_supplier_fk_user | akeneo_onboarder_supplier_contact.user_id | akeneo_onboarder_supplier_user.identifier_field
 FOREIGN CONSTRAINT | akeneo_onboarder_supplier_fk_supplier | akeneo_onboarder_supplier_contact.supplier_id | supplier.id
+FOREIGN CONSTRAINT | akeneo_onboarder_supplier_fk_user | akeneo_onboarder_supplier_contact.user_id | akeneo_onboarder_supplier_user.identifier_field
 FOREIGN CONSTRAINT | FK_D19917E62ADD6D8C | akeneo_onboarder_supplier_family.supplier_id | akeneo_onboarder_supplier.id
 FOREIGN CONSTRAINT | FK_D19917E6C35E566A | akeneo_onboarder_supplier_family.family_id | pim_catalog_family.id
-FOREIGN CONSTRAINT | akeneo_onboarder_supplier_has_catalog_locale_ibfk_2 | akeneo_onboarder_supplier_has_catalog_locale.catalog_locale_id | pim_catalog_locale.id
 FOREIGN CONSTRAINT | akeneo_onboarder_supplier_has_catalog_locale_ibfk_1 | akeneo_onboarder_supplier_has_catalog_locale.supplier_id | supplier.id
+FOREIGN CONSTRAINT | akeneo_onboarder_supplier_has_catalog_locale_ibfk_2 | akeneo_onboarder_supplier_has_catalog_locale.catalog_locale_id | pim_catalog_locale.id
 FOREIGN CONSTRAINT | attribute_reference_entity_identifier_foreign_key | akeneo_reference_entity_attribute.reference_entity_identifier | akeneo_reference_entity_reference_entity.identifier
 FOREIGN CONSTRAINT | akeneoreference_entity_reference_entity_identifier_foreign_key | akeneo_reference_entity_record.reference_entity_identifier | akeneo_reference_entity_reference_entity.identifier
 FOREIGN CONSTRAINT | akeneoreference_entity_attribute_as_image_foreign_key | akeneo_reference_entity_reference_entity.attribute_as_image | akeneo_reference_entity_attribute.identifier
@@ -1435,33 +1426,33 @@ FOREIGN CONSTRAINT | FK_C0477CAA7E366551 | akeneo_rule_engine_rule_definition_tr
 FOREIGN CONSTRAINT | FK_F7D0C461744E0351 | akeneo_rule_engine_rule_relation.rule_id | akeneo_rule_engine_rule_definition.id
 FOREIGN CONSTRAINT | FK_DAF6DF5524DB0683 | oro_config_value.config_id | oro_config.id
 FOREIGN CONSTRAINT | FK_F82840BC6ED78C3 | oro_user.file_info_id | akeneo_file_storage_file_info.id
-FOREIGN CONSTRAINT | FK_F82840BCD654B1EE | oro_user.defaultTree_id | pim_catalog_category.id
-FOREIGN CONSTRAINT | FK_F82840BCEAA72736 | oro_user.catalogScope_id | pim_catalog_channel.id
 FOREIGN CONSTRAINT | FK_F82840BC7BBFC60C | oro_user.catalogLocale_id | pim_catalog_locale.id
 FOREIGN CONSTRAINT | FK_F82840BCA7EA8E8C | oro_user.ui_locale_id | pim_catalog_locale.id
-FOREIGN CONSTRAINT | FK_EC003EF3FE54D947 | oro_user_access_group.group_id | oro_access_group.id
+FOREIGN CONSTRAINT | FK_F82840BCD654B1EE | oro_user.defaultTree_id | pim_catalog_category.id
+FOREIGN CONSTRAINT | FK_F82840BCEAA72736 | oro_user.catalogScope_id | pim_catalog_channel.id
 FOREIGN CONSTRAINT | FK_EC003EF3A76ED395 | oro_user_access_group.user_id | oro_user.id
-FOREIGN CONSTRAINT | FK_E7E7E38EFE54D947 | oro_user_access_group_role.group_id | oro_access_group.id
+FOREIGN CONSTRAINT | FK_EC003EF3FE54D947 | oro_user_access_group.group_id | oro_access_group.id
 FOREIGN CONSTRAINT | FK_E7E7E38ED60322AC | oro_user_access_group_role.role_id | oro_access_role.id
-FOREIGN CONSTRAINT | FK_290571BED60322AC | oro_user_access_role.role_id | oro_access_role.id
+FOREIGN CONSTRAINT | FK_E7E7E38EFE54D947 | oro_user_access_group_role.group_id | oro_access_group.id
 FOREIGN CONSTRAINT | FK_290571BEA76ED395 | oro_user_access_role.user_id | oro_user.id
+FOREIGN CONSTRAINT | FK_290571BED60322AC | oro_user_access_role.role_id | oro_access_role.id
 FOREIGN CONSTRAINT | FK_BD5E40238D93D649 | pim_api_access_token.user | oro_user.id
 FOREIGN CONSTRAINT | FK_BD5E4023C7440455 | pim_api_access_token.client | pim_api_client.id
-FOREIGN CONSTRAINT | FK_AD5DC7C6A76ED395 | pim_api_auth_code.user_id | oro_user.id
 FOREIGN CONSTRAINT | FK_AD5DC7C619EB6921 | pim_api_auth_code.client_id | pim_api_client.id
+FOREIGN CONSTRAINT | FK_AD5DC7C6A76ED395 | pim_api_auth_code.user_id | oro_user.id
 FOREIGN CONSTRAINT | FK_264A45108D93D649 | pim_api_refresh_token.user | oro_user.id
 FOREIGN CONSTRAINT | FK_264A4510C7440455 | pim_api_refresh_token.client | pim_api_client.id
+FOREIGN CONSTRAINT | FK_CC27100147D93336 | pim_catalog_association.owner_uuid | pim_catalog_product.uuid
 FOREIGN CONSTRAINT | FK_CC271001B1E1C39 | pim_catalog_association.association_type_id | pim_catalog_association_type.id
-FOREIGN CONSTRAINT | FK_CC2710017E3C61F9 | pim_catalog_association.owner_id | pim_catalog_product.id
 FOREIGN CONSTRAINT | FK_E91414DDEFB9C8A5 | pim_catalog_association_group.association_id | pim_catalog_association.id
 FOREIGN CONSTRAINT | FK_E91414DDFE54D947 | pim_catalog_association_group.group_id | pim_catalog_group.id
+FOREIGN CONSTRAINT | FK_3A3A49D45C977207 | pim_catalog_association_product.product_uuid | pim_catalog_product.uuid
 FOREIGN CONSTRAINT | FK_3A3A49D4EFB9C8A5 | pim_catalog_association_product.association_id | pim_catalog_association.id
-FOREIGN CONSTRAINT | FK_3A3A49D44584665A | pim_catalog_association_product.product_id | pim_catalog_product.id
-FOREIGN CONSTRAINT | FK_378B82C7EFB9C8A5 | pim_catalog_association_product_model.association_id | pim_catalog_association.id
 FOREIGN CONSTRAINT | FK_378B82C7B2C5DD70 | pim_catalog_association_product_model.product_model_id | pim_catalog_product_model.id
-FOREIGN CONSTRAINT | FK_16EA55AEFE54D947 | pim_catalog_association_product_model_to_group.group_id | pim_catalog_group.id
+FOREIGN CONSTRAINT | FK_378B82C7EFB9C8A5 | pim_catalog_association_product_model.association_id | pim_catalog_association.id
 FOREIGN CONSTRAINT | FK_16EA55AEEFB9C8A5 | pim_catalog_association_product_model_to_group.association_id | pim_catalog_product_model_association.id
-FOREIGN CONSTRAINT | FK_3FF3ED194584665A | pim_catalog_association_product_model_to_product.product_id | pim_catalog_product.id
+FOREIGN CONSTRAINT | FK_16EA55AEFE54D947 | pim_catalog_association_product_model_to_group.group_id | pim_catalog_group.id
+FOREIGN CONSTRAINT | FK_3FF3ED195C977207 | pim_catalog_association_product_model_to_product.product_uuid | pim_catalog_product.uuid
 FOREIGN CONSTRAINT | FK_3FF3ED19EFB9C8A5 | pim_catalog_association_product_model_to_product.association_id | pim_catalog_product_model_association.id
 FOREIGN CONSTRAINT | FK_12D4D59CB2C5DD70 | pim_catalog_association_product_model_to_product_model.product_model_id | pim_catalog_product_model.id
 FOREIGN CONSTRAINT | FK_12D4D59CEFB9C8A5 | pim_catalog_association_product_model_to_product_model.association_id | pim_catalog_product_model_association.id
@@ -1473,19 +1464,19 @@ FOREIGN CONSTRAINT | FK_26D2D5D0B6E62EFA | pim_catalog_attribute_locale.attribut
 FOREIGN CONSTRAINT | FK_26D2D5D0E559DFD1 | pim_catalog_attribute_locale.locale_id | pim_catalog_locale.id
 FOREIGN CONSTRAINT | FK_3DD413F8B6E62EFA | pim_catalog_attribute_option.attribute_id | pim_catalog_attribute.id
 FOREIGN CONSTRAINT | FK_CC4B9A83A7C41D6F | pim_catalog_attribute_option_value.option_id | pim_catalog_attribute_option.id
-FOREIGN CONSTRAINT | FK_B494B917B6E62EFA | pim_catalog_attribute_requirement.attribute_id | pim_catalog_attribute.id
 FOREIGN CONSTRAINT | FK_B494B91772F5A1AA | pim_catalog_attribute_requirement.channel_id | pim_catalog_channel.id
+FOREIGN CONSTRAINT | FK_B494B917B6E62EFA | pim_catalog_attribute_requirement.attribute_id | pim_catalog_attribute.id
 FOREIGN CONSTRAINT | FK_B494B917C35E566A | pim_catalog_attribute_requirement.family_id | pim_catalog_family.id
 FOREIGN CONSTRAINT | FK_DBC2A9287E366551 | pim_catalog_attribute_translation.foreign_key | pim_catalog_attribute.id
 FOREIGN CONSTRAINT | FK_350D8339727ACA70 | pim_catalog_category.parent_id | pim_catalog_category.id
 FOREIGN CONSTRAINT | FK_512179C112469DE2 | pim_catalog_category_product.category_id | pim_catalog_category.id
-FOREIGN CONSTRAINT | FK_512179C14584665A | pim_catalog_category_product.product_id | pim_catalog_product.id
+FOREIGN CONSTRAINT | FK_512179C15C977207 | pim_catalog_category_product.product_uuid | pim_catalog_product.uuid
 FOREIGN CONSTRAINT | FK_62B5D3612469DE2 | pim_catalog_category_product_model.category_id | pim_catalog_category.id
 FOREIGN CONSTRAINT | FK_62B5D36B2C5DD70 | pim_catalog_category_product_model.product_model_id | pim_catalog_product_model.id
 FOREIGN CONSTRAINT | FK_1C0FA6B77E366551 | pim_catalog_category_translation.foreign_key | pim_catalog_category.id
 FOREIGN CONSTRAINT | FK_E07E932A12469DE2 | pim_catalog_channel.category_id | pim_catalog_category.id
-FOREIGN CONSTRAINT | FK_5B55C68472F5A1AA | pim_catalog_channel_currency.channel_id | pim_catalog_channel.id
 FOREIGN CONSTRAINT | FK_5B55C68438248176 | pim_catalog_channel_currency.currency_id | pim_catalog_currency.id
+FOREIGN CONSTRAINT | FK_5B55C68472F5A1AA | pim_catalog_channel_currency.channel_id | pim_catalog_channel.id
 FOREIGN CONSTRAINT | FK_D8113CB272F5A1AA | pim_catalog_channel_locale.channel_id | pim_catalog_channel.id
 FOREIGN CONSTRAINT | FK_D8113CB2E559DFD1 | pim_catalog_channel_locale.locale_id | pim_catalog_locale.id
 FOREIGN CONSTRAINT | FK_8A91679D7E366551 | pim_catalog_channel_translation.foreign_key | pim_catalog_channel.id
@@ -1501,89 +1492,89 @@ FOREIGN CONSTRAINT | FK_1F4DC7028A37AD0 | pim_catalog_family_variant_has_variant
 FOREIGN CONSTRAINT | FK_1F4DC702D8404D | pim_catalog_family_variant_has_variant_attribute_sets.variant_attribute_sets_id | pim_catalog_family_variant_attribute_set.id
 FOREIGN CONSTRAINT | FK_CB9A96AF7E366551 | pim_catalog_family_variant_translation.foreign_key | pim_catalog_family_variant.id
 FOREIGN CONSTRAINT | FK_5D6997EDC54C8C93 | pim_catalog_group.type_id | pim_catalog_group_type.id
+FOREIGN CONSTRAINT | FK_7AC0C83A5C977207 | pim_catalog_group_product.product_uuid | pim_catalog_product.uuid
 FOREIGN CONSTRAINT | FK_7AC0C83AFE54D947 | pim_catalog_group_product.group_id | pim_catalog_group.id
-FOREIGN CONSTRAINT | FK_7AC0C83A4584665A | pim_catalog_group_product.product_id | pim_catalog_product.id
 FOREIGN CONSTRAINT | FK_622D98DB7E366551 | pim_catalog_group_translation.foreign_key | pim_catalog_group.id
 FOREIGN CONSTRAINT | FK_6EF81AEB7E366551 | pim_catalog_group_type_translation.foreign_key | pim_catalog_group_type.id
-FOREIGN CONSTRAINT | FK_91CD19C0C35E566A | pim_catalog_product.family_id | pim_catalog_family.id
 FOREIGN CONSTRAINT | FK_91CD19C08A37AD0 | pim_catalog_product.family_variant_id | pim_catalog_family_variant.id
 FOREIGN CONSTRAINT | FK_91CD19C0B2C5DD70 | pim_catalog_product.product_model_id | pim_catalog_product_model.id
-FOREIGN CONSTRAINT | FK_5943911E8A37AD0 | pim_catalog_product_model.family_variant_id | pim_catalog_family_variant.id
+FOREIGN CONSTRAINT | FK_91CD19C0C35E566A | pim_catalog_product.family_id | pim_catalog_family.id
 FOREIGN CONSTRAINT | FK_5943911E727ACA70 | pim_catalog_product_model.parent_id | pim_catalog_product_model.id
-FOREIGN CONSTRAINT | FK_F5F4C8CAB1E1C39 | pim_catalog_product_model_association.association_type_id | pim_catalog_association_type.id
+FOREIGN CONSTRAINT | FK_5943911E8A37AD0 | pim_catalog_product_model.family_variant_id | pim_catalog_family_variant.id
 FOREIGN CONSTRAINT | FK_F5F4C8CA7E3C61F9 | pim_catalog_product_model_association.owner_id | pim_catalog_product_model.id
+FOREIGN CONSTRAINT | FK_F5F4C8CAB1E1C39 | pim_catalog_product_model_association.association_type_id | pim_catalog_association_type.id
+FOREIGN CONSTRAINT | FK_E0768BA35C977207 | pim_catalog_product_unique_data.product_uuid | pim_catalog_product.uuid
 FOREIGN CONSTRAINT | FK_E0768BA3B6E62EFA | pim_catalog_product_unique_data.attribute_id | pim_catalog_attribute.id
-FOREIGN CONSTRAINT | FK_E0768BA34584665A | pim_catalog_product_unique_data.product_id | pim_catalog_product.id
 FOREIGN CONSTRAINT | pim_catalog_table_column_attribute_id_fk | pim_catalog_table_column.attribute_id | pim_catalog_attribute.id
 FOREIGN CONSTRAINT | pim_catalog_table_column_select_option_column_fk | pim_catalog_table_column_select_option.column_id | pim_catalog_table_column.id
-FOREIGN CONSTRAINT | FK_E9C4264ABAAF4009 | pim_catalog_variant_attribute_set_has_attributes.attributes_id | pim_catalog_attribute.id
 FOREIGN CONSTRAINT | FK_E9C4264A11D06F0E | pim_catalog_variant_attribute_set_has_attributes.variant_attribute_set_id | pim_catalog_family_variant_attribute_set.id
-FOREIGN CONSTRAINT | FK_6965051EE684FCEE | pim_catalog_variant_attribute_set_has_axes.axes_id | pim_catalog_attribute.id
+FOREIGN CONSTRAINT | FK_E9C4264ABAAF4009 | pim_catalog_variant_attribute_set_has_attributes.attributes_id | pim_catalog_attribute.id
 FOREIGN CONSTRAINT | FK_6965051E11D06F0E | pim_catalog_variant_attribute_set_has_axes.variant_attribute_set_id | pim_catalog_family_variant_attribute_set.id
-FOREIGN CONSTRAINT | FK_2A32D03DF675F31B | pim_comment_comment.author_id | oro_user.id
+FOREIGN CONSTRAINT | FK_6965051EE684FCEE | pim_catalog_variant_attribute_set_has_axes.axes_id | pim_catalog_attribute.id
 FOREIGN CONSTRAINT | FK_2A32D03D727ACA70 | pim_comment_comment.parent_id | pim_comment_comment.id
-FOREIGN CONSTRAINT | FK_dqi_product_criteria_evaluation | pim_data_quality_insights_product_criteria_evaluation.product_id | pim_catalog_product.id
+FOREIGN CONSTRAINT | FK_2A32D03DF675F31B | pim_comment_comment.author_id | oro_user.id
+FOREIGN CONSTRAINT | FK_dqi_product_uuid_criteria_evaluation | pim_data_quality_insights_product_criteria_evaluation.product_uuid | pim_catalog_product.uuid
 FOREIGN CONSTRAINT | FK_dqi_product_model_criteria_evaluation | pim_data_quality_insights_product_model_criteria_evaluation.product_id | pim_catalog_product_model.id
 FOREIGN CONSTRAINT | FK_dqi_product_model_score | pim_data_quality_insights_product_model_score.product_model_id | pim_catalog_product_model.id
-FOREIGN CONSTRAINT | FK_dqi_product_score | pim_data_quality_insights_product_score.product_id | pim_catalog_product.id
+FOREIGN CONSTRAINT | FK_dqi_product_uuid_score | pim_data_quality_insights_product_score.product_uuid | pim_catalog_product.uuid
 FOREIGN CONSTRAINT | FK_B56B38F17E3C61F9 | pim_datagrid_view.owner_id | oro_user.id
 FOREIGN CONSTRAINT | FK_342AA8558D93D649 | pim_notification_user_notification.user | oro_user.id
 FOREIGN CONSTRAINT | FK_342AA855BF5476CA | pim_notification_user_notification.notification | pim_notification_notification.id
-FOREIGN CONSTRAINT | FK_3CEEC2F2A76ED395 | pim_user_default_datagrid_view.user_id | oro_user.id
 FOREIGN CONSTRAINT | FK_3CEEC2F231518C7 | pim_user_default_datagrid_view.view_id | pim_datagrid_view.id
+FOREIGN CONSTRAINT | FK_3CEEC2F2A76ED395 | pim_user_default_datagrid_view.user_id | oro_user.id
 FOREIGN CONSTRAINT | FK_E63905212CFD9410 | pimee_dqi_attribute_locale_quality.attribute_code | pim_catalog_attribute.code
 FOREIGN CONSTRAINT | FK_FB61346D2CFD9410 | pimee_dqi_attribute_quality.attribute_code | pim_catalog_attribute.code
 FOREIGN CONSTRAINT | FK_D69E7F7B1ED93D47 | pimee_security_attribute_group_access.user_group_id | oro_access_group.id
 FOREIGN CONSTRAINT | FK_D69E7F7B62D643B7 | pimee_security_attribute_group_access.attribute_group_id | pim_catalog_attribute_group.id
-FOREIGN CONSTRAINT | FK_5A5F2763A68D82A5 | pimee_security_job_profile_access.job_profile_id | akeneo_batch_job_instance.id
 FOREIGN CONSTRAINT | FK_5A5F27631ED93D47 | pimee_security_job_profile_access.user_group_id | oro_access_group.id
+FOREIGN CONSTRAINT | FK_5A5F2763A68D82A5 | pimee_security_job_profile_access.job_profile_id | akeneo_batch_job_instance.id
 FOREIGN CONSTRAINT | FK_E1E285481ED93D47 | pimee_security_locale_access.user_group_id | oro_access_group.id
 FOREIGN CONSTRAINT | FK_E1E28548E559DFD1 | pimee_security_locale_access.locale_id | pim_catalog_locale.id
-FOREIGN CONSTRAINT | FK_B38721D61ED93D47 | pimee_security_product_category_access.user_group_id | oro_access_group.id
 FOREIGN CONSTRAINT | FK_B38721D612469DE2 | pimee_security_product_category_access.category_id | pim_catalog_category.id
+FOREIGN CONSTRAINT | FK_B38721D61ED93D47 | pimee_security_product_category_access.user_group_id | oro_access_group.id
 FOREIGN CONSTRAINT | attr_grp_completeness_attribute_group_foreign_key | pimee_teamwork_assistant_completeness_per_attribute_group.attribute_group_id | pim_catalog_attribute_group.id
 FOREIGN CONSTRAINT | attr_grp_completeness_channel_foreign_key | pimee_teamwork_assistant_completeness_per_attribute_group.channel_id | pim_catalog_channel.id
 FOREIGN CONSTRAINT | attr_grp_completeness_locale_foreign_key | pimee_teamwork_assistant_completeness_per_attribute_group.locale_id | pim_catalog_locale.id
-FOREIGN CONSTRAINT | attr_grp_completeness_product_foreign_key | pimee_teamwork_assistant_completeness_per_attribute_group.product_id | pim_catalog_product.id
-FOREIGN CONSTRAINT | FK_9406D3B07E3C61F9 | pimee_teamwork_assistant_project.owner_id | oro_user.id
-FOREIGN CONSTRAINT | FK_9406D3B072F5A1AA | pimee_teamwork_assistant_project.channel_id | pim_catalog_channel.id
-FOREIGN CONSTRAINT | FK_9406D3B0E559DFD1 | pimee_teamwork_assistant_project.locale_id | pim_catalog_locale.id
+FOREIGN CONSTRAINT | attr_grp_completeness_product_uuid_foreign_key | pimee_teamwork_assistant_completeness_per_attribute_group.product_uuid | pim_catalog_product.uuid
 FOREIGN CONSTRAINT | FK_9406D3B01E2E9CAF | pimee_teamwork_assistant_project.datagrid_view_id | pim_datagrid_view.id
-FOREIGN CONSTRAINT | product_selection_product_foreign_key | pimee_teamwork_assistant_project_product.product_id | pim_catalog_product.id
+FOREIGN CONSTRAINT | FK_9406D3B072F5A1AA | pimee_teamwork_assistant_project.channel_id | pim_catalog_channel.id
+FOREIGN CONSTRAINT | FK_9406D3B07E3C61F9 | pimee_teamwork_assistant_project.owner_id | oro_user.id
+FOREIGN CONSTRAINT | FK_9406D3B0E559DFD1 | pimee_teamwork_assistant_project.locale_id | pim_catalog_locale.id
 FOREIGN CONSTRAINT | product_selection_project_foreign_key | pimee_teamwork_assistant_project_product.project_id | pimee_teamwork_assistant_project.id
-FOREIGN CONSTRAINT | FK_8B8E20EDA76ED395 | pimee_teamwork_assistant_project_status.user_id | oro_user.id
+FOREIGN CONSTRAINT | product_selection_project_uuid_foreign_key | pimee_teamwork_assistant_project_product.product_uuid | pim_catalog_product.uuid
 FOREIGN CONSTRAINT | FK_8B8E20ED166D1F9C | pimee_teamwork_assistant_project_status.project_id | pimee_teamwork_assistant_project.id
-FOREIGN CONSTRAINT | FK_DF34C6AD1ED93D47 | pimee_teamwork_assistant_project_user_group.user_group_id | oro_access_group.id
+FOREIGN CONSTRAINT | FK_8B8E20EDA76ED395 | pimee_teamwork_assistant_project_status.user_id | oro_user.id
 FOREIGN CONSTRAINT | FK_DF34C6AD166D1F9C | pimee_teamwork_assistant_project_user_group.project_id | pimee_teamwork_assistant_project.id
+FOREIGN CONSTRAINT | FK_DF34C6AD1ED93D47 | pimee_teamwork_assistant_project_user_group.user_group_id | oro_access_group.id
 FOREIGN CONSTRAINT | FK_FBF18BD212469DE2 | pimee_workflow_category_published_product.category_id | pim_catalog_category.id
 FOREIGN CONSTRAINT | FK_FBF18BD24584665A | pimee_workflow_category_published_product.product_id | pimee_workflow_published_product.id
-FOREIGN CONSTRAINT | FK_60C37BBCFE54D947 | pimee_workflow_group_published_product.group_id | pim_catalog_group.id
 FOREIGN CONSTRAINT | FK_60C37BBC4584665A | pimee_workflow_group_published_product.product_id | pimee_workflow_published_product.id
-FOREIGN CONSTRAINT | FK_6F63A25F4584665A | pimee_workflow_product_draft.product_id | pim_catalog_product.id
+FOREIGN CONSTRAINT | FK_60C37BBCFE54D947 | pimee_workflow_group_published_product.group_id | pim_catalog_group.id
+FOREIGN CONSTRAINT | FK_6F63A25F5C977207 | pimee_workflow_product_draft.product_uuid | pim_catalog_product.uuid
 FOREIGN CONSTRAINT | FK_68577CF4B2C5DD70 | pimee_workflow_product_model_draft.product_model_id | pim_catalog_product_model.id
-FOREIGN CONSTRAINT | FK_7B1302F8B6E62EFA | pimee_workflow_product_unique_data.attribute_id | pim_catalog_attribute.id
 FOREIGN CONSTRAINT | FK_7B1302F84584665A | pimee_workflow_product_unique_data.product_id | pimee_workflow_published_product.id
-FOREIGN CONSTRAINT | FK_E3566E69C35E566A | pimee_workflow_published_product.family_id | pim_catalog_family.id
-FOREIGN CONSTRAINT | FK_E3566E698A37AD0 | pimee_workflow_published_product.family_variant_id | pim_catalog_family_variant.id
-FOREIGN CONSTRAINT | FK_E3566E69283311CE | pimee_workflow_published_product.original_product_id | pim_catalog_product.id
-FOREIGN CONSTRAINT | FK_E3566E69B2C5DD70 | pimee_workflow_published_product.product_model_id | pim_catalog_product_model.id
+FOREIGN CONSTRAINT | FK_7B1302F8B6E62EFA | pimee_workflow_product_unique_data.attribute_id | pim_catalog_attribute.id
 FOREIGN CONSTRAINT | FK_E3566E694BBC2705 | pimee_workflow_published_product.version_id | pim_versioning_version.id
-FOREIGN CONSTRAINT | FK_A3D033B4B1E1C39 | pimee_workflow_published_product_association.association_type_id | pim_catalog_association_type.id
+FOREIGN CONSTRAINT | FK_E3566E6987DBB431 | pimee_workflow_published_product.original_product_uuid | pim_catalog_product.uuid
+FOREIGN CONSTRAINT | FK_E3566E698A37AD0 | pimee_workflow_published_product.family_variant_id | pim_catalog_family_variant.id
+FOREIGN CONSTRAINT | FK_E3566E69B2C5DD70 | pimee_workflow_published_product.product_model_id | pim_catalog_product_model.id
+FOREIGN CONSTRAINT | FK_E3566E69C35E566A | pimee_workflow_published_product.family_id | pim_catalog_family.id
 FOREIGN CONSTRAINT | FK_A3D033B47E3C61F9 | pimee_workflow_published_product_association.owner_id | pimee_workflow_published_product.id
-FOREIGN CONSTRAINT | FK_4F53DE31FE54D947 | pimee_workflow_published_product_association_published_group.group_id | pim_catalog_group.id
+FOREIGN CONSTRAINT | FK_A3D033B4B1E1C39 | pimee_workflow_published_product_association.association_type_id | pim_catalog_association_type.id
 FOREIGN CONSTRAINT | FK_4F53DE31EFB9C8A5 | pimee_workflow_published_product_association_published_group.association_id | pimee_workflow_published_product_association.id
+FOREIGN CONSTRAINT | FK_4F53DE31FE54D947 | pimee_workflow_published_product_association_published_group.group_id | pim_catalog_group.id
 FOREIGN CONSTRAINT | FK_B34078DD4584665A | pimee_workflow_published_product_association_published_product.product_id | pimee_workflow_published_product.id
 FOREIGN CONSTRAINT | FK_B34078DDEFB9C8A5 | pimee_workflow_published_product_association_published_product.association_id | pimee_workflow_published_product_association.id
+FOREIGN CONSTRAINT | FK_AA5F18744584665A | pimee_workflow_published_product_completeness.product_id | pimee_workflow_published_product.id
 FOREIGN CONSTRAINT | FK_AA5F187472F5A1AA | pimee_workflow_published_product_completeness.channel_id | pim_catalog_channel.id
 FOREIGN CONSTRAINT | FK_AA5F1874E559DFD1 | pimee_workflow_published_product_completeness.locale_id | pim_catalog_locale.id
-FOREIGN CONSTRAINT | FK_AA5F18744584665A | pimee_workflow_published_product_completeness.product_id | pimee_workflow_published_product.id
 FOREIGN CONSTRAINT | FK_B0FD5518762147F6 | pimee_workflow_published_product_completeness_missing_attribute.missing_attribute_id | pim_catalog_attribute.id
 FOREIGN CONSTRAINT | FK_B0FD5518B640FBA5 | pimee_workflow_published_product_completeness_missing_attribute.completeness_id | pimee_workflow_published_product_completeness.id
-FOREIGN CONSTRAINT | FK_9B2A6C7EF98F144A | supplier.logo_id | akeneo_file_storage_file_info.id
 FOREIGN CONSTRAINT | FK_9B2A6C7E1F64356C | supplier.catalog_locale_id | pim_catalog_locale.id
 FOREIGN CONSTRAINT | FK_9B2A6C7EA7EA8E8C | supplier.ui_locale_id | pim_catalog_locale.id
-FOREIGN CONSTRAINT | FK_7E84F38FC35E566A | supplier_family.family_id | pim_catalog_family.id
+FOREIGN CONSTRAINT | FK_9B2A6C7EF98F144A | supplier.logo_id | akeneo_file_storage_file_info.id
 FOREIGN CONSTRAINT | FK_7E84F38F2ADD6D8C | supplier_family.supplier_id | supplier.id
+FOREIGN CONSTRAINT | FK_7E84F38FC35E566A | supplier_family.family_id | pim_catalog_family.id
 UNIQUE CONSTRAINT | UNIQ_69DD750638A36066 | acl_classes | class_type
 UNIQUE CONSTRAINT | UNIQ_46C8B806EA000B103D9AB4A64DEF17BCE4289BF4 | acl_entries | class_id, object_identity_id, field_name, ace_order
 UNIQUE CONSTRAINT | UNIQ_9407E5494B12AD6EA000B10 | acl_object_identities | class_id, object_identifier
@@ -1616,7 +1607,7 @@ UNIQUE CONSTRAINT | UNIQ_F82840BCF85E0677 | oro_user | username
 UNIQUE CONSTRAINT | UNIQ_BD5E40235F37A13B | pim_api_access_token | token
 UNIQUE CONSTRAINT | UNIQ_AD5DC7C65F37A13B | pim_api_auth_code | token
 UNIQUE CONSTRAINT | UNIQ_264A45105F37A13B | pim_api_refresh_token | token
-UNIQUE CONSTRAINT | locale_foreign_key_idx | pim_catalog_association | association_type_id, owner_id
+UNIQUE CONSTRAINT | owner_uuid_association_type_id_idx | pim_catalog_association | association_type_id, owner_uuid
 UNIQUE CONSTRAINT | UNIQ_E6CF913A77153098 | pim_catalog_association_type | code
 UNIQUE CONSTRAINT | locale_foreign_key_idx | pim_catalog_association_type_translation | foreign_key, locale
 UNIQUE CONSTRAINT | searchunique_idx | pim_catalog_attribute | code, entity_type
@@ -1631,7 +1622,7 @@ UNIQUE CONSTRAINT | pim_category_code_uc | pim_catalog_category | code
 UNIQUE CONSTRAINT | locale_foreign_key_idx | pim_catalog_category_translation | foreign_key, locale
 UNIQUE CONSTRAINT | UNIQ_E07E932A77153098 | pim_catalog_channel | code
 UNIQUE CONSTRAINT | locale_foreign_key_idx | pim_catalog_channel_translation | foreign_key, locale
-UNIQUE CONSTRAINT | searchunique_idx | pim_catalog_completeness | locale_id, channel_id, product_id
+UNIQUE CONSTRAINT | channel_locale_product_unique_idx | pim_catalog_completeness | locale_id, channel_id, product_uuid
 UNIQUE CONSTRAINT | UNIQ_5A1712C777153098 | pim_catalog_currency | code
 UNIQUE CONSTRAINT | UNIQ_9063207277153098 | pim_catalog_family | code
 UNIQUE CONSTRAINT | locale_foreign_key_idx | pim_catalog_family_translation | foreign_key, locale
@@ -1644,6 +1635,7 @@ UNIQUE CONSTRAINT | UNIQ_693B2EF777153098 | pim_catalog_group_type | code
 UNIQUE CONSTRAINT | locale_foreign_key_idx | pim_catalog_group_type_translation | foreign_key, locale
 UNIQUE CONSTRAINT | UNIQ_7405C7B177153098 | pim_catalog_locale | code
 UNIQUE CONSTRAINT | UNIQ_91CD19C0772E836A | pim_catalog_product | identifier
+UNIQUE CONSTRAINT | UNIQ_91CD19C0BF396750 | pim_catalog_product | id
 UNIQUE CONSTRAINT | UNIQ_5943911E77153098 | pim_catalog_product_model | code
 UNIQUE CONSTRAINT | locale_foreign_key_idx | pim_catalog_product_model_association | association_type_id, owner_id
 UNIQUE CONSTRAINT | unique_value_idx | pim_catalog_product_unique_data | attribute_id, raw_data
@@ -1656,12 +1648,12 @@ UNIQUE CONSTRAINT | locale_user_group_idx | pimee_security_locale_access | user_
 UNIQUE CONSTRAINT | category_user_group_idx | pimee_security_product_category_access | user_group_id, category_id
 UNIQUE CONSTRAINT | channel_locale_label_idx | pimee_teamwork_assistant_project | channel_id, locale_id, label
 UNIQUE CONSTRAINT | UNIQ_9406D3B01E2E9CAF | pimee_teamwork_assistant_project | datagrid_view_id
-UNIQUE CONSTRAINT | unique_idx | pimee_workflow_product_draft | product_id, author
+UNIQUE CONSTRAINT | unique_author_product_idx | pimee_workflow_product_draft | product_uuid, author
 UNIQUE CONSTRAINT | unique_idx | pimee_workflow_product_model_draft | product_model_id, author
 UNIQUE CONSTRAINT | unique_value_idx | pimee_workflow_product_unique_data | attribute_id, raw_data
-UNIQUE CONSTRAINT | UNIQ_E3566E69283311CE | pimee_workflow_published_product | original_product_id
 UNIQUE CONSTRAINT | UNIQ_E3566E694BBC2705 | pimee_workflow_published_product | version_id
 UNIQUE CONSTRAINT | UNIQ_E3566E69772E836A | pimee_workflow_published_product | identifier
+UNIQUE CONSTRAINT | UNIQ_E3566E6987DBB431 | pimee_workflow_published_product | original_product_uuid
 UNIQUE CONSTRAINT | locale_foreign_key_idx | pimee_workflow_published_product_association | association_type_id, owner_id
 UNIQUE CONSTRAINT | searchunique_idx | pimee_workflow_published_product_completeness | locale_id, channel_id, product_id
 UNIQUE CONSTRAINT | UNIQ_9B2A6C7E77153098 | supplier | code

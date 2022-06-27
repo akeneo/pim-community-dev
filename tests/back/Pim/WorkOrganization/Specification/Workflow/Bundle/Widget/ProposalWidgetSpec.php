@@ -13,6 +13,7 @@ use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -74,47 +75,47 @@ class ProposalWidgetSpec extends ObjectBehavior
         $productModelDraftRepository,
         $presenter,
         $router,
-        ProductDraft $first,
-        ProductModelDraft $second,
-        ProductInterface $firstProduct,
-        ProductModelInterface $secondProductModel
+        ProductDraft $productDraft,
+        ProductModelDraft $productModelDraft,
+        ProductInterface $product,
+        ProductModelInterface $productModel
     ) {
         $authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
-        $productDraftRepository->findApprovableByUser($user, 10)->willReturn([$first]);
-        $productModelDraftRepository->findApprovableByUser($user, 10)->willReturn([$second]);
+        $productDraftRepository->findApprovableByUser($user, 10)->willReturn([$productDraft]);
+        $productModelDraftRepository->findApprovableByUser($user, 10)->willReturn([$productModelDraft]);
 
-        $first->getEntityWithValue()->willReturn($firstProduct);
-        $second->getEntityWithValue()->willReturn($secondProductModel);
+        $productDraft->getEntityWithValue()->willReturn($product);
+        $productModelDraft->getEntityWithValue()->willReturn($productModel);
 
-        $firstProduct->getId()->willReturn(1);
-        $secondProductModel->getId()->willReturn(2);
-        $firstProduct->getIdentifier()->willReturn('sku1');
-        $secondProductModel->getCode()->willReturn('sku2');
-        $firstProduct->getLabel()->willReturn('First product');
-        $secondProductModel->getLabel()->willReturn('Second product');
-        $first->getAuthor()->willReturn('julia');
-        $first->getAuthorLabel()->willReturn('Julia Stark');
-        $second->getAuthor()->willReturn('julia');
-        $second->getAuthorLabel()->willReturn('Julia Stark');
+        $product->getUuid()->willReturn(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productModel->getId()->willReturn(2);
+        $product->getIdentifier()->willReturn('sku1');
+        $productModel->getCode()->willReturn('sku2');
+        $product->getLabel()->willReturn('First product');
+        $productModel->getLabel()->willReturn('Second product');
+        $productDraft->getAuthor()->willReturn('julia');
+        $productDraft->getAuthorLabel()->willReturn('Julia Stark');
+        $productModelDraft->getAuthor()->willReturn('julia');
+        $productModelDraft->getAuthorLabel()->willReturn('Julia Stark');
         $firstCreatedAt = new \DateTime();
         $secondCreatedAt = new \DateTime();
-        $first->getCreatedAt()->willReturn($firstCreatedAt);
-        $second->getCreatedAt()->willReturn($secondCreatedAt);
+        $productDraft->getCreatedAt()->willReturn($firstCreatedAt);
+        $productModelDraft->getCreatedAt()->willReturn($secondCreatedAt);
 
         $options = ['locale' => 'en', 'timezone' => 'Pacific/Kiritimati'];
         $presenter->present($firstCreatedAt, $options)->willReturn($firstCreatedAt->format('m/d/Y'));
         $presenter->present($secondCreatedAt, $options)->willReturn($secondCreatedAt->format('m/d/Y'));
 
-        $router->generate('pim_enrich_product_edit', ['id' => 1])->willReturn('/enrich/product/1');
+        $router->generate('pim_enrich_product_edit', ['uuid' => 'df470d52-7723-4890-85a0-e79be625e2ed'])->willReturn('/enrich/product/df470d52-7723-4890-85a0-e79be625e2ed');
         $router->generate('pim_enrich_product_model_edit', ['id' => 2])->willReturn('/enrich/product_model/2');
 
         $this->getData()->shouldReturn(
             [
                 [
-                    'productId'        => 1,
+                    'productId'        => 'df470d52-7723-4890-85a0-e79be625e2ed',
                     'productLabel'     => 'First product',
                     'authorFullName'   => 'Julia Stark',
-                    'productEditUrl'   => '/enrich/product/1',
+                    'productEditUrl'   => '/enrich/product/df470d52-7723-4890-85a0-e79be625e2ed',
                     'productReviewUrl' =>
                         '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bidentifier%5D%5Bvalue%5D=sku1&f%5Bidentifier%5D%5Btype%5D=1',
                     'createdAt'        => $firstCreatedAt->format('m/d/Y')

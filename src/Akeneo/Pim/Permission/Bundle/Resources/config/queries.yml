@@ -28,7 +28,7 @@ services:
     pim_catalog.query.get_associated_product_codes_by_product:
         class: Akeneo\Pim\Permission\Bundle\Entity\Query\GetAssociatedProductCodesByProductFromDB
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@database_connection'
             - '@security.token_storage'
 
     pimee_security.query.get_access_group_id_for_locale_code:

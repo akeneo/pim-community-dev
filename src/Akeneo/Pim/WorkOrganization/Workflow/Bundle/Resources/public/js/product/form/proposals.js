@@ -64,11 +64,11 @@ define([
     },
 
     /**
-     * Return the current productId
+     * Return the current product uuid
      *
      * @return {number}
      */
-    getProductId: function() {
+    getProductUuid: function() {
       return this.getFormData().meta.id;
     },
 
@@ -95,7 +95,7 @@ define([
         params: {dataLocale: UserContext.get('catalogLocale')},
       };
 
-      urlParams.params[this.datagrid.paramName] = this.getProductId();
+      urlParams.params[this.datagrid.paramName] = this.getProductUuid();
 
       $.get(Routing.generate('pim_datagrid_load', urlParams)).then(
         function(response) {

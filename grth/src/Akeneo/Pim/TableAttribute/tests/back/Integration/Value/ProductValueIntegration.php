@@ -78,7 +78,6 @@ final class ProductValueIntegration extends TestCase
         $this->assertValuesAreSanitized();
     }
 
-    /** @test */
     public function it_updates_and_validates_then_saves_a_table_product_model_value(): void
     {
         $this->createAttribute([

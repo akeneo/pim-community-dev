@@ -8,8 +8,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -27,11 +27,11 @@ class PurgeVersioningCommandWithPublishedProductsIntegration extends TestCase
     {
         $publishedProduct1 = $this->createPublishedProduct('my_published_product1', ['categories' => ['categoryA']]);
         $product1 = $publishedProduct1->getOriginalProduct();
-        $this->addVersion($product1->getId(), 4);
-        $this->addVersion($product1->getId(), 5);
-        $this->changeVersionsDate($product1->getId(), new \DateTime('now -5 DAYS'));
+        $this->addVersion($product1->getUuid(), 4);
+        $this->addVersion($product1->getUuid(), 5);
+        $this->changeVersionsDate($product1->getUuid(), new \DateTime('now -5 DAYS'));
 
-        $productVersions = $this->getProductVersions($product1->getId());
+        $productVersions = $this->getProductVersions($product1->getUuid());
         $this->assertCount(5, $productVersions);
 
         $output = $this->runPurgeCommand();
@@ -40,7 +40,7 @@ class PurgeVersioningCommandWithPublishedProductsIntegration extends TestCase
         Assert::assertStringContainsString(sprintf('Start purging versions of %s (1/1)', Product::class), $result);
         Assert::assertStringContainsString('Successfully deleted 2 versions', $result);
 
-        $productVersions = $this->getProductVersions($product1->getId());
+        $productVersions = $this->getProductVersions($product1->getUuid());
         Assert::assertCount(3, $productVersions);
         Assert::assertEquals([1, 3, 5], $productVersions);
     }
@@ -84,30 +84,30 @@ class PurgeVersioningCommandWithPublishedProductsIntegration extends TestCase
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->addVersion($product->getId(), 2);
-        $this->addVersion($product->getId(), 3);
+        $this->addVersion($product->getUuid(), 2);
+        $this->addVersion($product->getUuid(), 3);
 
         return $this->get('pimee_workflow.manager.published_product')->publish($product);
     }
 
     private function addVersion(
-        int $resourceId,
+        UuidInterface $resourceUuid,
         int $versionNumber = 1
     ): void {
         $loggedAt = new \DateTime('now');
         $this->get('database_connection')->executeQuery(
-            'INSERT INTO pim_versioning_version (resource_name, resource_id, version, logged_at, author, changeset, pending) 
-             VALUES (:resource_name, :resource_id, :version, :logged_at, "test", :changeset, false)',
+            'INSERT INTO pim_versioning_version (resource_name, resource_uuid, version, logged_at, author, changeset, pending) 
+             VALUES (:resource_name, :resource_uuid, :version, :logged_at, "test", :changeset, false)',
             [
                 'resource_name' => Product::class,
-                'resource_id' => $resourceId,
+                'resource_uuid' => $resourceUuid->getBytes(),
                 'version' => $versionNumber,
                 'logged_at' => $loggedAt->format('Y-m-d H:i:s'),
                 'changeset' => serialize([]),
             ],
             [
                 'resource_name' => \PDO::PARAM_STR,
-                'resource_id' => \PDO::PARAM_INT,
+                'resource_uuid' => \PDO::PARAM_STR,
                 'version' => \PDO::PARAM_INT,
                 'logged_at' => \PDO::PARAM_STR,
                 'changeset' => \PDO::PARAM_STR,
@@ -116,18 +116,14 @@ class PurgeVersioningCommandWithPublishedProductsIntegration extends TestCase
     }
 
     private function changeVersionsDate(
-        int $resourceId,
+        UuidInterface $resourceUuid,
         \DateTime $newDate
     ): void {
         $this->get('database_connection')->executeQuery(
-            'UPDATE pim_versioning_version SET logged_at = :logged_at WHERE resource_id = :resource_id',
+            'UPDATE pim_versioning_version SET logged_at = :logged_at WHERE resource_uuid = :resource_uuid',
             [
-                'resource_id' => $resourceId,
+                'resource_uuid' => $resourceUuid->getBytes(),
                 'logged_at' => $newDate->format('Y-m-d H:i:s'),
-            ],
-            [
-                'resource_id' => \PDO::PARAM_INT,
-                'logged_at' => \PDO::PARAM_STR,
             ]
         );
     }
@@ -156,19 +152,19 @@ class PurgeVersioningCommandWithPublishedProductsIntegration extends TestCase
         return $output;
     }
 
-    private function getProductVersions(int $productId): array
+    private function getProductVersions(UuidInterface $productUuid): array
     {
         return $this->getConnection()->executeQuery(<<<SQL
             SELECT version
             FROM pim_versioning_version
             WHERE resource_name = :resourceName
-            AND resource_id = :resourceId
+            AND resource_uuid = :resourceUuid
 SQL
             ,
             [
                 'resourceName' => Product::class,
-                'resourceId' => $productId
+                'resourceUuid' => $productUuid->getBytes(),
             ]
-        )->fetchAll(FetchMode::COLUMN);
+        )->fetchFirstColumn();
     }
 }

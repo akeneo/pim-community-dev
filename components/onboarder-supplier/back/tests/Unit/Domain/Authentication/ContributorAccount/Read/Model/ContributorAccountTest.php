@@ -12,7 +12,12 @@ final class ContributorAccountTest extends TestCase
     /** @test */
     public function itCanBeNormalized(): void
     {
-        $sut = new ContributorAccount('9f4c017c-7682-4f83-9099-dd9afcada1a2', 'burger@example.com', 'foo', true);
+        $sut = new ContributorAccount(
+            '9f4c017c-7682-4f83-9099-dd9afcada1a2',
+            'burger@example.com',
+            'foo',
+            new \DateTimeImmutable(),
+        );
 
         static::assertSame(
             [
@@ -23,5 +28,30 @@ final class ContributorAccountTest extends TestCase
             ],
             $sut->toArray(),
         );
+    }
+
+    public function itDoesTellThatTheAccessTokenIsValid(): void
+    {
+        $sut = new ContributorAccount(
+            '9f4c017c-7682-4f83-9099-dd9afcada1a2',
+            'burger@example.com',
+            'foo',
+            new \DateTimeImmutable(),
+        );
+
+        static::assertTrue($sut->isAccessTokenValid($sut->accessTokenCreatedAt));
+    }
+
+    public function itDoesTellThatTheTheAccessTokenIsNotValidAnymore(): void
+    {
+        $expiredAccessToken = (new \DateTimeImmutable())->modify('- 15 days');
+        $sut = new ContributorAccount(
+            '9f4c017c-7682-4f83-9099-dd9afcada1a2',
+            'burger@example.com',
+            'foo',
+            $expiredAccessToken,
+        );
+
+        static::assertFalse($sut->isAccessTokenValid($sut->accessTokenCreatedAt));
     }
 }

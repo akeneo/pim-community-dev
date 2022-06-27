@@ -20,9 +20,9 @@ class ProductModelCompletenessWithRuleIntegration extends TestCase
         $query = <<<SQL
 SELECT channel.code as channel_code, locale.code as locale_code, completeness.missing_count 
 FROM pim_catalog_product product
-JOIN pim_catalog_completeness completeness ON completeness.product_id = product.id
-JOIN pim_catalog_locale locale ON locale.id = completeness.locale_id
-JOIN pim_catalog_channel channel ON channel.id = completeness.channel_id
+    JOIN pim_catalog_completeness completeness ON completeness.product_uuid = product.uuid
+    JOIN pim_catalog_locale locale ON locale.id = completeness.locale_id
+    JOIN pim_catalog_channel channel ON channel.id = completeness.channel_id
 WHERE product.identifier = '1111111113' 
 ORDER BY channel_code, locale_code;
 SQL;

@@ -54,11 +54,11 @@ define([
     },
 
     /**
-     * Return the current productId
+     * Return the current product uuid
      *
-     * @return {number}
+     * @return {string}
      */
-    getProductId: function() {
+    getProductUuid: function() {
       return this.getFormData().meta.id;
     },
 
@@ -172,7 +172,7 @@ define([
         comment: comment,
       };
 
-      postData[this.config.idKeyName] = this.getProductId();
+      postData[this.config.idKeyName] = this.getProductUuid();
 
       return $.post(Routing.generate(this.config.routes.ready, postData))
         .then(

@@ -159,11 +159,17 @@ image:
     repository: httpd
     tag: 2.4.51
     pullPolicy: IfNotPresent
+  curl:
+    repository: curlimages/curl
+    pullPolicy: IfNotPresent
+    tag: 7.83.1
 
 mailer:
   login: null
   password: null
   base_mailer_url: null
+  domain: null
+  api_key: null
 
 memcached:
   image:
@@ -253,7 +259,7 @@ pim:
   comm_panel_api_url: null
   logging_level: NOTICE
   monitoring:
-    authenticationToken: authenticationToken
+    authenticationToken: null
   serviceAccountKey: null
   hook:
     addAdmin:

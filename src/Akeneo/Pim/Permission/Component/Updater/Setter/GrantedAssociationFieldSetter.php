@@ -103,10 +103,12 @@ class GrantedAssociationFieldSetter extends AbstractFieldSetter implements Field
         $associatedProducts = $this->productRepository->getItemsFromIdentifiers($associatedProductIdentifiers);
 
         $user = $this->tokenStorage->getToken()->getUser();
-        $grantedProductIds = $this->productCategoryAccessQuery->getGrantedItemIds($associatedProducts, $user);
+        $grantedProductUuids = \array_flip(
+            $this->productCategoryAccessQuery->getGrantedProductUuids($associatedProducts, $user)
+        );
 
         foreach ($associatedProducts as $associatedProduct) {
-            if (!isset($grantedProductIds[$associatedProduct->getId()])) {
+            if (!isset($grantedProductUuids[$associatedProduct->getUuid()->toString()])) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     'associations',
                     'product identifier',

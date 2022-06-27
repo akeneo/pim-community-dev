@@ -15,29 +15,25 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByEntityIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
-final class PimEnterpriseGetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluationsByProductIdQueryInterface
+final class PimEnterpriseGetCriteriaEvaluationsByProductUuidQuery implements GetCriteriaEvaluationsByEntityIdQueryInterface
 {
-    private Connection $dbConnection;
-
-    private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery;
-
-    public function __construct(Connection $dbConnection, GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery)
-    {
-        $this->dbConnection = $dbConnection;
-        $this->getCriteriaEvaluationsByProductIdQuery = $getCriteriaEvaluationsByProductIdQuery;
+    public function __construct(
+        private Connection $dbConnection,
+        private GetCriteriaEvaluationsByEntityIdQueryInterface $getCriteriaEvaluationsByProductUuidQuery
+    ) {
     }
 
     public function execute(ProductEntityIdInterface $productId): Read\CriterionEvaluationCollection
     {
-        Assert::isInstanceOf($productId, ProductId::class);
-        
-        $productCriteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);
+        Assert::isInstanceOf($productId, ProductUuid::class);
+
+        $productCriteriaEvaluations = $this->getCriteriaEvaluationsByProductUuidQuery->execute($productId);
         $attributeSpellingResult = $this->getAttributeSpellingResultFromProductFamily($productId);
 
         if (null === $attributeSpellingResult) {
@@ -62,7 +58,7 @@ final class PimEnterpriseGetCriteriaEvaluationsByProductIdQuery implements GetCr
         return $completeCriterionEvaluations;
     }
 
-    private function getAttributeSpellingResultFromProductFamily(ProductEntityIdInterface $productId): ?Read\CriterionEvaluationResult
+    private function getAttributeSpellingResultFromProductFamily(ProductUuid $productUuid): ?Read\CriterionEvaluationResult
     {
         $query = <<<SQL
 SELECT family_evaluation.result
@@ -70,13 +66,13 @@ FROM pim_catalog_product AS product
     INNER JOIN pimee_dqi_family_criteria_evaluation AS family_evaluation
         ON family_evaluation.family_id = product.family_id
         AND family_evaluation.criterion_code = :criterionCode
-WHERE product.id = :productId;
+WHERE product.uuid = :productUuid;
 SQL;
 
         $rawResult = $this->dbConnection->executeQuery(
             $query,
-            ['productId' => (int)(string)$productId, 'criterionCode' => EvaluateAttributeSpelling::CRITERION_CODE],
-            ['productId' => \PDO::PARAM_INT]
+            ['productUuid' => $productUuid->toBytes(), 'criterionCode' => EvaluateAttributeSpelling::CRITERION_CODE],
+            ['productUuid' => \PDO::PARAM_STR]
         )->fetchColumn();
 
         if (empty($rawResult)) {

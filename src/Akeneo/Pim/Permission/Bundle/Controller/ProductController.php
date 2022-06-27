@@ -65,7 +65,7 @@ class ProductController extends BaseController
      *
      * @AclAncestor("pim_pdf_generator_product_download")
      */
-    public function downloadPdfAction(Request $request, $id)
+    public function downloadPdfAction(Request $request, string $uuid)
     {
         $locale = $this->userContext->getCurrentLocale();
         $viewLocaleGranted = $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale);
@@ -73,6 +73,6 @@ class ProductController extends BaseController
             throw new AccessDeniedException();
         }
 
-        return parent::downloadPdfAction($request, $id);
+        return parent::downloadPdfAction($request, $uuid);
     }
 }

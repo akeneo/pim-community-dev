@@ -15,13 +15,13 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscri
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductIdsQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductUuidsQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\ProductModelProposalIndexer;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\ProductProposalIndexer;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductModel\RemoveModelProposalsIndexSubscriber;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectModelProposalIdsFromProductModelIdsQueryInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProposalIdsFromProductIdsQueryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProposalIdsFromProductUuidsQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -35,8 +35,8 @@ class RemoveModelProposalsIndexSubscriberSpec extends ObjectBehavior
 {
     function let(
         SelectModelProposalIdsFromProductModelIdsQueryInterface $selectModelProposalIdsFromProductModelIdsQuery,
-        SelectProposalIdsFromProductIdsQueryInterface $selectProposalIdsFromProductIdsQuery,
-        DescendantProductIdsQueryInterface $descendantProductIdsQuery,
+        SelectProposalIdsFromProductUuidsQueryInterface $selectProposalIdsFromProductIdsQuery,
+        DescendantProductUuidsQueryInterface $descendantProductIdsQuery,
         DescendantProductModelIdsQueryInterface $descendantProductModelIdsQuery,
         ProductModelProposalIndexer $productModelProposalIndexer,
         ProductProposalIndexer $productProposalIndexer
@@ -89,7 +89,7 @@ class RemoveModelProposalsIndexSubscriberSpec extends ObjectBehavior
     function it_has_no_impact_on_non_product_model(ProductInterface $product)
     {
         $event = new GenericEvent($product);
-        $product->getId()->shouldNotBeCalled();
+        $product->getUuid()->shouldNotBeCalled();
 
         $this->calculateImpactedModelProposals($event)->shouldReturn(null);
     }
