@@ -47,4 +47,3 @@ class GetAllExtensionsActionSpec extends ObjectBehavior
         );
     }
 }
-Response::
