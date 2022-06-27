@@ -1,188 +1,9 @@
-import React, {useState, useRef, ChangeEvent, FC, KeyboardEvent, useCallback} from 'react';
+import React, {useState, useRef, ChangeEvent, FC, KeyboardEvent} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontFamily} from '../../../theme';
 import {CloseIcon, LockIcon} from '../../../icons';
 import {arrayUnique, Key, Override} from '../../../shared';
-import {InputProps} from '../common/InputProps';
-
-type TagInputProps = Override<
-  Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps<string[]>>,
-  {
-    /**
-     * Tags to display.
-     */
-    value: string[];
-
-    /**
-     * Placeholder displayed where there is no tag.
-     */
-    placeholder?: string;
-
-    /**
-     * Defines if the input is valid on not.
-     */
-    invalid?: boolean;
-
-    /**
-     * List of separators used to create tags.
-     */
-    separators?: string[];
-
-    /**
-     * Handler called when tags are updated.
-     */
-    onChange: (tags: string[]) => void;
-
-    /**
-     * Callback called when the user hits enter on the field.
-     */
-    onSubmit?: () => void;
-  }
->;
-
-const TagInput: FC<TagInputProps> = ({
-  onChange,
-  placeholder,
-  invalid,
-  value = [],
-  readOnly,
-  onSubmit,
-  separators = ['\\s', ',', ';'], // matching spaces, tabs, line breaks, coma and semi-colon
-  ...inputProps
-}) => {
-  const [isLastTagSelected, setLastTagAsSelected] = useState<boolean>(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const containerRef = useRef<HTMLUListElement>(null);
-  const inputContainerRef = useRef<HTMLLIElement>(null);
-
-  const onChangeCreateTags = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const tagsAsString = event.currentTarget.value;
-      if (tagsAsString !== '') {
-        const newTags = tagsAsString.split(new RegExp(`[${separators.join('')}]+`, 'g'));
-        if (newTags.length === 1) {
-          return;
-        }
-        const newTagsWithoutEmpty = newTags.filter((tag: string) => tag.trim() !== '');
-
-        createTags([...value, ...newTagsWithoutEmpty]);
-      }
-    },
-    [value]
-  );
-
-  const onBlurCreateTag = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const inputCurrentValue = event.currentTarget.value.trim();
-      if (inputCurrentValue !== '') {
-        createTags([...value, ...[inputCurrentValue]]);
-      }
-    },
-    [value]
-  );
-
-  const createTags = useCallback(
-    (newTags: string[]) => {
-      newTags = arrayUnique(newTags);
-      onChange(newTags);
-      if (inputRef && inputRef.current) {
-        inputRef.current.value = '';
-      }
-    },
-    [inputRef, onChange]
-  );
-
-  const removeTag = useCallback(
-    (tagIndexToRemove: number) => {
-      const clonedTags = [...value];
-      clonedTags.splice(tagIndexToRemove, 1);
-      onChange(clonedTags);
-    },
-    [value, onChange]
-  );
-
-  const focusOnInputField = useCallback(
-    (event: MouseEvent) => {
-      if (
-        inputRef &&
-        inputRef.current &&
-        ((containerRef && containerRef.current === event.target) ||
-          (inputContainerRef && inputContainerRef.current === event.target))
-      ) {
-        inputRef.current.focus();
-      }
-    },
-    [inputRef, containerRef, inputContainerRef]
-  );
-
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent) => {
-      const inputCurrentValue = inputRef?.current?.value.trim() ?? '';
-
-      if (Key.Enter === event.key && !isLastTagSelected && !readOnly) {
-        '' === inputCurrentValue ? onSubmit?.() : createTags([...value, ...[inputCurrentValue]]);
-
-        return;
-      }
-
-      const isDeleteKeyPressed = [Key.Backspace.toString(), Key.Delete.toString()].includes(event.key);
-      const tagsAreEmpty = value.length === 0;
-
-      if (!isDeleteKeyPressed || tagsAreEmpty || '' !== inputCurrentValue) {
-        setLastTagAsSelected(false);
-
-        return;
-      }
-
-      if (isLastTagSelected) {
-        const newTags = value.slice(0, value.length - 1);
-        onChange(newTags);
-      }
-
-      setLastTagAsSelected(!isLastTagSelected);
-    },
-    [isLastTagSelected, setLastTagAsSelected, onChange, value, inputRef, onSubmit, readOnly]
-  );
-
-  return (
-    <TagContainer
-      data-testid="tagInputContainer"
-      ref={containerRef}
-      invalid={invalid}
-      onClick={focusOnInputField}
-      readOnly={readOnly}
-    >
-      {value.map((tag, index) => {
-        return (
-          <Tag
-            key={`${tag.toLowerCase()}-${index}`}
-            data-testid="tag"
-            isSelected={index === value.length - 1 && isLastTagSelected}
-            readOnly={readOnly}
-          >
-            {!readOnly && <RemoveTagIcon onClick={() => removeTag(index)} data-testid={`remove-${index}`} />}
-            <TagText>{tag}</TagText>
-          </Tag>
-        );
-      })}
-      <InputContainer ref={inputContainerRef} onClick={focusOnInputField}>
-        <input
-          type="text"
-          data-testid="tag-input"
-          ref={inputRef}
-          placeholder={value.length === 0 ? placeholder : ''}
-          onKeyDown={handleKeyDown}
-          onChange={onChangeCreateTags}
-          onBlurCapture={onBlurCreateTag}
-          aria-invalid={invalid}
-          readOnly={readOnly}
-          {...inputProps}
-        />
-        {readOnly && <ReadOnlyIcon size={16} />}
-      </InputContainer>
-    </TagContainer>
-  );
-};
+import {InputProps} from '../common';
 
 const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps>`
   width: 12px;
@@ -261,5 +82,166 @@ const ReadOnlyIcon = styled(LockIcon)`
   margin: 11px;
   color: ${getColor('grey', 100)};
 `;
+
+type TagInputProps = Override<
+  Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps<string[]>>,
+  {
+    /**
+     * Tags to display.
+     */
+    value: string[];
+
+    /**
+     * Placeholder displayed where there is no tag.
+     */
+    placeholder?: string;
+
+    /**
+     * Defines if the input is valid on not.
+     */
+    invalid?: boolean;
+
+    /**
+     * List of separators used to create tags.
+     */
+    separators?: string[];
+
+    /**
+     * Handler called when tags are updated.
+     */
+    onChange: (tags: string[]) => void;
+
+    /**
+     * Callback called when the user hits enter on the field.
+     */
+    onSubmit?: () => void;
+  }
+>;
+
+const TagInput: FC<TagInputProps> = ({
+  onChange,
+  placeholder,
+  invalid,
+  value = [],
+  readOnly,
+  onSubmit,
+  separators = ['\\s', ',', ';'], // matching spaces, tabs, line breaks, coma and semi-colon
+  ...inputProps
+}) => {
+  const [isLastTagSelected, setLastTagAsSelected] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLUListElement>(null);
+  const inputContainerRef = useRef<HTMLLIElement>(null);
+
+  const onChangeCreateTags = (event: ChangeEvent<HTMLInputElement>) => {
+    const tagsAsString = event.currentTarget.value;
+    if (tagsAsString !== '') {
+      const newTags = tagsAsString.split(new RegExp(`[${separators.join('')}]+`, 'g'));
+      if (newTags.length === 1) {
+        return;
+      }
+      const newTagsWithoutEmpty = newTags.filter((tag: string) => tag.trim() !== '');
+
+      createTags([...value, ...newTagsWithoutEmpty]);
+    }
+  };
+
+  const onBlurCreateTag = (event: ChangeEvent<HTMLInputElement>) => {
+    const inputCurrentValue = event.currentTarget.value.trim();
+    if (inputCurrentValue !== '') {
+      createTags([...value, ...[inputCurrentValue]]);
+    }
+  };
+
+  const createTags = (newTags: string[]) => {
+    newTags = arrayUnique(newTags);
+    onChange(newTags);
+    if (inputRef && inputRef.current) {
+      inputRef.current.value = '';
+    }
+  };
+
+  const removeTag = (tagIndexToRemove: number) => {
+    const clonedTags = [...value];
+    clonedTags.splice(tagIndexToRemove, 1);
+    onChange(clonedTags);
+  };
+
+  const focusOnInputField = (event: MouseEvent) => {
+    if (
+      inputRef &&
+      inputRef.current &&
+      ((containerRef && containerRef.current === event.target) ||
+        (inputContainerRef && inputContainerRef.current === event.target))
+    ) {
+      inputRef.current.focus();
+    }
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    const inputCurrentValue = inputRef?.current?.value.trim() ?? '';
+
+    if (Key.Enter === event.key && !isLastTagSelected && !readOnly) {
+      '' === inputCurrentValue ? onSubmit?.() : createTags([...value, ...[inputCurrentValue]]);
+
+      return;
+    }
+
+    const isDeleteKeyPressed = [Key.Backspace.toString(), Key.Delete.toString()].includes(event.key);
+    const tagsAreEmpty = value.length === 0;
+
+    if (!isDeleteKeyPressed || tagsAreEmpty || '' !== inputCurrentValue) {
+      setLastTagAsSelected(false);
+
+      return;
+    }
+
+    if (isLastTagSelected) {
+      const newTags = value.slice(0, value.length - 1);
+      onChange(newTags);
+    }
+
+    setLastTagAsSelected(!isLastTagSelected);
+  };
+
+  return (
+    <TagContainer
+      data-testid="tagInputContainer"
+      ref={containerRef}
+      invalid={invalid}
+      onClick={focusOnInputField}
+      readOnly={readOnly}
+    >
+      {value.map((tag, index) => {
+        return (
+          <Tag
+            key={`${tag.toLowerCase()}-${index}`}
+            data-testid="tag"
+            isSelected={index === value.length - 1 && isLastTagSelected}
+            readOnly={readOnly}
+          >
+            {!readOnly && <RemoveTagIcon onClick={() => removeTag(index)} data-testid={`remove-${index}`} />}
+            <TagText>{tag}</TagText>
+          </Tag>
+        );
+      })}
+      <InputContainer ref={inputContainerRef} onClick={focusOnInputField}>
+        <input
+          type="text"
+          data-testid="tag-input"
+          ref={inputRef}
+          placeholder={value.length === 0 ? placeholder : ''}
+          onKeyDown={handleKeyDown}
+          onChange={onChangeCreateTags}
+          onBlurCapture={onBlurCreateTag}
+          aria-invalid={invalid}
+          readOnly={readOnly}
+          {...inputProps}
+        />
+        {readOnly && <ReadOnlyIcon size={16} />}
+      </InputContainer>
+    </TagContainer>
+  );
+};
 
 export {TagInput};
