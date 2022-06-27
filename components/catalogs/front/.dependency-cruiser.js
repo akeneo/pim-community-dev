@@ -167,14 +167,14 @@ module.exports = {
             },
         },
         {
-            name: 'no-to-internal-ProductSelection',
+            name: 'no-to-other-components-internals',
             severity: 'error',
             from: {
-                pathNot: '^src/components/ProductSelection/.+',
+                path: '^src/components/([^/]+)/.+',
             },
             to: {
-                path: '^src/components/ProductSelection/.+',
-                pathNot: '^src/components/ProductSelection/index\\.ts',
+                path: '^src/components/([^/]+)/(?!index).+',
+                pathNot: '^src/components/$1',
             },
         },
     ],
