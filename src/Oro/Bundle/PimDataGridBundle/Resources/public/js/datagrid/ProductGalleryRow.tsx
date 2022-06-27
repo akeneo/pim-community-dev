@@ -48,9 +48,8 @@ class ProductGalleryRow extends BaseRow {
     const followProduct = () => {
       const technicalId = this.model.get('technical_id');
       const route = this.isProductModel() ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit';
-      Router.redirectToRoute(route, {
-        id: technicalId,
-      });
+      const params = this.isProductModel() ? {id: technicalId} : {uuid: technicalId};
+      Router.redirectToRoute(route, params);
     };
 
     const notifySelection = (isSelected: boolean) => {

@@ -31,5 +31,5 @@ interface ComputeProductsKeyIndicator
      *      ],
      * ]
      */
-    public function compute(ProductEntityIdCollection $productIdCollection): array;
+    public function compute(ProductEntityIdCollection $entityIdCollection): array;
 }

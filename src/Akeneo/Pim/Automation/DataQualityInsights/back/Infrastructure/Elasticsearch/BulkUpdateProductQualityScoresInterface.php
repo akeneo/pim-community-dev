@@ -12,5 +12,5 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
  */
 interface BulkUpdateProductQualityScoresInterface
 {
-    public function __invoke(ProductEntityIdCollection $productIdCollection): void;
+    public function __invoke(ProductEntityIdCollection $entityIdCollection): void;
 }

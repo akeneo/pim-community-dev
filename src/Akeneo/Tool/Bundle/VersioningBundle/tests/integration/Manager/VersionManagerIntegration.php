@@ -60,7 +60,7 @@ class VersionManagerIntegration extends TestCase
         $product = $this->productRepository->findOneByIdentifier('bar');
         $this->productSaver->save($product);
 
-        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
+        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), null, $product->getUuid());
         $this->assertEmpty($productVersions);
     }
 
@@ -69,7 +69,7 @@ class VersionManagerIntegration extends TestCase
         $product = $this->get('pim_catalog.builder.product')->createProduct('versioned-product');
         $this->productSaver->save($product);
 
-        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
+        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), null, $product->getUuid());
 
         $this->assertCount(1, $productVersions);
 
@@ -77,7 +77,8 @@ class VersionManagerIntegration extends TestCase
 
         $this->assertEquals($version->getVersion(), 1);
         $this->assertEquals($version->getResourceName(), ClassUtils::getClass($product));
-        $this->assertEquals($version->getResourceId(), $product->getId());
+        $this->assertNull($version->getResourceId());
+        $this->assertEquals($version->getResourceUuid(), $product->getUuid());
 
         $this->assertNotNull($version->getLoggedAt());
         $this->assertFalse($version->isPending());
@@ -103,6 +104,47 @@ class VersionManagerIntegration extends TestCase
         ]);
     }
 
+    public function testCreateFamilyVersionOnFamilyCreation()
+    {
+        $family = $this->get('pim_catalog.factory.family')->create();
+        $this->get('pim_catalog.updater.family')->update($family, ['code' => 'my_family', 'attributes' => ['sku']]);
+        $constraintList = $this->get('validator')->validate($family);
+        $this->assertEquals(0, $constraintList->count());
+        $this->get('pim_catalog.saver.family')->save($family);
+
+        $familyVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($family), $family->getId(), null);
+
+        $this->assertCount(1, $familyVersions);
+
+        $version = current($familyVersions);
+
+        $this->assertEquals($version->getVersion(), 1);
+        $this->assertEquals($version->getResourceName(), ClassUtils::getClass($family));
+        $this->assertEquals($version->getResourceId(), $family->getId());
+        $this->assertNull($version->getResourceUuid());
+
+        $this->assertNotNull($version->getLoggedAt());
+        $this->assertFalse($version->isPending());
+        $this->assertNull($version->getContext());
+        $this->assertEquals($version->getAuthor(), 'system');
+        $this->assertEquals($version->getSnapshot(), [
+            'code' => 'my_family',
+            'attributes' => 'sku',
+            'attribute_as_label' => 'sku',
+            'attribute_as_image' => null,
+            'requirements-ecommerce' => 'sku',
+            'requirements-tablet' => 'sku',
+        ]);
+        $this->assertEquals($version->getChangeset(), [
+            'code' => ['old' => null, 'new' => 'my_family'],
+            'attributes' => ['old' => null, 'new' => 'sku'],
+            'attribute_as_label' => ['old' => null, 'new' => 'sku'],
+            'attribute_as_image' => ['old' => null, 'new' => null],
+            'requirements-ecommerce' => ['old' => null, 'new' => 'sku'],
+            'requirements-tablet' => ['old' => null, 'new' => 'sku'],
+        ]);
+    }
+
     public function testCreateProductVersionOnUpdate()
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct('versioned-product');
@@ -125,14 +167,15 @@ class VersionManagerIntegration extends TestCase
             '2017-02-01T00:00:00+01:00'
         );
 
-        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
+        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), null, $product->getUuid());
 
         $this->assertCount(2, $productVersions);
 
         $version = current($productVersions);
         $this->assertEquals($version->getVersion(), 2);
         $this->assertEquals($version->getResourceName(), ClassUtils::getClass($product));
-        $this->assertEquals($version->getResourceId(), $product->getId());
+        $this->assertNull($version->getResourceId());
+        $this->assertEquals($version->getResourceUuid(), $product->getUuid());
         $this->assertNotNull($version->getLoggedAt());
         $this->assertEquals($version->getSnapshot(), [
             'sku'        => 'versioned-product',
@@ -176,14 +219,15 @@ class VersionManagerIntegration extends TestCase
         $product->removeValue($productValue);
         $this->productSaver->save($product);
 
-        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
+        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), null, $product->getUuid());
 
         $this->assertCount(2, $productVersions);
 
         $version = current($productVersions);
         $this->assertEquals($version->getVersion(), 2);
         $this->assertEquals($version->getResourceName(), ClassUtils::getClass($product));
-        $this->assertEquals($version->getResourceId(), $product->getId());
+        $this->assertNull($version->getResourceId());
+        $this->assertEquals($version->getResourceUuid(), $product->getUuid());
         $this->assertNotNull($version->getLoggedAt());
         $this->assertEquals($version->getSnapshot(), [
             'sku'        => 'versioned-product',

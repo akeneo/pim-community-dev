@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Comp
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaByFeatureRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByEntityIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -41,7 +41,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
 class GetProductEvaluation
 {
     public function __construct(
-        private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
+        private GetCriteriaEvaluationsByEntityIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
         private CriteriaByFeatureRegistry $criteriaRegistry,
         private CompleteEvaluationWithImprovableAttributes $completeEvaluationWithImprovableAttributes

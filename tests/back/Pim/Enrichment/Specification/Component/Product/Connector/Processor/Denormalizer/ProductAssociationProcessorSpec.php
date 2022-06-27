@@ -66,7 +66,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
-        $product->getId()->willReturn(42);
 
         $convertedData = [
             'identifier'   => 'tshirt',
@@ -136,7 +135,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
-        $product->getId()->willReturn(42);
 
         $convertedData = [
             'identifier'   => 'tshirt',
@@ -206,7 +204,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabledComparison')->willReturn(true);
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
-        $product->getId()->willReturn(42);
 
         $convertedData = [
             'identifier'   => 'tshirt',
@@ -287,7 +284,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabledComparison')->willReturn(true);
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
-        $product->getId()->willReturn(42);
 
         $convertedData = [
             'identifier'   => 'tshirt',
@@ -365,7 +361,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
-        $product->getId()->willReturn(42);
 
         $convertedData = [
             'identifier'   => 'tshirt',

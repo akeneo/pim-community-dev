@@ -13,7 +13,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -43,7 +45,7 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
 
     public function test_it_creates_a_collection_of_product_model_criteria_evaluations()
     {
-        $productModelId = new ProductId($this->createProductModel('ziggy', 'familyVariantA1')->getId());
+        $productModelId = new ProductModelId($this->createProductModel('ziggy', 'familyVariantA1')->getId());
         $this->deleteAllProductModelCriterionEvaluations();
 
         $this->assertCountProductModelCriterionEvaluations(0);
@@ -79,28 +81,28 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
 
     public function test_it_updates_a_criterion_evaluation_instead_of_creating_it_when_it_already_exists()
     {
-        $productIdWithExistingEvaluation = new ProductId($this->createProductModel('ziggy', 'familyVariantA1')->getId());
-        $productIdWithoutEvaluation = new ProductId($this->createProductModel('yggiz', 'familyVariantA1')->getId());
+        $productModelIdWithExistingEvaluation = new ProductModelId($this->createProductModel('ziggy', 'familyVariantA1')->getId());
+        $productModelIdWithoutEvaluation = new ProductModelId($this->createProductModel('yggiz', 'familyVariantA1')->getId());
         $criterionCode = new CriterionCode('completeness');
         $this->deleteAllProductModelCriterionEvaluations();
 
-        $existingEvaluation = $this->givenAnExistingCriterionEvaluation($criterionCode, $productIdWithExistingEvaluation);
+        $existingEvaluation = $this->givenAnExistingCriterionEvaluation($criterionCode, $productModelIdWithExistingEvaluation);
 
         $this->productModelCriterionEvaluationRepository->create((new Write\CriterionEvaluationCollection)
             ->add(new Write\CriterionEvaluation(
                 $criterionCode,
-                $productIdWithExistingEvaluation,
+                $productModelIdWithExistingEvaluation,
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new Write\CriterionEvaluation(
                 $criterionCode,
-                $productIdWithoutEvaluation,
+                $productModelIdWithoutEvaluation,
                 CriterionEvaluationStatus::pending()
             )));
 
         $this->assertCountProductModelCriterionEvaluations(2);
 
-        $updatedEvaluation = $this->findCriterionEvaluation($productIdWithExistingEvaluation, $criterionCode);
+        $updatedEvaluation = $this->findCriterionEvaluation($productModelIdWithExistingEvaluation, $criterionCode);
         $this->assertSame($existingEvaluation->getEvaluatedAt()->format(Clock::TIME_FORMAT), $updatedEvaluation->getEvaluatedAt()->format(Clock::TIME_FORMAT));
         $this->assertSame(CriterionEvaluationStatus::PENDING, strval($updatedEvaluation->getStatus()));
         $this->assertNotNull($updatedEvaluation->getResult());
@@ -108,7 +110,7 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
 
     public function test_it_updates_product_model_criteria_evaluations()
     {
-        $productModelId = new ProductId($this->createProductModel('ziggy', 'familyVariantA1')->getId());
+        $productModelId = new ProductModelId($this->createProductModel('ziggy', 'familyVariantA1')->getId());
         $this->deleteAllProductModelCriterionEvaluations();
 
         $criterionEvaluationA = new Write\CriterionEvaluation(
@@ -145,8 +147,8 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
                 ->add($criterionEvaluationB)
         );
 
-        $updatedCriterionEvaluationA = $this->findCriterionEvaluation($criterionEvaluationA->getProductId(), $criterionEvaluationA->getCriterionCode());
-        $updatedCriterionEvaluationB = $this->findCriterionEvaluation($criterionEvaluationB->getProductId(), $criterionEvaluationB->getCriterionCode());
+        $updatedCriterionEvaluationA = $this->findCriterionEvaluation($criterionEvaluationA->getEntityId(), $criterionEvaluationA->getCriterionCode());
+        $updatedCriterionEvaluationB = $this->findCriterionEvaluation($criterionEvaluationB->getEntityId(), $criterionEvaluationB->getCriterionCode());
 
         $this->assertCriterionEvaluationEquals($criterionEvaluationA, $updatedCriterionEvaluationA);
         $this->assertCriterionEvaluationEquals($criterionEvaluationB, $updatedCriterionEvaluationB);
@@ -157,12 +159,12 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
         return (new Write\CriterionEvaluationCollection)
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completeness'),
-                new ProductId($this->createProductModel('a_product_model', 'familyVariantA1')->getId()),
+                new ProductModelId($this->createProductModel('a_product_model', 'familyVariantA1')->getId()),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completion'),
-                new ProductId($this->createProductModel('another_product_model', 'familyVariantA1')->getId()),
+                new ProductModelId($this->createProductModel('another_product_model', 'familyVariantA1')->getId()),
                 CriterionEvaluationStatus::pending()
             ));
     }
@@ -174,10 +176,10 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
         return $stmt->fetchAllAssociative();
     }
 
-    private function findCriterionEvaluation(ProductId $productId, CriterionCode $criterionCode): ?Read\CriterionEvaluation
+    private function findCriterionEvaluation(ProductEntityIdInterface $entityId, CriterionCode $criterionCode): ?Read\CriterionEvaluation
     {
         $evaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_model_criteria_evaluations')
-            ->execute($productId);
+            ->execute($entityId);
 
         return $evaluations->get($criterionCode);
     }
@@ -200,7 +202,7 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
     private function assertCriterionEvaluationEquals(Write\CriterionEvaluation $expectedCriterionEvaluation, Read\CriterionEvaluation $criterionEvaluation): void
     {
         $this->assertEquals($expectedCriterionEvaluation->getCriterionCode(), $criterionEvaluation->getCriterionCode());
-        $this->assertEquals($expectedCriterionEvaluation->getProductId(), $criterionEvaluation->getProductId());
+        $this->assertEquals($expectedCriterionEvaluation->getEntityId(), $criterionEvaluation->getProductId());
         $this->assertEvaluatedAtEquals($expectedCriterionEvaluation->getEvaluatedAt(), $criterionEvaluation->getEvaluatedAt());
         $this->assertEquals($expectedCriterionEvaluation->getStatus(), $criterionEvaluation->getStatus());
         $this->assertEquals($expectedCriterionEvaluation->getResult()->getRates()->toArrayInt(), $criterionEvaluation->getResult()->getRates()->toArrayInt());
@@ -208,7 +210,7 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
         $this->assertEquals($expectedCriterionEvaluation->getResult()->getDataToArray(), $criterionEvaluation->getResult()->getData());
     }
 
-    private function givenAnExistingCriterionEvaluation(CriterionCode $criterionCode, ProductId $productModelId): Write\CriterionEvaluation
+    private function givenAnExistingCriterionEvaluation(CriterionCode $criterionCode, ProductModelId $productModelId): Write\CriterionEvaluation
     {
         $evaluation = new Write\CriterionEvaluation(
                 $criterionCode,

@@ -8,6 +8,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
@@ -44,7 +46,7 @@ class GetProductCompletenessesIntegration extends TestCase
             ]
         );
 
-        $completenesses = $this->getCompletenesses($this->getProductId('productA'));
+        $completenesses = $this->getCompletenesses($this->getProductUuid('productA'));
         // ecommerce + en_US
         // tablet + (en_US, de_DE, fr_FR)
         // ecommerce_china + (en_US, zh_CN)
@@ -57,87 +59,87 @@ class GetProductCompletenessesIntegration extends TestCase
     {
         $this->initProducts();
 
-        $idProdA = $this->getProductId('productA');
-        $idProdA2 = $this->getProductId('productA2');
+        $idProdA = $this->getProductUuid('productA');
+        $idProdA2 = $this->getProductUuid('productA2');
         $completenesses = $this
             ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
-            ->fromProductIds([$idProdA, $idProdA2]);
+            ->fromProductUuids([$idProdA, $idProdA2]);
 
         Assert::assertCount(2, $completenesses);
 
-        Assert::assertArrayHasKey($idProdA, $completenesses);
-        Assert::assertCount(6, $completenesses[$idProdA]);
-        $this->assertCompletenessContains($completenesses[$idProdA], 'ecommerce', 'en_US', 4, 1);
-        $this->assertCompletenessContains($completenesses[$idProdA], 'tablet', 'en_US', 4, 2);
+        Assert::assertArrayHasKey($idProdA->toString(), $completenesses);
+        Assert::assertCount(6, $completenesses[$idProdA->toString()]);
+        $this->assertCompletenessContains($completenesses[$idProdA->toString()], 'ecommerce', 'en_US', 4, 1);
+        $this->assertCompletenessContains($completenesses[$idProdA->toString()], 'tablet', 'en_US', 4, 2);
 
-        Assert::assertArrayHasKey($idProdA2, $completenesses);
-        Assert::assertCount(6, $completenesses[$idProdA2]);
-        $this->assertCompletenessContains($completenesses[$idProdA2], 'ecommerce', 'en_US', 4, 1);
-        $this->assertCompletenessContains($completenesses[$idProdA2], 'tablet', 'en_US', 4, 2);
+        Assert::assertArrayHasKey($idProdA2->toString(), $completenesses);
+        Assert::assertCount(6, $completenesses[$idProdA2->toString()]);
+        $this->assertCompletenessContains($completenesses[$idProdA2->toString()], 'ecommerce', 'en_US', 4, 1);
+        $this->assertCompletenessContains($completenesses[$idProdA2->toString()], 'tablet', 'en_US', 4, 2);
     }
 
     public function test_it_returns_completenesses_of_several_product_id_filtered_by_channel_and_locales(): void
     {
         $this->initProducts();
-        $idProdA = $this->getProductId('productA');
-        $idProdA2 = $this->getProductId('productA2');
+        $idProdA = $this->getProductUuid('productA');
+        $idProdA2 = $this->getProductUuid('productA2');
         $completenesses = $this
             ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
-            ->fromProductIds([$idProdA, $idProdA2], 'ecommerce_china', ['en_US', 'fr_FR']);
+            ->fromProductUuids([$idProdA, $idProdA2], 'ecommerce_china', ['en_US', 'fr_FR']);
 
         Assert::assertCount(2, $completenesses);
 
-        Assert::assertArrayHasKey($idProdA, $completenesses);
-        Assert::assertCount(1, $completenesses[$idProdA]);
-        $this->assertCompletenessContains($completenesses[$idProdA], 'ecommerce_china', 'en_US', 1, 0);
+        Assert::assertArrayHasKey($idProdA->toString(), $completenesses);
+        Assert::assertCount(1, $completenesses[$idProdA->toString()]);
+        $this->assertCompletenessContains($completenesses[$idProdA->toString()], 'ecommerce_china', 'en_US', 1, 0);
 
-        Assert::assertArrayHasKey($idProdA2, $completenesses);
-        Assert::assertCount(1, $completenesses[$idProdA2]);
-        $this->assertCompletenessContains($completenesses[$idProdA2], 'ecommerce_china', 'en_US', 1, 0);
+        Assert::assertArrayHasKey($idProdA2->toString(), $completenesses);
+        Assert::assertCount(1, $completenesses[$idProdA2->toString()]);
+        $this->assertCompletenessContains($completenesses[$idProdA2->toString()], 'ecommerce_china', 'en_US', 1, 0);
     }
 
     public function test_it_returns_completenesses_of_several_product_id_filtered_by_channel(): void
     {
         $this->initProducts();
-        $idProdA = $this->getProductId('productA');
-        $idProdA2 = $this->getProductId('productA2');
+        $idProdA = $this->getProductUuid('productA');
+        $idProdA2 = $this->getProductUuid('productA2');
         $completenesses = $this
             ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
-            ->fromProductIds([$idProdA, $idProdA2], 'ecommerce_china');
+            ->fromProductUuids([$idProdA, $idProdA2], 'ecommerce_china');
 
         Assert::assertCount(2, $completenesses);
 
-        Assert::assertArrayHasKey($idProdA, $completenesses);
-        Assert::assertCount(2, $completenesses[$idProdA]);
-        $this->assertCompletenessContains($completenesses[$idProdA], 'ecommerce_china', 'en_US', 1, 0);
-        $this->assertCompletenessContains($completenesses[$idProdA], 'ecommerce_china', 'zh_CN', 1, 0);
+        Assert::assertArrayHasKey($idProdA->toString(), $completenesses);
+        Assert::assertCount(2, $completenesses[$idProdA->toString()]);
+        $this->assertCompletenessContains($completenesses[$idProdA->toString()], 'ecommerce_china', 'en_US', 1, 0);
+        $this->assertCompletenessContains($completenesses[$idProdA->toString()], 'ecommerce_china', 'zh_CN', 1, 0);
 
-        Assert::assertArrayHasKey($idProdA2, $completenesses);
-        Assert::assertCount(2, $completenesses[$idProdA2]);
-        $this->assertCompletenessContains($completenesses[$idProdA2], 'ecommerce_china', 'en_US', 1, 0);
-        $this->assertCompletenessContains($completenesses[$idProdA2], 'ecommerce_china', 'zh_CN', 1, 0);
+        Assert::assertArrayHasKey($idProdA2->toString(), $completenesses);
+        Assert::assertCount(2, $completenesses[$idProdA2->toString()]);
+        $this->assertCompletenessContains($completenesses[$idProdA2->toString()], 'ecommerce_china', 'en_US', 1, 0);
+        $this->assertCompletenessContains($completenesses[$idProdA2->toString()], 'ecommerce_china', 'zh_CN', 1, 0);
     }
 
     public function test_it_returns_completenesses_of_several_product_id_filtered_by_locale(): void
     {
         $this->initProducts();
-        $idProdA = $this->getProductId('productA');
-        $idProdA2 = $this->getProductId('productA2');
+        $idProdA = $this->getProductUuid('productA');
+        $idProdA2 = $this->getProductUuid('productA2');
         $completenesses = $this
             ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
-            ->fromProductIds([$idProdA, $idProdA2], null, ['zh_CN', 'fr_FR']);
+            ->fromProductUuids([$idProdA, $idProdA2], null, ['zh_CN', 'fr_FR']);
 
         Assert::assertCount(2, $completenesses);
 
-        Assert::assertArrayHasKey($idProdA, $completenesses);
-        Assert::assertCount(2, $completenesses[$idProdA]);
-        $this->assertCompletenessContains($completenesses[$idProdA], 'tablet', 'fr_FR', 4, 1);
-        $this->assertCompletenessContains($completenesses[$idProdA], 'ecommerce_china', 'zh_CN', 1, 0);
+        Assert::assertArrayHasKey($idProdA->toString(), $completenesses);
+        Assert::assertCount(2, $completenesses[$idProdA->toString()]);
+        $this->assertCompletenessContains($completenesses[$idProdA->toString()], 'tablet', 'fr_FR', 4, 1);
+        $this->assertCompletenessContains($completenesses[$idProdA->toString()], 'ecommerce_china', 'zh_CN', 1, 0);
 
-        Assert::assertArrayHasKey($idProdA2, $completenesses);
-        Assert::assertCount(2, $completenesses[$idProdA2]);
-        $this->assertCompletenessContains($completenesses[$idProdA2], 'tablet', 'fr_FR', 4, 2);
-        $this->assertCompletenessContains($completenesses[$idProdA2], 'ecommerce_china', 'zh_CN', 1, 0);
+        Assert::assertArrayHasKey($idProdA2->toString(), $completenesses);
+        Assert::assertCount(2, $completenesses[$idProdA2->toString()]);
+        $this->assertCompletenessContains($completenesses[$idProdA2->toString()], 'tablet', 'fr_FR', 4, 2);
+        $this->assertCompletenessContains($completenesses[$idProdA2->toString()], 'ecommerce_china', 'zh_CN', 1, 0);
     }
 
     public function test_that_it_returns_an_empty_array_for_a_product_without_family()
@@ -168,7 +170,7 @@ class GetProductCompletenessesIntegration extends TestCase
             ]
         );
 
-        $completenesses = $this->getCompletenesses($this->getProductId('product_without_family'));
+        $completenesses = $this->getCompletenesses($this->getProductUuid('product_without_family'));
         Assert::assertSame(0, $completenesses->count());
     }
 
@@ -238,20 +240,20 @@ class GetProductCompletenessesIntegration extends TestCase
         $this->get('pim_catalog.saver.product')->save($product);
     }
 
-    private function getProductId(string $identifier): ?int
+    private function getProductUuid(string $identifier): ?UuidInterface
     {
-        $productId = $this->get('database_connection')->executeQuery(
-            'SELECT id from pim_catalog_product where identifier = :identifier',
+        $productUuid = $this->get('database_connection')->executeQuery(
+            'SELECT BIN_TO_UUID(uuid) as uuid from pim_catalog_product where identifier = :identifier',
             ['identifier' => $identifier]
         )->fetchOne();
 
-        return $productId ? (int)$productId : null;
+        return $productUuid ? Uuid::fromString($productUuid) : null;
     }
 
-    private function getCompletenesses(int $productId): ProductCompletenessCollection
+    private function getCompletenesses(UuidInterface $productUuid): ProductCompletenessCollection
     {
         return $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
-                    ->fromProductId($productId);
+                    ->fromProductUuid($productUuid);
     }
 
     private function assertCompletenessContains(

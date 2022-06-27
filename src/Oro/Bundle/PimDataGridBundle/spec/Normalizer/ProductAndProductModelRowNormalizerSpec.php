@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Oro\Bundle\PimDataGridBundle\Normalizer\ProductAndProductModelRowNormalizer;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -47,7 +48,7 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
             'label',
             null,
             90,
-            1,
+            '54162e35-ff81-48f1-96d5-5febd3f00fd5',
             'parent_code',
             new WriteValueCollection([])
         );
@@ -74,7 +75,7 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
             'data',
             MediaValue::value('media_attribute', new FileInfo()),
             90,
-            1,
+            '54162e35-ff81-48f1-96d5-5febd3f00fd5',
             'parent_code',
             $values
         );
@@ -128,9 +129,9 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
             ],
             'completeness' => 90,
             'document_type' => 'product',
-            'technical_id' => 1,
-            'id'           => 1,
-            'search_id' => 'product_1',
+            'technical_id' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
+            'id'           => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
+            'search_id' => 'product_54162e35-ff81-48f1-96d5-5febd3f00fd5',
             'is_checked' => true,
             'complete_variant_product' => [],
             'parent' => 'parent_code',
