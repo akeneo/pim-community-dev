@@ -13,18 +13,12 @@ use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInte
  */
 class LegacyMeasurementProvider
 {
-    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
-
-    private LegacyMeasurementAdapter $adapter;
-
     private array $legacyMeasurementFamily = [];
 
     public function __construct(
-        MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
-        LegacyMeasurementAdapter $adapter
+        private MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
+        private LegacyMeasurementAdapter $adapter
     ) {
-        $this->measurementFamilyRepository = $measurementFamilyRepository;
-        $this->adapter = $adapter;
     }
 
     public function getMeasurementFamilies(): array

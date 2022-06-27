@@ -19,11 +19,8 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class StandardUnitCodeCannotBeChangedValidator extends ConstraintValidator
 {
-    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
-
-    public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
+    public function __construct(private MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
     {
-        $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
     /**
@@ -35,7 +32,7 @@ class StandardUnitCodeCannotBeChangedValidator extends ConstraintValidator
         try {
             $measurementFamily = $this->measurementFamilyRepository
                 ->getByCode(MeasurementFamilyCode::fromString($saveMeasurementFamilyCommand->code));
-        } catch (MeasurementFamilyNotFoundException $e) {
+        } catch (MeasurementFamilyNotFoundException) {
             return;
         }
 

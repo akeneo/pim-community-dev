@@ -15,11 +15,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class CodeMustBeUniqueValidator extends ConstraintValidator
 {
-    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
-
-    public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
+    public function __construct(private MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
     {
-        $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
     public function validate($value, Constraint $constraint)
@@ -41,7 +38,7 @@ class CodeMustBeUniqueValidator extends ConstraintValidator
             $this->measurementFamilyRepository->getByCode(MeasurementFamilyCode::fromString($code));
 
             return true;
-        } catch (MeasurementFamilyNotFoundException $ex) {
+        } catch (MeasurementFamilyNotFoundException) {
             return false;
         }
     }

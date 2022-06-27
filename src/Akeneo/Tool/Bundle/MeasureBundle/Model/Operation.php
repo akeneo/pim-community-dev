@@ -17,21 +17,16 @@ final class Operation
     public const STANDARD_VALUE = '1';
     private const SUPPORTED_OPERATORS = [self::STANDARD_OPERATOR, 'div', 'add', 'sub'];
 
-    private string $operator;
-
-    private string $value;
-
-    private function __construct(string $operator, string $value)
-    {
+    private function __construct(
+        private string $operator,
+        private string $value
+    ) {
         Assert::oneOf($operator, self::SUPPORTED_OPERATORS);
         Assert::regex(
             $value,
             '~^[0-9]*\.?[0-9]+$~',
             sprintf('Expecting operation value to be a numeric, "%s" given', $value)
         );
-
-        $this->operator = $operator;
-        $this->value = $value;
     }
 
     public static function create(string $operator, string $value): self

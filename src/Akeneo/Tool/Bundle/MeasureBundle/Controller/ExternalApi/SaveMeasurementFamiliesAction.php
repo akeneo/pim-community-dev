@@ -32,40 +32,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class SaveMeasurementFamiliesAction
 {
-    private MeasurementFamilyListValidator $measurementFamilyListValidator;
-
-    private MeasurementFamilyCommonStructureValidator $measurementFamilyCommonStructureValidator;
-
-    private MeasurementFamilyValidator $measurementFamilyStructureValidator;
-
-    private ValidatorInterface $validator;
-
-    private ViolationNormalizer $violationNormalizer;
-
-    private SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler;
-
-    private CreateMeasurementFamilyHandler $createMeasurementFamilyHandler;
-
-    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
-
     public function __construct(
-        MeasurementFamilyListValidator $measurementFamilyListValidator,
-        MeasurementFamilyCommonStructureValidator $measurementFamilyCommonStructureValidator,
-        MeasurementFamilyValidator $measurementFamilyStructureValidator,
-        ValidatorInterface $validator,
-        ViolationNormalizer $violationNormalizer,
-        SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler,
-        CreateMeasurementFamilyHandler $createMeasurementFamilyHandler,
-        MeasurementFamilyRepositoryInterface $measurementFamilyRepository
+        private MeasurementFamilyListValidator $measurementFamilyListValidator,
+        private MeasurementFamilyCommonStructureValidator $measurementFamilyCommonStructureValidator,
+        private MeasurementFamilyValidator $measurementFamilyStructureValidator,
+        private ValidatorInterface $validator,
+        private ViolationNormalizer $violationNormalizer,
+        private SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler,
+        private CreateMeasurementFamilyHandler $createMeasurementFamilyHandler,
+        private MeasurementFamilyRepositoryInterface $measurementFamilyRepository
     ) {
-        $this->measurementFamilyListValidator = $measurementFamilyListValidator;
-        $this->measurementFamilyCommonStructureValidator = $measurementFamilyCommonStructureValidator;
-        $this->measurementFamilyStructureValidator = $measurementFamilyStructureValidator;
-        $this->validator = $validator;
-        $this->violationNormalizer = $violationNormalizer;
-        $this->saveMeasurementFamilyHandler = $saveMeasurementFamilyHandler;
-        $this->createMeasurementFamilyHandler = $createMeasurementFamilyHandler;
-        $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
     public function __invoke(Request $request): Response
@@ -128,7 +104,7 @@ class SaveMeasurementFamiliesAction
     {
         try {
             return $this->measurementFamilyRepository->getByCode($measurementFamilyCode);
-        } catch (MeasurementFamilyNotFoundException $exception) {
+        } catch (MeasurementFamilyNotFoundException) {
             return null;
         }
     }

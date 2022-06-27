@@ -16,15 +16,10 @@ use Psr\EventDispatcher\EventDispatcherInterface;
  */
 class DeleteMeasurementFamilyHandler
 {
-    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
-    private ?EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
-        EventDispatcherInterface $eventDispatcher
+        private MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
+        private ?EventDispatcherInterface $eventDispatcher
     ) {
-        $this->measurementFamilyRepository = $measurementFamilyRepository;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

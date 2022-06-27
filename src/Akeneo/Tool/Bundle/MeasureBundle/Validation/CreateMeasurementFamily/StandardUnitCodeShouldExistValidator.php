@@ -23,7 +23,13 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
     public function validate($createMeasurementFamilyCommand, Constraint $constraint)
     {
         if (!$createMeasurementFamilyCommand instanceof CreateMeasurementFamilyCommand) {
-            throw new \LogicException(sprintf('Expect an instance of class "%s", "%s" given', CreateMeasurementFamilyCommand::class, get_class($createMeasurementFamilyCommand)));
+            throw new \LogicException(
+                sprintf(
+                    'Expect an instance of class "%s", "%s" given',
+                    CreateMeasurementFamilyCommand::class,
+                    $createMeasurementFamilyCommand::class
+                )
+            );
         }
         $standardUnitCode = $createMeasurementFamilyCommand->standardUnitCode;
         if (empty($standardUnitCode)) {

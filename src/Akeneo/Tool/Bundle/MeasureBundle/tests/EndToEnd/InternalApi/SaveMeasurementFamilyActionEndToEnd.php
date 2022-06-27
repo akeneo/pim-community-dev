@@ -163,7 +163,7 @@ class SaveMeasurementFamilyActionEndToEnd extends WebTestCase
         $measurementFamilyCode = MeasurementFamilyCode::fromString($normalizedMeasurementFamily['code']);
         try {
             $normalizedActual = $this->measurementFamilyRepository->getByCode($measurementFamilyCode)->normalize();
-        } catch (MeasurementFamilyNotFoundException $e) {
+        } catch (MeasurementFamilyNotFoundException) {
             $hasNotBeenCreated = true;
         }
 

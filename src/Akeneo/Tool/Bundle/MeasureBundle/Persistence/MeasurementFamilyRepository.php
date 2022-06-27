@@ -22,17 +22,14 @@ use Doctrine\DBAL\Types\Types;
  */
 class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterface
 {
-    private Connection $sqlConnection;
-
     /** @var MeasurementFamily[] */
     private array $allMeasurementFamiliesCache = [];
 
     /** @var MeasurementFamily[] */
     private array $measurementFamilyCache = [];
 
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
     }
 
     public function all(): array

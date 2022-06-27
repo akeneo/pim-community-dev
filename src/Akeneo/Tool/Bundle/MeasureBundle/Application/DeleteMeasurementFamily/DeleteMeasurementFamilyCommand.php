@@ -10,6 +10,5 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily;
  */
 class DeleteMeasurementFamilyCommand
 {
-    /** @var string */
-    public $code;
+    public string $code;
 }

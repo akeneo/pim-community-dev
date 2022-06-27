@@ -22,20 +22,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class DeleteMeasurementFamilyAction
 {
-    private ValidatorInterface $validator;
-
-    private DeleteMeasurementFamilyHandler $deleteMeasurementFamilyHandler;
-
-    private SecurityFacadeInterface $securityFacade;
-
     public function __construct(
-        ValidatorInterface $validator,
-        DeleteMeasurementFamilyHandler $deleteMeasurementFamilyHandler,
-        SecurityFacadeInterface $securityFacade
+        private ValidatorInterface $validator,
+        private DeleteMeasurementFamilyHandler $deleteMeasurementFamilyHandler,
+        private SecurityFacadeInterface $securityFacade
     ) {
-        $this->validator = $validator;
-        $this->deleteMeasurementFamilyHandler = $deleteMeasurementFamilyHandler;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request, string $code): Response
@@ -53,9 +44,9 @@ class DeleteMeasurementFamilyAction
             $deleteMeasurementFamilyCommand = $this->createDeleteMeasurementFamilyCommand($code);
             $this->validateDeleteMeasurementFamilyCommand($deleteMeasurementFamilyCommand);
             $this->handleDeleteMeasurementFamilyCommand($deleteMeasurementFamilyCommand);
-        } catch (MeasurementFamilyNotFoundException $ex) {
+        } catch (MeasurementFamilyNotFoundException) {
             return new Response(null, Response::HTTP_NOT_FOUND);
-        } catch (ViolationHttpException $ex) {
+        } catch (ViolationHttpException) {
             return new JsonResponse(
                 [
                     'code' => Response::HTTP_UNPROCESSABLE_ENTITY,

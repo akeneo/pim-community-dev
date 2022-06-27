@@ -20,16 +20,10 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnitsValidator extends ConstraintValidator
 {
-    private IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
-
-    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
-
     public function __construct(
-        MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
-        IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily
+        private MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
+        private IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily
     ) {
-        $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily = $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
-        $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
     /**
@@ -46,7 +40,7 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
 
         try {
             $measurementFamily = $this->measurementFamilyRepository->getByCode(MeasurementFamilyCode::fromString($saveMeasurementFamily->code));
-        } catch (MeasurementFamilyNotFoundException $exception) {
+        } catch (MeasurementFamilyNotFoundException) {
             return;
         }
 

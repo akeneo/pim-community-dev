@@ -19,11 +19,9 @@ class MeasureConverter
     public const SCALE = 12;
 
     private ?string $family = null;
-    private LegacyMeasurementProvider $legacyMeasurementProvider;
 
-    public function __construct(LegacyMeasurementProvider $provider)
+    public function __construct(private LegacyMeasurementProvider $legacyMeasurementProvider)
     {
-        $this->legacyMeasurementProvider = $provider;
     }
 
     /**
@@ -60,7 +58,7 @@ class MeasureConverter
      *
      * @return string
      */
-    public function convert($baseUnit, $finalUnit, $value)
+    public function convert($baseUnit, $finalUnit, float|int|string $value)
     {
         $standardValue = $this->convertBaseToStandard($baseUnit, $value);
 
@@ -78,7 +76,7 @@ class MeasureConverter
      * @throws UnitNotFoundException
      * @throws UnknownOperatorException
      */
-    public function convertBaseToStandard($baseUnit, $value)
+    public function convertBaseToStandard($baseUnit, float|int|string $value)
     {
         $unitInfo = $this->getUnitInfo($baseUnit);
         $conversionConfig = $unitInfo['convert'];
@@ -104,17 +102,13 @@ class MeasureConverter
      *
      *@throws UnknownOperatorException
      */
-    protected function applyOperation($value, $operator, $operand)
+    protected function applyOperation(float|int|string $value, $operator, $operand)
     {
         if (!is_numeric($value)) {
             return '0';
         }
 
-        if (is_float($value)) {
-            $processedValue = \number_format($value, static::SCALE, '.', '');
-        } else {
-            $processedValue = (string) $value;
-        }
+        $processedValue = is_float($value) ? \number_format($value, static::SCALE, '.', '') : (string) $value;
 
         switch ($operator) {
             case 'div':
@@ -149,7 +143,7 @@ class MeasureConverter
      *
      * @return string
      */
-    public function convertStandardToResult($finalUnit, $value)
+    public function convertStandardToResult($finalUnit, float|int|string $value)
     {
         $unitInfo = $this->getUnitInfo($finalUnit);
         $conversionConfig = $unitInfo['convert'];
@@ -176,7 +170,7 @@ class MeasureConverter
      *
      * @throws UnknownOperatorException
      */
-    protected function applyReversedOperation($value, $operator, $operand)
+    protected function applyReversedOperation(float|int|string $value, $operator, $operand)
     {
         $processedValue = (string) $value;
 

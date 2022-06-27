@@ -16,26 +16,17 @@ class MeasurementFamily
 {
     public const MIN_UNIT_COUNT = 1;
 
-    private MeasurementFamilyCode $code;
-
-    private LabelCollection $labels;
-
-    private UnitCode $standardUnitCode;
-
-    private array $units;
-
-    private function __construct(MeasurementFamilyCode $code, LabelCollection $labels, UnitCode $standardUnitCode, array $units)
-    {
+    private function __construct(
+        private MeasurementFamilyCode $code,
+        private LabelCollection $labels,
+        private UnitCode $standardUnitCode,
+        private array $units
+    ) {
         Assert::allIsInstanceOf($units, Unit::class);
         Assert::minCount($units, self::MIN_UNIT_COUNT);
         $this->assertStandardUnitExists($standardUnitCode, $units);
         $this->assertStandardUnitOperationIsAMultiplyByOne($standardUnitCode, $units);
         $this->assertNoDuplicatedUnits($units);
-
-        $this->code = $code;
-        $this->labels = $labels;
-        $this->standardUnitCode = $standardUnitCode;
-        $this->units = $units;
     }
 
     public static function create(MeasurementFamilyCode $code, LabelCollection $labels, UnitCode $standardUnitCode, array $units): self

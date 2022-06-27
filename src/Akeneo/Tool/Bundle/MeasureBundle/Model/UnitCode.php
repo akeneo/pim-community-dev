@@ -13,9 +13,7 @@ use Webmozart\Assert\Assert;
  */
 final class UnitCode
 {
-    private string $code;
-
-    private function __construct(string $code)
+    private function __construct(private string $code)
     {
         Assert::stringNotEmpty($code);
         Assert::maxLength(
@@ -28,7 +26,6 @@ final class UnitCode
             '/^[a-zA-Z0-9_]+$/',
             sprintf('Unit code may contain only letters, numbers and underscores. "%s" given', $code)
         );
-        $this->code = $code;
     }
 
     public static function fromString(string $code): self

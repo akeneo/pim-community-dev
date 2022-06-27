@@ -10,18 +10,13 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Application\ValidateUnit;
  */
 class ValidateUnitCommand
 {
-    /** @var string */
-    public $measurementFamilyCode;
+    public string $measurementFamilyCode;
 
-    /** @var string */
-    public $code;
+    public string $code;
 
-    /** @var array */
-    public $labels;
+    public array $labels;
 
-    /** @var array */
-    public $convert_from_standard;
+    public array $convert_from_standard;
 
-    /** @var string */
-    public $symbol;
+    public string $symbol;
 }

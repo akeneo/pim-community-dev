@@ -20,16 +20,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ValidateUnitAction
 {
-    private ValidatorInterface $validator;
-
-    private NormalizerInterface $violationNormalizer;
-
     public function __construct(
-        ValidatorInterface $validator,
-        NormalizerInterface $violationNormalizer
+        private ValidatorInterface $validator,
+        private NormalizerInterface $violationNormalizer
     ) {
-        $this->validator = $validator;
-        $this->violationNormalizer = $violationNormalizer;
     }
 
     public function __invoke(Request $request): Response
@@ -48,7 +42,7 @@ class ValidateUnitAction
             if ($violations->count() > 0) {
                 return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_UNPROCESSABLE_ENTITY);
             }
-        } catch (MeasurementFamilyNotFoundException $ex) {
+        } catch (MeasurementFamilyNotFoundException) {
             return new Response(null, Response::HTTP_NOT_FOUND);
         }
 

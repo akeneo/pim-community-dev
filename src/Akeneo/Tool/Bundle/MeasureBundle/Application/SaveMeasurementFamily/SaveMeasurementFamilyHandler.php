@@ -21,15 +21,10 @@ use Psr\EventDispatcher\EventDispatcherInterface;
  */
 class SaveMeasurementFamilyHandler
 {
-    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
-    private ?EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
-        EventDispatcherInterface $eventDispatcher
+        private MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
+        private ?EventDispatcherInterface $eventDispatcher
     ) {
-        $this->measurementFamilyRepository = $measurementFamilyRepository;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function handle(SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand): void

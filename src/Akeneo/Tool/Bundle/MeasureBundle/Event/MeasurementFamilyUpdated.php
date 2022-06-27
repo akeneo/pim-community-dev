@@ -14,11 +14,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class MeasurementFamilyUpdated extends Event
 {
-    private MeasurementFamilyCode $measurementFamilyCode;
-
-    public function __construct(MeasurementFamilyCode $measurementFamilyCode)
+    public function __construct(private MeasurementFamilyCode $measurementFamilyCode)
     {
-        $this->measurementFamilyCode = $measurementFamilyCode;
     }
 
     public function getMeasurementFamilyCode(): MeasurementFamilyCode

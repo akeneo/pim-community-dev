@@ -14,11 +14,8 @@ use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInte
  */
 class FindAllMeasurementFamilies
 {
-    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
-
-    public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
+    public function __construct(private MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
     {
-        $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
     /**

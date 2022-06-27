@@ -14,11 +14,8 @@ use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
  */
 class MeasureManager
 {
-    private LegacyMeasurementProvider $legacyMeasurementProvider;
-
-    public function __construct(LegacyMeasurementProvider $legacyMeasurementProvider)
+    public function __construct(private LegacyMeasurementProvider $legacyMeasurementProvider)
     {
-        $this->legacyMeasurementProvider = $legacyMeasurementProvider;
     }
 
     /**
