@@ -152,6 +152,10 @@ tests-back-onboarder: lint-back coupling coupling-list-unused-requirements unit-
 .PHONY: tests-front-onboarder
 tests-front-onboarder: lint-front unit-front #Doc: Run front tests for Onboarder Serenity
 
+tests-onboarder-retailer: lint-front-retailer unit-front-retailer lint-back-retailer coupling-retailer coupling-list-unused-requirements-retailer unit-back-retailer acceptance-back-retailer integration-back-retailer
+
+tests-onboarder-supplier: lint-front-supplier unit-front-supplier lint-back-supplier coupling-supplier coupling-list-unused-requirements-supplier unit-back-supplier acceptance-back-supplier integration-back-supplier
+
 .PHONY: extract-front-translations
 extract-front-translations: #Doc: Extract translations for Crowdin
 	$(YARN_RUN) run --cwd=components/onboarder-supplier/front i18n-extract 'src/**/*.{ts,tsx}' --ignore '**/*.{test,d}.{ts,tsx}' --format simple --out-file src/translations/messages.en.json
