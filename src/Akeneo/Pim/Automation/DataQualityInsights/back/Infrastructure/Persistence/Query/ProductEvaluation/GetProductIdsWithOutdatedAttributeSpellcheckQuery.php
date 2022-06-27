@@ -35,13 +35,13 @@ final class GetProductIdsWithOutdatedAttributeSpellcheckQuery implements GetProd
     public function evaluatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
         $query = <<<SQL
-SELECT DISTINCT product.id
+SELECT DISTINCT BIN_TO_UUID(product.uuid) AS uuid
 FROM pimee_dqi_attribute_spellcheck AS spellcheck
     INNER JOIN pim_catalog_attribute AS attribute ON attribute.code = spellcheck.attribute_code
     INNER JOIN pim_catalog_family_attribute AS family_attribute ON family_attribute.attribute_id = attribute.id
     INNER JOIN pim_catalog_product AS product ON product.family_id = family_attribute.family_id
     LEFT JOIN pim_data_quality_insights_product_criteria_evaluation AS product_evaluation
-        ON product_evaluation.product_id = product.id AND product_evaluation.criterion_code = :criterionCode
+        ON product_evaluation.product_uuid = product.uuid AND product_evaluation.criterion_code = :criterionCode
 WHERE spellcheck.evaluated_at >= :updatedSince
     AND (product_evaluation.evaluated_at IS NULL OR spellcheck.evaluated_at > product_evaluation.evaluated_at)
     AND (product_evaluation.status IS NULL OR product_evaluation.status != :pending);
@@ -53,18 +53,18 @@ SQL;
             'updatedSince' => $updatedSince->format(Clock::TIME_FORMAT)
         ]);
 
-        $productIds = [];
-        while ($productId = $stmt->fetchColumn()) {
-            $productIds[] = $productId;
+        $productUuids = [];
+        while ($productUuid = $stmt->fetchOne()) {
+            $productUuids[] = $productUuid;
 
-            if (count($productIds) >= $bulkSize) {
-                yield $this->idFactory->createCollection($productIds);
-                $productIds = [];
+            if (count($productUuids) >= $bulkSize) {
+                yield $this->idFactory->createCollection($productUuids);
+                $productUuids = [];
             }
         }
 
-        if (!empty($productIds)) {
-            yield $this->idFactory->createCollection($productIds);
+        if (!empty($productUuids)) {
+            yield $this->idFactory->createCollection($productUuids);
         }
     }
 }

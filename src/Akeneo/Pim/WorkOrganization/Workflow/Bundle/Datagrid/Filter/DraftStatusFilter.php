@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProductIdsByUserAndDraftStatusQueryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProductModelIdsByUserAndDraftStatusQueryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProductUuidsByUserAndDraftStatusQueryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -32,24 +32,14 @@ class DraftStatusFilter extends ChoiceFilter
     const IN_PROGRESS = 1;
     const WAITING_FOR_APPROVAL = 2;
 
-    private $selectProductIdsByUserAndDraftStatusQuery;
-
-    private $selectProductModelIdsByUserAndDraftStatusQuery;
-
-    private $userContext;
-
     public function __construct(
         FormFactoryInterface $formFactory,
         ProductFilterUtility $filterUtility,
-        SelectProductIdsByUserAndDraftStatusQueryInterface $selectProductIdsByUserAndDraftStatusQuery,
-        SelectProductModelIdsByUserAndDraftStatusQueryInterface $selectProductModelIdsByUserAndDraftStatusQuery,
-        UserContext $userContext
+        private SelectProductUuidsByUserAndDraftStatusQueryInterface $selectProductUuidsByUserAndDraftStatusQuery,
+        private SelectProductModelIdsByUserAndDraftStatusQueryInterface $selectProductModelIdsByUserAndDraftStatusQuery,
+        private UserContext $userContext
     ) {
         parent::__construct($formFactory, $filterUtility);
-
-        $this->selectProductIdsByUserAndDraftStatusQuery = $selectProductIdsByUserAndDraftStatusQuery;
-        $this->selectProductModelIdsByUserAndDraftStatusQuery = $selectProductModelIdsByUserAndDraftStatusQuery;
-        $this->userContext = $userContext;
     }
 
     /**
@@ -84,9 +74,9 @@ class DraftStatusFilter extends ChoiceFilter
             throw new \Exception('Draft filter is only useable when user is authenticated');
         }
 
-        $productIds = $this->selectProductIdsByUserAndDraftStatusQuery->execute($user->getUsername(), $draftStatuses);
+        $productUuids = $this->selectProductUuidsByUserAndDraftStatusQuery->execute($user->getUsername(), $draftStatuses);
         $productModelIds = $this->selectProductModelIdsByUserAndDraftStatusQuery->execute($user->getUsername(), $draftStatuses);
-        $esIds = $this->prepareIdsForEsFilter($productIds, $productModelIds);
+        $esIds = $this->prepareIdsForEsFilter($productUuids, $productModelIds);
         $esIds = empty($esIds) ? ['null'] : $esIds;
 
         $this->util->applyFilter($filterDatasource, 'id', $operator, $esIds);
@@ -94,11 +84,11 @@ class DraftStatusFilter extends ChoiceFilter
         return true;
     }
 
-    private function prepareIdsForEsFilter(array $productIds, array $productModelIds): array
+    private function prepareIdsForEsFilter(array $productUuids, array $productModelIds): array
     {
         $esValueIds = [];
-        foreach ($productIds as $productId) {
-            $esValueIds[] = 'product_' . $productId;
+        foreach ($productUuids as $productUuid) {
+            $esValueIds[] = 'product_' . $productUuid->toString();
         }
         foreach ($productModelIds as $productModelId) {
             $esValueIds[] = 'product_model_' . $productModelId;

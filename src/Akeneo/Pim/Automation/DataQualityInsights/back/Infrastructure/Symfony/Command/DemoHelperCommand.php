@@ -44,7 +44,7 @@ final class DemoHelperCommand extends Command
         private BulkUpdateProductQualityScoresInterface      $bulkUpdateProductQualityScores,
         private CreateCriteriaEvaluations                    $createProductModelsCriteriaEvaluations,
         private EvaluatePendingCriteria                      $evaluateProductModelsPendingCriteria,
-        private ProductEntityIdFactoryInterface              $productIdFactory,
+        private ProductEntityIdFactoryInterface              $productUuidFactory,
         private ProductEntityIdFactoryInterface              $productModelIdFactory,
     ) {
         parent::__construct();
@@ -253,27 +253,25 @@ final class DemoHelperCommand extends Command
         $progressBar->start();
 
         for ($i = 0; $i < $nbSteps; $i++) {
-            $result = $this->db->executeQuery('select id from pim_catalog_product LIMIT ' . $i * 100 . ',100');
-            $ids = array_map(function ($id) {
-                return intval($id);
-            }, $result->fetchFirstColumn());
+            $result = $this->db->executeQuery('select BIN_TO_UUID(uuid) as uuid from pim_catalog_product LIMIT ' . $i * 100 . ',100');
+            $uuids = $result->fetchFirstColumn();
 
-            $this->evaluateProducts($ids);
+            $this->evaluateProducts($uuids);
 
-            $progressBar->advance(count($ids));
+            $progressBar->advance(count($uuids));
         }
 
         $progressBar->finish();
     }
 
-    private function evaluateProducts(array $ids): void
+    private function evaluateProducts(array $uuids): void
     {
-        $productIdCollection = $this->productIdFactory->createCollection(array_map(fn ($id) => (string)$id, $ids));
+        $productUuidCollection = $this->productUuidFactory->createCollection($uuids);
 
-        $this->createProductsCriteriaEvaluations->createAll($productIdCollection);
-        $this->evaluatePendingCriteria->evaluateAllCriteria($productIdCollection);
-        $this->consolidateProductScores->consolidate($productIdCollection);
-        ($this->bulkUpdateProductQualityScores)($productIdCollection);
+        $this->createProductsCriteriaEvaluations->createAll($productUuidCollection);
+        $this->evaluatePendingCriteria->evaluateAllCriteria($productUuidCollection);
+        $this->consolidateProductScores->consolidate($productUuidCollection);
+        ($this->bulkUpdateProductQualityScores)($productUuidCollection);
     }
 
     private function fullSynchronousProductModelsCriteriaEvaluation(SymfonyStyle $io): void
@@ -317,22 +315,20 @@ final class DemoHelperCommand extends Command
     private function partialSynchronousCriteriaEvaluation(SymfonyStyle $io): void
     {
         $stmt = $this->db->executeQuery(
-            'select max(id) as id from pim_catalog_product where product_model_id is null group by family_id'
+            'select MAX(BIN_TO_UUID(uuid)) as uuid from pim_catalog_product where product_model_id is null group by family_id'
         );
 
-        $ids = array_map(function ($id) {
-            return intval($id);
-        }, $stmt->fetchFirstColumn());
+        $uuids = $stmt->fetchFirstColumn();
 
-        if (count($ids) === 0) {
+        if (count($uuids) === 0) {
             $io->error('No products to evaluate');
 
             return;
         }
 
-        $io->comment(sprintf('Launch the evaluation of %d products', count($ids)));
+        $io->comment(sprintf('Launch the evaluation of %d products', count($uuids)));
 
-        $this->evaluateProducts($ids);
+        $this->evaluateProducts($uuids);
     }
 
     private function numberOfProducts(array $scores): int

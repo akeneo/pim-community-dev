@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\RefreshProjectCompletenessJobLauncher;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -43,13 +44,13 @@ class RefreshProjectCompletenessJobLauncherSpec extends ObjectBehavior
         UserInterface $user
     ) {
         $jobInstanceRepository->findOneByIdentifier('job_name')->willReturn($jobInstance);
-        $product->getId()->willReturn(1);
+        $product->getUuid()->willReturn(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
 
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $configuration = [
-            'product_identifier' => 1,
+            'product_identifier' => 'df470d52-7723-4890-85a0-e79be625e2ed',
             'channel_identifier' => 'channel',
             'locale_identifier'  => 'locale',
         ];

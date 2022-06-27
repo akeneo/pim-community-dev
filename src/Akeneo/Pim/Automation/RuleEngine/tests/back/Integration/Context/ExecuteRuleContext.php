@@ -183,7 +183,7 @@ final class ExecuteRuleContext implements Context
     public function theCompletenessForTheProductShouldBe(string $identifier, TableNode $table): void
     {
         $product = $this->getProduct($identifier);
-        $completenessCollection = $this->getProductCompletenesses->fromProductId($product->getId());
+        $completenessCollection = $this->getProductCompletenesses->fromProductUuid($product->getUuid());
 
         foreach ($table as $index => $expected) {
             $foundCompleteness = null;

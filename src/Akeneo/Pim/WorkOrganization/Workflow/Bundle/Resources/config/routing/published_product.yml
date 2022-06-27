@@ -26,6 +26,7 @@ pimee_workflow_published_product_rest_publish:
     path: /
     defaults: { _controller: pimee_workflow.controller.published_product_rest:publishAction }
     methods:  [PUT]
+
 pimee_workflow_published_product_rest_unpublish:
     path: /
     defaults: { _controller: pimee_workflow.controller.published_product_rest:unpublishAction }

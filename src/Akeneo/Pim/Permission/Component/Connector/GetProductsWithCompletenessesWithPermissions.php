@@ -37,7 +37,7 @@ class GetProductsWithCompletenessesWithPermissions implements GetProductsWithCom
 
         return $productWithCompletenesses->buildWithCompletenesses(
             new ProductCompletenessCollection(
-                $productWithCompletenesses->id(),
+                $productWithCompletenesses->uuid(),
                 array_filter(
                     (array) $productWithCompletenesses->completenesses()->getIterator(),
                     fn (ProductCompleteness $completeness): bool => in_array($completeness->localeCode(), $viewableLocales)

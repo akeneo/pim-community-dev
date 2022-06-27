@@ -87,7 +87,6 @@ class EditAttributesProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $productValidator->validate($product)->willReturn($violations);
-        $product->getId()->willReturn(42);
 
         $filledValues = $values;
         $productEmptyValuesFilter->filter($product, ['values' => $values])->willReturn(['values' => $filledValues]);
@@ -140,10 +139,8 @@ class EditAttributesProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $productValidator->validate($product)->willReturn($violations);
-        $product->getId()->willReturn(10);
 
         $product->isAttributeEditable($attribute)->willReturn(true);
-        $product->getId()->willReturn(42);
 
         $filledValues = $values;
         $productEmptyValuesFilter->filter($product, ['values' => $values])->willReturn(['values' => $filledValues]);

@@ -12,10 +12,12 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Webmozart\Assert\Assert;
 
 /**
  * Product product draft factory
@@ -37,7 +39,8 @@ class ProductDraftFactory implements EntityWithValuesDraftFactory
 
     public function createEntityWithValueDraft(EntityWithValuesInterface $product, DraftSource $draftSource): EntityWithValuesDraftInterface
     {
-        $fullProduct = $this->productRepository->find($product->getId());
+        Assert::implementsInterface($product, ProductInterface::class);
+        $fullProduct = $this->productRepository->find($product->getUuid());
 
         $productDraft = new ProductDraft();
         $productDraft

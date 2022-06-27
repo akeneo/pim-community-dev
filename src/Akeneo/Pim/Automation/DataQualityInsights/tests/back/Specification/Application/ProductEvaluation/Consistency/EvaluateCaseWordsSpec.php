@@ -28,10 +28,11 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 use PhpSpec\Wrapper\Subject;
+use Ramsey\Uuid\Uuid;
 
 final class EvaluateCaseWordsSpec extends ObjectBehavior
 {
@@ -159,7 +160,7 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
         return $this(
             new Write\CriterionEvaluation(
                 new CriterionCode('criterion1'),
-                new ProductId(1),
+                ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
                 CriterionEvaluationStatus::pending()
             ),
             $productValues,
@@ -184,7 +185,7 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
         ($this(
             new Write\CriterionEvaluation(
                 new CriterionCode('criterion1'),
-                new ProductId(1),
+                ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
                 CriterionEvaluationStatus::pending()
             ),
             new ProductValuesCollection(),
@@ -243,7 +244,7 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
         $result = $this(
             new Write\CriterionEvaluation(
                 new CriterionCode('criterion1'),
-                new ProductId(1),
+                ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
                 CriterionEvaluationStatus::pending()
             ),
             $productValues,

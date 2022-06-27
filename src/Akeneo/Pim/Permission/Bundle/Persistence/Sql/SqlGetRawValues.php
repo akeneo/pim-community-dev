@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Permission\Bundle\Persistence\Sql;
 
 use Akeneo\Pim\Permission\Component\Query\GetRawValues;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\UuidInterface;
 
 final class SqlGetRawValues implements GetRawValues
 {
@@ -28,11 +29,10 @@ final class SqlGetRawValues implements GetRawValues
     /**
      * {@inheritDoc}
      */
-    public function forProductId($id): ?array
+    public function forProductUuid(UuidInterface $uuid): ?array
     {
         $query = <<<SQL
         SELECT
-            p.id,
             JSON_MERGE_PATCH(
                 COALESCE(pm2.raw_values, '{}'),
                 COALESCE(pm1.raw_values, '{}'),
@@ -41,12 +41,12 @@ final class SqlGetRawValues implements GetRawValues
         FROM pim_catalog_product p
             LEFT JOIN pim_catalog_product_model pm1 ON p.product_model_id = pm1.id
             LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
-        WHERE p.id = :id
+        WHERE p.uuid = :uuid
         SQL;
 
-        $row = $this->connection->executeQuery($query, ['id' => $id])->fetch();
+        $rawValues = $this->connection->executeQuery($query, ['uuid' => $uuid->getBytes()])->fetchOne();
 
-        return !$row ? null : \json_decode($row['raw_values'], true);
+        return false === $rawValues ? null : \json_decode($rawValues, true);
     }
 
     /**

@@ -20,6 +20,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesM
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
 {
@@ -80,7 +81,7 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
         $values = new WriteValueCollection();
         $writeValueCollectionFactory->createFromStorageFormat(['the raw values'])->willReturn($values);
         $productCompletenessMask = new CompletenessProductMask(
-            42, 'my_bag', 'accessories', [
+            '42', 'my_bag', 'accessories', [
                 'name-ecommerce-en_US',
                 'name-ecommerce-fr_FR',
                 'desc-<all_channels>-<all_locales>',
@@ -94,7 +95,7 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
 
         $this->fromEntityWithFamily($entityWithFamily)->shouldBeLike(
             new ProductCompletenessWithMissingAttributeCodesCollection(
-                42, [
+                '42', [
                     new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 2, [1 => 'view']),
                     new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, []),
                 ]
@@ -112,7 +113,7 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
         $family = new Family();
         $family->setCode('accessories');
         $product->getFamily()->willReturn($family);
-        $product->getId()->willReturn(42);
+        $product->getUuid()->willReturn(Uuid::fromString('df31ba3f-508d-424c-8bc4-446c6e2966e5'));
         $product->getIdentifier()->willReturn('my_bag');
 
         $requiredAttributesMasksPerChannelAndLocale = [
@@ -134,12 +135,12 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
             ['accessories' => $requiredAttributesMask]
         );
 
-        $getRawValues->forProductId(42)->shouldBeCalledOnce()->willReturn(['the raw values']);
+        $getRawValues->forProductUuid(Uuid::fromString('df31ba3f-508d-424c-8bc4-446c6e2966e5'))->shouldBeCalledOnce()->willReturn(['the raw values']);
         $values = new WriteValueCollection();
         $writeValueCollectionFactory->createFromStorageFormat(['the raw values'])->willReturn($values);
 
         $productCompletenessMask = new CompletenessProductMask(
-            42, 'my_bag', 'accessories', [
+            'df31ba3f-508d-424c-8bc4-446c6e2966e5', 'my_bag', 'accessories', [
                 'name-ecommerce-en_US',
                 'name-ecommerce-fr_FR',
                 'desc-<all_channels>-<all_locales>',
@@ -147,13 +148,13 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
                 'size-ecommerce-en_US',
             ]
         );
-        $getCompletenessProductMasks->fromValueCollection(42, 'my_bag', 'accessories', $values)->willReturn(
+        $getCompletenessProductMasks->fromValueCollection('df31ba3f-508d-424c-8bc4-446c6e2966e5', 'my_bag', 'accessories', $values)->willReturn(
             $productCompletenessMask
         );
 
         $this->fromEntityWithFamily($product)->shouldBeLike(
             new ProductCompletenessWithMissingAttributeCodesCollection(
-                42, [
+                'df31ba3f-508d-424c-8bc4-446c6e2966e5', [
                     new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 2, [1 => 'view']),
                     new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, []),
                 ]

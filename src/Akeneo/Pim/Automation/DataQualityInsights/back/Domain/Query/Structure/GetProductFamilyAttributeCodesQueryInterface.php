@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 
 interface GetProductFamilyAttributeCodesQueryInterface
 {

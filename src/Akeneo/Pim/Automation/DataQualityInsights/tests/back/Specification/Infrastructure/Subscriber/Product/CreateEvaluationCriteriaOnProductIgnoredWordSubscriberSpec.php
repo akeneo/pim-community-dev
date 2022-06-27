@@ -16,11 +16,12 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductWordIgnoredEvent;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CreateEvaluationCriteriaOnProductIgnoredWordSubscriberSpec extends ObjectBehavior
@@ -54,14 +55,14 @@ class CreateEvaluationCriteriaOnProductIgnoredWordSubscriberSpec extends ObjectB
         $createProductsCriteriaEvaluations,
         $idFactory
     ) {
-        $product = new ProductId(12345);
-        $productIdCollection = ProductIdCollection::fromInt(12345);
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productIdCollection = ProductUuidCollection::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->createAll($productIdCollection)->shouldBeCalled();
 
-        $idFactory->createCollection(['12345'])->willReturn($productIdCollection);
+        $idFactory->createCollection(['df470d52-7723-4890-85a0-e79be625e2ed'])->willReturn($productIdCollection);
 
-        $this->onIgnoredWord(new ProductWordIgnoredEvent($product));
+        $this->onIgnoredWord(new ProductWordIgnoredEvent($productUuid));
     }
 }

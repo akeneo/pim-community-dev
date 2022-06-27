@@ -2,7 +2,7 @@ const Routing = require('routing');
 
 const ROUTE_NAME = 'akeneo_data_quality_insights_product_model_check_text_ignore';
 
-const fetchProductModelIgnoreTextIssue = async (word: string, locale: string, productId: number) => {
+const fetchProductModelIgnoreTextIssue = async (word: string, locale: string, productId: string) => {
   await fetch(Routing.generate(ROUTE_NAME), {
     method: 'POST',
     headers: {

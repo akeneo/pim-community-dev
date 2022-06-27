@@ -33,7 +33,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -63,10 +63,10 @@ class EvaluateSpellingSpec extends ObjectBehavior
         TextCheckResultCollection $textCheckResultTextEcommerceFR,
         TextCheckResultCollection $textCheckResultTextPrintEn
     ) {
-        $productId = new ProductId(1);
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criterionEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
-            $productId,
+            $productUuid,
             CriterionEvaluationStatus::pending()
         );
 
@@ -170,10 +170,10 @@ class EvaluateSpellingSpec extends ObjectBehavior
         TextCheckResultCollection $textCheckResultTextareaPrintEn,
         FilterProductValuesForSpelling $filterProductValuesForSpelling
     ) {
-        $productId = new ProductId(42);
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criterionEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
-            $productId,
+            $productUuid,
             CriterionEvaluationStatus::pending()
         );
 
@@ -223,10 +223,10 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $supportedLocaleValidator,
         $filterProductValuesForSpelling
     ) {
-        $productId = new ProductId(1);
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criterionEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
-            $productId,
+            $productUuid,
             CriterionEvaluationStatus::pending()
         );
 
@@ -344,10 +344,10 @@ class EvaluateSpellingSpec extends ObjectBehavior
         SupportedLocaleValidator $supportedLocaleValidator,
         FilterProductValuesForSpelling $filterProductValuesForSpelling
     ) {
-        $productId = new ProductId(1);
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criterionEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
-            $productId,
+            $productUuid,
             CriterionEvaluationStatus::pending()
         );
 

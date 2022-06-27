@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
@@ -125,11 +124,7 @@ final class MassActionContext implements Context
         foreach (explode(',', $productIdentifiers) as $productIdentifier) {
             $product = $this->productRepository->findOneByIdentifier(trim($productIdentifier));
             if (null !== $product) {
-                if ($product instanceof AbstractProduct) {
-                    $productIds[] = sprintf('product_%s', $product->getUuid()->toString());
-                } else {
-                    $productIds[] = sprintf('product_%d', $product->getId());
-                }
+                $productIds[] = sprintf('product_%s', $product->getUuid()->toString());
                 continue;
             }
 

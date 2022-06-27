@@ -74,12 +74,12 @@ class RulesExecutor implements ItemWriterInterface
 
         foreach ($entitiesWithValues as $entityWithValues) {
             if ($entityWithValues instanceof ProductInterface &&
-                null !== $entityWithValues->getId()
+                null !== $entityWithValues->getCreated()
             ) {
                 $entityIds[] = sprintf(
-                    '%s%d',
+                    '%s%s',
                     'product_',
-                    $entityWithValues->getId()
+                    $entityWithValues->getUuid()->toString()
                 );
             } elseif ($entityWithValues instanceof ProductModelInterface &&
                 null !== $entityWithValues->getId()

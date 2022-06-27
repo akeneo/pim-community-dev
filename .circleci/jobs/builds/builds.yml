@@ -276,7 +276,7 @@ jobs:
                   command: |
                       TYPE="srnt"
                       TYPE_LONG="serenity"
-                      IMAGE_TAG=${CIRCLE_SHA1}
+                      IMAGE_TAG=$(echo ${CIRCLE_SHA1} | cut -c -7)-$(echo ${CIRCLE_WORKFLOW_ID} | cut -c -31)
                       IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
                       IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
                       RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
@@ -419,7 +419,7 @@ jobs:
                   command: |
                       TYPE="grth"
                       TYPE_LONG="growth"
-                      IMAGE_TAG=$(echo growth-${CIRCLE_SHA1} | cut -b 1-40)
+                      IMAGE_TAG=growth-$(echo ${CIRCLE_SHA1} | cut -c -7)-$(echo ${CIRCLE_WORKFLOW_ID} | cut -c -23)
                       IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
                       IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
                       RELEASE_NAME="growth-v$(date +%Y%m%d%H%M%S)"
@@ -523,7 +523,7 @@ jobs:
                   command: |
                       TYPE="tria"
                       TYPE_LONG="trial"
-                      IMAGE_TAG=$(echo trial-${CIRCLE_SHA1} | cut -b 1-40)
+                      IMAGE_TAG=trial-$(echo ${CIRCLE_SHA1} | cut -c -7)-$(echo ${CIRCLE_WORKFLOW_ID} | cut -c -25)
                       IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
                       IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
                       RELEASE_NAME="trial-v$(date +%Y%m%d%H%M%S)"

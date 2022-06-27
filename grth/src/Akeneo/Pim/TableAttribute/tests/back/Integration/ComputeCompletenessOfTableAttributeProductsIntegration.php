@@ -155,7 +155,7 @@ class ComputeCompletenessOfTableAttributeProductsIntegration extends TestCase
         string $localeCode
     ): ?ProductCompleteness {
         $completenesses = $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
-            ->fromProductId($product->getId());
+            ->fromProductUuid($product->getUuid());
 
         foreach ($completenesses as $completeness) {
             if ($channelCode === $completeness->channelCode() && $localeCode === $completeness->localeCode()) {

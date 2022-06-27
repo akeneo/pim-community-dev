@@ -11,6 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Widget;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
@@ -113,7 +115,9 @@ class ProposalWidget implements WidgetInterface
 
         foreach ($proposals as $proposal) {
             $result[] = [
-                'productId'        => $proposal->getEntityWithValue()->getId(),
+                'productId'        => $proposal->getEntityWithValue() instanceof ProductInterface
+                    ? $proposal->getEntityWithValue()->getUuid()->toString()
+                    : $proposal->getEntityWithValue()->getId(),
                 'productLabel'     => $proposal->getEntityWithValue()->getLabel(),
                 'authorFullName'   => $proposal->getAuthorLabel(),
                 'productEditUrl'   => $this->getProductEditUrl($proposal),
@@ -172,7 +176,9 @@ class ProposalWidget implements WidgetInterface
     private function getProductEditUrl(EntityWithValuesDraftInterface $proposal): string
     {
         $route = $proposal instanceof ProductModelDraft ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit';
+        $entity = $proposal->getEntityWithValue();
+        $params = $entity instanceof ProductInterface ? ['uuid' => $entity->getUuid()->toString()] : ['id' => $entity->getId()];
 
-        return $this->router->generate($route, ['id' => $proposal->getEntityWithValue()->getId()]);
+        return $this->router->generate($route, $params);
     }
 }

@@ -27,7 +27,7 @@ class FilterByProjectProgressIntegration extends TeamworkAssistantTestCase
         $productIdentifiers = $this->get('pimee_teamwork_assistant.repository.project_completeness')
             ->findProductIdentifiers($project, ProjectCompletenessFilter::OWNER_IN_PROGRESS, 'Julia');
 
-        $this->assertEquals(
+        $this->assertEqualsCanonicalizing(
             ['ssd-sandisk-plus-tlc-240', 'ssd-sandisk-plus-tlc-480'],
             $productIdentifiers
         );

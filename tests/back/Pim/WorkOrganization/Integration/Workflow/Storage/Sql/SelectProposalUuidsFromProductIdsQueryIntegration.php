@@ -19,9 +19,9 @@ use Akeneo\Test\Integration\TestCase;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class SelectProposalIdsFromProductIdsQueryIntegration extends TestCase
+class SelectProposalUuidsFromProductIdsQueryIntegration extends TestCase
 {
-    public function testSelectProposalIdsFromProductIds()
+    public function testSelectProposalIdsFromProductUuids(): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('1111111113');
 
@@ -48,8 +48,8 @@ class SelectProposalIdsFromProductIdsQueryIntegration extends TestCase
         // Save the draft
         $this->get('pimee_workflow.saver.product_draft')->save($draft);
 
-        $query = $this->get('pimee_workflow.query.select_proposal_ids_from_product_ids');
-        $resultRows = $query->fetch([$product->getId()]);
+        $query = $this->get('pimee_workflow.query.select_proposal_ids_from_product_uuids');
+        $resultRows = $query->fetch([$product->getUuid()]);
 
         $this->assertCount(1, $resultRows);
     }

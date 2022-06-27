@@ -37,13 +37,15 @@ class ProductReverterIntegration extends TestCase
 
         $productVersions = $this->getVersionRepository()->getLogEntries(
             ClassUtils::getClass($product),
-            $product->getId()
+            null,
+            $product->getUuid()
         );
         $this->getProductReverter()->revert(end($productVersions));
 
         $productVersions = $this->getVersionRepository()->getLogEntries(
             ClassUtils::getClass($product),
-            $product->getId()
+            null,
+            $product->getUuid()
         );
         $this->assertCount(3, $productVersions);
 
@@ -69,7 +71,8 @@ class ProductReverterIntegration extends TestCase
 
         $productVersions = $this->getVersionRepository()->getLogEntries(
             ClassUtils::getClass($product),
-            $product->getId()
+            null,
+            $product->getUuid()
         );
         $this->getProductReverter()->revert(end($productVersions));
 
@@ -94,7 +97,8 @@ class ProductReverterIntegration extends TestCase
 
         $productVersions = $this->getVersionRepository()->getLogEntries(
             ClassUtils::getClass($product),
-            $product->getId()
+            null,
+            $product->getUuid()
         );
         $this->assertCount(2, $productVersions);
 
@@ -102,7 +106,8 @@ class ProductReverterIntegration extends TestCase
 
         $productVersions = $this->getVersionRepository()->getLogEntries(
             ClassUtils::getClass($product),
-            $product->getId()
+            null,
+            $product->getUuid()
         );
         $this->assertCount(3, $productVersions);
     }

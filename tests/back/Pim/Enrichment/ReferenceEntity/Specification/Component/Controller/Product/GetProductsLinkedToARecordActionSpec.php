@@ -113,7 +113,7 @@ class GetProductsLinkedToARecordActionSpec extends ObjectBehavior
             'label',
             null,
             999,
-            10,
+            '57700274-9b48-4857-b17d-a7da106cd150',
             'parent',
             new WriteValueCollection([])
         );

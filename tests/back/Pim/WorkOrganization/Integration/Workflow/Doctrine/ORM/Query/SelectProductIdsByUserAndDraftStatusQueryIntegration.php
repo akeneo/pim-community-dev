@@ -33,14 +33,14 @@ class SelectProductIdsByUserAndDraftStatusQueryIntegration extends TestCase
         $this->createProductDraft('mary', $productWithDraftInProgressB, EntityWithValuesDraftInterface::IN_PROGRESS);
         $this->createProductDraft('mary', $productWithDraftWaitingForApproval, EntityWithValuesDraftInterface::READY);
 
-        $expectedProductIds = [$productWithDraftInProgressA->getId(), $productWithDraftInProgressB->getId()];
+        $expectedProductUuids = [$productWithDraftInProgressA->getUuid(), $productWithDraftInProgressB->getUuid()];
 
-        $productIds = $this->get('pimee_workflow.query.select_product_ids_by_user_and_draft_status')->execute(
+        $productIds = $this->get('pimee_workflow.query.select_product_uuids_by_user_and_draft_status')->execute(
             'mary',
             [EntityWithValuesDraftInterface::IN_PROGRESS]
         );
 
-        $this->assertEqualsCanonicalizing($expectedProductIds, $productIds);
+        $this->assertEqualsCanonicalizing($expectedProductUuids, $productIds);
     }
 
     /**
@@ -50,12 +50,12 @@ class SelectProductIdsByUserAndDraftStatusQueryIntegration extends TestCase
     {
         $this->createProduct('product_in_working_copy');
 
-        $productIds = $this->get('pimee_workflow.query.select_product_ids_by_user_and_draft_status')->execute(
+        $productUuids = $this->get('pimee_workflow.query.select_product_uuids_by_user_and_draft_status')->execute(
             'mary',
             [EntityWithValuesDraftInterface::IN_PROGRESS, EntityWithValuesDraftInterface::READY]
         );
 
-        $this->assertEquals([], $productIds);
+        $this->assertEquals([], $productUuids);
     }
 
     /**

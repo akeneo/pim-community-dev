@@ -135,7 +135,7 @@ JOIN information_schema.INNODB_FOREIGN fo ON fo.ID = CONCAT(tc.CONSTRAINT_SCHEMA
 WHERE CONSTRAINT_TYPE = 'FOREIGN KEY'
 AND    TABLE_SCHEMA = :table_schema
 AND TABLE_NAME NOT IN (:excluded_tables)
-ORDER BY TABLE_NAME, REF_NAME
+ORDER BY TABLE_NAME, CONSTRAINT_NAME
 SQL;
 
         $result = $this->db->executeQuery(

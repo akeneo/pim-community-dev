@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluati
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 
 interface FilterProductIdsWithCriterionNotEvaluatedSinceQueryInterface
 {

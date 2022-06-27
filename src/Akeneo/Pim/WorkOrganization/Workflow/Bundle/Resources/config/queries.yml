@@ -16,7 +16,7 @@ services:
     pimee_workflow.query.get_associated_product_codes_by_published_product:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\GetAssociatedProductCodesByPublishedProductFromDB
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@database_connection'
             - '@security.token_storage'
 
     pimee_workflow.sql.product.update_draft_author:
@@ -44,8 +44,8 @@ services:
         arguments:
             - '@database_connection'
 
-    pimee_workflow.query.select_proposal_ids_from_product_ids:
-        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SelectProposalIdsFromProductIdsQuery
+    pimee_workflow.query.select_proposal_ids_from_product_uuids:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SelectProposalIdsFromProductUuidsQuery
         arguments:
             - '@database_connection'
 
@@ -64,8 +64,8 @@ services:
         arguments:
             - '@database_connection'
 
-    pimee_workflow.query.select_product_ids_by_user_and_draft_status:
-        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\SelectProductIdsByUserAndDraftStatusQuery
+    pimee_workflow.query.select_product_uuids_by_user_and_draft_status:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\SelectProductUuidsByUserAndDraftStatusQuery
         arguments:
             - '@database_connection'
 

@@ -70,7 +70,8 @@ class RevertContext implements Context
         $product = $this->findProduct($productIdentifier);
         $versions = $this->versionRepository->getLogEntries(
             ClassUtils::getClass($product),
-            $product->getId()
+            null,
+            $product->getUuid()
         );
 
         $versionsCount = count($versions);

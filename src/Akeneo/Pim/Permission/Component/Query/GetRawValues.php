@@ -13,15 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Query;
 
+use Ramsey\Uuid\UuidInterface;
+
 /**
  * Get raw values of a product / product model. Values of the entity are merged with values of its parent(s).
  */
 interface GetRawValues
 {
-    /**
-     * @param string|int $id
-     */
-    public function forProductId($id): ?array;
+    public function forProductUuid(UuidInterface $uuid): ?array;
 
     public function forProductModelId(int $id): ?array;
 }

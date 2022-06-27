@@ -2,21 +2,20 @@
 
 namespace Akeneo\SharedCatalog\tests\back\Integration\Query;
 
-use Akeneo\SharedCatalog\Query\GetProductIdFromProductIdentifierQueryInterface;
+use Akeneo\SharedCatalog\Query\GetProductUuidFromProductIdentifierQueryInterface;
 use Akeneo\SharedCatalog\tests\back\Utils\CreateProduct;
 use Akeneo\Test\Integration\TestCase;
 
-class GetProductIdFromProductIdentifierQueryIntegration extends TestCase
+class GetProductUuidFromProductIdentifierQueryIntegration extends TestCase
 {
     use CreateProduct;
 
-    /** @var GetProductIdFromProductIdentifierQueryInterface */
-    private $getProductIdFromProductIdentifierQuery;
+    private GetProductUuidFromProductIdentifierQueryInterface $getProductUuidFromProductIdentifierQuery;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->getProductIdFromProductIdentifierQuery = $this->get(GetProductIdFromProductIdentifierQueryInterface::class);
+        $this->getProductUuidFromProductIdentifierQuery = $this->get(GetProductUuidFromProductIdentifierQueryInterface::class);
     }
 
     protected function getConfiguration()
@@ -35,11 +34,9 @@ class GetProductIdFromProductIdentifierQueryIntegration extends TestCase
             'aFamily',
             []
         );
-        $expectedProductId = $product->getId();
+        $result = $this->getProductUuidFromProductIdentifierQuery->execute($productIdentifier);
 
-        $result = $this->getProductIdFromProductIdentifierQuery->execute($productIdentifier);
-
-        self::assertEquals($expectedProductId, $result);
+        self::assertEquals($product->getUuid(), $result);
     }
 
     /**
@@ -47,7 +44,7 @@ class GetProductIdFromProductIdentifierQueryIntegration extends TestCase
      */
     public function it_returns_null_if_the_identifier_does_not_exists()
     {
-        $result = $this->getProductIdFromProductIdentifierQuery->execute('this_does_not_exists');
+        $result = $this->getProductUuidFromProductIdentifierQuery->execute('this_does_not_exists');
 
         self::assertNull($result);
     }

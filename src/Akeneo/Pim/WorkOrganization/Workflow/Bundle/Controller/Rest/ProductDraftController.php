@@ -143,20 +143,20 @@ class ProductDraftController
     /**
      * Mark a product draft as ready
      *
-     * @param Request    $request
-     * @param int|string $productId
-     *
-     * @throws AccessDeniedHttpException
+     * @param Request $request
+     * @param string  $productUuid
      *
      * @return Response
+     *
+     * @throws AccessDeniedHttpException
      */
-    public function readyAction(Request $request, $productId)
+    public function readyAction(Request $request, string $productUuid)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $product = $this->findProductOr404($productId);
+        $product = $this->findProductOr404($productUuid);
         $productDraft = $this->findDraftForProductOr404($product);
         $comment = $request->get('comment') ?: null;
 
@@ -442,17 +442,17 @@ class ProductDraftController
     /**
      * Find a product by its id
      *
-     * @param mixed $productId
-     *
-     * @throws NotFoundHttpException
+     * @param string $productUuid
      *
      * @return ProductInterface
+     *
+     * @throws NotFoundHttpException
      */
-    protected function findProductOr404($productId)
+    protected function findProductOr404($productUuid)
     {
-        $product = $this->productRepository->find($productId);
+        $product = $this->productRepository->find($productUuid);
         if (null === $product) {
-            throw new NotFoundHttpException(sprintf('Product with id %s not found', $productId));
+            throw new NotFoundHttpException(sprintf('Product with uuid %s not found', $productUuid));
         }
 
         return $product;

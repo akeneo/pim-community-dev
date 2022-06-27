@@ -515,4 +515,12 @@ class ProductDraft implements EntityWithValuesDraftInterface
         $this->authorLabel = $authorLabel;
         return $this;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isNew(): bool
+    {
+        return null === $this->id;
+    }
 }

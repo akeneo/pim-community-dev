@@ -182,7 +182,7 @@ class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
     {
         $res = $this->get('database_connection')->executeQuery(<<<SQL
 SELECT completeness.missing_count, completeness.required_count FROM pim_catalog_completeness completeness
-INNER JOIN pim_catalog_product product ON product.id = completeness.product_id
+INNER JOIN pim_catalog_product product ON product.uuid = completeness.product_uuid
 INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
 INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
 WHERE product.identifier = :identifier

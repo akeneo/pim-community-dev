@@ -30,7 +30,7 @@ interface DuplicatedProductResponse {
 class DuplicateModal extends BaseView {
   private readonly template = _.template(template);
 
-  private productIdToDuplicate: number;
+  private productUuidToDuplicate: string;
   private productIdentifierToDuplicate: string;
 
   private readonly config: Config;
@@ -41,8 +41,8 @@ class DuplicateModal extends BaseView {
     this.config = {...this.config, ...options.config};
   }
 
-  public setProductIdToDuplicate(productId: number) {
-    this.productIdToDuplicate = productId;
+  public setProductUuidToDuplicate(productUuid: string) {
+    this.productUuidToDuplicate = productUuid;
   }
 
   public setProductIdentifierToDuplicate(productIdentifier: string) {
@@ -87,7 +87,7 @@ class DuplicateModal extends BaseView {
 
     this.notifySuccessMessage(duplicatedProductResponse);
 
-    router.redirectToRoute(this.config.editRoute, {id: duplicatedProductResponse.duplicated_product.meta.id});
+    router.redirectToRoute(this.config.editRoute, {uuid: duplicatedProductResponse.duplicated_product.meta.id});
   }
 
   private notifySuccessMessage(duplicatedProductResponse: DuplicatedProductResponse) {
@@ -115,7 +115,7 @@ class DuplicateModal extends BaseView {
 
     return $.ajax({
       url: Routing.generate(this.config.postUrl, {
-        id: this.productIdToDuplicate,
+        uuid: this.productUuidToDuplicate,
       }),
       type: 'POST',
       data: JSON.stringify(this.getFormData()),

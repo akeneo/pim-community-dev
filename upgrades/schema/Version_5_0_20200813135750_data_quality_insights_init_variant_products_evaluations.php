@@ -2,7 +2,7 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -52,7 +52,7 @@ SQL
 
         $productIds = [];
         while ($productId = $stmt->fetchColumn()) {
-            $productIds[] = new ProductId(intval($productId));
+            $productIds[] = new ProductUuid(intval($productId));
 
             if (count($productIds) >= $batchSize) {
                 yield $productIds;

@@ -104,7 +104,7 @@ class PublishedProductsManagerIntegration extends TestCase
         $this->assertValuesEqual($product->getValues()->toArray(), $publishedProduct->getValues()->toArray());
         $this->assertProductAssociationsEqual($product, $publishedProduct);
 
-        $productCompletenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $productCompletenesses = $this->getProductCompletenesses()->fromProductUuid($product->getUuid());
         $publishedProductCompletenesses = $this->getPublishedProductCompletenesses()->fromPublishedProductId($publishedProduct->getId());
 
         $this->assertSameCompletenesses($productCompletenesses, $publishedProductCompletenesses);
@@ -201,7 +201,7 @@ class PublishedProductsManagerIntegration extends TestCase
         $this->assertNotNull($publishedProduct);
         $this->assertNotNull($publishedProduct->getOriginalProduct());
 
-        $this->assertEquals($product->getId(), $publishedProduct->getOriginalProduct()->getId());
+        $this->assertEquals($product->getUuid()->toString(), $publishedProduct->getOriginalProduct()->getUuid()->toString());
         $this->assertEquals($product->getIdentifier(), $publishedProduct->getIdentifier());
         $this->assertEquals($product->isEnabled(), $publishedProduct->isEnabled());
         $this->assertEquals($product->getFamilyId(), $publishedProduct->getFamilyId());

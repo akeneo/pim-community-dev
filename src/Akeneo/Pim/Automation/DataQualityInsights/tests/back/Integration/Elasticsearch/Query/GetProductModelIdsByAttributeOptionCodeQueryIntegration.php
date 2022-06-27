@@ -15,12 +15,11 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Elasticsear
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 
 final class GetProductModelIdsByAttributeOptionCodeQueryIntegration extends AbstractGetProductIdsByAttributeOptionCodeQueryIntegration
 {
-    public function test_it_returns_the_products_that_have_a_given_attribute_option()
+    public function test_it_returns_the_product_models_that_have_a_given_attribute_option()
     {
         $this->givenALocalizableMultiSelectAttributeWithOptions();
 

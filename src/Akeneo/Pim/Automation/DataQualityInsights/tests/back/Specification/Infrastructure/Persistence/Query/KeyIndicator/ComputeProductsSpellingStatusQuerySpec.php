@@ -16,9 +16,9 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 final class ComputeProductsSpellingStatusQuerySpec extends ObjectBehavior
 {
@@ -29,11 +29,14 @@ final class ComputeProductsSpellingStatusQuerySpec extends ObjectBehavior
 
     public function it_computes_products_with_spelling_status_key_indicator($getEvaluationRatesByProductAndCriterionQuery)
     {
-        $productIdCollection = ProductIdCollection::fromInts([13, 42, 999]);
+        $uuid13 = Uuid::uuid4()->toString();
+        $uuid42 = Uuid::uuid4()->toString();
+        $uuid99 = Uuid::uuid4()->toString();
+        $productIdCollection = ProductUuidCollection::fromStrings([$uuid13, $uuid42, $uuid99]);
         $criterionCode = new CriterionCode(EvaluateSpelling::CRITERION_CODE);
 
         $getEvaluationRatesByProductAndCriterionQuery->execute($productIdCollection, $criterionCode)->willReturn([
-            13 => [
+            $uuid13 => [
                 'ecommerce' => [
                     'en_US' => 100,
                 ],
@@ -41,7 +44,7 @@ final class ComputeProductsSpellingStatusQuerySpec extends ObjectBehavior
                     'en_US' => 0,
                 ],
             ],
-            42 => [
+            $uuid42 => [
                 'ecommerce' => [
                     'en_US' => 0,
                     'fr_FR' => 100,
@@ -50,7 +53,7 @@ final class ComputeProductsSpellingStatusQuerySpec extends ObjectBehavior
         ]);
 
         $this->compute($productIdCollection)->shouldBeLike([
-            13 => [
+            $uuid13 => [
                 'ecommerce' => [
                     'en_US' => true,
                 ],
@@ -58,7 +61,7 @@ final class ComputeProductsSpellingStatusQuerySpec extends ObjectBehavior
                     'en_US' => false,
                 ],
             ],
-            42 => [
+            $uuid42 => [
                 'ecommerce' => [
                     'en_US' => false,
                     'fr_FR' => true,

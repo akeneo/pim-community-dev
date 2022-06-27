@@ -21,6 +21,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\UnpublisherInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class PublishedProductManagerSpec extends ObjectBehavior
@@ -74,8 +75,9 @@ class PublishedProductManagerSpec extends ObjectBehavior
         ProductInterface $product,
         PublishedProductInterface $published
     ) {
-        $product->getId()->willReturn(1);
-        $productRepository->find(1)->willReturn($product);
+        $uuid = Uuid::uuid4();
+        $product->getUuid()->willReturn($uuid);
+        $productRepository->find($uuid)->willReturn($product);
         $repositoryWithPermission->findOneByOriginalProduct(Argument::any())->willReturn(null);
         $publisher->publish($product, [])->willReturn($published);
 
@@ -100,10 +102,12 @@ class PublishedProductManagerSpec extends ObjectBehavior
         PublishedProductInterface $publishedBar,
         AssociationInterface $association
     ) {
-        $productFoo->getId()->willReturn(1);
-        $productBar->getId()->willReturn(2);
-        $productRepository->find(1)->willReturn($productFoo);
-        $productRepository->find(2)->willReturn($productBar);
+        $fooUuid = Uuid::uuid4();
+        $barUuid = Uuid::uuid4();
+        $productFoo->getUuid()->willReturn($fooUuid);
+        $productBar->getUuid()->willReturn($barUuid);
+        $productRepository->find($fooUuid)->willReturn($productFoo);
+        $productRepository->find($barUuid)->willReturn($productBar);
         $publishedFoo->getOriginalProduct()->willReturn($productFoo);
         $publishedBar->getOriginalProduct()->willReturn($productBar);
 
@@ -145,10 +149,11 @@ class PublishedProductManagerSpec extends ObjectBehavior
         PublishedProductInterface $published,
         ProductInterface $fullProduct
     ) {
+        $uuid = Uuid::uuid4();
+        $filteredProduct->getUuid()->willReturn($uuid);
         $repositoryWithoutPermission->findOneByOriginalProduct(Argument::any())->willReturn($alreadyPublished);
-        $productRepository->find(1)->willReturn($fullProduct);
+        $productRepository->find($uuid)->willReturn($fullProduct);
         $publisher->publish($fullProduct, [])->willReturn($published);
-        $filteredProduct->getId()->willReturn(1);
 
         $eventDispatcher->dispatch(Argument::any(), PublishedProductEvents::PRE_PUBLISH, null)->shouldBeCalled();
         $eventDispatcher->dispatch(Argument::any(), PublishedProductEvents::POST_PUBLISH)->shouldBeCalled();
@@ -226,8 +231,9 @@ class PublishedProductManagerSpec extends ObjectBehavior
         ProductInterface $filteredProduct,
         ProductInterface $fullProduct
     ) {
-        $productRepository->find(1)->willReturn($fullProduct);
-        $filteredProduct->getId()->willReturn(1);
+        $uuid = Uuid::uuid4();
+        $productRepository->find($uuid)->willReturn($fullProduct);
+        $filteredProduct->getUuid()->willReturn($uuid);
         $alreadyPublished->getId()->willReturn(1);
         $repositoryWithoutPermission->findOneByOriginalProduct(Argument::any())->willReturn($alreadyPublished);
         $repositoryWithoutPermission->find(1)->willReturn($alreadyPublished);

@@ -127,10 +127,10 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
             $hasAssociations = true;
 
             $associatedProducts = $association->getProducts();
-            $grantedProductIds = $this->productCategoryAccessQuery->getGrantedItemIds($associatedProducts->toArray(), $user);
+            $grantedProductIds = \array_flip($this->productCategoryAccessQuery->getGrantedProductUuids($associatedProducts->toArray(), $user));
 
             foreach ($associatedProducts as $associatedProduct) {
-                if (!isset($grantedProductIds[$associatedProduct->getId()])) {
+                if (!isset($grantedProductIds[$associatedProduct->getUuid()->toString()])) {
                     $associationCodes[$association->getAssociationType()->getCode()]['products'][] = $associatedProduct->getIdentifier();
                 }
             }

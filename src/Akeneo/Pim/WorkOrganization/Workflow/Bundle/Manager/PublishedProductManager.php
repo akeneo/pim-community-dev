@@ -28,6 +28,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\ORM\Exception\MissingIdentifierField;
 use Doctrine\Persistence\ObjectManager;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
@@ -71,13 +72,13 @@ class PublishedProductManager
     /**
      * Find the published product by its original product
      *
-     * @param mixed $productId
+     * @param string $productUuid
      *
      * @return PublishedProductInterface
      */
-    public function findPublishedProductByOriginalId($productId)
+    public function findPublishedProductByOriginalUuid(string $productUuid)
     {
-        return $this->publishedRepositoryWithPermission->findOneByOriginalProductId($productId);
+        return $this->publishedRepositoryWithPermission->findOneByOriginalProductUuid($productUuid);
     }
 
     /**
@@ -89,19 +90,15 @@ class PublishedProductManager
      */
     public function findPublishedProductByOriginal(ProductInterface $product)
     {
-        return $this->publishedRepositoryWithPermission->findOneByOriginalProductId($product);
+        return $this->publishedRepositoryWithPermission->findOneByOriginalProduct($product);
     }
 
     /**
      * Find the working copy, the original product
-     *
-     * @param mixed $productId
-     *
-     * @return ProductInterface
      */
-    public function findOriginalProduct($productId)
+    public function findOriginalProduct(string $productUuid): ?ProductInterface
     {
-        return $this->productRepository->find($productId);
+        return $this->productRepository->find($productUuid);
     }
 
     /**
@@ -128,7 +125,7 @@ class PublishedProductManager
     {
         Assert::true($this->featureFlags->isEnabled('published_product'));
 
-        $originalProduct = $this->findOriginalProduct($product->getId());
+        $originalProduct = $this->findOriginalProduct($product->getUuid());
         $this->dispatchEvent(PublishedProductEvents::PRE_PUBLISH, $originalProduct);
 
         $published = $this->publishedRepositoryWithoutPermission->findOneByOriginalProduct($product);

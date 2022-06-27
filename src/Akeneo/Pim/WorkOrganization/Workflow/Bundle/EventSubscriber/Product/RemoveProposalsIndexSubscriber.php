@@ -15,7 +15,8 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\ProductProposalIndexer;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProposalIdsFromProductIdsQueryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProposalIdsFromProductUuidsQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -25,7 +26,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class RemoveProposalsIndexSubscriber implements EventSubscriberInterface
 {
-    /** @var SelectProposalIdsFromProductIdsQueryInterface  */
+    /** @var SelectProposalIdsFromProductUuidsQueryInterface  */
     private $selectProposalIdsFromProductIdsQuery;
 
     /** @var ProductProposalIndexer */
@@ -35,7 +36,7 @@ class RemoveProposalsIndexSubscriber implements EventSubscriberInterface
     private $proposalIdsToDelete = [];
 
     public function __construct(
-        SelectProposalIdsFromProductIdsQueryInterface $selectProposalIdsFromProductIdQuery,
+        SelectProposalIdsFromProductUuidsQueryInterface $selectProposalIdsFromProductIdQuery,
         ProductProposalIndexer $productProposalIndexer
     ) {
         $this->productProposalIndexer = $productProposalIndexer;
@@ -55,11 +56,11 @@ class RemoveProposalsIndexSubscriber implements EventSubscriberInterface
      */
     public function calculateImpactedProposals(GenericEvent $event)
     {
-        if (!$event->getSubject() instanceof ProductInterface) {
+        if (!$event->getSubject() instanceof ProductInterface || $event->getSubject() instanceof PublishedProduct) {
             return;
         }
 
-        $this->proposalIdsToDelete = $this->selectProposalIdsFromProductIdsQuery->fetch([$event->getSubject()->getId()]);
+        $this->proposalIdsToDelete = $this->selectProposalIdsFromProductIdsQuery->fetch([$event->getSubject()->getUuid()]);
     }
 
     /**

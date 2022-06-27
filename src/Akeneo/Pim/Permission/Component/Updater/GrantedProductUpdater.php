@@ -88,7 +88,7 @@ class GrantedProductUpdater implements ObjectUpdaterInterface
         }
 
         // TODO: PIM-6564 will be done when we'll publish product model
-        if (null !== $product->getId()) {
+        if (null !== $product->getCreated()) {
             $this->checkGrantedFieldsForProductDraft($product, $data);
             $this->checkGrantedFieldsForViewableProduct($product, $data);
         }

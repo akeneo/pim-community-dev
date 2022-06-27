@@ -16,6 +16,8 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -107,7 +109,7 @@ class PublishedProductController
             return new RedirectResponse('/');
         }
 
-        $product = $this->findOr404($request->query->get('originalId'));
+        $product = $this->findOr404($request->query->get('originalUuid'));
 
         $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
         if (!$isOwner) {
@@ -136,7 +138,7 @@ class PublishedProductController
             return new RedirectResponse('/');
         }
 
-        $published = $this->findPublishedByOriginalIdOr404($request->query->get('originalId'));
+        $published = $this->findPublishedByOriginalIdOr404($request->query->get('originalUuid'));
 
         $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $published->getOriginalProduct());
         if (!$isOwner) {
@@ -174,20 +176,19 @@ class PublishedProductController
     /**
      * Find a published product by its original product id or return a 404 response
      *
-     * @param int|string $originalProductId
-     *
-     * @throws NotFoundHttpException
+     * @param string $originalProductUuid
      *
      * @return PublishedProductInterface
+     * @throws NotFoundHttpException
      */
-    protected function findPublishedByOriginalIdOr404($originalProductId)
+    protected function findPublishedByOriginalIdOr404(string $originalProductUuid)
     {
-        $published = $this->manager->findPublishedProductByOriginalId($originalProductId);
+        $published = $this->manager->findPublishedProductByOriginalUuid($originalProductUuid);
 
         if (!$published) {
             throw new NotFoundHttpException(sprintf(
-                'Published product with original id %s could not be found.',
-                (string) $originalProductId
+                'Published product with original uuid %s could not be found.',
+                (string) $originalProductUuid
             ));
         }
 
@@ -195,22 +196,21 @@ class PublishedProductController
     }
 
     /**
-     * Find a product by its id or return a 404 response
+     * Find a product by its uuid or return a 404 response
      *
-     * @param int|string $originalProductId
-     *
-     * @throws NotFoundHttpException
+     * @param string $originalProductUuid
      *
      * @return PublishedProductInterface
+     * @throws NotFoundHttpException
      */
-    protected function findOr404($originalProductId)
+    protected function findOr404(string $originalProductUuid)
     {
-        $product = $this->manager->findOriginalProduct($originalProductId);
+        $product = $this->manager->findOriginalProduct($originalProductUuid);
 
         if (!$product) {
             throw new NotFoundHttpException(sprintf(
-                'Product with original id %s could not be found.',
-                (string) $originalProductId
+                'Product with original uuid %s could not be found.',
+                (string) $originalProductUuid
             ));
         }
 

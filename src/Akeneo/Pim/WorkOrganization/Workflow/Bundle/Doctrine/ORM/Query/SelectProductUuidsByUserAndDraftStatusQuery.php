@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query;
 
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProductIdsByUserAndDraftStatusQueryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProductUuidsByUserAndDraftStatusQueryInterface;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class SelectProductIdsByUserAndDraftStatusQuery implements SelectProductIdsByUserAndDraftStatusQueryInterface
+class SelectProductUuidsByUserAndDraftStatusQuery implements SelectProductUuidsByUserAndDraftStatusQueryInterface
 {
     private $connection;
 
@@ -28,10 +30,13 @@ class SelectProductIdsByUserAndDraftStatusQuery implements SelectProductIdsByUse
         $this->connection = $connection;
     }
 
-    public function execute(string $username, array $draftStatuses)
+    /**
+     * {@inheritDoc}
+     */
+    public function execute(string $username, array $draftStatuses): array
     {
         $querySql = <<<SQL
-    SELECT product_id FROM pimee_workflow_product_draft
+    SELECT BIN_TO_UUID(product_uuid) FROM pimee_workflow_product_draft
     WHERE author = :author
     AND status IN (:statuses)
 SQL;
@@ -41,13 +46,10 @@ SQL;
             ['author' => $username, 'statuses' => $draftStatuses],
             ['author' => \PDO::PARAM_STR, 'statuses' => Connection::PARAM_INT_ARRAY]
         );
-        $resultRows = $stmt->fetchAllAssociative();
 
-        $productIds = [];
-        foreach ($resultRows as $resultRow) {
-            $productIds[] = (int) $resultRow['product_id'];
-        }
-
-        return $productIds;
+        return \array_map(
+            static fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
+            $stmt->fetchFirstColumn()
+        );
     }
 }

@@ -141,7 +141,7 @@ type ReadyProposal = {
 type ProposalProps = {
   formattedChanges: InProgressProposal | ReadyProposal;
   documentType: 'product_draft' | 'product_model_draft';
-  documentId: number;
+  documentIdOrUuid: number | string;
   documentLabel: string;
   authorLabel: string;
   authorCode: string;
@@ -152,7 +152,7 @@ type ProposalProps = {
 
 const Proposal: React.FC<ProposalProps> = ({
   formattedChanges,
-  documentId,
+  documentIdOrUuid,
   documentType,
   documentLabel,
   authorLabel,
@@ -170,7 +170,7 @@ const Proposal: React.FC<ProposalProps> = ({
 
   const documentUrl = `#${router.generate(
     documentType === 'product_draft' ? 'pim_enrich_product_edit' : 'pim_enrich_product_model_edit',
-    {id: documentId}
+    documentType === 'product_draft' ? {uuid: documentIdOrUuid} : {id: documentIdOrUuid}
   )}`;
 
   const flatChanges: (ProposalChangeData & {attributeCode: AttributeCode})[] = [];

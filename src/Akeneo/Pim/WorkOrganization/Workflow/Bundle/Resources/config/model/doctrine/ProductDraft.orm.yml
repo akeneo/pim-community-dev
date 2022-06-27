@@ -45,10 +45,10 @@ Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft:
         entityWithValues:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             joinColumn:
-                name: product_id
-                referencedColumnName: id
-                nullable: false
+                name: product_uuid
+                referencedColumnName: uuid
+                columnDefinition: BINARY(16) NOT NULL
                 onDelete: CASCADE
     uniqueConstraints:
-        unique_idx:
-            columns: [ author, product_id ]
+        unique_author_product_idx:
+            columns: [ author, product_uuid ]

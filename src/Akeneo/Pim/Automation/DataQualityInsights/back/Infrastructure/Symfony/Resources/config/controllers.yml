@@ -10,7 +10,7 @@ services:
         public: true
         arguments:
             $ignoreWordForProduct: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForProduct'
-            $idFactory: '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
+            $idFactory: '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddProductModelWordInDictionaryController:
         public: true
