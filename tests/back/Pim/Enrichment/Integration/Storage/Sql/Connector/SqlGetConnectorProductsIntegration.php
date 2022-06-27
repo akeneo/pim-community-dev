@@ -31,6 +31,7 @@ class SqlGetConnectorProductsIntegration extends TestCase
         parent::setUp();
         $this->createQuantifiedAssociationType('PRODUCT_SET');
         $this->createQuantifiedAssociationType('ANOTHER_PRODUCT_SET');
+        $this->createQuantifiedAssociationType('11');
 
         $this->createProductModel(
             [
@@ -113,6 +114,9 @@ class SqlGetConnectorProductsIntegration extends TestCase
                 ],
                 'ANOTHER_PRODUCT_SET' => [
                     'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
+                ],
+                '11' => [
+                    'products' => [['identifier' => 'apollon_A_false', 'quantity' => 2]],
                 ],
             ]
         ]);
@@ -232,6 +236,10 @@ class SqlGetConnectorProductsIntegration extends TestCase
                     'ANOTHER_PRODUCT_SET' => [
                         'products' => [],
                         'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
+                    ],
+                    '11' => [
+                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 2]],
+                        'product_models' => [],
                     ],
                 ],
                 [],
@@ -365,6 +373,10 @@ class SqlGetConnectorProductsIntegration extends TestCase
                         'products' => [],
                         'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
                     ],
+                    '11' => [
+                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 2]],
+                        'product_models' => [],
+                    ],
                 ],
                 [],
                 new ReadValueCollection([
@@ -434,6 +446,10 @@ class SqlGetConnectorProductsIntegration extends TestCase
                 'ANOTHER_PRODUCT_SET' => [
                     'products' => [],
                     'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
+                ],
+                '11' => [
+                    'products' => [['identifier' => 'apollon_A_false', 'quantity' => 2]],
+                    'product_models' => [],
                 ],
             ],
             [],
@@ -563,6 +579,10 @@ class SqlGetConnectorProductsIntegration extends TestCase
                         'products' => [],
                         'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
                     ],
+                    '11' => [
+                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 2]],
+                        'product_models' => [],
+                    ],
                 ],
                 [],
                 new ReadValueCollection([
@@ -672,4 +692,3 @@ class SqlGetConnectorProductsIntegration extends TestCase
         return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers');
     }
 }
-
