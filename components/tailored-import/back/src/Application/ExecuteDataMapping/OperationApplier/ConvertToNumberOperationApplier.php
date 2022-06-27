@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Operatio
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
@@ -34,13 +35,24 @@ final class ConvertToNumberOperationApplier implements OperationApplierInterface
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
-        return new NumberValue(
-            str_replace($operation->getDecimalSeparator(), static::DEFAULT_DECIMAL_SEPARATOR, $value->getValue()),
-        );
+        if (!$this->isValidNumber($value->getValue(), $operation->getDecimalSeparator())) {
+            return new InvalidValue(sprintf(
+                'Cannot convert "%s" to a number with separator "%s"',
+                $value->getValue(),
+                $operation->getDecimalSeparator(),
+            ));
+        }
+
+        return new NumberValue(str_replace($operation->getDecimalSeparator(), static::DEFAULT_DECIMAL_SEPARATOR, $value->getValue()));
     }
 
     public function supports(OperationInterface $operation): bool
     {
         return $operation instanceof ConvertToNumberOperation;
+    }
+
+    private function isValidNumber(string $value, string $separator): bool
+    {
+        return 0 !== preg_match(sprintf('/^[0-9]+(\%s[0-9])?$/', $separator), $value);
     }
 }

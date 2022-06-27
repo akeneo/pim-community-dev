@@ -19,6 +19,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMap
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use PHPUnit\Framework\Assert;
 
 final class HandleNumberTest extends HandleDataMappingTestCase
@@ -111,6 +112,74 @@ final class HandleNumberTest extends HandleDataMappingTestCase
                         ],
                     ),
                     [],
+                ),
+            ],
+            'it handles number attribute targets with invalid values' => [
+                'row' => [
+                    '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
+                    '00000000-0000-0000-0000-000000000001' => '2022',
+                    '00000000-0000-0000-0000-000000000002' => '12,5',
+                    '00000000-0000-0000-0000-000000000003' => '6.5',
+                ],
+                'data_mappings' => [
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
+                        AttributeTarget::create(
+                            'year',
+                            'pim_catalog_number',
+                            null,
+                            null,
+                            'set',
+                            'skip',
+                            ['decimal_separator' => ','],
+                        ),
+                        ['00000000-0000-0000-0000-000000000001'],
+                        OperationCollection::create([]),
+                        [],
+                    ),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fec',
+                        AttributeTarget::create(
+                            'age',
+                            'pim_catalog_number',
+                            'ecommerce',
+                            'fr_FR',
+                            'set',
+                            'skip',
+                            ['decimal_separator' => '.'],
+                        ),
+                        ['00000000-0000-0000-0000-000000000002'],
+                        OperationCollection::create([]),
+                        [],
+                    ),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fec',
+                        AttributeTarget::create(
+                            'quantity',
+                            'pim_catalog_number',
+                            'ecommerce',
+                            null,
+                            'set',
+                            'skip',
+                            ['decimal_separator' => ','],
+                        ),
+                        ['00000000-0000-0000-0000-000000000003'],
+                        OperationCollection::create([]),
+                        [],
+                    ),
+                ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetNumberValue('year', null, null, '2022'),
+                        ],
+                    ),
+                    [
+                        new InvalidValue('Cannot convert "12,5" to a number with separator "."'),
+                        new InvalidValue('Cannot convert "6.5" to a number with separator ","'),
+                    ],
                 ),
             ],
         ];
