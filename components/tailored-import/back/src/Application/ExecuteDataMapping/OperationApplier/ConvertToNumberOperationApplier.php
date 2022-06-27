@@ -53,6 +53,6 @@ final class ConvertToNumberOperationApplier implements OperationApplierInterface
 
     private function isValidNumber(string $value, string $separator): bool
     {
-        return 0 !== preg_match(sprintf('/^[0-9]+(\%s[0-9])?$/', $separator), $value);
+        return 0 !== preg_match(sprintf('/^[0-9]*(\%s[0-9]*)?$/', $separator), $value);
     }
 }

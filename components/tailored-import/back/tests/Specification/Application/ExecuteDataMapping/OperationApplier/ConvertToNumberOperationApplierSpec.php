@@ -34,19 +34,47 @@ class ConvertToNumberOperationApplierSpec extends ObjectBehavior
     public function it_applies_convert_to_number_operation(): void
     {
         $operation = new ConvertToNumberOperation($this->uuid, ',');
-        $value = new StringValue('1,234');
 
-        $this->applyOperation($operation, $value)
+        $this->applyOperation($operation, new StringValue('1,234'))
             ->shouldBeLike(new NumberValue('1.234'));
+        $this->applyOperation($operation, new StringValue('12,34'))
+            ->shouldBeLike(new NumberValue('12.34'));
+        $this->applyOperation($operation, new StringValue('123,4'))
+            ->shouldBeLike(new NumberValue('123.4'));
+        $this->applyOperation($operation, new StringValue('1234'))
+            ->shouldBeLike(new NumberValue('1234'));
+
+        $operation = new ConvertToNumberOperation($this->uuid, '.');
+
+        $this->applyOperation($operation, new StringValue('1.234'))
+            ->shouldBeLike(new NumberValue('1.234'));
+        $this->applyOperation($operation, new StringValue('12.34'))
+            ->shouldBeLike(new NumberValue('12.34'));
+        $this->applyOperation($operation, new StringValue('123.4'))
+            ->shouldBeLike(new NumberValue('123.4'));
+        $this->applyOperation($operation, new StringValue('1234'))
+            ->shouldBeLike(new NumberValue('1234'));
     }
 
-    public function it_returns_an_invalid_value_object_when_the_decimal_separator_is_not_found(): void
+    public function it_returns_an_invalid_value_when_cannot_convert_to_number(): void
     {
-        $operation = new ConvertToNumberOperation($this->uuid, ',');
-        $value = new StringValue('1.234');
+        $operation = new ConvertToNumberOperation($this->uuid, '.');
 
-        $this->applyOperation($operation, $value)
-            ->shouldBeLike(new InvalidValue(''));
+        $this->applyOperation($operation, new StringValue('1,234'))
+            ->shouldBeLike(new InvalidValue('Cannot convert "1,234" to a number with separator "."'));
+        $this->applyOperation($operation, new StringValue('1234,'))
+            ->shouldBeLike(new InvalidValue('Cannot convert "1234," to a number with separator "."'));
+        $this->applyOperation($operation, new StringValue('1K234'))
+            ->shouldBeLike(new InvalidValue('Cannot convert "1K234" to a number with separator "."'));
+
+        $operation = new ConvertToNumberOperation($this->uuid, ',');
+
+        $this->applyOperation($operation, new StringValue('1.234'))
+            ->shouldBeLike(new InvalidValue('Cannot convert "1.234" to a number with separator ","'));
+        $this->applyOperation($operation, new StringValue('1234.'))
+            ->shouldBeLike(new InvalidValue('Cannot convert "1234." to a number with separator ","'));
+        $this->applyOperation($operation, new StringValue('1K234'))
+            ->shouldBeLike(new InvalidValue('Cannot convert "1K234" to a number with separator ","'));
     }
 
     public function it_throws_an_exception_when_value_type_is_invalid(): void

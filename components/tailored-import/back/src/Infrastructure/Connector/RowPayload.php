@@ -42,7 +42,7 @@ class RowPayload
     }
 
     /**
-     * @param InvalidValue[]
+     * @param InvalidValue[] $invalidValues
      */
     public function setInvalidValues(array $invalidValues): void
     {
@@ -50,7 +50,7 @@ class RowPayload
     }
 
     /**
-     * @return null|InvalidValue[]
+     * @return InvalidValue[]|null
      */
     public function getInvalidValues(): ?array
     {
