@@ -208,26 +208,27 @@ SQL;
 
     public function addWarnings(StepExecution $stepExecution, array $warnings): void
     {
+        if(0 === count($warnings)) {
+            return;
+        }
+
         $sql = <<<SQL
 INSERT INTO akeneo_batch_warning (step_execution_id, reason, reason_parameters, item) VALUES %s
 SQL;
 
-        $connection = $this->jobManager->getConnection();
+        $valuePlaceholders = [];
+        $values = [];
 
-        $values = array_map(static fn (Warning $warning) =>
-            sprintf(
-                "(%s, %s, %s, %s)",
-                $connection->quote($stepExecution->getId()),
-                $connection->quote($warning->getReason()),
-                $connection->quote(serialize($warning->getReasonParameters())),
-                $connection->quote(serialize($warning->getItem())),
-        ), $warnings);
+        foreach ($warnings as $warning) {
+            $valuePlaceholders[] = '(?, ?, ?, ?)';
+            $values = [...$values, $stepExecution->getId(), $warning->getReason(), serialize($warning->getReasonParameters()), serialize($warning->getItem())];
+        }
 
-        $sql = sprintf($sql, join(', ', $values));
+        $sql = sprintf($sql, join(', ', $valuePlaceholders));
 
-        $this->jobManager->getConnection()->executeQuery($sql);
+        $this->jobManager->getConnection()->executeQuery($sql, $values);
 
-        $this->incrementWarningCount($stepExecution->getId(), count($values));
+        $this->incrementWarningCount($stepExecution->getId(), count($warnings));
 
         if ($stepExecution->getWarnings() instanceof PersistentCollection) {
             $stepExecution->getWarnings()->setInitialized(false);

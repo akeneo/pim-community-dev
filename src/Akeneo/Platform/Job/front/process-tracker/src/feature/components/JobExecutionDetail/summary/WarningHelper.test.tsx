@@ -21,3 +21,12 @@ test('it displays a warning', () => {
 
   expect(screen.getByText('my element')).toBeInTheDocument();
 });
+
+test('it does not display expand button if item is empty', () => {
+  const warningWithEmptyItem: Warning = {
+    reason: 'reason',
+    item: {},
+  };
+
+  expect(screen.queryByText('job_execution.summary.display_item')).not.toBeInTheDocument();
+});
