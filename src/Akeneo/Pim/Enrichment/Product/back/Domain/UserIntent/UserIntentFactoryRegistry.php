@@ -37,11 +37,10 @@ class UserIntentFactoryRegistry
     }
 
     /**
-     * @param string $fieldName
      * @param mixed $data
-     * @return UserIntent[]|null
+     * @return UserIntent[]
      */
-    public function fromStandardFormatField(string $fieldName, mixed $data): array | null
+    public function fromStandardFormatField(string $fieldName, mixed $data): array
     {
         $factory = $this->userIntentFactoriesWithFieldName[$fieldName] ?? null;
         if (null === $factory && \in_array($fieldName, $this->ignoredFieldNames)) {
