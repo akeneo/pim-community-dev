@@ -19,7 +19,7 @@ class UcsMiddleware implements MiddlewareInterface
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
         // No tenant ID in the env, but existing in the received message
-        // We are in a daemon long running process
+        // We are in a daemon long-running process
         if (null === $this->pimTenantId && null !== $envelope->last(TenantIdStamp::class)) {
             /** @var TenantIdStamp $stamp */
             $stamp = $envelope->last(TenantIdStamp::class);
