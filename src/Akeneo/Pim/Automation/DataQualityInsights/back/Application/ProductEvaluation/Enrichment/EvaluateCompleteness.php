@@ -27,7 +27,7 @@ final class EvaluateCompleteness
     public function evaluate(CalculateProductCompletenessInterface $completenessCalculator, Write\CriterionEvaluation $criterionEvaluation): Write\CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
-        $completenessResult = $completenessCalculator->calculate($criterionEvaluation->getProductId());
+        $completenessResult = $completenessCalculator->calculate($criterionEvaluation->getEntityId());
 
         $evaluationResult = new Write\CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localeCodes) {

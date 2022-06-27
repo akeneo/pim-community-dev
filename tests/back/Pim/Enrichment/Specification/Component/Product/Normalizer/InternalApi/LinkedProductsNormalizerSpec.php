@@ -44,7 +44,7 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
             'data',
             MediaValue::value('media_attribute', new FileInfo()),
             90,
-            1,
+            '54162e35-ff81-48f1-96d5-5febd3f00fd5',
             'parent_code',
             $values
         );
@@ -74,7 +74,7 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
 
         $expected = [
             [
-                'id'           => 1,
+                'id'           => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'identifier'   => 'identifier',
                 'label'        => 'data',
                 'document_type' => 'product',

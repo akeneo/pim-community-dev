@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -17,11 +18,11 @@ final class SqlFindProductIdentifier implements FindIdentifier
     {
     }
 
-    public function fromId(int $id): null|string
+    public function fromUuid(string $uuid): null|string
     {
         $identifier = $this->connection->executeQuery(
-            'SELECT identifier FROM pim_catalog_product WHERE id = :id',
-            ['id' => $id]
+            'SELECT identifier FROM pim_catalog_product WHERE uuid = :uuid',
+            ['uuid' => Uuid::fromString($uuid)->getBytes()]
         )->fetchOne();
 
         return false === $identifier ? null : $identifier;

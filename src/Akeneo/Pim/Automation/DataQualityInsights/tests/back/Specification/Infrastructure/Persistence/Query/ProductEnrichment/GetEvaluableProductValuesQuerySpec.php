@@ -16,8 +16,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -36,10 +37,10 @@ class GetEvaluableProductValuesQuerySpec extends ObjectBehavior
     public function it_returns_nothing_when_there_is_no_evaluable_attributes(
         GetEvaluableAttributesByProductQueryInterface $getEvaluableAttributesByProductQuery
     ) {
-        $productId = new ProductId(42);
+        $productUuid = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
-        $getEvaluableAttributesByProductQuery->execute($productId)->willReturn([]);
-        $this->byProductId($productId)->shouldBeLike(new ProductValuesCollection());
+        $getEvaluableAttributesByProductQuery->execute($productUuid)->willReturn([]);
+        $this->byProductId($productUuid)->shouldBeLike(new ProductValuesCollection());
     }
 
     public function it_returns_product_values_by_attributes_channel_and_locale(
@@ -47,7 +48,7 @@ class GetEvaluableProductValuesQuerySpec extends ObjectBehavior
         GetEvaluableAttributesByProductQueryInterface $getEvaluableAttributesByProductQuery,
         GetLocalesByChannelQueryInterface $localesByChannelQuery
     ) {
-        $productId = new ProductId(42);
+        $productId = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
             'ecommerce' => ['en_US', 'fr_FR'],

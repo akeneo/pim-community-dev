@@ -5,6 +5,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Common\Saver;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Test products have been correctly removed from the index after a product has been removed.
@@ -35,11 +36,11 @@ class RemovingProductIntegration extends TestCase
         $this->get('pim_catalog.saver.product')->save($product);
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bat');
-        $productId = $product->getId();
+        $productUuid = $product->getUuid();
 
         $this->get('pim_catalog.remover.product')->remove($product);
 
-        $this->assertNotFoundInProductAndProductModelIndex($productId);
+        $this->assertNotFoundInProductAndProductModelIndex($productUuid);
     }
 
     public function testRemovingProductsOnBulkRemove()
@@ -54,15 +55,15 @@ class RemovingProductIntegration extends TestCase
         $productFoo = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
         $productBar = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bar');
         $productBaz = $this->get('pim_catalog.repository.product')->findOneByIdentifier('baz');
-        $productFooId = $productFoo->getId();
-        $productBarId = $productBar->getId();
-        $productBazId = $productBaz->getId();
+        $productFooUuid = $productFoo->getUuid();
+        $productBarUuid = $productBar->getUuid();
+        $productBazUuid = $productBaz->getUuid();
 
         $this->get('pim_catalog.remover.product')->removeAll([$productFoo, $productBar, $productBaz]);
 
-        $this->assertNotFoundInProductAndProductModelIndex($productFooId);
-        $this->assertNotFoundInProductAndProductModelIndex($productBarId);
-        $this->assertNotFoundInProductAndProductModelIndex($productBazId);
+        $this->assertNotFoundInProductAndProductModelIndex($productFooUuid);
+        $this->assertNotFoundInProductAndProductModelIndex($productBarUuid);
+        $this->assertNotFoundInProductAndProductModelIndex($productBazUuid);
     }
 
     /**
@@ -75,15 +76,13 @@ class RemovingProductIntegration extends TestCase
 
     /**
      * Asserts the given productId does not exists in the product and product model Index.
-     *
-     * @param string $productId
      */
-    private function assertNotFoundInProductAndProductModelIndex(string $productId): void
+    private function assertNotFoundInProductAndProductModelIndex(UuidInterface $productUuid): void
     {
         $found = true;
         try {
-            $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_' . $productId);
-        } catch (Missing404Exception $e) {
+            $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_' . $productUuid->toString());
+        } catch (Missing404Exception) {
             $found = false;
         }
         $this->assertFalse($found);

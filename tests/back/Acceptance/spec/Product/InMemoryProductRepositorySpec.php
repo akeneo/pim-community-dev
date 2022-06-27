@@ -84,7 +84,7 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $product = new Product();
         $this->save($product);
 
-        $this->find($product->getId())->shouldReturn($product);
+        $this->find($product->getUuid())->shouldReturn($product);
     }
 
     function it_returns_null_when_it_does_not_find_a_product()
@@ -163,23 +163,6 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $products->shouldBeArray();
         $products->shouldHaveCount(1);
         $products->shouldHaveKeyWithValue('A', $productA);
-    }
-
-    function it_finds_one_product_by_id()
-    {
-        $productA = new Product();
-        $productA->setId(1);
-        $productA->setIdentifier('A');
-        $this->save($productA);
-
-        $productB = new Product();
-        $productB->setId(2);
-        $productB->setIdentifier('B');
-        $this->save($productB);
-
-        $this->findOneBy(['id' => 1])->shouldBe($productA);
-        $this->findOneBy(['id' => 2])->shouldBe($productB);
-        $this->findOneBy(['id' => 3])->shouldBeNull();
     }
 
     function it_finds_one_product_by_uuid()

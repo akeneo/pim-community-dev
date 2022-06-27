@@ -15,6 +15,7 @@ batch_jobs:
     compute_completeness_of_products_family: 제품 패밀리 완성도 계산
     index_family_products: 패밀리 제품 및 제품 모델 인덱스 처리
     delete_products_and_product_models: 제품 대량 삭제
+    ensure_attribute_group_order: 특성 그룹 정렬 순서 확인
     clean_attribute:
       register_clean_job: 블랙리스트에 코드 추가
       clean_product_model: 제품 모델 정리

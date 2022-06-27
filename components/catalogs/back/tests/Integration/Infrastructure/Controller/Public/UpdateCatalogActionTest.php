@@ -9,24 +9,24 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Public\UpdateCatalogAction
+ * @covers \Akeneo\Catalogs\Application\Handler\UpdateCatalogHandler
  */
 class UpdateCatalogActionTest extends IntegrationTestCase
 {
     private ?KernelBrowser $client;
     private ?CommandBus $commandBus;
-    private ?TokenStorageInterface $tokenStorage;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->commandBus = self::getContainer()->get(CommandBus::class);
-        $this->tokenStorage = self::getContainer()->get(TokenStorageInterface::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
@@ -38,11 +38,10 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             'write_catalogs',
             'delete_catalogs',
         ]);
-
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $this->tokenStorage->getToken()->getUser()->getUserIdentifier(),
+            'shopifi',
         ));
 
         $this->client->request(
@@ -68,11 +67,10 @@ class UpdateCatalogActionTest extends IntegrationTestCase
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient([]);
-
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $this->tokenStorage->getToken()->getUser()->getUserIdentifier(),
+            'shopifi',
         ));
 
         $this->client->request(
@@ -121,18 +119,17 @@ class UpdateCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsNotFoundWhenCatalogDoesNotBelongToCurrentUser(): void
     {
-        $this->createUser('willy-mesnage');
-        $this->commandBus->execute(new CreateCatalogCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'willy-mesnage',
-        ));
-
         $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
         ]);
+        $this->createUser('magendo');
+        $this->commandBus->execute(new CreateCatalogCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            'magendo',
+        ));
 
         $this->client->request(
             'PATCH',

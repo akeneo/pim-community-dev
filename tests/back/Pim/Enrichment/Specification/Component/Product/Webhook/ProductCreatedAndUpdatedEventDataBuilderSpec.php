@@ -25,6 +25,8 @@ use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
@@ -86,11 +88,13 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $bulkEvent = new BulkEvent([$blueJeanEvent, $redJeanEvent]);
 
         $productList = new ConnectorProductList(2, [
-            $this->buildConnectorProduct(1, 'blue_jean'),
-            $this->buildConnectorProduct(2, 'red_jean'),
+            $this->buildConnectorProduct(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), 'blue_jean'),
+            $this->buildConnectorProduct(Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'), 'red_jean'),
         ]);
 
-        $getConnectorProductsQuery->fromProductIdentifiers(['blue_jean', 'red_jean'], 10, null, null, null)->willReturn($productList);
+        $getConnectorProductsQuery
+            ->fromProductIdentifiers(['blue_jean', 'red_jean'], 10, null, null, null)
+            ->willReturn($productList);
 
         $expectedCollection = new EventDataCollection();
         $expectedCollection->setEventData($blueJeanEvent, [
@@ -134,9 +138,13 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     ): void {
         $context = new Context('ecommerce_0000', 10);
 
-        $productList = new ConnectorProductList(1, [$this->buildConnectorProduct(1, 'blue_jean')]);
+        $productList = new ConnectorProductList(1, [
+            $this->buildConnectorProduct(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), 'blue_jean')
+        ]);
 
-        $getConnectorProductsQuery->fromProductIdentifiers(['blue_jean', 'red_jean'], 10, null, null, null)->willReturn($productList);
+        $getConnectorProductsQuery
+            ->fromProductIdentifiers(['blue_jean', 'red_jean'], 10, null, null, null)
+            ->willReturn($productList);
 
         $blueJeanEvent = new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'identifier' => 'blue_jean',
@@ -169,10 +177,10 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         Assert::assertEquals($expectedCollection, $collection);
     }
 
-    private function buildConnectorProduct(int $id, string $identifier)
+    private function buildConnectorProduct(UuidInterface $uuid, string $identifier): ConnectorProduct
     {
         return new ConnectorProduct(
-            $id,
+            $uuid,
             $identifier,
             new \DateTimeImmutable('2020-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2020-04-25 15:55:50', new \DateTimeZone('UTC')),

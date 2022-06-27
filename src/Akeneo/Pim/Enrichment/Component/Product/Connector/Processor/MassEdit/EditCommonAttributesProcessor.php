@@ -142,7 +142,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
 
     protected function isAttributeEditable(ProductInterface $product, string $attributeCode): bool
     {
-        if (!$this->productRepository->hasAttributeInFamily($product->getId(), $attributeCode)) {
+        if (!$this->productRepository->hasAttributeInFamily($product->getUuid(), $attributeCode)) {
             return false;
         }
 
@@ -189,7 +189,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             new DataInvalidItem(
                 [
                     'class'  => ClassUtils::getClass($product),
-                    'id'     => $product->getId(),
+                    'uuid' => $product->getUuid()->toString(),
                     'string' => $product->getIdentifier(),
                 ]
             )

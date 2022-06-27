@@ -17,7 +17,7 @@ trait PeriodEventCountTrait
 {
     /**
      * @param string[] $connectionCodes
-     * @param array<array{connection_code: string, event_datetime: string, event_count: string}> $data
+     * @param array<array{connection_code: string, event_datetime: ?string, event_count: ?string}> $data
      *
      * @return PeriodEventCount[]
      */

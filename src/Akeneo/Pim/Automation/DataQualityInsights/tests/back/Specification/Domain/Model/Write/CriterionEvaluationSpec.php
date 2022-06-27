@@ -8,8 +8,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionApplic
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -19,7 +20,7 @@ final class CriterionEvaluationSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith(new CriterionCode('test'), new ProductId(42), CriterionEvaluationStatus::pending());
+        $this->beConstructedWith(new CriterionCode('test'), ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')), CriterionEvaluationStatus::pending());
     }
 
     public function it_starts_and_ends_an_evaluation()

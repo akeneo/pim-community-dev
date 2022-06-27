@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -89,8 +90,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
             $values = $this->valuesNormalizer->normalize($row['values'], self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
 
             $projection = new ElasticsearchProductProjection(
-                $row['id'],
-                $row['uuid'],
+                Uuid::fromString($row['uuid']),
                 $row['identifier'],
                 Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['created_date'], $platform),
                 Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated_date'], $platform),
@@ -122,8 +122,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 WITH
     product as (
         SELECT
-            product.id,
-            BIN_TO_UUID(product.uuid) as uuid,
+            product.uuid,
             product.identifier,
             product.is_enabled,
             product.product_model_id AS parent_product_model_id,
@@ -157,25 +156,25 @@ WITH
     ),
     product_categories AS (
         SELECT
-            product.id AS product_id,
+            product.uuid AS product_uuid,
             JSON_ARRAYAGG(category.code) AS category_codes
         FROM
             product
-            JOIN pim_catalog_category_product category_product ON category_product.product_id = product.id
+            JOIN pim_catalog_category_product category_product ON category_product.product_uuid = product.uuid
             JOIN pim_catalog_category category ON category.id = category_product.category_id
-        GROUP BY product.id
+        GROUP BY product.uuid
     ),
     ancestor_categories AS (
-        SELECT product_id, JSON_ARRAYAGG(category_code) as category_codes
+        SELECT product_uuid, JSON_ARRAYAGG(category_code) as category_codes
         FROM (
-            SELECT product.id AS product_id, category.code AS category_code
+            SELECT product.uuid AS product_uuid, category.code AS category_code
             FROM
                 product
                 INNER JOIN pim_catalog_product_model model ON model.id = product.parent_product_model_id
                 INNER JOIN pim_catalog_category_product_model category_model ON category_model.product_model_id = model.id
                 INNER JOIN pim_catalog_category category ON category.id= category_model.category_id
             UNION ALL
-            SELECT product.id AS product_id, category.code AS category_code
+            SELECT product.uuid AS product_uuid, category.code AS category_code
             FROM
                 product
                 INNER JOIN pim_catalog_product_model model ON model.id = product.parent_product_model_id
@@ -183,25 +182,25 @@ WITH
                 INNER JOIN pim_catalog_category_product_model category_model ON category_model.product_model_id= parent.id
                 INNER JOIN pim_catalog_category category ON category.id = category_model.category_id
         ) results
-        GROUP BY product_id
+        GROUP BY product_uuid
     ),
     product_groups AS (
         SELECT
-            product.id AS product_id,
+            product.uuid AS product_uuid,
             JSON_ARRAYAGG(pim_group.code) AS group_codes
         FROM
             product
-            JOIN pim_catalog_group_product group_product ON group_product.product_id = product.id
+            JOIN pim_catalog_group_product group_product ON group_product.product_uuid = product.uuid
             JOIN pim_catalog_group pim_group ON pim_group.id = group_product.group_id
-        GROUP BY  product.id
+        GROUP BY product.uuid
     ),
     product_completeness AS (
         SELECT
-            completeness.product_id,
+            completeness.product_uuid,
             JSON_OBJECTAGG(channel_code, completeness.completeness_per_locale) as completeness_per_channel
         FROM (
             SELECT
-                product_id,
+                product_uuid,
                 JSON_OBJECTAGG(
                     locale.code,
                     IF(
@@ -213,12 +212,12 @@ WITH
                 channel.code as channel_code
             FROM
                 product
-                STRAIGHT_JOIN pim_catalog_completeness completeness ON completeness.product_id = product.id
+                STRAIGHT_JOIN pim_catalog_completeness completeness ON completeness.product_uuid = product.uuid
                 JOIN pim_catalog_channel channel ON channel.id = completeness.channel_id
                 JOIN pim_catalog_locale locale ON locale.id = completeness.locale_id
-            GROUP BY product_id, channel_code
+            GROUP BY product_uuid, channel_code
         ) as completeness
-        GROUP BY completeness.product_id
+        GROUP BY completeness.product_uuid
     ),
     product_family_label AS (
         SELECT
@@ -256,8 +255,7 @@ WITH
         GROUP BY family_variant.family_variant_id
     )
     SELECT
-        product.id,
-        product.uuid,
+        BIN_TO_UUID(product.uuid) as uuid,
         product.identifier,
         product.is_enabled,
         product.parent_product_model_code,
@@ -283,11 +281,11 @@ WITH
         COALESCE(variant_product_attributes.attribute_codes_at_variant_product_level, JSON_ARRAY()) AS attribute_codes_at_variant_product_level
     FROM
         product
-        LEFT JOIN product_groups ON product_groups.product_id = product.id
-        LEFT JOIN product_categories ON product_categories.product_id = product.id
-        LEFT JOIN ancestor_categories ON ancestor_categories.product_id = product.id
+        LEFT JOIN product_groups ON product_groups.product_uuid = product.uuid
+        LEFT JOIN product_categories ON product_categories.product_uuid = product.uuid
+        LEFT JOIN ancestor_categories ON ancestor_categories.product_uuid = product.uuid
         LEFT JOIN product_family_label ON product_family_label.family_id = product.family_id
-        LEFT JOIN product_completeness ON product_completeness.product_id = product.id
+        LEFT JOIN product_completeness ON product_completeness.product_uuid = product.uuid
         LEFT JOIN family_attributes ON family_attributes.family_id = product.family_id
         LEFT JOIN variant_product_attributes ON variant_product_attributes.family_variant_id = product.family_variant_id
 SQL;

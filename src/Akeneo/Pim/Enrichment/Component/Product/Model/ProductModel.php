@@ -239,7 +239,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreated(): \DateTimeInterface
+    public function getCreated(): ?\DateTimeInterface
     {
         return $this->created;
     }
@@ -997,5 +997,13 @@ class ProductModel implements ProductModelInterface
         $associationsCollection->add($association);
 
         return $associationsCollection;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isNew(): bool
+    {
+        return null === $this->id;
     }
 }

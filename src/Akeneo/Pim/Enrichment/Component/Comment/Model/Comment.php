@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Comment\Model;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Comment model
@@ -23,6 +24,8 @@ class Comment implements CommentInterface
 
     /** @var string */
     protected $resourceId;
+
+    protected UuidInterface $resourceUuid;
 
     /** @var UserInterface */
     protected $author;
@@ -192,5 +195,21 @@ class Comment implements CommentInterface
         $this->children = $children;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setResourceUuid(UuidInterface $resourceUuid): void
+    {
+        $this->resourceUuid = $resourceUuid;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResourceUuid(): ?UuidInterface
+    {
+        return $this->resourceUuid;
     }
 }

@@ -10,13 +10,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class ConnectorProductSpec extends ObjectBehavior
 {
     function let()
     {
         $this->beConstructedWith(
-            1,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -260,7 +261,7 @@ class ConnectorProductSpec extends ObjectBehavior
     function it_returns_empty_array_if_no_association_type_exists()
     {
         $this->beConstructedWith(
-            42,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -290,7 +291,7 @@ class ConnectorProductSpec extends ObjectBehavior
             new ProductCompleteness('ecommerce', 'fr_FR', 10, 1),
             new ProductCompleteness('print', 'en_US', 4, 0),
         ];
-        $completenessCollection = new ProductCompletenessCollection(1, $completenesses);
+        $completenessCollection = new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), $completenesses);
         $connectorProduct = $this->buildWithCompletenesses($completenessCollection);
 
         $connectorProduct->completenesses()->shouldReturn($completenessCollection);

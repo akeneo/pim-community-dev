@@ -1,8 +1,7 @@
-import React, {FC, useCallback, useState} from 'react';
+import React, {FC, useCallback} from 'react';
 import {getColor} from 'akeneo-design-system';
-import {Criterion, CriterionState} from './models/Criterion';
-import {Criteria} from './models/Criteria';
-import {useCatalogCriteria} from './hooks/useCatalogCriteria';
+import {Criterion} from './models/Criterion';
+import {AnyCriterionState, Criteria} from './models/Criteria';
 import {AddCriterionDropdown} from './components/AddCriterionDropdown';
 import styled from 'styled-components';
 import {Empty} from './components/Empty';
@@ -15,25 +14,24 @@ const Header = styled.div`
 `;
 
 type Props = {
-    id: string;
+    criteria: Criteria;
+    setCriteria: (criteria: Criteria) => void;
+    onChange: (isDirty: boolean) => void;
 };
 
-const ProductSelection: FC<Props> = ({id}) => {
-    const backend = useCatalogCriteria(id);
-
-    const [criteria, setCriteria] = useState<Criteria>(backend);
-
+const ProductSelection: FC<Props> = ({criteria, setCriteria, onChange}) => {
     const addCriterion = useCallback(
-        (criterion: Criterion<CriterionState>) => {
-            setCriteria(state => [...state, criterion]);
+        (criterion: Criterion<AnyCriterionState>) => {
+            setCriteria([...criteria, criterion]);
+            onChange(true);
         },
-        [setCriteria]
+        [criteria, setCriteria, onChange]
     );
 
     const updateCriterion = useCallback(
-        (criterion: Criterion<CriterionState>, newState: CriterionState) => {
-            setCriteria(state =>
-                state.map(old =>
+        (criterion: Criterion<AnyCriterionState>, newState: AnyCriterionState) => {
+            setCriteria(
+                criteria.map(old =>
                     criterion.id !== old.id
                         ? old
                         : {
@@ -42,21 +40,23 @@ const ProductSelection: FC<Props> = ({id}) => {
                           }
                 )
             );
+            onChange(true);
         },
-        [setCriteria]
+        [criteria, setCriteria, onChange]
     );
 
     const removeCriterion = useCallback(
-        (criterion: Criterion<CriterionState>) => {
-            setCriteria(state => state.filter(old => old.id !== criterion.id));
+        (criterion: Criterion<AnyCriterionState>) => {
+            setCriteria(criteria.filter(old => old.id !== criterion.id));
+            onChange(true);
         },
-        [setCriteria]
+        [criteria, setCriteria, onChange]
     );
 
     const list = criteria.map(criterion => {
         const Module = criterion.module;
 
-        const handleChange = (newState: CriterionState) => updateCriterion(criterion, newState);
+        const handleChange = (newState: AnyCriterionState) => updateCriterion(criterion, newState);
         const handleRemove = () => removeCriterion(criterion);
 
         return <Module key={criterion.id} state={criterion.state} onChange={handleChange} onRemove={handleRemove} />;
