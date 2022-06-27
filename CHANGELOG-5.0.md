@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- Fix PHP alternative to 7.4 in Dockerfile
+
 # 5.0.99 (2022-06-21)
 
 - PIM-10489: Fix code cast on proposals
