@@ -343,7 +343,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iShouldBeOnTheProductEditPage(ProductInterface $product)
     {
-        $this->assertAddress($this->getPage('Product edit')->getUrl(['id' => $product->getId()]));
+        $this->assertAddress($this->getPage('Product edit')->getUrl(['uuid' => $product->getUuid()->toString()]));
 
         $this->getMainContext()->spin(function () {
             return $this->getCurrentPage()->find('css', '.AknTitleContainer-title');

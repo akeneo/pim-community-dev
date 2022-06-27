@@ -19,6 +19,7 @@ catalogs-fixtures:
 catalogs-tests:
 	$(MAKE) catalogs-lint-back
 	$(MAKE) catalogs-coupling-back
+	$(MAKE) catalogs-mutation-unit-back
 	$(MAKE) catalogs-coverage-back
 	$(MAKE) catalogs-acceptance-back
 	$(MAKE) catalogs-lint-front
@@ -77,26 +78,33 @@ catalogs-coverage-back:
 	XDEBUG_MODE=coverage APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
-		--testsuite Catalogs_Unit \
-		--log-junit var/tests/phpunit/phpunit_catalogs_unit.xml \
-		--coverage-php coverage/Catalogs/Back/Global/unit.cov \
-		--coverage-html coverage/Catalogs/Back/Unit/ \
-		--coverage-filter $(CATALOGS_PATH)/back/src/
-	XDEBUG_MODE=coverage APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
-		--configuration $(CATALOGS_PATH)/back/ \
-		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
-		--testsuite Catalogs_Integration \
-		--log-junit var/tests/phpunit/phpunit_catalogs_integration.xml \
-		--coverage-php coverage/Catalogs/Back/Global/integration.cov \
-		--coverage-html coverage/Catalogs/Back/Integration/ \
+		--log-junit var/tests/phpunit/phpunit_catalogs_global.xml \
+		--coverage-html coverage/Catalogs/Back/Global/ \
 		--coverage-filter $(CATALOGS_PATH)/back/src/
 
-	# download phpcov binary
-	$(DOCKER_COMPOSE) run -u www-data -w /srv/pim/var --rm php sh -c "test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar && php phpcov.phar --version"
-	# Merge code coverages
-	$(PHP_RUN) -d memory_limit=-1 var/phpcov.phar merge \
-		--html coverage/Catalogs/Back/Global/ \
-		coverage/Catalogs/Back/Global/
+.PHONY: catalogs-mutation-back
+catalogs-mutation-back: var/infection.phar
+	XDEBUG_MODE=coverage APP_ENV=test $(PHP_RUN) var/infection.phar \
+		--configuration=$(CATALOGS_PATH)/back/infection.json \
+		--only-covered \
+		--show-mutations
+
+.PHONY: catalogs-mutation-unit-back
+catalogs-mutation-unit-back: var/infection.phar
+	XDEBUG_MODE=coverage APP_ENV=test $(PHP_RUN) var/infection.phar \
+		--configuration=$(CATALOGS_PATH)/back/infection.json \
+		--only-covered \
+		--show-mutations \
+		--test-framework-options="--testsuite=Catalogs_Unit" \
+		--min-covered-msi=100
+
+.PHONY: catalogs-mutation-integration-back
+catalogs-mutation-integration-back: var/infection.phar
+	XDEBUG_MODE=coverage APP_ENV=test $(PHP_RUN) var/infection.phar \
+		--configuration=$(CATALOGS_PATH)/back/infection.json \
+		--only-covered \
+		--show-mutations \
+		--test-framework-options="--testsuite=Catalogs_Integration"
 
 # TESTS FRONT
 
@@ -126,3 +134,12 @@ catalogs-lint-front_fix:
 .PHONY: catalogs-lint-back_fix
 catalogs-lint-back_fix:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=$(CATALOGS_PATH)/back/.php_cs.php
+
+# BINARIES
+
+var/infection.phar:
+	wget -q https://github.com/infection/infection/releases/download/0.26.0/infection.phar -O var/infection.phar
+	wget -q https://github.com/infection/infection/releases/download/0.26.0/infection.phar.asc -O var/infection.phar.asc
+	echo "80b26af31585cf98f6a898c34aa961c0bd4289ad135fa6771831bcd1d47aa5cc  var/infection.phar" | sha256sum --check
+	echo "5052975aaf68cc4010b9726bd00ac2ec3c0cf0123f94044ae37aa3d892cf02c8  var/infection.phar.asc" | sha256sum --check
+	chmod +x var/infection.phar

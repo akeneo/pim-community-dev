@@ -206,7 +206,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         foreach ($products as $product) {
             $productIds[] = IdEncoder::encode(
                 $product instanceof ProductModel ? 'product_model' : 'product',
-                $product->getId()
+                $product instanceof ProductModel ? $product->getId() : $product->getUuid()->toString()
             );
             $productToCleanCount++;
             if (0 === $productToCleanCount % $productBatchSize) {

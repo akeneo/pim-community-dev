@@ -87,12 +87,12 @@ datagrid:
                 type: url
                 route: pim_enrich_product_rest_remove
                 params:
-                    - id
+                    uuid: id
             toggle_status_link:
                 type: url
                 route: pim_enrich_product_toggle_status
                 params:
-                    - id
+                    uuid: id
         actions:
             edit:
                 type:      navigate-product-and-product-model

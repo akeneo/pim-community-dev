@@ -22,6 +22,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssociatedProductDatasourceSpec extends ObjectBehavior
@@ -120,8 +121,8 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'association_type_id' => '1'
         ]);
 
-        $associatedProduct1->getId()->willReturn('1');
-        $associatedProduct2->getId()->willReturn('2');
+        $associatedProduct1->getUuid()->willReturn(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'));
+        $associatedProduct2->getUuid()->willReturn(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d'));
         $associatedProductModel->getId()->willReturn('1');
         $currentProduct->getAllAssociations()->willReturn($associationCollection);
         $currentProduct->getIdentifier()->willReturn('current_product');
@@ -177,7 +178,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             ->addFilter(
                 'id',
                 Operators::IN_LIST,
-                ['product_1', 'product_2']
+                ['product_57700274-9b48-4857-b17d-a7da106cd150', 'product_0cc93a87-0b93-4246-939a-9d9d7a84302d']
             )->shouldBeCalled();
         $pqbAsso
             ->addFilter(
@@ -299,8 +300,8 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $results['data']->shouldBeArray();
         $results['data']->shouldHaveCount(3);
         $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);
-        $results['data'][0]->getValue('id')->shouldReturn('product-1');
-        $results['data'][1]->getValue('id')->shouldReturn('product-2');
+        $results['data'][0]->getValue('id')->shouldReturn('product-57700274-9b48-4857-b17d-a7da106cd150');
+        $results['data'][1]->getValue('id')->shouldReturn('product-0cc93a87-0b93-4246-939a-9d9d7a84302d');
         $results['data'][2]->getValue('id')->shouldReturn('product-model-1');
         $results['meta']->shouldBe([
             'source' => $productSourceNormalized,
@@ -352,8 +353,8 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'association_type_id' => '1'
         ]);
 
-        $associatedProduct1->getId()->willReturn('1');
-        $associatedProduct2->getId()->willReturn('2');
+        $associatedProduct1->getUuid()->willReturn(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'));
+        $associatedProduct2->getUuid()->willReturn(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d'));
         $associatedProductModel->getId()->willReturn('1');
         $currentProduct->getAllAssociations()->willReturn($associationCollection);
         $currentProduct->getIdentifier()->willReturn('current_product');
@@ -409,7 +410,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             ->addFilter(
                 'id',
                 Operators::IN_LIST,
-                ['product_1', 'product_2']
+                ['product_57700274-9b48-4857-b17d-a7da106cd150', 'product_0cc93a87-0b93-4246-939a-9d9d7a84302d']
             )->shouldBeCalled();
         $pqbAsso
             ->addFilter(
@@ -510,8 +511,8 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $results['data']->shouldBeArray();
         $results['data']->shouldHaveCount(2);
         $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);
-        $results['data'][0]->getValue('id')->shouldReturn('product-1');
-        $results['data'][1]->getValue('id')->shouldReturn('product-2');
+        $results['data'][0]->getValue('id')->shouldReturn('product-57700274-9b48-4857-b17d-a7da106cd150');
+        $results['data'][1]->getValue('id')->shouldReturn('product-0cc93a87-0b93-4246-939a-9d9d7a84302d');
     }
 
     public function getMatchers(): array

@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Product interface
@@ -32,21 +33,7 @@ interface ProductInterface extends
     EntityWithQuantifiedAssociationsInterface,
     StateUpdatedAware
 {
-    /**
-     * Get the ID of the product
-     *
-     * @return int|string
-     */
-    public function getId();
-
-    /**
-     * Set id
-     *
-     * @param int|string $id
-     *
-     * @return ProductInterface
-     */
-    public function setId($id);
+    public function getUuid(): UuidInterface;
 
     /**
      * @param string|null $identifierValue

@@ -2,17 +2,18 @@ import React, {FC, useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import StatusCriterion from '../criteria/StatusCriterion';
-import {Criterion, CriterionState} from '../models/Criterion';
+import {Criterion} from '../models/Criterion';
+import {AnyCriterionState} from '../models/Criteria';
 
 type Factory = {
     label: string;
-    factory: () => Criterion<any>;
+    factory: () => Criterion<AnyCriterionState>;
 };
 
 type SectionProps = {
     label: string;
     factories: Factory[];
-    onClick: (criterion: Criterion<CriterionState>) => void;
+    onClick: (criterion: Criterion<AnyCriterionState>) => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -34,7 +35,7 @@ const Section = React.forwardRef<HTMLDivElement, SectionProps>(({label, factorie
 });
 
 type Props = {
-    onNewCriterion: (criterion: Criterion<CriterionState>) => void;
+    onNewCriterion: (criterion: Criterion<AnyCriterionState>) => void;
 };
 
 const AddCriterionDropdown: FC<Props> = ({onNewCriterion}) => {

@@ -4,45 +4,33 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
+use Ramsey\Uuid\UuidInterface;
 
 final class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCodesByProduct
 {
-    /** @var Connection */
-    private $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCodes(int $productId, AssociationInterface $association)
+    public function getCodes(UuidInterface $productUuid, AssociationInterface $association): array
     {
-        $associationTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_product_model_association' : 'pim_catalog_association';
-        $associationProductTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_association_product_model_to_product' : 'pim_catalog_association_product';
-
         $sql = <<<SQL
 SELECT DISTINCT(p.identifier) as code
-FROM $associationTable a
-    INNER JOIN $associationProductTable ap ON a.id = ap.association_id
-    INNER JOIN pim_catalog_product p ON p.id = ap.product_id
-WHERE a.owner_id = :ownerId AND a.association_type_id = :associationTypeId
+FROM pim_catalog_association a
+    INNER JOIN pim_catalog_association_product ap ON a.id = ap.association_id
+    INNER JOIN pim_catalog_product p ON p.uuid = ap.product_uuid
+WHERE a.owner_uuid = UUID_TO_BIN(:ownerUuid) AND a.association_type_id = :associationTypeId
 ORDER BY p.identifier ASC;
 SQL;
         $stmt = $this->connection->executeQuery(
             $sql,
             [
-                'ownerId'           => $productId,
+                'ownerUuid' => $productUuid->toString(),
                 'associationTypeId' => $association->getAssociationType()->getId()
-            ],
-            [
-                'ownerId'           => \PDO::PARAM_INT,
-                'associationTypeId' => \PDO::PARAM_INT
             ]
         );
 

@@ -16,7 +16,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 
@@ -66,21 +66,21 @@ final class ComputeScoresSpec extends ObjectBehavior
         $criteriaEvaluations = (new CriterionEvaluationCollection())
             ->add(new CriterionEvaluation(
                 $criterionA,
-                new ProductId(42),
+                ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::done(),
                 new CriterionEvaluationResult($criterionResultA, new CriterionEvaluationResultStatusCollection(), [])
             ))
             ->add(new CriterionEvaluation(
                 $criterionB,
-                new ProductId(42),
+                ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::done(),
                 new CriterionEvaluationResult($criterionResultB, new CriterionEvaluationResultStatusCollection(), [])
             ))
             ->add(new CriterionEvaluation(
                 $criterionC,
-                new ProductId(42),
+                ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::done(),
                 new CriterionEvaluationResult($criterionResultC, new CriterionEvaluationResultStatusCollection(), [])

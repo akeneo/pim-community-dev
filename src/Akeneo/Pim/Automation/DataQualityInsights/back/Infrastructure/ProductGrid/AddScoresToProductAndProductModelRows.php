@@ -7,9 +7,12 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -22,7 +25,6 @@ class AddScoresToProductAndProductModelRows
         private ProductEntityIdFactoryInterface $idFactory
     ) {
     }
-
 
     /**
      * @param Row[] $rows
@@ -39,8 +41,11 @@ class AddScoresToProductAndProductModelRows
 
         $productIds = [];
         foreach ($rows as $row) {
-            $productIds[] = (string)$row->technicalId();
+            if ($type === $row->documentType()) {
+                $productIds[] = (string) $row->technicalId();
+            }
         }
+
         $productIdCollection = $this->idFactory->createCollection($productIds);
 
         $scores = ($this->getQualityScoresFactory)($productIdCollection, $type);
@@ -50,7 +55,7 @@ class AddScoresToProductAndProductModelRows
 
         $enrichedRows = [];
         foreach ($rows as $row) {
-            $scoreValue = $this->retrieveScore($row->technicalId(), $scores, $channel, $locale);
+            $scoreValue = $this->retrieveScore((string) $row->technicalId(), $scores, $channel, $locale);
             $property = new AdditionalProperty('data_quality_insights_score', $scoreValue);
             $enrichedRows[] = $row->addAdditionalProperty($property);
         }
@@ -58,7 +63,7 @@ class AddScoresToProductAndProductModelRows
         return $enrichedRows;
     }
 
-    private function retrieveScore(int $technicalId, array $scores, ChannelCode $channel, LocaleCode $locale): string
+    private function retrieveScore(string $technicalId, array $scores, ChannelCode $channel, LocaleCode $locale): string
     {
         if (isset($scores[$technicalId])) {
             $score = $scores[$technicalId]->getByChannelAndLocale($channel, $locale);

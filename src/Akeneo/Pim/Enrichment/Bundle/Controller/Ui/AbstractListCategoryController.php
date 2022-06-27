@@ -41,17 +41,7 @@ abstract class AbstractListCategoryController extends AbstractController
         $this->template = $template;
     }
 
-    /**
-     * List categories associated with the provided product and descending from the category
-     * defined by the parent parameter.
-     *
-     * @param Request    $request    The request object
-     * @param string     $id         Product id
-     * @param int        $categoryId The parent category id
-     *
-     * httpparam include_category if true, will include the parentCategory in the response
-     */
-    public function listCategoriesAction(Request $request, $id, $categoryId): Response
+    protected function doListCategoriesAction(Request $request, string $id, string $categoryId): Response
     {
         if (!$this->securityFacade->isGranted($this->acl)) {
             throw new AccessDeniedException();

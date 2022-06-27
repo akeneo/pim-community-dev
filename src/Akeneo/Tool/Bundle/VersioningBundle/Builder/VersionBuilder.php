@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Bundle\VersioningBundle\Builder;
 use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Util\ClassUtils;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -45,7 +46,8 @@ class VersionBuilder
     public function buildVersion($versionable, $author, Version $previousVersion = null, $context = null)
     {
         $resourceName = ClassUtils::getClass($versionable);
-        $resourceId = $versionable->getId();
+        $resourceId = method_exists($versionable, 'getUuid') ? null : $versionable->getId();
+        $resourceUuid = method_exists($versionable, 'getUuid') ? $versionable->getUuid() : null;
 
         $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
         $oldSnapshot = $previousVersion ? $previousVersion->getSnapshot() : [];
@@ -55,7 +57,7 @@ class VersionBuilder
 
         $changeset = $this->buildChangeset($oldSnapshot, $snapshot);
 
-        $version = $this->versionFactory->create($resourceName, $resourceId, $author, $context);
+        $version = $this->versionFactory->create($resourceName, $resourceId, $resourceUuid, $author, $context);
         $version->setVersion($versionNumber)
             ->setSnapshot($snapshot)
             ->setChangeset($changeset);
@@ -75,9 +77,12 @@ class VersionBuilder
      */
     public function createPendingVersion($versionable, $author, array $changeset, $context = null)
     {
+        $resourceId = method_exists($versionable, 'getUuid') ? null : $versionable->getId();
+        $resourceUuid = method_exists($versionable, 'getUuid') ? $versionable->getUuid() : null;
         $version = $this->versionFactory->create(
             ClassUtils::getClass($versionable),
-            $versionable->getId(),
+            $resourceId,
+            $resourceUuid,
             $author,
             $context
         );

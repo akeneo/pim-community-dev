@@ -109,7 +109,7 @@ class RefreshCommand extends Command
         while ($nbPendings > 0) {
             $previousVersions = [];
             foreach ($pendingVersions as $pending) {
-                $key = sprintf('%s_%s', $pending->getResourceName(), $pending->getResourceId());
+                $key = sprintf('%s_%s', $pending->getResourceName(), $pending->getResourceId() ?? $pending->getResourceUuid()->toString());
 
                 $previousVersion = isset($previousVersions[$key]) ? $previousVersions[$key] : null;
                 $version = $this->createVersion($pending, $previousVersion);

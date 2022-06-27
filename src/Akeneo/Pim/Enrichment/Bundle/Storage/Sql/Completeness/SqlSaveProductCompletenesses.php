@@ -10,6 +10,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\DeadlockException;
 use Doctrine\DBAL\ParameterType;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
@@ -63,8 +64,8 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
             // Clean completeness rows that do not concern existing channels or activated locales anymore
             foreach ($productCompletenessCollections as $productCompletenessCollection) {
                 $conditions = [];
-                $productId = $productCompletenessCollection->productId();
-                $values = [$productId];
+                $productUuid = Uuid::fromString($productCompletenessCollection->productId())->getBytes();
+                $values = [$productUuid];
                 foreach ($productCompletenessCollection as $productCompleteness) {
                     $conditions[] = '(?, ?)';
                     $values[] = $localeIdsFromCode[$productCompleteness->localeCode()];
@@ -79,7 +80,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                     $sql = <<<SQL
                     DELETE /*+ SET_VAR( range_optimizer_max_mem_size = 50000000) */
                     FROM pim_catalog_completeness
-                    WHERE product_id = ? AND (locale_id, channel_id) NOT IN ({conditions})
+                    WHERE product_uuid = ? AND (locale_id, channel_id) NOT IN ({conditions})
                     SQL;
 
                     $this->connection->executeQuery(
@@ -90,8 +91,8 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                     );
                 } else {
                     $this->connection->executeQuery(
-                        'DELETE FROM pim_catalog_completeness WHERE product_id = ?',
-                        [$productId]
+                        'DELETE FROM pim_catalog_completeness WHERE product_uuid = ?',
+                        [$productUuid]
                     );
                 }
             }
@@ -100,7 +101,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
             foreach ($productCompletenessCollections as $productCompletenessCollection) {
                 $numberCompletenessRow += count($productCompletenessCollection);
             }
-            $placeholders = implode(',', array_fill(0, $numberCompletenessRow, '(?, ?, ?, ?, ?)'));
+            $placeholders = implode(',', array_fill(0, $numberCompletenessRow, '(?, ?, UUID_TO_BIN(?), ?, ?)'));
 
             if (empty($placeholders)) {
                 return;
@@ -108,7 +109,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
 
             $insert = <<<SQL
                 INSERT INTO pim_catalog_completeness
-                    (locale_id, channel_id, product_id, missing_count, required_count)
+                    (locale_id, channel_id, product_uuid, missing_count, required_count)
                 VALUES
                     $placeholders
                 ON DUPLICATE KEY UPDATE missing_count = VALUES(missing_count), required_count = VALUES(required_count)
@@ -121,7 +122,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                 foreach ($productCompletenessCollection as $productCompleteness) {
                     $stmt->bindValue($placeholderIndex++, $localeIdsFromCode[$productCompleteness->localeCode()]);
                     $stmt->bindValue($placeholderIndex++, $channelIdsFromCode[$productCompleteness->channelCode()]);
-                    $stmt->bindValue($placeholderIndex++, $productCompletenessCollection->productId(), ParameterType::INTEGER);
+                    $stmt->bindValue($placeholderIndex++, $productCompletenessCollection->productId());
                     $stmt->bindValue($placeholderIndex++, count($productCompleteness->missingAttributeCodes()), ParameterType::INTEGER);
                     $stmt->bindValue($placeholderIndex++, $productCompleteness->requiredCount(), ParameterType::INTEGER);
                 }
