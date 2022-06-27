@@ -203,9 +203,6 @@ abstract class IntegrationTestCase extends WebTestCase
         ));
     }
 
-    /**
-     * @todo call the command bus when there will be a command/handler for this
-     */
     protected function enableCatalog(string $id): void
     {
         $connection = self::getContainer()->get(Connection::class);

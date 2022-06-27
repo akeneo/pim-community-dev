@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  *
  * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAllCatalogsByOwnerAction
  */
-class GetCatalogsByOwnerActionTest extends IntegrationTestCase
+class GetAllCatalogsByOwnerActionTest extends IntegrationTestCase
 {
     private ?CommandBus $commandBus;
 

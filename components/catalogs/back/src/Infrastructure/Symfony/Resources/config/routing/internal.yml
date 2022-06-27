@@ -10,17 +10,9 @@ akeneo_catalogs_internal_get_catalog:
     requirements:
         catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
 
-akeneo_catalogs_internal_get_catalog_data:
-    path: '/rest/catalogs/{catalogId}/data'
-    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCatalogDataAction
-    methods: [ GET ]
-    requirements:
-        catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
-
-
-akeneo_catalogs_internal_save_criteria:
-    path: '/rest/catalogs/{catalogId}/save-criteria'
-    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\SaveCriteriaAction
-    methods: [ POST ]
+akeneo_catalogs_internal_update_catalog:
+    path: '/rest/catalogs/{catalogId}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\UpdateCatalogAction
+    methods: [ PATCH ]
     requirements:
         catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'

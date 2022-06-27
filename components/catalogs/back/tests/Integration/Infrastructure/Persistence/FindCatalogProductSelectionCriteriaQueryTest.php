@@ -27,13 +27,6 @@ class FindCatalogProductSelectionCriteriaQueryTest extends IntegrationTestCase
         $this->query = self::getContainer()->get(FindCatalogProductSelectionCriteriaQuery::class);
     }
 
-    public function testItGetsNullResultOnInvalidCatalogId(): void
-    {
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
-
-        Assert::assertNull($result);
-    }
-
     public function testItGetsProductSelectionCriteria(): void
     {
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
@@ -51,5 +44,12 @@ class FindCatalogProductSelectionCriteriaQueryTest extends IntegrationTestCase
         ];
 
         Assert::assertEquals($expectedCriteria, $result);
+    }
+
+    public function testItThrowsOnInvalidCatalogId(): void
+    {
+        $this->expectException(\LogicException::class);
+
+        $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
     }
 }

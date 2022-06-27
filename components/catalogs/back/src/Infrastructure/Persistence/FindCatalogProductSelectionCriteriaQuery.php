@@ -22,7 +22,7 @@ class FindCatalogProductSelectionCriteriaQuery implements FindCatalogProductSele
     /**
      * @inheritDoc
      */
-    public function execute(string $id): ?array
+    public function execute(string $id): array
     {
         $query = <<<SQL
         SELECT
@@ -37,7 +37,7 @@ class FindCatalogProductSelectionCriteriaQuery implements FindCatalogProductSele
         ])->fetchOne();
 
         if (!$result) {
-            return null;
+            throw new \LogicException('Catalog not found');
         }
 
         /** @var array<array-key,array{field: string, operator: string, value?: mixed}>|null $criteria */

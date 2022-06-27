@@ -11,7 +11,7 @@ namespace Akeneo\Catalogs\Application\Persistence;
 interface FindCatalogProductSelectionCriteriaQueryInterface
 {
     /**
-     * @return array<array-key,array{field: string, operator: string, value?: mixed}>|null
+     * @return array<array-key, array{field: string, operator: string, value?: mixed}>
      */
-    public function execute(string $id): ?array;
+    public function execute(string $id): array;
 }

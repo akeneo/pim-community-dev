@@ -59,6 +59,13 @@ class GetCatalogActionTest extends IntegrationTestCase
         Assert::assertSame('Store FR', $payload['name']);
         Assert::assertSame(false, $payload['enabled']);
         Assert::assertSame('admin', $payload['owner_username']);
+        Assert::assertSame([
+            [
+                'field' => 'enabled',
+                'value' => true,
+                'operator' => '=',
+            ],
+        ], $payload['product_selection_criteria']);
     }
 
     public function testItGetsNotFoundResponseWithWrongId(): void

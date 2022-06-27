@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
+use Akeneo\Catalogs\Application\Persistence\FindCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,6 +21,7 @@ final class GetCatalogAction
 {
     public function __construct(
         private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
+        private FindCatalogProductSelectionCriteriaQueryInterface $findCatalogProductSelectionCriteriaQuery,
         private NormalizerInterface $normalizer,
     ) {
     }
@@ -36,6 +38,14 @@ final class GetCatalogAction
             throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
         }
 
-        return new JsonResponse($this->normalizer->normalize($catalog, 'internal'));
+        $catalogNormalized = (array) $this->normalizer->normalize($catalog, 'internal');
+        $productSelectionCriteria = $this->findCatalogProductSelectionCriteriaQuery->execute($catalogId);
+
+        return new JsonResponse(\array_merge(
+            $catalogNormalized,
+            [
+                'product_selection_criteria' => $productSelectionCriteria,
+            ],
+        ));
     }
 }
