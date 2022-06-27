@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MeasureBundle\Installer;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -68,7 +68,7 @@ VALUES
     ('VolumeFlow', '{"de_DE":"Volumenstrom","fr_FR":"Débit volumétrique","en_US":"Volume flow"}', 'CUBIC_METER_PER_SECOND', '[{"code":"CUBIC_METER_PER_SECOND","labels":{"fr_FR":"Mètre cube par seconde","en_US":"Cubic meter per second"},"convert_from_standard":[{"operator":"mul","value":"1"}],"symbol":"m³/s"},{"code":"CUBIC_METER_PER_MINUTE","labels":{"fr_FR":"Mètre cube par minute","en_US":"Cubic meter per minute"},"convert_from_standard":[{"operator":"mul","value":"60"}],"symbol":"m³/min"},{"code":"CUBIC_METER_PER_HOUR","labels":{"fr_FR":"Mètre cube par heure","en_US":"Cubic meter per hour"},"convert_from_standard":[{"operator":"mul","value":"3600"}],"symbol":"m³/h"},{"code":"CUBIC_METER_PER_DAY","labels":{"fr_FR":"Mètre cube par jour","en_US":"Cubic meter per day"},"convert_from_standard":[{"operator":"mul","value":"86400"}],"symbol":"m³/d"},{"code":"MILLILITER_PER_SECOND","labels":{"fr_FR":"Millilitre par seconde","en_US":"Milliliter per second"},"convert_from_standard":[{"operator":"mul","value":"0.000001"}],"symbol":"ml/s"},{"code":"MILLILITER_PER_MINUTE","labels":{"fr_FR":"Millilitre par minute","en_US":"Milliliter per minute"},"convert_from_standard":[{"operator":"mul","value":"0.000001"},{"operator":"mul","value":"60"}],"symbol":"ml/min"},{"code":"MILLILITER_PER_HOUR","labels":{"fr_FR":"Millilitre par heure","en_US":"Milliliter per hour"},"convert_from_standard":[{"operator":"mul","value":"0.000001"},{"operator":"mul","value":"3600"}],"symbol":"ml/h"},{"code":"MILLILITER_PER_DAY","labels":{"fr_FR":"Millilitre par jour","en_US":"Milliliter per day"},"convert_from_standard":[{"operator":"mul","value":"0.000001"},{"operator":"mul","value":"86400"}],"symbol":"ml/d"},{"code":"CUBIC_CENTIMETER_PER_SECOND","labels":{"fr_FR":"Centimètre cube par seconde","en_US":"Cubic centimeter per second"},"convert_from_standard":[{"operator":"mul","value":"0.000001"}],"symbol":"cm³/s"},{"code":"CUBIC_CENTIMETER_PER_MINUTE","labels":{"fr_FR":"Centimètre cube par minute","en_US":"Cubic centimeter per minute"},"convert_from_standard":[{"operator":"mul","value":"0.000001"},{"operator":"mul","value":"60"}],"symbol":"cm³/min"},{"code":"CUBIC_CENTIMETER_PER_HOUR","labels":{"fr_FR":"Centimètre cube par heure","en_US":"Cubic centimeter per hour"},"convert_from_standard":[{"operator":"mul","value":"0.000001"},{"operator":"mul","value":"3600"}],"symbol":"cm³/h"},{"code":"CUBIC_CENTIMETER_PER_DAY","labels":{"fr_FR":"Centimètre cube par jour","en_US":"Cubic centimeter per day"},"convert_from_standard":[{"operator":"mul","value":"0.000001"},{"operator":"mul","value":"86400"}],"symbol":"cm³/d"},{"code":"CUBIC_DECIMETER_PER_MINUTE","labels":{"fr_FR":"Décimètre cube par minute","en_US":"Cubic decimeter per minute"},"convert_from_standard":[{"operator":"mul","value":"0.001"},{"operator":"mul","value":"60"}],"symbol":"dm³/min"},{"code":"CUBIC_DECIMETER_PER_HOUR","labels":{"fr_FR":"Décimètre cube par heure","en_US":"Cubic decimeter per hour"},"convert_from_standard":[{"operator":"mul","value":"0.001"},{"operator":"mul","value":"3600"}],"symbol":"dm³/h"},{"code":"LITER_PER_SECOND","labels":{"fr_FR":"Litre par seconde","en_US":"Liter per second"},"convert_from_standard":[{"operator":"mul","value":"0.001"}],"symbol":"l/s"},{"code":"LITER_PER_MINUTE","labels":{"fr_FR":"Litre par minute","en_US":"Liter per minute"},"convert_from_standard":[{"operator":"mul","value":"0.001"},{"operator":"mul","value":"60"}],"symbol":"l/min"},{"code":"LITER_PER_HOUR","labels":{"fr_FR":"Litre par heure","en_US":"Liter per hour"},"convert_from_standard":[{"operator":"mul","value":"0.001"},{"operator":"mul","value":"3600"}],"symbol":"l/h"},{"code":"LITER_PER_DAY","labels":{"fr_FR":"Litre par jour","en_US":"Liter per day"},"convert_from_standard":[{"operator":"mul","value":"0.001"},{"operator":"mul","value":"86400"}],"symbol":"l/d"},{"code":"KILOLITER_PER_HOUR","labels":{"fr_FR":"Kilolitre par heure","en_US":"Kiloliter per hour"},"convert_from_standard":[{"operator":"mul","value":"3600"}],"symbol":"kl/h"}]');
 SQL;
 
-        $this->connection->exec($sql);
+        $this->connection->executeStatement($sql);
     }
 
     private function createMeasurementTable(): void
@@ -84,6 +84,6 @@ CREATE TABLE `akeneo_measurement` (
 ) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 SQL;
 
-        $this->connection->exec($sql);
+        $this->connection->executeStatement($sql);
     }
 }

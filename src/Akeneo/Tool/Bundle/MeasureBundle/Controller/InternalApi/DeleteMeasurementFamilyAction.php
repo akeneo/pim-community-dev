@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi;
 
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyHandler;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,12 +26,12 @@ class DeleteMeasurementFamilyAction
 
     private DeleteMeasurementFamilyHandler $deleteMeasurementFamilyHandler;
 
-    private SecurityFacade $securityFacade;
+    private SecurityFacadeInterface $securityFacade;
 
     public function __construct(
         ValidatorInterface $validator,
         DeleteMeasurementFamilyHandler $deleteMeasurementFamilyHandler,
-        SecurityFacade $securityFacade
+        SecurityFacadeInterface $securityFacade
     ) {
         $this->validator                      = $validator;
         $this->deleteMeasurementFamilyHandler = $deleteMeasurementFamilyHandler;
