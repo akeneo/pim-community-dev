@@ -106,7 +106,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         $codeChallenge = 'JN2eVHPP4F';
 
         $client->request('POST', '/api/1.0/app/90741597-54c5-48a1-98da-a68e7ee0a715/challenge', [
-            'query' => [
+            'json' => [
                 'code_identifier' => $codeIdentifier,
                 'code_challenge' => $codeChallenge,
             ],
@@ -128,7 +128,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         $codeChallenge = 'JN2eVHPP4F';
 
         $client->request('POST', '/api/1.0/app/90741597-54c5-48a1-98da-a68e7ee0a715/challenge', [
-            'query' => [
+            'json' => [
                 'code_identifier' => $codeIdentifier,
                 'code_challenge' => $codeChallenge,
             ],
@@ -150,7 +150,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         $codeChallenge = 'JN2eVHPP4F';
 
         $client->request('POST', '/api/1.0/app/90741597-54c5-48a1-98da-a68e7ee0a715/challenge', [
-            'query' => [
+            'json' => [
                 'code_identifier' => $codeIdentifier,
                 'code_challenge' => $codeChallenge,
             ],

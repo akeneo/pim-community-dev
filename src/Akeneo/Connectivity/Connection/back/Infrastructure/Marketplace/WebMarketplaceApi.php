@@ -96,7 +96,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
     {
         try {
             $response = $this->client->request('POST', \sprintf('/api/1.0/app/%s/challenge', $appId), [
-                'query' => [
+                'json' => [
                     'code_identifier' => $codeIdentifier,
                     'code_challenge' => $codeChallenge,
                 ],
