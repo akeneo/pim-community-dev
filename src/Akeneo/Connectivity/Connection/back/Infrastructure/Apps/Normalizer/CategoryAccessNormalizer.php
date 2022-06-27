@@ -32,22 +32,14 @@ class CategoryAccessNormalizer implements NormalizerInterface, CacheableSupports
             return $normalizedCategory;
         }
 
-        $viewPermissions = \explode(',', $normalizedCategory['view_permission']);
-        $editPermissions = \explode(',', $normalizedCategory['edit_permission']);
-        $ownPermissions = \explode(',', $normalizedCategory['own_permission']);
+        $codeLabelMapping = \array_combine(
+            \array_column($userGroupLabels, 'code'),
+            \array_column($userGroupLabels, 'label'),
+        );
 
-        foreach ($userGroupLabels as $userGroupLabel) {
-            $code = $userGroupLabel['code'];
-            $label = $userGroupLabel['label'];
-
-            $viewPermissions = $this->replaceAppCodeByLabel($viewPermissions, $code, $label);
-            $editPermissions = $this->replaceAppCodeByLabel($editPermissions, $code, $label);
-            $ownPermissions = $this->replaceAppCodeByLabel($ownPermissions, $code, $label);
-        }
-
-        $normalizedCategory['view_permission'] = \implode(',', $viewPermissions);
-        $normalizedCategory['edit_permission'] = \implode(',', $editPermissions);
-        $normalizedCategory['own_permission'] = \implode(',', $ownPermissions);
+        $normalizedCategory['view_permission'] = $this->replaceAppCodeByLabel($normalizedCategory['view_permission'], $codeLabelMapping);
+        $normalizedCategory['edit_permission'] = $this->replaceAppCodeByLabel($normalizedCategory['edit_permission'], $codeLabelMapping);
+        $normalizedCategory['own_permission'] = $this->replaceAppCodeByLabel($normalizedCategory['own_permission'], $codeLabelMapping);
 
         return $normalizedCategory;
     }
@@ -58,16 +50,18 @@ class CategoryAccessNormalizer implements NormalizerInterface, CacheableSupports
     }
 
     /**
-     * @return array<string>
+     * @param array<array-key<string>, string> $mapping
      */
-    private function replaceAppCodeByLabel(array $permissions, string $code, string $label): array
+    private function replaceAppCodeByLabel(string $permissions, array $mapping): string
     {
-        foreach ($permissions as $key => $permission) {
-            if ($code === $permission) {
-                $permissions[$key] = $label;
+        $permissionsArray = \explode(',', $permissions);
+
+        foreach ($permissionsArray as $key => $permission) {
+            if (isset($mapping[$permission])) {
+                $permissionsArray[$key] = $mapping[$permission];
             }
         }
 
-        return $permissions;
+        return \implode(',', $permissionsArray);
     }
 }
