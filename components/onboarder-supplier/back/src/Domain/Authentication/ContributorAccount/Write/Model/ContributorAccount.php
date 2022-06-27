@@ -6,10 +6,8 @@ use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\W
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Password;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
-class ContributorAccount implements PasswordAuthenticatedUserInterface, UserInterface
+class ContributorAccount
 {
     private function __construct(
         private Identifier $identifier,
@@ -97,30 +95,5 @@ class ContributorAccount implements PasswordAuthenticatedUserInterface, UserInte
     public function getPassword(): ?string
     {
         return null === $this->password ? null : (string) $this->password;
-    }
-
-    public function getRoles(): array
-    {
-        return ['ROLE_USER'];
-    }
-
-    public function getSalt()
-    {
-        // TODO: Implement getSalt() method.
-    }
-
-    public function getUsername(): string
-    {
-        return $this->email();
-    }
-
-    public function getUserIdentifier(): string
-    {
-        return $this->email;
-    }
-
-    public function eraseCredentials()
-    {
-        // TODO: Implement eraseCredentials() method.
     }
 }

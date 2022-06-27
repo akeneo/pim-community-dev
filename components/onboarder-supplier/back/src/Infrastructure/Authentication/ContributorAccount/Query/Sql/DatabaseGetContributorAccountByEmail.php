@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByEmail;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetContributorAccountByEmail implements GetContributorAccountByEmail
+final class DatabaseGetContributorAccountByEmail
 {
     public function __construct(private Connection $connection)
     {
@@ -17,7 +16,7 @@ final class DatabaseGetContributorAccountByEmail implements GetContributorAccoun
     public function __invoke(string $email): ?ContributorAccount
     {
         $sql = <<<SQL
-            SELECT id, email, created_at, password, access_token, access_token_created_at, last_logged_at
+            SELECT email, password
             FROM akeneo_onboarder_serenity_contributor_account
             WHERE email = :email
         SQL;
@@ -28,17 +27,6 @@ final class DatabaseGetContributorAccountByEmail implements GetContributorAccoun
             ->fetchAssociative()
         ;
 
-        return false !== $result
-            ? ContributorAccount::hydrate(
-                $result['id'],
-                $result['email'],
-                $result['created_at'],
-                $result['password'],
-                $result['access_token'],
-                $result['access_token_created_at'],
-                $result['last_logged_at'],
-            )
-            : null
-            ;
+        return false !== $result ? new ContributorAccount($result['email'], $result['password']) : null;
     }
 }

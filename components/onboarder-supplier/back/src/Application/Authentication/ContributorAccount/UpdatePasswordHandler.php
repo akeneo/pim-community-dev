@@ -8,17 +8,17 @@ use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAcco
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Exception\InvalidPassword;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Validation\Password;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
+use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\HashPassword;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class UpdatePasswordHandler
 {
     public function __construct(
         private ContributorAccountRepository $contributorAccountRepository,
-        private UserPasswordHasherInterface $passwordHasher,
         private ValidatorInterface $validator,
+        private HashPassword $hashPassword,
         private LoggerInterface $logger,
     ) {
     }
@@ -46,10 +46,8 @@ final class UpdatePasswordHandler
             throw new InvalidPassword($violations);
         }
 
-        $hashedPassword = $this->passwordHasher->hashPassword(
-            $contributorAccount,
-            $updatePassword->plainTextPassword,
-        );
+        $hashedPassword = ($this->hashPassword)($contributorAccount->email(), $updatePassword->plainTextPassword);
+
         $contributorAccount->setPassword($hashedPassword);
 
         $this->contributorAccountRepository->save($contributorAccount);

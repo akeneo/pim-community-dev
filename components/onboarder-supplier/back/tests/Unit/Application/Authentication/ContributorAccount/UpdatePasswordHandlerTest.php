@@ -9,11 +9,11 @@ use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAcco
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePassword;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Validation\Password;
+use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\HashPassword;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -22,7 +22,7 @@ final class UpdatePasswordHandlerTest extends TestCase
     /** @test */
     public function itUpdatesTheContributorPassword(): void
     {
-        $passwordHasher = $this->createMock(UserPasswordHasher::class);
+        $passwordHasher = $this->createMock(HashPassword::class);
         $violationsSpy = $this->createMock(ConstraintViolationList::class);
         $contributorAccount = ContributorAccount::hydrate(
             'b8b13d0b-496b-4a7c-a574-0d522ba90752',
@@ -52,10 +52,10 @@ final class UpdatePasswordHandlerTest extends TestCase
             ->willReturn($violationsSpy)
         ;
 
-        $sut = new UpdatePasswordHandler($contributorAccountRepository, $passwordHasher, $validatorSpy, new NullLogger());
+        $sut = new UpdatePasswordHandler($contributorAccountRepository, $validatorSpy, $passwordHasher, new NullLogger());
 
         try {
-            $passwordHasher->expects($this->once())->method('hashPassword');
+            $passwordHasher->expects($this->once())->method('__invoke');
             ($sut)($updatePassword);
         } catch (ContributorAccountDoesNotExist) {
             static::fail('ContributorAccountDoesNotExist exception should not have been thrown.');
@@ -65,7 +65,7 @@ final class UpdatePasswordHandlerTest extends TestCase
     /** @test */
     public function itThrowsAnExceptionIfTheContributorAccountCannotBeFound(): void
     {
-        $passwordHasher = $this->createMock(UserPasswordHasher::class);
+        $passwordHasher = $this->createMock(HashPassword::class);
         $validator = $this->createMock(ValidatorInterface::class);
         $contributorAccountRepository = new InMemoryRepository();
 
@@ -74,7 +74,7 @@ final class UpdatePasswordHandlerTest extends TestCase
             'P@ssw0rd*foo',
         );
 
-        $sut = new UpdatePasswordHandler($contributorAccountRepository, $passwordHasher, $validator, new NullLogger());
+        $sut = new UpdatePasswordHandler($contributorAccountRepository, $validator, $passwordHasher, new NullLogger());
 
         try {
             ($sut)($updatePassword);
@@ -87,7 +87,7 @@ final class UpdatePasswordHandlerTest extends TestCase
     /** @test */
     public function itThrowsAnInvalidPasswordExceptionIfThePasswordDoesNotFulfillTheRequirements(): void
     {
-        $passwordHasher = $this->createMock(UserPasswordHasher::class);
+        $passwordHasher = $this->createMock(HashPassword::class);
         $validatorSpy = $this->createMock(ValidatorInterface::class);
         $contributorAccount = ContributorAccount::hydrate(
             'b8b13d0b-496b-4a7c-a574-0d522ba90752',
@@ -118,7 +118,7 @@ final class UpdatePasswordHandlerTest extends TestCase
             ->willReturn($violationsSpy)
         ;
 
-        $sut = new UpdatePasswordHandler($contributorAccountRepository, $passwordHasher, $validatorSpy, new NullLogger());
+        $sut = new UpdatePasswordHandler($contributorAccountRepository, $validatorSpy, $passwordHasher, new NullLogger());
 
         $this->expectException(InvalidPassword::class);
 
