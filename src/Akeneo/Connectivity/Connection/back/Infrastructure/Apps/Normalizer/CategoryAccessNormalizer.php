@@ -32,9 +32,9 @@ class CategoryAccessNormalizer implements NormalizerInterface, CacheableSupports
             return $normalizedCategory;
         }
 
-        $viewPermissions = explode(',', $normalizedCategory['view_permission']);
-        $editPermissions = explode(',', $normalizedCategory['edit_permission']);
-        $ownPermissions = explode(',', $normalizedCategory['own_permission']);
+        $viewPermissions = \explode(',', $normalizedCategory['view_permission']);
+        $editPermissions = \explode(',', $normalizedCategory['edit_permission']);
+        $ownPermissions = \explode(',', $normalizedCategory['own_permission']);
 
         foreach ($userGroupLabels as $userGroupLabel) {
             $code = $userGroupLabel['code'];
@@ -45,9 +45,9 @@ class CategoryAccessNormalizer implements NormalizerInterface, CacheableSupports
             $ownPermissions = $this->replaceAppCodeByLabel($ownPermissions, $code, $label);
         }
 
-        $normalizedCategory['view_permission'] = implode(',', $viewPermissions);
-        $normalizedCategory['edit_permission'] = implode(',', $editPermissions);
-        $normalizedCategory['own_permission'] = implode(',', $ownPermissions);
+        $normalizedCategory['view_permission'] = \implode(',', $viewPermissions);
+        $normalizedCategory['edit_permission'] = \implode(',', $editPermissions);
+        $normalizedCategory['own_permission'] = \implode(',', $ownPermissions);
 
         return $normalizedCategory;
     }

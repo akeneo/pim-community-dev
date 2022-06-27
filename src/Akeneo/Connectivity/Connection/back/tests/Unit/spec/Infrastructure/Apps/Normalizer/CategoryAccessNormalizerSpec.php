@@ -45,7 +45,7 @@ class CategoryAccessNormalizerSpec extends ObjectBehavior
     public function it_returns_the_original_flat_category(
         CategoryNormalizer $categoryNormalizer,
         GetAllAppsUserGroupLabelQuery $getAllAppsUserGroupLabelQuery,
-    ):void
+    ): void
     {
         $category = new Category();
         $getAllAppsUserGroupLabelQuery->execute()->willReturn([]);

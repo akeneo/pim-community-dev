@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoEnterprise\Connectivity\Connection\tests\Integration;
+namespace AkeneoEnterprise\Connectivity\Connection\Tests\Integration\Infrastructure\Apps\Persistence;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -22,7 +22,7 @@ class GetAllAppsUserGroupLabelQueryIntegration extends TestCase
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
     }
 
-    public function test_it_returns_an_array_of_connected_app_labels_indexed_by_connected_app_codes()
+    public function test_it_returns_an_array_of_connected_app_labels_indexed_by_connected_app_codes(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             '2677e764-f852-4956-bf9b-1a1ec1b0d145',
