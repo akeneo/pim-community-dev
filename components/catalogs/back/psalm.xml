@@ -8,6 +8,7 @@
         <ignoreFiles allowMissingFiles="true">
             <directory name="../../../vendor" />
             <directory name="../../../../../../vendor" />
+            <file name="src/Infrastructure/TemporaryEnrichmentBridge/SearchAfterSizeUuidResultCursorFactory.php" />
         </ignoreFiles>
     </projectFiles>
 </psalm>

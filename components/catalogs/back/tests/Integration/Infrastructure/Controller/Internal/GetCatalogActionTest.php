@@ -8,16 +8,16 @@ use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCatalogAction
  */
 class GetCatalogActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client;
     private ?CommandBus $commandBus;
 
     public function setUp(): void
@@ -32,7 +32,7 @@ class GetCatalogActionTest extends IntegrationTestCase
 
     public function testItGetsCatalog(): void
     {
-        $this->client = $this->getAuthenticatedInternalApiClient('admin');
+        $client = $this->getAuthenticatedInternalApiClient('admin');
 
         $this->commandBus->execute(new CreateCatalogCommand(
             'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
@@ -40,7 +40,7 @@ class GetCatalogActionTest extends IntegrationTestCase
             'admin',
         ));
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/rest/catalogs/ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             [],
@@ -50,7 +50,7 @@ class GetCatalogActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true);
 
         Assert::assertEquals(200, $response->getStatusCode());
@@ -63,9 +63,9 @@ class GetCatalogActionTest extends IntegrationTestCase
 
     public function testItGetsNotFoundResponseWithWrongId(): void
     {
-        $this->client = $this->getAuthenticatedInternalApiClient('admin');
+        $client = $this->getAuthenticatedInternalApiClient('admin');
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/rest/catalogs/ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             [],
@@ -74,7 +74,7 @@ class GetCatalogActionTest extends IntegrationTestCase
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ],
         );
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(404, $response->getStatusCode());
     }

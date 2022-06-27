@@ -1,4 +1,4 @@
-import React, {FC, useRef} from 'react';
+import React, {FC, useRef, useState} from 'react';
 import {AppIllustration, Breadcrumb} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../../shared/translate';
 import {ConnectedApp} from '../../../../model/Apps/connected-app';
@@ -22,6 +22,7 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
     const connectedAppHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_edit', {
         connectionCode: connectedApp.connection_code,
     })}`;
+    const [isDirty, setIsDirty] = useState<boolean>(false);
     const catalogEditRef = useRef<CatalogEditRef>(null);
 
     const SaveButton = () => {
@@ -30,11 +31,29 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
                 onClick={() => {
                     catalogEditRef.current && catalogEditRef.current.save();
                 }}
+                disabled={!isDirty}
                 classNames={['AknButtonList-item']}
             >
                 <Translate id='pim_common.save' />
             </ApplyButton>
         );
+    };
+
+    const FormState = () => {
+        return (
+            (isDirty && (
+                <div className='updated-status'>
+                    <span className='AknState'>
+                        <Translate id='pim_common.entity_updated' />
+                    </span>
+                </div>
+            )) ||
+            null
+        );
+    };
+
+    const handleChange = (isDirty: boolean) => {
+        setIsDirty(isDirty);
     };
 
     const breadcrumb = (
@@ -54,6 +73,7 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
                 breadcrumb={breadcrumb}
                 buttons={[<SaveButton key={0} />]}
                 userButtons={<UserButtons />}
+                state={<FormState />}
                 imageSrc={connectedApp.logo ?? undefined}
                 imageIllustration={connectedApp.logo ? undefined : <AppIllustration />}
                 tag={tag}
@@ -62,7 +82,7 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
             </PageHeader>
 
             <PageContent>
-                <CatalogEdit id={catalog.id} ref={catalogEditRef} />
+                <CatalogEdit id={catalog.id} onChange={handleChange} ref={catalogEditRef} />
             </PageContent>
         </>
     );

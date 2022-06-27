@@ -1,14 +1,18 @@
-import userEvent from '@testing-library/user-event';
-
 jest.unmock('./Edit');
 jest.unmock('./TabBar');
 
 import React, {useEffect, useState} from 'react';
 import {act, render, screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {Edit} from './Edit';
+import {CatalogEditRef} from '../CatalogEdit';
+import {useSaveCriteria} from '../../ProductSelection/hooks/useSaveCriteria';
+import {Operator} from '../../ProductSelection/models/Operator';
+import {StatusCriterion} from '../../ProductSelection/criteria/StatusCriterion/types';
+import {useCriteria} from '../hooks/useCriteria';
 
 jest.mock('../../ProductSelection', () => ({
     ProductSelection: () => <>[ProductSelection]</>,
@@ -40,9 +44,11 @@ const intersectionObserverMock = (callback: EntryCallback) => ({
 window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
 test('it renders without error', () => {
+    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [[], jest.fn()]);
+
     render(
         <ThemeProvider theme={pimTheme}>
-            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} />
+            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} onChange={jest.fn()} />
         </ThemeProvider>
     );
 
@@ -50,9 +56,11 @@ test('it renders without error', () => {
 });
 
 test('it switches between tabs', () => {
+    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [[], jest.fn()]);
+
     render(
         <ThemeProvider theme={pimTheme}>
-            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} />
+            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} onChange={jest.fn()} />
         </ThemeProvider>
     );
 
@@ -65,4 +73,64 @@ test('it switches between tabs', () => {
     act(() => userEvent.click(screen.getByText('akeneo_catalogs.catalog_edit.tabs.settings')));
 
     expect(screen.getByText('[Settings]')).toBeInTheDocument();
+});
+
+test('it calls save from parent component', () => {
+    const criterion1: StatusCriterion = {
+        id: 'foo',
+        module: () => <div>[FoorCriterion]</div>,
+        state: {
+            field: 'enabled',
+            operator: Operator.EQUALS,
+            value: true,
+        },
+    };
+    const criterion2: StatusCriterion = {
+        id: 'bar',
+        module: () => <div>[BarCriterion]</div>,
+        state: {
+            field: 'enabled',
+            operator: Operator.NOT_EQUAL,
+            value: false,
+        },
+    };
+    const criteria = [criterion1, criterion2];
+    (useCriteria as unknown as jest.MockedFunction<typeof useCriteria>).mockImplementation(() => [criteria, jest.fn()]);
+
+    const mutate = jest.fn();
+    const saveCriteriaResult = {
+        isLoading: false,
+        isError: false,
+        data: undefined,
+        error: null,
+        mutate: mutate,
+    };
+    (useSaveCriteria as jest.Mock).mockImplementation(() => saveCriteriaResult);
+
+    const ref: {current: CatalogEditRef | null} = {
+        current: null,
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} onChange={jest.fn()} ref={ref} />
+        </ThemeProvider>
+    );
+
+    expect(ref.current).not.toBeUndefined();
+
+    ref.current && ref.current.save();
+
+    expect(mutate).toHaveBeenCalledWith([
+        {
+            field: 'enabled',
+            operator: Operator.EQUALS,
+            value: true,
+        },
+        {
+            field: 'enabled',
+            operator: Operator.NOT_EQUAL,
+            value: false,
+        },
+    ]);
 });
