@@ -40,7 +40,7 @@ final class DatabaseGetContributorAccountByAccessToken implements GetContributor
             $result['id'],
             $result['email'],
             $result['access_token'],
-            $result['access_token_created_at'],
+            new \DateTimeImmutable($result['access_token_created_at']),
         );
     }
 }
