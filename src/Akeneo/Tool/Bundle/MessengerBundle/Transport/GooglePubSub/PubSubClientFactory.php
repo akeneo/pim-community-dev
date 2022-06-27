@@ -14,21 +14,21 @@ use Google\Cloud\PubSub\PubSubClient;
  */
 class PubSubClientFactory
 {
-   /** @var ?string */
-   private $keyFilePath = null;
+    /** @var ?string */
+    private $keyFilePath = null;
 
-   public function __construct(string $keyFilePath)
-   {
+    public function __construct(string $keyFilePath)
+    {
        if (!empty($keyFilePath)) {
            $this->keyFilePath = $keyFilePath;
        }
-   }
+    }
 
-   public function createPubSubClient(array $config): PubSubClient
-   {
+    public function createPubSubClient(array $config): PubSubClient
+    {
        return new PubSubClient(array_merge([
            'keyFilePath' => $this->keyFilePath,
            'transport' => 'rest',
        ], $config));
-   }
+    }
 }
