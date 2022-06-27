@@ -7,10 +7,13 @@
   "dependencies": {},
   "peerDependencies": {
     "akeneo-design-system": "*",
+    "@akeneo-pim-community/shared": "*",
     "react": "^16.9.12",
     "react-dom": "^16.9.12",
+    "react-query": "^3.39.1",
     "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "styled-components": "^5.1.1"
   },
   "proxy": "http://localhost:8080",
   "scripts": {
@@ -18,7 +21,8 @@
     "lib:build": "tsc -p tsconfig.build.json",
     "eslint": "eslint --config .eslintrc.json src/**/*.{ts,tsx}",
     "prettier": "prettier --config .prettierrc.json src/**/*.{ts,tsx}",
-    "jest": "jest --config jest.config.js"
+    "jest": "jest --config jest.config.js",
+    "depcruise": "depcruise -c .dependency-cruiser.js src"
   },
   "eslintConfig": {
     "extends": [
@@ -44,11 +48,14 @@
     "@testing-library/dom": "^7.29.6",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.2.6",
+    "@testing-library/react-hooks": "^3.4.2",
     "@testing-library/user-event": "^12.8.3",
     "@types/jest": "^26.0.22",
     "@types/node": "^14.0.0",
     "@types/react": "^16.9.12",
     "@types/react-dom": "^16.9.12",
+    "dependency-cruiser": "^11.10.0",
+    "jest-fetch-mock": "^3.0.3",
     "prettier": "^2.2.1",
     "react-scripts": "4.0.1",
     "ts-jest": "^26.4.0",

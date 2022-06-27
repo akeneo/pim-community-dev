@@ -106,6 +106,7 @@ catalogs-lint-front:
 		yarn workspace @akeneo-pim-community/catalogs prettier --check
 		yarn workspace @akeneo-pim-community/catalogs eslint
 		yarn workspace @akeneo-pim-community/catalogs tsc --noEmit --strict
+		yarn workspace @akeneo-pim-community/catalogs depcruise
 	@<<- EOF
 
 .PHONY: catalogs-unit-front
