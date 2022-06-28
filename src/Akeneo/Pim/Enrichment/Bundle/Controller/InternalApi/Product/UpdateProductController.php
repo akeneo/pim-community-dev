@@ -16,7 +16,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\MessageBus;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -61,13 +60,13 @@ final class UpdateProductController
     ) {
     }
 
-    public function __invoke(Request $request, string $id): Response
+    public function __invoke(Request $request, string $uuid): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductOr404($uuid);
         $data = json_decode($request->getContent(), true);
         try {
             $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $product]);
@@ -132,22 +131,16 @@ final class UpdateProductController
     }
 
     /**
-     * Find a product by its id or return a 404 response
-     *
-     * @param string $id the product id
+     * Find a product by its uuid or return a 404 response
      *
      * @throws NotFoundHttpException
-     *
-     * @return ProductInterface
      */
-    private function findProductOr404($id)
+    private function findProductOr404(string $uuid): ProductInterface
     {
-        $product = $this->productRepository->find($id);
+        $product = $this->productRepository->find($uuid);
 
         if (null === $product) {
-            throw new NotFoundHttpException(
-                sprintf('Product with id %s could not be found.', $id)
-            );
+            throw new NotFoundHttpException(sprintf('Product with uuid %s could not be found.', $uuid));
         }
 
         return $product;
@@ -155,11 +148,8 @@ final class UpdateProductController
 
     /**
      * Updates product with the provided request data
-     *
-     * @param ProductInterface $product
-     * @param array $data
      */
-    private function updateProduct(ProductInterface $product, array $data)
+    private function updateProduct(ProductInterface $product, array $data): void
     {
         $values = $this->productValueConverter->convert($data['values']);
 
