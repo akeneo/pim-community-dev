@@ -277,7 +277,7 @@ SQL;
                 $rows,
                 function ($carry, $item) use ($esIdentifiers) {
                     if(!in_array($item['_id'], $esIdentifiers)) {
-                        $carry[] = $item['identifier'];
+                        $carry[] = $item['code'];
                     }
                     return $carry;
                 },
