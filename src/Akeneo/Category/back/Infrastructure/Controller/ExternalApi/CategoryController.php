@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
+namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;

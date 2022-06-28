@@ -1,0 +1,28 @@
+#parameters:
+#    pim_enrich.controller.category_tree.class: Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController
+
+services:
+    pim_api.controller.category:
+        public: true
+        class: 'Akeneo\Category\Infrastructure\Controller\ExternalApi\CategoryController'
+        arguments:
+            - '@pim_api.repository.category'
+            - '@pim_external_api_serializer'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_catalog.saver.category'
+            - '@router'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.category_partial_update_stream'
+            - '%pim_api.configuration%'
+
+    pim_enrich.controller.rest.category:
+        public: true
+        class: 'Akeneo\Category\Infrastructure\Controller\InternalApi\CategoryController'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_enrich.twig.category_extension'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'

@@ -3,7 +3,7 @@
 namespace Akeneo\Test\Category\End2End\ExternalApi;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Akeneo\Test\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetCategoryEndToEnd extends ApiTestCase
