@@ -68,10 +68,10 @@ final class UpdateCatalogAction
         }
 
         $this->upsertCatalogQuery->execute(
-            id: $catalogId,
-            name: $catalog->getName(),
-            ownerUsername: $catalog->getOwnerUsername(),
-            enabled: $payload['enabled'],
+            $catalogId,
+            $catalog->getName(),
+            $catalog->getOwnerUsername(),
+            $payload['enabled'],
         );
 
         $this->updateCatalogProductSelectionCriteriaQuery->execute(

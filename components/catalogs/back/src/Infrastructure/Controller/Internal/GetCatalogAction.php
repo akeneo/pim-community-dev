@@ -39,13 +39,8 @@ final class GetCatalogAction
         }
 
         $catalogNormalized = (array) $this->normalizer->normalize($catalog, 'internal');
-        $productSelectionCriteria = $this->findCatalogProductSelectionCriteriaQuery->execute($catalogId);
+        $catalogNormalized['product_selection_criteria'] = $this->findCatalogProductSelectionCriteriaQuery->execute($catalogId);
 
-        return new JsonResponse(\array_merge(
-            $catalogNormalized,
-            [
-                'product_selection_criteria' => $productSelectionCriteria,
-            ],
-        ));
+        return new JsonResponse($catalogNormalized);
     }
 }
