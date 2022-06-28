@@ -32,7 +32,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\SpellCheckResult;
 use PhpSpec\ObjectBehavior;
@@ -55,10 +55,10 @@ class EvaluateAttributeOptionSpellingSpec extends ObjectBehavior
     public function it_evaluates_attribute_option_spelling(
         GetAttributeOptionSpellcheckQueryInterface $getAttributeOptionSpellcheckQuery
     ) {
-        $productId = new ProductId(1);
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criterionEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE),
-            $productId,
+            $productUuid,
             CriterionEvaluationStatus::pending()
         );
 

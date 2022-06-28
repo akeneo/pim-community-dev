@@ -66,9 +66,9 @@ class ProductsUpdater
     private function getEntityId(EntityWithValuesInterface $entity): string
     {
         return sprintf(
-            '%s_%d',
+            '%s_%s',
             $entity instanceof ProductModelInterface ? 'product_model' : 'product',
-            $entity->getId()
+            $entity instanceof ProductInterface ? $entity->getUuid()->toString() : $entity->getId()
         );
     }
 }

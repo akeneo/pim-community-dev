@@ -1,0 +1,5 @@
+services:
+    Akeneo\OnboarderSerenity\Supplier\Test\Acceptance\Context\Authentication\ContributorAccountContext:
+        - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+        - '@akeneo.onboarder_serenity_contributor_authentication.feature'
+        - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler'

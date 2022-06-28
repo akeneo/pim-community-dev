@@ -19,10 +19,12 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Column;
 use Akeneo\Platform\TailoredImport\Domain\UpsertProductCommandCleaner;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Platform\TailoredImport\Infrastructure\Subscriber\UpdateJobExecutionSummarySubscriber;
-use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Model\Warning;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -30,19 +32,28 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Webmozart\Assert\Assert;
 
-class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface, InitializableInterface
+class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface, InitializableInterface, FlushableInterface
 {
+    private const WARNING_BATCH_SIZE = 100;
+
     private ?StepExecution $stepExecution;
+    private array $warnings = [];
 
     public function __construct(
         private MessageBusInterface $messageBus,
         private EventDispatcherInterface $eventDispatcher,
+        private JobRepositoryInterface $jobRepository,
     ) {
     }
 
     public function initialize(): void
     {
         $this->eventDispatcher->addSubscriber(new UpdateJobExecutionSummarySubscriber($this->stepExecution));
+    }
+
+    public function flush(): void
+    {
+        $this->saveAndClearWarnings();
     }
 
     public function write(array $items): void
@@ -66,6 +77,15 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
 
     private function upsertProduct(RowPayload $rowPayload): void
     {
+        if (0 < count($rowPayload->getInvalidValues())) {
+            $this->stepExecution->incrementSummaryInfo('skip');
+            $this->addInvalidValuesWarning($rowPayload);
+
+            if ('skip_product' === $this->stepExecution->getJobParameters()->get('error_action')) {
+                return;
+            }
+        }
+
         try {
             if (null === $rowPayload->getUpsertProductCommand()) {
                 throw new \RuntimeException('RowPayload wrongly formed missing UpsertCommand');
@@ -73,7 +93,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
 
             $this->messageBus->dispatch($rowPayload->getUpsertProductCommand());
         } catch (LegacyViolationsException|ViolationsException $violationsException) {
-            $this->addWarning($violationsException->violations(), $rowPayload);
+            $this->addViolationsWarning($violationsException->violations(), $rowPayload);
 
             if ($this->shouldSkipProduct($violationsException)) {
                 $this->stepExecution->incrementSummaryInfo('skip');
@@ -85,14 +105,36 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
         }
     }
 
-    private function addWarning(ConstraintViolationListInterface $violationList, RowPayload $rowPayload): void
+    private function addViolationsWarning(ConstraintViolationListInterface $violationList, RowPayload $rowPayload): void
     {
         foreach ($violationList as $violation) {
-            $this->stepExecution->addWarning(
+            $this->addWarning(new Warning(
+                $this->stepExecution,
                 $violation->getMessage(),
                 $violation->getParameters(),
-                new FileInvalidItem($this->getFormattedCells($rowPayload), $rowPayload->getRowPosition()),
-            );
+                $this->getFormattedCells($rowPayload),
+            ));
+        }
+    }
+
+    private function addInvalidValuesWarning(RowPayload $rowPayload): void
+    {
+        foreach ($rowPayload->getInvalidValues() as $invalidValue) {
+            $this->addWarning(new Warning(
+                $this->stepExecution,
+                $invalidValue->getErrorKey(),
+                [],
+                $this->getFormattedCells($rowPayload),
+            ));
+        }
+    }
+
+    private function addWarning(Warning $warning): void
+    {
+        $this->warnings[] = $warning;
+
+        if (self::WARNING_BATCH_SIZE <= count($this->warnings)) {
+            $this->saveAndClearWarnings();
         }
     }
 
@@ -163,11 +205,13 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
 
     private function getUserIntentCount(RowPayload $rowPayload): int
     {
-        $valueUserIntentCount = count($rowPayload->getUpsertProductCommand()->valueUserIntents());
-        $categoryUserIntentCount = null === $rowPayload->getUpsertProductCommand()->categoryUserIntent() ? 0 : 1;
-        $familyUserIntentCount = null === $rowPayload->getUpsertProductCommand()->familyUserIntent() ? 0 : 1;
+        $command = $rowPayload->getUpsertProductCommand();
+        $valueUserIntentCount = count($command->valueUserIntents());
+        $categoryUserIntentCount = null === $command->categoryUserIntent() ? 0 : 1;
+        $familyUserIntentCount = null === $command->familyUserIntent() ? 0 : 1;
+        $enabledUserIntentCount = null === $command->enabledUserIntent() ? 0 : 1;
 
-        return $valueUserIntentCount + $categoryUserIntentCount + $familyUserIntentCount;
+        return $valueUserIntentCount + $categoryUserIntentCount + $familyUserIntentCount + $enabledUserIntentCount;
     }
 
     private function calculateSkippedNoDiff(StepExecution $stepExecution): int
@@ -177,5 +221,11 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
             - $stepExecution->getSummaryInfo('process', 0)
             - $stepExecution->getSummaryInfo('skip', 0)
             - $stepExecution->getSummaryInfo('skipped_no_diff', 0);
+    }
+
+    private function saveAndClearWarnings(): void
+    {
+        $this->jobRepository->addWarnings($this->stepExecution, $this->warnings);
+        $this->warnings = [];
     }
 }

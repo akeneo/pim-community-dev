@@ -1,0 +1,11 @@
+onboarder:
+  supplier:
+    contributor:
+      email_already_exists: Este correo electrónico ya se utiliza para otro proveedor y todavía no admitimos que varios proveedores tengan el mismo colaborador. Lamentamos las molestias.
+    contributor_account:
+      validation:
+        min_password_length: La contraseña debe tener al menos 8 caracteres.
+        max_password_length: La contraseña no debe superar los 255 caracteres.
+        must_contain_an_uppercase_letter: La contraseña debe tener al menos una letra mayúscula.
+        must_contain_a_lowercase_letter: La contraseña debe tener al menos una letra minúscula.
+        must_contain_a_digit: La contraseña debe tener al menos un número.

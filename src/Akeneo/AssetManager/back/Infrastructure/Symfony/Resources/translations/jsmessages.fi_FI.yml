@@ -117,6 +117,10 @@ pim_asset_manager:
         execute_rules: Suorita säännöt
       execute_naming_convention:
         confirm_title: Vahvista suoritus
+    naming_convention:
+      help:
+        description: Täällä voit määritellä nimeämiskäytännön tiedot
+        link: Opi kaikki mitä tarvitset tietää formaatista.
     properties:
       title: Assettiperheen ominaisuudet
       identifier: Koodi
@@ -292,6 +296,9 @@ pim_asset_manager:
         channel: Valitse kanava
         locale: Valitse lokaali
         action: Valitse toiminto
+      helper:
+        content: Huomaa, että on mahdollista lisätä sama attribuutti useita kertoja, joten varmista, että valitset attribuutit huolellisesti.
+        link: Voit tarkistaa dokumentaatiomme välttääksesi ongelmat.
       unsupported_attribute: Tämä attribuuttityyppi "{{ attributeType }}" ei ole tuettu
     grid:
       search: Etsi otsikolla, koodilla tai tekstiattribuutilla
@@ -479,6 +486,8 @@ akeneo_job_process_tracker:
   type_filter:
     asset_manager_link_assets_to_products: Linkitä assetit tuotteisiin
     asset_manager_compute_transformations: Muodosta assetin muunnokset
+    asset_manager_mass_delete_assets: Assettien massapoisto
+    asset_manager_mass_edit_assets: Assettien massamuokkaus
 batch_jobs:
   default_steps:
     mass_delete_assets: Suorita assettien massapoisto

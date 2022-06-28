@@ -60,7 +60,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater'
         public: false
         arguments:
-            - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'
             - '@pimee_workflow.updater.entity_with_values_without_permission'
             - '@pim_catalog.association.filter.parent_associations'
             - '@pim_catalog.quantified_associations.quantified_associations_from_ancestors_filter'

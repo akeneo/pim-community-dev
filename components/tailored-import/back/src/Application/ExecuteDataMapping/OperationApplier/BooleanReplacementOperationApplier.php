@@ -17,7 +17,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\Unex
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
@@ -33,11 +33,13 @@ final class BooleanReplacementOperationApplier implements OperationApplierInterf
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
-        if (!array_key_exists($value->getValue(), $operation->getMapping())) {
-            return new NullValue();
+        if (!$operation->hasMappedValue($value->getValue())) {
+            return new InvalidValue(sprintf('There is no mapped value for this source value: "%s"', $value->getValue()));
         }
 
-        return new BooleanValue($operation->getMapping()[$value->getValue()]);
+        $mappedValue = $operation->getMappedValue($value->getValue());
+
+        return new BooleanValue($mappedValue);
     }
 
     public function supports(OperationInterface $operation): bool

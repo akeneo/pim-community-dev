@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -67,15 +68,15 @@ class ApproveNotificationSubscriber extends AbstractProposalStateNotificationSub
      */
     protected function send(GenericEvent $event, array $messageInfos)
     {
-        $productDraft = $event->getSubject();
+        $entityDraft = $event->getSubject();
         $user = $this->userContext->getUser();
 
-        if (null === $user || !$this->authorWantToBeNotified($productDraft)) {
+        if (null === $user || !$this->authorWantToBeNotified($entityDraft)) {
             return;
         }
 
         $message = $messageInfos['message'] ?? 'pimee_workflow.product_draft.notification.approve';
-        $route = $productDraft->getEntityWithValue() instanceof ProductModelInterface ?
+        $route = $entityDraft->getEntityWithValue() instanceof ProductModelInterface ?
             'pim_enrich_product_model_edit' :
             'pim_enrich_product_edit';
 
@@ -84,11 +85,15 @@ class ApproveNotificationSubscriber extends AbstractProposalStateNotificationSub
             ->setType('success')
             ->setMessage($message)
             ->setRoute($route)
-            ->setRouteParams(['id' => $productDraft->getEntityWithValue()->getId()]);
+            ->setRouteParams(
+                $entityDraft->getEntityWithValue() instanceof ProductInterface
+                ? ['uuid' => $entityDraft->getEntityWithValue()->getUuid()->toString()]
+                : ['id' => $entityDraft->getEntityWithValue()->getId()]
+            );
 
         $options = [
             'messageParams' => [
-                '%product%' => $productDraft->getEntityWithValue()->getLabel($this->userContext->getCurrentLocaleCode()),
+                '%product%' => $entityDraft->getEntityWithValue()->getLabel($this->userContext->getCurrentLocaleCode()),
                 '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
             ],
             'context'       => [
@@ -119,6 +124,6 @@ class ApproveNotificationSubscriber extends AbstractProposalStateNotificationSub
             ->setMessageParams($options['messageParams'])
             ->setContext($options['context']);
 
-        $this->notifier->notify($notification, [$productDraft->getAuthor()]);
+        $this->notifier->notify($notification, [$entityDraft->getAuthor()]);
     }
 }

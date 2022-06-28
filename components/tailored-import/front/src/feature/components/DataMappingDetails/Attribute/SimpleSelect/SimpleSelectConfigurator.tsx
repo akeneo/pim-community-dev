@@ -44,6 +44,7 @@ const SimpleSelectConfigurator = ({
         compatibleOperations={[SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
+        validationErrors={filterErrors(validationErrors, '[operations]')}
       />
     </>
   );

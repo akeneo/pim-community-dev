@@ -56,6 +56,8 @@ batch_jobs:
 job_execution:
   summary:
     assets: Assetit
+    transformations: Assettien muunnokset
+    skipped: Ohitettu
 pim_mass_edit.notification.asset_manager_mass_delete_assets:
   warning: Assetit poistettu varoituksin
   success: Assetit poistettu onnistuneesti
@@ -65,5 +67,13 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   success: Assetit muokattu onnistuneesti
   error: Asettien muokkaus epäonnistui
 pim_api:
+  acl:
+    asset_family:
+      create: Luo ja päivitä assettiperheitä
+      list: Listaa assettiperheet
+    asset:
+      create: Luo ja päivitä assetteja
+      list: Listaa assetit
+      remove: Poista assetteja
   acl_group:
     asset: Assetit

@@ -27,8 +27,9 @@ $rules = [
             'Akeneo\OnboarderSerenity\Retailer\Infrastructure\Install\InstallOnboarderSerenityTables',
 
             // Dangerous dependencies, migrations shouldn't rely on services
-            'Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId',
+            'Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid',
             'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\Query\InitDataQualityInsightsSchema',
+            'Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidStep',
             'Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory',
             'Akeneo\Platform\VersionProvider',
             'Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMappingWrapper',
@@ -40,6 +41,8 @@ $rules = [
             'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
             'Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity',
             'Psr\Container\ContainerInterface',
+            'Symfony\Bundle\FrameworkBundle\Console\Application',
+            'Symfony\Component\Console\Output\NullOutput',
             'Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity',
             'Webmozart\Assert\Assert',
             'Psr\Log\LoggerInterface',

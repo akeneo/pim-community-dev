@@ -3,6 +3,14 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {getDefaultSplitOperation, SplitOperationBlock} from './SplitOperationBlock';
+import {OperationPreviewData} from 'feature/models';
+
+const operationPreviewData: OperationPreviewData = {
+  [expect.any(String)]: [
+    {type: 'string', value: 'tee shirt'},
+    {type: 'string', value: 't-shirt'},
+  ],
+};
 
 test('it can get the default split operation', () => {
   expect(getDefaultSplitOperation()).toEqual({
@@ -23,8 +31,9 @@ test('it displays a split operation block', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: ['<p>Hello</p>', '<p>World</p>'],
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
@@ -44,8 +53,9 @@ test('it can be removed using the remove button', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: ['<p>Hello</p>', '<p>World</p>'],
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
@@ -71,12 +81,13 @@ test('it can change the separator', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: ['<p>Hello</p>', '<p>World</p>'],
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
-  userEvent.click(screen.getByTitle('akeneo.tailored_import.data_mapping.operations.split.collapse'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_import.data_mapping.operations.common.collapse'));
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(screen.getByTitle('semicolon'));
 
@@ -97,8 +108,9 @@ test('it throws an error if the operation is not a split operation', () => {
         previewData={{
           isLoading: false,
           hasError: false,
-          data: ['<p>Hello</p>', '<p>World</p>'],
+          data: operationPreviewData,
         }}
+        validationErrors={[]}
       />
     );
   }).toThrowError('SplitOperationBlock can only be used with SplitOperation');

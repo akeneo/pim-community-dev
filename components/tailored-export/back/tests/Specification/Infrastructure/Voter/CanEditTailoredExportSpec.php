@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Voter;
 
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
+use Akeneo\Channel\API\Query\FindAllViewableLocalesForUser;
+use Akeneo\Channel\API\Query\Locale;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
@@ -56,11 +57,11 @@ class CanEditTailoredExportSpec extends ObjectBehavior
     ];
 
     public function let(
-        GetAllViewableLocalesForUserInterface $getAllViewableLocales,
+        FindAllViewableLocalesForUser $findAllViewableLocalesForUser,
         GetViewableAttributeCodesForUserInterface $getViewableAttributes,
         GetAttributes $getAttributes
     ) {
-        $this->beConstructedWith($getAllViewableLocales, $getViewableAttributes, $getAttributes);
+        $this->beConstructedWith($findAllViewableLocalesForUser, $getViewableAttributes, $getAttributes);
     }
 
     public function it_does_not_validate_if_columns_is_not_defined(JobInstance $jobInstance): void
@@ -72,8 +73,8 @@ class CanEditTailoredExportSpec extends ObjectBehavior
     }
 
     public function it_does_not_validate_if_an_attribute_is_not_visible(
-        $getAttributes,
-        $getViewableAttributes,
+        GetAttributes $getAttributes,
+        GetViewableAttributeCodesForUserInterface $getViewableAttributes,
         JobInstance $jobInstance
     ): void {
         $userId = 2;
@@ -98,9 +99,9 @@ class CanEditTailoredExportSpec extends ObjectBehavior
     }
 
     public function it_validates_if_an_attribute_is_deleted(
-        $getAttributes,
-        $getViewableAttributes,
-        $getAllViewableLocales,
+        GetAttributes $getAttributes,
+        GetViewableAttributeCodesForUserInterface $getViewableAttributes,
+        FindAllViewableLocalesForUser $findAllViewableLocalesForUser,
         JobInstance $jobInstance
     ): void {
         $userId = 2;
@@ -120,18 +121,18 @@ class CanEditTailoredExportSpec extends ObjectBehavior
             'Weight'
         ]);
 
-        $getAllViewableLocales->fetchAll($userId)->willReturn([
-            'fr_FR',
-            'en_US'
+        $findAllViewableLocalesForUser->findAll($userId)->willReturn([
+            new Locale('fr_FR', true),
+            new Locale('en_US', true),
         ]);
 
         $this->execute($jobInstance, $userId)->shouldReturn(true);
     }
 
     public function it_does_not_validate_if_a_locale_is_not_visible(
-        $getAttributes,
-        $getViewableAttributes,
-        $getAllViewableLocales,
+        GetAttributes $getAttributes,
+        GetViewableAttributeCodesForUserInterface $getViewableAttributes,
+        FindAllViewableLocalesForUser $findAllViewableLocalesForUser,
         JobInstance $jobInstance
     ): void {
         $userId = 2;
@@ -150,8 +151,8 @@ class CanEditTailoredExportSpec extends ObjectBehavior
             'Weight'
         ]);
 
-        $getAllViewableLocales->fetchAll($userId)->willReturn([
-            'en_US'
+        $findAllViewableLocalesForUser->findAll($userId)->willReturn([
+            new Locale('en_US', true),
         ]);
 
         $this->execute($jobInstance, $userId)->shouldReturn(false);

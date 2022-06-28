@@ -28,7 +28,6 @@ $rules = [
 
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
-            'Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface',
         ],
     )->in('Akeneo\OnboarderSerenity\Retailer\Domain'),
 
@@ -37,14 +36,9 @@ $rules = [
             // Onboarder coupling
             'Akeneo\OnboarderSerenity\Retailer\Domain',
 
-            // PIM coupling
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
-
             // External dependencies coupling
             'Psr\Log\LoggerInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
-            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
-            'Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
@@ -81,8 +75,6 @@ $rules = [
             'Psr\Log\LoggerInterface',
             'Ramsey\Uuid\Uuid',
             'Symfony',
-            'Twig\Environment',
-            'Swift_Mailer',
         ],
     )->in('Akeneo\OnboarderSerenity\Retailer\Infrastructure'),
 
@@ -112,20 +104,14 @@ $rules = [
             'Akeneo\OnboarderSerenity\Retailer\Application',
             'Akeneo\OnboarderSerenity\Retailer\Infrastructure',
             // PIM coupling
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             // External dependencies coupling
             'PHPUnit\Framework',
             'Psr\Log\NullLogger',
             'Ramsey\Uuid\Uuid',
             'Symfony\Component\EventDispatcher\EventDispatcher',
-            'Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher',
-            'Symfony\Component\Routing\Generator\UrlGeneratorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
-            'Symfony\Component\Validator\Context\ExecutionContextInterface',
-            'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
-            'Twig\Environment',
         ],
     )->in('Akeneo\OnboarderSerenity\Retailer\Test\Unit'),
 
@@ -135,9 +121,6 @@ $rules = [
             'Akeneo\OnboarderSerenity\Retailer\Domain',
             'Akeneo\OnboarderSerenity\Retailer\Application\Supplier',
             'Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier',
-            'Akeneo\OnboarderSerenity\Retailer\Infrastructure\Authentication',
-            // PIM coupling
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag',
             // External dependencies coupling
             'Behat',
             'PHPUnit\Framework',

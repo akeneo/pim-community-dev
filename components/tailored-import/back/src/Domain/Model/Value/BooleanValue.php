@@ -17,6 +17,8 @@ use Webmozart\Assert\Assert;
 
 final class BooleanValue implements ValueInterface
 {
+    private const TYPE = 'boolean';
+
     public function __construct(
         private bool $value,
     ) {
@@ -26,5 +28,13 @@ final class BooleanValue implements ValueInterface
     public function getValue(): bool
     {
         return $this->value;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'type' => self::TYPE,
+            'value' => $this->value,
+        ];
     }
 }

@@ -24,7 +24,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\FamilyCriterionEvaluationRepository;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -36,17 +36,18 @@ final class PimEnterpriseGetCriteriaEvaluationsByProductIdQueryIntegration exten
         $channel = new ChannelCode('ecommerce');
         $locale = new LocaleCode('en_US');
         $familyId = new FamilyId($this->createFamily('a_family')->getId());
-        $productId = new ProductId($this->createProduct('ziggy', ['family' => 'a_family'])->getId());
+        $product = $this->createProduct('ziggy', ['family' => 'a_family']);
+        $productUuid = ProductUuid::fromUuid($product->getUuid());
         $this->createProduct('whatever', ['family' => 'a_family']);
 
         $productEvaluatedAt = new \DateTimeImmutable('2020-12-04 14:03:34');
-        $this->updateProductEvaluationsAt($productId->toInt(), CriterionEvaluationStatus::DONE, $productEvaluatedAt);
+        $this->updateProductEvaluationsAt($product->getUuid(), CriterionEvaluationStatus::DONE, $productEvaluatedAt);
 
         $familyAttributeSpellingEvaluation = $this->givenAFamilyAttributeSpellingEvaluation($familyId);
 
         $expectedAttributeSpellingEvaluation = new Read\CriterionEvaluation(
             $familyAttributeSpellingEvaluation->getCriterionCode(),
-            $productId,
+            $productUuid,
             $productEvaluatedAt,
             CriterionEvaluationStatus::done(),
             new Read\CriterionEvaluationResult(
@@ -60,7 +61,7 @@ final class PimEnterpriseGetCriteriaEvaluationsByProductIdQueryIntegration exten
             )
         );
 
-        $productEvaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations')->execute($productId);
+        $productEvaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations')->execute($productUuid);
 
         $this->assertReadCriterionEvaluationEquals(
             $expectedAttributeSpellingEvaluation,

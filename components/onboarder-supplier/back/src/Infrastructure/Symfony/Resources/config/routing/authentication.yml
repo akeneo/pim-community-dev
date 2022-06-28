@@ -1,6 +1,13 @@
+onboarder_serenity_supplier_contributor_get_contributor_account:
+    path: /contributor-account/{accessToken}
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\GetContributorAccount
+        _feature: onboarder_serenity_contributor_authentication
+    methods: [GET]
+
 onboarder_serenity_supplier_contributor_set_up_password:
-    path: /set-up-password/{token}
+    path: /set-up-password
     defaults:
         _controller: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword
         _feature: onboarder_serenity_contributor_authentication
-    methods: [GET]
+    methods: [PUT]

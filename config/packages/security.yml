@@ -60,6 +60,11 @@ security:
             access_denied_handler: pim_api.security.access_denied_handler
             provider: pim_user_api
 
+        onboarder-serenity-supplier:
+            pattern: ^/onboarder-supplier/authentication
+            security: false
+            anonymous: true
+
         api_index:
             pattern:                        ^/api/rest/v1$
             security:                       false
@@ -118,11 +123,11 @@ security:
         - { path: ^/saml-idp/resume, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/onboarder-supplier/authentication, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
 
     password_hashers:
-        Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount: 'auto'
-
+        Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount: 'auto'
 
 acl:
     connection: default

@@ -17,6 +17,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class RemoveNotificationSubscriberSpec extends ObjectBehavior
@@ -147,7 +148,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $draft->getAuthor()->willReturn('author');
         $draft->getEntityWithValue()->willReturn($product);
 
-        $product->getId()->willReturn(42);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $product->getLabel(Argument::any())->willReturn('T-Shirt');
 
         $notificationFactory->create()->willReturn($notification);
@@ -155,7 +156,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $notification->setMessage('pimee_workflow.product_draft.notification.remove')->willReturn($notification);
         $notification->setMessageParams(['%product%' => 'T-Shirt', '%owner%' => 'John Doe'])->willReturn($notification);
         $notification->setRoute('pim_enrich_product_edit')->willReturn($notification);
-        $notification->setRouteParams(['id' => 42])->willReturn($notification);
+        $notification->setRouteParams(['uuid' => '54162e35-ff81-48f1-96d5-5febd3f00fd5'])->willReturn($notification);
         $notification->setContext(
             [
                 'actionType'       => 'pimee_workflow_product_draft_notification_remove',
@@ -204,7 +205,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $draft->getAuthor()->willReturn('author');
         $draft->getEntityWithValue()->willReturn($product);
 
-        $product->getId()->willReturn(42);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $product->getLabel(Argument::any())->willReturn('T-Shirt');
 
         $notificationFactory->create()->willReturn($notification);
@@ -213,7 +214,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $notification->setMessage('pimee_workflow.product_draft.notification.remove')->willReturn($notification);
         $notification->setMessageParams(['%product%' => 'T-Shirt', '%owner%' => 'John Doe'])->willReturn($notification);
         $notification->setRoute('pim_enrich_product_edit')->willReturn($notification);
-        $notification->setRouteParams(['id' => 42])->willReturn($notification);
+        $notification->setRouteParams(['uuid' => '54162e35-ff81-48f1-96d5-5febd3f00fd5'])->willReturn($notification);
         $notification->setComment('Nope Mary.')->willReturn($notification);
         $notification->setContext(
             [

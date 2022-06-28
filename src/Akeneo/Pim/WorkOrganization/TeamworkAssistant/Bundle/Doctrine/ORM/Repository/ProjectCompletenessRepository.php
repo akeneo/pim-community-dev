@@ -108,10 +108,11 @@ ATTRIBUTE_GROUP_FILTER;
         $sql = <<<SQL
 SELECT `product`.`identifier`
 FROM (
-    SELECT DISTINCT `project_product`.`product_id`
+    SELECT DISTINCT `project_product`.`product_uuid`
     FROM `pimee_teamwork_assistant_project_product` AS `project_product`
-    LEFT JOIN `pim_catalog_category_product` AS `category_product`
-        ON `project_product`.`product_id` = `category_product`.`product_id`
+        INNER JOIN pim_catalog_product p ON p.uuid = project_product.product_uuid
+        LEFT JOIN `pim_catalog_category_product` AS `category_product`
+            ON p.uuid = `category_product`.`product_uuid`
     WHERE `project_product`.`project_id` = :project_id
     AND (
         `category_product`.`category_id` IS NULL
@@ -126,10 +127,10 @@ FROM (
 ) AS `product_selection`
 
 INNER JOIN `pim_catalog_product` AS `product`
-    ON `product`.`id` = `product_selection`.`product_id`
+    ON `product`.`uuid` = `product_selection`.`product_uuid`
 
 INNER JOIN `pimee_teamwork_assistant_completeness_per_attribute_group` AS `completeness_per_attribute_group`
-    ON `completeness_per_attribute_group`.`product_id` = `product_selection`.`product_id`
+    ON `completeness_per_attribute_group`.`product_uuid` = `product_selection`.`product_uuid`
     AND `completeness_per_attribute_group`.`channel_id` = :channel_id
     AND `completeness_per_attribute_group`.`locale_id` = :locale_id
 $filterByAttributeGroupPermissions
@@ -146,14 +147,14 @@ SQL;
         if ($status === ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS) {
             $sql .= <<<SQL
 HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) > 0 OR SUM(`completeness_per_attribute_group`.`has_at_least_one_required_attribute_filled`) > 0)
-AND SUM(`completeness_per_attribute_group`.`is_complete`) <> COUNT(`completeness_per_attribute_group`.`product_id`)
+AND SUM(`completeness_per_attribute_group`.`is_complete`) <> COUNT(`completeness_per_attribute_group`.`product_uuid`)
 SQL;
         }
 
         // DONE
         if ($status === ProjectCompletenessFilter::CONTRIBUTOR_DONE) {
             $sql .= <<<SQL
-HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = COUNT(`completeness_per_attribute_group`.`product_id`))
+HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = COUNT(`completeness_per_attribute_group`.`product_uuid`))
 SQL;
         }
 
@@ -180,11 +181,11 @@ SELECT `product`.`identifier`
 FROM 
      `pim_catalog_product` AS `product`
       INNER JOIN `pimee_teamwork_assistant_completeness_per_attribute_group` AS `completeness_per_attribute_group`
-        ON `product`.`id` = `completeness_per_attribute_group`.`product_id` 
+        ON `product`.`uuid` = `completeness_per_attribute_group`.`product_uuid` 
         AND completeness_per_attribute_group.channel_id = :channel_id 
         AND completeness_per_attribute_group.locale_id = :locale_id 
       INNER JOIN `pimee_teamwork_assistant_project_product` AS `project_product`
-        ON `project_product`.`product_id` = `completeness_per_attribute_group`.`product_id`
+        ON `project_product`.`product_uuid` = `completeness_per_attribute_group`.`product_uuid`
         AND `project_product`.`project_id` = :project_id
 GROUP BY `product`.`identifier`
 SQL;
@@ -199,14 +200,14 @@ SQL;
         if ($status === ProjectCompletenessFilter::OWNER_IN_PROGRESS) {
             $sql .= <<<SQL
 HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) > 0 OR SUM(`completeness_per_attribute_group`.`has_at_least_one_required_attribute_filled`) > 0)
-AND SUM(`completeness_per_attribute_group`.`is_complete`) <> COUNT(`completeness_per_attribute_group`.`product_id`)
+AND SUM(`completeness_per_attribute_group`.`is_complete`) <> COUNT(`completeness_per_attribute_group`.`product_uuid`)
 SQL;
         }
 
         // DONE
         if ($status === ProjectCompletenessFilter::OWNER_DONE) {
             $sql .= <<<SQL
-HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = COUNT(`completeness_per_attribute_group`.`product_id`))
+HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = COUNT(`completeness_per_attribute_group`.`product_uuid`))
 SQL;
         }
 
@@ -288,15 +289,15 @@ SQL;
     SELECT
             SUM(completeness_attribute_group.has_at_least_one_required_attribute_filled) AS attribute_group_in_progress,
             SUM(completeness_attribute_group.is_complete) AS attribute_group_done,
-            COUNT(completeness_attribute_group.product_id) AS total_attribute_group
+            COUNT(completeness_attribute_group.product_uuid) AS total_attribute_group
         FROM pimee_teamwork_assistant_completeness_per_attribute_group AS completeness_attribute_group
         JOIN pimee_teamwork_assistant_project_product AS project_product
-            ON project_product.product_id = completeness_attribute_group.product_id
+            ON project_product.product_uuid = completeness_attribute_group.product_uuid
         WHERE
             completeness_attribute_group.locale_id = :locale_id
             AND completeness_attribute_group.channel_id = :channel_id
             AND project_product.project_id = :project_id
-      GROUP BY completeness_attribute_group.product_id
+      GROUP BY completeness_attribute_group.product_uuid
 ) completeness
 SQL;
         } else {
@@ -318,46 +319,48 @@ WITH user AS (
     WHERE oro_user.username = :username
 ),
      project_product AS (
-         SELECT product_id
+         SELECT product_uuid
          FROM pimee_teamwork_assistant_project_product AS project_product
          WHERE project_product.project_id = :project_id
      ),
      product_without_category AS (
-         SELECT project_product.product_id
+         SELECT project_product.product_uuid
          FROM project_product
-                  LEFT JOIN pim_catalog_category_product AS category_product
-                            ON project_product.product_id = category_product.product_id
+             INNER JOIN pim_catalog_product p ON p.uuid = project_product.product_uuid
+             LEFT JOIN pim_catalog_category_product AS category_product
+                            ON p.uuid = category_product.product_uuid
          WHERE category_product.category_id IS NULL
      ),
      product_with_at_least_one_editable_category AS (
-         SELECT product_id
+         SELECT product_uuid
          FROM project_product
          WHERE EXISTS(
                        SELECT *
                        FROM pim_catalog_category_product AS category_product
+                                JOIN pim_catalog_product p ON p.uuid = category_product.product_uuid
                                 JOIN pimee_security_product_category_access category_access
                                      ON category_product.category_id = category_access.category_id
                                 JOIN oro_user_access_group group_access
                                      ON group_access.group_id = category_access.user_group_id
                                 JOIN user ON user.id = group_access.user_id
-                       WHERE category_product.product_id = project_product.product_id
+                       WHERE p.uuid = project_product.product_uuid
                          AND category_access.edit_items = 1
                    )
      ),
      editable_product AS (
-         SELECT product_id
+         SELECT product_uuid
          FROM product_with_at_least_one_editable_category
          UNION ALL
-         SELECT product_id
+         SELECT product_uuid
          FROM product_without_category
      ),
      completeness_attribute_group AS (
-         SELECT completeness_attribute_group.product_id,
+         SELECT completeness_attribute_group.product_uuid,
                 completeness_attribute_group.has_at_least_one_required_attribute_filled,
                 completeness_attribute_group.is_complete,
                 completeness_attribute_group.attribute_group_id
          FROM pimee_teamwork_assistant_completeness_per_attribute_group completeness_attribute_group
-                  JOIN editable_product ON editable_product.product_id = completeness_attribute_group.product_id
+                  JOIN editable_product ON editable_product.product_uuid = completeness_attribute_group.product_uuid
          WHERE completeness_attribute_group.locale_id = :locale_id
            AND completeness_attribute_group.channel_id = :channel_id
      ),
@@ -385,12 +388,12 @@ WITH user AS (
                           completeness_attribute_group.attribute_group_id
      ),
      progress_per_product AS (
-         SELECT product_id,
+         SELECT product_uuid,
                 SUM(has_at_least_one_required_attribute_filled) AS attribute_group_in_progress,
                 SUM(is_complete)                                AS attribute_group_done,
                 COUNT(*)                                        AS total_attribute_group
          FROM editable_completeness_attribute_group
-         GROUP BY product_id
+         GROUP BY product_uuid
      )
 SELECT COALESCE(
                SUM(

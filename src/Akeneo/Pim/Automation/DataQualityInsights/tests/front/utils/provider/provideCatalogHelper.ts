@@ -8,7 +8,7 @@ type Labels = {
   [locale: string]: string;
 };
 const aProduct = (
-  id: number = 1234,
+  id: string = 'df470d52-7723-4890-85a0-e79be625e2ed',
   labels: Labels = {},
   identifier: string = 'idx_1234',
   family: string = 'a_family'

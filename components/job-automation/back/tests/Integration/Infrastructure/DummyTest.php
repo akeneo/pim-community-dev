@@ -8,7 +8,7 @@ use Akeneo\Test\Integration\Configuration;
 
 class DummyTest extends IntegrationTestCase
 {
-    public function testItReturnsMessage(): void
+    public function test_it_returns_message(): void
     {
         $dummy = new Dummy('Hello world!');
         $this->assertEquals('Hello world!', $dummy->getMessage());

@@ -10,6 +10,8 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Value;
  */
 class DateValue implements ValueInterface
 {
+    private const TYPE = 'date';
+
     public function __construct(
         private \DateTimeImmutable $value,
     ) {
@@ -18,5 +20,13 @@ class DateValue implements ValueInterface
     public function getValue(): \DateTimeImmutable
     {
         return $this->value;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'type' => self::TYPE,
+            'value' => $this->value->format('Y-m-d'),
+        ];
     }
 }

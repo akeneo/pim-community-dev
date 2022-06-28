@@ -1,0 +1,6 @@
+pim_catalog_table: Taula
+pim_table:
+  export_with_label:
+    product: Producte
+    product_model: Model de producte
+    attribute: Atribut

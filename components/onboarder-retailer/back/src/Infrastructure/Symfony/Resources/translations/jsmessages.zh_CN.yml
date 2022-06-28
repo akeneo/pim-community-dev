@@ -1,0 +1,80 @@
+onboarder:
+  menu_block_title: Onboarder
+  supplier:
+    breadcrumb:
+      root: Onboarder
+      suppliers: 供应商
+    supplier_create:
+      modal:
+        title: 供应商
+        code:
+          label: 代码
+        label:
+          label: 标签
+      create_button:
+        label: 创建您的第一个供应商
+      notification:
+        title: 供应商已创建。
+        content: 现在可以在供应商管理部分对其进行编辑。
+      error:
+        unknown_error: 创建供应商时出错。
+        supplier_already_exists: '代码为“{{ supplierCode }}”的供应商已存在。'
+    supplier_list:
+      menu_item: 供应商
+      title: "]-Inf, 1]{{ count }} 个供应商|]1, Inf[{{ count }} 个供应商"
+      no_supplier: 还没有供应商。
+      search_by_supplier: 按供应商搜索
+      no_search_result: 没有符合此搜索的供应商。
+      notification:
+        error:
+          title: 我们无法显示供应商列表。
+          content: 非常抱歉给您带来不便！请稍后再试。
+      dropdown:
+        export_suppliers: 导出供应商
+        download_template: 下载模板
+        import_suppliers: 导入供应商
+      columns:
+        supplier: 供应商
+        number_of_contributors: 贡献者数量
+        actions: 操作
+    supplier_delete:
+      sucess_message: 此供应商已成功删除
+      modal:
+        title: 供应商
+        confirmation_question: 确定要删除此供应商吗？
+        warning: 删除此供应商后，任何未保存的丰富度都将丢失。
+        unknown_error: 删除供应商时出错。
+    supplier_edit:
+      tabs:
+        configuration: 配置
+        contributors: "贡献者\n"
+        product_files: 产品文件
+      configuration_form:
+        code: 代码
+        label: 供应商标签 (必填)
+      contributors_form:
+        info: '添加贡献者以让他们有权访问 Akeneo Onboarder。您可以在地址列表中使用分隔符分割不同的地址：空格、逗号、分号和换行。'
+        invalid_emails_warning: 有些电子邮件无效，将不会进行添加。
+        emails_belonging_to_other_suppliers_warning: 贡献者只能属于一个供应商。当您保存此供应商时，所有显示警告的电子邮件都将被删除。
+        add_contributors: 添加贡献者
+        add_button: 添加
+        search_by_email_address: 按电子邮件地址搜索
+        columns:
+          email: 电子邮件地址
+        no_contributor: 还没有贡献者。
+        result_counter: '{0} 无结果|{1} {{ count }} 个结果|]1,Inf] {{ count }} 个结果'
+        notification:
+          email_error:
+            title: 我们无法添加此贡献者。
+            content: "电子邮件 {{ emailAddress }} 无效：{{ message }}"
+          contributor_email_already_exists:
+            title: 我们无法添加此贡献者。
+            content: 电子邮件 {{ emailAddress }} 已经用于另一个供应商，我们不支持多个具有相同贡献者的供应商。很抱歉给您带来不便。
+      loading_error: 加载供应商时出错。
+      success_message: 此供应商已成功更新。
+      update_error: 更新供应商时出错。
+      delete_label: 删除此供应商
+pim_title:
+  onboarder_serenity_retailer_supplier_list: 供应商
+  onboarder_serenity_retailer_supplier_edit: 编辑供应商
+batch_jobs.onboarder_serenity_xlsx_supplier_import.label: 以 XLSX 格式导入 Onboarder Serenity 供应商

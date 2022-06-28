@@ -21,7 +21,7 @@ class ConvertToNumberOperationSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith(',');
+        $this->beConstructedWith('00000000-0000-0000-0000-000000000000', ',');
     }
 
     public function it_is_initializable()
@@ -42,6 +42,7 @@ class ConvertToNumberOperationSpec extends ObjectBehavior
     public function it_normalize_operation()
     {
         $this->normalize()->shouldReturn([
+            'uuid' => '00000000-0000-0000-0000-000000000000',
             'type' => 'convert_to_number',
             'decimal_separator' => ',',
         ]);

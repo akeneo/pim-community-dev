@@ -52,6 +52,11 @@ batch_jobs:
     send_for_approval: Lähetä hyväksyttäväksi
 pim_title:
   pimee_enrich_locale_edit: Lokaatio | Muokkaa
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Käyttöoikeudeltaan mukautettujen lokaalien määrä
+    nb_custom_category_accesses: Käyttöoikeudeltaan mukautettujen kategorioiden määrä
+    nb_custom_attribute_group_accesses: Käyttöoikeudeltaan mukautettujen attribuuttiryhmien määrä
 category.permissions:
   view.label: Tuotteiden katselu sallittu
   edit.label: Tuotteiden muokkaaminen sallittu
@@ -60,3 +65,19 @@ category.permissions:
   no_access_to_products: Sinulle ei ole käyttöoikeuksia tuotteisiin yhdessäkään kategoriapuussa. Ota yhteyttä pääkäyttäjään
   apply_on_children.label: Tee muutokset myös alatasolle
   apply_on_children.help: Alatasojen nykyiset käyttöoikeudet säilytetään
+pim_permissions:
+  widget:
+    entity:
+      attribute_group:
+        label: Attribuuttiryhmät
+        help: Jos haluat, että sovelluksesi voi muokata kaikkia tuotetietojasi, valitse Kaikki -vaihtoehto muokkaa -tasolle. Muussa tapauksessa valitse vain attribuuttiryhmät, joita sovelluksesi voi nähdä tai muokata tason mukaan.
+      category:
+        label: Kategoriapuut
+        help: Jos haluat, että sovellus voi muokata tuotteitasi käyttämättä PIMin muutosehdotuksia, valitse Omistus -taso. Muuten valitse Muokkaus -taso.
+      locale:
+        label: Lokaatiot
+        help: Jos haluat, että sovelluksesi voi muokata tuotteitasi kaikilla kielillä, valitse Kaikki -vaihtoehto Muokkaus -tasolle. Muussa tapauksessa valitse vain ne kielet, joita sovelluksesi voi nähdä tai muokata tason mukaan.
+      not_granted_warning: Tämä osio on käytettävissä vain käyttäjille, joilla on {{ permission }}. Ota yhteyttä pääkäyttäjään. Oikean käyttöoikeuden avulla voit palata sovelluksen asetuksiin ja muokata niitä.
+pimee_enrich.acl.category.edit_permissions: Hallinnoi kategorioiden käyttöoikeuksia
+pimee_enrich.acl.attribute_group.edit_permissions: Hallinnoi attribuuttiryhmien käyttöoikeuksia
+pimee_enrich.acl.locale.edit_permissions: Hallinnoi lokaatioiden käyttöoikeuksia

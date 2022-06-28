@@ -1,6 +1,74 @@
 services:
+    #feature flag
+    akeneo.onboarder_serenity_contributor_authentication.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_ONBOARDER_SERENITY_CONTRIBUTOR_AUTHENTICATION_ENABLED)%'
+        public: true
+
+    #Repositories
+    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:
+        class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\Sql\DatabaseRepository
+        arguments:
+            - '@database_connection'
+
+    # Queries
+    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken:
+        public: true
+        class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByAccessToken
+        arguments:
+            - '@database_connection'
+
+    #Event subscribers
+    Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler'
+            - '@akeneo.onboarder_serenity_contributor_authentication.feature'
+        tags:
+            - 'kernel.event_subscriber'
+
+    Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendWelcomeEmailOnContributorAccountCreated:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler'
+        tags:
+            - 'kernel.event_subscriber'
+
+    # Validators
+    Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Validation\PasswordValidator:
+        tags:
+            - { name: validator.constraint_validator }
+
     # Controllers
     Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword:
         public: true
         arguments:
-            - '@Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAccount\UpdatePasswordHandler'
+            - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler'
+
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\GetContributorAccount:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken'
+
+    #Command handlers
+    Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@event_dispatcher'
+
+    Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Infrastructure\Mailer\SendSwiftmailerEmail'
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail'
+
+    Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@security.user_password_hasher'
+            - '@validator'
+            - '@logger'
+
+    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail:
+        class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigWelcomeEmail
+        arguments:
+            - '@twig'
+            - '%env(AKENEO_PIM_URL)%'

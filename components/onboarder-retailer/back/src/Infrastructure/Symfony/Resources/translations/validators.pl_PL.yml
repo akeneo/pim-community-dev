@@ -1,0 +1,11 @@
+onboarder:
+  supplier:
+    contributor:
+      email_already_exists: Ten adres e-mail jest już używany przez innego dostawcę, a obecnie jeden współtwórca nie może przynależeć do kilku dostawców. Przepraszamy za utrudnienia.
+    contributor_account:
+      validation:
+        min_password_length: Hasło powinno składać się z co najmniej 8 znaków.
+        max_password_length: Hasło może składać się z maksymalnie 255 znaków.
+        must_contain_an_uppercase_letter: Hasło musi zawierać co najmniej jedną wielką literę.
+        must_contain_a_lowercase_letter: Hasło musi zawierać co najmniej jedną małą literę.
+        must_contain_a_digit: Hasło musi zawierać co najmniej jedną cyfrę.

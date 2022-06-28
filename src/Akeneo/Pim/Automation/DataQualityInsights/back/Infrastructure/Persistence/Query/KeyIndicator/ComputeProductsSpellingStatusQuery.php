@@ -35,10 +35,10 @@ final class ComputeProductsSpellingStatusQuery implements ComputeProductsKeyIndi
         return new KeyIndicatorCode(ProductsWithPerfectSpelling::CODE);
     }
 
-    public function compute(ProductEntityIdCollection $productIdCollection): array
+    public function compute(ProductEntityIdCollection $entityIdCollection): array
     {
         $productsSpellingRates = $this->getEvaluationRatesByProductAndCriterionQuery->execute(
-            $productIdCollection,
+            $entityIdCollection,
             new CriterionCode(EvaluateSpelling::CRITERION_CODE)
         );
 

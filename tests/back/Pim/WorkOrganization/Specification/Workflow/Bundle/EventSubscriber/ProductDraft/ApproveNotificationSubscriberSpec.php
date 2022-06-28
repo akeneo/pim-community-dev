@@ -18,6 +18,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class ApproveNotificationSubscriberSpec extends ObjectBehavior
@@ -222,7 +223,7 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         $draft->getAuthor()->willReturn('author');
         $draft->getEntityWithValue()->willReturn($product);
 
-        $product->getId()->willReturn(42);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $product->getLabel(Argument::any())->willReturn('T-Shirt');
 
         $identifier->getData()->willReturn('tshirt');
@@ -239,7 +240,7 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
             ]
         )->willReturn($notification);
         $notification->setRoute('pim_enrich_product_edit')->willReturn($notification);
-        $notification->setRouteParams(['id' => 42])->willReturn($notification);
+        $notification->setRouteParams(['uuid' => '54162e35-ff81-48f1-96d5-5febd3f00fd5'])->willReturn($notification);
         $notification->setComment('a comment')->willReturn($notification);
         $notification->setContext(
             [

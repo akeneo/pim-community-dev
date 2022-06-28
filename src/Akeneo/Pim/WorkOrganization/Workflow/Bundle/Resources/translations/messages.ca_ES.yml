@@ -61,6 +61,9 @@ pimee_workflow:
         second: Trieu l'operació
         third: Configurar
         fourth: Confirmar
+  check_removal:
+    product_error: Impossible eliminar un producte publicat
+    entity_error: Les entitats vinculades a productes publicats no es poden eliminar.
 btn:
   publish: Publicar
   unpublish: Desfer la publicació

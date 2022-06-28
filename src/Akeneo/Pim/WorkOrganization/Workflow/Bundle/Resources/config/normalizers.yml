@@ -100,7 +100,7 @@ services:
             - { name: pim_serializer.normalizer, priority: 90 }
 
     pimee_workflow.normalizer.standard.published_product.associations:
-        class: '%pim_catalog.normalizer.standard.product.associations.class%'
+        class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Standard\AssociationsNormalizer
         arguments:
             - '@pimee_workflow.query.get_associated_product_codes_by_published_product'
         tags:

@@ -18,6 +18,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -72,7 +73,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         SaverInterface $productSaver,
         ProductInterface $filteredProduct
     ) {
-        $filteredProduct->getId()->willReturn(42);
+        $filteredProduct->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d', '2020-01-01'));
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
             ->willReturn(true);
         $authorizationChecker->isGranted(Attributes::EDIT, $filteredProduct)
@@ -89,7 +90,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         SaverInterface $productDraftSaver,
         ProductInterface $filteredProduct
     ) {
-        $filteredProduct->getId()->willReturn(42);
+        $filteredProduct->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d', '2020-01-01'));
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
             ->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $filteredProduct)
@@ -105,7 +106,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         SaverInterface $productSaver,
         ProductInterface $filteredProduct
     ) {
-        $filteredProduct->getId()->willReturn(null);
+        $filteredProduct->getCreated()->willReturn(null);
         $productSaver->save($filteredProduct, [])->shouldBeCalled();
 
         $this->save($filteredProduct);
@@ -127,12 +128,14 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         UserInterface $user,
         DraftSource $draftSource
     ) {
+        $productUuid = Uuid::fromString('75cfd06e-9c03-44cb-93d3-b2e93d8f82b3');
         $this->prepareDraftSource($token, $user, $draftSource, $draftSourceFactory);
 
-        $productRepository->find(42)->willReturn($fullProduct);
+        $productRepository->find($productUuid)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
 
-        $filteredProduct->getId()->willReturn(42);
+        $filteredProduct->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d', '2020-01-01'));
+        $filteredProduct->getUuid()->willReturn($productUuid);
         $filteredProduct->getIdentifier()->willReturn('sku');
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
             ->willReturn(false);
@@ -167,12 +170,14 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         DraftSource $draftSource,
         UserInterface $user
     ) {
+        $productUuid = Uuid::fromString('75cfd06e-9c03-44cb-93d3-b2e93d8f82b3');
         $this->prepareDraftSource($token, $user, $draftSource, $draftSourceFactory);
 
-        $productRepository->find(42)->willReturn($fullProduct);
+        $productRepository->find($productUuid)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
 
-        $filteredProduct->getId()->willReturn(42);
+        $filteredProduct->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d', '2020-01-01'));
+        $filteredProduct->getUuid()->willReturn($productUuid);
         $filteredProduct->getIdentifier()->willReturn('sku');
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
             ->willReturn(false);
@@ -206,12 +211,14 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         UserInterface $user,
         DraftSource $draftSource
     ) {
+        $productUuid = Uuid::fromString('75cfd06e-9c03-44cb-93d3-b2e93d8f82b3');
         $this->prepareDraftSource($token, $user, $draftSource, $draftSourceFactory);
 
-        $productRepository->find(42)->willReturn($fullProduct);
+        $productRepository->find($productUuid)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
 
-        $filteredProduct->getId()->willReturn(42);
+        $filteredProduct->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d', '2020-01-01'));
+        $filteredProduct->getUuid()->willReturn($productUuid);
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
             ->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $filteredProduct)
@@ -244,12 +251,14 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         UserInterface $user,
         DraftSource $draftSource
     ) {
+        $productUuid = Uuid::fromString('75cfd06e-9c03-44cb-93d3-b2e93d8f82b3');
         $this->prepareDraftSource($token, $user, $draftSource, $draftSourceFactory);
 
-        $productRepository->find(42)->willReturn($fullProduct);
+        $productRepository->find($productUuid)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
 
-        $filteredProduct->getId()->willReturn(42);
+        $filteredProduct->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d', '2020-01-01'));
+        $filteredProduct->getUuid()->willReturn($productUuid);
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
             ->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $filteredProduct)
@@ -284,12 +293,16 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     ) {
         $this->prepareDraftSource($token, $user, $draftSource, $draftSourceFactory);
 
-        $filteredOwnedProduct->getId()->willReturn(42);
-        $productRepository->find(42)->shouldNotBeCalled();
+        $filteredOwnedProduct->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d', '2020-01-01'));
+        $productUuid = Uuid::fromString('75cfd06e-9c03-44cb-93d3-b2e93d8f82b3');
+        $filteredOwnedProduct->getUuid()->willReturn($productUuid);
+        $productRepository->find($productUuid)->shouldNotBeCalled();
         $mergeDataOnProduct->merge($filteredOwnedProduct, Argument::any())->shouldNotBeCalled();
 
-        $filteredNotOwnedProduct->getId()->willReturn(43);
-        $productRepository->find(43)->willReturn($fullNotOwnedProduct);
+        $filteredNotOwnedProduct->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d', '2020-01-01'));
+        $productUuid2 = Uuid::fromString('df31ba3f-508d-424c-8bc4-446c6e2966e5');
+        $filteredNotOwnedProduct->getUuid()->willReturn($productUuid2);
+        $productRepository->find($productUuid2)->willReturn($fullNotOwnedProduct);
         $mergeDataOnProduct->merge($filteredNotOwnedProduct, $fullNotOwnedProduct)->willReturn($fullNotOwnedProduct);
 
         $authorizationChecker->isGranted(Attributes::OWN, $filteredOwnedProduct)
@@ -297,7 +310,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::EDIT, $filteredOwnedProduct)
             ->willReturn(true);
 
-        $filteredNotOwnedProduct->getId()->willReturn(43);
+        $filteredNotOwnedProduct->getUuid()->willReturn($productUuid2);
         $authorizationChecker->isGranted(Attributes::OWN, $filteredNotOwnedProduct)
             ->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $filteredNotOwnedProduct)

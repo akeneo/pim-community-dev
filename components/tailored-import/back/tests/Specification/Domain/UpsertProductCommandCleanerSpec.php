@@ -15,13 +15,14 @@ namespace Specification\Akeneo\Platform\TailoredImport\Domain;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use PhpSpec\ObjectBehavior;
 
 class UpsertProductCommandCleanerSpec extends ObjectBehavior
 {
-    public function it_cleans_value_user_intents()
+    public function it_cleans_value_user_intents(): void
     {
         $invalidUpsertProductCommand = new UpsertProductCommand(
             userId: 1,
@@ -43,7 +44,7 @@ class UpsertProductCommandCleanerSpec extends ObjectBehavior
         $this::removeInvalidUserIntents(['valueUserIntents[1]'], $invalidUpsertProductCommand)->shouldBeLike($expectedUpsertProductCommand);
     }
 
-    public function it_cleans_category_user_intent()
+    public function it_cleans_category_user_intent(): void
     {
         $invalidUpsertProductCommand = new UpsertProductCommand(
             userId: 1,
@@ -59,7 +60,7 @@ class UpsertProductCommandCleanerSpec extends ObjectBehavior
         $this::removeInvalidUserIntents(['categoryUserIntent'], $invalidUpsertProductCommand)->shouldBeLike($expectedUpsertProductCommand);
     }
 
-    public function it_cleans_family_user_intent()
+    public function it_cleans_family_user_intent(): void
     {
         $invalidUpsertProductCommand = new UpsertProductCommand(
             userId: 1,
@@ -73,5 +74,21 @@ class UpsertProductCommandCleanerSpec extends ObjectBehavior
         );
 
         $this::removeInvalidUserIntents(['familyUserIntent'], $invalidUpsertProductCommand)->shouldBeLike($expectedUpsertProductCommand);
+    }
+
+    public function it_cleans_enabled_user_intent(): void
+    {
+        $invalidUpsertProductCommand = new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'identifier',
+            enabledUserIntent: new SetEnabled(true),
+        );
+
+        $expectedUpsertProductCommand = new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'identifier',
+        );
+
+        $this::removeInvalidUserIntents(['enabledUserIntent'], $invalidUpsertProductCommand)->shouldBeLike($expectedUpsertProductCommand);
     }
 }

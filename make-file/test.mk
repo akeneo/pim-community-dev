@@ -135,6 +135,7 @@ integration-back: var/tests/phpunit pim-integration-back #Doc: launch all integr
 	PIM_CONTEXT=job-automation $(MAKE) integration-back
 	PIM_CONTEXT=enrichment-product $(MAKE) enrichment-product-integration-back
 	PIM_CONTEXT=channel $(MAKE) channel-integration-back
+	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-integration-back
 
 .PHONY: pim-integration-back
 pim-integration-back: #Doc: launch all PHPUnit integration tests

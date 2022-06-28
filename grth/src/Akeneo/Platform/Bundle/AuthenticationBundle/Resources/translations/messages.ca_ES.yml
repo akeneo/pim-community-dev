@@ -1,0 +1,3 @@
+akeneo_authentication:
+  sso:
+    unknown_user_error: No teniu permís per accedir a aquesta aplicació. Poseu-vos en contacte amb el vostre administrador.

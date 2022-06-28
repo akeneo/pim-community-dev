@@ -65,15 +65,15 @@ services:
             - '@database_connection'
             - '%akeneo.shared_catalog.connector.code%'
 
-    Akeneo\SharedCatalog\Query\GetProductIdFromProductIdentifierQueryInterface:
-        class: Akeneo\SharedCatalog\Query\GetProductIdFromProductIdentifierQuery
+    Akeneo\SharedCatalog\Query\GetProductUuidFromProductIdentifierQueryInterface:
+        class: Akeneo\SharedCatalog\Query\GetProductUuidFromProductIdentifierQuery
         arguments:
             - '@database_connection'
 
     Akeneo\SharedCatalog\Query\FindProductIdentifiersQueryInterface:
         class: Akeneo\SharedCatalog\Query\FindProductIdentifiersQuery
         arguments:
-            - '@Akeneo\SharedCatalog\Query\GetProductIdFromProductIdentifierQueryInterface'
+            - '@Akeneo\SharedCatalog\Query\GetProductUuidFromProductIdentifierQueryInterface'
             - '@akeneo.shared_catalog.query.product_query_builder_factory'
 
     Akeneo\SharedCatalog\Controller\SharedCatalogListAction:

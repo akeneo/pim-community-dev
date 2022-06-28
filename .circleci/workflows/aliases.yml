@@ -16,7 +16,16 @@ parameters:
   instance:
     default: ""
     type: string
-
+  # parameters for jenkins ge2ee mig
+  trigger_jenkins_ge2ee_mig:
+    default: false
+    type: boolean
+  source_pfid:
+    default: ""
+    type: string
+  ge2ee_script_release:
+    default: ""
+    type: string
 
 
 slack-fail-post-step: &slack-fail-post-step

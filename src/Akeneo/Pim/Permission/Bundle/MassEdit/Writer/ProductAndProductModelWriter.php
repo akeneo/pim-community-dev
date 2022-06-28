@@ -63,13 +63,13 @@ class ProductAndProductModelWriter extends BaseWriter
      */
     protected function hasPermissions(EntityWithFamilyInterface $entityWithValue): bool
     {
-        if (null === $entityWithValue->getId()) {
+        if ($entityWithValue->isNew()) {
             return true;
         }
 
         try {
             $hasRight = $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithValue);
-        } catch (AuthenticationCredentialsNotFoundException $e) {
+        } catch (AuthenticationCredentialsNotFoundException) {
             $hasRight = true;
         }
 

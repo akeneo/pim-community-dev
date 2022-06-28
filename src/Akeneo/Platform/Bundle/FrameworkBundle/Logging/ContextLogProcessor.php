@@ -54,7 +54,11 @@ class ContextLogProcessor
     {
         $this->traceId= (string) Uuid::uuid4();
         $this->cachedContext['cmd_name']= $cmd->getName();
-        $this->cachedContext['akeneo_context']= $this->boundedContextResolver->fromCommand($cmd)?: "Unknown context";
+        if ($this->cachedContext['cmd_name'] === 'messenger:consume') {
+            $this->cachedContext['akeneo_context'] = 'CommonTools';
+        } else {
+            $this->cachedContext['akeneo_context']= $this->boundedContextResolver->fromCommand($cmd)?: "Unknown context";
+        }
     }
 
     public function insertContext(string $key, string $value): void

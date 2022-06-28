@@ -23,7 +23,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\SpellCheckResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsWithOutdatedAttributeSpellcheckQuery;
@@ -152,12 +153,12 @@ final class GetProductModelIdsWithOutdatedAttributeSpellcheckQueryIntegration ex
     {
         $spellingEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateAttributeSpelling::CRITERION_CODE),
-            new ProductId($productModelId),
+            new ProductModelId($productModelId),
             CriterionEvaluationStatus::pending()
         );
         $otherEvaluation = new Write\CriterionEvaluation(
             new CriterionCode('spelling'),
-            new ProductId($productModelId),
+            new ProductModelId($productModelId),
             CriterionEvaluationStatus::pending()
         );
 

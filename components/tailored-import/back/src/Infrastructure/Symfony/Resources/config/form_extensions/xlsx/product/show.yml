@@ -51,6 +51,7 @@ extensions:
         config:
             label: pim_import_export.form.job_instance.button.import.launch
             route: pim_enrich_job_instance_rest_import_launch
+            title: akeneo.tailored_import.form.job_instance.launch.title
             identifier:
                 path: code
                 name: code

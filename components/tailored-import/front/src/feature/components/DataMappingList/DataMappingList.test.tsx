@@ -1,5 +1,5 @@
 import React from 'react';
-import {screen, act} from '@testing-library/react';
+import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {ValidationError} from '@akeneo-pim-community/shared';
 import {Column, DataMapping} from 'feature';
@@ -119,9 +119,7 @@ test('it displays the data mappings', async () => {
   );
 
   expect(screen.getByText('pim_common.categories')).toBeInTheDocument();
-  expect(
-    screen.getByText('akeneo.tailored_import.data_mapping.sources.title: catego 1 (B) catego 2 (C)')
-  ).toBeInTheDocument();
+  expect(screen.getByText('catego 1 (B), catego 2 (C)')).toBeInTheDocument();
 });
 
 test('it calls handler when row is selected', async () => {
@@ -177,28 +175,4 @@ test('it displays validation errors', async () => {
   expect(screen.getByText('global_error.key.name')).toBeInTheDocument();
   expect(screen.queryByText('error.key.name')).not.toBeInTheDocument();
   expect(screen.getByRole('alert')).toBeInTheDocument();
-});
-
-test('it can search data mappings on column labels', async () => {
-  jest.useFakeTimers();
-
-  await renderWithProviders(
-    <DataMappingList
-      selectedDataMappingUuid={null}
-      onDataMappingSelected={jest.fn()}
-      dataMappings={dataMappings}
-      columns={columns}
-      validationErrors={[]}
-      onDataMappingAdded={jest.fn()}
-      onDataMappingRemoved={jest.fn()}
-    />
-  );
-
-  act(() => {
-    userEvent.paste(screen.getByPlaceholderText('pim_common.search'), 'cate');
-    jest.runAllTimers();
-  });
-
-  expect(screen.getByText('pim_common.categories')).toBeInTheDocument();
-  expect(screen.queryByText('pim_common.parent')).not.toBeInTheDocument();
 });

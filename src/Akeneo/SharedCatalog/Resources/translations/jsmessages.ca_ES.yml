@@ -1,0 +1,35 @@
+batch_jobs.akeneo_shared_catalog.label: Envia als catàlegs compartits
+pim_common:
+  recipients: Destinataris
+  branding: Marca
+  result_count: "{0}0 resultats|{1}1 resultat|]1, Inf[{{ itemsCount }} resultats"
+  items_selected: "{0}0 elements seleccionats|{1}1 element seleccionat|]1, Inf[{{ itemsCount }} elements seleccionats"
+shared_catalog:
+  recipients:
+    add: Afegir email de l'usuari aquí
+    placeholder: betty@akeneo.com
+    email: Adreça email
+    invalid_email: L'adreça de correu electrònic no és vàlida.
+    duplicate_email: Alguns destinataris ja són a la llista, s'ignoraran.
+    helper: "Afegiu destinataris per donar-los accés al vostre nou catàleg compartit. Podeu omplir una llista d'adreces amb separadors: espai, coma, punt i coma i salt de línia."
+    no_result: Ho sentim, no hi ha cap correu electrònic que coincideixi amb la teva cerca
+    no_data: Encara no s'ha declarat cap adreça de correu electrònic
+    max_limit_reached: Heu arribat al límit de 500 destinataris.
+  branding:
+    upload_placeholder: "Arrossegueu i deixeu anar els vostres fitxers o feu clic aquí"
+    uploading: Pujant...
+    validation:
+      invalid_extension: "L'extensió de fitxer no és vàlida, les extensions permeses són: {{ allowed_extensions }}"
+      filesize_too_large: El fitxer que heu proporcionat és massa gran, la mida màxima és de 2 MB
+      invalid_file: El fitxer no és vàlid
+      invalid_color: Aquest valor no és un color CSS vàlid.
+    color:
+      label: Defineix el teu color de marca
+    logo:
+      label: Pengeu el vostre logotip
+      file_information_helper: "Mida màxima: 2 MB; Format de fitxer: PNG o JPG"
+    cover:
+      label: Puja la teva portada
+      file_information_helper: Aquesta imatge s'utilitzarà a la pàgina d'inici de sessió del catàleg i a la portada de les exportacions PDF. Tingueu en compte que si voleu que la portada aparegui correctament després de la impressió, les seves dimensions haurien de ser superiors a 1600px x 2227px.
+  button:
+    save: Desar i compartir

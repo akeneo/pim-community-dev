@@ -1,6 +1,5 @@
 import {channels} from 'feature/tests';
 import {Attribute} from './Attribute';
-import {Column} from './Column';
 import {
   DataMapping,
   updateDataMapping,
@@ -8,7 +7,6 @@ import {
   createDefaultDataMapping,
   addSourceToDataMapping,
   createAttributeDataMapping,
-  filterOnColumnLabels,
 } from './DataMapping';
 
 const attribute: Attribute = {
@@ -227,32 +225,4 @@ test('it updates a data mapping', () => {
   expect(updateDataMapping([], updatedDataMapping)).toEqual([]);
   expect(updateDataMapping(dataMappings, updatedDataMapping)).toEqual([dataMappings[0], updatedDataMapping]);
   expect(updateDataMapping(dataMappings, nonExistentDataMapping)).toEqual(dataMappings);
-});
-
-test('it can filter data mappings based on column labels', () => {
-  const columns: Column[] = [
-    {uuid: 'uuid-IDEnTiFier', index: 0, label: 'IDEnTiFier'},
-    {uuid: 'uuid-Name', index: 1, label: 'Name'},
-    {uuid: 'uuid-idendescrip tion', index: 2, label: 'idendescrip tion'},
-    {uuid: 'uuid-catego1', index: 2, label: 'catego1'},
-    {uuid: 'uuid-catego2', index: 2, label: 'catego2 tion'},
-  ];
-
-  const identifierDataMapping = {...createAttributeDataMapping(attribute, []), sources: ['uuid-IDEnTiFier']};
-  const nameDataMapping = {...createAttributeDataMapping(attribute, []), sources: ['uuid-Name']};
-  const descriptionDataMapping = {...createAttributeDataMapping(attribute, []), sources: ['uuid-idendescrip tion']};
-  const categoriesDataMapping = {...createPropertyDataMapping('categories'), sources: ['uuid-catego1', 'uuid-catego2']};
-
-  const dataMappings: DataMapping[] = [
-    identifierDataMapping,
-    nameDataMapping,
-    descriptionDataMapping,
-    categoriesDataMapping,
-  ];
-
-  expect(filterOnColumnLabels(dataMappings, columns, '')).toEqual(dataMappings);
-  expect(filterOnColumnLabels(dataMappings, columns, 'iden')).toEqual([identifierDataMapping, descriptionDataMapping]);
-  expect(filterOnColumnLabels(dataMappings, columns, 'cat')).toEqual([categoriesDataMapping]);
-  expect(filterOnColumnLabels(dataMappings, columns, ' TION')).toEqual([descriptionDataMapping, categoriesDataMapping]);
-  expect(filterOnColumnLabels(dataMappings, columns, 'not found')).toEqual([]);
 });

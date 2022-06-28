@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AbstractFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -71,7 +72,19 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
      */
     public function setFieldData($entityWithCategories, $field, $data, array $options = [])
     {
-        $areCategoriesVisible = $this->areAllCategoriesVisibleOnEntity($entityWithCategories);
+        if (method_exists($entityWithCategories, 'getUuid') && !$entityWithCategories instanceof PublishedProductInterface) {
+            $entityWithoutPermissionInDb = $this->entityManager->getRepository(ClassUtils::getClass($entityWithCategories))
+                ->find($entityWithCategories->getUuid());
+        } else {
+            if (null === $entityWithCategories->getId()) {
+                $entityWithoutPermissionInDb = null;
+            } else {
+                $entityWithoutPermissionInDb = $this->entityManager->getRepository(ClassUtils::getClass($entityWithCategories))
+                    ->find($entityWithCategories->getId());
+            }
+        }
+
+        $areCategoriesVisible = $this->areAllCategoriesVisibleOnEntity($entityWithCategories, $entityWithoutPermissionInDb);
         $wasOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithCategories);
         if ($entityWithCategories instanceof ProductModelInterface &&
             $this->authorizationChecker->isGranted(Attributes::EDIT, $entityWithCategories)
@@ -114,7 +127,7 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
             $isOwner = true;
         }
 
-        if ($wasOwner && !$isOwner && null !== $entityWithCategories->getId()) {
+        if ($wasOwner && !$isOwner && null !== $entityWithoutPermissionInDb) {
             throw new InvalidArgumentException(
                 'You should at least keep your product in one category on which you have an own permission.'
             );
@@ -131,20 +144,14 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
      *
      * @return bool
      */
-    protected function areAllCategoriesVisibleOnEntity(CategoryAwareInterface $entityWithCategories)
+    protected function areAllCategoriesVisibleOnEntity(CategoryAwareInterface $entityWithCategories, $entityWithoutPermissionInDb)
     {
         Assert::implementsInterface($entityWithCategories, EntityWithValuesInterface::class);
-        if (null === $entityWithCategories->getId()) {
+        if (null === $entityWithoutPermissionInDb) {
             return true;
         }
 
-        $entityWithoutPermission = $this->entityManager->getRepository(ClassUtils::getClass($entityWithCategories))
-            ->find($entityWithCategories->getId());
-        if (null === $entityWithoutPermission) {
-            return true;
-        }
-
-        $categoryCodes = $entityWithoutPermission->getCategoryCodes();
+        $categoryCodes = $entityWithoutPermissionInDb->getCategoryCodes();
         if (count($categoryCodes) === 0) {
             return true;
         }

@@ -11,8 +11,11 @@ pim_asset_manager:
         should_not_be_linked: 'No pots eliminar aquesta família perquè els actius de la família d''atributs estan relacionades amb aquesta família'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Com a mínim un grup d''usuaris té que tenir permisos d''edició sobre a aquesta família'
+      product_attributes:
+        should_not_be_linked: 'No podeu suprimir aquesta família perquè hi ha enllaçada una col·lecció d''actius.'
       should_exist: 'La família de recurs "%asset_family_code%" no s''ha trobat.'
       rule_template:
+        limit_reached: 'Heu assolit el límit de regles d''enllaç de producte %limit% per a la família de recursos "%asset_family_identifier%".'
         product_selection_cannot_be_empty: 'Té que especificar com a mínim una selecció de productes a la regla d''enllaç de productes'
         product_assignment_cannot_be_empty: 'Té que especificar com a mínim una assignació de productes a la regla d''enllaç de productes'
         extrapolated_attribute_should_exist: 'L''atribut "%attribute_code%" no existeix per a aquesta família de recursos fixes'
@@ -35,8 +38,13 @@ pim_asset_manager:
         same_operation_twice: 'L''operació "%operation_type%" no és pot definir dos cops en una transformació'
         attribute_reference_should_exist: 'L''atribut "%attribute_code%" no existeix per a aquesta família de recursos fixes'
         unknown_extra_field: 'La propietat {{ field }} no s''esperava.'
+      naming_convention:
+        not_main_media_attribute_code: 'La propietat ha de coincidir amb el codi de l''atribut definit com a mitjà principal'
   asset:
     validation:
+      mass_edit:
+        updater_cannot_be_empty: 'Els atributs utilitzats en transformacions o en mode de només lectura no es poden seleccionar.'
+        updater_must_be_unique: 'Assegureu-vos que aquest atribut i el seu canal i configuració regional, si escau, no estiguin ja seleccionats.'
       code:
         pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
         should_be_unique: 'Ja existeix un actiu amb aquest codi "%code%"'
@@ -70,6 +78,9 @@ pim_asset_manager:
         should_be_integer: 'Aquest camp ha de ser un enter'
         integer_too_long: 'Aquest enter és massa gran'
         should_be_numeric: 'Aquest camp té que ser un valor numèric amb els separador decimal correcte'
+      media_link:
+        protocol_not_allowed: 'Aquest camp hauria de començar amb un protocol vàlid. Els protocols permesos són: %allowed_protocols%.'
+        domain_not_allowed: 'Aquest URL no està permès.'
   attribute:
     validation:
       options:
@@ -107,6 +118,7 @@ pim_asset_manager:
         asset_family_should_exist: 'La família de recurs "%asset_family_code%" no s''ha trobat.'
       prefix:
         should_not_be_empty: 'El nom no pot ser una cadena buida.'
+        protocol_not_allowed: 'Aquest camp hauria de començar amb un protocol vàlid. Els protocols permesos són: %allowed_protocols%.'
       suffix:
         should_not_be_empty: 'El sufix no pot ser una cadena buida.'
       media_type:

@@ -3,6 +3,7 @@
 # Force bash compatibility (Instead of user default shell)
 SHELL := /bin/bash
 
+USE_EDITION_FLAG ?= false
 TYPE ?= srnt
 INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?=  $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG_SHORTED)
@@ -11,6 +12,24 @@ TYPE_LONG ?= serenity
 ENV_NAME ?= sandbox
 PRODUCT_REFERENCE_TYPE ?= $(TYPE_LONG)_instance
 PRODUCT_REFERENCE_CODE ?= $(TYPE_LONG)_$(ENV_NAME)
+PRODUCT_REFERENCE_SIZE ?= S
+PRODUCT_REFERENCE_SIZE_INDEX :=
+ifeq ($(PRODUCT_REFERENCE_SIZE),S)
+	PRODUCT_REFERENCE_SIZE_INDEX := 0
+endif
+ifeq ($(PRODUCT_REFERENCE_SIZE),M)
+	PRODUCT_REFERENCE_SIZE_INDEX := 1
+endif
+ifeq ($(PRODUCT_REFERENCE_SIZE),L)
+	PRODUCT_REFERENCE_SIZE_INDEX := 2
+endif
+ifeq ($(PRODUCT_REFERENCE_SIZE),XL)
+	PRODUCT_REFERENCE_SIZE_INDEX := 3
+endif
+ifeq ($(PRODUCT_REFERENCE_SIZE_INDEX),)
+	XL_PRODUCT_REFERENCE_SIZE_INDEX := $(shell echo $$(echo $(PRODUCT_REFERENCE_SIZE)) | sed 's/XL//' )
+	PRODUCT_REFERENCE_SIZE_INDEX := $(shell echo $$(( $(XL_PRODUCT_REFERENCE_SIZE_INDEX) + 2)) )
+endif
 BUCKET ?= serenity-edition-dev
 IMAGE_TAG ?= latest
 
@@ -20,7 +39,13 @@ GOOGLE_CLUSTER_ZONE ?= europe-west1-b
 GOOGLE_CLUSTER_NAME ?= bh-cluster-sandbox
 GOOGLE_MANAGED_ZONE_DNS ?= bh.akeneo.ch
 GOOGLE_MANAGED_ZONE_NAME ?= bh-akeneo-ch
+STORAGE_LOCATION ?= EU
 CLUSTER_DNS_NAME ?= $(GOOGLE_CLUSTER_ZONE)-akecld-blackhawk-$(ENV_NAME).bh.akeneo.ch.
+
+FIRESTORE_COLLECTION ?= tenant_contexts
+
+FQDN ?= $(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)
+PORTAL_PROJECT_CODE ?= NOT_ON_PAPO_$(PFID)
 
 DEPLOYMENT_DIR ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 PIM_SRC_PATH ?= $(realpath $(DEPLOYMENT_DIR)/..)
@@ -31,20 +56,62 @@ MAIN_TF_TEMPLATE ?= $(PRODUCT_REFERENCE_TYPE)
 MYSQL_DISK_SIZE ?= 10
 MYSQL_DISK_DESCRIPTION ?=
 MYSQL_SOURCE_SNAPSHOT ?=
+MYSQL_DSIK_STORAGE_CLASS ?= ssd-retain-csi
+MYSQL_DSIK_NAME ?= projects/$(GOOGLE_PROJECT_ID)/zones/$(GOOGLE_CLUSTER_ZONE)/disks/$(PFID)-mysql
+MYSQL_USER_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 22)')
+MYSQL_ROOT_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 22)')
+MONITORING_AUTHENTICATION_TOKEN := $(shell bash -c 'echo $$(pwgen -sB 32)')
 DEPLOYMENT_HASH ?=
 BUCKET_PIM_SRC_DIR ?= gcs::https://www.googleapis.com/storage/v1/akecld-blackhawk-sandbox-terraform-modules/$(BUCKET)/$(DEPLOYMENT_HASH)
 
-TF_INPUT_FALSE ?= -input=false
-TF_AUTO_APPROVE ?= -auto-approve
+MAILGUN_DOMAIN ?= mg.cloud.akeneo.com
+MAILGUN_LOGIN ?= $(PFID)-$(GOOGLE_PROJECT_ID)@$(MAILGUN_DOMAIN)
+MAILGUN_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 16)')
+MAILGUN_HOST ?= smtp.mailgun.org
+MAILGUN_PORT ?= 2525
 
-
-# ?
-UPGRADE_STEP_2 ?= false
-#Vars for exec_in
-executor ?= kubectl
-migrate ?= no
-# ?
-
+HEAP_SIZE_UNIT ?= m
+MEMORY_UNIT ?= Mi
+CPU_UNIT ?= m
+INNO_MEMORY_UNIT ?= M
+DEFAULT_ES_CLIENT_HEAP_SIZE := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'elasticsearch.client.heapSize') | sed 's/$(HEAP_SIZE_UNIT)//' )
+ES_CLIENT_HEAP_SIZE := $(shell echo $$(( $(DEFAULT_ES_CLIENT_HEAP_SIZE) + $(DEFAULT_ES_CLIENT_HEAP_SIZE) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(HEAP_SIZE_UNIT) )
+DEFAULT_ES_CLIENT_LIMITS_MEMORY := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'elasticsearch.client.resources.limits.memory') | sed 's/$(MEMORY_UNIT)//' )
+ES_CLIENT_LIMITS_MEMORY := $(shell echo $$(( $(DEFAULT_ES_CLIENT_LIMITS_MEMORY) + $(DEFAULT_ES_CLIENT_LIMITS_MEMORY) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(MEMORY_UNIT) )
+DEFAULT_ES_CLIENT_REQUESTS_CPU := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'elasticsearch.client.resources.requests.cpu') | sed 's/$(CPU_UNIT)//' )
+ES_CLIENT_REQUESTS_CPU := $(shell echo $$(( $(DEFAULT_ES_CLIENT_REQUESTS_CPU) + $(DEFAULT_ES_CLIENT_REQUESTS_CPU) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(CPU_UNIT) )
+DEFAULT_ES_CLIENT_REQUESTS_MEMORY := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'elasticsearch.client.resources.requests.memory') | sed 's/$(MEMORY_UNIT)//' )
+ES_CLIENT_REQUESTS_MEMORY := $(shell echo $$(( $(DEFAULT_ES_CLIENT_REQUESTS_MEMORY) + $(DEFAULT_ES_CLIENT_REQUESTS_MEMORY) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(MEMORY_UNIT) )
+DEFAULT_ES_MASTER_HEAP_SIZE := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'elasticsearch.master.heapSize') | sed 's/$(HEAP_SIZE_UNIT)//' )
+ES_MASTER_HEAP_SIZE := $(shell echo $$(( $(DEFAULT_ES_MASTER_HEAP_SIZE) + $(DEFAULT_ES_MASTER_HEAP_SIZE) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(HEAP_SIZE_UNIT) )
+DEFAULT_ES_MASTER_LIMITS_MEMORY := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'elasticsearch.master.resources.limits.memory') | sed 's/$(MEMORY_UNIT)//' )
+ES_MASTER_LIMITS_MEMORY := $(shell echo $$(( $(DEFAULT_ES_MASTER_LIMITS_MEMORY) + $(DEFAULT_ES_MASTER_LIMITS_MEMORY) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(MEMORY_UNIT) )
+DEFAULT_ES_MASTER_REQUESTS_CPU := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'elasticsearch.master.resources.requests.cpu') | sed 's/$(CPU_UNIT)//' )
+ES_MASTER_REQUESTS_CPU := $(shell echo $$(( $(DEFAULT_ES_MASTER_REQUESTS_CPU) + $(DEFAULT_ES_MASTER_REQUESTS_CPU) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(CPU_UNIT) )
+DEFAULT_ES_MASTER_REQUESTS_MEMORY := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'elasticsearch.master.resources.requests.memory') | sed 's/$(MEMORY_UNIT)//' )
+ES_MASTER_REQUESTS_MEMORY := $(shell echo $$(( $(DEFAULT_ES_MASTER_REQUESTS_MEMORY) + $(DEFAULT_ES_MASTER_REQUESTS_MEMORY) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(MEMORY_UNIT) )
+DEFAULT_ES_DATA_HEAP_SIZE := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'elasticsearch.data.heapSize') | sed 's/$(HEAP_SIZE_UNIT)//' )
+ES_DATA_HEAP_SIZE := $(shell echo $$(( $(DEFAULT_ES_DATA_HEAP_SIZE) + $(DEFAULT_ES_DATA_HEAP_SIZE) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(HEAP_SIZE_UNIT) )
+DEFAULT_ES_DATA_LIMITS_MEMORY := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'elasticsearch.data.resources.limits.memory') | sed 's/$(MEMORY_UNIT)//' )
+ES_DATA_LIMITS_MEMORY := $(shell echo $$(( $(DEFAULT_ES_DATA_LIMITS_MEMORY) + $(DEFAULT_ES_DATA_LIMITS_MEMORY) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(MEMORY_UNIT) )
+DEFAULT_ES_DATA_REQUESTS_CPU := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'elasticsearch.data.resources.requests.cpu') | sed 's/$(CPU_UNIT)//' )
+ES_DATA_REQUESTS_CPU := $(shell echo $$(( $(DEFAULT_ES_DATA_REQUESTS_CPU) + $(DEFAULT_ES_DATA_REQUESTS_CPU) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(CPU_UNIT) )
+DEFAULT_ES_DATA_REQUESTS_MEMORY := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'elasticsearch.data.resources.requests.memory') | sed 's/$(MEMORY_UNIT)//' )
+ES_DATA_REQUESTS_MEMORY := $(shell echo $$(( $(DEFAULT_ES_DATA_REQUESTS_MEMORY) + $(DEFAULT_ES_DATA_REQUESTS_MEMORY) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(MEMORY_UNIT) )
+DEFAULT_MYSQL_INNODB_BUFFER_POOL_SIZE := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'mysql.mysql.innodbBufferPoolSize') | sed 's/$(INNO_MEMORY_UNIT)//' )
+MYSQL_INNODB_BUFFER_POOL_SIZE := $(shell echo $$(( $(DEFAULT_MYSQL_INNODB_BUFFER_POOL_SIZE) + 1024 * $(PRODUCT_REFERENCE_SIZE_INDEX) ))$(INNO_MEMORY_UNIT) )
+DEFAULT_MYSQL_LIMITS_MEMORY := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'mysql.mysql.resources.limits.memory') | sed 's/$(MEMORY_UNIT)//' )
+MYSQL_LIMITS_MEMORY := $(shell echo $$(( $(DEFAULT_MYSQL_LIMITS_MEMORY) + 1024 * $(PRODUCT_REFERENCE_SIZE_INDEX) * 130 / 100 ))$(MEMORY_UNIT) )
+DEFAULT_MYSQL_REQUESTS_CPU := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'mysql.mysql.resources.requests.cpu') | sed 's/$(CPU_UNIT)//' )
+MYSQL_REQUESTS_CPU := $(shell echo $$(( $(DEFAULT_MYSQL_REQUESTS_CPU) + $(DEFAULT_MYSQL_REQUESTS_CPU) * $(PRODUCT_REFERENCE_SIZE_INDEX) * 130 / 100 / 2 ))$(CPU_UNIT) )
+DEFAULT_MYSQL_REQUESTS_MEMORY := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'mysql.mysql.resources.requests.memory') | sed 's/$(MEMORY_UNIT)//' )
+MYSQL_REQUESTS_MEMORY := $(shell echo $$(( $(DEFAULT_MYSQL_REQUESTS_MEMORY) + 1024 * $(PRODUCT_REFERENCE_SIZE_INDEX) * 130 / 100 ))$(MEMORY_UNIT) )
+DEFAULT_MEMCACHED_LIMITS_MEMORY := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'memcached.resources.limits.memory') | sed 's/$(MEMORY_UNIT)//' )
+MEMCACHED_LIMITS_MEMORY := $(shell echo $$(( $(DEFAULT_MEMCACHED_LIMITS_MEMORY) + $(DEFAULT_MEMCACHED_LIMITS_MEMORY) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(MEMORY_UNIT) )
+DEFAULT_MEMCACHED_REQUESTS_CPU := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'memcached.resources.requests.cpu') | sed 's/$(CPU_UNIT)//' )
+MEMCACHED_REQUESTS_CPU := $(shell echo $$(( $(DEFAULT_MEMCACHED_REQUESTS_CPU) + $(DEFAULT_MEMCACHED_REQUESTS_CPU) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(CPU_UNIT) )
+DEFAULT_MEMCACHED_REQUESTS_MEMORY := $(shell echo $$(yq r "$(DEPLOYMENT_DIR)/tenant/values.yaml" 'memcached.resources.requests.memory') | sed 's/$(MEMORY_UNIT)//' )
+MEMCACHED_REQUESTS_MEMORY := $(shell echo $$(( $(DEFAULT_MEMCACHED_REQUESTS_MEMORY) + $(DEFAULT_MEMCACHED_REQUESTS_MEMORY) * $(PRODUCT_REFERENCE_SIZE_INDEX) / 2 ))$(MEMORY_UNIT) )
 
 .DEFAULT_GOAL := help
 
@@ -69,10 +136,11 @@ push-pim-image-prod: #Doc: push docker image to docker hub
 
 ## Deploy tenants
 .PHONY: deploy_tenant
-deploy_tenant: generate_deployment_files deploy_tenant_terraform deploy_tenant_helm deploy_tenant_go
+# deploy_tenant: generate_deployment_files deploy_tenant_terraform deploy_tenant_helm deploy_tenant_go
+deploy_tenant: generate_deployment_files deploy_tenant_helm deploy_tenant_go
 	@echo "#######################################################################################"
 	@echo ""
-	@echo "This environment is available at https://$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS) :)"
+	@echo "This environment is available at https://$(FQDN) :)"
 	@echo ""
 	@echo "K9s direct access command line: k9s -n $(PFID) -c pods"
 	@echo ""
@@ -88,87 +156,83 @@ generate_deployment_files: $(INSTANCE_DIR)
 	@echo " - with instance name prefix : $(INSTANCE_NAME_PREFIX)"
 	@echo " - with image tag : $(IMAGE_TAG)"
 	@echo " - on cluster : $(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)"
-	@echo " - URL : $(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"
+	@echo " - URL : $(FQDN)"
 	@echo "=========================================================="
 	if [ ! -f $(INSTANCE_DIR)/values.yaml ]; then \
 		cp $(DEPLOYMENT_DIR)/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml ;\
 	fi
-
-	cat $(DEPLOYMENT_DIR)/config/$(MAIN_TF_TEMPLATE).tpl.tf.json > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
-
-	CLUSTER_DNS_NAME=$(CLUSTER_DNS_NAME) \
-	GOOGLE_CLUSTER_ZONE=$(GOOGLE_CLUSTER_ZONE) \
-	GOOGLE_CLUSTER_NAME=$(GOOGLE_CLUSTER_NAME) \
-	GOOGLE_MANAGED_ZONE_DNS=$(GOOGLE_MANAGED_ZONE_DNS) \
-	GOOGLE_MANAGED_ZONE_NAME=$(GOOGLE_MANAGED_ZONE_NAME) \
-	GOOGLE_PROJECT_ID=$(GOOGLE_PROJECT_ID) \
+	cat $(DEPLOYMENT_DIR)/config/helm-tenant-values.yaml > $(INSTANCE_DIR)/helm-tenant-values.yaml.tmp
+	USE_EDITION_FLAG=$(USE_EDITION_FLAG) \
 	IMAGE_TAG=$(IMAGE_TAG) \
+	TYPE=$(TYPE) \
 	INSTANCE_NAME=$(INSTANCE_NAME) \
 	PFID=$(PFID) \
-	BUCKET_PIM_SRC_DIR=$(BUCKET_PIM_SRC_DIR) \
-	PIM_SRC_DIR=$(PIM_ROOT_DIR) \
-	TYPE=$(TYPE) \
-	PRODUCT_REFERENCE_TYPE=$(PRODUCT_REFERENCE_TYPE) \
+	FQDN=$(FQDN) \
+	GOOGLE_MANAGED_ZONE_DNS=$(GOOGLE_MANAGED_ZONE_DNS) \
 	PRODUCT_REFERENCE_CODE=$(PRODUCT_REFERENCE_CODE) \
-	MYSQL_DISK_SIZE=$(MYSQL_DISK_SIZE) \
-	MYSQL_DISK_NAME=$(PFID)-mysql \
-	MYSQL_DISK_DESCRIPTION=$(MYSQL_DISK_DESCRIPTION) \
-	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
+	PRODUCT_REFERENCE_TYPE=$(PRODUCT_REFERENCE_TYPE) \
+	PRODUCT_REFERENCE_SIZE=$(PRODUCT_REFERENCE_SIZE) \
+	PORTAL_PROJECT_CODE=$(PORTAL_PROJECT_CODE) \
+	GOOGLE_PROJECT_ID=$(GOOGLE_PROJECT_ID) \
+	GOOGLE_CLUSTER_ZONE=$(GOOGLE_CLUSTER_ZONE) \
+	STORAGE_LOCATION=$(STORAGE_LOCATION) \
+	MONITORING_AUTHENTICATION_TOKEN=$(MONITORING_AUTHENTICATION_TOKEN) \
+	MONITORING_AUTHENTICATION_TOKEN_TEST=$(MONITORING_AUTHENTICATION_TOKEN_TEST) \
+	MAILGUN_LOGIN=$(MAILGUN_LOGIN) \
+	MAILGUN_PASSWORD=$(MAILGUN_PASSWORD) \
+	MAILGUN_HOST=$(MAILGUN_HOST) \
+	MAILGUN_DOMAIN=$(MAILGUN_DOMAIN) \
+	MAILGUN_PORT=$(MAILGUN_PORT) \
 	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
-	FT_CATALOG_API_BASE_URI=${FT_CATALOG_API_BASE_URI} \
-	FT_CATALOG_API_CLIENT_ID=${FT_CATALOG_API_CLIENT_ID} \
-	FT_CATALOG_API_PASSWORD=${FT_CATALOG_API_PASSWORD} \
-	FT_CATALOG_API_SECRET=${FT_CATALOG_API_SECRET} \
-	FT_CATALOG_API_USERNAME=${FT_CATALOG_API_USERNAME} \
-	AKENEO_CONNECT_API_CLIENT_SECRET=${AKENEO_CONNECT_API_CLIENT_SECRET} \
-	AKENEO_CONNECT_API_CLIENT_PASSWORD=${AKENEO_CONNECT_API_CLIENT_PASSWORD} \
-	AKENEO_CONNECT_SAML_ENTITY_ID=${AKENEO_CONNECT_SAML_ENTITY_ID} \
-	AKENEO_CONNECT_SAML_CERTIFICATE=${AKENEO_CONNECT_SAML_CERTIFICATE} \
-	AKENEO_CONNECT_SAML_SP_CLIENT_ID=${AKENEO_CONNECT_SAML_SP_CLIENT_ID} \
-	AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64=${AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64} \
-	AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64=${AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64} \
-	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
-	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
+	MYSQL_USER_PASSWORD=$(MYSQL_USER_PASSWORD) \
+	MYSQL_ROOT_PASSWORD=$(MYSQL_ROOT_PASSWORD) \
+	MYSQL_DISK_SIZE=$(MYSQL_DISK_SIZE) \
+	MYSQL_DSIK_NAME=$(MYSQL_DSIK_NAME) \
+	MYSQL_DSIK_STORAGE_CLASS=$(MYSQL_DSIK_STORAGE_CLASS) \
+	MYSQL_INNODB_BUFFER_POOL_SIZE=$(MYSQL_INNODB_BUFFER_POOL_SIZE) \
+	MYSQL_LIMITS_MEMORY=$(MYSQL_LIMITS_MEMORY) \
+	MYSQL_REQUESTS_CPU=$(MYSQL_REQUESTS_CPU) \
+	MYSQL_REQUESTS_MEMORY=$(MYSQL_REQUESTS_MEMORY) \
+	ES_CLIENT_HEAP_SIZE=$(ES_CLIENT_HEAP_SIZE) \
+	ES_CLIENT_LIMITS_MEMORY=$(ES_CLIENT_LIMITS_MEMORY) \
+	ES_CLIENT_REQUESTS_CPU=$(ES_CLIENT_REQUESTS_CPU) \
+	ES_CLIENT_REQUESTS_MEMORY=$(ES_CLIENT_REQUESTS_MEMORY) \
+	ES_MASTER_HEAP_SIZE=$(ES_MASTER_HEAP_SIZE) \
+	ES_MASTER_LIMITS_MEMORY=$(ES_MASTER_LIMITS_MEMORY) \
+	ES_MASTER_REQUESTS_CPU=$(ES_MASTER_REQUESTS_CPU) \
+	ES_MASTER_REQUESTS_MEMORY=$(ES_MASTER_REQUESTS_MEMORY) \
+	ES_DATA_HEAP_SIZE=$(ES_DATA_HEAP_SIZE) \
+	ES_DATA_LIMITS_MEMORY=$(ES_DATA_LIMITS_MEMORY) \
+	ES_DATA_REQUESTS_CPU=$(ES_DATA_REQUESTS_CPU) \
+	ES_DATA_REQUESTS_MEMORY=$(ES_DATA_REQUESTS_MEMORY) \
+	MEMCACHED_LIMITS_MEMORY=$(MEMCACHED_LIMITS_MEMORY) \
+	MEMCACHED_REQUESTS_CPU=$(MEMCACHED_REQUESTS_CPU) \
+	MEMCACHED_REQUESTS_MEMORY=$(MEMCACHED_REQUESTS_MEMORY) \
+	FIRESTORE_COLLECTION=$(FIRESTORE_COLLECTION) \
+	envsubst < $(INSTANCE_DIR)/helm-tenant-values.yaml.tmp > $(INSTANCE_DIR)/helm-tenant-values.yaml ;\
+	rm -rf $(INSTANCE_DIR)/helm-tenant-values.yaml.tmp
+	cat $(INSTANCE_DIR)/helm-tenant-values.yaml
 
 $(INSTANCE_DIR):
 	mkdir -p $(INSTANCE_DIR)
 
-.PHONY: deploy_tenant_terraform
-deploy_tenant_terraform: $(INSTANCE_DIR)
-ifeq ($(UPGRADE_STEP_2),true)
-	@echo "We are in the second step of update"
-	cd $(INSTANCE_DIR) && STEP='PRE_INIT' INSTANCE_NAME=$(INSTANCE_NAME) bash $(DEPLOYMENT_DIR)/automation/upgrade.sh
-	cd $(INSTANCE_DIR) && terraform plan
-	cd $(INSTANCE_DIR) && STEP='PRE_APPLY' INSTANCE_NAME=$(INSTANCE_NAME) bash $(DEPLOYMENT_DIR)/automation/upgrade.sh
-endif
-	cd $(INSTANCE_DIR) && cat main.tf.json
-	cd $(INSTANCE_DIR) && terraform init $(TF_INPUT_FALSE) -upgrade
-	cd $(INSTANCE_DIR) && terraform plan '-out=upgrades.tfplan' $(TF_INPUT_FALSE) -compact-warnings
-	cd $(INSTANCE_DIR) && terraform show -json upgrades.tfplan > ~/upgrades.tfplan.json
-	cd $(INSTANCE_DIR) && HELM_DEBUG=true terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) upgrades.tfplan
-
 .PHONY: deploy_tenant_helm
 deploy_tenant_helm:
-	yq w -i $(INSTANCE_DIR)/.terraform/modules/pim/deployments-ucs/tenant/Chart.yaml version 0.0.0-$(IMAGE_TAG)
-	yq w -i $(INSTANCE_DIR)/.terraform/modules/pim/deployments-ucs/tenant/Chart.yaml appVersion $(IMAGE_TAG)
+	yq w -i $(DEPLOYMENT_DIR)/tenant/Chart.yaml version 0.0.0-$(IMAGE_TAG)
+	yq w -i $(DEPLOYMENT_DIR)/tenant/Chart.yaml appVersion $(IMAGE_TAG)
 	helm3 repo add akeneo-charts gs://akeneo-charts/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
 	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 dependencies update $(INSTANCE_DIR)/.terraform/modules/pim/deployments-ucs/tenant/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	export KUBECONFIG=$(INSTANCE_DIR)/.kubeconfig
-	helm3 upgrade --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 10m --create-namespace --namespace $(PFID) $(PFID) $(INSTANCE_DIR)/.terraform/modules/pim/deployments-ucs/tenant/ -f $(INSTANCE_DIR)/tf-helm-pim-values.yaml -f $(INSTANCE_DIR)/values.yaml
+	helm3 dependencies update $(DEPLOYMENT_DIR)/tenant/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
+	helm3 upgrade --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 10m --create-namespace --namespace $(PFID) $(PFID) $(DEPLOYMENT_DIR)/tenant/ -f $(INSTANCE_DIR)/helm-tenant-values.yaml -f $(INSTANCE_DIR)/values.yaml
 
 .PHONY: deploy_tenant_go
 deploy_tenant_go:
-	MYSQL_PASSWORD=$(shell yq r "$(INSTANCE_DIR)/tf-helm-pim-values.yaml" 'mysql.mysql.userPassword'); \
-	MAILGUN_PASSWORD=$(shell yq r "$(INSTANCE_DIR)/tf-helm-pim-values.yaml" 'mailer.password'); \
-	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-create.go $(PFID) $(INSTANCE_NAME) $${MYSQL_PASSWORD} $${MAILGUN_PASSWORD} $(DEPLOYMENT_HASH)
+	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-create.go $(PFID) $(INSTANCE_NAME) $(MYSQL_USER_PASSWORD) $(MAILGUN_PASSWORD) $(DEPLOYMENT_HASH)
 
 ## Cleanup tenants
 .PHONY: delete_tenant
 delete_tenant: generate_deployment_files
 	helm3 delete $(PFID) --namespace $(PFID)
-	cd $(INSTANCE_DIR) && terraform init $(TF_INPUT_FALSE) -upgrade
-	cd $(INSTANCE_DIR) && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 	kubectl delete ns $(PFID)
 	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-remove.go $(PFID)
 
@@ -198,8 +262,10 @@ deploy_crossplane:
 	helm3 upgrade --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 20m --create-namespace --namespace crossplane-system crossplane crossplane-stable/crossplane
 	kubectl apply -f k8s/crossplane/templates/gcp-authentication.yaml
 	kubectl apply -f k8s/crossplane/templates/provider-jet-gcp.yaml
+	kubectl apply -f k8s/crossplane/templates/provider-gcp.yaml
 	# Can take some time ...
 	kubectl apply -f k8s/crossplane/templates/provider-config-jet-gcp.yaml
+	kubectl apply -f k8s/crossplane/templates/provider-config-gcp.yaml
 
 .PHONY: datadog
 datadog:

@@ -6,6 +6,7 @@ namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Elastic
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -60,9 +61,9 @@ class StatusFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->esProductClient = $this->get('akeneo_elasticsearch.client.published_product');
         $publishedProductManager = $this->get('pimee_workflow.manager.published_product');
 
-        $foo = $this->createProduct('foo', ['enabled' => true]);
+        $foo = $this->createProduct('foo', [new SetEnabled(true)]);
         $publishedProductManager->publish($foo);
-        $bar = $this->createProduct('bar', ['enabled' => false]);
+        $bar = $this->createProduct('bar', [new SetEnabled(false)]);
         $publishedProductManager->publish($bar);
 
         $this->esProductClient->refreshIndex();

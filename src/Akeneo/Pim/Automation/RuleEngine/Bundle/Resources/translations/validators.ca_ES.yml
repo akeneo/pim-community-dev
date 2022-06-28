@@ -1,0 +1,31 @@
+pimee_catalog_rule:
+  rule_definition:
+    validation:
+      actions:
+        copy:
+          missing_from_field_key: 'Falta la clau "from_field" o està buida'
+          missing_to_field_key: 'Falta la clau "to_field" o està buida'
+        concatenate:
+          invalid_source: 'No podeu concatenar dades del camp "{{ field }}".'
+          missing_source_key: 'Es requereix una única clau entre "camp", "text" o "new_line"; seleccioneu-ne una'
+          only_one_source_key_expected: 'Es requereix una única clau entre "camp", "text" o "new_line"; seleccioneu-ne només una'
+          text_target_does_not_accept_new_line: 'L''atribut target "{{ targetField }}" no accepta una línia nova'
+          unexpected_source_option: 'La clau {{ key }} és irrellevant per a l''atribut {{ attribute }}'
+          missing_from_key: 'Falta la tecla "de" o està buida'
+          missing_to_key: 'Falta la tecla "a" o està buida'
+          source_count: 'Aquest valor ha de contenir almenys 2 elements'
+        calculate:
+          division_by_zero: 'Les divisions per zero no són possibles'
+          missing_operand_key: 'La clau "valor" o "camp" és necessària, però totes dues falten o estan buides'
+          only_one_key_expected: 'La clau "valor" o "camp" és necessària; trieu-ne una'
+          unexpected_key: 'La clau "{{ key }}" és irrellevant'
+          invalid_operator: 'Aquest valor hauria de ser "sumar", "restar", "multiplicar" o "dividir"'
+        remove:
+          invalid_field: 'No podeu eliminar elements del camp "{{ field }}".'
+          include_children_option: 'L''opció "include_children" només es pot aplicar amb el camp "categories".'
+        set:
+          invalid_field: 'No podeu establir dades al camp "{{ field }}".'
+          missing_value_key: 'Falta la clau "valor" o està buida'
+        custom:
+          unkown_type: 'Tipus d''acció desconegut'
+          missing_type_key: 'Falta la clau "tipus" o està buida'

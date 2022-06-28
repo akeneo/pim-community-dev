@@ -24,7 +24,7 @@ use Ramsey\Uuid\Uuid;
 
 class CleanHTMLTagsOperationApplierSpec extends ObjectBehavior
 {
-    private $uuid = '00000000-0000-0000-0000-000000000000';
+    private string $uuid = '00000000-0000-0000-0000-000000000000';
 
     public function it_supports_clean_html_tags_operation(): void
     {
@@ -62,10 +62,7 @@ class CleanHTMLTagsOperationApplierSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_operation_type_is_invalid(): void
     {
-        $operation = new BooleanReplacementOperation([
-            '1' => true,
-            '0' => false,
-        ]);
+        $operation = new BooleanReplacementOperation($this->uuid, ['true' => ['1'], 'false' => ['0']]);
         $value = new StringValue('0');
 
         $this->shouldThrow(new UnexpectedValueException($operation, CleanHTMLTagsOperation::class, CleanHTMLTagsOperationApplier::class))

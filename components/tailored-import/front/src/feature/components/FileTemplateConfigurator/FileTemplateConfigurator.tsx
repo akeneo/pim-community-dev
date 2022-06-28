@@ -22,9 +22,9 @@ type FileTemplateConfiguratorProps = {
 };
 
 const FileTemplateConfiguratorContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 5rem;
 `;
 
 const FileTemplateConfigurator = ({

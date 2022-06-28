@@ -75,7 +75,7 @@ class RemoveProjectIntegration extends TeamworkAssistantTestCase
     private function assertPreProcessingEntriesAreRemoved()
     {
         $selectPreProcessing = <<<SQL
-SELECT count(`completeness`.`product_id`)
+SELECT count(`completeness`.`product_uuid`)
 FROM `pimee_teamwork_assistant_completeness_per_attribute_group` AS `completeness`;
 SQL;
 
@@ -90,15 +90,15 @@ SQL;
         );
 
         $selectProductsPreProcessing = <<<SQL
-SELECT DISTINCT(`completeness`.`product_id`)
+SELECT DISTINCT(BIN_TO_UUID(completeness.product_uuid)) AS product_uuid
 FROM `pimee_teamwork_assistant_completeness_per_attribute_group` AS `completeness`;
 SQL;
-        $productsIdPreProcessing = $this->getConnection()->fetchAll($selectProductsPreProcessing);
-        $clothingProductsId = $this->getFormattedClothingProductIds();
+        $productsUuidPreProcessing = $this->getConnection()->fetchAll($selectProductsPreProcessing);
+        $clothingProductsUuid = $this->getFormattedClothingProductUuids();
 
-        $this->assertCount(count($productsIdPreProcessing), $clothingProductsId);
-        foreach ($productsIdPreProcessing as $productId) {
-            $this->assertTrue(in_array($productId, $clothingProductsId));
+        $this->assertCount(count($productsUuidPreProcessing), $clothingProductsUuid);
+        foreach ($productsUuidPreProcessing as $productUuid) {
+            $this->assertTrue(in_array($productUuid, $clothingProductsUuid, true));
         }
     }
 
@@ -110,7 +110,7 @@ SQL;
     private function assertAssociatedProductsAreRemoved($projectId)
     {
         $selectProducts = <<<SQL
-SELECT count(`project_product`.`product_id`) AS `count`
+SELECT count(`project_product`.`product_uuid`) AS `count`
 FROM `pimee_teamwork_assistant_project_product` AS `project_product`
 WHERE `project_product`.`project_id` = :project_id;
 SQL;
@@ -131,7 +131,7 @@ SQL;
     /**
      * @return array
      */
-    private function getFormattedClothingProductIds()
+    private function getFormattedClothingProductUuids()
     {
         $pqbFactory = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose');
         $pqb = $pqbFactory->create([
@@ -144,11 +144,11 @@ SQL;
                 ]
             ]
         ]);
-        $productsId = [];
+        $productsUuid = [];
         foreach ($pqb->execute() as $product) {
-            $productsId[] = ['product_id' => $product->getId()];
+            $productsUuid[] = ['product_uuid' => $product->getUuid()->toString()];
         }
 
-        return $productsId;
+        return $productsUuid;
     }
 }

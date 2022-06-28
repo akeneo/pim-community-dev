@@ -17,6 +17,8 @@ use Webmozart\Assert\Assert;
 
 class MeasurementValue implements ValueInterface
 {
+    private const TYPE = 'measurement';
+
     public function __construct(
         private string $value,
         private string $unit,
@@ -33,5 +35,14 @@ class MeasurementValue implements ValueInterface
     public function getUnit(): string
     {
         return $this->unit;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'type' => self::TYPE,
+            'value' => $this->value,
+            'unit' => $this->unit,
+        ];
     }
 }

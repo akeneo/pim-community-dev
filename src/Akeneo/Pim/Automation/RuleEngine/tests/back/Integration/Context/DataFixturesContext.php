@@ -33,6 +33,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -92,7 +93,7 @@ final class DataFixturesContext implements Context
         $this->getContainer()->get('doctrine')->getConnection()->update(
             'pim_catalog_product',
             ['created' => $createdAt],
-            ['id' => $product->getId()]
+            ['uuid' => $product->getUuid()->getBytes()]
         );
 
         $this->container->get('doctrine.orm.entity_manager')->refresh($product);

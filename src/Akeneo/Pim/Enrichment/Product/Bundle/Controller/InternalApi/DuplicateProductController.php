@@ -58,7 +58,7 @@ class DuplicateProductController
         $this->normalizer = $normalizer;
     }
 
-    public function duplicateProductAction(Request $request, string $id)
+    public function duplicateProductAction(Request $request, string $uuid)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -71,9 +71,9 @@ class DuplicateProductController
         }
 
         /** @var ProductInterface */
-        $product = $this->productRepository->find($id);
+        $product = $this->productRepository->find($uuid);
         if (null === $product) {
-            throw new NotFoundHttpException(sprintf('Product with id %s could not be found.', $id));
+            throw new NotFoundHttpException(sprintf('Product with uuid %s could not be found.', $uuid));
         }
 
         if (null === $this->userContext->getUser()) {

@@ -1,0 +1,5 @@
+services:
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Mailer\SendSwiftmailerEmail:
+        arguments:
+            - '@mailer'
+            - '@monolog.logger.onboarder_serenity'

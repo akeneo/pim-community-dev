@@ -1,0 +1,18 @@
+batch_jobs.akeneo_shared_catalog.label: Lähetä jaetuille luetteloille
+shared_catalog:
+  recipients:
+    duplicate_email: Jotkut vastaanottajat ovat jo luettelossa, ne jätetään huomiotta.
+  branding:
+    upload_placeholder: "Vedä ja pudota tiedostot tai klikkaa tästä"
+    uploading: Ladataan...
+    validation:
+      invalid_file: Tiedosto on virheellinen
+      invalid_color: Tämä arvo ei ole kelvollinen CSS-väri.
+    color:
+      label: Määrittele brändin väri
+    logo:
+      label: Lataa logo
+      file_information_helper: "Suurin koko: 2MB; Tiedostomuoto: PNG tai JPG"
+    cover:
+      label: Lataa kansi
+      file_information_helper: Tätä kuvaa käytetään luettelon kirjautumissivulla ja PDF-vientien kannessa. Muista, että jos haluat kansilehden näkyvän oikein tulostuksen jälkeen, sen mittojen tulee olla yli 1600px x 2227px.

@@ -19,7 +19,7 @@ extensions:
         targetZone: buttons
         position: 85
         config:
-            idKeyName: productId
+            idKeyName: productUuid
             routes:
                 ready: pimee_workflow_product_draft_ready
 

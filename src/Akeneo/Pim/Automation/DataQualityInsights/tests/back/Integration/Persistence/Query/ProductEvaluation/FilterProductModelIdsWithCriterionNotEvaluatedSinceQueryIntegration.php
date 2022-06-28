@@ -112,7 +112,7 @@ SQL;
 
         $this->get('database_connection')->executeQuery($query, [
             'evaluated_at' => $evaluatedAt->format(Clock::TIME_FORMAT),
-            'productModelId' => $criterionEvaluation->getProductId()->toInt(),
+            'productModelId' => $criterionEvaluation->getEntityId()->toInt(),
             'criterionCode' => $criterionEvaluation->getCriterionCode(),
         ]);
     }

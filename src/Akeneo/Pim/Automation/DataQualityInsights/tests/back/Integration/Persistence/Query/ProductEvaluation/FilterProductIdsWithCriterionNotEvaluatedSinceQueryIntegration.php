@@ -19,9 +19,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
+use Webmozart\Assert\Assert;
 
 final class FilterProductIdsWithCriterionNotEvaluatedSinceQueryIntegration extends DataQualityInsightsTestCase
 {
@@ -40,39 +41,39 @@ final class FilterProductIdsWithCriterionNotEvaluatedSinceQueryIntegration exten
         $evaluatedSince = new \DateTimeImmutable('2020-06-22 10:21:34');
         $criterionCode = new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE);
         $anotherCriterionCode = new CriterionCode('completeness');
-        $productIdsToFilter = [
-            new ProductId($this->createProductWithoutEvaluations('product_1')->getId()),
-            new ProductId($this->createProductWithoutEvaluations('product_2')->getId()),
-            new ProductId($this->createProductWithoutEvaluations('product_3')->getId()),
-            new ProductId($this->createProductWithoutEvaluations('product_4')->getId()),
-            new ProductId($this->createProductWithoutEvaluations('product_5')->getId()),
+        $productUuidsToFilter = [
+            ProductUuid::fromUuid($this->createProductWithoutEvaluations('product_1')->getUuid()),
+            ProductUuid::fromUuid($this->createProductWithoutEvaluations('product_2')->getUuid()),
+            ProductUuid::fromUuid($this->createProductWithoutEvaluations('product_3')->getUuid()),
+            ProductUuid::fromUuid($this->createProductWithoutEvaluations('product_4')->getUuid()),
+            ProductUuid::fromUuid($this->createProductWithoutEvaluations('product_5')->getUuid()),
         ];
-        $notInvolvedProduct = new ProductId($this->createProductWithoutEvaluations('not_involved_product')->getId());
+        $notInvolvedProduct = ProductUuid::fromUuid($this->createProductWithoutEvaluations('not_involved_product')->getUuid());
 
-        $this->givenAPendingProductCriterion($productIdsToFilter[0], $criterionCode, $evaluatedSince->modify('-2 MINUTE'));
-        $this->givenAProductCriterionEvaluatedAt($productIdsToFilter[1], $criterionCode, $evaluatedSince);
-        $this->givenAProductCriterionEvaluatedAt($productIdsToFilter[1], $anotherCriterionCode, $evaluatedSince->modify('-1 SECOND'));
+        $this->givenAPendingProductCriterion($productUuidsToFilter[0], $criterionCode, $evaluatedSince->modify('-2 MINUTE'));
+        $this->givenAProductCriterionEvaluatedAt($productUuidsToFilter[1], $criterionCode, $evaluatedSince);
+        $this->givenAProductCriterionEvaluatedAt($productUuidsToFilter[1], $anotherCriterionCode, $evaluatedSince->modify('-1 SECOND'));
         $this->givenAProductCriterionEvaluatedAt($notInvolvedProduct, $criterionCode, $evaluatedSince->modify('-1 HOUR'));
 
-        $this->givenAProductCriterionEvaluatedAt($productIdsToFilter[2], $criterionCode, $evaluatedSince->modify('-1 SECOND'));
-        $this->givenAProductCriterionEvaluatedAt($productIdsToFilter[3], $criterionCode, $evaluatedSince->modify('-3 DAY'));
+        $this->givenAProductCriterionEvaluatedAt($productUuidsToFilter[2], $criterionCode, $evaluatedSince->modify('-1 SECOND'));
+        $this->givenAProductCriterionEvaluatedAt($productUuidsToFilter[3], $criterionCode, $evaluatedSince->modify('-3 DAY'));
 
-        $productIds = $this->get('akeneo.pim.automation.data_quality_insights.query.filter_product_ids_with_criterion_not_evaluated_since')
-            ->execute(ProductIdCollection::fromProductIds($productIdsToFilter), $evaluatedSince, $criterionCode);
+        $productUuids = $this->get('akeneo.pim.automation.data_quality_insights.query.filter_product_ids_with_criterion_not_evaluated_since')
+            ->execute(ProductUuidCollection::fromProductUuids($productUuidsToFilter), $evaluatedSince, $criterionCode);
 
-        $this->assertEqualsCanonicalizing([$productIdsToFilter[2], $productIdsToFilter[3]], $productIds->toArray());
+        $this->assertEqualsCanonicalizing([$productUuidsToFilter[2], $productUuidsToFilter[3]], $productUuids->toArray());
     }
 
-    private function givenAPendingProductCriterion(ProductId $productId, CriterionCode $criterionCode, \DateTimeImmutable $evaluatedAt): void
+    private function givenAPendingProductCriterion(ProductUuid $productUuid, CriterionCode $criterionCode, \DateTimeImmutable $evaluatedAt): void
     {
-        $criterionEvaluation = $this->createProductEvaluation($productId, $criterionCode);
+        $criterionEvaluation = $this->createProductEvaluation($productUuid, $criterionCode);
 
         $this->evaluateProductCriterionAt($criterionEvaluation, $evaluatedAt);
     }
 
-    private function givenAProductCriterionEvaluatedAt(ProductId $productId, CriterionCode $criterionCode, \DateTimeImmutable $evaluatedAt): void
+    private function givenAProductCriterionEvaluatedAt(ProductUuid $productUuid, CriterionCode $criterionCode, \DateTimeImmutable $evaluatedAt): void
     {
-        $criterionEvaluation = $this->createProductEvaluation($productId, $criterionCode);
+        $criterionEvaluation = $this->createProductEvaluation($productUuid, $criterionCode);
 
         $criterionEvaluation->end(new Write\CriterionEvaluationResult());
         $this->productCriterionEvaluationRepository->update((new Write\CriterionEvaluationCollection)->add($criterionEvaluation));
@@ -80,11 +81,11 @@ final class FilterProductIdsWithCriterionNotEvaluatedSinceQueryIntegration exten
         $this->evaluateProductCriterionAt($criterionEvaluation, $evaluatedAt);
     }
 
-    private function createProductEvaluation(ProductId $productId, CriterionCode $criterionCode): Write\CriterionEvaluation
+    private function createProductEvaluation(ProductUuid $productUuid, CriterionCode $criterionCode): Write\CriterionEvaluation
     {
         $criterionEvaluation = new Write\CriterionEvaluation(
             $criterionCode,
-            $productId,
+            $productUuid,
             CriterionEvaluationStatus::pending()
         );
 
@@ -96,14 +97,17 @@ final class FilterProductIdsWithCriterionNotEvaluatedSinceQueryIntegration exten
     private function evaluateProductCriterionAt(Write\CriterionEvaluation $criterionEvaluation, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
-UPDATE pim_data_quality_insights_product_criteria_evaluation
-SET evaluated_at = :evaluated_at
-WHERE product_id = :productId AND criterion_code = :criterionCode;
+UPDATE pim_data_quality_insights_product_criteria_evaluation e, pim_catalog_product p
+SET e.evaluated_at = :evaluated_at
+WHERE p.uuid = :productUuid AND e.product_uuid = p.uuid AND criterion_code = :criterionCode;
 SQL;
+
+        $productUuid = $criterionEvaluation->getEntityId();
+        Assert::isInstanceOf($productUuid, ProductUuid::class);
 
         $this->get('database_connection')->executeQuery($query, [
             'evaluated_at' => $evaluatedAt->format(Clock::TIME_FORMAT),
-            'productId' => $criterionEvaluation->getProductId()->toInt(),
+            'productUuid' => $productUuid->toBytes(),
             'criterionCode' => $criterionEvaluation->getCriterionCode(),
         ]);
     }

@@ -3,6 +3,12 @@ pim_enrich:
     attribute:
       property:
         is_read_only: Només de lectura
+pimee_import_export:
+  entity:
+    job_instance:
+      flash:
+        update:
+          fail_empty_permission: Heu de seleccionar almenys un treball autoritzat per editar
 pimee_enrich.entity.category:
   module:
     permissions:
@@ -50,3 +56,12 @@ batch_jobs:
     send_for_approval: Enviar per a la seva aprovació
 pim_title:
   pimee_enrich_locale_edit: Local | Editar
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Número de locals amb acceos personalitzats
+    nb_custom_category_accesses: Número de categories amb accessos personalitzats
+pim_permissions:
+  widget:
+    entity:
+      locale:
+        label: Configuracions regionals

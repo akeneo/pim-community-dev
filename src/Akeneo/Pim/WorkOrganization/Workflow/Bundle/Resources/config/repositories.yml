@@ -60,16 +60,6 @@ services:
         tags:
             - { name: 'pim_repository' }
 
-    pimee_workflow.repository.published_product_mass_action:
-        class: '%pim_catalog.repository.product_mass_action.class%'
-        arguments:
-            - '@pim_catalog.object_manager.product'
-            - '%pimee_workflow.entity.published_product.class%'
-            - '@pimee_workflow.repository.published_product'
-            - '@security.token_storage'
-            - '%pimee_security.entity.product_category_access.class%'
-            - '%pim_catalog.entity.product.class%'
-
     pimee_workflow.repository.delegating_product:
         class: '%pimee_workflow.repository.delegating_product.class%'
         arguments:

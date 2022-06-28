@@ -24,7 +24,7 @@ use PhpSpec\ObjectBehavior;
 
 class SplitOperationApplierSpec extends ObjectBehavior
 {
-    private $uuid = '00000000-0000-0000-0000-000000000000';
+    private string $uuid = '00000000-0000-0000-0000-000000000000';
 
     public function it_supports_split_operation(): void
     {
@@ -34,10 +34,10 @@ class SplitOperationApplierSpec extends ObjectBehavior
     public function it_applies_split_operation(): void
     {
         $operation = new SplitOperation($this->uuid, ',');
-        $value = new StringValue('value1,value2, value3');
+        $value = new StringValue('value1   ,value2,  value3');
 
         $this->applyOperation($operation, $value)
-            ->shouldBeLike(new ArrayValue(['value1', 'value2', ' value3']));
+            ->shouldBeLike(new ArrayValue(['value1', 'value2', 'value3']));
     }
 
     public function it_throws_an_exception_when_value_type_is_invalid(): void

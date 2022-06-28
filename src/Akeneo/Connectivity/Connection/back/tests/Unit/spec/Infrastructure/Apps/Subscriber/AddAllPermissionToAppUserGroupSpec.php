@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace spec\AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Subscriber;
 
-use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Event\AppUserGroupCreated;
 use Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver;
 use Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver;
 use Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
-use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
-use AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Subscriber\AddAllPermissionToAppUserGroup;
-use AkeneoEnterprise\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

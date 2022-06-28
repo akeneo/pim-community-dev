@@ -14,11 +14,10 @@ namespace Akeneo\Pim\Permission\Component\Filter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Filter not granted associated product from product
@@ -27,21 +26,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
 {
-    private AuthorizationCheckerInterface $authorizationChecker;
-    private ItemCategoryAccessQuery $productCategoryAccessQuery;
-    private ItemCategoryAccessQuery $productModelCategoryAccessQuery;
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker,
-        ItemCategoryAccessQuery $productCategoryAccessQuery,
-        ItemCategoryAccessQuery $productModelCategoryAccessQuery,
-        TokenStorageInterface $tokenStorage
+        private ItemCategoryAccessQuery $productCategoryAccessQuery,
+        private ItemCategoryAccessQuery $productModelCategoryAccessQuery,
+        private TokenStorageInterface $tokenStorage
     ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->productCategoryAccessQuery = $productCategoryAccessQuery;
-        $this->productModelCategoryAccessQuery = $productModelCategoryAccessQuery;
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -63,20 +52,43 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
 
         foreach ($filteredEntityWithAssociations->getAssociations() as $clonedAssociation) {
             $associationTypeCode = $clonedAssociation->getAssociationType()->getCode();
-            $associatedProducts = clone $clonedAssociation->getProducts();
+            $associatedProductsAndPublishedProducts = clone $clonedAssociation->getProducts();
             $associatedProductModels = clone $clonedAssociation->getProductModels();
 
-            $grantedProductIds = $this->productCategoryAccessQuery->getGrantedItemIds(
-                $associatedProducts->toArray(),
-                $user
+            $associatedProducts = $associatedProductsAndPublishedProducts->filter(
+                fn ($entity): bool => !$entity instanceof PublishedProductInterface
             );
+            if ($associatedProducts->count() > 0) {
+                $grantedProductUuids = \array_flip($this->productCategoryAccessQuery->getGrantedProductUuids(
+                    $associatedProducts->toArray(),
+                    $user
+                ));
 
-            foreach ($associatedProducts as $associatedProduct) {
-                if (!isset($grantedProductIds[$associatedProduct->getId()])) {
-                    $filteredEntityWithAssociations->removeAssociatedProduct(
-                        $associatedProduct,
-                        $associationTypeCode
-                    );
+                foreach ($associatedProducts as $associatedProduct) {
+                    if (!isset($grantedProductUuids[$associatedProduct->getUuid()->toString()])) {
+                        $filteredEntityWithAssociations->removeAssociatedProduct(
+                            $associatedProduct,
+                            $associationTypeCode
+                        );
+                    }
+                }
+            }
+
+            $associatedPublishedProducts = $associatedProductsAndPublishedProducts->filter(
+                fn ($entity): bool => $entity instanceof PublishedProductInterface
+            );
+            if ($associatedPublishedProducts->count() > 0) {
+                $grantedPublishedProductIds = $this->productCategoryAccessQuery->getGrantedItemIds(
+                    $associatedPublishedProducts->toArray(),
+                    $user
+                );
+                foreach ($associatedPublishedProducts as $associatedPublishedProduct) {
+                    if (!isset($grantedPublishedProductIds[$associatedPublishedProduct->getId()])) {
+                        $filteredEntityWithAssociations->removeAssociatedProduct(
+                            $associatedPublishedProduct,
+                            $associationTypeCode
+                        );
+                    }
                 }
             }
 

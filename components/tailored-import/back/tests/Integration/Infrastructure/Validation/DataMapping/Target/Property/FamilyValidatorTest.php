@@ -64,6 +64,20 @@ final class FamilyValidatorTest extends AbstractValidationTest
                     'sample_data' => [],
                 ]
             ],
+            'a valid family data mapping with clear if empty' => [
+                [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
+                        'code' => 'family',
+                        'type' => 'property',
+                        'action_if_not_empty' => 'set',
+                        'action_if_empty' => 'clear',
+                    ],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => [],
+                ]
+            ],
         ];
     }
 
@@ -103,7 +117,7 @@ final class FamilyValidatorTest extends AbstractValidationTest
                 ]
             ],
             'a family data mapping with an invalid target action if empty' => [
-                'This value should be equal to "skip".',
+                'The value you selected is not a valid choice.',
                 '[target][action_if_empty]',
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
@@ -111,7 +125,7 @@ final class FamilyValidatorTest extends AbstractValidationTest
                         'code' => 'family',
                         'type' => 'property',
                         'action_if_not_empty' => 'add',
-                        'action_if_empty' => 'clear', // <== Here is the error
+                        'action_if_empty' => 'blob', // <== Here is the error
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     'operations' => [],

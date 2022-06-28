@@ -34,16 +34,22 @@ pim_reference_entity:
         codes_dont_exist: "Els següents codis d'opcions no existeixen per aquest atribut : \"%option_codes%\""
       record:
         should_exist: 'El registre "%record_code%" no s''ha trobat.'
+        should_not_be_used_as_product_variant_axis: 'No podeu suprimir aquest registre, ja que s''utilitza com a eix variant en una de les variants del vostre producte'
       record_collection:
         should_exist: 'Els registres "%record_codes%" no s''han trobat.'
+        should_not_be_used_as_product_variant_axis: 'No podeu suprimir aquests registres, ja que s''utilitzen com a eix de variant en una o diverses variants de producte'
       limit_reached: 'Vostè no pot crear el registre "%record_label%" perquè vostè ha arribat al límit de registres %limit% per a aquesta entitat de referència'
       channel:
+        is_expected: 'L''atribut "%attribute_code%" de l''entitat de referència "%reference_entity_identifier%" requereix un valor per canal.'
         is_not_expected: 'No s''espera un canal per l''atribut "%attribute_code%" perquè no té un valor per canal.'
         should_exist: 'El canal "%channel_identifier%" no existeix.'
       locale:
+        is_expected: 'L''atribut "%attribute_code%" de l''entitat de referència "%reference_entity_identifier%" requereix un valor per configuració regional.'
         is_not_expected: 'No s''espera una localització per l''atribut "%attribute_code%" perquè no té un valor per local.'
         is_not_activated: 'La localització "%locale_identifier%" no està activada.'
         is_not_activated_for_channel: 'La localització "%locale_identifier%" no està activada pel canal "%channel_identifier%".'
+      channel_and_locale:
+        are_expected: 'L''atribut "%attribute_code%" de l''entitat de referència "%reference_entity_identifier%" requereix un valor per canal i un per local.'
       number:
         should_be_integer: 'Aquest camp té que ser un enter'
         integer_too_long: 'Aquest enter és massa gran'

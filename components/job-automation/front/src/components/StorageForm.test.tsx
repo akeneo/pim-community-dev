@@ -14,7 +14,7 @@ test('it renders the storage form', () => {
     <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
   );
 
-  expect(screen.getByText('akeneo.automation.storage.connection.none')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.job_automation.storage.connection.none')).toBeInTheDocument();
 });
 
 test('it triggers onStorageChange callback when storage configurator onStorageChange is triggered', () => {
@@ -29,7 +29,9 @@ test('it triggers onStorageChange callback when storage configurator onStorageCh
     <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
   );
 
-  const file_pathInput = screen.getByLabelText('akeneo.automation.storage.file_path.label pim_common.required_label');
+  const file_pathInput = screen.getByLabelText(
+    'akeneo.job_automation.storage.file_path.label pim_common.required_label'
+  );
   userEvent.type(file_pathInput, 'x');
 
   expect(onStorageChange).toHaveBeenLastCalledWith({
@@ -47,7 +49,7 @@ test('it does not render the storage form configurator if storage is none', () =
     <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
   );
 
-  expect(screen.queryByText('akeneo.automation.storage.file_path.label')).not.toBeInTheDocument();
+  expect(screen.queryByText('akeneo.job_automation.storage.file_path.label')).not.toBeInTheDocument();
 });
 
 test('it renders the storage form configurator if storage is local', () => {
@@ -60,8 +62,10 @@ test('it renders the storage form configurator if storage is local', () => {
     <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
   );
 
-  expect(screen.getByText('akeneo.automation.storage.file_path.label pim_common.required_label')).toBeInTheDocument();
-  expect(screen.queryByText('akeneo.automation.storage.host.label')).not.toBeInTheDocument();
+  expect(
+    screen.getByText('akeneo.job_automation.storage.file_path.label pim_common.required_label')
+  ).toBeInTheDocument();
+  expect(screen.queryByText('akeneo.job_automation.storage.host.label')).not.toBeInTheDocument();
 });
 
 test('it renders the storage form configurator if storage is sftp', () => {
@@ -78,8 +82,10 @@ test('it renders the storage form configurator if storage is sftp', () => {
     <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
   );
 
-  expect(screen.getByText('akeneo.automation.storage.file_path.label pim_common.required_label')).toBeInTheDocument();
-  expect(screen.getByText('akeneo.automation.storage.host.label pim_common.required_label')).toBeInTheDocument();
+  expect(
+    screen.getByText('akeneo.job_automation.storage.file_path.label pim_common.required_label')
+  ).toBeInTheDocument();
+  expect(screen.getByText('akeneo.job_automation.storage.host.label pim_common.required_label')).toBeInTheDocument();
 });
 
 test('it can select a local storage', () => {
@@ -94,7 +100,7 @@ test('it can select a local storage', () => {
   );
 
   userEvent.click(screen.getByTitle('pim_common.open'));
-  userEvent.click(screen.getByText('akeneo.automation.storage.connection.local'));
+  userEvent.click(screen.getByText('akeneo.job_automation.storage.connection.local'));
 
   expect(onStorageChange).toBeCalledWith({
     type: 'local',
@@ -114,7 +120,7 @@ test('it can select a sftp storage', () => {
   );
 
   userEvent.click(screen.getByTitle('pim_common.open'));
-  userEvent.click(screen.getByText('akeneo.automation.storage.connection.sftp'));
+  userEvent.click(screen.getByText('akeneo.job_automation.storage.connection.sftp'));
 
   expect(onStorageChange).toBeCalledWith({
     type: 'sftp',

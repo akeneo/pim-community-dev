@@ -93,5 +93,6 @@ Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct:
         originalProduct:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             joinColumns:
-                original_product_id:
-                    referencedColumnName: id
+                original_product_uuid:
+                    referencedColumnName: uuid
+                    columnDefinition: BINARY(16)

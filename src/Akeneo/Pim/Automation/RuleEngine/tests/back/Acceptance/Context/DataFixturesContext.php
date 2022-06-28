@@ -582,10 +582,6 @@ final class DataFixturesContext implements Context
         $valueCollection = $this->valueCollectionFactory->createFromStorageFormat($normalizedProduct['values']);
         $product->setValues($valueCollection);
 
-        if (isset($normalizedProduct['id'])) {
-            $product->setId(intval($normalizedProduct['id']));
-        }
-
         $this->productRepository->save($product);
     }
 

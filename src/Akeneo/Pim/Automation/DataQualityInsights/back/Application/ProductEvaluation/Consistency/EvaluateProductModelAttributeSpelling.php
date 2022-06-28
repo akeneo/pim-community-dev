@@ -35,7 +35,7 @@ final class EvaluateProductModelAttributeSpelling implements EvaluateCriterionIn
 
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
     {
-        $attributeCodes = $this->getProductFamilyAttributeCodesQuery->execute($criterionEvaluation->getProductId());
+        $attributeCodes = $this->getProductFamilyAttributeCodesQuery->execute($criterionEvaluation->getEntityId());
 
         return $this->evaluateAttributeSpelling->byAttributeCodes($attributeCodes);
     }

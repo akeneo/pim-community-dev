@@ -53,9 +53,14 @@ commands:
             - run:
                   name: Restore persisted env vars
                   command: |
-                      echo "Persisted env vars:"
-                      cat persisted_env_vars
-                      cat persisted_env_vars >> $BASH_ENV
+                      if [[ -f persisted_env_vars ]]
+                      then
+                        echo "Persisted env vars:"
+                        cat persisted_env_vars
+                        cat persisted_env_vars >> $BASH_ENV
+                      else
+                        echo "WARN: There is no persisted_env_vars file"
+                      fi
 
     modify_cluster:
         description: "Modify cluster version if needed"

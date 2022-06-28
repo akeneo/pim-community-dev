@@ -419,7 +419,7 @@ upgrade-instance:
 	JENKINSFILE_PATH=$(OPERATIONS_TOOLS_DIR)/saas-instances-upgrade.Jenkinsfile \
 	/app/bin/jenkinsfile-runner-launcher -ns -u \
 	-a "batchMode=false" \
-	-a "skipShutdown=false" \
+	-a "skipShutdown=true" \
 	-a "autoApply=true" \
 	-a "release=$(IMAGE_TAG)" \
 	-a "productTypePrefixFilter=$(TYPE)" \

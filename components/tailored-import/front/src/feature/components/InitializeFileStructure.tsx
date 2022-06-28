@@ -128,7 +128,10 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
           <HelperContainer>
             <Helper level="info">
               {translate('akeneo.tailored_import.file_structure.modal.helper')}{' '}
-              <Link href="#TODO Add missing link" target="_blank">
+              <Link
+                href="https://help.akeneo.com/pim/serenity/articles/tailored-import.html#define-your-import-structure"
+                target="_blank"
+              >
                 {translate('akeneo.tailored_import.file_structure.modal.link')}
               </Link>
             </Helper>
@@ -159,7 +162,7 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
     >
       <div>
         {translate('akeneo.tailored_import.file_structure.placeholder.helper')}{' '}
-        <Link href="#TODO Add missing link" target="_blank">
+        <Link href="https://help.akeneo.com/pim/serenity/articles/tailored-import.html" target="_blank">
           {translate('akeneo.tailored_import.file_structure.placeholder.link')}
         </Link>
       </div>

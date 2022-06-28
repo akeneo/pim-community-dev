@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -53,10 +54,10 @@ class RemoveNotificationSubscriber extends AbstractProposalStateNotificationSubs
      */
     protected function send(GenericEvent $event, array $messageInfos)
     {
-        $productDraft = $event->getSubject();
+        $entityDraft = $event->getSubject();
         $user = $this->userContext->getUser();
 
-        if (null === $user || !$this->authorWantToBeNotified($productDraft)) {
+        if (null === $user || !$this->authorWantToBeNotified($entityDraft)) {
             return;
         }
 
@@ -68,12 +69,16 @@ class RemoveNotificationSubscriber extends AbstractProposalStateNotificationSubs
         $notification
             ->setType('error')
             ->setMessage($message)
-            ->setRoute($productDraft instanceof ProductModelDraft ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit')
-            ->setRouteParams(['id' => $productDraft->getEntityWithValue()->getId()]);
+            ->setRoute($entityDraft instanceof ProductModelDraft ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit')
+            ->setRouteParams(
+                $entityDraft->getEntityWithValue() instanceof ProductInterface
+                ? ['uuid' => $entityDraft->getEntityWithValue()->getUuid()->toString()]
+                : ['id' => $entityDraft->getEntityWithValue()->getId()]
+            );
 
         $options = [
             'messageParams' => [
-                '%product%' => $productDraft->getEntityWithValue()->getLabel($this->userContext->getCurrentLocaleCode()),
+                '%product%' => $entityDraft->getEntityWithValue()->getLabel($this->userContext->getCurrentLocaleCode()),
                 '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
             ],
             'context' => [
@@ -91,6 +96,6 @@ class RemoveNotificationSubscriber extends AbstractProposalStateNotificationSubs
             $notification->setComment($event->getArgument('comment'));
         }
 
-        $this->notifier->notify($notification, [$productDraft->getAuthor()]);
+        $this->notifier->notify($notification, [$entityDraft->getAuthor()]);
     }
 }

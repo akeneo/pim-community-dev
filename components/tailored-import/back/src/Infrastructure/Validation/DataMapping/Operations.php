@@ -19,15 +19,22 @@ final class Operations extends Constraint
 {
     public const INCOMPATIBLE_OPERATION_TYPE = 'akeneo.tailored_import.validation.operations.incompatible_operation_type';
     public const OPERATION_TYPE_DOES_NOT_EXIST = 'akeneo.tailored_import.validation.operations.operation_type_does_not_exist';
+    public const MISSING_REQUIRED_OPERATION = 'akeneo.tailored_import.validation.operations.missing_required_operation';
 
     public function __construct(
-        private array $compatibleOperations,
+        private array $compatibleOperationTypes,
+        private array $requiredOperations = [],
     ) {
         parent::__construct();
     }
 
-    public function getCompatibleOperations(): array
+    public function getCompatibleOperationTypes(): array
     {
-        return $this->compatibleOperations;
+        return $this->compatibleOperationTypes;
+    }
+
+    public function getRequiredOperationTypes(): array
+    {
+        return $this->requiredOperations;
     }
 }

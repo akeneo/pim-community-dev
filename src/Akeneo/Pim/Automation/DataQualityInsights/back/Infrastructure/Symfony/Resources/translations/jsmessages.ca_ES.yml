@@ -1,12 +1,22 @@
 akeneo_data_quality_insights:
   product_evaluation:
     criteria:
+      consistency_textarea_uppercase_words:
+        recommendation: Atributs amb problemes amb majúscules
+      consistency_textarea_lowercase_words:
+        recommendation: Atributs amb problemes amb minúscules
       consistency_spelling:
         recommendation: Atributs amb problemes d'ortografia
+      consistency_attribute_spelling:
+        recommendation: Atribuir etiquetes amb faltes d'ortografia
+      consistency_attribute_option_spelling:
+        recommendation: Opcions d'atribut amb errors tipogràfics
     axis:
       consistency:
         title: Consistència
         attributes_link: Mostrar tots els atributs millorables
+    messages:
+      add_image_attribute_recommendation: Una imatge val més que mil paraules. Hauríeu d'afegir una col·lecció de recursos o un atribut d'imatge per millorar la qualitat de les dades d'aquest producte.
   product_edit_form:
     attribute_filter:
       all_improvable_attributes: Tots els atributs millorables
@@ -21,13 +31,86 @@ akeneo_data_quality_insights:
       good: Bé
       in_progress: Processant
       n_a: N/A
+  attribute_edit_form:
+    quality_summary: Si milloreu aquest atribut, millorareu la qualitat general dels productes {{ count }}.
+  spellcheck:
+    popover:
+      default_aria_label: Suggeriments ortogràfics
+      aria_label: "Suggeriments ortogràfics per a: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
       list:
-        values_perfect_spelling:
+        has_image:
+          no_data: Les col·leccions d'actius i els atributs d'imatge semblen buits, hauríeu de penjar imatges d'aquest indicador clau per destacar la qualitat dels vostres productes.
+        attributes_perfect_spelling:
+          title: Atributs etiquetats correctament
+          no_data: Les vostres etiquetes d'atributs i opcions semblen buides, hauríeu d'enriquir-les perquè aquest indicador clau destaqui la qualitat dels vostres atributs.
           messages:
+            first_step:
+              message1: Estàs passant un moment difícil amb les etiquetes d'atributs i opcions? Què tal tornar als conceptes bàsics <a href="{{ link }}" target="_blank">aquí</a>?
+              message2: Necessites ajuda amb els teus atributs i opcions d'atributs? Fes una ullada <a href="{{ link }}" target="_blank">aquí</a>!
             second_step:
+              message1: Fes un cop d'ull a les teves etiquetes d'atributs i opcions. Els vostres productes es veuran encara millor després.
+              message2: Sembla que us heu perdut en algun lloc pel camí! Algunes de les teves etiquetes encara necessiten treballar.
+            third_step:
+              message1: Estàs molt a prop! Només uns quants tocs finals i ja estaràs a punt.
+              message2: Alguns dels vostres atributs i etiquetes encara necessiten una mica de treball, però esteu pel bon camí.
+            perfect_score_step:
+              message1: El teu catàleg està més preparat que mai! Has fet una gran feina!
+              message2: Gran treball en les etiquetes d'atributs i opcions!
+        values_perfect_spelling:
+          title: Productes amb una ortografia perfecta en valors de producte de text
+          no_data: Les vostres àrees de text semblen buides, hauríeu d'enriquir-les per aquest indicador clau per destacar la qualitat dels vostres productes.
+          messages:
+            first_step:
+              message1: Els vostres productes mereixen ser descrits correctament. Comproveu l'ortografia!
+              message2: Sou el millor defensor dels vostres productes, feu una ullada a l'ortografia.
+              message3: Les descripcions dels vostres productes són la imatge de la vostra empresa, eliminem aquestes errades! Les primeres impressions importen.
+              message4: Com més errors tinguis, pitjor impressió donaràs. Presteu més atenció a la vostra ortografia.
+            second_step:
+              message1: Ja tens grans productes, ara només necessites una bona ortografia!
+              message2: Un error d'ortografia pot allunyar un client, sigueu minuciosos!
               message3: Alguns productes necessiten una mica d'ajuda per ser perfectes. Vigila amb els errors!
+            third_step:
+              message1: Una bona ortografia marca la diferència, no esteu tan lluny!
+              message2: Gairebé allà, esteu tan a prop de l'ortografia perfecta!
+              message3: Ets un parell de faltes d'ortografia lluny dels valors perfectes del producte.
+              message4: Només una mica més d'esforç per arribar a una descripció del producte impecable!
+            perfect_score_step:
+              message1: Ortografia perfecta a tot el vostre catàleg. Ben fet!
+              message2: "Això és impressionant: els teus productes estan impecables!"
+              message3: Has fet un treball increïble eliminant el 100% de les faltes d'ortografia. Felicitats!
   product_grid:
     filter_label:
       spelling_quality: Qualitat ortogràfica
+  dictionary:
+    helper:
+      content: El diccionari us permet registrar paraules que seran ignorades per Data Quality Insights.
+      link_label: Més informació en el centre d'ajuda.
+    words: Paraules
+    searchPlaceholder: Cerca una paraula
+    add_words: Afegeix paraules aquí
+    no_search_results:
+      title: No s'han trobat resultats per a la teva cerca
+      subtitle: Provi amb nous criteris de cerca.
+    no_data:
+      title: Encara no hi ha paraules
+      subtitle: Afegiu el primer a dalt, feu clic a "Afegeix" o premeu Enter.
+pimee_enrich.entity.locale:
+  grid:
+    columns:
+      dictionary_words_count:
+        title: Nombre de paraules
+        label: "]-Inf, 1]{{ count }} paraula|]1, Inf[{{ count }} paraules"
+        not_available: No disponible
+    add_words: Afegir paraules
+    items_selected: "{1}1 element seleccionat|[2, Inf[{{ count }} elements seleccionats"
+    modal:
+      title: Afegeix paraules a {{ count }} localitzacions
+      subtitle: Escriu les teves paraules a continuació. S'afegiran a totes les configuracions regionals seleccionades.
+      locales_added_notification:
+        title: Paraules afegides a {{ count }} localitzacions
+        content: Les paraules noves s'han afegit als diccionaris de les localitzacions seleccionades.
+      no_supported_locales:
+        title: Data Quality Insights no pot revisar l'ortografia de les configuracions regionals seleccionades.
+        content: Per conèixer la llista de configuracions regionals compatibles, consulteu el nostre <a href="{{ link }}" target="_blank">Centre d'ajuda</a>

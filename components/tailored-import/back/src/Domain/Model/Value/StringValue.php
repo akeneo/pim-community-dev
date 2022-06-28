@@ -17,6 +17,8 @@ use Webmozart\Assert\Assert;
 
 final class StringValue implements ValueInterface
 {
+    private const TYPE = 'string';
+
     public function __construct(
         private string $value,
     ) {
@@ -26,5 +28,13 @@ final class StringValue implements ValueInterface
     public function getValue(): string
     {
         return $this->value;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'type' => self::TYPE,
+            'value' => $this->value,
+        ];
     }
 }

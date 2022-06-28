@@ -24,6 +24,7 @@ use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
 {
@@ -76,11 +77,11 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
         $product = $query->fromProductIdentifier('variant_product', (int) $userId);
 
         $productData = $this->get('database_connection')->executeQuery(
-            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "variant_product"'
+            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "variant_product"'
         )->fetch();
 
         $expectedProduct = new ConnectorProduct(
-            (int) $productData['id'],
+            Uuid::fromString($productData['uuid']),
             'variant_product',
             new \DateTimeImmutable($productData['created'], new \DateTimeZone('UTC')),
             new \DateTimeImmutable($productData['updated'], new \DateTimeZone('UTC')),
@@ -240,11 +241,11 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
         $product = $query->fromProductIdentifier('variant_product', (int) $userId);
 
         $productData = $this->get('database_connection')->executeQuery(
-            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "variant_product"'
+            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "variant_product"'
         )->fetch();
 
         $expectedProduct = new ConnectorProduct(
-            (int) $productData['id'],
+            Uuid::fromString($productData['uuid']),
             'variant_product',
             new \DateTimeImmutable($productData['created'], new \DateTimeZone('UTC')),
             new \DateTimeImmutable($productData['updated'], new \DateTimeZone('UTC')),

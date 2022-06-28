@@ -22,6 +22,12 @@ use Akeneo\Tool\Component\Versioning\Model\Version;
 interface PublishedProductInterface extends ProductInterface
 {
     /**
+     * @param int|string $id
+     * @return ProductInterface
+     */
+    public function setId($id);
+
+    /**
      * @return mixed
      */
     public function getOriginalProduct();

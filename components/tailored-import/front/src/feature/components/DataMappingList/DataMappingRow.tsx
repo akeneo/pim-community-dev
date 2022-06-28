@@ -60,12 +60,10 @@ const DataMappingRow = ({
         {isAttributeDataMapping(dataMapping) ? (
           <AttributeLabelCell attributeCode={dataMapping.target.code} />
         ) : (
-          <PropertyLabelCell>{translate(`pim_common.${dataMapping.target.code}`)}</PropertyLabelCell>
+          <PropertyLabelCell rowTitle={true}>{translate(`pim_common.${dataMapping.target.code}`)}</PropertyLabelCell>
         )}
         <Table.Cell>
-          {sources.length === 0
-            ? translate('akeneo.tailored_import.data_mapping_list.no_sources')
-            : `${translate('akeneo.tailored_import.data_mapping.sources.title')}: ${sources.join(' ')}`}
+          {0 === sources.length ? translate('akeneo.tailored_import.data_mapping_list.no_sources') : sources.join(', ')}
           <Spacer />
           {hasError && <Pill level="danger" />}
         </Table.Cell>

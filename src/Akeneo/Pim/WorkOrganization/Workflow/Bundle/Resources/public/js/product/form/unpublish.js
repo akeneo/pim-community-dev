@@ -16,8 +16,8 @@ define([
   return Publish.extend({
     className: 'AknButtonList-item',
     template: _.template(template),
-    getProductId: function() {
-      return this.getFormData().meta.original_product_id;
+    getProductUuid: function() {
+      return this.getFormData().meta.original_product_uuid;
     },
     togglePublished: function() {
       Publish.prototype.togglePublished.apply(this, arguments).then(function() {

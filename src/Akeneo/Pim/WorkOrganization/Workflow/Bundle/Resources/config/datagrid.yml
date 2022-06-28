@@ -171,7 +171,7 @@ services:
             - '@pimee_workflow.normalizer.datagrid.published_product'
             - '@pim_datagrid.event_subscriber.filter_entity_with_values_subscriber'
         calls:
-            - [ setMassActionRepository, ['@pimee_workflow.repository.published_product_mass_action' ]]
+            - [ setMassActionRepository, ['@pim_catalog.repository.product_mass_action' ]]
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_published_product }
 
@@ -323,7 +323,7 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
-            - '@pimee_workflow.query.select_product_ids_by_user_and_draft_status'
+            - '@pimee_workflow.query.select_product_uuids_by_user_and_draft_status'
             - '@pimee_workflow.query.select_product_model_ids_by_user_and_draft_status'
             - '@pim_user.context.user'
         tags:

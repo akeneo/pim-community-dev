@@ -1,0 +1,11 @@
+onboarder:
+  supplier:
+    contributor:
+      email_already_exists: Dit e-mailadres wordt al gebruikt voor een andere leverancier en we ondersteunen nog niet dat meerdere leveranciers dezelfde medewerker hebben. Excuses voor het ongemak.
+    contributor_account:
+      validation:
+        min_password_length: Het wachtwoord moet uit minstens 8 tekens bestaan.
+        max_password_length: Het wachtwoord mag niet langer zijn dan 255 tekens.
+        must_contain_an_uppercase_letter: Het wachtwoord moet minimaal één hoofdletter bevatten.
+        must_contain_a_lowercase_letter: Het wachtwoord moet minimaal één kleine letter bevatten.
+        must_contain_a_digit: Het wachtwoord moet minimaal één cijfer bevatten.

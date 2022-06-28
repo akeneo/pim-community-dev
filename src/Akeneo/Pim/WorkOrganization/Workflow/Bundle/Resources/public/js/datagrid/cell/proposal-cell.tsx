@@ -18,7 +18,7 @@ class ProposalCell extends StringCell {
   render() {
     const formattedChanges = this.model.get('formatted_changes');
     const documentType = this.model.get('document_type');
-    const documentId = this.model.get('document_id');
+    const documentIdOrUuid = this.model.get('document_id');
     const documentLabel = this.model.get('document_label');
     const authorLabel = this.model.get('author_label');
     const authorCode = this.model.get('author_code');
@@ -31,7 +31,7 @@ class ProposalCell extends StringCell {
         <ThemeProvider theme={pimTheme}>
           <Proposal
             documentType={documentType}
-            documentId={documentId}
+            documentIdOrUuid={documentIdOrUuid}
             documentLabel={documentLabel}
             authorLabel={authorLabel}
             formattedChanges={formattedChanges}

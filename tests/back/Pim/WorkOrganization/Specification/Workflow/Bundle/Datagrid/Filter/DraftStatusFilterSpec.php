@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Fil
 
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\DraftStatusFilter;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProductIdsByUserAndDraftStatusQueryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProductUuidsByUserAndDraftStatusQueryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProductModelIdsByUserAndDraftStatusQueryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -14,6 +14,7 @@ use Oro\Bundle\FilterBundle\Filter\FilterInterface;
 use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class DraftStatusFilterSpec extends ObjectBehavior
@@ -21,11 +22,11 @@ class DraftStatusFilterSpec extends ObjectBehavior
     function let(
         FormFactoryInterface $formFactory,
         ProductFilterUtility $filterUtility,
-        SelectProductIdsByUserAndDraftStatusQueryInterface $selectProductIdsByUserAndDraftStatusQuery,
+        SelectProductUuidsByUserAndDraftStatusQueryInterface $selectProductUuidsByUserAndDraftStatusQuery,
         SelectProductModelIdsByUserAndDraftStatusQueryInterface $selectProductModelIdsByUserAndDraftStatusQuery,
         UserContext $userContext
     ) {
-        $this->beConstructedWith($formFactory, $filterUtility, $selectProductIdsByUserAndDraftStatusQuery, $selectProductModelIdsByUserAndDraftStatusQuery, $userContext);
+        $this->beConstructedWith($formFactory, $filterUtility, $selectProductUuidsByUserAndDraftStatusQuery, $selectProductModelIdsByUserAndDraftStatusQuery, $userContext);
     }
 
     function it_is_a_choice_filter()
@@ -41,7 +42,7 @@ class DraftStatusFilterSpec extends ObjectBehavior
 
     function it_applies_filter_on_draft_status_in_progress(
         ProductFilterUtility $filterUtility,
-        SelectProductIdsByUserAndDraftStatusQueryInterface $selectProductIdsByUserAndDraftStatusQuery,
+        SelectProductUuidsByUserAndDraftStatusQueryInterface $selectProductUuidsByUserAndDraftStatusQuery,
         SelectProductModelIdsByUserAndDraftStatusQueryInterface $selectProductModelIdsByUserAndDraftStatusQuery,
         UserContext $userContext,
         UserInterface $user,
@@ -50,22 +51,24 @@ class DraftStatusFilterSpec extends ObjectBehavior
         $userContext->getUser()->willReturn($user);
         $user->getUsername()->willReturn('mary');
 
-        $selectProductIdsByUserAndDraftStatusQuery
+        $uuid1 = Uuid::uuid4();
+        $uuid2 = Uuid::uuid4();
+        $selectProductUuidsByUserAndDraftStatusQuery
             ->execute('mary', [EntityWithValuesDraftInterface::IN_PROGRESS])
-            ->willReturn([42, 56]);
+            ->willReturn([$uuid1, $uuid2]);
 
         $selectProductModelIdsByUserAndDraftStatusQuery
             ->execute('mary', [EntityWithValuesDraftInterface::IN_PROGRESS])
             ->willReturn([7]);
 
-        $filterUtility->applyFilter($filterDatasource, 'id', 'IN', ['product_42', 'product_56', 'product_model_7'])->shouldBeCalled();
+        $filterUtility->applyFilter($filterDatasource, 'id', 'IN', ['product_' . $uuid1->toString(), 'product_' . $uuid2->toString(), 'product_model_7'])->shouldBeCalled();
 
         $this->apply($filterDatasource, ['value' => DraftStatusFilter::IN_PROGRESS]);
     }
 
     function it_applies_filter_on_draft_status_working_copy(
         ProductFilterUtility $filterUtility,
-        SelectProductIdsByUserAndDraftStatusQueryInterface $selectProductIdsByUserAndDraftStatusQuery,
+        SelectProductUuidsByUserAndDraftStatusQueryInterface $selectProductUuidsByUserAndDraftStatusQuery,
         SelectProductModelIdsByUserAndDraftStatusQueryInterface $selectProductModelIdsByUserAndDraftStatusQuery,
         UserContext $userContext,
         UserInterface $user,
@@ -74,15 +77,17 @@ class DraftStatusFilterSpec extends ObjectBehavior
         $userContext->getUser()->willReturn($user);
         $user->getUsername()->willReturn('mary');
 
-        $selectProductIdsByUserAndDraftStatusQuery
+        $uuid1 = Uuid::uuid4();
+        $uuid2 = Uuid::uuid4();
+        $selectProductUuidsByUserAndDraftStatusQuery
             ->execute('mary', [EntityWithValuesDraftInterface::IN_PROGRESS, EntityWithValuesDraftInterface::READY])
-            ->willReturn([42, 56]);
+            ->willReturn([$uuid1, $uuid2]);
 
         $selectProductModelIdsByUserAndDraftStatusQuery
             ->execute('mary', [EntityWithValuesDraftInterface::IN_PROGRESS, EntityWithValuesDraftInterface::READY])
             ->willReturn([7]);
 
-        $filterUtility->applyFilter($filterDatasource, 'id', 'NOT IN', ['product_42', 'product_56', 'product_model_7'])->shouldBeCalled();
+        $filterUtility->applyFilter($filterDatasource, 'id', 'NOT IN', ['product_' . $uuid1->toString(), 'product_' . $uuid2->toString(), 'product_model_7'])->shouldBeCalled();
 
         $this->apply($filterDatasource, ['value' => DraftStatusFilter::WORKING_COPY]);
     }
@@ -114,7 +119,7 @@ class DraftStatusFilterSpec extends ObjectBehavior
 
     function it_applies_a_filter_even_if_there_is_no_draft(
         ProductFilterUtility $filterUtility,
-        SelectProductIdsByUserAndDraftStatusQueryInterface $selectProductIdsByUserAndDraftStatusQuery,
+        SelectProductUuidsByUserAndDraftStatusQueryInterface $selectProductUuidsByUserAndDraftStatusQuery,
         SelectProductModelIdsByUserAndDraftStatusQueryInterface $selectProductModelIdsByUserAndDraftStatusQuery,
         UserContext $userContext,
         UserInterface $user,
@@ -123,7 +128,7 @@ class DraftStatusFilterSpec extends ObjectBehavior
         $userContext->getUser()->willReturn($user);
         $user->getUsername()->willReturn('mary');
 
-        $selectProductIdsByUserAndDraftStatusQuery
+        $selectProductUuidsByUserAndDraftStatusQuery
             ->execute('mary', [EntityWithValuesDraftInterface::IN_PROGRESS])
             ->willReturn([]);
 

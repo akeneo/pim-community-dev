@@ -26,7 +26,7 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_product_row(ImageNormalizer $imageNormalizer)
     {
-        $technicalId = 10;
+        $technicalId = '57700274-9b48-4857-b17d-a7da106cd150';
         $productIdentifier = 'identifier';
         $label = 'Product label';
         $localeCode = 'en_US';
@@ -40,7 +40,7 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
         $this->normalize(new Rows([$row], 15, 8, 7), $channelCode, $localeCode)->shouldReturn(
             [
                 [
-                    'id'                             => $technicalId,
+                    'id'                             => '57700274-9b48-4857-b17d-a7da106cd150',
                     'identifier'                     => $productIdentifier,
                     'label'                          => $label,
                     'document_type'                  => 'product',
@@ -81,7 +81,7 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
     }
 
     private function productRow(
-        int $technicalId,
+        string $technicalId,
         string $productIdentifier,
         string $label,
         \StdClass $image,

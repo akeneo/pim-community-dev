@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\EventSubscriber;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
@@ -101,11 +102,12 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     {
         $skippedReasons = implode(', ', $event->getReasons());
         $patternItem = static::NAME_PATTERN.': subject "%s" has been skipped due to "%s".';
+        $subject = $event->getSubject();
         $messageItem = sprintf(
             $patternItem,
             $event->getDefinition()->getCode(),
             RuleEvents::SKIP,
-            $event->getSubject()->getId(),
+            $subject instanceof ProductInterface ? $subject->getUuid()->toString() : $subject->getId(),
             $skippedReasons
         );
         $this->logger->warning($messageItem);

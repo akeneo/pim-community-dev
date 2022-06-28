@@ -322,6 +322,9 @@ job_execution:
 pim_notification:
   types:
     reference_entity_mass_delete_records: Massapoisto tietueet
+akeneo_job_process_tracker:
+  type_filter:
+    reference_entity_mass_delete_records: Massapoista tietueet
 pim_analytics:
   info_type:
     nb_reference_entities: Viittaustietojen lukumäärä

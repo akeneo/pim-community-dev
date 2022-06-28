@@ -1,0 +1,197 @@
+table_attribute_template:
+  nutrition-europe:
+    average_nutritional_values:
+      label: Mitjana de valors nutricionals
+      options:
+        energy: Energia
+        fat: Greix
+        saturated_fat: Greixos saturats
+        carbohydrate: Carbohidrats
+        sugars: Sucres
+        protein: Proteïna
+        salt: Sal
+    per_100g:
+      label: 'Per 100g'
+    per_serving:
+      label: 'Per ració (x g)'
+    percentage_reference_intake:
+      label: '% de la ingesta de referència (per 100 g o porció)'
+  nutrition-unitedstates:
+    nutrition_facts:
+      label: Informació nutricional
+      options:
+        total_fat: Greix total (g)
+        saturated_fat: Greixos saturats (g)
+        trans_fat: Greix trans (g)
+        cholesterol: Colesterol (g)
+        sodium: Sodi (g)
+        total_carbohydrate: Carbohidrats totals (g)
+        dietary_fiber: Fibra dietètica (g)
+        total_sugars: Sucres totals (g)
+        included_added_sugars: Sucres afegits inclosos (g)
+        protein: Proteïna (g)
+    amount_per_serving:
+      label: Quantitat per porció
+    percentage_daily_value:
+      label: '% valor diari'
+  nutrition-unitedkingdom:
+    nutrition:
+      label: Nutrició
+      options:
+        energy: Energia
+        fat: Greix
+        of_which_saturates: dels quals saturats
+        carbohydrate: Carbohidrats
+        of_which_sugars: dels quals sucres
+        fibre: Fibra
+        protein: Proteïna
+        salt: Sal
+    per_100g:
+      label: Per 100g
+    percentage_reference_intake:
+      label: '% d''ingesta de referència'
+    your_reference_intake:
+      label: 'la teva ingesta de referència 8400kJ 2000kcal'
+  food_composition:
+    composition:
+      label: Composició
+      options:
+        wheat_flour: Farina de blat
+        butter: Mantega
+        water: Aigua
+        sugar: Sucre
+    percentage:
+      label: '%'
+    allergen:
+      label: Al·lergen
+  clothing_composition:
+    composition:
+      label: Composició
+      options:
+        cotton: Cotò
+        polyester: Polièster
+        elastane: Elastà
+    percentage:
+      label: '%'
+  dimensions-metric:
+    dimensions:
+      label: Dimensions
+      options:
+        length: Longitud (cm)
+        width: Amplada (cm)
+        height: Alçada (cm)
+        weight: Pes (kg)
+    value:
+      label: Valor
+  dimensions-imperial:
+    dimensions:
+      label: Dimensions
+      options:
+        length: Longitud (polzades)
+        width: Amplada (polzades)
+        height: Alçada (polzades)
+        weight: Pes (lliures)
+    value:
+      label: Valor
+  packaging-metric:
+    parcel:
+      label: Paquet
+      options:
+        parcel1: Paquet 1
+        parcel2: Paquet 2
+        parcel3: Paquet 3
+        parcel4: Paquet 4
+    width:
+      label: Amplada (cm)
+    length:
+      label: Longitud (cm)
+    height:
+      label: Alçada (cm)
+  packaging-imperial:
+    parcel:
+      label: Paquet
+      options:
+        parcel1: Paquet 1
+        parcel2: Paquet 2
+        parcel3: Paquet 3
+pim_table_attribute:
+  form:
+    attribute:
+      delete_first_column_option_helper: Quan suprimiu aquesta opció, se suprimirà tota la fila de tots els productes que utilitzin l'atribut de taula "{{ attributeLabel }}".
+      delete_other_column_option_helper: Quan suprimiu aquesta opció, el valor de la cel·la s'eliminarà per a tots els productes amb l'atribut de taula "{{ attributeLabel }}".
+      no_options_helper: Si us plau, afegiu la vostra primera opció.
+      no_options: No s'han trobat opcions
+      please_try_again: Si us plau, torna-ho a provar
+      first_column_type_helper: La primera columna d'una taula és sempre un tipus de columna Selecciona.
+      first_column_type_helper_with_reference_entity: La primera columna d'una taula és un tipus de columna "Selecciona" o "Entitat de referència".
+      discard_changes: Perdreu els canvis a les opcions de selecció si sortiu de la pàgina.
+      completeness: Integritat
+      required_for_completeness: Necessaris per a la integritat
+      completeness_helper_text: "Per descobrir com funciona la integritat per a un atribut de taula,"
+      completeness_helper_link: consulta el nostre centre d'ajuda.
+      reference_entity: Entitat de referència
+    product:
+      items_per_page: Ítems per pàgina
+      current_items: "{{ minItem }}-{{ maxItem }} de {{ itemCount }}"
+      current_page: "Pàgina {{ currentPage }} / {{ pageCount }}"
+      no_search_result: "Ho sentim, no hi ha línies per a la teva cerca!"
+      no_rows_title: "La vostra taula {{ attributeLabel }} està buida."
+      no_rows_subtitle: Afegiu files per definir propietats noves
+      no_rows_subtitle_no_permission: Per poder editar aquest atribut, aneu a la pàgina de configuració d'atributs o poseu-vos en contacte amb el vostre administrador PIM.
+      no_results: No hi ha resultats
+      no_options: No hi ha opcions
+      no_records: No hi ha registres
+      no_add_options_unallowed: Contacteu amb el vostre administrador PIM per gestionar les opcions "{{ attributeLabel }}".
+      edit_records_unallowed: Contacteu amb el vostre administrador PIM per gestionar l'entitat de referència "{{ referenceEntityLabel }}".
+      manage_records: Gestionar registres
+      actions:
+        delete_row: Suprimeix aquesta fila
+        clear_row: Esborra aquesta fila
+        move_first: Mou a la primera posició
+        move_last: Mou a l'última posició
+      order: Ordre
+      save_options_error: S'ha produït un error en desar les opcions
+      save_options_success: Opcions actualitzades correctament
+  properties:
+    data_type:
+      text: Text
+      number: Nombre
+      boolean: Sí/No
+      select: Seleccionar
+      reference_entity: Entitat de referència
+  validations:
+    column_code_must_be_filled: Cal omplir el codi
+    not_available_code: Aquest codi de columna no està disponible
+    column_data_type_must_be_filled: Cal omplir el tipus de dades
+    invalid_column_code: El codi de columna només pot contenir lletres, números i guions baixos
+    invalid_code: El codi només pot contenir lletres, números i guions baixos
+    duplicated_column_code: Cada columna requereix un codi únic. {{ duplicateCode }} ja s'utilitza
+    duplicated_select_code: Cada codi requereix un codi únic
+    max_greater_than_min: El màxim ha de ser superior al mínim
+    max_length: Nombre màxim de caràcters (fins a 100)
+    min: Valor mínim
+    max: Valor màxim
+    decimals_allowed: Valors decimals permesos
+  datagrid:
+    select_your_operator: Selecciona el seu operador
+    select_your_value: Seleccioneu el vostre valor
+    any_row: Qualsevol fila
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_table: Taula
+batch_jobs:
+  csv_table_attribute_options_export.label: Exportació d'opcions de selecció d'atributs de taula en CSV
+  xlsx_table_attribute_options_export.label: Exportació d'opcions de selecció d'atributs de taula a XLSX
+  csv_table_attribute_options_import.label: Importació d'opcions de selecció d'atributs de taula en CSV
+  xlsx_table_attribute_options_import.label: Importació d'opcions de selecció d'atributs de taula a XLSX
+  csv_product_table_values_export.label: Exportació de valors de la taula de productes en CSV
+  xlsx_product_table_values_export.label: Exportació de valors de la taula de productes a XLSX
+  csv_product_model_table_values_export.label: Exportació dels valors de la taula del model de producte en CSV
+  xlsx_product_model_table_values_export.label: Exportació dels valors de la taula del model de producte en XLSX
+  csv_product_table_values_import.label: Importació de valors de taula de productes en CSV
+  xlsx_product_table_values_import.label: Importació de valors de taula de productes en XLSX
+  csv_product_model_table_values_import.label: Importació dels valors de la taula del model de producte en CSV
+  xlsx_product_model_table_values_import.label: Importació dels valors de la taula del model de producte en XLSX

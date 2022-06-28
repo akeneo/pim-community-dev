@@ -13,14 +13,23 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
+use Webmozart\Assert\Assert;
+
 class ConvertToMeasurementOperation implements OperationInterface
 {
     public const TYPE = 'convert_to_measurement';
 
     public function __construct(
+        private string $uuid,
         private string $decimalSeparator,
         private string $unit,
     ) {
+        Assert::uuid($uuid);
+    }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
     }
 
     public function getDecimalSeparator(): string
@@ -36,6 +45,7 @@ class ConvertToMeasurementOperation implements OperationInterface
     public function normalize(): array
     {
         return [
+            'uuid' => $this->uuid,
             'type' => self::TYPE,
             'decimal_separator' => $this->decimalSeparator,
             'unit' => $this->unit,

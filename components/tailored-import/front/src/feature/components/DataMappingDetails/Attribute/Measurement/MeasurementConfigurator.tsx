@@ -98,6 +98,7 @@ const MeasurementConfigurator = ({
         compatibleOperations={[]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
+        validationErrors={filterErrors(validationErrors, '[operations]')}
       />
     </>
   );

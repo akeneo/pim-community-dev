@@ -9,8 +9,8 @@ dependencies:
     version: "2.0.15"
     repository: gs://akeneo-charts/
   - name: elasticsearch
-    version: "1.32.43"
+    version: "1.32.44"
     repository: gs://akeneo-charts/
   - name: memcached
-    version: "3.2.3"
-    repository: https://charts.helm.sh/stable
+    version: "6.1.4"
+    repository: https://charts.bitnami.com/bitnami

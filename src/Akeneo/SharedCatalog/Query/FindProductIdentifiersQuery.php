@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterface
 {
     public function __construct(
-        private GetProductIdFromProductIdentifierQueryInterface $getProductIdFromProductIdentifierQuery,
+        private GetProductUuidFromProductIdentifierQueryInterface $getProductUuidFromProductIdentifierQuery,
         private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
     ) {
     }
@@ -29,20 +29,18 @@ class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterfac
         $searchAfterProductIdentifier = $options['search_after'];
 
         if (null !== $searchAfterProductIdentifier) {
-            $searchAfterProductId = $this->getProductIdFromProductIdentifierQuery->execute($searchAfterProductIdentifier);
+            $searchAfterProductUUid = $this->getProductUuidFromProductIdentifierQuery->execute($searchAfterProductIdentifier);
 
-            if (null === $searchAfterProductId) {
+            if (null === $searchAfterProductUUid) {
                 throw new \InvalidArgumentException(sprintf(
                     'Product with identifier "%s" not found',
                     $searchAfterProductIdentifier
                 ));
             }
 
-            // @TODO CPM-596: use product_<uuid> once the uuid migration will be done
-            // Replace the $searchAfterProductId by a new $searchAfterProductUuid
             $pqbOptions['search_after'] = [
                 strtolower($searchAfterProductIdentifier),
-                'product_z',
+                'product_'.$searchAfterProductUUid->toString(),
             ];
         }
 

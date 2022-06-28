@@ -55,9 +55,9 @@ const SpellcheckProductValuesList: FC = () => {
 
       (async () => {
         if (isSimpleProduct(product) || isVariantProduct(product)) {
-          await fetchIgnoreTextIssue(text, locale, product.meta.id as number);
+          await fetchIgnoreTextIssue(text, locale, product.meta.id as string);
         } else {
-          await fetchProductModelIgnoreTextIssue(text, locale, product.meta.id as number);
+          await fetchProductModelIgnoreTextIssue(text, locale, product.meta.id as string);
         }
 
         Object.values(elements).forEach(({element}) => {

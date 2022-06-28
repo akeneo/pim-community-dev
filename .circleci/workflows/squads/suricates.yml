@@ -41,12 +41,15 @@ workflows:
                   - /SURI-.*/
                   - /OB2-.*/
                   - /OBS-.*/
+      - build_onboarder_supplier_front:
+            requires:
+              - checkout
+              - "Deploy Onboarder PR environment?"
       - build_srnt_prod:
             name: "Build srnt Prod for deploy PR"
             requires:
-              - checkout
               - test_helm_generated_k8s_files
-              - "Deploy Onboarder PR environment?"
+              - build_onboarder_supplier_front
       - deploy_pr_environment:
             name: "Deploy Onboarder PR environment"
             requires:

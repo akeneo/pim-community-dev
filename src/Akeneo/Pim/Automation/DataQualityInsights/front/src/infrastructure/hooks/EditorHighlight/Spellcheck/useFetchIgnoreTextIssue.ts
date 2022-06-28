@@ -17,9 +17,9 @@ const useFetchIgnoreTextIssue = () => {
 
       (async () => {
         if (isSimpleProduct(product) || isVariantProduct(product)) {
-          await fetchIgnoreTextIssue(word, locale, product.meta.id as number);
+          await fetchIgnoreTextIssue(word, locale, product.meta.id as string);
         } else {
-          await fetchProductModelIgnoreTextIssue(word, locale, product.meta.id as number);
+          await fetchProductModelIgnoreTextIssue(word, locale, product.meta.id as string);
         }
       })();
 

@@ -5,3 +5,4 @@ services:
       - '@akeneo.tailored_import.handler.execute_data_mapping'
       - '@akeneo.pim.structure.query.get_attributes'
       - '@akeneo.tailored_import.hydrator.data_mapping_collection'
+      - '@security.token_storage'

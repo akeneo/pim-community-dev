@@ -63,7 +63,7 @@ class FetchUserRightsOnProduct implements FetchUserRightsOnProductInterface
                         p.identifier as product_identifier, cp.category_id
                     FROM 
                         pim_catalog_product p
-                        LEFT JOIN pim_catalog_category_product cp ON cp.product_id = p.id
+                        LEFT JOIN pim_catalog_category_product cp ON cp.product_uuid = p.uuid
                         WHERE p.identifier IN (:productIdentifiers)
                     UNION
                     SELECT

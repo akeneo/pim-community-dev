@@ -85,12 +85,12 @@ final class InitializeGrowthEditionDoubleScoreCommand extends Command
 
     private function initializeProducts(array $criteriaToInitialize): void
     {
-        $lastProductId = '0';
+        $lastProductUuid = '0';
 
-        while ($productIds = $this->getNextBulkOfProductIds($lastProductId)) {
+        while ($productUuids = $this->getNextBulkOfProductUuids($lastProductUuid)) {
             try {
-                $this->createCriteriaEvaluationsForProducts->create($criteriaToInitialize, $this->productIdFactory->createCollection($productIds));
-                $lastProductId = end($productIds);
+                $this->createCriteriaEvaluationsForProducts->create($criteriaToInitialize, $this->productIdFactory->createCollection($productUuids));
+                $lastProductUuid = end($productUuids);
             } catch (\Throwable $exception) {
                 $this->deleteTask(self::$defaultName);
                 throw $exception;
@@ -98,18 +98,19 @@ final class InitializeGrowthEditionDoubleScoreCommand extends Command
         }
     }
 
-    private function getNextBulkOfProductIds(string $lastProductId): array
+    private function getNextBulkOfProductUuids(string $lastProductUuid): array
     {
         $limit = $this->bulkSize;
 
+        // Check on created and uuid
         $sql = <<<SQL
-SELECT id FROM pim_catalog_product
-WHERE id > :lastId
-ORDER BY id ASC
+SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product
+WHERE BIN_TO_UUID(uuid) > :lastUuid
+ORDER BY uuid ASC
 LIMIT $limit;
 SQL;
 
-        return $this->dbConnection->executeQuery($sql, ['lastId' => $lastProductId])->fetchFirstColumn();
+        return $this->dbConnection->executeQuery($sql, ['lastUuid' => $lastProductUuid])->fetchFirstColumn();
     }
 
     private function initializeProductModels(array $criteriaToInitialize): void

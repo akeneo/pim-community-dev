@@ -76,8 +76,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        $id = $product->getId();
-        $workingCopy = $this->productRepository->find($id);
+        $workingCopy = $this->productRepository->find($product->getUuid());
         $normalizedWorkingCopy = $this->normalizer->normalize($workingCopy, 'standard', $context);
         $draftStatus = null;
 
@@ -91,7 +90,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         $normalizedProduct = $this->normalizer->normalize($product, 'internal_api', $context);
 
-        $published = $this->publishedManager->findPublishedProductByOriginalId($product->getId());
+        $published = $this->publishedManager->findPublishedProductByOriginal($product);
         $ownerGroups = $this->categoryAccessRepo->getGrantedUserGroupsForEntityWithValues(
             $product,
             Attributes::OWN_PRODUCTS,

@@ -180,13 +180,9 @@ extensions:
                 -
                     field: updated
                     view: akeneo-product-updated-filter
-
-
-    pim-job-instance-xlsx-tailored-product-model-export-edit-filter-the-data-default-attribute-filters:
-        module: pim/job/product/edit/content/data/default-attribute-filters
-        parent: pim-job-instance-xlsx-tailored-product-model-export-edit-filter-the-data-filters
-        config:
-            types: [pim_catalog_identifier]
+                -
+                    field: identifier
+                    view: akeneo-attribute-identifier-filter
 
     pim-job-instance-xlsx-tailored-product-model-export-edit-filter-the-data-add-filter:
         module: pim/job/product/edit/content/data/add-select/attribute

@@ -20,6 +20,7 @@ envVarsDeployPreprod: &envVarsDeployPreprod
 
 envVarsDeployUCS: &envVarsDeployUCS
   ENV_NAME: "dev"
+  GOOGLE_PROJECT_ID_PROD: "akeneo-cloud"
   GOOGLE_PROJECT_ID: "akecld-blackhawk-sandbox"
   GOOGLE_COMPUTE_ZONE: "europe-west1-b"
   CLUSTER_NAME: "bh-cluster-sandbox"

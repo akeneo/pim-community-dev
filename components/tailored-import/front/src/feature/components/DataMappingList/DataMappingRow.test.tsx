@@ -125,9 +125,7 @@ test('it displays a data mapping row', async () => {
 
   expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   expect(screen.getByText('pim_common.parent')).toBeInTheDocument();
-  expect(
-    screen.getByText('akeneo.tailored_import.data_mapping.sources.title: Source 1 (A) Source 3 (C)')
-  ).toBeInTheDocument();
+  expect(screen.getByText('Source 1 (A), Source 3 (C)')).toBeInTheDocument();
 });
 
 test('it displays a pill when there is a validation error', async () => {

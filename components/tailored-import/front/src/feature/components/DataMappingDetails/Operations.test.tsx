@@ -24,6 +24,7 @@ test('it displays preview if sample data is provided', async () => {
       compatibleOperations={[]}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
@@ -44,6 +45,7 @@ test('it does not display preview if no source is set', async () => {
       compatibleOperations={[]}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
@@ -64,6 +66,7 @@ test('it calls refresh sample data handler when user refreshes a data', async ()
       compatibleOperations={[]}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={handleRefreshSampleData}
+      validationErrors={[]}
     />
   );
 
@@ -90,6 +93,7 @@ test('it displays compatible operation when present in data mapping', async () =
       compatibleOperations={['clean_html_tags']}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
@@ -109,6 +113,7 @@ test('it can add a compatible operation in data mapping', async () => {
       compatibleOperations={['clean_html_tags']}
       onOperationsChange={handleOperationsChange}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
@@ -130,6 +135,7 @@ test('it can remove an operation from data mapping', async () => {
       compatibleOperations={['clean_html_tags']}
       onOperationsChange={handleOperationsChange}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
@@ -149,6 +155,7 @@ test('it tells when there are no more available operations and hides the add but
       compatibleOperations={['clean_html_tags']}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
@@ -172,6 +179,7 @@ test('it tells when the operation block is not found', async () => {
       compatibleOperations={['unknown_operation']}
       onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
@@ -195,10 +203,11 @@ test('it can handle an operation change', async () => {
       compatibleOperations={['split']}
       onOperationsChange={handleOperationsChange}
       onRefreshSampleData={jest.fn()}
+      validationErrors={[]}
     />
   );
 
-  userEvent.click(screen.getByTitle('akeneo.tailored_import.data_mapping.operations.split.collapse'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_import.data_mapping.operations.common.collapse'));
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(screen.getByTitle('semicolon'));
 

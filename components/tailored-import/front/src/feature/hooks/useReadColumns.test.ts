@@ -7,6 +7,7 @@ const fileStructure: FileStructure = {
   first_column: 0,
   first_product_row: 1,
   sheet_name: null,
+  unique_identifier_column: 0,
 };
 
 const mockedColumns: Column[] = [{label: 'sku', index: 0, uuid: 'fake-uuid'}];

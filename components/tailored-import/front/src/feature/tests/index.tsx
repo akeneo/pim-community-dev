@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
-import {act} from '@testing-library/react';
+import {act, render} from '@testing-library/react';
 import {renderHook, RenderHookResult} from '@testing-library/react-hooks';
-import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
+import {Channel, DefaultProviders} from '@akeneo-pim-community/shared';
 import {Attribute, MeasurementFamily} from '../models';
 import {FetcherContext} from '../contexts';
 
@@ -191,11 +191,13 @@ type WrapperProps = {
 };
 
 const Wrapper = ({children}: WrapperProps) => (
-  <FetcherContext.Provider value={fetchers}>{children}</FetcherContext.Provider>
+  <DefaultProviders>
+    <FetcherContext.Provider value={fetchers}>{children}</FetcherContext.Provider>
+  </DefaultProviders>
 );
 
 const renderWithProviders = async (children: ReactNode) =>
-  await act(async () => void baseRender(<Wrapper>{children}</Wrapper>));
+  await act(async () => void render(<Wrapper>{children}</Wrapper>));
 
 const renderHookWithProviders = <P, R>(hook: (props: P) => R, initialProps?: P): RenderHookResult<P, R> =>
   renderHook(hook, {wrapper: Wrapper, initialProps});

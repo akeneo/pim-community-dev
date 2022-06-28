@@ -10,7 +10,7 @@ import {
   SettingsIllustration,
   useBooleanState,
 } from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {DataMapping, getDefaultOperation, Operation, OperationType} from '../../models';
 import {
   CleanHTMLTagsOperationBlock,
@@ -23,6 +23,12 @@ import {
   SPLIT_OPERATION_TYPE,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   SimpleSelectReplacementOperationBlock,
+  BOOLEAN_REPLACEMENT_OPERATION_TYPE,
+  BooleanReplacementOperationBlock,
+  CATEGORIES_REPLACEMENT_OPERATION_TYPE,
+  CategoriesReplacementOperationBlock,
+  EnabledReplacementOperationBlock,
+  ENABLED_REPLACEMENT_OPERATION_TYPE,
 } from './Operation';
 import {usePreviewData} from '../../hooks';
 
@@ -41,10 +47,13 @@ const OperationBlocksContainer = styled.div`
 const operationBlocks: {
   [operationType in OperationType]: FunctionComponent<OperationBlockProps>;
 } = {
+  [BOOLEAN_REPLACEMENT_OPERATION_TYPE]: BooleanReplacementOperationBlock,
+  [CATEGORIES_REPLACEMENT_OPERATION_TYPE]: CategoriesReplacementOperationBlock,
   [CLEAN_HTML_TAGS_OPERATION_TYPE]: CleanHTMLTagsOperationBlock,
-  [SPLIT_OPERATION_TYPE]: SplitOperationBlock,
-  [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,
+  [ENABLED_REPLACEMENT_OPERATION_TYPE]: EnabledReplacementOperationBlock,
   [MULTI_SELECT_REPLACEMENT_OPERATION_TYPE]: MultiSelectReplacementOperationBlock,
+  [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,
+  [SPLIT_OPERATION_TYPE]: SplitOperationBlock,
 };
 
 type OperationsProps = {
@@ -52,9 +61,16 @@ type OperationsProps = {
   compatibleOperations: OperationType[];
   onOperationsChange: (operations: Operation[]) => void;
   onRefreshSampleData: (index: number) => Promise<void>;
+  validationErrors: ValidationError[];
 };
 
-const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRefreshSampleData}: OperationsProps) => {
+const Operations = ({
+  dataMapping,
+  compatibleOperations,
+  onOperationsChange,
+  onRefreshSampleData,
+  validationErrors,
+}: OperationsProps) => {
   const translate = useTranslate();
   const [loadingSampleData, setLoadingSampleData] = useState<number[]>([]);
   const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
@@ -121,6 +137,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
                 isLastOperation={index === dataMapping.operations.length - 1}
                 onChange={handleOperationChange}
                 onRemove={handleOperationRemove}
+                validationErrors={filterErrors(validationErrors, `[${operation.uuid}]`)}
               />
             );
           })}
@@ -132,7 +149,10 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
             ) : (
               <Helper inline={true}>
                 {translate('akeneo.tailored_import.data_mapping.operations.no_available.text')}{' '}
-                <Link href="#TODO Add missing link" target="_blank">
+                <Link
+                  href="https://help.akeneo.com/pim/serenity/articles/tailored-import.html#discover-operations"
+                  target="_blank"
+                >
                   {translate('akeneo.tailored_import.data_mapping.operations.no_available.link')}
                 </Link>
               </Helper>

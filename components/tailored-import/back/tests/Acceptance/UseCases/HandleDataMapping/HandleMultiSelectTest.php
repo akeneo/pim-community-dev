@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapp
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
@@ -30,12 +31,12 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
     public function test_it_can_handle_a_multi_select_data_mapping_value(
         array $row,
         array $dataMappings,
-        UpsertProductCommand $expected,
+        ExecuteDataMappingResult $expected,
     ): void {
         $executeDataMappingQuery = $this->getExecuteDataMappingQuery($row, '25621f5a-504f-4893-8f0c-9f1b0076e53e', $dataMappings);
-        $upsertProductCommand = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
+        $result = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
 
-        Assert::assertEquals($expected, $upsertProductCommand);
+        Assert::assertEquals($expected, $result);
     }
 
     public function provider(): array
@@ -79,13 +80,16 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new SetMultiSelectValue('tshirt_style', null, null, ['vneck,long_sleeve,sportwear']),
-                        new SetMultiSelectValue('collection', 'ecommerce', 'fr_FR', ['autumn_2021,summer_2022,winter_2022']),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetMultiSelectValue('tshirt_style', null, null, ['vneck,long_sleeve,sportwear']),
+                            new SetMultiSelectValue('collection', 'ecommerce', 'fr_FR', ['autumn_2021,summer_2022,winter_2022']),
+                        ],
+                    ),
+                    [],
                 ),
             ],
             'it handles a multi select attribute target with multiple sources and no operation' => [
@@ -111,12 +115,15 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new SetMultiSelectValue('tshirt_style', null, null, ['vneck', 'long_sleeve']),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetMultiSelectValue('tshirt_style', null, null, ['vneck', 'long_sleeve']),
+                        ],
+                    ),
+                    [],
                 ),
             ],
             'it handles a multi select attribute target with single source and replacement operation' => [
@@ -146,12 +153,15 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new SetMultiSelectValue('tshirt_style', null, null, ['adidas']),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetMultiSelectValue('tshirt_style', null, null, ['adidas']),
+                        ],
+                    ),
+                    [],
                 ),
             ],
             'it handles a multi select attribute target with multiple sources and replacement operation' => [
@@ -187,18 +197,21 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new SetMultiSelectValue('tshirt_style', null, null, ['adidas', 'puma']),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetMultiSelectValue('tshirt_style', null, null, ['adidas', 'puma']),
+                        ],
+                    ),
+                    [],
                 ),
             ],
             'it handles a multi select attribute target with single source and split operation' => [
                 'row' => [
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
-                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'long_sleeve,short_sleeve',
+                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'long_sleeve,   short_sleeve',
                 ],
                 'data_mappings' => [
                     DataMapping::create(
@@ -219,12 +232,15 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new SetMultiSelectValue('tshirt_style', null, null, ['long_sleeve', 'short_sleeve']),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetMultiSelectValue('tshirt_style', null, null, ['long_sleeve', 'short_sleeve']),
+                        ],
+                    ),
+                    [],
                 ),
             ],
             'it handles a multi select attribute target with multiple sources and split operation' => [
@@ -252,12 +268,15 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new SetMultiSelectValue('tshirt_style', null, null, ['vneck', 'long_sleeve', 'short_sleeve']),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetMultiSelectValue('tshirt_style', null, null, ['vneck', 'long_sleeve', 'short_sleeve']),
+                        ],
+                    ),
+                    [],
                 ),
             ],
             'it handles a multi select attribute target with multiple sources and split & replacement operations' => [
@@ -295,19 +314,22 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new SetMultiSelectValue('tshirt_style', null, null, [
-                            'vneck',
-                            'short_sleeve',
-                            'adidas',
-                            'broussaille',
-                            'puma',
-                            'women',
-                        ]),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new SetMultiSelectValue('tshirt_style', null, null, [
+                                'vneck',
+                                'short_sleeve',
+                                'adidas',
+                                'broussaille',
+                                'puma',
+                                'women',
+                            ]),
+                        ],
+                    ),
+                    [],
                 ),
             ],
         ];

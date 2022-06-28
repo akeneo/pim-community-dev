@@ -25,7 +25,7 @@ const followAttributeSpellingCriterion = (
     JSON.stringify({
       label: translate('akeneo_data_quality_insights.product_edit_form.back_to_products'),
       route: isProductModel(product) ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit',
-      routeParams: {id: product.meta.id},
+      routeParams: isProductModel(product) ? {id: product.meta.id} : {uuid: product.meta.id},
       displayLinkRoutes: ['pim_enrich_attribute_index', 'pim_enrich_attribute_edit'],
     })
   );
