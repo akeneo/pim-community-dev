@@ -123,4 +123,3 @@ workflows:
                       - test_onboarder_bundle
                       - test_database
                       - test_back_behat_legacy_ce
-                      - test_catalogs_ee
