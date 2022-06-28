@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Command\Category\CheckCategoryTrees;
+namespace Akeneo\Category\Infrastructure\Cli\CheckCategoryTrees;
 
 class CategoriesPool
 {
