@@ -37,6 +37,7 @@ class PimImportExportExtension extends Extension
         $loader->load('queries.yml');
         $loader->load('repositories.yml');
         $loader->load('services.yml');
+        $loader->load('step.yml');
         $loader->load('storage_client.yml');
         $loader->load('validations.yml');
         $loader->load('widget.yml');

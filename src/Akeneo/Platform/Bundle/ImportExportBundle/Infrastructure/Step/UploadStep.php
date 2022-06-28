@@ -1,0 +1,105 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Step;
+
+use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
+use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageCommand;
+use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscriber\UpdateJobExecutionStorageSummarySubscriber;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobWithStepsInterface;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\AbstractStep;
+use Akeneo\Tool\Component\Batch\Step\ItemStep;
+use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+final class UploadStep extends AbstractStep
+{
+    private const STORAGE_KEY = 'storage';
+
+    public function __construct(
+        $name,
+        EventDispatcherInterface $eventDispatcher,
+        JobRepositoryInterface $jobRepository,
+        private JobRegistry $jobRegistry,
+        private TransferFilesToStorageHandler $transferFilesToStorageHandler,
+    ) {
+        parent::__construct($name, $eventDispatcher, $jobRepository);
+    }
+
+    protected function doExecute(StepExecution $stepExecution)
+    {
+        $jobExecution = $stepExecution->getJobExecution();
+
+        if (JobInstance::TYPE_EXPORT !== $jobExecution->getJobInstance()->getType()) {
+            throw new \Exception('Upload step should not be used for non export job.');
+        }
+
+        $jobParameters = $jobExecution->getRawParameters();
+        if (!array_key_exists(self::STORAGE_KEY, $jobParameters)) {
+            throw new \Exception('malformed job parameters, missing storage configuration');
+        }
+
+        if ('local' === $jobParameters[self::STORAGE_KEY]['type'] || 'none' === $jobParameters[self::STORAGE_KEY]['type']) {
+            return;
+        }
+
+        $this->eventDispatcher->addSubscriber(new UpdateJobExecutionStorageSummarySubscriber());
+        $command = new TransferFilesToStorageCommand(
+            $this->extractFileToTransfer($jobExecution),
+            $jobParameters[self::STORAGE_KEY],
+        );
+
+        $this->transferFilesToStorageHandler->handle($command);
+    }
+
+    private function extractFileToTransfer(JobExecution $jobExecution): array
+    {
+        $writtenFiles = [];
+        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
+
+        foreach ($job->getSteps() as $step) {
+            if (!$step instanceof ItemStep) {
+                continue;
+            }
+
+            $writer = $step->getWriter();
+            if (!$writer instanceof ArchivableWriterInterface) {
+                continue;
+            }
+
+            $writtenFiles = array_merge($writtenFiles, $this->extractFileToTransferFromWriter($writer));
+        }
+
+        return $writtenFiles;
+    }
+
+    private function extractFileToTransferFromWriter(ArchivableWriterInterface $writer): array
+    {
+        return array_map(
+            static fn (WrittenFileInfo $writtenFile) => new FileToTransfer(
+                $writtenFile->sourceKey(),
+                $writtenFile->sourceStorage(),
+                $writtenFile->outputFilepath(),
+            ),
+            $writer->getWrittenFiles()
+        );
+    }
+}
