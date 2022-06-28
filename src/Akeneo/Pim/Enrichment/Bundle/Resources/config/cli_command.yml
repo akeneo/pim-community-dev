@@ -92,4 +92,4 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@database_connection'
         tags:
-            - { name: 'console.command' }
+            - { name: 'console.command', command: 'pim:product:clean-removed-products', description: 'Erase documents present in Elasticsearch but not present in MySQL' }

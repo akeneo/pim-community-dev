@@ -13,11 +13,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Erases documents present in Elasticsearch but not present in MySQL
+ *
+ * @author    Anne-Laure Jouhanneau <anne-laure.jouhanneau@akeneo.com>
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class CleanRemovedProductsCommand extends Command
 {
     private const DEFAULT_BATCH_SIZE = 1000;
-
-    protected static $defaultName = 'pim:product:clean-removed-products';
 
     public function __construct(
         private ProductAndAncestorsIndexer $productAndAncestorsIndexer,
@@ -36,8 +41,7 @@ class CleanRemovedProductsCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'Number of products to index per batch',
                 self::DEFAULT_BATCH_SIZE
-            )
-            ->setDescription('Erase documents present in Elasticsearch but not present in MySQL');
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
