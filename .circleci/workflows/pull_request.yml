@@ -162,4 +162,3 @@ workflows:
                       - test_back_data_migrations
                       - test_grth
                       - test_tria
-                      - test_catalogs
