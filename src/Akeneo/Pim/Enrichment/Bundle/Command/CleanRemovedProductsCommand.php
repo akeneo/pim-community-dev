@@ -60,7 +60,7 @@ class CleanRemovedProductsCommand extends Command
         $output->writeln('');
         $output->writeln(sprintf('<info>%d products de-indexed</info>', $numberOfIndexedProducts));
 
-        return 0;
+        return Command::success;
     }
 
     private function getEraseDiffElasticsearchProductIdentifiers(int $batchSize): \Generator
