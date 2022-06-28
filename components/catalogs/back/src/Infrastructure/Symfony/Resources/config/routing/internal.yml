@@ -24,3 +24,8 @@ akeneo_catalogs_internal_save_criteria:
     methods: [ POST ]
     requirements:
         catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+
+akeneo_catalogs_internal_get_families:
+    path: '/rest/catalogs/families'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetFamiliesAction
+    methods: [ GET ]
