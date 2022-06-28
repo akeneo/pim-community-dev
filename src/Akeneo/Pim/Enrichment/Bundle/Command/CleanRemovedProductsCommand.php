@@ -57,7 +57,7 @@ class CleanRemovedProductsCommand extends Command
             $numberOfIndexedProducts = $this->doDeindex($deleteProductIdentifiers, new ProgressBar($output, 0));
         }
 
-        $output->writeln('');
+        $output->writeln();
         $output->writeln(sprintf('<info>%d products de-indexed</info>', $numberOfIndexedProducts));
 
         return Command::success;
