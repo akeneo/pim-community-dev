@@ -3,7 +3,6 @@
 namespace Akeneo\Category\Infrastructure\Cli\CheckCategoryTrees;
 
 use Doctrine\DBAL\Connection;
-use function Akeneo\Pim\Enrichment\Bundle\Command\Category\CheckCategoryTrees\count;
 
 class Category
 {
