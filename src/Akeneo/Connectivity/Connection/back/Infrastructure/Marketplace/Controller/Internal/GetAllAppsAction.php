@@ -47,6 +47,10 @@ final class GetAllAppsAction
         } catch (\Exception $e) {
             $this->logger->error(\sprintf('unable to retrieve the list of apps, got error "%s"', $e->getMessage()));
 
+            if (Response::HTTP_BAD_REQUEST === $e->getCode()) {
+                return new JsonResponse(GetAllAppsResult::create(0, [])->normalize());
+            }
+
             return new Response(null, Response::HTTP_NO_CONTENT);
         }
 
