@@ -28,5 +28,7 @@ test('it does not display expand button if item is empty', () => {
     item: {},
   };
 
+  renderWithProviders(<WarningHelper warning={warningWithEmptyItem} />);
+
   expect(screen.queryByText('job_execution.summary.display_item')).not.toBeInTheDocument();
 });
