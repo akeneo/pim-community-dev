@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use function Akeneo\Pim\Enrichment\Bundle\Command\Category\CheckCategoryTrees\count;
+use function Category\CheckCategoryTrees\count;
 
 /**
  * Checks whether categories tree are sane or corrupted
@@ -21,7 +21,7 @@ use function Akeneo\Pim\Enrichment\Bundle\Command\Category\CheckCategoryTrees\co
  */
 class CheckCategoryTrees extends Command
 {
-    protected static $defaultName = 'pim:categories:check-order';
+    protected static $defaultName = 'akeneo:categories:check-order';
 
     private Connection $connection;
 
