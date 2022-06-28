@@ -30,7 +30,7 @@ class UpdateCatalogProductSelectionCriteriaQuery implements UpdateCatalogProduct
             $query,
             [
                 'id' => Uuid::fromString($id)->getBytes(),
-                'product_selection_criteria' => array_values($productSelectionCriteria),
+                'product_selection_criteria' => \array_values($productSelectionCriteria),
             ],
             [
                 'product_selection_criteria' => Types::JSON,

@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation;
 
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class UpdateCatalogPayloadIsValid extends Compound
 {
+    /**
+     * @param array<array-key, mixed> $options
+     * @return array<array-key, Constraint>
+     */
     protected function getConstraints(array $options): array
     {
         return [
@@ -40,12 +48,12 @@ class UpdateCatalogPayloadIsValid extends Compound
                                 'allowExtraFields' => false,
                             ]),
                         ),
-                        new Assert\Callback(function ($array, ExecutionContextInterface $context) {
-                            if (!is_array($array)) {
+                        new Assert\Callback(static function (mixed $array, ExecutionContextInterface $context): void {
+                            if (!\is_array($array)) {
                                 return;
                             }
 
-                            if (count(array_filter(array_keys($array), 'is_string')) > 0) {
+                            if (\count(\array_filter(\array_keys($array), 'is_string')) > 0) {
                                 $context->buildViolation('Invalid array structure.')
                                     ->addViolation();
                             }
