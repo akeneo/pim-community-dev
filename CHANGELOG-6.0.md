@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.32 (2022-06-28)
+
 ## Improvement
 
 - Improvement: Update Composer dependencies and fix ArabicHtmlFormatterSpec
