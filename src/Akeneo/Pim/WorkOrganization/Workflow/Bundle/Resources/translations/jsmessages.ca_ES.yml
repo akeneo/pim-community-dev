@@ -123,6 +123,7 @@ pimee_enrich.entity.product:
       published: Publicat
       revert: Restaurar
     attribute:
+      can_be_updated_by_a_rule: "]-Inf, 1]Aquest atribut es pot actualitzar mitjançant una regla:|]1, +Inf[Aquest atribut es pot actualitzar mitjançant les regles:"
       value_updated: Aquest valor s'actualitzarà pel projecte actual
     meta:
       published_version: Versió publicada
