@@ -162,6 +162,7 @@ final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
                 ],
             ]
         );
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     private function createProduct(string $identifier, array $data): void
