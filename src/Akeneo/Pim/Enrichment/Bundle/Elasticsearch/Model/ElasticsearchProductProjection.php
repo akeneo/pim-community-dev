@@ -5,23 +5,21 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Model\AffectedByMigrationProjection;
-use Symfony\Component\Serializer\Encoder\NormalizationAwareInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Model\ElasticsearchProjection;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ElasticsearchProductProjection implements AffectedByMigrationProjection
+final class ElasticsearchProductProjection implements ElasticsearchProjection
 {
     private const INDEX_PREFIX_ID   = 'product_';
     private const INDEX_DATE_FORMAT = 'c';
 
     public function __construct(
-        private string $id,
-        private ?string $uuid,
+        private UuidInterface $uuid,
         private string $identifier,
         private \DateTimeImmutable $createdDate,
         private \DateTimeImmutable $updatedDate,
@@ -50,7 +48,6 @@ final class ElasticsearchProductProjection implements AffectedByMigrationProject
         $additionalData = array_merge($this->additionalData, $additionalData);
 
         return new self(
-            $this->id,
             $this->uuid,
             $this->identifier,
             $this->createdDate,
@@ -75,16 +72,6 @@ final class ElasticsearchProductProjection implements AffectedByMigrationProject
         );
     }
 
-    public function shouldBeMigrated(): bool
-    {
-        return $this->uuid !== null;
-    }
-
-    public function getFormerDocumentId(): string
-    {
-        return sprintf('%s%s', self::INDEX_PREFIX_ID, $this->id);
-    }
-
     public function toArray(): array
     {
         $inGroup = null;
@@ -104,7 +91,7 @@ final class ElasticsearchProductProjection implements AffectedByMigrationProject
         }
 
         $data = [
-            'id' => sprintf('%s%s', self::INDEX_PREFIX_ID, $this->uuid ?? $this->id),
+            'id' => sprintf('%s%s', self::INDEX_PREFIX_ID, $this->uuid->toString()),
             'identifier' => $this->identifier,
             'created' => $this->createdDate->format(self::INDEX_DATE_FORMAT),
             'updated' => $this->updatedDate->format(self::INDEX_DATE_FORMAT),

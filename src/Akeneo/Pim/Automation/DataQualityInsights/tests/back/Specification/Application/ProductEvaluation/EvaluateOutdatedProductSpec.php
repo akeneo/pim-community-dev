@@ -6,10 +6,12 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Pr
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -20,38 +22,38 @@ final class EvaluateOutdatedProductSpec extends ObjectBehavior
     public function let(
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
         EvaluateProducts $evaluateProducts,
-        ProductEntityIdFactoryInterface $idFactory
+        ProductUuidFactory $uuidFactory
     ) {
-        $this->beConstructedWith($hasUpToDateEvaluationQuery, $evaluateProducts, $idFactory);
+        $this->beConstructedWith($hasUpToDateEvaluationQuery, $evaluateProducts, $uuidFactory);
     }
 
     public function it_evaluate_a_product_if_it_has_outdated_evaluation(
-        $hasUpToDateEvaluationQuery,
-        $evaluateProducts,
-        $idFactory
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        EvaluateProducts $evaluateProducts,
+        ProductEntityIdFactoryInterface $uuidFactory
     ) {
-        $productId = new ProductId(42);
-        $collection = ProductIdCollection::fromString('42');
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $collection = ProductUuidCollection::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
-        $hasUpToDateEvaluationQuery->forProductId($productId)->willReturn(false);
-        $idFactory->createCollection(['42'])->willReturn($collection);
+        $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(false);
+        $uuidFactory->createCollection(['df470d52-7723-4890-85a0-e79be625e2ed'])->willReturn($collection);
         $evaluateProducts->__invoke($collection)->shouldBeCalled();
 
-        $this->__invoke($productId);
+        $this->__invoke($productUuid);
     }
 
     public function it_does_not_evaluate_a_product_with_up_to_date_evaluation(
-        $hasUpToDateEvaluationQuery,
-        $evaluateProducts,
-        $idFactory
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        EvaluateProducts $evaluateProducts,
+        ProductEntityIdFactoryInterface $uuidFactory
     ) {
-        $productId = new ProductId(42);
-        $collection = ProductIdCollection::fromString('42');
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $collection = ProductUuidCollection::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
-        $hasUpToDateEvaluationQuery->forProductId($productId)->willReturn(true);
-        $idFactory->createCollection(['42'])->willReturn($collection);
+        $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(true);
+        $uuidFactory->createCollection(['df470d52-7723-4890-85a0-e79be625e2ed'])->willReturn($collection);
         $evaluateProducts->__invoke($collection)->shouldNotBeCalled();
 
-        $this->__invoke($productId);
+        $this->__invoke($productUuid);
     }
 }

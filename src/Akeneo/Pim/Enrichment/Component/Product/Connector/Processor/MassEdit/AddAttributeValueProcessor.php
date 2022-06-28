@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
@@ -181,7 +180,9 @@ class AddAttributeValueProcessor extends AbstractProcessor
             new DataInvalidItem(
                 [
                     'class'  => ClassUtils::getClass($entity),
-                    'id'     => $entity->getId(),
+                    'id'     => $entity instanceof ProductInterface && get_class($entity) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface'
+                        ? $entity->getUuid()->toString()
+                        : $entity->getId(),
                     'string' => $entity->getIdentifier(),
                 ]
             )

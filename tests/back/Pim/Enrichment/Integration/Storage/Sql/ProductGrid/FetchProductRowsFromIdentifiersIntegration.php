@@ -51,7 +51,7 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
                 'foo',
                 MediaValue::value('an_image', $akeneoImage),
                 31,
-                $product1->getId(),
+                $product1->getUuid()->toString(),
                 'sub_product_model',
                 new WriteValueCollection([
                     ScalarValue::value('sku', 'foo'),
@@ -68,7 +68,7 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
                 '[baz]',
                 null,
                 null,
-                $product2->getId(),
+                $product2->getUuid()->toString(),
                 null,
                 new WriteValueCollection([
                     ScalarValue::value('sku', 'baz'),

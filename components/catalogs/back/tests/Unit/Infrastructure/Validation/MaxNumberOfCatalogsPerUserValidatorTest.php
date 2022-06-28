@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Unit\Application\Validation;
+namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Application\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUser;
 use Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUserValidator;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
@@ -72,5 +74,18 @@ class MaxNumberOfCatalogsPerUserValidatorTest extends ConstraintValidatorTestCas
         ));
 
         $this->validator->validate(new \stdClass(), new MaxNumberOfCatalogsPerUser());
+    }
+
+    public function testItThrowsAnExceptionIfInvalidConstraint(): void
+    {
+        $this->expectException(UnexpectedTypeException::class);
+
+        $command = new CreateCatalogCommand(
+            id: '43c74e94-0074-4316-ac66-93cd0ca71a6b',
+            name: 'foo',
+            ownerUsername: 'shopifi',
+        );
+
+        $this->validator->validate($command, new NotBlank());
     }
 }

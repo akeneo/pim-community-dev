@@ -64,7 +64,7 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
                 '[baz]',
                 null,
                 null,
-                $product2->getId(),
+                $product2->getUuid()->toString(),
                 null,
                 new WriteValueCollection([
                     ScalarValue::value('sku', 'baz'),

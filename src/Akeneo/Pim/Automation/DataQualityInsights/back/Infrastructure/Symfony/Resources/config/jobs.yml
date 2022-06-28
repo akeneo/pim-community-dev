@@ -112,7 +112,7 @@ services:
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '@logger'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
 
     akeneo.pim.automation.data_quality_insights.connector.tasklet.evaluate_products_and_product_models_criteria:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsAndProductModelsCriteriaTasklet

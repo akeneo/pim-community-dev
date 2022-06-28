@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Connection;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Elasticsearch\Client;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -26,9 +26,6 @@ class CollectProductValidationErrorEndToEnd extends ApiTestCase
     /** @var FamilyLoader */
     private $familyLoader;
 
-    /** @var ProductLoader */
-    private $productLoader;
-
     /** @var Client */
     private $elasticsearch;
 
@@ -38,7 +35,6 @@ class CollectProductValidationErrorEndToEnd extends ApiTestCase
 
         $this->attributeLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.attribute');
         $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
-        $this->productLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product');
 
         $this->elasticsearch = $this->get('akeneo_connectivity.client.connection_error');
     }
@@ -94,6 +90,9 @@ class CollectProductValidationErrorEndToEnd extends ApiTestCase
         $doc = $result['hits']['hits'][0]['_source'];
         Assert::assertEquals('erp', $doc['connection_code']);
 
+        $uuid = $doc['content']['product']['uuid'];
+        Assert::assertTrue(Uuid::isValid($uuid));
+
         $expectedContent = [
             'property' => 'values',
             'message' => 'The unknown_color value is not in the color attribute option list.',
@@ -134,12 +133,24 @@ class CollectProductValidationErrorEndToEnd extends ApiTestCase
                 ]
             ],
             'product' => [
-                'id' => null,
+                'uuid' => Uuid::uuid4(),
                 'identifier' => 'high-top_sneakers',
                 'label' => 'high-top_sneakers',
-                'family' => 'shoes'
+                'family' => 'shoes',
             ]
         ];
-        Assert::assertEquals($expectedContent, $doc['content']);
+
+        $this->assertReponsesEquals($expectedContent, $doc['content']);
+    }
+
+    private function assertReponsesEquals(array $expectedContent, array $actualContent): void
+    {
+        if (isset($expectedContent['product']['uuid'])) {
+            Assert::assertTrue(Uuid::isValid($actualContent['product']['uuid']));
+            unset($expectedContent['product']['uuid']);
+            unset($actualContent['product']['uuid']);
+        }
+
+        Assert::assertEquals($expectedContent, $actualContent);
     }
 }

@@ -71,7 +71,7 @@ final class ApiAggregatorForProductPostSaveEventSubscriber implements EventSubsc
             return;
         }
 
-        $this->eventProducts[$product->getId()] = $product;
+        $this->eventProducts[$product->getUuid()->toString()] = $product;
 
         // We don't stop propagation because subscribers may not handle the bulk save.
         $event->setArgument('unitary', false);
