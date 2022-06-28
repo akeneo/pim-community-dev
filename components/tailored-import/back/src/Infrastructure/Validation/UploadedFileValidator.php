@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -21,11 +22,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class UploadedFileValidator extends ConstraintValidator
 {
-    public const ALLOWED_MIME_TYPES = [
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    ];
-    public const SIZE_LIMIT = '10M';
+    private const ALLOWED_MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    private const SIZE_LIMIT = '10M';
 
     public function validate($uploadedFile, Constraint $constraint): void
     {
@@ -40,9 +38,11 @@ class UploadedFileValidator extends ConstraintValidator
             new File([
                 'maxSize' => self::SIZE_LIMIT,
                 'maxSizeMessage' => UploadedFile::MAX_SIZE,
-                'mimeTypes' => self::ALLOWED_MIME_TYPES,
-                'mimeTypesMessage' => UploadedFile::NOT_ALLOWED_MIME_TYPE,
             ]),
+        ]);
+
+        $validator->inContext($this->context)->atPath('[file]')->validate($uploadedFile->getClientMimeType(), [
+            new EqualTo(self::ALLOWED_MIME_TYPE, null, UploadedFile::NOT_ALLOWED_MIME_TYPE),
         ]);
     }
 }
