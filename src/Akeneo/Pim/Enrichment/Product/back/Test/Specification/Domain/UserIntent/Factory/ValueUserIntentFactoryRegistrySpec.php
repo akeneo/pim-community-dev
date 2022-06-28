@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\UserIntentFactory;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValueUserIntentFactory;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -18,7 +17,7 @@ use PhpSpec\ObjectBehavior;
 class ValueUserIntentFactoryRegistrySpec extends ObjectBehavior
 {
     function let(
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributeTypes $getAttributeTypes,
         ValueUserIntentFactory $valueUserIntentFactory1,
         ValueUserIntentFactory $valueUserIntentFactory2,
         ValueUserIntentFactory $valueUserIntentFactory3,
@@ -27,12 +26,12 @@ class ValueUserIntentFactoryRegistrySpec extends ObjectBehavior
         $valueUserIntentFactory2->getSupportedAttributeTypes()->willReturn(['pim_catalog_identifier']);
         $valueUserIntentFactory3->getSupportedAttributeTypes()->willReturn(['pim_catalog_textarea']);
 
-        $this->beConstructedWith($attributeRepository, [$valueUserIntentFactory1, $valueUserIntentFactory2, $valueUserIntentFactory3]);
+        $this->beConstructedWith($getAttributeTypes, [$valueUserIntentFactory1, $valueUserIntentFactory2, $valueUserIntentFactory3]);
         $this->shouldImplement(UserIntentFactory::class);
     }
 
     function it_returns_user_intents(
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributeTypes $getAttributeTypes,
         ValueUserIntentFactory $valueUserIntentFactory1,
         ValueUserIntentFactory $valueUserIntentFactory2,
         ValueUserIntentFactory $valueUserIntentFactory3,
@@ -44,7 +43,7 @@ class ValueUserIntentFactoryRegistrySpec extends ObjectBehavior
         $valueUserIntentFactory2->getSupportedAttributeTypes()->willReturn(['pim_catalog_identifier']);
         $valueUserIntentFactory3->getSupportedAttributeTypes()->willReturn(['pim_catalog_textarea']);
 
-        $attributeRepository->getAttributeTypeByCodes(['a_text', 'sku', 'A_TExtAreA'])
+        $getAttributeTypes->fromAttributeCodes(['a_text', 'sku', 'A_TExtAreA'])
             ->shouldBeCalledOnce()
             ->willReturn([
                 'a_text' => 'pim_catalog_text',

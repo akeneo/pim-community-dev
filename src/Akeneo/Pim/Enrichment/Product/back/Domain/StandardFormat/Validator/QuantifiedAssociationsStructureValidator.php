@@ -10,8 +10,11 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class QuantifiedAssociationsStructureValidator
+class QuantifiedAssociationsStructureValidator
 {
+    /**
+     * @param mixed $data
+     */
     public function validate(string $field, $data): void
     {
         if (!is_array($data)) {
@@ -85,6 +88,9 @@ final class QuantifiedAssociationsStructureValidator
         }
     }
 
+    /**
+     * @param array<int|string, mixed> $data
+     */
     private function isArraySequential(array $data): bool
     {
         return empty($data) || array_keys($data) === range(0, count($data) - 1);
