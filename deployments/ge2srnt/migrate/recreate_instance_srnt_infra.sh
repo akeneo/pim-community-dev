@@ -66,6 +66,12 @@ echo "-----------------------------"
 ## Add use_edition_flag=true dans main.tf.json
 echo "--- Adding use_edition_flag in main.tf.json ---"
 jq -r '.module.pim.use_edition_flag |= true ' main.tf.json > main.tf.json.temp && mv main.tf.json.temp main.tf.json
+# Managing pim-monitoring module depreciation
+if [[ $(jq -r '.module  | has("pim-monitoring") ' main.tf.json) == "true" ]]; then
+    jq -r '.module."pim-monitoring".use_edition_flag |= "${module.pim.use_edition_flag}"' main.tf.json  > main.tf.json.temp && mv main.tf.json.temp main.tf.json
+else
+    echo "INFO: This instance doesn't have pim-monitoring terraform module"
+fi
 
 ## Remove disk and snapshot from main.tf
 echo "--- Delete mysql disk informations from main.tf.json ---"
