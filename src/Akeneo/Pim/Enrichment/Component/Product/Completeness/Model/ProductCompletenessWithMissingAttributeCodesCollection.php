@@ -10,21 +10,17 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
  */
 final class ProductCompletenessWithMissingAttributeCodesCollection implements \IteratorAggregate, \Countable
 {
-    /** @var int */
-    private $productId;
-
     /** @var ProductCompletenessWithMissingAttributeCodes[] */
-    private $completenesses = [];
+    private array $completenesses = [];
 
-    public function __construct(int $productId, array $completenesses)
+    public function __construct(private string $productId, array $completenesses)
     {
-        $this->productId = $productId;
         foreach ($completenesses as $completeness) {
             $this->add($completeness);
         }
     }
 
-    public function productId(): int
+    public function productId(): string
     {
         return $this->productId;
     }

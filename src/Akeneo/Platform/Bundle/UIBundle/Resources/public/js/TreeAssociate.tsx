@@ -11,7 +11,8 @@ class TreeAssociate {
   private selectedCategoryCodesByTreeIdInput: HTMLInputElement;
   private listCategoriesRoute: string;
   private childrenRoute: string;
-  private productId: number;
+  private productId?: number;
+  private productUuid?: string;
   private dataLocale?: string;
   private container: HTMLDivElement;
   private readOnly: boolean;
@@ -30,7 +31,8 @@ class TreeAssociate {
       return;
     }
     this.selectedCategoryCodesByTreeIdInput = document.getElementById('hidden-tree-input') as HTMLInputElement;
-    this.productId = Number(this.container.dataset.id);
+    this.productId = this.container.dataset.id !== '' ? Number(this.container.dataset.id) : undefined;
+    this.productUuid = this.container.dataset.uuid !== '' ? this.container.dataset.uuid : undefined;
     this.listCategoriesRoute = routes.list_categories;
     this.childrenRoute = routes.children;
     if (!this.container.dataset.datalocale) {
@@ -67,13 +69,21 @@ class TreeAssociate {
         JSON.parse(this.selectedCategoryCodesByTreeIdInput.value)[treeId] &&
         JSON.parse(this.selectedCategoryCodesByTreeIdInput.value)[treeId].length
       ) {
-        const url = Router.generate(this.listCategoriesRoute, {
-          id: this.productId,
+        const params: {[key: string]: any} = {
+          uuid: this.productUuid,
           categoryId: treeId,
           _format: 'json',
           context: 'associate',
           dataLocale: this.dataLocale,
-        });
+        };
+        if (typeof this.productUuid !== 'undefined') {
+          params.uuid = this.productUuid;
+        }
+        if (typeof this.productId !== 'undefined') {
+          params.id = this.productId;
+        }
+
+        const url = Router.generate(this.listCategoriesRoute, params);
 
         const response = await fetch(url);
         const json: CategoryResponse[] = await response.json();

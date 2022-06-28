@@ -8,8 +8,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -23,19 +24,25 @@ class GetUpToDateProductModelScoresQuery implements GetProductModelScoresQueryIn
     ) {
     }
 
-    public function byProductModelId(ProductEntityIdInterface $productModelId): Read\Scores
+    public function byProductModelId(ProductModelId $productModelId): Read\Scores
     {
-        if ($this->hasUpToDateEvaluationQuery->forProductId($productModelId)) {
+        if ($this->hasUpToDateEvaluationQuery->forEntityId($productModelId)) {
             return $this->getProductModelScoresQuery->byProductModelId($productModelId);
         }
 
         return new Read\Scores(new ChannelLocaleRateCollection(), new ChannelLocaleRateCollection());
     }
 
-    public function byProductModelIds(ProductEntityIdCollection $productIdCollection): array
+    public function byProductModelIdCollection(ProductModelIdCollection $productModelIdCollection): array
     {
-        $upToDateProducts = $this->hasUpToDateEvaluationQuery->forProductIdCollection($productIdCollection);
+        $upToDateProductModels = $this->hasUpToDateEvaluationQuery->forEntityIdCollection($productModelIdCollection);
 
-        return is_null($upToDateProducts) ? [] : $this->getProductModelScoresQuery->byProductModelIds($upToDateProducts);
+        if (is_null($upToDateProductModels)) {
+            return [];
+        }
+
+        Assert::isInstanceOf($upToDateProductModels, ProductModelIdCollection::class);
+
+        return $this->getProductModelScoresQuery->byProductModelIdCollection($upToDateProductModels);
     }
 }

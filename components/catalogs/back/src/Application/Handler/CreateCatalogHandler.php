@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
+use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 
@@ -15,6 +16,7 @@ final class CreateCatalogHandler
 {
     public function __construct(
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
+        private UpdateCatalogProductSelectionCriteriaQueryInterface $updateCatalogProductSelectionCriteriaQuery,
     ) {
     }
 
@@ -25,6 +27,17 @@ final class CreateCatalogHandler
             $command->getName(),
             $command->getOwnerUsername(),
             false,
+        );
+
+        $this->updateCatalogProductSelectionCriteriaQuery->execute(
+            $command->getId(),
+            [
+                [
+                    'field' => 'enabled',
+                    'operator' => '=',
+                    'value' => true,
+                ],
+            ],
         );
     }
 }

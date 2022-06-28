@@ -12,6 +12,9 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
         left_idx:
             columns:
                 - lft
+        updated_idx:
+            columns:
+                - updated
     gedmo:
         tree:
             type: nested

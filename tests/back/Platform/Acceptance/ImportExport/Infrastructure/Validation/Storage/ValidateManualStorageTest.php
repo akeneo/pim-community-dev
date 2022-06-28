@@ -10,7 +10,7 @@ class ValidateManualStorageTest extends AbstractValidationTest
     /**
      * @dataProvider validManualStorage
      */
-    public function testItDoesNotBuildViolationsWhenManualStorageAreValid(array $value): void
+    public function test_it_does_not_build_violations_when_manual_storage_are_valid(array $value): void
     {
         $violations = $this->getValidator()->validate($value, new ManualUploadStorage(['xlsx', 'xls']));
 
@@ -20,7 +20,7 @@ class ValidateManualStorageTest extends AbstractValidationTest
     /**
      * @dataProvider invalidManualStorage
      */
-    public function testItBuildViolationsWhenManualStorageAreInvalid(
+    public function test_it_build_violations_when_manual_storage_are_invalid(
         string $expectedErrorMessage,
         string $expectedErrorPath,
         array $value,

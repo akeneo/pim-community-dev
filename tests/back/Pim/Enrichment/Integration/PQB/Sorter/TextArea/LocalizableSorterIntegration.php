@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\TextArea;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -31,30 +32,18 @@ class LocalizableSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('cat', [
-            'values' => [
-                'a_localizable_text_area' => [
-                    ['data' => 'black cat', 'locale' => 'en_US', 'scope' => null],
-                    ['data' => 'chat <b>noir</b>', 'locale' => 'fr_FR', 'scope' => null],
-                ]
-            ]
+            new SetTextareaValue('a_localizable_text_area',null,'en_US', 'black cat'),
+            new SetTextareaValue('a_localizable_text_area',null,'fr_FR', 'chat <b>noir</b>'),
         ]);
 
         $this->createProduct('cattle', [
-            'values' => [
-                'a_localizable_text_area' => [
-                    ['data' => 'cattle', 'locale' => 'en_US', 'scope' => null],
-                    ['data' => '<h1>cattle</h1>', 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetTextareaValue('a_localizable_text_area', null, 'en_US', 'cattle'),
+            new SetTextareaValue('a_localizable_text_area', null, 'fr_FR', '<h1>cattle</h1>'),
         ]);
 
         $this->createProduct('dog', [
-            'values' => [
-                'a_localizable_text_area' => [
-                    ['data' => 'just a dog...', 'locale' => 'en_US', 'scope' => null],
-                    ['data' => 'juste un chien', 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetTextareaValue('a_localizable_text_area', null, 'en_US', 'just a dog...'),
+            new SetTextareaValue('a_localizable_text_area', null, 'fr_FR', 'juste un chien'),
         ]);
 
         $this->createProduct('empty_product', []);

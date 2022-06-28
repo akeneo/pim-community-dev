@@ -23,11 +23,12 @@ final class SqlFindCategoryTreesIntegration extends TestCase
     /** @test */
     public function it_fetches_the_category_trees(): void
     {
+        $actual = $this->sqlFindCategoryTrees->execute();
+
         $masterTree = new CategoryTree();
+        $masterTree->id = $actual[0]->id;
         $masterTree->code = 'master';
         $masterTree->labels = ['en_US' => 'Master catalog'];
-
-        $actual = $this->sqlFindCategoryTrees->execute();
 
         $expected = [$masterTree];
         self::assertEquals($expected, $actual);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionHealthCheck;
 use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTracking;
 use Akeneo\Platform\Job\Application\SearchJobExecution\Model\StepExecutionTracking;
@@ -51,8 +50,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $query->page = 2;
 
         $expectedJobExecutions = [
+            $this->getExpectedJobExecutionRow($this->jobExecutionIds[4]),
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[2]),
-            $this->getExpectedJobExecutionRow($this->jobExecutionIds[3]),
         ];
 
         $this->assertEquals($expectedJobExecutions, $this->query->search($query));
@@ -142,7 +141,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
 
         $query = new SearchJobExecutionQuery();
 
-        $this->assertEquals(4, $this->query->count($query));
+        $this->assertEquals(5, $this->query->count($query));
     }
 
     /**
@@ -227,8 +226,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $query->sortDirection = 'ASC';
 
         $expectedJobExecutions = [
+            $this->getExpectedJobExecutionRow($this->jobExecutionIds[4]),
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[3]),
-            $this->getExpectedJobExecutionRow($this->jobExecutionIds[0]),
         ];
 
         $this->assertEquals($expectedJobExecutions, $this->query->search($query));
@@ -247,8 +246,8 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $query->sortDirection = 'ASC';
 
         $expectedJobExecutions = [
+            $this->getExpectedJobExecutionRow($this->jobExecutionIds[4]),
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[3]),
-            $this->getExpectedJobExecutionRow($this->jobExecutionIds[0]),
         ];
 
         $this->assertEquals($expectedJobExecutions, $this->query->search($query));
@@ -392,7 +391,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'user' => 'julia',
             'status' => Status::COMPLETED,
             'is_stoppable' => false,
-            'health_check_time' => '2020-01-02T01:00:05+01:00',
         ]);
 
         $this->jobExecutionIds[] = $this->fixturesJobHelper->createJobExecution([
@@ -412,6 +410,21 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'job_instance_id' => $aProductExportJobInstanceId,
             'start_time' => null,
             'status' => Status::STARTING,
+        ]);
+
+        $crashedJobInstance = $this->fixturesJobHelper->createJobInstance([
+            'code' => 'a_crashed_job',
+            'job_name' => 'a_crashed_job',
+            'label' => 'A crashed job',
+            'type' => 'crashed',
+        ]);
+
+        $this->jobExecutionIds[] = $this->fixturesJobHelper->createJobExecution([
+            'job_instance_id' => $crashedJobInstance,
+            'start_time' => '2019-01-02T00:00:00+00:00',
+            'health_check_time' => '2019-01-02 01:00:00',
+            'user' => null,
+            'status' => Status::IN_PROGRESS,
         ]);
 
         $this->stepExecutionIds[] = $this->fixturesJobHelper->createStepExecution([
@@ -473,7 +486,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     'import',
                     new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
                     'julia',
-                    new JobExecutionHealthCheck(Status::fromLabel('COMPLETED'), new \DateTimeImmutable('2020-01-02T00:00:05+00:00'), new \DateTimeImmutable('2020-01-02 01:00:00')),
+                    Status::fromLabel('COMPLETED'),
                     false,
                     new JobExecutionTracking(3, 3, [
                         new StepExecutionTracking(
@@ -514,7 +527,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     'import',
                     new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
                     'peter',
-                    new JobExecutionHealthCheck(Status::fromLabel('IN_PROGRESS'), null, new \DateTimeImmutable('2020-01-02 01:00:00')),
+                    Status::fromLabel('IN_PROGRESS'),
                     true,
                     new JobExecutionTracking(1, 3, [
                         new StepExecutionTracking(
@@ -535,7 +548,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     'import',
                     null,
                     null,
-                    new JobExecutionHealthCheck(Status::fromLabel('STARTING'), null, new \DateTimeImmutable('2020-01-02 01:00:00')),
+                    Status::fromLabel('STARTING'),
                     true,
                     new JobExecutionTracking(0, 3, []),
                 ),
@@ -545,10 +558,20 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     'export',
                     null,
                     null,
-                    new JobExecutionHealthCheck(Status::fromLabel('STARTING'), null, new \DateTimeImmutable('2020-01-02 01:00:00')),
+                    Status::fromLabel('STARTING'),
                     true,
                     new JobExecutionTracking(0, 3, []),
                 ),
+                $this->jobExecutionIds[4] => new JobExecutionRow(
+                    $this->jobExecutionIds[4],
+                    'A crashed job',
+                    'crashed',
+                    new \DateTimeImmutable('2019-01-02T00:00:00+00:00'),
+                    null,
+                    Status::fromLabel('FAILED'),
+                    true,
+                    new JobExecutionTracking(0, 3, []),
+                )
             ];
         }
 

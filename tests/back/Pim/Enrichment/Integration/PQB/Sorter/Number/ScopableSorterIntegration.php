@@ -4,7 +4,9 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Number;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -33,21 +35,13 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_scopable_number' => [
-                    ['data' => '192.103', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => '16', 'locale' => null, 'scope' => 'tablet'],
-                ],
-            ],
+            new SetNumberValue('a_scopable_number', 'ecommerce', null, '192.103'),
+            new SetNumberValue('a_scopable_number', 'tablet', null, '16'),
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_scopable_number' => [
-                    ['data' => '16', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => '192.103', 'locale' => null, 'scope' => 'tablet'],
-                ],
-            ],
+            new SetNumberValue('a_scopable_number', 'ecommerce', null, '16'),
+            new SetNumberValue('a_scopable_number', 'tablet', null, '192.103'),
         ]);
 
         $this->createProduct('empty_product', []);

@@ -10,7 +10,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -24,39 +26,41 @@ final class GetProductScoresQuery implements GetProductScoresQueryInterface
     ) {
     }
 
-    public function byProductId(ProductEntityIdInterface $productId): Read\Scores
+    public function byProductUuid(ProductEntityIdInterface $productUuid): Read\Scores
     {
-        $productIdCollection = $this->idFactory->createCollection([(string)$productId]);
-        $productScores = $this->byProductIds($productIdCollection);
+        $productIdCollection = $this->idFactory->createCollection([(string)$productUuid]);
+        $productScores = $this->byProductUuidCollection($productIdCollection);
 
-        return $productScores[(string)$productId] ?? new Read\Scores(
+        return $productScores[(string)$productUuid] ?? new Read\Scores(
             new ChannelLocaleRateCollection(),
             new ChannelLocaleRateCollection()
         );
     }
 
-    public function byProductIds(ProductEntityIdCollection $productIdCollection): array
+    public function byProductUuidCollection(ProductEntityIdCollection $productUuidCollection): array
     {
-        if ($productIdCollection->isEmpty()) {
+        if ($productUuidCollection->isEmpty()) {
             return [];
         }
 
+        Assert::isInstanceOf($productUuidCollection, ProductUuidCollection::class);
+
         $query = <<<SQL
-SELECT product_id, scores, scores_partial_criteria
+SELECT BIN_TO_UUID(p.uuid) AS product_uuid, scores, scores_partial_criteria
 FROM pim_data_quality_insights_product_score
-WHERE product_id IN(:product_ids)
+WHERE product_uuid IN(:product_uuids)
 SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
-            ['product_ids' => $productIdCollection->toArrayString()],
-            ['product_ids' => Connection::PARAM_INT_ARRAY]
+            ['product_uuids' => $productUuidCollection->toArrayBytes()],
+            ['product_uuids' => Connection::PARAM_STR_ARRAY]
         );
 
         $productsScores = [];
         while ($row = $stmt->fetchAssociative()) {
-            $productId = $row['product_id'];
-            $productsScores[$productId] = new Read\Scores(
+            $productUuid = $row['product_uuid'];
+            $productsScores[$productUuid] = new Read\Scores(
                 $this->hydrateScores($row['scores']),
                 $this->hydrateScores($row['scores_partial_criteria'] ?? '{}'),
             );

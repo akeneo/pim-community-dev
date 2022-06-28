@@ -8,10 +8,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ComputePr
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -31,32 +33,34 @@ class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualitySco
     ) {
     }
 
-    public function __invoke(ProductEntityIdCollection $productIdCollection): void
+    public function __invoke(ProductEntityIdCollection $entityIdCollection): void
     {
         switch ($this->documentType) {
             case ProductModelInterface::class:
-                $scores = $this->getProductModelScoresQuery->byProductModelIds($productIdCollection);
+                Assert::isInstanceOf($entityIdCollection, ProductModelIdCollection::class);
+                $scores = $this->getProductModelScoresQuery->byProductModelIdCollection($entityIdCollection);
                 $identifierPrefix = self::PRODUCT_MODEL_IDENTIFIER_PREFIX;
                 break;
             case ProductInterface::class:
-                $scores = $this->getProductScoresQuery->byProductIds($productIdCollection);
+                Assert::isInstanceOf($entityIdCollection, ProductUuidCollection::class);
+                $scores = $this->getProductScoresQuery->byProductUuidCollection($entityIdCollection);
                 $identifierPrefix = self::PRODUCT_IDENTIFIER_PREFIX;
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid type %s', $this->documentType));
         }
 
-        $computedKeyIndicators = $this->computeProductsKeyIndicators->compute($productIdCollection);
+        $computedKeyIndicators = $this->computeProductsKeyIndicators->compute($entityIdCollection);
 
         $params = [];
-        foreach ($productIdCollection->toArray() as $productId) {
-            if (!array_key_exists((string) $productId, $scores)) {
+        foreach ($entityIdCollection->toArray() as $entityId) {
+            if (!array_key_exists((string) $entityId, $scores)) {
                 continue;
             }
-            $qualityScores = $scores[(string) $productId];
-            $keyIndicators = $computedKeyIndicators[(string) $productId] ?? [];
+            $qualityScores = $scores[(string) $entityId];
+            $keyIndicators = $computedKeyIndicators[(string) $entityId] ?? [];
 
-            $params[$identifierPrefix . $productId] = [
+            $params[$identifierPrefix . $entityId] = [
                 'script' => [
                     'inline' => "ctx._source.data_quality_insights = params;",
                     'params' => [
@@ -71,7 +75,7 @@ class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualitySco
         $this->esClient->bulkUpdate(
             array_map(
                 fn ($productId) => $identifierPrefix . $productId,
-                $productIdCollection->toArrayString()
+                $entityIdCollection->toArrayString()
             ),
             $params
         );

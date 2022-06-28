@@ -14,7 +14,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 
 interface StorageHydratorInterface
 {
-    public function hydrate(array $normalizedStorage): StorageInterface | NoneStorage;
+    public function hydrate(array $normalizedStorage): StorageInterface|NoneStorage;
 
     public function supports(array $normalizedStorage): bool;
 }

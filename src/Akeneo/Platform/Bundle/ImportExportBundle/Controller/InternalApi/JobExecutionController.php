@@ -53,7 +53,7 @@ class JobExecutionController
 
     public function getAction($identifier): JsonResponse
     {
-        /** @var JobExecution | null $jobExecution */
+        /** @var JobExecution|null $jobExecution */
         $jobExecution = $this->jobExecutionRepo->find($identifier);
         if (null === $jobExecution) {
             throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');

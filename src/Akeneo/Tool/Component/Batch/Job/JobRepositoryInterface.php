@@ -30,4 +30,9 @@ interface JobRepositoryInterface
     public function remove(array $jobsExecutions): void;
 
     public function addWarning(Warning $warning): void;
+
+    /**
+     * @param Warning[] $warnings
+     */
+    public function addWarnings(StepExecution $stepExecution, array $warnings): void;
 }

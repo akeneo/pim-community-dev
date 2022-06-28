@@ -87,6 +87,10 @@ pim_enrich.entity.attribute_option:
       add_option: Feu clic aquí per afegir-ne un
       delete_confirmation_title_msg: Eliminar "{{ optionCode }}" de les seves opcions?
       delete_confirmation_subtitle_msg: Esteu segur que voleu eliminar la opció? Aquesta acció no és pot desfer.
+      search:
+        placeholder: Cerca a l'etiqueta o codi
+        no_result:
+          title: No hi ha cap resultat per a la vostra cerca.
 pim_enrich.entity.association_type:
   label: tipus d'associació
   property:
@@ -115,6 +119,9 @@ pim_enrich.entity.association_type:
     delete:
       confirm: Esteu segur que voleu suprimir aquest tipus d'associació?
   hint: <a href="{{link}}" target="_blank">En aquest article</a>trobarà tot el que necessita per crear el seu propi tipus d'associació.
+  no_association_types:
+    title: No teniu cap tipus d'associació
+    hint: Crea el teu primer
 pim_enrich.entity.group_type:
   label: tipus de grup
   flash:
@@ -142,6 +149,7 @@ pim_enrich.entity.attribute:
       success: Atribut actualitzat correctament.
       fail: No s'ha pogut actualitzar l'atribut.
       fields_not_ready: "Ara no es pot guardar l'atribut. Els següents camps no estan preparats: {{ fields }}"
+      cant_remove_attributes_used_as_label: Els atributs utilitzats com a etiquetes en una família no es poden eliminar.
     delete:
       success: L'atribut s'ha suprimit correctament
       fail: No podeu eliminar aquest atribut
@@ -157,6 +165,7 @@ pim_enrich.entity.attribute:
     default_metric_unit:
       label: Unitat de mètrica per defecte
       choose: Trieu una unitat
+    guidelines: Directrius d'atributs
     group:
       label: Grup d'atributs
       choose: Trieu el grup de l'atribut
@@ -202,6 +211,11 @@ pim_enrich.entity.attribute:
       url: URL
     wysiwyg_enabled: Editor de text enriquit habilitat
     default_value: Valor per defecte
+    code:
+      must_be_filled: Cal omplir el codi
+      invalid: El codi no és vàlid
+      not_available: Aquest codi no està disponible
+      is_duplicate: Aquest codi ja s'utilitza.
   module:
     add_attribute:
       no_available_attributes: No hi ha més atributs a afegir
@@ -212,12 +226,15 @@ pim_enrich.entity.attribute:
       common: Paràmetres generals
       type_specific: Escriu els paràmetres específics
       validation: Paràmetres de validació
+      select_locale: Seleccioneu el local
     delete:
       confirm: Esteu segur que voleu suprimir aquest atribut?
       product_count: '{0}0 productes|{1}1 producte|]1, Inf[{{ count }} productes'
       product_model_count: '{0}0 models de producte|{1}1 model de producte|]1, Inf[{{ count }} models de producte'
+      used: ']-Inf,1]actualment té valors establerts per a aquest atribut, s''eliminaran.|]1, Inf[actualment tenen valors establerts per a aquest atribut, s''eliminaran.'
       helper:
         content: Si necessita canviar el seu tipus d'atribut per fer-lo localitzable o definible, mantenint l'accés als seus valors d'atributs existents,
+        link: consulteu el nostre Centre d'ajuda (per a més informació).
       type: Escriu "{{ attributeCode }}"
       confirm_from_family: Esteu segur que voleu suprimir aquest atribut de la família?
       confirm_from_group: Esteu segur que voleu suprimir l'atribut {{ attribute }} d'aquest grup d'atributs?

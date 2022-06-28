@@ -41,6 +41,7 @@ pim_title:
   akeneo_connectivity_connection_connect_marketplace_test_app_create: 테스트 앱 만들기
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: 테스트 앱 삭제
   akeneo_connectivity_connection_connect_connected_apps_open: 앱 열기
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: 카탈로그 편집
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -138,6 +139,7 @@ akeneo_connectivity.connection:
           not_listed_on_the_appstore: 앱이 Akeneo App Store 목록에 더 이상 없습니다. App 지원 팀에 문의해주십시오.
           manage_app: 앱 관리
           open_app: 앱 열기
+          pending: 앱이 연결되어 있지 않습니다. 앱을 열면 연결 문제를 해결할 수 있습니다.
         flash:
           error: 죄송합니다. 연결된 앱 목록을 가져오는 동안 오류가 발생했습니다.
       edit:
@@ -145,6 +147,7 @@ akeneo_connectivity.connection:
         tabs:
           settings: 설정
           permissions: 권한
+          catalogs: 카탈로그
           error_monitoring: 오류 모니터링
         settings:
           monitoring:
@@ -152,6 +155,7 @@ akeneo_connectivity.connection:
           authorizations:
             title: 권한 부여
             information: '앱 권한 부여에 관한 자세한 내용은 {{ link }}을(를) 확인하십시오.'
+            no_access_to_product_information: '이 연결된 앱은 제품 정보에 액세스하지 않습니다.'
             information_link_anchor: 도움말 문서
             no_scope: 특정 권한 부여 요청이 없습니다.
           authentication:
@@ -171,6 +175,9 @@ akeneo_connectivity.connection:
               1: 이 앱에서 오류를 추적하려면
               2: 설정에서
               3: 모니터링을 활성화하십시오.
+        catalogs:
+          edit:
+            not_found: 카탈로그를 찾을 수 없습니다
         flash:
           load_permissions_error.title: '{{ entity }}에 저장된 권한을 로드할 수 없습니다.'
           load_permissions_error.description: 나중에 다시 시도하십시오.
@@ -256,8 +263,10 @@ akeneo_connectivity.connection:
           reference_entity_record: 참조 엔터티 레코드
           asset_families: 애셋 패밀리
           assets: 애셋
+          catalogs: 카탈로그
         new: 신규
       error:
+        sub_text: 앱 지원 팀에 문의해주십시오.
         app_not_found: 기존 앱 중 이 client_id와 일치하는 것이 없습니다.
       constraint:
         client_id:
@@ -270,6 +279,8 @@ akeneo_connectivity.connection:
         redirect_uri:
           not_blank: redirect_uri가 필요합니다.
           must_be_url: redirect_uri는 유효한 URL이 아닙니다.
+        scope:
+          too_long: 범위 목록은 1,000자 이하여야 합니다.
   connections: 연결
   secondary_actions:
     title: 기타 작업

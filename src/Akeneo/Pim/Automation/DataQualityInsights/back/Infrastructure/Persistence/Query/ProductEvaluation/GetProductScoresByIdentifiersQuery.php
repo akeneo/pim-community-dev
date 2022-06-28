@@ -42,7 +42,7 @@ final class GetProductScoresByIdentifiersQuery implements GetProductScoresByIden
 SELECT product.identifier, product_score.scores, product_score.scores_partial_criteria
 FROM pim_catalog_product product
 INNER JOIN pim_data_quality_insights_product_score AS product_score 
-    ON product_score.product_id = product.id
+    ON product_score.product_uuid = product.product_uuid
 WHERE product.identifier IN(:product_identifiers);
 SQL;
 

@@ -26,7 +26,7 @@ class GetEvaluableAttributesByProductModelQuery implements GetEvaluableAttribute
         $this->dbConnection = $dbConnection;
     }
 
-    public function execute(ProductEntityIdInterface $productId): array
+    public function execute(ProductEntityIdInterface $productModelId): array
     {
         $query = <<<SQL
 SELECT
@@ -58,7 +58,7 @@ SQL;
         $statement = $this->dbConnection->executeQuery(
             $query,
             [
-                'product_model_id' => (int)(string)$productId,
+                'product_model_id' => (int)(string)$productModelId,
                 'attribute_types' => AttributeType::EVALUABLE_ATTRIBUTE_TYPES,
             ],
             [

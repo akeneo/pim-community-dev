@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -28,7 +29,7 @@ class GroupsFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
         $this->get('pim_catalog.saver.group')->save($group);
 
-        $this->createProduct('foo', ['groups' => ['groupA', 'groupB']]);
+        $this->createProduct('foo', [new SetGroups(['groupA', 'groupB'])]);
         $this->createProduct('bar', []);
         $this->createProduct('baz', []);
     }

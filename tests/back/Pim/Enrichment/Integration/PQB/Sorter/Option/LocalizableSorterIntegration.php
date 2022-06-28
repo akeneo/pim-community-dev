@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Option;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -41,21 +42,13 @@ class LocalizableSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_localizable_simple_select' => [
-                    ['data' => 'black', 'locale' => 'en_US', 'scope' => null],
-                    ['data' => 'orange', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-            ],
+            new SetSimpleSelectValue('a_localizable_simple_select', null, 'en_US', 'black'),
+            new SetSimpleSelectValue('a_localizable_simple_select', null, 'fr_FR', 'orange'),
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_localizable_simple_select' => [
-                    ['data' => 'orange', 'locale' => 'en_US', 'scope' => null],
-                    ['data' => 'black', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-            ],
+            new SetSimpleSelectValue('a_localizable_simple_select', null, 'en_US', 'orange'),
+            new SetSimpleSelectValue('a_localizable_simple_select', null, 'fr_FR', 'black'),
         ]);
 
         $this->createProduct('empty_product', []);

@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Boolean;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -31,21 +32,13 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_scopable_yes_no' => [
-                    ['data' => false, 'scope' => 'ecommerce', 'locale' => null],
-                    ['data' => true, 'scope' => 'tablet', 'locale' => null]
-                ]
-            ]
+            new SetBooleanValue('a_scopable_yes_no', 'ecommerce', null, false),
+            new SetBooleanValue('a_scopable_yes_no', 'tablet', null, true),
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_scopable_yes_no' => [
-                    ['data' => true, 'scope' => 'ecommerce', 'locale' => null],
-                    ['data' => false, 'scope' => 'tablet', 'locale' => null],
-                ]
-            ]
+            new SetBooleanValue('a_scopable_yes_no', 'ecommerce', null, true),
+            new SetBooleanValue('a_scopable_yes_no', 'tablet', null, false),
         ]);
 
         $this->createProduct('empty_product', []);

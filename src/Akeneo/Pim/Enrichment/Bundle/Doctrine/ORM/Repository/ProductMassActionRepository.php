@@ -50,16 +50,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
      */
     public function deleteFromIds(array $identifiers)
     {
-        if (empty($identifiers)) {
-            throw new \LogicException('No products to remove');
-        }
-
-        $qb = $this->em->createQueryBuilder();
-        $qb
-            ->delete($this->entityName, 'p')
-            ->where($qb->expr()->in('p.id', $identifiers));
-
-        return $qb->getQuery()->execute();
+        throw new \LogicException("Products should not be removed using this method");
     }
 
     /**

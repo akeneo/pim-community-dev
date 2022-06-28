@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
 
-const Empty: FC = () => <>[Empty]</>;
+const Empty: FC = jest.fn(() => <>[Empty]</>);
 
 export {Empty};

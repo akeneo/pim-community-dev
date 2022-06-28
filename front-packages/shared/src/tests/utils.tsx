@@ -21,4 +21,4 @@ const renderDOMWithProviders = (ui: ReactElement, container: HTMLElement) =>
 const renderHookWithProviders: <P = {}, R = any>(hook: () => R) => RenderHookResult<P, R> = <P, R>(hook: () => R) =>
   renderHook<P, R>(hook, {wrapper: DefaultProviders});
 
-export {renderWithProviders, renderDOMWithProviders, renderHookWithProviders};
+export {renderWithProviders, renderDOMWithProviders, renderHookWithProviders, DefaultProviders};

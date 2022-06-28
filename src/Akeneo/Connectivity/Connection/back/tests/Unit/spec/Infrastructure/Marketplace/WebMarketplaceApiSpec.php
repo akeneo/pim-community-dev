@@ -44,7 +44,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         StreamInterface $stream
     ): void {
         $expectedResponse = [
-            'total' => 2,
+            'total' => 3,
             'limit' => 10,
             'offset' => 0,
             'items' => [
@@ -73,7 +73,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
                         'E-commerce',
                     ],
                     'certified' => false,
-                ],
+                ]
             ],
         ];
 
@@ -229,7 +229,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         $extensions = ($this->getApps())->getWrappedObject();
 
         Assert::assertEquals([
-            'total' => 1,
+            'total' => 2,
             'offset' => 0,
             'limit' => 120,
             'items' => [
@@ -248,6 +248,21 @@ class WebMarketplaceApiSpec extends ObjectBehavior
                     'activate_url' => 'https://yell-extension-t2omu7tdaq-uc.a.run.app/activate',
                     'callback_url' => 'https://yell-extension-t2omu7tdaq-uc.a.run.app/oauth2',
                 ],
+                [
+                    "id" => "b213fec1-02e6-4f88-9e2e-0ac86fa34d92",
+                    "author" => "Akeneo",
+                    "partner" => null,
+                    "name" => "Akeneo Demo App in docker",
+                    "activate_url" => "http://172.17.0.1:8090",
+                    "callback_url" => "http://172.17.0.1:8090/callback",
+                    "categories" => [
+                        "Advertising"
+                    ],
+                    "logo" => "https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-ico-app-demoapp_0.jpeg?itok=U7JH_xFa",
+                    "description" => "Apps are the best way to connect the third-party technology that you need to your Akeneo platform. The Akeneo Demo App will allow you to test out the connection experience. You can connect your PIM with the Demo App to see just how easy it is!",
+                    "certified" => false,
+                    "url" => "https://marketplace.akeneo.com/extension/akeneo-demo-app"
+                ]
             ],
         ], $extensions);
     }

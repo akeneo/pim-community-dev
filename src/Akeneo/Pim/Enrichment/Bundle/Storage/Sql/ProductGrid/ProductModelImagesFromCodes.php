@@ -232,6 +232,7 @@ SQL;
 
         $sql = <<<SQL
             SELECT 
+            /*+ SET_VAR(sort_buffer_size = 1000000) */
                 pm_root.code,
                 a_image.code as attribute_code,
                 pm_child.raw_values,

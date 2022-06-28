@@ -2,7 +2,6 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Doctrine\ORM\EntityManager;
@@ -10,7 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 
 /**
- * Job instance repository
+ * Job instance repository.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -21,8 +20,7 @@ class JobInstanceRepository extends EntityRepository implements DatagridReposito
     private JobRegistry $jobRegistry;
 
     /**
-     * @param EntityManager $em
-     * @param string        $class
+     * @param string $class
      */
     public function __construct(JobRegistry $jobRegistry, EntityManager $em, $class)
     {
@@ -42,7 +40,7 @@ class JobInstanceRepository extends EntityRepository implements DatagridReposito
 
         $qb = $this->createQueryBuilder('j');
         $qb
-            ->addSelect("j.jobName as jobName")
+            ->addSelect('j.jobName as jobName')
             ->addSelect(
                 "CONCAT('pim_import_export.status.', j.status) as statusLabel"
             )

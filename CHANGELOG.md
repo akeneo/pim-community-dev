@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10487: Fix import of very tiny measurement values (e.g. 0.000075 GRAM)
 - PIM-10215: Fixed last operation widget job type translation key
 - PIM-10233: Fix the saved value by an empty wysiwyg
 - PIM-10232: Fix "A new entity is found through the relationship" errors in jobs
@@ -44,6 +45,11 @@
 - PIM-10467: Fix create and delete quickly product models via API create indexation issue
 - PIM-10471: Do not generate 2 files when making a quick export of 1 type of products
 - PIM-10475: Fix option existence validation for numeric option codes
+- PIM-10483: Fix slow loading products when filtering by variants
+- PIM-10484: Fix job filter on status being incoherent with job interrupted by demon crash
+- PIM-10495: Fix product datagrid by increasing sort_buffer_size
+- PIM-10499: Fix MySQL's out of sort memory errors on variant product and product model edit form
+- PIM-10500: Fix API not returning quantified associations for products when association type code is numeric
 
 ## Improvements
 
@@ -52,6 +58,7 @@
 - Improvement: Use Debian Bullseye (v11) in Dockerfiles for akeneo/pim-php-dev:master
 - BH-1159: Refactor BatchCommand to use execution ID without batch code
 - BH-1159: Add tenant ID for batch processing
+- BH-1159: Use available JobMessage class for denormalization
 
 ## New features
 

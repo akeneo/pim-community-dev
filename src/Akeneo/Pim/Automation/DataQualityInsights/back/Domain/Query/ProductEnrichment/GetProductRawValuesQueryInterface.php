@@ -12,5 +12,5 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
  */
 interface GetProductRawValuesQueryInterface
 {
-    public function execute(ProductEntityIdInterface $productId): array;
+    public function execute(ProductEntityIdInterface $entityId): array;
 }

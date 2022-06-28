@@ -27,10 +27,15 @@ pim_import_export:
       error: La exportació <strong>%label%</strong> ha fallat
       warning: La exportació <strong>%label%</strong> acabat amb alguns avisos
       success: La exportació <strong>%label%</strong> ha acabat
+      warnings:
+        xlsx_cell_conversion_error: Excepció en convertir la columna "{0}" al tipus d'atribut de producte PIM objectiu (comproveu el format de cel·la d'Excel)
+        xlsx_cell_date_to_text_conversion_error: No es pot convertir la cel·la {0} amb format de data en un atribut de tipus text
     import:
       error: La importació <strong>%label%</strong> ha fallat
       warning: La importació <strong>%label%</strong> acabat amb alguns avisos
       success: La importació <strong>%label%</strong> ha acabat
+      warnings:
+        xlsx_cell_date_conversion_error: No es pot convertir la cel·la "{cellName}" amb format de data a un atribut del tipus {attributeType}
   list: Seleccioneu un job
   job_profile:
     tab:

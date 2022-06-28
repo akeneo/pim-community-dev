@@ -11,8 +11,8 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
 
 interface ProductEntityIdCollection extends \IteratorAggregate, \Countable
 {
-    /**  @param array<string> $ids */
-    public static function fromStrings(array $ids): self;
+    /**  @param array<string> $productEntityIds */
+    public static function fromStrings(array $productEntityIds): self;
 
     /** @return array<ProductEntityIdInterface> */
     public function toArray(): array;

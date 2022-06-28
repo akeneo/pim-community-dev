@@ -21,6 +21,8 @@ class FamilyAttributeAsLabelChangedSubscriberIntegration extends AbstractProduct
     {
         parent::setUp();
 
+        $this->createAdminUser();
+
         $this->esClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
     }
 
@@ -43,11 +45,9 @@ class FamilyAttributeAsLabelChangedSubscriberIntegration extends AbstractProduct
         ]);
 
         $this->createProduct('my_product1', [
-            'family' => $familyCode,
-            'values' => [
-                'name' => [['scope' => null, 'locale' => null, 'data' => 'ABCD']],
-                'meta_title' => [['scope' => null, 'locale' => null, 'data' => 'DCBA']],
-            ]
+            new SetFamily($familyCode),
+            new SetTextValue('name', null, null, 'ABCD'),
+            new SetTextValue('meta_title', null, null, 'DCBA'),
         ]);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByCode($familyCode);

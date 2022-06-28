@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Factory;
@@ -25,14 +26,17 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
     public function test_it_returns_a_ui_job_message(): void
     {
         $jobExecution = $this->createJobExecution('update_product_value');
-        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
-            'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
-            'job_execution_id' => $jobExecution->getId(),
-            'tenant_id' => 'foo_tenant_id',
-            'created_time' => '2021-03-08T15:37:23+01:00',
-            'updated_time' => null,
-            'options' => ['option1' => 'value1'],
-        ]);
+        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized(
+            [
+                'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
+                'job_execution_id' => $jobExecution->getId(),
+                'tenant_id' => 'foo_tenant_id',
+                'created_time' => '2021-03-08T15:37:23+01:00',
+                'updated_time' => null,
+                'options' => ['option1' => 'value1'],
+            ],
+            UiJobExecutionMessage::class
+        );
         self::assertInstanceOf(UiJobExecutionMessage::class, $jobExecutionMessage);
         self::assertEquals('215ee791-1c40-4c60-82fb-cb017d6bcb90', $jobExecutionMessage->getId()->toString());
         self::assertEquals($jobExecution->getId(), $jobExecutionMessage->getJobExecutionId());
@@ -45,13 +49,16 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
     public function test_it_returns_an_import_job_message(): void
     {
         $jobExecution = $this->createJobExecution('csv_product_import');
-        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
-            'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
-            'job_execution_id' => $jobExecution->getId(),
-            'created_time' => '2021-03-08T15:37:23+01:00',
-            'updated_time' => '2021-03-10T15:37:23+01:00',
-            'options' => ['option1' => 'value1', 'option2' => 'value2'],
-        ]);
+        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized(
+            [
+                'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
+                'job_execution_id' => $jobExecution->getId(),
+                'created_time' => '2021-03-08T15:37:23+01:00',
+                'updated_time' => '2021-03-10T15:37:23+01:00',
+                'options' => ['option1' => 'value1', 'option2' => 'value2'],
+            ],
+            ImportJobExecutionMessage::class
+        );
         self::assertInstanceOf(ImportJobExecutionMessage::class, $jobExecutionMessage);
         self::assertEquals('215ee791-1c40-4c60-82fb-cb017d6bcb90', $jobExecutionMessage->getId()->toString());
         self::assertEquals($jobExecution->getId(), $jobExecutionMessage->getJobExecutionId());
@@ -64,33 +71,39 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
     public function test_it_returns_an_export_job_message(): void
     {
         $jobExecution = $this->createJobExecution('csv_product_export');
-        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
-            'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
-            'job_execution_id' => $jobExecution->getId(),
-            'created_time' => '2021-03-08T15:37:23+01:00',
-            'updated_time' => null,
-            'options' => ['option1' => 'value1'],
-        ]);
+        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized(
+            [
+                'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
+                'job_execution_id' => $jobExecution->getId(),
+                'created_time' => '2021-03-08T15:37:23+01:00',
+                'updated_time' => null,
+                'options' => ['option1' => 'value1'],
+            ],
+            ExportJobExecutionMessage::class
+        );
         self::assertInstanceOf(ExportJobExecutionMessage::class, $jobExecutionMessage);
     }
 
     public function test_it_returns_a_backend_job_message(): void
     {
         $jobExecution = $this->createJobExecution('compute_completeness_of_products_family');
-        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
-            'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
-            'job_execution_id' => $jobExecution->getId(),
-            'created_time' => '2021-03-08T15:37:23+01:00',
-            'updated_time' => null,
-            'options' => ['option1' => 'value1'],
-        ]);
+        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized(
+            [
+                'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
+                'job_execution_id' => $jobExecution->getId(),
+                'created_time' => '2021-03-08T15:37:23+01:00',
+                'updated_time' => null,
+                'options' => ['option1' => 'value1'],
+            ],
+            null
+        );
         self::assertInstanceOf(DataMaintenanceJobExecutionMessage::class, $jobExecutionMessage);
     }
 
     protected function createJobExecution(
         string $jobInstanceCode,
         array $configuration = []
-    ) : JobExecution {
+    ): JobExecution {
         $jobInstance = $this->get('pim_enrich.repository.job_instance')->findOneBy(['code' => $jobInstanceCode]);
 
         $job = $this->get('akeneo_batch.job.job_registry')->get($jobInstanceCode);

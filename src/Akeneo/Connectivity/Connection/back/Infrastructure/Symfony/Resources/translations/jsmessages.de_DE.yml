@@ -41,6 +41,7 @@ pim_title:
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Eine Test-App erstellen
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: Test-App löschen
   akeneo_connectivity_connection_connect_connected_apps_open: App öffnen
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Katalog bearbeiten
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -138,6 +139,7 @@ akeneo_connectivity.connection:
           not_listed_on_the_appstore: App nicht mehr im Akeneo App Store aufgelistet. Bitte kontaktieren Sie den App-Support.
           manage_app: Apps verwalten
           open_app: App öffnen
+          pending: App nicht verbunden. Das Öffnen der App sollte Verbindungsprobleme beheben.
         flash:
           error: Beim Abrufen der Liste der verbundenen Apps ist ein Fehler aufgetreten.
       edit:
@@ -145,6 +147,7 @@ akeneo_connectivity.connection:
         tabs:
           settings: Einstellungen
           permissions: Berechtigungen
+          catalogs: Kataloge
           error_monitoring: Fehlerüberwachung
         settings:
           monitoring:
@@ -172,6 +175,9 @@ akeneo_connectivity.connection:
               1: Um Fehler in dieser App zu verfolgen,
               2: aktiviere Überwachung
               3: in den Einstellungen.
+        catalogs:
+          edit:
+            not_found: Katalog nicht gefunden
         flash:
           load_permissions_error.title: 'Berechtigungen auf {{ entity }} konnten nicht geladen werden.'
           load_permissions_error.description: Bitte später versuchen.
@@ -260,6 +266,7 @@ akeneo_connectivity.connection:
           catalogs: Kataloge
         new: NEU
       error:
+        sub_text: Bitte kontaktieren Sie den App-Support.
         app_not_found: Die client_id stimmt nicht mit einer existierenden App überein.
       constraint:
         client_id:
@@ -272,6 +279,8 @@ akeneo_connectivity.connection:
         redirect_uri:
           not_blank: Die redirect_uri ist erforderlich.
           must_be_url: Die redirect_uri ist keine gültige URL.
+        scope:
+          too_long: Die Gültigkeitsbereich darf nicht mehr als 1000 Zeichen betragen.
   connections: Verbindungen
   secondary_actions:
     title: Weitere Aktionen

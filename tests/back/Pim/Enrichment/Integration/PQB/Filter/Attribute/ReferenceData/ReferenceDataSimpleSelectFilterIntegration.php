@@ -4,6 +4,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\ReferenceData;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -30,28 +32,20 @@ class ReferenceDataSimpleSelectFilterIntegration extends AbstractProductQueryBui
         $this->createProduct(
             'product_one',
             [
-                'family' => 'a_family',
-                'values' => [
-                    'a_ref_data_simple_select' => [
-                        ['data' => 'acid-green', 'scope' => null, 'locale' => null],
-                    ],
-                ],
+                new SetFamily('a_family'),
+                new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null, null, 'acid-green')
             ]
         );
 
         $this->createProduct(
             'product_two',
             [
-                'family' => 'a_family',
-                'values' => [
-                    'a_ref_data_simple_select' => [
-                        ['data' => 'aero-blue', 'scope' => null, 'locale' => null],
-                    ],
-                ],
+                new SetFamily('a_family'),
+                new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null, null, 'aero-blue')
             ]
         );
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorIn()

@@ -5,7 +5,7 @@ job-lint-back: #Doc: launch PHPStan for job bounded context
 
 .PHONY: job-lint-fix-back
 job-lint-fix-back: #Doc: launch PHPStan for job bounded context
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=.php_cs.php src/Akeneo/Platform/Job
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=src/Akeneo/Platform/Job/back/tests/.php_cs.php
 
 .PHONY: job-coupling-back
 job-coupling-back: #Doc: launch coupling detector for job bounded context

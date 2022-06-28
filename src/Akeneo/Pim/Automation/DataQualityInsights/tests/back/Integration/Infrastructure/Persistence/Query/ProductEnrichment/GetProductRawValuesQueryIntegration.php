@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEnrichment;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductRawValuesQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\TestCase;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -18,7 +19,7 @@ class GetProductRawValuesQueryIntegration extends TestCase
 {
     public function test_it_returns_product_values_by_attribute()
     {
-        $productId = $this->createProduct();
+        $productUuid = $this->createProduct();
 
         $expectedRawValues = [
             'a_text' => [
@@ -35,7 +36,7 @@ class GetProductRawValuesQueryIntegration extends TestCase
 
         $productRawValues = $this
             ->get(GetProductRawValuesQuery::class)
-            ->execute($productId);
+            ->execute($productUuid);
 
         $this->assertProductHasRawValues($expectedRawValues, $productRawValues);
     }
@@ -44,7 +45,7 @@ class GetProductRawValuesQueryIntegration extends TestCase
     {
         $result = $this
             ->get(GetProductRawValuesQuery::class)
-            ->execute(new ProductId(1418), ['a_text', 'a_yes_no']);
+            ->execute(ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')), ['a_text', 'a_yes_no']);
 
         $this->assertSame([], $result);
     }
@@ -153,7 +154,7 @@ class GetProductRawValuesQueryIntegration extends TestCase
         $this->assertProductHasRawValues($expectedResult, $result);
     }
 
-    private function createProduct(): ProductId
+    private function createProduct(): ProductUuid
     {
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier('product_with_family')
@@ -170,16 +171,16 @@ class GetProductRawValuesQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->saveAll([$product]);
 
-        return $this->get(ProductIdFactory::class)->create((string)$product->getId());
+        return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }
 
-    private function createVariantProduct(string $identifier, array $data): ProductId
+    private function createVariantProduct(string $identifier, array $data): ProductUuid
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return $this->get(ProductIdFactory::class)->create((string)$product->getId());
+        return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }
 
     private function createProductModel(array $data): ProductModelInterface

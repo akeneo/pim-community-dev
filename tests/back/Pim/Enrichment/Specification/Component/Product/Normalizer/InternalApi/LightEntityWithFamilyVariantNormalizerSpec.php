@@ -25,6 +25,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class LightEntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
@@ -96,7 +97,7 @@ class LightEntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         ProductInterface $variantProduct,
         FileInfoInterface $fileInfo
     ) {
-        $variantProduct->getId()->willReturn(42);
+        $variantProduct->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $variantProduct->getIdentifier()->willReturn('tshirt_green');
         $variantProduct->getLabel('en_US', 'ecommerce')->willReturn('Green t-shirt');
 
@@ -110,11 +111,11 @@ class LightEntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $variantProduct->getImage()->willReturn($imageValue);
         $variantProduct->getValue('color')->willReturn(OptionValue::value('color', 'green'));
 
-        $getCompletenessRatio->forChannelCodeAndLocaleCode(42, 'ecommerce', 'en_US')->willReturn(44);
+        $getCompletenessRatio->forChannelCodeAndLocaleCode(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), 'ecommerce', 'en_US')->willReturn(44);
 
         $this->normalize($variantProduct, 'internal_api', ['channel' => 'ecommerce', 'locale' => 'en_US'])->shouldReturn(
              [
-                 'id' => 42,
+                 'uuid' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                  'identifier' => 'tshirt_green',
                  'labels' => ['en_US' => 'Green t-shirt'],
                  'axes_values_labels' => ['en_US' => 'Green'],

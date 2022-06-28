@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Metric;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -35,27 +36,15 @@ class LocalizableSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_localizable_metric' => [
-                    ['data' => ['amount' => '10.55', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetMeasurementValue('a_localizable_metric', null, 'fr_FR', '10.55', 'KILOWATT')
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_localizable_metric' => [
-                    ['data' => ['amount' => '15000', 'unit' => 'WATT'], 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetMeasurementValue('a_localizable_metric', null, 'fr_FR', '15000', 'KILOWATT')
         ]);
 
         $this->createProduct('product_three', [
-            'values' => [
-                'a_localizable_metric' => [
-                    ['data' => ['amount' => '-2.5654', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetMeasurementValue('a_localizable_metric', null, 'fr_FR', '-2.5654', 'KILOWATT')
         ]);
 
         $this->createProduct('empty_product', []);
