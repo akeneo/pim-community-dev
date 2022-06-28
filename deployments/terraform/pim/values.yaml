@@ -10,8 +10,6 @@ global:
     type: srnt
     instanceName: null # Generated with terraform template
     pfid: null # Generated with terraform template
-  monitoring:
-    enabled: false
 
 backup:
   enabled: true

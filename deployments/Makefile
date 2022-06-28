@@ -309,13 +309,7 @@ endif
 
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
-ifeq ($(ACTIVATE_MONITORING),true)
-	jq -s '.[0] * .[1]' $(DEPLOYMENT_DIR)/config/$(MAIN_TF_TEMPLATE).tpl.tf.json  $(DEPLOYMENT_DIR)/config/$(MAIN_TF_TEMPLATE)_monitoring.tpl.tf.json  > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
-else
 	cat $(DEPLOYMENT_DIR)/config/$(MAIN_TF_TEMPLATE).tpl.tf.json > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
-	@echo "-- WARNING: MONITORING is not activated on this PR. If your PR impact monitoring, please activate it."
-	@echo "To activate it show 'deactivate_monitoring' and 'ACTIVATE_MONITORING' on '.CircleCi/config.yml'"
-endif
 
 	CLUSTER_DNS_NAME=$(CLUSTER_DNS_NAME) \
 	GOOGLE_CLUSTER_ZONE=$(GOOGLE_CLUSTER_ZONE) \
@@ -356,9 +350,6 @@ endif
 .PHONY: change-terraform-source-version
 change-terraform-source-version: #Doc: change terraform pim and monitoring source to deploy infra with a custom git version
 	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform"
-ifeq ($(ACTIVATE_MONITORING),true)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform/monitoring"
-endif
 	@echo "Terraform pim and monitoring source updated"
 
 $(CLOUD_CUSTOMERS_DEV_DIR):
@@ -390,10 +381,6 @@ else
 ifeq ($(TYPE),srnt)
 	PIM_VERSION=$(shell yq r "$(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json" 'module.pim.pim_version'); \
 	yq w -j -P -i $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform"
-ifeq ($(ACTIVATE_MONITORING),true)
-	PIM_VERSION=$(shell yq r "$(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json" 'module.pim.pim_version'); \
-	yq w -j -P -i $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform/monitoring"
-endif
 endif
 	cp -r $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR) $(INSTANCE_DIR)
 endif

@@ -67,9 +67,6 @@ yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.password "${PIMPASS
 #yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mailgun_api_key' "key-coincoin"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.papo_project_code' "${TARGET_PAPO_PROJECT_CODE}"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.dns_external' "${TARGET_DNS_FQDN}"
-if [[ ${ACTIVATE_MONITORING} != "false" ]]; then
-      yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/${BUCKET}/${SOURCE_PED_TAG}//deployments/terraform/monitoring"
-fi
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/${BUCKET}/${SOURCE_PED_TAG}//deployments/terraform"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.pim_version' "${SOURCE_PED_TAG}"
 # remove the old mysql_disk & mysql_source_snapshot if exit

@@ -33,15 +33,6 @@ module "pim" {
   papo_project_code       = "NOT_ON_PAPO_srnt-${INSTANCE_NAME}"
   force_destroy_storage   = true
 }
-
-module "pim-monitoring" {
-  source = "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform/monitoring?ref=${tag_to_release}"
-
-  google_project_id      = "akecld-saas-dev"
-  instance_name          = "${INSTANCE_NAME}"
-  dns_external           = "${INSTANCE_NAME}.dev.cloud.akeneo.com."
-  pager_duty_service_key = "d55f85282a8e4e16b2c822249ad440bd"
-}
 ```
 
 ### 3. Create `values.yaml`
