@@ -50,8 +50,6 @@ final class CleanProductScoresCommand extends Command
         $output->writeln('Start cleaning...');
         $this->startTask(self::$defaultName);
 
-        $lastProductIdAsBytes = '';
-
         while ($productScoresToClean = $this->getNextProductUuidAsBytesScoresToClean()) {
             try {
                 $this->cleanProductScores($productScoresToClean);
