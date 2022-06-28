@@ -32,7 +32,7 @@ class ComputeProductsKeyIndicators
 
         $productsKeyIndicators = [];
         foreach ($productIdCollection as $productId) {
-            $productId = $productId->toInt();
+            $productId = (string) $productId;
             foreach ($localesByChannel as $channel => $locales) {
                 foreach ($locales as $locale) {
                     foreach ($keyIndicatorsResultsByName as $keyIndicatorName => $keyIndicatorResultsByProduct) {

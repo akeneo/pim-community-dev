@@ -150,5 +150,7 @@ akeneo_data_quality_insights:
     filter_value:
       good: Hyvä
       to_improve: Kehitettävä
+      "yes": "Kyllä"
+      "no": "Ei"
 pim_title:
   akeneo_data_quality_insights_dashboard: Tuotetiedon laadun analytiikka

@@ -10,6 +10,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 class ProductIndexerSpec extends ObjectBehavior
 {
@@ -99,19 +100,17 @@ class ProductIndexerSpec extends ObjectBehavior
         $this->indexFromProductIdentifiers([]);
     }
 
-    function it_deletes_products_from_elasticsearch_index(Client $productAndProductModelIndexClient)
-    {
-        $productAndProductModelIndexClient->delete('product_40')->shouldBeCalled();
-
-        $this->removeFromProductId(40)->shouldReturn(null);
-    }
-
     function it_bulk_deletes_products_from_elasticsearch_index(Client $productAndProductModelIndexClient)
     {
-        $productAndProductModelIndexClient->bulkDelete(['product_40', 'product_33'])
-            ->shouldBeCalled();
+        $productAndProductModelIndexClient->bulkDelete([
+            'product_54162e35-ff81-48f1-96d5-5febd3f00fd5',
+            'product_d9f573cc-8905-4949-8151-baf9d5328f26'
+        ])->shouldBeCalled();
 
-        $this->removeFromProductIds([40, 33])->shouldReturn(null);
+        $this->removeFromProductUuids([
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
+            Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26')
+        ])->shouldReturn(null);
     }
 
     function it_indexes_products_from_identifiers_and_waits_for_index_refresh(
@@ -173,8 +172,7 @@ class ProductIndexerSpec extends ObjectBehavior
     private function getElasticSearchProjection(string $identifier): ElasticsearchProductProjection
     {
         return new ElasticsearchProductProjection(
-            '1',
-            '1e40-4c55-a415-89c7958b270d',
+            Uuid::fromString('3bf35583-c54e-4f8a-8bd9-5693c142a1cf'),
             $identifier,
             new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),

@@ -4,7 +4,7 @@ import {Criterion} from '../../models/Criterion';
 export type StatusCriterionOperator = typeof Operator.EQUALS | typeof Operator.NOT_EQUAL;
 
 export type StatusCriterionState = {
-    field: 'status';
+    field: 'enabled';
     operator: StatusCriterionOperator;
     value: boolean;
 };

@@ -8,7 +8,7 @@ test('it creates a StatusCriterion with default values', () => {
         id: expect.any(String),
         module: expect.any(Function),
         state: {
-            field: 'status',
+            field: 'enabled',
             operator: Operator.EQUALS,
             value: true,
         },
@@ -25,7 +25,7 @@ test('it creates a StatusCriterion with empty values', () => {
         id: expect.any(String),
         module: expect.any(Function),
         state: {
-            field: 'status',
+            field: 'enabled',
             operator: Operator.EQUALS,
             value: true,
         },
@@ -42,7 +42,7 @@ test('it creates a StatusCriterion with given values', () => {
         id: expect.any(String),
         module: expect.any(Function),
         state: {
-            field: 'status',
+            field: 'enabled',
             operator: Operator.NOT_EQUAL,
             value: false,
         },

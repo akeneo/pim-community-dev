@@ -75,7 +75,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
      */
     protected function incrementCount(ProductInterface $product)
     {
-        if ($product->getId()) {
+        if ($product->getCreated()) {
             $this->stepExecution->incrementSummaryInfo('process');
         } else {
             $this->stepExecution->incrementSummaryInfo('create');

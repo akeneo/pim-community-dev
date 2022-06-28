@@ -6,11 +6,11 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CompletenessCalculationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdentifierFromProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdentifierFromProductUuidQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 
@@ -20,26 +20,20 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
  */
 final class CalculateProductCompleteness implements CalculateProductCompletenessInterface
 {
-    private GetProductIdentifierFromProductIdQueryInterface $getProductIdentifierFromProductIdQuery;
-
-    private CompletenessCalculator $completenessCalculator;
-
     public function __construct(
-        GetProductIdentifierFromProductIdQueryInterface $getProductIdentifierFromProductIdQuery,
-        CompletenessCalculator $completenessCalculator
+        private GetProductIdentifierFromProductUuidQueryInterface $getProductIdentifierFromProductIdQuery,
+        private CompletenessCalculator $completenessCalculator
     ) {
-        $this->completenessCalculator = $completenessCalculator;
-        $this->getProductIdentifierFromProductIdQuery = $getProductIdentifierFromProductIdQuery;
     }
 
-    public function calculate(ProductEntityIdInterface $productId): CompletenessCalculationResult
+    public function calculate(ProductEntityIdInterface $productUuid): CompletenessCalculationResult
     {
-        if (!$productId instanceof ProductId) {
-            throw new \InvalidArgumentException(sprintf('Invalid product id: %s', (string) $productId));
+        if (!$productUuid instanceof ProductUuid) {
+            throw new \InvalidArgumentException(sprintf('Invalid product uuid: %s', (string) $productUuid));
         }
 
         $result = new CompletenessCalculationResult();
-        $productIdentifier = $this->getProductIdentifierFromProductIdQuery->execute($productId);
+        $productIdentifier = $this->getProductIdentifierFromProductIdQuery->execute($productUuid);
         $completenessCollection = $this->completenessCalculator->fromProductIdentifier((string) $productIdentifier);
 
         foreach ($completenessCollection as $completeness) {

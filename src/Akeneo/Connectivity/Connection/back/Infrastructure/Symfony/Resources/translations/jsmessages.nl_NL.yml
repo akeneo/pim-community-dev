@@ -41,6 +41,7 @@ pim_title:
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Een testapp maken
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: Testapp verwijderen
   akeneo_connectivity_connection_connect_connected_apps_open: App openen
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Catalogus bewerken
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -138,6 +139,7 @@ akeneo_connectivity.connection:
           not_listed_on_the_appstore: De app staat niet meer in de Akeneo App Store. Neem contact op met het ondersteuningsteam voor apps.
           manage_app: App beheren
           open_app: App openen
+          pending: De app is niet verbonden. Door de app te openen, zouden de verbindingsproblemen opgelost moeten zijn.
         flash:
           error: Er is een fout opgetreden tijdens het ophalen van de lijst met verbonden apps.
       edit:
@@ -145,6 +147,7 @@ akeneo_connectivity.connection:
         tabs:
           settings: Instellingen
           permissions: Machtigingen
+          catalogs: Catalogi
           error_monitoring: Foutenmonitoring
         settings:
           monitoring:
@@ -152,6 +155,7 @@ akeneo_connectivity.connection:
           authorizations:
             title: autorisaties
             information: 'Bekijk onze {{ link }} voor meer informatie over app-autorisaties.'
+            no_access_to_product_information: 'Deze verbonden app heeft geen toegang tot uw productinformatie.'
             information_link_anchor: Artikel in Hulp
             no_scope: Er zijn geen specifieke autorisaties aangevraagd.
           authentication:
@@ -171,6 +175,9 @@ akeneo_connectivity.connection:
               1: Om fouten in deze app bij te houden,
               2: activeer monitoring
               3: in de instellingen.
+        catalogs:
+          edit:
+            not_found: Catalogus niet gevonden
         flash:
           load_permissions_error.title: 'De opgeslagen machtigingen op {{ entity }} kunnen niet worden geladen.'
           load_permissions_error.description: Probeer het later opnieuw.
@@ -256,8 +263,10 @@ akeneo_connectivity.connection:
           reference_entity_record: Records van referentie-entiteiten
           asset_families: assetfamilies
           assets: assets
+          catalogs: catalogi
         new: NIEUW
       error:
+        sub_text: Neem contact op met het ondersteuningsteam voor de App.
         app_not_found: De klant_id komt niet overeen met een bestaande app.
       constraint:
         client_id:
@@ -270,6 +279,8 @@ akeneo_connectivity.connection:
         redirect_uri:
           not_blank: De redirect_uri is vereist.
           must_be_url: De redirect_uri is geen geldige url.
+        scope:
+          too_long: De lijst voor bereik mag niet meer dan 1000 tekens bevatten.
   connections: Verbindingen
   secondary_actions:
     title: Overige acties

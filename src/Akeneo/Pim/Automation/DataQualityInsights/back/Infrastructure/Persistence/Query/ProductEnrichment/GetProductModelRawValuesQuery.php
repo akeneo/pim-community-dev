@@ -6,7 +6,9 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductRawValuesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -22,8 +24,10 @@ class GetProductModelRawValuesQuery implements GetProductRawValuesQueryInterface
         $this->dbConnection = $dbConnection;
     }
 
-    public function execute(ProductEntityIdInterface $productId): array
+    public function execute(ProductEntityIdInterface $productModelId): array
     {
+        Assert::isInstanceOf($productModelId, ProductModelId::class);
+
         $query = <<<SQL
 SELECT
     JSON_MERGE(
@@ -38,7 +42,7 @@ SQL;
         $statement = $this->dbConnection->executeQuery(
             $query,
             [
-                'product_model_id' => (int)(string)$productId,
+                'product_model_id' => (int)(string)$productModelId,
             ],
             [
                 'product_model_id' => \PDO::PARAM_INT,

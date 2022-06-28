@@ -7,15 +7,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\AbstractQuantifiedAssociationsTestCase;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractProductWithQuantifiedAssociationsTestCase extends AbstractQuantifiedAssociationsTestCase
 {
-    protected function updateProductWithInternalApi(string $productId, array $data): Response
+    protected function updateProductWithInternalApi(UuidInterface $productUuid, array $data): Response
     {
         $this->client->request(
             'POST',
-            sprintf('/enrich/product/rest/%s', $productId),
+            sprintf('/enrich/product/rest/%s', $productUuid->toString()),
             [],
             [],
             [
@@ -27,11 +28,11 @@ abstract class AbstractProductWithQuantifiedAssociationsTestCase extends Abstrac
         return $this->client->getResponse();
     }
 
-    protected function getProductFromInternalApi(string $productId): array
+    protected function getProductFromInternalApi(UuidInterface $productUuid): array
     {
         $this->client->request(
             'GET',
-            sprintf('/enrich/product/rest/%s', $productId),
+            sprintf('/enrich/product/rest/%s', $productUuid->toString()),
             [],
             [],
             [

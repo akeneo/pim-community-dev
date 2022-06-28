@@ -117,7 +117,8 @@ class ProductContext implements Context
         $product = $this->findProduct($identifier);
         $lastVersion = $this->versionRepository->getNewestLogEntry(
             ClassUtils::getClass($product),
-            $product->getId()
+            null,
+            $product->getUuid()
         );
         $actualChangeset = $lastVersion->getChangeset();
 

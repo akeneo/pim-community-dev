@@ -6,9 +6,11 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductUuidsFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -17,9 +19,9 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProduct
 final class GetDataQualityInsightsPropertiesForProductProjection implements GetAdditionalPropertiesForProductProjectionInterface
 {
     public function __construct(
-        private GetProductScoresQueryInterface                    $getProductScoresQuery,
-        private GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
-        private ComputeProductsKeyIndicators                      $getProductsKeyIndicators,
+        private GetProductScoresQueryInterface $getProductScoresQuery,
+        private GetProductUuidsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
+        private ComputeProductsKeyIndicators $getProductsKeyIndicators,
         private ProductEntityIdFactoryInterface $idFactory
     ) {
     }
@@ -35,7 +37,8 @@ final class GetDataQualityInsightsPropertiesForProductProjection implements GetA
         $productIdentifierIds = $this->getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers);
 
         $productIdCollection = $this->idFactory->createCollection(array_map(fn ($productId) => (string) $productId, array_values($productIdentifierIds)));
-        $productScores = $this->getProductScoresQuery->byProductIds($productIdCollection);
+        Assert::isInstanceOf($productIdCollection, ProductUuidCollection::class);
+        $productScores = $this->getProductScoresQuery->byProductUuidCollection($productIdCollection);
         $productKeyIndicators = $this->getProductsKeyIndicators->compute($productIdCollection);
 
         $additionalProperties = [];

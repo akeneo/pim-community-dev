@@ -13,5 +13,5 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
  */
 interface CalculateProductCompletenessInterface
 {
-    public function calculate(ProductEntityIdInterface $productId): CompletenessCalculationResult;
+    public function calculate(ProductEntityIdInterface $entityId): CompletenessCalculationResult;
 }

@@ -20,6 +20,11 @@ akeneo_catalogs:
     product_selection:
         empty: Add selection criteria to create your product selection
         more_information: Check out our Help center for more information.
+        add_criteria:
+            label: add selection criteria
+            search: search criterion
+            no_results: no matches found
+            section_system: system
         criteria:
             status:
                 label: Status

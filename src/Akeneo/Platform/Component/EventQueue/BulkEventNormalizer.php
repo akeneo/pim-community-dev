@@ -21,20 +21,20 @@ class BulkEventNormalizer implements NormalizerInterface, DenormalizerInterface
         $this->eventNormalizer = $eventNormalizer;
     }
 
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof BulkEvent;
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === BulkEvent::class;
     }
 
     /**
-     * @param BulkEvent $object
+     * @param BulkEventInterface $object
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         if (false === $this->supportsNormalization($object, $format)) {
             throw new \InvalidArgumentException();
@@ -45,7 +45,7 @@ class BulkEventNormalizer implements NormalizerInterface, DenormalizerInterface
         }, $object->getEvents());
     }
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): BulkEvent
     {
         if (false === $this->supportsDenormalization($data, $type, $format)) {
             throw new \InvalidArgumentException();

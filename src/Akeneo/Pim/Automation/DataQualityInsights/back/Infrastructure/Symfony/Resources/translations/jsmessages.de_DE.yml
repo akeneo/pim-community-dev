@@ -45,6 +45,8 @@ akeneo_data_quality_insights:
       title: Schlüsselindikatoren
       products: '{1}1 Produkt|]1, 200[{{ count }} Produkte|[200, Inf[mehr als {{ count }} Produkte'
       product_models: '{1}1 Produktmodell|]1, 200[{{ count }} Produktmodelle|[200, Inf[mehr als {{ count }} Produktmodelle'
+      entities_to_work_on: 'Sie haben <improvable_products_count_link/> zu bearbeiten.'
+      entities_to_work_on_2_kinds: 'Sie haben <improvable_products_count_link/> und <improvable_product_models_count_link/> zu bearbeiten.'
       list:
         has_image:
           title: Produkte mit einem Bild

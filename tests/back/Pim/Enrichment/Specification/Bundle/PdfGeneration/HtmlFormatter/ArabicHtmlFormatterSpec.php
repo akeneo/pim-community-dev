@@ -17,7 +17,7 @@ class ArabicHtmlFormatterSpec extends ObjectBehavior
     {
         $html = "<div class='test'><span>الآن لحضور المؤتمر الدولي العاشر ليونيكود</span><span>جتنملا مقر</span></div>";
 
-        $this->formatHtml($html)->shouldReturn("<div class='test'><span>ﺩﻮﻜﻴﻧﻮﻴﻟ ﺮﺷﺎﻌﻟﺍ ﻲﻟﻭﺪﻟﺍ ﺮﻤﺗﺆﻤﻟﺍ ﺭﻮﻀﺤﻟ ﻥﻵﺍ</span><span>ﺮﻘﻣ ﻼﻤﻨﺘﺟ</span></div>");
+        $this->formatHtml($html)->shouldReturn("<div class='test'><span>دﻮﻜﻴﻧﻮﻴﻟ ﺮﺷﺎﻌﻟا ﻲﻟوﺪﻟا ﺮﻤﺗﺆﻤﻟا رﻮﻀﺤﻟ نﻵا</span><span>ﺮﻘﻣ ﻼﻤﻨﺘﺟ</span></div>");
     }
 
     function it_does_not_alter_other_texts_and_numbers()

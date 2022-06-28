@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -176,11 +175,15 @@ class EditAttributesProcessor extends AbstractProcessor
             'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
             [],
             new DataInvalidItem(
-                [
-                    'class'  => ClassUtils::getClass($entity),
-                    'id'     => $entity->getId(),
-                    'string' => $entity->getIdentifier(),
-                ]
+                array_merge(
+                    $entity instanceof ProductInterface && get_class($entity) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface'
+                        ? ['uuid' => $entity->getUuid()->toString()]
+                        : ['id' => $entity->getId()],
+                    [
+                        'class'  => ClassUtils::getClass($entity),
+                        'string' => $entity->getIdentifier(),
+                    ]
+                )
             )
         );
     }

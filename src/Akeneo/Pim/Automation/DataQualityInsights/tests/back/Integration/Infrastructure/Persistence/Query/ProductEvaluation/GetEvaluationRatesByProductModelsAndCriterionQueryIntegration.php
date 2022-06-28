@@ -11,7 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductModelsAndCriterionQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -138,15 +138,15 @@ SQL,
         return [$productModelId => []];
     }
 
-    private function saveEvaluationResults(int $productModelId, array $evaluationResults): void
+    private function saveEvaluationResults(int $productModelIdAsInt, array $evaluationResults): void
     {
-        $productId = new ProductId($productModelId);
+        $productModelId = new ProductModelId($productModelIdAsInt);
         $evaluations = new Write\CriterionEvaluationCollection();
 
         foreach ($evaluationResults as $criterion => $evaluationResult) {
             $evaluation = new Write\CriterionEvaluation(
                 new CriterionCode($criterion),
-                $productId,
+                $productModelId,
                 CriterionEvaluationStatus::done()
             );
             $evaluation->end($evaluationResult);
