@@ -11,6 +11,8 @@ use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Model\Warning;
 
 class DoctrineJobRepositoryIntegration extends TestCase
 {
@@ -68,6 +70,47 @@ class DoctrineJobRepositoryIntegration extends TestCase
         $this->assertEquals(ExitStatus::UNKNOWN, $lastJobExecution->getExitStatus()->getExitCode());
         $this->assertEquals(['foo' => 'bar'], $lastJobExecution->getRawParameters());
         $this->assertEquals(['foo' => 'bar'], $lastJobExecution->getJobParameters()->all());
+    }
+
+    public function testAddWarnings()
+    {
+        $jobInstanceCode = 'csv_product_quick_export';
+        $jobInstance = $this->getJobInstanceRepository()->findOneByIdentifier($jobInstanceCode);
+        $job = $this->get('akeneo_batch.job.job_registry')->get($jobInstanceCode);
+        $jobParameters =  new JobParameters([]);
+        $jobExecution = $this->getDoctrineJobRepository()->createJobExecution($job, $jobInstance, $jobParameters);
+
+        $stepExecution = new StepExecution('step_with_warnings', $jobExecution);
+        $this->getDoctrineJobRepository()->updateStepExecution($stepExecution);
+        $jobExecution->addStepExecution($stepExecution);
+        $this->getDoctrineJobRepository()->updateJobExecution($jobExecution);
+
+        $warningCount = 5;
+        $warnings = [];
+
+        for ($i = 0; $i < $warningCount; $i++) {
+            $warnings[] = new Warning(
+                $stepExecution,
+                sprintf('Error {{ param }} %s', $i),
+                ['param' => 'value'],
+                ['name' => sprintf('Invalid item %s', $i)]
+            );
+        }
+
+        $this->getDoctrineJobRepository()->addWarnings($stepExecution, $warnings);
+        $this->getDoctrineJobRepository()->getJobManager()->clear();
+
+        $lastJobExecution = $this->getDoctrineJobRepository()->getLastJobExecution($jobInstance, BatchStatus::STARTING);
+        $stepExecutionWithWarnings = $lastJobExecution->getStepExecutions()->first();
+
+        $this->assertCount($warningCount, $stepExecutionWithWarnings->getWarnings());
+        $this->assertEquals($warningCount, $stepExecutionWithWarnings->getWarningCount());
+
+        $firstWarning = $stepExecutionWithWarnings->getWarnings()[0];
+
+        $this->assertEquals('Error {{ param }} 0', $firstWarning->getReason());
+        $this->assertEquals(['param' => 'value'], $firstWarning->getReasonParameters());
+        $this->assertEquals(['name' => 'Invalid item 0'], $firstWarning->getItem());
     }
 
     protected function getDoctrineJobRepository(): DoctrineJobRepository

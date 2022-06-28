@@ -18,6 +18,8 @@ const WarningHelper = ({warning}: WarningHelperProps) => {
   const [isExpanded, setExpanded] = useState<boolean>(false);
   const toggleExpanded = () => setExpanded(!isExpanded);
 
+  const itemIsFilled = 0 < Object.keys(warning.item).length;
+
   return (
     <Helper level="warning">
       <ul>
@@ -25,9 +27,11 @@ const WarningHelper = ({warning}: WarningHelperProps) => {
           <li key={index}>{reason}</li>
         ))}
       </ul>
-      <Link onClick={toggleExpanded}>
-        {translate(isExpanded ? 'job_execution.summary.hide_item' : 'job_execution.summary.display_item')}
-      </Link>
+      {itemIsFilled && (
+        <Link onClick={toggleExpanded}>
+          {translate(isExpanded ? 'job_execution.summary.hide_item' : 'job_execution.summary.display_item')}
+        </Link>
+      )}
       {isExpanded && <SpacedTable content={warning.item}></SpacedTable>}
     </Helper>
   );
