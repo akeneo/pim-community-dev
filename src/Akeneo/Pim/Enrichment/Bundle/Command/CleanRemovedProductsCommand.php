@@ -60,7 +60,7 @@ class CleanRemovedProductsCommand extends Command
         $output->writeln();
         $output->writeln(sprintf('<info>%d products de-indexed</info>', $numberOfIndexedProducts));
 
-        return Command::success;
+        return Command::SUCCESS;
     }
 
     private function getEraseDiffElasticsearchProductIdentifiers(int $batchSize): \Generator
@@ -91,10 +91,11 @@ SQL;
                 ]
             ], $searchAfter ? [
                 'search_after' => $searchAfter
-            ] : []);
+            ] : []
+            );
             $results = $this->productAndProductModelClient->search($params);
-
             $esIdentifiers = array_map(fn ($doc) => $doc['_id'], $results['hits']['hits']);
+            $esDocuments = $results['hits']['hits'];
 
             $rows = $this->connection->executeQuery(
                 $sql,
@@ -105,11 +106,10 @@ SQL;
                     'esIdentifiers' => Connection::PARAM_STR_ARRAY,
                 ]
             )->fetchAllAssociative();
-
-            $esDocuments = $results['hits']['hits'];
             $mysqlIds = array_map(function ($item) {
                 return $item['_id'];
             }, $rows);
+
             $diff = array_reduce(
                 $esDocuments,
                 function ($carry, $item) use ($mysqlIds): array {
