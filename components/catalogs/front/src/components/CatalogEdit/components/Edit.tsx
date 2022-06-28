@@ -1,39 +1,19 @@
-import React, {forwardRef, PropsWithRef, useCallback, useImperativeHandle} from 'react';
+import React, {FC, PropsWithChildren, useCallback} from 'react';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {useTabBar} from 'akeneo-design-system';
 import {TabBar, Tabs} from './TabBar';
-import {ProductSelection} from '../../ProductSelection';
 import {Settings} from './Settings';
-import {useCriteria} from '../hooks/useCriteria';
-import {CatalogEditRef} from '../CatalogEdit';
-import {useSaveCriteria} from '../../ProductSelection/hooks/useSaveCriteria';
+import {CatalogFormValues} from '../models/CatalogFormValues';
+import {CatalogFormErrors} from '../models/CatalogFormErrors';
 
 type Props = {
-    id: string;
-    onChange: (isDirty: boolean) => void;
+    values: CatalogFormValues;
+    errors: CatalogFormErrors;
 };
 
-const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, ref) => {
+const Edit: FC<PropsWithChildren<Props>> = ({values, errors}) => {
     const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.SETTINGS, 'pim_catalog_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
-    const [criteria, setCriteria] = useCriteria(id);
-    /* istanbul ignore next */
-    const saveCriteria = useSaveCriteria(
-        id,
-        () => {
-            onChange(false);
-        },
-        () => {
-            onChange(true);
-        }
-    );
-
-    useImperativeHandle(ref, () => ({
-        save: () => {
-            saveCriteria.mutate(criteria.map(value => value.state));
-            onChange(false);
-        },
-    }));
 
     const handleSwitchTo = useCallback(
         (tab: string) => {
@@ -43,16 +23,24 @@ const Edit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, re
         [setActiveTab, switchTo]
     );
 
+    if (undefined === values) {
+        return null;
+    }
+
     return (
         <>
             <TabBar isCurrent={isCurrent} switchTo={handleSwitchTo} />
 
-            {isCurrent(Tabs.SETTINGS) && <Settings />}
-            {isCurrent(Tabs.PRODUCT_SELECTION) && (
-                <ProductSelection criteria={criteria} setCriteria={setCriteria} onChange={onChange} />
+            {isCurrent(Tabs.SETTINGS) && (
+                <Settings
+                    settings={{
+                        enabled: values.enabled,
+                    }}
+                    errors={errors}
+                />
             )}
         </>
     );
-});
+};
 
 export {Edit};
