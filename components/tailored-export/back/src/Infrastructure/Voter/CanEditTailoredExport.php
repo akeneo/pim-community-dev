@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -11,7 +13,8 @@
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Voter;
 
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
+use Akeneo\Channel\API\Query\FindAllViewableLocalesForUser;
+use Akeneo\Channel\API\Query\Locale;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
@@ -20,7 +23,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 class CanEditTailoredExport
 {
     public function __construct(
-        protected GetAllViewableLocalesForUserInterface $getAllViewableLocales,
+        protected FindAllViewableLocalesForUser $findAllViewableLocalesForUser,
         protected GetViewableAttributeCodesForUserInterface $getViewableAttributes,
         protected GetAttributes $getAttributes,
     ) {
@@ -62,7 +65,11 @@ class CanEditTailoredExport
 
             return array_merge($accumulator, array_filter($localeCodes));
         }, []));
-        $viewableLocaleCodes = $this->getAllViewableLocales->fetchAll($userId);
+
+        $viewableLocaleCodes = \array_map(
+            static fn (Locale $locale) => $locale->getCode(),
+            $this->findAllViewableLocalesForUser->findAll($userId),
+        );
 
         return empty(array_diff($jobLocaleCodes, $viewableLocaleCodes));
     }
