@@ -160,6 +160,7 @@ akeneo.tailored_import:
         should_not_be_blank: Please define a column label.
         max_length_reached: Column label is too long. It should contain {{ limit }} characters or less.
     data_mappings:
+      target_should_unique: The target "{{ code }}" cannot be selected multiple time.
       max_count_reached: You have reached the limit of {{ limit }} mappings, you can no longer add mapping to your import.
       no_identifier_target_found: There is no mapping targeting an identifier, please add one.
       too_many_identifier_target_found: There is more than one mapping targeting an identifier, please remove one.
