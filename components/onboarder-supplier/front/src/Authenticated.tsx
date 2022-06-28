@@ -1,13 +1,13 @@
 import React from 'react';
 import {Switch} from 'react-router-dom';
 import {Route} from './components';
-import {FileTransfer} from './pages';
+import {FilesDropping} from './pages';
 
 const Authenticated = () => {
     return (
         <Switch>
             <Route path="/">
-                <FileTransfer />
+                <FilesDropping />
             </Route>
         </Switch>
     );

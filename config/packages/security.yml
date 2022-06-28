@@ -66,8 +66,8 @@ security:
             pattern: ^/onboarder-supplier/authentication
             anonymous: true
 
-        onboarder_serenity_supplier_home:
-            pattern: ^/onboarder-supplier/
+        onboarder_serenity_supplier_secured_area:
+            pattern: ^/onboarder-supplier
             provider: onboarder_serenity_contributor_account_user
             json_login:
                 check_path: onboarder_serenity_supplier_contributor_login
@@ -136,7 +136,6 @@ security:
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
 
     password_hashers:
-        Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount: 'auto'
         Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount: 'auto'
 
 acl:

@@ -31,7 +31,7 @@ test('it successfully authenticates a contributor', async () => {
         email: 'mylogin',
         password: 'mypassword',
     });
-    expect(historyPushMock).toHaveBeenNthCalledWith(1, routes.fileTranser);
+    expect(historyPushMock).toHaveBeenNthCalledWith(1, routes.filesDropping);
 });
 
 test('it fails to authenticate a contributor', async () => {

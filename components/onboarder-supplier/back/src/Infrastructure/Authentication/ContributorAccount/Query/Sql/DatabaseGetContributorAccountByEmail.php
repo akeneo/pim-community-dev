@@ -7,7 +7,7 @@ namespace Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\Contri
 use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetContributorAccountByEmail
+class DatabaseGetContributorAccountByEmail
 {
     public function __construct(private Connection $connection)
     {

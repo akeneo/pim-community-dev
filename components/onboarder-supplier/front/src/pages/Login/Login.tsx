@@ -37,8 +37,8 @@ const Login = () => {
                     {hasLoginFailed && (
                         <Helper level="error">
                             <FormattedMessage
-                                defaultMessage="Your e-mail or password seems to be wrong. Please, try again."
-                                id="zbqp1W"
+                                defaultMessage="Your email or password seems to be wrong. Please, try again."
+                                id="pEIVvb"
                             />
                         </Helper>
                     )}

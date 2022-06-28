@@ -11,7 +11,7 @@ const NotFound = () => {
     const history = useHistory();
 
     const goToHome = () => {
-        const route = isAuthenticated ? routes.fileTranser : routes.login;
+        const route = isAuthenticated ? routes.filesDropping : routes.login;
         history.push(route);
     };
 

@@ -9,7 +9,7 @@ use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAcco
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePassword;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Validation\Password;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\HashPassword;
+use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\HashPassword;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;

@@ -20,7 +20,6 @@ services:
             - '@database_connection'
 
     Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail:
-        public: true
         arguments:
             - '@database_connection'
 
@@ -72,7 +71,7 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@validator'
-            - '@Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\HashSymfonyPassword'
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\HashPassword'
             - '@logger'
 
     Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail:
@@ -86,6 +85,7 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail'
 
-    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\HashSymfonyPassword:
+    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\HashPassword:
+        class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\HashSymfonyPassword
         arguments:
             - '@security.user_password_hasher'

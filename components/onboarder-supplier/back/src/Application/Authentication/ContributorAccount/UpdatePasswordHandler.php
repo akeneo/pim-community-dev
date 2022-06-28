@@ -7,8 +7,8 @@ namespace Akeneo\OnboarderSerenity\Supplier\Application\Authentication\Contribut
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Exception\ContributorAccountDoesNotExist;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Exception\InvalidPassword;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Validation\Password;
+use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\HashPassword;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\HashPassword;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

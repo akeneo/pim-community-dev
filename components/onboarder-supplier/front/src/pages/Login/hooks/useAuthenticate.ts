@@ -14,7 +14,7 @@ const useAuthenticate = () => {
         try {
             const response = await mutation.mutateAsync({email, password});
             updateUser({email: response.email});
-            history.push(routes.fileTranser);
+            history.push(routes.filesDropping);
         } catch (error) {
             if (error instanceof UnauthorizedError) {
                 return false;

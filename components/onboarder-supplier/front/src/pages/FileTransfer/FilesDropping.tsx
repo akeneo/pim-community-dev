@@ -6,7 +6,7 @@ import {BadgeButton} from '../../components/BadgeButton';
 import {AkeneoThemedProps, getColor, getFontSize} from 'akeneo-design-system';
 import illustration from '../../assets/images/Factory.svg';
 
-const FileTransfer = () => {
+const FilesDropping = () => {
     return (
         <Container>
             <Menu>
@@ -135,4 +135,4 @@ const Illustration = styled.img`
     width: 280px;
 `;
 
-export {FileTransfer};
+export {FilesDropping};

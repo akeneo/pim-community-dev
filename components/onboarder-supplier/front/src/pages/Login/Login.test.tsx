@@ -50,6 +50,6 @@ test('it displays an error if credentials are wrong', async () => {
     fireEvent.click(screen.getByTestId('submit-login'));
 
     await waitFor(() => {
-        expect(screen.getByText('Your e-mail or password seems to be wrong. Please, try again.')).toBeInTheDocument();
+        expect(screen.getByText('Your email or password seems to be wrong. Please, try again.')).toBeInTheDocument();
     });
 });

@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 final class ContributorAccountProvider implements UserProviderInterface
 {
-    public function __construct(private DatabaseGetContributorAccountByEmail $contributorAccountByEmail)
+    public function __construct(private DatabaseGetContributorAccountByEmail $getContributorAccountByEmail)
     {
     }
 
@@ -33,7 +33,7 @@ final class ContributorAccountProvider implements UserProviderInterface
 
     public function loadUserByIdentifier(string $identifier): ?UserInterface
     {
-        return ($this->contributorAccountByEmail)($identifier);
+        return ($this->getContributorAccountByEmail)($identifier);
     }
 
     public function loadUserByUsername(string $username): ?UserInterface
