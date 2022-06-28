@@ -94,9 +94,7 @@ SQL;
             ] : []);
             $results = $this->productAndProductModelClient->search($params);
 
-            $esIdentifiers = array_map(function ($doc) {
-                return $doc['_id'];
-            }, $results['hits']['hits']);
+            $esIdentifiers = array_map(fn ($doc) => $doc['_id'], $results['hits']['hits']);
 
             $rows = $this->connection->executeQuery(
                 $sql,
