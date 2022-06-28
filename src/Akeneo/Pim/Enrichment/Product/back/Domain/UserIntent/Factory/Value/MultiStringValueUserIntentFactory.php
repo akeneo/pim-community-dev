@@ -26,7 +26,7 @@ class MultiStringValueUserIntentFactory implements ValueUserIntentFactory
         return [
             AttributeTypes::OPTION_MULTI_SELECT,
             AttributeTypes::REFERENCE_ENTITY_COLLECTION,
-            // TODO: Add when userIntent is ready
+            // TODO CPM-673: Add when userIntent is ready
 //            AttributeTypes::REFERENCE_DATA_MULTI_SELECT,
             AttributeTypes::ASSET_COLLECTION,
         ];

@@ -33,7 +33,7 @@ class StringValueUserIntentFactory implements ValueUserIntentFactory
             AttributeTypes::OPTION_SIMPLE_SELECT,
             AttributeTypes::FILE,
             AttributeTypes::IMAGE,
-            // TODO: Add when userIntent is ready
+            // TODO CPM-673: Add when userIntent is ready
 //            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
             AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT
         ];
