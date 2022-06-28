@@ -208,7 +208,7 @@ SQL;
 
     public function addWarnings(StepExecution $stepExecution, array $warnings): void
     {
-        if(0 === count($warnings)) {
+        if (0 === count($warnings)) {
             return;
         }
 
