@@ -16,13 +16,13 @@ type Props = {
 
 const EnabledInput: FC<Props> = ({value, error}) => {
     const translate = useTranslate();
-    const dispatchCatalogFormEvent = useCatalogFormContext();
+    const dispatch = useCatalogFormContext();
 
     const handleStatusChange = useCallback(
         value => {
-            dispatchCatalogFormEvent(value ? {type: CatalogFormActions.ENABLE} : {type: CatalogFormActions.DISABLE});
+            dispatch(value ? {type: CatalogFormActions.ENABLE} : {type: CatalogFormActions.DISABLE});
         },
-        [dispatchCatalogFormEvent]
+        [dispatch]
     );
 
     return (
