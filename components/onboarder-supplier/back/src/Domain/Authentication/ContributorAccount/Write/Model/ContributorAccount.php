@@ -54,7 +54,7 @@ class ContributorAccount implements PasswordAuthenticatedUserInterface
         );
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
         $this->password = Password::fromString($password);
         $this->accessToken = null;
