@@ -25,7 +25,6 @@ class UpdateCatalogPayloadIsValid extends Compound
                 'fields' => [
                     'enabled' => new Assert\Required([
                         new Assert\Type('boolean'),
-                        new Assert\NotBlank(),
                     ]),
                     'product_selection_criteria' => [
                         new Assert\Type('array'),

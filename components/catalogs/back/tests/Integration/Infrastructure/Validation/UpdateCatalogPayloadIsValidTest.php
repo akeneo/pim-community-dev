@@ -28,7 +28,7 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
     public function testItValidates(): void
     {
         $violations = $this->validator->validate([
-            'enabled' => true,
+            'enabled' => false,
             'product_selection_criteria' => [
                 [
                     'field' => 'enabled',
