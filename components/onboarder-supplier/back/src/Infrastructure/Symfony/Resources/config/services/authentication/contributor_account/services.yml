@@ -49,6 +49,11 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken'
 
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\RequestNewInvitation:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler'
+
     #Command handlers
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler:
         arguments:
