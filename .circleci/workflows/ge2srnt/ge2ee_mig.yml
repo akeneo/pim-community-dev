@@ -1,4 +1,5 @@
 client-to-clone-grth: &client-to-clone-grth
+client-to-clone-grth-ge2ee-nightly: &client-to-clone-grth-ge2ee-nightly
 
 workflows:
 
@@ -36,18 +37,18 @@ workflows:
             and:
                 - equal: [ true, << pipeline.parameters.trigger_jenkins_ge2ee_mig >> ]
                 - not:
-                    equal: [ "", << pipeline.parameters.source_pfid >> ]
+                    equal: [ "", << pipeline.parameters.instance >> ]
         jobs:
             - checkout
             - jenkins_ge2ee_migration:
                 name: "Migrate Ge to EE via Jenkins"
-                SOURCE_PFID: << pipeline.parameters.source_pfid >>
+                INSTANCE: << pipeline.parameters.instance >>
                 GE2EE_SCRIPT_RELEASE: << pipeline.parameters.ge2ee_script_release >>
                 PRODUCT_TYPE: grth
                 requires:
                     - checkout
 
-    ge2ee_mig_build_script:
+    ge2ee_deploy_and_migrate:
         when:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
@@ -59,6 +60,7 @@ workflows:
                           only:
                               - /BH-.*/
                               - /SDO-.*/
+                              - /.*GE2EE.*/
             - checkout:
                 requires:
                     - ready_to_build?
@@ -78,3 +80,86 @@ workflows:
                 requires:
                     - "[grth] Deploy last release"
                     - "[srnt] Build release with scripts"
+
+
+    ge2ee_clone_and_migrate:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - ready_to_build?:
+                  type: approval
+                  filters:
+                      branches:
+                          only:
+                              - /BH-.*/
+                              - /SDO-.*/
+                              - /.*GE2EE.*/
+            - checkout:
+                requires:
+                    - ready_to_build?
+            - build_env_vars:
+                name: "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["grth"]
+                requires:
+                    - checkout
+            - test_clone_from_customer_db:
+                name: "[<< matrix.PRODUCT_TYPE >>] deploy_clone_from-<< matrix.SOURCE_PFID >>"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["grth"]
+                        SOURCE_PFID: *client-to-clone-grth
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+            - ge2ee_mig-build_srnt_prod:
+                  name: "[srnt] Build with EDITION_FLAG"
+                  requires:
+                      - checkout
+            - jenkins_ge2ee_migration:
+                name: "GE2EE Migration for Cloned: << matrix.SOURCE_PFID >>"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["grth"]
+                        SOURCE_PFID: *client-to-clone-grth
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] deploy_clone_from-<< matrix.SOURCE_PFID >>"
+                    - "[srnt] Build with EDITION_FLAG"
+
+    nightly_ge2ee_clone_and_migrate:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                #REPLACE BEFORE MERGIN- equal: [ "nightly_ge2ee_clone_and_migrate", << pipeline.schedule.name >> ]
+                - equal: [ "nightly_ge2ee_clone_and_migrate_test", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - build_env_vars:
+                name: "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["grth"]
+                requires:
+                    - checkout
+            - test_clone_from_customer_db:
+                name: "[<< matrix.PRODUCT_TYPE >>] deploy_clone_from-<< matrix.SOURCE_PFID >>"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["grth"]
+                        SOURCE_PFID: *client-to-clone-grth-ge2ee-nightly
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+            - ge2ee_mig-build_srnt_prod:
+                  name: "[srnt] Build with EDITION_FLAG"
+                  requires:
+                      - checkout
+            - jenkins_ge2ee_migration:
+                name: "GE2EE Migration for Cloned: << matrix.SOURCE_PFID >>"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["grth"]
+                        SOURCE_PFID: *client-to-clone-grth-ge2ee-nightly
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] deploy_clone_from-<< matrix.SOURCE_PFID >>"
+                    - "[srnt] Build with EDITION_FLAG"

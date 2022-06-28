@@ -103,8 +103,8 @@ terraform show -json upgrades.tfplan > upgrades.tfplan.json
 HELM_DEBUG=true terraform apply "${TF_INPUT_FALSE}" "${TF_AUTO_APPROVE}" upgrades.tfplan
 
 echo "--- Remove minimal catalog after instance recreation ---"
-yq d -i values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
-yq d -i values.yaml pim.hook.installPim.enabled true
+yq d -i values.yaml pim.defaultCatalog
+yq d -i values.yaml pim.hook.installPim
 
 echo "--- Print values.yaml without Catalog Install Hook ---"
 cat values.yaml

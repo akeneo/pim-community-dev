@@ -60,7 +60,7 @@ yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.upgradeES.enabled false
 yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.resetPassword true
 yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.userPassword test
 yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.rootPassword test
-yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.email "${PIMUSER}"
+yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.email "fake-a9r3-${PIMUSER}@akeneo.com"
 yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.login "${PIMUSER}"
 yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.password "${PIMPASSWORD}"
 #To run local duplication, UnComment & add prod "mailgun_api_key"
@@ -202,3 +202,5 @@ kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /my
 
 echo "- Upgrade config files"
 yq d -i ${DESTINATION_PATH}/values.yaml pim.hook
+yq d -i ${DESTINATION_PATH}/values.yaml mysql.mysql.resetPassword
+
