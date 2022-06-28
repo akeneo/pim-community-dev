@@ -47,7 +47,7 @@ final class GetProductScoresQuery implements GetProductScoresQueryInterface
 
         $query = <<<SQL
 SELECT BIN_TO_UUID(p.uuid) AS product_uuid, scores, scores_partial_criteria
-FROM pim_data_quality_insights_product_score
+FROM pim_data_quality_insights_product_score p
 WHERE product_uuid IN(:product_uuids)
 SQL;
 
