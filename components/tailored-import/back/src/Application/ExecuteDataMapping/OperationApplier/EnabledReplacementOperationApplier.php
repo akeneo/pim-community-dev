@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\NoMappedValueFound;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
@@ -34,7 +34,7 @@ final class EnabledReplacementOperationApplier implements OperationApplierInterf
         }
 
         if (!$operation->hasMappedValue($value->getValue())) {
-            throw new NoMappedValueFound($value->getValue());
+            return new InvalidValue(sprintf('There is no mapped value for this source value: "%s"', $value->getValue()));
         }
 
         $mappedValue = $operation->getMappedValue($value->getValue());

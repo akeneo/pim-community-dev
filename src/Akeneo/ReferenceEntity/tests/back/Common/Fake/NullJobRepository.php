@@ -76,4 +76,11 @@ class NullJobRepository implements JobRepositoryInterface
     public function addWarning(Warning $warning): void
     {
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addWarnings(StepExecution $stepExecution, array $warnings): void
+    {
+    }
 }

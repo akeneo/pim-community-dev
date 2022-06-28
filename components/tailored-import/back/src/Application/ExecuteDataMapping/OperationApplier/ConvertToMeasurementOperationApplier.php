@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Operatio
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\MeasurementValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
@@ -34,6 +35,14 @@ class ConvertToMeasurementOperationApplier implements OperationApplierInterface
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
+        if (!$this->isValidNumber($value->getValue(), $operation->getDecimalSeparator())) {
+            return new InvalidValue(sprintf(
+                'Cannot convert "%s" to a number with separator "%s"',
+                $value->getValue(),
+                $operation->getDecimalSeparator(),
+            ));
+        }
+
         return new MeasurementValue(
             str_replace($operation->getDecimalSeparator(), self::DEFAULT_DECIMAL_SEPARATOR, $value->getValue()),
             $operation->getUnit(),
@@ -43,5 +52,10 @@ class ConvertToMeasurementOperationApplier implements OperationApplierInterface
     public function supports(OperationInterface $operation): bool
     {
         return $operation instanceof ConvertToMeasurementOperation;
+    }
+
+    private function isValidNumber(string $value, string $separator): bool
+    {
+        return 0 !== preg_match(sprintf('/^[0-9]*(\%s[0-9]*)?$/', $separator), $value);
     }
 }

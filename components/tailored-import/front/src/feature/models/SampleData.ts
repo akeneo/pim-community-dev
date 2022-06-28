@@ -4,7 +4,6 @@ const SAMPLE_DATA_MAX_LENGTH = 100;
 const ELLIPSIS_CHARACTER = '…';
 
 type SampleData = string | null;
-type PreviewData = string | string[] | null;
 
 const formatSampleData = (translate: Translate, sampleData: SampleData): string => {
   if (sampleData === null) {
@@ -24,4 +23,4 @@ const replaceSampleData = (sampleData: SampleData[], index: number, value: Sampl
 ];
 
 export {formatSampleData, replaceSampleData};
-export type {PreviewData, SampleData};
+export type {SampleData};

@@ -13,36 +13,30 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Value;
 
-use Webmozart\Assert\Assert;
-
-class MeasurementValue implements ValueInterface
+final class InvalidValue implements ValueInterface
 {
-    private const TYPE = 'measurement';
+    private const TYPE = 'invalid';
 
     public function __construct(
-        private string $value,
-        private string $unit,
+        private string $errorKey,
     ) {
-        Assert::stringNotEmpty($value);
-        Assert::stringNotEmpty($unit);
     }
 
-    public function getValue(): string
+    public function getValue(): mixed
     {
-        return $this->value;
+        throw new \RuntimeException('You can\'t access to value on an InvalidValue object');
     }
 
-    public function getUnit(): string
+    public function getErrorKey(): string
     {
-        return $this->unit;
+        return $this->errorKey;
     }
 
     public function normalize(): array
     {
         return [
             'type' => self::TYPE,
-            'value' => $this->value,
-            'unit' => $this->unit,
+            'error_key' => $this->errorKey,
         ];
     }
 }

@@ -10,6 +10,7 @@ export * from './DataMapping';
 export * from './FileTemplateInformation';
 export * from './MeasurementFamily';
 export * from './Operation';
+export * from './PreviewData';
 export * from './ReplacementValues';
 export * from './SampleData';
 export * from './Target';

@@ -6,7 +6,14 @@ import {
   getDefaultCategoriesReplacementOperation,
   CategoriesReplacementOperationBlock,
 } from './CategoriesReplacementOperationBlock';
-import {ReplacementValues} from '../../../../models';
+import {OperationPreviewData, ReplacementValues} from 'feature/models';
+
+const operationPreviewData: OperationPreviewData = {
+  [expect.any(String)]: [
+    {type: 'string', value: 'tee shirt'},
+    {type: 'string', value: 't-shirt'},
+  ],
+};
 
 jest.mock('../CategoriesReplacementModal/CategoriesReplacementModal', () => ({
   CategoriesReplacementModal: ({
@@ -32,8 +39,6 @@ test('it can get the default categories replacement operation', () => {
 });
 
 test('it displays a categories_replacement operation block', () => {
-  const previewData = ['<p>TSHIRT</p>', '<p>TeeShirt</p>'];
-
   renderWithProviders(
     <CategoriesReplacementOperationBlock
       targetCode="categories"
@@ -44,8 +49,9 @@ test('it displays a categories_replacement operation block', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: previewData,
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
@@ -56,7 +62,6 @@ test('it displays a categories_replacement operation block', () => {
 
 test('it can be removed using the remove button', () => {
   const handleRemove = jest.fn();
-  const previewData = ['<p>Hello</p>', '<p>World</p>'];
 
   renderWithProviders(
     <CategoriesReplacementOperationBlock
@@ -68,8 +73,9 @@ test('it can be removed using the remove button', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: previewData,
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
@@ -84,7 +90,6 @@ test('it can be removed using the remove button', () => {
 
 test('it opens a replacement modal and handles change', async () => {
   const handleChange = jest.fn();
-  const previewData = ['<p>Pantalon</p>', '<p>Pantacourt</p>'];
 
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: true,
@@ -101,8 +106,9 @@ test('it opens a replacement modal and handles change', async () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: previewData,
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
@@ -120,7 +126,6 @@ test('it opens a replacement modal and handles change', async () => {
 
 test('it does not call handler when cancelling', () => {
   const handleChange = jest.fn();
-  const previewData = ['<p>Cape</p>', '<p>Cape en velour</p>'];
 
   renderWithProviders(
     <CategoriesReplacementOperationBlock
@@ -132,8 +137,9 @@ test('it does not call handler when cancelling', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: previewData,
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
@@ -145,7 +151,6 @@ test('it does not call handler when cancelling', () => {
 
 test('it throws an error if the operation is not a categories replacement operation', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-  const previewData = ['<p>Chaussettes</p>', '<p>Sandalettes</p>'];
 
   expect(() => {
     renderWithProviders(
@@ -158,8 +163,9 @@ test('it throws an error if the operation is not a categories replacement operat
         previewData={{
           isLoading: false,
           hasError: false,
-          data: previewData,
+          data: operationPreviewData,
         }}
+        validationErrors={[]}
       />
     );
   }).toThrowError('CategoriesReplacementOperationBlock can only be used with CategoriesReplacementOperation');

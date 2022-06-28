@@ -66,8 +66,6 @@ echo "-----------------------------"
 ## Add use_edition_flag=true dans main.tf.json
 echo "--- Adding use_edition_flag in main.tf.json ---"
 jq -r '.module.pim.use_edition_flag |= true ' main.tf.json > main.tf.json.temp && mv main.tf.json.temp main.tf.json
-# TODO ->  Warning : pim-monitoring is depreacated -> Test before action
-jq -r '.module."pim-monitoring".use_edition_flag |= "${module.pim.use_edition_flag}"' main.tf.json  > main.tf.json.temp && mv main.tf.json.temp main.tf.json
 
 ## Remove disk and snapshot from main.tf
 echo "--- Delete mysql disk informations from main.tf.json ---"

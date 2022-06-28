@@ -5,13 +5,13 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2021 Akeneo SAS (https://www.akeneo.com)
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Voter;
+namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Voter;
 
 use Akeneo\Channel\API\Query\FindAllViewableLocalesForUser;
 use Akeneo\Channel\API\Query\Locale;
@@ -21,40 +21,59 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttribu
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 
-class CanEditTailoredExportSpec extends ObjectBehavior
+class CanEditTailoredImportSpec extends ObjectBehavior
 {
-    const COLUMNS = [
-        'columns' => [
-            [
-                'sources' => [
-                    [
-                        'code' => 'description',
-                        'type' => 'attribute',
-                        'locale' => null
-                    ],
-                    [
-                        'code' => 'name',
-                        'type' => 'attribute',
-                        'locale' => 'fr_FR'
-                    ],
-                    [
-                        'code' => 'status',
-                        'type' => 'property',
-                        'locale' => null
-                    ]
-                ]
+    private const JOB_RAW_PARAMETERS = ['import_structure' => ['data_mappings' => [
+        [
+            'target' => [
+                'code' => 'description',
+                'locale' => 'fr_FR',
+                'type' => 'attribute',
             ],
-            [
-                'sources' => [
-                    [
-                        'code' => 'Weight',
-                        'type' => 'attribute',
-                        'locale' => null
-                    ]
-                ]
-            ]
-        ]
-    ];
+        ],
+        [
+            'target' => [
+                'code' => 'description',
+                'locale' => 'en_US',
+                'type' => 'attribute',
+            ],
+        ],
+        [
+            'target' => [
+                'code' => 'description',
+                'locale' => null,
+                'type' => 'attribute',
+            ],
+        ],
+        [
+            'target' => [
+                'code' => 'name',
+                'locale' => 'fr_FR',
+                'type' => 'attribute',
+            ],
+        ],
+        [
+            'target' => [
+                'code' => 'name',
+                'locale' => null,
+                'type' => 'attribute',
+            ],
+        ],
+        [
+            'target' => [
+                'code' => 'Weight',
+                'locale' => 'fr_FR',
+                'type' => 'attribute',
+            ],
+        ],
+        [
+            'target' => [
+                'code' => 'family',
+                'locale' => null,
+                'type' => 'property',
+            ],
+        ],
+    ]]];
 
     public function let(
         FindAllViewableLocalesForUser $findAllViewableLocalesForUser,
@@ -64,7 +83,7 @@ class CanEditTailoredExportSpec extends ObjectBehavior
         $this->beConstructedWith($findAllViewableLocalesForUser, $getViewableAttributes, $getAttributes);
     }
 
-    public function it_does_not_validate_if_columns_is_not_defined(JobInstance $jobInstance): void
+    public function it_does_not_validate_if_data_mappings_are_not_defined(JobInstance $jobInstance): void
     {
         $userId = 2;
         $jobInstance->getRawParameters()->willReturn([]);
@@ -78,21 +97,21 @@ class CanEditTailoredExportSpec extends ObjectBehavior
         JobInstance $jobInstance
     ): void {
         $userId = 2;
-        $jobInstance->getRawParameters()->willReturn(self::COLUMNS);
+        $jobInstance->getRawParameters()->willReturn(self::JOB_RAW_PARAMETERS);
 
         $description = $this->createAttribute('description');
         $name = $this->createAttribute('name');
-        $Weight = $this->createAttribute('Weight');
+        $weight = $this->createAttribute('Weight');
 
         $getAttributes->forCodes(['description', 'name', 'Weight'])->willReturn([
             'description' => $description,
             'name' => $name,
-            'Weight' => $Weight
+            'Weight' => $weight,
         ]);
 
         $getViewableAttributes->forAttributeCodes(['description', 'name', 'Weight'], $userId)->willReturn([
             'description',
-            'name'
+            'name',
         ]);
 
         $this->execute($jobInstance, $userId)->shouldReturn(false);
@@ -105,25 +124,25 @@ class CanEditTailoredExportSpec extends ObjectBehavior
         JobInstance $jobInstance
     ): void {
         $userId = 2;
-        $jobInstance->getRawParameters()->willReturn(self::COLUMNS);
+        $jobInstance->getRawParameters()->willReturn(self::JOB_RAW_PARAMETERS);
 
         $description = $this->createAttribute('description');
-        $Weight = $this->createAttribute('Weight');
+        $weight = $this->createAttribute('Weight');
 
         $getAttributes->forCodes(['description', 'name', 'Weight'])->willReturn([
             'description' => $description,
             'name' => null,
-            'Weight' => $Weight
+            'Weight' => $weight,
         ]);
 
         $getViewableAttributes->forAttributeCodes(['description', 'Weight'], $userId)->willReturn([
             'description',
-            'Weight'
+            'Weight',
         ]);
 
         $findAllViewableLocalesForUser->findAll($userId)->willReturn([
             new Locale('fr_FR', true),
-            new Locale('en_US', true),
+            new Locale('en_US', false),
         ]);
 
         $this->execute($jobInstance, $userId)->shouldReturn(true);
@@ -136,23 +155,23 @@ class CanEditTailoredExportSpec extends ObjectBehavior
         JobInstance $jobInstance
     ): void {
         $userId = 2;
-        $jobInstance->getRawParameters()->willReturn(self::COLUMNS);
+        $jobInstance->getRawParameters()->willReturn(self::JOB_RAW_PARAMETERS);
 
         $description = $this->createAttribute('description');
-        $Weight = $this->createAttribute('Weight');
+        $weight = $this->createAttribute('Weight');
 
         $getAttributes->forCodes(['description', 'name', 'Weight'])->willReturn([
             'description' => $description,
-            'Weight' => $Weight
+            'Weight' => $weight,
         ]);
 
         $getViewableAttributes->forAttributeCodes(['description', 'Weight'], $userId)->willReturn([
             'description',
-            'Weight'
+            'Weight',
         ]);
 
         $findAllViewableLocalesForUser->findAll($userId)->willReturn([
-            new Locale('en_US', true),
+            new Locale('en_US', false),
         ]);
 
         $this->execute($jobInstance, $userId)->shouldReturn(false);

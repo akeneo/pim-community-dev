@@ -4,3 +4,4 @@ services:
     arguments:
       - '@pim_enrich.product.message_bus'
       - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'

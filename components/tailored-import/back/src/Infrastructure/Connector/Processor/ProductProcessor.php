@@ -50,8 +50,13 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             $item->getRow(),
             $this->getDataMappingCollection(),
         );
-        $upsertProductCommand = $this->executeDataMappingHandler->handle($query);
+
+        $executeDataMappingHandleResult = $this->executeDataMappingHandler->handle($query);
+        $upsertProductCommand = $executeDataMappingHandleResult->getUpsertProductCommand();
+        $invalidValues = $executeDataMappingHandleResult->getInvalidValues();
+
         $item->setUpsertProductCommand($upsertProductCommand);
+        $item->setInvalidValues($invalidValues);
 
         return $item;
     }

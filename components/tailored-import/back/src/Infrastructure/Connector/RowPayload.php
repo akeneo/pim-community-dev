@@ -16,10 +16,13 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 
 class RowPayload
 {
     private ?UpsertProductCommand $upsertProductCommand = null;
+    /** @var InvalidValue[] */
+    private ?array $invalidValues = null;
 
     public function __construct(
         private Row $row,
@@ -36,6 +39,22 @@ class RowPayload
     public function getUpsertProductCommand(): ?UpsertProductCommand
     {
         return $this->upsertProductCommand;
+    }
+
+    /**
+     * @param InvalidValue[] $invalidValues
+     */
+    public function setInvalidValues(array $invalidValues): void
+    {
+        $this->invalidValues = $invalidValues;
+    }
+
+    /**
+     * @return InvalidValue[]|null
+     */
+    public function getInvalidValues(): ?array
+    {
+        return $this->invalidValues;
     }
 
     public function getRow(): Row

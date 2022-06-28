@@ -16,4 +16,6 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Value;
 interface ValueInterface
 {
     public function getValue(): mixed;
+
+    public function normalize(): array;
 }

@@ -62,6 +62,7 @@ class DataMappingsValidator extends ConstraintValidator
         }
 
         $this->validateDataMappingUuidsAreUnique($dataMappings);
+        $this->validateDataMappingTargetAreUnique($dataMappings);
         $this->validateThereIsNotTooManyIdentifier($dataMappings);
     }
 
@@ -78,6 +79,42 @@ class DataMappingsValidator extends ConstraintValidator
                 }
 
                 $dataMappingUuids[] = $dataMapping['uuid'];
+            }
+        }
+    }
+
+    private function validateDataMappingTargetAreUnique(array $dataMappings): void
+    {
+        $targetList = [];
+        $duplicatedValues = [];
+        foreach ($dataMappings as $dataMapping) {
+            $target = [
+                'code' => $dataMapping['target']['code'],
+                'type' => $dataMapping['target']['type'],
+                'channel' => $dataMapping['target']['channel'] ?? null,
+                'locale' => $dataMapping['target']['locale'] ?? null,
+            ];
+
+            if (\in_array($target, $targetList, true)) {
+                $duplicatedValues[] = $target;
+            }
+
+            $targetList[] = $target;
+        }
+
+        foreach ($dataMappings as $dataMapping) {
+            $target = [
+                'code' => $dataMapping['target']['code'],
+                'type' => $dataMapping['target']['type'],
+                'channel' => $dataMapping['target']['channel'] ?? null,
+                'locale' => $dataMapping['target']['locale'] ?? null,
+            ];
+
+            if (\in_array($target, $duplicatedValues, true)) {
+                $this->context->buildViolation(DataMappings::TARGET_SHOULD_BE_UNIQUE)
+                    ->setParameter('{{ code }}', $target['code'])
+                    ->atPath(sprintf('[%s][target][code]', $dataMapping['uuid']))
+                    ->addViolation();
             }
         }
     }
