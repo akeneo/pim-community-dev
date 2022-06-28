@@ -32,6 +32,9 @@ class MeasurementValueUserIntentFactory implements ValueUserIntentFactory
         if (null === $data['data'] || '' === $data['data']) {
             return new ClearValue($attributeCode, $data['scope'], $data['locale']);
         }
+        if (!\is_array($data['data'])) {
+            throw InvalidPropertyTypeException::arrayExpected($attributeCode, static::class, $data['data']);
+        }
         if (!array_key_exists('amount', $data['data'])) {
             throw InvalidPropertyTypeException::arrayKeyExpected($attributeCode, 'amount', static::class, $data);
         }

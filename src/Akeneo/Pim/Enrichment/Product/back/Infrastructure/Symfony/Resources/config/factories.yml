@@ -6,7 +6,7 @@ services:
 
     Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValueUserIntentFactoryRegistry:
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes'
             - !tagged_iterator 'pim.enrichment.product.value_user_intent_factory'
         tags:
             - { name: 'pim.enrichment.product.user_intent_factory' }
@@ -37,7 +37,7 @@ services:
 
     Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\QuantifiedAssociationUserIntentFactory:
         arguments:
-            - '@pim_catalog.updater.validator.quantified_associations_structure_validator'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\StandardFormat\Validator\QuantifiedAssociationsStructureValidator'
         tags:
             - { name: 'pim.enrichment.product.user_intent_factory' }
 
@@ -54,6 +54,10 @@ services:
             - { name: 'pim.enrichment.product.value_user_intent_factory' }
 
     Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\StringValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\TableValueUserIntentFactory:
         tags:
             - { name: 'pim.enrichment.product.value_user_intent_factory' }
 
@@ -74,9 +78,5 @@ services:
             - { name: 'pim.enrichment.product.value_user_intent_factory' }
 
     Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\FileValueUserIntentFactory:
-        tags:
-            - { name: 'pim.enrichment.product.value_user_intent_factory' }
-
-    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\TableValueUserIntentFactory:
         tags:
             - { name: 'pim.enrichment.product.value_user_intent_factory' }

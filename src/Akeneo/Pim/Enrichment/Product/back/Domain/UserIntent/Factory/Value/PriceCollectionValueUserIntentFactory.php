@@ -33,6 +33,9 @@ class PriceCollectionValueUserIntentFactory implements ValueUserIntentFactory
         if (null === $data['data'] || [] === $data['data']) {
             return new ClearValue($attributeCode, $data['scope'], $data['locale']);
         }
+        if (!\is_array($data['data'])) {
+            throw InvalidPropertyTypeException::arrayExpected($attributeCode, static::class, $data['data']);
+        }
         foreach ($data['data'] as $price) {
             $this->validateScalarArray($attributeCode, $price);
             if (!array_key_exists('amount', $price)) {
