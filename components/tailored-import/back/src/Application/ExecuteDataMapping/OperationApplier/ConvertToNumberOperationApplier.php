@@ -35,7 +35,13 @@ final class ConvertToNumberOperationApplier implements OperationApplierInterface
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
-        if (!$this->isValidNumber($value->getValue(), $operation->getDecimalSeparator())) {
+        $numberValue = str_replace(
+            $operation->getDecimalSeparator(),
+            self::DEFAULT_DECIMAL_SEPARATOR,
+            $value->getValue(),
+        );
+
+        if (!is_numeric($numberValue)) {
             return new InvalidValue(sprintf(
                 'Cannot convert "%s" to a number with separator "%s"',
                 $value->getValue(),
@@ -43,16 +49,11 @@ final class ConvertToNumberOperationApplier implements OperationApplierInterface
             ));
         }
 
-        return new NumberValue(str_replace($operation->getDecimalSeparator(), static::DEFAULT_DECIMAL_SEPARATOR, $value->getValue()));
+        return new NumberValue($numberValue);
     }
 
     public function supports(OperationInterface $operation): bool
     {
         return $operation instanceof ConvertToNumberOperation;
-    }
-
-    private function isValidNumber(string $value, string $separator): bool
-    {
-        return 0 !== preg_match(sprintf('/^[0-9]*(\%s[0-9]*)?$/', $separator), $value);
     }
 }
