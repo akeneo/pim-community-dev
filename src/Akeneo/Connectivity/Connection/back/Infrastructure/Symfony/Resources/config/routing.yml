@@ -1,5 +1,10 @@
 # Public Urls
 
+akeneo_connectivity_connection_connect_apps_v1_activate:
+    path: '/connect/apps/v1/activate/{id}'
+    controller: akeneo_connectivity.connection.public.controller.apps.redirect_to_app_activate_url
+    methods: [ GET ]
+
 akeneo_connectivity_connection_connect_apps_v1_authorize:
     path: '/connect/apps/v1/authorize'
     controller: akeneo_connectivity.connection.public.controller.apps.authorize

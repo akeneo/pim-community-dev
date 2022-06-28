@@ -72,9 +72,9 @@ services:
             - '@logger'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
 
-    akeneo_connectivity.connection.internal_api.controller.apps.get_app_activate_url:
+    akeneo_connectivity.connection.public.controller.apps.redirect_to_app_activate_url:
         public: true
-        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Apps\GetAppActivateUrlController
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\RedirectToAppActivateUrlAction
         arguments:
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
             - '@akeneo_connectivity.connection.service.apps.client_provider'

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Apps;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Symfony\Component\HttpFoundation\Cookie;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetAppActivateUrlController
+class RedirectToAppActivateUrlAction
 {
     private GetAppQueryInterface $getAppQuery;
     private ClientProviderInterface $clientProvider;
@@ -44,10 +44,6 @@ class GetAppActivateUrlController
 
     public function __invoke(Request $request, string $id): Response
     {
-        if (!$request->isXmlHttpRequest()) {
-            return new RedirectResponse('/');
-        }
-
         if (!$this->featureFlag->isEnabled()) {
             throw new NotFoundHttpException();
         }
@@ -65,8 +61,10 @@ class GetAppActivateUrlController
 
         $this->clientProvider->findOrCreateClient($app);
 
-        return new JsonResponse([
-            'url' => $app->getActivateUrl(),
-        ]);
+        $session = $request->getSession();
+        $response = new RedirectResponse($app->getActivateUrl());
+        $response->headers->setCookie(new Cookie($session->getName(), $session->getId()));
+
+        return $response;
     }
 }

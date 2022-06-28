@@ -10,9 +10,9 @@ export const ActivateAppButton: FC<{id: string; isConnected: boolean}> = ({id, i
     const generateUrl = useRouter();
     const isAuthorized = !security.isGranted('akeneo_connectivity_connection_manage_apps');
 
-    const url = `#${generateUrl('akeneo_connectivity_connection_connect_apps_activate', {
+    const url = generateUrl('akeneo_connectivity_connection_connect_apps_v1_activate', {
         id: id,
-    })}`;
+    });
 
     if (isConnected) {
         return (
