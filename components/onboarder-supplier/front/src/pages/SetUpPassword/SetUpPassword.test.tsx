@@ -6,6 +6,7 @@ import {BadRequestError} from '../../api/BadRequestError';
 import * as hook from './hooks/useContributorAccount';
 
 beforeEach(() => {
+    // @ts-ignore
     hook.useContributorAccount = jest.fn().mockReturnValue({
         loadingError: false,
         contributorAccount: {},
@@ -100,6 +101,7 @@ test('it enables submit button if passwords are equal and match requirements', a
 });
 
 test('it renders the request new invitation page if the access token is expired', async () => {
+    // @ts-ignore
     hook.useContributorAccount = jest.fn().mockReturnValue({
         loadingError: new BadRequestError([]),
         contributorAccount: {},
