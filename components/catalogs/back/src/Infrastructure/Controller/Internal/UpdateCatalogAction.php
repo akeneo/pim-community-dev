@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Validation\UpdateCatalogPayloadIsValid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +53,9 @@ final class UpdateCatalogAction
          */
         $payload = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        $violations = $this->validator->validate($payload, $this->getPayloadConstraints());
+        $violations = $this->validator->validate($payload, [
+            new UpdateCatalogPayloadIsValid(),
+        ]);
 
         if ($violations->count() > 0) {
             return new JsonResponse(
@@ -77,46 +80,5 @@ final class UpdateCatalogAction
         );
 
         return new JsonResponse(null, 204);
-    }
-
-    /**
-     * @return array<Constraint>
-     */
-    private function getPayloadConstraints(): array
-    {
-        return [
-            new Assert\Collection([
-                'fields' => [
-                    'enabled' => new Assert\Required([
-                        new Assert\Type('boolean'),
-                        new Assert\NotBlank(),
-                    ]),
-                    'product_selection_criteria' => [
-                        new Assert\Type('array'),
-                        new Assert\All(
-                            new Assert\Collection([
-                                'fields' => [
-                                    'field' => [
-                                        new Assert\Type('string'),
-                                        new Assert\NotBlank(),
-                                    ],
-                                    'operator' => [
-                                        new Assert\Type('string'),
-                                        new Assert\NotBlank(),
-                                    ],
-                                    'value' => [
-                                        new Assert\Optional(),
-                                    ],
-                                ],
-                                'allowMissingFields' => false,
-                                'allowExtraFields' => false,
-                            ]),
-                        ),
-                    ],
-                ],
-                'allowMissingFields' => false,
-                'allowExtraFields' => false,
-            ]),
-        ];
     }
 }
