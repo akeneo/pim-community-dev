@@ -19,10 +19,12 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Column;
 use Akeneo\Platform\TailoredImport\Domain\UpsertProductCommandCleaner;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Platform\TailoredImport\Infrastructure\Subscriber\UpdateJobExecutionSummarySubscriber;
-use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Model\Warning;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -30,19 +32,28 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Webmozart\Assert\Assert;
 
-class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface, InitializableInterface
+class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface, InitializableInterface, FlushableInterface
 {
+    private const WARNING_BATCH_SIZE = 100;
+
     private ?StepExecution $stepExecution;
+    private array $warnings = [];
 
     public function __construct(
         private MessageBusInterface $messageBus,
         private EventDispatcherInterface $eventDispatcher,
+        private JobRepositoryInterface $jobRepository,
     ) {
     }
 
     public function initialize(): void
     {
         $this->eventDispatcher->addSubscriber(new UpdateJobExecutionSummarySubscriber($this->stepExecution));
+    }
+
+    public function flush(): void
+    {
+        $this->saveAndClearWarnings();
     }
 
     public function write(array $items): void
@@ -97,22 +108,33 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     private function addViolationsWarning(ConstraintViolationListInterface $violationList, RowPayload $rowPayload): void
     {
         foreach ($violationList as $violation) {
-            $this->stepExecution->addWarning(
+            $this->addWarning(new Warning(
+                $this->stepExecution,
                 $violation->getMessage(),
                 $violation->getParameters(),
-                new FileInvalidItem($this->getFormattedCells($rowPayload), $rowPayload->getRowPosition()),
-            );
+                $this->getFormattedCells($rowPayload),
+            ));
         }
     }
 
     private function addInvalidValuesWarning(RowPayload $rowPayload): void
     {
         foreach ($rowPayload->getInvalidValues() as $invalidValue) {
-            $this->stepExecution->addWarning(
+            $this->addWarning(new Warning(
+                $this->stepExecution,
                 $invalidValue->getErrorKey(),
                 [],
-                new FileInvalidItem($this->getFormattedCells($rowPayload), $rowPayload->getRowPosition()),
-            );
+                $this->getFormattedCells($rowPayload),
+            ));
+        }
+    }
+
+    private function addWarning(Warning $warning): void
+    {
+        $this->warnings[] = $warning;
+
+        if (self::WARNING_BATCH_SIZE <= count($this->warnings)) {
+            $this->saveAndClearWarnings();
         }
     }
 
@@ -199,5 +221,11 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
             - $stepExecution->getSummaryInfo('process', 0)
             - $stepExecution->getSummaryInfo('skip', 0)
             - $stepExecution->getSummaryInfo('skipped_no_diff', 0);
+    }
+
+    private function saveAndClearWarnings(): void
+    {
+        $this->jobRepository->addWarnings($this->stepExecution, $this->warnings);
+        $this->warnings = [];
     }
 }

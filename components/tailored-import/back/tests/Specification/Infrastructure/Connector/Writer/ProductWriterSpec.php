@@ -26,8 +26,10 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -48,7 +50,8 @@ class ProductWriterSpec extends ObjectBehavior
     public function let(
         MessageBusInterface $messageBus,
         StepExecution $stepExecution,
-        EventDispatcher $eventDispatcher
+        EventDispatcher $eventDispatcher,
+        JobRepositoryInterface $jobRepository,
     ) {
         $this->rowPayload = new RowPayload(
             new Row([
@@ -60,7 +63,7 @@ class ProductWriterSpec extends ObjectBehavior
             ColumnCollection::createFromNormalized(self::DEFAULT_COLUMN_CONFIGURATION),
             0
         );
-        $this->beConstructedWith($messageBus, $eventDispatcher);
+        $this->beConstructedWith($messageBus, $eventDispatcher, $jobRepository);
 
         $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_product']));
         $stepExecution->getSummaryInfo('item_position', 0)->willReturn(1);
@@ -74,7 +77,6 @@ class ProductWriterSpec extends ObjectBehavior
 
     public function it_executes_an_upsert_command_without_user_intent(
         MessageBusInterface $messageBus,
-        StepExecution $stepExecution,
     ) {
         $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: []);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
@@ -87,7 +89,6 @@ class ProductWriterSpec extends ObjectBehavior
 
     public function it_executes_an_upsert_command_with_value_user_intent(
         MessageBusInterface $messageBus,
-        StepExecution $stepExecution,
     ) {
         $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
             new SetTextValue('name', null, null, 'Produit 1'),
@@ -102,7 +103,6 @@ class ProductWriterSpec extends ObjectBehavior
 
     public function it_executes_an_upsert_command_with_category_user_intent(
         MessageBusInterface $messageBus,
-        StepExecution $stepExecution,
     ) {
         $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', categoryUserIntent: new AddCategories(['clothes', 'shoes']));
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
@@ -115,7 +115,6 @@ class ProductWriterSpec extends ObjectBehavior
 
     public function it_executes_an_upsert_command_with_family_user_intent(
         MessageBusInterface $messageBus,
-        StepExecution $stepExecution,
     ) {
         $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', familyUserIntent: new SetFamily('a_family'));
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
@@ -143,12 +142,6 @@ class ProductWriterSpec extends ObjectBehavior
         $constraintViolation->__toString()->willReturn('legacy error');
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new LegacyViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
-        $stepExecution->addWarning('legacy error', [], new FileInvalidItem([
-            'Sku' => 'ref1',
-            'Name' => 'Produit 1',
-            'Categories' => 'clothes, shoes',
-            'Family' => 'a_family',
-        ], 0))->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
         $stepExecution->getSummaryInfo('create', 0)->willReturn(0);
         $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
@@ -174,12 +167,6 @@ class ProductWriterSpec extends ObjectBehavior
         $constraintViolation->getPropertyPath()->willReturn('');
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
-        $stepExecution->addWarning('error', [], new FileInvalidItem([
-            'Sku' => 'ref1',
-            'Name' => 'Produit 1',
-            'Categories' => 'clothes, shoes',
-            'Family' => 'a_family',
-        ], 0))->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
         $stepExecution->getSummaryInfo('create', 0)->willReturn(0);
         $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
@@ -207,12 +194,6 @@ class ProductWriterSpec extends ObjectBehavior
         $constraintViolation->getPropertyPath()->willReturn('valueUserIntents[0]');
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
-        $stepExecution->addWarning('error', [], new FileInvalidItem([
-            'Sku' => 'ref1',
-            'Name' => 'Produit 1',
-            'Categories' => 'clothes, shoes',
-            'Family' => 'a_family',
-        ], 0))->shouldBeCalled();
 
         $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
             new SetTextValue('reference', null, null, 'ref1'),
@@ -245,12 +226,6 @@ class ProductWriterSpec extends ObjectBehavior
         $constraintViolation->getPropertyPath()->willReturn('categoryUserIntent');
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
-        $stepExecution->addWarning('error', [], new FileInvalidItem([
-            'Sku' => 'ref1',
-            'Name' => 'Produit 1',
-            'Categories' => 'clothes, shoes',
-            'Family' => 'a_family',
-        ], 0))->shouldBeCalled();
 
         $upsertProductCommand = new UpsertProductCommand(
             userId: 1,
@@ -286,12 +261,6 @@ class ProductWriterSpec extends ObjectBehavior
         $constraintViolation->getPropertyPath()->willReturn('familyUserIntent');
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
-        $stepExecution->addWarning('error', [], new FileInvalidItem([
-            'Sku' => 'ref1',
-            'Name' => 'Produit 1',
-            'Categories' => 'clothes, shoes',
-            'Family' => 'a_family',
-        ], 0))->shouldBeCalled();
 
         $upsertProductCommand = new UpsertProductCommand(
             userId: 1,
@@ -352,9 +321,6 @@ class ProductWriterSpec extends ObjectBehavior
             'Family' => 'a_family'], 0
         );
 
-        $stepExecution->addWarning('value error', [], $fileInvalidItem)->shouldBeCalled();
-        $stepExecution->addWarning('category error', [], $fileInvalidItem)->shouldBeCalled();
-        $stepExecution->addWarning('family error', [], $fileInvalidItem)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
         $stepExecution->getSummaryInfo('create', 0)->willReturn(0);
         $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
@@ -384,7 +350,6 @@ class ProductWriterSpec extends ObjectBehavior
         $constraintViolation->getPropertyPath()->willReturn('unknown');
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
-        $stepExecution->addWarning('unknown error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1', 'Categories' => 'clothes, shoes', 'Family' => 'a_family'], 0))->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
         $stepExecution->getSummaryInfo('create', 0)->willReturn(0);
         $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
@@ -404,43 +369,6 @@ class ProductWriterSpec extends ObjectBehavior
         $this->rowPayload->setInvalidValues([new InvalidValue('Operation error')]);
 
         $messageBus->dispatch($upsertProductCommand)->shouldNotBeCalled();
-
-        $fileInvalidItem = new FileInvalidItem([
-            'Sku' => 'ref1',
-            'Name' => 'Produit 1',
-            'Categories' => 'clothes, shoes',
-            'Family' => 'a_family'], 0
-        );
-
-        $stepExecution->addWarning('Operation error', [], $fileInvalidItem)->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
-        $stepExecution->getSummaryInfo('create', 0)->willReturn(0);
-        $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
-
-        $this->write([$this->rowPayload]);
-    }
-
-    public function it_should_add_warning_when_there_are_invalid_values(
-        MessageBusInterface $messageBus,
-        StepExecution $stepExecution,
-    ) {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
-            new SetTextValue('name', null, null, 'Produit 1'),
-        ]);
-
-        $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
-        $this->rowPayload->setInvalidValues([new InvalidValue('Operation error')]);
-
-        $fileInvalidItem = new FileInvalidItem([
-            'Sku' => 'ref1',
-            'Name' => 'Produit 1',
-            'Categories' => 'clothes, shoes',
-            'Family' => 'a_family'], 0
-        );
-
-        $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
-        $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
-        $stepExecution->addWarning('Operation error', [], $fileInvalidItem)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
         $stepExecution->getSummaryInfo('create', 0)->willReturn(0);
         $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
