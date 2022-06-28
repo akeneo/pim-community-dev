@@ -102,6 +102,17 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
                     'scope' => null,
                     'locale' => null,
                     'canReview' => true
+                ]],
+                '12345' => [[
+                    'before' => 'before proposal',
+                    'after' => 'proposal data',
+                    'data' => 'proposal data',
+                    'attributeLabel' => 'Name',
+                    'attributeType' => "pim_catalog_text",
+                    'attributeReferenceDataName' => "refdataname",
+                    'scope' => null,
+                    'locale' => null,
+                    'canReview' => true
                 ]]
             ],
             'author_code' => 'mary',
@@ -337,9 +348,15 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
         $entityWithValuesDraft->getId()->willReturn(42);
         $entityWithValuesDraft->isInProgress()->willReturn(false);
         $entityWithValuesDraft->getEntityWithValue()->willReturn($entityWithValues);
-        $entityWithValuesDraft->getChanges()->willReturn(['values' => ['name' => [$change]]]);
+        $entityWithValuesDraft->getChanges()->willReturn([
+            'values' => [
+                'name' => [$change],
+                12345 => [$change],
+            ]
+        ]);
         $entityWithValuesDraft->getAuthor()->willReturn('mary');
         $entityWithValuesDraft->getReviewStatusForChange('name', Argument::any(), Argument::any())->willReturn('to_review');
+        $entityWithValuesDraft->getReviewStatusForChange('12345', null, null)->willReturn('to_review');
 
         $entityWithValues->getIdentifier()->willReturn('product_69');
 
@@ -362,8 +379,18 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_catalog_text');
         $attribute->getReferenceDataName()->willReturn('refdataname');
 
+        $attributeRepository->findOneByIdentifier('12345')->willReturn($attribute);
+        $attribute->isLocalizable()->willReturn(isset($options['localizable']) ? $options['localizable'] : false);
+        $attribute->getType()->willReturn('pim_catalog_text');
+        $attribute->getReferenceDataName()->willReturn('refdataname');
+
         $valueCollectionWithoutEmptyValuesProvider->getChanges($entityWithValuesDraft, $context)->willReturn([
             'name' => [[
+                'data' => 'proposal data',
+                'scope' => null,
+                'locale' => isset($options['localizable']) && $options['localizable'] ? 'en_US' : null,
+            ]],
+            '12345' => [[
                 'data' => 'proposal data',
                 'scope' => null,
                 'locale' => isset($options['localizable']) && $options['localizable'] ? 'en_US' : null,
@@ -371,6 +398,11 @@ class ProposalChangesNormalizerSpec extends ObjectBehavior
         ]);
 
         $presenterRegistry->presentChange($entityWithValuesDraft, $change, 'name')->willReturn([
+            'before' => 'before proposal',
+            'after' => 'proposal data',
+        ]);
+
+        $presenterRegistry->presentChange($entityWithValuesDraft, $change, '12345')->willReturn([
             'before' => 'before proposal',
             'after' => 'proposal data',
         ]);
