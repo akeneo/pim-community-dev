@@ -114,9 +114,11 @@ SQL;
 
         $result = [];
         foreach ($allQuantifiedAssociationsWithProductId as $associationTypeCode => $associationWithIds) {
-            if (empty($associationWithIds) || !is_string($associationTypeCode)) {
+            if (empty($associationWithIds)) {
                 continue;
             }
+
+            $associationTypeCode = (string) $associationTypeCode;
 
             if (!in_array($associationTypeCode, $validQuantifiedAssociationTypeCodes)) {
                 continue;
