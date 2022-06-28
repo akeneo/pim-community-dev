@@ -15,8 +15,10 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Value;
 
 final class InvalidValue implements ValueInterface
 {
+    private const TYPE = 'invalid';
+
     public function __construct(
-        private string $errorMessage,
+        private string $errorKey,
     ) {
     }
 
@@ -25,8 +27,16 @@ final class InvalidValue implements ValueInterface
         throw new \RuntimeException('You can\'t access to value on an InvalidValue object');
     }
 
-    public function getErrorMessage(): string
+    public function getErrorKey(): string
     {
-        return $this->errorMessage;
+        return $this->errorKey;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'type' => self::TYPE,
+            'error_key' => $this->errorKey,
+        ];
     }
 }

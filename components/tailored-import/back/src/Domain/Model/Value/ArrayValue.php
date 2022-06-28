@@ -17,6 +17,8 @@ use Webmozart\Assert\Assert;
 
 final class ArrayValue implements ValueInterface
 {
+    private const TYPE = 'array';
+
     public function __construct(
         private array $value,
     ) {
@@ -26,5 +28,13 @@ final class ArrayValue implements ValueInterface
     public function getValue(): array
     {
         return $this->value;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'type' => self::TYPE,
+            'value' => $this->value,
+        ];
     }
 }

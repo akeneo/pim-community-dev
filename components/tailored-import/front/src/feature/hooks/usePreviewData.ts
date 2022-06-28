@@ -1,11 +1,11 @@
 import {useEffect, useState} from 'react';
 import {useRoute} from '@akeneo-pim-community/shared';
-import {DataMapping, PreviewData} from '../models';
+import {DataMapping, OperationPreviewData} from '../models';
 
 const usePreviewData = (dataMapping: DataMapping) => {
   const route = useRoute('pimee_tailored_import_generate_preview_data_action');
   const [isLoading, setIsLoading] = useState(false);
-  const [previewData, setPreviewData] = useState<PreviewData[]>([]);
+  const [previewData, setPreviewData] = useState<OperationPreviewData>({});
   const [hasError, setHasError] = useState<boolean>(false);
 
   useEffect(() => {
@@ -26,13 +26,13 @@ const usePreviewData = (dataMapping: DataMapping) => {
       const data = await response.json();
 
       setIsLoading(false);
-      setPreviewData(response.ok ? data.preview_data : []);
+      setPreviewData(response.ok ? data.preview_data : {});
       setHasError(!response.ok);
     };
 
     setHasError(false);
     if (dataMapping.sample_data.length === 0 || dataMapping.operations.length === 0) {
-      setPreviewData([]);
+      setPreviewData({});
 
       return;
     }

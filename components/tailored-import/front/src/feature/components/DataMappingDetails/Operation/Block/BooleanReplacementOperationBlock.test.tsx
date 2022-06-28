@@ -7,6 +7,14 @@ import {
   getDefaultBooleanReplacementOperation,
 } from './BooleanReplacementOperationBlock';
 import userEvent from '@testing-library/user-event';
+import {OperationPreviewData} from 'feature/models';
+
+const operationPreviewData: OperationPreviewData = {
+  [expect.any(String)]: [
+    {type: 'boolean', value: '1'},
+    {type: 'boolean', value: '0'},
+  ],
+};
 
 test('it can get the default boolean replacement operation', () => {
   expect(getDefaultBooleanReplacementOperation()).toEqual({
@@ -37,7 +45,7 @@ test('it displays a boolean_replacement operation block', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: [],
+        data: operationPreviewData,
       }}
       validationErrors={[]}
     />
@@ -69,7 +77,7 @@ test('it updates mapping value', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: [],
+        data: operationPreviewData,
       }}
       validationErrors={[]}
     />
@@ -119,7 +127,7 @@ test('it throws an error if the operation is not a boolean replacement operation
         previewData={{
           isLoading: false,
           hasError: false,
-          data: [],
+          data: operationPreviewData,
         }}
         validationErrors={[]}
       />
@@ -164,7 +172,7 @@ test('it displays validation errors', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: [],
+        data: operationPreviewData,
       }}
       validationErrors={validationErrors}
     />

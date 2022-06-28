@@ -15,8 +15,18 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Value;
 
 final class NullValue implements ValueInterface
 {
+    private const TYPE = 'null';
+
     public function getValue(): mixed
     {
         return null;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'type' => self::TYPE,
+            'value' => null,
+        ];
     }
 }

@@ -109,7 +109,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     {
         foreach ($rowPayload->getInvalidValues() as $invalidValue) {
             $this->stepExecution->addWarning(
-                $invalidValue->getErrorMessage(),
+                $invalidValue->getErrorKey(),
                 [],
                 new FileInvalidItem($this->getFormattedCells($rowPayload), $rowPayload->getRowPosition()),
             );

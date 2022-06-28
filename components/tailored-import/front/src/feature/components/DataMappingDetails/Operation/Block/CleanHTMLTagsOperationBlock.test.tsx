@@ -3,6 +3,14 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {CleanHTMLTagsOperationBlock, getDefaultCleanHTMLTagsOperation} from './CleanHTMLTagsOperationBlock';
+import {OperationPreviewData} from 'feature/models';
+
+const operationPreviewData: OperationPreviewData = {
+  [expect.any(String)]: [
+    {type: 'string', value: '<p>Hello</p>'},
+    {type: 'string', value: '<p>World</p>'},
+  ],
+};
 
 test('it can get the default clean html tags operation', () => {
   expect(getDefaultCleanHTMLTagsOperation()).toEqual({
@@ -12,10 +20,6 @@ test('it can get the default clean html tags operation', () => {
 });
 
 test('it displays a clean html tags operation block', () => {
-  const previewData = {
-    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
-  };
-
   renderWithProviders(
     <CleanHTMLTagsOperationBlock
       targetCode="name"
@@ -26,8 +30,9 @@ test('it displays a clean html tags operation block', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: previewData,
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
@@ -36,9 +41,6 @@ test('it displays a clean html tags operation block', () => {
 
 test('it can be removed using the remove button', () => {
   const handleRemove = jest.fn();
-  const previewData = {
-    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
-  };
 
   renderWithProviders(
     <CleanHTMLTagsOperationBlock
@@ -50,8 +52,9 @@ test('it can be removed using the remove button', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: previewData,
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
@@ -65,10 +68,6 @@ test('it can be removed using the remove button', () => {
 });
 
 test('it displays a preview data section when having preview data', () => {
-  const previewData = {
-    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
-  };
-
   renderWithProviders(
     <CleanHTMLTagsOperationBlock
       targetCode="name"
@@ -79,8 +78,9 @@ test('it displays a preview data section when having preview data', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: previewData,
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
