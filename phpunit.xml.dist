@@ -49,6 +49,10 @@
             <directory>components/tailored-export/back/tests/Integration</directory>
         </testsuite>
 
+        <testsuite name="Akeneo_Connectivity_Connection_Integration">
+            <directory suffix="Integration.php">src/Akeneo/Connectivity/Connection/back/tests/Integration</directory>
+        </testsuite>
+
         <testsuite name="End_to_End">
             <directory suffix="EndToEnd.php">src</directory>
             <directory suffix="EndToEnd.php">tests/back</directory>
