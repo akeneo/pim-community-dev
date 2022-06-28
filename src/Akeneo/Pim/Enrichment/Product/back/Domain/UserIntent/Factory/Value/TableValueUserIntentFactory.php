@@ -31,10 +31,6 @@ class TableValueUserIntentFactory implements ValueUserIntentFactory
             throw InvalidPropertyTypeException::arrayExpected($attributeCode, static::class, $data['data']);
         }
 
-        if (!is_array($data['data'])) {
-            throw InvalidPropertyTypeException::arrayExpected($attributeCode, static::class, $data['data']);
-        }
-
         return new SetTableValue($attributeCode, $data['scope'], $data['locale'], $data['data']);
     }
 }
