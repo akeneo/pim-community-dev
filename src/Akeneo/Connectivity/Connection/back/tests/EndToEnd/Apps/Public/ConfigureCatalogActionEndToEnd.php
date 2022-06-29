@@ -8,6 +8,7 @@ use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ConfigureCatalogActionEndToEnd extends WebTestCase
 {
+    private FilePersistedFeatureFlags $featureFlags;
     private ConnectedAppLoader $connectedAppLoader;
     private Connection $connection;
     private CommandBus $catalogCommandBus;
@@ -33,6 +35,7 @@ class ConfigureCatalogActionEndToEnd extends WebTestCase
     {
         parent::setUp();
 
+        $this->featureFlags = $this->get('feature_flags');
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
         $this->connection = $this->get('database_connection');
         $this->catalogCommandBus = $this->get(CommandBus::class);
@@ -40,9 +43,9 @@ class ConfigureCatalogActionEndToEnd extends WebTestCase
 
     public function test_it_is_redirected_to_the_catalog_edit_page():void
     {
+        $this->featureFlags->enable('marketplace_activate');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
-
         $this->authenticateAsAdmin();
 
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
@@ -68,7 +71,7 @@ class ConfigureCatalogActionEndToEnd extends WebTestCase
 
         Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
         \assert($response instanceof RedirectResponse);
-        Assert::assertEquals('/', $response->getTargetUrl());
+        Assert::assertEquals('/#/connect/connected-apps/connected_app/catalogs/0607c0f8-4ef2-4177-9242-5d864f5d5379', $response->getTargetUrl());
     }
 
     private function getConnectionUserIdentifier(string $connectionCode): string

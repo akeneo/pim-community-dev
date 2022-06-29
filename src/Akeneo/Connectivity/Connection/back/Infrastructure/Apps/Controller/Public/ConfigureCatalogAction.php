@@ -64,10 +64,10 @@ final class ConfigureCatalogAction
         return
             (
                 $app->isTestApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps', $user)
+                $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
             ) || (
                 !$app->isTestApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_manage_apps', $user)
+                $this->security->isGranted('akeneo_connectivity_connection_manage_apps')
             );
     }
 
