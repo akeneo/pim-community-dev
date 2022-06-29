@@ -57,7 +57,7 @@ class CleanRemovedProductsCommand extends Command
             $numberOfIndexedProducts = $this->doDeindex($deleteProductIdentifiers, new ProgressBar($output, 0));
         }
 
-        $output->writeln();
+        $output->writeln('');
         $output->writeln(sprintf('<info>%d products de-indexed</info>', $numberOfIndexedProducts));
 
         return Command::SUCCESS;
@@ -142,8 +142,7 @@ SQL;
 
         foreach ($chunkedProductIdentifiersAncestorsCodes as $arrayProductIdentifierAncestorsCodes) {
             if ($arrayProductIdentifierAncestorsCodes !== null) {
-                $this->productAndAncestorsIndexer->removeFromProductIdsAndReindexAncestors(
-                    [$arrayProductIdentifierAncestorsCodes['_id']],
+                $this->productAndAncestorsIndexer->removeFromProductUuidsAndReindexAncestors(
                     [Uuid::fromString($arrayProductIdentifierAncestorsCodes['_id'])],
                     $arrayProductIdentifierAncestorsCodes['ancestor_codes'] ?? []
                 );
