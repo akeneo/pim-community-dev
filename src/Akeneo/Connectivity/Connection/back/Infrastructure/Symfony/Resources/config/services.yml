@@ -23,14 +23,3 @@ services:
             - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver'
         tags:
             - { name: kernel.event_subscriber }
-
-    AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllAppsUserGroupLabelQuery:
-        arguments:
-            - '@database_connection'
-
-    AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Normalizer\CategoryAccessNormalizer:
-        decorates: pimee_versioning.normalizer.category
-        decoration_inner_name: pimee_versioning.normalizer.category.inner
-        arguments:
-            - '@pimee_versioning.normalizer.category.inner'
-            - '@AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllAppsUserGroupLabelQuery'
