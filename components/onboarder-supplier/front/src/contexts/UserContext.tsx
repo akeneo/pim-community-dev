@@ -1,8 +1,5 @@
-import React, {createContext, useContext, useState, ReactElement} from 'react';
-
-type User = {
-    email: string;
-};
+import React, {createContext, ReactElement, useContext} from 'react';
+import {usePersistentUser, User} from './usePersistentUser';
 
 type UserContextType = {
     user: User | null;
@@ -13,7 +10,11 @@ type UserContextType = {
 const UserContext = createContext<UserContextType>({user: null, updateUser: () => {}, isAuthenticated: false});
 
 const UserContextProvider = ({children}: {children: ReactElement}) => {
-    const [user, updateUser] = useState<User | null>(null);
+    const {user, updateUser, isInitialized} = usePersistentUser();
+
+    if (!isInitialized) {
+        return null;
+    }
 
     const state: UserContextType = {
         user,
