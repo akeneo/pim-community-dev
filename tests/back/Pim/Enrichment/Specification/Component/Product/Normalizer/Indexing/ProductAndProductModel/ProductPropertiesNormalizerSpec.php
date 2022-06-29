@@ -17,6 +17,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -60,11 +61,11 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_product_properties_with_minimum_filled_fields_and_values(
         $normalizer,
-        $getProductCompletenesses,
+        GetProductCompletenesses $getProductCompletenesses,
         ProductInterface $product,
         WriteValueCollection $valueCollection
     ) {
-        $product->getId()->willReturn(67);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $family = null;
 
@@ -94,8 +95,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $valueCollection->isEmpty()->willReturn(true);
 
         $completeness = new ProductCompleteness('channelCode', 'localeCode', 0, 0);
-        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
-        $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
+        $completenessCollection = new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [$completeness]);
+        $getProductCompletenesses->fromProductUuid(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'))->willReturn($completenessCollection);
 
         $normalizer->normalize(
             $completenessCollection,
@@ -105,7 +106,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'id' => 'product_67',
+                'id' => 'product_54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'identifier' => 'sku-001',
                 'created' => $now->format('c'),
                 'updated' => $now->format('c'),
@@ -130,7 +131,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_product_properties_with_fields_and_values(
         $normalizer,
-        $getProductCompletenesses,
+        GetProductCompletenesses $getProductCompletenesses,
         ProductInterface $product,
         WriteValueCollection $valueCollection,
         FamilyInterface $family,
@@ -139,7 +140,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->isVariant()->willReturn(false);
-        $product->getId()->willReturn(67);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $product->getIdentifier()->willReturn('sku-001');
 
         $product->getCreated()->willReturn($now);
@@ -177,8 +178,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         );
 
         $completeness = new ProductCompleteness('ecommerce', 'en_US', 3, 1);
-        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
-        $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
+        $completenessCollection = new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [$completeness]);
+        $getProductCompletenesses->fromProductUuid(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'))->willReturn($completenessCollection);
         $normalizer->normalize($completenessCollection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             [])->willReturn(
             [
@@ -207,7 +208,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'id' => 'product_67',
+                'id' => 'product_54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'identifier' => 'sku-001',
                 'created' => $now->format('c'),
                 'updated' => $now->format('c'),
@@ -257,7 +258,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $normalizer,
         $localeRepository,
         $channelRepository,
-        $getProductCompletenesses,
+        GetProductCompletenesses $getProductCompletenesses,
         AttributeInterface $sku,
         ProductInterface $variantProduct,
         WriteValueCollection $valueCollection,
@@ -277,7 +278,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $beforeNow->sub(new \DateInterval('P10D'));
 
         $variantProduct->isVariant()->willReturn(true);
-        $variantProduct->getId()->willReturn(67);
+        $variantProduct->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $variantProduct->getIdentifier()->willReturn('sku-001');
 
         $variantProduct->getCreated()->willReturn($now);
@@ -312,13 +313,13 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $completeness2 = new ProductCompleteness('ecommerce', 'fr_FR', 3, 1);
         $completeness3 = new ProductCompleteness('print', 'en_US', 3, 1);
         $completeness4 = new ProductCompleteness('print', 'fr_FR', 3, 1);
-        $completenessCollection = new ProductCompletenessCollection(67, [
+        $completenessCollection = new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [
             $completeness1,
             $completeness2,
             $completeness3,
             $completeness4
         ]);
-        $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
+        $getProductCompletenesses->fromProductUuid(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'))->willReturn($completenessCollection);
         $normalizer->normalize(
             $completenessCollection,
             ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
@@ -400,7 +401,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $this->normalize($variantProduct,
             ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'id' => 'product_67',
+                'id' => 'product_54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'identifier' => 'sku-001',
                 'created' => $now->format('c'),
                 'updated' => $afterNow->format('c'),
@@ -461,7 +462,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_variant_product_properties_with_minimum_filled_fields_and_values(
         $normalizer,
         $channelRepository,
-        $getProductCompletenesses,
+        GetProductCompletenesses $getProductCompletenesses,
         ProductInterface $variantProduct,
         WriteValueCollection $valueCollection,
         FamilyInterface $family,
@@ -475,7 +476,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $variantProduct->isVariant()->willReturn(true);
-        $variantProduct->getId()->willReturn(67);
+        $variantProduct->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $variantProduct->getIdentifier()->willReturn('sku-001');
         $variantProduct->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($sku);
@@ -516,8 +517,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         );
 
         $completeness = new ProductCompleteness('ecommerce', 'en_US', 0, 0);
-        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
-        $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
+        $completenessCollection = new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [$completeness]);
+        $getProductCompletenesses->fromProductUuid(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'))->willReturn($completenessCollection);
         $normalizer->normalize($completenessCollection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
             ->willReturn(['normalized_completeness']);
 
@@ -542,7 +543,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($variantProduct,
             ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-                'id' => 'product_67',
+                'id' => 'product_54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'identifier' => 'sku-001',
                 'created' => $now->format('c'),
                 'updated' => $now->format('c'),
@@ -581,7 +582,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_variant_product_properties_with_fields_and_values_and_its_parents_values(
         $normalizer,
         $localeRepository,
-        $getProductCompletenesses,
+        GetProductCompletenesses $getProductCompletenesses,
         ProductInterface $variantProduct,
         WriteValueCollection $valueCollection,
         FamilyInterface $family,
@@ -594,7 +595,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $variantProduct->isVariant()->willReturn(true);
-        $variantProduct->getId()->willReturn(67);
+        $variantProduct->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $variantProduct->getIdentifier()->willReturn('sku-001');
         $variantProduct->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($sku);
@@ -638,8 +639,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         );
 
         $completeness = new ProductCompleteness('ecommerce', 'en_US', 3, 1);
-        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
-        $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
+        $completenessCollection = new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [$completeness]);
+        $getProductCompletenesses->fromProductUuid(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'))->willReturn($completenessCollection);
         $normalizer->normalize($completenessCollection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             [])->willReturn(
             [
@@ -695,7 +696,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $this->normalize($variantProduct,
             ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'id' => 'product_67',
+                'id' => 'product_54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'identifier' => 'sku-001',
                 'created' => $now->format('c'),
                 'updated' => $now->format('c'),
@@ -760,7 +761,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $normalizer,
         $channelRepository,
         $localeRepository,
-        $getProductCompletenesses,
+        GetProductCompletenesses $getProductCompletenesses,
         NormalizerInterface $normalizer1,
         NormalizerInterface $normalizer2,
         ProductInterface $product,
@@ -768,7 +769,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($channelRepository, $localeRepository, $getProductCompletenesses, $normalizer, [$normalizer1, $normalizer2]);
 
-        $product->getId()->willReturn(67);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $family = null;
 
@@ -798,8 +799,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $valueCollection->isEmpty()->willReturn(true);
 
         $completeness = new ProductCompleteness('channelCode', 'localeCode', 0, 0);
-        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
-        $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
+        $completenessCollection = new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [$completeness]);
+        $getProductCompletenesses->fromProductUuid(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'))->willReturn($completenessCollection);
 
         $normalizer->normalize($completenessCollection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             [])->willReturn(['normalized_completeness']);
@@ -814,7 +815,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'id'                      => 'product_67',
+                'id'                      => 'product_54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'identifier'              => 'sku-001',
                 'created'                 => $now->format('c'),
                 'updated'                 => $now->format('c'),

@@ -81,9 +81,9 @@ class SecurityContext extends PimContext
 
         $comments = $this
             ->getService('pim_comment.repository.comment')
-            ->getComments(
+            ->getCommentsByUuid(
                 ClassUtils::getClass($product),
-                $product->getId()
+                $product->getUuid()
             );
 
         $lastComment = end($comments);
@@ -130,7 +130,7 @@ class SecurityContext extends PimContext
 
         $this->doCall('GET', $url, [
             'inset' => 1,
-            'values' => $product->getId()
+            'values' => $product->getUuid()->toString()
         ]);
     }
 
@@ -446,7 +446,7 @@ class SecurityContext extends PimContext
         $url = $this
             ->getService('router')
             ->generate($routeName, [
-                'id' => $product->getId(),
+                'uuid' => $product->getUuid()->toString(),
             ]);
 
         $this->doCall('POST', $url, [], [
@@ -469,7 +469,7 @@ class SecurityContext extends PimContext
         $url = $this
             ->getService('router')
             ->generate($routeName, [
-                'id' => $product->getId(),
+                'uuid' => $product->getUuid()->toString(),
             ]);
 
         $this->doCall('DELETE', $url);
@@ -493,7 +493,7 @@ class SecurityContext extends PimContext
         $url = $this
             ->getService('router')
             ->generate($routeName, [
-                'id' => $product->getId(),
+                'uuid' => $product->getUuid()->toString(),
                 'attributeId' => $attribute->getId(),
             ]);
 

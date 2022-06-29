@@ -18,7 +18,7 @@ class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWit
                 new SetIdentifierValue('sku', 'yellow_chair')
             ],
         );
-        $normalizedProduct = $this->getProductFromInternalApi($product->getId());
+        $normalizedProduct = $this->getProductFromInternalApi($product->getUuid());
 
         $quantifiedAssociations = [
             'PRODUCTSET' => [
@@ -38,7 +38,7 @@ class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWit
             ]
         );
 
-        $response = $this->updateProductWithInternalApi($product->getId(), $normalizedProductWithQuantifiedAssociations);
+        $response = $this->updateProductWithInternalApi($product->getUuid(), $normalizedProductWithQuantifiedAssociations);
 
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $body = json_decode($response->getContent(), true);

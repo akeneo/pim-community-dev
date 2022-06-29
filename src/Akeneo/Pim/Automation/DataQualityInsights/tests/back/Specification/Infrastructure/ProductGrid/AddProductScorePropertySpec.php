@@ -32,26 +32,28 @@ class AddProductScorePropertySpec extends ObjectBehavior
             'en_US'
         );
 
-        $rows = [$this->makeRow(1), $this->makeRow(4)];
+        $uuid1 = '54162e35-ff81-48f1-96d5-5febd3f00fd5';
+        $uuid2 = 'ac930366-36f2-4ad9-9a9f-de94c913d8ca';
+        $rows = [$this->makeRow($uuid1), $this->makeRow($uuid2)];
 
         $addScoresToProductAndProductModelRows->__invoke($queryParameters, $rows, 'product')->shouldBeCalled();
 
         $this->add($queryParameters, $rows)->shouldHaveScoreProperties();
     }
 
-    private function makeRow(int $id): Row
+    private function makeRow(string $technicalId): Row
     {
         return Row::fromProduct(
-            strval($id), // identifier
+            sprintf('product_%s', $technicalId), // identifier
             null, // family
             [], // groupCodes
             true, // $enabled,
             new \DateTime(), // created
             new \DateTime(), // updated
-            strval($id), // label
+            sprintf('Label of %s', $technicalId), // label
             null, // image
             null, // completeness,
-            $id, //technicalId,
+            $technicalId, //technicalId,
             null, // parentCode,
             new WriteValueCollection() // values,
         );

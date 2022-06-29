@@ -54,7 +54,7 @@ FROM (
                          associated_group.code as associated_group_identifier
                   FROM pim_catalog_product product
                            CROSS JOIN pim_catalog_association_type association_type
-                           LEFT JOIN pim_catalog_association association ON association.owner_id = product.id AND association_type.id = association.association_type_id
+                           LEFT JOIN pim_catalog_association association ON association.owner_uuid = product.uuid AND association_type.id = association.association_type_id
                            LEFT JOIN pim_catalog_association_group group_association ON association.id = group_association.association_id
                            LEFT JOIN pim_catalog_group associated_group ON group_association.group_id = associated_group.id
                   WHERE product.identifier IN (?)

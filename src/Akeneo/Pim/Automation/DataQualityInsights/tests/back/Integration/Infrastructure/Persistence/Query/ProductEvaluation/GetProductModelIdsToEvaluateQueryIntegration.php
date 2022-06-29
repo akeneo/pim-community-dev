@@ -10,7 +10,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsToEvaluateQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -54,22 +55,22 @@ class GetProductModelIdsToEvaluateQueryIntegration extends DataQualityInsightsTe
         $evaluations = (new CriterionEvaluationCollection)
             ->add(new CriterionEvaluation(
                 new CriterionCode('completeness'),
-                new ProductId($productModelId1),
+                new ProductModelId($productModelId1),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new CriterionEvaluation(
                 new CriterionCode('spelling'),
-                new ProductId($productModelId1),
+                new ProductModelId($productModelId1),
                 CriterionEvaluationStatus::done()
             ))
             ->add(new CriterionEvaluation(
                 new CriterionCode('completion'),
-                new ProductId($productModelId2),
+                new ProductModelId($productModelId2),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new CriterionEvaluation(
                 new CriterionCode('completion'),
-                new ProductId($productModelId3),
+                new ProductModelId($productModelId3),
                 CriterionEvaluationStatus::pending()
             ));
 
@@ -84,7 +85,7 @@ class GetProductModelIdsToEvaluateQueryIntegration extends DataQualityInsightsTe
 
         $evaluationDone = new CriterionEvaluation(
             new CriterionCode('completeness'),
-            new ProductId($productModelId),
+            ProductModelId::fromString((string) $productModelId),
             CriterionEvaluationStatus::pending()
         );
 

@@ -23,7 +23,7 @@ final class EvaluateProductModelController
     public function __invoke(string $productId): JsonResponse
     {
         try {
-            ($this->evaluateProductModel)(new ProductModelId(intval($productId)));
+            ($this->evaluateProductModel)(ProductModelId::fromString($productId));
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }

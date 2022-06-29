@@ -6,7 +6,9 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductRawValuesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -24,6 +26,8 @@ class GetProductRawValuesQuery implements GetProductRawValuesQueryInterface
 
     public function execute(ProductEntityIdInterface $productId): array
     {
+        Assert::isInstanceOf($productId, ProductUuid::class);
+
         $query = <<<SQL
 SELECT
     JSON_MERGE(
@@ -34,16 +38,16 @@ SELECT
 FROM pim_catalog_product as product
     LEFT JOIN pim_catalog_product_model pm1 ON product.product_model_id = pm1.id
     LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
-WHERE product.id = :product_id;
+WHERE product.uuid = :product_uuid;
 SQL;
 
         $statement = $this->db->executeQuery(
             $query,
             [
-                'product_id' => (int)(string)$productId,
+                'product_uuid' => $productId->toBytes(),
             ],
             [
-                'product_id' => \PDO::PARAM_INT,
+                'product_uuid' => \PDO::PARAM_STR,
             ]
         );
 

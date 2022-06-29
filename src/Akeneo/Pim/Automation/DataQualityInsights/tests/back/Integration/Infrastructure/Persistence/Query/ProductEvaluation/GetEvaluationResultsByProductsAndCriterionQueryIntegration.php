@@ -6,11 +6,12 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Infra
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -29,7 +30,7 @@ final class GetEvaluationResultsByProductsAndCriterionQueryIntegration extends D
         $productWithoutAnyEvaluation = $this->givenAProductWithoutAnyEvaluation();
 
         $results = $this->get(GetEvaluationResultsByProductsAndCriterionQuery::class)->execute(
-            $this->get(ProductIdFactory::class)->createCollection([
+            $this->get(ProductUuidFactory::class)->createCollection([
                 (string) $productWithEvaluation,
                 (string) $productWithPendingEvaluation,
                 (string) $productWithoutAnyEvaluation,
@@ -37,18 +38,18 @@ final class GetEvaluationResultsByProductsAndCriterionQueryIntegration extends D
             new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE)
         );
 
-        $this->assertArrayHasKey($productWithEvaluation, $results, 'There should be an element for the evaluated product in the results');
-        $this->assertInstanceOf(CriterionEvaluationResult::class, $results[$productWithEvaluation], 'The result for the evaluated product should be an instance of CriterionEvaluationResult');
+        $this->assertArrayHasKey((string) $productWithEvaluation, $results, 'There should be an element for the evaluated product in the results');
+        $this->assertInstanceOf(CriterionEvaluationResult::class, $results[(string) $productWithEvaluation], 'The result for the evaluated product should be an instance of CriterionEvaluationResult');
 
-        $this->assertArrayHasKey($productWithPendingEvaluation, $results, 'There should be an element for the product with pending evaluation in the results');
-        $this->assertNull($results[$productWithPendingEvaluation], 'The result for the product with pending evaluation should be null');
+        $this->assertArrayHasKey((string) $productWithPendingEvaluation, $results, 'There should be an element for the product with pending evaluation in the results');
+        $this->assertNull($results[(string) $productWithPendingEvaluation], 'The result for the product with pending evaluation should be null');
 
-        $this->assertArrayNotHasKey($productWithoutAnyEvaluation, $results, 'There should not be result for the product without evaluation');
+        $this->assertArrayNotHasKey((string) $productWithoutAnyEvaluation, $results, 'There should not be result for the product without evaluation');
     }
 
-    private function givenAnEvaluatedProduct(): int
+    private function givenAnEvaluatedProduct(): UuidInterface
     {
-        $productId = $this->createProduct('an_evaluated_product', [
+        $productUuid = $this->createProduct('an_evaluated_product', [
             'family' => 'a_family',
             'values' => [
                 'name' => [
@@ -56,24 +57,24 @@ final class GetEvaluationResultsByProductsAndCriterionQueryIntegration extends D
                     ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'Bar'],
                 ],
             ]
-        ])->getId();
+        ])->getUuid();
 
-        $productIdCollection = $this->get(ProductIdFactory::class)->createCollection([(string)$productId]);
+        $productIdCollection = $this->get(ProductUuidFactory::class)->createCollection([(string)$productUuid]);
         ($this->get(EvaluateProducts::class))($productIdCollection);
 
-        return $productId;
+        return $productUuid;
     }
 
-    private function givenAProductWithPendingEvaluation(): int
+    private function givenAProductWithPendingEvaluation(): UuidInterface
     {
-        return $this->createProduct('a_product_with_pending_evaluation', ['family' => 'a_family'])->getId();
+        return $this->createProduct('a_product_with_pending_evaluation', ['family' => 'a_family'])->getUuid();
     }
 
-    private function givenAProductWithoutAnyEvaluation(): int
+    private function givenAProductWithoutAnyEvaluation(): UuidInterface
     {
-        $productId = $this->createProduct('a_product_without_evaluation', ['family' => 'a_family'])->getId();
-        $this->deleteProductCriterionEvaluations($productId);
+        $productUuid = $this->createProduct('a_product_without_evaluation', ['family' => 'a_family'])->getUuid();
+        $this->deleteProductCriterionEvaluations($productUuid);
 
-        return $productId;
+        return $productUuid;
     }
 }
