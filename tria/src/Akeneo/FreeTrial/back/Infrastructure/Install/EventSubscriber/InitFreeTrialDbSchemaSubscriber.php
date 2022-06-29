@@ -34,9 +34,9 @@ class InitFreeTrialDbSchemaSubscriber implements EventSubscriberInterface
 
     public function initDbSchema(InstallerEvent $event): void
     {
-        if (!$this->featureFlags->isEnabled('free_trial')) {
-            return;
-        }
+//        if (!$this->featureFlags->isEnabled('free_trial')) {
+//            return;
+//        }
 
         $query = <<<'SQL'
 CREATE TABLE IF NOT EXISTS akeneo_free_trial_invited_user (
