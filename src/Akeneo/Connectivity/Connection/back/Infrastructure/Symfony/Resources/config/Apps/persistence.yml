@@ -68,10 +68,6 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByUserIdQuery:
-        arguments:
-            - '@database_connection'
-
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByUserIdentifierQuery:
         arguments:
             - '@database_connection'
