@@ -77,4 +77,4 @@ endif
 
 .PHONY: env-debug
 env-debug:
-	docker-compose run fpm printenv
+	docker-compose run --rm php printenv
