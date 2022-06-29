@@ -32,3 +32,18 @@ test('it can persist the user in the local storage', async () => {
         expect(JSON.parse(localStorage.getItem('onboarder-supplier-contributor-account'))).toStrictEqual(user);
     });
 });
+
+test('it can remove a logged out user from the local storage', async () => {
+    localStorage.setItem('onboarder-supplier-contributor-account', JSON.stringify(user));
+
+    const {result, waitFor} = renderHook(() => usePersistentUser());
+    expect(result.current.isInitialized).toBe(true);
+    expect(result.current.user).toStrictEqual(user);
+
+    result.current.updateUser(null);
+    expect(result.current.user).toBeNull();
+
+    await waitFor(() => {
+        expect(localStorage.getItem('onboarder-supplier-contributor-account')).toBeNull();
+    });
+});

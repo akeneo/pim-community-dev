@@ -97,6 +97,10 @@ $rules = [
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Twig\Environment',
+            'Symfony\Component\HttpFoundation\Request',
+            'Symfony\Component\HttpFoundation\Response',
+            'Symfony\Component\Security\Http\Event\LogoutEvent',
+
         ],
     )->in('Akeneo\OnboarderSerenity\Supplier\Test\Unit'),
 

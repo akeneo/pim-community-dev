@@ -5,8 +5,16 @@ import {FormattedMessage} from 'react-intl';
 import {BadgeButton} from '../../components/BadgeButton';
 import {AkeneoThemedProps, getColor, getFontSize} from 'akeneo-design-system';
 import illustration from '../../assets/images/Factory.svg';
+import {useUserContext} from '../../contexts';
 
 const FilesDropping = () => {
+    const {updateUser} = useUserContext();
+
+    const logout = async () => {
+        await fetch('/onboarder-supplier/logout');
+        updateUser(null);
+    };
+
     return (
         <Container>
             <Menu>
@@ -27,7 +35,7 @@ const FilesDropping = () => {
                         <FormattedMessage defaultMessage="Settings" id="D3idYv" />
                     </MenuSectionHeader>
                     <MenuSection>
-                        <BadgeButton>
+                        <BadgeButton onClick={logout}>
                             <FormattedMessage defaultMessage="Log out" id="PlBReU" />
                         </BadgeButton>
                     </MenuSection>

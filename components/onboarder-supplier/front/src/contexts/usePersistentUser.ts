@@ -12,7 +12,7 @@ const usePersistentUser = () => {
 
     useEffect(() => {
         const contributorAccount = localStorage.getItem(localStorageKey);
-        if (null != contributorAccount) {
+        if (null !== contributorAccount) {
             const user = JSON.parse(contributorAccount);
             null !== user && updateUser(user);
         }

@@ -99,3 +99,7 @@ services:
         class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\HashSymfonyPassword
         arguments:
             - '@security.user_password_hasher'
+
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\LogoutEventSubscriber:
+        tags:
+            - 'kernel.event_subscriber'
