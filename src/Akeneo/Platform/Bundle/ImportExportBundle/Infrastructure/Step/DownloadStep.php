@@ -45,12 +45,12 @@ final class DownloadStep extends AbstractStep
         $jobExecution = $stepExecution->getJobExecution();
 
         if (JobInstance::TYPE_IMPORT !== $jobExecution->getJobInstance()->getType()) {
-            throw new \Exception('Download step should not be used for non import job.');
+            throw new \LogicException('Download step should not be used for non import job.');
         }
 
         $jobParameters = $jobExecution->getRawParameters();
         if (!array_key_exists(self::STORAGE_KEY, $jobParameters)) {
-            throw new \Exception('malformed job parameters, missing storage configuration');
+            throw new \LogicException('malformed job parameters, missing storage configuration');
         }
 
         if ('local' === $jobParameters[self::STORAGE_KEY]['type'] || 'none' === $jobParameters[self::STORAGE_KEY]['type']) {

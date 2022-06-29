@@ -49,12 +49,12 @@ final class UploadStep extends AbstractStep
         $jobExecution = $stepExecution->getJobExecution();
 
         if (JobInstance::TYPE_EXPORT !== $jobExecution->getJobInstance()->getType()) {
-            throw new \Exception('Upload step should not be used for non export job.');
+            throw new \LogicException('Upload step should not be used for non export job.');
         }
 
         $jobParameters = $jobExecution->getRawParameters();
         if (!array_key_exists(self::STORAGE_KEY, $jobParameters)) {
-            throw new \Exception('malformed job parameters, missing storage configuration');
+            throw new \LogicException('malformed job parameters, missing storage configuration');
         }
 
         if ('local' === $jobParameters[self::STORAGE_KEY]['type'] || 'none' === $jobParameters[self::STORAGE_KEY]['type']) {
