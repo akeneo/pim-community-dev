@@ -22,6 +22,7 @@ use Doctrine\DBAL\Connection as DbalConnection;
 use GuzzleHttp\Psr7\Message;
 use GuzzleHttp\Psr7\Request;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -103,13 +104,19 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             [
                 new ProductCreated(
                     $this->referenceAuthor,
-                    ['identifier' => $this->tshirtProduct->getIdentifier()],
+                    [
+                        'identifier' => $this->tshirtProduct->getIdentifier(),
+                        'uuid' => $this->tshirtProduct->getUuid(),
+                    ],
                     1607094167,
                     '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
                 ),
                 new ProductCreated(
                     $this->referenceAuthor,
-                    ['identifier' => $this->pantProduct->getIdentifier()],
+                    [
+                        'identifier' => $this->pantProduct->getIdentifier(),
+                        'uuid' => $this->pantProduct->getUuid(),
+                    ],
                     1607094167,
                     '0d932313-8eae-4f4a-bf37-33d3a932b8c9'
                 ),
@@ -141,7 +148,10 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             [
                 new ProductUpdated(
                     $this->referenceAuthor,
-                    ['identifier' => $this->tshirtProduct->getIdentifier()],
+                    [
+                        'identifier' => $this->tshirtProduct->getIdentifier(),
+                        'uuid' => Uuid::uuid4(),
+                    ],
                     1607094167,
                     '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
                 ),
@@ -174,6 +184,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                     $this->referenceAuthor,
                     [
                         'identifier' => $this->tshirtProduct->getIdentifier(),
+                        'uuid' => Uuid::uuid4(),
                         'category_codes' => $this->tshirtProduct->getCategoryCodes(),
                     ],
                     1607094167,

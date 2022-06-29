@@ -76,7 +76,8 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         Assert::assertEquals(
             [
                 'identifier' => 'blue_jean',
-                'category_codes' => []
+                'uuid' => $product->getUuid(),
+                'category_codes' => [],
             ],
             $event->getData()
         );
@@ -114,7 +115,8 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         Assert::assertEquals(
             [
                 'identifier' => 'product_identifier_1',
-                'category_codes' => []
+                'uuid' => $product1->getUuid(),
+                'category_codes' => [],
             ],
             $event->getData()
         );
@@ -125,7 +127,8 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         Assert::assertEquals(
             [
                 'identifier' => 'product_identifier_2',
-                'category_codes' => []
+                'uuid' => $product2->getUuid(),
+                'category_codes' => [],
             ],
             $event->getData()
         );
