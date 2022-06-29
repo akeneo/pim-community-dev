@@ -85,7 +85,11 @@ SQL;
             if (null === $row['all_quantified_associations']) {
                 continue;
             }
-            $allQuantifiedAssociationsWithProductId = json_decode($row['all_quantified_associations'], true);
+            $allQuantifiedAssociationsWithProductId = [];
+            $allQuantifiedAssociationsWithProductIdFromJson = json_decode($row['all_quantified_associations'], true);
+            foreach ($allQuantifiedAssociationsWithProductIdFromJson as $key => $value) {
+                $allQuantifiedAssociationsWithProductId[\strval($key)] = $value;
+            }
             $associationWithIdentifiers = $this->associationsWithIdentifiers(
                 $allQuantifiedAssociationsWithProductId,
                 $validQuantifiedAssociationTypeCodes
