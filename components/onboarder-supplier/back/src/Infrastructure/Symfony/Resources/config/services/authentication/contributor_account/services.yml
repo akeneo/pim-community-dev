@@ -19,6 +19,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail:
+        arguments:
+            - '@database_connection'
+
     #Event subscribers
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
         arguments:
@@ -54,6 +58,9 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler'
 
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\Security:
+        public: true
+
     #Command handlers
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler:
         arguments:
@@ -68,8 +75,8 @@ services:
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler:
         arguments:
             - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
-            - '@security.user_password_hasher'
             - '@validator'
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\HashPassword'
             - '@logger'
 
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler:
@@ -82,3 +89,13 @@ services:
         arguments:
             - '@twig'
             - '%env(AKENEO_PIM_URL)%'
+
+    #Authentication
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail'
+
+    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\HashPassword:
+        class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\HashSymfonyPassword
+        arguments:
+            - '@security.user_password_hasher'

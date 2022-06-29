@@ -8,6 +8,7 @@ import {UserContextProvider} from './contexts';
 import {queryClient} from './api';
 import {IntlProvider} from 'react-intl';
 import {ToastProvider} from './utils/toaster';
+import {Authenticated} from './Authenticated';
 
 function App() {
     return (
@@ -21,6 +22,11 @@ function App() {
                                     <Route path={`/(set-up-password|login)/`}>
                                         <Container>
                                             <Authentication />
+                                        </Container>
+                                    </Route>
+                                    <Route path={`/`}>
+                                        <Container>
+                                            <Authenticated />
                                         </Container>
                                     </Route>
                                 </Switch>

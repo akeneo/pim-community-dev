@@ -9,8 +9,8 @@ type BadgeButtonProps = {
 };
 
 const BadgeButton = ({onClick, isActive = false, children}: BadgeButtonProps) => {
-    const buttonLabel = React.Children.toArray(children).find(child => 'string' === typeof child);
     const badge = React.Children.toArray(children).find(child => isValidElement(child) && child.type === Badge);
+    const buttonLabel = React.Children.toArray(children).find(child => child !== badge);
 
     return (
         <Container isActive={isActive} onClick={onClick} hasBadge={badge !== undefined}>
@@ -34,7 +34,6 @@ const Container = styled.div<BadgeButtonProps & AkeneoThemedProps & {hasBadge: b
     font-weight: 400;
     font-size: ${getFontSize('big')} !important;
     color: ${getColor('grey120')};
-    text-transform: capitalize;
     text-decoration: none;
     border-width: 1px;
     border-radius: 4px;
