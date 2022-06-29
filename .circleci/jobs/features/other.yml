@@ -537,7 +537,7 @@ jobs:
                   command: make dsm
             - run:
                   name: Launch Tria in test mode
-                  command: make pim-test
+                  command: PIM_EDITION=TRIAL_EDITION make pim-test
             - run:
                   name: Debug
                   command: PIM_CONTEXT=test make env-debug
