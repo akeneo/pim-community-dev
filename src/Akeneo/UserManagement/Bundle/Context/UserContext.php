@@ -8,6 +8,7 @@ use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterfac
 use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\HttpFoundation\Request;
@@ -439,6 +440,10 @@ class UserContext
 
         if ($token !== null) {
             $user = $token->getUser();
+            if (!$user instanceof UserInterface) {
+                return null;
+            }
+
             $method = sprintf('get%s', ucfirst($optionName));
 
             if (null === $user || !is_object($user)) {
