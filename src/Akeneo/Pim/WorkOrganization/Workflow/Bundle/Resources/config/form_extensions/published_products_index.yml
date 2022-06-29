@@ -117,10 +117,13 @@ extensions:
             gridName: published-product-grid
 
     pimee-published-product-index-columns:
-        module: pim/datagrid/configure-columns-action
+        module: pim/datagrid/column-selector
         parent: pimee-published-product-index-grid-container
         targetZone: toolbar
         position: 10
+        config:
+            route: pimee_workflow_datagrid_published_product_grid_available_columns
+            gridName: published-product-grid
 
     pimee-published-product-index-display-selector:
         module: pim/datagrid/display-selector
