@@ -24,8 +24,7 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
                 ImportJobExecutionMessage::class => ['import'],
                 ExportJobExecutionMessage::class => ['export', 'quick_export'],
             ],
-            DataMaintenanceJobExecutionMessage::class,
-            'my_tenant_id'
+            DataMaintenanceJobExecutionMessage::class
         );
     }
 
@@ -41,7 +40,7 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage = $this->buildFromJobInstance($jobInstance, 1, []);
         $jobExecutionMessage->shouldBeAnInstanceOf(UiJobExecutionMessage::class);
         $jobExecutionMessage->getJobExecutionId()->shouldBe(1);
-        $jobExecutionMessage->tenantId()->shouldBe('my_tenant_id');
+        $jobExecutionMessage->getTenantId()->shouldBe(null);
     }
 
     function it_builds_an_export_job_execution_message(JobInstance $jobInstance)
@@ -68,7 +67,6 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
             [
                 'id' => '30e8008d-48dc-4430-97e1-6f67a5c420e9',
                 'job_execution_id' => 10,
-                'tenant_id' => 'foo_tenant_id',
                 'created_time' => '2021-03-08T15:37:23+01:00',
                 'updated_time' => null,
                 'options' => ['option1' => 'value1'],
@@ -78,7 +76,6 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage->shouldBeAnInstanceOf(UiJobExecutionMessage::class);
         $jobExecutionMessage->getId()->shouldBeLike(Uuid::fromString('30e8008d-48dc-4430-97e1-6f67a5c420e9'));
         $jobExecutionMessage->getJobExecutionId()->shouldBe(10);
-        $jobExecutionMessage->tenantId()->shouldBe('foo_tenant_id');
         $jobExecutionMessage->getCreateTime()->shouldBeLike(new \DateTime('2021-03-08T15:37:23+01:00'));
         $jobExecutionMessage->getUpdatedTime()->shouldBeNull();
         $jobExecutionMessage->getOptions()->shouldBe(['option1' => 'value1']);
@@ -90,7 +87,6 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
             [
                 'id' => 'a57380fc-ee3b-4bd2-94e6-c3ead13c32a7',
                 'job_execution_id' => 10,
-                'tenant_id' => 'foo_tenant_id',
                 'created_time' => '2021-03-08T15:37:23+01:00',
                 'updated_time' => '2021-03-09T15:37:23+01:00',
                 'options' => ['option1' => 'value1'],
@@ -100,7 +96,6 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage->shouldBeAnInstanceOf(ImportJobExecutionMessage::class);
         $jobExecutionMessage->getId()->shouldBeLike(Uuid::fromString('a57380fc-ee3b-4bd2-94e6-c3ead13c32a7'));
         $jobExecutionMessage->getJobExecutionId()->shouldBe(10);
-        $jobExecutionMessage->tenantId()->shouldBe('foo_tenant_id');
         $jobExecutionMessage->getCreateTime()->shouldBeLike(new \DateTime('2021-03-08T15:37:23+01:00'));
         $jobExecutionMessage->getUpdatedTime()->shouldBeLike(new \DateTime('2021-03-09T15:37:23+01:00'));
         $jobExecutionMessage->getOptions()->shouldBe(['option1' => 'value1']);
@@ -117,7 +112,6 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
             [
                 'id' => 'a57380fc-ee3b-4bd2-94e6-c3ead13c32a7',
                 'job_execution_id' => 10,
-                'tenant_id' => 'foo_tenant_id',
                 'created_time' => '2021-03-08T15:37:23+01:00',
                 'updated_time' => '2021-03-09T15:37:23+01:00',
                 'options' => [],
@@ -127,7 +121,6 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage->shouldBeAnInstanceOf(DataMaintenanceJobExecutionMessage::class);
         $jobExecutionMessage->getId()->shouldBeLike(Uuid::fromString('a57380fc-ee3b-4bd2-94e6-c3ead13c32a7'));
         $jobExecutionMessage->getJobExecutionId()->shouldBe(10);
-        $jobExecutionMessage->tenantId()->shouldBe('foo_tenant_id');
         $jobExecutionMessage->getCreateTime()->shouldBeLike(new \DateTime('2021-03-08T15:37:23+01:00'));
         $jobExecutionMessage->getUpdatedTime()->shouldBeLike(new \DateTime('2021-03-09T15:37:23+01:00'));
         $jobExecutionMessage->getOptions()->shouldBe([]);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlFindCategoryTrees;
 use Akeneo\Test\Integration\Configuration;
@@ -17,6 +18,7 @@ final class SqlFindCategoryTreesIntegration extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->createCategory(['code' => 'sales']);
         $this->sqlFindCategoryTrees = $this->createQuery(new AllowAll());
     }
 
@@ -30,7 +32,12 @@ final class SqlFindCategoryTreesIntegration extends TestCase
         $masterTree->code = 'master';
         $masterTree->labels = ['en_US' => 'Master catalog'];
 
-        $expected = [$masterTree];
+        $saleTree = new CategoryTree();
+        $saleTree->id = $actual[1]->id;
+        $saleTree->code = 'sales';
+        $saleTree->labels = [];
+
+        $expected = [$masterTree, $saleTree];
         self::assertEquals($expected, $actual);
     }
 
@@ -43,6 +50,42 @@ final class SqlFindCategoryTreesIntegration extends TestCase
 
         self::assertEmpty($actual);
     }
+
+    /** @test */
+    public function it_does_not_apply_permission_on_category_trees(): void
+    {
+        $actual = $this->sqlFindCategoryTrees->execute(false);
+
+        $masterTree = new CategoryTree();
+        $masterTree->id = $actual[0]->id;
+        $masterTree->code = 'master';
+        $masterTree->labels = ['en_US' => 'Master catalog'];
+
+        $saleTree = new CategoryTree();
+        $saleTree->id = $actual[1]->id;
+        $saleTree->code = 'sales';
+        $saleTree->labels = [];
+
+        $expected = [$masterTree, $saleTree];
+        self::assertEquals($expected, $actual);
+    }
+
+    /** @test */
+    public function it_applies_permission_on_category_trees(): void
+    {
+        $this->sqlFindCategoryTrees = $this->createQuery(new DenySalesCategory());
+        
+        $actual = $this->sqlFindCategoryTrees->execute();
+
+        $masterTree = new CategoryTree();
+        $masterTree->id = $actual[0]->id;
+        $masterTree->code = 'master';
+        $masterTree->labels = ['en_US' => 'Master catalog'];
+
+        $expected = [$masterTree];
+        self::assertEquals($expected, $actual);
+    }
+
 
     protected function getConfiguration(): Configuration
     {
@@ -77,6 +120,19 @@ class DenyAll implements CollectionFilterInterface
     public function filterCollection($collection, $type, array $options = [])
     {
         return [];
+    }
+
+    public function supportsCollection($collection, $type, array $options = [])
+    {
+        return true;
+    }
+}
+
+class DenySalesCategory implements CollectionFilterInterface
+{
+    public function filterCollection($collection, $type, array $options = [])
+    {
+        return array_filter($collection, fn (Category $category) => $category->getCode() != 'sales');
     }
 
     public function supportsCollection($collection, $type, array $options = [])
