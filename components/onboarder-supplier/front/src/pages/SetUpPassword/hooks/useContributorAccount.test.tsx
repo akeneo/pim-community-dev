@@ -38,6 +38,7 @@ test('it fetches the contributor account using the access token', async () => {
 
 test('it can set up a password for a contributor account', async () => {
     const notifyMock = jest.fn();
+    // @ts-ignore
     toasterHook.useToaster = jest.fn().mockReturnValue(notifyMock);
 
     const historyPushMock = jest.fn();
@@ -49,6 +50,7 @@ test('it can set up a password for a contributor account', async () => {
             status: 200,
         })
     );
+    // @ts-ignore
     passwordSaver.savePassword = savePasswordMock;
 
     const {result, waitForNextUpdate} = renderHookWithProviders(() => useContributorAccount('burger'));
@@ -77,12 +79,14 @@ test('it can set up a password for a contributor account', async () => {
 
 test('it returns an error if the password is invalid', async () => {
     const notifyMock = jest.fn();
+    // @ts-ignore
     toasterHook.useToaster = jest.fn().mockReturnValue(notifyMock);
 
     const historyPushMock = jest.fn();
     reactRouterDom.useHistory = jest.fn().mockReturnValue({push: historyPushMock});
 
     const savePasswordMock = jest.fn().mockRejectedValue(new BadRequestError(Promise.resolve()));
+    // @ts-ignore
     passwordSaver.savePassword = savePasswordMock;
 
     const {result, waitForNextUpdate} = renderHookWithProviders(() => useContributorAccount('burger'));

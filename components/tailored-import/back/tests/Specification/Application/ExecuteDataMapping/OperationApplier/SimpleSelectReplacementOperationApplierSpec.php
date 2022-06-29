@@ -23,7 +23,7 @@ use PhpSpec\ObjectBehavior;
 
 class SimpleSelectReplacementOperationApplierSpec extends ObjectBehavior
 {
-    private $uuid = '00000000-0000-0000-0000-000000000000';
+    private string $uuid = '00000000-0000-0000-0000-000000000000';
 
     public function it_supports_simple_select_replacement_operation(): void
     {

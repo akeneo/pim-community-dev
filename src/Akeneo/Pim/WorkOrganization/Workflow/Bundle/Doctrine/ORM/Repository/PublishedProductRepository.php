@@ -177,4 +177,22 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
 
         return count($queryBuilder->getQuery()->getArrayResult()) > 0;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function searchAfter(?ProductInterface $publishedProduct, int $limit): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults($limit);
+        ;
+
+        if (null !== $publishedProduct) {
+            $qb->where('p.id > :productId')
+                ->setParameter(':productId', $publishedProduct->getId());
+        }
+
+        return $qb->getQuery()->execute();
+    }
 }

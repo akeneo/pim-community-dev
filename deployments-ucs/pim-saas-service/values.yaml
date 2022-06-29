@@ -26,6 +26,9 @@ common:
   gcpProjectID: null # Generated
   googleZone: null # Generated
   pimMasterDomain: null # Generated
+  workloadIdentityKSA: null # Generated
+  workloadIdentityKSANamespace: null # Generated
+  workloadIdentityGSA: null # Generated
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "60"
@@ -108,7 +111,6 @@ pim:
   logging_level: NOTICE
   monitoring:
     authenticationToken: authenticationToken
-  serviceAccountKey: null # Generated
   pubsub:
     topic_business_event: null # Generated
     topic_job_queue_ui: null # Generated

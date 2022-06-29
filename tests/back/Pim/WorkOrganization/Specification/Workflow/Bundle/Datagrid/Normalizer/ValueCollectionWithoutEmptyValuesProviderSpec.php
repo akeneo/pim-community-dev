@@ -35,7 +35,8 @@ class ValueCollectionWithoutEmptyValuesProviderSpec extends ObjectBehavior
         GetAttributes $getAttributes,
         EntityWithValuesDraftInterface $entityWithValuesDraft,
         EntityWithValuesInterface $entityWithValues,
-        ValueInterface $value
+        ValueInterface $value,
+        ValueInterface $value2
     ) {
         $context = ['locales' => ['en_US']];
         $change = [
@@ -47,12 +48,18 @@ class ValueCollectionWithoutEmptyValuesProviderSpec extends ObjectBehavior
         $entityWithValuesDraft->getId()->willReturn(42);
         $entityWithValuesDraft->isInProgress()->willReturn(false);
         $entityWithValuesDraft->getEntityWithValue()->willReturn($entityWithValues);
-        $entityWithValuesDraft->getChanges()->willReturn(['values' => ['name' => [$change]]]);
+        $entityWithValuesDraft->getChanges()->willReturn([
+            'values' => [
+                'name' => [$change],
+                12345 => [$change],
+            ]
+        ]);
         $entityWithValuesDraft->getAuthor()->willReturn('mary');
         $entityWithValues->getIdentifier()->willReturn('product_69');
         $entityWithValuesDraft->getReviewStatusForChange('name', null, null)->willReturn('to_review');
+        $entityWithValuesDraft->getReviewStatusForChange('12345', null, null)->willReturn('to_review');
 
-        $getAttribute = new Attribute(
+        $getAttributeName = new Attribute(
             'name',
             'pim_catalog_text',
             [],
@@ -64,19 +71,46 @@ class ValueCollectionWithoutEmptyValuesProviderSpec extends ObjectBehavior
             'text',
             []
         );
-        $getAttributes->forCode('name')->willReturn($getAttribute);
+        $getAttributes->forCode('name')->willReturn($getAttributeName);
+
+        $getAttributeIntCode = new Attribute(
+            '12345',
+            'pim_catalog_text',
+            [],
+            false,
+            false,
+            null,
+            null,
+            null,
+            'text',
+            []
+        );
+        $getAttributes->forCode('12345')->willReturn($getAttributeIntCode);
 
         $value->getAttributeCode()->willReturn('name');
         $value->getScopeCode()->willReturn(null);
         $value->getLocaleCode()->willReturn(null);
-        $valueFactory->createByCheckingData($getAttribute, null, null, 'proposal data')->willReturn($value);
+        $valueFactory->createByCheckingData($getAttributeName, null, null, 'proposal data')->willReturn($value);
+
+        $value2->getAttributeCode()->willReturn('12345');
+        $value2->getScopeCode()->willReturn(null);
+        $value2->getLocaleCode()->willReturn(null);
+        $valueFactory->createByCheckingData($getAttributeIntCode, null, null, 'proposal data')->willReturn($value2);
 
         $standardNormalizer->normalize(Argument::type(WriteValueCollection::class), 'standard', $context)->willReturn([
-            'name' => [$change]
+            'name' => [$change],
+            '12345' => [$change]
         ]);
 
         $this->getChanges($entityWithValuesDraft, $context)->shouldReturn([
             'name' => [
+                [
+                    'data' => 'proposal data',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+            '12345' => [
                 [
                     'data' => 'proposal data',
                     'scope' => null,

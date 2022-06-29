@@ -17,6 +17,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\Unex
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ConvertToMeasurementOperationApplier;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\MeasurementValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
@@ -34,10 +35,67 @@ class ConvertToMeasurementOperationApplierSpec extends ObjectBehavior
     public function it_applies_convert_to_measurement_operation(): void
     {
         $operation = new ConvertToMeasurementOperation($this->uuid, ',', 'GRAM');
-        $value = new StringValue('1,234');
 
-        $this->applyOperation($operation, $value)
+        $this->applyOperation($operation, new StringValue('1,234'))
             ->shouldBeLike(new MeasurementValue('1.234', 'GRAM'));
+        $this->applyOperation($operation, new StringValue('12,34'))
+            ->shouldBeLike(new MeasurementValue('12.34', 'GRAM'));
+        $this->applyOperation($operation, new StringValue('123,4'))
+            ->shouldBeLike(new MeasurementValue('123.4', 'GRAM'));
+        $this->applyOperation($operation, new StringValue('1234'))
+            ->shouldBeLike(new MeasurementValue('1234', 'GRAM'));
+        $this->applyOperation($operation, new StringValue('-1234'))
+            ->shouldBeLike(new MeasurementValue('-1234', 'GRAM'));
+
+        $operation = new ConvertToMeasurementOperation($this->uuid, '.', 'GRAM');
+
+        $this->applyOperation($operation, new StringValue('1.234'))
+            ->shouldBeLike(new MeasurementValue('1.234', 'GRAM'));
+        $this->applyOperation($operation, new StringValue('12.34'))
+            ->shouldBeLike(new MeasurementValue('12.34', 'GRAM'));
+        $this->applyOperation($operation, new StringValue('123.4'))
+            ->shouldBeLike(new MeasurementValue('123.4', 'GRAM'));
+        $this->applyOperation($operation, new StringValue('1234'))
+            ->shouldBeLike(new MeasurementValue('1234', 'GRAM'));
+        $this->applyOperation($operation, new StringValue('-12.34'))
+            ->shouldBeLike(new MeasurementValue('-12.34', 'GRAM'));
+    }
+
+    public function it_does_not_return_an_invalid_value_when_using_default_separator(): void
+    {
+        $operation = new ConvertToMeasurementOperation($this->uuid, ',', 'GRAM');
+
+        $this->applyOperation($operation, new StringValue('1.234'))
+            ->shouldBeLike(new MeasurementValue('1.234', 'GRAM'));
+        $this->applyOperation($operation, new StringValue('12.34'))
+            ->shouldBeLike(new MeasurementValue('12.34', 'GRAM'));
+        $this->applyOperation($operation, new StringValue('123.4'))
+            ->shouldBeLike(new MeasurementValue('123.4', 'GRAM'));
+        $this->applyOperation($operation, new StringValue('1234'))
+            ->shouldBeLike(new MeasurementValue('1234', 'GRAM'));
+    }
+
+    public function it_returns_an_invalid_value_when_cannot_convert_to_number(): void
+    {
+        $operation = new ConvertToMeasurementOperation($this->uuid, '.', 'GRAM');
+
+        $this->applyOperation($operation, new StringValue('1,234'))
+            ->shouldBeLike(new InvalidValue('Cannot convert "1,234" to a number with separator "."'));
+        $this->applyOperation($operation, new StringValue('1234,'))
+            ->shouldBeLike(new InvalidValue('Cannot convert "1234," to a number with separator "."'));
+        $this->applyOperation($operation, new StringValue('1K234'))
+            ->shouldBeLike(new InvalidValue('Cannot convert "1K234" to a number with separator "."'));
+        $this->applyOperation($operation, new StringValue('1..234'))
+            ->shouldBeLike(new InvalidValue('Cannot convert "1..234" to a number with separator "."'));
+
+        $operation = new ConvertToMeasurementOperation($this->uuid, ',', 'GRAM');
+
+        $this->applyOperation($operation, new StringValue('c1234'))
+            ->shouldBeLike(new InvalidValue('Cannot convert "c1234" to a number with separator ","'));
+        $this->applyOperation($operation, new StringValue('1K234'))
+            ->shouldBeLike(new InvalidValue('Cannot convert "1K234" to a number with separator ","'));
+        $this->applyOperation($operation, new StringValue('1,,234'))
+            ->shouldBeLike(new InvalidValue('Cannot convert "1,,234" to a number with separator ","'));
     }
 
     public function it_throws_an_exception_when_value_type_is_invalid(): void

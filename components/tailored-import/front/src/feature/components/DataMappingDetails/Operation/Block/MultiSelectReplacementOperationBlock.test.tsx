@@ -6,6 +6,14 @@ import {
   getDefaultMultiSelectReplacementOperation,
   MultiSelectReplacementOperationBlock,
 } from './MultiSelectReplacementOperationBlock';
+import {OperationPreviewData} from 'feature/models';
+
+const operationPreviewData: OperationPreviewData = {
+  [expect.any(String)]: [
+    {type: 'array', value: ['tee shirt', 't-shirt']},
+    {type: 'string', value: 't-shirt'},
+  ],
+};
 
 jest.mock('../../../../hooks/useAttributeOptions', () => ({
   useAttributeOptions: (
@@ -53,10 +61,6 @@ test('it can get the default multi select replacement operation', () => {
 });
 
 test('it displays a multi_select_replacement operation block', () => {
-  const previewData = {
-    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
-  };
-
   renderWithProviders(
     <MultiSelectReplacementOperationBlock
       targetCode="brand"
@@ -67,8 +71,9 @@ test('it displays a multi_select_replacement operation block', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: previewData,
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
@@ -79,9 +84,6 @@ test('it displays a multi_select_replacement operation block', () => {
 
 test('it can be removed using the remove button', () => {
   const handleRemove = jest.fn();
-  const previewData = {
-    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
-  };
 
   renderWithProviders(
     <MultiSelectReplacementOperationBlock
@@ -93,8 +95,9 @@ test('it can be removed using the remove button', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: previewData,
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
@@ -109,9 +112,6 @@ test('it can be removed using the remove button', () => {
 
 test('it opens a replacement modal and handles change', async () => {
   const handleChange = jest.fn();
-  const previewData = {
-    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
-  };
 
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: true,
@@ -128,8 +128,9 @@ test('it opens a replacement modal and handles change', async () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: previewData,
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
@@ -160,9 +161,6 @@ test('it opens a replacement modal and handles change', async () => {
 
 test('it does not call handler when cancelling', () => {
   const handleChange = jest.fn();
-  const previewData = {
-    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
-  };
 
   renderWithProviders(
     <MultiSelectReplacementOperationBlock
@@ -174,8 +172,9 @@ test('it does not call handler when cancelling', () => {
       previewData={{
         isLoading: false,
         hasError: false,
-        data: previewData,
+        data: operationPreviewData,
       }}
+      validationErrors={[]}
     />
   );
 
@@ -187,9 +186,6 @@ test('it does not call handler when cancelling', () => {
 
 test('it throws an error if the operation is not a multi select replacement operation', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-  const previewData = {
-    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
-  };
 
   expect(() => {
     renderWithProviders(
@@ -202,8 +198,9 @@ test('it throws an error if the operation is not a multi select replacement oper
         previewData={{
           isLoading: false,
           hasError: false,
-          data: previewData,
+          data: operationPreviewData,
         }}
+        validationErrors={[]}
       />
     );
   }).toThrowError('MultiSelectReplacementOperationBlock can only be used with MultiSelectReplacementOperation');

@@ -6,8 +6,10 @@ import {OnboarderLogo, UnauthenticatedContainer} from '../../components';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useParams} from 'react-router-dom';
 import {NotFoundError} from '../../api/NotFoundError';
+import {BadRequestError} from '../../api/BadRequestError';
 import {NotFound} from '../NotFound';
 import {useContributorAccount} from './hooks';
+import {RequestNewInvitation} from '../RequestNewInvitation/RequestNewInvitation';
 
 type Params = {
     accessToken: string;
@@ -26,6 +28,10 @@ const SetUpPassword = () => {
             password.match(/(^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,255})$/) && password === passwordConfirmation;
         setIsSubmitButtonDisabled(!isPasswordValid);
     }, [password, passwordConfirmation, setIsSubmitButtonDisabled]);
+
+    if (loadingError instanceof BadRequestError) {
+        return <RequestNewInvitation />;
+    }
 
     if (loadingError instanceof NotFoundError) {
         return <NotFound />;

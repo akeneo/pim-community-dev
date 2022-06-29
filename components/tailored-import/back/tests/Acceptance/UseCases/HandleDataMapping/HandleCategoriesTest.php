@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapp
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CategoriesReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
@@ -31,12 +32,12 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
     public function test_it_can_handle_a_data_mapping_targeting_categories(
         array $row,
         array $dataMappings,
-        UpsertProductCommand $expected,
+        ExecuteDataMappingResult $expected,
     ): void {
         $executeDataMappingQuery = $this->getExecuteDataMappingQuery($row, '25621f5a-504f-4893-8f0c-9f1b0076e53e', $dataMappings);
-        $upsertProductCommand = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
+        $result = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
 
-        Assert::assertEquals($expected, $upsertProductCommand);
+        Assert::assertEquals($expected, $result);
     }
 
     public function provider(): array
@@ -61,10 +62,13 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    categoryUserIntent: new SetCategories(['shoes']),
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        categoryUserIntent: new SetCategories(['shoes']),
+                    ),
+                    [],
                 ),
             ],
             'it handles add categories targets' => [
@@ -86,10 +90,13 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    categoryUserIntent: new AddCategories(['shoes']),
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        categoryUserIntent: new AddCategories(['shoes']),
+                    ),
+                    [],
                 ),
             ],
             'it handles a categories target with multiple sources' => [
@@ -111,10 +118,13 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    categoryUserIntent: new SetCategories(['shoes', 'clothing']),
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        categoryUserIntent: new SetCategories(['shoes', 'clothing']),
+                    ),
+                    [],
                 ),
             ],
             'it handles a categories target with single source and split operation' => [
@@ -137,10 +147,13 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    categoryUserIntent: new SetCategories(['shoes', 'clothing']),
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        categoryUserIntent: new SetCategories(['shoes', 'clothing']),
+                    ),
+                    [],
                 ),
             ],
             'it handles a categories target with multiple sources and split operation' => [
@@ -164,10 +177,13 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    categoryUserIntent: new SetCategories(['shoes', 'women', 'clothing', 'men']),
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        categoryUserIntent: new SetCategories(['shoes', 'women', 'clothing', 'men']),
+                    ),
+                    [],
                 ),
             ],
             'it handles clear if empty on categories target' => [
@@ -188,10 +204,13 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    categoryUserIntent: new SetCategories([]),
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        categoryUserIntent: new SetCategories([]),
+                    ),
+                    [],
                 ),
             ],
             'it handles a categories target with single source and replacement operation' => [
@@ -217,10 +236,13 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    categoryUserIntent: new SetCategories(['adidas']),
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        categoryUserIntent: new SetCategories(['adidas']),
+                    ),
+                    [],
                 ),
             ],
             'it handles a categories target with multiple sources and replacement operation' => [
@@ -252,10 +274,13 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    categoryUserIntent: new SetCategories(['adidas', 'puma']),
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        categoryUserIntent: new SetCategories(['adidas', 'puma']),
+                    ),
+                    [],
                 ),
             ],
             'it handles a categories target with multiple sources and split & replacement operations' => [
@@ -289,17 +314,20 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                         [],
                     ),
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    categoryUserIntent: new SetCategories([
-                        'vneck',
-                        'short_sleeve',
-                        'adidas',
-                        'broussaille',
-                        'puma',
-                        'women',
-                    ]),
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        categoryUserIntent: new SetCategories([
+                            'vneck',
+                            'short_sleeve',
+                            'adidas',
+                            'broussaille',
+                            'puma',
+                            'women',
+                        ]),
+                    ),
+                    [],
                 ),
             ],
         ];

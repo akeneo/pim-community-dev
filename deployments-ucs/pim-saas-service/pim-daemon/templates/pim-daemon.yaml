@@ -37,11 +37,13 @@ spec:
         {{- include "pim.extraLabels" $tplCtx | indent 8 }}
       annotations:
         checksum/env-config: {{ include (print $.Template.BasePath "/pim-env-configmap.yaml") $tplCtx | replace  (printf "%s-%s" $tplCtx.Chart.Name $tplCtx.Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
-        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") $tplCtx | replace  (printf "%s-%s" $tplCtx.Chart.Name $tplCtx.Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
     spec:
 {{- if $daemonOptions.trapped }}
       terminationGracePeriodSeconds: 86400
 {{- end }}
+      serviceAccountName: {{ $tplCtx.Values.common.workloadIdentityKSA | quote }}
+      nodeSelector:
+        iam.gke.io/gke-metadata-server-enabled: "true"
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -65,10 +67,6 @@ spec:
           resources:
 {{ toYaml (required ( printf "Missing daemon resources for %s" $daemonName ) $daemonOptions.resources) | indent 12 }}
           volumeMounts:
-            - name: google-cloud-pim-storage-key
-              mountPath: /var/secrets/google/srnt.json
-              subPath: srnt.json
-              readOnly: true
             {{- if $tplCtx.Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key
               mountPath: /var/secrets/google/key.json
@@ -84,12 +82,6 @@ spec:
 {{ toYaml $tplCtx.Values.common.phpConfCLI | indent 12 }}
 {{- end }}
       volumes:
-        - name: google-cloud-pim-storage-key
-          secret:
-            secretName: pim-secrets
-            items:
-            - key: srntPimStorageKey
-              path: srnt.json
         {{- if $tplCtx.Values.onboarder.enabled }}
         - name: google-cloud-onboarder-key
           secret:

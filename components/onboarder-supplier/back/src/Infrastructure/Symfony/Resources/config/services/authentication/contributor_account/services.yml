@@ -53,6 +53,11 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken'
 
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\RequestNewInvitation:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler'
+
     Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\Security:
         public: true
 
@@ -73,6 +78,11 @@ services:
             - '@validator'
             - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\HashPassword'
             - '@logger'
+
+    Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler'
 
     Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail:
         class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigWelcomeEmail

@@ -43,8 +43,8 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
                 'operations' => [
                     [
                         'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
-                        'type' => 'clean_html_tags'
-                    ]
+                        'type' => 'clean_html_tags',
+                    ],
                 ],
                 'target' => [
                     'code' => 'name',
@@ -54,21 +54,34 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
                     'channel' => null,
                     'source_configuration' => [],
                     'action_if_not_empty' => 'set',
-                    'action_if_empty' => 'skip'
-                ]
-            ]
+                    'action_if_empty' => 'skip',
+                ],
+            ],
         );
 
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $decodedResponse = \json_decode($response->getContent(), true);
-        $expectedResponse = ['preview_data' => ['ad4e2d5c-2830-4ba8-bf83-07f9935063d6' => ['Produit 1', 'Produit 4', 'Produit 3']]];
+        $expectedResponse = ['preview_data' => ['ad4e2d5c-2830-4ba8-bf83-07f9935063d6' => [
+            [
+                'type' => 'string',
+                'value' => 'Produit 1',
+            ],
+            [
+                'type' => 'string',
+                'value' => 'Produit 4',
+            ],
+            [
+                'type' => 'string',
+                'value' => 'Produit 3',
+            ],
+        ]]];
 
         $this->assertSame($expectedResponse, $decodedResponse);
     }
 
-    public function test_it_return_a_validation_error_when_operation_does_not_exist(): void
+    public function test_it_returns_a_validation_error_when_operation_does_not_exist(): void
     {
         $this->webClientHelper->callApiRoute(
             $this->client,
@@ -78,7 +91,7 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
             [
                 'sample_data' => ['<b>Produit 1</b>', 'Produit 4', 'Produit 3'],
                 'operations' => [
-                    ['type' => 'unknown_operation']
+                    ['type' => 'unknown_operation'],
                 ],
                 'target' => [
                     'code' => 'name',
@@ -88,9 +101,9 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
                     'channel' => null,
                     'source_configuration' => [],
                     'action_if_not_empty' => 'set',
-                    'action_if_empty' => 'skip'
-                ]
-            ]
+                    'action_if_empty' => 'skip',
+                ],
+            ],
         );
 
         $response = $this->client->getResponse();
@@ -99,7 +112,7 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
         $decodedResponse = \json_decode($response->getContent(), true);
         $this->assertContains(
             'akeneo.tailored_import.validation.operations.operation_type_does_not_exist',
-            array_column($decodedResponse, 'messageTemplate')
+            array_column($decodedResponse, 'messageTemplate'),
         );
     }
 

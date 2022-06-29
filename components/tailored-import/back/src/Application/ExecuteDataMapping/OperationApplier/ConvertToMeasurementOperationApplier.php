@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Operatio
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\MeasurementValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
@@ -34,10 +35,21 @@ class ConvertToMeasurementOperationApplier implements OperationApplierInterface
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
-        return new MeasurementValue(
-            str_replace($operation->getDecimalSeparator(), self::DEFAULT_DECIMAL_SEPARATOR, $value->getValue()),
-            $operation->getUnit(),
+        $numberValue = str_replace(
+            $operation->getDecimalSeparator(),
+            self::DEFAULT_DECIMAL_SEPARATOR,
+            $value->getValue(),
         );
+
+        if (!is_numeric($numberValue)) {
+            return new InvalidValue(sprintf(
+                'Cannot convert "%s" to a number with separator "%s"',
+                $value->getValue(),
+                $operation->getDecimalSeparator(),
+            ));
+        }
+
+        return new MeasurementValue($numberValue, $operation->getUnit());
     }
 
     public function supports(OperationInterface $operation): bool

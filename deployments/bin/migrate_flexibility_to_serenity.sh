@@ -141,12 +141,9 @@ yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.single.persistentDisk.siz
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_disk_size' "${MYSQL_DISK_SIZE}"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_disk_name' "${MYSQL_DISK_NAME}"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.source' "../../terraform"
-yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim-monitoring.source' "../../terraform/monitoring"
 
 # Copy the main.tf.json file to be use when applying monitoring module
 cp ${DESTINATION_PATH}/main.tf.json /tmp/main.tf.json
-# Delete the module.pim-monitoring for now to be able to import MySQL disk
-yq d -P -j -i ${DESTINATION_PATH}/main.tf.json "module.pim-monitoring"
 
 
 echo "#########################################################################"
@@ -310,4 +307,3 @@ echo "- Upgrade config files"
 yq d -i ${DESTINATION_PATH}/values.yaml pim.hook
 # To be able to remove the ressources
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/${PED_TAG}//deployments/terraform"
-yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/${PED_TAG}//deployments/terraform/monitoring"

@@ -32,7 +32,7 @@ final class GeneratePreviewDataResult
         return [
             'preview_data' => array_map(
                 static fn (array $operationValue) => array_map(
-                    static fn (ValueInterface $value) => $value->getValue(),
+                    static fn (ValueInterface $value) => $value->normalize(),
                     $operationValue,
                 ),
                 $this->previewData,

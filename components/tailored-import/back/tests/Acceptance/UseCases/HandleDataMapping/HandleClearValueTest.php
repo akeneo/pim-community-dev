@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapp
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
@@ -29,12 +30,12 @@ final class HandleClearTest extends HandleDataMappingTestCase
     public function test_it_can_handle_a_clear_data_mapping_value(
         array $row,
         array $dataMappings,
-        UpsertProductCommand $expected,
+        ExecuteDataMappingResult $expected,
     ): void {
         $executeDataMappingQuery = $this->getExecuteDataMappingQuery($row, '25621f5a-504f-4893-8f0c-9f1b0076e53e', $dataMappings);
-        $upsertProductCommand = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
+        $result = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
 
-        Assert::assertEquals($expected, $upsertProductCommand);
+        Assert::assertEquals($expected, $result);
     }
 
     public function provider(): array
@@ -62,12 +63,15 @@ final class HandleClearTest extends HandleDataMappingTestCase
                         [],
                     )
                 ],
-                'expected' => new UpsertProductCommand(
-                    userId: 1,
-                    productIdentifier: 'this-is-a-sku',
-                    valueUserIntents: [
-                        new ClearValue('name', null, null),
-                    ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new ClearValue('name', null, null),
+                        ],
+                    ),
+                    [],
                 ),
             ],
         ];

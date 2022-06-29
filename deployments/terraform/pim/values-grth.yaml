@@ -111,11 +111,3 @@ pim:
         requests:
           cpu: "100m"
           memory: "256Mi"
-    clean-product-scores:
-      enabled: true
-      pimCommand: "pim:data-quality-insights:clean-product-scores --no-interaction"
-      schedule: "1 0 * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"

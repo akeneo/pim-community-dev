@@ -163,6 +163,7 @@ final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
                 new SetAssetValue('packshot_attr', null, null, ['packshot2'])
             ]
         );
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     private function createProduct(string $identifier, array $userIntents): void

@@ -27,14 +27,14 @@ test('It returns the preview data', async () => {
     ok: true,
     json: async () =>
       Promise.resolve({
-        preview_data: ['product1', 'product2', null],
+        preview_data: {uuid: ['product1', 'product2', null]},
       }),
   }));
 
   const {result} = renderHookWithProviders(() => usePreviewData(dataMapping));
   const [isLoading, previewData, hasError] = result.current;
   expect(isLoading).toBe(true);
-  expect(previewData).toEqual([]);
+  expect(previewData).toEqual({});
   expect(hasError).toBe(false);
 
   await act(async () => {
@@ -43,7 +43,7 @@ test('It returns the preview data', async () => {
 
   const [isLoadingAfterFlushPromise, previewDataAfterFlushPromise, hasErrorAfterFlushPromise] = result.current;
   expect(isLoadingAfterFlushPromise).toBe(false);
-  expect(previewDataAfterFlushPromise).toEqual(['product1', 'product2', null]);
+  expect(previewDataAfterFlushPromise).toEqual({uuid: ['product1', 'product2', null]});
   expect(hasErrorAfterFlushPromise).toBe(false);
 
   expect(global.fetch).toBeCalledWith('pimee_tailored_import_generate_preview_data_action', {
@@ -89,7 +89,7 @@ test('It returns the error when an error occurred during the generation', async 
 
   const [isLoading, previewData, hasError] = result.current;
   expect(isLoading).toBe(false);
-  expect(previewData).toEqual([]);
+  expect(previewData).toEqual({});
   expect(hasError).toBe(true);
 
   expect(global.fetch).toBeCalledWith('pimee_tailored_import_generate_preview_data_action', {
@@ -124,7 +124,7 @@ test('It does not call fetch when there is no sample data', async () => {
 
   const [isLoading, previewData, hasError] = result.current;
   expect(isLoading).toBe(false);
-  expect(previewData).toEqual([]);
+  expect(previewData).toEqual({});
   expect(hasError).toBe(false);
 
   expect(global.fetch).not.toBeCalled();
@@ -148,7 +148,7 @@ test('It does not call fetch when there is no operations', async () => {
 
   const [isLoading, previewData, hasError] = result.current;
   expect(isLoading).toBe(false);
-  expect(previewData).toEqual([]);
+  expect(previewData).toEqual({});
   expect(hasError).toBe(false);
 
   expect(global.fetch).not.toBeCalled();

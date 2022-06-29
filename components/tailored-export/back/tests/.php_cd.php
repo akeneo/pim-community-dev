@@ -44,6 +44,7 @@ $rules = [
             'Akeneo\Platform\TailoredExport\Domain',
 
             'Akeneo\AssetManager\Infrastructure\PublicApi',
+            'Akeneo\Channel\API',
             'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
             'Akeneo\Pim\Automation\DataQualityInsights\PublicApi',
             'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',

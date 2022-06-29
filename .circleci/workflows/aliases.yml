@@ -20,9 +20,6 @@ parameters:
   trigger_jenkins_ge2ee_mig:
     default: false
     type: boolean
-  source_pfid:
-    default: ""
-    type: string
   ge2ee_script_release:
     default: ""
     type: string
@@ -45,3 +42,4 @@ slack-post-step: &slack-post-step
 client-to-clone-srnt: &client-to-clone-srnt ["srnt-madeira-production", "srnt-pim-pce", "srnt-cto-pim", "srnt-iteshop"]
 client-to-clone-grth: &client-to-clone-grth ["grth-sirius-staging"]
 clients-to-clone-flex: &clients-to-clone-flex ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
+client-to-clone-grth-ge2ee-nightly: &client-to-clone-grth-ge2ee-nightly ["grth-comac-production", "grth-comac", "grth-grillstar", "grth-grillstar-sandbox", "grth-gero-staging", "grth-elettromedia", "grth-bordex", "grth-bordex-dev", "grth-brandsservices", "grth-brandsservicesp" ]
