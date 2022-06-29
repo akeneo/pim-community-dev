@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByUserIdentifierQuery;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -18,6 +19,7 @@ use PHPUnit\Framework\Assert;
 class FindOneConnectedAppByUserIdentifierQueryIntegration extends TestCase
 {
     private FindOneConnectedAppByUserIdentifierQuery $query;
+    private ConnectedAppLoader $connectedAppLoader;
     private Connection $connection;
 
     protected function getConfiguration(): Configuration

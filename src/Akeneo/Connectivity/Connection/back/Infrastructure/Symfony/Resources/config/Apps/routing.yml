@@ -85,6 +85,11 @@ akeneo_connectivity_connection_connect_apps_v1_scopes_update:
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\FlagConnectedAppWithOutdatedScopesAction
     methods: [ POST ]
 
+akeneo_connectivity_connection_connect_apps_v1_catalog:
+    path: '/connect/apps/v1/catalogs/{id}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\ConfigureCatalogAction
+    methods: [ GET ]
+
 # Front API
 ## Apps
 akeneo_connectivity_connection_connect_apps_activate:
