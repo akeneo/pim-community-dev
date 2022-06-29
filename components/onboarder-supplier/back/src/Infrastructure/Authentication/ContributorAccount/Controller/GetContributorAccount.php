@@ -19,8 +19,12 @@ final class GetContributorAccount
     {
         $contributorAccount = ($this->getContributorAccountByAccessToken)(trim($accessToken));
 
-        if (!$contributorAccount->isAccessTokenValid(new \DateTimeImmutable())) {
+        if (null === $contributorAccount->accessToken) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+        }
+
+        if (!$contributorAccount->isAccessTokenValid(new \DateTimeImmutable())) {
+            return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
 
         return new JsonResponse($contributorAccount->toArray());
