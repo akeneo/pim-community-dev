@@ -72,7 +72,8 @@ WHERE CONCAT('product_', BIN_TO_UUID(uuid)) IN (:esIdentifiers)
 SQL;
         $searchAfter = null;
         do {
-            $params = array_merge([
+            $params = array_merge(
+                [
                 'sort' => ['id' => 'asc'],
                 'size' => $batchSize,
                 '_source' => ['id', 'identifier','ancestors'],
@@ -89,7 +90,8 @@ SQL;
                         ]
                     ]
                 ]
-            ], $searchAfter ? [
+            ],
+                $searchAfter ? [
                 'search_after' => $searchAfter
             ] : []
             );
