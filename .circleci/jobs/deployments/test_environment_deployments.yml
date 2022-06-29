@@ -21,14 +21,12 @@ jobs:
                       INSTANCE_NAME="pimci-helpdesk"
                       PRODUCT_REFERENCE_TYPE="serenity_instance"
                       PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
-                      ACTIVATE_MONITORING=true
 
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                      echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
@@ -82,14 +80,12 @@ jobs:
                       INSTANCE_NAME="pimci-helpdesk-ge"
                       PRODUCT_REFERENCE_TYPE="growth_edition_instance"
                       PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
-                      ACTIVATE_MONITORING=true
 
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                      echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
                       echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
@@ -143,14 +139,12 @@ jobs:
                       INSTANCE_NAME="pimci-pm"
                       PRODUCT_REFERENCE_TYPE="serenity_instance"
                       PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
-                      ACTIVATE_MONITORING=true
 
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                      echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
@@ -212,14 +206,12 @@ jobs:
                       INSTANCE_NAME="bh-ref-instance"
                       PRODUCT_REFERENCE_TYPE="serenity_instance"
                       PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
-                      ACTIVATE_MONITORING=true
 
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                      echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Release to deploy: ${RELEASE_TO_DEPLOY}"

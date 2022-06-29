@@ -21,13 +21,10 @@ parameters:
     trigger_jenkins_ge2ee_mig:
       default: false
       type: boolean
-    source_pfid:
-      default: ""
-      type: string
     ge2ee_script_release:
       default: ""
       type: string
-      
+
 setup: true
 
 orbs:

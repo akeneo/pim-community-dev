@@ -66,8 +66,12 @@ echo "-----------------------------"
 ## Add use_edition_flag=true dans main.tf.json
 echo "--- Adding use_edition_flag in main.tf.json ---"
 jq -r '.module.pim.use_edition_flag |= true ' main.tf.json > main.tf.json.temp && mv main.tf.json.temp main.tf.json
-# TODO ->  Warning : pim-monitoring is depreacated -> Test before action
-jq -r '.module."pim-monitoring".use_edition_flag |= "${module.pim.use_edition_flag}"' main.tf.json  > main.tf.json.temp && mv main.tf.json.temp main.tf.json
+# Managing pim-monitoring module depreciation
+if [[ $(jq -r '.module  | has("pim-monitoring") ' main.tf.json) == "true" ]]; then
+    jq -r '.module."pim-monitoring".use_edition_flag |= "${module.pim.use_edition_flag}"' main.tf.json  > main.tf.json.temp && mv main.tf.json.temp main.tf.json
+else
+    echo "INFO: This instance doesn't have pim-monitoring terraform module"
+fi
 
 ## Remove disk and snapshot from main.tf
 echo "--- Delete mysql disk informations from main.tf.json ---"
@@ -99,8 +103,8 @@ terraform show -json upgrades.tfplan > upgrades.tfplan.json
 HELM_DEBUG=true terraform apply "${TF_INPUT_FALSE}" "${TF_AUTO_APPROVE}" upgrades.tfplan
 
 echo "--- Remove minimal catalog after instance recreation ---"
-yq d -i values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
-yq d -i values.yaml pim.hook.installPim.enabled true
+yq d -i values.yaml pim.defaultCatalog
+yq d -i values.yaml pim.hook.installPim
 
 echo "--- Print values.yaml without Catalog Install Hook ---"
 cat values.yaml

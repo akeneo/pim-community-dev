@@ -217,14 +217,12 @@ jobs:
                           INSTANCE_NAME_PREFIX=pimci-pr-ft
                       fi
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
-                      ACTIVATE_MONITORING=true
 
                       echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                      echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
@@ -449,12 +447,10 @@ jobs:
                       esac
 
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
-                      ACTIVATE_MONITORING=true
 
                       echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                      echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"

@@ -35,7 +35,13 @@ class ConvertToMeasurementOperationApplier implements OperationApplierInterface
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
-        if (!$this->isValidNumber($value->getValue(), $operation->getDecimalSeparator())) {
+        $numberValue = str_replace(
+            $operation->getDecimalSeparator(),
+            self::DEFAULT_DECIMAL_SEPARATOR,
+            $value->getValue(),
+        );
+
+        if (!is_numeric($numberValue)) {
             return new InvalidValue(sprintf(
                 'Cannot convert "%s" to a number with separator "%s"',
                 $value->getValue(),
@@ -43,19 +49,11 @@ class ConvertToMeasurementOperationApplier implements OperationApplierInterface
             ));
         }
 
-        return new MeasurementValue(
-            str_replace($operation->getDecimalSeparator(), self::DEFAULT_DECIMAL_SEPARATOR, $value->getValue()),
-            $operation->getUnit(),
-        );
+        return new MeasurementValue($numberValue, $operation->getUnit());
     }
 
     public function supports(OperationInterface $operation): bool
     {
         return $operation instanceof ConvertToMeasurementOperation;
-    }
-
-    private function isValidNumber(string $value, string $separator): bool
-    {
-        return 0 !== preg_match(sprintf('/^[0-9]*(\%s[0-9]*)?$/', $separator), $value);
     }
 }

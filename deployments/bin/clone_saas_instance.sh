@@ -60,16 +60,13 @@ yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.upgradeES.enabled false
 yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.resetPassword true
 yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.userPassword test
 yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.rootPassword test
-yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.email "${PIMUSER}"
+yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.email "fake-a9r3-${PIMUSER}@akeneo.com"
 yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.login "${PIMUSER}"
 yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.password "${PIMPASSWORD}"
 #To run local duplication, UnComment & add prod "mailgun_api_key"
 #yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mailgun_api_key' "key-coincoin"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.papo_project_code' "${TARGET_PAPO_PROJECT_CODE}"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.dns_external' "${TARGET_DNS_FQDN}"
-if [[ ${ACTIVATE_MONITORING} != "false" ]]; then
-      yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/${BUCKET}/${SOURCE_PED_TAG}//deployments/terraform/monitoring"
-fi
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/${BUCKET}/${SOURCE_PED_TAG}//deployments/terraform"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.pim_version' "${SOURCE_PED_TAG}"
 # remove the old mysql_disk & mysql_source_snapshot if exit
@@ -205,3 +202,5 @@ kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /my
 
 echo "- Upgrade config files"
 yq d -i ${DESTINATION_PATH}/values.yaml pim.hook
+yq d -i ${DESTINATION_PATH}/values.yaml mysql.mysql.resetPassword
+

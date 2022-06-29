@@ -17,6 +17,9 @@ jobs:
             SOURCE_PFID:
                 type: string
                 default: ""
+            INSTANCE:
+                type: string
+                default: ""
             GE2EE_SCRIPT_RELEASE:
                 type: string
                 default: ""
@@ -42,14 +45,14 @@ jobs:
                         OPERATIONS_TOOLS_DIR="/tmp/operation-tools"
                         OPERATIONS_TOOLS_BRANCH="SDO-86"
 
-                        # Manage Inputs for on_demand workflow
-                        # SOURCE_PFID
-                        if [[ "<<parameters.SOURCE_PFID>>" == "" ]]
+                        # Manage Inputs from different workflow
+                        # INSTANCE
+                        if [[ "<<parameters.INSTANCE>>" == "" ]]
                             then
                                 SOURCE_PFID=${TYPE}-${INSTANCE_NAME}
                                 echo "INFO: SOURCE_PFID retrieved from previous job"
                             else
-                                SOURCE_PFID=<<parameters.SOURCE_PFID>>
+                                SOURCE_PFID=<<parameters.INSTANCE>>
                                 echo "INFO: SOURCE_PFID retrieved from CircleCI parameter"
                         fi
                         # GE2EE_SCRIPT_RELEASE
