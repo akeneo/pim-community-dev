@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonRunnableException;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
@@ -25,44 +26,38 @@ use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     private ?StepExecution $stepExecution = null;
-    private RuleDefinitionRepositoryInterface $ruleDefinitionRepository;
-    private RunnerInterface $ruleRunner;
-    private DryRunnerInterface $dryRuleRunner;
-    private EventDispatcherInterface $eventDispatcher;
-    private JobStopper $jobStopper;
-    private JobRepositoryInterface $jobRepository;
-    private EntityManagerClearerInterface $cacheClearer;
 
     public function __construct(
-        RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
-        RunnerInterface $ruleRunner,
-        DryRunnerInterface $dryRuleRunner,
-        EventDispatcherInterface $eventDispatcher,
-        JobRepositoryInterface $jobRepository,
-        JobStopper $jobStopper,
-        EntityManagerClearerInterface $cacheClearer
+        private RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
+        private RunnerInterface $ruleRunner,
+        private DryRunnerInterface $dryRuleRunner,
+        private EventDispatcherInterface $eventDispatcher,
+        private JobRepositoryInterface $jobRepository,
+        private JobStopper $jobStopper,
+        private EntityManagerClearerInterface $cacheClearer,
+        private LoggerInterface $logger
     ) {
-        $this->ruleDefinitionRepository = $ruleDefinitionRepository;
-        $this->ruleRunner = $ruleRunner;
-        $this->dryRuleRunner = $dryRuleRunner;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->jobRepository = $jobRepository;
-        $this->jobStopper = $jobStopper;
-        $this->cacheClearer = $cacheClearer;
     }
 
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
 
-    public function execute()
+    public function execute(): void
     {
+        $numberOfExecutedRules = 0;
+        $startedTime = new \DateTimeImmutable('now');
+        $this->eventDispatcher->addListener(RuleEvents::POST_EXECUTE, static function () use (&$numberOfExecutedRules) {
+            $numberOfExecutedRules++;
+        });
+
         $dryRun = $this->stepExecution->getJobParameters()->get('dry_run');
         $this->stepExecution->setTotalItems($this->getTotalItemImpacted());
         $this->stepExecution->setSummary(
@@ -120,6 +115,11 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
         }
 
         $this->eventDispatcher->removeSubscriber($subscriber);
+        $ruleRunDuration = $startedTime->diff(new \DateTimeImmutable('now'));
+        $this->logger->notice(
+            'rules run stats',
+            ['duration' => $ruleRunDuration->format('%s.%fs'), 'rules_count' => $numberOfExecutedRules]
+        );
     }
 
     private function getRuleDefinitions(): iterable
@@ -157,7 +157,7 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
         return $totalProductsImpacted;
     }
 
-    private function countProducts(RuleDefinition $ruleDefinition)
+    private function countProducts(RuleDefinition $ruleDefinition): int
     {
         $ruleSubjectSet = $this->dryRuleRunner->dryRun($ruleDefinition);
         if (null === $ruleSubjectSet) {
