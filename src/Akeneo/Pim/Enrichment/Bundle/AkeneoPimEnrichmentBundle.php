@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\ConfigureAxisValue
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterPresentersPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
-use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterCategoryItemCounterPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterComparatorsPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterFilterPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterFlatTranslatorPass;
@@ -58,7 +57,6 @@ class AkeneoPimEnrichmentBundle extends Bundle
             ->addCompilerPass(new RegisterSerializerPass('pim_serializer'))
             ->addCompilerPass(new RegisterSerializerPass('pim_domain_error_serializer'))
             ->addCompilerPass(new RegisterRendererPass())
-            ->addCompilerPass(new RegisterCategoryItemCounterPass())
             ->addCompilerPass(new RegisterProductQueryFilterPass('product_and_product_model'))
             ->addCompilerPass(new ConfigureAxisValueLabelsNormalizerPass())
             ->addCompilerPass(new RegisterFlatTranslatorPass())

@@ -1,2 +1,0 @@
-services:
-  Akeneo\Category\Application\Component\Form\CategoryFormViewNormalizer: ~

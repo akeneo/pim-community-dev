@@ -76,21 +76,21 @@ services:
     Akeneo\Pim\Enrichment\Product\Application\Applier\SetCategoriesApplier:
         arguments:
             - '@pim_catalog.updater.product'
-            - '@Akeneo\Category\Domain\Query\GetNonViewableCategoryCodes'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes'
         tags:
             - { name: 'pim.enrichment.product.user_intent_applier' }
 
     Akeneo\Pim\Enrichment\Product\Application\Applier\AddCategoriesApplier:
         arguments:
             - '@pim_catalog.updater.product'
-            - '@Akeneo\Category\Domain\Query\GetCategoryCodes'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
         tags:
             - { name: 'pim.enrichment.product.user_intent_applier' }
 
     Akeneo\Pim\Enrichment\Product\Application\Applier\RemoveCategoriesApplier:
         arguments:
             - '@pim_catalog.updater.product'
-            - '@Akeneo\Category\Domain\Query\GetCategoryCodes'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
         tags:
             - { name: 'pim.enrichment.product.user_intent_applier' }
 

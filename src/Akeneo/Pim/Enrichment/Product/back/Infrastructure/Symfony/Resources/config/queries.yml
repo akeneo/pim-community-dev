@@ -4,3 +4,14 @@ services:
 
     Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels:
         class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetViewableProductModels
+
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\SqlGetCategoryCodes
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetNonViewableCategoryCodes
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
+            - '@Akeneo\Category\Domain\Query\GetViewableCategories'

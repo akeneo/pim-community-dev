@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Infrastructure\Query;
 
-use Akeneo\Category\Domain\Query\GetCategoryCodes;
-use Akeneo\Category\Domain\Query\GetNonViewableCategoryCodes as GetNonViewableCategoryCodesInterface;
 use Akeneo\Category\Domain\Query\GetViewableCategories;
-use Akeneo\Category\Infrastructure\Query\GetNonViewableCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes as GetNonViewableCategoryCodesInterface;
+use Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetNonViewableCategoryCodes;
 use PhpSpec\ObjectBehavior;
 
 class GetNonViewableCategoryCodesSpec extends ObjectBehavior

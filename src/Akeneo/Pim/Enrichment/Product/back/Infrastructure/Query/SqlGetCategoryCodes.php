@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Infrastructure\Query;
+namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Query;
 
-use Akeneo\Category\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 

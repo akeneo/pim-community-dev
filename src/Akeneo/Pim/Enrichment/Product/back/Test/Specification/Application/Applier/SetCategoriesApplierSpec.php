@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier;
 
-use Akeneo\Category\Domain\Query\GetNonViewableCategoryCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\SetCategoriesApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 

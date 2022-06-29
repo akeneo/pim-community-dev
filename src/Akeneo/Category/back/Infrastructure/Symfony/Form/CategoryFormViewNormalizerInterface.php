@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Domain\Component\Form;
+namespace Akeneo\Category\Infrastructure\Symfony\Form;
 
 use Symfony\Component\Form\FormView;
 

@@ -292,7 +292,7 @@ services:
             - '@pim_enrich.normalizer.violation'
             - '@pim_category.doctrine.counter.category_product'
             - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren'
-            - '@Akeneo\Category\Application\Component\Form\CategoryFormViewNormalizer'
+            - '@Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
             - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
         calls:
             - [ setContainer, [ '@service_container' ] ]

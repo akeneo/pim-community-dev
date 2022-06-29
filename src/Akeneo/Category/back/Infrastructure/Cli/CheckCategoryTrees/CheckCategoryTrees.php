@@ -20,9 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CheckCategoryTrees extends Command
 {
-    // TODO: if we change the command's name, we have to notify impacted clients
-//    protected static $defaultName = 'akeneo:categories:check-order';
-    protected static $defaultName = 'pim:categories:check-order';
+    protected static $defaultName = 'akeneo:categories:check-order';
 
     private Connection $connection;
 
