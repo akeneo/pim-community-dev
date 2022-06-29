@@ -1,4 +1,4 @@
-import {ProductSelectionValues} from '../../ProductSelection/models/ProductSelectionValues';
+import {ProductSelectionValues} from '../../ProductSelection';
 
 export type CatalogFormValues = {
     enabled: boolean;

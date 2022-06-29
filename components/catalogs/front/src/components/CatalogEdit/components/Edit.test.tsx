@@ -21,8 +21,8 @@ jest.mock('./Settings', () => ({
 }));
 
 mocked(getTabsValidationStatus).mockImplementation(() => ({
-    [Tabs.SETTINGS]: false,
-    [Tabs.PRODUCT_SELECTION]: false,
+    [Tabs.SETTINGS]: true,
+    [Tabs.PRODUCT_SELECTION]: true,
 }));
 
 test('it renders without error', () => {

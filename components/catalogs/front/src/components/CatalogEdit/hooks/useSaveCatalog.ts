@@ -30,7 +30,6 @@ export const useSaveCatalog = (): SaveCatalog => {
 
         if (!response.ok) {
             switch (response.status) {
-                case 400:
                 case 422:
                     return [false, ((await response.json()) as ErrorPayload).errors] as Result;
                 default:
