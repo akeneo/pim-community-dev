@@ -7,11 +7,11 @@ namespace Pim\Upgrade\Schema\Tests;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
-final class Version_7_0_20220404152647_dqi_update_pk_on_product_score_Integration extends TestCase
+final class Version_7_0_20220629142647_dqi_update_pk_on_product_score_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '_7_0_20220404152647_dqi_update_pk_on_product_score';
+    private const MIGRATION_LABEL = '_7_0_20220629142647_dqi_update_pk_on_product_score';
 
     protected function getConfiguration()
     {

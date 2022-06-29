@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 
-final class Version_7_0_20220404152647_dqi_update_pk_on_product_score extends AbstractMigration
+final class Version_7_0_20220629142647_dqi_update_pk_on_product_score extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
