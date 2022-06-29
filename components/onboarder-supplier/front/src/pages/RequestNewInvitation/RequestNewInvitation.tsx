@@ -50,7 +50,7 @@ const RequestNewInvitation = () => {
                         <TextInput onChange={setEmail} value={email} data-testid="email-input" />
                     </Field>
 
-                    <SubmitButton type="button" onClick={async () => await submit(email)}>
+                    <SubmitButton type="button" onClick={async () => await submit(email)} data-testid="submit-button">
                         <FormattedMessage defaultMessage="Receive a new invitation" id="tq8W8G" />
                     </SubmitButton>
                 </>
