@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public;
 
-use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
+use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBusInterface;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByUserIdentifierQueryInterface;
@@ -24,7 +24,7 @@ final class ConfigureCatalogAction
     public function __construct(
         private RouterInterface $router,
         private SecurityFacade $security,
-        private QueryBus $catalogQueryBus,
+        private QueryBusInterface $catalogQueryBus,
         private FindOneConnectedAppByUserIdentifierQueryInterface $findOneConnectedAppByUserIdentifierQuery,
     ) {
     }
