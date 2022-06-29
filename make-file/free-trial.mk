@@ -22,10 +22,3 @@ free-trial-integration-back: #Doc: launch PHPUnit integration test for the free 
 
 .PHONY: free-trial-tests
 free-trial-tests: free-trial-unit-back free-trial-integration-back
-
-.PHONY: trial-test
-trial-test: #Doc: run docker-compose up, clean symfony cache & install a new icecat catalog database in test environement
-	APP_ENV=test $(MAKE) up
-	APP_ENV=test $(MAKE) cache
-	cd $(PIM_SRC_PATH) && docker/wait_docker_up.sh
-	APP_ENV=test O="--catalog $(DATABASE_CATALOG_FREE_TRIAL)" $(MAKE) database

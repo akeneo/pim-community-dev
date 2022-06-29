@@ -49,6 +49,7 @@ integration-back: $(PIM_SRC_PATH)/var/tests/phpunit pim-integration-back #Doc: l
 
 .PHONY: pim-integration-back
 pim-integration-back: #Doc: launch all PHPUnit integration tests
+	$(PHP_RUN) > printenv
 ifeq ($(CI),true)
 	cd $(PIM_SRC_PATH) && vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Integration_Test
 else
