@@ -17,7 +17,6 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageCommand;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscriber\UpdateJobExecutionStorageSummarySubscriber;
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobWithStepsInterface;
@@ -75,17 +74,19 @@ final class UploadStep extends AbstractStep
         $writtenFiles = [];
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
 
-        foreach ($job->getSteps() as $step) {
-            if (!$step instanceof ItemStep) {
-                continue;
-            }
+        if ($job instanceof JobWithStepsInterface) {
+            foreach ($job->getSteps() as $step) {
+                if (!$step instanceof ItemStep) {
+                    continue;
+                }
 
-            $writer = $step->getWriter();
-            if (!$writer instanceof ArchivableWriterInterface) {
-                continue;
-            }
+                $writer = $step->getWriter();
+                if (!$writer instanceof ArchivableWriterInterface) {
+                    continue;
+                }
 
-            $writtenFiles = array_merge($writtenFiles, $this->extractFileToTransferFromWriter($writer));
+                $writtenFiles = array_merge($writtenFiles, $this->extractFileToTransferFromWriter($writer));
+            }
         }
 
         return $writtenFiles;
