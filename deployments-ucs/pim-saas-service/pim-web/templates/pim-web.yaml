@@ -33,8 +33,10 @@ spec:
         ad.datadoghq.com/httpd.logs: '[{ "service": "httpd", "source": "httpd", "log_processing_rules": [{ "type": "exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "\"(/status|/notification/count_unread)\""},{ "type": "exclude_at_match", "name": "exclude_valid_monitor_status_logs", "pattern" : "\"(/monitoring/services_status)\".*\"response_code\":\"2..\""}]}]'
         checksum/env-config: {{ include (print $.Template.BasePath "/pim-env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
         checksum/pim-web-config: {{ include (print $.Template.BasePath "/pim-web-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
-        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
     spec:
+      serviceAccountName: {{ .Values.common.workloadIdentityKSA | quote }}
+      nodeSelector:
+        iam.gke.io/gke-metadata-server-enabled: "true"
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -83,10 +85,6 @@ spec:
               readOnly: true
             - name: web-src
               mountPath: /srv/pim/public
-            - name: google-cloud-pim-storage-key
-              mountPath: /var/secrets/google/srnt.json
-              subPath: srnt.json
-              readOnly: true
             {{- if .Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key
               mountPath: /var/secrets/google/key.json
@@ -172,12 +170,6 @@ spec:
             items:
               - key: fpm.conf
                 path: zzz-akeneo.conf
-        - name: google-cloud-pim-storage-key
-          secret:
-            secretName: pim-secrets
-            items:
-            - key: srntPimStorageKey
-              path: srnt.json
         {{- if .Values.onboarder.enabled }}
         - name: google-cloud-onboarder-key
           secret:

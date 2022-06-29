@@ -31,8 +31,10 @@ spec:
         ad.datadoghq.com/fpm.instances: '[[{"status_url":"http://%%host%%:9000/status", "use_fastcgi": true}]]'
         checksum/env-config: {{ include (print $.Template.BasePath "/pim-env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
         checksum/pim-api-config: {{ include (print $.Template.BasePath "/pim-api-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
-        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
     spec:
+      serviceAccountName: {{ .Values.common.workloadIdentityKSA | quote }}
+      nodeSelector:
+        iam.gke.io/gke-metadata-server-enabled: "true"
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -76,10 +78,6 @@ spec:
               mountPath: /scripts-dir
             - name: web-src
               mountPath: /srv/pim/public
-            - name: google-cloud-pim-storage-key
-              mountPath: /var/secrets/google/srnt.json
-              subPath: srnt.json
-              readOnly: true
           envFrom: [ configMapRef: { name: pim-env-configmap } ]
           env:
             - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
@@ -159,9 +157,3 @@ spec:
             items:
               - key: fpm.conf
                 path: zzz-akeneo.conf
-        - name: google-cloud-pim-storage-key
-          secret:
-            secretName: pim-secrets
-            items:
-            - key: srntPimStorageKey
-              path: srnt.json
