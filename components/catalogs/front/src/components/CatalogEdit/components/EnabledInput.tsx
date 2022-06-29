@@ -19,7 +19,7 @@ const EnabledInput: FC<Props> = ({value, error}) => {
     const dispatch = useCatalogFormContext();
 
     const handleStatusChange = useCallback(
-        value => dispatch(value ? {type: CatalogFormActions.ENABLE} : {type: CatalogFormActions.DISABLE}),
+        value => dispatch({type: CatalogFormActions.SET_ENABLED, value: value}),
         [dispatch]
     );
 

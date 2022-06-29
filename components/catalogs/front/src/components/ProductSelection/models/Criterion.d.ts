@@ -1,10 +1,12 @@
 import {Operator} from './Operator';
 import {FC} from 'react';
+import {CriterionErrors} from './CriterionErrors';
 
 export type CriterionModule<State> = {
     state: State;
     onChange: (state: State) => void;
     onRemove: () => void;
+    errors: CriterionErrors;
 };
 
 export type CriterionState = {
@@ -14,7 +16,6 @@ export type CriterionState = {
 };
 
 export type Criterion<State extends CriterionState> = {
-    id: string;
-    module: FC<CriterionModule<State>>;
-    state: State;
+    component: FC<CriterionModule<State>>;
+    factory: (state?: Partial<State>) => State;
 };

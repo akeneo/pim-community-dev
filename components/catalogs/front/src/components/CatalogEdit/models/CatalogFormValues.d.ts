@@ -1,8 +1,6 @@
-import {AnyCriterionState} from '../../ProductSelection';
+import {ProductSelectionValues} from '../../ProductSelection/models/ProductSelectionValues';
 
 export type CatalogFormValues = {
     enabled: boolean;
-    product_selection_criteria: {
-        [key: string]: AnyCriterionState;
-    };
+    product_selection_criteria: ProductSelectionValues;
 };
