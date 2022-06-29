@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Akeneo\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
@@ -12,7 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductCriterionEvaluationByProductIdAndCriterionCodeQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -31,21 +32,21 @@ final class GetProductCriterionEvaluationByProductIdAndCriterionCodeQueryIntegra
 
     public function test_it_retrieves_a_product_evaluation(): void
     {
-        $productId = new ProductId($this->createProductWithoutEvaluations('ziggy')->getId());
-        $anotherProductId = new ProductId($this->createProductWithoutEvaluations('yggiz')->getId());
+        $productUuid = (new ProductUuidFactory)->create($this->createProductWithoutEvaluations('ziggy')->getUuid()->toString());
+        $anotherProductUuid = (new ProductUuidFactory)->create($this->createProductWithoutEvaluations('yggiz')->getUuid()->toString());
 
         $criterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
 
-        $expectedCompletenessEvaluation = $this->givenACompletenessEvaluationsDone($productId, $criterionEvaluationRepository);
-        $this->givenAPendingSpellingEvaluation($productId, $criterionEvaluationRepository);
-        $this->givenACompletenessEvaluationDoneForAnotherProduct($anotherProductId, $criterionEvaluationRepository);
+        $expectedCompletenessEvaluation = $this->givenACompletenessEvaluationsDone($productUuid, $criterionEvaluationRepository);
+        $this->givenAPendingSpellingEvaluation($productUuid, $criterionEvaluationRepository);
+        $this->givenACompletenessEvaluationDoneForAnotherProduct($anotherProductUuid, $criterionEvaluationRepository);
 
-        $productEvaluation = $this->get(GetProductCriterionEvaluationByProductIdAndCriterionCodeQuery::class)->execute($productId, new CriterionCode('completeness'));
+        $productEvaluation = $this->get(GetProductCriterionEvaluationByProductIdAndCriterionCodeQuery::class)->execute($productUuid, new CriterionCode('completeness'));
 
         $this->assertSameEvaluation($expectedCompletenessEvaluation, $productEvaluation);
     }
 
-    private function givenACompletenessEvaluationsDone(ProductId $productId, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
+    private function givenACompletenessEvaluationsDone(ProductUuid $ProductUuid, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
     {
         $channelEcommerce = new ChannelCode('ecommerce');
         $localeEn = new LocaleCode('en_US');
@@ -53,7 +54,7 @@ final class GetProductCriterionEvaluationByProductIdAndCriterionCodeQueryIntegra
 
         $completenessEvaluationDone = new Write\CriterionEvaluation(
             new CriterionCode('completeness'),
-            $productId,
+            $ProductUuid,
             CriterionEvaluationStatus::pending()
         );
 
@@ -75,11 +76,11 @@ final class GetProductCriterionEvaluationByProductIdAndCriterionCodeQueryIntegra
         return $completenessEvaluationDone;
     }
 
-    private function givenAPendingSpellingEvaluation(ProductId $productId, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
+    private function givenAPendingSpellingEvaluation(ProductUuid $productUuid, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
     {
         $spellingEvaluationPending = new Write\CriterionEvaluation(
             new CriterionCode('spelling'),
-            $productId,
+            $productUuid,
             CriterionEvaluationStatus::pending()
         );
 
@@ -88,7 +89,7 @@ final class GetProductCriterionEvaluationByProductIdAndCriterionCodeQueryIntegra
         return $spellingEvaluationPending;
     }
 
-    private function givenACompletenessEvaluationDoneForAnotherProduct(ProductId $productId, CriterionEvaluationRepositoryInterface $repository): void
+    private function givenACompletenessEvaluationDoneForAnotherProduct(ProductUuid $ProductUuid, CriterionEvaluationRepositoryInterface $repository): void
     {
         $channelEcommerce = new ChannelCode('ecommerce');
         $localeEn = new LocaleCode('en_US');
@@ -96,7 +97,7 @@ final class GetProductCriterionEvaluationByProductIdAndCriterionCodeQueryIntegra
 
         $completenessEvaluationDone = new Write\CriterionEvaluation(
             new CriterionCode('completeness'),
-            $productId,
+            $ProductUuid,
             CriterionEvaluationStatus::done()
         );
 
@@ -118,7 +119,7 @@ final class GetProductCriterionEvaluationByProductIdAndCriterionCodeQueryIntegra
     private function assertSameEvaluation(Write\CriterionEvaluation $expectedEvaluation, Read\CriterionEvaluation $evaluation): void
     {
         $this->assertEquals($expectedEvaluation->getCriterionCode(), $evaluation->getCriterionCode());
-        $this->assertEquals($expectedEvaluation->getProductId(), $evaluation->getProductId());
+        $this->assertEquals($expectedEvaluation->getEntityId(), $evaluation->getProductId());
         $this->assertEquals($expectedEvaluation->getStatus(), $evaluation->getStatus());
 
         $expectedResult = $expectedEvaluation->getResult();

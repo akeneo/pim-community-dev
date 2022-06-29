@@ -12,9 +12,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductCriterionEvaluationByProductIdAndCriterionCodeQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelCriterionEvaluationByProductIdAndCriterionCodeQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -56,8 +55,8 @@ final class GetProductModelCriterionEvaluationByProductIdAndCriterionCodeQueryIn
 
     public function test_it_retrieves_a_product_model_evaluation(): void
     {
-        $productModelId = new ProductId($this->createProductModelWithoutEvaluations('ziggy', 'family_variant')->getId());
-        $anotherProductModelId = new ProductId($this->createProductModelWithoutEvaluations('yggiz', 'family_variant')->getId());
+        $productModelId = new ProductModelId($this->createProductModelWithoutEvaluations('ziggy', 'family_variant')->getId());
+        $anotherProductModelId = new ProductModelId($this->createProductModelWithoutEvaluations('yggiz', 'family_variant')->getId());
 
         $criterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation');
 
@@ -70,7 +69,7 @@ final class GetProductModelCriterionEvaluationByProductIdAndCriterionCodeQueryIn
         $this->assertSameEvaluation($expectedCompletenessEvaluation, $productEvaluation);
     }
 
-    private function givenACompletenessEvaluationsDone(ProductId $productId, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
+    private function givenACompletenessEvaluationsDone(ProductModelId $productId, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
     {
         $channelEcommerce = new ChannelCode('ecommerce');
         $localeEn = new LocaleCode('en_US');
@@ -86,11 +85,9 @@ final class GetProductModelCriterionEvaluationByProductIdAndCriterionCodeQueryIn
             ->addRate($channelEcommerce, $localeEn, new Rate(90))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelEcommerce, $localeEn, ['description' => 0])
-
             ->addRate($channelEcommerce, $localeFr, new Rate(75))
             ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addRateByAttributes($channelEcommerce, $localeFr, ['description' => 0, 'weight' => 0])
-        ;
+            ->addRateByAttributes($channelEcommerce, $localeFr, ['description' => 0, 'weight' => 0]);
 
         $latestEvaluations = (new Write\CriterionEvaluationCollection())->add($completenessEvaluationDone);
         $repository->create($latestEvaluations);
@@ -100,11 +97,11 @@ final class GetProductModelCriterionEvaluationByProductIdAndCriterionCodeQueryIn
         return $completenessEvaluationDone;
     }
 
-    private function givenAPendingSpellingEvaluation(ProductId $productId, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
+    private function givenAPendingSpellingEvaluation(ProductModelId $productModelId, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
     {
         $spellingEvaluationPending = new Write\CriterionEvaluation(
             new CriterionCode('spelling'),
-            $productId,
+            $productModelId,
             CriterionEvaluationStatus::pending()
         );
 
@@ -113,7 +110,7 @@ final class GetProductModelCriterionEvaluationByProductIdAndCriterionCodeQueryIn
         return $spellingEvaluationPending;
     }
 
-    private function givenACompletenessEvaluationDoneForAnotherProduct(ProductId $productId, CriterionEvaluationRepositoryInterface $repository): void
+    private function givenACompletenessEvaluationDoneForAnotherProduct(ProductModelId $productModelId, CriterionEvaluationRepositoryInterface $repository): void
     {
         $channelEcommerce = new ChannelCode('ecommerce');
         $localeEn = new LocaleCode('en_US');
@@ -121,18 +118,16 @@ final class GetProductModelCriterionEvaluationByProductIdAndCriterionCodeQueryIn
 
         $completenessEvaluationDone = new Write\CriterionEvaluation(
             new CriterionCode('completeness'),
-            $productId,
+            $productModelId,
             CriterionEvaluationStatus::done()
         );
 
         $completenessEvaluationResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelEcommerce, $localeEn, new Rate(100))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
-
             ->addRate($channelEcommerce, $localeFr, new Rate(75))
             ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addRateByAttributes($channelEcommerce, $localeFr, ['name' => 0, 'weight' => 0])
-        ;
+            ->addRateByAttributes($channelEcommerce, $localeFr, ['name' => 0, 'weight' => 0]);
 
         $latestEvaluations = (new Write\CriterionEvaluationCollection())->add($completenessEvaluationDone);
         $repository->create($latestEvaluations);
@@ -143,7 +138,7 @@ final class GetProductModelCriterionEvaluationByProductIdAndCriterionCodeQueryIn
     private function assertSameEvaluation(Write\CriterionEvaluation $expectedEvaluation, Read\CriterionEvaluation $evaluation): void
     {
         $this->assertEquals($expectedEvaluation->getCriterionCode(), $evaluation->getCriterionCode());
-        $this->assertEquals($expectedEvaluation->getProductId(), $evaluation->getProductId());
+        $this->assertEquals($expectedEvaluation->getEntityId(), $evaluation->getProductId());
         $this->assertEquals($expectedEvaluation->getStatus(), $evaluation->getStatus());
 
         $expectedResult = $expectedEvaluation->getResult();

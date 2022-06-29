@@ -9,10 +9,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Hydrator\hydrateCriterionEvaluationResult;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -21,22 +23,24 @@ use Doctrine\DBAL\Types\Types;
 final class GetProductCriterionEvaluationByProductIdAndCriterionCodeQuery implements GetCriterionEvaluationByProductIdAndCriterionCodeQueryInterface
 {
     public function __construct(
-        private Connection $dbConnection,
+        private Connection                       $dbConnection,
         private hydrateCriterionEvaluationResult $hydrateCriterionEvaluationResult
     ) {
     }
 
-    public function execute(ProductEntityIdInterface $productId, CriterionCode $criterionCode): ?Read\CriterionEvaluation
+    public function execute(ProductEntityIdInterface $productUuid, CriterionCode $criterionCode): ?Read\CriterionEvaluation
     {
+        Assert::isInstanceOf($productUuid, ProductUuid::class);
+
         $query = <<<SQL
 SELECT evaluated_at, status, result 
 FROM pim_data_quality_insights_product_criteria_evaluation
-WHERE product_id = :productId AND criterion_code = :criterionCode;
+WHERE product_uuid = :productUuid AND criterion_code = :criterionCode;
 SQL;
         $rawEvaluation = $this->dbConnection->executeQuery(
             $query,
-            ['productId' => (string)$productId, 'criterionCode' => $criterionCode],
-            ['productId' => Types::INTEGER, 'criterionCode' => Types::STRING],
+            ['productUuid' => $productUuid->toBytes(), 'criterionCode' => $criterionCode],
+            ['productUuid' => Types::STRING, 'criterionCode' => Types::STRING],
         )->fetchAssociative();
 
         if (!$rawEvaluation) {
@@ -45,7 +49,7 @@ SQL;
 
         return new Read\CriterionEvaluation(
             $criterionCode,
-            $productId,
+            $productUuid,
             null !== $rawEvaluation['evaluated_at'] ? Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($rawEvaluation['evaluated_at'], $this->dbConnection->getDatabasePlatform()) : null,
             new CriterionEvaluationStatus($rawEvaluation['status']),
             null !== $rawEvaluation['result'] ? ($this->hydrateCriterionEvaluationResult)($criterionCode, $rawEvaluation['result']) : null,
