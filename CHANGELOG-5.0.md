@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.100 (2022-06-29)
+
 ## Bug fixes
 
 - Fix PHP alternative to 7.4 in Dockerfile
