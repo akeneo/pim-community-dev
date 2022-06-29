@@ -551,6 +551,9 @@ jobs:
                   name: Unit Back
                   command: PIM_CONTEXT=test make unit-back
             - run:
+                  name: Debug
+                  command: PIM_CONTEXT=test make env-debug
+            - run:
                   name: Integration Back
                   command: PIM_CONTEXT=test make pim-integration-back
             - store_test_results:
