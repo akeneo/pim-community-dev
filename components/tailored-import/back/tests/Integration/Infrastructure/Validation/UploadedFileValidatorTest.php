@@ -24,7 +24,7 @@ class UploadedFileValidatorTest extends AbstractValidationTest
         $uploadedFile = new UploadedFile(
             __DIR__ . '/../../../Common/simple_import.xlsx',
             'filename.xlsx',
-            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             null,
             true,
         );

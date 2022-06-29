@@ -41,6 +41,7 @@ class UploadStructureFileActionTest extends ControllerIntegrationTestCase
         $fileToUpload = new UploadedFile(
             __DIR__ . '/../../../Common/simple_import.xlsx',
             'simple_import.xlsx',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         );
 
         $response = $this->uploadFile($fileToUpload);

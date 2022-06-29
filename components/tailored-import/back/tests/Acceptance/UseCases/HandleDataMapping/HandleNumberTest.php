@@ -119,7 +119,7 @@ final class HandleNumberTest extends HandleDataMappingTestCase
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
                     '00000000-0000-0000-0000-000000000001' => '2022',
                     '00000000-0000-0000-0000-000000000002' => '12,5',
-                    '00000000-0000-0000-0000-000000000003' => '6.5',
+                    '00000000-0000-0000-0000-000000000003' => '6;5',
                 ],
                 'data_mappings' => [
                     DataMapping::create(
@@ -178,7 +178,7 @@ final class HandleNumberTest extends HandleDataMappingTestCase
                     ),
                     [
                         new InvalidValue('Cannot convert "12,5" to a number with separator "."'),
-                        new InvalidValue('Cannot convert "6.5" to a number with separator ","'),
+                        new InvalidValue('Cannot convert "6;5" to a number with separator ","'),
                     ],
                 ),
             ],
