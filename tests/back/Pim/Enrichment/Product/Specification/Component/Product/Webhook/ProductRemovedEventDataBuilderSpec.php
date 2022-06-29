@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Component\Product\Webhook;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductRemovedEventDataBuilder as BaseProductRemovedEventDataBuilder;
 use Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\NotGrantedProductException;
@@ -17,6 +18,7 @@ use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
 {
@@ -53,14 +55,16 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         $user->setUsername('erp_1234');
         $user->setId(10);
 
+        $blueJeanProduct = $this->aBlueJeanProduct();
         $eventWithGrantedProduct = new ProductRemoved(
             Author::fromNameAndType('erp', 'ui'),
-            $this->aBlueJeanProduct()
+            $blueJeanProduct
         );
 
+        $blueCamProduct = $this->aBlueCamProduct();
         $eventWithNonGrantedProduct = new ProductRemoved(
             Author::fromNameAndType('erp', 'ui'),
-            $this->aBlueCamProduct()
+            $blueCamProduct
         );
 
         $bulkEvent = new BulkEvent(
@@ -84,10 +88,13 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         )->willReturn([]);
 
         $expectedCollection = new EventDataCollection();
-        $expectedCollection->setEventData($eventWithGrantedProduct, ['resource' => ['identifier' => 'blue_jean']]);
+        $expectedCollection->setEventData($eventWithGrantedProduct, ['resource' => [
+            'identifier' => 'blue_jean',
+            'uuid' => $blueJeanProduct['uuid'],
+        ]]);
         $expectedCollection->setEventDataError(
             $eventWithNonGrantedProduct,
-            new NotGrantedProductException($user->getUsername(), 'blue_cam')
+            new NotGrantedProductException($user->getUsername(), $blueCamProduct['uuid'])
         );
 
         $actualCollection = $this->build($bulkEvent, $context);
@@ -103,6 +110,7 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
             Author::fromNameAndType('erp', 'ui'),
             [
                 'identifier' => 'blue_jean',
+                'uuid' => Uuid::uuid4(),
                 'category_codes' => [],
             ]
         );
@@ -112,7 +120,10 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
 
         $actualCollection = $this->build($bulkEvent, new Context('erp_1234', 10));
         $actualCollection->getEventData($eventWithNonCategorizedProduct)->shouldBe([
-            'resource' => ['identifier' => $eventWithNonCategorizedProduct->getIdentifier()],
+            'resource' => [
+                'identifier' => $eventWithNonCategorizedProduct->getIdentifier(),
+                'uuid' => $eventWithNonCategorizedProduct->getProductUuid(),
+            ],
         ]);
     }
 
@@ -123,9 +134,9 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
             $this->aBlueJeanProduct()
         );
 
-        $notSupportedEvent = new ProductRemoved(
+        $notSupportedEvent = new ProductModelRemoved(
             Author::fromNameAndType('erp', 'ui'),
-            $this->aBlueCamProduct()
+            $this->aBlueCamProductModel()
         );
 
         $bulkEvent = new BulkEvent(
@@ -146,6 +157,7 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
     {
         return [
             'identifier' => 'blue_jean',
+            'uuid' => Uuid::uuid4(),
             'category_codes' => ['clothes'],
         ];
     }
@@ -154,6 +166,15 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
     {
         return [
             'identifier' => 'blue_cam',
+            'uuid' => Uuid::uuid4(),
+            'category_codes' => ['cameras'],
+        ];
+    }
+
+    private function aBlueCamProductModel(): array
+    {
+        return [
+            'code' => 'blue_cam',
             'category_codes' => ['cameras'],
         ];
     }

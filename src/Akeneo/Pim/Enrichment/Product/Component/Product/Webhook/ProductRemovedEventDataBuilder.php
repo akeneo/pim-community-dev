@@ -53,7 +53,7 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
                 if (0 === count($grantedCategoryCodes)) {
                     $collection->setEventDataError(
                         $productRemovedEvent,
-                        new NotGrantedProductException($context->getUsername(), $productRemovedEvent->getIdentifier())
+                        new NotGrantedProductException($context->getUsername(), $productRemovedEvent->getProductUuid())
                     );
 
                     continue;
@@ -63,6 +63,7 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
             $data = [
                 'resource' => [
                     'identifier' => $productRemovedEvent->getIdentifier(),
+                    'uuid' => $productRemovedEvent->getProductUuid(),
                 ],
             ];
 
