@@ -55,6 +55,9 @@ pim_volume_monitoring:
 pim_data_quality_insights:
     resource: "@AkeneoDataQualityInsightsBundle/Resources/config/routing.yml"
 
+akeneo_category:
+    resource: "@AkeneoCategoryBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:
