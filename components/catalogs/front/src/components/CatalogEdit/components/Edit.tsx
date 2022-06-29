@@ -8,26 +8,12 @@ import {CatalogFormErrors} from '../models/CatalogFormErrors';
 import {ProductSelection} from '../../ProductSelection';
 import {useCatalogFormContext} from '../contexts/CatalogFormContext';
 import {CatalogFormActions} from '../reducers/CatalogFormReducer';
-import {findFirstError} from '../utils/findFirstError';
-import {ProductSelectionErrors} from '../../ProductSelection/ProductSelection';
+import {mapProductSelectionCriteriaErrors} from '../utils/mapProductSelectionCriteriaErrors';
+import {getTabsValidationStatus} from '../utils/getTabsValidationStatus';
 
 type Props = {
     values: CatalogFormValues;
     errors: CatalogFormErrors;
-};
-
-const mapProductSelectionCriteriaErrors = (errors: CatalogFormErrors, keys: string[]): ProductSelectionErrors => {
-    const map: ProductSelectionErrors = {};
-
-    keys.forEach((key, index) => {
-        map[key] = {
-            field: findFirstError(errors, `[product_selection_criteria][${index}][field]`),
-            operator: findFirstError(errors, `[product_selection_criteria][${index}][operator]`),
-            value: findFirstError(errors, `[product_selection_criteria][${index}][value]`),
-        };
-    });
-
-    return map;
 };
 
 const Edit: FC<PropsWithChildren<Props>> = ({values, errors}) => {
@@ -43,6 +29,7 @@ const Edit: FC<PropsWithChildren<Props>> = ({values, errors}) => {
         [setActiveTab, switchTo]
     );
 
+    /* istanbul ignore next */
     const handleProductSelectionChange = useCallback(
         value => {
             dispatch({type: CatalogFormActions.SET_PRODUCT_SELECTION_CRITERIA, value: value});
@@ -50,19 +37,9 @@ const Edit: FC<PropsWithChildren<Props>> = ({values, errors}) => {
         [dispatch]
     );
 
-    const invalidTabs = {
-        [Tabs.SETTINGS]: errors.find(error => error.propertyPath === '[enabled]') !== undefined,
-        [Tabs.PRODUCT_SELECTION]:
-            errors.find(error => error.propertyPath.startsWith('[product_selection_criteria]')) !== undefined,
-    };
-
-    if (undefined === values) {
-        return null;
-    }
-
     return (
         <>
-            <TabBar isCurrent={isCurrent} switchTo={handleSwitchTo} invalid={invalidTabs} />
+            <TabBar isCurrent={isCurrent} switchTo={handleSwitchTo} invalid={getTabsValidationStatus(errors)} />
 
             {isCurrent(Tabs.SETTINGS) && (
                 <Settings

@@ -8,6 +8,7 @@ import {Empty} from './components/Empty';
 import {ProductSelectionValues} from './models/ProductSelectionValues';
 import {CriterionErrors} from './models/CriterionErrors';
 import {AddCriterionDropdown} from './components/AddCriterionDropdown';
+import {ProductSelectionErrors} from './models/ProductSelectionErrors';
 
 const Header = styled.div`
     border-bottom: 1px solid ${getColor('grey', 60)};
@@ -15,10 +16,6 @@ const Header = styled.div`
     justify-content: end;
     padding: 10px 0;
 `;
-
-export type ProductSelectionErrors = {
-    [key in keyof ProductSelectionValues]?: CriterionErrors;
-};
 
 const emptyErrors: CriterionErrors = {
     value: null,
