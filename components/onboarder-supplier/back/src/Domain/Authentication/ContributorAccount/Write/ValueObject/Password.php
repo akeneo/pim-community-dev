@@ -6,11 +6,11 @@ namespace Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAcc
 
 final class Password
 {
-    private function __construct(private ?string $password)
+    private function __construct(private string $password)
     {
     }
 
-    public static function fromString(?string $password): self
+    public static function fromString(string $password): self
     {
         return new self($password);
     }
