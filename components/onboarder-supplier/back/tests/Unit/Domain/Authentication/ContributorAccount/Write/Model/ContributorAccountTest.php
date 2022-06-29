@@ -56,4 +56,27 @@ final class ContributorAccountTest extends TestCase
         static::assertNull($contributorAccount->accessToken());
         static::assertNull($contributorAccount->accessTokenCreatedAt());
     }
+
+    /** @test */
+    public function itResetsTheContributorAccountPassword(): void
+    {
+        $contributorAccount = ContributorAccount::hydrate(
+            'd52dc837-3122-48cf-aee9-4405dce82600',
+            'contributor@example.com',
+            (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
+            'P@$$w0rdfoo',
+            'foo',
+            (new \DateTimeImmutable())->modify('-2 days')->format('Y-m-d H:i:s'),
+            null,
+        );
+
+        $contributorAccount->resetPassword();
+
+        static::assertNull($contributorAccount->getPassword());
+        static::assertSame(
+            (new \DateTimeImmutable())->format('d'),
+            (new \DateTimeImmutable($contributorAccount->accessTokenCreatedAt()))->format('d'),
+        );
+        static::assertNotSame('foo', $contributorAccount->accessToken());
+    }
 }

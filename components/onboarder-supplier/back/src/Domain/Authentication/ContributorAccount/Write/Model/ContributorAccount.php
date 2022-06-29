@@ -96,4 +96,11 @@ class ContributorAccount
     {
         return null === $this->password ? null : (string) $this->password;
     }
+
+    public function resetPassword(): void
+    {
+        $this->password = null;
+        $this->accessToken = AccessToken::generate();
+        $this->accessTokenCreatedAt = new \DateTimeImmutable();
+    }
 }
