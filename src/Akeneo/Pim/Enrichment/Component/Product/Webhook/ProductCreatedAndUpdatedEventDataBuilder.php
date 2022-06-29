@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
@@ -49,7 +50,7 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
 
     public function build(BulkEventInterface $bulkEvent, Context $context): EventDataCollection
     {
-        // TODO Change this once GetConnectorProduct is done by Uuids
+        // TODO CPM-676 Change this once GetConnectorProduct is done by Uuids
         $products = $this->getConnectorProducts(
             $this->getProductIdentifiers($bulkEvent->getEvents()),
             $context->getUserId()
@@ -94,7 +95,7 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
     /**
      * @param string[] $identifiers
      *
-     * @return array<string, (ConnectorProduct|null)>
+     * @return array<string, ConnectorProduct>
      */
     private function getConnectorProducts(array $identifiers, int $userId): array
     {
@@ -102,7 +103,7 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
             ->fromProductIdentifiers($identifiers, $userId, null, null, null)
             ->connectorProducts();
 
-        $products = array_fill_keys($identifiers, null);
+        $products = [];
         foreach ($result as $product) {
             $products[$product->uuid()->toString()] = $product;
         }

@@ -150,7 +150,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                     $this->referenceAuthor,
                     [
                         'identifier' => $this->tshirtProduct->getIdentifier(),
-                        'uuid' => Uuid::uuid4(),
+                        'uuid' => $this->tshirtProduct->getUuid(),
                     ],
                     1607094167,
                     '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
@@ -184,7 +184,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                     $this->referenceAuthor,
                     [
                         'identifier' => $this->tshirtProduct->getIdentifier(),
-                        'uuid' => Uuid::uuid4(),
+                        'uuid' => $this->tshirtProduct->getUuid(),
                         'category_codes' => $this->tshirtProduct->getCategoryCodes(),
                     ],
                     1607094167,
@@ -278,6 +278,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             'data' => [
                 'resource' => [
                     'identifier' => $product->getIdentifier(),
+                    'uuid' => $product->getUuid(),
                 ],
             ],
         ];
