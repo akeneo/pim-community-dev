@@ -38,6 +38,9 @@ common:
   gcpProjectID: null
   googleZone: null
   pimMasterDomain: null
+  workloadIdentityKSA: null
+  workloadIdentityKSANamespace: null
+  workloadIdentityGSA: null
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "60"
@@ -136,11 +139,6 @@ elasticsearch:
     hooks:
       drain:
         enabled: false
-  keystore:
-    - secretName: pim-secrets
-      items:
-      - key: srntPimStorageKey
-        path: gcs.client.default.credentials_file
   snapshots:
     retention: 15
     repository: pim_gcs_repository

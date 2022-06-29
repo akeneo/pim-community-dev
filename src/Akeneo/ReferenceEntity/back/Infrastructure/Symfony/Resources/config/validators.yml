@@ -244,3 +244,9 @@ services:
             - '@akeneo_referenceentity.application.registry.record.edit_record_value_command_factory_registry'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.create_record_label' }
+
+    akeneo_referenceentity.validator.constraint_guesser.reference_entity_multiple_link:
+        public: false
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\ConstraintGuesser\ReferenceEntityMultipleLinkGuesser
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }

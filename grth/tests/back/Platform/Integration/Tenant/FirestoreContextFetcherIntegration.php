@@ -83,7 +83,6 @@ final class FirestoreContextFetcherIntegration extends TestCase
 
         $this->firestoreContextFetcher = new FirestoreContextFetcher(
             googleProjectId: $_ENV['GOOGLE_CLOUD_PROJECT'],
-            keyFilePath: $_ENV['SRNT_GOOGLE_APPLICATION_CREDENTIALS'],
             collection: self::TEST_COLLECTION
         );
     }
@@ -99,8 +98,7 @@ final class FirestoreContextFetcherIntegration extends TestCase
     {
         return (new FirestoreClient(
             [
-                'projectId' => $_ENV['GOOGLE_CLOUD_PROJECT'],
-                'keyFilePath' => $_ENV['SRNT_GOOGLE_APPLICATION_CREDENTIALS'],
+                'projectId' => $_ENV['GOOGLE_CLOUD_PROJECT']
             ]
         ))->collection(self::TEST_COLLECTION);
     }

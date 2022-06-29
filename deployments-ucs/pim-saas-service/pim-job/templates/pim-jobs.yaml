@@ -42,10 +42,6 @@ spec:
 {{ toYaml $jobOptions.resources | indent 14 }}
 {{- end }}
             volumeMounts:
-              - name: google-cloud-pim-storage-key
-                mountPath: /var/secrets/google/srnt.json
-                subPath: srnt.json
-                readOnly: true
               {{- if $tplCtx.Values.onboarder.enabled }}
               - name: google-cloud-onboarder-key
                 mountPath: /var/secrets/google/key.json
@@ -62,12 +58,6 @@ spec:
 {{- end }}
           restartPolicy: OnFailure
           volumes:
-            - name: google-cloud-pim-storage-key
-              secret:
-                secretName: pim-secrets
-                items:
-                - key: srntPimStorageKey
-                  path: srnt.json
             {{- if $tplCtx.Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key
               secret:

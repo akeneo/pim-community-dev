@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Supplier\Test\Unit\Infrastructure\Authentication\ContributorAccount\Repository\InMemory;
 
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +20,7 @@ final class InMemoryRepositoryTest extends TestCase
         $contributorAccountRepository->save(ContributorAccount::fromEmail('momoss@example.com'));
         $contributorAccountRepository->save(ContributorAccount::fromEmail('contributor@example.com'));
 
-        $contributorAccount = $contributorAccountRepository->findByEmail('momoss@example.com');
+        $contributorAccount = $contributorAccountRepository->findByEmail(Email::fromString('momoss@example.com'));
 
         $this->assertSame($contributorAccount->email(), 'momoss@example.com');
     }
@@ -31,7 +32,7 @@ final class InMemoryRepositoryTest extends TestCase
 
         $contributorAccountRepository->save(ContributorAccount::fromEmail('momoss@example.com'));
 
-        $this->assertNull($contributorAccountRepository->findByEmail('yolo@example.com'));
+        $this->assertNull($contributorAccountRepository->findByEmail(Email::fromString('yolo@example.com')));
     }
 
     /** @test */

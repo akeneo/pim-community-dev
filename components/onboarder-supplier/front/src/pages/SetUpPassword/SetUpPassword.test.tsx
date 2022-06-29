@@ -2,15 +2,18 @@ import React from 'react';
 import {fireEvent, screen} from '@testing-library/react';
 import {renderWithProviders} from '../../tests';
 import {SetUpPassword} from './SetUpPassword';
+import {BadRequestError} from '../../api/BadRequestError';
+import * as hook from './hooks/useContributorAccount';
 
-jest.mock('./hooks/useContributorAccount', () => ({
-    useContributorAccount: () => ({
+beforeEach(() => {
+    // @ts-ignore
+    hook.useContributorAccount = jest.fn().mockReturnValue({
         loadingError: false,
         contributorAccount: {},
         submitPassword: () => {},
         passwordHasErrors: false,
-    }),
-}));
+    });
+});
 
 test('it renders the password input with its confirmation input', async () => {
     renderWithProviders(<SetUpPassword />);
@@ -95,4 +98,20 @@ test('it enables submit button if passwords are equal and match requirements', a
 
     let submitButton = screen.getByTestId('submit-button');
     expect(submitButton).toBeEnabled();
+});
+
+test('it renders the request new invitation page if the access token is expired', async () => {
+    // @ts-ignore
+    hook.useContributorAccount = jest.fn().mockReturnValue({
+        loadingError: new BadRequestError([]),
+        contributorAccount: {},
+        submitPassword: () => {},
+        passwordHasErrors: false,
+    });
+    renderWithProviders(<SetUpPassword />);
+
+    const invitationExpiredMessage = screen.getByText(
+        'Your invitation has expired. Please enter your email address to receive a new one.'
+    );
+    expect(invitationExpiredMessage).toBeInTheDocument();
 });

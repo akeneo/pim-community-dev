@@ -12,7 +12,6 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
 
     public function __construct(
         private string $googleProjectId,
-        private string $keyFilePath,
         private string $collection = self::TENANT_COLLECTION
     ) {
     }
@@ -26,7 +25,6 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
         $db = new FirestoreClient(
             [
                 'projectId' => $this->googleProjectId,
-                'keyFilePath' => $this->keyFilePath,
             ]
         );
 
