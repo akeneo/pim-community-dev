@@ -20,22 +20,6 @@ class ErrorListProductEndToEnd extends AbstractProductTestCase
         $this->assert($client, 'Scope "not_found" does not exist.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    public function testInvalidPaginationTypeParameterType()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', 'api/rest/v1/products?pagination_type[]=unknown');
-        $this->assert($client, 'Invalid query parameters received: pagination_type must be a string.', Response::HTTP_BAD_REQUEST);
-    }
-
-    public function testInvalidSearchParameterType()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', 'api/rest/v1/products?search[]=unknown');
-        $this->assert($client, 'Invalid query parameters received: search must be a string.', Response::HTTP_BAD_REQUEST);
-    }
-
     public function testUnknownPaginationType()
     {
         $client = $this->createAuthenticatedClient();
