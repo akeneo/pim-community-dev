@@ -14,9 +14,9 @@ type ErrorPayload = {
 
 type Result = [true, never] | [false, CatalogFormErrors];
 type Args = {id: string; values: RequestPayload};
-type Query = (args: Args) => Promise<Result>;
+export type SaveCatalog = (args: Args) => Promise<Result>;
 
-export const useSaveCatalog = (): Query => {
+export const useSaveCatalog = (): SaveCatalog => {
     const queryClient = useQueryClient();
 
     const request = useCallback(async ({id, values}: Args) => {
