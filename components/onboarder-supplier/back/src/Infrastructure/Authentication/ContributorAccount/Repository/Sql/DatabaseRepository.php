@@ -58,7 +58,7 @@ class DatabaseRepository implements ContributorAccountRepository
         ;
 
         return false !== $result
-            ? ContributorAccount::hydrate(
+            ? $this->hydrate(
                 $result['id'],
                 $result['email'],
                 $result['created_at'],
@@ -86,7 +86,7 @@ class DatabaseRepository implements ContributorAccountRepository
         ;
 
         return false !== $result
-            ? ContributorAccount::hydrate(
+            ? $this->hydrate(
                 $result['id'],
                 $result['email'],
                 $result['created_at'],
@@ -97,5 +97,25 @@ class DatabaseRepository implements ContributorAccountRepository
             )
             : null
             ;
+    }
+
+    private function hydrate(
+        string $id,
+        string $email,
+        string $createdAt,
+        ?string $password,
+        ?string $accessToken,
+        ?string $accessTokenCreatedAt,
+        ?string $lastLoggedAt,
+    ): ContributorAccount {
+        return ContributorAccount::hydrate(
+            $id,
+            $email,
+            $createdAt,
+            $password,
+            $accessToken,
+            $accessTokenCreatedAt,
+            $lastLoggedAt,
+        );
     }
 }
