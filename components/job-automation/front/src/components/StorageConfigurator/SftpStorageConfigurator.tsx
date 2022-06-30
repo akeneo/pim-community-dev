@@ -17,7 +17,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
   }
   const translate = useTranslate();
   const portValidationErrors = filterErrors(validationErrors, '[port]');
-  const [check, setCheck, isChecking, checkReliability] = useCheckStorageConnection();
+  const [check, isChecking, checkReliability] = useCheckStorageConnection(storage);
 
   return (
     <>
@@ -32,10 +32,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         required={true}
         value={storage.host}
         label={translate('akeneo.job_automation.storage.host.label')}
-        onChange={(host: string) => {
-          onStorageChange({...storage, host});
-          setCheck(undefined);
-        }}
+        onChange={(host: string) => onStorageChange({...storage, host})}
         errors={filterErrors(validationErrors, '[host]')}
       />
       <Field
@@ -44,10 +41,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         <NumberInput
           min={1}
           max={65535}
-          onChange={(port: string) => {
-            onStorageChange({...storage, port: parseInt(port, 10)});
-            setCheck(undefined);
-          }}
+          onChange={(port: string) => onStorageChange({...storage, port: parseInt(port, 10)})}
           invalid={0 < portValidationErrors.length}
           value={storage.port.toString()}
         />
@@ -61,10 +55,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         value={storage.username}
         required={true}
         label={translate('akeneo.job_automation.storage.username.label')}
-        onChange={(username: string) => {
-          onStorageChange({...storage, username});
-          setCheck(undefined);
-        }}
+        onChange={(username: string) => onStorageChange({...storage, username})}
         errors={filterErrors(validationErrors, '[username]')}
       />
       <TextField
@@ -72,17 +63,14 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         required={true}
         type="password"
         label={translate('akeneo.job_automation.storage.password.label')}
-        onChange={(password: string) => {
-          onStorageChange({...storage, password});
-          setCheck(undefined);
-        }}
+        onChange={(password: string) => onStorageChange({...storage, password})}
         errors={filterErrors(validationErrors, '[password]')}
       />
       <>
         <CheckStorageConnetion>
           <Button
             onClick={() => {
-              checkReliability(storage);
+              checkReliability();
             }}
             disabled={(check && check.is_connection_healthy) || isChecking}
             level="primary"

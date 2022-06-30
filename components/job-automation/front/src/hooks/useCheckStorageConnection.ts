@@ -1,14 +1,20 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {ConnectionCheck} from '../components/StorageConfigurator';
 import {SftpStorage} from '../components';
 import {useRoute} from '@akeneo-pim-community/shared/lib/hooks/useRoute';
 
-const useCheckStorageConnection = () => {
+const useCheckStorageConnection = (storage: SftpStorage) => {
   const [check, setCheck] = useState<ConnectionCheck>();
   const [isChecking, setIsChecking] = useState<boolean>(false);
   const route = useRoute('pimee_job_automation_get_storage_connection_check');
 
-  const checkReliability = async (storage: SftpStorage) => {
+  useEffect(() => {
+    return () => {
+      setCheck(undefined);
+    };
+  }, [storage]);
+
+  const checkReliability = async () => {
     setIsChecking(true);
     const response = await fetch(route, {
       method: 'POST',
@@ -26,7 +32,7 @@ const useCheckStorageConnection = () => {
     setIsChecking(false);
   };
 
-  return [check, setCheck, isChecking, checkReliability] as const;
+  return [check, isChecking, checkReliability] as const;
 };
 
 export {useCheckStorageConnection};

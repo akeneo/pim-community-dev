@@ -11,22 +11,25 @@ test('connection healthy', async () => {
     }),
   }));
 
-  const {result} = renderHookWithProviders(() => useCheckStorageConnection());
-  const checkReliability = result.current[3];
+  const storage: SftpStorage = {
+    type: 'sftp',
+    file_path: 'test.xlsx',
+    host: '127.0.0.1',
+    port: 22,
+    username: 'sftp',
+    password: 'password',
+  };
+  const {result} = renderHookWithProviders(() => useCheckStorageConnection(storage));
+  const checkReliability = result.current[2];
 
   await act(async () => {
-    await checkReliability({
-      host: '127.0.0.1',
-      port: 22,
-      username: 'sftp',
-      password: 'password',
-    } as SftpStorage);
+    await checkReliability();
   });
 
   expect(result.current[0]).toEqual({
     is_connection_healthy: true,
   });
-  expect(result.current[2]).toEqual(false);
+  expect(result.current[1]).toEqual(false);
 });
 
 test('connection not healthy return error_message', async () => {
@@ -37,22 +40,24 @@ test('connection not healthy return error_message', async () => {
       error_message: 'something got wrong',
     }),
   }));
-
-  const {result} = renderHookWithProviders(() => useCheckStorageConnection());
-  const checkReliability = result.current[3];
+  const storage: SftpStorage = {
+    type: 'sftp',
+    file_path: 'test.xlsx',
+    host: '127.0.0.1',
+    port: 22,
+    username: 'sftp',
+    password: 'password',
+  };
+  const {result} = renderHookWithProviders(() => useCheckStorageConnection(storage));
+  const checkReliability = result.current[2];
 
   await act(async () => {
-    await checkReliability({
-      host: '127.0.0.1',
-      port: 22,
-      username: 'sftp',
-      password: 'password',
-    } as SftpStorage);
+    await checkReliability();
   });
 
   expect(result.current[0]).toEqual({
     is_connection_healthy: false,
     error_message: 'something got wrong',
   });
-  expect(result.current[2]).toEqual(false);
+  expect(result.current[1]).toEqual(false);
 });
