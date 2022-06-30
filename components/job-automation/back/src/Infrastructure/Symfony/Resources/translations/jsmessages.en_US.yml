@@ -17,4 +17,4 @@ akeneo.job_automation:
     file_path:
       unsupported_extension: Unsupported file extension
   connection_checker:
-    label: CHECK THE RELIABILITY
+    label: check the reliability
