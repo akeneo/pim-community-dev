@@ -3,7 +3,7 @@ import {Field, Helper, NumberInput, Button, CheckIcon, pimTheme} from 'akeneo-de
 import {TextField, useTranslate, filterErrors, ValidationError} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isSftpStorage} from './model';
 import styled from 'styled-components';
-import {useCheckStorageConnection} from "../../hooks/useCheckStorageConnection";
+import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
 
 const CheckStorageConnetion = styled.div`
   display: flex;
@@ -82,7 +82,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         <CheckStorageConnetion>
           <Button
             onClick={() => {
-                checkReliability(storage);
+              checkReliability(storage);
             }}
             disabled={(check && check.is_connection_healthy) || isChecking}
             level="primary"

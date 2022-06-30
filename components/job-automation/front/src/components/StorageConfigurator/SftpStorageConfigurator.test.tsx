@@ -219,23 +219,23 @@ test('it can check connection', async () => {
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: true,
     json: async () => ({
-      'is_connection_healthy': true
-    })
+      is_connection_healthy: true,
+    }),
   }));
 
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-      <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
   );
 
   const checkButton = screen.getByText('akeneo.automation.connection_checker.label');
   await act(async () => {
     userEvent.click(checkButton);
-  })
+  });
 
   expect(checkButton).toHaveAttribute('disabled');
-})
+});
 
 test('it can check connection, display message if error', async () => {
   const storage: SftpStorage = {
@@ -250,22 +250,22 @@ test('it can check connection, display message if error', async () => {
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: true,
     json: async () => ({
-      'is_connection_healthy': false,
-      'error_message': 'something got wrong'
-    })
+      is_connection_healthy: false,
+      error_message: 'something got wrong',
+    }),
   }));
 
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-      <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
   );
 
   const checkButton = screen.getByText('akeneo.automation.connection_checker.label');
   await act(async () => {
     userEvent.click(checkButton);
-  })
+  });
 
   expect(checkButton).not.toHaveAttribute('disabled');
   expect(screen.getByText('something got wrong')).not.toBeUndefined();
-})
+});
