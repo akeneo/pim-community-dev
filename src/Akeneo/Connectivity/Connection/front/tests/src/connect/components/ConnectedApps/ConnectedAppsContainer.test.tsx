@@ -26,7 +26,7 @@ test('The connected apps list renders with 2 connected apps card', async () => {
             scopes: ['scope A1'],
             connection_code: 'connectionCodeA',
             logo: 'http://www.example.test/path/to/logo/a',
-            author: 'author A',
+            author: 'authorA',
             user_group_name: 'app_123456abcde',
             categories: ['category A1', 'category A2'],
             certified: false,
@@ -38,7 +38,7 @@ test('The connected apps list renders with 2 connected apps card', async () => {
             scopes: ['scope B1', 'scope B2'],
             connection_code: 'connectionCodeB',
             logo: 'http://www.example.test/path/to/logo/b',
-            author: 'author B',
+            author: 'authorB',
             user_group_name: 'app_7891011ghijklm',
             categories: ['category B1'],
             certified: true,
@@ -72,13 +72,17 @@ test('The connected apps list renders with 2 connected apps card', async () => {
     ).toHaveLength(2);
     expect(screen.queryByText('App A')).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by' + ' author A')
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by?author=authorA'
+        )
     ).toBeInTheDocument();
     expect(screen.queryByText('category A1')).toBeInTheDocument();
     expect(screen.queryByText('category A2')).toBeNull();
     expect(screen.queryByText('App B')).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by' + ' author B')
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by?author=authorB'
+        )
     ).toBeInTheDocument();
     expect(screen.queryByText('category B1')).toBeInTheDocument();
 });

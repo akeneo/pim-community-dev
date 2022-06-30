@@ -18,7 +18,7 @@ test('The connected app card renders', async () => {
         scopes: ['scope A1'],
         connection_code: 'connectionCodeA',
         logo: 'http://www.example.test/path/to/logo/a',
-        author: 'author A',
+        author: 'authorA',
         user_group_name: 'app_123456abcde',
         categories: ['category A1', 'category A2'],
         certified: false,
@@ -31,7 +31,9 @@ test('The connected app card renders', async () => {
 
     expect(screen.queryByText('App A')).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by' + ' author A')
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by?author=authorA'
+        )
     ).toBeInTheDocument();
     expect(screen.queryByText('category A1')).toBeInTheDocument();
     expect(screen.queryByText('category A2')).toBeNull();
