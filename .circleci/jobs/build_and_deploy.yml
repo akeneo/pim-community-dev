@@ -300,7 +300,8 @@ jobs:
                       find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
                       find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/catalog-volume-monitoring.hash
                       find << parameters.path_to_front_packages >>/../src/Oro/Bundle/ConfigBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/config.hash
-                      echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/catalog-volume-monitoring.hash ~/process-tracker.hash ~/config.hash
+                      find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/ImportExportBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/import-export.hash
+                      echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/catalog-volume-monitoring.hash ~/process-tracker.hash ~/config.hash ~/import-export.hash
             - run:
                   name: Set directories owner to circleci
                   command: sudo chown -R circleci:circleci .
@@ -322,6 +323,9 @@ jobs:
             - restore_cache:
                   name: Restore micro-frontend Config cache
                   key: micro-frontend-config-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/config.hash" }}
+            - restore_cache:
+                  name: Restore micro-frontend Import Export cache
+                  key: micro-frontend-config-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/import-export.hash" }}
             - run:
                   name: Set directories owner to docker
                   command: sudo chown -R 1000:1000 ../project
@@ -374,6 +378,11 @@ jobs:
                   key: micro-frontend-config-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/config.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/../src/Oro/Bundle/ConfigBundle/front
+            - save_cache:
+                  name: Save micro-frontend Import Export cache
+                  key: micro-frontend-config-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/import-export.hash" }}
+                  paths:
+                      - << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/ImportExportBundle/front
             - persist_to_workspace:
                   root: ~/
                   paths:
