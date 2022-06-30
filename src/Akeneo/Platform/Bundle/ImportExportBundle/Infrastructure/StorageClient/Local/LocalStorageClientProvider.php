@@ -35,9 +35,4 @@ final class LocalStorageClientProvider implements StorageClientProviderInterface
     {
         return $storage instanceof LocalStorage;
     }
-
-    public function getConnectionProvider(StorageInterface $storage): ConnectionProvider|null
-    {
-        return null;
-    }
 }

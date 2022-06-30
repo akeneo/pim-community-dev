@@ -18,6 +18,4 @@ interface StorageClientProviderInterface
     public function supports(StorageInterface $storage): bool;
 
     public function getFromStorage(StorageInterface $storage): StorageClientInterface;
-    
-    public function getConnectionProvider(StorageInterface $storage): ConnectionProvider|null;
 }

@@ -37,9 +37,4 @@ final class ManualUploadStorageClientProvider implements StorageClientProviderIn
     {
         return $storage instanceof ManualUploadStorage;
     }
-
-    public function getConnectionProvider(StorageInterface $storage): ConnectionProvider|null
-    {
-        return null;
-    }
 }
