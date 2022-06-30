@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Ramsey\Uuid\UuidInterface;
 
 final class GetProductsWithQualityScores implements GetProductsWithQualityScoresInterface
 {
@@ -63,7 +64,7 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
     private function getProductsQualityScores(ConnectorProductList $connectorProductList): array
     {
         $productUuids = array_map(
-            fn (ConnectorProduct $connectorProduct) => $connectorProduct->uuid(),
+            fn (ConnectorProduct $connectorProduct): UuidInterface => $connectorProduct->uuid(),
             $connectorProductList->connectorProducts()
         );
 

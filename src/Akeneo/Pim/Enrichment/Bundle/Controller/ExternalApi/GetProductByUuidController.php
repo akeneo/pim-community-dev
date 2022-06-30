@@ -54,7 +54,7 @@ class GetProductByUuidController
         }
 
         $productUuid = Uuid::fromString($uuid);
-        if ($productUuid->getVersion() != 4) {
+        if ($productUuid->getVersion() !== 4) {
             throw new BadRequestException("Invalid UUID4 received");
         }
 

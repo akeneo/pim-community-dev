@@ -21,17 +21,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAndProductModelProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
+class ProductModelProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     protected ?StepExecution $stepExecution = null;
 
     public function __construct(
-        protected NormalizerInterface $productNormalizer,
         protected NormalizerInterface $productModelNormalizer,
         protected IdentifiableObjectRepositoryInterface $channelRepository,
         protected AttributeRepositoryInterface $attributeRepository,
         protected FillMissingValuesInterface $fillMissingProductModelValues,
-        private GetNormalizedProductQualityScoresInterface $getNormalizedProductQualityScores,
         private GetNormalizedProductModelQualityScoresInterface $getNormalizedProductModelQualityScores
     ) {
     }
@@ -47,12 +45,8 @@ class ProductAndProductModelProcessor implements ItemProcessorInterface, StepExe
 
         // not done for product as it fill missing product values at the end for performance purpose
         // not done yet for product model export so we have to do it
-        if ($entity instanceof ProductModelInterface) {
-            $productStandard = $this->productModelNormalizer->normalize($entity, 'standard');
-            $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($productStandard);
-        } else {
-            $productStandard = $this->productNormalizer->normalize($entity, 'standard');
-        }
+        $productStandard = $this->productModelNormalizer->normalize($entity, 'standard');
+        $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($productStandard);
 
         $attributeCodes = $this->areAttributesToFilter($parameters) ? $this->getAttributesCodesToFilter($parameters) : [];
 
@@ -76,19 +70,11 @@ class ProductAndProductModelProcessor implements ItemProcessorInterface, StepExe
         }
 
         if ($this->hasFilterOnQualityScore($parameters)) {
-            if ($entity instanceof ProductModelInterface) {
-                $productStandard['quality_scores'] = ($this->getNormalizedProductModelQualityScores)(
-                    $entity->getCode(),
-                    $structure['scope'] ?? null,
-                    $structure['locales'] ?? []
-                );
-            } else {
-                $productStandard['quality_scores'] = ($this->getNormalizedProductQualityScores)(
-                    $entity->getUuid(),
-                    $structure['scope'] ?? null,
-                    $structure['locales'] ?? []
-                );
-            }
+            $productStandard['quality_scores'] = ($this->getNormalizedProductModelQualityScores)(
+                $entity->getCode(),
+                $structure['scope'] ?? null,
+                $structure['locales'] ?? []
+            );
         }
 
         return $productStandard;

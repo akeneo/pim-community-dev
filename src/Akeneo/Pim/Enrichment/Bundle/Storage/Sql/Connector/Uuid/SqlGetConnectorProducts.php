@@ -74,7 +74,7 @@ final class SqlGetConnectorProducts implements GetConnectorProducts
 
         $rawValuesIndexedByProductUuid = [];
         foreach ($productUuids as $uuid) {
-            if (!array_key_exists('raw_values', $rows[$uuid->toString()])) {
+            if (!isset($rows[$uuid->toString()]['raw_values'])) {
                 continue;
             }
 

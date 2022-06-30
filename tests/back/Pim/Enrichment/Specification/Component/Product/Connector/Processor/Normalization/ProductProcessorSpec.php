@@ -7,7 +7,7 @@ use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\GetNormalizedProductModelQualityScores;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\GetNormalizedProductQualityScores;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductAndProductModelProcessor;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
@@ -26,26 +26,20 @@ use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductAndProductModelProcessorSpec extends ObjectBehavior
+class ProductProcessorSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $productNormalizer,
-        NormalizerInterface $productModelNormalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        FillMissingValuesInterface $fillMissingProductModelValues,
         GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
-        GetNormalizedProductModelQualityScores $getNormalizedProductModelQualityScores,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $productNormalizer,
-            $productModelNormalizer,
             $channelRepository,
             $attributeRepository,
-            $fillMissingProductModelValues,
             $getNormalizedProductQualityScores,
-            $getNormalizedProductModelQualityScores
         );
 
         $this->setStepExecution($stepExecution);
@@ -54,7 +48,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(
-            ProductAndProductModelProcessor::class
+            ProductProcessor::class
         );
     }
 
