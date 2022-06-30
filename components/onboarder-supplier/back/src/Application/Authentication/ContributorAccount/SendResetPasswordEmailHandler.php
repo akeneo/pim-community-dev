@@ -8,7 +8,7 @@ use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\W
 use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\SendEmail;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\ValueObject\Email;
 
-final class SendResetPasswordEmailHandler
+class SendResetPasswordEmailHandler
 {
     public function __construct(
         private SendEmail $sendEmail,

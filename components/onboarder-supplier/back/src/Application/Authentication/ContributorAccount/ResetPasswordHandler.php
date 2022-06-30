@@ -33,7 +33,7 @@ final class ResetPasswordHandler
         $this->contributorAccountRepository->save($contributorAccount);
 
         $this->eventDispatcher->dispatch(
-            new ResetPasswordRequested($resetPassword->email, $contributorAccount->accessToken())
+            new ResetPasswordRequested($resetPassword->email, $contributorAccount->accessToken()),
         );
     }
 }
