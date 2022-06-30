@@ -13,17 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Command;
 
-use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Command to run a rule
@@ -34,18 +32,13 @@ class RunCommand extends Command
 {
     protected static $defaultName = 'akeneo:rule:run';
 
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    private LoggerInterface $logger;
-
     public function __construct(
-        LoggerInterface $logger,
-        EventDispatcherInterface $eventDispatcher
+        private LoggerInterface $logger,
+        private JobLauncherInterface $jobLauncher,
+        private JobInstanceRepository $jobInstanceRepository,
+        private UserRepositoryInterface $userRepository
     ) {
         parent::__construct();
-        $this->logger = $logger;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -79,8 +72,6 @@ class RunCommand extends Command
         $username = $input->getOption('username') ?: null;
         $stopOnError = $input->getOption('stop-on-error') ?: false;
         $dryRun = $input->getOption('dry-run') ?: false;
-        $verbose = $input->getOption('verbose') ?: false;
-        $numberOfExecutedRules=0;
 
         $config = [
             'rule_codes' => $ruleCodes,
@@ -89,52 +80,17 @@ class RunCommand extends Command
             'dry_run' => $dryRun
         ];
 
-        $params = [
-            'command' => 'akeneo:batch:job',
-            'code' => 'rule_engine_execute_rules',
-            '--no-debug' => true,
-            '--no-log' => true,
-            '--config' => json_encode($config),
-        ];
+        $user = null;
         if (null !== $username) {
-            $params['--username'] = $username;
+            $user = $this->userRepository->findOneByIdentifier($username);
         }
-        $startedTime = new \DateTimeImmutable('now');
 
         $this->logger->notice($dryRun ? 'Dry running rules...' : 'Running rules...');
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('rule_engine_execute_rules');
+        $jobExecution = $this->jobLauncher->launch($jobInstance, $user, $config);
 
-        if ($verbose) {
-            $progressBar = new ProgressBar($output);
+        $hasError = $jobExecution->getStatus()->isUnsuccessful();
 
-            $this->eventDispatcher->addListener(
-                RuleEvents::POST_EXECUTE,
-                function () use ($progressBar) {
-                    $progressBar->advance();
-                }
-            );
-        }
-
-        $this->eventDispatcher->addListener(
-            RuleEvents::POST_EXECUTE,
-            function () use (&$numberOfExecutedRules) {
-                $numberOfExecutedRules++;
-            }
-        );
-
-        $this->getApplication()->setAutoExit(false);
-        $result = $this->getApplication()->run(new ArrayInput($params), new NullOutput());
-
-        if ($verbose) {
-            $progressBar->finish();
-            $output->writeln('');
-        }
-
-        $ruleRunDuration = $startedTime->diff(new \DateTimeImmutable('now'));
-        $this->logger->notice(
-            'rules run stats',
-            ['duration' => $ruleRunDuration->format('%s.%fs'), 'rules_count' => $numberOfExecutedRules]
-        );
-
-        return $result;
+        return $hasError ? self::FAILURE : self::SUCCESS;
     }
 }
