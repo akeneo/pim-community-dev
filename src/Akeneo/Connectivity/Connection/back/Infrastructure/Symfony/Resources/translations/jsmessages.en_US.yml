@@ -53,7 +53,7 @@ akeneo_connectivity.connection:
                 description: This is just an overview. For more details, take a look at the Akeneo App Store.
                 link: Go to the Akeneo App Store
             card:
-                developed_by: Developed by
+                developed_by: 'Developed by {{ author }}'
                 read_more: read more
                 more_info: More info
                 connect: Connect
@@ -82,7 +82,7 @@ akeneo_connectivity.connection:
                     description_2: Eager to know more about Apps ?
                     link: Check out our Help Center for more information.
                 card:
-                    developed_by: Developed by
+                    developed_by: 'Developed by {{ author }}'
                     manage_app: Manage app
                     open_app: Open App
                 flash:
