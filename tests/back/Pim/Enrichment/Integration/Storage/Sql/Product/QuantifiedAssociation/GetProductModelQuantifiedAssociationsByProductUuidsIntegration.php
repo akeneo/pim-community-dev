@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product\Association;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductUuids;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\AbstractQuantifiedAssociationIntegration;
 
-class GetProductModelQuantifiedAssociationsByProductIdentifiersIntegration extends AbstractQuantifiedAssociationIntegration
+class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends AbstractQuantifiedAssociationIntegration
 {
     use QuantifiedAssociationsTestCaseTrait;
 
@@ -352,8 +352,8 @@ class GetProductModelQuantifiedAssociationsByProductIdentifiersIntegration exten
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function getQuery(): GetProductModelQuantifiedAssociationsByProductIdentifiers
+    private function getQuery(): GetProductModelQuantifiedAssociationsByProductUuids
     {
-        return $this->get('akeneo.pim.enrichment.product.query.get_product_model_quantified_associations_by_product_identifiers');
+        return $this->get('Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductUuids');
     }
 }

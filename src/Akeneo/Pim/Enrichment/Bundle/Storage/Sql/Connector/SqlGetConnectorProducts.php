@@ -10,8 +10,8 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssoc
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductModelAssociationsByProductUuids;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductUuids;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductIdentifiers;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductUuids;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
@@ -34,8 +34,8 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         private GetProductAssociationsByProductUuids $getProductAssociationsByProductUuids,
         private GetProductModelAssociationsByProductUuids $getProductModelAssociationsByProductUuids,
         private GetGroupAssociationsByProductUuids $getGroupAssociationsByProductUuids,
-        private GetProductQuantifiedAssociationsByProductIdentifiers $getProductQuantifiedAssociationsByProductIdentifiers,
-        private GetProductModelQuantifiedAssociationsByProductIdentifiers $getProductModelQuantifiedAssociationsByProductIdentifiers,
+        private GetProductQuantifiedAssociationsByProductUuids $getProductQuantifiedAssociationsByProductUuids,
+        private GetProductModelQuantifiedAssociationsByProductUuids $getProductModelQuantifiedAssociationsByProductIdentifiers,
         private GetCategoryCodesByProductUuids $getCategoryCodesByProductUuids,
         private ReadValueCollectionFactory $readValueCollectionFactory,
         private AttributeRepositoryInterface $attributeRepository,
@@ -232,8 +232,14 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
 
     private function fetchQuantifiedAssociationsIndexedByProductIdentifier(array $identifiers): array
     {
+        $productQuantified = $this->replaceUuidKeysByIdentifiers(
+            $this->getProductQuantifiedAssociationsByProductUuids->fromProductUuids(
+                $this->getProductUuidsFromProductIdentifiers($identifiers)
+            )
+        );
+
         $quantifiedAssociations = array_replace_recursive(
-            $this->getProductQuantifiedAssociationsByProductIdentifiers->fromProductIdentifiers($identifiers),
+            $productQuantified,
             $this->getProductModelQuantifiedAssociationsByProductIdentifiers->fromProductIdentifiers($identifiers),
         );
 

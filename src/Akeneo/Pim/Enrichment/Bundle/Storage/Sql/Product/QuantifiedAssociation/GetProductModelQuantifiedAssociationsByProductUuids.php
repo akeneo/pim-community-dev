@@ -4,30 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductIdsQuery;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductModelIdsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindQuantifiedAssociationTypeCodesInterface;
 use Doctrine\DBAL\Connection;
 
-final class GetProductModelQuantifiedAssociationsByProductIdentifiers
+final class GetProductModelQuantifiedAssociationsByProductUuids
 {
-    /** @var Connection */
-    private $connection;
-
-    /** @var GetIdMappingFromProductIdsQuery */
-    private $getIdMappingFromProductModelIdsQuery;
-
-    /** @var FindQuantifiedAssociationTypeCodesInterface */
-    private $findQuantifiedAssociationTypeCodes;
-
     public function __construct(
-        Connection $connection,
-        GetIdMappingFromProductModelIdsQuery $getIdMappingFromProductModelIdsQuery,
-        FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
+        private Connection $connection,
+        private GetIdMappingFromProductModelIdsQuery $getIdMappingFromProductModelIdsQuery,
+        private FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
     ) {
-        $this->connection = $connection;
-        $this->getIdMappingFromProductModelIdsQuery = $getIdMappingFromProductModelIdsQuery;
-        $this->findQuantifiedAssociationTypeCodes = $findQuantifiedAssociationTypeCodes;
     }
 
     /**
