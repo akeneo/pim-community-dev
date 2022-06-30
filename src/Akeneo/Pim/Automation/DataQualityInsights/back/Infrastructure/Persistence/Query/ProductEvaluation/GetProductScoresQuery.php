@@ -46,14 +46,9 @@ final class GetProductScoresQuery implements GetProductScoresQueryInterface
         Assert::isInstanceOf($productUuidCollection, ProductUuidCollection::class);
 
         $query = <<<SQL
-SELECT BIN_TO_UUID(p.uuid) AS product_uuid, latest_score.scores, latest_score.scores_partial_criteria
-FROM pim_catalog_product p
-    INNER JOIN pim_data_quality_insights_product_score AS latest_score ON latest_score.product_uuid = p.uuid
-    LEFT JOIN pim_data_quality_insights_product_score AS younger_score
-        ON younger_score.product_uuid = latest_score.product_uuid
-        AND younger_score.evaluated_at > latest_score.evaluated_at
-WHERE p.uuid IN(:product_uuids)
-    AND younger_score.evaluated_at IS NULL;
+SELECT BIN_TO_UUID(product_uuid) AS product_uuid, scores, scores_partial_criteria
+FROM pim_data_quality_insights_product_score
+WHERE product_uuid IN(:product_uuids)
 SQL;
 
         $stmt = $this->dbConnection->executeQuery(

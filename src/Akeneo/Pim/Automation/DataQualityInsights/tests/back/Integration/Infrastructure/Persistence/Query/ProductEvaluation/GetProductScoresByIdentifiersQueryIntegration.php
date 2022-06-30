@@ -21,7 +21,7 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  */
 final class GetProductScoresByIdentifiersQueryIntegration extends DataQualityInsightsTestCase
 {
-    public function test_it_returns_the_latest_scores_by_product_identifiers()
+    public function test_it_returns_the_scores_by_product_identifiers()
     {
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
