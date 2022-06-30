@@ -74,7 +74,3 @@ ifeq ($(CI),true)
 else
 	APP_ENV=test $(DOCKER_COMPOSE) run --rm php vendor/bin/phpunit --testsuite End_to_End
 endif
-
-.PHONY: env-debug
-env-debug:
-	docker-compose run --rm php printenv

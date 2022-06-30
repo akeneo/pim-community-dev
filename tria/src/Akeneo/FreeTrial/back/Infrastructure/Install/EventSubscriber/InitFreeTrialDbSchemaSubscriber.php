@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\DBAL\Connection;
@@ -21,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InitFreeTrialDbSchemaSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private Connection $dbalConnection, private FeatureFlags $featureFlags)
+    public function __construct(private Connection $dbalConnection)
     {
     }
 
@@ -34,10 +33,6 @@ class InitFreeTrialDbSchemaSubscriber implements EventSubscriberInterface
 
     public function initDbSchema(InstallerEvent $event): void
     {
-        if (!$this->featureFlags->isEnabled('free_trial')) {
-            return;
-        }
-
         $query = <<<'SQL'
 CREATE TABLE IF NOT EXISTS akeneo_free_trial_invited_user (
     email VARCHAR(255) NOT NULL PRIMARY KEY,
