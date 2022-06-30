@@ -18,6 +18,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
+use Ramsey\Uuid\Uuid;
 
 class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
 {
@@ -49,6 +50,7 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
                 new ProductRemoved(
                     Author::fromNameAndType('ecommerce', 'ui'), [
                         'identifier' => 'product_with_one_category_viewable_by_redactor_and_one_category_not_viewable_by_redactor',
+                        'uuid' => Uuid::uuid4(),
                         'category_codes' => ['view_category', 'category_without_right'],
                     ]
                 ),
@@ -72,6 +74,7 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
                 new ProductRemoved(
                     Author::fromNameAndType('ecommerce', 'ui'), [
                         'identifier' => 'product_not_viewable_by_redactor',
+                        'uuid' => Uuid::uuid4(),
                         'category_codes' => ['category_without_right'],
                     ]
                 ),

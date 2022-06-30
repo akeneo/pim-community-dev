@@ -18,6 +18,7 @@ use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -125,14 +126,14 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
 
     public function it_throws_an_error_if_an_event_is_not_supported($baseProductModelRemovedEventDataBuilder): void
     {
-        $supportedEvent = new ProductRemoved(
+        $supportedEvent = new ProductModelRemoved(
             Author::fromNameAndType('erp', 'ui'),
             $this->aBlueJeanProductModel()
         );
 
         $notSupportedEvent = new ProductRemoved(
             Author::fromNameAndType('erp', 'ui'),
-            $this->aBlueCamProductModel()
+            $this->aBlueCamProduct()
         );
 
         $bulkEvent = new BulkEvent(
@@ -152,7 +153,6 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
     private function aBlueJeanProductModel(): array
     {
         return [
-            'identifier' => 'blue_jean',
             'code' => 'blue_jean',
             'category_codes' => ['clothes'],
         ];
@@ -161,8 +161,16 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
     private function aBlueCamProductModel(): array
     {
         return [
-            'identifier' => 'blue_cam',
             'code' => 'blue_cam',
+            'category_codes' => ['cameras'],
+        ];
+    }
+
+    private function aBlueCamProduct(): array
+    {
+        return [
+            'identifier' => 'blue_cam',
+            'uuid' => Uuid::uuid4(),
             'category_codes' => ['cameras'],
         ];
     }

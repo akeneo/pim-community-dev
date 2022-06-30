@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\Webhook;
 
 use Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface;
+use Ramsey\Uuid\UuidInterface;
 use Throwable;
 
 class NotGrantedProductException extends \Exception implements EventBuildingExceptionInterface
 {
     public function __construct(
         string $connectionCode,
-        string $productIdentifier,
+        UuidInterface $productUuid,
         $code = 0,
         Throwable $previous = null
     ) {
@@ -18,7 +19,7 @@ class NotGrantedProductException extends \Exception implements EventBuildingExce
             sprintf(
                 'The user "%s" does not have "view" permission access to the product "%s".',
                 $connectionCode,
-                $productIdentifier
+                $productUuid->toString()
             ),
             $code,
             $previous
