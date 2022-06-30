@@ -26,19 +26,13 @@ test('connection healthy', async () => {
     await checkReliability();
   });
 
-  expect(result.current[0]).toEqual({
-    is_connection_healthy: true,
-  });
+  expect(result.current[0]).toEqual(true);
   expect(result.current[1]).toEqual(false);
 });
 
 test('connection not healthy return error_message', async () => {
   global.fetch = jest.fn().mockImplementation(async () => ({
-    ok: true,
-    json: async () => ({
-      is_connection_healthy: false,
-      error_message: 'something got wrong',
-    }),
+    ok: false
   }));
   const storage: SftpStorage = {
     type: 'sftp',
@@ -55,9 +49,6 @@ test('connection not healthy return error_message', async () => {
     await checkReliability();
   });
 
-  expect(result.current[0]).toEqual({
-    is_connection_healthy: false,
-    error_message: 'something got wrong',
-  });
+  expect(result.current[0]).toEqual(false);
   expect(result.current[1]).toEqual(false);
 });

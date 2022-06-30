@@ -216,12 +216,7 @@ test('it can check connection', async () => {
     password: 'root',
   };
 
-  global.fetch = jest.fn().mockImplementation(async () => ({
-    ok: true,
-    json: async () => ({
-      is_connection_healthy: true,
-    }),
-  }));
+  global.fetch = jest.fn().mockImplementation(async () => ({ok: true}));
 
   const onStorageChange = jest.fn();
 
@@ -229,7 +224,7 @@ test('it can check connection', async () => {
     <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
   );
 
-  const checkButton = screen.getByText('akeneo.automation.connection_checker.label');
+  const checkButton = screen.getByText('akeneo.job_automation.connection_checker.label');
   await act(async () => {
     userEvent.click(checkButton);
   });
@@ -248,11 +243,7 @@ test('it can check connection, display message if error', async () => {
   };
 
   global.fetch = jest.fn().mockImplementation(async () => ({
-    ok: true,
-    json: async () => ({
-      is_connection_healthy: false,
-      error_message: 'something got wrong',
-    }),
+    ok: false,
   }));
 
   const onStorageChange = jest.fn();
@@ -261,11 +252,11 @@ test('it can check connection, display message if error', async () => {
     <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
   );
 
-  const checkButton = screen.getByText('akeneo.automation.connection_checker.label');
+  const checkButton = screen.getByText('akeneo.job_automation.connection_checker.label');
   await act(async () => {
     userEvent.click(checkButton);
   });
 
   expect(checkButton).not.toHaveAttribute('disabled');
-  expect(screen.getByText('something got wrong')).not.toBeUndefined();
+  expect(screen.getByText('akeneo.job_automation.connection_checker.exception')).not.toBeUndefined();
 });
