@@ -47,14 +47,13 @@ final class Version_7_0_20220630090000_permission_to_view_mass_edit_and_mass_del
     private function removePermissions(): void
     {
         $sql = <<<SQL
-DELETE
-FROM
-    pimee_security_job_profile_access a
-        JOIN oro_access_group g ON g.id = a.user_group_id
-        JOIN akeneo_batch_job_instance i ON i.id = a.job_profile_id
-WHERE g.name = 'All' AND i.code IN (:jobCodes)
+DELETE job_profile_access
+FROM pimee_security_job_profile_access job_profile_access
+JOIN oro_access_group access_group ON access_group.id = job_profile_access.user_group_id
+JOIN akeneo_batch_job_instance job_instance ON job_instance.id = job_profile_access.job_profile_id
+WHERE access_group.name = 'All' AND job_instance.code IN (:job_codes)
 SQL;
-        $this->get('database_connection')->executeQuery($sql, ['jobCodes' => self::JOB_CODES], ['jobCodes' => Connection::PARAM_STR_ARRAY]);
+        $this->get('database_connection')->executeQuery($sql, ['job_codes' => self::JOB_CODES], ['job_codes' => Connection::PARAM_STR_ARRAY]);
     }
 
     private function permissionExists(string $jobCode): bool
