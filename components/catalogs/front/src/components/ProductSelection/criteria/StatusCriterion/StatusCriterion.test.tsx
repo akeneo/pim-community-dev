@@ -12,7 +12,7 @@ test('it renders without error', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <StatusCriterion
-                state={{field: 'status', operator: Operator.EQUALS, value: true}}
+                state={{field: 'enabled', operator: Operator.EQUALS, value: true}}
                 onChange={jest.fn()}
                 onRemove={jest.fn()}
             />
@@ -30,7 +30,7 @@ test('it calls onChange when the operator changes', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <StatusCriterion
-                state={{field: 'status', operator: Operator.EQUALS, value: true}}
+                state={{field: 'enabled', operator: Operator.EQUALS, value: true}}
                 onChange={onChange}
                 onRemove={jest.fn()}
             />
@@ -43,7 +43,7 @@ test('it calls onChange when the operator changes', () => {
     act(() => userEvent.click(screen.getByText(Operator.NOT_EQUAL)));
 
     expect(onChange).toHaveBeenCalledWith({
-        field: 'status',
+        field: 'enabled',
         operator: Operator.NOT_EQUAL,
         value: true,
     });
@@ -55,7 +55,7 @@ test('it calls onChange when the value changes', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <StatusCriterion
-                state={{field: 'status', operator: Operator.EQUALS, value: true}}
+                state={{field: 'enabled', operator: Operator.EQUALS, value: true}}
                 onChange={onChange}
                 onRemove={jest.fn()}
             />
@@ -68,7 +68,7 @@ test('it calls onChange when the value changes', () => {
     act(() => userEvent.click(screen.getByText('akeneo_catalogs.product_selection.criteria.status.disabled')));
 
     expect(onChange).toHaveBeenCalledWith({
-        field: 'status',
+        field: 'enabled',
         operator: Operator.EQUALS,
         value: false,
     });

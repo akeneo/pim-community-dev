@@ -154,7 +154,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             $row = $rows[$identifier];
 
             $products[] = new ConnectorProduct(
-                $row['id'],
+                $row['uuid'],
                 $row['identifier'],
                 $row['created'],
                 $row['updated'],
@@ -260,11 +260,18 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
 
         $quantifiedAssociationsIndexedByIdentifier = [];
         foreach ($quantifiedAssociations as $identifier => $quantifiedAssociation) {
-            $associationTypes = array_keys($quantifiedAssociation);
-            $quantifiedAssociationsWithoutEntities = array_fill_keys($associationTypes, ['products' => [], 'product_models' => []]);
-            $quantifiedAssociation = array_merge_recursive($quantifiedAssociationsWithoutEntities, $quantifiedAssociation);
+            $associationTypes = array_map('strval', array_keys($quantifiedAssociation));
 
-            $quantifiedAssociationsIndexedByIdentifier[$identifier]['quantified_associations'] = $quantifiedAssociation;
+            $filledAssociations = [];
+            foreach ($associationTypes as $associationType) {
+                $filledAssociations[$associationType] = ['product_models' => [], 'products' => []];
+                if (\array_key_exists($associationType, $quantifiedAssociation)) {
+                    $filledAssociations[$associationType]['products'] = $quantifiedAssociation[$associationType]['products'] ?? [];
+                    $filledAssociations[$associationType]['product_models'] = $quantifiedAssociation[$associationType]['product_models'] ?? [];
+                }
+            }
+
+            $quantifiedAssociationsIndexedByIdentifier[$identifier]['quantified_associations'] = $filledAssociations;
         }
 
         return $quantifiedAssociationsIndexedByIdentifier;

@@ -13,18 +13,12 @@ final class ExternalJavascriptDependenciesProvider
         $this->externalDependenciesProviders = $externalDependenciesProviders;
     }
 
-    public function getScripts(): ?array
+    public function getScripts(): array
     {
         $dependencies = [];
 
         foreach ($this->externalDependenciesProviders as $externalDependenciesProvider) {
-            if ($externalDependenciesProvider->getScript() !== null) {
-                $dependencies[] = $externalDependenciesProvider->getScript();
-            }
-        }
-
-        if (empty($dependencies)) {
-            return null;
+            $dependencies[] = $externalDependenciesProvider->getScript();
         }
 
         return $dependencies;

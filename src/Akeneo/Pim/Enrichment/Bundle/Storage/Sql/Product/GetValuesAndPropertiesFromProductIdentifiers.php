@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Uuid;
 
 /**
  * SQL Query to get the properties and the values from a set of product identifiers:
@@ -30,15 +31,15 @@ final class GetValuesAndPropertiesFromProductIdentifiers
     {
         $query = <<<SQL
 WITH groupCodes AS (
-    SELECT p.id AS pid, JSON_ARRAYAGG(g.code) AS group_codes
+    SELECT p.uuid AS puuid, JSON_ARRAYAGG(g.code) AS group_codes
     FROM pim_catalog_product p
-    LEFT JOIN pim_catalog_group_product pg ON p.id = pg.product_id
+    LEFT JOIN pim_catalog_group_product pg ON p.uuid = pg.product_uuid
     LEFT JOIN pim_catalog_group g ON pg.group_id = g.id
     WHERE p.identifier IN (?)
-    GROUP BY p.id
+    GROUP BY p.uuid
 )
 SELECT
-    p.id,
+    BIN_TO_UUID(p.uuid) AS uuid,
     p.identifier,
     p.is_enabled,
     pm1.code AS product_model_code,
@@ -51,9 +52,9 @@ FROM pim_catalog_product p
 LEFT JOIN pim_catalog_family f ON p.family_id = f.id
 LEFT JOIN pim_catalog_product_model pm1 ON p.product_model_id = pm1.id
 LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
-INNER JOIN groupCodes gc ON p.id = gc.pid
+INNER JOIN groupCodes gc ON p.uuid = gc.puuid
 WHERE p.identifier IN (?)
-GROUP BY p.id, p.identifier
+GROUP BY p.uuid, p.identifier
 SQL;
 
         $rows = $this->connection->fetchAllAssociative(
@@ -69,7 +70,7 @@ SQL;
             sort($groupCodes);
 
             $results[$row['identifier']] = [
-                'id' => Type::getType(Types::INTEGER)->convertToPHPValue($row['id'], $platform),
+                'uuid' => Uuid::fromString(Type::getType(Types::STRING)->convertToPHPValue($row['uuid'], $platform)),
                 'identifier' => Type::getType(Types::STRING)->convertToPHPValue($row['identifier'], $platform),
                 'is_enabled' => Type::getType(Types::BOOLEAN)->convertToPHPValue($row['is_enabled'], $platform),
                 'product_model_code' => Type::getType(Types::STRING)->convertToPHPValue($row['product_model_code'], $platform),

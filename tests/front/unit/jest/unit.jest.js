@@ -28,7 +28,12 @@ const unitConfig = {
     '\\.(jpg|ico|jpeg|png|gif|svg|css)$': `${__dirname}/fileMock.js`,
   },
   testRegex: '(.*)\\.unit\\.(jsx?|tsx?)$',
-  testPathIgnorePatterns: ['/node_modules/', '/front-packages/', '<rootDir>/src/Akeneo/Connectivity/'],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/front-packages/',
+    '<rootDir>/src/Akeneo/Connectivity/',
+    '<rootDir>/src/Akeneo/Category/',
+  ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleDirectories: ['node_modules', `<rootDir>/public/bundles/`],
   globals: {

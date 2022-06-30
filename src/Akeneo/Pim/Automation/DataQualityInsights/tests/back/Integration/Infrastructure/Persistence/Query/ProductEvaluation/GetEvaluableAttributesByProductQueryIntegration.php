@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluableAttributesByProductQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -55,7 +55,7 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
             ],
         ]);
 
-        $productId = $this->createProduct();
+        $productUuid = $this->createProduct();
 
         $expectedAttributes = [
             new Attribute(new AttributeCode('a_localizable_textarea'), AttributeType::textarea(), true),
@@ -65,12 +65,12 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
 
         $result = $this
             ->get(GetEvaluableAttributesByProductQuery::class)
-            ->execute($productId);
+            ->execute($productUuid);
 
         $this->assertEqualsCanonicalizing($expectedAttributes, $result);
     }
 
-    private function createProduct(): ProductId
+    private function createProduct(): ProductUuid
     {
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier('product_with_family')
@@ -79,7 +79,7 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return $this->get(ProductIdFactory::class)->create((string)$product->getId());
+        return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }
 
     private function createAttributes(array $attributesData): void

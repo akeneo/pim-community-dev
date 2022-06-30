@@ -67,6 +67,7 @@ pim_common:
   product_models: Tuotemallit
   products: Tuotteet
   properties: Ominaisuudet
+  quality_score: Laatupisteytys
   quantity: Määrä
   remove: Poista
   save: Tallenna
@@ -550,3 +551,4 @@ pim_login:
   footer:
     powered: Powered by
     powered_image_title: logo Akeneo
+pim_system.acl_group.developer_mode: Kehittäjätila

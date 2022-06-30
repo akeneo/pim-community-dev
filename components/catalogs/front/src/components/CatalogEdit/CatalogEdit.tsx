@@ -1,4 +1,4 @@
-import React, {forwardRef, PropsWithRef, useImperativeHandle} from 'react';
+import React, {forwardRef, PropsWithRef} from 'react';
 import {Edit} from './components/Edit';
 import {ErrorBoundary} from '../ErrorBoundary';
 
@@ -7,18 +7,13 @@ type CatalogEditRef = {
 } | null;
 type Props = {
     id: string;
+    onChange: (isDirty: boolean) => void;
 };
 
-const CatalogEdit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id}, ref) => {
-    useImperativeHandle(ref, () => ({
-        save() {
-            console.log('Catalog ' + id + ' saved.');
-        },
-    }));
-
+const CatalogEdit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, ref) => {
     return (
         <ErrorBoundary>
-            <Edit id={id} />
+            <Edit id={id} onChange={onChange} ref={ref} />
         </ErrorBoundary>
     );
 });

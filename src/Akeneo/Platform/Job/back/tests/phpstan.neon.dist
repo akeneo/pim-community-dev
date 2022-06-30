@@ -2,5 +2,5 @@ parameters:
   level: 5
   paths:
     - %rootDir%/../../../src/Akeneo/Platform/Job
-  excludes_analyse:
+  excludePaths:
     - %rootDir%/../../../src/Akeneo/Platform/Job/back/tests/Specification

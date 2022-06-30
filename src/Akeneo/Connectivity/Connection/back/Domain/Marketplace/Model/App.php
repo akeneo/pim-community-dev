@@ -147,6 +147,22 @@ class App
         /** @phpstan-var array{
          *     id: string,
          *     name: string,
+         *     logo: string,
+         *     author: string,
+         *     partner?: string,
+         *     description?: string,
+         *     url: string,
+         *     categories: array<string>,
+         *     certified?: bool,
+         *     activate_url: string,
+         *     callback_url: string,
+         *     connected?: bool,
+         * } $values
+         */
+
+        /** @phpstan-var array{
+         *     id: string,
+         *     name: string,
          *     author?: string,
          *     activate_url: string,
          *     callback_url: string,

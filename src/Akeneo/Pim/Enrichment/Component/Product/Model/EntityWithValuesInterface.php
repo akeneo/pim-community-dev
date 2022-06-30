@@ -88,4 +88,6 @@ interface EntityWithValuesInterface
      * Get the list of used attribute codes from the indexed values
      */
     public function getUsedAttributeCodes(): array;
+
+    public function isNew(): bool;
 }

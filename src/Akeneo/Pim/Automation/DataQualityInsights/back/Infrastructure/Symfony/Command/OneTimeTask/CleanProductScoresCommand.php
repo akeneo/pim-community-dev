@@ -50,9 +50,7 @@ final class CleanProductScoresCommand extends Command
         $output->writeln('Start cleaning...');
         $this->startTask(self::$defaultName);
 
-        $lastProductId = 0;
-
-        while ($productScoresToClean = $this->getNextProductScoresToClean($lastProductId)) {
+        while ($productScoresToClean = $this->getNextProductUuidAsBytesScoresToClean()) {
             try {
                 $this->cleanProductScores($productScoresToClean);
             } catch (\Throwable $exception) {
@@ -68,51 +66,47 @@ final class CleanProductScoresCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function getNextProductScoresToClean(int $lastProductId): string
+    private function getNextProductUuidAsBytesScoresToClean(): array
     {
         $query = <<<SQL
-SELECT old_scores.product_id, old_scores.evaluated_at
+SELECT old_scores.product_uuid AS product_uuid, old_scores.evaluated_at
 FROM pim_data_quality_insights_product_score AS old_scores
 INNER JOIN pim_data_quality_insights_product_score AS younger_scores
-    ON younger_scores.product_id = old_scores.product_id
+    ON younger_scores.product_uuid = old_scores.product_uuid
     AND younger_scores.evaluated_at > old_scores.evaluated_at
-WHERE old_scores.product_id > :lastProductId
-GROUP BY old_scores.product_id, old_scores.evaluated_at
-ORDER BY old_scores.product_id ASC, old_scores.evaluated_at ASC
+GROUP BY old_scores.product_uuid, old_scores.evaluated_at
+ORDER BY old_scores.product_uuid ASC, old_scores.evaluated_at ASC
 LIMIT :bulkSize;
 SQL;
 
-        $results = $this->dbConnection->executeQuery(
+        return $this->dbConnection->executeQuery(
             $query,
             [
-                'lastProductId' => $lastProductId,
                 'bulkSize' => $this->bulkSize,
             ],
             [
-                'lastProductId' => \PDO::PARAM_INT,
                 'bulkSize' => \PDO::PARAM_INT,
             ]
-        )->fetchAllAssociative();
-
-        return implode(', ', array_map(function (array $productScoreToClean) {
-            return sprintf(
-                "%d",
-                $productScoreToClean['product_id']
-            );
-        }, $results));
+        )->fetchFirstColumn();
     }
 
-    private function cleanProductScores(string $productIds): void
+    private function cleanProductScores(array $productUuidsAsBytes): void
     {
         $this->dbConnection->executeQuery(
             <<<SQL
 DELETE old_scores
 FROM pim_data_quality_insights_product_score AS old_scores
 INNER JOIN pim_data_quality_insights_product_score AS younger_scores
-    ON younger_scores.product_id = old_scores.product_id
+    ON younger_scores.product_uuid = old_scores.product_uuid
     AND younger_scores.evaluated_at > old_scores.evaluated_at
-WHERE old_scores.product_id IN ($productIds);
-SQL
+WHERE old_scores.product_uuid IN (:productUuidAsBytes);
+SQL,
+            [
+                'productUuidAsBytes' => $productUuidsAsBytes
+            ],
+            [
+                'productUuidAsBytes' => Connection::PARAM_STR_ARRAY,
+            ]
         );
     }
 }

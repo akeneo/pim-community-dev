@@ -12,6 +12,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Julien Janvier <j.janvier@gmail.com>
@@ -35,7 +36,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
      */
     protected function getCurrentCompleteness(ProductInterface $product)
     {
-        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($product->getUuid());
 
         return $completenesses->getIterator()->current();
     }
@@ -46,7 +47,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
      */
     protected function assertCompletenessesCount(ProductInterface $product, $expectedNumberOfCompletenesses)
     {
-        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($product->getUuid());
         $this->assertCount($expectedNumberOfCompletenesses, $completenesses);
     }
 

@@ -41,6 +41,7 @@ pim_title:
   akeneo_connectivity_connection_connect_marketplace_test_app_create: テストアプリを作成
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: テストアプリを削除
   akeneo_connectivity_connection_connect_connected_apps_open: アプリを開く
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: カタログの編集
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -138,6 +139,7 @@ akeneo_connectivity.connection:
           not_listed_on_the_appstore: アプリが Akeneo App Store に表示されなくなりました。アプリのサポートにお問い合わせください。
           manage_app: アプリの管理
           open_app: アプリを開く
+          pending: アプリが接続されていません。アプリを開くと接続問題は解決されるはずです。
         flash:
           error: 申し訳ございません、接続されたアプリリストを取得中にエラーが発生しました。
       edit:
@@ -145,6 +147,7 @@ akeneo_connectivity.connection:
         tabs:
           settings: 設定
           permissions: 許可
+          catalogs: カタログ
           error_monitoring: エラーモニタリング
         settings:
           monitoring:
@@ -152,6 +155,7 @@ akeneo_connectivity.connection:
           authorizations:
             title: 承認
             information: 'アプリの承認についての詳細は、{{ link }} をご覧ください。'
+            no_access_to_product_information: 'この接続されたアプリは商品情報にアクセスできません。'
             information_link_anchor: ヘルプセンターの記事
             no_scope: 特定の承認は要求されていません。
           authentication:
@@ -171,6 +175,9 @@ akeneo_connectivity.connection:
               1: このアプリのエラーを追跡するには
               2: モニタリングの有効化
               3: 設定
+        catalogs:
+          edit:
+            not_found: カタログが見つかりません
         flash:
           load_permissions_error.title: '{{ entity }} の保存済みの権限を読み込めませんでした。'
           load_permissions_error.description: 後で再試行してください。
@@ -256,8 +263,10 @@ akeneo_connectivity.connection:
           reference_entity_record: 参照エンティティの記録
           asset_families: アセットファミリー
           assets: アセット
+          catalogs: カタログ
         new: 新規
       error:
+        sub_text: アプリサポートにお問合せください
         app_not_found: client_id が既存のアプリと一致しません。
       constraint:
         client_id:
@@ -270,6 +279,8 @@ akeneo_connectivity.connection:
         redirect_uri:
           not_blank: redirect_uriは必須です。
           must_be_url: redirect_uriは有効なURLではありません。
+        scope:
+          too_long: スコープリストに1000文字以上を含めることはできません。
   connections: 接続
   secondary_actions:
     title: その他の操作

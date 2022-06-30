@@ -73,44 +73,16 @@ class ProductIndexer implements ProductIndexerInterface
     }
 
     /**
-     * Removes the product from the product and product model index.
-     *
-     * {@inheritdoc}
+     * @param UuidInterface[] $productUuids
      */
-    public function removeFromProductId(int $productId): void
-    {
-        $this->productAndProductModelClient->delete(self::PRODUCT_IDENTIFIER_PREFIX . $productId);
-    }
-
-    /**
-     * Removes the products from the product and product model index.
-     *
-     * {@inheritdoc}
-     */
-    public function removeFromProductIds(array $productIds): void
-    {
-        if (0 === count($productIds)) {
-            return;
-        }
-
-        $this->productAndProductModelClient->bulkDelete(array_map(
-            function ($productId) {
-                return self::PRODUCT_IDENTIFIER_PREFIX . (string) $productId;
-            },
-            $productIds
-        ));
-    }
-
     public function removeFromProductUuids(array $productUuids): void
     {
-        if (0 === count($productUuids)) {
+        if ([] === $productUuids) {
             return;
         }
 
         $this->productAndProductModelClient->bulkDelete(array_map(
-            function ($productUuid) {
-                return self::PRODUCT_IDENTIFIER_PREFIX . $productUuid->toString();
-            },
+            fn (UuidInterface $productUuid): string => self::PRODUCT_IDENTIFIER_PREFIX . $productUuid->toString(),
             $productUuids
         ));
     }

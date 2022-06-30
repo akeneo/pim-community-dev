@@ -6,5 +6,5 @@ namespace Akeneo\Platform\Bundle\UIBundle\Provider;
 
 interface ExternalDependencyProviderInterface
 {
-    public function getScript(): ?string;
+    public function getScript(): string;
 }

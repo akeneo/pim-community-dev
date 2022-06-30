@@ -1,5 +1,12 @@
 # 6.0.x
 
+# 6.0.32 (2022-06-28)
+
+## Improvement
+
+- Improvement: Update Composer dependencies and fix ArabicHtmlFormatterSpec
+- Improvement: Update PhpStan to 1.7.14
+
 # 6.0.31 (2022-06-14)
 
 # 6.0.30 (2022-06-08)

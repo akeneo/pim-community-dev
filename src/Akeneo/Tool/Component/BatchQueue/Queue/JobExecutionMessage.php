@@ -16,13 +16,14 @@ use Ramsey\Uuid\UuidInterface;
  */
 abstract class JobExecutionMessage implements JobExecutionMessageInterface
 {
+    private ?string $tenantId = null;
+
     private function __construct(
         private UuidInterface $id,
         private int $jobExecutionId,
         private \DateTime $createTime,
         private ?\DateTime $updatedTime,
-        private array $options,
-        private ?string $tenantId
+        private array $options
     ) {
     }
 
@@ -31,12 +32,11 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface
      */
     public static function createJobExecutionMessage(
         int $jobExecutionId,
-        array $options,
-        ?string $tenantId = null
+        array $options
     ): JobExecutionMessageInterface {
         $createTime = new \DateTime('now', new \DateTimeZone('UTC'));
 
-        return new static(Uuid::uuid4(), $jobExecutionId, $createTime, null, $options, $tenantId);
+        return new static(Uuid::uuid4(), $jobExecutionId, $createTime, null, $options);
     }
 
     public static function createJobExecutionMessageFromNormalized(array $normalized): JobExecutionMessageInterface
@@ -48,8 +48,7 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface
             null !== $normalized['updated_time']
                 ? new \DateTime($normalized['updated_time'], new \DateTimeZone('UTC'))
                 : null,
-            $normalized['options'] ?? [],
-            $normalized['tenant_id'] ?? null,
+            $normalized['options'] ?? []
         );
     }
 
@@ -78,8 +77,13 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface
         return $this->options;
     }
 
-    public function tenantId(): ?string
+    public function getTenantId(): ?string
     {
         return $this->tenantId;
+    }
+
+    public function setTenantId(string $tenantId): void
+    {
+        $this->tenantId = $tenantId;
     }
 }

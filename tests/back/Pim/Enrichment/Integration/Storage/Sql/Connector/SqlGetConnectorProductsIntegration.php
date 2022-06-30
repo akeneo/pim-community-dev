@@ -20,6 +20,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 class SqlGetConnectorProductsIntegration extends TestCase
 {
@@ -30,6 +31,7 @@ class SqlGetConnectorProductsIntegration extends TestCase
         parent::setUp();
         $this->createQuantifiedAssociationType('PRODUCT_SET');
         $this->createQuantifiedAssociationType('ANOTHER_PRODUCT_SET');
+        $this->createQuantifiedAssociationType('11');
 
         $this->createProductModel(
             [
@@ -113,6 +115,9 @@ class SqlGetConnectorProductsIntegration extends TestCase
                 'ANOTHER_PRODUCT_SET' => [
                     'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
                 ],
+                '11' => [
+                    'products' => [['identifier' => 'apollon_A_false', 'quantity' => 2]],
+                ],
             ]
         ]);
 
@@ -134,16 +139,16 @@ class SqlGetConnectorProductsIntegration extends TestCase
         $product = $query->fromProductQueryBuilder($pqb, (int) $userId, null, null, null);
 
         $productDataAppolonA = $this->get('database_connection')->executeQuery(
-            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "apollon_A_false"'
+            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_A_false"'
         )->fetch();
         $productDataAppolonB = $this->get('database_connection')->executeQuery(
-            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
+            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
         )->fetch();
 
 
         $expectedProducts = new ConnectorProductList(2, [
             new ConnectorProduct(
-                (int) $productDataAppolonA['id'],
+                Uuid::fromString($productDataAppolonA['uuid']),
                 'apollon_A_false',
                 new \DateTimeImmutable($productDataAppolonA['created'], new \DateTimeZone('UTC')),
                 new \DateTimeImmutable($productDataAppolonA['updated'], new \DateTimeZone('UTC')),
@@ -192,7 +197,7 @@ class SqlGetConnectorProductsIntegration extends TestCase
                 null
             ),
             new ConnectorProduct(
-                (int) $productDataAppolonB['id'],
+                Uuid::fromString($productDataAppolonB['uuid']),
                 'apollon_B_false',
                 new \DateTimeImmutable($productDataAppolonB['created'], new \DateTimeZone('UTC')),
                 new \DateTimeImmutable($productDataAppolonB['updated'], new \DateTimeZone('UTC')),
@@ -231,6 +236,10 @@ class SqlGetConnectorProductsIntegration extends TestCase
                     'ANOTHER_PRODUCT_SET' => [
                         'products' => [],
                         'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
+                    ],
+                    '11' => [
+                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 2]],
+                        'product_models' => [],
                     ],
                 ],
                 [],
@@ -270,16 +279,16 @@ class SqlGetConnectorProductsIntegration extends TestCase
         );
 
         $productDataAppolonA = $this->get('database_connection')->executeQuery(
-            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "apollon_A_false"'
+            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_A_false"'
         )->fetch();
         $productDataAppolonB = $this->get('database_connection')->executeQuery(
-            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
+            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
         )->fetch();
 
 
         $expectedProducts = new ConnectorProductList(2, [
             new ConnectorProduct(
-                (int) $productDataAppolonA['id'],
+                Uuid::fromString($productDataAppolonA['uuid']),
                 'apollon_A_false',
                 new \DateTimeImmutable($productDataAppolonA['created'], new \DateTimeZone('UTC')),
                 new \DateTimeImmutable($productDataAppolonA['updated'], new \DateTimeZone('UTC')),
@@ -324,7 +333,7 @@ class SqlGetConnectorProductsIntegration extends TestCase
                 null
             ),
             new ConnectorProduct(
-                (int) $productDataAppolonB['id'],
+                Uuid::fromString($productDataAppolonB['uuid']),
                 'apollon_B_false',
                 new \DateTimeImmutable($productDataAppolonB['created'], new \DateTimeZone('UTC')),
                 new \DateTimeImmutable($productDataAppolonB['updated'], new \DateTimeZone('UTC')),
@@ -364,6 +373,10 @@ class SqlGetConnectorProductsIntegration extends TestCase
                         'products' => [],
                         'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
                     ],
+                    '11' => [
+                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 2]],
+                        'product_models' => [],
+                    ],
                 ],
                 [],
                 new ReadValueCollection([
@@ -390,11 +403,11 @@ class SqlGetConnectorProductsIntegration extends TestCase
         $product = $query->fromProductIdentifier('apollon_B_false', (int) $userId);
 
         $productData = $this->get('database_connection')->executeQuery(
-            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
+            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
         )->fetch();
 
         $expectedProduct = new ConnectorProduct(
-            (int) $productData['id'],
+            Uuid::fromString($productData['uuid']),
             'apollon_B_false',
             new \DateTimeImmutable($productData['created'], new \DateTimeZone('UTC')),
             new \DateTimeImmutable($productData['updated'], new \DateTimeZone('UTC')),
@@ -434,6 +447,10 @@ class SqlGetConnectorProductsIntegration extends TestCase
                     'products' => [],
                     'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
                 ],
+                '11' => [
+                    'products' => [['identifier' => 'apollon_A_false', 'quantity' => 2]],
+                    'product_models' => [],
+                ],
             ],
             [],
             new ReadValueCollection([
@@ -465,15 +482,15 @@ class SqlGetConnectorProductsIntegration extends TestCase
         $product = $query->fromProductIdentifiers(['apollon_A_false', 'apollon_B_false'], (int) $userId, null, null, null);
 
         $productDataAppolonA = $this->get('database_connection')->executeQuery(
-            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "apollon_A_false"'
+            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_A_false"'
         )->fetch();
         $productDataAppolonB = $this->get('database_connection')->executeQuery(
-            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
+            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
         )->fetch();
 
         $expectedProducts = new ConnectorProductList(2, [
             new ConnectorProduct(
-                (int) $productDataAppolonA['id'],
+                Uuid::fromString($productDataAppolonA['uuid']),
                 'apollon_A_false',
                 new \DateTimeImmutable($productDataAppolonA['created'], new \DateTimeZone('UTC')),
                 new \DateTimeImmutable($productDataAppolonA['updated'], new \DateTimeZone('UTC')),
@@ -522,7 +539,7 @@ class SqlGetConnectorProductsIntegration extends TestCase
                 null
             ),
             new ConnectorProduct(
-                (int) $productDataAppolonB['id'],
+                Uuid::fromString($productDataAppolonB['uuid']),
                 'apollon_B_false',
                 new \DateTimeImmutable($productDataAppolonB['created'], new \DateTimeZone('UTC')),
                 new \DateTimeImmutable($productDataAppolonB['updated'], new \DateTimeZone('UTC')),
@@ -561,6 +578,10 @@ class SqlGetConnectorProductsIntegration extends TestCase
                     'ANOTHER_PRODUCT_SET' => [
                         'products' => [],
                         'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
+                    ],
+                    '11' => [
+                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 2]],
+                        'product_models' => [],
                     ],
                 ],
                 [],
@@ -671,4 +692,3 @@ class SqlGetConnectorProductsIntegration extends TestCase
         return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers');
     }
 }
-

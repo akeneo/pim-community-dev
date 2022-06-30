@@ -64,7 +64,11 @@ class SendBusinessEventToWebhooksHandler
             foreach ($webhooks as $webhook) {
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
 
-                $filteredPimEventBulk = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $pimEventBulk);
+                $filteredPimEventBulk = $this->filterConnectionOwnEvents(
+                    $webhook,
+                    $user->getUserIdentifier(),
+                    $pimEventBulk
+                );
                 if (null === $filteredPimEventBulk) {
                     continue;
                 }

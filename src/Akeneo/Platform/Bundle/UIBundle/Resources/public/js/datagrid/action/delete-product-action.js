@@ -20,6 +20,10 @@ define(['oro/datagrid/delete-action', 'pim/router', 'pim/security-context'], fun
       const productType = this.model.get('document_type');
       const id = this.model.get('technical_id');
 
+      if (productType === 'product') {
+        return Router.generate('pim_enrich_product_rest_remove', {uuid: id});
+      }
+
       return Router.generate('pim_enrich_' + productType + '_rest_remove', {id});
     },
 

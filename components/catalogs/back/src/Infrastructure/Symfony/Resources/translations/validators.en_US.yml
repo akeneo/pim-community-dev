@@ -1,0 +1,3 @@
+akeneo_catalogs:
+    validation:
+        max_number_of_catalogs_per_user_message: You can create up to 15 catalogs
