@@ -164,3 +164,5 @@ onboarder_serenity_supplier:
 free_trial:
     prefix: /free-trial
     resource: "@AkeneoFreeTrialBundle/Resources/config/routing.yml"
+    defaults:
+        _feature: 'free_trial'
