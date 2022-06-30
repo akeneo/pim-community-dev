@@ -35,7 +35,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         private GetProductModelAssociationsByProductUuids $getProductModelAssociationsByProductUuids,
         private GetGroupAssociationsByProductUuids $getGroupAssociationsByProductUuids,
         private GetProductQuantifiedAssociationsByProductUuids $getProductQuantifiedAssociationsByProductUuids,
-        private GetProductModelQuantifiedAssociationsByProductUuids $getProductModelQuantifiedAssociationsByProductIdentifiers,
+        private GetProductModelQuantifiedAssociationsByProductUuids $getProductModelQuantifiedAssociationsByProductUuids,
         private GetCategoryCodesByProductUuids $getCategoryCodesByProductUuids,
         private ReadValueCollectionFactory $readValueCollectionFactory,
         private AttributeRepositoryInterface $attributeRepository,
@@ -92,7 +92,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         $rows = array_replace_recursive(
             $valuesAndProperties,
             $this->fetchAssociationsIndexedByProductUuids($productUuids),
-            $this->fetchQuantifiedAssociationsIndexedByProductIdentifier($productIdentifiers),
+            $this->fetchQuantifiedAssociationsIndexedByProductUuids($productUuids),
             $this->fetchCategoryCodesIndexedByProductUuids($productUuids)
         );
 
@@ -230,21 +230,16 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         return $associationsIndexedByIdentifier;
     }
 
-    private function fetchQuantifiedAssociationsIndexedByProductIdentifier(array $identifiers): array
+    private function fetchQuantifiedAssociationsIndexedByProductUuids(array $uuids): array
     {
-        $productQuantified = $this->replaceUuidKeysByIdentifiers(
-            $this->getProductQuantifiedAssociationsByProductUuids->fromProductUuids(
-                $this->getProductUuidsFromProductIdentifiers($identifiers)
-            )
-        );
-
         $quantifiedAssociations = array_replace_recursive(
-            $productQuantified,
-            $this->getProductModelQuantifiedAssociationsByProductIdentifiers->fromProductIdentifiers($identifiers),
+            $this->getProductQuantifiedAssociationsByProductUuids->fromProductUuids($uuids),
+            $this->getProductModelQuantifiedAssociationsByProductUuids->fromProductUuids($uuids),
         );
+        $quantifiedAssociationsByIdentifier = $this->replaceUuidKeysByIdentifiers($quantifiedAssociations);
 
         $quantifiedAssociationsIndexedByIdentifier = [];
-        foreach ($quantifiedAssociations as $identifier => $quantifiedAssociation) {
+        foreach ($quantifiedAssociationsByIdentifier as $identifier => $quantifiedAssociation) {
             $associationTypes = array_map('strval', array_keys($quantifiedAssociation));
 
             $filledAssociations = [];

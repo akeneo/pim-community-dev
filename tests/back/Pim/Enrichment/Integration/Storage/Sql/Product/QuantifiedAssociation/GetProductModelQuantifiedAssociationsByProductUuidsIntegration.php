@@ -58,9 +58,10 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
-        $actual = $this->getQuery()->fromProductIdentifiers(['productC']);
+        $uuidProductC = $this->getProductUuidFromIdentifier('productC');
+        $actual = $this->getQuery()->fromProductUuids([$uuidProductC]);
         $expected = [
-            'productC' => [
+            $uuidProductC => [
                 'PRODUCT_SET' => [
                     'product_models' => [
                         ['identifier' => 'productModelA', 'quantity' => 8],
@@ -107,10 +108,10 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
-
-        $actual = $this->getQuery()->fromProductIdentifiers(['productA']);
+        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
+        $actual = $this->getQuery()->fromProductUuids([$uuidProductA]);
         $expected = [
-            'productA' => [
+            $uuidProductA => [
                 'PRODUCT_SET' => [
                     'product_models' => [
                         ['identifier' => 'associated_product_model', 'quantity' => 3],
@@ -181,9 +182,12 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
-        $actual = $this->getQuery()->fromProductIdentifiers(['productC', 'productD', 'variant_product_1']);
+        $uuidProductC = $this->getProductUuidFromIdentifier('productC');
+        $uuidProductD = $this->getProductUuidFromIdentifier('productD');
+        $uuidProductVariantProduct1 = $this->getProductUuidFromIdentifier('variant_product_1');
+        $actual = $this->getQuery()->fromProductUuids([$uuidProductC, $uuidProductD, $uuidProductVariantProduct1]);
         $expected = [
-            'productC' => [
+            $uuidProductC => [
                 'PRODUCT_SET' => [
                     'product_models' => [
                         ['identifier' => 'productModelA', 'quantity' => 3],
@@ -191,14 +195,14 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
                     ],
                 ],
             ],
-            'productD' => [
+            $uuidProductD => [
                 'PRODUCT_SET' => [
                     'product_models' => [
                         ['identifier' => 'productModelB', 'quantity' => 1],
                     ],
                 ],
             ],
-            'variant_product_1' => [
+            $uuidProductVariantProduct1 => [
                 'PRODUCT_SET' => [
                     'product_models' => [
                         ['identifier' => 'productModelA', 'quantity' => 5],
@@ -229,9 +233,11 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
-        $actual = $this->getQuery()->fromProductIdentifiers(['productA', 'productB']);
+        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
+        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $actual = $this->getQuery()->fromProductUuids([$uuidProductA, $uuidProductB]);
         $expected = [
-            'productB' => [
+            $uuidProductB => [
                 'PRODUCT_SET' => [
                     'product_models' => [
                         ['identifier' => 'productModelA', 'quantity' => 3],
@@ -266,9 +272,10 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
-        $actual = $this->getQuery()->fromProductIdentifiers(['productB']);
+        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $actual = $this->getQuery()->fromProductUuids([$uuidProductB]);
         $expected = [
-            'productB' => [
+            $uuidProductB => [
                 'PRODUCT_SET' => [
                     'product_models' => [
                         ['identifier' => 'root_product_model', 'quantity' => 6],
@@ -297,7 +304,9 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
-        $actual = $this->getQuery()->fromProductIdentifiers(['productA', 'productB']);
+        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
+        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $actual = $this->getQuery()->fromProductUuids([$uuidProductA, $uuidProductB]);
 
         $this->assertSame([], $actual);
     }
@@ -318,8 +327,9 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
             ],
         ]);
 
+        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
         $this->getProductModelRemover()->remove($productModelA);
-        $actual = $this->getQuery()->fromProductIdentifiers(['productB']);
+        $actual = $this->getQuery()->fromProductUuids([$uuidProductB]);
 
         $this->assertSame([], $actual);
     }
@@ -342,7 +352,8 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
 
         $associationType = $this->getAssociationTypeRepository()->findOneBy(['code' => 'PRODUCT_SET']);
         $this->getAssociationTypeRemover()->remove($associationType);
-        $actual = $this->getQuery()->fromProductIdentifiers(['productB']);
+        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $actual = $this->getQuery()->fromProductUuids([$uuidProductB]);
 
         $this->assertSame([], $actual);
     }
@@ -355,5 +366,12 @@ class GetProductModelQuantifiedAssociationsByProductUuidsIntegration extends Abs
     private function getQuery(): GetProductModelQuantifiedAssociationsByProductUuids
     {
         return $this->get('Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductUuids');
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): string
+    {
+        return $this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        );
     }
 }

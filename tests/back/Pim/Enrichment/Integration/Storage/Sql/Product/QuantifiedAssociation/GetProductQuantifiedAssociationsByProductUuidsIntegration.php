@@ -9,7 +9,7 @@ use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\
 use AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\AbstractQuantifiedAssociationIntegration;
 use Doctrine\DBAL\Connection;
 
-class GetProductQuantifiedAssociationsByProductIdentifiersIntegration extends AbstractQuantifiedAssociationIntegration
+class GetProductQuantifiedAssociationsByProductUuidsIntegration extends AbstractQuantifiedAssociationIntegration
 {
     use QuantifiedAssociationsTestCaseTrait;
 
@@ -386,7 +386,7 @@ SQL;
 
     private function getQuery(): GetProductQuantifiedAssociationsByProductUuids
     {
-        return $this->get('akeneo.pim.enrichment.product.query.get_product_quantified_associations_by_product_identifiers');
+        return $this->get('Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductUuids');
     }
 
     protected function getConfiguration()
