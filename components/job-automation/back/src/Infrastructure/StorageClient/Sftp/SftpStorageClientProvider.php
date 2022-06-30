@@ -16,14 +16,14 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\Sftp;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileSystemStorageClient;
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\RemoteStorageClientProviderInterface;
 use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage;
 use League\Flysystem\Filesystem;
 use League\Flysystem\PhpseclibV2\ConnectionProvider;
 use League\Flysystem\PhpseclibV2\SftpAdapter;
 use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
 
-final class SftpStorageClientProvider implements StorageClientProviderInterface
+final class SftpStorageClientProvider implements RemoteStorageClientProviderInterface
 {
     private const MAX_RETRIES = 4;
     private const USE_AGENT = false;
@@ -57,7 +57,7 @@ final class SftpStorageClientProvider implements StorageClientProviderInterface
         return $storage instanceof SftpStorage;
     }
 
-    public function getConnectionProvider(StorageInterface $storage): ConnectionProvider|null
+    public function getConnectionProvider(StorageInterface $storage): ConnectionProvider
     {
         if (!$storage instanceof SftpStorage) {
             throw new \InvalidArgumentException('The provider only support SftpStorage');
