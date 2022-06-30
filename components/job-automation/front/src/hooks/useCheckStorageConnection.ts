@@ -24,7 +24,7 @@ const useCheckStorageConnection = (storage: SftpStorage) => {
       body: JSON.stringify(storage),
     });
 
-    response.ok ? setCheck(true) : setCheck(false)
+    response.ok ? setCheck(true) : setCheck(false);
     setIsChecking(false);
   };
 

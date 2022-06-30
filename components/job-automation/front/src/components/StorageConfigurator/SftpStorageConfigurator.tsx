@@ -80,7 +80,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
           {check ? <CheckIcon color={pimTheme.color.green100} /> : ''}
         </CheckStorageConnetion>
         <>
-          {(undefined !== check && !check) ? (
+          {undefined !== check && !check ? (
             <Helper inline level="error">
               {translate('akeneo.job_automation.connection_checker.exception')}
             </Helper>
