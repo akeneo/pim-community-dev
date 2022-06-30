@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product\Association;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssociationsByProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssociationsByProductUuids;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
@@ -14,7 +14,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetProductAssociationsByProductIdentifiersIntegration extends TestCase
+class GetProductAssociationsByProductUuidsIntegration extends TestCase
 {
     public function setUp(): void
     {
@@ -58,50 +58,59 @@ class GetProductAssociationsByProductIdentifiersIntegration extends TestCase
 
     public function testWithAProductContainingNoAssociation()
     {
-        $expected = ['productE' => $this->getAssociationsFormattedAfterFetch()];
-        $actual = $this->getQuery()->fetchByProductIdentifiers(['productE']);
+        $uuidProductE = $this->getProductUuidFromIdentifier('productE');
+        $expected = [$uuidProductE => $this->getAssociationsFormattedAfterFetch()];
+        $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
     public function testOnASingleProduct()
     {
+        $uuidProductD = $this->getProductUuidFromIdentifier('productD');
         $expected = [
-            'productD' => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC'])
+            $uuidProductD => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC'])
         ];
-        $actual = $this->getQuery()->fetchByProductIdentifiers(['productD']);
+        $actual = $this->getQuery()->fetchByProductUuids([$uuidProductD]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
     public function testOnMultipleSimpleProduct()
     {
+        $uuidProductE = $this->getProductUuidFromIdentifier('productE');
+        $uuidProductD = $this->getProductUuidFromIdentifier('productD');
+        $uuidProductC = $this->getProductUuidFromIdentifier('productC');
         $expected = [
-            'productE' => $this->getAssociationsFormattedAfterFetch(),
-            'productD' => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC']),
-            'productC' => $this->getAssociationsFormattedAfterFetch([], [], [], ['productA']),
+            $uuidProductE => $this->getAssociationsFormattedAfterFetch(),
+            $uuidProductD => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC']),
+            $uuidProductC => $this->getAssociationsFormattedAfterFetch([], [], [], ['productA']),
         ];
-        $actual = $this->getQuery()->fetchByProductIdentifiers(['productE', 'productC', 'productD']);
+        $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE, $uuidProductC, $uuidProductD]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
     public function testOnMultipleWithProductModels()
     {
+        $uuidProductE = $this->getProductUuidFromIdentifier('productE');
+        $uuidProductD = $this->getProductUuidFromIdentifier('productD');
+        $uuidProductC = $this->getProductUuidFromIdentifier('productC');
+        $uuidVariantProduct1 = $this->getProductUuidFromIdentifier('variant_product_1');
         $expected = [
-            'productE' => $this->getAssociationsFormattedAfterFetch(),
-            'productD' => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC']),
-            'productC' => $this->getAssociationsFormattedAfterFetch([], [], [], ['productA']),
-            'variant_product_1' => $this->getAssociationsFormattedAfterFetch(['productF', 'productD'], ['productA', 'productC', 'productG'], ['productB'], ['productE']),
+            $uuidProductE => $this->getAssociationsFormattedAfterFetch(),
+            $uuidProductD => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC']),
+            $uuidProductC => $this->getAssociationsFormattedAfterFetch([], [], [], ['productA']),
+            $uuidVariantProduct1 => $this->getAssociationsFormattedAfterFetch(['productF', 'productD'], ['productA', 'productC', 'productG'], ['productB'], ['productE']),
         ];
-        $actual = $this->getQuery()->fetchByProductIdentifiers(['productE', 'productC', 'productD', 'variant_product_1']);
+        $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE, $uuidProductC, $uuidProductD, $uuidVariantProduct1]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
-    private function getQuery(): GetProductAssociationsByProductIdentifiers
+    private function getQuery(): GetProductAssociationsByProductUuids
     {
-        return $this->get('akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers');
+        return $this->get('Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssociationsByProductUuids');
     }
 
     private function givenAssociationTypes(array $codes): void
@@ -186,5 +195,12 @@ class GetProductAssociationsByProductIdentifiersIntegration extends TestCase
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): string
+    {
+        return $this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        );
     }
 }

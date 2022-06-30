@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetGroupAssociationsByProductIdentifiers;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssociationsByProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssociationsByProductUuids;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductModelAssociationsByProductIdentifiers;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductUuids;
@@ -31,7 +31,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
 {
     public function __construct(
         private GetValuesAndPropertiesFromProductUuids $getValuesAndPropertiesFromProductUuids,
-        private GetProductAssociationsByProductIdentifiers $getProductAssociationsByProductIdentifiers,
+        private GetProductAssociationsByProductUuids $getProductAssociationsByProductUuids,
         private GetProductModelAssociationsByProductIdentifiers $getProductModelAssociationsByProductIdentifiers,
         private GetGroupAssociationsByProductIdentifiers $getGroupAssociationsByProductIdentifiers,
         private GetProductQuantifiedAssociationsByProductIdentifiers $getProductQuantifiedAssociationsByProductIdentifiers,
@@ -215,8 +215,14 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
 
     private function fetchAssociationsIndexedByProductIdentifier(array $identifiers): array
     {
+        $productAssociations = $this->replaceUuidKeysByIdentifiers(
+            $this->getProductAssociationsByProductUuids->fetchByProductUuids(
+                $this->getProductUuidsFromProductIdentifiers($identifiers)
+            )
+        );
+
         $associations = array_replace_recursive(
-            $this->getProductAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers),
+            $productAssociations,
             $this->getProductModelAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers),
             $this->getGroupAssociationsByProductIdentifiers->fetchByProductIdentifier($identifiers)
         );
