@@ -75,7 +75,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
             disabled={check || isChecking}
             level="primary"
           >
-            {translate('akeneo.automation.connection_checker.label')}
+            {translate('akeneo.job_automation.connection_checker.label')}
           </Button>
           {check ? <CheckIcon color={pimTheme.color.green100} /> : ''}
         </CheckStorageConnetion>
