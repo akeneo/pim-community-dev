@@ -45,19 +45,19 @@ class SetMultiReferenceDataValueSpec extends ObjectBehavior
         $this->values()->shouldReturn(['Akeneo', 'Ziggy']);
     }
 
-    function it_can_only_be_instantiated_with_string_record_codes()
+    function it_can_only_be_instantiated_with_string_values()
     {
         $this->beConstructedWith('attribute_ref_data', null, null, ['test', 12, false]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_with_empty_record_codes()
+    function it_cannot_be_instantiated_with_empty_values()
     {
         $this->beConstructedWith('attribute_ref_data', null, null, []);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_if_one_of_the_record_codes_is_empty()
+    function it_cannot_be_instantiated_if_one_of_the_values_is_empty()
     {
         $this->beConstructedWith('attribute_ref_data', null, null, ['a', '', 'b']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
