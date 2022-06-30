@@ -85,16 +85,14 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
 
         $productUuids = $this->getProductUuidsFromProductIdentifiers($productIdentifiers);
 
-        $valuesAndProperties = $this->replaceUuidKeysByIdentifiers(
-            $this->getValuesAndPropertiesFromProductUuids->fetchByProductUuids($productUuids)
-        );
-
-        $rows = array_replace_recursive(
-            $valuesAndProperties,
+        $rowsByUuid = array_replace_recursive(
+            $this->getValuesAndPropertiesFromProductUuids->fetchByProductUuids($productUuids),
             $this->fetchAssociationsIndexedByProductUuids($productUuids),
             $this->fetchQuantifiedAssociationsIndexedByProductUuids($productUuids),
             $this->fetchCategoryCodesIndexedByProductUuids($productUuids)
         );
+
+        $rows = $this->replaceUuidKeysByIdentifiers($rowsByUuid);
 
         $rawValuesIndexedByProductIdentifier = [];
         foreach ($productIdentifiers as $identifier) {
@@ -204,10 +202,9 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
     {
         $categoryCodes = [];
         $categoryCodesByUuid = $this->getCategoryCodesByProductUuids->fetchCategoryCodes($uuids);
-        $categoryCodesByIdentifier = $this->replaceUuidKeysByIdentifiers($categoryCodesByUuid);
 
-        foreach ($categoryCodesByIdentifier as $productIdentifier => $productCategoryCodes) {
-            $categoryCodes[$productIdentifier] = ['category_codes' => $productCategoryCodes];
+        foreach ($categoryCodesByUuid as $productUuid => $productCategoryCodes) {
+            $categoryCodes[$productUuid] = ['category_codes' => $productCategoryCodes];
         }
 
         return $categoryCodes;
@@ -220,14 +217,13 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             $this->getProductModelAssociationsByProductUuids->fetchByProductUuids($uuids),
             $this->getGroupAssociationsByProductUuids->fetchByProductUuids($uuids)
         );
-        $associationsByIdentifiers = $this->replaceUuidKeysByIdentifiers($associations);
 
-        $associationsIndexedByIdentifier = [];
-        foreach ($associationsByIdentifiers as $identifier => $association) {
-            $associationsIndexedByIdentifier[$identifier]['associations'] = $association;
+        $associationsIndexedByUuid = [];
+        foreach ($associations as $uuid => $association) {
+            $associationsIndexedByUuid[$uuid]['associations'] = $association;
         }
 
-        return $associationsIndexedByIdentifier;
+        return $associationsIndexedByUuid;
     }
 
     private function fetchQuantifiedAssociationsIndexedByProductUuids(array $uuids): array
@@ -236,10 +232,9 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             $this->getProductQuantifiedAssociationsByProductUuids->fromProductUuids($uuids),
             $this->getProductModelQuantifiedAssociationsByProductUuids->fromProductUuids($uuids),
         );
-        $quantifiedAssociationsByIdentifier = $this->replaceUuidKeysByIdentifiers($quantifiedAssociations);
 
-        $quantifiedAssociationsIndexedByIdentifier = [];
-        foreach ($quantifiedAssociationsByIdentifier as $identifier => $quantifiedAssociation) {
+        $quantifiedAssociationsIndexedByUuid = [];
+        foreach ($quantifiedAssociations as $uuid => $quantifiedAssociation) {
             $associationTypes = array_map('strval', array_keys($quantifiedAssociation));
 
             $filledAssociations = [];
@@ -251,10 +246,10 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 }
             }
 
-            $quantifiedAssociationsIndexedByIdentifier[$identifier]['quantified_associations'] = $filledAssociations;
+            $quantifiedAssociationsIndexedByUuid[$uuid]['quantified_associations'] = $filledAssociations;
         }
 
-        return $quantifiedAssociationsIndexedByIdentifier;
+        return $quantifiedAssociationsIndexedByUuid;
     }
 
     /**
