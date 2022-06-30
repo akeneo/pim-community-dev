@@ -1,9 +1,9 @@
-import React, {FC, memo, useCallback} from 'react';
-import {AnyCriterionState} from '../models/Criteria';
-import {getCriterionByFieldType} from '../criteria/getCriterionByFieldType';
+import React, {FC, memo, useCallback, useEffect, useState} from 'react';
+import {AnyCriterionState, CriterionModule} from '../models/Criterion';
 import {useProductSelectionContext} from '../contexts/ProductSelectionContext';
 import {ProductSelectionActions} from '../reducers/ProductSelectionReducer';
 import {CriterionErrors} from '../models/CriterionErrors';
+import {useCriteriaRegistry} from '../criteria/useCriteriaRegistry';
 
 type Props = {
     id: string;
@@ -13,7 +13,12 @@ type Props = {
 
 export const Criterion: FC<Props> = memo(({id, state, errors}) => {
     const dispatch = useProductSelectionContext();
-    const {component: Component} = getCriterionByFieldType(state.field);
+    const {getCriterionByField} = useCriteriaRegistry();
+    const [Component, setComponent] = useState<FC<CriterionModule<AnyCriterionState>>>();
+
+    useEffect(() => {
+        getCriterionByField(state.field).then(criterion => setComponent(() => criterion.component));
+    }, [getCriterionByField, state.field, setComponent]);
 
     const handleChange = useCallback(
         (newState: AnyCriterionState) => {
@@ -32,6 +37,10 @@ export const Criterion: FC<Props> = memo(({id, state, errors}) => {
             id: id,
         });
     }, [dispatch, id]);
+
+    if (!Component) {
+        return null;
+    }
 
     return <Component state={state} errors={errors} onChange={handleChange} onRemove={handleRemove} />;
 });

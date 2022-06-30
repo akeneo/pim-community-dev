@@ -1,5 +1,5 @@
 import {ProductSelectionValues} from '../models/ProductSelectionValues';
-import {AnyCriterionState} from '../models/Criteria';
+import {AnyCriterionState} from '../models/Criterion';
 
 const removeKey = <T>(object: {[key: string]: T}, property: string): {[key: string]: T} => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -2,9 +2,10 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import StatusCriterion from '../criteria/StatusCriterion';
-import {AnyCriterionState} from '../models/Criteria';
+import {AnyCriterionState} from '../models/Criterion';
 import {useProductSelectionContext} from '../contexts/ProductSelectionContext';
 import {ProductSelectionActions} from '../reducers/ProductSelectionReducer';
+import {useCriteriaRegistry} from '../criteria/useCriteriaRegistry';
 
 type Factory = {
     label: string;
@@ -47,23 +48,17 @@ const Section = React.forwardRef<HTMLDivElement, SectionProps>(({label, factorie
     );
 });
 
-type Props = {};
-
-const AddCriterionDropdown: FC<Props> = () => {
+const AddCriterionDropdown: FC<{}> = () => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
+    const {system} = useCriteriaRegistry();
 
     const systemCriterionFactories: Factory[] = useMemo(() => {
         const regex = new RegExp(search, 'i');
 
-        return [
-            {
-                label: translate('akeneo_catalogs.product_selection.criteria.status.label'),
-                factory: StatusCriterion.factory,
-            },
-        ].filter(factory => factory.label.match(regex));
-    }, [translate, search]);
+        return system.filter(factory => factory.label.match(regex));
+    }, [system, search]);
 
     return (
         <Dropdown>
