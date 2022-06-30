@@ -96,6 +96,12 @@ services:
             - '@twig'
             - '%env(AKENEO_PIM_URL)%'
 
+    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildResetPasswordEmail:
+        class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigResetPasswordEmail
+        arguments:
+            - '@twig'
+            - '%env(AKENEO_PIM_URL)%'
+
     #Authentication
     Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider:
         arguments:
