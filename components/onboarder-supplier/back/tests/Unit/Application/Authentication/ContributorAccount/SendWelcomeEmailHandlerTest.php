@@ -30,7 +30,7 @@ class SendWelcomeEmailHandlerTest extends TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with(new Email(
-                "You've received an invitation to contribute to onboarder",
+                'You\'ve received an invitation to contribute to Onboarder',
                 'htmlContent',
                 'textContent',
                 'noreply@akeneo.com',
