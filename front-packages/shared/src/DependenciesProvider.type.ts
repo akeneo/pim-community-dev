@@ -31,6 +31,7 @@ type View = {
   setElement: (element: HTMLElement | null) => View;
   render: () => void;
   remove: () => void;
+  setData: (data: any, options?: {silent?: boolean}) => void;
 };
 
 type ViewBuilder = {

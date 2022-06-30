@@ -4,6 +4,7 @@ const view: View = {
   setElement: () => view,
   render: () => {},
   remove: () => {},
+  setData: () => {},
 };
 
 const mockedDependencies = {

@@ -1,6 +1,10 @@
 import React from 'react';
 import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
-import {CategoriesApp} from '@akeneo-pim-community/settings-ui';
+import {CategoriesApp} from '@akeneo-pim-community/category';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {ThemeProvider} from 'styled-components';
+import {pimTheme} from 'akeneo-design-system';
+
 const __ = require('oro/translator');
 
 const mediator = require('oro/mediator');
@@ -15,7 +19,13 @@ class CategoriesSettings extends ReactController {
   }
 
   reactElementToMount() {
-    return <CategoriesApp setCanLeavePage={(canLeavePage: boolean) => this.setCanLeavePage(canLeavePage)} />;
+    return (
+      <DependenciesProvider>
+        <ThemeProvider theme={pimTheme}>
+          <CategoriesApp setCanLeavePage={(canLeavePage: boolean) => this.setCanLeavePage(canLeavePage)} />
+        </ThemeProvider>
+      </DependenciesProvider>
+    );
   }
 
   routeGuardToUnmount() {
