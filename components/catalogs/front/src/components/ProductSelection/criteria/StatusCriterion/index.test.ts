@@ -11,12 +11,7 @@ test('it provides a component and the state factory', () => {
 });
 
 test('it creates a StatusCriterion state with empty values', () => {
-    expect(
-        criterion.factory({
-            operator: undefined,
-            value: undefined,
-        })
-    ).toMatchObject({
+    expect(criterion.factory()).toMatchObject({
         field: 'enabled',
         operator: Operator.EQUALS,
         value: true,

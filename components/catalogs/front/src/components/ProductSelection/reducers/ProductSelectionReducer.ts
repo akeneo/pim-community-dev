@@ -2,13 +2,14 @@ import {ProductSelectionValues} from '../models/ProductSelectionValues';
 import {AnyCriterionState} from '../models/Criterion';
 
 const removeKey = <T>(object: {[key: string]: T}, property: string): {[key: string]: T} => {
+    /* istanbul ignore next */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {[property]: _, ...rest} = object;
 
     return rest;
 };
 
-type ProductSelectionState = ProductSelectionValues;
+export type ProductSelectionState = ProductSelectionValues;
 
 export enum ProductSelectionActions {
     INITIALIZE = 'INITIALIZE',
