@@ -2,14 +2,13 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
-use AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\CategoryTree\CategoryTreeFixturesLoader;
 use Webmozart\Assert\Assert;
 
-class GetCategoryCodesByProductIdentifiersIntegration extends TestCase
+class GetCategoryCodesByProductUuidsIntegration extends TestCase
 {
     /** @var EntityBuilder */
     private $entityBuilder;
@@ -67,43 +66,54 @@ class GetCategoryCodesByProductIdentifiersIntegration extends TestCase
 
     public function testGetCategoryCodesForASimpleProduct(): void
     {
-        $expected = ['productA' => ['men', 'shop_2019']];
-        $actual = $this->getQuery()->fetchCategoryCodes(['productA']);
+        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
+        $expected = [$uuidProductA => ['men', 'shop_2019']];
+        $actual = $this->getQuery()->fetchCategoryCodes([$uuidProductA]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
     public function testGetCategoryCodesForAVariantProduct(): void
     {
-        $expected = ['variant_product_1' => ['trending', 'watch', 'famous', 'men']];
-        $actual = $this->getQuery()->fetchCategoryCodes(['variant_product_1']);
+        $uuidVariantProduct1 = $this->getProductUuidFromIdentifier('variant_product_1');
+        $expected = [$uuidVariantProduct1 => ['trending', 'watch', 'famous', 'men']];
+        $actual = $this->getQuery()->fetchCategoryCodes([$uuidVariantProduct1]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
     public function testGetCategoryCodesOnMultipleIdentifiers(): void
     {
+        $uuidVariantProduct1 = $this->getProductUuidFromIdentifier('variant_product_1');
+        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
+        $uuidVariantProduct2 = $this->getProductUuidFromIdentifier('variant_product_2');
+
         $expected = [
-            'variant_product_1' => ['trending', 'watch', 'famous', 'men'],
-            'productA' => ['men', 'shop_2019'],
-            'variant_product_2' => ['watch', 'famous', 'men']
+            $uuidVariantProduct1 => ['trending', 'watch', 'famous', 'men'],
+            $uuidProductA => ['men', 'shop_2019'],
+            $uuidVariantProduct2 => ['watch', 'famous', 'men'],
         ];
-        $actual = $this->getQuery()->fetchCategoryCodes(['productA', 'variant_product_1', 'variant_product_2']);
+        $actual = $this->getQuery()->fetchCategoryCodes([
+            $uuidProductA,
+            $uuidVariantProduct1,
+            $uuidVariantProduct2
+        ]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
     public function testGetCategoryCodesOnProductWithoutCategory(): void
     {
-        $expected = ['productB' => []];
-        $actual = $this->getQuery()->fetchCategoryCodes(['productB']);
+        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
+        $expected = [$uuidProductB => []];
+        $actual = $this->getQuery()->fetchCategoryCodes([$uuidProductB]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
-    private function getQuery(): GetCategoryCodesByProductIdentifiers
+    private function getQuery(): GetCategoryCodesByProductUuids
     {
-        return $this->get('akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers');
+        return $this->get('Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids');
     }
 
     private function givenBooleanAttributes(array $codes): void
@@ -154,5 +164,12 @@ class GetCategoryCodesByProductIdentifiersIntegration extends TestCase
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): string
+    {
+        return $this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        );
     }
 }

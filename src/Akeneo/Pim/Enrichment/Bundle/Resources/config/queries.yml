@@ -135,8 +135,7 @@ services:
             - '@database_connection'
             - '@logger'
 
-    akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductIdentifiers'
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids:
         arguments:
             - '@database_connection'
 
@@ -238,7 +237,7 @@ services:
             $getProductAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers'
             $getProductQuantifiedAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_quantified_associations_by_product_identifiers'
             $getProductModelQuantifiedAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_model_quantified_associations_by_product_identifiers'
-            $getCategoryCodesByProductIdentifiers: '@akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers'
+            $getCategoryCodesByProductUuids: '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids'
             $readValueCollectionFactory: '@akeneo.pim.enrichment.factory.read_value_collection'
             $attributeRepository: '@pim_catalog.repository.attribute'
 
