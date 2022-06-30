@@ -3,9 +3,20 @@ export interface HeapAgent {
   addUserProperties: (properties: object) => void;
 }
 
+const FeatureFlags = require('pim/feature-flags');
+
 const getHeapAgent = async (): Promise<HeapAgent | null> => {
+  if (!FeatureFlags.isEnabled('free_trial')) {
+    return null;
+  }
+
   // @ts-ignore
-  return window.heap ? (window.heap as HeapAgent) : null;
+  if (!window.heap || typeof window.heap === 'undefined') {
+    throw new Error('Heap library is not installed');
+  }
+
+  // @ts-ignore
+  return window.heap as HeapAgent;
 };
 
 export {getHeapAgent};

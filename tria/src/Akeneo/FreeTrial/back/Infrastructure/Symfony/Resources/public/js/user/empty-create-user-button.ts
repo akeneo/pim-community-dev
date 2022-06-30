@@ -1,11 +1,15 @@
-const BaseForm = require('pim/form');
+const CreateButton = require('pim/form/common/index/create-button');
+const FeatureFlags = require('pim/feature-flags');
 
-class EmptyCreateUserButton extends BaseForm {
+class EmptyCreateUserButton extends CreateButton {
   render() {
-    // Delete the div container to not display the separator in the data-drop-zone="buttons"
-    this.$el.remove();
+    if (FeatureFlags.isEnabled('free_trial')) {
+      this.$el.remove();
 
-    return this;
+      return this;
+    }
+
+    return super.render();
   }
 }
 

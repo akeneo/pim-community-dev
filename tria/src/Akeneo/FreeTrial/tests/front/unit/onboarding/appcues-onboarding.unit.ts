@@ -42,13 +42,6 @@ beforeEach(() => {
 });
 
 describe('Appcues init', () => {
-  test('it throws an error when appcues is not initialized', async () => {
-    // @ts-ignore;
-    getAppcuesAgent.mockResolvedValue(null);
-
-    await expect(AppcuesOnboarding.init()).rejects.toEqual(new Error('Appcues should be initialized'));
-  });
-
   test('it set up appcues onboarding when appcues is initialized', async () => {
     // @ts-ignore;
     getAppcuesAgent.mockResolvedValue(mockedAppcues);

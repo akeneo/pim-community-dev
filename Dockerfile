@@ -142,6 +142,7 @@ COPY frontend frontend
 COPY src src
 COPY components components
 COPY grth grth
+COPY tria tria
 COPY upgrades upgrades
 COPY composer.json package.json yarn.lock .env tsconfig.json *.js version.txt .
 
@@ -153,6 +154,7 @@ ENV SRNT_GOOGLE_BUCKET_NAME="srnt_google_bucket_dummy"
 
 RUN mkdir var && \
     composer config repositories.grth '{"type": "path", "url": "grth/", "options": {"symlink": false }}' && \
+    composer config repositories.tria '{"type": "path", "url": "tria/", "options": {"symlink": false }}' && \
     composer install \
         --no-scripts \
         --no-interaction \
@@ -188,6 +190,7 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/config config
 COPY --from=builder --chown=www-data:www-data /srv/pim/public public
 COPY --from=builder --chown=www-data:www-data /srv/pim/src src
 COPY --from=builder --chown=www-data:www-data /srv/pim/grth/src/Akeneo grth/src/Akeneo
+COPY --from=builder --chown=www-data:www-data /srv/pim/tria/src/Akeneo tria/src/Akeneo
 COPY --from=builder --chown=www-data:www-data /srv/pim/components components
 COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
 COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod

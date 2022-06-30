@@ -39,7 +39,7 @@ ifeq ($(USE_EDITION_FLAG),true)
 	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/..)
 	BUCKET := serenity-edition-dev
 
-#We don't hardcode TYPE_LONG to keep proper edition specific PRODUCT_REFERENCE_TYPE & PRODUCT_REFERENCE_CODE 
+#We don't hardcode TYPE_LONG to keep proper edition specific PRODUCT_REFERENCE_TYPE & PRODUCT_REFERENCE_CODE
 endif
 
 PRODUCT_REFERENCE_TYPE ?= $(TYPE_LONG)_instance
@@ -346,7 +346,7 @@ create-pim-main-tf: $(INSTANCE_DIR)
 ifeq ($(USE_EDITION_FLAG),true)
 	yq w -j -P -i  ${INSTANCE_DIR}/main.tf.json  'module.pim.use_edition_flag' true
 endif
-	
+
 .PHONY: change-terraform-source-version
 change-terraform-source-version: #Doc: change terraform pim and monitoring source to deploy infra with a custom git version
 	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform"

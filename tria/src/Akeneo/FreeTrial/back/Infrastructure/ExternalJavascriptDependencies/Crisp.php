@@ -3,19 +3,18 @@
 
 namespace Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator;
 use Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\ExternalDependencyProviderInterface;
 
 final class Crisp implements ExternalDependencyProviderInterface, ContentSecurityPolicyProviderInterface
 {
-    private ScriptNonceGenerator $nonceGenerator;
-    private string $crispWebsiteId;
-
-    public function __construct(ScriptNonceGenerator $nonceGenerator, string $crispWebsiteId)
-    {
-        $this->nonceGenerator = $nonceGenerator;
-        $this->crispWebsiteId = $crispWebsiteId;
+    public function __construct(
+        private ScriptNonceGenerator $nonceGenerator,
+        private string $crispWebsiteId,
+        private FeatureFlags $featureFlags
+    ) {
     }
 
     /**
@@ -23,6 +22,10 @@ final class Crisp implements ExternalDependencyProviderInterface, ContentSecurit
      */
     public function getContentSecurityPolicy(): array
     {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
+            return [];
+        }
+
         return [
             'script-src' => ["*.crisp.chat"],
             'style-src' => ["'self'", "*.crisp.chat", "data:", "'unsafe-inline'"],
@@ -35,6 +38,10 @@ final class Crisp implements ExternalDependencyProviderInterface, ContentSecurit
 
     public function getScript(): string
     {
+        if (!$this->featureFlags->isEnabled('free_trial')) {
+            return '';
+        }
+
         $nonce = $this->nonceGenerator->getGeneratedNonce();
 
         return sprintf(

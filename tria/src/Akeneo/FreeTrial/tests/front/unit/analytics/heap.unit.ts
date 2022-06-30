@@ -4,12 +4,6 @@ import {getHeapAgent} from '../../../../back/Infrastructure/Symfony/Resources/pu
 jest.mock('../../../../back/Infrastructure/Symfony/Resources/public/js/analytics/heap-agent');
 
 describe('Heap init', () => {
-  test('it throws an error when Heap is not initialized', async () => {
-    getHeapAgent.mockResolvedValue(null);
-
-    await expect(Heap.init()).rejects.toEqual(new Error('Heap is not initialized'));
-  });
-
   test('it identifies and add user properties at initialization', async () => {
     const mockedHeap = {
       identify: jest.fn(),

@@ -2,6 +2,7 @@ services:
   Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies\Appcues:
     arguments:
       - '%env(APPCUES_ID)%'
+      - '@feature_flags'
     tags:
       - { name: akeneo.pim.security.content_security_policy_provider }
       - { name: akeneo.pim.security.external_dependency_provider }
@@ -10,6 +11,7 @@ services:
     arguments:
       - '@security.script_nonce_generator'
       - '%env(HEAP_ID)%'
+      - '@feature_flags'
     tags:
       - { name: akeneo.pim.security.content_security_policy_provider }
       - { name: akeneo.pim.security.external_dependency_provider }
@@ -18,6 +20,7 @@ services:
     arguments:
       - '@security.script_nonce_generator'
       - '%env(CRISP_WEBSITE_ID)%'
+      - '@feature_flags'
     tags:
       - { name: akeneo.pim.security.content_security_policy_provider }
       - { name: akeneo.pim.security.external_dependency_provider }
@@ -27,6 +30,7 @@ services:
       - '@security.script_nonce_generator'
       - '%env(GOOGLE_TAG_MANAGER_ID)%'
       - '%env(GOOGLE_ANALYTICS_ID)%'
+      - '@feature_flags'
     tags:
       - { name: akeneo.pim.security.content_security_policy_provider }
       - { name: akeneo.pim.security.external_dependency_provider }
@@ -35,6 +39,7 @@ services:
     arguments:
       - '@security.script_nonce_generator'
       - '%env(GOOGLE_ANALYTICS_ID)%'
+      - '@feature_flags'
     tags:
       - { name: akeneo.pim.security.content_security_policy_provider }
       - { name: akeneo.pim.security.external_dependency_provider }
@@ -43,6 +48,7 @@ services:
     arguments:
       - '@security.script_nonce_generator'
       - '%env(HOTJAR_ID)%'
+      - '@feature_flags'
     tags:
       - { name: akeneo.pim.security.content_security_policy_provider }
       - { name: akeneo.pim.security.external_dependency_provider }

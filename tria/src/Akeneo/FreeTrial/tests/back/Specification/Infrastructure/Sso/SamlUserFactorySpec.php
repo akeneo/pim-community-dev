@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\FreeTrial\Infrastructure\Sso;
 
 use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User\UnknownUserException;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -33,14 +33,14 @@ final class SamlUserFactorySpec extends ObjectBehavior
 {
     public function let(
         SamlUserFactoryInterface $baseUserFactory,
-        FeatureFlag $freeTrialFeature,
+        FeatureFlags $featureFlags,
         SimpleFactoryInterface $userFactory,
         SaverInterface $userSaver,
         ObjectUpdaterInterface $userUpdater,
         ValidatorInterface $userValidator,
         LoggerInterface $logger
     ) {
-        $this->beConstructedWith($baseUserFactory, $freeTrialFeature, $userFactory, $userSaver, $userUpdater, $userValidator, $logger);
+        $this->beConstructedWith($baseUserFactory, $featureFlags, $userFactory, $userSaver, $userUpdater, $userValidator, $logger);
     }
 
     public function it_is_an_user_factory()
@@ -49,7 +49,7 @@ final class SamlUserFactorySpec extends ObjectBehavior
     }
 
     public function it_creates_an_user_from_a_saml_token(
-        $freeTrialFeature,
+        $featureFlags,
         $userFactory,
         $userSaver,
         $userUpdater,
@@ -58,7 +58,7 @@ final class SamlUserFactorySpec extends ObjectBehavior
         UserInterface $user,
         ConstraintViolationListInterface $violations
     ) {
-        $freeTrialFeature->isEnabled()->willReturn(true);
+        $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
         $token->getUsername()->willReturn('an_user_name');
@@ -91,24 +91,24 @@ final class SamlUserFactorySpec extends ObjectBehavior
 
     public function it_calls_the_base_user_factory_if_the_free_trial_feature_is_disabled(
         $baseUserFactory,
-        $freeTrialFeature,
+        $featureFlags,
         SamlTokenInterface $token
     ) {
-        $freeTrialFeature->isEnabled()->willReturn(false);
+        $featureFlags->isEnabled('free_trial')->willReturn(false);
         $baseUserFactory->createUser($token)->shouldBeCalled();
 
         $this->createUser($token);
     }
 
     public function it_throws_an_exception_if_an_attribute_is_missing_in_the_token(
-        $freeTrialFeature,
+        $featureFlags,
         $userFactory,
         $userSaver,
         $userUpdater,
         SamlTokenInterface $token,
         UserInterface $user
     ) {
-        $freeTrialFeature->isEnabled()->willReturn(true);
+        $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
         $token->getUsername()->willReturn('an_user_name');
@@ -124,14 +124,14 @@ final class SamlUserFactorySpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_an_attribute_is_malformed_in_the_token(
-        $freeTrialFeature,
+        $featureFlags,
         $userFactory,
         $userSaver,
         $userUpdater,
         SamlTokenInterface $token,
         UserInterface $user
     ) {
-        $freeTrialFeature->isEnabled()->willReturn(true);
+        $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
         $token->getUsername()->willReturn('an_user_name');
@@ -148,14 +148,14 @@ final class SamlUserFactorySpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_an_attribute_value_is_not_a_string(
-        $freeTrialFeature,
+        $featureFlags,
         $userFactory,
         $userSaver,
         $userUpdater,
         SamlTokenInterface $token,
         UserInterface $user
     ) {
-        $freeTrialFeature->isEnabled()->willReturn(true);
+        $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
         $token->getUsername()->willReturn('an_user_name');
@@ -172,7 +172,7 @@ final class SamlUserFactorySpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_the_user_is_invalid(
-        $freeTrialFeature,
+        $featureFlags,
         $userFactory,
         $userSaver,
         $userUpdater,
@@ -180,7 +180,7 @@ final class SamlUserFactorySpec extends ObjectBehavior
         SamlTokenInterface $token,
         UserInterface $user
     ) {
-        $freeTrialFeature->isEnabled()->willReturn(true);
+        $featureFlags->isEnabled('free_trial')->willReturn(true);
 
         $userFactory->create()->willReturn($user);
         $token->getUsername()->willReturn('an_user_name');
