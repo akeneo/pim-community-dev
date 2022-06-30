@@ -32,9 +32,9 @@ final class SetUpPassword
                     $request->get('plainTextPassword'),
                 )
             );
-        } catch (InvalidPassword $e) {
+        } catch (InvalidPassword) {
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
-        } catch (ContributorAccountDoesNotExist $e) {
+        } catch (ContributorAccountDoesNotExist) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

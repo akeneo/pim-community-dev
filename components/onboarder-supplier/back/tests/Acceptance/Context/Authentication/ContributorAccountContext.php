@@ -8,6 +8,7 @@ use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAcco
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePassword;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag;
 use Behat\Behat\Context\Context;
@@ -41,8 +42,8 @@ final class ContributorAccountContext implements Context
     {
         $emails = explode(';', $contributorAccountEmails);
 
-        $contributorAccount0 = $this->contributorAccountRepository->findByEmail($emails[0]);
-        $contributorAccount1 = $this->contributorAccountRepository->findByEmail($emails[1]);
+        $contributorAccount0 = $this->contributorAccountRepository->findByEmail(Email::fromString($emails[0]));
+        $contributorAccount1 = $this->contributorAccountRepository->findByEmail(Email::fromString($emails[1]));
 
         Assert::assertSame($emails[0], (string) $contributorAccount0->email());
         Assert::assertSame($emails[1], (string) $contributorAccount1->email());
@@ -64,7 +65,7 @@ final class ContributorAccountContext implements Context
      */
     public function iUpdateTheContributorAccountPassword(string $email, string $password): void
     {
-        $contributorAccount = $this->contributorAccountRepository->findByEmail($email);
+        $contributorAccount = $this->contributorAccountRepository->findByEmail(Email::fromString($email));
         try {
             ($this->updatePasswordHandler)(new UpdatePassword($contributorAccount->identifier(), $password));
         } catch (InvalidPassword $e) {
@@ -77,7 +78,7 @@ final class ContributorAccountContext implements Context
      */
     public function theContributorAccountShouldHaveAsPassword(string $email, string $password): void
     {
-        $contributorAccount = $this->contributorAccountRepository->findByEmail($email);
+        $contributorAccount = $this->contributorAccountRepository->findByEmail(Email::fromString($email));
 
         Assert::assertNotNull($contributorAccount->getPassword());
     }

@@ -6,8 +6,10 @@ import {OnboarderLogo, UnauthenticatedContainer} from '../../components';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useParams} from 'react-router-dom';
 import {NotFoundError} from '../../api/NotFoundError';
+import {BadRequestError} from '../../api/BadRequestError';
 import {NotFound} from '../NotFound';
 import {useContributorAccount} from './hooks';
+import {RequestNewInvitation} from '../RequestNewInvitation/RequestNewInvitation';
 
 type Params = {
     accessToken: string;
@@ -27,6 +29,10 @@ const SetUpPassword = () => {
         setIsSubmitButtonDisabled(!isPasswordValid);
     }, [password, passwordConfirmation, setIsSubmitButtonDisabled]);
 
+    if (loadingError instanceof BadRequestError) {
+        return <RequestNewInvitation />;
+    }
+
     if (loadingError instanceof NotFoundError) {
         return <NotFound />;
     }
@@ -37,7 +43,7 @@ const SetUpPassword = () => {
 
     return (
         <UnauthenticatedContainer>
-            <OnboarderLogo />
+            <OnboarderLogo width={213} />
             <WelcomeText>
                 <p>
                     <FormattedMessage
@@ -127,7 +133,7 @@ const SetUpPassword = () => {
 };
 
 const WelcomeText = styled.div`
-    margin-bottom: 30px;
+    margin: 30px 0 30px 0;
     color: ${getColor('grey140')};
 `;
 const ContributorEmail = styled.span`

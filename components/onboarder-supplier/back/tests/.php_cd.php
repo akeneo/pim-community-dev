@@ -28,7 +28,6 @@ $rules = [
 
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
-            'Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface',
         ],
     )->in('Akeneo\OnboarderSerenity\Supplier\Domain'),
 
@@ -47,7 +46,6 @@ $rules = [
             'Psr\Log\LoggerInterface',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
-            'Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface',
             'Symfony\Component\Validator\Exception\UnexpectedTypeException',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
@@ -75,6 +73,7 @@ $rules = [
         [
             // Onboarder coupling
             'Akeneo\OnboarderSerenity\Supplier\Domain',
+            'Akeneo\OnboarderSerenity\Supplier\Infrastructure',
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
             'Symfony',
@@ -95,7 +94,6 @@ $rules = [
             // External dependencies coupling
             'PHPUnit\Framework',
             'Psr\Log\NullLogger',
-            'Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Twig\Environment',

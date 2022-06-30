@@ -43,10 +43,6 @@ spec:
 {{ toYaml .Values.common.phpConfCLI  | indent 12 }}
 {{- end }}
           volumeMounts:
-            - name: google-cloud-pim-storage-key
-              mountPath: /var/secrets/google/srnt.json
-              subPath: srnt.json
-              readOnly: true
             {{- if .Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key
               mountPath: /var/secrets/google/key.json
@@ -56,12 +52,6 @@ spec:
             - name: pim-scripts-configmap
               mountPath: /scripts-dir
       volumes:
-        - name: google-cloud-pim-storage-key
-          secret:
-            secretName: pim-secrets
-            items:
-            - key: srntPimStorageKey
-              path: srnt.json
         {{- if .Values.onboarder.enabled }}
         - name: google-cloud-onboarder-key
           secret:

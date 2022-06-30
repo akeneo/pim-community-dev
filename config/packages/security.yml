@@ -12,6 +12,8 @@ security:
             id: pim_user.provider.user_api
         saml_pim_user:
             id: akeneo_authentication.sso.user.provider
+        onboarder_serenity_contributor_account_user:
+            id: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider
 
     encoders:
         Akeneo\UserManagement\Component\Model\User: sha512
@@ -60,10 +62,17 @@ security:
             access_denied_handler: pim_api.security.access_denied_handler
             provider: pim_user_api
 
-        onboarder-serenity-supplier:
+        onboarder_serenity_supplier_authentication:
             pattern: ^/onboarder-supplier/authentication
-            security: false
             anonymous: true
+
+        onboarder_serenity_supplier_secured_area:
+            pattern: ^/onboarder-supplier
+            provider: onboarder_serenity_contributor_account_user
+            json_login:
+                check_path: onboarder_serenity_supplier_contributor_login
+            logout:
+                path: onboarder_serenity_supplier_contributor_logout
 
         api_index:
             pattern:                        ^/api/rest/v1$
@@ -127,7 +136,7 @@ security:
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
 
     password_hashers:
-        Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount: 'auto'
+        Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount: 'auto'
 
 acl:
     connection: default

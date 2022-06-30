@@ -6,9 +6,8 @@ use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\W
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Password;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-class ContributorAccount implements PasswordAuthenticatedUserInterface
+class ContributorAccount
 {
     private function __construct(
         private Identifier $identifier,

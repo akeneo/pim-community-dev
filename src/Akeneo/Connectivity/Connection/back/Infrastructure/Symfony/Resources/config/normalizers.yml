@@ -1,0 +1,14 @@
+services:
+    AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Normalizer\CategoryAccessNormalizer:
+        decorates: pimee_versioning.normalizer.category
+        decoration_inner_name: pimee_versioning.normalizer.category.inner
+        arguments:
+            - '@pimee_versioning.normalizer.category.inner'
+            - '@AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllAppsUserGroupLabelQuery'
+
+    AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Normalizer\AttributeGroupAccessNormalizer:
+        decorates: pimee_versioning.normalizer.attribute_group
+        decoration_inner_name: pimee_versioning.normalizer.attribute_group.inner
+        arguments:
+            - '@pimee_versioning.normalizer.attribute_group.inner'
+            - '@AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllAppsUserGroupLabelQuery'
