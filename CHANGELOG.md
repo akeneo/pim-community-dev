@@ -53,6 +53,7 @@
 - PIM-10479: Fix Rule engine concatenate action does not handle properly case-sensitivity for option codes
 - PIM-10493: Fix Rule engine datagrid sorting
 - PIM-10507: Fix product export with labels when a table attribute contains a measurement column
+- PIM-10510: "Automatic link between assets and products" log download returns a 403
 
 ## Improvements
 
