@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetGroupAssociationsByProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetGroupAssociationsByProductUuids;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssociationsByProductUuids;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductModelAssociationsByProductUuids;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids;
@@ -33,7 +33,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         private GetValuesAndPropertiesFromProductUuids $getValuesAndPropertiesFromProductUuids,
         private GetProductAssociationsByProductUuids $getProductAssociationsByProductUuids,
         private GetProductModelAssociationsByProductUuids $getProductModelAssociationsByProductUuids,
-        private GetGroupAssociationsByProductIdentifiers $getGroupAssociationsByProductIdentifiers,
+        private GetGroupAssociationsByProductUuids $getGroupAssociationsByProductUuids,
         private GetProductQuantifiedAssociationsByProductIdentifiers $getProductQuantifiedAssociationsByProductIdentifiers,
         private GetProductModelQuantifiedAssociationsByProductIdentifiers $getProductModelQuantifiedAssociationsByProductIdentifiers,
         private GetCategoryCodesByProductUuids $getCategoryCodesByProductUuids,
@@ -91,7 +91,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
 
         $rows = array_replace_recursive(
             $valuesAndProperties,
-            $this->fetchAssociationsIndexedByProductIdentifier($productIdentifiers),
+            $this->fetchAssociationsIndexedByProductUuids($productUuids),
             $this->fetchQuantifiedAssociationsIndexedByProductIdentifier($productIdentifiers),
             $this->fetchCategoryCodesIndexedByProductUuids($productUuids)
         );
@@ -213,28 +213,17 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         return $categoryCodes;
     }
 
-    private function fetchAssociationsIndexedByProductIdentifier(array $identifiers): array
+    private function fetchAssociationsIndexedByProductUuids(array $uuids): array
     {
-        $productAssociations = $this->replaceUuidKeysByIdentifiers(
-            $this->getProductAssociationsByProductUuids->fetchByProductUuids(
-                $this->getProductUuidsFromProductIdentifiers($identifiers)
-            )
-        );
-
-        $productModelAssociations = $this->replaceUuidKeysByIdentifiers(
-            $this->getProductModelAssociationsByProductUuids->fetchByProductUuids(
-                $this->getProductUuidsFromProductIdentifiers($identifiers)
-            )
-        );
-
         $associations = array_replace_recursive(
-            $productAssociations,
-            $productModelAssociations,
-            $this->getGroupAssociationsByProductIdentifiers->fetchByProductIdentifier($identifiers)
+            $this->getProductAssociationsByProductUuids->fetchByProductUuids($uuids),
+            $this->getProductModelAssociationsByProductUuids->fetchByProductUuids($uuids),
+            $this->getGroupAssociationsByProductUuids->fetchByProductUuids($uuids)
         );
+        $associationsByIdentifiers = $this->replaceUuidKeysByIdentifiers($associations);
 
         $associationsIndexedByIdentifier = [];
-        foreach ($associations as $identifier => $association) {
+        foreach ($associationsByIdentifiers as $identifier => $association) {
             $associationsIndexedByIdentifier[$identifier]['associations'] = $association;
         }
 
