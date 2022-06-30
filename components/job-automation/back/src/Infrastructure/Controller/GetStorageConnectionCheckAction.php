@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Controller;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck\StorageConnectionCheckHandler;
 use Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck\StorageConnectionCheckQuery;
 use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage;

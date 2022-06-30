@@ -54,16 +54,11 @@ final class GetStorageConnectionCheckActionTest extends ControllerIntegrationTes
             self::ROUTE,
             [],
             'POST',
-            [],µ
+            [],
             '{"type": "sftp","file_path": "import_%job_label%_%datetime%.xlsx","host": "127.0.0.1","port": 22, "username": "foo", "password": "bar"}'
         );
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $response = \json_decode($response->getContent(), true);
-        $this->assertEqualsCanonicalizing([
-            "is_connection_healthy" => false,
-            "error_message" => "Cannot connect to 127.0.0.1:22. Error 111. Connection refused"
-        ], $response);
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     protected function getConfiguration(): Configuration
