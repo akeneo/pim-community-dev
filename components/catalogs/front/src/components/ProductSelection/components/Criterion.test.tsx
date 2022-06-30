@@ -1,5 +1,3 @@
-import {ProductSelectionActions} from '../reducers/ProductSelectionReducer';
-
 jest.unmock('./Criterion');
 
 import React from 'react';
@@ -13,6 +11,7 @@ import {Operator} from '../models/Operator';
 import {useCriteriaRegistry} from '../criteria/useCriteriaRegistry';
 import {AnyCriterion, AnyCriterionState} from '../models/Criterion';
 import {ProductSelectionContext} from '../contexts/ProductSelectionContext';
+import {ProductSelectionActions} from '../reducers/ProductSelectionReducer';
 
 const mockGetCriterionByField = () =>
     Promise.resolve({

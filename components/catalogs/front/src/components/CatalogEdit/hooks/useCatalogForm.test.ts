@@ -1,3 +1,6 @@
+jest.unmock('./useCatalogForm');
+jest.unmock('../reducers/CatalogFormReducer');
+
 import {CatalogFormActions} from '../reducers/CatalogFormReducer';
 import {act, renderHook} from '@testing-library/react-hooks';
 import {mocked} from 'ts-jest/utils';
@@ -5,9 +8,6 @@ import {Operator} from '../../ProductSelection/models/Operator';
 import {useCatalogForm} from './useCatalogForm';
 import {useCatalog} from './useCatalog';
 import {SaveCatalog, useSaveCatalog} from './useSaveCatalog';
-
-jest.unmock('./useCatalogForm');
-jest.unmock('../reducers/CatalogFormReducer');
 
 test('it returns a placeholder when loading', () => {
     mocked(useCatalog).mockImplementation(() => ({

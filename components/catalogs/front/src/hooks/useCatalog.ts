@@ -4,6 +4,7 @@ type Data = {
     id: string;
     name: string;
     enabled: boolean;
+    owner_username: string;
 };
 type Error = string | null;
 type Result = {
