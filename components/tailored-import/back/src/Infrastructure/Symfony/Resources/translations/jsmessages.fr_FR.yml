@@ -109,7 +109,6 @@ akeneo.tailored_import:
       does_not_exist: Le fichier "{{ file_key }}" n'a pas été trouvé.
     uploaded_file:
       max_size: Le fichier est trop volumineux. Sa taille ne doit pas dépasser {{ limit }} {{ suffix }}.
-      not_allowed_mime_type: Le fichier doit être une feuille de calcul Excel.
     file_structure:
       first_product_row_should_be_after_header_row: La première colonne produit doit être située après la ligne d'en-tête.
       unique_identifier_column_should_be_after_first_column_message: La colonne de l'identifiant unique doit être située au moins après la première colonne.
