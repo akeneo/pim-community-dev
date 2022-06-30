@@ -6,7 +6,7 @@ namespace Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAcc
 
 final class ResetPasswordRequested
 {
-    public function __construct(public string $contributorAccountEmail)
+    public function __construct(public string $contributorAccountEmail, public string $accessToken)
     {
     }
 }
