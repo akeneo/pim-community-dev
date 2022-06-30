@@ -23,6 +23,7 @@ $rules = [
         [
             'Webmozart\Assert\Assert',
             'Akeneo\Platform\JobAutomation\Domain',
+            'Akeneo\Platform\Bundle\ImportExportBundle\Domain'
         ],
     )->in('Akeneo\Platform\JobAutomation\Application'),
     $builder->only(
@@ -38,6 +39,7 @@ $rules = [
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
             'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure',
             'Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage',
+            'Akeneo\Platform\JobAutomation\Application',
 
             'League\Flysystem\Filesystem',
             'League\Flysystem\PhpseclibV2',
