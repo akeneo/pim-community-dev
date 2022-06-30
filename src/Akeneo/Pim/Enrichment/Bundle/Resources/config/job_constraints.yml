@@ -107,6 +107,7 @@ services:
             -
                 - 'csv_product_quick_export'
                 - 'csv_product_grid_context_quick_export'
+            - 'csv'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -125,6 +126,7 @@ services:
             -
                 - 'xlsx_product_quick_export'
                 - 'xlsx_product_grid_context_quick_export'
+            - 'xlsx'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 

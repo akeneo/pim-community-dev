@@ -41,7 +41,7 @@ final class DownloadFileFromStorageBeforeImportSubscriber implements EventSubscr
     {
         $jobExecution = $event->getJobExecution();
 
-        if (!$this->remoteStorageFeatureFlag->isEnabled($jobExecution->getJobInstance()->getJobName())) {
+        if (!$this->remoteStorageFeatureFlag->isEnabled()) {
             return;
         }
 
@@ -63,6 +63,10 @@ final class DownloadFileFromStorageBeforeImportSubscriber implements EventSubscr
 
         $outputFilePath = $this->downloadFileFromStorageHandler->handle($command);
 
-        $jobExecution->getJobParameters()->set('filePath', $outputFilePath);
+        $storage = [
+            'type' => 'local',
+            'file_path' => $outputFilePath,
+        ];
+        $jobExecution->getJobParameters()->set('storage', $storage);
     }
 }

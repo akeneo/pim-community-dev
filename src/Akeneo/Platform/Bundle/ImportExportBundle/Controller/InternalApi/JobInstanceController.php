@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
@@ -305,21 +306,21 @@ class JobInstanceController
             }
 
             $rawParameters = $jobInstance->getRawParameters();
-            $rawParameters['filePath'] = $jobFileLocation->url();
-            if ($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
-                $rawParameters['storage'] = [
-                    'type' => ManualUploadStorage::TYPE,
-                    'file_path' => $jobFileLocation->path(),
-                ];
-            }
+            $filePath = $this->remoteStorageFeatureFlag->isEnabled() ? $jobFileLocation->path() : $jobFileLocation->isRemote();
+            $rawParameters['storage'] = [
+                'type' => ManualUploadStorage::TYPE,
+                'file_path' => $filePath,
+            ];
 
             $jobInstance->setRawParameters($rawParameters);
         }
 
-        /* TODO remove it when we will migrate to storage unification */
-        if ($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
-            $rawParameters = $jobInstance->getRawParameters();
-            $rawParameters['filePath'] = '/tmp/fake_path.xlsx';
+        $rawParameters = $jobInstance->getRawParameters();
+        if(NoneStorage::TYPE === $rawParameters['storage']['type']) {
+            $rawParameters['storage'] = [
+                'type' => 'local',
+                'file_path' => $this->getDefaultFilePath($jobInstance->getType())
+            ];
             $jobInstance->setRawParameters($rawParameters);
         }
 
@@ -559,5 +560,10 @@ class JobInstanceController
     private function isFileUpload(Request $request): bool
     {
         return $request->server->get('CONTENT_LENGTH') > 0;
+    }
+
+    private function getDefaultFilePath(string $jobType): string
+    {
+        return sprintf('%s%s%s_%s_%s.csv', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $jobType, '%job_label%', '%datetime%');
     }
 }

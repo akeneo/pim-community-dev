@@ -73,7 +73,7 @@ class JobInstancesBuilder
             $yamlReader = $this->getYamlReader();
             $realPath = $fileLocator->locate('@' . $jobsFilePath);
             $jobExecution = new JobExecution();
-            $jobParameters = new JobParameters(['filePath' => $realPath]);
+            $jobParameters = new JobParameters(['storage' => ['type' => 'local', 'file_path' => $realPath]]);
             $jobExecution->setJobParameters($jobParameters);
             $stepExecution = new StepExecution('reader', $jobExecution);
             $yamlReader->setStepExecution($stepExecution);

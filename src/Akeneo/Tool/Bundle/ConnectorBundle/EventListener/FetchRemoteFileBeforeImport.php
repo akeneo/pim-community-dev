@@ -44,19 +44,19 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
     {
         $jobExecution = $event->getJobExecution();
 
-        if ($this->remoteStorageFeatureFlag->isEnabled($jobExecution->getJobInstance()->getJobName())) {
+        if ($this->remoteStorageFeatureFlag->isEnabled()) {
             return;
         }
 
         $jobParameters = $jobExecution->getJobParameters();
 
         if (null === $jobParameters ||
-            !$jobParameters->has('filePath') ||
+            !$jobParameters->has('storage') ||
             JobInstance::TYPE_IMPORT !== $jobExecution->getJobInstance()->getType()) {
             return;
         }
 
-        $jobFileLocation = JobFileLocation::parseUrl($jobParameters->get('filePath'));
+        $jobFileLocation = JobFileLocation::parseUrl($jobParameters->get('storage')['file_path']);
 
         if (true === $jobFileLocation->isRemote()) {
             $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
@@ -68,7 +68,11 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
             file_put_contents($localFilePath, $remoteStream);
             fclose($remoteStream);
 
-            $jobParameters->set('filePath', $localFilePath);
+            $storage = [
+                'type' => 'local',
+                'file_path' => $localFilePath
+            ];
+            $jobParameters->set('storage', $storage);
         }
     }
 }

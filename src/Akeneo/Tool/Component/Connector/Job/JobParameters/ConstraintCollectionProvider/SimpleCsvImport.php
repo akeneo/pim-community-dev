@@ -2,12 +2,11 @@
 
 namespace Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileExtension;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -39,15 +38,7 @@ class SimpleCsvImport implements ConstraintCollectionProviderInterface
         return new Collection(
             [
                 'fields' => [
-                    'filePath' => [
-                        new NotBlank(['groups' => ['Execution', 'UploadExecution']]),
-                        new FileExtension(
-                            [
-                                'allowedExtensions' => ['csv', 'zip'],
-                                'groups'            => ['Execution', 'UploadExecution']
-                            ]
-                        )
-                    ],
+                    'storage'   => new Storage(['csv']),
                     'delimiter' => [
                         new NotBlank(),
                         new Choice(
@@ -72,10 +63,6 @@ class SimpleCsvImport implements ConstraintCollectionProviderInterface
                     ],
                     'withHeader'    => new Type('bool'),
                     'escape'        => new NotBlank(),
-                    'uploadAllowed' => [
-                        new Type('bool'),
-                        new IsTrue(['groups' => 'UploadExecution']),
-                    ],
                     'invalid_items_file_format' => new NotBlank(),
                     'user_to_notify' => new Type('string'),
                     'is_user_authenticated' => new Type('bool'),

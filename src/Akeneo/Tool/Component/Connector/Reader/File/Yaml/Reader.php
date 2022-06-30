@@ -130,7 +130,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
     protected function getFileData()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('filePath');
+        $filePath = $jobParameters->get('storage')['file_path'];
         $fileContent = file_get_contents($filePath);
         if (false !== $fileContent) {
             if (null !== $this->stepExecution) {
