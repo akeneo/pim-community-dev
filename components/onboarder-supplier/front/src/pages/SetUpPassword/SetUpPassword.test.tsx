@@ -33,6 +33,7 @@ test('it renders password type inputs', async () => {
 
     expect(passwordInput).toHaveAttribute('type', 'password');
     expect(confirmPasswordInput).toHaveAttribute('type', 'password');
+    expect(screen.queryAllByTestId('password-rule-is-valid')).toHaveLength(0);
 });
 
 test('it does not enable submit button if the password does not contain 8 characters', async () => {
@@ -46,6 +47,7 @@ test('it does not enable submit button if the password does not contain 8 charac
 
     let submitButton = screen.getByTestId('submit-button');
     expect(submitButton).toBeDisabled();
+    expect(screen.queryAllByTestId('password-rule-is-valid')).toHaveLength(4);
 });
 
 test('it does not enable submit button if the password does not contain at least an uppercase letter', async () => {
@@ -59,6 +61,7 @@ test('it does not enable submit button if the password does not contain at least
 
     let submitButton = screen.getByTestId('submit-button');
     expect(submitButton).toBeDisabled();
+    expect(screen.queryAllByTestId('password-rule-is-valid')).toHaveLength(4);
 });
 
 test('it does not enable submit button if the password does not contain at least a lowercase letter', async () => {
@@ -72,6 +75,7 @@ test('it does not enable submit button if the password does not contain at least
 
     let submitButton = screen.getByTestId('submit-button');
     expect(submitButton).toBeDisabled();
+    expect(screen.queryAllByTestId('password-rule-is-valid')).toHaveLength(4);
 });
 
 test('it does not enable submit button if the password does not contain at least a number', async () => {
@@ -85,6 +89,7 @@ test('it does not enable submit button if the password does not contain at least
 
     let submitButton = screen.getByTestId('submit-button');
     expect(submitButton).toBeDisabled();
+    expect(screen.queryAllByTestId('password-rule-is-valid')).toHaveLength(4);
 });
 
 test('it enables submit button if passwords are equal and match requirements', async () => {
@@ -98,6 +103,7 @@ test('it enables submit button if passwords are equal and match requirements', a
 
     let submitButton = screen.getByTestId('submit-button');
     expect(submitButton).toBeEnabled();
+    expect(screen.queryAllByTestId('password-rule-is-valid')).toHaveLength(5);
 });
 
 test('it renders the request new invitation page if the access token is expired', async () => {

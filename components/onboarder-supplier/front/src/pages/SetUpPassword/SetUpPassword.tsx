@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {ReactElement, useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {Button, Field, getColor, Helper, TextInput} from 'akeneo-design-system';
+import {AkeneoThemedProps, Button, CheckIcon, Field, getColor, Helper, TextInput} from 'akeneo-design-system';
 import {PasswordInput} from './components/PasswordInput';
 import {OnboarderLogo, UnauthenticatedContainer} from '../../components';
 import {FormattedMessage, useIntl} from 'react-intl';
@@ -103,21 +103,21 @@ const SetUpPassword = () => {
                             id="kpFvB9"
                         />
                     </p>
-                    <p>
+                    <PasswordRule isValid={8 <= password.length}>
                         <FormattedMessage defaultMessage="At least 8 characters" id="YwMziN" />
-                    </p>
-                    <p>
+                    </PasswordRule>
+                    <PasswordRule isValid={/[A-Z]/.test(password)}>
                         <FormattedMessage defaultMessage="At least an uppercase letter" id="67ZuXt" />
-                    </p>
-                    <p>
+                    </PasswordRule>
+                    <PasswordRule isValid={/[a-z]/.test(password)}>
                         <FormattedMessage defaultMessage="At least a lowercase letter" id="PTGASZ" />
-                    </p>
-                    <p>
+                    </PasswordRule>
+                    <PasswordRule isValid={/[0-9]/.test(password)}>
                         <FormattedMessage defaultMessage="At least a number" id="nAsEaE" />
-                    </p>
-                    <p>
+                    </PasswordRule>
+                    <PasswordRule isValid={'' !== password && password === passwordConfirmation}>
                         <FormattedMessage defaultMessage="Correct confirmation" id="XurM/d" />
-                    </p>
+                    </PasswordRule>
                 </PasswordRequirements>
                 <Button
                     data-testid="submit-button"
@@ -131,6 +131,23 @@ const SetUpPassword = () => {
         </UnauthenticatedContainer>
     );
 };
+
+const PasswordRule = ({isValid, children}: {isValid: boolean; children: ReactElement}) => {
+    return (
+        <PasswordRuleContainer isValid={isValid}>
+            {isValid && <CheckIcon size={16} data-testid="password-rule-is-valid" />}
+            {children}
+        </PasswordRuleContainer>
+    );
+};
+
+const PasswordRuleContainer = styled.div<{isValid: boolean} & AkeneoThemedProps>`
+    color: ${({isValid}) => getColor(isValid ? 'green100' : 'grey120')};
+    margin-top: 15px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+`;
 
 const WelcomeText = styled.div`
     margin: 30px 0 30px 0;
@@ -151,9 +168,6 @@ const PasswordRequirements = styled.div`
 
     p:first-child {
         color: ${getColor('grey140')};
-    }
-    p:not(:first-child) {
-        margin-top: 15px;
     }
 `;
 
