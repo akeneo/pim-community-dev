@@ -32,7 +32,7 @@ test('connection healthy', async () => {
 
 test('connection not healthy return error_message', async () => {
   global.fetch = jest.fn().mockImplementation(async () => ({
-    ok: false
+    ok: false,
   }));
   const storage: SftpStorage = {
     type: 'sftp',
