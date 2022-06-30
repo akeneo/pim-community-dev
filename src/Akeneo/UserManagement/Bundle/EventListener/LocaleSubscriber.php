@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\EventListener;
 
 use Akeneo\UserManagement\Component\Event\UserEvent;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
@@ -73,6 +74,10 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
     {
         $user = $event->getAuthenticationToken()->getUser();
+
+        if (!$user instanceof UserInterface) {
+            return;
+        }
 
         $event->getRequest()->getSession()->remove('dataLocale');
         $event->getRequest()->getSession()->set('_locale', $user->getUiLocale()->getCode());
