@@ -78,4 +78,20 @@ class JobProfileVoterSpec extends ObjectBehavior
             ->vote($token, $jobProfile, [Attributes::EXECUTE])
             ->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
+
+    /** TODO: Do not pull-up it into master (https://github.com/akeneo/pim-enterprise-dev/pull/14184) */
+    function it_returns_granted_access_on_asset_manager_job_instance_without_permission(
+        $accessManager,
+        $token,
+        JobInstance $jobProfile,
+        UserInterface $user
+    ) {
+        $token->getUser()->willReturn($user);
+        $jobProfile->getJobName()->willReturn('asset_manager_execute_naming_convention');
+        $accessManager->getExecuteUserGroups($jobProfile)->willReturn([]);
+
+        $this
+            ->vote($token, $jobProfile, [Attributes::EXECUTE])
+            ->shouldReturn(VoterInterface::ACCESS_GRANTED);
+    }
 }
