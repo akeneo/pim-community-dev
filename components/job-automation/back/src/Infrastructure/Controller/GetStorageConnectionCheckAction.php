@@ -17,6 +17,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck\StorageConnectionCheckHandler;
 use Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck\StorageConnectionCheckQuery;
+use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +43,7 @@ final class GetStorageConnectionCheckAction
 
         $data = json_decode($request->getContent(), true);
 
-        $violations = $this->validator->validate($data, new Storage(['xlsx', 'xls']));
+        $violations = $this->validator->validate($data, new SftpStorage(['xlsx']));
         if (0 < $violations->count()) {
             return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
