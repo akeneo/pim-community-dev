@@ -14,7 +14,8 @@ define([
   'pim/template/product/start-copy',
   'pim/analytics',
   'pim/feature-flags',
-], function ($, _, __, BaseForm, template, analytics, FeatureFlags) {
+  '@akeneo-pim-community/product'
+], function ($, _, __, BaseForm, template, analytics, FeatureFlags, {CompareTranslateButton}) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'AknDropdown-menuLink start-copying',
@@ -22,6 +23,7 @@ define([
       click: 'startCopy',
     },
     isCopying: false,
+    buttonDisabled: false,
 
     /**
      * {@inheritdoc}
@@ -37,6 +39,19 @@ define([
      */
     render() {
       if (FeatureFlags.isEnabled('free_trial')) {
+        this.renderReact(
+          CompareTranslateButton,
+          {
+            onClick: () => {
+              this.startCopy();
+              this.buttonDisabled = true;
+              this.render();
+            },
+            disabled: this.buttonDisabled,
+          },
+          this.el
+        );
+
         return this;
       }
 
@@ -65,6 +80,10 @@ define([
      * Stops the copy and re-display the button
      */
     stopCopy() {
+      if (FeatureFlags.isEnabled('free_trial')) {
+        this.buttonDisabled = false;
+      }
+
       this.isCopying = false;
       this.render();
     },
