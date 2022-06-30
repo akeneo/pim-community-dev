@@ -139,8 +139,7 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.enrichment.product.query.get_values_and_properties_from_product_identifiers:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductIdentifiers'
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductUuids:
         arguments:
             - '@database_connection'
 
@@ -231,7 +230,7 @@ services:
     akeneo.pim.enrichment.product.connector.get_product_from_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProducts'
         arguments:
-            $getValuesAndPropertiesFromProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_values_and_properties_from_product_identifiers'
+            $getValuesAndPropertiesFromProductUuids: '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductUuids'
             $getProductModelAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_model_associations_by_product_identifiers'
             $getGroupAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_group_associations_by_product_identifiers'
             $getProductAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers'

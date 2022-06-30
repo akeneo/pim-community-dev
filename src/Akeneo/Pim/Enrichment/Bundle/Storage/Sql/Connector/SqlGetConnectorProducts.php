@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetGroupAssocia
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssociationsByProductIdentifiers;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductModelAssociationsByProductIdentifiers;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductUuids;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductIdentifiers;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
@@ -30,7 +30,7 @@ use Ramsey\Uuid\UuidInterface;
 class SqlGetConnectorProducts implements Query\GetConnectorProducts
 {
     public function __construct(
-        private GetValuesAndPropertiesFromProductIdentifiers $getValuesAndPropertiesFromProductIdentifiers,
+        private GetValuesAndPropertiesFromProductUuids $getValuesAndPropertiesFromProductUuids,
         private GetProductAssociationsByProductIdentifiers $getProductAssociationsByProductIdentifiers,
         private GetProductModelAssociationsByProductIdentifiers $getProductModelAssociationsByProductIdentifiers,
         private GetGroupAssociationsByProductIdentifiers $getGroupAssociationsByProductIdentifiers,
@@ -85,8 +85,12 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
 
         $productUuids = $this->getProductUuidsFromProductIdentifiers($productIdentifiers);
 
+        $valuesAndProperties = $this->replaceUuidKeysByIdentifiers(
+            $this->getValuesAndPropertiesFromProductUuids->fetchByProductUuids($productUuids)
+        );
+
         $rows = array_replace_recursive(
-            $this->getValuesAndPropertiesFromProductIdentifiers->fetchByProductIdentifiers($productIdentifiers),
+            $valuesAndProperties,
             $this->fetchAssociationsIndexedByProductIdentifier($productIdentifiers),
             $this->fetchQuantifiedAssociationsIndexedByProductIdentifier($productIdentifiers),
             $this->fetchCategoryCodesIndexedByProductUuids($productUuids)
