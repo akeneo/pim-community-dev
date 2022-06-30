@@ -18,3 +18,4 @@ akeneo.job_automation:
       unsupported_extension: Unsupported file extension
   connection_checker:
     label: check the reliability
+    exception: Connection can't be established, check your parameters

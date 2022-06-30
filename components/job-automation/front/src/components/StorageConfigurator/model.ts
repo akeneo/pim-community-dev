@@ -41,10 +41,5 @@ type StorageConnectionCheckerProps = {
   storage: Storage;
 };
 
-type ConnectionCheck = {
-  is_connection_healthy: boolean;
-  error_message: string | null;
-};
-
-export type {StorageConfiguratorProps, StorageConnectionCheckerProps, ConnectionCheck};
+export type {StorageConfiguratorProps, StorageConnectionCheckerProps};
 export {isLocalStorage, isSftpStorage, getStorageConfigurator};

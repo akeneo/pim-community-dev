@@ -54,14 +54,9 @@ final class GetStorageConnectionCheckAction
                 $storage,
             ));
 
-            return new JsonResponse([
-                'is_connection_healthy' => true,
-            ]);
+            return new JsonResponse([], Response::HTTP_OK);
         } catch (\Exception $exception) {
-            return new JsonResponse([
-                'is_connection_healthy' => false,
-                'error_message' => $exception->getMessage(),
-            ]);
+            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
     }
 }

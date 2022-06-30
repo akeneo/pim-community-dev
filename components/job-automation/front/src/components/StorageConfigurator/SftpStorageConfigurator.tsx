@@ -72,17 +72,17 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
             onClick={() => {
               checkReliability();
             }}
-            disabled={(check && check.is_connection_healthy) || isChecking}
+            disabled={check || isChecking}
             level="primary"
           >
             {translate('akeneo.automation.connection_checker.label')}
           </Button>
-          {check && check.is_connection_healthy ? <CheckIcon color={pimTheme.color.green100} /> : ''}
+          {check ? <CheckIcon color={pimTheme.color.green100} /> : ''}
         </CheckStorageConnetion>
         <>
-          {check && !check.is_connection_healthy ? (
+          {(undefined !== check && !check) ? (
             <Helper inline level="error">
-              {check.error_message}
+              {translate('akeneo.job_automation.connection_checker.exception')}
             </Helper>
           ) : (
             ''
