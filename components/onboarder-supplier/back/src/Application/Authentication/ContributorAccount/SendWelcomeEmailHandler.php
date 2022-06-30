@@ -21,7 +21,7 @@ class SendWelcomeEmailHandler
         $emailContent = ($this->buildWelcomeEmail)($command->accessToken, $command->email);
 
         $email = new Email(
-            "You've received an invitation to contribute to onboarder",
+            'You\'ve received an invitation to contribute to Onboarder',
             $emailContent->htmlContent,
             $emailContent->textContent,
             'noreply@akeneo.com',
