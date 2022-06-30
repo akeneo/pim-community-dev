@@ -1,43 +1,23 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Field, Helper, NumberInput, Button, CheckIcon, pimTheme} from 'akeneo-design-system';
-import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
-import {StorageConfiguratorProps, isSftpStorage, ConnectionCheck} from './model';
-import {LocalStorage, NoneStorage, SftpStorage} from '../model';
-import {useRoute} from '@akeneo-pim-community/shared/lib/hooks/useRoute';
+import {TextField, useTranslate, filterErrors, ValidationError} from '@akeneo-pim-community/shared';
+import {StorageConfiguratorProps, isSftpStorage} from './model';
 import styled from 'styled-components';
+import {useCheckStorageConnection} from "../../hooks/useCheckStorageConnection";
 
-const Wrapper = styled.div`
+const CheckStorageConnetion = styled.div`
   display: flex;
   align-items: center;
   gap: 8.5px;
 `;
+
 const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: StorageConfiguratorProps) => {
   if (!isSftpStorage(storage)) {
     throw new Error(`Invalid storage type "${storage.type}" for sftp storage configurator`);
   }
   const translate = useTranslate();
-  const route = useRoute('pimee_job_automation_get_storage_connection_check');
   const portValidationErrors = filterErrors(validationErrors, '[port]');
-  const [check, setCheck] = useState<ConnectionCheck>();
-  const [isChecking, setIsChecking] = useState<boolean>(false);
-
-  const checkData = async (storage: LocalStorage | SftpStorage | NoneStorage) => {
-    setIsChecking(true);
-    const response = await fetch(route, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-      body: JSON.stringify(storage),
-    });
-
-    if (response.ok) {
-      const data: ConnectionCheck = await response.json();
-      setCheck(data);
-    }
-    setIsChecking(false);
-  };
+  const [check, setCheck, isChecking, checkReliability] = useCheckStorageConnection();
 
   return (
     <>
@@ -45,14 +25,14 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         required={true}
         value={storage.file_path}
         label={translate('akeneo.job_automation.storage.file_path.label')}
-        onChange={file_path => onStorageChange({...storage, file_path})}
+        onChange={(file_path: string) => onStorageChange({...storage, file_path})}
         errors={filterErrors(validationErrors, '[file_path]')}
       />
       <TextField
         required={true}
         value={storage.host}
         label={translate('akeneo.job_automation.storage.host.label')}
-        onChange={host => {
+        onChange={(host: string) => {
           onStorageChange({...storage, host});
           setCheck(undefined);
         }}
@@ -64,14 +44,14 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         <NumberInput
           min={1}
           max={65535}
-          onChange={port => {
+          onChange={(port: string) => {
             onStorageChange({...storage, port: parseInt(port, 10)});
             setCheck(undefined);
           }}
           invalid={0 < portValidationErrors.length}
           value={storage.port.toString()}
         />
-        {portValidationErrors.map((error, key) => (
+        {portValidationErrors.map((error: ValidationError, key: number) => (
           <Helper key={key} level="error" inline={true}>
             {translate(error.messageTemplate, error.parameters, error.plural)}
           </Helper>
@@ -99,10 +79,10 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         errors={filterErrors(validationErrors, '[password]')}
       />
       <>
-        <Wrapper>
+        <CheckStorageConnetion>
           <Button
             onClick={() => {
-              checkData(storage);
+                checkReliability(storage);
             }}
             disabled={(check && check.is_connection_healthy) || isChecking}
             level="primary"
@@ -110,7 +90,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
             {translate('akeneo.automation.connection_checker.label')}
           </Button>
           {check && check.is_connection_healthy ? <CheckIcon color={pimTheme.color.green100} /> : ''}
-        </Wrapper>
+        </CheckStorageConnetion>
         <>
           {check && !check.is_connection_healthy ? (
             <Helper inline level="error">
