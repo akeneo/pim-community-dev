@@ -50,6 +50,7 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
 
     public function build(BulkEventInterface $bulkEvent, Context $context): EventDataCollection
     {
+        // TODO CPM-676 Change this once GetConnectorProduct is done by Uuids
         $products = $this->getConnectorProducts(
             $this->getProductIdentifiers($bulkEvent->getEvents()),
             $context->getUserId()
@@ -59,10 +60,10 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
 
         /** @var ProductCreated|ProductUpdated $event */
         foreach ($bulkEvent->getEvents() as $event) {
-            $product = $products[$event->getIdentifier()] ?? null;
+            $product = $products[$event->getProductUuid()->toString()] ?? null;
 
             if (null === $product) {
-                $collection->setEventDataError($event, new ProductNotFoundException($event->getIdentifier()));
+                $collection->setEventDataError($event, new ProductNotFoundException($event->getProductUuid()));
 
                 continue;
             }
@@ -94,7 +95,7 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
     /**
      * @param string[] $identifiers
      *
-     * @return array<string, (ConnectorProduct|null)>
+     * @return array<string, ConnectorProduct>
      */
     private function getConnectorProducts(array $identifiers, int $userId): array
     {
@@ -102,9 +103,9 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
             ->fromProductIdentifiers($identifiers, $userId, null, null, null)
             ->connectorProducts();
 
-        $products = array_fill_keys($identifiers, null);
+        $products = [];
         foreach ($result as $product) {
-            $products[$product->identifier()] = $product;
+            $products[$product->uuid()->toString()] = $product;
         }
 
         return $products;
