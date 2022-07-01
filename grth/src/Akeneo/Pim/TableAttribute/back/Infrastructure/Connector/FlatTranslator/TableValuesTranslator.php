@@ -16,6 +16,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 class TableValuesTranslator
 {
@@ -28,7 +29,7 @@ class TableValuesTranslator
     }
 
     /**
-     * @param array $items for example:
+     * @param array<string[]> $items for example:
      *  [
      *      {
      *          "product": "foo",
@@ -51,8 +52,11 @@ class TableValuesTranslator
      */
     public function translate(array $items, string $localeCode, bool $headerWithLabel): array
     {
+        Assert::allIsArray($items);
         $attributeCodes = [];
         foreach ($items as $index => $item) {
+            Assert::isMap($item);
+            Assert::allString($item);
             $attributeParts = \explode('-', $item['attribute']);
             $attributeCodes[$index] = $attributeParts[0];
             $items[$index] = $this->translateItem($item, $localeCode);
@@ -60,7 +64,7 @@ class TableValuesTranslator
 
         return $headerWithLabel ? $this->translateWithHeaderLabel($items, $localeCode, $attributeCodes) : $items;
     }
-    
+
     private function translateWithHeaderLabel(array $items, string $localeCode, array $attributeCodes): array
     {
         $extraColumnTranslations = [
@@ -105,7 +109,7 @@ class TableValuesTranslator
             $item[$column] = match ($column) {
                 'product', 'product_model' => $value,
                 'attribute' => $this->attributeTranslator->translate($value, $localeCode),
-                default => $this->tableValueTranslatorRegistry->translate($attributeCode, $column, $localeCode, $value),
+                default => $this->tableValueTranslatorRegistry->translate($attributeCode, (string) $column, $localeCode, $value),
             };
         }
 

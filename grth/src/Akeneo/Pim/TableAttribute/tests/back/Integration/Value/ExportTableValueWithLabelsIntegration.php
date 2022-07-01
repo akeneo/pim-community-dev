@@ -36,7 +36,7 @@ final class ExportTableValueWithLabelsIntegration extends TestCase
         $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, $config);
         $expectedContent = <<<CSV
 SKU;Categories;Enabled;Family;Groups;Nutrition
-toto;"Master catalog";Yes;;;"[{""Ingredients"":""Salt"",""Is allergenic"":""No""},{""Ingredients"":""[egg]"",""Quantity"":2},{""Ingredients"":""[butter]"",""Quantity"":25,""Is allergenic"":""Yes""}]"
+toto;"Master catalog";Yes;;;"[{""Ingredients"":""Salt"",""Is allergenic"":""No""},{""Ingredients"":""[egg]"",""Quantity"":""2""},{""Ingredients"":""[butter]"",""Quantity"":""25"",""Is allergenic"":""Yes"",""Energy"":""3.5 kilocalorie""}]"
 
 CSV;
         Assert::assertSame($expectedContent, $csv);
@@ -49,7 +49,7 @@ CSV;
         $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, $config);
         $expectedContent = <<<CSV
 [sku];Catégories;Activé;Famille;Groupes;[nutrition]
-toto;[master];Oui;;;"[{""Ingredients"":""Sel"",""[is_allergenic]"":""Non""},{""Ingredients"":""[egg]"",""Quantité"":2},{""Ingredients"":""[butter]"",""Quantité"":25,""[is_allergenic]"":""Oui""}]"
+toto;[master];Oui;;;"[{""Ingredients"":""Sel"",""[is_allergenic]"":""Non""},{""Ingredients"":""[egg]"",""Quantité"":""2""},{""Ingredients"":""[butter]"",""Quantité"":""25"",""[is_allergenic]"":""Oui"",""[2]"":""3.5 kilocalorie""}]"
 
 CSV;
         Assert::assertSame($expectedContent, $csv);
@@ -74,7 +74,7 @@ CSV;
         }
         $header = \array_shift($lines);
 
-        $expectedNutritionValue = '[{"Ingredients":"Salt","Is allergenic":"No"},{"Ingredients":"[egg]","Quantity":2},{"Ingredients":"[butter]","Quantity":25,"Is allergenic":"Yes"}]';
+        $expectedNutritionValue = '[{"Ingredients":"Salt","Is allergenic":"No"},{"Ingredients":"[egg]","Quantity":"2"},{"Ingredients":"[butter]","Quantity":"25","Is allergenic":"Yes","Energy":"3.5 kilocalorie"}]';
 
         Assert::assertCount(1, $lines);
         foreach ($lines as $row) {
@@ -160,6 +160,15 @@ CSV;
                             'en_US' => 'Is allergenic',
                         ],
                     ],
+                    [
+                        'code' => '2',
+                        'data_type' => 'measurement',
+                        'labels' => [
+                            'en_US' => 'Energy',
+                        ],
+                        'measurement_family_code' => 'Energy',
+                        'measurement_default_unit_code' => 'KILOCALORIE',
+                    ],
                 ],
             ]
         );
@@ -170,7 +179,7 @@ CSV;
         $this->createProduct('toto', [
             ['ingredient' => 'salt', 'is_allergenic' => false],
             ['ingredient' => 'egg', 'quantity' => 2],
-            ['ingredient' => 'butter', 'quantity' => 25, 'is_allergenic' => true],
+            ['ingredient' => 'butter', 'quantity' => 25, 'is_allergenic' => true, '2' => ['amount' => 3.5, 'unit' => 'KILOCALORIE']],
         ]);
     }
 

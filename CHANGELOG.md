@@ -52,6 +52,7 @@
 - GRF-63: Fix calculation on TWA projects with completeness filter
 - PIM-10479: Fix Rule engine concatenate action does not handle properly case-sensitivity for option codes
 - PIM-10493: Fix Rule engine datagrid sorting
+- PIM-10507: Fix product export with labels when a table attribute contains a measurement column
 
 ## Improvements
 

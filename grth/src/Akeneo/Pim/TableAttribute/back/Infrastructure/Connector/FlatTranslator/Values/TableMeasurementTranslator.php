@@ -15,7 +15,6 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Valu
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 use Webmozart\Assert\Assert;
 
@@ -30,12 +29,13 @@ class TableMeasurementTranslator implements TableValueTranslator
         return MeasurementColumn::DATATYPE;
     }
 
-    public function translate(string $attributeCode, ColumnDefinition $column, string $localeCode, mixed $value): string
+    public function translate(string $attributeCode, ColumnDefinition $column, string $localeCode, string $value): string
     {
         Assert::isInstanceOf($column, MeasurementColumn::class);
-        Assert::string($value);
 
-        preg_match('/^(?P<amount>([^ ]+)) (?P<unit>.*)$/', $value, $explodedValue);
+        if (1 !== \preg_match('/^(?P<amount>([^ ]+)) (?P<unit>[^ ]+)$/', $value, $explodedValue)) {
+            return $value;
+        }
         $amount = $explodedValue['amount'];
         $unit = $explodedValue['unit'];
 

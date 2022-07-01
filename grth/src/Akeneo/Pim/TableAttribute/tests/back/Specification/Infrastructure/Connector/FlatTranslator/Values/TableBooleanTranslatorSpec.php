@@ -55,16 +55,16 @@ class TableBooleanTranslatorSpec extends ObjectBehavior
     {
         $booleanColumn = BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']);
 
-        $this->translate('nutrition', $booleanColumn, 'en_US', true)->shouldReturn('Yes');
-        $this->translate('nutrition', $booleanColumn, 'fr_FR', true)->shouldReturn('Oui');
+        $this->translate('nutrition', $booleanColumn, 'en_US', '1')->shouldReturn('Yes');
+        $this->translate('nutrition', $booleanColumn, 'fr_FR', '1')->shouldReturn('Oui');
     }
 
     function it_translates_false_value()
     {
         $booleanColumn = BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']);
 
-        $this->translate('nutrition', $booleanColumn, 'en_US', false)->shouldReturn('No');
-        $this->translate('nutrition', $booleanColumn, 'fr_FR', false)->shouldReturn('Non');
+        $this->translate('nutrition', $booleanColumn, 'en_US', '0')->shouldReturn('No');
+        $this->translate('nutrition', $booleanColumn, 'fr_FR', '0')->shouldReturn('Non');
     }
 
     function it_translates_string_values()
