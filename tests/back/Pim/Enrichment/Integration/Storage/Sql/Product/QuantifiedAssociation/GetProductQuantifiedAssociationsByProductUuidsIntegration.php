@@ -8,6 +8,8 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetPr
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\AbstractQuantifiedAssociationIntegration;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class GetProductQuantifiedAssociationsByProductUuidsIntegration extends AbstractQuantifiedAssociationIntegration
 {
@@ -62,7 +64,7 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
         $uuidProductC = $this->getProductUuidFromIdentifier('productC');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductC]);
         $expected = [
-            $uuidProductC => [
+            $uuidProductC->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
                         ['identifier' => 'productA', 'quantity' => 8],
@@ -136,7 +138,7 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
         $uuidVariantProduct1 = $this->getProductUuidFromIdentifier('variant_product_1');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductC, $uuidProductD, $uuidVariantProduct1]);
         $expected = [
-            $uuidProductC => [
+            $uuidProductC->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
                         ['identifier' => 'productA', 'quantity' => 3],
@@ -144,14 +146,14 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
                     ],
                 ],
             ],
-            $uuidProductD => [
+            $uuidProductD->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
                         ['identifier' => 'productB', 'quantity' => 1],
                     ],
                 ],
             ],
-            $uuidVariantProduct1 => [
+            $uuidVariantProduct1->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
                         ['identifier' => 'productA', 'quantity' => 5],
@@ -202,7 +204,7 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
         $uuidProductA = $this->getProductUuidFromIdentifier('productA');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductA]);
         $expected = [
-            $uuidProductA => [
+            $uuidProductA->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
                         ['identifier' => 'associated_product', 'quantity' => 3],
@@ -234,7 +236,7 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
         $uuidProductB = $this->getProductUuidFromIdentifier('productB');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductA, $uuidProductB]);
         $expected = [
-            $uuidProductB => [
+            $uuidProductB->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
                         ['identifier' => 'productA', 'quantity' => 3],
@@ -272,7 +274,7 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
         $uuidProductB = $this->getProductUuidFromIdentifier('productB');
         $actual = $this->getQuery()->fromProductUuids([$uuidProductB]);
         $expected = [
-            $uuidProductB => [
+            $uuidProductB->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
                         ['identifier' => 'productA', 'quantity' => 3],
@@ -394,10 +396,10 @@ SQL;
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function getProductUuidFromIdentifier(string $productIdentifier): string
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
     {
-        return $this->get('database_connection')->fetchOne(
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
             'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        );
+        ));
     }
 }

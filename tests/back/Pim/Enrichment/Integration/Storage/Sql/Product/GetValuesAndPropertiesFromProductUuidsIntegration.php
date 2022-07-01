@@ -9,6 +9,8 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -87,8 +89,8 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
         $uuidProductA = $this->getProductUuidFromIdentifier('productA');
         $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
-            $uuidProductA => [
-                'uuid' => 'doc: we can not check the uuid',
+            $uuidProductA->toString() => [
+                'uuid' => $uuidProductA->toString(),
                 'identifier' => 'productA',
                 'is_enabled' => true,
                 'product_model_code' => null,
@@ -111,7 +113,7 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
         $uuidProductB = $this->getProductUuidFromIdentifier('productB');
         $this->assertEquals(
             ['group1', 'group2'],
-            $this->getQuery()->fetchByProductUuids([$uuidProductB])[$uuidProductB]['group_codes']
+            $this->getQuery()->fetchByProductUuids([$uuidProductB])[$uuidProductB->toString()]['group_codes']
         );
     }
 
@@ -120,8 +122,8 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
         $uuidVariantProductA = $this->getProductUuidFromIdentifier('VariantProductA');
         $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
-            $uuidVariantProductA => [
-                'uuid' => 'doc: we can not check the uuid',
+            $uuidVariantProductA->toString() => [
+                'uuid' => $uuidVariantProductA->toString(),
                 'identifier' => 'VariantProductA',
                 'is_enabled' => true,
                 'product_model_code' => 'SubProductModel',
@@ -188,8 +190,8 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
             'second_yes_no' => ['<all_channels>' => ['<all_locales>' => false]]
         ];
 
-        static::assertArrayHasKey($uuidVariantProductWithEmptyValuesFromPM, $results);
-        static::assertEqualsCanonicalizing($expected, $results[$uuidVariantProductWithEmptyValuesFromPM]['raw_values']);
+        static::assertArrayHasKey($uuidVariantProductWithEmptyValuesFromPM->toString(), $results);
+        static::assertEqualsCanonicalizing($expected, $results[$uuidVariantProductWithEmptyValuesFromPM->toString()]['raw_values']);
     }
 
     private function getQuery(): GetValuesAndPropertiesFromProductUuids
@@ -260,10 +262,10 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
         $this->get('pim_catalog.saver.group')->saveAll($groups);
     }
 
-    private function getProductUuidFromIdentifier(string $productIdentifier): string
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
     {
-        return $this->get('database_connection')->fetchOne(
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
             'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        );
+        ));
     }
 }

@@ -78,7 +78,7 @@ FROM (
                   AND association_type.is_quantified = false
                   UNION DISTINCT
                   SELECT
-                      product.identifier as product_uuid,
+                      product.uuid as product_uuid,
                       association_type.code as association_type_code,
                       associated_product.identifier as associated_product_identifier
                   FROM pim_catalog_product product

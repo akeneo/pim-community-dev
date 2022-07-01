@@ -38,7 +38,7 @@ final class GetProductModelAssociationsByProductUuids
         $query = <<<SQL
 SELECT
     /*+ SET_VAR(sort_buffer_size = 1000000) */
-    UUID_TO_BIN(product_uuid) AS uuid,
+    BIN_TO_UUID(product_uuid) AS uuid,
     JSON_OBJECTAGG(association_type_code, product_model_associations_by_type) as associations
 FROM (
          SELECT product_uuid,
@@ -104,7 +104,7 @@ SQL;
                 $filteredAssociations[$associationType]['product_models'] = $association;
             }
 
-            $results[$row['product_uuid']] = $filteredAssociations;
+            $results[$row['uuid']] = $filteredAssociations;
         }
 
         return $results;

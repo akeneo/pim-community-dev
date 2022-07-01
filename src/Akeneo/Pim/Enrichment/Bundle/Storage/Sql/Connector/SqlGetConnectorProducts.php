@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -254,8 +255,9 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
 
     /**
      * @param array<string> $productIdentifiers
+     * @return array<UuidInterface>
      */
-    private function getProductUuidsFromProductIdentifiers(array $productIdentifiers)
+    private function getProductUuidsFromProductIdentifiers(array $productIdentifiers): array
     {
         $sql = <<<SQL
 SELECT BIN_TO_UUID(uuid) AS uuid
@@ -263,14 +265,22 @@ FROM pim_catalog_product
 WHERE identifier IN (:identifiers)
 SQL;
 
-        return $this->connection->fetchFirstColumn(
-            $sql,
-            ['identifiers' => $productIdentifiers],
-            ['identifiers' => Connection::PARAM_STR_ARRAY]
+        return array_map(
+            fn (string $uuidStr): UuidInterface => Uuid::fromString($uuidStr),
+            $this->connection->fetchFirstColumn(
+                $sql,
+                ['identifiers' => $productIdentifiers],
+                ['identifiers' => Connection::PARAM_STR_ARRAY]
+            )
         );
     }
 
-    private function replaceUuidKeysByIdentifiers(array $resultByUuid)
+    /**
+     * @param array<string, array> $resultByUuid
+     * @return array<string, array>
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function replaceUuidKeysByIdentifiers(array $resultByUuid): array
     {
         $sql = <<<SQL
 SELECT BIN_TO_UUID(uuid) AS uuid, identifier
@@ -278,7 +288,7 @@ FROM pim_catalog_product
 WHERE uuid IN (:uuids)
 SQL;
 
-        $uuidsAsBytes = array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), array_keys($resultByUuid));
+        $uuidsAsBytes = array_map(fn (string $uuid): string => Uuid::fromString($uuid)->getBytes(), array_keys($resultByUuid));
         $uuidsToIdentifiers = $this->connection->fetchAllKeyValue($sql, ['uuids' => $uuidsAsBytes], ['uuids' => Connection::PARAM_STR_ARRAY]);
 
         $result = [];

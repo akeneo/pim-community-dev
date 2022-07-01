@@ -6,6 +6,8 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUu
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 class GetCategoryCodesByProductUuidsIntegration extends TestCase
@@ -67,7 +69,7 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
     public function testGetCategoryCodesForASimpleProduct(): void
     {
         $uuidProductA = $this->getProductUuidFromIdentifier('productA');
-        $expected = [$uuidProductA => ['men', 'shop_2019']];
+        $expected = [$uuidProductA->toString() => ['men', 'shop_2019']];
         $actual = $this->getQuery()->fetchCategoryCodes([$uuidProductA]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
@@ -76,7 +78,7 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
     public function testGetCategoryCodesForAVariantProduct(): void
     {
         $uuidVariantProduct1 = $this->getProductUuidFromIdentifier('variant_product_1');
-        $expected = [$uuidVariantProduct1 => ['trending', 'watch', 'famous', 'men']];
+        $expected = [$uuidVariantProduct1->toString() => ['trending', 'watch', 'famous', 'men']];
         $actual = $this->getQuery()->fetchCategoryCodes([$uuidVariantProduct1]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
@@ -89,9 +91,9 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
         $uuidVariantProduct2 = $this->getProductUuidFromIdentifier('variant_product_2');
 
         $expected = [
-            $uuidVariantProduct1 => ['trending', 'watch', 'famous', 'men'],
-            $uuidProductA => ['men', 'shop_2019'],
-            $uuidVariantProduct2 => ['watch', 'famous', 'men'],
+            $uuidVariantProduct1->toString() => ['trending', 'watch', 'famous', 'men'],
+            $uuidProductA->toString() => ['men', 'shop_2019'],
+            $uuidVariantProduct2->toString() => ['watch', 'famous', 'men'],
         ];
         $actual = $this->getQuery()->fetchCategoryCodes([
             $uuidProductA,
@@ -105,7 +107,7 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
     public function testGetCategoryCodesOnProductWithoutCategory(): void
     {
         $uuidProductB = $this->getProductUuidFromIdentifier('productB');
-        $expected = [$uuidProductB => []];
+        $expected = [$uuidProductB->toString() => []];
         $actual = $this->getQuery()->fetchCategoryCodes([$uuidProductB]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
@@ -166,10 +168,10 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function getProductUuidFromIdentifier(string $productIdentifier): string
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
     {
-        return $this->get('database_connection')->fetchOne(
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
             'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        );
+        ));
     }
 }

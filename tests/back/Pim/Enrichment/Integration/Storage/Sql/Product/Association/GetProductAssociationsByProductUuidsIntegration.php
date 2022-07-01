@@ -7,6 +7,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product\Association;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssociationsByProductUuids;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -59,7 +61,7 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
     public function testWithAProductContainingNoAssociation()
     {
         $uuidProductE = $this->getProductUuidFromIdentifier('productE');
-        $expected = [$uuidProductE => $this->getAssociationsFormattedAfterFetch()];
+        $expected = [$uuidProductE->toString() => $this->getAssociationsFormattedAfterFetch()];
         $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
@@ -69,7 +71,7 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
     {
         $uuidProductD = $this->getProductUuidFromIdentifier('productD');
         $expected = [
-            $uuidProductD => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC'])
+            $uuidProductD->toString() => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC'])
         ];
         $actual = $this->getQuery()->fetchByProductUuids([$uuidProductD]);
 
@@ -82,9 +84,9 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
         $uuidProductD = $this->getProductUuidFromIdentifier('productD');
         $uuidProductC = $this->getProductUuidFromIdentifier('productC');
         $expected = [
-            $uuidProductE => $this->getAssociationsFormattedAfterFetch(),
-            $uuidProductD => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC']),
-            $uuidProductC => $this->getAssociationsFormattedAfterFetch([], [], [], ['productA']),
+            $uuidProductE->toString() => $this->getAssociationsFormattedAfterFetch(),
+            $uuidProductD->toString() => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC']),
+            $uuidProductC->toString() => $this->getAssociationsFormattedAfterFetch([], [], [], ['productA']),
         ];
         $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE, $uuidProductC, $uuidProductD]);
 
@@ -98,10 +100,10 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
         $uuidProductC = $this->getProductUuidFromIdentifier('productC');
         $uuidVariantProduct1 = $this->getProductUuidFromIdentifier('variant_product_1');
         $expected = [
-            $uuidProductE => $this->getAssociationsFormattedAfterFetch(),
-            $uuidProductD => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC']),
-            $uuidProductC => $this->getAssociationsFormattedAfterFetch([], [], [], ['productA']),
-            $uuidVariantProduct1 => $this->getAssociationsFormattedAfterFetch(['productF', 'productD'], ['productA', 'productC', 'productG'], ['productB'], ['productE']),
+            $uuidProductE->toString() => $this->getAssociationsFormattedAfterFetch(),
+            $uuidProductD->toString() => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC']),
+            $uuidProductC->toString() => $this->getAssociationsFormattedAfterFetch([], [], [], ['productA']),
+            $uuidVariantProduct1->toString() => $this->getAssociationsFormattedAfterFetch(['productF', 'productD'], ['productA', 'productC', 'productG'], ['productB'], ['productE']),
         ];
         $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE, $uuidProductC, $uuidProductD, $uuidVariantProduct1]);
 
@@ -197,10 +199,10 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function getProductUuidFromIdentifier(string $productIdentifier): string
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
     {
-        return $this->get('database_connection')->fetchOne(
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
             'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        );
+        ));
     }
 }
