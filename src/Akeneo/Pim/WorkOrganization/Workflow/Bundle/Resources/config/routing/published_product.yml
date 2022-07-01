@@ -39,3 +39,9 @@ pimee_workflow_mass_edit_rest_get_filter:
     path: /mass_edit
     defaults: { _controller: pimee_workflow.controller.rest.mass_edit:getFilterAction }
     methods: [POST]
+
+# @todo @merge @pullup master/7.0: remove this route (declared in another config file in master)
+pimee_workflow_datagrid_published_product_grid_available_columns:
+    path: /datagrid/published-product-grid/available-columns
+    defaults: { _controller: pimee_workflow.controller.published_product_grid:getAvailableColumnsAction }
+    methods: ['GET']

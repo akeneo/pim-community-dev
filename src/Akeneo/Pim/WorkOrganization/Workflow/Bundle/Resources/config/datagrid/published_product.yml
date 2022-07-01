@@ -1,7 +1,7 @@
 datagrid:
     published-product-grid:
         options:
-            entityHint: product
+            entityHint: published_product
             filtersAsColumn: true
             displayTypes:
                 default:
