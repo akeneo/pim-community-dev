@@ -28,7 +28,7 @@ const RequestNewInvitation = () => {
 
     return (
         <UnauthenticatedContainer>
-            <OnboarderLogo />
+            <StyledOnboarderLogo />
 
             {!isFormSubmitted ? (
                 <>
@@ -47,10 +47,15 @@ const RequestNewInvitation = () => {
                         />
                     </InvitationHasExpiredMessage>
                     <Field label={'Email'}>
-                        <TextInput onChange={setEmail} value={email} data-testid="email-input" />
+                        <TextInput onChange={setEmail} value={email} />
                     </Field>
 
-                    <SubmitButton type="button" onClick={async () => await submit(email)} data-testid="submit-button">
+                    <SubmitButton
+                        disabled={'' === email}
+                        type="button"
+                        onClick={async () => await submit(email)}
+                        data-testid="submit-button"
+                    >
                         <FormattedMessage defaultMessage="Receive a new invitation" id="tq8W8G" />
                     </SubmitButton>
                 </>
@@ -72,6 +77,10 @@ const InvitationHasExpiredMessage = styled.p`
 
 const SubmitButton = styled(Button)`
     margin-top: 50px;
+`;
+
+const StyledOnboarderLogo = styled(OnboarderLogo)`
+    margin-bottom: 30px;
 `;
 
 export {RequestNewInvitation};

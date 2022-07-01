@@ -7,13 +7,31 @@ import {RequestNewInvitation} from './RequestNewInvitation';
 test('it renders an invitation has expired message and an email input', async () => {
     renderWithProviders(<RequestNewInvitation />);
 
-    const emailInput = screen.getByTestId('email-input');
+    const emailInput = screen.getByLabelText('Email');
     const invitationExpiredMessage = screen.getByText(
         'Your invitation has expired. Please enter your email address to receive a new one.'
     );
 
     expect(emailInput).toBeInTheDocument();
     expect(invitationExpiredMessage).toBeInTheDocument();
+});
+
+test('it ensures the submit button is disabled if the email input is empty', () => {
+    renderWithProviders(<RequestNewInvitation />);
+
+    const submitButton = screen.getByTestId('submit-button');
+
+    expect(submitButton).toBeDisabled();
+});
+
+test('it ensures the submit button is enabled if the email input is not empty', () => {
+    renderWithProviders(<RequestNewInvitation />);
+
+    const emailInput = screen.getByLabelText('Email');
+
+    userEvent.type(emailInput, 'test@example.com');
+
+    expect(screen.getByTestId('submit-button')).toBeEnabled();
 });
 
 test('it does not render a message saying that an email will be send if the form has not been submitted', () => {
@@ -27,7 +45,7 @@ test('it does not render a message saying that an email will be send if the form
 test('it renders a message saying that an email will be send when the form has been submitted', () => {
     renderWithProviders(<RequestNewInvitation />);
 
-    const emailInput = screen.getByTestId('email-input');
+    const emailInput = screen.getByLabelText('Email');
     const submitButton = screen.getByTestId('submit-button');
 
     userEvent.type(emailInput, 'test@example.com');
