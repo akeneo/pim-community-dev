@@ -1,7 +1,8 @@
 import {StatusCriterionState} from '../criteria/StatusCriterion';
 import {Criterion} from './Criterion';
+import {FamilyCriterionState} from '../criteria/FamilyCriterion';
 
-export type AnyCriterionState = StatusCriterionState;
+export type AnyCriterionState = StatusCriterionState | FamilyCriterionState;
 
 export type CriteriaState = AnyCriterionState[];
 

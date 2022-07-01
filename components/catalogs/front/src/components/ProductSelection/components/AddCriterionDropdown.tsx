@@ -2,12 +2,13 @@ import React, {FC, useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import StatusCriterion from '../criteria/StatusCriterion';
-import {Criterion} from '../models/Criterion';
+import {Criterion, CriterionState} from '../models/Criterion';
 import {AnyCriterionState} from '../models/Criteria';
+import FamilyCriterion from '../criteria/FamilyCriterion';
 
 type Factory = {
     label: string;
-    factory: () => Criterion<AnyCriterionState>;
+    factory: () => Criterion<any>;
 };
 
 type SectionProps = {
@@ -50,6 +51,10 @@ const AddCriterionDropdown: FC<Props> = ({onNewCriterion}) => {
             {
                 label: translate('akeneo_catalogs.product_selection.criteria.status.label'),
                 factory: StatusCriterion,
+            },
+            {
+                label: translate('akeneo_catalogs.product_selection.criteria.family.label'),
+                factory: FamilyCriterion,
             },
         ].filter(factory => factory.label.match(regex));
     }, [translate, search]);

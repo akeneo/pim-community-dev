@@ -30,6 +30,9 @@ akeneo_catalogs:
                 label: Status
                 enabled: Enabled
                 disabled: Disabled
+            family:
+                label: Family
+                no_matches: No matches found
         operators:
             "STARTS WITH": starts with
             "ENDS WITH": ends with
