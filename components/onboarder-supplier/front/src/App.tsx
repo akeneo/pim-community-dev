@@ -9,6 +9,7 @@ import {queryClient} from './api';
 import {IntlProvider} from 'react-intl';
 import {ToastProvider} from './utils/toaster';
 import {Authenticated} from './Authenticated';
+import {publicRoutesRegex} from './pages/routes';
 
 function App() {
     return (
@@ -19,7 +20,7 @@ function App() {
                         <QueryClientProvider client={queryClient}>
                             <HashRouter>
                                 <Switch>
-                                    <Route path={`/(set-up-password|login)/`}>
+                                    <Route path={`/(${publicRoutesRegex})/`}>
                                         <Container>
                                             <Authentication />
                                         </Container>
