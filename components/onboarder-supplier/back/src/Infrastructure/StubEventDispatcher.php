@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Supplier\Infrastructure;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class StubEventDispatcher implements EventDispatcherInterface
 {
