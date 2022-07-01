@@ -16,19 +16,21 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
       <TextField
         required={true}
         value={storage.file_path}
-        label={translate('akeneo.job_automation.storage.file_path.label')}
+        label={translate('pim_import_export.form.job_instance.storage_form.file_path.label')}
         onChange={file_path => onStorageChange({...storage, file_path})}
         errors={filterErrors(validationErrors, '[file_path]')}
       />
       <TextField
         required={true}
         value={storage.host}
-        label={translate('akeneo.job_automation.storage.host.label')}
+        label={translate('pim_import_export.form.job_instance.storage_form.host.label')}
         onChange={host => onStorageChange({...storage, host})}
         errors={filterErrors(validationErrors, '[host]')}
       />
       <Field
-        label={`${translate('akeneo.job_automation.storage.port.label')} ${translate('pim_common.required_label')}`}
+        label={`${translate('pim_import_export.form.job_instance.storage_form.port.label')} ${translate(
+          'pim_common.required_label'
+        )}`}
       >
         <NumberInput
           min={1}
@@ -46,7 +48,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
       <TextField
         value={storage.username}
         required={true}
-        label={translate('akeneo.job_automation.storage.username.label')}
+        label={translate('pim_import_export.form.job_instance.storage_form.username.label')}
         onChange={(username: string) => onStorageChange({...storage, username})}
         errors={filterErrors(validationErrors, '[username]')}
       />
@@ -54,7 +56,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         value={storage.password}
         required={true}
         type="password"
-        label={translate('akeneo.job_automation.storage.password.label')}
+        label={translate('pim_import_export.form.job_instance.storage_form.password.label')}
         onChange={(password: string) => onStorageChange({...storage, password})}
         errors={filterErrors(validationErrors, '[password]')}
       />

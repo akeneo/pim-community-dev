@@ -11,10 +11,16 @@ test('it renders the storage form', () => {
   };
 
   renderWithProviders(
-    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
+    <StorageForm
+      jobType="export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={jest.fn()}
+    />
   );
 
-  expect(screen.getByText('akeneo.job_automation.storage.connection.none')).toBeInTheDocument();
+  expect(screen.getByText('pim_import_export.form.job_instance.storage_form.connection.none')).toBeInTheDocument();
 });
 
 test('it triggers onStorageChange callback when storage configurator onStorageChange is triggered', () => {
@@ -26,11 +32,17 @@ test('it triggers onStorageChange callback when storage configurator onStorageCh
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <StorageForm
+      jobType="export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
   const file_pathInput = screen.getByLabelText(
-    'akeneo.job_automation.storage.file_path.label pim_common.required_label'
+    'pim_import_export.form.job_instance.storage_form.file_path.label pim_common.required_label'
   );
   userEvent.type(file_pathInput, 'x');
 
@@ -46,10 +58,18 @@ test('it does not render the storage form configurator if storage is none', () =
   };
 
   renderWithProviders(
-    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
+    <StorageForm
+      jobType="export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={jest.fn()}
+    />
   );
 
-  expect(screen.queryByText('akeneo.job_automation.storage.file_path.label')).not.toBeInTheDocument();
+  expect(
+    screen.queryByText('pim_import_export.form.job_instance.storage_form.file_path.label')
+  ).not.toBeInTheDocument();
 });
 
 test('it renders the storage form configurator if storage is local', () => {
@@ -59,13 +79,19 @@ test('it renders the storage form configurator if storage is local', () => {
   };
 
   renderWithProviders(
-    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
+    <StorageForm
+      jobType="export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={jest.fn()}
+    />
   );
 
   expect(
-    screen.getByText('akeneo.job_automation.storage.file_path.label pim_common.required_label')
+    screen.getByText('pim_import_export.form.job_instance.storage_form.file_path.label pim_common.required_label')
   ).toBeInTheDocument();
-  expect(screen.queryByText('akeneo.job_automation.storage.host.label')).not.toBeInTheDocument();
+  expect(screen.queryByText('pim_import_export.form.job_instance.storage_form.host.label')).not.toBeInTheDocument();
 });
 
 test('it renders the storage form configurator if storage is sftp', () => {
@@ -79,13 +105,21 @@ test('it renders the storage form configurator if storage is sftp', () => {
   };
 
   renderWithProviders(
-    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
+    <StorageForm
+      jobType="export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={jest.fn()}
+    />
   );
 
   expect(
-    screen.getByText('akeneo.job_automation.storage.file_path.label pim_common.required_label')
+    screen.getByText('pim_import_export.form.job_instance.storage_form.file_path.label pim_common.required_label')
   ).toBeInTheDocument();
-  expect(screen.getByText('akeneo.job_automation.storage.host.label pim_common.required_label')).toBeInTheDocument();
+  expect(
+    screen.getByText('pim_import_export.form.job_instance.storage_form.host.label pim_common.required_label')
+  ).toBeInTheDocument();
 });
 
 test('it can select a local storage', () => {
@@ -96,15 +130,21 @@ test('it can select a local storage', () => {
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <StorageForm
+      jobType="export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
   userEvent.click(screen.getByTitle('pim_common.open'));
-  userEvent.click(screen.getByText('akeneo.job_automation.storage.connection.local'));
+  userEvent.click(screen.getByText('pim_import_export.form.job_instance.storage_form.connection.local'));
 
   expect(onStorageChange).toBeCalledWith({
     type: 'local',
-    file_path: '/tmp/export_%job_label%_%datetime%.xlsx',
+    file_path: 'export_%job_label%_%datetime%.xlsx',
   });
 });
 
@@ -116,15 +156,21 @@ test('it can select a sftp storage', () => {
   const onStorageChange = jest.fn();
 
   renderWithProviders(
-    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+    <StorageForm
+      jobType="export"
+      storage={storage}
+      fileExtension="csv"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
   );
 
   userEvent.click(screen.getByTitle('pim_common.open'));
-  userEvent.click(screen.getByText('akeneo.job_automation.storage.connection.sftp'));
+  userEvent.click(screen.getByText('pim_import_export.form.job_instance.storage_form.connection.sftp'));
 
   expect(onStorageChange).toBeCalledWith({
     type: 'sftp',
-    file_path: 'export_%job_label%_%datetime%.xlsx',
+    file_path: 'export_%job_label%_%datetime%.csv',
     host: '',
     port: 22,
     username: '',
@@ -156,7 +202,13 @@ test('it displays validation errors', () => {
   ];
 
   renderWithProviders(
-    <StorageForm jobType="export" storage={storage} validationErrors={validationErrors} onStorageChange={jest.fn()} />
+    <StorageForm
+      jobType="export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={validationErrors}
+      onStorageChange={jest.fn()}
+    />
   );
 
   expect(screen.getByText('error.key.a_type_error')).toBeInTheDocument();

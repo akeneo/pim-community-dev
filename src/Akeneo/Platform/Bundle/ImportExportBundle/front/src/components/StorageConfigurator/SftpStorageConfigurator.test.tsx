@@ -37,7 +37,7 @@ test('it allows user to fill file_path field', () => {
   );
 
   const file_pathInput = screen.getByLabelText(
-    'akeneo.job_automation.storage.file_path.label pim_common.required_label'
+    'pim_import_export.form.job_instance.storage_form.file_path.label pim_common.required_label'
   );
   userEvent.type(file_pathInput, 'x');
 
@@ -60,7 +60,9 @@ test('it allows user to fill host field', () => {
     <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
   );
 
-  const hostInput = screen.getByLabelText('akeneo.job_automation.storage.host.label pim_common.required_label');
+  const hostInput = screen.getByLabelText(
+    'pim_import_export.form.job_instance.storage_form.host.label pim_common.required_label'
+  );
   userEvent.type(hostInput, 'm');
 
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, host: 'example.com'});
@@ -82,7 +84,9 @@ test('it allows user to fill port field', () => {
     <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
   );
 
-  const portInput = screen.getByLabelText('akeneo.job_automation.storage.port.label pim_common.required_label');
+  const portInput = screen.getByLabelText(
+    'pim_import_export.form.job_instance.storage_form.port.label pim_common.required_label'
+  );
   userEvent.type(portInput, '2');
 
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, port: 22});
@@ -104,7 +108,9 @@ test('it allows user to fill username field', () => {
     <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
   );
 
-  const usernameInput = screen.getByLabelText('akeneo.job_automation.storage.username.label pim_common.required_label');
+  const usernameInput = screen.getByLabelText(
+    'pim_import_export.form.job_instance.storage_form.username.label pim_common.required_label'
+  );
   userEvent.type(usernameInput, 't');
 
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, username: 'root'});
@@ -126,7 +132,9 @@ test('it allows user to fill password field', () => {
     <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
   );
 
-  const passwordInput = screen.getByLabelText('akeneo.job_automation.storage.password.label pim_common.required_label');
+  const passwordInput = screen.getByLabelText(
+    'pim_import_export.form.job_instance.storage_form.password.label pim_common.required_label'
+  );
   userEvent.type(passwordInput, 't');
 
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, password: 'root'});
