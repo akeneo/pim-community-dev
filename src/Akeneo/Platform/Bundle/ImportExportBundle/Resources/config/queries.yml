@@ -13,5 +13,11 @@ services:
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@pim_import_export.clock'
 
+    # @TODO pull up to 6.0 remove this service
+    pim_import_export.query.get_warning_count:
+        class: Akeneo\Platform\Bundle\ImportExportBundle\Query\GetWarningCount
+        arguments:
+            - '@database_connection'
+
     pim_import_export.clock:
         class: Akeneo\Platform\Bundle\ImportExportBundle\Query\SystemClock

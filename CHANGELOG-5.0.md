@@ -1,5 +1,10 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10502: Fix API error when trying to post/patch a product with non-existing attribute code that is also a number
+- PIM-10506: Fix performance issues on process tracker
+
 # 5.0.101 (2022-07-01)
 
 # 5.0.100 (2022-06-29)
