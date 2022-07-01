@@ -14,7 +14,6 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileSystemStorageClient;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
 use League\Flysystem\Filesystem;
-use League\Flysystem\PhpseclibV2\ConnectionProvider;
 
 class FakeStorageClientProvider implements StorageClientProviderInterface
 {
@@ -32,10 +31,5 @@ class FakeStorageClientProvider implements StorageClientProviderInterface
     public function getFromStorage(StorageInterface $storage): StorageClientInterface
     {
         return new FileSystemStorageClient($this->fileSystem);
-    }
-    
-    public function getConnectionProvider(StorageInterface $storage): ConnectionProvider|null
-    {
-        return new FakeConnectionProvider();
     }
 }

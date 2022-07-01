@@ -11,7 +11,6 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
-use League\Flysystem\PhpseclibV2\ConnectionProvider;
 
 interface StorageClientProviderInterface
 {
