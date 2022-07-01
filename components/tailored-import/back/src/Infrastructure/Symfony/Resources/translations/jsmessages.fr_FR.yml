@@ -9,7 +9,7 @@ akeneo.tailored_import:
   file_structure:
     placeholder:
       title: Votre profil d'import est vide.
-      helper: Cliquez sur "Initialiser la structure d'import' pour commencer à la définir.
+      helper: Cliquez sur "Initialiser la structure d'import" pour commencer à la définir.
       link: Consultez notre Help Center pour plus d'informations.
       button: Initialiser la structure d'import
     modal:
@@ -18,7 +18,7 @@ akeneo.tailored_import:
       helper: Commencez par définir la structure de votre fichier afin de configurer votre import.
       link: Consultez notre Help Center pour plus d'informations.
       upload:
-        placeholder: Glissez et déposez votre fichier, ou cliquez pour le chercher depuis votre disque.
+        placeholder: Glissez et déposez votre fichier, ou cliquez pour le téléverser depuis votre disque.
         uploading: Téléversement en cours...
         error: Une erreur est survenue lors du téléversement de votre fichier. Veuillez vérifier ce dernier et réessayer.
       sheet: Feuille
@@ -49,19 +49,100 @@ akeneo.tailored_import:
       add: Ajouter une opération
       common:
         collapse: Réduire
+      clean_html_tags:
+        title: Supprimer les balises HTML
+      split:
+        title: Scinder
+        separator: 'Sélectionnez un séparateur :'
+        comma: Virgule (,)
+        semicolon: Point-virgule (;)
+        pipe: Barre verticale (|)
+      simple_select_replacement:
+        title: Remplacement des listes à choix unique
+      multi_select_replacement:
+        title: Remplacement des listes à choix multiple
+      categories_replacement:
+        title: Remplacement des catégories
+        modal:
+          title: Gérer les catégories
+          table:
+            header:
+              replacement: Catégories du PIM
+              source_values: Catégories de votre fichier source
+      no_result: Aucune opération n'est disponible.
+      no_source: Afin accéder aux opérations, veuillez d'abord ajouter une source de données.
+      no_available:
+        text: Aucune opération disponible.
+        link: Cliquez ici pour consulter notre Help Center.
+      remove: Êtes-vous sûr de vouloir supprimer cette opération?
+      replacement:
+        to_placeholder: Définissez les valeurs de votre fichier source.
+        modal:
+          options: Gérer les options
+          subtitle: Remplacement
+          no_result:
+            title: Désolé, il n'y a aucune valeur pour cet attribut.
+          empty_result:
+            title: Désolé, il n’y a aucun résultat pour votre recherche.
+            text: Essayez à nouveau avec d'autres critères de recherche.
+          filters:
+            mapped:
+              label: 'Afficher :'
+              unmapped: Toutes les valeurs non remplacées
+              mapped: Toutes les valeurs remplacées
+              all: Toutes les valeurs
+          table:
+            header:
+              replacement: Options du PIM
+              source_values: Valeurs de votre fichier source
+          validation_error: Certaines valeurs de remplacement sont erronées. Afin de les corriger, veuillez vous référer aux messages d'erreur sous chaque champ.
+      boolean_replacement:
+        title: Remplacement des Oui/Non
+        field:
+          yes_value: Valeur pour "Oui"
+          no_value: Valeur pour "Non"
+      enabled_replacement:
+        title: Remplacement de l'état
+        field:
+          enabled_value: Valeur pour "Activé"
+          disabled_value: Valeur pour "Désactivé"
+    sources:
+      title: Source(s)
+      add:
+        title: Ouvrir la liste des sources
+        label: Ajouter une source
+        helper: "]-Inf, 1]Pour ce type d'attribut, vous ne pouvez ajouter qu'une seule source.|]1, Inf[Pour ce type d'attribut, vous ne pouvez ajouter que {{ limit }} sources."
     target:
+      title: Destination
+      identifier: Aucun paramètre n'est disponible pour l'attribut de type "Identifiant" utilisé en tant que destination.
+      enabled: Aucun paramètre n'est disponible pour l'attribut de type "Activé" utilisé en tant que destination.
+      locale_specific: Cet attribut est spécifique à une ou plusieurs locales.
+      action_if_not_empty:
+        title: Assignation
+        add: Ajouter aux valeurs existantes
+        set: Remplacer les valeurs existantes
+      clear_if_empty: Effacer les valeurs existantes si la cellule du fichier est vide
       parameters:
         decimal_separator:
+          title: Séparateur des décimales
+          comma: Virgule (,)
           dot: Point (.)
           arabic_comma: Séparateur décimal arabe (٫)
         measurement_unit:
           title: Unité
         date_format: Format de la date
+      invalid:
+        attribute: L'attribut utilisé en tant que destination a été supprimé et recréé avec un autre type d'attribut. Veuillez supprimer ce mapping et l'ajouter à nouveau.
+        property: Cette propriété n'est pas valide, veuillez supprimer ce mapping et l'ajouter à nouveau.
   form:
     job_instance:
       tab:
         import-structure:
           title: Structure de l'import
+      edit:
+        title: Afin d'éditer ce profil, veuillez vérifier vos permissions avec votre administrateur.
+      launch:
+        title: Afin d'importer, veuillez vérifier vos permissions avec votre administrateur.
   validation:
     required: Cette valeur est requise.
     max_length_reached: Cette valeur est trop longue. Elle peut contenir jusqu'à {{ limit }} caractères.
@@ -78,6 +159,7 @@ akeneo.tailored_import:
         should_not_be_blank: Veuillez définir un en-tête de colonne.
         max_length_reached: L'en-tête de cette colonne est trop long. Il peut contenir un maximum de {{ limit }} caractères.
     data_mappings:
+      target_should_unique: La destination "{{ code }}" ne peut pas être sélectionnée plus d'une fois.
       max_count_reached: Vous avez atteint la limite de {{ limit }} mappings de données, vous ne pouvez plus en ajouter.
       no_identifier_target_found: Il n'y a pas de mapping ciblant un attribut de type "Identifiant", veuillez en ajouter un.
       too_many_identifier_target_found: Il y a plus d'un mapping ciblant un attribut de type "Identifiant", veuillez n'en garder qu'un.
@@ -109,6 +191,7 @@ akeneo.tailored_import:
       does_not_exist: Le fichier "{{ file_key }}" n'a pas été trouvé.
     uploaded_file:
       max_size: Le fichier est trop volumineux. Sa taille ne doit pas dépasser {{ limit }} {{ suffix }}.
+      not_allowed_mime_type: Seuls les fichiers XLSX sont pris en charge.
     file_structure:
       first_product_row_should_be_after_header_row: La première colonne produit doit être située après la ligne d'en-tête.
       unique_identifier_column_should_be_after_first_column_message: La colonne de l'identifiant unique doit être située au moins après la première colonne.
