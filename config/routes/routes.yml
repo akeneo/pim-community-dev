@@ -120,6 +120,9 @@ pim_tailored_export:
 pim_tailored_import:
     resource: "@AkeneoTailoredImportBundle/Resources/config/routing.yml"
 
+pim_job_automation:
+    resource: "@AkeneoJobAutomationBundle/Resources/config/routing.yml"
+
 pim_tailored_export_reference_entity:
     resource: "@AkeneoTailoredExportBundle/Resources/config/reference_entity/routing.yml"
 

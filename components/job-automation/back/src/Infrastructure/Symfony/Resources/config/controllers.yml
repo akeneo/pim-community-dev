@@ -1,0 +1,9 @@
+services:
+  akeneo.job_automation.controllers.storage_connection_check_action:
+    class: Akeneo\Platform\JobAutomation\Infrastructure\Controller\GetStorageConnectionCheckAction
+    public: true
+    arguments:
+      - '@akeneo.job_automation.handler.storage_connection_check'
+      - '@validator'
+      - '@serializer'
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\StorageHydrator'

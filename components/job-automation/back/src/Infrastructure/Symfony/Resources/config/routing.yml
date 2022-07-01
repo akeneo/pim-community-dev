@@ -1,0 +1,4 @@
+pimee_job_automation_get_storage_connection_check:
+  path: /rest/job_automation/storage_connection_check
+  defaults: { _controller: akeneo.job_automation.controllers.storage_connection_check_action }
+  methods: [POST]
