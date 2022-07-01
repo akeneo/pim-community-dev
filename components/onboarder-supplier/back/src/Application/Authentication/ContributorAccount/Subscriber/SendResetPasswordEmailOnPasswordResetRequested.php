@@ -7,8 +7,9 @@ namespace Akeneo\OnboarderSerenity\Supplier\Application\Authentication\Contribut
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmail;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Event\ResetPasswordRequested;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class SendResetPasswordEmailOnPasswordResetRequested
+final class SendResetPasswordEmailOnPasswordResetRequested implements EventSubscriberInterface
 {
     public function __construct(private SendResetPasswordEmailHandler $sendResetPasswordEmailHandler)
     {

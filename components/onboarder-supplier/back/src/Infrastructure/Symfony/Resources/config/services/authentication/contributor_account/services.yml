@@ -37,6 +37,12 @@ services:
         tags:
             - 'kernel.event_subscriber'
 
+    Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendResetPasswordEmailOnPasswordResetRequested:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler'
+        tags:
+            - 'kernel.event_subscriber'
+
     # Validators
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Validation\PasswordValidator:
         tags:
@@ -93,6 +99,11 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@event_dispatcher'
+
+    Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\SendEmail'
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildResetPasswordEmail'
 
     # Email sending services
     Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail:
