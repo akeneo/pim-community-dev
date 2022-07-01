@@ -54,7 +54,7 @@
 - PIM-10493: Fix Rule engine datagrid sorting
 - PIM-10507: Fix product export with labels when a table attribute contains a measurement column
 - PIM-10510: "Automatic link between assets and products" log download returns a 403
-- PIM-10521: Fix product link on asset page
+- PIM-10521: Fix product link on asset and reference entity pages
 
 ## Improvements
 
