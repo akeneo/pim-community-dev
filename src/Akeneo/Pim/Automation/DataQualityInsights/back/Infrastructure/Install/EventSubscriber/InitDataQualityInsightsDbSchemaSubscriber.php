@@ -51,11 +51,10 @@ CREATE TABLE pim_data_quality_insights_product_model_criteria_evaluation (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pim_data_quality_insights_product_score (
-    product_uuid BINARY(16) NOT NULL,
+    product_uuid BINARY(16) NOT NULL PRIMARY KEY,
     evaluated_at DATE NOT NULL,
     scores JSON NOT NULL,
     scores_partial_criteria JSON DEFAULT NULL,
-    PRIMARY KEY (product_uuid, evaluated_at),
     INDEX evaluated_at_index (evaluated_at),
     CONSTRAINT FK_dqi_product_uuid_score FOREIGN KEY (product_uuid) REFERENCES pim_catalog_product (uuid) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

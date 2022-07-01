@@ -72,6 +72,7 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements DispatchB
         $author = Author::fromUser($user);
         $data = [
             'identifier' => $product->getIdentifier(),
+            'uuid' => $product->getUuid(),
         ];
 
         if ($postSaveEvent->hasArgument('is_new') && true === $postSaveEvent->getArgument('is_new')) {

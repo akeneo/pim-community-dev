@@ -50,8 +50,6 @@ final class CleanProductScoresCommand extends Command
         $output->writeln('Start cleaning...');
         $this->startTask(self::$defaultName);
 
-        $lastProductIdAsBytes = '';
-
         while ($productScoresToClean = $this->getNextProductUuidAsBytesScoresToClean()) {
             try {
                 $this->cleanProductScores($productScoresToClean);
@@ -81,7 +79,7 @@ ORDER BY old_scores.product_uuid ASC, old_scores.evaluated_at ASC
 LIMIT :bulkSize;
 SQL;
 
-        $results = $this->dbConnection->executeQuery(
+        return $this->dbConnection->executeQuery(
             $query,
             [
                 'bulkSize' => $this->bulkSize,
@@ -89,11 +87,7 @@ SQL;
             [
                 'bulkSize' => \PDO::PARAM_INT,
             ]
-        )->fetchAllAssociative();
-
-        return array_map(function (array $productScoreToClean) {
-            return $productScoreToClean['product_uuid'];
-        }, $results);
+        )->fetchFirstColumn();
     }
 
     private function cleanProductScores(array $productUuidsAsBytes): void

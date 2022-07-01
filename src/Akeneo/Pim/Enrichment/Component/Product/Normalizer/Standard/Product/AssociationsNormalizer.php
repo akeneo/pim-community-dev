@@ -97,6 +97,9 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
                         $data[$code]['products'][] = $product->getReference();
                     }
                     sort($data[$code]['products']);
+                } elseif (\get_class($associationAwareEntity) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
+                    // do nothing, published product associations are computed in their own normalizer
+                    // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
                 } elseif ($associationAwareEntity instanceof ProductInterface) {
                     $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductCodeByProduct->getCodes(
                         $associationAwareEntity->getUuid(),
