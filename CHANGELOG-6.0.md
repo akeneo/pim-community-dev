@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- OCT-77: Fix translation error in the PIM App Store
+
 # 6.0.32 (2022-06-28)
 
 ## Improvement
