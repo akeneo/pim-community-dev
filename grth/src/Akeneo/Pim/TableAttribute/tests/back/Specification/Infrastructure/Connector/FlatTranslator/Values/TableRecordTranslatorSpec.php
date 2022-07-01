@@ -68,15 +68,6 @@ class TableRecordTranslatorSpec extends ObjectBehavior
             ->during('translate',['nutrition', $columnDefinition, 'fr_FR', 'red']);
     }
 
-    function it_throws_an_exception_if_value_is_not_a_string()
-    {
-        $columnDefinition = $this->getReferenceEntityColumn();
-
-        $this
-            ->shouldThrow(\InvalidArgumentException::class)
-            ->during('translate',['nutrition', $columnDefinition, 'fr_FR', ['red']]);
-    }
-
     private function getReferenceEntityColumn(): ReferenceEntityColumn
     {
         return ReferenceEntityColumn::fromNormalized(

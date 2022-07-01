@@ -52,22 +52,22 @@ final class TableValuesTranslatorSpec extends ObjectBehavior
                 'product' => '1',
                 'attribute' => 'nutrition-fr_FR-eco',
                 'ingredient' => 'salt',
-                'quantity' => 12,
-                'is_allergenic' => true,
+                'quantity' => '12',
+                'is_allergenic' => '1',
             ],
             [
                 'product' => '1',
                 'attribute' => 'nutrition-fr_FR-eco',
                 'ingredient' => 'sugar',
-                'quantity' => 5,
+                'quantity' => '5',
             ],
         ];
 
         $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'en_US', 'salt')->willReturn('Salt');
-        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', 12)->willReturn(12);
-        $tableValueTranslatorRegistry->translate('nutrition', 'is_allergenic', 'en_US', true)->willReturn('Yes');
+        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', '12')->willReturn('12');
+        $tableValueTranslatorRegistry->translate('nutrition', 'is_allergenic', 'en_US', '1')->willReturn('Yes');
         $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'en_US', 'sugar')->willReturn('Sugar');
-        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', 5)->willReturn(5);
+        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', '5')->willReturn('5');
 
         $attributeTranslator->translate('nutrition-fr_FR-eco', 'en_US')->willReturn('Nutrition (Français, ecommerce)');
 
@@ -76,14 +76,14 @@ final class TableValuesTranslatorSpec extends ObjectBehavior
                 'product' => '1',
                 'attribute' => 'Nutrition (Français, ecommerce)',
                 'ingredient' => 'Salt',
-                'quantity' => 12,
+                'quantity' => '12',
                 'is_allergenic' => 'Yes',
             ],
             [
                 'product' => '1',
                 'attribute' => 'Nutrition (Français, ecommerce)',
                 'ingredient' => 'Sugar',
-                'quantity' => 5,
+                'quantity' => '5',
             ],
         ]);
     }
@@ -98,22 +98,22 @@ final class TableValuesTranslatorSpec extends ObjectBehavior
                 'product_model' => '1',
                 'attribute' => 'nutrition-fr_FR-eco',
                 'ingredient' => 'salt',
-                'quantity' => 12,
-                'is_allergenic' => false,
+                'quantity' => '12',
+                'is_allergenic' => '0',
             ],
             [
                 'product_model' => '1',
                 'attribute' => 'nutrition-fr_FR-eco',
                 'ingredient' => 'sugar',
-                'quantity' => 5,
+                'quantity' => '5',
             ],
         ];
 
         $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'en_US', 'salt')->willReturn('Salt');
-        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', 12)->willReturn(12);
-        $tableValueTranslatorRegistry->translate('nutrition', 'is_allergenic', 'en_US', false)->willReturn('No');
+        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', '12')->willReturn('12');
+        $tableValueTranslatorRegistry->translate('nutrition', 'is_allergenic', 'en_US', '0')->willReturn('No');
         $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'en_US', 'sugar')->willReturn('Sugar');
-        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', 5)->willReturn(5);
+        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', '5')->willReturn('5');
 
         $attributeTranslator->translate('nutrition-fr_FR-eco', 'en_US')->willReturn('Nutrition (Français, ecommerce)');
 
@@ -122,14 +122,14 @@ final class TableValuesTranslatorSpec extends ObjectBehavior
                 'Product model' => '1',
                 'Attribute' => 'Nutrition (Français, ecommerce)',
                 'Ingredient' => 'Salt',
-                '[quantity]' => 12,
+                '[quantity]' => '12',
                 'Is allergenic' => 'No',
             ],
             [
                 'Product model' => '1',
                 'Attribute' => 'Nutrition (Français, ecommerce)',
                 'Ingredient' => 'Sugar',
-                '[quantity]' => 5,
+                '[quantity]' => '5',
             ],
         ]);
     }

@@ -16,6 +16,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\FlatAttributeValueTranslatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\TableAttribute\Domain\Value\Cell;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry;
 
 final class TableTranslator implements FlatAttributeValueTranslatorInterface
@@ -62,9 +63,9 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
                     unset($decodedValue[$index][$columnCode]);
                     $decodedValue[$index][$label] = $this->tableValueTranslatorRegistry->translate(
                         $attributeCode,
-                        $columnCode,
+                        (string) $columnCode,
                         $locale,
-                        $cellValue
+                        Cell::fromNormalized($cellValue)->asString()
                     );
                 }
             }
