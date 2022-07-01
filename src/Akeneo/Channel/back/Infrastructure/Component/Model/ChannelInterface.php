@@ -2,8 +2,8 @@
 
 namespace Akeneo\Channel\Infrastructure\Component\Model;
 
-use Akeneo\Channel\Infrastructure\Component\Event\ChannelEvent;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Event\ChannelEvent;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;

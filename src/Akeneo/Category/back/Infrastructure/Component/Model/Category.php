@@ -2,10 +2,10 @@
 
 namespace Akeneo\Category\Infrastructure\Component\Model;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Model\Category as BaseCategory;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Category\Infrastructure\Component\Classification\Model\Category as BaseCategory;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

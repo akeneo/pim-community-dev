@@ -24,37 +24,11 @@ class AkeneoCategoryExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        // $loader->load('connector/flat_translators.yml');
-        // $loader->load('connector/use_cases.yml');
-        // $loader->load('array_converter.yml');
-         $loader->load('category_counters.yml');
-         $loader->load('controllers.yml');
-        // $loader->load('documentation.yml');
-        // $loader->load('entities.yml');
-        // $loader->load('event_subscribers.yml');
-        // $loader->load('factories.yml');
-        // $loader->load('form_types.yml');
-         $loader->load('forms.yml');
-        // $loader->load('job_constraints.yml');
-        // $loader->load('job_defaults.yml');
-        // $loader->load('jobs.yml');
-        // $loader->load('managers.yml');
-        // $loader->load('models.yml');
-        // $loader->load('normalizers.yml');
-        // $loader->load('product_grid_category_tree.yml');
-        // $loader->load('providers.yml');
-         $loader->load('queries.yml');
-        // $loader->load('query_builders.yml');
-        // $loader->load('readers.yml');
-        // $loader->load('removers.yml');
-        $loader->load('repositories.yml');
+        $loader->load('category_counters.yml');
         $loader->load('cli.yml');
-        // $loader->load('savers.yml');
-        // $loader->load('scope_mappers.yml');
-        // $loader->load('serializers_standard.yml');
-        // $loader->load('serializers_versioning.yml');
-        // $loader->load('steps.yml');
-        // $loader->load('twig.yml');
-        // $loader->load('updaters.yml');
+        $loader->load('controllers.yml');
+        $loader->load('forms.yml');
+        $loader->load('queries.yml');
+        $loader->load('repositories.yml');
     }
 }

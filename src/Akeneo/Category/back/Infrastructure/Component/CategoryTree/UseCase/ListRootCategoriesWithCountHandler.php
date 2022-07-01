@@ -39,8 +39,7 @@ class ListRootCategoriesWithCountHandler
         UserContext                                          $userContext,
         ListRootCategoriesWithCountIncludingSubCategories    $listAndCountIncludingSubCategories,
         ListRootCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
-    )
-    {
+    ) {
         $this->categoryRepository = $categoryRepository;
         $this->userContext = $userContext;
         $this->listAndCountIncludingSubCategories = $listAndCountIncludingSubCategories;
