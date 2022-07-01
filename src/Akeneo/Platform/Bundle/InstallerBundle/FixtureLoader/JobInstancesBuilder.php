@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -73,7 +74,7 @@ class JobInstancesBuilder
             $yamlReader = $this->getYamlReader();
             $realPath = $fileLocator->locate('@' . $jobsFilePath);
             $jobExecution = new JobExecution();
-            $jobParameters = new JobParameters(['storage' => ['type' => 'local', 'file_path' => $realPath]]);
+            $jobParameters = new JobParameters(['storage' => ['type' => LocalStorage::TYPE, 'file_path' => $realPath]]);
             $jobExecution->setJobParameters($jobParameters);
             $stepExecution = new StepExecution('reader', $jobExecution);
             $yamlReader->setStepExecution($stepExecution);

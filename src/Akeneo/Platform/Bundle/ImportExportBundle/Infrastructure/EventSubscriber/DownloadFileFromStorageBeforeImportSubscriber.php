@@ -12,6 +12,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscrib
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageCommand;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageHandler;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage\Local\LocalStorage;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -64,7 +65,7 @@ final class DownloadFileFromStorageBeforeImportSubscriber implements EventSubscr
         $outputFilePath = $this->downloadFileFromStorageHandler->handle($command);
 
         $storage = [
-            'type' => 'local',
+            'type' => LocalStorage::TYPE,
             'file_path' => $outputFilePath,
         ];
         $jobExecution->getJobParameters()->set('storage', $storage);

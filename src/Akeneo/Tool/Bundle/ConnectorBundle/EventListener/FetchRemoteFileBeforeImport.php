@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
@@ -69,7 +70,7 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
             fclose($remoteStream);
 
             $storage = [
-                'type' => 'local',
+                'type' => LocalStorage::TYPE,
                 'file_path' => $localFilePath
             ];
             $jobParameters->set('storage', $storage);

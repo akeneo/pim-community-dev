@@ -4,6 +4,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
@@ -318,8 +319,8 @@ class JobInstanceController
         $rawParameters = $jobInstance->getRawParameters();
         if(NoneStorage::TYPE === $rawParameters['storage']['type']) {
             $rawParameters['storage'] = [
-                'type' => 'local',
-                'file_path' => $this->getDefaultFilePath($jobInstance->getType())
+                'type' => LocalStorage::TYPE,
+                'file_path' => $this->getDefaultFilePath($jobInstance->getType(), 'xlsx') //TODO: guess the file extension
             ];
             $jobInstance->setRawParameters($rawParameters);
         }
@@ -562,8 +563,8 @@ class JobInstanceController
         return $request->server->get('CONTENT_LENGTH') > 0;
     }
 
-    private function getDefaultFilePath(string $jobType): string
+    private function getDefaultFilePath(string $jobType, string $fileExtension): string
     {
-        return sprintf('%s%s%s_%s_%s.csv', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $jobType, '%job_label%', '%datetime%');
+        return sprintf('%s%s%s_%s_%s.%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $jobType, '%job_label%', '%datetime%', $fileExtension);
     }
 }
