@@ -53,6 +53,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         ?array $localesToFilterOn
     ): ConnectorProductList {
         $result = $pqb->execute();
+        // TODO: the pqb should now return uuids
         $identifiers = array_map(function (IdentifierResult $identifier) {
             return $identifier->getIdentifier();
         }, iterator_to_array($result));
@@ -63,6 +64,9 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         return new ConnectorProductList($result->count(), $products->connectorProducts());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct
     {
         $products = $this->fromProductIdentifiers([$productIdentifier], $userId, null, null, null);
@@ -73,6 +77,9 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         return $products->connectorProducts()[0];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function fromProductIdentifiers(
         array $productIdentifiers,
         int $userId,
@@ -80,24 +87,46 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
     ): ConnectorProductList {
-        $productUuids = $this->getProductUuidsFromProductIdentifiers($productIdentifiers);
+        return $this->fromProductUuids(
+            $this->getProductUuidsFromProductIdentifiers($productIdentifiers),
+            $userId,
+            $attributesToFilterOn,
+            $channelToFilterOn,
+            $localesToFilterOn
+        );
+    }
 
-        $rowsByUuid = array_replace_recursive(
+    public function fromProductUuid(UuidInterface $productUuid, int $userId): ConnectorProduct
+    {
+        $products = $this->fromProductUuids([$productUuid], $userId, null, null, null);
+        if ($products->totalNumberOfProducts() === 0) {
+            throw new ObjectNotFoundException(sprintf('Product "%s" was not found.', $productUuid->toString()));
+        }
+
+        return $products->connectorProducts()[0];
+    }
+
+    public function fromProductUuids(
+        array $productUuids,
+        int $userId,
+        ?array $attributesToFilterOn,
+        ?string $channelToFilterOn,
+        ?array $localesToFilterOn
+    ): ConnectorProductList {
+        $rows = array_replace_recursive(
             $this->getValuesAndPropertiesFromProductUuids->fetchByProductUuids($productUuids),
             $this->fetchAssociationsIndexedByProductUuids($productUuids),
             $this->fetchQuantifiedAssociationsIndexedByProductUuids($productUuids),
             $this->fetchCategoryCodesIndexedByProductUuids($productUuids)
         );
 
-        $rows = $this->replaceUuidKeysByIdentifiers($rowsByUuid);
-
-        $rawValuesIndexedByProductIdentifier = [];
-        foreach ($productIdentifiers as $identifier) {
-            if (!isset($rows[$identifier]['identifier'])) {
+        $rawValuesIndexedByProductUuid = [];
+        foreach ($productUuids as $productUuid) {
+            if (!isset($rows[$productUuid->toString()]['uuid'])) {
                 continue;
             }
 
-            $rawValues = $rows[$identifier]['raw_values'];
+            $rawValues = $rows[$productUuid->toString()]['raw_values'];
             if (null !== $attributesToFilterOn) {
                 $rawValues = $this->filterByAttributeCodes($rawValues, $attributesToFilterOn);
             }
@@ -108,18 +137,18 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 $rawValues = $this->filterByLocaleCodes($rawValues, $localesToFilterOn);
             }
 
-            $rows[$identifier]['raw_values'] = $rawValues;
-            $rawValuesIndexedByProductIdentifier[$identifier] = $rawValues;
+            $rows[$productUuid->toString()]['raw_values'] = $rawValues;
+            $rawValuesIndexedByProductUuid[$productUuid->toString()] = $rawValues;
         }
 
-        $filteredRawValuesIndexedByProductIdentifier = $this->readValueCollectionFactory->createMultipleFromStorageFormat($rawValuesIndexedByProductIdentifier);
+        $filteredRawValuesIndexedByProductIdentifier = $this->readValueCollectionFactory->createMultipleFromStorageFormat($rawValuesIndexedByProductUuid);
 
         $products = [];
-        foreach ($productIdentifiers as $identifier) {
-            if (!isset($rows[$identifier]['identifier'])) {
+        foreach ($productUuids as $productUuid) {
+            if (!isset($rows[$productUuid->toString()]['uuid'])) {
                 continue;
             }
-            $row = $rows[$identifier];
+            $row = $rows[$productUuid->toString()];
 
             $products[] = new ConnectorProduct(
                 $row['uuid'],
@@ -134,20 +163,13 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 $row['associations'] ?? [],
                 $row['quantified_associations'] ?? [],
                 [],
-                $filteredRawValuesIndexedByProductIdentifier[$identifier],
+                $filteredRawValuesIndexedByProductIdentifier[$productUuid->toString()],
                 null,
                 null
             );
         }
 
         return new ConnectorProductList(count($products), $products);
-    }
-
-    private function removeIdentifierValue(array $rawValues, string $identifierAttributeCode): array
-    {
-        unset($rawValues[$identifierAttributeCode]);
-
-        return $rawValues;
     }
 
     private function filterByAttributeCodes(array $rawValues, array $attributeCodes): array
