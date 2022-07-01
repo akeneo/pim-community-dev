@@ -74,7 +74,7 @@ services:
 
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler:
         arguments:
-            - '@Akeneo\OnboarderSerenity\Supplier\Infrastructure\Mailer\SendSwiftmailerEmail'
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\SendEmail'
             - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail'
 
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler:
