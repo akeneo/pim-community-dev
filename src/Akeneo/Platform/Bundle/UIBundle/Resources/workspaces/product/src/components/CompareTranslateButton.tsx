@@ -17,7 +17,7 @@ const CompareTranslateButton: React.FC<Props> = ({onClick, disabled}) => {
 
   return (
     <StyledButton ghost level="secondary" onClick={onClick} disabled={disabled}>
-      {translate('free_trial.product-edit-form.compare_translate.button_title')}
+      {translate('pim_enrich.entity.product.module.copy.button_label')}
     </StyledButton>
   );
 };

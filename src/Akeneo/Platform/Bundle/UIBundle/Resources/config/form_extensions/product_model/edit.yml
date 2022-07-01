@@ -91,7 +91,7 @@ extensions:
         position: 80
 
     pim-free-trial-pim-product-model-edit-form-start-copy:
-        module: pim/product-edit-form/start-copy
+        module: pim/product-edit-form/free-trial-start-copy
         parent: pim-product-model-edit-form
         targetZone: buttons
         aclResourceId: pim_enrich_product_model_edit_attributes

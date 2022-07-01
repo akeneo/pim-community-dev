@@ -13,9 +13,8 @@ define([
   'pim/form',
   'pim/template/product/start-copy',
   'pim/analytics',
-  'pim/feature-flags',
-  '@akeneo-pim-community/product'
-], function ($, _, __, BaseForm, template, analytics, FeatureFlags, {CompareTranslateButton}) {
+  'pim/feature-flags'
+], function ($, _, __, BaseForm, template, analytics, FeatureFlags) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'AknDropdown-menuLink start-copying',
@@ -23,7 +22,6 @@ define([
       click: 'startCopy',
     },
     isCopying: false,
-    buttonDisabled: false,
 
     /**
      * {@inheritdoc}
@@ -38,30 +36,15 @@ define([
      * {@inheritdoc}
      */
     render() {
-      if (FeatureFlags.isEnabled('free_trial')) {
-        this.renderReact(
-          CompareTranslateButton,
-          {
-            onClick: () => {
-              this.startCopy();
-              this.buttonDisabled = true;
-              this.render();
-            },
-            disabled: this.buttonDisabled,
-          },
-          this.el
-        );
-
-        return this;
-      }
-
-      this.$el.html('');
-      if (!this.isCopying) {
-        this.$el.html(
-          this.template({
-            label: __('pim_enrich.entity.product.module.copy.label'),
-          })
-        );
+      if (!FeatureFlags.isEnabled('free_trial')) {
+        this.$el.html('');
+        if (!this.isCopying) {
+          this.$el.html(
+            this.template({
+              label: __('pim_enrich.entity.product.module.copy.label'),
+            })
+          );
+        }
       }
     },
 
@@ -80,10 +63,6 @@ define([
      * Stops the copy and re-display the button
      */
     stopCopy() {
-      if (FeatureFlags.isEnabled('free_trial')) {
-        this.buttonDisabled = false;
-      }
-
       this.isCopying = false;
       this.render();
     },
