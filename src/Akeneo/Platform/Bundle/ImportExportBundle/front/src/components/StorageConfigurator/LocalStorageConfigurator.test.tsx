@@ -28,7 +28,7 @@ test('it allows user to fill local storage file_path field', () => {
   );
 
   const file_pathInput = screen.getByLabelText(
-    'akeneo.job_automation.storage.file_path.label pim_common.required_label'
+    'pim_import_export.form.job_instance.storage_form.file_path.label pim_common.required_label'
   );
   userEvent.type(file_pathInput, 'x');
 

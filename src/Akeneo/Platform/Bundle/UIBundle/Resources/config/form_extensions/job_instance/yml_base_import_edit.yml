@@ -94,6 +94,7 @@ extensions:
         config:
             tabCode: pim-job-instance-properties
             jobType: import
+            fileExtension: yml
 
     pim-job-instance-yml-base-import-edit-label:
         module: pim/job/common/edit/label

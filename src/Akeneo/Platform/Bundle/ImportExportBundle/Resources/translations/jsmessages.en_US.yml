@@ -156,6 +156,23 @@ pim_import_export:
                         title: File locale
                         help: Define the locale in which labels are displayed
             file_path: File path
+            storage_form:
+                title: Storage
+                connection:
+                    label: Type
+                    local: Local
+                    sftp: SFTP
+                    none: Only manual upload
+                file_path.label: File path
+                host.label: Host
+                port.label: Port
+                username.label: Login
+                password.label: Password
+            validation:
+                storage:
+                    unavailable_type: This storage is not available, only {{ available_types }} are available.
+                file_path:
+                    unsupported_extension: Unsupported file extension
     widget:
         last_operations:
             empty: There is no operation to display for now.
