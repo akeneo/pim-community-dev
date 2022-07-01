@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write;
+namespace Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount;
 
 use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\ValueObject\EmailContent;
 

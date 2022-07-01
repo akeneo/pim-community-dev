@@ -81,7 +81,7 @@ services:
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler:
         arguments:
             - '@Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\SendEmail'
-            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail'
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail'
 
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler:
         arguments:
@@ -103,16 +103,16 @@ services:
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler:
         arguments:
             - '@Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\SendEmail'
-            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildResetPasswordEmail'
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail'
 
     # Email sending services
-    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail:
+    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail:
         class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigWelcomeEmail
         arguments:
             - '@twig'
             - '%env(AKENEO_PIM_URL)%'
 
-    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildResetPasswordEmail:
+    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail:
         class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigResetPasswordEmail
         arguments:
             - '@twig'

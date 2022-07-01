@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail;
+use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\SendEmail;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\ValueObject\Email;
 

@@ -6,5 +6,5 @@ namespace Akeneo\OnboarderSerenity\Supplier\Infrastructure;
 
 final class SetUpPasswordUrl
 {
-    public const VALUE = '%s/onboarder/supplier/index.html/#/set-up-password/%s';
+    public const VALUE = '%s/onboarder/supplier/index.html#/set-up-password/%s';
 }

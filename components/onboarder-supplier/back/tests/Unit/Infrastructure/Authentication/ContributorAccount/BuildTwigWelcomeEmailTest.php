@@ -25,14 +25,14 @@ final class BuildTwigWelcomeEmailTest extends TestCase
                     '@AkeneoOnboarderSerenitySupplier/Email/contributor-invitation.html.twig',
                     [
                         'contributorEmail' => $contributorEmail,
-                        'url' => 'http://wwww.example.com/onboarder/supplier/index.html/#/set-up-password/foo',
+                        'url' => 'http://wwww.example.com/onboarder/supplier/index.html#/set-up-password/foo',
                     ],
                 ],
                 [
                     '@AkeneoOnboarderSerenitySupplier/Email/contributor-invitation.txt.twig',
                     [
                         'contributorEmail' => $contributorEmail,
-                        'url' => 'http://wwww.example.com/onboarder/supplier/index.html/#/set-up-password/foo',
+                        'url' => 'http://wwww.example.com/onboarder/supplier/index.html#/set-up-password/foo',
                     ],
                 ],
             )

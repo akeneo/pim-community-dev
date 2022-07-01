@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail;
+use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\ValueObject\EmailContent;
 use Akeneo\OnboarderSerenity\Supplier\Infrastructure\SetUpPasswordUrl;
 use Twig\Environment;
