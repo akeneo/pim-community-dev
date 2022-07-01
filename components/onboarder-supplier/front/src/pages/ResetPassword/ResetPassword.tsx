@@ -58,8 +58,8 @@ const ResetPassword = () => {
             ) : (
                 <div>
                     <FormattedMessage
-                        defaultMessage="If the email address exists, an email has been send to reset your password."
-                        id="31lL+P"
+                        defaultMessage="If the email address exists, an email has been sent to reset your password."
+                        id="WZVD1c"
                     />
                 </div>
             )}

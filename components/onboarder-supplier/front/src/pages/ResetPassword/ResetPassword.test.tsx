@@ -43,6 +43,6 @@ test('it does not render the email input and the submit button if the form has b
     expect(screen.queryByLabelText('Email')).toBeNull();
     expect(screen.queryByTestId('submit-button')).toBeNull();
     expect(
-        screen.getByText('If the email address exists, an email has been send to reset your password.')
+        screen.getByText('If the email address exists, an email has been sent to reset your password.')
     ).toBeInTheDocument();
 });
