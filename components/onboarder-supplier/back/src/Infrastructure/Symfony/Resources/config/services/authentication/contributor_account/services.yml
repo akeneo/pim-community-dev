@@ -58,6 +58,11 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler'
 
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\ResetPassword:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler'
+
     Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\Security:
         public: true
 

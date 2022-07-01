@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Supplier\Test\Unit\Application\Authentication\ContributorAccount;
 
-use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Exception\ContributorAccountDoesNotExist;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\ResetPassword;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Event\ResetPasswordRequested;
@@ -47,18 +46,17 @@ final class ResetPasswordHandlerTest extends TestCase
     }
 
     /** @test */
-    public function itThrowsAnExceptionIfTheContributorAccountDoesNotExist(): void
+    public function itDoesNotResetTheContributorAccountPasswordIfItDoesNotExist(): void
     {
-        $contributorAccountRepository = new InMemoryRepository();
+        $contributorAccountRepository = $this->createMock(InMemoryRepository::class);
         $eventDispatcherStub = new StubEventDispatcher();
+        $dispatchedEvents = $eventDispatcherStub->getDispatchedEvents();
         $sut = new ResetPasswordHandler($contributorAccountRepository, $eventDispatcherStub);
 
-        try {
-            ($sut)(new ResetPassword('test@example.com'));
-            static::fail('ContributorAccountDoesNotExist exception should have been thrown.');
-        } catch (ContributorAccountDoesNotExist) {
-            $dispatchedEvents = $eventDispatcherStub->getDispatchedEvents();
-            static::assertCount(0, $dispatchedEvents);
-        }
+        $contributorAccountRepository->expects(self::never())->method('save')->withAnyParameters();
+
+        ($sut)(new ResetPassword('test@example.com'));
+
+        static::assertCount(0, $dispatchedEvents);
     }
 }
