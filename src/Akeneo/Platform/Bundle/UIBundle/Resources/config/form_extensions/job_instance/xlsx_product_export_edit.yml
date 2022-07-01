@@ -104,6 +104,7 @@ extensions:
         config:
             tabCode: pim-job-instance-properties
             jobType: export
+            fileExtension: xlsx
 
     pim-job-instance-xlsx-product-export-edit-properties-decimal-separator:
         module: pim/job/common/edit/field/decimal-separator

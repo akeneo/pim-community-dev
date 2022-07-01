@@ -6,25 +6,26 @@ import {getStorageConfigurator} from './StorageConfigurator';
 
 type StorageFormProps = {
   jobType: JobType;
+  fileExtension: string;
   storage: Storage;
   validationErrors: ValidationError[];
   onStorageChange: (storage: Storage) => void;
 };
 
-const StorageForm = ({jobType, storage, validationErrors, onStorageChange}: StorageFormProps) => {
+const StorageForm = ({jobType, fileExtension, storage, validationErrors, onStorageChange}: StorageFormProps) => {
   const translate = useTranslate();
 
   const handleTypeChange = (type: string) =>
-    isValidStorageType(type) && onStorageChange(getDefaultStorage(jobType, type));
+    isValidStorageType(type) && onStorageChange(getDefaultStorage(jobType, type, fileExtension));
 
   const StorageConfigurator = getStorageConfigurator(storage.type);
 
   return (
     <Section>
       <SectionTitle>
-        <SectionTitle.Title>{translate('akeneo.job_automation.storage.title')}</SectionTitle.Title>
+        <SectionTitle.Title>{translate('pim_import_export.form.job_instance.storage_form.title')}</SectionTitle.Title>
       </SectionTitle>
-      <Field label={translate('akeneo.job_automation.storage.connection.label')}>
+      <Field label={translate('pim_import_export.form.job_instance.storage_form.connection.label')}>
         <SelectInput
           value={storage.type}
           onChange={handleTypeChange}
@@ -34,7 +35,7 @@ const StorageForm = ({jobType, storage, validationErrors, onStorageChange}: Stor
         >
           {STORAGE_TYPES.map(storageType => (
             <SelectInput.Option value={storageType} key={storageType}>
-              {translate(`akeneo.job_automation.storage.connection.${storageType}`)}
+              {translate(`pim_import_export.form.job_instance.storage_form.connection.${storageType}`)}
             </SelectInput.Option>
           ))}
         </SelectInput>
