@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * When a channel is updated, products completenesses related to channel and locales need to be cleaned.
@@ -24,56 +26,18 @@ use Psr\Log\LoggerInterface;
  */
 class RemoveCompletenessForChannelAndLocaleTasklet implements TaskletInterface
 {
-    /** @var EntityManagerClearerInterface */
-    private $cacheClearer;
-
-    /** @var NotifierInterface */
-    private $notifier;
-
-    /** @var SimpleFactoryInterface */
-    private $notificationFactory;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
-
-    /** @var ChannelRepositoryInterface */
-    private $channelRepository;
-
-    /** @var LocaleRepositoryInterface */
-    private $localeRepository;
-
-    /** @var BulkSaverInterface */
-    private $localeBulkSaver;
-
-    /** @var int */
-    private $productBatchSize;
-
-    /** @var StepExecution */
-    private $stepExecution;
-
-    /** @var BulkSaverInterface */
-    private $productBulkSaver;
+    private StepExecution $stepExecution;
 
     public function __construct(
-        EntityManagerClearerInterface $cacheClearer,
-        NotifierInterface $notifier,
-        SimpleFactoryInterface $notificationFactory,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository,
-        BulkSaverInterface $localeBulkSaver,
-        BulkSaverInterface $productBulkSaver,
-        int $productBatchSize
+        private EntityManagerClearerInterface $cacheClearer,
+        private NotifierInterface $notifier,
+        private SimpleFactoryInterface $notificationFactory,
+        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private CursorableRepositoryInterface $productRepository,
+        private ChannelRepositoryInterface $channelRepository,
+        private BulkSaverInterface $productBulkSaver,
+        private int $productBatchSize
     ) {
-        $this->cacheClearer = $cacheClearer;
-        $this->notifier = $notifier;
-        $this->notificationFactory = $notificationFactory;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
-        $this->channelRepository = $channelRepository;
-        $this->localeRepository = $localeRepository;
-        $this->localeBulkSaver = $localeBulkSaver;
-        $this->productBatchSize = $productBatchSize;
-        $this->productBulkSaver = $productBulkSaver;
     }
 
     public function setStepExecution(StepExecution $stepExecution)
@@ -83,43 +47,37 @@ class RemoveCompletenessForChannelAndLocaleTasklet implements TaskletInterface
 
     public function execute(): void
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $localesIdentifiers = $jobParameters->get('locales_identifier');
-        $channelCode = $jobParameters->get('channel_code');
+        if (!$this->shouldRun()) {
+            return;
+        }
 
-        $usersToNotify = [$jobParameters->get('username')];
+        $usersToNotify = [$this->stepExecution->getJobParameters()->get('username')];
         $this->notifyUsersItBegins($usersToNotify);
 
-        $products = $this->productQueryBuilderFactory->create()->execute();
-        $productsToClean = [];
-        foreach ($products as $product) {
-            $productsToClean[] = $product;
+        $productIdentifiers = $this->productQueryBuilderFactory->create()->execute();
+        $productIdentifiersToClean = [];
+        /** @var IdentifierResult $productIdentifier */
+        foreach ($productIdentifiers as $productIdentifier) {
+            $productIdentifiersToClean[] = $productIdentifier->getIdentifier();
 
-            if (count($productsToClean) >= $this->productBatchSize) {
-                $this->cleanProducts($productsToClean);
+            if (count($productIdentifiersToClean) >= $this->productBatchSize) {
+                $products = $this->productRepository->getItemsFromIdentifiers($productIdentifiersToClean);
+                $this->cleanProducts($products);
                 $this->cacheClearer->clear();
-                $productsToClean = [];
+                $productIdentifiersToClean = [];
             }
         }
 
-        if (!empty($productsToClean)) {
-            $this->cleanProducts($productsToClean);
-        }
-        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
-        $locales = $this->localeRepository->findBy(['code' => $localesIdentifiers]);
-        foreach ($locales as $locale) {
-            $locale->removeChannel($channel);
-        }
-
-        if (!empty($locales)) {
-            $this->localeBulkSaver->saveAll($locales);
+        if (!empty($productIdentifiersToClean)) {
+            $products = $this->productRepository->getItemsFromIdentifiers($productIdentifiersToClean);
+            $this->cleanProducts($products);
         }
         $this->notifyUsersItIsDone($usersToNotify);
     }
 
-    private function cleanProducts(array $productIdentifiers): void
+    private function cleanProducts(array $products): void
     {
-        $this->productBulkSaver->saveAll($productIdentifiers, ['force_save' => true]);
+        $this->productBulkSaver->saveAll($products, ['force_save' => true]);
     }
 
     private function notifyUsersItBegins(array $users): void
@@ -146,5 +104,28 @@ class RemoveCompletenessForChannelAndLocaleTasklet implements TaskletInterface
                 'showReportButton' => false
             ]);
         $this->notifier->notify($doneNotif, $users);
+    }
+
+    private function shouldRun(): bool
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $channelCode = $jobParameters->get('channel_code');
+        /** @var ?ChannelInterface $channel */
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
+        if (null === $channel) {
+            return true;
+        }
+
+        $localeCodes = $jobParameters->get('locales_identifier');
+        $currentLocaleCodes = $channel->getLocales()->map(
+            static fn (LocaleInterface $locale): string => $locale->getCode()
+        );
+        foreach ($localeCodes as $localeCode) {
+            if (!$currentLocaleCodes->contains($localeCode)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

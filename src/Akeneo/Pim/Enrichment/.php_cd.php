@@ -199,6 +199,7 @@ $rules = [
 
         // TIP-931: SearchQueryBuilder design problem
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder',
+        'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult',
 
         // TIP-932: KeepOnlyValuesForVariation should use the public API related to the root aggregate Family Variant
         'Akeneo\Pim\Structure\Component\Model\CommonAttributeCollection',
