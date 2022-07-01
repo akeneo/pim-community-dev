@@ -76,7 +76,7 @@ class CreateConnectedAppWithAuthorizationHandler
 
         $userId = $this->createUser->execute(
             $randomCode,
-            $marketplaceApp->getName(),
+            \strtr($marketplaceApp->getName(), '<>&"', '____'),
             [$group->getName()],
             [$role->getRole()]
         );
