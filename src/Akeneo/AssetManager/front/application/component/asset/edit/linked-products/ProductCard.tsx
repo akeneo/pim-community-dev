@@ -33,7 +33,9 @@ type ProductProps = {
 const ProductCard = ({product, locale}: ProductProps) => {
   const label = getLabelInCollection(product.labels, locale, true, product.identifier);
   const router = useRouter();
-  const productEditUrl = router.generate(`pim_enrich_${product.type}_edit`, {id: product.id});
+  const productEditUrl = product.type === 'product' ?
+    router.generate('pim_enrich_product_edit', {uuid: product.id}) :
+    router.generate('pim_enrich_product_model_edit', {id: product.id});
 
   return (
     <Card stacked={isProductModel(product)} fit="contain" src={getMediaFilePath(router, product.image)}>
