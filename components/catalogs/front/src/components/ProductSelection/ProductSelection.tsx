@@ -1,10 +1,14 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC, useEffect, useReducer} from 'react';
 import {getColor} from 'akeneo-design-system';
-import {Criterion} from './models/Criterion';
-import {AnyCriterionState, Criteria} from './models/Criteria';
-import {AddCriterionDropdown} from './components/AddCriterionDropdown';
 import styled from 'styled-components';
+import {ProductSelectionReducer} from './reducers/ProductSelectionReducer';
+import {ProductSelectionContext} from './contexts/ProductSelectionContext';
+import {Criterion} from './components/Criterion';
 import {Empty} from './components/Empty';
+import {ProductSelectionValues} from './models/ProductSelectionValues';
+import {CriterionErrors} from './models/CriterionErrors';
+import {AddCriterionDropdown} from './components/AddCriterionDropdown';
+import {ProductSelectionErrors} from './models/ProductSelectionErrors';
 
 const Header = styled.div`
     border-bottom: 1px solid ${getColor('grey', 60)};
@@ -13,62 +17,38 @@ const Header = styled.div`
     padding: 10px 0;
 `;
 
-type Props = {
-    criteria: Criteria;
-    setCriteria: (criteria: Criteria) => void;
-    onChange: (isDirty: boolean) => void;
+const emptyErrors: CriterionErrors = {
+    value: null,
+    operator: null,
+    field: null,
 };
 
-const ProductSelection: FC<Props> = ({criteria, setCriteria, onChange}) => {
-    const addCriterion = useCallback(
-        (criterion: Criterion<AnyCriterionState>) => {
-            setCriteria([...criteria, criterion]);
-            onChange(true);
-        },
-        [criteria, setCriteria, onChange]
-    );
+type Props = {
+    criteria: ProductSelectionValues;
+    onChange: (values: ProductSelectionValues) => void;
+    errors: ProductSelectionErrors;
+};
 
-    const updateCriterion = useCallback(
-        (criterion: Criterion<AnyCriterionState>, newState: AnyCriterionState) => {
-            setCriteria(
-                criteria.map(old =>
-                    criterion.id !== old.id
-                        ? old
-                        : {
-                              ...old,
-                              state: newState,
-                          }
-                )
-            );
-            onChange(true);
-        },
-        [criteria, setCriteria, onChange]
-    );
+const ProductSelection: FC<Props> = ({criteria, onChange, errors}) => {
+    const [values, dispatch] = useReducer(ProductSelectionReducer, criteria);
 
-    const removeCriterion = useCallback(
-        (criterion: Criterion<AnyCriterionState>) => {
-            setCriteria(criteria.filter(old => old.id !== criterion.id));
-            onChange(true);
-        },
-        [criteria, setCriteria, onChange]
-    );
+    useEffect(() => {
+        if (criteria !== values) {
+            onChange(values);
+        }
+    }, [criteria, values, onChange]);
 
-    const list = criteria.map(criterion => {
-        const Module = criterion.module;
-
-        const handleChange = (newState: AnyCriterionState) => updateCriterion(criterion, newState);
-        const handleRemove = () => removeCriterion(criterion);
-
-        return <Module key={criterion.id} state={criterion.state} onChange={handleChange} onRemove={handleRemove} />;
-    });
+    const rows = Object.keys(values).map(id => (
+        <Criterion key={id} id={id} state={values[id]} errors={errors[id] || emptyErrors} />
+    ));
 
     return (
-        <>
+        <ProductSelectionContext.Provider value={dispatch}>
             <Header>
-                <AddCriterionDropdown onNewCriterion={addCriterion} />
+                <AddCriterionDropdown />
             </Header>
-            {criteria.length ? list : <Empty />}
-        </>
+            {rows.length ? rows : <Empty />}
+        </ProductSelectionContext.Provider>
     );
 };
 

@@ -11,9 +11,17 @@ jest.mock('../ErrorBoundary', () => ({
 }));
 
 test('it renders without error', () => {
+    const form = {
+        values: {
+            enabled: true,
+            product_selection_criteria: {},
+        },
+        dispatch: jest.fn(),
+        errors: [],
+    };
     render(
         <ThemeProvider theme={pimTheme}>
-            <CatalogEdit id={'123e4567-e89b-12d3-a456-426614174000'} onChange={jest.fn()} />
+            <CatalogEdit form={form} />
         </ThemeProvider>
     );
 

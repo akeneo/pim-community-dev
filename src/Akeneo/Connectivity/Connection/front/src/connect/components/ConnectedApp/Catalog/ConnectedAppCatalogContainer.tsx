@@ -1,4 +1,4 @@
-import React, {FC, useRef, useState} from 'react';
+import React, {FC} from 'react';
 import {AppIllustration, Breadcrumb} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../../shared/translate';
 import {ConnectedApp} from '../../../../model/Apps/connected-app';
@@ -7,7 +7,7 @@ import {useRouter} from '../../../../shared/router/use-router';
 import {ApplyButton, PageContent, PageHeader} from '../../../../common';
 import {UserButtons} from '../../../../shared/user';
 import {DeveloperModeTag} from '../../DeveloperModeTag';
-import {CatalogEdit, CatalogEditRef} from '@akeneo-pim-community/catalogs';
+import {CatalogEdit, useCatalogForm} from '@akeneo-pim-community/catalogs';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -22,18 +22,11 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
     const connectedAppHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_edit', {
         connectionCode: connectedApp.connection_code,
     })}`;
-    const [isDirty, setIsDirty] = useState<boolean>(false);
-    const catalogEditRef = useRef<CatalogEditRef>(null);
+    const [form, save, isDirty] = useCatalogForm(catalog.id);
 
     const SaveButton = () => {
         return (
-            <ApplyButton
-                onClick={() => {
-                    catalogEditRef.current && catalogEditRef.current.save();
-                }}
-                disabled={!isDirty}
-                classNames={['AknButtonList-item']}
-            >
+            <ApplyButton onClick={save} disabled={!isDirty} classNames={['AknButtonList-item']}>
                 <Translate id='pim_common.save' />
             </ApplyButton>
         );
@@ -50,10 +43,6 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
             )) ||
             null
         );
-    };
-
-    const handleChange = (isDirty: boolean) => {
-        setIsDirty(isDirty);
     };
 
     const breadcrumb = (
@@ -81,9 +70,7 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
                 {catalog.name}
             </PageHeader>
 
-            <PageContent>
-                <CatalogEdit id={catalog.id} onChange={handleChange} ref={catalogEditRef} />
-            </PageContent>
+            <PageContent>{form && <CatalogEdit form={form} />}</PageContent>
         </>
     );
 };
