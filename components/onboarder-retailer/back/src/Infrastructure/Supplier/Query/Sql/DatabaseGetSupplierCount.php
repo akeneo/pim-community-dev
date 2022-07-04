@@ -18,7 +18,7 @@ final class DatabaseGetSupplierCount implements GetSupplierCount
         return (int) $this->connection->executeQuery(
             <<<SQL
             SELECT COUNT(*)
-            FROM `akeneo_onboarder_serenity_supplier`
+            FROM `akeneo_supplier_portal_supplier`
             WHERE label LIKE :search
         SQL,
             [

@@ -60,7 +60,7 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
     private function createSupplier(): void
     {
         $sql = <<<SQL
-            INSERT INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label)
+            INSERT INTO `akeneo_supplier_portal_supplier` (identifier, code, label)
             VALUES (:identifier, :code, :label)
         SQL;
 
@@ -77,7 +77,7 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
     private function createContributor(string $email): void
     {
         $sql = <<<SQL
-            INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (email, supplier_identifier)
+            INSERT INTO `akeneo_supplier_portal_supplier_contributor` (email, supplier_identifier)
             VALUES (:email, :supplierIdentifier)
         SQL;
 

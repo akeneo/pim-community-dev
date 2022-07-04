@@ -18,7 +18,7 @@ final class DatabaseSupplierExists implements SupplierExists
     {
         $sql = <<<SQL
             SELECT 1
-            FROM `akeneo_onboarder_serenity_supplier`
+            FROM `akeneo_supplier_portal_supplier`
             WHERE code = :code
         SQL;
 

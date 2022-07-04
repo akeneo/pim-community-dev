@@ -21,7 +21,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
         $this->connection = $this->get('doctrine.dbal.default_connection');
 
         $this->connection->executeStatement(<<<SQL
-            DELETE FROM `akeneo_onboarder_serenity_contributor_account`;
+            DELETE FROM `akeneo_supplier_portal_contributor_account`;
         SQL);
     }
 

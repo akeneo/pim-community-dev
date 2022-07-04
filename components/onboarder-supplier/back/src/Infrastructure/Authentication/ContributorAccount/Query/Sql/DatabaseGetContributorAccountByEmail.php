@@ -17,7 +17,7 @@ class DatabaseGetContributorAccountByEmail
     {
         $sql = <<<SQL
             SELECT email, password
-            FROM akeneo_onboarder_serenity_contributor_account
+            FROM akeneo_supplier_portal_contributor_account
             WHERE email = :email
         SQL;
 

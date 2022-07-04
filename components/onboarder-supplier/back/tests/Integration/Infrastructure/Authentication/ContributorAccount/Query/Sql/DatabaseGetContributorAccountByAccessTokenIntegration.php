@@ -13,7 +13,7 @@ final class DatabaseGetContributorAccountByAccessTokenIntegration extends SqlInt
     public function itGetsAContributorAccountFromAValidAccessToken(): void
     {
         $sql = <<<SQL
-            INSERT INTO akeneo_onboarder_serenity_contributor_account (
+            INSERT INTO akeneo_supplier_portal_contributor_account (
                 id, email, password, access_token, access_token_created_at, created_at
             ) VALUES (
                 '9f4c017c-7682-4f83-9099-dd9afcada1a2',

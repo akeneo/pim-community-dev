@@ -39,7 +39,7 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
     private function addSupplierTable(): void
     {
         $sql = <<<SQL
-            CREATE TABLE IF NOT EXISTS `akeneo_onboarder_serenity_supplier` (
+            CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_supplier` (
               `identifier` char(36) NOT NULL,
               `code` varchar(200) NOT NULL,
               `label` varchar(200) NOT NULL,
@@ -56,7 +56,7 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
     private function addSupplierContributorTable(): void
     {
         $sql = <<<SQL
-            CREATE TABLE IF NOT EXISTS `akeneo_onboarder_serenity_supplier_contributor` (
+            CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_supplier_contributor` (
               `id` bigint UNSIGNED AUTO_INCREMENT NOT NULL,
               `email` varchar(255) NOT NULL,
               `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -65,7 +65,7 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
               CONSTRAINT UC_supplier_contributor_email UNIQUE (`email`),
               CONSTRAINT `supplier_identifier_foreign_key`
                 FOREIGN KEY (`supplier_identifier`)
-                REFERENCES `akeneo_onboarder_serenity_supplier` (identifier)
+                REFERENCES `akeneo_supplier_portal_supplier` (identifier)
                 ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         SQL;
@@ -76,7 +76,7 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
     private function addContributorAccountTable(): void
     {
         $sql = <<<SQL
-            CREATE TABLE IF NOT EXISTS `akeneo_onboarder_serenity_contributor_account` (
+            CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_contributor_account` (
             `id` varchar(36) NOT NULL,
             `email` varchar(255) NOT NULL,
             `password` varchar(255) DEFAULT NULL,

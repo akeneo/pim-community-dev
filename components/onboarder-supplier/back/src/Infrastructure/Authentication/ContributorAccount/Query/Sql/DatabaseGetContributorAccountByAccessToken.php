@@ -21,7 +21,7 @@ final class DatabaseGetContributorAccountByAccessToken implements GetContributor
                    email,
                    access_token, 
                    access_token_created_at
-            FROM akeneo_onboarder_serenity_contributor_account
+            FROM akeneo_supplier_portal_contributor_account
             WHERE access_token = :accessToken
         SQL;
 

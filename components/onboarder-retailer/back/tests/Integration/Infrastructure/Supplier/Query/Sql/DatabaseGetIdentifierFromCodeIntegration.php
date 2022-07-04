@@ -37,7 +37,7 @@ final class DatabaseGetIdentifierFromCodeIntegration extends SqlIntegrationTestC
     private function createSupplier(): void
     {
         $sql = <<<SQL
-            INSERT INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label)
+            INSERT INTO `akeneo_supplier_portal_supplier` (identifier, code, label)
             VALUES (:identifier, :code, :label)
         SQL;
 

@@ -100,7 +100,7 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     {
         $sql = <<<SQL
             SELECT *
-            FROM `akeneo_onboarder_serenity_contributor_account`
+            FROM `akeneo_supplier_portal_contributor_account`
             WHERE email = :email
         SQL;
 

@@ -19,11 +19,11 @@ final class DatabaseGetAllSuppliersWithContributors implements GetAllSuppliersWi
         $sql = <<<SQL
             WITH contributor AS (
                 SELECT contributor.supplier_identifier, JSON_ARRAYAGG(email) as contributors
-                FROM `akeneo_onboarder_serenity_supplier_contributor` contributor
+                FROM `akeneo_supplier_portal_supplier_contributor` contributor
                 GROUP BY contributor.supplier_identifier
             )
             SELECT identifier, code, label, contributor.contributors
-            FROM `akeneo_onboarder_serenity_supplier` supplier
+            FROM `akeneo_supplier_portal_supplier` supplier
             LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier
             ORDER BY code;
         SQL;

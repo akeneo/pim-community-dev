@@ -23,11 +23,11 @@ final class DatabaseGetSupplierList implements GetSupplierList
         $sql = <<<SQL
             WITH contributor AS (
                 SELECT contributor.supplier_identifier, COUNT(id) as contributors_count
-                FROM akeneo_onboarder_serenity_supplier_contributor contributor
+                FROM akeneo_supplier_portal_supplier_contributor contributor
                 GROUP BY contributor.supplier_identifier
             )
             SELECT identifier, code, label, IFNULL(contributors_count, 0) as contributors_count
-            FROM `akeneo_onboarder_serenity_supplier` as supplier
+            FROM `akeneo_supplier_portal_supplier` as supplier
             LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier
             WHERE label LIKE :search
             ORDER BY label

@@ -82,11 +82,11 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
         $sql = <<<SQL
             WITH contributor AS (
                 SELECT supplier_identifier, JSON_ARRAYAGG(email) as contributor_emails
-                FROM `akeneo_onboarder_serenity_supplier_contributor` contributor
+                FROM `akeneo_supplier_portal_supplier_contributor` contributor
                 GROUP BY contributor.supplier_identifier
             )
             SELECT identifier, code, label, contributor.contributor_emails
-            FROM `akeneo_onboarder_serenity_supplier` supplier
+            FROM `akeneo_supplier_portal_supplier` supplier
             LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier
             WHERE code = :code
         SQL;
@@ -112,7 +112,7 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
     {
         $sql = <<<SQL
             SELECT COUNT(*)
-            FROM `akeneo_onboarder_serenity_supplier`
+            FROM `akeneo_supplier_portal_supplier`
         SQL;
 
         return (int) static::$kernel->getContainer()->get('database_connection')->executeQuery($sql)->fetchOne();
