@@ -4,7 +4,7 @@ jest.unmock('../reducers/CatalogFormReducer');
 import {CatalogFormActions} from '../reducers/CatalogFormReducer';
 import {act, renderHook} from '@testing-library/react-hooks';
 import {mocked} from 'ts-jest/utils';
-import {Operator} from '../../ProductSelection/models/Operator';
+import {Operator} from '../../ProductSelection';
 import {useCatalogForm} from './useCatalogForm';
 import {useCatalog} from './useCatalog';
 import {SaveCatalog, useSaveCatalog} from './useSaveCatalog';
