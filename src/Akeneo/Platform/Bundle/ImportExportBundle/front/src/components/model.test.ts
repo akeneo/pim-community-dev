@@ -1,5 +1,12 @@
 import {FeatureFlags} from '@akeneo-pim-community/shared';
-import {isValidStorageType, getDefaultStorage, isExport, getDefaultFilePath} from './model';
+import {
+  isValidStorageType,
+  getDefaultStorage,
+  isExport,
+  getDefaultFilePath,
+  localStorageIsEnabled,
+  remoteStorageIsEnabled,
+} from './model';
 
 const featureFlagCollection = {
   job_automation_local_storage: false,
@@ -12,17 +19,23 @@ const featureFlags: FeatureFlags = {
   isEnabled: (featureFlag: string) => featureFlagCollection[featureFlag],
 };
 
+beforeEach(() => {
+  featureFlagCollection.job_automation_local_storage = false;
+  featureFlagCollection.job_automation_remote_storage = false;
+});
+
 test('it says if a storage type is valid', () => {
-  expect(isValidStorageType('local', featureFlags)).toBe(false);
-  expect(isValidStorageType('sftp', featureFlags)).toBe(false);
+  expect(isValidStorageType('local', featureFlags, 'xlsx_product_export')).toBe(false);
+  expect(isValidStorageType('sftp', featureFlags, 'xlsx_product_export')).toBe(false);
 
   enableFeatureFlag('job_automation_local_storage');
   enableFeatureFlag('job_automation_remote_storage');
 
-  expect(isValidStorageType('none', featureFlags)).toBe(true);
-  expect(isValidStorageType('local', featureFlags)).toBe(true);
-  expect(isValidStorageType('sftp', featureFlags)).toBe(true);
-  expect(isValidStorageType('invalid', featureFlags)).toBe(false);
+  expect(isValidStorageType('none', featureFlags, 'xlsx_product_export')).toBe(true);
+  expect(isValidStorageType('local', featureFlags, 'xlsx_product_export')).toBe(true);
+  expect(isValidStorageType('sftp', featureFlags, 'xlsx_product_export')).toBe(true);
+  expect(isValidStorageType('sftp', featureFlags, 'xlsx_attribute_export')).toBe(false);
+  expect(isValidStorageType('invalid', featureFlags, 'xlsx_product_export')).toBe(false);
 });
 
 test('it returns the default local storage', () => {
@@ -58,4 +71,14 @@ test('it returns the default file path', () => {
   expect(getDefaultFilePath('export', 'csv')).toBe('export_%job_label%_%datetime%.csv');
   expect(getDefaultFilePath('import', 'xlsx')).toBe('myfile.xlsx');
   expect(getDefaultFilePath('import', 'csv')).toBe('myfile.csv');
+});
+
+test('it check if local storage is enabled', () => {
+  expect(localStorageIsEnabled(featureFlags)).toBe(false);
+  enableFeatureFlag('job_automation_local_storage');
+  expect(localStorageIsEnabled(featureFlags)).toBe(true);
+  expect(remoteStorageIsEnabled(featureFlags, 'xlsx_product_import')).toBe(false);
+  enableFeatureFlag('job_automation_remote_storage');
+  expect(remoteStorageIsEnabled(featureFlags, 'xlsx_product_import')).toBe(true);
+  expect(remoteStorageIsEnabled(featureFlags, 'csv_attribute_import')).toBe(false);
 });

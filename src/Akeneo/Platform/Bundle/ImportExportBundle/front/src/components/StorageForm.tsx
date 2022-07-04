@@ -1,10 +1,11 @@
 import React from 'react';
 import {SectionTitle, Field, SelectInput, Helper} from 'akeneo-design-system';
 import {Section, useTranslate, ValidationError, filterErrors, useFeatureFlags} from '@akeneo-pim-community/shared';
-import {Storage, isValidStorageType, getDefaultStorage, JobType, getEnabledStorageTypes} from './model';
+import {Storage, isValidStorageType, getDefaultStorage, JobType, getEnabledStorageTypes, shouldHideForm} from './model';
 import {getStorageConfigurator} from './StorageConfigurator';
 
 type StorageFormProps = {
+  jobCode: string;
   jobType: JobType;
   fileExtension: string;
   storage: Storage;
@@ -12,15 +13,26 @@ type StorageFormProps = {
   onStorageChange: (storage: Storage) => void;
 };
 
-const StorageForm = ({jobType, fileExtension, storage, validationErrors, onStorageChange}: StorageFormProps) => {
+const StorageForm = ({
+  jobCode,
+  jobType,
+  fileExtension,
+  storage,
+  validationErrors,
+  onStorageChange,
+}: StorageFormProps) => {
   const translate = useTranslate();
   const featureFlags = useFeatureFlags();
 
-  const handleTypeChange = (type: string) =>
-    isValidStorageType(type, featureFlags) && onStorageChange(getDefaultStorage(jobType, type, fileExtension));
+  if (shouldHideForm(featureFlags, jobCode)) {
+    return null;
+  }
 
-  const storageTypes = getEnabledStorageTypes(featureFlags);
-  const StorageConfigurator = getStorageConfigurator(storage.type, featureFlags);
+  const handleTypeChange = (type: string) =>
+    isValidStorageType(type, featureFlags, jobCode) && onStorageChange(getDefaultStorage(jobType, type, fileExtension));
+
+  const storageTypes = getEnabledStorageTypes(featureFlags, jobCode);
+  const StorageConfigurator = getStorageConfigurator(storage.type, featureFlags, jobCode);
 
   return (
     <Section>
