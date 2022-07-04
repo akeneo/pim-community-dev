@@ -18,7 +18,7 @@ final class ExceptionContext implements Context
 
     public function __construct()
     {
-        $this->exceptions = [];
+        $this->throwables = [];
     }
 
     public function add(\Throwable $throwable): void

@@ -77,27 +77,27 @@ final class UpdateProductController
             $this->updateProduct($product, $data);
         } catch (ViolationsException | LegacyViolationsException $e) {
             $isNotOwnerException = \count(
-                    \array_filter(
-                        \iterator_to_array($e->violations()),
-                        fn (ConstraintViolationInterface $violation): bool => ViolationCode::containsViolationCode((int) $violation->getCode(), ViolationCode::USER_IS_NOT_OWNER)
-                    )
-                ) > 0;
+                \array_filter(
+                    \iterator_to_array($e->violations()),
+                    fn (ConstraintViolationInterface $violation): bool => ViolationCode::containsViolationCode((int) $violation->getCode(), ViolationCode::USER_IS_NOT_OWNER)
+                )
+            ) > 0;
             if ($isNotOwnerException) {
                 return $this->handleProductDraft($product, $data);
             }
 
             $hasPermissionException = \count(
-                    \array_filter(
-                        \iterator_to_array($e->violations()),
-                        function (ConstraintViolationInterface $violation): bool {
-                            return \is_int($violation->getCode()) && ViolationCode::containsViolationCode((int)$violation->getCode(), ViolationCode::PERMISSION);
-                        }
-                    )
-                ) > 0;
+                \array_filter(
+                    \iterator_to_array($e->violations()),
+                    function (ConstraintViolationInterface $violation): bool {
+                        return \is_int($violation->getCode()) && ViolationCode::containsViolationCode((int)$violation->getCode(), ViolationCode::PERMISSION);
+                    }
+                )
+            ) > 0;
             if ($hasPermissionException) {
                 throw new AccessDeniedHttpException();
             }
-            $product = $this->findProductOr404($id);
+            $product = $this->findProductOr404($uuid);
             $violations = $e->violations();
             $violations->addAll($this->localizedConverter->getViolations());
             $normalizedViolations = $this->normalizeViolations($violations, $product);
@@ -119,7 +119,7 @@ final class UpdateProductController
             return new JsonResponse($normalizedViolations, 400);
         }
 
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductOr404($uuid);
         $normalizedProduct = $this->normalizer->normalize(
             $product,
             'internal_api',
@@ -127,7 +127,6 @@ final class UpdateProductController
         );
 
         return new JsonResponse($normalizedProduct);
-
     }
 
     /**
@@ -167,7 +166,7 @@ final class UpdateProductController
 
         // don't filter during creation, because identifier is needed
         // but not sent by the frontend during creation (it sends the sku in the values)
-        if (null !== $product->getId() && $product->isVariant()) {
+        if (!$product->isNew() && $product->isVariant()) {
             $data = $this->productAttributeFilter->filter($data);
         }
 
@@ -206,7 +205,7 @@ final class UpdateProductController
 
         // don't filter during creation, because identifier is needed
         // but not sent by the frontend during creation (it sends the sku in the values)
-        if (null !== $product->getId() && $product->isVariant()) {
+        if (null !== $product->getCreated() && $product->isVariant()) {
             $data = $this->productAttributeFilter->filter($data);
         }
 
