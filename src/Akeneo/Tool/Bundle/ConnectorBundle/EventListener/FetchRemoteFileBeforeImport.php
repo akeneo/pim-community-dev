@@ -45,7 +45,8 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
     {
         $jobExecution = $event->getJobExecution();
 
-        if ($this->remoteStorageFeatureFlag->isEnabled()) {
+        $jobCode = $jobExecution->getJobInstance()->getCode();
+        if ($this->remoteStorageFeatureFlag->isEnabled($jobCode)) {
             return;
         }
 

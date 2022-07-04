@@ -48,7 +48,8 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
     {
         $jobExecution = $event->getJobExecution();
 
-        if (!$this->remoteStorageFeatureFlag->isEnabled()) {
+        $jobCode = $jobExecution->getJobInstance()->getCode();
+        if (!$this->remoteStorageFeatureFlag->isEnabled($jobCode)) {
             return;
         }
 

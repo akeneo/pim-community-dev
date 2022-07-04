@@ -44,9 +44,10 @@ class FetchRemoteFilesAfterExport implements EventSubscriberInterface
 
     public function fetchRemoteFiles(JobExecutionEvent $event): void
     {
+        $jobCode = $event->getJobExecution()->getJobInstance()->getCode();
         if (
             $this->versionProvider->isSaaSVersion() ||
-            $this->remoteStorageFeatureFlag->isEnabled()
+            $this->remoteStorageFeatureFlag->isEnabled($jobCode)
         ) {
             return;
         }
