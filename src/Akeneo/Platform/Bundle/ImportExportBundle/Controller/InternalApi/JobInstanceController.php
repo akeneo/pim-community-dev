@@ -28,6 +28,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -318,9 +319,13 @@ class JobInstanceController
 
         $rawParameters = $jobInstance->getRawParameters();
         if(NoneStorage::TYPE === $rawParameters['storage']['type']) {
+            if(JobInstance::TYPE_IMPORT === $jobInstance->getType()) {
+                throw new BadRequestException();
+            }
+
             $rawParameters['storage'] = [
                 'type' => LocalStorage::TYPE,
-                'file_path' => $this->getDefaultFilePath($jobInstance->getType(), 'xlsx') //TODO: guess the file extension
+                'file_path' => $this->getDefaultFilePath($jobInstance->getType(), $jobInstance->getCode())
             ];
             $jobInstance->setRawParameters($rawParameters);
         }
@@ -563,8 +568,11 @@ class JobInstanceController
         return $request->server->get('CONTENT_LENGTH') > 0;
     }
 
-    private function getDefaultFilePath(string $jobType, string $fileExtension): string
+    private function getDefaultFilePath(string $jobType, string $jobCode): string
     {
+        //TODO: this will works in Saas but we have to find a safer way to handle custom job in Paas
+        $fileExtension = explode('_', $jobCode)[0];
+
         return sprintf('%s%s%s_%s_%s.%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $jobType, '%job_label%', '%datetime%', $fileExtension);
     }
 }
