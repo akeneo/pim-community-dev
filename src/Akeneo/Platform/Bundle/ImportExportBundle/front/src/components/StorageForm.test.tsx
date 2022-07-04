@@ -20,7 +20,9 @@ test('it renders the storage form', () => {
     />
   );
 
-  expect(screen.getByText('pim_import_export.form.job_instance.storage_form.connection.none')).toBeInTheDocument();
+  expect(
+    screen.getByText('pim_import_export.form.job_instance.storage_form.connection.none.export')
+  ).toBeInTheDocument();
 });
 
 test('it triggers onStorageChange callback when storage configurator onStorageChange is triggered', () => {
