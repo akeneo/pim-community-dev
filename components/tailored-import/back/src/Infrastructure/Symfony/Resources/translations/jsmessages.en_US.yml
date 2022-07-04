@@ -193,6 +193,7 @@ akeneo.tailored_import:
     uploaded_file:
       max_size: The file is too big. The maximum size is {{ limit }}{{ suffix }}.
       not_allowed_mime_type: Only XLSX files are supported.
+      not_allowed_extension: Only XLSX files are supported.
     file_structure:
       first_product_row_should_be_after_header_row: First product row should be after the header row.
       unique_identifier_column_should_be_after_first_column_message: Unique identifier column should be at least the first column.
