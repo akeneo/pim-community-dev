@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProd
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
@@ -22,9 +23,16 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ConnectorProductNormalizerSpec extends ObjectBehavior
 {
-    function let(ProductValueNormalizer $productValuesNormalizer, RouterInterface $router)
-    {
-        $this->beConstructedWith(new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()), new DateTimeNormalizer());
+    function let(
+        ProductValueNormalizer $productValuesNormalizer,
+        RouterInterface $router,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
+        $this->beConstructedWith(
+            new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()),
+            new DateTimeNormalizer(),
+            $attributeRepository
+        );
         $productValuesNormalizer->normalize(Argument::type(ReadValueCollection::class), 'standard')->willReturn([]);
     }
 
@@ -47,12 +55,15 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             'parent_product_model_code',
             [
                 'X_SELL' => [
-                    'products' => ['product_code_1'],
+                    'products' => [
+                        ['uuid' => '95341071-a0dd-47c6-81b1-315913952c43', 'identifier' => 'product_code_1'],
+                        ['uuid' => '905addae-b005-41c4-a277-9fe8804f43f5', 'identifier' => null],
+                    ],
                     'product_models' => [],
                     'groups' => ['group_code_2']
                 ],
                 'UPSELL' => [
-                    'products' => ['product_code_4'],
+                    'products' => [['uuid' => '0c14f70a-18c0-40d1-ab25-9994dd17c486', 'identifier' => 'product_code_4']],
                     'product_models' => ['product_model_5'],
                     'groups' => ['group_code_3']
                 ]
@@ -141,7 +152,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'values' => (object) [],
                 'associations' => [
                     'X_SELL' => [
-                        'products' => ['product_code_1'],
+                        'products' => ['product_code_1', null],
                         'product_models' => [],
                         'groups' => ['group_code_2']
                     ],
@@ -222,7 +233,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             'parent_product_model_code',
             [
                 'X_SELL' => [
-                    'products' => ['product_code_1'],
+                    'products' => [['uuid' => '95341071-a0dd-47c6-81b1-315913952c43', 'identifier' => 'product_code_1']],
                     'product_models' => [],
                     'groups' => ['group_code_2']
                 ],
