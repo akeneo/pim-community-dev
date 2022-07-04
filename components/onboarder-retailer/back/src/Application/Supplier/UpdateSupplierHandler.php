@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Application\Supplier;
+namespace Akeneo\SupplierPortal\Retailer\Application\Supplier;
 
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\Exception\InvalidData;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\Exception\SupplierDoesNotExist;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\InvalidData;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\SupplierDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

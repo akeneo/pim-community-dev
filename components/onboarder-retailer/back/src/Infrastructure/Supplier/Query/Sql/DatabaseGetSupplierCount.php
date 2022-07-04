@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Query\Sql;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\GetSupplierCount;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCount;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetSupplierCount implements GetSupplierCount

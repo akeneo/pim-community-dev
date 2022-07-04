@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Test\Unit\Domain\Write\Supplier\ValueObject\Contributor;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\Write\Supplier\ValueObject\Contributor;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Contributor\Email;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Contributor\Email;
 use PHPUnit\Framework\TestCase;
 
 class EmailTest extends TestCase

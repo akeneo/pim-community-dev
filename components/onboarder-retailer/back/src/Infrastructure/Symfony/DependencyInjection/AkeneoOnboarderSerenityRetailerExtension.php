@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Symfony\DependencyInjection;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Symfony\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderResolver;
@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Loader\DirectoryLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-final class AkeneoOnboarderSerenityRetailerExtension extends Extension
+final class AkeneoSupplierPortalRetailerExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {

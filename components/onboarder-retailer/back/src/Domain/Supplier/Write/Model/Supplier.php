@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Model;
+namespace Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorDeleted;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Code;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Contributors;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Label;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Contributors;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Label;
 
 final class Supplier
 {

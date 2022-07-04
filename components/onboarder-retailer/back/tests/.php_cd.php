@@ -29,12 +29,12 @@ $rules = [
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
         ],
-    )->in('Akeneo\OnboarderSerenity\Retailer\Domain'),
+    )->in('Akeneo\SupplierPortal\Retailer\Domain'),
 
     $builder->only(
         [
             // Onboarder coupling
-            'Akeneo\OnboarderSerenity\Retailer\Domain',
+            'Akeneo\SupplierPortal\Retailer\Domain',
 
             // External dependencies coupling
             'Psr\Log\LoggerInterface',
@@ -43,13 +43,13 @@ $rules = [
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
         ],
-    )->in('Akeneo\OnboarderSerenity\Retailer\Application'),
+    )->in('Akeneo\SupplierPortal\Retailer\Application'),
 
     $builder->only(
         [
             // Onboarder coupling
-            'Akeneo\OnboarderSerenity\Retailer\Domain',
-            'Akeneo\OnboarderSerenity\Retailer\Application',
+            'Akeneo\SupplierPortal\Retailer\Domain',
+            'Akeneo\SupplierPortal\Retailer\Application',
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Event\EventInterface',
             'Akeneo\Tool\Component\Batch\Event\InvalidItemEvent',
@@ -76,15 +76,15 @@ $rules = [
             'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
-    )->in('Akeneo\OnboarderSerenity\Retailer\Infrastructure'),
+    )->in('Akeneo\SupplierPortal\Retailer\Infrastructure'),
 
 
     // tests
     $builder->only(
         [
             // Onboarder coupling
-            'Akeneo\OnboarderSerenity\Retailer\Domain',
-            'Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
+            'Akeneo\SupplierPortal\Retailer\Domain',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Job\JobParameters',
             'Akeneo\Tool\Component\Batch\Model\JobExecution',
@@ -95,14 +95,14 @@ $rules = [
             'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
-    )->in('Akeneo\OnboarderSerenity\Retailer\Test\Integration'),
+    )->in('Akeneo\SupplierPortal\Retailer\Test\Integration'),
 
     $builder->only(
         [
             // Onboarder coupling
-            'Akeneo\OnboarderSerenity\Retailer\Domain',
-            'Akeneo\OnboarderSerenity\Retailer\Application',
-            'Akeneo\OnboarderSerenity\Retailer\Infrastructure',
+            'Akeneo\SupplierPortal\Retailer\Domain',
+            'Akeneo\SupplierPortal\Retailer\Application',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure',
             // PIM coupling
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             // External dependencies coupling
@@ -113,20 +113,20 @@ $rules = [
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
         ],
-    )->in('Akeneo\OnboarderSerenity\Retailer\Test\Unit'),
+    )->in('Akeneo\SupplierPortal\Retailer\Test\Unit'),
 
     $builder->only(
         [
             // Onboarder coupling
-            'Akeneo\OnboarderSerenity\Retailer\Domain',
-            'Akeneo\OnboarderSerenity\Retailer\Application\Supplier',
-            'Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier',
+            'Akeneo\SupplierPortal\Retailer\Domain',
+            'Akeneo\SupplierPortal\Retailer\Application\Supplier',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier',
             // External dependencies coupling
             'Behat',
             'PHPUnit\Framework',
             'Ramsey\Uuid\Uuid',
         ],
-    )->in('Akeneo\OnboarderSerenity\Retailer\Test\Acceptance'),
+    )->in('Akeneo\SupplierPortal\Retailer\Test\Acceptance'),
 ];
 
 return new Configuration($rules, $finder);

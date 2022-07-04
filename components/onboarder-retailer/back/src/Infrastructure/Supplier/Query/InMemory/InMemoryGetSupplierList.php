@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Query\InMemory;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\GetSupplierList;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\Model\SupplierWithContributorCount;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as SupplierRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierList;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContributorCount;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as SupplierRepository;
 
 class InMemoryGetSupplierList implements GetSupplierList
 {

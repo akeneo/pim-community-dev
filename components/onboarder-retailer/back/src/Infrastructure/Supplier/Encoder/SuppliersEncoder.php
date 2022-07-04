@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Encoder;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder;
 
 interface SuppliersEncoder
 {

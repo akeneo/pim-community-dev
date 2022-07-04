@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Import;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Import;
 
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\CreateSupplier;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\CreateSupplierHandler;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\UpdateSupplier;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\UpdateSupplierHandler;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\GetIdentifierFromCode;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\SupplierExists;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetIdentifierFromCode;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\InvalidItemEvent;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
