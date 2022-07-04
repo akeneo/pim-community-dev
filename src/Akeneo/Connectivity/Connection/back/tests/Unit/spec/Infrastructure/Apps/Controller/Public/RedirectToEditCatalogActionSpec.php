@@ -9,7 +9,7 @@ use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByUserIdentifierQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\ConfigureCatalogAction;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RedirectToEditCatalogAction;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,7 +21,7 @@ use Symfony\Component\Routing\RouterInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ConfigureCatalogActionSpec extends ObjectBehavior
+class RedirectToEditCatalogActionSpec extends ObjectBehavior
 {
     public function let(
         RouterInterface $router,
@@ -39,7 +39,7 @@ class ConfigureCatalogActionSpec extends ObjectBehavior
 
     public function it_is_an_configure_catalog_action(): void
     {
-        $this->beAnInstanceOf(ConfigureCatalogAction::class);
+        $this->beAnInstanceOf(RedirectToEditCatalogAction::class);
     }
 
     public function it_throws_not_found_exception_when_catalog_id_is_wrong(QueryBusInterface $catalogQueryBus): void

@@ -159,7 +159,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByUserIdentifierQuery'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\ConfigureCatalogAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RedirectToEditCatalogAction:
         public: true
         arguments:
             - '@router'
