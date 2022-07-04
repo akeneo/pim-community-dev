@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Test\Integration\Infrastructure\Authentication\ContributorAccount\Query\Sql;
+namespace Akeneo\SupplierPortal\Supplier\Test\Integration\Infrastructure\Authentication\ContributorAccount\Query\Sql;
 
-use Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail;
-use Akeneo\SupplierPortal\Test\Integration\SqlIntegrationTestCase;
+use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail;
+use Akeneo\SupplierPortal\Supplier\Test\Integration\SqlIntegrationTestCase;
 
 final class DatabaseGetContributorAccountByEmailIntegration extends SqlIntegrationTestCase
 {

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Test\Acceptance\Context\Authentication;
+namespace Akeneo\SupplierPortal\Supplier\Test\Acceptance\Context\Authentication;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag;
-use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\Exception\InvalidPassword;
-use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\UpdatePassword;
-use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\UpdatePasswordHandler;
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
-use Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\InvalidPassword;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePassword;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
+use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;

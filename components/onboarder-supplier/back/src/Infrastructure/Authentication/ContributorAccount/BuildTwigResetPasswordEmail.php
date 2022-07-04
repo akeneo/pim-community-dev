@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount;
 
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail;
-use Akeneo\SupplierPortal\Domain\Mailer\ValueObject\EmailContent;
-use Akeneo\SupplierPortal\Infrastructure\SetUpPasswordUrl;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\EmailContent;
+use Akeneo\SupplierPortal\Supplier\Infrastructure\SetUpPasswordUrl;
 use Twig\Environment;
 
 final class BuildTwigResetPasswordEmail implements BuildResetPasswordEmail

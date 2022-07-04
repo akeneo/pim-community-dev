@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Test\Unit\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount;
 
-use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\SendResetPasswordEmail;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmail;
 use PHPUnit\Framework\TestCase;
 
 final class SendResetPasswordEmailTest extends TestCase

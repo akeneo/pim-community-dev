@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Read\Model;
+namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read\Model;
 
 final class ContributorAccount
 {

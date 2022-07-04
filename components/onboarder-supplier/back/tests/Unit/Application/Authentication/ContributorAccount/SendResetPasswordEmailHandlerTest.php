@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Test\Unit\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount;
 
-use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\SendResetPasswordEmail;
-use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler;
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail;
-use Akeneo\SupplierPortal\Domain\Mailer\SendEmail;
-use Akeneo\SupplierPortal\Domain\Mailer\ValueObject\Email;
-use Akeneo\SupplierPortal\Domain\Mailer\ValueObject\EmailContent;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmail;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\Email;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\EmailContent;
 use PHPUnit\Framework\TestCase;
 
 final class SendResetPasswordEmailHandlerTest extends TestCase

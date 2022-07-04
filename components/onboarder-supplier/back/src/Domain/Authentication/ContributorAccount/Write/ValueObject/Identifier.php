@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ValueObject;
+namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject;
 
 use Ramsey\Uuid\Uuid;
 

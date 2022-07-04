@@ -5,7 +5,7 @@ acceptance:
         - '%paths.base%/features'
       contexts:
         - Akeneo\OnboarderSerenity\Retailer\Test\Acceptance\Context\SupplierContext
-        - Akeneo\SupplierPortal\Test\Acceptance\Context\Authentication\ContributorAccountContext
+        - Akeneo\SupplierPortal\Supplier\Test\Acceptance\Context\Authentication\ContributorAccountContext
 
   extensions:
     Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Test\Unit\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount;
 
-use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\ResetPassword;
-use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\ResetPasswordHandler;
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\Event\ResetPasswordRequested;
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
-use Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
-use Akeneo\SupplierPortal\Infrastructure\StubEventDispatcher;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\ResetPassword;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event\ResetPasswordRequested;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
+use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Supplier\Infrastructure\StubEventDispatcher;
 use PHPUnit\Framework\TestCase;
 
 final class ResetPasswordHandlerTest extends TestCase

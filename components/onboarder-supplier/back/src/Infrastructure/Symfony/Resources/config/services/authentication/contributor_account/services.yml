@@ -7,127 +7,127 @@ services:
         public: true
 
     #Repositories
-    Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:
-        class: Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Repository\Sql\DatabaseRepository
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\Sql\DatabaseRepository
         arguments:
             - '@database_connection'
 
     # Queries
-    Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken:
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken:
         public: true
-        class: Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByAccessToken
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByAccessToken
         arguments:
             - '@database_connection'
 
-    Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail:
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail:
         arguments:
             - '@database_connection'
 
     #Event subscribers
-    Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
         arguments:
-            - '@Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\CreateContributorAccountHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler'
             - '@akeneo.onboarder_serenity_contributor_authentication.feature'
         tags:
             - 'kernel.event_subscriber'
 
-    Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\Subscriber\SendWelcomeEmailOnContributorAccountCreated:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendWelcomeEmailOnContributorAccountCreated:
         arguments:
-            - '@Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler'
         tags:
             - 'kernel.event_subscriber'
 
-    Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\Subscriber\SendResetPasswordEmailOnPasswordResetRequested:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendResetPasswordEmailOnPasswordResetRequested:
         arguments:
-            - '@Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler'
         tags:
             - 'kernel.event_subscriber'
 
     # Validators
-    Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\Validation\PasswordValidator:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Validation\PasswordValidator:
         tags:
             - { name: validator.constraint_validator }
 
     # Controllers
-    Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword:
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\UpdatePasswordHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler'
 
-    Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Controller\GetContributorAccount:
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\GetContributorAccount:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken'
 
-    Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Controller\RequestNewInvitation:
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\RequestNewInvitation:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\RequestNewInvitationHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler'
 
-    Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Controller\ResetPassword:
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\ResetPassword:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\ResetPasswordHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler'
 
-    Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Controller\Security:
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\Security:
         public: true
 
     #Command handlers
-    Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\CreateContributorAccountHandler:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler:
         arguments:
-            - '@Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@event_dispatcher'
 
-    Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler:
         arguments:
-            - '@Akeneo\SupplierPortal\Domain\Mailer\SendEmail'
-            - '@Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\BuildWelcomeEmail'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail'
 
-    Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\UpdatePasswordHandler:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler:
         arguments:
-            - '@Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@validator'
-            - '@Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\HashPassword'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\HashPassword'
             - '@logger'
 
-    Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\RequestNewInvitationHandler:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler:
         arguments:
-            - '@Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
-            - '@Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler'
 
-    Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\ResetPasswordHandler:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler:
         arguments:
-            - '@Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@event_dispatcher'
 
-    Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler:
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler:
         arguments:
-            - '@Akeneo\SupplierPortal\Domain\Mailer\SendEmail'
-            - '@Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail'
 
     # Email sending services
-    Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\BuildWelcomeEmail:
-        class: Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\BuildTwigWelcomeEmail
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail:
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigWelcomeEmail
         arguments:
             - '@twig'
             - '%env(AKENEO_PIM_URL)%'
 
-    Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail:
-        class: Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\BuildTwigResetPasswordEmail
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail:
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigResetPasswordEmail
         arguments:
             - '@twig'
             - '%env(AKENEO_PIM_URL)%'
 
     #Authentication
-    Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider:
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider:
         arguments:
-            - '@Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail'
+            - '@Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail'
 
-    Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\HashPassword:
-        class: Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Security\HashSymfonyPassword
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\HashPassword:
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\HashSymfonyPassword
         arguments:
             - '@security.user_password_hasher'
 
-    Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Security\LogoutEventSubscriber:
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\LogoutEventSubscriber:
         tags:
             - 'kernel.event_subscriber'

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Test\Unit\Domain\Authentication\ContributorAccount\Read\Model;
+namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Domain\Authentication\ContributorAccount\Read\Model;
 
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Read\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read\Model\ContributorAccount;
 use PHPUnit\Framework\TestCase;
 
 final class ContributorAccountTest extends TestCase

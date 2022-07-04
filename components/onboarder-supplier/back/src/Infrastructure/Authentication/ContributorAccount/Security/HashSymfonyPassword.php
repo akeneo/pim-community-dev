@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Security;
+namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security;
 
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\HashPassword;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\HashPassword;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class HashSymfonyPassword implements HashPassword

@@ -25,12 +25,12 @@ $rules = [
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
         ],
-    )->in('Akeneo\SupplierPortal\Domain'),
+    )->in('Akeneo\SupplierPortal\Supplier\Domain'),
 
     $builder->only(
         [
             // Supplier Portal coupling
-            'Akeneo\SupplierPortal\Domain',
+            'Akeneo\SupplierPortal\Supplier\Domain',
 
             // Onboarder retailer coupling
             'Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
@@ -47,13 +47,13 @@ $rules = [
             'Symfony\Component\Validator\Constraint',
             'Symfony\Contracts\EventDispatcher\EventDispatcherInterface',
         ],
-    )->in('Akeneo\SupplierPortal\Application'),
+    )->in('Akeneo\SupplierPortal\Supplier\Application'),
 
     $builder->only(
         [
             // Supplier Portal coupling
-            'Akeneo\SupplierPortal\Domain',
-            'Akeneo\SupplierPortal\Application',
+            'Akeneo\SupplierPortal\Supplier\Domain',
+            'Akeneo\SupplierPortal\Supplier\Application',
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
             'Psr\Log\LoggerInterface',
@@ -61,27 +61,27 @@ $rules = [
             'Twig\Environment',
             'Swift_Mailer',
         ],
-    )->in('Akeneo\SupplierPortal\Infrastructure'),
+    )->in('Akeneo\SupplierPortal\Supplier\Infrastructure'),
 
 
     // tests
     $builder->only(
         [
             // Supplier Portal coupling
-            'Akeneo\SupplierPortal\Domain',
-            'Akeneo\SupplierPortal\Infrastructure',
+            'Akeneo\SupplierPortal\Supplier\Domain',
+            'Akeneo\SupplierPortal\Supplier\Infrastructure',
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
             'Symfony',
         ],
-    )->in('Akeneo\SupplierPortal\Test\Integration'),
+    )->in('Akeneo\SupplierPortal\Supplier\Test\Integration'),
 
     $builder->only(
         [
             // Supplier Portal coupling
-            'Akeneo\SupplierPortal\Domain',
-            'Akeneo\SupplierPortal\Application',
-            'Akeneo\SupplierPortal\Infrastructure',
+            'Akeneo\SupplierPortal\Supplier\Domain',
+            'Akeneo\SupplierPortal\Supplier\Application',
+            'Akeneo\SupplierPortal\Supplier\Infrastructure',
             // Onboarder retailer coupling
             'Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
             'Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
@@ -99,23 +99,23 @@ $rules = [
             'Symfony\Component\Security\Core\Authentication\Token\TokenInterface',
 
         ],
-    )->in('Akeneo\SupplierPortal\Test\Unit'),
+    )->in('Akeneo\SupplierPortal\Supplier\Test\Unit'),
 
     $builder->only(
         [
             // Supplier Portal coupling
-            'Akeneo\SupplierPortal\Domain',
-            'Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\Exception\InvalidPassword',
-            'Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\UpdatePassword',
-            'Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\UpdatePasswordHandler',
-            'Akeneo\SupplierPortal\Infrastructure\Authentication',
+            'Akeneo\SupplierPortal\Supplier\Domain',
+            'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\InvalidPassword',
+            'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePassword',
+            'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler',
+            'Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication',
             // PIM coupling
             'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag',
             // External dependencies coupling
             'Behat',
             'PHPUnit\Framework',
         ],
-    )->in('Akeneo\SupplierPortal\Test\Acceptance'),
+    )->in('Akeneo\SupplierPortal\Supplier\Test\Acceptance'),
 ];
 
 return new Configuration($rules, $finder);

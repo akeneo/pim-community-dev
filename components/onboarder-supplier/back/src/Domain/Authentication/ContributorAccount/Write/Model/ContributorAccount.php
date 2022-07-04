@@ -1,11 +1,11 @@
 <?php
 
-namespace Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\Model;
+namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model;
 
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ValueObject\AccessToken;
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ValueObject\Password;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\AccessToken;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Password;
 
 class ContributorAccount
 {

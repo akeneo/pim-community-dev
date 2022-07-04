@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount;
 
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
-use Akeneo\SupplierPortal\Domain\Mailer\SendEmail;
-use Akeneo\SupplierPortal\Domain\Mailer\ValueObject\Email;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\Email;
 
 class SendWelcomeEmailHandler
 {

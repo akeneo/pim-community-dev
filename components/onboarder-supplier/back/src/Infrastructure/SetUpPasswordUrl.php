@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Infrastructure;
+namespace Akeneo\SupplierPortal\Supplier\Infrastructure;
 
 final class SetUpPasswordUrl
 {

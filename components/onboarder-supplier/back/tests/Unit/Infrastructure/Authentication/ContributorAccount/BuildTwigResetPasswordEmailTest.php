@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Test\Unit\Infrastructure\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Infrastructure\Authentication\ContributorAccount;
 
-use Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\BuildTwigResetPasswordEmail;
+use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigResetPasswordEmail;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 

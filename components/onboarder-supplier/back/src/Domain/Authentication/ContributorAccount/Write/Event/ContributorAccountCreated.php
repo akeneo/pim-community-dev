@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\Event;
+namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event;
 
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 
 class ContributorAccountCreated
 {

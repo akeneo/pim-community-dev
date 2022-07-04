@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Infrastructure\Mailer;
+namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer;
 
-use Akeneo\SupplierPortal\Domain\Mailer\SendEmail;
-use Akeneo\SupplierPortal\Domain\Mailer\ValueObject\Email;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\Email;
 use Psr\Log\LoggerInterface;
 use Swift_Mailer;
 

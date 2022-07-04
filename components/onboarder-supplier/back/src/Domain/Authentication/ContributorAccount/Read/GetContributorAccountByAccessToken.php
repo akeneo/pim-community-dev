@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Read;
+namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read;
 
-use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Read\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read\Model\ContributorAccount;
 
 interface GetContributorAccountByAccessToken
 {

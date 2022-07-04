@@ -13,7 +13,7 @@ security:
         saml_pim_user:
             id: akeneo_authentication.sso.user.provider
         akeneo_supplier_portal_contributor_account_user:
-            id: Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider
+            id: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider
 
     encoders:
         Akeneo\UserManagement\Component\Model\User: sha512
@@ -136,7 +136,7 @@ security:
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
 
     password_hashers:
-        Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount: 'auto'
+        Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount: 'auto'
 
 acl:
     connection: default

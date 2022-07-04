@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\Exception;
+namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception;
 
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
