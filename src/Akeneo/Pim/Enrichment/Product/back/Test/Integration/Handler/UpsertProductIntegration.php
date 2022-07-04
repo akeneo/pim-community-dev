@@ -35,10 +35,12 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceDataValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceDataValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTableValue;
@@ -1247,6 +1249,94 @@ final class UpsertProductIntegration extends TestCase
             ]
         );
         $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_creates_and_updates_a_product_with_a_simple_reference_data_value(): void
+    {
+        $this->createAttribute([
+            'code' => 'color_ref_data',
+            'type' => AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
+            'group' => 'other',
+            'localizable' => false,
+            'scopable' => false,
+            'reference_data_name' => 'color',
+        ]);
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNull($product);
+
+        // create product 'identifier'
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [
+                new SetSimpleReferenceDataValue('color_ref_data', null, null, 'red'),
+            ]
+        );
+        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertNotNull($product->getValue('color_ref_data'));
+        Assert::assertEquals(
+            'red',
+            $product->getValue('color_ref_data')->getData()
+        );
+
+        $this->updateProduct(new SetSimpleReferenceDataValue('color_ref_data', null, null, 'yellow'));
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEquals(
+            'yellow',
+            $product->getValue('color_ref_data')->getData()
+        );
+    }
+
+    /** @test */
+    public function it_creates_and_updates_a_product_with_a_multi_reference_data_value(): void
+    {
+        $this->createAttribute([
+            'code' => 'color_ref_data',
+            'type' => AttributeTypes::REFERENCE_DATA_MULTI_SELECT,
+            'group' => 'other',
+            'localizable' => false,
+            'scopable' => false,
+            'reference_data_name' => 'color',
+        ]);
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNull($product);
+
+        // create product 'identifier'
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [
+                new SetMultiReferenceDataValue('color_ref_data', null, null, ['red', 'yellow']),
+            ]
+        );
+        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertNotNull($product->getValue('color_ref_data'));
+        Assert::assertEqualsCanonicalizing(
+            ['red', 'yellow'],
+            $product->getValue('color_ref_data')->getData()
+        );
+
+        $this->updateProduct(new SetMultiReferenceDataValue('color_ref_data', null, null, ['red', 'blue']));
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEqualsCanonicalizing(
+            ['red', 'blue'],
+            $product->getValue('color_ref_data')->getData()
+        );
     }
 
     private function getUserId(string $username): int
