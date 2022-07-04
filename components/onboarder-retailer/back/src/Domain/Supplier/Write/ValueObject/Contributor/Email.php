@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Contributor;
+namespace Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Contributor;
 
 final class Email
 {

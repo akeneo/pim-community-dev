@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Test\Unit\Domain\Write\Supplier\Event;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\Write\Supplier\Event;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorDeleted;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use PHPUnit\Framework\TestCase;
 
 final class ContributorDeletedTest extends TestCase

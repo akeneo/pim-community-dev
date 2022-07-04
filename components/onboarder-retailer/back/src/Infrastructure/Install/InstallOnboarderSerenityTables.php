@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Install;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Install;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class InstallOnboarderSerenityTables implements EventSubscriberInterface
+final class InstallSupplierPortalTables implements EventSubscriberInterface
 {
     public const ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA = [
         'code' => 'onboarder_serenity_xlsx_supplier_import',
@@ -25,15 +25,15 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [InstallerEvents::POST_DB_CREATE => ['installOnboarderSerenityTables', 100]];
+        return [InstallerEvents::POST_DB_CREATE => ['installSupplierPortalTables', 100]];
     }
 
-    public function installOnboarderSerenityTables(): void
+    public function installSupplierPortalTables(): void
     {
         $this->addSupplierTable();
         $this->addSupplierContributorTable();
         $this->addContributorAccountTable();
-        $this->addOnboarderSerenityXlsxSupplierImportJob();
+        $this->addSupplierPortalXlsxSupplierImportJob();
     }
 
     private function addSupplierTable(): void
@@ -92,9 +92,9 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
         $this->connection->executeStatement($sql);
     }
 
-    private function addOnboarderSerenityXlsxSupplierImportJob(): void
+    private function addSupplierPortalXlsxSupplierImportJob(): void
     {
-        if ($this->onboarderSerenityXlsxSupplierImportJobExists()) {
+        if ($this->SupplierPortalXlsxSupplierImportJobExists()) {
             return;
         }
 
@@ -115,7 +115,7 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
         );
     }
 
-    private function onboarderSerenityXlsxSupplierImportJobExists(): bool
+    private function SupplierPortalXlsxSupplierImportJobExists(): bool
     {
         $sql = <<<SQL
             SELECT COUNT(*)

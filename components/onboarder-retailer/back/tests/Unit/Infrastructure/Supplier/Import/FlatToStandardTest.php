@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Test\Unit\Infrastructure\Supplier\Import;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\Supplier\Import;
 
-use Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Import\FlatToStandard;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Import\FlatToStandard;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use PHPUnit\Framework\TestCase;
 

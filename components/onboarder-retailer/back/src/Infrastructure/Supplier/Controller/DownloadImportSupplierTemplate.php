@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Controller;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller;
 
-use Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder;
 use Box\Spout\Common\Type;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;

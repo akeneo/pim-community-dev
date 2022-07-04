@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Encoder;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder;
 
 use Box\Spout\Common\Exception\IOException;
 use Box\Spout\Common\Type;

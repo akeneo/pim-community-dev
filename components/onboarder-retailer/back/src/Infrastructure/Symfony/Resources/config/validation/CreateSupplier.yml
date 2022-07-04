@@ -1,4 +1,4 @@
-Akeneo\OnboarderSerenity\Retailer\Application\Supplier\CreateSupplier:
+Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplier:
   properties:
     label:
       - NotBlank:
@@ -11,5 +11,5 @@ Akeneo\OnboarderSerenity\Retailer\Application\Supplier\CreateSupplier:
           - Email: ~
           - Length:
               max: 255
-          - Akeneo\OnboarderSerenity\Retailer\Application\Supplier\Validation\UniqueContributorEmail: ~
+          - Akeneo\SupplierPortal\Retailer\Application\Supplier\Validation\UniqueContributorEmail: ~
 

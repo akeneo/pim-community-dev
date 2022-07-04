@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Test\Unit\Application\Supplier;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\Supplier;
 
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\Exception\InvalidData;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\Exception\SupplierDoesNotExist;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\UpdateSupplier;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\UpdateSupplierHandler;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
-use Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\InvalidData;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\SupplierDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\EventDispatcher;

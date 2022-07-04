@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read;
+namespace Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\Model\SupplierWithContributors;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContributors;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 
 interface GetSupplier
 {

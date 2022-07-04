@@ -7,4 +7,4 @@ config:
         onboarder_serenity_retailer_supplier_edit:
           module: onboarder-retailer/controller/supplier-management
   paths:
-    onboarder-retailer/controller/supplier-management: akeneoonboarderserenityretailer/js/controller/supplier-management.tsx
+    onboarder-retailer/controller/supplier-management: akeneoSupplierPortalretailer/js/controller/supplier-management.tsx

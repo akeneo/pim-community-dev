@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Test\Unit\Domain\Write\Supplier\Model;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\Write\Supplier\Model;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorDeleted;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use PHPUnit\Framework\TestCase;
 
 final class SupplierTest extends TestCase

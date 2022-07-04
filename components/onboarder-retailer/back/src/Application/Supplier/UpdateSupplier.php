@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Application\Supplier;
+namespace Akeneo\SupplierPortal\Retailer\Application\Supplier;
 
 final class UpdateSupplier
 {

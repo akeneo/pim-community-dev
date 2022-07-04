@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Test\Integration\Infrastructure\Supplier\Query\Sql;
+namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\GetAllSuppliersWithContributors;
-use Akeneo\OnboarderSerenity\Retailer\Test\Integration\SqlIntegrationTestCase;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetAllSuppliersWithContributors;
+use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetAllSuppliersWithContributorsIntegration extends SqlIntegrationTestCase

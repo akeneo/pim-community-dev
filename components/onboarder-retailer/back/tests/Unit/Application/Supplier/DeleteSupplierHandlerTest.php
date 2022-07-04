@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Test\Unit\Application\Supplier;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\Supplier;
 
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\DeleteSupplier;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\DeleteSupplierHandler;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 

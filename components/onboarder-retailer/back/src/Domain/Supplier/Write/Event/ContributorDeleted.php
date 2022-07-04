@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event;
+namespace Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 
 final class ContributorDeleted
 {

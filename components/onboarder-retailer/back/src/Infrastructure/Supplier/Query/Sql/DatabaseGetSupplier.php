@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Query\Sql;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\GetSupplier;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\Model\SupplierWithContributors;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContributors;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetSupplier implements GetSupplier

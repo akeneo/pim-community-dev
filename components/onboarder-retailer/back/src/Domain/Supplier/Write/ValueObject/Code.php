@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject;
+namespace Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject;
 
 final class Code
 {

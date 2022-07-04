@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Application\Supplier\Validation;
+namespace Akeneo\SupplierPortal\Retailer\Application\Supplier\Validation;
 
 use Symfony\Component\Validator\Constraint;
 

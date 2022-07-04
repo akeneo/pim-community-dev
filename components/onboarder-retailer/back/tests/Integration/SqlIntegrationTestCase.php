@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Test\Integration;
+namespace Akeneo\SupplierPortal\Retailer\Test\Integration;
 
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -26,7 +26,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
             DELETE FROM `akeneo_batch_job_execution`;
         SQL);
 
-        $this->addOnboarderSerenityXlsxSupplierImportJob();
+        $this->addSupplierPortalXlsxSupplierImportJob();
     }
 
     protected function get(string $service): ?object
@@ -42,9 +42,9 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
         $this->ensureKernelShutdown();
     }
 
-    private function addOnboarderSerenityXlsxSupplierImportJob(): void
+    private function addSupplierPortalXlsxSupplierImportJob(): void
     {
-        if ($this->onboarderSerenityXlsxSupplierImportJobExists()) {
+        if ($this->SupplierPortalXlsxSupplierImportJobExists()) {
             return;
         }
 
@@ -65,7 +65,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
         );
     }
 
-    private function onboarderSerenityXlsxSupplierImportJobExists(): bool
+    private function SupplierPortalXlsxSupplierImportJobExists(): bool
     {
         $sql = <<<SQL
             SELECT COUNT(*)

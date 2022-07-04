@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Test\Acceptance\Context;
+namespace Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context;
 
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\CreateSupplier;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\CreateSupplierHandler;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\DeleteSupplier;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\DeleteSupplierHandler;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\Exception\InvalidData;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\UpdateSupplier;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\UpdateSupplierHandler;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\Model\SupplierWithContributorCount;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Code;
-use Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
-use Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\InvalidData;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContributorCount;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;

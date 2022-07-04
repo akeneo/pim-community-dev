@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Test\Unit\Infrastructure\Supplier\Query\InMemory;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\Supplier\Query\InMemory;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Code;
-use Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists;
-use Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 
 final class InMemorySupplierExistsTest extends TestCase

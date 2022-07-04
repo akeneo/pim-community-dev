@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Application\Supplier\Validation;
+namespace Akeneo\SupplierPortal\Retailer\Application\Supplier\Validation;
 
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\UpdateSupplier;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
