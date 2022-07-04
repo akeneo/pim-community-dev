@@ -1,3 +1,5 @@
+import {FeatureFlags} from '@akeneo-pim-community/shared';
+
 type JobType = 'import' | 'export';
 
 type LocalStorage = {
@@ -20,12 +22,27 @@ type NoneStorage = {
 
 type Storage = LocalStorage | SftpStorage | NoneStorage;
 
-type StorageType = Storage['type'];
+type StorageType = 'none' | 'local' | 'sftp';
 
-const STORAGE_TYPES = ['local', 'sftp', 'none'];
+const STORAGE_TYPES = ['none'];
 
-const isValidStorageType = (storageType: string): storageType is StorageType => {
-  return STORAGE_TYPES.includes(storageType);
+const getEnabledStorageTypes = (featureFlags: FeatureFlags): string[] => {
+  const enabledStorageTypes = [...STORAGE_TYPES];
+
+  if (featureFlags.isEnabled('job_automation_local_storage')) {
+    enabledStorageTypes.push('local');
+  }
+
+  if (featureFlags.isEnabled('job_automation_remote_storage')) {
+    enabledStorageTypes.push('sftp');
+  }
+
+  return enabledStorageTypes;
+};
+
+const isValidStorageType = (storageType: string, featureFlags: FeatureFlags): storageType is StorageType => {
+  const enabledStorageTypes = getEnabledStorageTypes(featureFlags);
+  return enabledStorageTypes.includes(storageType);
 };
 
 const isExport = (jobType: JobType) => 'export' === jobType;
@@ -61,4 +78,4 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
 
 export type {JobType, Storage, StorageType, LocalStorage, SftpStorage, NoneStorage};
 
-export {getDefaultStorage, isValidStorageType, STORAGE_TYPES, isExport, getDefaultFilePath};
+export {getDefaultStorage, isValidStorageType, isExport, getDefaultFilePath, getEnabledStorageTypes};

@@ -1,7 +1,19 @@
+import {FeatureFlags} from '@akeneo-pim-community/shared';
 import {LocalStorage, SftpStorage} from '../model';
 import {isLocalStorage, isSftpStorage, getStorageConfigurator} from './model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
+
+const featureFlagCollection = {
+  job_automation_local_storage: false,
+  job_automation_remote_storage: false,
+};
+
+const enableFeatureFlag = (featureFlag: string) => (featureFlagCollection[featureFlag] = true);
+
+const featureFlags: FeatureFlags = {
+  isEnabled: (featureFlag: string) => featureFlagCollection[featureFlag],
+};
 
 const localStorage: LocalStorage = {
   type: 'local',
@@ -28,10 +40,16 @@ test('it says if a storage is a sftp storage', () => {
 });
 
 test('it returns storage configurator', () => {
-  expect(getStorageConfigurator('none')).toBe(null);
-  expect(getStorageConfigurator('local')).toBe(LocalStorageConfigurator);
-  expect(getStorageConfigurator('sftp')).toBe(SftpStorageConfigurator);
+  expect(getStorageConfigurator('none', featureFlags)).toBe(null);
+
+  expect(getStorageConfigurator('local', featureFlags)).toBe(null);
+  enableFeatureFlag('job_automation_local_storage');
+  expect(getStorageConfigurator('local', featureFlags)).toBe(LocalStorageConfigurator);
+
+  expect(getStorageConfigurator('sftp', featureFlags)).toBe(null);
+  enableFeatureFlag('job_automation_remote_storage');
+  expect(getStorageConfigurator('sftp', featureFlags)).toBe(SftpStorageConfigurator);
 
   // @ts-expect-error - there is no storage configurator for type 'unknown'
-  expect(getStorageConfigurator('unknown')).toBe(null);
+  expect(getStorageConfigurator('unknown', featureFlags)).toBe(null);
 });
