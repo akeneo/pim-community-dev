@@ -35,8 +35,6 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
             throw new \InvalidArgumentException('The provider only support SftpStorage');
         }
 
-        $dirname = dirname($storage->getFilePath());
-
         $connection = new SftpConnectionProvider(
             $storage->getHost(),
             $storage->getUsername(),
@@ -49,7 +47,7 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
             self::MAX_RETRIES,
         );
 
-        return new FileSystemStorageClient(new Filesystem(new SftpAdapter($connection, $dirname)));
+        return new FileSystemStorageClient(new Filesystem(new SftpAdapter($connection, '')));
     }
 
     public function supports(StorageInterface $storage): bool
