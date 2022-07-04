@@ -12,9 +12,11 @@ type ProductCardProps = {
 };
 
 const ProductCard = ({product, locale}: ProductCardProps) => {
-  const productRoute = useRoute(`pim_enrich_${product.getType()}_edit`, {
-    id: product.getId().stringValue(),
-  });
+  const productRoute =
+    product.getType() === 'product'
+      ? useRoute('pim_enrich_product_edit', {uuid: product.getId().stringValue()})
+      : useRoute('pim_enrich_product_model_edit', {id: product.getId().stringValue()});
+
   const completeness = Completeness.createFromNormalized(product.getCompleteness().normalize());
   const label = product.getLabel(locale);
 
