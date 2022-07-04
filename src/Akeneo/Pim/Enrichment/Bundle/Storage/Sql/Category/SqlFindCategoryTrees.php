@@ -34,7 +34,7 @@ class SqlFindCategoryTrees implements FindCategoryTrees
     }
 
     /**
-     * @param Category[]
+     * @param Category[] $categories
      * @return CategoryTree[]
      */
     private function categoryTrees(array $categories): array

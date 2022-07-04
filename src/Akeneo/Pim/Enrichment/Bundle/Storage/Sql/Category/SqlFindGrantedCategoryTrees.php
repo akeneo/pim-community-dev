@@ -38,7 +38,7 @@ class SqlFindGrantedCategoryTrees implements FindGrantedCategoryTrees
     }
 
     /**
-     * @param Category[]
+     * @param Category[] $categories
      * @return Category[]
      */
     private function applyPermissions(array $categories): array
@@ -47,10 +47,11 @@ class SqlFindGrantedCategoryTrees implements FindGrantedCategoryTrees
     }
 
     /**
-     * @param Category[]
+     * @param Category[] $categories
      * @return CategoryTree[]
      */
-    private function categoryTrees(array $categories): array {
+    private function categoryTrees(array $categories): array
+    {
         $translationNormalizer = $this->translationNormalizer;
 
         return array_map(
