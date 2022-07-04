@@ -1,4 +1,6 @@
 export * from './components';
+export * from './contexts';
+export * from './dependencies';
 export * from './DependenciesContext';
 export * from './DependenciesProvider.type';
 export * from './hooks';

@@ -5,7 +5,7 @@ import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {QueryClient, QueryClientProvider} from 'react-query';
-import {MicroFrontendDependenciesProvider} from '@akeneo-pim-community/shared';
+import {MicroFrontendDependenciesProvider, TranslationsProvider} from '@akeneo-pim-community/shared';
 import {FakePIM} from './FakePIM';
 import {FakeCatalogEditContainer} from './FakeCatalogEditContainer';
 import {FakeCatalogListContainer} from './FakeCatalogListContainer';
@@ -44,6 +44,7 @@ ReactDOM.render(
                         messages: {},
                     }}
                 >
+                    <TranslationsProvider>
                     <Router>
                         <FakePIM>
                             <Switch>
@@ -56,6 +57,7 @@ ReactDOM.render(
                             </Switch>
                         </FakePIM>
                     </Router>
+                    </TranslationsProvider>
                 </MicroFrontendDependenciesProvider>
             </QueryClientProvider>
         </ThemeProvider>

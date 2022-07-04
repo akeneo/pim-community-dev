@@ -1,11 +1,12 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
+import {initTranslator} from '@akeneo-pim-community/shared';
+
 import BaseView = require('pimui/js/view/base');
 
 const mediator = require('oro/mediator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const init = require('pim/init');
-const initTranslator = require('pim/init-translator');
 const initLayout = require('oro/init-layout');
 const initSignin = require('pimuser/js/init-signin');
 const pageTitle = require('pim/page-title');
