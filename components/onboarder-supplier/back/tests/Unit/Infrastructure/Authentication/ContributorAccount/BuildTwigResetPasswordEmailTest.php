@@ -22,14 +22,14 @@ final class BuildTwigResetPasswordEmailTest extends TestCase
             ->method('render')
             ->withConsecutive(
                 [
-                    '@AkeneoSupplierPortal/Email/contributor-reset-password.html.twig',
+                    '@AkeneoSupplierPortalSupplier/Email/contributor-reset-password.html.twig',
                     [
                         'contributorEmail' => $contributorEmail,
                         'url' => 'http://wwww.example.com/supplier-portal/index.html#/set-up-password/foo',
                     ],
                 ],
                 [
-                    '@AkeneoSupplierPortal/Email/contributor-reset-password.txt.twig',
+                    '@AkeneoSupplierPortalSupplier/Email/contributor-reset-password.txt.twig',
                     [
                         'contributorEmail' => $contributorEmail,
                         'url' => 'http://wwww.example.com/supplier-portal/index.html#/set-up-password/foo',

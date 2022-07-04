@@ -6,6 +6,6 @@ namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Symfony;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class AkeneoSupplierPortalBundle extends Bundle
+final class AkeneoSupplierPortalSupplierBundle extends Bundle
 {
 }

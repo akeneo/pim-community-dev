@@ -22,14 +22,14 @@ final class BuildTwigWelcomeEmailTest extends TestCase
             ->method('render')
             ->withConsecutive(
                 [
-                    '@AkeneoSupplierPortal/Email/contributor-invitation.html.twig',
+                    '@AkeneoSupplierPortalSupplier/Email/contributor-invitation.html.twig',
                     [
                         'contributorEmail' => $contributorEmail,
                         'url' => 'http://wwww.example.com/supplier-portal/index.html#/set-up-password/foo',
                     ],
                 ],
                 [
-                    '@AkeneoSupplierPortal/Email/contributor-invitation.txt.twig',
+                    '@AkeneoSupplierPortalSupplier/Email/contributor-invitation.txt.twig',
                     [
                         'contributorEmail' => $contributorEmail,
                         'url' => 'http://wwww.example.com/supplier-portal/index.html#/set-up-password/foo',

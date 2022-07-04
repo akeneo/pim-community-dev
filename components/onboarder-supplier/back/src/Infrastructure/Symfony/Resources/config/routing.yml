@@ -1,6 +1,6 @@
 akeneo_supplier_portal_authentication:
-    resource: '@AkeneoSupplierPortalBundle/Resources/config/routing/authentication.yml'
+    resource: '@AkeneoSupplierPortalSupplierBundle/Resources/config/routing/authentication.yml'
     prefix: /authentication
 
 akeneo_supplier_portal_home:
-    resource: '@AkeneoSupplierPortalBundle/Resources/config/routing/secured.yml'
+    resource: '@AkeneoSupplierPortalSupplierBundle/Resources/config/routing/secured.yml'

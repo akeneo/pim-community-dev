@@ -22,7 +22,7 @@ final class BuildTwigResetPasswordEmail implements BuildResetPasswordEmail
         $setUpPasswordUrl = sprintf(SetUpPasswordUrl::VALUE, $this->domain, $accessToken);
 
         $htmlContent = $this->twig->render(
-            '@AkeneoSupplierPortal/Email/contributor-reset-password.html.twig',
+            '@AkeneoSupplierPortalSupplier/Email/contributor-reset-password.html.twig',
             [
                 'contributorEmail' => $email,
                 'url' => $setUpPasswordUrl,
@@ -30,7 +30,7 @@ final class BuildTwigResetPasswordEmail implements BuildResetPasswordEmail
         );
 
         $textContent = $this->twig->render(
-            '@AkeneoSupplierPortal/Email/contributor-reset-password.txt.twig',
+            '@AkeneoSupplierPortalSupplier/Email/contributor-reset-password.txt.twig',
             [
                 'contributorEmail' => $email,
                 'url' => $setUpPasswordUrl,

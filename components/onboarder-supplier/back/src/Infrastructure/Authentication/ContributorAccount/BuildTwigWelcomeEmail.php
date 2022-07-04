@@ -22,7 +22,7 @@ class BuildTwigWelcomeEmail implements BuildWelcomeEmail
         $setUpPasswordUrl = sprintf(SetUpPasswordUrl::VALUE, $this->domain, $accessToken);
 
         $htmlContent = $this->twig->render(
-            '@AkeneoSupplierPortal/Email/contributor-invitation.html.twig',
+            '@AkeneoSupplierPortalSupplier/Email/contributor-invitation.html.twig',
             [
                 'contributorEmail' => $email,
                 'url' => $setUpPasswordUrl,
@@ -30,7 +30,7 @@ class BuildTwigWelcomeEmail implements BuildWelcomeEmail
         );
 
         $textContent = $this->twig->render(
-            '@AkeneoSupplierPortal/Email/contributor-invitation.txt.twig',
+            '@AkeneoSupplierPortalSupplier/Email/contributor-invitation.txt.twig',
             [
                 'contributorEmail' => $email,
                 'url' => $setUpPasswordUrl,

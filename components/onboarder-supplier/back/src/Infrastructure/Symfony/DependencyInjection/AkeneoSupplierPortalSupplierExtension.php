@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Loader\DirectoryLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-final class AkeneoSupplierPortalExtension extends Extension
+final class AkeneoSupplierPortalSupplierExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {

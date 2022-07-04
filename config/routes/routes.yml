@@ -160,7 +160,7 @@ onboarder_serenity_retailer:
     prefix: /onboarder-retailer/v2
 
 akeneo_supplier_portal:
-    resource: "@AkeneoSupplierPortalBundle/Resources/config/routing.yml"
+    resource: "@AkeneoSupplierPortalSupplierBundle/Resources/config/routing.yml"
     prefix: /supplier-portal
 
 # Free Trial
