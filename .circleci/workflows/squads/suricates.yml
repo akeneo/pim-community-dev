@@ -20,10 +20,10 @@ workflows:
       - build_srnt_dev:
           requires:
             - checkout
-      - test_front_onboarder:
+      - test_front_supplier_portal:
           requires:
             - build_srnt_dev
-      - test_back_onboarder:
+      - test_back_supplier_portal:
           requires:
             - build_srnt_dev
       - test_database:
@@ -33,7 +33,7 @@ workflows:
           requires:
             - checkout
       - deploy_pr_environment?:
-            name: "Deploy Onboarder PR environment?"
+            name: "Deploy Supplier Portal PR environment?"
             type: approval
             filters:
               branches:
@@ -45,22 +45,22 @@ workflows:
             name: "Build srnt Prod for deploy PR"
             requires:
               - test_helm_generated_k8s_files
-              - "Deploy Onboarder PR environment?"
+              - "Deploy Supplier Portal PR environment?"
       - deploy_pr_environment:
-            name: "Deploy Onboarder PR environment"
+            name: "Deploy Supplier Portal PR environment"
             requires:
                 - "Build srnt Prod for deploy PR"
       - delete_pr_environment?:
-            name: "Delete Onboarder PR environment?"
+            name: "Delete Supplier Portal PR environment?"
             type: approval
             requires:
-                - "Deploy Onboarder PR environment"
+                - "Deploy Supplier Portal PR environment"
       - delete_pr_environment:
-            name: "Delete Onboarder PR environment"
+            name: "Delete Supplier Portal PR environment"
             requires:
-            - "Delete Onboarder PR environment?"
+            - "Delete Supplier Portal PR environment?"
       - pull_request_success:
           requires:
-            - test_front_onboarder
-            - test_back_onboarder
+            - test_front_supplier_portal
+            - test_back_supplier_portal
             - test_database

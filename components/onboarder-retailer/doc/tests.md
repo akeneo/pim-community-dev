@@ -3,19 +3,19 @@
 ## Back
 Run all the Supplier Portal unit backend tests:
 ```
-PIM_CONTEXT=onboarder-serenity make unit-back
+PIM_CONTEXT=supplier-portal make unit-back
 ```
 
 Run a single Supplier Portal unit backend test:
 ```
-PIM_CONTEXT=onboarder-serenity make unit-back ARGS="path/to/the/test/from/ee-root-directory"
+PIM_CONTEXT=supplier-portal make unit-back ARGS="path/to/the/test/from/ee-root-directory"
 ```
 
 ## Front
 
 Run all the Supplier Portal unit front tests:
 ```
-PIM_CONTEXT=onboarder-serenity make unit-front
+PIM_CONTEXT=supplier-portal make unit-front
 ```
 
 Watch the Supplier Portal unit front tests:
@@ -27,22 +27,22 @@ docker-compose -f ./docker-compose.yml -f ./docker-compose.override.yml run --rm
 
 Run all the Supplier Portal integration tests:
 ```
-PIM_CONTEXT=onboarder-serenity make integration-back
+PIM_CONTEXT=supplier-portal make integration-back
 ```
 
 Run a single Supplier Portal integration test:
 ```
-PIM_CONTEXT=onboarder-serenity make integration-back ARGS="--filter <class_name_or_method_test_name>"
+PIM_CONTEXT=supplier-portal make integration-back ARGS="--filter <class_name_or_method_test_name>"
 ```
 
 # Acceptance tests
 
 Run all the Supplier Portal acceptance tests:
 ```
-PIM_CONTEXT=onboarder-serenity make acceptance-back
+PIM_CONTEXT=supplier-portal make acceptance-back
 ```
 
 Run a single Supplier Portal acceptance test:
 ```
-PIM_CONTEXT=onboarder-serenity make acceptance-back ARGS="path/to/the/test/from/ee-root-directory"
+PIM_CONTEXT=supplier-portal make acceptance-back ARGS="path/to/the/test/from/ee-root-directory"
 ```
