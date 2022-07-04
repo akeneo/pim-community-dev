@@ -1,11 +1,10 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import StatusCriterion from '../criteria/StatusCriterion';
 import {AnyCriterionState} from '../models/Criterion';
 import {useProductSelectionContext} from '../contexts/ProductSelectionContext';
 import {ProductSelectionActions} from '../reducers/ProductSelectionReducer';
-import {useCriteriaRegistry} from '../criteria/useCriteriaRegistry';
+import {useCriteriaRegistry} from '../hooks/useCriteriaRegistry';
 
 type Factory = {
     label: string;

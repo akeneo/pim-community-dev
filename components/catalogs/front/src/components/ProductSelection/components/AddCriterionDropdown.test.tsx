@@ -9,7 +9,7 @@ import {pimTheme} from 'akeneo-design-system';
 import {AddCriterionDropdown} from './AddCriterionDropdown';
 import {ProductSelectionContext} from '../contexts/ProductSelectionContext';
 import {Operator} from '../models/Operator';
-import {useCriteriaRegistry} from '../criteria/useCriteriaRegistry';
+import {useCriteriaRegistry} from '../hooks/useCriteriaRegistry';
 
 mocked(useCriteriaRegistry).mockImplementation(() => ({
     system: [

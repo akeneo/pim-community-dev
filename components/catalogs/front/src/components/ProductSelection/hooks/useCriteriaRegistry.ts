@@ -1,6 +1,6 @@
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {AnyCriterion, AnyCriterionState} from '../models/Criterion';
-import StatusCriterion from './StatusCriterion';
+import StatusCriterion from '../criteria/StatusCriterion';
 import {useCallback, useMemo} from 'react';
 
 type Factory = {

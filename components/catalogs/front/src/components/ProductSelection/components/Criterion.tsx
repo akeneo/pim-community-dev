@@ -3,7 +3,7 @@ import {AnyCriterionState, CriterionModule} from '../models/Criterion';
 import {useProductSelectionContext} from '../contexts/ProductSelectionContext';
 import {ProductSelectionActions} from '../reducers/ProductSelectionReducer';
 import {CriterionErrors} from '../models/CriterionErrors';
-import {useCriteriaRegistry} from '../criteria/useCriteriaRegistry';
+import {useCriteriaRegistry} from '../hooks/useCriteriaRegistry';
 
 type Props = {
     id: string;
