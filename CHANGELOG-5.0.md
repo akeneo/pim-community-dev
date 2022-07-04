@@ -1,5 +1,11 @@
 # 5.0.x
 
+# 5.0.101 (2022-07-01)
+
+## Bug fixes
+
+- PIM-10510: "Automatic link between assets and products" log download returns a 403
+
 # 5.0.100 (2022-06-29)
 
 ## Bug fixes
