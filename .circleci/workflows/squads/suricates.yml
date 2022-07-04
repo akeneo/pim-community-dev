@@ -14,6 +14,7 @@ workflows:
                 - /SURI-.*/
                 - /OB2-.*/
                 - /OBS-.*/
+                - /SP-.*/
       - checkout:
           requires:
             - ready_to_build?
@@ -41,6 +42,7 @@ workflows:
                   - /SURI-.*/
                   - /OB2-.*/
                   - /OBS-.*/
+                  - /SP-.*/
       - build_srnt_prod:
             name: "Build srnt Prod for deploy PR"
             requires:
