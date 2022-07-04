@@ -1,7 +1,7 @@
 import React from 'react';
 import {SectionTitle, Field, SelectInput, Helper} from 'akeneo-design-system';
 import {Section, useTranslate, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
-import {Storage, isValidStorageType, getDefaultStorage, STORAGE_TYPES, JobType} from './model';
+import {Storage, isValidStorageType, getDefaultStorage, STORAGE_TYPES, JobType, NoneStorage} from './model';
 import {getStorageConfigurator} from './StorageConfigurator';
 
 type StorageFormProps = {
@@ -35,7 +35,9 @@ const StorageForm = ({jobType, fileExtension, storage, validationErrors, onStora
         >
           {STORAGE_TYPES.map(storageType => (
             <SelectInput.Option value={storageType} key={storageType}>
-              {translate(`pim_import_export.form.job_instance.storage_form.connection.${storageType}`)}
+              {'none' === storageType
+                ? translate(`pim_import_export.form.job_instance.storage_form.connection.${storageType}.${jobType}`)
+                : translate(`pim_import_export.form.job_instance.storage_form.connection.${storageType}`)}
             </SelectInput.Option>
           ))}
         </SelectInput>
