@@ -151,6 +151,10 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  filters:
+                      branches:
+                          ignore:
+                              - "master"
             - deploy_pr_environment_with_flags:
                   name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment with flags"
                   matrix:
