@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductUuids;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
+class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
 {
     private const CREATED = '2012-10-05 22:49:48';
     private const UPDATED = '2012-10-28 23:50:49';
@@ -79,16 +80,17 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
     public function testNoProducts()
     {
         $expected = [];
-        $actual = $this->getQuery()->fetchByProductIdentifiers([]);
+        $actual = $this->getQuery()->fetchByProductUuids([]);
         $this->assertEquals($expected, $actual);
     }
 
     public function testSingleProductProperties()
     {
+        $uuidProductA = $this->getProductUuidFromIdentifier('productA');
         $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
-            'productA' => [
-                'uuid' => 'doc: we can not check the uuid',
+            $uuidProductA->toString() => [
+                'uuid' => $uuidProductA->toString(),
                 'identifier' => 'productA',
                 'is_enabled' => true,
                 'product_model_code' => null,
@@ -101,28 +103,27 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
                 ]
             ]
         ];
-        $actual = $this->getQuery()->fetchByProductIdentifiers(['productA']);
-
-        Assert::isInstanceOf($actual['productA']['uuid'], UuidInterface::class);
-        unset($expected['productA']['uuid'], $actual['productA']['uuid']);
+        $actual = $this->getQuery()->fetchByProductUuids([$uuidProductA]);
 
         $this->assertEquals($expected, $actual);
     }
 
     public function testGroups()
     {
+        $uuidProductB = $this->getProductUuidFromIdentifier('productB');
         $this->assertEquals(
             ['group1', 'group2'],
-            $this->getQuery()->fetchByProductIdentifiers(['productB'])['productB']['group_codes']
+            $this->getQuery()->fetchByProductUuids([$uuidProductB])[$uuidProductB->toString()]['group_codes']
         );
     }
 
     public function testVariantProductValues()
     {
+        $uuidVariantProductA = $this->getProductUuidFromIdentifier('VariantProductA');
         $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
-            'VariantProductA' => [
-                'uuid' => 'doc: we can not check the uuid',
+            $uuidVariantProductA->toString() => [
+                'uuid' => $uuidVariantProductA->toString(),
                 'identifier' => 'VariantProductA',
                 'is_enabled' => true,
                 'product_model_code' => 'SubProductModel',
@@ -137,10 +138,7 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
                 ]
             ]
         ];
-        $actual = $this->getQuery()->fetchByProductIdentifiers(['VariantProductA']);
-
-        Assert::isInstanceOf($actual['VariantProductA']['uuid'], UuidInterface::class);
-        unset($expected['VariantProductA']['uuid'], $actual['VariantProductA']['uuid']);
+        $actual = $this->getQuery()->fetchByProductUuids([$uuidVariantProductA]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
@@ -183,7 +181,8 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
                 ]
             ]
         );
-        $results = $this->getQuery()->fetchByProductIdentifiers(['VariantProductWithEmptyValuesFromPM']);
+        $uuidVariantProductWithEmptyValuesFromPM = $this->getProductUuidFromIdentifier('VariantProductWithEmptyValuesFromPM');
+        $results = $this->getQuery()->fetchByProductUuids([$uuidVariantProductWithEmptyValuesFromPM]);
 
         $expected = [
             'sku' => ['<all_channels>' => ['<all_locales>' => 'VariantProductWithEmptyValuesFromPM']],
@@ -191,13 +190,13 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
             'second_yes_no' => ['<all_channels>' => ['<all_locales>' => false]]
         ];
 
-        static::assertArrayHasKey('VariantProductWithEmptyValuesFromPM', $results);
-        static::assertEqualsCanonicalizing($expected, $results['VariantProductWithEmptyValuesFromPM']['raw_values']);
+        static::assertArrayHasKey($uuidVariantProductWithEmptyValuesFromPM->toString(), $results);
+        static::assertEqualsCanonicalizing($expected, $results[$uuidVariantProductWithEmptyValuesFromPM->toString()]['raw_values']);
     }
 
-    private function getQuery(): GetValuesAndPropertiesFromProductIdentifiers
+    private function getQuery(): GetValuesAndPropertiesFromProductUuids
     {
-        return $this->get('akeneo.pim.enrichment.product.query.get_values_and_properties_from_product_identifiers');
+        return $this->get('Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductUuids');
     }
 
     protected function getConfiguration()
@@ -261,5 +260,12 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
             return $group;
         }, $groupCodes);
         $this->get('pim_catalog.saver.group')->saveAll($groups);
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        ));
     }
 }

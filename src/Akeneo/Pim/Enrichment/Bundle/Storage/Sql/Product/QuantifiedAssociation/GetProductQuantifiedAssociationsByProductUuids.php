@@ -7,8 +7,9 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductIdsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindQuantifiedAssociationTypeCodesInterface;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\UuidInterface;
 
-final class GetProductQuantifiedAssociationsByProductIdentifiers
+final class GetProductQuantifiedAssociationsByProductUuids
 {
     /** @var Connection */
     private $connection;
@@ -42,34 +43,36 @@ final class GetProductQuantifiedAssociationsByProductIdentifiers
      *      ]
      * ]
      */
-    public function fromProductIdentifiers(array $productIdentifiers): array
+    public function fromProductUuids(array $productUuids): array
     {
-        if (empty($productIdentifiers)) {
+        if (empty($productUuids)) {
             return [];
         }
 
-        $rows = $this->fetchQuantifiedAssociations($productIdentifiers);
+        $rows = $this->fetchQuantifiedAssociations($productUuids);
 
         return $this->hydrateQuantifiedAssociations($rows);
     }
 
-    private function fetchQuantifiedAssociations(array $productIdentifiers): array
+    private function fetchQuantifiedAssociations(array $productUuids): array
     {
         $query = <<<SQL
 SELECT
-    p.identifier,
+    BIN_TO_UUID(p.uuid) AS uuid,
     JSON_MERGE_PRESERVE(COALESCE(pm2.quantified_associations, '{}'), COALESCE(pm1.quantified_associations, '{}'), COALESCE(p.quantified_associations, '{}')) AS all_quantified_associations
 FROM pim_catalog_product p
 LEFT JOIN pim_catalog_product_model pm1 ON p.product_model_id = pm1.id
 LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
-WHERE p.identifier IN (:productIdentifiers)
+WHERE p.uuid IN (:productUuids)
 ;
 SQL;
 
+        $uuidsAsBytes = array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+
         $rows = $this->connection->executeQuery(
             $query,
-            ['productIdentifiers' => $productIdentifiers],
-            ['productIdentifiers' => Connection::PARAM_STR_ARRAY]
+            ['productUuids' => $uuidsAsBytes],
+            ['productUuids' => Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
         return $rows;
@@ -90,8 +93,8 @@ SQL;
                 $validQuantifiedAssociationTypeCodes
             );
             if (!empty($associationWithIdentifiers)) {
-                $productIdentifier = $row['identifier'];
-                $results[$productIdentifier] = $associationWithIdentifiers;
+                $productUuid = $row['uuid'];
+                $results[$productUuid] = $associationWithIdentifiers;
             }
         }
 

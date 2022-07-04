@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * SQL Query to get the properties and the values from a set of product identifiers:
@@ -17,17 +18,16 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class GetValuesAndPropertiesFromProductIdentifiers
+final class GetValuesAndPropertiesFromProductUuids
 {
-    /** @var Connection */
-    private $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
-    public function fetchByProductIdentifiers(array $productIdentifiers): array
+    /**
+     * @param array<UuidInterface> $productUuids
+     */
+    public function fetchByProductUuids(array $productUuids): array
     {
         $query = <<<SQL
 WITH groupCodes AS (
@@ -35,7 +35,7 @@ WITH groupCodes AS (
     FROM pim_catalog_product p
     LEFT JOIN pim_catalog_group_product pg ON p.uuid = pg.product_uuid
     LEFT JOIN pim_catalog_group g ON pg.group_id = g.id
-    WHERE p.identifier IN (?)
+    WHERE p.uuid IN (?)
     GROUP BY p.uuid
 )
 SELECT
@@ -53,13 +53,15 @@ LEFT JOIN pim_catalog_family f ON p.family_id = f.id
 LEFT JOIN pim_catalog_product_model pm1 ON p.product_model_id = pm1.id
 LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
 INNER JOIN groupCodes gc ON p.uuid = gc.puuid
-WHERE p.identifier IN (?)
+WHERE p.uuid IN (?)
 GROUP BY p.uuid, p.identifier
 SQL;
 
+        $uuidsAsBytes = array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+
         $rows = $this->connection->fetchAllAssociative(
             $query,
-            [$productIdentifiers, $productIdentifiers],
+            [$uuidsAsBytes, $uuidsAsBytes],
             [Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]
         );
 
@@ -69,7 +71,7 @@ SQL;
             $groupCodes = array_values(array_filter(json_decode($row['group_codes'])));
             sort($groupCodes);
 
-            $results[$row['identifier']] = [
+            $results[$row['uuid']] = [
                 'uuid' => Uuid::fromString(Type::getType(Types::STRING)->convertToPHPValue($row['uuid'], $platform)),
                 'identifier' => Type::getType(Types::STRING)->convertToPHPValue($row['identifier'], $platform),
                 'is_enabled' => Type::getType(Types::BOOLEAN)->convertToPHPValue($row['is_enabled'], $platform),
