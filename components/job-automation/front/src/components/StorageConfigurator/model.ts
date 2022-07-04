@@ -37,5 +37,9 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
   );
 };
 
-export type {StorageConfiguratorProps};
+type StorageConnectionCheckerProps = {
+  storage: Storage;
+};
+
+export type {StorageConfiguratorProps, StorageConnectionCheckerProps};
 export {isLocalStorage, isSftpStorage, getStorageConfigurator};

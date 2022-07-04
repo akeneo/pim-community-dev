@@ -4,5 +4,6 @@ parameters:
     - %rootDir%/../../../components/job-automation/back
   excludePaths:
     - %rootDir%/../../../components/job-automation/back/tests/Specification
+    - %rootDir%/../../../components/job-automation/back/tests/Integration
   checkMissingIterableValueType: false
   treatPhpDocTypesAsCertain: false

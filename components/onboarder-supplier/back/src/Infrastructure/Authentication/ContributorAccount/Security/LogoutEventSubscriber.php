@@ -19,6 +19,8 @@ final class LogoutEventSubscriber implements EventSubscriberInterface
 
     public function onLogout(LogoutEvent $event): void
     {
-        $event->setResponse(new Response());
+        if ($event->getToken()?->getUser() instanceof ContributorAccount) {
+            $event->setResponse(new Response());
+        }
     }
 }

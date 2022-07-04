@@ -175,6 +175,15 @@ RUN mkdir var && \
     (test -d grth/upgrades/schema/ && cp grth/upgrades/schema/* upgrades/schema/ || true) && \
     (test -d vendor/akeneo/pim-onboarder/upgrades/schema/ && cp vendor/akeneo/pim-onboarder/upgrades/schema/* upgrades/schema/ || true)
 
+FROM node:14 AS builder-onboarder-supplier-front
+
+COPY --from=builder --chown=www-data:www-data /srv/pim /srv/pim
+
+WORKDIR /srv/pim/components/onboarder-supplier/front
+
+RUN yarn install && \
+    yarn app:build
+
 #
 # Image used for production
 #
@@ -198,6 +207,9 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
 COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php .
 COPY --from=builder --chown=www-data:www-data /srv/pim/composer.lock .
 COPY --from=builder --chown=www-data:www-data /srv/pim/version.txt .
+
+# Copy Onboarder supplier front
+COPY --from=builder-onboarder-supplier-front --chown=www-data:www-data /srv/pim/components/onboarder-supplier/front/build components/onboarder-supplier/front/build
 
 # Prepare the application
 RUN mkdir -p public/media && chown -R www-data:www-data public/media var && \

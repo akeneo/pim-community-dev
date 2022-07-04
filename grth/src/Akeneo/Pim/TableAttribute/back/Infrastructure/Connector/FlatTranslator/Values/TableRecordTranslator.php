@@ -29,10 +29,9 @@ class TableRecordTranslator implements TableValueTranslator
         return ReferenceEntityColumn::DATATYPE;
     }
 
-    public function translate(string $attributeCode, ColumnDefinition $column, string $localeCode, mixed $value): string
+    public function translate(string $attributeCode, ColumnDefinition $column, string $localeCode, string $value): string
     {
         Assert::isInstanceOf($column, ReferenceEntityColumn::class);
-        Assert::string($value);
 
         return ($this->getRecordLabel)($column->referenceEntityIdentifier(), $value, $localeCode) ?? sprintf('[%s]', $value);
     }

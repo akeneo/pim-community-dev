@@ -100,6 +100,7 @@ $rules = [
             'Symfony\Component\HttpFoundation\Request',
             'Symfony\Component\HttpFoundation\Response',
             'Symfony\Component\Security\Http\Event\LogoutEvent',
+            'Symfony\Component\Security\Core\Authentication\Token\TokenInterface',
 
         ],
     )->in('Akeneo\OnboarderSerenity\Supplier\Test\Unit'),

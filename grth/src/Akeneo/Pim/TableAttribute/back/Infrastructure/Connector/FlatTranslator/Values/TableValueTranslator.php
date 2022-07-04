@@ -23,6 +23,6 @@ interface TableValueTranslator
         string $attributeCode,
         ColumnDefinition $column,
         string $localeCode,
-        mixed $value
+        string $value
     ): string;
 }

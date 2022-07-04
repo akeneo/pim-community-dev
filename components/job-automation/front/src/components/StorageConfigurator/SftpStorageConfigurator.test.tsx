@@ -1,6 +1,6 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import {screen} from '@testing-library/react';
+import {screen, act} from '@testing-library/react';
 import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
 import {LocalStorage, SftpStorage} from '../model';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
@@ -204,4 +204,59 @@ test('it displays validation errors', () => {
   expect(screen.getByText('error.key.a_port_error')).toBeInTheDocument();
   expect(screen.getByText('error.key.an_username_error')).toBeInTheDocument();
   expect(screen.getByText('error.key.a_password_error')).toBeInTheDocument();
+});
+
+test('it can check connection', async () => {
+  const storage: SftpStorage = {
+    type: 'sftp',
+    file_path: '/tmp/file.xlsx',
+    host: 'example.com',
+    port: 22,
+    username: 'root',
+    password: 'root',
+  };
+
+  global.fetch = jest.fn().mockImplementation(async () => ({ok: true}));
+
+  const onStorageChange = jest.fn();
+
+  renderWithProviders(
+    <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+  );
+
+  const checkButton = screen.getByText('akeneo.job_automation.connection_checker.label');
+  await act(async () => {
+    userEvent.click(checkButton);
+  });
+
+  expect(checkButton).toHaveAttribute('disabled');
+});
+
+test('it can check connection, display message if error', async () => {
+  const storage: SftpStorage = {
+    type: 'sftp',
+    file_path: '/tmp/file.xlsx',
+    host: 'example.com',
+    port: 22,
+    username: 'root',
+    password: 'root',
+  };
+
+  global.fetch = jest.fn().mockImplementation(async () => ({
+    ok: false,
+  }));
+
+  const onStorageChange = jest.fn();
+
+  renderWithProviders(
+    <SftpStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+  );
+
+  const checkButton = screen.getByText('akeneo.job_automation.connection_checker.label');
+  await act(async () => {
+    userEvent.click(checkButton);
+  });
+
+  expect(checkButton).not.toHaveAttribute('disabled');
+  expect(screen.getByText('akeneo.job_automation.connection_checker.exception')).not.toBeUndefined();
 });

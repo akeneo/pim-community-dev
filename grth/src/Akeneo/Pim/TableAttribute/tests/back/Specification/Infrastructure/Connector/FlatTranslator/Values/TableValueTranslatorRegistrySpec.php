@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
@@ -19,17 +20,23 @@ class TableValueTranslatorRegistrySpec extends ObjectBehavior
     function let(
         TableConfigurationRepository $tableConfigurationRepository,
         TableValueTranslator $selectValueTranslator,
-        TableValueTranslator $booleanValueTranslator
+        TableValueTranslator $booleanValueTranslator,
+        TableValueTranslator $measurementValueTranslator
     ) {
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(TableConfiguration::fromColumnDefinitions([
             self::getIngredientColumn(),
             NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             self::getIsAllergenicColumn(),
+            self::getLengthColumn(),
         ]));
 
         $selectValueTranslator->getSupportedColumnDataType()->willReturn(SelectColumn::DATATYPE);
         $booleanValueTranslator->getSupportedColumnDataType()->willReturn(BooleanColumn::DATATYPE);
-        $this->beConstructedWith($tableConfigurationRepository, [$selectValueTranslator, $booleanValueTranslator]);
+        $measurementValueTranslator->getSupportedColumnDataType()->willReturn(MeasurementColumn::DATATYPE);
+        $this->beConstructedWith(
+            $tableConfigurationRepository,
+            [$selectValueTranslator, $booleanValueTranslator, $measurementValueTranslator]
+        );
     }
 
     function it_is_initializable()
@@ -50,18 +57,29 @@ class TableValueTranslatorRegistrySpec extends ObjectBehavior
 
     function it_translates_a_boolean_column(TableValueTranslator $booleanValueTranslator)
     {
-        $booleanValueTranslator->translate('nutrition', self::getIsAllergenicColumn(), 'en_US', true)
-            ->willReturn('Yes');
-        $this->translate('nutrition', 'is_allergenic', 'en_US', true)->shouldReturn('Yes');
+        $booleanValueTranslator->translate('nutrition', self::getIsAllergenicColumn(), 'en_US', '1')
+            ->shouldBeCalled()->willReturn('Yes');
+        $this->translate('nutrition', 'is_allergenic', 'en_US', '1')->shouldReturn('Yes');
 
-        $booleanValueTranslator->translate('nutrition', self::getIsAllergenicColumn(), 'fr_FR', false)
-            ->willReturn('No');
-        $this->translate('nutrition', 'is_allergenic', 'fr_FR', false)->shouldReturn('No');
+        $booleanValueTranslator->translate('nutrition', self::getIsAllergenicColumn(), 'fr_FR', '0')
+            ->shouldBeCalled()->willReturn('No');
+        $this->translate('nutrition', 'is_allergenic', 'fr_FR', '0')->shouldReturn('No');
+    }
+
+    function it_translates_a_measurement_value(TableValueTranslator $measurementValueTranslator)
+    {
+        $measurementValueTranslator->translate('nutrition', self::getLengthColumn(), 'en_US', '0.12 METER')
+            ->shouldBeCalled()->willReturn('0.12 Meter');
+        $this->translate('nutrition', '1', 'en_US', '0.12 METER');
+
+        $measurementValueTranslator->translate('nutrition', self::getLengthColumn(), 'fr_FR', '12 CENTIMETER')
+                                   ->shouldBeCalled()->willReturn('12 Centimètre');
+        $this->translate('nutrition', '1', 'fr_FR', '12 CENTIMETER');
     }
 
     function it_cannot_translate_when_column_type_is_not_handled()
     {
-        $this->translate('nutrition', 'quantity', 'en_US', 12)->shouldReturn(12);
+        $this->translate('nutrition', 'quantity', 'en_US', '12')->shouldReturn('12');
     }
 
     function it_cannot_translate_when_column_is_unknown()
@@ -77,5 +95,17 @@ class TableValueTranslatorRegistrySpec extends ObjectBehavior
     private static function getIsAllergenicColumn(): BooleanColumn
     {
         return BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']);
+    }
+
+    private static function getLengthColumn(): MeasurementColumn
+    {
+        return MeasurementColumn::fromNormalized(
+            [
+                'id' => ColumnIdGenerator::length(),
+                'code' => '1',
+                'measurement_family_code' => 'Length',
+                'measurement_default_unit_code' => 'METER',
+            ]
+        );
     }
 }

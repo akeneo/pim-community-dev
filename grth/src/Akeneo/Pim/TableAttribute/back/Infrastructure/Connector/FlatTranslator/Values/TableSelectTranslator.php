@@ -29,7 +29,7 @@ final class TableSelectTranslator implements TableValueTranslator
         return SelectColumn::DATATYPE;
     }
 
-    public function translate(string $attributeCode, ColumnDefinition $column, string $localeCode, mixed $value): string
+    public function translate(string $attributeCode, ColumnDefinition $column, string $localeCode, string $value): string
     {
         $selectOptionCollection = $this->selectOptionCollectionRepository->getByColumn($attributeCode, $column->code());
 
