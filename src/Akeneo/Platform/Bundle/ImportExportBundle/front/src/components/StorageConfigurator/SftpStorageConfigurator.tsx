@@ -1,7 +1,15 @@
 import React from 'react';
-import {Field, Helper, NumberInput} from 'akeneo-design-system';
-import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
+import {Field, Helper, NumberInput, Button, CheckIcon, pimTheme} from 'akeneo-design-system';
+import {TextField, useTranslate, filterErrors, ValidationError} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isSftpStorage} from './model';
+import styled from 'styled-components';
+import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
+
+const CheckStorageConnetion = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8.5px;
+`;
 
 const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: StorageConfiguratorProps) => {
   if (!isSftpStorage(storage)) {
@@ -10,6 +18,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
 
   const translate = useTranslate();
   const portValidationErrors = filterErrors(validationErrors, '[port]');
+  const [check, isChecking, checkReliability] = useCheckStorageConnection(storage);
 
   return (
     <>
@@ -24,7 +33,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         required={true}
         value={storage.host}
         label={translate('pim_import_export.form.job_instance.storage_form.host.label')}
-        onChange={host => onStorageChange({...storage, host})}
+        onChange={(host: string) => onStorageChange({...storage, host})}
         errors={filterErrors(validationErrors, '[host]')}
       />
       <Field
@@ -35,11 +44,11 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         <NumberInput
           min={1}
           max={65535}
-          onChange={port => onStorageChange({...storage, port: parseInt(port, 10)})}
+          onChange={(port: string) => onStorageChange({...storage, port: parseInt(port, 10)})}
           invalid={0 < portValidationErrors.length}
           value={storage.port.toString()}
         />
-        {portValidationErrors.map((error, key) => (
+        {portValidationErrors.map((error: ValidationError, key) => (
           <Helper key={key} level="error" inline={true}>
             {translate(error.messageTemplate, error.parameters, error.plural)}
           </Helper>
@@ -60,6 +69,27 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         onChange={(password: string) => onStorageChange({...storage, password})}
         errors={filterErrors(validationErrors, '[password]')}
       />
+      <>
+        <CheckStorageConnetion>
+          <Button
+            onClick={() => {
+              checkReliability();
+            }}
+            disabled={check || isChecking}
+            level="primary"
+          >
+            {translate('pim_import_export.form.job_instance.connection_checker.label')}
+          </Button>
+          {check ? <CheckIcon color={pimTheme.color.green100} /> : ''}
+        </CheckStorageConnetion>
+        <>
+          {undefined !== check && !check && (
+            <Helper inline level="error">
+              {translate('pim_import_export.form.job_instance.connection_checker.exception')}
+            </Helper>
+          )}
+        </>
+      </>
     </>
   );
 };
