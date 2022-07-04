@@ -26,22 +26,42 @@ type StorageType = 'none' | 'local' | 'sftp';
 
 const STORAGE_TYPES = ['none'];
 
-const getEnabledStorageTypes = (featureFlags: FeatureFlags): string[] => {
+const REMOTE_STORAGE_JOB_CODES = [
+  'xlsx_product_export',
+  'xlsx_product_tailored_export',
+  'xlsx_product_import',
+  'xlsx_product_tailored_import',
+];
+
+const localStorageIsEnabled = (featureFlags: FeatureFlags): boolean =>
+  featureFlags.isEnabled('job_automation_local_storage');
+
+const remoteStorageIsEnabled = (featureFlags: FeatureFlags, jobCode: string): boolean =>
+  featureFlags.isEnabled('job_automation_remote_storage') && REMOTE_STORAGE_JOB_CODES.includes(jobCode);
+
+const shouldHideForm = (featureFlags: FeatureFlags, jobCode: string): boolean =>
+  !localStorageIsEnabled(featureFlags) && !remoteStorageIsEnabled(featureFlags, jobCode);
+
+const getEnabledStorageTypes = (featureFlags: FeatureFlags, jobCode: string): string[] => {
   const enabledStorageTypes = [...STORAGE_TYPES];
 
-  if (featureFlags.isEnabled('job_automation_local_storage')) {
+  if (localStorageIsEnabled(featureFlags)) {
     enabledStorageTypes.push('local');
   }
 
-  if (featureFlags.isEnabled('job_automation_remote_storage')) {
+  if (remoteStorageIsEnabled(featureFlags, jobCode)) {
     enabledStorageTypes.push('sftp');
   }
 
   return enabledStorageTypes;
 };
 
-const isValidStorageType = (storageType: string, featureFlags: FeatureFlags): storageType is StorageType => {
-  const enabledStorageTypes = getEnabledStorageTypes(featureFlags);
+const isValidStorageType = (
+  storageType: string,
+  featureFlags: FeatureFlags,
+  jobCode: string
+): storageType is StorageType => {
+  const enabledStorageTypes = getEnabledStorageTypes(featureFlags, jobCode);
   return enabledStorageTypes.includes(storageType);
 };
 
@@ -78,4 +98,13 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
 
 export type {JobType, Storage, StorageType, LocalStorage, SftpStorage, NoneStorage};
 
-export {getDefaultStorage, isValidStorageType, isExport, getDefaultFilePath, getEnabledStorageTypes};
+export {
+  getDefaultStorage,
+  isValidStorageType,
+  isExport,
+  getDefaultFilePath,
+  getEnabledStorageTypes,
+  localStorageIsEnabled,
+  remoteStorageIsEnabled,
+  shouldHideForm,
+};

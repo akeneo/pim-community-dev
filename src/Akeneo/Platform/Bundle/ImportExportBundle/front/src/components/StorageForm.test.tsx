@@ -1,9 +1,21 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import {screen} from '@testing-library/react';
-import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
+import {renderWithProviders, ValidationError, useFeatureFlags} from '@akeneo-pim-community/shared';
 import {StorageForm} from './StorageForm';
 import {LocalStorage, NoneStorage, SftpStorage} from './model';
+
+const mockedUseFeatureFlags = useFeatureFlags as jest.Mock;
+
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useFeatureFlags', () => ({
+  useFeatureFlags: jest.fn(),
+}));
+
+beforeEach(() => {
+  mockedUseFeatureFlags.mockImplementation(() => ({
+    isEnabled: (featureFlag: string): boolean => true,
+  }));
+});
 
 test('it renders the storage form', () => {
   const storage: NoneStorage = {
@@ -12,6 +24,7 @@ test('it renders the storage form', () => {
 
   renderWithProviders(
     <StorageForm
+      jobCode="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -25,6 +38,31 @@ test('it renders the storage form', () => {
   ).toBeInTheDocument();
 });
 
+test('it hides the storage form when local and remote storage are disabled', () => {
+  mockedUseFeatureFlags.mockImplementation(() => ({
+    isEnabled: (featureFlag: string): boolean => false,
+  }));
+
+  const storage: NoneStorage = {
+    type: 'none',
+  };
+
+  renderWithProviders(
+    <StorageForm
+      jobCode="xlsx_attribute_export"
+      jobType="export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={jest.fn()}
+    />
+  );
+
+  expect(
+    screen.queryByText('pim_import_export.form.job_instance.storage_form.connection.none.export')
+  ).not.toBeInTheDocument();
+});
+
 test('it triggers onStorageChange callback when storage configurator onStorageChange is triggered', () => {
   const storage: LocalStorage = {
     type: 'local',
@@ -35,6 +73,7 @@ test('it triggers onStorageChange callback when storage configurator onStorageCh
 
   renderWithProviders(
     <StorageForm
+      jobCode="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -61,6 +100,7 @@ test('it does not render the storage form configurator if storage is none', () =
 
   renderWithProviders(
     <StorageForm
+      jobCode="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -82,6 +122,7 @@ test('it renders the storage form configurator if storage is local', () => {
 
   renderWithProviders(
     <StorageForm
+      jobCode="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -108,6 +149,7 @@ test('it renders the storage form configurator if storage is sftp', () => {
 
   renderWithProviders(
     <StorageForm
+      jobCode="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -133,6 +175,7 @@ test('it can select a local storage', () => {
 
   renderWithProviders(
     <StorageForm
+      jobCode="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -159,6 +202,7 @@ test('it can select a sftp storage', () => {
 
   renderWithProviders(
     <StorageForm
+      jobCode="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="csv"
@@ -205,6 +249,7 @@ test('it displays validation errors', () => {
 
   renderWithProviders(
     <StorageForm
+      jobCode="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
