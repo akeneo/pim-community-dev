@@ -37,7 +37,7 @@ class RedirectToEditCatalogActionSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_an_configure_catalog_action(): void
+    public function it_is_a_redirect_to_catalog_editing_action(): void
     {
         $this->beAnInstanceOf(RedirectToEditCatalogAction::class);
     }
@@ -165,7 +165,7 @@ class RedirectToEditCatalogActionSpec extends ObjectBehavior
         $this->shouldThrow(new AccessDeniedHttpException())->during('__invoke', ['catalog_id']);
     }
 
-    public function it_redirects_user_edit_catalog_page(
+    public function it_redirects_user_to_the_edit_catalog_page(
         QueryBusInterface $catalogQueryBus,
         FindOneConnectedAppByUserIdentifierQueryInterface $findOneConnectedAppByUserIdentifierQuery,
         SecurityFacade $security,
