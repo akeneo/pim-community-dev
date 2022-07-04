@@ -18,11 +18,11 @@ final class SendResetPasswordEmailOnPasswordResetRequested implements EventSubsc
     public static function getSubscribedEvents(): array
     {
         return [
-            ResetPasswordRequested::class => 'sendResetPassword',
+            ResetPasswordRequested::class => 'sendResetPasswordEmail',
         ];
     }
 
-    public function sendResetPassword(ResetPasswordRequested $event): void
+    public function sendResetPasswordEmail(ResetPasswordRequested $event): void
     {
         ($this->sendResetPasswordEmailHandler)(
             new SendResetPasswordEmail(

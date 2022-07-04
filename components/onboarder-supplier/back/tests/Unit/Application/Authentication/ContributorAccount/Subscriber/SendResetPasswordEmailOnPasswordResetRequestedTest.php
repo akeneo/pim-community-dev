@@ -34,6 +34,6 @@ final class SendResetPasswordEmailOnPasswordResetRequestedTest extends TestCase
 
         $sut = new SendResetPasswordEmailOnPasswordResetRequested($sendResetPasswordEmailHandler);
 
-        $sut->sendResetPassword($event);
+        $sut->sendResetPasswordEmail($event);
     }
 }
