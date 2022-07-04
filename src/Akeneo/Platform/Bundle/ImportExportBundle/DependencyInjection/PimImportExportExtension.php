@@ -28,7 +28,6 @@ class PimImportExportExtension extends Extension
         $loader->load('connector.yml');
         $loader->load('controllers.yml');
         $loader->load('datagrid_listeners.yml');
-        $loader->load('event_subscribers.yml');
         $loader->load('factory.yml');
         $loader->load('grid.yml');
         $loader->load('handlers.yml');
@@ -37,6 +36,7 @@ class PimImportExportExtension extends Extension
         $loader->load('queries.yml');
         $loader->load('repositories.yml');
         $loader->load('services.yml');
+        $loader->load('step.yml');
         $loader->load('storage_client.yml');
         $loader->load('validations.yml');
         $loader->load('widget.yml');
