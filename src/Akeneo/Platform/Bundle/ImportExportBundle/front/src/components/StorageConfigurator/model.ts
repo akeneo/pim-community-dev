@@ -1,6 +1,6 @@
 import {FunctionComponent} from 'react';
 import {ValidationError, FeatureFlags} from '@akeneo-pim-community/shared';
-import {LocalStorage, SftpStorage, Storage, StorageType} from '../model';
+import {LocalStorage, SftpStorage, Storage, StorageType, remoteStorageIsEnabled, localStorageIsEnabled} from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 
@@ -19,14 +19,14 @@ const STORAGE_CONFIGURATORS: StorageConfiguratorCollection = {
   none: null,
 };
 
-const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConfiguratorCollection => {
+const getEnabledStorageConfigurators = (featureFlags: FeatureFlags, jobCode: string): StorageConfiguratorCollection => {
   const enabledStorageConfigurators = {...STORAGE_CONFIGURATORS};
 
-  if (featureFlags.isEnabled('job_automation_local_storage')) {
+  if (localStorageIsEnabled(featureFlags)) {
     enabledStorageConfigurators['local'] = LocalStorageConfigurator;
   }
 
-  if (featureFlags.isEnabled('job_automation_remote_storage')) {
+  if (remoteStorageIsEnabled(featureFlags, jobCode)) {
     enabledStorageConfigurators['sftp'] = SftpStorageConfigurator;
   }
 
@@ -35,9 +35,10 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConf
 
 const getStorageConfigurator = (
   storageType: StorageType,
-  featureFlags: FeatureFlags
+  featureFlags: FeatureFlags,
+  jobCode: string
 ): FunctionComponent<StorageConfiguratorProps> | null => {
-  const enabledStorageConfigurators = getEnabledStorageConfigurators(featureFlags);
+  const enabledStorageConfigurators = getEnabledStorageConfigurators(featureFlags, jobCode);
   return enabledStorageConfigurators[storageType] ?? null;
 };
 
