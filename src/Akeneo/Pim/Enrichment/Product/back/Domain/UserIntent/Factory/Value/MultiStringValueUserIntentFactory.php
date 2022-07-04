@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceDataValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
@@ -26,8 +27,7 @@ class MultiStringValueUserIntentFactory implements ValueUserIntentFactory
         return [
             AttributeTypes::OPTION_MULTI_SELECT,
             AttributeTypes::REFERENCE_ENTITY_COLLECTION,
-            // TODO CPM-673: Add when userIntent is ready
-//            AttributeTypes::REFERENCE_DATA_MULTI_SELECT,
+            AttributeTypes::REFERENCE_DATA_MULTI_SELECT,
             AttributeTypes::ASSET_COLLECTION,
         ];
     }
@@ -44,7 +44,7 @@ class MultiStringValueUserIntentFactory implements ValueUserIntentFactory
             AttributeTypes::OPTION_MULTI_SELECT => new SetMultiSelectValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             AttributeTypes::REFERENCE_ENTITY_COLLECTION => new SetMultiReferenceEntityValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             AttributeTypes::ASSET_COLLECTION => new SetAssetValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
-            // TODO: Add AttributeTypes::REFERENCE_DATA_MULTI_SELECT when userIntent is ready
+            AttributeTypes::REFERENCE_DATA_MULTI_SELECT => new SetMultiReferenceDataValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             default => throw new \InvalidArgumentException('Not implemented')
         };
     }

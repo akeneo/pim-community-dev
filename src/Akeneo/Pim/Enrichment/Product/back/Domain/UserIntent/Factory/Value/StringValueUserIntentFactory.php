@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceDataValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
@@ -33,8 +34,7 @@ class StringValueUserIntentFactory implements ValueUserIntentFactory
             AttributeTypes::OPTION_SIMPLE_SELECT,
             AttributeTypes::FILE,
             AttributeTypes::IMAGE,
-            // TODO CPM-673: Add when userIntent is ready
-//            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
+            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
             AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT
         ];
     }
@@ -56,6 +56,7 @@ class StringValueUserIntentFactory implements ValueUserIntentFactory
             AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT => new SetSimpleReferenceEntityValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             AttributeTypes::FILE => new SetFileValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             AttributeTypes::IMAGE => new SetImageValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
+            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT => new SetSimpleReferenceDataValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             default => throw new \InvalidArgumentException('Not implemented')
         };
     }

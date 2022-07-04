@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceDataValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
@@ -32,13 +33,22 @@ class MultiStringValueUserIntentFactorySpec extends ObjectBehavior
         ])->shouldBeLike(new SetMultiSelectValue('a_multi_select', null, null, ['option1', 'option2']));
     }
 
-    function it_returns_set_multi_reference_data_user_intent()
+    function it_returns_set_multi_reference_entity_user_intent()
     {
         $this->create(AttributeTypes::REFERENCE_ENTITY_COLLECTION, 'a_multi_ref_entity', [
             'data' => ['record1', 'record2'],
             'locale' => null,
             'scope' => null,
         ])->shouldBeLike(new SetMultiReferenceEntityValue('a_multi_ref_entity', null, null, ['record1', 'record2']));
+    }
+
+    function it_returns_set_multi_reference_data_user_intent()
+    {
+        $this->create(AttributeTypes::REFERENCE_DATA_MULTI_SELECT, 'a_multi_ref_data', [
+            'data' => ['record1', 'record2'],
+            'locale' => null,
+            'scope' => null,
+        ])->shouldBeLike(new SetMultiReferenceDataValue('a_multi_ref_data', null, null, ['record1', 'record2']));
     }
 
     function it_returns_set_asset_collection_user_intent()

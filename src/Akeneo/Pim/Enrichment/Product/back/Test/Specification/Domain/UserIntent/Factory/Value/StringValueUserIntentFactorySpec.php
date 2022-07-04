@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceDataValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
@@ -53,6 +54,15 @@ class StringValueUserIntentFactorySpec extends ObjectBehavior
             'locale' => null,
             'scope' => null,
         ])->shouldBeLike(new SetSimpleReferenceEntityValue('a_simple_reference_entity', null, null, 'coucou'));
+    }
+
+    function it_returns_set_simple_reference_data_user_intent()
+    {
+        $this->create(AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT, 'a_simple_reference_data', [
+            'data' => 'coucou',
+            'locale' => null,
+            'scope' => null,
+        ])->shouldBeLike(new SetSimpleReferenceDataValue('a_simple_reference_data', null, null, 'coucou'));
     }
 
     function it_returns_clear_value()
