@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql;
+namespace Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount;
+use Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount;
 use Doctrine\DBAL\Connection;
 
 class DatabaseGetContributorAccountByEmail

@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\ValueObject\EmailContent;
+use Akeneo\SupplierPortal\Domain\Mailer\ValueObject\EmailContent;
 
 interface BuildResetPasswordEmail
 {

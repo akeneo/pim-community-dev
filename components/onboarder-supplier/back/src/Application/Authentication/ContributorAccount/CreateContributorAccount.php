@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Application\Authentication\ContributorAccount;
 
 class CreateContributorAccount
 {

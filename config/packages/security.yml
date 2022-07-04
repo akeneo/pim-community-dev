@@ -12,8 +12,8 @@ security:
             id: pim_user.provider.user_api
         saml_pim_user:
             id: akeneo_authentication.sso.user.provider
-        onboarder_serenity_contributor_account_user:
-            id: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider
+        akeneo_supplier_portal_contributor_account_user:
+            id: Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider
 
     encoders:
         Akeneo\UserManagement\Component\Model\User: sha512
@@ -62,17 +62,17 @@ security:
             access_denied_handler: pim_api.security.access_denied_handler
             provider: pim_user_api
 
-        onboarder_serenity_supplier_authentication:
-            pattern: ^/onboarder-supplier/authentication
+        akeneo_supplier_portal_authentication:
+            pattern: ^/supplier-portal/authentication
             anonymous: true
 
-        onboarder_serenity_supplier_secured_area:
-            pattern: ^/onboarder-supplier
-            provider: onboarder_serenity_contributor_account_user
+        akeneo_supplier_portal_secured_area:
+            pattern: ^/supplier-portal
+            provider: akeneo_supplier_portal_contributor_account_user
             json_login:
-                check_path: onboarder_serenity_supplier_contributor_login
+                check_path: akeneo_supplier_portal_contributor_login
             logout:
-                path: onboarder_serenity_supplier_contributor_logout
+                path: akeneo_supplier_portal_contributor_logout
 
         api_index:
             pattern:                        ^/api/rest/v1$
@@ -132,11 +132,11 @@ security:
         - { path: ^/saml-idp/resume, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/onboarder-supplier/authentication, roles: PUBLIC_ACCESS }
+        - { path: ^/supplier-portal/authentication, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
 
     password_hashers:
-        Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount: 'auto'
+        Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount: 'auto'
 
 acl:
     connection: default

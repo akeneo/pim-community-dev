@@ -1,12 +1,12 @@
 <?php
 
-namespace Akeneo\OnboarderSerenity\Supplier\Test\Unit\Application\Authentication\ContributorAccount\Subscriber;
+namespace Akeneo\SupplierPortal\Test\Unit\Application\Authentication\ContributorAccount\Subscriber;
 
-use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmail;
-use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler;
-use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendWelcomeEmailOnContributorAccountCreated;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Event\ContributorAccountCreated;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\SendWelcomeEmail;
+use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler;
+use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\Subscriber\SendWelcomeEmailOnContributorAccountCreated;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\Event\ContributorAccountCreated;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 use PHPUnit\Framework\TestCase;
 
 class SendWelcomeEmailOnContributorAccountCreatedTest extends TestCase

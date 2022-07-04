@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read;
+namespace Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Read;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Read\Model\ContributorAccount;
 
 interface GetContributorAccountByAccessToken
 {

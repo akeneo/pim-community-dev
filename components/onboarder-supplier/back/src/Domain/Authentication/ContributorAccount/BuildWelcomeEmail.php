@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\ValueObject\EmailContent;
+use Akeneo\SupplierPortal\Domain\Mailer\ValueObject\EmailContent;
 
 interface BuildWelcomeEmail
 {

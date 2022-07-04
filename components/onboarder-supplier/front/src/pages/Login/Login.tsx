@@ -1,5 +1,5 @@
 import React, {SyntheticEvent, useState} from 'react';
-import {OnboarderLogo, UnauthenticatedContainer} from '../../components';
+import {SupplierPortalLogo, UnauthenticatedContainer} from '../../components';
 import styled from 'styled-components';
 import {Button, Field, Helper, Link, TextInput} from 'akeneo-design-system';
 import {useAuthenticate} from './hooks/useAuthenticate';
@@ -30,7 +30,7 @@ const Login = () => {
 
     return (
         <UnauthenticatedContainer>
-            <OnboarderLogo width={213} />
+            <SupplierPortalLogo width={213} />
             <Content>
                 <EmailInput label={intl.formatMessage({defaultMessage: 'Email', id: 'sy+pv5'})}>
                     <TextInput onChange={setEmail} value={email} invalid={hasLoginFailed} />

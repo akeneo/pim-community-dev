@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Test\Unit\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Test\Unit\Application\Authentication\ContributorAccount;
 
-use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Exception\ContributorAccountDoesNotExist;
-use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitation;
-use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler;
-use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
-use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\Exception\ContributorAccountDoesNotExist;
+use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\RequestNewInvitation;
+use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\RequestNewInvitationHandler;
+use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
+use Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 
 final class RequestNewInvitationHandlerTest extends TestCase

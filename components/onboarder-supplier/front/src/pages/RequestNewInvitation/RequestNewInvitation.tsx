@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {useMutation} from 'react-query';
 import {Button, Field, Helper, TextInput} from 'akeneo-design-system';
-import {OnboarderLogo, UnauthenticatedContainer} from '../../components';
+import {SupplierPortalLogo, UnauthenticatedContainer} from '../../components';
 import {FormattedMessage} from 'react-intl';
 import {requestNewInvitation} from './api/requestNewInvitation';
 import {BadRequestError} from '../../api/BadRequestError';
@@ -28,7 +28,7 @@ const RequestNewInvitation = () => {
 
     return (
         <UnauthenticatedContainer>
-            <StyledOnboarderLogo />
+            <StyledSupplierPortalLogo />
 
             {!isFormSubmitted ? (
                 <>
@@ -79,7 +79,7 @@ const SubmitButton = styled(Button)`
     margin-top: 50px;
 `;
 
-const StyledOnboarderLogo = styled(OnboarderLogo)`
+const StyledSupplierPortalLogo = styled(SupplierPortalLogo)`
     margin-bottom: 30px;
 `;
 

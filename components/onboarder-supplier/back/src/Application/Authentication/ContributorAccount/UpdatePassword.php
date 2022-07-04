@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Application\Authentication\ContributorAccount;
 
 final class UpdatePassword
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql;
+namespace Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Read\Model\ContributorAccount;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetContributorAccountByAccessToken implements GetContributorAccountByAccessToken

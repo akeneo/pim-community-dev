@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Test\Unit\Domain\Authentication\ContributorAccount\Write\ValueObject;
+namespace Akeneo\SupplierPortal\Test\Unit\Domain\Authentication\ContributorAccount\Write\ValueObject;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use PHPUnit\Framework\TestCase;
 
 class EmailTest extends TestCase

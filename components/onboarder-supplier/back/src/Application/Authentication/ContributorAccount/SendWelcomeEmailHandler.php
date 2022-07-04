@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Application\Authentication\ContributorAccount;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\SendEmail;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\ValueObject\Email;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
+use Akeneo\SupplierPortal\Domain\Mailer\SendEmail;
+use Akeneo\SupplierPortal\Domain\Mailer\ValueObject\Email;
 
 class SendWelcomeEmailHandler
 {
@@ -21,7 +21,7 @@ class SendWelcomeEmailHandler
         $emailContent = ($this->buildWelcomeEmail)($command->accessToken, $command->email);
 
         $email = new Email(
-            "You've received an invitation to contribute to Onboarder",
+            "You've received an invitation to contribute to Akeneo Supplier Portal",
             $emailContent->htmlContent,
             $emailContent->textContent,
             'noreply@akeneo.com',

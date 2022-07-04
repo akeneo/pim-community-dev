@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Test\Unit\Infrastructure\Authentication\ContributorAccount\Security;
+namespace Akeneo\SupplierPortal\Test\Unit\Infrastructure\Authentication\ContributorAccount\Security;
 
-use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail;
-use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount;
-use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider;
+use Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail;
+use Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount;
+use Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider;
 use PHPUnit\Framework\TestCase;
 
 final class ContributorAccountProviderTest extends TestCase

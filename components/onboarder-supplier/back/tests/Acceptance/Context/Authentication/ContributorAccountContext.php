@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Test\Acceptance\Context\Authentication;
+namespace Akeneo\SupplierPortal\Test\Acceptance\Context\Authentication;
 
-use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Exception\InvalidPassword;
-use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePassword;
-use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
-use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag;
+use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\Exception\InvalidPassword;
+use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\UpdatePassword;
+use Akeneo\SupplierPortal\Application\Authentication\ContributorAccount\UpdatePasswordHandler;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
+use Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -28,9 +28,9 @@ final class ContributorAccountContext implements Context
     }
 
     /**
-     * @BeforeScenario @onboarder-serenity-contributor-authentication-enabled
+     * @BeforeScenario @supplier-portal-contributor-authentication-enabled
      */
-    public function enableOnboarderSerenityContributorAuthentication(): void
+    public function enableSupplierPortalContributorAuthentication(): void
     {
         $this->contributorAuthenticationFeatureFlag->enable();
     }

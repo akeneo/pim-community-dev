@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Test\Integration\Infrastructure\Authentication\ContributorAccount\Repository\Sql;
+namespace Akeneo\SupplierPortal\Test\Integration\Infrastructure\Authentication\ContributorAccount\Repository\Sql;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
-use Akeneo\OnboarderSerenity\Supplier\Test\Integration\SqlIntegrationTestCase;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
+use Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
 class DatabaseRepositoryIntegration extends SqlIntegrationTestCase

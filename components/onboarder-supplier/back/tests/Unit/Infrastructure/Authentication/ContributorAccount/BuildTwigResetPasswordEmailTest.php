@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Test\Unit\Infrastructure\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Test\Unit\Infrastructure\Authentication\ContributorAccount;
 
-use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigResetPasswordEmail;
+use Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\BuildTwigResetPasswordEmail;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 
@@ -22,17 +22,17 @@ final class BuildTwigResetPasswordEmailTest extends TestCase
             ->method('render')
             ->withConsecutive(
                 [
-                    '@AkeneoOnboarderSerenitySupplier/Email/contributor-reset-password.html.twig',
+                    '@AkeneoSupplierPortal/Email/contributor-reset-password.html.twig',
                     [
                         'contributorEmail' => $contributorEmail,
-                        'url' => 'http://wwww.example.com/onboarder/supplier/index.html#/set-up-password/foo',
+                        'url' => 'http://wwww.example.com/supplier-portal/index.html#/set-up-password/foo',
                     ],
                 ],
                 [
-                    '@AkeneoOnboarderSerenitySupplier/Email/contributor-reset-password.txt.twig',
+                    '@AkeneoSupplierPortal/Email/contributor-reset-password.txt.twig',
                     [
                         'contributorEmail' => $contributorEmail,
-                        'url' => 'http://wwww.example.com/onboarder/supplier/index.html#/set-up-password/foo',
+                        'url' => 'http://wwww.example.com/supplier-portal/index.html#/set-up-password/foo',
                     ],
                 ],
             )

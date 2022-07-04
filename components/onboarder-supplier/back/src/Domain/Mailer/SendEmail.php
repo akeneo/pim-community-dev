@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Domain\Mailer;
+namespace Akeneo\SupplierPortal\Domain\Mailer;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\ValueObject\Email;
+use Akeneo\SupplierPortal\Domain\Mailer\ValueObject\Email;
 
 interface SendEmail
 {

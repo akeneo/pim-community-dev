@@ -4,5 +4,5 @@ services:
     class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag
 
   # Repositories
-  Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:
-    class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository
+  Akeneo\SupplierPortal\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:
+    class: Akeneo\SupplierPortal\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository
