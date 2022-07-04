@@ -32,14 +32,14 @@ class ChannelController
 {
     public function __construct(
         private ChannelRepositoryInterface $channelRepository,
-        private NormalizerInterface        $normalizer,
-        private ObjectUpdaterInterface     $updater,
-        private SaverInterface             $saver,
-        private RemoverInterface           $remover,
-        private SimpleFactoryInterface     $channelFactory,
-        private ValidatorInterface         $validator,
-        private SecurityFacadeInterface    $securityFacade,
-        private FindCategoryTrees          $findCategoryTrees
+        private NormalizerInterface $normalizer,
+        private ObjectUpdaterInterface $updater,
+        private SaverInterface $saver,
+        private RemoverInterface $remover,
+        private SimpleFactoryInterface $channelFactory,
+        private ValidatorInterface $validator,
+        private SecurityFacadeInterface $securityFacade,
+        private FindCategoryTrees $findCategoryTrees
     ) {
     }
 
@@ -83,8 +83,8 @@ class ChannelController
      */
     public function listCategoryTreeAction(): JsonResponse
     {
-        $categoryTrees = $this->findCategoryTrees->execute(false);
-        $normalizeCategoryTrees = array_map(fn (CategoryTree $categoryTree) => $categoryTree->normalize(), $categoryTrees);
+        $categoryTrees = $this->findCategoryTrees->execute();
+        $normalizeCategoryTrees = array_map(fn(CategoryTree $categoryTree) => $categoryTree->normalize(), $categoryTrees);
 
         return new JsonResponse($normalizeCategoryTrees);
     }
