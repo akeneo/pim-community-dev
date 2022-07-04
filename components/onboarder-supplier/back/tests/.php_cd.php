@@ -45,11 +45,11 @@ $rules = [
             // External dependencies coupling
             'Psr\Log\LoggerInterface',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
-            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Symfony\Component\Validator\Exception\UnexpectedTypeException',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
+            'Symfony\Contracts\EventDispatcher\EventDispatcherInterface',
         ],
     )->in('Akeneo\OnboarderSerenity\Supplier\Application'),
 

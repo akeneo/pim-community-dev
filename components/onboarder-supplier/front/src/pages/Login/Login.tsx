@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {SyntheticEvent, useState} from 'react';
 import {OnboarderLogo, UnauthenticatedContainer} from '../../components';
 import styled from 'styled-components';
-import {Button, Field, Helper, TextInput} from 'akeneo-design-system';
+import {Button, Field, Helper, Link, TextInput} from 'akeneo-design-system';
 import {useAuthenticate} from './hooks/useAuthenticate';
 import {FormattedMessage, useIntl} from 'react-intl';
+import {routes} from '../routes';
+import {useHistory} from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -11,6 +13,7 @@ const Login = () => {
     const [hasLoginFailed, setHasLoginFailed] = useState(false);
     const intl = useIntl();
     const {login} = useAuthenticate();
+    const history = useHistory();
 
     const isSubmitButtonDisabled = '' === email || '' === password;
 
@@ -19,14 +22,20 @@ const Login = () => {
         setHasLoginFailed(!isSuccess);
     };
 
+    const goToResetPassword = (event: SyntheticEvent) => {
+        event.preventDefault();
+
+        history.push(routes.resetPassword);
+    };
+
     return (
         <UnauthenticatedContainer>
             <OnboarderLogo width={213} />
             <Content>
-                <StyledField label={intl.formatMessage({defaultMessage: 'Email', id: 'sy+pv5'})}>
+                <EmailInput label={intl.formatMessage({defaultMessage: 'Email', id: 'sy+pv5'})}>
                     <TextInput onChange={setEmail} value={email} invalid={hasLoginFailed} />
-                </StyledField>
-                <StyledField label={intl.formatMessage({defaultMessage: 'Password', id: '5sg7KC'})}>
+                </EmailInput>
+                <PasswordInput label={intl.formatMessage({defaultMessage: 'Password', id: '5sg7KC'})}>
                     <TextInput
                         type="password"
                         onChange={setPassword}
@@ -42,7 +51,12 @@ const Login = () => {
                             />
                         </Helper>
                     )}
-                </StyledField>
+                </PasswordInput>
+                <ForgotPasswordLink>
+                    <Link onClick={goToResetPassword}>
+                        <FormattedMessage defaultMessage="Forgot your password?" id="cyRU1N" />
+                    </Link>
+                </ForgotPasswordLink>
                 <Button type="button" disabled={isSubmitButtonDisabled} onClick={onSubmit} data-testid="submit-login">
                     <FormattedMessage defaultMessage="Login" id="AyGauy" />
                 </Button>
@@ -51,12 +65,21 @@ const Login = () => {
     );
 };
 
+const ForgotPasswordLink = styled.div`
+    margin-bottom: 50px;
+`;
+
 const Content = styled.div`
     margin-top: 30px;
 `;
 
-const StyledField = styled(Field)`
+const EmailInput = styled(Field)`
     margin-bottom: 20px;
+    position: relative;
+`;
+
+const PasswordInput = styled(Field)`
+    margin-bottom: 12px;
     position: relative;
 `;
 

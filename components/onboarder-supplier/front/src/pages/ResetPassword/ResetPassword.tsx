@@ -4,25 +4,21 @@ import {useMutation} from 'react-query';
 import {Button, Field, Helper, TextInput} from 'akeneo-design-system';
 import {OnboarderLogo, UnauthenticatedContainer} from '../../components';
 import {FormattedMessage} from 'react-intl';
-import {requestNewInvitation} from './api/requestNewInvitation';
-import {BadRequestError} from '../../api/BadRequestError';
-import {NotFoundError} from '../../api/NotFoundError';
+import {resetPassword} from './api/resetPassword';
 
-const RequestNewInvitation = () => {
+const ResetPassword = () => {
     const [email, setEmail] = useState('');
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [hasError, setHasError] = useState(false);
 
-    const mutation = useMutation(requestNewInvitation);
+    const mutation = useMutation(resetPassword);
 
     const submit = async (email: string) => {
         setIsFormSubmitted(true);
         try {
             await mutation.mutateAsync({email: email});
         } catch (error) {
-            if (error instanceof BadRequestError || error instanceof NotFoundError) {
-                setHasError(true);
-            }
+            setHasError(true);
         }
     };
 
@@ -40,12 +36,12 @@ const RequestNewInvitation = () => {
                             />
                         </Helper>
                     )}
-                    <InvitationHasExpiredMessage>
+                    <ResetPasswordMessage>
                         <FormattedMessage
-                            defaultMessage="Your invitation has expired. Please enter your email address to receive a new one."
-                            id="sYYIml"
+                            defaultMessage="Please enter your email address to reset your password."
+                            id="ShbYD9"
                         />
-                    </InvitationHasExpiredMessage>
+                    </ResetPasswordMessage>
                     <Field label={'Email'}>
                         <TextInput onChange={setEmail} value={email} />
                     </Field>
@@ -56,14 +52,14 @@ const RequestNewInvitation = () => {
                         onClick={async () => await submit(email)}
                         data-testid="submit-button"
                     >
-                        <FormattedMessage defaultMessage="Receive a new invitation" id="tq8W8G" />
+                        <FormattedMessage defaultMessage="Reset my password" id="OXLLjP" />
                     </SubmitButton>
                 </>
             ) : (
                 <div>
                     <FormattedMessage
-                        defaultMessage="An email will be send in a few moments. Please check your emails to access the service."
-                        id="SHw26+"
+                        defaultMessage="If the email address exists, an email has been sent to reset your password."
+                        id="WZVD1c"
                     />
                 </div>
             )}
@@ -71,7 +67,7 @@ const RequestNewInvitation = () => {
     );
 };
 
-const InvitationHasExpiredMessage = styled.p`
+const ResetPasswordMessage = styled.p`
     margin-bottom: 30px;
 `;
 
@@ -83,4 +79,4 @@ const StyledOnboarderLogo = styled(OnboarderLogo)`
     margin-bottom: 30px;
 `;
 
-export {RequestNewInvitation};
+export {ResetPassword};

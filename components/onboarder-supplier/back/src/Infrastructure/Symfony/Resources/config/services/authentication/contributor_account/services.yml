@@ -37,6 +37,12 @@ services:
         tags:
             - 'kernel.event_subscriber'
 
+    Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendResetPasswordEmailOnPasswordResetRequested:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler'
+        tags:
+            - 'kernel.event_subscriber'
+
     # Validators
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Validation\PasswordValidator:
         tags:
@@ -58,6 +64,11 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler'
 
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\ResetPassword:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler'
+
     Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\Security:
         public: true
 
@@ -69,8 +80,8 @@ services:
 
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler:
         arguments:
-            - '@Akeneo\OnboarderSerenity\Supplier\Infrastructure\Mailer\SendSwiftmailerEmail'
-            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail'
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\SendEmail'
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail'
 
     Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler:
         arguments:
@@ -84,8 +95,25 @@ services:
             - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler'
 
-    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail:
+    Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@event_dispatcher'
+
+    Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\SendEmail'
+            - '@Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail'
+
+    # Email sending services
+    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail:
         class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigWelcomeEmail
+        arguments:
+            - '@twig'
+            - '%env(AKENEO_PIM_URL)%'
+
+    Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail:
+        class: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigResetPasswordEmail
         arguments:
             - '@twig'
             - '%env(AKENEO_PIM_URL)%'

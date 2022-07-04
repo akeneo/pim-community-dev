@@ -6,7 +6,7 @@ namespace Akeneo\OnboarderSerenity\Supplier\Test\Unit\Application\Authentication
 
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail;
+use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\SendEmail;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\ValueObject\Email;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\ValueObject\EmailContent;
@@ -30,7 +30,7 @@ class SendWelcomeEmailHandlerTest extends TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with(new Email(
-                "You've received an invitation to contribute to onboarder",
+                'You\'ve received an invitation to contribute to Onboarder',
                 'htmlContent',
                 'textContent',
                 'noreply@akeneo.com',

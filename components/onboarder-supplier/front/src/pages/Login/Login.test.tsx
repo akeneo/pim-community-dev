@@ -11,9 +11,10 @@ jest.mock('./hooks/useAuthenticate', () => ({
     }),
 }));
 
-test('it renders the login page with an email and a password field', () => {
+test('it renders the login page with an email, a password field and a forgot password link', () => {
     renderWithProviders(<Login />);
 
+    expect(screen.getByText('Forgot your password?')).toBeInTheDocument();
     expect(screen.getByLabelText('Email')).toBeInTheDocument();
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
 });

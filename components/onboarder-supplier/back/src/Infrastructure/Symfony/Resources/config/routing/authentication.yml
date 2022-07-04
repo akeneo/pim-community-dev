@@ -18,3 +18,10 @@ onboarder_serenity_supplier_contributor_request_new_invitation:
         _controller: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\RequestNewInvitation
         _feature: onboarder_serenity_contributor_authentication
     methods: POST
+
+onboarder_serenity_supplier_contributor_reset_password:
+    path: /contributor-account/reset-password
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\ResetPassword
+        _feature: onboarder_serenity_contributor_authentication
+    methods: POST

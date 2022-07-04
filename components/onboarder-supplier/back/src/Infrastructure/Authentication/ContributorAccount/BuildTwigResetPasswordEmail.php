@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
+use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail;
 use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\ValueObject\EmailContent;
 use Akeneo\OnboarderSerenity\Supplier\Infrastructure\SetUpPasswordUrl;
 use Twig\Environment;
 
-class BuildTwigWelcomeEmail implements BuildWelcomeEmail
+final class BuildTwigResetPasswordEmail implements BuildResetPasswordEmail
 {
     public function __construct(
         private Environment $twig,
@@ -17,12 +17,12 @@ class BuildTwigWelcomeEmail implements BuildWelcomeEmail
     ) {
     }
 
-    public function __invoke(string $accessToken, string $email): EmailContent
+    public function __invoke(string $email, string $accessToken): EmailContent
     {
         $setUpPasswordUrl = sprintf(SetUpPasswordUrl::VALUE, $this->domain, $accessToken);
 
         $htmlContent = $this->twig->render(
-            '@AkeneoOnboarderSerenitySupplier/Email/contributor-invitation.html.twig',
+            '@AkeneoOnboarderSerenitySupplier/Email/contributor-reset-password.html.twig',
             [
                 'contributorEmail' => $email,
                 'url' => $setUpPasswordUrl,
@@ -30,7 +30,7 @@ class BuildTwigWelcomeEmail implements BuildWelcomeEmail
         );
 
         $textContent = $this->twig->render(
-            '@AkeneoOnboarderSerenitySupplier/Email/contributor-invitation.txt.twig',
+            '@AkeneoOnboarderSerenitySupplier/Email/contributor-reset-password.txt.twig',
             [
                 'contributorEmail' => $email,
                 'url' => $setUpPasswordUrl,
