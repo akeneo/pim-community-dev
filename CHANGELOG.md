@@ -54,6 +54,7 @@
 - PIM-10503: Fix Wrong regex on channel deletion
 - PIM-10514: Fix associations normalization for published products
 - PIM-10516: Fix remove completeness job when deactivating and reactivating a locale
+- PIM-10508: Fix attribute creation when label contains an '&' character
 
 ## Improvements
 
