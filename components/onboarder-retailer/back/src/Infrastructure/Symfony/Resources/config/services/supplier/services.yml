@@ -11,19 +11,19 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists'
             - '@event_dispatcher'
-            - '@monolog.logger.onboarder_serenity'
+            - '@monolog.logger.supplier_portal'
 
     Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
             - '@validator'
-            - '@monolog.logger.onboarder_serenity'
+            - '@monolog.logger.supplier_portal'
             - '@event_dispatcher'
 
     Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplierHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
-            - '@monolog.logger.onboarder_serenity'
+            - '@monolog.logger.supplier_portal'
 
     # Queries
     Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierList:
@@ -99,7 +99,7 @@ services:
         public: true
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
-            - '@monolog.logger.onboarder_serenity'
+            - '@monolog.logger.supplier_portal'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\DownloadImportSupplierTemplate:
         public: true
@@ -110,7 +110,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\XlsxSuppliersEncoder
         arguments:
-            - '@monolog.logger.onboarder_serenity'
+            - '@monolog.logger.supplier_portal'
 
     # Import
     onboarder_serenity.job.xlsx_supplier_import:
@@ -142,7 +142,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@event_dispatcher'
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetIdentifierFromCode'
-            - '@monolog.logger.onboarder_serenity'
+            - '@monolog.logger.supplier_portal'
 
     onboarder_serenity.connector.supplier.reader.file.xlsx:
         class: '%pim_connector.reader.file.xlsx.class%'

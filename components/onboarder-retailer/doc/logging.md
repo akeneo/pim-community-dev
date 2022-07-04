@@ -10,12 +10,12 @@ In Supplier Portal back-end, we log through [the Symfony logger](https://symfony
 a [PSR-3](https://www.php-fig.org/psr/psr-3/) compatible logger, backed-up by [Monolog](https://seldaek.github.io/monolog/)
 which provides additional functionalities, like separation of logs by channels, more configuration options, etc…
 
-To use the logger, we simply need to inject the `@monolog.logger.onboarder_serenity` service, as you can see in the following example.
+To use the logger, we simply need to inject the `@monolog.logger.supplier_portal` service, as you can see in the following example.
 
 ```yaml
 Foo\Bar:
     arguments:
-        - '@monolog.logger.onboarder_serenity'
+        - '@monolog.logger.supplier_portal'
 ```
 
 ```php
