@@ -1,7 +1,7 @@
 import React from 'react';
 import {SectionTitle, Field, SelectInput, Helper} from 'akeneo-design-system';
-import {Section, useTranslate, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
-import {Storage, isValidStorageType, getDefaultStorage, STORAGE_TYPES, JobType, NoneStorage} from './model';
+import {Section, useTranslate, ValidationError, filterErrors, useFeatureFlags} from '@akeneo-pim-community/shared';
+import {Storage, isValidStorageType, getDefaultStorage, JobType, getEnabledStorageTypes} from './model';
 import {getStorageConfigurator} from './StorageConfigurator';
 
 type StorageFormProps = {
@@ -14,11 +14,13 @@ type StorageFormProps = {
 
 const StorageForm = ({jobType, fileExtension, storage, validationErrors, onStorageChange}: StorageFormProps) => {
   const translate = useTranslate();
+  const featureFlags = useFeatureFlags();
 
   const handleTypeChange = (type: string) =>
-    isValidStorageType(type) && onStorageChange(getDefaultStorage(jobType, type, fileExtension));
+    isValidStorageType(type, featureFlags) && onStorageChange(getDefaultStorage(jobType, type, fileExtension));
 
-  const StorageConfigurator = getStorageConfigurator(storage.type);
+  const storageTypes = getEnabledStorageTypes(featureFlags);
+  const StorageConfigurator = getStorageConfigurator(storage.type, featureFlags);
 
   return (
     <Section>
@@ -33,7 +35,7 @@ const StorageForm = ({jobType, fileExtension, storage, validationErrors, onStora
           openLabel={translate('pim_common.open')}
           clearable={false}
         >
-          {STORAGE_TYPES.map(storageType => (
+          {storageTypes.map(storageType => (
             <SelectInput.Option value={storageType} key={storageType}>
               {'none' === storageType
                 ? translate(`pim_import_export.form.job_instance.storage_form.connection.${storageType}.${jobType}`)

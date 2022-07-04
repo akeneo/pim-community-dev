@@ -1,10 +1,28 @@
+import {FeatureFlags} from '@akeneo-pim-community/shared';
 import {isValidStorageType, getDefaultStorage, isExport, getDefaultFilePath} from './model';
 
+const featureFlagCollection = {
+  job_automation_local_storage: false,
+  job_automation_remote_storage: false,
+};
+
+const enableFeatureFlag = (featureFlag: string) => (featureFlagCollection[featureFlag] = true);
+
+const featureFlags: FeatureFlags = {
+  isEnabled: (featureFlag: string) => featureFlagCollection[featureFlag],
+};
+
 test('it says if a storage type is valid', () => {
-  expect(isValidStorageType('none')).toBe(true);
-  expect(isValidStorageType('local')).toBe(true);
-  expect(isValidStorageType('sftp')).toBe(true);
-  expect(isValidStorageType('invalid')).toBe(false);
+  expect(isValidStorageType('local', featureFlags)).toBe(false);
+  expect(isValidStorageType('sftp', featureFlags)).toBe(false);
+
+  enableFeatureFlag('job_automation_local_storage');
+  enableFeatureFlag('job_automation_remote_storage');
+
+  expect(isValidStorageType('none', featureFlags)).toBe(true);
+  expect(isValidStorageType('local', featureFlags)).toBe(true);
+  expect(isValidStorageType('sftp', featureFlags)).toBe(true);
+  expect(isValidStorageType('invalid', featureFlags)).toBe(false);
 });
 
 test('it returns the default local storage', () => {
