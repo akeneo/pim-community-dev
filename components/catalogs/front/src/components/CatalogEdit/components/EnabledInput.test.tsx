@@ -1,4 +1,5 @@
 jest.unmock('./EnabledInput');
+jest.unmock('../contexts/CatalogFormContext');
 
 import React from 'react';
 import {fireEvent, render, screen} from '@testing-library/react';

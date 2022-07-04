@@ -1,5 +1,6 @@
 jest.unmock('./ProductSelection');
 jest.unmock('./reducers/ProductSelectionReducer');
+jest.unmock('./contexts/ProductSelectionContext');
 
 import React from 'react';
 import {fireEvent, render, screen} from '@testing-library/react';
