@@ -1,4 +1,4 @@
-# How is the Onboarder Serenity translated?
+# How is the Supplier Portal translated?
 
 We are using the same tools as the PIM to handle translations:
 
@@ -21,7 +21,7 @@ Nelson is an Akeneo tool allowing us to merge new translations from Crowdin into
 The translations are pulled from Crowdin everyday at 7:00 a.m. UTC.
 Github PRs are automatically created and merged by a Github Akeneo Nelson user.
 
-We are using our own configuration file for Onboarder serenity. It is not under VCS, it is configured directly on the
+We are using our own configuration file for Supplier Portal. It is not under VCS, it is configured directly on the
 Githook server.
 The filepath is `/home/akeneo/nelson/config/onboarder-serenity.yml`.
 
