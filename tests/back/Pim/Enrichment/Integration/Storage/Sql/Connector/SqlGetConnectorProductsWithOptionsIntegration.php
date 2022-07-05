@@ -21,6 +21,7 @@ use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
 {
@@ -109,7 +110,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             ],
             'quantified_associations' => [
                 'PRODUCT_SET' => [
-                    'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6]],
+                    'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6, 'uuid' => $this->getProductUuidFromIdentifier('apollon_A_false')->toString()]],
                 ],
                 'ANOTHER_PRODUCT_SET' => [
                     'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
@@ -185,6 +186,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 new ReadValueCollection([
                     new OptionValueWithLinkedData('a_simple_select','optionA', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionA', 'labels' => ['en_US' => 'Option A',],]),
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                    ScalarValue::value('sku', 'apollon_A_false'),
                     ScalarValue::value('a_yes_no', false),
                     ScalarValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
@@ -204,7 +206,9 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 'amor',
                 [
                     'X_SELL' => [
-                        'products' => ['apollon_A_false'],
+                        'products' => [
+                            ['identifier' => 'apollon_A_false', 'uuid' => $this->getProductUuidFromIdentifier('apollon_A_false')->toString()],
+                        ],
                         'product_models' => ['amor'],
                         'groups' => ['groupA', 'groupB'],
                     ],
@@ -226,7 +230,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 ],
                 [
                     'PRODUCT_SET' => [
-                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6]],
+                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6, 'uuid' => $this->getProductUuidFromIdentifier('apollon_A_false')->toString()]],
                         'product_models' => [],
                     ],
                     'ANOTHER_PRODUCT_SET' => [
@@ -238,6 +242,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 new ReadValueCollection([
                     new OptionValueWithLinkedData('a_simple_select','optionB', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionB', 'labels' => ['en_US' => 'Option B',],]),
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                    ScalarValue::value('sku', 'apollon_B_false'),
                     ScalarValue::value('a_yes_no', false),
                     ScalarValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
@@ -336,7 +341,9 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 'amor',
                 [
                     'X_SELL' => [
-                        'products' => ['apollon_A_false'],
+                        'products' => [
+                            ['identifier' => 'apollon_A_false', 'uuid' => $this->getProductUuidFromIdentifier('apollon_A_false')->toString()],
+                        ],
                         'product_models' => ['amor'],
                         'groups' => ['groupA', 'groupB'],
                     ],
@@ -358,7 +365,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 ],
                 [
                     'PRODUCT_SET' => [
-                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6]],
+                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6, 'uuid' => $this->getProductUuidFromIdentifier('apollon_A_false')->toString()]],
                         'product_models' => [],
                     ],
                     'ANOTHER_PRODUCT_SET' => [
@@ -406,7 +413,9 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             'amor',
             [
                 'X_SELL' => [
-                    'products' => ['apollon_A_false'],
+                    'products' => [
+                        ['identifier' => 'apollon_A_false', 'uuid' => $this->getProductUuidFromIdentifier('apollon_A_false')->toString()],
+                    ],
                     'product_models' => ['amor'],
                     'groups' => ['groupA', 'groupB'],
                 ],
@@ -428,7 +437,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             ],
             [
                 'PRODUCT_SET' => [
-                    'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6]],
+                    'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6, 'uuid' => $this->getProductUuidFromIdentifier('apollon_A_false')->toString()]],
                     'product_models' => [],
                 ],
                 'ANOTHER_PRODUCT_SET' => [
@@ -440,6 +449,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             new ReadValueCollection([
                 new OptionValueWithLinkedData('a_simple_select','optionB', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionB', 'labels' => ['en_US' => 'Option B',],]),
                 PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                ScalarValue::value('sku', 'apollon_B_false'),
                 ScalarValue::value('a_yes_no', false),
                 ScalarValue::value('a_number_float', '12.5000'),
                 ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
@@ -515,6 +525,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 new ReadValueCollection([
                     new OptionValueWithLinkedData('a_simple_select','optionA', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionA', 'labels' => ['en_US' => 'Option A',],]),
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                    ScalarValue::value('sku', 'apollon_A_false'),
                     ScalarValue::value('a_yes_no', false),
                     ScalarValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
@@ -534,7 +545,9 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 'amor',
                 [
                     'X_SELL' => [
-                        'products' => ['apollon_A_false'],
+                        'products' => [
+                            ['identifier' => 'apollon_A_false', 'uuid' => $this->getProductUuidFromIdentifier('apollon_A_false')->toString()],
+                        ],
                         'product_models' => ['amor'],
                         'groups' => ['groupA', 'groupB'],
                     ],
@@ -556,7 +569,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 ],
                 [
                     'PRODUCT_SET' => [
-                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6]],
+                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6, 'uuid' => $this->getProductUuidFromIdentifier('apollon_A_false')->toString()]],
                         'product_models' => [],
                     ],
                     'ANOTHER_PRODUCT_SET' => [
@@ -568,6 +581,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 new ReadValueCollection([
                     new OptionValueWithLinkedData('a_simple_select','optionB', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionB', 'labels' => ['en_US' => 'Option B',],]),
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                    ScalarValue::value('sku', 'apollon_B_false'),
                     ScalarValue::value('a_yes_no', false),
                     ScalarValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
@@ -670,6 +684,13 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
     private function getQuery(): GetConnectorProducts
     {
         return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options');
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        ));
     }
 }
 

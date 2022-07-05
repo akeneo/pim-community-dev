@@ -136,7 +136,8 @@ SQL;
                 }
                 $uniqueQuantifiedAssociations[$identifier] = [
                     'identifier' => $identifier,
-                    'quantity' => (int)$associationWithProductId['quantity']
+                    'quantity' => (int)$associationWithProductId['quantity'],
+                    'uuid' => $associationWithProductId['uuid'],
                 ];
             }
             if (!empty($uniqueQuantifiedAssociations)) {

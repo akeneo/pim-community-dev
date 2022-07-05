@@ -145,6 +145,24 @@ final class ConnectorProductNormalizer
         return $result;
     }
 
+    /**
+     * This method keeps only the identifier and quantify values from the associated products and removes the uuid from
+     * result.
+     *
+     * @param array $quantifiedAssociations
+     * Example
+     * [
+     *   'X_SELL' => [
+     *     'products' => [
+     *       ['uuid' => '95341071-a0dd-47c6-81b1-315913952c43', 'identifier' => 'product_code_1', 'quantity' => 8]
+     *     ],
+     *     'product_models' => [],
+     *     'groups' => ['group_code_2']
+     *   ],
+     * ],
+     *
+     * @return array
+     */
     private function normalizeQuantifiedAssociations(array $quantifiedAssociations): array
     {
         $result = [];

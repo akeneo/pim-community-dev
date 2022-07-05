@@ -25,31 +25,53 @@ use Webmozart\Assert\Assert;
 final class ConnectorProduct
 {
     public function __construct(
-        private UuidInterface                  $uuid,
-        private string                         $identifier,
-        private \DateTimeImmutable             $createdDate,
-        private \DateTimeImmutable             $updatedDate,
-        private bool                           $enabled,
-        private ?string                        $familyCode,
-        private array                          $categoryCodes,
-        private array                          $groupCodes,
-        private ?string                        $parentProductModelCode,
-        private array                          $associations,
-        private array                          $quantifiedAssociations,
+        private UuidInterface $uuid,
+        private string $identifier,
+        private \DateTimeImmutable $createdDate,
+        private \DateTimeImmutable $updatedDate,
+        private bool $enabled,
+        private ?string $familyCode,
+        private array $categoryCodes,
+        private array $groupCodes,
+        private ?string $parentProductModelCode,
+        private array $associations,
+        private array $quantifiedAssociations,
         // medata are for the status of the product in enterprise edition
-        private array                          $metadata,
-        private ReadValueCollection            $values,
-        private ?QualityScoreCollection        $qualityScores,
+        private array $metadata,
+        private ReadValueCollection $values,
+        private ?QualityScoreCollection $qualityScores,
         private ?ProductCompletenessCollection $completenesses
-    )
-    {
-        $this->validateAssociationsFormat();
-        $this->validateQuantifiedAssociationsFormat();
+    ) {
+        try {
+            $this->validateAssociationsFormat();
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Malformed associations parameter: %s',
+                    \json_encode($this->associations)
+                ),
+                0,
+                $e
+            );
+        }
+
+        try {
+            $this->validateQuantifiedAssociationsFormat();
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Malformed quantified associations parameter %s',
+                    \json_encode($this->quantifiedAssociations)
+                ),
+                0,
+                $e
+            );
+        }
     }
 
     private function validateAssociationsFormat(): void
     {
-        Assert::isMap($this->associations);
+        Assert::isArray($this->associations);
         Assert::allIsMap($this->associations);
         foreach ($this->associations as $associationsByType) {
             Assert::allRegex(array_keys($associationsByType), '/products|product_models|groups/');
@@ -78,7 +100,7 @@ final class ConnectorProduct
 
     private function validateQuantifiedAssociationsFormat(): void
     {
-        Assert::isMap($this->quantifiedAssociations);
+        Assert::isArray($this->quantifiedAssociations);
         Assert::allIsMap($this->quantifiedAssociations);
         foreach ($this->quantifiedAssociations as $quantifiedAssociationsByType) {
             Assert::allRegex(array_keys($quantifiedAssociationsByType), '/products|product_models/');
@@ -227,18 +249,18 @@ final class ConnectorProduct
                     $value->getScopeCode(),
                     $value->getLocaleCode(),
                     [
-                        "attribute" => $value->getAttributeCode(),
-                        "code" => $value->getData(),
-                        "labels" => $optionLabels[$value->getAttributeCode()][$value->getData()] ?? []
+                        'attribute' => $value->getAttributeCode(),
+                        'code' => $value->getData(),
+                        'labels' => $optionLabels[$value->getAttributeCode()][$value->getData()] ?? []
                     ],
                 );
             } elseif ($value instanceof OptionsValue) {
                 $linkedData = [];
                 foreach ($value->getData() as $optionCode) {
                     $linkedData[$optionCode] = [
-                        "attribute" => $value->getAttributeCode(),
-                        "code" => $optionCode,
-                        "labels" => $optionLabels[$value->getAttributeCode()][$optionCode] ?? [],
+                        'attribute' => $value->getAttributeCode(),
+                        'code' => $optionCode,
+                        'labels' => $optionLabels[$value->getAttributeCode()][$optionCode] ?? [],
                     ];
                 }
 
@@ -327,7 +349,10 @@ final class ConnectorProduct
     {
         $associatedProducts = [];
         foreach ($this->associations as $associationType => $associations) {
-            $associatedProducts[] = $associations['products'];
+            $associatedProducts[] = array_map(
+                fn (array $associatedProduct): string => $associatedProduct['identifier'],
+                $associations['products']
+            );
         }
 
         return !empty($associatedProducts) ? array_unique(array_merge(...$associatedProducts)) : [];
@@ -474,7 +499,7 @@ final class ConnectorProduct
         foreach ($this->associations as $associationType => $association) {
             $filteredAssociations[$associationType]['products'] = array_filter(
                 $association['products'],
-                fn(array $associatedProduct): bool => in_array($associatedProduct['identifier'], $productIdentifiersToFilter)
+                fn (array $associatedProduct): bool => in_array($associatedProduct['identifier'], $productIdentifiersToFilter)
             );
             $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
