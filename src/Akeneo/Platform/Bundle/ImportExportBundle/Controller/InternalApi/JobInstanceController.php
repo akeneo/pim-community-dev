@@ -318,8 +318,8 @@ class JobInstanceController
         }
 
         $rawParameters = $jobInstance->getRawParameters();
-        if(NoneStorage::TYPE === $rawParameters['storage']['type']) {
-            if(JobInstance::TYPE_IMPORT === $jobInstance->getType()) {
+        if (NoneStorage::TYPE === $rawParameters['storage']['type']) {
+            if (JobInstance::TYPE_IMPORT === $jobInstance->getType()) {
                 throw new BadRequestException();
             }
 
