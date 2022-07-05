@@ -117,7 +117,7 @@ extensions:
             label: pim_common.general_properties
 
     pim-user-edit-form-general-tab-content:
-        module: pim/common/simple-view
+        module: pim/user/form/user-profile-tab-content
         parent: pim-user-edit-form-general-tab
         position: 10
         config:
@@ -356,7 +356,7 @@ extensions:
             label: pim_user_management.entity.user.module.update.password
 
     pim-user-edit-form-password-tab-content:
-        module: pim/common/simple-view
+        module: pim/user/form/user-profile-tab-content
         parent: pim-user-edit-form-password-tab
         position: 10
         config:
