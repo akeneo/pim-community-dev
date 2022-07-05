@@ -33,7 +33,7 @@ jobs:
                     name: Launch PHP static analyzer & check Sf services
                     command: PIM_CONTEXT=test make static-back
             -   run:
-                    name: Run tests for Onboarder Serenity
+                    name: Run tests for Supplier Portal
                     command: PIM_CONTEXT=supplier-portal make tests-back-supplier-portal
             - store_test_results:
                 path: var/tests/phpunit

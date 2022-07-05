@@ -1,4 +1,4 @@
-Feature: Onboarder Serenity - Suppliers management - validate a supplier
+Feature: Supplier Portal - Suppliers management - validate a supplier
 
   Scenario: Edit a supplier with a blank label
     Given a supplier with code "supplier1" and label "Supplier1"

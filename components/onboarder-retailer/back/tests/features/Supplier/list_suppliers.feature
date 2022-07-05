@@ -1,4 +1,4 @@
-Feature: Onboarder Serenity - Suppliers management - list suppliers
+Feature: Supplier Portal - Suppliers management - list suppliers
 
   Scenario: List suppliers
     Given a supplier with code "supplier2" and label "Supplier2" and "2" contributors
