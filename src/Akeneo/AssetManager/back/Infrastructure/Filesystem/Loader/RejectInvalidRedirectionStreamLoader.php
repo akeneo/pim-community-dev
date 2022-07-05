@@ -38,13 +38,14 @@ final class RejectInvalidRedirectionStreamLoader implements LoaderInterface
     public function find($path)
     {
         $client = new Client([
+            'timeout' => 2,
             'headers' => ['User-Agent' => null],
             'allow_redirects' => [
                 'max' => 10,
-                'strict'          => true,
-                'referer'         => true,
-                'protocols'       => $this->urlChecker->getAllowedProtocols(),
-                'on_redirect'     => fn (RequestInterface $request, ResponseInterface $response, UriInterface $uri): bool => $this->checkRedirectIsValid($request, $response, $uri),
+                'strict' => true,
+                'referer' => true,
+                'protocols' => $this->urlChecker->getAllowedProtocols(),
+                'on_redirect' => fn (RequestInterface $request, ResponseInterface $response, UriInterface $uri): bool => $this->checkRedirectIsValid($request, $response, $uri),
                 'track_redirects' => true,
             ],
         ]);
