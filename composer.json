@@ -118,5 +118,10 @@
         "before-commit-re": "Run all the checks on the Reference Entity Bounded Context",
         "before-commit-am": "Run all the checks on the Asset Manager Bounded Context"
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true
+        }
+    }
 }
