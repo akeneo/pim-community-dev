@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Twig;
 
 use Akeneo\Category\Infrastructure\Component\Model\Category;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
+use Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterRegistryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
