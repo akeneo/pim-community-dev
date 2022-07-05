@@ -74,6 +74,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                         [
                             'identifier' => 'product_identifier_1',
                             'quantity' => 8,
+                            'uuid' => '77ff41a7-69fc-4b4a-898c-3117e08e60da',
                         ],
                     ],
                     'product_models' => [
@@ -244,6 +245,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                         [
                             'identifier' => 'product_identifier_1',
                             'quantity' => 8,
+                            'uuid' => '77ff41a7-69fc-4b4a-898c-3117e08e60da',
                         ],
                     ],
                     'product_models' => [

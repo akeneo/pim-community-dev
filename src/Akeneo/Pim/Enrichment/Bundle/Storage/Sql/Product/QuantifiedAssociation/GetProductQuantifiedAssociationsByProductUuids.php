@@ -37,7 +37,7 @@ final class GetProductQuantifiedAssociationsByProductUuids
      *      'productA' => [
      *          'PACK' => [
      *              'products' => [
-     *                  ['identifier' => 'productB','quantity' => 5]
+     *                  ['identifier' => 'productB','quantity' => 5, 'uuid' => 'uuidProductB']
      *              ]
      *          ]
      *      ]

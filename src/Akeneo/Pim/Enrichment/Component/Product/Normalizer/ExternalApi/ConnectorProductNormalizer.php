@@ -147,6 +147,22 @@ final class ConnectorProductNormalizer
 
     private function normalizeQuantifiedAssociations(array $quantifiedAssociations): array
     {
-        return $quantifiedAssociations;
+        $result = [];
+        foreach ($quantifiedAssociations as $associationType => $associationsByType) {
+            foreach ($associationsByType as $entityType => $associationsByEntityType) {
+                $result[$associationType][$entityType] = $entityType === 'products' ?
+                    array_map(
+                        fn (array $associatedObject): array => array_filter(
+                            $associatedObject,
+                            fn (string $key): bool => in_array($key, ['identifier', 'quantity']),
+                            ARRAY_FILTER_USE_KEY
+                        ),
+                        $associationsByEntityType
+                    ) :
+                    $result[$associationType][$entityType] = $associationsByEntityType;
+            }
+        }
+
+        return $result;
     }
 }

@@ -46,8 +46,8 @@ class ConnectorProductSpec extends ObjectBehavior
             [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'product_1', 'quantity' => 1],
-                        ['identifier' => 'product_2', 'quantity' => 2]
+                        ['identifier' => 'product_1', 'quantity' => 1, 'uuid' => 'b9c3b775-d6ef-4748-b384-a99a759e469a'],
+                        ['identifier' => 'product_2', 'quantity' => 2, 'uuid' => '894631da-832f-4818-a2ae-44d70c16e679'],
                     ],
                     'product_models' => [
                         ['identifier' => 'product_model_1', 'quantity' => 3],
@@ -56,8 +56,8 @@ class ConnectorProductSpec extends ObjectBehavior
                 ],
                 'PRODUCT_SET1' => [
                     'products' => [
-                        ['identifier' => 'product_1', 'quantity' => 2],
-                        ['identifier' => 'product_3', 'quantity' => 9]
+                        ['identifier' => 'product_1', 'quantity' => 2, 'uuid' => 'b9c3b775-d6ef-4748-b384-a99a759e469a'],
+                        ['identifier' => 'product_3', 'quantity' => 9, 'uuid' => '77ff41a7-69fc-4b4a-898c-3117e08e60da'],
                     ],
                     'product_models' => [
                         ['identifier' => 'product_model_1', 'quantity' => 2],
@@ -157,7 +157,7 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct->quantifiedAssociations()->shouldReturn([
             'PRODUCT_SET' => [
                 'products' => [
-                    ['identifier' => 'product_2', 'quantity' => 2]
+                    ['identifier' => 'product_2', 'quantity' => 2, 'uuid' => '894631da-832f-4818-a2ae-44d70c16e679'],
                 ],
                 'product_models' => [
                     ['identifier' => 'product_model_1', 'quantity' => 3],
@@ -189,8 +189,8 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct->quantifiedAssociations()->shouldReturn([
             'PRODUCT_SET' => [
                 'products' => [
-                    ['identifier' => 'product_1', 'quantity' => 1],
-                    ['identifier' => 'product_2', 'quantity' => 2]
+                    ['identifier' => 'product_1', 'quantity' => 1, 'uuid' => 'b9c3b775-d6ef-4748-b384-a99a759e469a'],
+                    ['identifier' => 'product_2', 'quantity' => 2, 'uuid' => '894631da-832f-4818-a2ae-44d70c16e679']
                 ],
                 'product_models' => [
                     ['identifier' => 'product_model_2', 'quantity' => 4],
@@ -198,8 +198,8 @@ class ConnectorProductSpec extends ObjectBehavior
             ],
             'PRODUCT_SET1' => [
                 'products' => [
-                    ['identifier' => 'product_1', 'quantity' => 2],
-                    ['identifier' => 'product_3', 'quantity' => 9]
+                    ['identifier' => 'product_1', 'quantity' => 2, 'uuid' => 'b9c3b775-d6ef-4748-b384-a99a759e469a'],
+                    ['identifier' => 'product_3', 'quantity' => 9, 'uuid' => '77ff41a7-69fc-4b4a-898c-3117e08e60da']
                 ],
                 'product_models' => [],
             ],
