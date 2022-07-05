@@ -151,7 +151,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     {
         $sql = <<<SQL
             SELECT code, label, updated_at
-            FROM `akeneo_onboarder_serenity_supplier`
+            FROM `akeneo_supplier_portal_supplier`
             WHERE identifier = :identifier
         SQL;
 
@@ -167,7 +167,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     {
         $sql = <<<SQL
             SELECT COUNT(*)
-            FROM akeneo_onboarder_serenity_supplier_contributor
+            FROM akeneo_supplier_portal_supplier_contributor
             WHERE supplier_identifier = :supplierIdentifier
         SQL;
 

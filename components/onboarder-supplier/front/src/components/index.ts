@@ -1,3 +1,3 @@
 export * from './Route';
-export * from './OnboarderLogo';
+export * from './SupplierPortalLogo';
 export * from './UnauthenticatedContainer';

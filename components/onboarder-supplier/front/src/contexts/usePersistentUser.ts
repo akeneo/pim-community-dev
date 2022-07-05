@@ -4,7 +4,7 @@ type User = {
     email: string;
 };
 
-const localStorageKey = 'onboarder-supplier-contributor-account';
+const localStorageKey = 'supplier-portal-contributor-account';
 
 const usePersistentUser = () => {
     const [user, updateUser] = useState<User | null>(null);

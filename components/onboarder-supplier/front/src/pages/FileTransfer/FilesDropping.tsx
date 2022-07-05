@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {OnboarderLogo} from '../../components';
+import {SupplierPortalLogo} from '../../components';
 import {FormattedMessage} from 'react-intl';
 import {BadgeButton} from '../../components/BadgeButton';
 import {AkeneoThemedProps, getColor, getFontSize} from 'akeneo-design-system';
@@ -11,14 +11,14 @@ const FilesDropping = () => {
     const {updateUser} = useUserContext();
 
     const logout = async () => {
-        await fetch('/onboarder-supplier/logout');
+        await fetch('/supplier-portal/logout');
         updateUser(null);
     };
 
     return (
         <Container>
             <Menu>
-                <OnboarderLogo width={164} />
+                <SupplierPortalLogo width={164} />
                 <MenuContent>
                     <MenuSectionHeader active={true}>
                         <FormattedMessage defaultMessage="File enrichment" id="gxGnf7" />
@@ -41,13 +41,13 @@ const FilesDropping = () => {
                     </MenuSection>
                 </MenuContent>
                 <ApplicationName>
-                    <FormattedMessage defaultMessage="Akeneo Onboarder Serenity" id="+udE9J" />
+                    <FormattedMessage defaultMessage="Akeneo Supplier Portal" id="CRLCRt" />
                 </ApplicationName>
             </Menu>
             <Content>
                 <WelcomeMessage>
                     <WelcomeMessageTitle>
-                        <FormattedMessage defaultMessage="Akeneo Onboarder Assistant" id="vf3HzI" />
+                        <FormattedMessage defaultMessage="Akeneo Supplier Portal Assistant" id="tp6tYp" />
                     </WelcomeMessageTitle>
                     <p>
                         <FormattedMessage

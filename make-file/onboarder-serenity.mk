@@ -78,7 +78,7 @@ unit-back-retailer: #Doc: Run unit back tests for the retailer part of Onboarder
 
 .PHONY: unit-back-supplier
 unit-back-supplier: #Doc: Run unit back tests for the supplier part of Onboarder Serenity
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Supplier_Unit_Test --configuration components/onboarder-supplier/back/tests/phpunit.xml.dist ${ARGS}
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Supplier_Portal_Supplier_Unit_Test --configuration components/onboarder-supplier/back/tests/phpunit.xml.dist ${ARGS}
 
 .PHONY: unit-back
 unit-back: unit-back-retailer unit-back-supplier #Doc: Run unit back tests for Onboarder Serenity
@@ -105,7 +105,7 @@ endif
 .PHONY: acceptance-back-supplier
 acceptance-back-supplier: #Doc: Run Behat acceptance back tests for the supplier part of Onboarder Serenity
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder-supplier/back/tests/behat.yml --profile acceptance --format pim --out var/tests/behat/onboarder-serenity-acceptance --format progress --out std --colors $(O)
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder-supplier/back/tests/behat.yml --profile acceptance --format pim --out var/tests/behat/supplier-portal-acceptance --format progress --out std --colors $(O)
 else
 	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder-supplier/back/tests/behat.yml --profile acceptance ${ARGS}
 endif
@@ -132,9 +132,9 @@ endif
 .PHONY: integration-back-supplier
 integration-back-supplier: #Doc: Run integration back tests for the supplier part of Onboarder Serenity
 ifeq ($(CI),true)
-	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Onboarder_Serenity_Supplier_Integration_Test
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Supplier_Portal_Supplier_Integration_Test
 else
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Supplier_Integration_Test --configuration components/onboarder-supplier/back/tests/phpunit.xml.dist ${ARGS}
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Supplier_Portal_Supplier_Integration_Test --configuration components/onboarder-supplier/back/tests/phpunit.xml.dist ${ARGS}
 endif
 
 .PHONY: integration-back

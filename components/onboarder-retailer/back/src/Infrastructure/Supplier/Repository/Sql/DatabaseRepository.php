@@ -18,7 +18,7 @@ final class DatabaseRepository implements Repository
     public function save(Supplier $supplier): void
     {
         $sql = <<<SQL
-            REPLACE INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label, updated_at)
+            REPLACE INTO `akeneo_supplier_portal_supplier` (identifier, code, label, updated_at)
             VALUES (:identifier, :code, :label, :updatedAt)
         SQL;
 
@@ -41,11 +41,11 @@ final class DatabaseRepository implements Repository
         $sql = <<<SQL
             WITH contributor AS (
                 SELECT supplier_identifier, JSON_ARRAYAGG(email) as contributor_emails
-                FROM `akeneo_onboarder_serenity_supplier_contributor` contributor
+                FROM `akeneo_supplier_portal_supplier_contributor` contributor
                 GROUP BY contributor.supplier_identifier
             )
             SELECT identifier, code, label, contributor.contributor_emails
-            FROM `akeneo_onboarder_serenity_supplier` supplier
+            FROM `akeneo_supplier_portal_supplier` supplier
             LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier
             WHERE identifier = :identifier
         SQL;
@@ -68,7 +68,7 @@ final class DatabaseRepository implements Repository
     public function delete(Identifier $identifier): void
     {
         $this->connection->delete(
-            'akeneo_onboarder_serenity_supplier',
+            'akeneo_supplier_portal_supplier',
             ['identifier' => (string) $identifier],
         );
     }
@@ -76,7 +76,7 @@ final class DatabaseRepository implements Repository
     private function deleteContributors(string $supplierIdentifier): void
     {
         $this->connection->delete(
-            'akeneo_onboarder_serenity_supplier_contributor',
+            'akeneo_supplier_portal_supplier_contributor',
             ['supplier_identifier' => $supplierIdentifier],
         );
     }
@@ -84,7 +84,7 @@ final class DatabaseRepository implements Repository
     private function persistContributors(Supplier $supplier): void
     {
         $sql = <<<SQL
-            INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (email, supplier_identifier)
+            INSERT INTO `akeneo_supplier_portal_supplier_contributor` (email, supplier_identifier)
             VALUES (:email, :supplierIdentifier)
         SQL;
 

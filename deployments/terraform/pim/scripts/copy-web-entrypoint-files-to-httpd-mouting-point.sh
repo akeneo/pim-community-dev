@@ -4,8 +4,8 @@ set -e
 #Copy PIM entrypoint files into web-src volume
 cp -p -r -f /srv/pim/public/* /srv/pim/public/.htaccess /web-src/.
 
-#Onboarder serenity front build
+#Supplier portal front build
 if [[ -d '/srv/pim/components/onboarder-supplier/front/build' ]];then
-  mkdir -p /web-src/onboarder/supplier/
-  cp -p -r -f /srv/pim/components/onboarder-supplier/front/build/* /web-src/onboarder/supplier/
+  mkdir -p /web-src/supplier-portal/
+  cp -p -r -f /srv/pim/components/onboarder-supplier/front/build/* /web-src/supplier-portal/
 fi

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\Sql;
+namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\Sql;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 use Doctrine\DBAL\Connection;
 
 class DatabaseRepository implements ContributorAccountRepository
@@ -19,7 +19,7 @@ class DatabaseRepository implements ContributorAccountRepository
     public function save(ContributorAccount $contributorAccount): void
     {
         $sql = <<<SQL
-            REPLACE INTO `akeneo_onboarder_serenity_contributor_account` (
+            REPLACE INTO `akeneo_supplier_portal_contributor_account` (
                 id,
                 email,
                 password,
@@ -47,7 +47,7 @@ class DatabaseRepository implements ContributorAccountRepository
     {
         $sql = <<<SQL
             SELECT id, email, created_at, password, access_token, access_token_created_at, last_logged_at
-            FROM akeneo_onboarder_serenity_contributor_account
+            FROM akeneo_supplier_portal_contributor_account
             WHERE id = :identifier
         SQL;
 
@@ -75,7 +75,7 @@ class DatabaseRepository implements ContributorAccountRepository
     {
         $sql = <<<SQL
             SELECT id, email, created_at, password, access_token, access_token_created_at, last_logged_at
-            FROM akeneo_onboarder_serenity_contributor_account
+            FROM akeneo_supplier_portal_contributor_account
             WHERE email = :email
         SQL;
 

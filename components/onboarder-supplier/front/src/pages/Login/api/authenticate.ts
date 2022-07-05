@@ -1,7 +1,7 @@
 import {apiFetch} from '../../../api/apiFetch';
 
 const authenticate = async (data: {email: string; password: string}): Promise<{email: string}> => {
-    return await apiFetch('/onboarder-supplier/login', {
+    return await apiFetch('/supplier-portal/login', {
         method: 'POST',
         headers: [
             ['Content-type', 'application/json'],

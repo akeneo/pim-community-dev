@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Test\Integration\Infrastructure\Authentication\ContributorAccount\Repository\Sql;
+namespace Akeneo\SupplierPortal\Supplier\Test\Integration\Infrastructure\Authentication\ContributorAccount\Repository\Sql;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
-use Akeneo\OnboarderSerenity\Supplier\Test\Integration\SqlIntegrationTestCase;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Supplier\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
 class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
@@ -100,7 +100,7 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     {
         $sql = <<<SQL
             SELECT *
-            FROM `akeneo_onboarder_serenity_contributor_account`
+            FROM `akeneo_supplier_portal_contributor_account`
             WHERE email = :email
         SQL;
 

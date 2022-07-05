@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\SendEmail;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Mailer\ValueObject\Email;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\Email;
 
 class SendResetPasswordEmailHandler
 {

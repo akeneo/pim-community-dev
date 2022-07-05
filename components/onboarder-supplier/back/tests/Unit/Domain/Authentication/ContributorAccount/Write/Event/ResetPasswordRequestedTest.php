@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Test\Unit\Domain\Authentication\ContributorAccount\Write\Event;
+namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Domain\Authentication\ContributorAccount\Write\Event;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\Event\ResetPasswordRequested;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event\ResetPasswordRequested;
 use PHPUnit\Framework\TestCase;
 
 final class ResetPasswordRequestedTest extends TestCase

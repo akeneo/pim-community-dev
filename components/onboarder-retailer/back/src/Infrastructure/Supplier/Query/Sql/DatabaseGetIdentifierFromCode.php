@@ -19,7 +19,7 @@ final class DatabaseGetIdentifierFromCode implements GetIdentifierFromCode
         $identifier = $this->connection->executeQuery(
             <<<SQL
                 SELECT identifier
-                FROM `akeneo_onboarder_serenity_supplier`
+                FROM `akeneo_supplier_portal_supplier`
                 WHERE code = :code
             SQL
             ,

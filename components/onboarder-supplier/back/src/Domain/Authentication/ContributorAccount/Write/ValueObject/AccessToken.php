@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject;
+namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject;
 
 class AccessToken
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Test\Integration\Infrastructure\Authentication\ContributorAccount\Query\Sql;
+namespace Akeneo\SupplierPortal\Supplier\Test\Integration\Infrastructure\Authentication\ContributorAccount\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail;
-use Akeneo\OnboarderSerenity\Supplier\Test\Integration\SqlIntegrationTestCase;
+use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByEmail;
+use Akeneo\SupplierPortal\Supplier\Test\Integration\SqlIntegrationTestCase;
 
 final class DatabaseGetContributorAccountByEmailIntegration extends SqlIntegrationTestCase
 {
@@ -33,7 +33,7 @@ final class DatabaseGetContributorAccountByEmailIntegration extends SqlIntegrati
     public function insertContributorAccount(string $id, string $email): void
     {
         $sql = <<<SQL
-            INSERT INTO akeneo_onboarder_serenity_contributor_account (
+            INSERT INTO akeneo_supplier_portal_contributor_account (
                 id, email, password, access_token, access_token_created_at, created_at
             ) VALUES (
                 :id,

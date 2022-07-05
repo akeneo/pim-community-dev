@@ -19,7 +19,7 @@ body, #bodyTable, #bodyCell{height:100% !important; margin:0; padding:0; width:1
 body, #bodyTable{
     background-color:#FFFFFF;
 }
-.OnboarderHeaderContainer-logo {
+.SupplierPortalHeaderContainer-logo {
     height:auto;
     max-width:290px;
 }

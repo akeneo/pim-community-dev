@@ -2,7 +2,7 @@ import React, {ReactElement, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, Button, CheckIcon, Field, getColor, Helper, TextInput} from 'akeneo-design-system';
 import {PasswordInput} from './components/PasswordInput';
-import {OnboarderLogo, UnauthenticatedContainer} from '../../components';
+import {SupplierPortalLogo, UnauthenticatedContainer} from '../../components';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useParams} from 'react-router-dom';
 import {NotFoundError} from '../../api/NotFoundError';
@@ -43,7 +43,7 @@ const SetUpPassword = () => {
 
     return (
         <UnauthenticatedContainer>
-            <OnboarderLogo width={213} />
+            <SupplierPortalLogo width={213} />
             <WelcomeText>
                 <p>
                     <FormattedMessage
@@ -55,7 +55,10 @@ const SetUpPassword = () => {
                     />
                 </p>
                 <p>
-                    <FormattedMessage id="onXqax" defaultMessage="You have been invited to use Akeneo Onboarder." />
+                    <FormattedMessage
+                        id="u0BAeP"
+                        defaultMessage="You have been invited to use Akeneo Supplier Portal."
+                    />
                 </p>
                 <p>
                     <FormattedMessage

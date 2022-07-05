@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql;
+namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount;
+use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount;
 use Doctrine\DBAL\Connection;
 
 class DatabaseGetContributorAccountByEmail
@@ -17,7 +17,7 @@ class DatabaseGetContributorAccountByEmail
     {
         $sql = <<<SQL
             SELECT email, password
-            FROM akeneo_onboarder_serenity_contributor_account
+            FROM akeneo_supplier_portal_contributor_account
             WHERE email = :email
         SQL;
 

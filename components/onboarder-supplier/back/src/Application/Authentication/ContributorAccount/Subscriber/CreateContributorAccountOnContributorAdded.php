@@ -1,11 +1,11 @@
 <?php
 
-namespace Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Subscriber;
+namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber;
 
 use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
-use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccount;
-use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccount;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CreateContributorAccountOnContributorAdded implements EventSubscriberInterface

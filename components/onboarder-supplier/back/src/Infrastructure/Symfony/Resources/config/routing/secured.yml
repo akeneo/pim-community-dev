@@ -1,10 +1,10 @@
-onboarder_serenity_supplier_contributor_login:
+supplier_portal_contributor_login:
     path: /login
     defaults:
-        _controller: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\Security::login
+        _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\Security::login
         _format: json
     methods: POST
 
-onboarder_serenity_supplier_contributor_logout:
+supplier_portal_contributor_logout:
     path: /logout
     methods: GET

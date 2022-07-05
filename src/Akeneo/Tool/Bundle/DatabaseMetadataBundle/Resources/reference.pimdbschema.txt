@@ -29,9 +29,6 @@ akeneo_onboarder_message | BASE TABLE
 akeneo_onboarder_nice_to_have_attribute | BASE TABLE
 akeneo_onboarder_pre_ref_product | BASE TABLE
 akeneo_onboarder_retailer_contact | BASE TABLE
-akeneo_onboarder_serenity_contributor_account | BASE TABLE
-akeneo_onboarder_serenity_supplier | BASE TABLE
-akeneo_onboarder_serenity_supplier_contributor | BASE TABLE
 akeneo_onboarder_supplier | BASE TABLE
 akeneo_onboarder_supplier_contact | BASE TABLE
 akeneo_onboarder_supplier_family | BASE TABLE
@@ -45,6 +42,9 @@ akeneo_rule_engine_rule_definition | BASE TABLE
 akeneo_rule_engine_rule_definition_translation | BASE TABLE
 akeneo_rule_engine_rule_relation | BASE TABLE
 akeneo_structure_version_last_update | BASE TABLE
+akeneo_supplier_portal_contributor_account | BASE TABLE
+akeneo_supplier_portal_supplier | BASE TABLE
+akeneo_supplier_portal_supplier_contributor | BASE TABLE
 lock_keys | BASE TABLE
 messenger_messages | BASE TABLE
 migration_versions | BASE TABLE
@@ -347,22 +347,6 @@ akeneo_onboarder_pre_ref_product | created_at | NO | datetime |
 akeneo_onboarder_pre_ref_product | is_rejected | NO | tinyint(1) |
 akeneo_onboarder_retailer_contact | supplier_id | NO | char(36) | PRI
 akeneo_onboarder_retailer_contact | user_id | NO | int | PRI
-akeneo_onboarder_serenity_contributor_account | id | NO | varchar(36) | PRI
-akeneo_onboarder_serenity_contributor_account | email | NO | varchar(255) | UNI
-akeneo_onboarder_serenity_contributor_account | password | YES | varchar(255) |
-akeneo_onboarder_serenity_contributor_account | access_token | YES | varchar(255) |
-akeneo_onboarder_serenity_contributor_account | access_token_created_at | YES | datetime |
-akeneo_onboarder_serenity_contributor_account | created_at | NO | datetime |
-akeneo_onboarder_serenity_contributor_account | last_logged_at | YES | datetime |
-akeneo_onboarder_serenity_supplier | identifier | NO | char(36) | PRI
-akeneo_onboarder_serenity_supplier | code | NO | varchar(200) | UNI
-akeneo_onboarder_serenity_supplier | label | NO | varchar(200) |
-akeneo_onboarder_serenity_supplier | created_at | NO | datetime |
-akeneo_onboarder_serenity_supplier | updated_at | NO | datetime |
-akeneo_onboarder_serenity_supplier_contributor | id | NO | bigint unsigned | PRI
-akeneo_onboarder_serenity_supplier_contributor | email | NO | varchar(255) | UNI
-akeneo_onboarder_serenity_supplier_contributor | created_at | NO | datetime |
-akeneo_onboarder_serenity_supplier_contributor | supplier_identifier | NO | char(36) | MUL
 akeneo_onboarder_supplier | id | NO | int | PRI
 akeneo_onboarder_supplier | code | NO | varchar(50) | UNI
 akeneo_onboarder_supplier | sort_order | NO | int |
@@ -419,6 +403,22 @@ akeneo_rule_engine_rule_relation | resource_name | NO | varchar(255) | MUL
 akeneo_rule_engine_rule_relation | resource_id | NO | int |
 akeneo_structure_version_last_update | resource_name | NO | varchar(255) | PRI
 akeneo_structure_version_last_update | last_update | NO | datetime |
+akeneo_supplier_portal_contributor_account | id | NO | varchar(36) | PRI
+akeneo_supplier_portal_contributor_account | email | NO | varchar(255) | UNI
+akeneo_supplier_portal_contributor_account | password | YES | varchar(255) |
+akeneo_supplier_portal_contributor_account | access_token | YES | varchar(255) |
+akeneo_supplier_portal_contributor_account | access_token_created_at | YES | datetime |
+akeneo_supplier_portal_contributor_account | created_at | NO | datetime |
+akeneo_supplier_portal_contributor_account | last_logged_at | YES | datetime |
+akeneo_supplier_portal_supplier | identifier | NO | char(36) | PRI
+akeneo_supplier_portal_supplier | code | NO | varchar(200) | UNI
+akeneo_supplier_portal_supplier | label | NO | varchar(200) |
+akeneo_supplier_portal_supplier | created_at | NO | datetime |
+akeneo_supplier_portal_supplier | updated_at | NO | datetime |
+akeneo_supplier_portal_supplier_contributor | id | NO | bigint unsigned | PRI
+akeneo_supplier_portal_supplier_contributor | email | NO | varchar(255) | UNI
+akeneo_supplier_portal_supplier_contributor | created_at | NO | datetime |
+akeneo_supplier_portal_supplier_contributor | supplier_identifier | NO | char(36) | MUL
 lock_keys | key_id | NO | varchar(64) | PRI
 lock_keys | key_token | NO | varchar(44) |
 lock_keys | key_expiration | NO | int unsigned |
@@ -1014,13 +1014,6 @@ INDEX | akeneo_onboarder_pre_ref_product | supplier_supplier_reference | supplie
 INDEX | akeneo_onboarder_retailer_contact | PRIMARY | supplier_id, user_id
 INDEX | akeneo_onboarder_retailer_contact | supplier_id | supplier_id
 INDEX | akeneo_onboarder_retailer_contact | user_id | user_id
-INDEX | akeneo_onboarder_serenity_contributor_account | PRIMARY | id
-INDEX | akeneo_onboarder_serenity_contributor_account | UC_contributor_account_email | email
-INDEX | akeneo_onboarder_serenity_supplier | PRIMARY | identifier
-INDEX | akeneo_onboarder_serenity_supplier | UC_supplier_code | code
-INDEX | akeneo_onboarder_serenity_supplier_contributor | PRIMARY | id
-INDEX | akeneo_onboarder_serenity_supplier_contributor | supplier_identifier_foreign_key | supplier_identifier
-INDEX | akeneo_onboarder_serenity_supplier_contributor | UC_supplier_contributor_email | email
 INDEX | akeneo_onboarder_supplier | PRIMARY | id
 INDEX | akeneo_onboarder_supplier | UNIQ_4BA928F877153098 | code
 INDEX | akeneo_onboarder_supplier_contact | akeneo_onboarder_supplier_fk_supplier | supplier_id
@@ -1051,6 +1044,13 @@ INDEX | akeneo_rule_engine_rule_relation | IDX_F7D0C461744E0351 | rule_id
 INDEX | akeneo_rule_engine_rule_relation | PRIMARY | id
 INDEX | akeneo_rule_engine_rule_relation | resource_name_resource_id_idx | resource_name, resource_id
 INDEX | akeneo_structure_version_last_update | PRIMARY | resource_name
+INDEX | akeneo_supplier_portal_contributor_account | PRIMARY | id
+INDEX | akeneo_supplier_portal_contributor_account | UC_contributor_account_email | email
+INDEX | akeneo_supplier_portal_supplier | PRIMARY | identifier
+INDEX | akeneo_supplier_portal_supplier | UC_supplier_code | code
+INDEX | akeneo_supplier_portal_supplier_contributor | PRIMARY | id
+INDEX | akeneo_supplier_portal_supplier_contributor | supplier_identifier_foreign_key | supplier_identifier
+INDEX | akeneo_supplier_portal_supplier_contributor | UC_supplier_contributor_email | email
 INDEX | lock_keys | PRIMARY | key_id
 INDEX | messenger_messages | IDX_75EA56E016BA31DB | delivered_at
 INDEX | messenger_messages | IDX_75EA56E0E3BD61CE | available_at
@@ -1409,7 +1409,6 @@ FOREIGN CONSTRAINT | pim_catalog_attribute_fk_attribute | akeneo_onboarder_nice_
 FOREIGN CONSTRAINT | pim_catalog_family_fk_family | akeneo_onboarder_nice_to_have_attribute.family_id | pim_catalog_family.id
 FOREIGN CONSTRAINT | akeneo_onboarder_retailer_contact_ibfk_1 | akeneo_onboarder_retailer_contact.supplier_id | supplier.id
 FOREIGN CONSTRAINT | akeneo_onboarder_retailer_contact_ibfk_2 | akeneo_onboarder_retailer_contact.user_id | oro_user.id
-FOREIGN CONSTRAINT | supplier_identifier_foreign_key | akeneo_onboarder_serenity_supplier_contributor.supplier_identifier | akeneo_onboarder_serenity_supplier.identifier
 FOREIGN CONSTRAINT | akeneo_onboarder_supplier_fk_supplier | akeneo_onboarder_supplier_contact.supplier_id | supplier.id
 FOREIGN CONSTRAINT | akeneo_onboarder_supplier_fk_user | akeneo_onboarder_supplier_contact.user_id | akeneo_onboarder_supplier_user.identifier_field
 FOREIGN CONSTRAINT | FK_D19917E62ADD6D8C | akeneo_onboarder_supplier_family.supplier_id | akeneo_onboarder_supplier.id
@@ -1424,6 +1423,7 @@ FOREIGN CONSTRAINT | permissions_reference_entity_identifier_foreign_key | akene
 FOREIGN CONSTRAINT | user_group_foreign_key | akeneo_reference_entity_reference_entity_permissions.user_group_identifier | oro_access_group.id
 FOREIGN CONSTRAINT | FK_C0477CAA7E366551 | akeneo_rule_engine_rule_definition_translation.foreign_key | akeneo_rule_engine_rule_definition.id
 FOREIGN CONSTRAINT | FK_F7D0C461744E0351 | akeneo_rule_engine_rule_relation.rule_id | akeneo_rule_engine_rule_definition.id
+FOREIGN CONSTRAINT | supplier_identifier_foreign_key | akeneo_supplier_portal_supplier_contributor.supplier_identifier | akeneo_supplier_portal_supplier.identifier
 FOREIGN CONSTRAINT | FK_DAF6DF5524DB0683 | oro_config_value.config_id | oro_config.id
 FOREIGN CONSTRAINT | FK_F82840BC6ED78C3 | oro_user.file_info_id | akeneo_file_storage_file_info.id
 FOREIGN CONSTRAINT | FK_F82840BC7BBFC60C | oro_user.catalogLocale_id | pim_catalog_locale.id
@@ -1588,15 +1588,15 @@ UNIQUE CONSTRAINT | client_id | akeneo_connectivity_connection | client_id
 UNIQUE CONSTRAINT | UNIQ_F19B3719A5D32530 | akeneo_file_storage_file_info | file_key
 UNIQUE CONSTRAINT | code | akeneo_measurement | code
 UNIQUE CONSTRAINT | supplier_supplier_reference | akeneo_onboarder_pre_ref_product | supplier_reference, supplier_id
-UNIQUE CONSTRAINT | UC_contributor_account_email | akeneo_onboarder_serenity_contributor_account | email
-UNIQUE CONSTRAINT | UC_supplier_code | akeneo_onboarder_serenity_supplier | code
-UNIQUE CONSTRAINT | UC_supplier_contributor_email | akeneo_onboarder_serenity_supplier_contributor | email
 UNIQUE CONSTRAINT | UNIQ_4BA928F877153098 | akeneo_onboarder_supplier | code
 UNIQUE CONSTRAINT | UNIQ_850CA3EC6B804D7 | akeneo_onboarder_supplier_user | email_field
 UNIQUE CONSTRAINT | attribute_identifier_index | akeneo_reference_entity_attribute | code, reference_entity_identifier
 UNIQUE CONSTRAINT | attribute_reference_entity_order_index | akeneo_reference_entity_attribute | reference_entity_identifier, attribute_order
 UNIQUE CONSTRAINT | akeneoreference_entity_identifier_record_ux | akeneo_reference_entity_record | code, reference_entity_identifier
 UNIQUE CONSTRAINT | locale_foreign_key_idx | akeneo_rule_engine_rule_definition_translation | foreign_key, locale
+UNIQUE CONSTRAINT | UC_contributor_account_email | akeneo_supplier_portal_contributor_account | email
+UNIQUE CONSTRAINT | UC_supplier_code | akeneo_supplier_portal_supplier | code
+UNIQUE CONSTRAINT | UC_supplier_contributor_email | akeneo_supplier_portal_supplier_contributor | email
 UNIQUE CONSTRAINT | UNIQ_FEF9EDB75E237E06 | oro_access_group | name
 UNIQUE CONSTRAINT | UNIQ_673F65E757698A6A | oro_access_role | role
 UNIQUE CONSTRAINT | CONFIG_UQ_ENTITY | oro_config | entity, record_id

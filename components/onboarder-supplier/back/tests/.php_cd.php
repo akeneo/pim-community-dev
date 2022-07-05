@@ -22,19 +22,15 @@ $rules = [
     // src
     $builder->only(
         [
-            // Onboarder coupling
-
-            // PIM coupling
-
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
         ],
-    )->in('Akeneo\OnboarderSerenity\Supplier\Domain'),
+    )->in('Akeneo\SupplierPortal\Supplier\Domain'),
 
     $builder->only(
         [
-            // Onboarder coupling
-            'Akeneo\OnboarderSerenity\Supplier\Domain',
+            // Supplier Portal coupling
+            'Akeneo\SupplierPortal\Supplier\Domain',
 
             // Onboarder retailer coupling
             'Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
@@ -51,13 +47,13 @@ $rules = [
             'Symfony\Component\Validator\Constraint',
             'Symfony\Contracts\EventDispatcher\EventDispatcherInterface',
         ],
-    )->in('Akeneo\OnboarderSerenity\Supplier\Application'),
+    )->in('Akeneo\SupplierPortal\Supplier\Application'),
 
     $builder->only(
         [
-            // Onboarder coupling
-            'Akeneo\OnboarderSerenity\Supplier\Domain',
-            'Akeneo\OnboarderSerenity\Supplier\Application',
+            // Supplier Portal coupling
+            'Akeneo\SupplierPortal\Supplier\Domain',
+            'Akeneo\SupplierPortal\Supplier\Application',
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
             'Psr\Log\LoggerInterface',
@@ -65,27 +61,27 @@ $rules = [
             'Twig\Environment',
             'Swift_Mailer',
         ],
-    )->in('Akeneo\OnboarderSerenity\Supplier\Infrastructure'),
+    )->in('Akeneo\SupplierPortal\Supplier\Infrastructure'),
 
 
     // tests
     $builder->only(
         [
-            // Onboarder coupling
-            'Akeneo\OnboarderSerenity\Supplier\Domain',
-            'Akeneo\OnboarderSerenity\Supplier\Infrastructure',
+            // Supplier Portal coupling
+            'Akeneo\SupplierPortal\Supplier\Domain',
+            'Akeneo\SupplierPortal\Supplier\Infrastructure',
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
             'Symfony',
         ],
-    )->in('Akeneo\OnboarderSerenity\Supplier\Test\Integration'),
+    )->in('Akeneo\SupplierPortal\Supplier\Test\Integration'),
 
     $builder->only(
         [
-            // Onboarder coupling
-            'Akeneo\OnboarderSerenity\Supplier\Domain',
-            'Akeneo\OnboarderSerenity\Supplier\Application',
-            'Akeneo\OnboarderSerenity\Supplier\Infrastructure',
+            // Supplier Portal coupling
+            'Akeneo\SupplierPortal\Supplier\Domain',
+            'Akeneo\SupplierPortal\Supplier\Application',
+            'Akeneo\SupplierPortal\Supplier\Infrastructure',
             // Onboarder retailer coupling
             'Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
             'Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
@@ -103,23 +99,23 @@ $rules = [
             'Symfony\Component\Security\Core\Authentication\Token\TokenInterface',
 
         ],
-    )->in('Akeneo\OnboarderSerenity\Supplier\Test\Unit'),
+    )->in('Akeneo\SupplierPortal\Supplier\Test\Unit'),
 
     $builder->only(
         [
-            // Onboarder coupling
-            'Akeneo\OnboarderSerenity\Supplier\Domain',
-            'Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Exception\InvalidPassword',
-            'Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePassword',
-            'Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler',
-            'Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication',
+            // Supplier Portal coupling
+            'Akeneo\SupplierPortal\Supplier\Domain',
+            'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\InvalidPassword',
+            'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePassword',
+            'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler',
+            'Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication',
             // PIM coupling
             'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag',
             // External dependencies coupling
             'Behat',
             'PHPUnit\Framework',
         ],
-    )->in('Akeneo\OnboarderSerenity\Supplier\Test\Acceptance'),
+    )->in('Akeneo\SupplierPortal\Supplier\Test\Acceptance'),
 ];
 
 return new Configuration($rules, $finder);

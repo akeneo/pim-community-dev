@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Test\Integration;
+namespace Akeneo\SupplierPortal\Supplier\Test\Integration;
 
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -21,7 +21,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
         $this->connection = $this->get('doctrine.dbal.default_connection');
 
         $this->connection->executeStatement(<<<SQL
-            DELETE FROM `akeneo_onboarder_serenity_contributor_account`;
+            DELETE FROM `akeneo_supplier_portal_contributor_account`;
         SQL);
     }
 

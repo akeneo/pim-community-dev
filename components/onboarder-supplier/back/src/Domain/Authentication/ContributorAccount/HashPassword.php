@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount;
 
 interface HashPassword
 {

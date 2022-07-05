@@ -1,27 +1,27 @@
-onboarder_serenity_supplier_contributor_get_contributor_account:
+supplier_portal_supplier_contributor_get_contributor_account:
     path: /contributor-account/{accessToken}
     defaults:
-        _controller: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\GetContributorAccount
+        _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\GetContributorAccount
         _feature: onboarder_serenity_contributor_authentication
     methods: [GET]
 
-onboarder_serenity_supplier_contributor_set_up_password:
+supplier_portal_supplier_contributor_set_up_password:
     path: /set-up-password
     defaults:
-        _controller: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword
+        _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword
         _feature: onboarder_serenity_contributor_authentication
     methods: [PUT]
 
-onboarder_serenity_supplier_contributor_request_new_invitation:
+supplier_portal_supplier_contributor_request_new_invitation:
     path: /contributor-account/request-new-invitation
     defaults:
-        _controller: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\RequestNewInvitation
+        _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\RequestNewInvitation
         _feature: onboarder_serenity_contributor_authentication
     methods: POST
 
-onboarder_serenity_supplier_contributor_reset_password:
+supplier_portal_supplier_contributor_reset_password:
     path: /contributor-account/reset-password
     defaults:
-        _controller: Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\ResetPassword
+        _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\ResetPassword
         _feature: onboarder_serenity_contributor_authentication
     methods: POST

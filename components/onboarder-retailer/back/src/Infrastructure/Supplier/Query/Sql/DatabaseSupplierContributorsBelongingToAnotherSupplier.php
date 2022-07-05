@@ -21,7 +21,7 @@ final class DatabaseSupplierContributorsBelongingToAnotherSupplier implements Su
 
         $query = <<<SQL
             SELECT email
-            FROM akeneo_onboarder_serenity_supplier_contributor
+            FROM akeneo_supplier_portal_supplier_contributor
             WHERE email IN (:emails)
             AND supplier_identifier != :supplierIdentifier
         SQL;

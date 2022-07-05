@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Supplier\Test\Integration\Infrastructure\Authentication\ContributorAccount\Query\Sql;
+namespace Akeneo\SupplierPortal\Supplier\Test\Integration\Infrastructure\Authentication\ContributorAccount\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken;
-use Akeneo\OnboarderSerenity\Supplier\Test\Integration\SqlIntegrationTestCase;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken;
+use Akeneo\SupplierPortal\Supplier\Test\Integration\SqlIntegrationTestCase;
 
 final class DatabaseGetContributorAccountByAccessTokenIntegration extends SqlIntegrationTestCase
 {
@@ -13,7 +13,7 @@ final class DatabaseGetContributorAccountByAccessTokenIntegration extends SqlInt
     public function itGetsAContributorAccountFromAValidAccessToken(): void
     {
         $sql = <<<SQL
-            INSERT INTO akeneo_onboarder_serenity_contributor_account (
+            INSERT INTO akeneo_supplier_portal_contributor_account (
                 id, email, password, access_token, access_token_created_at, created_at
             ) VALUES (
                 '9f4c017c-7682-4f83-9099-dd9afcada1a2',
