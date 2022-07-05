@@ -18,5 +18,6 @@ use Symfony\Component\Validator\Constraint;
 class UploadedFile extends Constraint
 {
     public const NOT_ALLOWED_MIME_TYPE = 'akeneo.tailored_import.validation.uploaded_file.not_allowed_mime_type';
+    public const NOT_ALLOWED_EXTENSION = 'akeneo.tailored_import.validation.uploaded_file.not_allowed_extension';
     public const MAX_SIZE = 'akeneo.tailored_import.validation.uploaded_file.max_size';
 }

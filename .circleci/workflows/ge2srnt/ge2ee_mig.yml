@@ -131,8 +131,7 @@ workflows:
         when:
             and:
                 - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-                #REPLACE BEFORE MERGIN- equal: [ "nightly_ge2ee_clone_and_migrate", << pipeline.schedule.name >> ]
-                - equal: [ "nightly_ge2ee_clone_and_migrate_test", << pipeline.schedule.name >> ]
+                - equal: [ "nightly_ge2ee_clone_and_migrate", << pipeline.schedule.name >> ]
         jobs:
             - checkout
             - build_env_vars:

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\EqualTo;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -22,8 +22,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class UploadedFileValidator extends ConstraintValidator
 {
-    private const ALLOWED_MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-    private const SIZE_LIMIT = '10M';
+    public const ALLOWED_EXTENSIONS = ['xlsx'];
+    public const ALLOWED_MIME_TYPES = [
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    ];
+    public const SIZE_LIMIT = '10M';
 
     public function validate($uploadedFile, Constraint $constraint): void
     {
@@ -32,17 +35,21 @@ class UploadedFileValidator extends ConstraintValidator
         }
 
         $validator = $this->context->getValidator();
-        // TODO: build the violation without file
         $validator->inContext($this->context)->atPath('[file]')->validate($uploadedFile, [
             new Valid(),
             new File([
                 'maxSize' => self::SIZE_LIMIT,
                 'maxSizeMessage' => UploadedFile::MAX_SIZE,
+                'mimeTypes' => self::ALLOWED_MIME_TYPES,
+                'mimeTypesMessage' => UploadedFile::NOT_ALLOWED_MIME_TYPE,
             ]),
         ]);
 
-        $validator->inContext($this->context)->atPath('[file]')->validate($uploadedFile->getClientMimeType(), [
-            new EqualTo(self::ALLOWED_MIME_TYPE, null, UploadedFile::NOT_ALLOWED_MIME_TYPE),
+        $validator->inContext($this->context)->atPath('[file]')->validate($uploadedFile->getClientOriginalExtension(), [
+            new Choice([
+                'choices' => self::ALLOWED_EXTENSIONS,
+                'message' => UploadedFile::NOT_ALLOWED_EXTENSION,
+            ]),
         ]);
     }
 }

@@ -1,8 +1,5 @@
 editionFlag:
   enabled: false
-  srnt: "SERENITY_EDITION"
-  grth: "GROWTH_EDITION"
-  tria: "TRIAL_EDITION"
 
 nameOverride: ""
 global:
