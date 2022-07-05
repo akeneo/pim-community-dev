@@ -90,7 +90,11 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
         ];
         $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE, $uuidProductC, $uuidProductD]);
 
-        $this->assertEqualsCanonicalizing($expected, $actual);
+        $this->assertEqualsCanonicalizing(\array_keys($actual), \array_keys($expected));
+        foreach ($actual as $productUuid => $actualAssociations) {
+            $expectedAssociations = $expected[$productUuid];
+            $this->assertEqualsCanonicalizing($actualAssociations, $expectedAssociations);
+        }
     }
 
     public function testOnMultipleWithProductModels()
@@ -105,9 +109,14 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
             $uuidProductC->toString() => $this->getAssociationsFormattedAfterFetch([], [], [], ['productA']),
             $uuidVariantProduct1->toString() => $this->getAssociationsFormattedAfterFetch(['productF', 'productD'], ['productA', 'productC', 'productG'], ['productB'], ['productE']),
         ];
+        ksort($expected);
         $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE, $uuidProductC, $uuidProductD, $uuidVariantProduct1]);
 
-        $this->assertEqualsCanonicalizing($expected, $actual);
+        $this->assertEqualsCanonicalizing(\array_keys($actual), \array_keys($expected));
+        foreach ($actual as $productUuid => $actualAssociations) {
+            $expectedAssociations = $expected[$productUuid];
+            $this->assertEqualsCanonicalizing($actualAssociations, $expectedAssociations);
+        }
     }
 
     private function getQuery(): GetProductAssociationsByProductUuids
