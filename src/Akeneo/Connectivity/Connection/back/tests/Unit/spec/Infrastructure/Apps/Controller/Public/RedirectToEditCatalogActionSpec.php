@@ -132,39 +132,6 @@ class RedirectToEditCatalogActionSpec extends ObjectBehavior
         $this->shouldThrow(new AccessDeniedHttpException())->during('__invoke', ['catalog_id']);
     }
 
-    public function it_denies_user_that_cannot_open_an_app(
-        QueryBusInterface $catalogQueryBus,
-        FindOneConnectedAppByUserIdentifierQueryInterface $findOneConnectedAppByUserIdentifierQuery,
-        SecurityFacade $security,
-    ): void {
-        $catalogQueryBus
-            ->execute(new GetCatalogQuery('catalog_id'))
-            ->willReturn(new Catalog('catalog_id', 'Catalog name', 'owner_username', false));
-
-        $findOneConnectedAppByUserIdentifierQuery
-            ->execute('owner_username')
-            ->willReturn(new ConnectedApp(
-                'a_connected_app_id',
-                'a_connected_app_name',
-                ['read_scope_d', 'read_scope_b'],
-                'random_connection_code',
-                'a/path/to/a/logo',
-                'an_author',
-                'a_group',
-                'an_username',
-                [],
-                false,
-                null,
-                false,
-            ));
-
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
-        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
-        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(false);
-
-        $this->shouldThrow(new AccessDeniedHttpException())->during('__invoke', ['catalog_id']);
-    }
-
     public function it_redirects_user_to_the_edit_catalog_page(
         QueryBusInterface $catalogQueryBus,
         FindOneConnectedAppByUserIdentifierQueryInterface $findOneConnectedAppByUserIdentifierQuery,

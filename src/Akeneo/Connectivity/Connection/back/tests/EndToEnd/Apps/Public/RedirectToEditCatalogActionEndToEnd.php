@@ -44,7 +44,6 @@ class RedirectToEditCatalogActionEndToEnd extends WebTestCase
     public function test_it_is_redirected_to_the_catalog_edit_page():void
     {
         $this->featureFlags->enable('marketplace_activate');
-        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $this->authenticateAsAdmin();
 
