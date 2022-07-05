@@ -1,4 +1,4 @@
-import {useQuery} from 'react-query';
+import {useCatalogQuery} from './useCatalogQuery';
 
 type Data = {
     id: string;
@@ -15,13 +15,5 @@ type Result = {
 };
 
 export const useCatalog = (catalogId: string): Result => {
-    return useQuery<Data, Error, Data>(['catalog_item', catalogId], async () => {
-        const response = await fetch('/rest/catalogs/' + catalogId, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        });
-
-        return await response.json();
-    });
+    return useCatalogQuery(catalogId);
 };
