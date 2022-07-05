@@ -144,9 +144,9 @@ export const MarketplaceCard: FC<Props> = ({item, additionalActions}) => {
             <TextInformation>
                 <Name>{item.name}</Name>
                 <Author>
-                    {translate('akeneo_connectivity.connection.connect.marketplace.card.developed_by')}
-                    &nbsp;
-                    {item.author}
+                    {translate('akeneo_connectivity.connection.connect.marketplace.card.developed_by', {
+                        author: item.author,
+                    })}
                 </Author>
                 {item.partner && <PartnerTag>{item.partner}</PartnerTag>}
                 {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
