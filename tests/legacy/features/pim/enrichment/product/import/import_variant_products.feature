@@ -43,7 +43,7 @@ Feature: Import variant products through CSV import
 
   Scenario Outline: Convert a variant product to a simple product via import or not, depending on the convertVariantToSimple job parameter
     Given the following job "csv_catalog_modeling_product_import" configuration:
-      | filePath               | %file to import%         |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
       | enabledComparison      | <enabledComparison>      |
       | convertVariantToSimple | <convertVariantToSimple> |
     And the following CSV file to import:

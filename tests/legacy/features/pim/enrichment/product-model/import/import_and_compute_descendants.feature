@@ -13,7 +13,7 @@ Feature: Create product models through CSV import and update their descendants
       model-tshirt-divided-navy-blue;clothing_color_size;model-tshirt-divided;;;;;navy_blue;100% cotton
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And I am logged in as "Julia"
 
   @critical

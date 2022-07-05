@@ -16,7 +16,7 @@ Feature: Skip invalid product models through CSV
       ;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
@@ -44,7 +44,7 @@ Feature: Skip invalid product models through CSV
       code-003;code-001;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
@@ -68,7 +68,7 @@ Feature: Skip invalid product models through CSV
       code-002;code-001;clothing_color_size;red
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath          | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
       | enabledComparison | no               |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job

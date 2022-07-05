@@ -12,7 +12,7 @@ Feature: Export products according to simple select reference data values
       | HEEL-2 | heels  | The heel 2 | purpureus  | 2014_collection |
       | HEEL-3 | heels  | The heel 3 |            | 2014_collection |
     And the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/footwear_product_export.csv |
+      | storage | {"type": "local", "file_path": "%tmp%/product_export/footwear_product_export.csv"} |
 
   Scenario: Export only the product values with selected reference data values
     Given I am logged in as "Julia"
