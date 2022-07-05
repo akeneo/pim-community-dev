@@ -38,7 +38,7 @@ final class RejectInvalidRedirectionStreamLoader implements LoaderInterface
     public function find($path)
     {
         $client = new Client([
-            'timeout' => 10,
+            'timeout' => 2,
             'headers' => ['User-Agent' => null],
             'allow_redirects' => [
                 'max' => 10,
