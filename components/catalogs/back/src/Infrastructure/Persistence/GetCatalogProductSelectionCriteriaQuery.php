@@ -12,7 +12,7 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FindCatalogProductSelectionCriteriaQuery implements FindCatalogProductSelectionCriteriaQueryInterface
+class GetCatalogProductSelectionCriteriaQuery implements FindCatalogProductSelectionCriteriaQueryInterface
 {
     public function __construct(
         private Connection $connection,
@@ -22,7 +22,7 @@ class FindCatalogProductSelectionCriteriaQuery implements FindCatalogProductSele
     /**
      * @inheritDoc
      */
-    public function execute(string $id): ?array
+    public function execute(string $id): array
     {
         $query = <<<SQL
         SELECT
@@ -37,7 +37,7 @@ class FindCatalogProductSelectionCriteriaQuery implements FindCatalogProductSele
         ])->fetchOne();
 
         if (!$result) {
-            return null;
+            throw new \LogicException('Catalog not found');
         }
 
         /** @var array<array-key,array{field: string, operator: string, value?: mixed}>|null $criteria */

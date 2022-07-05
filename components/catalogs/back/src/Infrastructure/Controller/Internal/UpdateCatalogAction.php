@@ -6,7 +6,8 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\UpdateCatalogProductSelectionCriteriaQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Validation\Criteria;
+use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Validation\UpdateCatalogPayloadIsValid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,11 +20,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SaveCriteriaAction
+final class UpdateCatalogAction
 {
     public function __construct(
         private ValidatorInterface $validator,
         private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
+        private UpsertCatalogQueryInterface $upsertCatalogQuery,
         private UpdateCatalogProductSelectionCriteriaQueryInterface $updateCatalogProductSelectionCriteriaQuery,
         private NormalizerInterface $normalizer,
     ) {
@@ -41,26 +43,38 @@ final class SaveCriteriaAction
             throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
         }
 
-        /** @var array<int, array{field: string, operator: string, value?: mixed}> $payload */
+        /**
+         * @var array{
+         *      enabled: bool,
+         *      product_selection_criteria: array<int, array{field: string, operator: string, value?: mixed}>,
+         * } $payload
+         */
         $payload = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $violations = $this->validator->validate($payload, [
-            new Criteria(),
+            new UpdateCatalogPayloadIsValid(),
         ]);
 
         if ($violations->count() > 0) {
             return new JsonResponse(
                 [
                     'errors' => $this->normalizer->normalize($violations),
-                    'message' => 'Criteria are not valid.',
+                    'message' => 'Catalog is not valid.',
                 ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
 
+        $this->upsertCatalogQuery->execute(
+            $catalogId,
+            $catalog->getName(),
+            $catalog->getOwnerUsername(),
+            $payload['enabled'],
+        );
+
         $this->updateCatalogProductSelectionCriteriaQuery->execute(
             $catalogId,
-            $payload,
+            $payload['product_selection_criteria'],
         );
 
         return new JsonResponse(null, 204);
