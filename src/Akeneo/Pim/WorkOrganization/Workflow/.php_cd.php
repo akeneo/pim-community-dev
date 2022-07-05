@@ -83,7 +83,7 @@ $rules = [
 
         // TIP-987: Published should be less coupled to Product
         // TIP-988: Split Published vs Draft/Proposal
-        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
 
         // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
@@ -217,7 +217,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
-        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',

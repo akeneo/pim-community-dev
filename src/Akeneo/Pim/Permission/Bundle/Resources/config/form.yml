@@ -93,7 +93,7 @@ services:
             - [addEventSubscriber, ['@pimee_security.form.subscriber.locale_permissions']]
 
     Akeneo\Pim\Permission\Bundle\Form\CategoryFormViewNormalizerWithPermissions:
-        decorates: Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer
-        decoration_inner_name: 'Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer.CE'
+        decorates: Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer
+        decoration_inner_name: 'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer.CE'
         arguments:
-            - '@Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer.CE'
+            - '@Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer.CE'

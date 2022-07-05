@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Bundle\EventSubscriber;
 
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;

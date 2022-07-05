@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\Permission\Bundle\Entity;
 
 use Akeneo\Pim\Permission\Component\Model\CategoryAccessInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 
 /**

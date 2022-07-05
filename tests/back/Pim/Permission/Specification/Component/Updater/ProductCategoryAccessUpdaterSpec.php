@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Permission\Component\Updater;
 
 use Akeneo\Pim\Permission\Component\Updater\ProductCategoryAccessUpdater;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

@@ -13,8 +13,8 @@ namespace Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category;
 
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
