@@ -74,7 +74,7 @@ coupling-list-unused-requirements: coupling-list-unused-requirements-retailer co
 
 .PHONY: unit-back-retailer
 unit-back-retailer: #Doc: Run unit back tests for the retailer part of Supplier Portal
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Retailer_Unit_Test --configuration components/onboarder-retailer/back/tests/phpunit.xml.dist ${ARGS}
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Supplier_Portal_Retailer_Unit_Test --configuration components/onboarder-retailer/back/tests/phpunit.xml.dist ${ARGS}
 
 .PHONY: unit-back-supplier
 unit-back-supplier: #Doc: Run unit back tests for the supplier part of Supplier Portal
@@ -97,7 +97,7 @@ unit-front: unit-front-retailer unit-front-supplier #Doc: Run unit front tests f
 .PHONY: acceptance-back-retailer
 acceptance-back-retailer: #Doc: Run Behat acceptance back tests for the retailer part of Supplier Portal
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder-retailer/back/tests/behat.yml --profile acceptance --format pim --out var/tests/behat/onboarder-serenity-acceptance --format progress --out std --colors $(O)
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder-retailer/back/tests/behat.yml --profile acceptance --format pim --out var/tests/behat/supplier-portal-acceptance --format progress --out std --colors $(O)
 else
 	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder-retailer/back/tests/behat.yml --profile acceptance ${ARGS}
 endif
@@ -113,20 +113,12 @@ endif
 .PHONY: acceptance-back
 acceptance-back: acceptance-back-retailer acceptance-back-supplier #Doc: Run acceptance back tests for Supplier Portal
 
-.PHONY: integration-back
-integration-back: #Doc: Run integration back tests for Supplier Portal
-ifeq ($(CI),true)
-	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Onboarder_Serenity_Retailer_Integration_Test
-else
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Retailer_Integration_Test --configuration components/onboarder-retailer/back/tests/phpunit.xml.dist ${ARGS}
-endif
-
 .PHONY: integration-back-retailer
 integration-back-retailer: #Doc: Run integration back tests for the retailer part of Supplier Portal
 ifeq ($(CI),true)
-	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Onboarder_Serenity_Retailer_Integration_Test
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Supplier_Portal_Retailer_Integration_Test
 else
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Retailer_Integration_Test --configuration components/onboarder-retailer/back/tests/phpunit.xml.dist ${ARGS}
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Supplier_Portal_Retailer_Integration_Test --configuration components/onboarder-retailer/back/tests/phpunit.xml.dist ${ARGS}
 endif
 
 .PHONY: integration-back-supplier
