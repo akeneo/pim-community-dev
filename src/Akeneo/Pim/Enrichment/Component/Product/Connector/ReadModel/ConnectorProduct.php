@@ -12,7 +12,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueWithLinkedData;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLinkedData;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * This read model is dedicated to export product data for the connector, such as the API.
@@ -40,6 +42,7 @@ final class ConnectorProduct
         private ?QualityScoreCollection $qualityScores,
         private ?ProductCompletenessCollection $completenesses
     ) {
+        $this->validateAssociationsFormat();
     }
 
     public function uuid(): UuidInterface
@@ -407,10 +410,10 @@ final class ConnectorProduct
     {
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
-            $filteredAssociations[$associationType]['products'] = array_values(array_intersect(
+            $filteredAssociations[$associationType]['products'] = array_filter(
                 $association['products'],
-                $productIdentifiersToFilter
-            ));
+                fn (array $associatedProduct): bool => in_array($associatedProduct['identifier'], $productIdentifiersToFilter)
+            );
             $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
         }
@@ -476,5 +479,35 @@ final class ConnectorProduct
             $this->qualityScores,
             $productCompletenessCollection
         );
+    }
+
+    private function validateAssociationsFormat()
+    {
+        Assert::isMap($this->associations);
+        Assert::allIsMap($this->associations);
+        foreach ($this->associations as $associationsByType) {
+            Assert::allRegex(array_keys($associationsByType), '/products|product_models|groups/');
+            Assert::isMap($associationsByType);
+            if (array_key_exists('products', $associationsByType)) {
+                Assert::isArray($associationsByType['products']);
+                foreach ($associationsByType['products'] as $associatedProduct) {
+                    Assert::isMap($associatedProduct);
+                    Assert::keyExists($associatedProduct, 'uuid');
+                    Assert::stringNotEmpty($associatedProduct['uuid']);
+                    Assert::true(Uuid::isValid($associatedProduct['uuid']), sprintf('The associated product "%s" is not a valid uuid', $associatedProduct['uuid']));
+                    Assert::keyExists($associatedProduct, 'identifier');
+                    Assert::nullOrString($associatedProduct['identifier']);
+                }
+            }
+            /*
+            if (array_key_exists('product_models', $associationsByType)) {
+                Assert::isArray($associationsByType['product_models']);
+                Assert::allStringNotEmpty($associationsByType['product_models']);
+            }
+            if (array_key_exists('groups', $associationsByType)) {
+                Assert::isArray($associationsByType['groups']);
+                Assert::allStringNotEmpty($associationsByType['groups']);
+            }*/
+        }
     }
 }
