@@ -7,6 +7,10 @@ services:
         arguments:
             - !tagged_iterator pim_api.security.scope_mapper
 
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\FindCurrentAppId:
+        arguments:
+            - '@security.token_storage'
+
     # SERVICES
     Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp:
         arguments:
