@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Field, Helper, NumberInput, Button, CheckIcon, getColor} from 'akeneo-design-system';
-import {TextField, useTranslate, filterErrors, ValidationError} from '@akeneo-pim-community/shared';
+import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isSftpStorage} from './model';
 import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
 
@@ -25,16 +25,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
 
   const translate = useTranslate();
   const portValidationErrors = filterErrors(validationErrors, '[port]');
-  const [isValid, isChecking, checkReliability] = useCheckStorageConnection(storage);
-
-  const canCheckConnection =
-    !isChecking &&
-    !isValid &&
-    '' !== storage.file_path &&
-    '' !== storage.host &&
-    !isNaN(storage.port) &&
-    '' !== storage.username &&
-    '' !== storage.password;
+  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
 
   return (
     <>
