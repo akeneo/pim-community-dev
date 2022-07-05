@@ -176,8 +176,8 @@ pim_import_export:
                 file_path:
                     unsupported_extension: Unsupported file extension
             connection_checker:
-                label: check the reliability
-                exception: Connection can't be established, check your parameters
+                label: Test connection settings
+                exception: Connection can't be established, please check your settings.
     widget:
         last_operations:
             empty: There is no operation to display for now.

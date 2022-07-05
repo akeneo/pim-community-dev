@@ -237,7 +237,7 @@ test('it can check connection', async () => {
     userEvent.click(checkButton);
   });
 
-  expect(checkButton).toHaveAttribute('disabled');
+  expect(checkButton).toBeDisabled();
 });
 
 test('it can check connection, display message if error', async () => {
@@ -265,6 +265,6 @@ test('it can check connection, display message if error', async () => {
     userEvent.click(checkButton);
   });
 
-  expect(checkButton).not.toHaveAttribute('disabled');
-  expect(screen.getByText('pim_import_export.form.job_instance.connection_checker.exception')).not.toBeUndefined();
+  expect(checkButton).not.toBeDisabled();
+  expect(screen.getByText('pim_import_export.form.job_instance.connection_checker.exception')).toBeInTheDocument();
 });
