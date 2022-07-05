@@ -4,7 +4,7 @@ acceptance:
       paths:
         - '%paths.base%/features'
       contexts:
-        - Akeneo\OnboarderSerenity\Retailer\Test\Acceptance\Context\SupplierContext
+        - Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\SupplierContext
         - Akeneo\SupplierPortal\Supplier\Test\Acceptance\Context\Authentication\ContributorAccountContext
 
   extensions:

@@ -1,4 +1,4 @@
-Feature: Onboarder Serenity - Suppliers management - delete supplier
+Feature: Supplier Portal - Suppliers management - delete supplier
 
   Scenario: delete a supplier
     Given a supplier "supplier1"

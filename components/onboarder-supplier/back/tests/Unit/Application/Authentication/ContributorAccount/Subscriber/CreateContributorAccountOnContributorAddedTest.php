@@ -2,9 +2,9 @@
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount\Subscriber;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccount;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded;

@@ -1,4 +1,4 @@
-Feature: Onboarder Serenity - Suppliers management - edit a supplier
+Feature: Supplier Portal - Suppliers management - edit a supplier
 
   Scenario: Edit a supplier label
     Given a supplier with code "supplier1" and label "Supplier1"
