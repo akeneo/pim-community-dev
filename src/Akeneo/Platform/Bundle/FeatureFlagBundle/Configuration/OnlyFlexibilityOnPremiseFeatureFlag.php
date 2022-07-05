@@ -7,9 +7,9 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 class OnlyFlexibilityOnPremiseFeatureFlag implements FeatureFlag
 {
     private const SAAS_EDITIONS = [
-        'SERENITY_EDITION',
-        'GROWTH_EDITION',
-        'TRIAL_EDITION',
+        'serenity_instance',
+        'growth_edition_instance',
+        'pim_trial_instance',
     ];
 
     public function __construct(
