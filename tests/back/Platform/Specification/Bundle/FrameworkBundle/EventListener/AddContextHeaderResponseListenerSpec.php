@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Platform\Bundle\FrameworkBundle\EventListener;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Security\FindCurrentAppIdInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Logging\BoundedContextResolver;
 use Akeneo\Platform\Bundle\FrameworkBundle\EventListener\AddContextHeaderResponseListener;
 use PhpSpec\ObjectBehavior;
@@ -20,9 +21,11 @@ class AddContextHeaderResponseListenerSpec extends ObjectBehavior
         Request $request,
         Response $response,
         ResponseHeaderBag $headers,
-        ParameterBag $requestAttributes
+        ParameterBag $requestAttributes,
+        FindCurrentAppIdInterface $findCurrentAppId,
     ) {
         $boundedContextResolver->fromRequest($request)->shouldBeCalled()->willReturn('my_context');
+        $findCurrentAppId->execute()->shouldBeCalled()->willReturn('my_app_id');
 
         $event = new ResponseEvent(
             $kernel->getWrappedObject(),
@@ -43,6 +46,7 @@ class AddContextHeaderResponseListenerSpec extends ObjectBehavior
         $headers->set('x-akeneo-context', 'my_context')->shouldBeCalled();
         $headers->set('x-request-path', 'my_path_info')->shouldBeCalled();
         $headers->set('x-symfony-route', 'my_symfony_route')->shouldBeCalled();
+        $headers->set('x-app-id', 'my_app_id')->shouldBeCalled();
 
         $this->injectAkeneoContextHeader($event);
     }

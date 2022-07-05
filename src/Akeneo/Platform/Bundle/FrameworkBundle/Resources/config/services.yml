@@ -32,6 +32,7 @@ services:
     Akeneo\Platform\Bundle\FrameworkBundle\EventListener\AddContextHeaderResponseListener:
         arguments:
             - '@Akeneo\Platform\Bundle\FrameworkBundle\Logging\BoundedContextResolver'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\FindCurrentAppId'
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: injectAkeneoContextHeader }
 
