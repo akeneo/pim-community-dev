@@ -30,6 +30,18 @@ class ProductIdentifierValidationIntegration extends TestCase
         $this->assertSame($violations->get(0)->getPropertyPath(), 'identifier');
     }
 
+    public function testLineBreakInIdentifierValidation()
+    {
+        $product = $this->createProduct("foo" . PHP_EOL);
+        $violations = $this->validateProduct($product);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame($violations->get(0)->getMessage(), 'This field should not contain any line break');
+        $this->assertSame($violations->get(0)->getPropertyPath(), 'identifier');
+
+        $this->saveProduct($product);
+    }
+
     public function testMaxCharactersValidation()
     {
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByCode('sku');
