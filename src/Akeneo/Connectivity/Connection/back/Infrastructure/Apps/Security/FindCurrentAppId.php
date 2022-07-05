@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
 
-use Akeneo\Connectivity\Connection\Application\Security\FindCurrentAppIdInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\Security\FindCurrentAppIdInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -27,6 +27,10 @@ class FindCurrentAppId implements FindCurrentAppIdInterface
         /** @var UserInterface|null $user */
         $user = $this->tokenStorage->getToken()?->getUser();
 
-        return $user?->getProperty('app_id');
+        if (!$user instanceof UserInterface) {
+            return null;
+        }
+
+        return $user->getProperty('app_id');
     }
 }

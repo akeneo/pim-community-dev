@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Application\Security;
+namespace Akeneo\Connectivity\Connection\Application\Apps\Security;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
