@@ -42,6 +42,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 $convertedItem[$property] = false === $data || null === $data ? '0' : '1';
                 break;
             case 'family':
+            case 'uuid':
                 $convertedItem[$property] = (string) $data;
                 break;
             case 'parent':

@@ -2,7 +2,7 @@ services:
     Akeneo\Pim\Enrichment\Product\Domain\UserIntent\UserIntentFactoryRegistry:
         arguments:
             - !tagged_iterator 'pim.enrichment.product.user_intent_factory'
-            - ['identifier', 'created', 'updated', 'parent_associations', 'metadata', 'quality_scores', 'completenesses']
+            - ['uuid', 'identifier', 'created', 'updated', 'parent_associations', 'metadata', 'quality_scores', 'completenesses']
 
     Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValueUserIntentFactoryRegistry:
         arguments:

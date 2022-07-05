@@ -17,28 +17,13 @@ use Akeneo\Tool\Component\Connector\Writer\File\DefaultColumnSorter;
  */
 class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInterface
 {
-    /** @var  AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var AssociationTypeRepositoryInterface */
-    protected $associationTypeRepository;
-
-    /**
-     * @param FieldSplitter                         $fieldSplitter
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param AssociationTypeRepositoryInterface    $associationTypeRepository
-     * @param array                                 $firstDefaultColumns
-     */
     public function __construct(
         FieldSplitter $fieldSplitter,
-        AttributeRepositoryInterface $attributeRepository,
-        AssociationTypeRepositoryInterface $associationTypeRepository,
+        protected AttributeRepositoryInterface $attributeRepository,
+        protected AssociationTypeRepositoryInterface $associationTypeRepository,
         array $firstDefaultColumns
     ) {
         parent::__construct($fieldSplitter, $firstDefaultColumns);
-
-        $this->attributeRepository       = $attributeRepository;
-        $this->associationTypeRepository = $associationTypeRepository;
     }
 
     /**
@@ -52,6 +37,7 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
             !empty($context['filters']['structure']['attributes'])
         ) {
             $rawColumns = array_merge(
+                ['uuid'],
                 [$identifier],
                 $this->firstDefaultColumns,
                 array_map(function ($associationType) {
@@ -70,7 +56,7 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
             return array_unique($sortedColumns);
         }
 
-        array_unshift($this->firstDefaultColumns, $identifier);
+        array_unshift($this->firstDefaultColumns, 'uuid', $identifier);
 
         return parent::sort($columns);
     }
