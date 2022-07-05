@@ -25,7 +25,10 @@ class IsChannelUsedInProductProductExportJobIntegration extends TestCase
         $this->givenAProductExportJobUsingChannel('ecommerce');
         $this->assertFalse($isChannelUsedInProductProductExportJob->execute('mobile'));
 
-         $this->givenAProductExportJobUsingChannel('mobile');
+        $this->givenAProductExportJobUsingChannel('mobile_channel');
+        $this->assertFalse($isChannelUsedInProductProductExportJob->execute('mobile'));
+
+        $this->givenAProductExportJobUsingChannel('mobile');
         $this->assertTrue($isChannelUsedInProductProductExportJob->execute('mobile'));
     }
 
@@ -39,6 +42,9 @@ class IsChannelUsedInProductProductExportJobIntegration extends TestCase
         $this->assertFalse($isChannelUsedInProductProductExportJob->execute('mobile'));
 
         $this->givenAProductExportJobUsingChannel('ecommerce', 'csv_published_product_export');
+        $this->assertFalse($isChannelUsedInProductProductExportJob->execute('mobile'));
+
+        $this->givenAProductExportJobUsingChannel('mobile_channel', 'csv_published_product_export');
         $this->assertFalse($isChannelUsedInProductProductExportJob->execute('mobile'));
 
          $this->givenAProductExportJobUsingChannel('mobile', 'csv_published_product_export');

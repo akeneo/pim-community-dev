@@ -72,7 +72,10 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $event = $events[0];
         Assert::assertInstanceOf(ProductCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier'], $event->getData());
+        Assert::assertEquals([
+            'identifier' => 'product_identifier',
+            'uuid' => $product->getUuid(),
+        ], $event->getData());
     }
 
     function it_dispatches_a_single_product_updated_event($security)
@@ -100,7 +103,10 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $event = $events[0];
         Assert::assertInstanceOf(ProductUpdated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier'], $event->getData());
+        Assert::assertEquals([
+            'identifier' => 'product_identifier',
+            'uuid' => $product->getUuid(),
+        ], $event->getData());
     }
 
     function it_dispatches_multiple_product_events_in_bulk($security)
@@ -132,12 +138,18 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $event = $events[0];
         Assert::assertInstanceOf(ProductCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier_1'], $event->getData());
+        Assert::assertEquals([
+            'identifier' => 'product_identifier_1',
+            'uuid' => $product1->getUuid(),
+        ], $event->getData());
 
         $event = $events[1];
         Assert::assertInstanceOf(ProductUpdated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier_2'], $event->getData());
+        Assert::assertEquals([
+            'identifier' => 'product_identifier_2',
+            'uuid' => $product2->getUuid(),
+        ], $event->getData());
     }
 
     function it_dispatches_a_batch_of_product_events_once_the_max_bulk_size_is_reached($security)
@@ -172,12 +184,18 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $event = $events[0];
         Assert::assertInstanceOf(ProductCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier_1'], $event->getData());
+        Assert::assertEquals([
+            'identifier' => 'product_identifier_1',
+            'uuid' => $product1->getUuid(),
+        ], $event->getData());
 
         $event = $events[1];
         Assert::assertInstanceOf(ProductUpdated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier_2'], $event->getData());
+        Assert::assertEquals([
+            'identifier' => 'product_identifier_2',
+            'uuid' => $product2->getUuid(),
+        ], $event->getData());
 
         /** @var EventInterface[] */
         $events = $messageBus->messages[1]->getEvents();
@@ -186,7 +204,10 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $event = $events[0];
         Assert::assertInstanceOf(ProductCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_identifier_3'], $event->getData());
+        Assert::assertEquals([
+            'identifier' => 'product_identifier_3',
+            'uuid' => $product3->getUuid(),
+        ], $event->getData());
     }
 
     function it_only_supports_product_event($security)

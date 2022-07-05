@@ -51,6 +51,10 @@
 - PIM-10495: Fix product datagrid by increasing sort_buffer_size
 - PIM-10499: Fix MySQL's out of sort memory errors on variant product and product model edit form
 - PIM-10500: Fix API not returning quantified associations for products when association type code is numeric
+- PIM-10503: Fix Wrong regex on channel deletion
+- PIM-10514: Fix associations normalization for published products
+- PIM-10516: Fix remove completeness job when deactivating and reactivating a locale
+- PIM-10508: Fix attribute creation when label contains an '&' character
 
 ## Improvements
 

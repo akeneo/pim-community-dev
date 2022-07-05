@@ -67,7 +67,10 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
             [
                 new ProductCreated(
                     $this->referenceAuthor,
-                    ['identifier' => $this->referenceProduct->getIdentifier()],
+                    [
+                        'identifier' => $this->referenceProduct->getIdentifier(),
+                        'uuid' => $this->referenceProduct->getUuid(),
+                    ],
                     1607094167,
                     '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
                 ),

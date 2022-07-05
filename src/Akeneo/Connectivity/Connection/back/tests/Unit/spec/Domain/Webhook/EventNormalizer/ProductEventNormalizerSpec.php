@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Platform\Component\EventQueue\Author;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -39,9 +40,13 @@ class ProductEventNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_a_product_created_event(): void
     {
+        $uuid = Uuid::uuid4();
         $event = new ProductCreated(
             Author::fromNameAndType('julia', Author::TYPE_UI),
-            ['identifier' => 'blue_sneakers'],
+            [
+                'identifier' => 'blue_sneakers',
+                'uuid' => $uuid,
+            ],
             0,
             '9979c367-595d-42ad-9070-05f62f31f49b'
         );
@@ -53,14 +58,19 @@ class ProductEventNormalizerSpec extends ObjectBehavior
             'author' => 'julia',
             'author_type' => 'ui',
             'product_identifier' => 'blue_sneakers',
+            'product_uuid' => $uuid->toString()
         ]);
     }
 
     public function it_normalizes_a_product_updated_event(): void
     {
+        $uuid = Uuid::uuid4();
         $event = new ProductUpdated(
             Author::fromNameAndType('julia', Author::TYPE_UI),
-            ['identifier' => 'blue_sneakers'],
+            [
+                'identifier' => 'blue_sneakers',
+                'uuid' => $uuid,
+            ],
             0,
             '9979c367-595d-42ad-9070-05f62f31f49b'
         );
@@ -72,14 +82,20 @@ class ProductEventNormalizerSpec extends ObjectBehavior
             'author' => 'julia',
             'author_type' => 'ui',
             'product_identifier' => 'blue_sneakers',
+            'product_uuid' => $uuid->toString(),
         ]);
     }
 
     public function it_normalizes_a_product_removed_event(): void
     {
+        $uuid = Uuid::uuid4();
         $event = new ProductRemoved(
             Author::fromNameAndType('julia', Author::TYPE_UI),
-            ['identifier' => 'blue_sneakers', 'category_codes' => []],
+            [
+                'identifier' => 'blue_sneakers',
+                'uuid' => $uuid,
+                'category_codes' => [],
+            ],
             0,
             '9979c367-595d-42ad-9070-05f62f31f49b'
         );
@@ -91,6 +107,7 @@ class ProductEventNormalizerSpec extends ObjectBehavior
             'author' => 'julia',
             'author_type' => 'ui',
             'product_identifier' => 'blue_sneakers',
+            'product_uuid' => $uuid->toString(),
         ]);
     }
 }

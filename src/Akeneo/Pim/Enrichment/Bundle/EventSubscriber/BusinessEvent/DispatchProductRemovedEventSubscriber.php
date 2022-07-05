@@ -67,6 +67,7 @@ final class DispatchProductRemovedEventSubscriber implements DispatchBufferedPim
         $author = Author::fromUser($user);
         $data = [
             'identifier' => $product->getIdentifier(),
+            'uuid' => $product->getUuid(),
             'category_codes' => $product->getCategoryCodes(),
         ];
 

@@ -89,7 +89,7 @@ define([
 
       const value = objectParams[paramName] ?? '';
 
-      return decodeURI(value);
+      return decodeURIComponent(value);
     },
 
     /**

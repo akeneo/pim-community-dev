@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
@@ -34,8 +35,6 @@ class RemoveCompletenessForChannelAndLocaleTasklet implements TaskletInterface
         private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         private CursorableRepositoryInterface $productRepository,
         private ChannelRepositoryInterface $channelRepository,
-        private LocaleRepositoryInterface $localeRepository,
-        private BulkSaverInterface $localeBulkSaver,
         private BulkSaverInterface $productBulkSaver,
         private int $productBatchSize
     ) {
@@ -48,11 +47,11 @@ class RemoveCompletenessForChannelAndLocaleTasklet implements TaskletInterface
 
     public function execute(): void
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $localesIdentifiers = $jobParameters->get('locales_identifier');
-        $channelCode = $jobParameters->get('channel_code');
+        if (!$this->shouldRun()) {
+            return;
+        }
 
-        $usersToNotify = [$jobParameters->get('username')];
+        $usersToNotify = [$this->stepExecution->getJobParameters()->get('username')];
         $this->notifyUsersItBegins($usersToNotify);
 
         $productIdentifiers = $this->productQueryBuilderFactory->create()->execute();
@@ -72,15 +71,6 @@ class RemoveCompletenessForChannelAndLocaleTasklet implements TaskletInterface
         if (!empty($productIdentifiersToClean)) {
             $products = $this->productRepository->getItemsFromIdentifiers($productIdentifiersToClean);
             $this->cleanProducts($products);
-        }
-        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
-        $locales = $this->localeRepository->findBy(['code' => $localesIdentifiers]);
-        foreach ($locales as $locale) {
-            $locale->removeChannel($channel);
-        }
-
-        if (!empty($locales)) {
-            $this->localeBulkSaver->saveAll($locales);
         }
         $this->notifyUsersItIsDone($usersToNotify);
     }
@@ -114,5 +104,28 @@ class RemoveCompletenessForChannelAndLocaleTasklet implements TaskletInterface
                 'showReportButton' => false
             ]);
         $this->notifier->notify($doneNotif, $users);
+    }
+
+    private function shouldRun(): bool
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $channelCode = $jobParameters->get('channel_code');
+        /** @var ?ChannelInterface $channel */
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
+        if (null === $channel) {
+            return true;
+        }
+
+        $localeCodes = $jobParameters->get('locales_identifier');
+        $currentLocaleCodes = $channel->getLocales()->map(
+            static fn (LocaleInterface $locale): string => $locale->getCode()
+        );
+        foreach ($localeCodes as $localeCode) {
+            if (!$currentLocaleCodes->contains($localeCode)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
