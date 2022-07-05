@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Transform the properties of a product object (fields and product values)
@@ -19,6 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class PropertiesNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
+    const UUID = 'uuid';
     const FIELD_IDENTIFIER = 'identifier';
     const FIELD_LABEL = 'label';
     const FIELD_FAMILY = 'family';
@@ -54,6 +56,9 @@ class PropertiesNormalizer implements NormalizerInterface, CacheableSupportsMeth
         $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
         $data = [];
 
+        if (get_class($product) != 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
+            $data[self::UUID] = $product->getUuid()->toString();
+        }
         $data[self::FIELD_IDENTIFIER] = $product->getIdentifier();
         $data[self::FIELD_FAMILY] = $product->getFamily() ? $product->getFamily()->getCode() : null;
         if ($product->isVariant() && null !== $product->getParent()) {
