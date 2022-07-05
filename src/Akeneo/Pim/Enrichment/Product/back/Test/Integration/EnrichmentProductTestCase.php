@@ -50,7 +50,7 @@ abstract class EnrichmentProductTestCase extends TestCase
         $this->createCategory(['code' => 'suppliers']);
         $this->createCategory(['code' => 'sales']);
 
-        if (FeatureHelper::isPermissionFeatureActivated()) {
+        if (FeatureHelper::isPermissionFeatureAvailable()) {
             $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('All', [
                 'own' => ['all' => false, 'identifiers' => []],
                 'edit' => ['all' => false, 'identifiers' => []],

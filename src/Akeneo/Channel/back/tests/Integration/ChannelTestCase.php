@@ -34,7 +34,7 @@ class ChannelTestCase extends TestCase
 
         $this->createUser('mary', ['ROLE_USER'], ['Redactor']);
 
-        if (FeatureHelper::isPermissionFeatureActivated()) {
+        if (FeatureHelper::isPermissionFeatureAvailable()) {
             $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver')->save('All', [
                 'edit' => ['all' => false, 'identifiers' => []],
                 'view' => ['all' => false, 'identifiers' => []],

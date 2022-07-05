@@ -26,7 +26,7 @@ final class GetProductUuidsHandlerWithPermissionsIntegration extends EnrichmentP
 
     protected function setUp(): void
     {
-        FeatureHelper::skipIntegrationTestWhenPermissionFeatureIsNotActivated();
+        FeatureHelper::skipIntegrationTestWhenPermissionFeatureIsNotAvailable();
 
         parent::setUp();
         $this->get('feature_flags')->enable('permission');

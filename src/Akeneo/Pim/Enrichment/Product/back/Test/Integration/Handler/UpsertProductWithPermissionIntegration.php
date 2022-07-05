@@ -34,7 +34,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
      */
     protected function setUp(): void
     {
-        FeatureHelper::skipIntegrationTestWhenPermissionFeatureIsNotActivated();
+        FeatureHelper::skipIntegrationTestWhenPermissionFeatureIsNotAvailable();
         parent::setUp();
 
         $this->loadEnrichmentProductFunctionalFixtures();
