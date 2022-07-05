@@ -1,19 +1,34 @@
 jest.unmock('./AddCriterionDropdown');
 
 import React from 'react';
-import {act, render, screen, fireEvent} from '@testing-library/react';
+import {act, fireEvent, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {mocked} from 'ts-jest/utils';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {AddCriterionDropdown} from './AddCriterionDropdown';
-import StatusCriterion, {StatusCriterionState} from '../criteria/StatusCriterion';
+import {ProductSelectionContext} from '../contexts/ProductSelectionContext';
 import {Operator} from '../models/Operator';
-import {Criterion} from '../models/Criterion';
+import {useCriteriaRegistry} from '../hooks/useCriteriaRegistry';
+
+mocked(useCriteriaRegistry).mockImplementation(() => ({
+    system: [
+        {
+            label: 'akeneo_catalogs.product_selection.criteria.status.label',
+            factory: () => ({
+                field: 'enabled',
+                operator: Operator.EQUALS,
+                value: true,
+            }),
+        },
+    ],
+    getCriterionByField: () => Promise.reject(),
+}));
 
 test('it renders without error', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <AddCriterionDropdown onNewCriterion={jest.fn()} />
+            <AddCriterionDropdown />
         </ThemeProvider>
     );
 
@@ -21,10 +36,23 @@ test('it renders without error', () => {
 });
 
 test('it opens the dropdown and adds a criterion', () => {
-    (StatusCriterion as jest.Mock).mockImplementation(
-        (): Criterion<StatusCriterionState> => ({
-            id: 'abc6',
-            module: () => null,
+    const dispatch = jest.fn();
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <ProductSelectionContext.Provider value={dispatch}>
+                <AddCriterionDropdown />
+            </ProductSelectionContext.Provider>
+        </ThemeProvider>
+    );
+
+    act(() => userEvent.click(screen.getByText('akeneo_catalogs.product_selection.add_criteria.label')));
+    act(() => userEvent.click(screen.getByText('akeneo_catalogs.product_selection.criteria.status.label')));
+
+    expect(dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+            type: 'ADD_CRITERION',
+            id: expect.any(String),
             state: {
                 field: 'enabled',
                 operator: Operator.EQUALS,
@@ -32,33 +60,12 @@ test('it opens the dropdown and adds a criterion', () => {
             },
         })
     );
-
-    const handleNewCriterion = jest.fn();
-
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <AddCriterionDropdown onNewCriterion={handleNewCriterion} />
-        </ThemeProvider>
-    );
-
-    act(() => userEvent.click(screen.getByText('akeneo_catalogs.product_selection.add_criteria.label')));
-    act(() => userEvent.click(screen.getByText('akeneo_catalogs.product_selection.criteria.status.label')));
-
-    expect(handleNewCriterion).toHaveBeenCalledWith({
-        id: 'abc6',
-        module: expect.any(Function),
-        state: {
-            field: 'enabled',
-            operator: Operator.EQUALS,
-            value: true,
-        },
-    });
 });
 
 test('it opens and closes the dropdown', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <AddCriterionDropdown onNewCriterion={jest.fn()} />
+            <AddCriterionDropdown />
         </ThemeProvider>
     );
 
@@ -71,7 +78,7 @@ test('it opens and closes the dropdown', () => {
 test('it opens and searches in the options', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <AddCriterionDropdown onNewCriterion={jest.fn()} />
+            <AddCriterionDropdown />
         </ThemeProvider>
     );
 

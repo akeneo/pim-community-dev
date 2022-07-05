@@ -32,7 +32,10 @@ final class UpsertCatalogQuery implements UpsertCatalogQueryInterface
             (SELECT id FROM oro_user WHERE username = :owner_username LIMIT 1),
             :is_enabled
         )
-        ON DUPLICATE KEY UPDATE name = :name, updated = NOW()
+        ON DUPLICATE KEY UPDATE
+            name = :name,
+            is_enabled = :is_enabled,
+            updated = NOW()
         SQL;
 
         $this->connection->executeQuery(

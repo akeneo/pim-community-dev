@@ -119,6 +119,7 @@ catalogs-lint-front: yarn-policies
 	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs prettier --check
 	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs eslint
 	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs tsc --noEmit --strict
+	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs depcruise
 
 .PHONY: catalogs-unit-front
 catalogs-unit-front: yarn-policies

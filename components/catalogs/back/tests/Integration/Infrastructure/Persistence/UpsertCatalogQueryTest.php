@@ -52,13 +52,13 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
 
         $this->query->execute($id, 'Store US', 'test', false);
-        $this->query->execute($id, 'Store US [NEW]', 'test', false);
+        $this->query->execute($id, 'Store US [NEW]', 'test', true);
 
         $this->assertCatalogExists([
             'id' => $id,
             'name' => 'Store US [NEW]',
             'owner_id' => $owner->getId(),
-            'is_enabled' => '0',
+            'is_enabled' => '1',
         ]);
         $this->assertCountCatalogs(1);
     }

@@ -5,7 +5,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\ReferenceData;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceDataValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -33,7 +33,7 @@ class ReferenceDataSimpleSelectFilterIntegration extends AbstractProductQueryBui
             'product_one',
             [
                 new SetFamily('a_family'),
-                new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null, null, 'acid-green')
+                new SetSimpleReferenceDataValue('a_ref_data_simple_select', null, null, 'acid-green')
             ]
         );
 
@@ -41,7 +41,7 @@ class ReferenceDataSimpleSelectFilterIntegration extends AbstractProductQueryBui
             'product_two',
             [
                 new SetFamily('a_family'),
-                new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null, null, 'aero-blue')
+                new SetSimpleReferenceDataValue('a_ref_data_simple_select', null, null, 'aero-blue')
             ]
         );
 
