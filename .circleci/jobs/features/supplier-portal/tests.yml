@@ -34,7 +34,7 @@ jobs:
                     command: PIM_CONTEXT=test make static-back
             -   run:
                     name: Run tests for Onboarder Serenity
-                    command: PIM_CONTEXT=supplier-portal make tests-back-onboarder
+                    command: PIM_CONTEXT=supplier-portal make tests-back-supplier-portal
             - store_test_results:
                 path: var/tests/phpunit
     test_front_supplier_portal:
@@ -58,4 +58,4 @@ jobs:
                         PIM_CONTEXT=supplier-portal make install-front-dependencies-supplier
             -   run:
                     name: Run tests front for Onboarder Serenity
-                    command: PIM_CONTEXT=supplier-portal make tests-front-onboarder
+                    command: PIM_CONTEXT=supplier-portal make tests-front-supplier-portal
