@@ -133,7 +133,8 @@ jobs:
         label:     CSV catalog modeling product import
         type:      import
         configuration:
-            uploadAllowed:     true
+            storage:
+                type: none
             delimiter:         ;
             enclosure:         '"'
             enabled:            true
@@ -148,7 +149,8 @@ jobs:
         label:     XLSX catalog modeling product import
         type:      import
         configuration:
-            uploadAllowed:      true
+            storage:
+                type: none
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family
@@ -161,7 +163,8 @@ jobs:
         label:     CSV catalog modeling family import
         type:      import
         configuration:
-            uploadAllowed: true
+            storage:
+                type: none
             delimiter:     ;
             enclosure:     '"'
     csv_catalog_modeling_family_variant_import:
@@ -170,7 +173,8 @@ jobs:
         label:     CSV catalog modeling family variant import
         type:      import
         configuration:
-            uploadAllowed: true
+            storage:
+                type: none
             delimiter:     ;
             enclosure:     '"'
     xlsx_catalog_modeling_family_variant_import:
@@ -179,14 +183,16 @@ jobs:
         label:     XLSX catalog modeling family variant import
         type:      import
         configuration:
-            uploadAllowed: true
+            storage:
+                type: none
     xlsx_catalog_modeling_family_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_family_import
         label:     XLSX catalog modeling family import
         type:      import
         configuration:
-            uploadAllowed: true
+            storage:
+                type: none
     csv_catalog_modeling_family_variant_export:
         connector: Akeneo CSV Connector
         alias:     csv_family_variant_export
@@ -196,7 +202,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/family_variant.csv
+            storage:
+                type: none
     xlsx_catalog_modeling_family_variant_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_family_variant_export
@@ -204,7 +211,8 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            filePath:   /tmp/family_variant.xlsx
+            storage:
+                type: none
 
     csv_catalog_modeling_product_model_import:
         connector: Akeneo CSV Connector
@@ -212,8 +220,8 @@ jobs:
         label: CSV catalog modeling product model import
         type: import
         configuration:
-            filePath: /tmp/product_model.csv
-            uploadAllowed: true
+            storage:
+                type: none
             delimiter: ;
             enclosure: '"'
             enabled: true
@@ -228,8 +236,8 @@ jobs:
         label: XLSX catalog modeling product model import
         type: import
         configuration:
-            filePath: /tmp/product_model.xlsx
-            uploadAllowed: true
+            storage:
+                type: none
             enabled: true
             categoriesColumn: categories
             familyVariantColumn: family_variant
@@ -244,8 +252,8 @@ jobs:
         configuration:
             delimiter:  ;
             enclosure:  '"'
-            withHeader: true
-            filePath: /tmp/products.csv
+            storage:
+                type: none
             filters:
                 data:
                     -
@@ -275,7 +283,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/products.csv
+            storage:
+                type: none
     xlsx_summer_2016_shoes_products_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_export
@@ -283,7 +292,8 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            filePath: /tmp/products.xlsx
+            storage:
+                type: none
             filters:
                 data:
                     -
@@ -311,7 +321,8 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            filePath: /tmp/product_models.xlsx
+            storage:
+                type: none
             filters:
                 data:
                     -
