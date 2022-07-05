@@ -3,6 +3,10 @@
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Export\Product;
 
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader as AssetManagerFixturesLoader;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader as ReferenceEntityFixturesLoader;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase as ExportTestCase;
 
@@ -115,16 +119,13 @@ CSV;
         );
 
         // Products
-        $this->createVariantProduct(
+        $this->createProduct(
             'a_product',
             [
-                'family' => 'clothing',
-                'categories' => [],
-                'values' => [
-                    'creator' => [['data' => 'starck', 'locale' => null, 'scope' => null]],
-                    'designer_influence' => [['data' => ['starck', 'jacobs'], 'locale' => null, 'scope' => null]],
-                    'assets' => [['data' => ['nike', 'addidas'], 'locale' => null, 'scope' => null]],
-                ],
+                new SetFamily('clothing'),
+                new SetSimpleReferenceEntityValue('creator', null, null, 'starck'),
+                new SetMultiReferenceEntityValue('designer_influence', null, null, ['starck', 'jacobs']),
+                new SetAssetValue('assets', null, null, ['nike', 'addidas'])
             ]
         );
     }
