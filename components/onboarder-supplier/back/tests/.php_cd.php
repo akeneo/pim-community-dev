@@ -33,7 +33,7 @@ $rules = [
             'Akeneo\SupplierPortal\Supplier\Domain',
 
             // Onboarder retailer coupling
-            'Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
 
             // PIM coupling
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
@@ -83,8 +83,8 @@ $rules = [
             'Akeneo\SupplierPortal\Supplier\Application',
             'Akeneo\SupplierPortal\Supplier\Infrastructure',
             // Onboarder retailer coupling
-            'Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
-            'Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
             // PIM coupling
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             // External dependencies coupling
