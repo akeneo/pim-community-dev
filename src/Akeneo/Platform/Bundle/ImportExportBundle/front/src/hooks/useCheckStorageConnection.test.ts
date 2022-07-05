@@ -1,14 +1,11 @@
-import {renderHookWithProviders} from '@akeneo-pim-community/shared/lib/tests/utils';
-import {useCheckStorageConnection} from './useCheckStorageConnection';
-import {SftpStorage} from '../components';
 import {act} from '@testing-library/react-hooks';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared';
+import {SftpStorage} from '../components';
+import {useCheckStorageConnection} from './useCheckStorageConnection';
 
 test('connection healthy', async () => {
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: true,
-    json: async () => ({
-      is_connection_healthy: true,
-    }),
   }));
 
   const storage: SftpStorage = {
@@ -20,20 +17,23 @@ test('connection healthy', async () => {
     password: 'password',
   };
   const {result} = renderHookWithProviders(() => useCheckStorageConnection(storage));
-  const checkReliability = result.current[2];
+  const [, , checkReliability] = result.current;
 
   await act(async () => {
     await checkReliability();
   });
 
-  expect(result.current[0]).toEqual(true);
-  expect(result.current[1]).toEqual(false);
+  const [isValid, canCheckConnection] = result.current;
+
+  expect(isValid).toEqual(true);
+  expect(canCheckConnection).toEqual(false);
 });
 
-test('connection not healthy return error_message', async () => {
+test('connection not healthy returns false', async () => {
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: false,
   }));
+
   const storage: SftpStorage = {
     type: 'sftp',
     file_path: 'test.xlsx',
@@ -43,12 +43,14 @@ test('connection not healthy return error_message', async () => {
     password: 'password',
   };
   const {result} = renderHookWithProviders(() => useCheckStorageConnection(storage));
-  const checkReliability = result.current[2];
+  const [, , checkReliability] = result.current;
 
   await act(async () => {
     await checkReliability();
   });
 
-  expect(result.current[0]).toEqual(false);
-  expect(result.current[1]).toEqual(false);
+  const [isValid, canCheckConnection] = result.current;
+
+  expect(isValid).toEqual(false);
+  expect(canCheckConnection).toEqual(true);
 });
