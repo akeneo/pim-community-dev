@@ -1,50 +1,32 @@
 jest.unmock('./index');
 
-import factory from './index';
+import criterion from './index';
 import {Operator} from '../../models/Operator';
 
-test('it creates a StatusCriterion with default values', () => {
-    expect(factory()).toMatchObject({
-        id: expect.any(String),
-        module: expect.any(Function),
-        state: {
-            field: 'enabled',
-            operator: Operator.EQUALS,
-            value: true,
-        },
+test('it provides a component and the state factory', () => {
+    expect(criterion).toMatchObject({
+        component: expect.any(Function),
+        factory: expect.any(Function),
     });
 });
 
-test('it creates a StatusCriterion with empty values', () => {
-    expect(
-        factory({
-            operator: undefined,
-            value: undefined,
-        })
-    ).toMatchObject({
-        id: expect.any(String),
-        module: expect.any(Function),
-        state: {
-            field: 'enabled',
-            operator: Operator.EQUALS,
-            value: true,
-        },
+test('it creates a StatusCriterion state with empty values', () => {
+    expect(criterion.factory()).toMatchObject({
+        field: 'enabled',
+        operator: Operator.EQUALS,
+        value: true,
     });
 });
 
-test('it creates a StatusCriterion with given values', () => {
+test('it creates a StatusCriterion state with given values', () => {
     expect(
-        factory({
+        criterion.factory({
             operator: Operator.NOT_EQUAL,
             value: false,
         })
     ).toMatchObject({
-        id: expect.any(String),
-        module: expect.any(Function),
-        state: {
-            field: 'enabled',
-            operator: Operator.NOT_EQUAL,
-            value: false,
-        },
+        field: 'enabled',
+        operator: Operator.NOT_EQUAL,
+        value: false,
     });
 });
