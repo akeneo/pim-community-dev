@@ -50,7 +50,7 @@ class WriterSpec extends ObjectBehavior
         $stepExecution->getStartTime()->willReturn(new \DateTimeImmutable('1967-08-05 15:15:00'));
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('job_label');
-        $jobParameters->get('filePath')->willReturn(sys_get_temp_dir() . '/my/file/path/%job_label%_%datetime%.csv');
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => sys_get_temp_dir() . '/my/file/path/%job_label%_%datetime%.csv']);
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->get('withHeader')->willReturn(true);
 
@@ -130,7 +130,7 @@ class WriterSpec extends ObjectBehavior
         $jobParameters->has('linesPerFile')->willReturn(false);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn(sys_get_temp_dir() . '/my/file/path/%job_label%_%datetime%.csv');
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => sys_get_temp_dir() . '/my/file/path/%job_label%_%datetime%.csv']);
         $jobParameters->has('ui_locale')->willReturn(false);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getStartTime()->willReturn(new \DateTimeImmutable('1967-08-05 15:15:00'));

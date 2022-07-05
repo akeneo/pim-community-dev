@@ -49,7 +49,7 @@ class CsvUserWriterSpec extends ObjectBehavior
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn('/tmp/akeneo_batch1234/');
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobParameters->get('filePath')->willReturn('/tmp/output_dir/users.csv');
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => '/tmp/output_dir/users.csv']);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');

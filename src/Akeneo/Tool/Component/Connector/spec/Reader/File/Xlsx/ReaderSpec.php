@@ -21,8 +21,7 @@ class ReaderSpec extends ObjectBehavior
         FileIteratorFactory $fileIteratorFactory,
         ArrayConverterInterface $converter,
         StepExecution $stepExecution
-    )
-    {
+    ) {
         $this->beConstructedWith($fileIteratorFactory, $converter);
         $this->setStepExecution($stepExecution);
     }
@@ -32,12 +31,11 @@ class ReaderSpec extends ObjectBehavior
         FileIteratorInterface $fileIterator,
         JobParameters $jobParameters,
         StepExecution $stepExecution
-    )
-    {
+    ) {
         $filePath = __DIR__ . '/features/Context/fixtures/product_with_carriage_return.xlsx';
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn($filePath);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
         $fileIterator->valid()->willReturn(true, true, true, false);
         $fileIterator->current()->willReturn(null);
         $fileIterator->rewind()->shouldBeCalled();
@@ -54,10 +52,9 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution,
         FileIteratorInterface $fileIterator,
         JobParameters $jobParameters
-    )
-    {
+    ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn($this->initFilePath());
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $this->initFilePath()]);
 
         $this->initFileIterator($fileIteratorFactory, $fileIterator);
         $converter->convert($this->initXlsData(), Argument::any())->willReturn($this->initXlsData());
@@ -73,8 +70,7 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution,
         FileIteratorInterface $fileIterator,
         JobParameters $jobParameters
-    )
-    {
+    ) {
         $this->initStepExecution($stepExecution, $jobParameters);
 
         $this->initFileIterator($fileIteratorFactory, $fileIterator);
@@ -85,7 +81,6 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo("skip")->shouldBeCalled();
 
         $this->shouldThrow(InvalidItemFromViolationsException::class)->during('read');
-
     }
 
     function it_skips_an_item_in_case_of_business_exception_error(
@@ -94,12 +89,12 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution,
         FileIteratorInterface $fileIterator,
         JobParameters $jobParameters
-    )    {
+    ) {
         $this->initStepExecution($stepExecution, $jobParameters);
         $this->initFileIterator($fileIteratorFactory, $fileIterator);
 
         $converter->convert($this->initXlsData(), Argument::any())->willThrow(
-            new BusinessArrayConversionException('message','messageKey',[])
+            new BusinessArrayConversionException('message', 'messageKey', [])
         );
 
         $this->shouldThrow(InvalidItemException::class)->during('read');
@@ -135,12 +130,10 @@ class ReaderSpec extends ObjectBehavior
     private function initStepExecution(\PhpSpec\Wrapper\Collaborator $stepExecution, $jobParameters): void
     {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn($this->initFilePath());
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $this->initFilePath()]);
 
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
-
-
     }
 
     /**

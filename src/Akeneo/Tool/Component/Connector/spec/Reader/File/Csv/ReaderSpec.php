@@ -18,8 +18,8 @@ class ReaderSpec extends ObjectBehavior
     function let(
         FileIteratorFactory $fileIteratorFactory,
         ArrayConverterInterface $converter,
-        StepExecution $stepExecution)
-    {
+        StepExecution $stepExecution
+    ) {
         $this->beConstructedWith($fileIteratorFactory, $converter);
         $this->setStepExecution($stepExecution);
     }
@@ -33,7 +33,7 @@ class ReaderSpec extends ObjectBehavior
         $filePath = $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv';
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('delimiter')->willReturn(';');
-        $jobParameters->get('filePath')->willReturn($filePath);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $fileIterator->valid()->willReturn(true, true, true, false);
@@ -63,7 +63,7 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('delimiter')->willReturn(';');
-        $jobParameters->get('filePath')->willReturn($filePath);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
 
         $data = [
             'sku'  => 'SKU-001',
@@ -102,7 +102,7 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('delimiter')->willReturn(';');
-        $jobParameters->get('filePath')->willReturn($filePath);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
 
         $data = [
             'sku'  => 'SKU-001',
@@ -136,8 +136,8 @@ class ReaderSpec extends ObjectBehavior
     private function getPath()
     {
         return __DIR__ . DIRECTORY_SEPARATOR .
-               DIRECTORY_SEPARATOR  . 'features' .
-               DIRECTORY_SEPARATOR  . 'Context' .
-               DIRECTORY_SEPARATOR  . 'fixtures';
+            DIRECTORY_SEPARATOR  . 'features' .
+            DIRECTORY_SEPARATOR  . 'Context' .
+            DIRECTORY_SEPARATOR  . 'fixtures';
     }
 }

@@ -22,7 +22,9 @@ class SimpleCsvExportSpec extends ObjectBehavior
     {
         $this->getDefaultValues()->shouldReturn(
             [
-                'filePath'   => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.csv',
+                'storage' => [
+                    'type' => 'none',
+                ],
                 'delimiter'  => ";",
                 'enclosure'  => '"',
                 'withHeader' => true,

@@ -22,12 +22,13 @@ class SimpleCsvImportSpec extends ObjectBehavior
     {
         $this->getDefaultValues()->shouldReturn(
             [
-                'filePath'                  => null,
+                'storage' => [
+                    'type' => 'none',
+                ],
                 'delimiter'                 => ";",
                 'enclosure'                 => '"',
                 'escape'                    => '\\',
                 'withHeader'                => true,
-                'uploadAllowed'             => true,
                 'invalid_items_file_format' => 'csv',
                 'user_to_notify'            => null,
                 'is_user_authenticated'     => false,

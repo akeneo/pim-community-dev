@@ -37,7 +37,7 @@ class ReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $incorrectlyFormattedFilePath = realpath(__DIR__ . '/../../../fixtures/fake_incorrectly_formatted_yml_file.yml');
-        $jobParameters->get('filePath')->willReturn($incorrectlyFormattedFilePath);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $incorrectlyFormattedFilePath]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $this->totalItems()->shouldReturn(0);
@@ -50,7 +50,7 @@ class ReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $incorrectlyFormattedFilePath = realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml');
-        $jobParameters->get('filePath')->willReturn($incorrectlyFormattedFilePath);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $incorrectlyFormattedFilePath]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $this->totalItems()->shouldReturn(3);
@@ -65,7 +65,7 @@ class ReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $incorrectlyFormattedFilePath = realpath(__DIR__ . '/../../../fixtures/fake_incorrectly_formatted_yml_file.yml');
-        $jobParameters->get('filePath')->willReturn($incorrectlyFormattedFilePath);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $incorrectlyFormattedFilePath]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $this->read()->shouldReturn(null);
@@ -79,8 +79,7 @@ class ReaderSpec extends ObjectBehavior
         $this->beConstructedWith($converter, false, false);
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
-
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml')]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalledTimes(3);
@@ -115,7 +114,7 @@ class ReaderSpec extends ObjectBehavior
         $this->beConstructedWith($converter, false, false);
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml')]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
@@ -141,7 +140,7 @@ class ReaderSpec extends ObjectBehavior
         $this->beConstructedWith($converter, false, false);
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml')]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalled();
@@ -176,7 +175,7 @@ class ReaderSpec extends ObjectBehavior
         $this->beConstructedWith($converter, true, false);
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml')]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
@@ -207,8 +206,7 @@ class ReaderSpec extends ObjectBehavior
         $this->beConstructedWith($converter, true, 'sku');
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')
-            ->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_without_code.yml'));
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => realpath(__DIR__ . '/../../../fixtures/fake_products_without_code.yml')]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
@@ -241,8 +239,7 @@ class ReaderSpec extends ObjectBehavior
         $this->beConstructedWith($converter, false, false);
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')
-            ->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml')]);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();

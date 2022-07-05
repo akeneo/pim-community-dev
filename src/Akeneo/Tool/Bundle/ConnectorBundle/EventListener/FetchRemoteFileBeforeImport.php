@@ -45,16 +45,18 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
     {
         $jobExecution = $event->getJobExecution();
 
-        $jobCode = $jobExecution->getJobInstance()->getCode();
-        if ($this->remoteStorageFeatureFlag->isEnabled($jobCode)) {
+        $jobName = $jobExecution->getJobInstance()->getJobName();
+        if ($this->remoteStorageFeatureFlag->isEnabled($jobName)) {
             return;
         }
 
         $jobParameters = $jobExecution->getJobParameters();
 
-        if (null === $jobParameters ||
+        if (
+            null === $jobParameters ||
             !$jobParameters->has('storage') ||
-            JobInstance::TYPE_IMPORT !== $jobExecution->getJobInstance()->getType()) {
+            JobInstance::TYPE_IMPORT !== $jobExecution->getJobInstance()->getType()
+        ) {
             return;
         }
 
@@ -63,7 +65,7 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
         if (true === $jobFileLocation->isRemote()) {
             $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
-            $localFilePath = $workingDirectory.DIRECTORY_SEPARATOR.basename($jobFileLocation->path());
+            $localFilePath = $workingDirectory . DIRECTORY_SEPARATOR . basename($jobFileLocation->path());
 
             $remoteStream =  $this->filesystem->readStream($jobFileLocation->path());
 

@@ -22,7 +22,9 @@ class SimpleYamlExportSpec extends ObjectBehavior
     {
         $this->getDefaultValues()->shouldReturn(
             [
-                'filePath' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.yml',
+                'storage' => [
+                    'type' => 'none',
+                ],
                 'user_to_notify' => null,
                 'is_user_authenticated' => false,
             ]
