@@ -23,7 +23,7 @@ Feature: Update variants of family through XLSX import
       another_clothing_color_size;clothing;Clothing variant by color/size;color,size;;name,image,variation_image,composition;
       """
     And the following job "xlsx_catalog_modeling_family_variant_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "xlsx_catalog_modeling_family_variant_import" import job page
     And I launch the import job
     And I wait for the "xlsx_catalog_modeling_family_variant_import" job to finish

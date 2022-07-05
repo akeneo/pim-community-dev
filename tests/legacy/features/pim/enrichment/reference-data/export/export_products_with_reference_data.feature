@@ -8,7 +8,7 @@ Feature: Export products
   Scenario: Export products with reference data
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
     And I am logged in as "Julia"
     Given the following products:
       | sku      | family   | categories        | price          | size | color    | name-en_US |
