@@ -1,10 +1,10 @@
-akeneo_supplier_portal_contributor_login:
+supplier_portal_contributor_login:
     path: /login
     defaults:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\Security::login
         _format: json
     methods: POST
 
-akeneo_supplier_portal_contributor_logout:
+supplier_portal_contributor_logout:
     path: /logout
     methods: GET

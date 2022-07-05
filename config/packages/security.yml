@@ -70,9 +70,9 @@ security:
             pattern: ^/supplier-portal
             provider: akeneo_supplier_portal_contributor_account_user
             json_login:
-                check_path: akeneo_supplier_portal_contributor_login
+                check_path: supplier_portal_contributor_login
             logout:
-                path: akeneo_supplier_portal_contributor_logout
+                path: supplier_portal_contributor_logout
 
         api_index:
             pattern:                        ^/api/rest/v1$
