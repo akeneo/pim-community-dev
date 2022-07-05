@@ -74,12 +74,10 @@ final class ProductQueryBuilderAdapter extends AbstractEntityWithValuesQueryBuil
     private function applyPermissions(int $userId): void
     {
         try {
-            $isEnabled = $this->featureFlags->isEnabled('permission');
+            if (!$this->featureFlags->isEnabled('permission')) {
+                return;
+            }
         } catch (\InvalidArgumentException) {
-            $isEnabled = false;
-        }
-
-        if (!$isEnabled) {
             return;
         }
 

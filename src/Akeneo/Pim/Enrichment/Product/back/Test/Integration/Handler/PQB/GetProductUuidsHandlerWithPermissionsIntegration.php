@@ -29,6 +29,7 @@ final class GetProductUuidsHandlerWithPermissionsIntegration extends EnrichmentP
         FeatureHelper::skipIntegrationTestWhenPermissionFeatureIsNotActivated();
 
         parent::setUp();
+        $this->get('feature_flags')->enable('permission');
         $this->productRepository = $this->get('pim_catalog.repository.product');
 
         $this->loadEnrichmentProductFunctionalFixtures();
