@@ -1,5 +1,8 @@
 executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
 
+orbs:
+    slack-app: circleci/slack@4.8.3
+
 jobs:
   test_catalogs:
     machine:
@@ -14,15 +17,15 @@ jobs:
               echo export PIM_CONTEXT=catalogs >> $BASH_ENV
       -   run:
             name: Create yarn cache folder
-            command: mkdir -p  ~/.cache/yarn
+            command: mkdir -p  ~/.cache/yarn ~/.cache/Cypress
       -   run:
             name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
-            command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+            command: sudo chown -R 1000:1000 ../project ~/.cache/yarn ~/.cache/Cypress
       -   run:
-            name: Symlink node_modules
+            name: Re-install node_modules
             command: |
               rm -r vendor/akeneo/pim-community-dev/node_modules
-              ln -s ~/project/node_modules ~/project/vendor/akeneo/pim-community-dev/node_modules
+              cd ~/project/vendor/akeneo/pim-community-dev && make node_modules
       -   run:
             name: Pull docker image for node
             command: docker-compose pull node
@@ -61,3 +64,7 @@ jobs:
       -   run:
             name: Acceptance back
             command: APP_ENV=test make catalogs-acceptance-back
+      -   slack-app/notify:
+            channel: 'monitoring-octopus'
+            event: fail
+            template: basic_fail_1

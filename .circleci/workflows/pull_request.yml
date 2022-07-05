@@ -154,6 +154,8 @@ workflows:
             - test_catalogs:
                   requires:
                       - build_srnt_dev
+                  context:
+                      - octopus-slack
             - pull_request_success:
                   requires:
                       - test_back_behat_legacy
