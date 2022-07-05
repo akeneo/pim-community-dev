@@ -16,7 +16,7 @@ spec:
       - name: TARGET
         value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
       - name: LOGIN
-        value: {{ .Values.pim.defaultAdminUser.email }}
+        value: {{ .Values.pim.defaultAdminUser.login }}
       - name: PASSWORD
         value: {{ .Values.pim.defaultAdminUser.password }}
     command: ["bash", "/scripts-dir/test-pim-daemon.sh"]
