@@ -55,7 +55,8 @@ final class ConnectedAppFactory
             $code,
             $app->getName(),
             [$group->getName()],
-            [$role->getRole()]
+            [$role->getRole()],
+            $id,
         );
         $connection = $this->createConnection->execute(
             $code,

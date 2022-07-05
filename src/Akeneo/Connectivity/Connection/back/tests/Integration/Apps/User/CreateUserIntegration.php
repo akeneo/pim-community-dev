@@ -39,7 +39,7 @@ class CreateUserIntegration extends TestCase
     public function test_it_creates_a_user(): void
     {
         $this->createUserGroup->execute('magento_ug');
-        $userId = $this->createUser->execute('x57L54a93CXq', 'magento', ['magento_ug'], ['ROLE_USER']);
+        $userId = $this->createUser->execute('x57L54a93CXq', 'magento', ['magento_ug'], ['ROLE_USER'], '0b46f5ed-aa47-4d10-8962-25a6866c0c58');
 
         /** @var UserInterface|null $user */
         $user = $this->userRepository->find($userId);
@@ -50,5 +50,6 @@ class CreateUserIntegration extends TestCase
         Assert::assertTrue($user->isApiUser());
         Assert::assertSame(['magento_ug'], $user->getGroupNames());
         Assert::assertSame(['ROLE_USER'], $user->getRoles());
+        Assert::assertSame(['0b46f5ed-aa47-4d10-8962-25a6866c0c58'], $user->getProperty('app_id'));
     }
 }

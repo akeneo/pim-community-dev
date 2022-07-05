@@ -78,7 +78,8 @@ class CreateConnectedAppWithAuthorizationHandler
             $randomCode,
             $marketplaceApp->getName(),
             [$group->getName()],
-            [$role->getRole()]
+            [$role->getRole()],
+            $appId,
         );
 
         $connection = $this->createConnection->execute(

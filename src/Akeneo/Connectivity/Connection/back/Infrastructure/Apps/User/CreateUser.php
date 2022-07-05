@@ -25,7 +25,7 @@ class CreateUser implements CreateUserInterface
     ) {
     }
 
-    public function execute(string $username, string $name, array $groups, array $roles): int
+    public function execute(string $username, string $name, array $groups, array $roles, string $appId): int
     {
         $password = $this->generatePassword();
 
@@ -37,6 +37,9 @@ class CreateUser implements CreateUserInterface
             'email' => \sprintf('%s@example.com', $username),
             'groups' => $groups,
             'roles' => $roles,
+            'properties' => [
+                'app_id' => $appId,
+            ],
         ];
 
         /** @var UserInterface $user */
