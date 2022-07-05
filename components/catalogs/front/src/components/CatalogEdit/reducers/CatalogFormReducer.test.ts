@@ -2,7 +2,7 @@ jest.unmock('./CatalogFormReducer');
 
 import {CatalogFormValues} from '../models/CatalogFormValues';
 import {CatalogFormAction, CatalogFormActions, CatalogFormReducer} from './CatalogFormReducer';
-import {Operator} from '../../ProductSelection/models/Operator';
+import {Operator} from '../../ProductSelection';
 
 const tests: {state: CatalogFormValues; action: CatalogFormAction; result: CatalogFormValues}[] = [
     {
