@@ -65,8 +65,8 @@ jobs:
         label:     CSV product import
         type:      import
         configuration:
-            filePath:           '/tmp/footwear_products.csv'
-            uploadAllowed:      true
+            storage:
+                type: none
             delimiter:          ;
             enclosure:          '"'
             enabled:            true
@@ -81,8 +81,8 @@ jobs:
         label: CSV product model import
         type: import
         configuration:
-            filePath: /tmp/product_model.csv
-            uploadAllowed: true
+            storage:
+                type: none
             delimiter: ;
             enclosure: '"'
             enabled: true
@@ -124,7 +124,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/products.csv
+            storage:
+                type: none
             filters:
                 data:
                     -
@@ -166,7 +167,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/product_models.csv
+            storage:
+                type: none
             filters:
                 data: []
                 structure:

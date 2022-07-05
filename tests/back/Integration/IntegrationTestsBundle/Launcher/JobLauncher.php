@@ -77,7 +77,7 @@ class JobLauncher
             unlink($filePath);
         }
 
-        $config['filePath'] = $filePath;
+        $config['storage'] = ['type' => 'local', 'file_path' => $filePath];
 
         $arrayInput = [
             'command'  => 'akeneo:batch:job',
@@ -147,7 +147,7 @@ class JobLauncher
             unlink($filePath);
         }
 
-        $config['filePath'] = $filePath;
+        $config['storage'] = ['type' => 'local', 'file_path' => $filePath];
 
         $pathFinder = new PhpExecutableFinder();
         $command = [
@@ -215,7 +215,7 @@ class JobLauncher
             $fs->copy($fixturePath, $fixturesPath, true);
         }
 
-        $config['filePath'] = $filePath;
+        $config['storage'] = ['type' => 'local', 'file_path' => $filePath];
 
         $arrayInput = [
             'command'  => 'akeneo:batch:job',
@@ -418,7 +418,7 @@ class JobLauncher
 
         file_put_contents($filePath, $content);
 
-        $config['filePath'] =  $filePath;
+        $config['storage'] = ['type' => 'local', 'file_path' => $filePath];
 
         $pathFinder = new PhpExecutableFinder();
         $command = [

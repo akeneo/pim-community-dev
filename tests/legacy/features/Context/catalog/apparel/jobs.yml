@@ -5,7 +5,8 @@ jobs:
         label:     CSV Product import
         type:      import
         configuration:
-            uploadAllowed:     true
+            storage:
+                type: none
             delimiter:         ;
             enclosure:         '"'
             enabled:            true
@@ -20,7 +21,8 @@ jobs:
         label:     XLSX product import
         type:      import
         configuration:
-            uploadAllowed:      true
+            storage:
+                type: none
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family
@@ -36,7 +38,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/products.csv
+            storage:
+                type: none
             filters:
                 data:
                     -
@@ -69,7 +72,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/products.csv
+            storage:
+                type: none
             filters:
                 data:
                     -
@@ -97,7 +101,8 @@ jobs:
         label:     XLSX product export for tablet
         type:      export
         configuration:
-            filePath: /tmp/products.xlsx
+            storage:
+                type: none
             linesPerFile: 10000
             withHeader: true
             filters:
@@ -130,7 +135,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/products.csv
+            storage:
+                type: none
             filters:
                 data:
                     -
@@ -161,14 +167,16 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/family.csv
+            storage:
+                type: none
     category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
         label:     Category import
         type:      import
         configuration:
-            uploadAllowed:       true
+            storage:
+                type: none
             delimiter:           ;
             enclosure:           '"'
     category_export:
@@ -180,14 +188,16 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/category.csv
+            storage:
+                type: none
     association_type_import:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_import
         label:     Association type import
         type:      import
         configuration:
-            uploadAllowed: true
+            storage:
+                type: none
             delimiter:     ;
             enclosure:     '"'
     association_type_export:
@@ -199,14 +209,16 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/association_type.csv
+            storage:
+                type: none
     group_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_import
         label:     Group import
         type:      import
         configuration:
-            uploadAllowed: true
+            storage:
+                type: none
             delimiter:     ;
             enclosure:     '"'
     group_export:
@@ -218,7 +230,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/group.csv
+            storage:
+                type: none
     xlsx_group_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_export
@@ -227,14 +240,16 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath:   /tmp/xlsx_group_export.xlsx
+            storage:
+                type: none
     attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
         label:     Attribute import
         type:      import
         configuration:
-            uploadAllowed: true
+            storage:
+                type: none
             delimiter:     ;
             enclosure:     '"'
     attribute_export:
@@ -246,14 +261,16 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/attribute.csv
+            storage:
+                type: none
     option_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_import
         label:     Option import
         type:      import
         configuration:
-            uploadAllowed: true
+            storage:
+                type: none
             delimiter:     ;
             enclosure:     '"'
     option_export:
@@ -265,7 +282,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/option.csv
+            storage:
+                type: none
     update_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     update_product_value
