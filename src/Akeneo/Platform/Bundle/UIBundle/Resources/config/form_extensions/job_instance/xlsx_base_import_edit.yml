@@ -97,6 +97,17 @@ extensions:
             jobType: import
             fileExtension: xlsx
 
+    pim-job-instance-xlsx-base-import-edit-properties-file-upload:
+        module: pim/job/common/edit/field/allow-file-upload
+        parent: pim-job-instance-xlsx-base-import-edit-global
+        position: 130
+        targetZone: properties
+        config:
+            fieldCode: configuration.uploadAllowed
+            readOnly: false
+            label: pim_import_export.form.job_instance.tab.properties.upload_allowed.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.upload_allowed.help
+
     pim-job-instance-xlsx-base-import-edit-label:
         module: pim/job/common/edit/label
         parent: pim-job-instance-xlsx-base-import-edit
