@@ -19,13 +19,6 @@ paths = [
     '''node_modules''',
     '''vendor''',
 ]
-# Values used for CI
-regexes = [
-    '''api: bh\-1174\-[0-9]{6}\-pim\-api''',
-    ''''?(password|PASSWORD)'?: '?9hmaEF20ZpNu'?''',
-    '''(PASSWORD|Password)'?: '?KPUk0supyEL5NBc9'?''',
-    '''Password: UHio4m6MMRPuSWrs''',
-]
 
 [[rules]]
 description = "Adafruit API Key"
@@ -1154,10 +1147,6 @@ keywords = [
 ]
 [rules.allowlist]
 stopwords= [
-    # CI testing files containing fake values for CircleCI to run test workflows
-    "oFVFp9oAEibTCiqJe3omkm",
-    "default-europe-west1",
-    # Default values
     "client",
     "endpoint",
     "vpn",
