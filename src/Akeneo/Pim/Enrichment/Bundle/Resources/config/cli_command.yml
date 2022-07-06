@@ -78,3 +78,9 @@ services:
             - '@database_connection'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220516171405SetProductIdentifierNullableZddMigration:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'akeneo.pim.zdd_migration' }

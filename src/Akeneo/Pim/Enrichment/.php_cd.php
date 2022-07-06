@@ -20,6 +20,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
         'Akeneo\Platform\Job\Domain\Model\Status',
+        'Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Liip\ImagineBundle',
