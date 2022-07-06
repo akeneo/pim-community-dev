@@ -70,10 +70,7 @@ FROM (
                   SELECT
                       product.uuid as product_uuid,
                       association_type.code as association_type_code,
-                      CASE 
-                          WHEN associated_product.uuid IS NULL THEN NULL
-                          ELSE JSON_OBJECT('uuid', BIN_TO_UUID(associated_product.uuid), 'identifier', associated_product.identifier)
-                      END as associated_product_object
+                      JSON_OBJECT('uuid', BIN_TO_UUID(associated_product.uuid), 'identifier', associated_product.identifier) AS associated_product_object
                   FROM pim_catalog_product product
                        INNER JOIN pim_catalog_product_model product_model ON product_model.id = product.product_model_id
                        INNER JOIN pim_catalog_product_model_association product_model_association ON product_model_association.owner_id = product_model.id
@@ -86,10 +83,7 @@ FROM (
                   SELECT
                       product.uuid as product_uuid,
                       association_type.code as association_type_code,
-                      CASE 
-                          WHEN associated_product.uuid IS NULL THEN NULL
-                          ELSE JSON_OBJECT('uuid', BIN_TO_UUID(associated_product.uuid), 'identifier', associated_product.identifier)
-                      END as associated_product_object
+                      JSON_OBJECT('uuid', BIN_TO_UUID(associated_product.uuid), 'identifier', associated_product.identifier) AS associated_product_object
                   FROM pim_catalog_product product
                        INNER JOIN pim_catalog_product_model child_product_model ON child_product_model.id = product.product_model_id
                        INNER JOIN pim_catalog_product_model product_model ON product_model.id = child_product_model.parent_id
@@ -119,7 +113,7 @@ SQL;
             $filteredAssociations = [];
             foreach ($associations as $associationType => $productAssociations) {
                 $association = array_values(array_filter($productAssociations));
-                usort($association, fn (array $a1, array $a2): int => strcmp($a1['identifier'], $a2['identifier']));
+                usort($association, static fn (array $a1, array $a2): int => $a1['identifier'] <=> $a2['identifier']);
                 $filteredAssociations[$associationType]['products'] = $association;
             }
 

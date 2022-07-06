@@ -71,7 +71,6 @@ final class ConnectorProduct
 
     private function validateAssociationsFormat(): void
     {
-        Assert::isArray($this->associations);
         Assert::allIsMap($this->associations);
         foreach ($this->associations as $associationsByType) {
             Assert::allRegex(array_keys($associationsByType), '/products|product_models|groups/');
@@ -100,7 +99,6 @@ final class ConnectorProduct
 
     private function validateQuantifiedAssociationsFormat(): void
     {
-        Assert::isArray($this->quantifiedAssociations);
         Assert::allIsMap($this->quantifiedAssociations);
         foreach ($this->quantifiedAssociations as $quantifiedAssociationsByType) {
             Assert::allRegex(array_keys($quantifiedAssociationsByType), '/products|product_models/');
@@ -497,10 +495,10 @@ final class ConnectorProduct
     {
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
-            $filteredAssociations[$associationType]['products'] = array_filter(
+            $filteredAssociations[$associationType]['products'] = array_values(array_filter(
                 $association['products'],
                 fn (array $associatedProduct): bool => in_array($associatedProduct['identifier'], $productIdentifiersToFilter)
-            );
+            ));
             $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
         }

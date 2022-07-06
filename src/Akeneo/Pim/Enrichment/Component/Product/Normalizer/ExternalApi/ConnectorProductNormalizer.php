@@ -138,7 +138,7 @@ final class ConnectorProductNormalizer
             foreach ($associationsByType as $entityType => $associationsByEntityType) {
                 $result[$associationType][$entityType] = $entityType === 'products' ?
                     array_map(fn (array $associatedObject): ?string => $associatedObject['identifier'], $associationsByEntityType) :
-                    $result[$associationType][$entityType] = $associationsByEntityType;
+                    $associationsByEntityType;
             }
         }
 
@@ -146,7 +146,7 @@ final class ConnectorProductNormalizer
     }
 
     /**
-     * This method keeps only the identifier and quantify values from the associated products and removes the uuid from
+     * This method keeps only the identifier and quantity values from the associated products and removes the uuid from
      * result.
      *
      * @param array $quantifiedAssociations
