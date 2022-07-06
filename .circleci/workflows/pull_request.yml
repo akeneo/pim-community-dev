@@ -8,7 +8,7 @@ workflows:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
         jobs:
             - security-hunter/scan-latest-commits:
-                  since_when: "2022-07-05"
+                  since_when: "2022-07-07"
 
             - security-hunter/scan-dir:
                   severity: "CRITICAL"
