@@ -107,5 +107,5 @@ return [
 
     // Dev related bundles
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
-    //Akeneo\Onboarder\Bundle\PimOnboarderBundle::class => ['all' => true],
+    Akeneo\Onboarder\Bundle\PimOnboarderBundle::class => ['all' => true],
 ];
