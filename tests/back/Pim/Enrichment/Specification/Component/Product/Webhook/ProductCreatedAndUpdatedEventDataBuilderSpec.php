@@ -54,8 +54,14 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_supports_a_bulk_event_of_product_created_and_updated_events(): void
     {
         $bulkEvent = new BulkEvent([
-            new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => '1']),
-            new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => '2']),
+            new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
+                'identifier' => '1',
+                'uuid' => Uuid::uuid4(),
+            ]),
+            new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), [
+                'identifier' => '2',
+                'uuid' => Uuid::uuid4(),
+            ]),
         ]);
 
         $this->supports($bulkEvent)->shouldReturn(true);
@@ -64,9 +70,13 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_does_not_support_a_bulk_event_of_unsupported_product_events(): void
     {
         $bulkEvent = new BulkEvent([
-            new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => '1']),
+            new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
+                'identifier' => '1',
+                'uuid' => Uuid::uuid4(),
+            ]),
             new ProductRemoved(Author::fromNameAndType('julia', Author::TYPE_UI), [
                 'identifier' => '1',
+                'uuid' => Uuid::uuid4(),
                 'category_codes' => [],
             ]),
         ]);
@@ -79,17 +89,21 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     ): void {
         $context = new Context('ecommerce_0000', 10);
 
+        $blueJeanUuid = Uuid::uuid4();
         $blueJeanEvent = new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'identifier' => 'blue_jean',
+            'uuid' => $blueJeanUuid,
         ]);
+        $redJeanUuid = Uuid::uuid4();
         $redJeanEvent = new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'identifier' => 'red_jean',
+            'uuid' => $redJeanUuid,
         ]);
         $bulkEvent = new BulkEvent([$blueJeanEvent, $redJeanEvent]);
 
         $productList = new ConnectorProductList(2, [
-            $this->buildConnectorProduct(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), 'blue_jean'),
-            $this->buildConnectorProduct(Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'), 'red_jean'),
+            $this->buildConnectorProduct($blueJeanUuid, 'blue_jean'),
+            $this->buildConnectorProduct($redJeanUuid, 'red_jean'),
         ]);
 
         $getConnectorProductsQuery
@@ -138,8 +152,9 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     ): void {
         $context = new Context('ecommerce_0000', 10);
 
+        $blueJeanUuid = Uuid::uuid4();
         $productList = new ConnectorProductList(1, [
-            $this->buildConnectorProduct(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), 'blue_jean')
+            $this->buildConnectorProduct($blueJeanUuid, 'blue_jean')
         ]);
 
         $getConnectorProductsQuery
@@ -148,9 +163,12 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
 
         $blueJeanEvent = new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'identifier' => 'blue_jean',
+            'uuid' => $blueJeanUuid,
         ]);
+        $redJeanUuid = Uuid::uuid4();
         $redJeanEvent = new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'identifier' => 'red_jean',
+            'uuid' => $redJeanUuid,
         ]);
         $bulkEvent = new BulkEvent([$blueJeanEvent, $redJeanEvent]);
 
@@ -170,7 +188,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
                 'quantified_associations' => (object) [],
             ],
         ]);
-        $expectedCollection->setEventDataError($redJeanEvent, new ProductNotFoundException('red_jean'));
+        $expectedCollection->setEventDataError($redJeanEvent, new ProductNotFoundException($redJeanUuid));
 
         $collection = $this->build($bulkEvent, $context)->getWrappedObject();
 

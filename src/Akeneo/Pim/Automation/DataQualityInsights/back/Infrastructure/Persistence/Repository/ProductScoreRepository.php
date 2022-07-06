@@ -75,48 +75,5 @@ ON DUPLICATE KEY UPDATE
     scores_partial_criteria = product_score_values.scores_partial_criteria;
 SQL
         );
-
-        // We need to delete younger product scores after inserting the new ones,
-        // so we insure to have 1 product score per product
-        $productUuids = array_map(function (Write\ProductScores $productScore) {
-            $entity = $productScore->getEntityId();
-            Assert::isInstanceOf($entity, ProductUuid::class);
-
-            return (string) $entity->toBytes();
-        }, $productsScores);
-
-        $this->dbConnection->executeQuery(
-            <<<SQL
-DELETE old_scores
-FROM pim_data_quality_insights_product_score AS old_scores
-INNER JOIN pim_data_quality_insights_product_score AS younger_scores
-    ON younger_scores.product_uuid = old_scores.product_uuid
-    AND younger_scores.evaluated_at > old_scores.evaluated_at
-WHERE old_scores.product_uuid IN (:product_uuids);
-SQL,
-            [
-                'product_uuids' => $productUuids,
-            ],
-            [
-                'product_uuids' => Connection::PARAM_STR_ARRAY
-            ]
-        );
-    }
-
-    public function purgeUntil(\DateTimeImmutable $date): void
-    {
-        $query = <<<SQL
-DELETE old_scores
-FROM pim_data_quality_insights_product_score AS old_scores
-INNER JOIN pim_data_quality_insights_product_score AS younger_scores
-    ON younger_scores.product_uuid = old_scores.product_uuid
-    AND younger_scores.evaluated_at > old_scores.evaluated_at
-WHERE old_scores.evaluated_at < :purge_date;
-SQL;
-
-        $this->dbConnection->executeQuery(
-            $query,
-            ['purge_date' => $date->format('Y-m-d')]
-        );
     }
 }

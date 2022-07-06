@@ -1,7 +1,22 @@
 import React from 'react';
-import {Field, Helper, NumberInput} from 'akeneo-design-system';
+import styled from 'styled-components';
+import {Field, Helper, NumberInput, Button, CheckIcon, getColor} from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isSftpStorage} from './model';
+import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
+
+const CheckStorageForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+const CheckStorageConnection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8.5px;
+  color: ${getColor('green', 100)};
+`;
 
 const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: StorageConfiguratorProps) => {
   if (!isSftpStorage(storage)) {
@@ -10,6 +25,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
 
   const translate = useTranslate();
   const portValidationErrors = filterErrors(validationErrors, '[port]');
+  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
 
   return (
     <>
@@ -60,6 +76,19 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         onChange={(password: string) => onStorageChange({...storage, password})}
         errors={filterErrors(validationErrors, '[password]')}
       />
+      <CheckStorageForm>
+        <CheckStorageConnection>
+          <Button onClick={checkReliability} disabled={!canCheckConnection} level="primary">
+            {translate('pim_import_export.form.job_instance.connection_checker.label')}
+          </Button>
+          {isValid && <CheckIcon />}
+        </CheckStorageConnection>
+        {false === isValid && (
+          <Helper inline={true} level="error">
+            {translate('pim_import_export.form.job_instance.connection_checker.exception')}
+          </Helper>
+        )}
+      </CheckStorageForm>
     </>
   );
 };

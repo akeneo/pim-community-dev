@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\EventQueue;
 
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Exception\RuntimeException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -54,11 +55,15 @@ class EventNormalizer implements NormalizerInterface, DenormalizerInterface
             throw new RuntimeException(sprintf('The class "%s" is not defined.', $type));
         }
 
+        $eventData = $data['data'];
+        if (array_key_exists('uuid', $eventData)) {
+            $eventData = array_merge($eventData, ['uuid' => Uuid::fromString($eventData['uuid'])]);
+        }
         // /!\ Do not change to a new format for event without a strategy to
         // support the previous/old format of the events already in the queue (before the migration).
         return new $type(
             Author::fromNameAndType($data['author'], $data['author_type'] ?? Author::TYPE_API),
-            $data['data'],
+            $eventData,
             $data['timestamp'],
             $data['uuid']
         );

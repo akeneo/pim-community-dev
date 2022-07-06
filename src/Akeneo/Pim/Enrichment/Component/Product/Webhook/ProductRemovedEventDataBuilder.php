@@ -39,7 +39,8 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
         foreach ($bulkEvent->getEvents() as $event) {
             $data = [
                 'resource' => [
-                    'identifier' => $event->getIdentifier()
+                    'identifier' => $event->getIdentifier(),
+                    'uuid' => $event->getProductUuid(),
                 ],
             ];
             $collection->setEventData($event, $data);
