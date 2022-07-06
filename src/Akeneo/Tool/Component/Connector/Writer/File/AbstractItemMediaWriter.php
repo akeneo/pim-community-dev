@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Writer\File;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
@@ -177,7 +178,11 @@ abstract class AbstractItemMediaWriter implements
     public function getPath(array $placeholders = []): string
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $filePath = $parameters->get($this->jobParamFilePath);
+        $storage = $parameters->get('storage');
+
+        $filePath = LocalStorage::TYPE === $storage['type'] ?
+            $storage['file_path'] :
+            sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
 
         if (false !== \strpos($filePath, '%')) {
             $datetime = $this->stepExecution->getStartTime()->format($this->datetimeFormat);
