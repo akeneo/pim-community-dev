@@ -49,7 +49,7 @@ class ValidateFilePathTest extends AbstractValidationTest
                 '',
             ],
             'file path with bad extension' => [
-                'akeneo.job_automation.validation.file_path.unsupported_extension',
+                'pim_import_export.form.job_instance.validation.file_path.unsupported_extension',
                 '',
                 '/tmp/file.csv',
             ],
