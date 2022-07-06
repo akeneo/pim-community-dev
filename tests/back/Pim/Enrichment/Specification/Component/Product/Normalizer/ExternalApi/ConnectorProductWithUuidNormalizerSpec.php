@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
@@ -21,7 +21,7 @@ use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\RouterInterface;
 
-class ConnectorProductNormalizerSpec extends ObjectBehavior
+class ConnectorProductWithUuidNormalizerSpec extends ObjectBehavior
 {
     function let(
         ProductValueNormalizer $productValueNormalizer,
@@ -33,19 +33,16 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             new DateTimeNormalizer(),
             $attributeRepository
         );
-        $attributeRepository->getIdentifierCode()->willReturn('sku');
     }
 
     function it_is_a_normalizer_of_a_list_of_connector_products()
     {
-        $this->shouldBeAnInstanceOf(ConnectorProductNormalizer::class);
+        $this->shouldBeAnInstanceOf(ConnectorProductWithUuidNormalizer::class);
     }
 
     function it_normalizes_a_list_of_products(
         ProductValueNormalizer $productValueNormalizer
     ) {
-        $identifier1 = ScalarValue::value('sku', 'identifier_1');
-        $value1 = ScalarValue::value('another_attribute', 'value_1');
         $connector1 = new ConnectorProduct(
             Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_1',
@@ -89,7 +86,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 ],
             ],
             [],
-            new ReadValueCollection([$identifier1, $value1]),
+            new ReadValueCollection(),
             new QualityScoreCollection([
                 'ecommerce' => [
                     'en_US' => new QualityScore('B', 81),
@@ -105,8 +102,6 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             )
         );
 
-        $identifier2 = ScalarValue::value('sku', 'identifier_2');
-        $value2 = ScalarValue::value('another_attribute', 'value_2');
         $connector2 = new ConnectorProduct(
             Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'),
             'identifier_2',
@@ -120,13 +115,11 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             [],
             [],
             ['a_metadata' => 'viande'],
-            new ReadValueCollection([$identifier2, $value2]),
+            new ReadValueCollection(),
             null,
             null
         );
 
-        $identifier3 = ScalarValue::value('sku', 'identifier_3');
-        $value3 = ScalarValue::value('another_attribute', 'value_3');
         $connector3 = new ConnectorProduct(
             Uuid::fromString('fdf6f091-3f75-418f-98af-8c19db8b0000'),
             'identifier_3',
@@ -140,23 +133,16 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             [],
             [],
             ['a_metadata' => 'viande'],
-            new ReadValueCollection([$value3, $identifier3]),
+            new ReadValueCollection(),
             null,
             new ProductCompletenessCollection(Uuid::fromString('fdf6f091-3f75-418f-98af-8c19db8b0000'), [])
         );
-
-        $productValueNormalizer->normalize($identifier1, 'standard')->shouldBeCalled()->willReturn(['normalizedIdentifier1']);
-        $productValueNormalizer->normalize($value1, 'standard')->shouldBeCalled()->willReturn(['normalizedValue1']);
-        $productValueNormalizer->normalize($identifier2, 'standard')->shouldBeCalled()->willReturn(['normalizedIdentifier2']);
-        $productValueNormalizer->normalize($value2, 'standard')->shouldBeCalled()->willReturn(['normalizedValue2']);
-        $productValueNormalizer->normalize($identifier3, 'standard')->shouldBeCalled()->willReturn(['normalizedIdentifier3']);
-        $productValueNormalizer->normalize($value3, 'standard')->shouldBeCalled()->willReturn(['normalizedValue3']);
 
         $this->normalizeConnectorProductList(
             new ConnectorProductList(3, [$connector1, $connector2, $connector3])
         )->shouldBeLike([
             [
-                'identifier' => 'identifier_1',
+                'uuid' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'created' => '2019-04-23T15:55:50+00:00',
                 'updated' => '2019-04-25T15:55:50+00:00',
                 'enabled' => true,
@@ -164,18 +150,15 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'categories' => ['category_code_1', 'category_code_2'],
                 'groups' => ['group_code_1', 'group_code_2'],
                 'parent' => 'parent_product_model_code',
-                'values' => [
-                    # Identifier value is removed from values
-                    'another_attribute' => [['normalizedValue1']],
-                ],
+                'values' => (object) [],
                 'associations' => [
                     'X_SELL' => [
-                        'products' => ['product_code_1', null],
+                        'products' => ['95341071-a0dd-47c6-81b1-315913952c43', '905addae-b005-41c4-a277-9fe8804f43f5'],
                         'product_models' => [],
                         'groups' => ['group_code_2']
                     ],
                     'UPSELL' => [
-                        'products' => ['product_code_4'],
+                        'products' => ['0c14f70a-18c0-40d1-ab25-9994dd17c486'],
                         'product_models' => ['product_model_5'],
                         'groups' => ['group_code_3']
                     ]
@@ -184,7 +167,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                     'PRODUCT_SET' => [
                         'products' => [
                             [
-                                'identifier' => 'product_identifier_1',
+                                'uuid' => '77ff41a7-69fc-4b4a-898c-3117e08e60da',
                                 'quantity' => 8,
                             ],
                         ],
@@ -206,7 +189,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 ]
             ],
             [
-                'identifier' => 'identifier_2',
+                'uuid' => 'd9f573cc-8905-4949-8151-baf9d5328f26',
                 'created' => '2019-04-23T15:55:50+00:00',
                 'updated' => '2019-04-25T15:55:50+00:00',
                 'enabled' => true,
@@ -214,16 +197,13 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'categories' => [],
                 'groups' => [],
                 'parent' => null,
-                'values' => [
-                    # Identifier value is removed from values
-                    'another_attribute' => [['normalizedValue2']],
-                ],
+                'values' => (object) [],
                 'associations' => (object) [],
                 'quantified_associations' => (object) [],
                 'metadata' => ['a_metadata' => 'viande'],
             ],
             [
-                'identifier' => 'identifier_3',
+                'uuid' => 'fdf6f091-3f75-418f-98af-8c19db8b0000',
                 'created' => '2019-04-23T15:55:50+00:00',
                 'updated' => '2019-04-25T15:55:50+00:00',
                 'enabled' => true,
@@ -231,10 +211,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'categories' => [],
                 'groups' => [],
                 'parent' => null,
-                'values' => [
-                    # Identifier value is removed from values
-                    'another_attribute' => [['normalizedValue3']],
-                ],
+                'values' => (object) [],
                 'associations' => (object) [],
                 'quantified_associations' => (object) [],
                 'metadata' => ['a_metadata' => 'viande'],
@@ -246,8 +223,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
     function it_normalize_a_single_connection_product(
         ProductValueNormalizer $productValueNormalizer
     ) {
-        $identifier = ScalarValue::value('sku', 'identifier_1');
-        $value = ScalarValue::value('another_attribute', 'value');
+        $skuValue = ScalarValue::value('sku', 'identifier1');
         $connector = new ConnectorProduct(
             Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_1',
@@ -283,16 +259,20 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 ],
             ],
             [],
-            new ReadValueCollection([$identifier, $value]),
+            new ReadValueCollection([
+                $skuValue
+            ]),
             null,
             null
         );
 
-        $productValueNormalizer->normalize($identifier, 'standard')->shouldBeCalled()->willReturn(['normalizedIdentifier']);
-        $productValueNormalizer->normalize($value, 'standard')->shouldBeCalled()->willReturn(['normalizedValue']);
+        $productValueNormalizer
+            ->normalize($skuValue, 'standard')
+            ->shouldBeCalled()
+            ->willReturn(['normalizedIdentifier']);
 
         $this->normalizeConnectorProduct($connector)->shouldBeLike([
-            'identifier' => 'identifier_1',
+            'uuid' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
             'created' => '2019-04-23T15:55:50+00:00',
             'updated' => '2019-04-25T15:55:50+00:00',
             'enabled' => true,
@@ -301,11 +281,11 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             'groups' => ['group_code_1', 'group_code_2'],
             'parent' => 'parent_product_model_code',
             'values' => [
-                'another_attribute' => [['normalizedValue']],
+                'sku' => [['normalizedIdentifier']],
             ],
             'associations' => [
                 'X_SELL' => [
-                    'products' => ['product_code_1'],
+                    'products' => ['95341071-a0dd-47c6-81b1-315913952c43'],
                     'product_models' => [],
                     'groups' => ['group_code_2']
                 ],
@@ -314,7 +294,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'PRODUCT_SET' => [
                     'products' => [
                         [
-                            'identifier' => 'product_identifier_1',
+                            'uuid' => '77ff41a7-69fc-4b4a-898c-3117e08e60da',
                             'quantity' => 8,
                         ],
                     ],
