@@ -10,11 +10,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class InstallSupplierPortalTables implements EventSubscriberInterface
 {
-    public const ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA = [
-        'code' => 'onboarder_serenity_xlsx_supplier_import',
-        'label' => 'Onboarder Serenity XLSX Supplier Import',
-        'job_name' => 'onboarder_serenity_xlsx_supplier_import',
-        'connector' => 'Onboarder Serenity',
+    public const SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA = [
+        'code' => 'supplier_portal_xlsx_supplier_import',
+        'label' => 'Supplier Portal XLSX Supplier Import',
+        'job_name' => 'supplier_portal_xlsx_supplier_import',
+        'connector' => 'Supplier Portal',
         'raw_parameters' => 'a:0:{}',
         'type' => 'import',
     ];
@@ -106,11 +106,11 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
         $this->connection->executeStatement(
             $sql,
             [
-                'code' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['code'],
-                'label' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['label'],
-                'connector' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['connector'],
-                'rawParameters' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['raw_parameters'],
-                'type' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['type'],
+                'code' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['code'],
+                'label' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['label'],
+                'connector' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['connector'],
+                'rawParameters' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['raw_parameters'],
+                'type' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['type'],
             ],
         );
     }
@@ -125,7 +125,7 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
 
         return 1 === (int) $this
             ->connection
-            ->executeQuery($sql, ['code' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['code']])
+            ->executeQuery($sql, ['code' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['code']])
             ->fetchOne()
         ;
     }
