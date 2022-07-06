@@ -1,6 +1,6 @@
 acceptance:
   suites:
-    onboarder_serenity_retailer_acceptance:
+    supplier_portal_retailer_acceptance:
       paths:
         - '%paths.base%/features'
       contexts:
