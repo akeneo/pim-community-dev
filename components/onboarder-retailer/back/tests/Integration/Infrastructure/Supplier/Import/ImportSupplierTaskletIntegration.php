@@ -52,7 +52,7 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
     private function runSupplierPortalXlsxSupplierImportJob(string $filePath): void
     {
         $jobInstanceRepository = $this->get('pim_enrich.repository.job_instance');
-        $jobInstance = $jobInstanceRepository->findOneBy(['code' => 'onboarder_serenity_xlsx_supplier_import']);
+        $jobInstance = $jobInstanceRepository->findOneBy(['code' => 'supplier_portal_xlsx_supplier_import']);
 
         $jobParameters = new JobParameters(['filePath' => $filePath]);
         $jobExecution = new JobExecution();
@@ -69,7 +69,7 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
 
         $input = new ArrayInput([
             'command' => 'akeneo:batch:job',
-            'code' => 'onboarder_serenity_xlsx_supplier_import',
+            'code' => 'supplier_portal_xlsx_supplier_import',
             'execution' => $jobExecution->getId(),
         ]);
 

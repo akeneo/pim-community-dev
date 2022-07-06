@@ -56,9 +56,9 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
         $this->connection->executeStatement(
             $sql,
             [
-                'code' => 'onboarder_serenity_xlsx_supplier_import',
-                'label' => 'Onboarder Serenity XLSX Supplier Import',
-                'connector' => 'Onboarder Serenity',
+                'code' => 'supplier_portal_xlsx_supplier_import',
+                'label' => 'Supplier Portal XLSX Supplier Import',
+                'connector' => 'Supplier Portal',
                 'rawParameters' => 'a:0:{}',
                 'type' => 'import',
             ],
@@ -75,7 +75,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
 
         return 1 === (int) $this
                 ->connection
-                ->executeQuery($sql, ['code' => 'onboarder_serenity_xlsx_supplier_import'])
+                ->executeQuery($sql, ['code' => 'supplier_portal_xlsx_supplier_import'])
                 ->fetchOne()
             ;
     }

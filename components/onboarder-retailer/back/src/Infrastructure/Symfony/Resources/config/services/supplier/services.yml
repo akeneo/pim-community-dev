@@ -116,7 +116,7 @@ services:
     onboarder_serenity.job.xlsx_supplier_import:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - 'onboarder_serenity_xlsx_supplier_import'
+            - 'supplier_portal_xlsx_supplier_import'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -   - '@pim_connector.step.charset_validator'
@@ -153,14 +153,14 @@ services:
     onboarder_serenity.job.job_parameters.default_values_provider.xlsx_supplier_import:
         class: '%pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import.class%'
         arguments:
-            - [ 'onboarder_serenity_xlsx_supplier_import' ]
+            - [ 'supplier_portal_xlsx_supplier_import' ]
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     onboarder_serenity.job.job_parameters.constraint_collection_provider.xlsx_supplier_import:
         class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import.class%'
         arguments:
-            - [ 'onboarder_serenity_xlsx_supplier_import' ]
+            - [ 'supplier_portal_xlsx_supplier_import' ]
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -171,7 +171,7 @@ services:
     onboarder_serenity.supplier.job_instance.form_provider:
         class: Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider
         arguments:
-            -   onboarder_serenity_xlsx_supplier_import: pim-job-instance-xlsx-base-import
+            -   supplier_portal_xlsx_supplier_import: pim-job-instance-xlsx-base-import
         tags:
             - { name: pim_enrich.provider.form }
 
