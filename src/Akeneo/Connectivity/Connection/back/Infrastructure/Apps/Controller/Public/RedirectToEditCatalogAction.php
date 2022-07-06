@@ -37,6 +37,10 @@ final class RedirectToEditCatalogAction
             throw new NotFoundHttpException();
         }
 
+        if (null === $catalog) {
+            throw new NotFoundHttpException();
+        }
+
         $connectedApp = $this->findOneConnectedAppByUserIdentifierQuery->execute($catalog->getOwnerUsername());
         if (null === $connectedApp) {
             throw new NotFoundHttpException();

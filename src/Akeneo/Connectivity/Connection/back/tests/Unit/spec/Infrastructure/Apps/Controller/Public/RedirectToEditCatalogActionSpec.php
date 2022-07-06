@@ -51,6 +51,15 @@ class RedirectToEditCatalogActionSpec extends ObjectBehavior
         $this->shouldThrow(new NotFoundHttpException())->during('__invoke', ['invalid_catalog_id']);
     }
 
+    public function it_throws_not_found_exception_when_catalog_is_not_found(QueryBusInterface $catalogQueryBus): void
+    {
+        $catalogQueryBus
+            ->execute(new GetCatalogQuery('invalid_catalog_id'))
+            ->willReturn(null);
+
+        $this->shouldThrow(new NotFoundHttpException())->during('__invoke', ['invalid_catalog_id']);
+    }
+
     public function it_throws_not_found_exception_when_catalog_is_not_related_to_a_connected_app(
         QueryBusInterface $catalogQueryBus,
         FindOneConnectedAppByUserIdentifierQueryInterface $findOneConnectedAppByUserIdentifierQuery,
