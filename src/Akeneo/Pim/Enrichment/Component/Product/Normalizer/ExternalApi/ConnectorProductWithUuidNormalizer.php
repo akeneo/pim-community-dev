@@ -14,7 +14,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 /**
  * This connector is the equivalent of the ConnectorProductNormalizer, with some differences:
  * - The associated products return uuid instead of identifiers
- * - The quantified associated products return uuid instead+quantity of identifiers+quantity
+ * - The quantified associated products return uuid+quantity instead of identifiers+quantity
  * - The identifier attribute value is not removed from the value collection
  * - The identifier attribute is not normalized at the root of the normalized product
  * - The uuid is normalized at the root of the normalized product
