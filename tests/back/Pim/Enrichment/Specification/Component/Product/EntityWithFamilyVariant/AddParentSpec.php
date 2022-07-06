@@ -39,7 +39,7 @@ class AddParentSpec extends ObjectBehavior
         WriteValueCollection $filteredValues,
         VariantAttributeSetInterface $attributeSet
     ) {
-        $product->getId()->willReturn(40);
+        $product->getCreated()->willReturn(new \DateTime('2017-01-01T01:03:34+01:00'));
         $product->getFamilyVariant()->willReturn($familyVariant);
         $product->getValues()->willReturn($values);
         $values->filter(Argument::any())->willReturn($filteredValues);
@@ -64,8 +64,7 @@ class AddParentSpec extends ObjectBehavior
         $eventDispatcher,
         ProductInterface $product
     ) {
-        $product->getId()->willReturn(null);
-
+        $product->getCreated()->willReturn(null);
         $productModelRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
         $product->setParent(Argument::cetera())->shouldNotBeCalled();
         $product->setValues(Argument::cetera())->shouldNotBeCalled();
@@ -80,7 +79,7 @@ class AddParentSpec extends ObjectBehavior
         $productModelRepository,
         ProductInterface $product
     ) {
-        $product->getId()->willReturn(40);
+        $product->getCreated()->willReturn(new \DateTime('2017-01-01T01:03:34+01:00'));
 
         $productModelRepository->findOneByIdentifier('invalid_parent_code')->willReturn()->willReturn(null);
 

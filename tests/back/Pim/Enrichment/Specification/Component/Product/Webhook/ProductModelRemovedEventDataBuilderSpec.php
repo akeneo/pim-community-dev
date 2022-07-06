@@ -14,6 +14,7 @@ use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
 {
@@ -42,7 +43,11 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
     {
         $bulkEvent = new BulkEvent([
             new ProductModelRemoved(Author::fromNameAndType('julia', Author::TYPE_UI), ['code' => '1', 'category_codes' => []]),
-            new ProductRemoved(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => '1', 'category_codes' => []]),
+            new ProductRemoved(Author::fromNameAndType('julia', Author::TYPE_UI), [
+                'identifier' => '1',
+                'uuid' => Uuid::uuid4(),
+                'category_codes' => [],
+            ]),
         ]);
 
         $this->supports($bulkEvent)->shouldReturn(false);

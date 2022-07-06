@@ -4,6 +4,8 @@ namespace Akeneo\Channel\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
+use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -37,6 +39,7 @@ class ChannelController
         private SimpleFactoryInterface $channelFactory,
         private ValidatorInterface $validator,
         private SecurityFacadeInterface $securityFacade,
+        private FindCategoryTrees $findCategoryTrees
     ) {
     }
 
@@ -72,6 +75,18 @@ class ChannelController
                 ['filter_locales' => $filterLocales]
             )
         );
+    }
+
+    /**
+     * Gets Category tree without apply user permission
+     * @return JsonResponse
+     */
+    public function listCategoryTreeAction(): JsonResponse
+    {
+        $categoryTrees = $this->findCategoryTrees->execute();
+        $normalizeCategoryTrees = array_map(fn (CategoryTree $categoryTree) => $categoryTree->normalize(), $categoryTrees);
+
+        return new JsonResponse($normalizeCategoryTrees);
     }
 
     /**

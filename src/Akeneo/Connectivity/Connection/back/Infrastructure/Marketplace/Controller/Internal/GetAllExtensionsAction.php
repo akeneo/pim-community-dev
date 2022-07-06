@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceAnalyticsGenerator;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllExtensionsResult;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAllExtensionsQueryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Psr\Log\LoggerInterface;
@@ -37,6 +38,10 @@ final class GetAllExtensionsAction
             $result = $this->getAllExtensionsQuery->execute();
         } catch (\Exception $e) {
             $this->logger->error(\sprintf('unable to retrieve the list of extensions, got error "%s"', $e->getMessage()));
+
+            if (Response::HTTP_BAD_REQUEST === $e->getCode()) {
+                return new JsonResponse(GetAllExtensionsResult::create(0, [])->normalize());
+            }
 
             return new Response(null, Response::HTTP_NO_CONTENT);
         }

@@ -50,6 +50,7 @@ services:
             - '@pim_catalog.factory.channel'
             - '@validator'
             - '@oro_security.security_facade'
+            - '@akeneo.enrichment.public_api.find_category_trees'
 
     pim_api.controller.currency:
         public: true

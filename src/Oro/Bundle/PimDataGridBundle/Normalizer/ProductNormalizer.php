@@ -69,7 +69,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $data['image'] = $this->normalizeImage($product->getImage(), $context);
         $data['completeness'] = $this->getCompletenessRatio($product, $context);
         $data['document_type'] = IdEncoder::PRODUCT_TYPE;
-        $data['technical_id'] = $product->getId();
+        $data['technical_id'] = $product->getUuid()->toString();
         $data['search_id'] = IdEncoder::encode($data['document_type'], $data['technical_id']);
         $data['is_checked'] = false;
         $data['complete_variant_product'] = null;
@@ -136,7 +136,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     protected function getCompletenessRatio(ProductInterface $product, array $context): ?int
     {
-        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses->fromProductUuid($product->getUuid());
         $channel = current($context['channels']);
         $locale = current($context['locales']);
         $completeness = $completenesses->getCompletenessForChannelAndLocale($channel, $locale);

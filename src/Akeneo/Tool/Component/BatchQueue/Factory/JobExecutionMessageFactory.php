@@ -29,8 +29,7 @@ class JobExecutionMessageFactory
 
     public function __construct(
         array $mappingJobMessageTypes,
-        string $jobMessageTypeFallback,
-        private ?string $tenantId
+        string $jobMessageTypeFallback
     ) {
         Assert::classExists($jobMessageTypeFallback);
         Assert::subclassOf($jobMessageTypeFallback, JobExecutionMessageInterface::class);
@@ -49,11 +48,12 @@ class JobExecutionMessageFactory
         /** @var string|JobExecutionMessageInterface $class */
         $class = $this->getJobMessageClass($jobInstance->getType() ?? '');
 
-        return $class::createJobExecutionMessage($jobExecutionId, $options, $this->tenantId);
+        return $class::createJobExecutionMessage($jobExecutionId, $options);
     }
 
     public function buildFromNormalized(array $normalized, ?string $jobMessageClass): JobExecutionMessageInterface
     {
+        /** @var string|JobExecutionMessageInterface $class */
         $class = $jobMessageClass ?? $this->jobMessageTypeFallback;
 
         Assert::classExists($class);

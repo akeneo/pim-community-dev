@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -51,15 +52,22 @@ class VersioningController
      * Get the history of the given entity type with the given entityId
      *
      * @param string $entityType
-     * @param string $entityId
+     * @param string $entityId This is an id OR a uuid
      *
      * @return JSONResponse
      */
     public function getAction($entityType, $entityId)
     {
+        if (Uuid::isValid($entityId)) {
+            $entityUuid = Uuid::fromString($entityId);
+            $entityId = null;
+        } else {
+            $entityUuid = null;
+        }
+
         return new JsonResponse(
             $this->normalizer->normalize(
-                $this->versionRepository->getLogEntries($this->FQCNResolver->getFQCN($entityType), $entityId),
+                $this->versionRepository->getLogEntries($this->FQCNResolver->getFQCN($entityType), $entityId, $entityUuid),
                 'internal_api'
             )
         );

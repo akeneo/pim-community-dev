@@ -7,6 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -14,18 +15,18 @@ use PHPUnit\Framework\Assert;
  */
 class SqlFindProductIdentifierIntegration extends TestCase
 {
-    private int $fooId;
+    private string $fooUuid;
 
     /** @test */
-    public function it_gets_the_identifier_of_a_product_from_its_id(): void
+    public function it_gets_the_identifier_of_a_product_from_its_uuid(): void
     {
         $findIdentifier = $this->get('Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier');
         Assert::assertSame(
             'foo',
-            $findIdentifier->fromId($this->fooId)
+            $findIdentifier->fromUuid($this->fooUuid)
         );
-        $unknownId = $this->fooId + 1000;
-        Assert::assertNull($findIdentifier->fromId($unknownId));
+        $unknownId = Uuid::uuid4();
+        Assert::assertNull($findIdentifier->fromUuid($unknownId->toString()));
     }
 
     protected function setUp(): void
@@ -48,7 +49,7 @@ SQL;
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
         Assert::assertNotNull($product);
-        $this->fooId = $product->getId();
+        $this->fooUuid = $product->getUuid()->toString();
     }
 
     protected function getConfiguration()

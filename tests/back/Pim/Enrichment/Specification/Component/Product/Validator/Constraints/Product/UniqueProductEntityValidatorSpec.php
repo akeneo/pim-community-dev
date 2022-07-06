@@ -14,6 +14,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -46,7 +47,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         WriteValueCollection $values,
         ValueInterface $identifierValue,
-        AttributeInterface $identifierAttribute
+        AttributeInterface $identifierAttribute,
     ) {
         $constraint = new UniqueProductEntity();
 
@@ -57,8 +58,9 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $values->getByCodes('identifier')->willReturn($identifierValue);
 
         $product->getIdentifier()->willReturn('identifier');
-        $findId->fromIdentifier('identifier')->willReturn('40');
-        $product->getId()->willReturn(64);
+        $uuid = Uuid::uuid4();
+        $findId->fromIdentifier('identifier')->willReturn($uuid);
+        $product->getUuid()->willReturn(Uuid::uuid4());
 
         $context->buildViolation(Argument::type('string'), Argument::type('array'))
             ->willReturn($constraintViolationBuilder);

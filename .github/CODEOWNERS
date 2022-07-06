@@ -1,8 +1,5 @@
 # More info here: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-## Product Database Migrations
-upgrades/schema/ @akeneo/squad-chipmunks
-
 # Octopus features
 /src/Akeneo/Connectivity @akeneo/squad-octopus
 /components/catalogs @akeneo/squad-octopus

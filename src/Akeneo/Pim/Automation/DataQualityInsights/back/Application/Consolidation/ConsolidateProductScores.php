@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\FilterPartialCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByEntityIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
 class ConsolidateProductScores
 {
     public function __construct(
-        private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsQuery,
+        private GetCriteriaEvaluationsByEntityIdQueryInterface $getCriteriaEvaluationsQuery,
         private ComputeScores $computeScores,
         private ProductScoreRepositoryInterface $productScoreRepository,
         private Clock $clock,

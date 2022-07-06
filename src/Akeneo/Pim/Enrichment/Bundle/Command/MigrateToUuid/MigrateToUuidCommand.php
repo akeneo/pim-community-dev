@@ -17,6 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class MigrateToUuidCommand extends Command
 {
+    use MigrateToUuidTrait;
+
     protected static $defaultName = 'pim:product:migrate-to-uuid';
 
     private const DQI_JOB_NAME = 'data_quality_insights_evaluations';
@@ -36,8 +38,7 @@ class MigrateToUuidCommand extends Command
         MigrateToUuidStep $migrateToUuidAddConstraints,
         MigrateToUuidStep $migrateToUuidReindexElasticsearch,
         private LoggerInterface $logger,
-        private Connection $connection,
-        private MigrationAuthorization $migrationAuthorization
+        private Connection $connection
     ) {
         parent::__construct();
         $this->steps = [
@@ -58,11 +59,19 @@ class MigrateToUuidCommand extends Command
         $this->setDescription('Migrate databases to product uuids');
         $this->addOption('dry-run', 'd', InputOption::VALUE_NEGATABLE, 'dry run', false);
         $this->addOption('with-stats', 's', InputOption::VALUE_NEGATABLE, 'Display stats (be careful the command is way too slow)', false);
+        $this->addOption('wait-for-dqi', 'w', InputOption::VALUE_NEGATABLE, 'Wait for DQI job before starting', true);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$this->columnExists('pim_catalog_category_product', 'product_id')) {
+            $output->writeln('Migration cannot be ran on a fresh install');
+
+            return self::SUCCESS;
+        }
+
         $withStats = $input->getOption('with-stats');
+        $waitForDQI = $input->getOption('wait-for-dqi');
         $context = new Context($input->getOption('dry-run'), $withStats);
 
         if (!$this->isDatabaseReady()) {
@@ -78,15 +87,9 @@ class MigrateToUuidCommand extends Command
             return self::SUCCESS;
         }
 
-        if (!$this->migrationAuthorization->isGranted()) {
-            $this->logger->notice('The client is not authorized to run the migration. Aborting.');
-
-            return self::SUCCESS;
-        }
-
         $this->start();
         try {
-            while ($this->hasDQIJobStarted()) {
+            while ($waitForDQI && $this->hasDQIJobStarted()) {
                 $this->logger->notice(sprintf(
                     'There is a "%s" job in progress. Wait for %d seconds before retrying migration start...',
                     self::DQI_JOB_NAME,

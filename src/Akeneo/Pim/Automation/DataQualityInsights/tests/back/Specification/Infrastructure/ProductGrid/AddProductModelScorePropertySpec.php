@@ -32,7 +32,7 @@ class AddProductModelScorePropertySpec extends ObjectBehavior
             'en_US'
         );
 
-        $rows = [$this->makeRow(1), $this->makeRow(4)];
+        $rows = [$this->makeProductModelRow('1'), $this->makeProductModelRow('4')];
 
         $addScoresToProductAndProductModelRows->__invoke($queryParameters, $rows, 'product_model')->shouldBeCalled();
 
@@ -57,19 +57,19 @@ class AddProductModelScorePropertySpec extends ObjectBehavior
         ];
     }
 
-    private function makeRow(int $id): Row
+    private function makeProductModelRow(string $technicalId): Row
     {
         return Row::fromProduct(
-            strval($id), // identifier
+            sprintf('product_model_%s', $technicalId), // identifier
             null, // family
             [], // groupCodes
             true, // $enabled,
             new \DateTime(), // created
             new \DateTime(), // updated
-            strval($id), // label
+            sprintf('Label of %s', $technicalId), // label
             null, // image
             null, // completeness,
-            $id, //technicalId,
+            $technicalId, //technicalId,
             null, // parentCode,
             new WriteValueCollection() // values,
         );
