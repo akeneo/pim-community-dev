@@ -11,7 +11,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\AssociationsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\QuantifiedAssociationsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
@@ -31,7 +33,9 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
         $this->beConstructedWith(
             new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()),
             new DateTimeNormalizer(),
-            $attributeRepository
+            $attributeRepository,
+            new AssociationsNormalizer(),
+            new QuantifiedAssociationsNormalizer()
         );
         $productValuesNormalizer->normalize(Argument::type(ReadValueCollection::class), 'standard')->willReturn([]);
     }

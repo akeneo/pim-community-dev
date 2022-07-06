@@ -13,12 +13,27 @@ services:
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
 
+    Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\AssociationsNormalizer: ~
+    Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\QuantifiedAssociationsNormalizer: ~
     pim_api.normalizer.connector_products:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer'
         arguments:
             - '@pim_api.normalizer.values'
             - '@pim_catalog.normalizer.standard.datetime'
             - '@pim_catalog.repository.attribute'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\AssociationsNormalizer'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\AssociationsWithUuidNormalizer'
+
+    Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\AssociationsWithUuidNormalizer: ~
+    Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\QuantifiedAssociationsWithUuidNormalizer: ~
+    pim_api.normalizer.connector_products_with_uuid:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer'
+        arguments:
+            - '@pim_api.normalizer.values'
+            - '@pim_catalog.normalizer.standard.datetime'
+            - '@pim_catalog.repository.attribute'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\AssociationsWithUuidNormalizer'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\QuantifiedAssociationsWithUuidNormalizer'
 
     pim_api.normalizer.connector_product_models:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductModelNormalizer'
