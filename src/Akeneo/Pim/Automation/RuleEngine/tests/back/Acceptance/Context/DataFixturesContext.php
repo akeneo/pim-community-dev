@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+//use Akeneo\Category\Infrastructure\Component\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
@@ -49,7 +50,6 @@ use Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository;
 use Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository;
 use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
-use Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;

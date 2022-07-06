@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Bundle\Manager;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;

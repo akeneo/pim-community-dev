@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\ElasticsearchAndSql\CategoryTree;
 
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -140,4 +140,3 @@ class ListGrantedChildrenCategoriesWithCountIncludingSubCategoriesIntegration ex
         return $this->catalog->useMinimalCatalog();
     }
 }
-

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Test\Pim\Enrichment\Category\Integration\Query;
 
-use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
+use Akeneo\Category\Domain\Query\GetViewableCategories;
 use Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

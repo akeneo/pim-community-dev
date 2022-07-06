@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Pim\Enrichment\Category\Infrastructure\Query;
 
-use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
+use Akeneo\Category\Domain\Query\GetOwnedCategories;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
