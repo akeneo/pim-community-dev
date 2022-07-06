@@ -84,11 +84,3 @@ services:
             - '@database_connection'
         tags:
             - { name: 'akeneo.pim.zdd_migration' }
-
-    Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\MigrateZddCommand:
-        arguments:
-            - '@database_connection'
-            - '@monolog.logger'
-            - !tagged_iterator { tag: 'akeneo.pim.zdd_migration' }
-        tags:
-            - { name: 'console.command' }

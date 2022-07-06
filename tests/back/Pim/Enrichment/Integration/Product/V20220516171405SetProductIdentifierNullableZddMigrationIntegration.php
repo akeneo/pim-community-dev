@@ -47,7 +47,7 @@ class V20220516171405SetProductIdentifierNullableZddMigrationIntegration extends
             'columnName' => $columnName
         ]);
 
-        return $result !== 'NO';
+        return $result === 'YES';
     }
 
     private function setNotNullableColumn(): void

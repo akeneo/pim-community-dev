@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations;
+namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 /**
  * A ZDD Migration (for Zero Downtime Deployment Migration) is a migration that:

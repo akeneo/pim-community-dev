@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db;
+namespace Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber;
 
-use Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\ZddMigration;
+use Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -25,15 +25,11 @@ class MarkZddMigrationsAsMigratedSubscriber implements EventSubscriberInterface
 
     public function __construct(
         private Connection $connection,
-        \Traversable $zddMigrations
+        iterable $zddMigrations
     ) {
-        $this->zddMigrations = iterator_to_array($zddMigrations);
-
-        Assert::allIsInstanceOf($this->zddMigrations, ZddMigration::class);
-        usort($this->zddMigrations, fn ($a, $b) => \strcmp(
-            (new \ReflectionClass($a))->getShortName(),
-            (new \ReflectionClass($b))->getShortName()
-        ));
+        Assert::allIsInstanceOf($zddMigrations, ZddMigration::class);
+        $zddMigrations = $zddMigrations instanceof \Traversable ? \iterator_to_array($zddMigrations) : $zddMigrations;
+        $this->zddMigrations = $zddMigrations;
     }
 
     public static function getSubscribedEvents(): array

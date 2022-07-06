@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations;
 
+use Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -52,6 +53,6 @@ class V20220516171405SetProductIdentifierNullableZddMigration implements ZddMigr
             'columnName' => $columnName
         ]);
 
-        return $result !== 'NO';
+        return $result === 'YES';
     }
 }

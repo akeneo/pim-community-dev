@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations;
+namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class MigrateZddCommand extends Command
+final class MigrateZddCommand extends Command
 {
     protected static $defaultName = 'pim:zdd-migration:migrate';
 
@@ -79,6 +79,7 @@ class MigrateZddCommand extends Command
                     );
 
                     $output->write($e->getMessage());
+
                     return Command::FAILURE;
                 }
             }
