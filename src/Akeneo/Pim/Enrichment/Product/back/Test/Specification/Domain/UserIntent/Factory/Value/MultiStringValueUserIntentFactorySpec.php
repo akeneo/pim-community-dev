@@ -63,7 +63,7 @@ class MultiStringValueUserIntentFactorySpec extends ObjectBehavior
     function it_returns_clear_value()
     {
         $this->create(AttributeTypes::OPTION_MULTI_SELECT, 'a_multi_select', [
-            'data' => null,
+            'data' => [],
             'locale' => 'fr_FR',
             'scope' => 'ecommerce',
         ])->shouldBeLike(new ClearValue('a_multi_select', 'ecommerce', 'fr_FR'));

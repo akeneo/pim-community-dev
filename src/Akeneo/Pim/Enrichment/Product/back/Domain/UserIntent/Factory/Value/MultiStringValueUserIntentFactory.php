@@ -35,7 +35,7 @@ class MultiStringValueUserIntentFactory implements ValueUserIntentFactory
     public function create(string $attributeType, string $attributeCode, mixed $data): ValueUserIntent
     {
         $this->validateValueStructure($attributeCode, $data);
-        if (null === $data['data']) {
+        if ([] === $data['data']) {
             return new ClearValue($attributeCode, $data['scope'], $data['locale']);
         }
         $this->validateScalarArray($attributeCode, $data['data']);
