@@ -157,7 +157,7 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
 
         $product = $query->fromProductIdentifier('variant_product', (int) $userId);
 
-        Assert::assertEqualsCanonicalizing([
+        Assert::assertEquals([
             'X_SELL' => [
                 'products' => [
                     ['identifier' => 'product_view', 'uuid' => $this->getProductUuidFromIdentifier('product_view')->toString()],
