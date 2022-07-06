@@ -25,6 +25,7 @@ use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
 {
@@ -115,6 +116,7 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
             [],
             ['workflow_status' => 'working_copy'],
             new ReadValueCollection([
+                ScalarValue::value('sku', 'variant_product'),
                 ScalarValue::value('variant_product_axis_attribute', true),
                 ScalarValue::localizableValue('variant_product_edit_attribute', true, 'en_US'),
                 ScalarValue::localizableValue('variant_product_edit_attribute', true, 'fr_FR'),
@@ -157,7 +159,9 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
 
         Assert::assertEquals([
             'X_SELL' => [
-                'products' => ['product_view'],
+                'products' => [
+                    ['identifier' => 'product_view', 'uuid' => $this->getProductUuidFromIdentifier('product_view')->toString()],
+                ],
                 'product_models' => [],
                 'groups' => [],
             ],
@@ -197,8 +201,16 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
         Assert::assertEquals([
             'PRODUCTSET' => [
                 'products' => [
-                    ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
-                    ['identifier' => 'product_without_category', 'quantity' => 3],
+                    [
+                        'identifier' => 'product_viewable_by_everybody',
+                        'quantity' => 2,
+                        'uuid' => $this->getProductUuidFromIdentifier('product_viewable_by_everybody')->toString(),
+                    ],
+                    [
+                        'identifier' => 'product_without_category',
+                        'quantity' => 3,
+                        'uuid' => $this->getProductUuidFromIdentifier('product_without_category')->toString(),
+                    ],
                 ],
                 'product_models' => [
                     ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
@@ -279,6 +291,7 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
             [],
             ['workflow_status' => 'working_copy'],
             new ReadValueCollection([
+                ScalarValue::value('sku', 'variant_product'),
                 ScalarValue::value('variant_product_axis_attribute', true),
                 ScalarValue::localizableValue('variant_product_edit_attribute', true, 'en_US'),
                 ScalarValue::localizableValue('variant_product_edit_attribute', true, 'fr_FR'),
@@ -301,7 +314,6 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
 
         Assert::assertEquals($expectedProductList, $productList);
         Assert::assertEquals($expectedProduct, $product);
-
     }
 
     /**
@@ -331,5 +343,12 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
     private function getQuery(): GetConnectorProducts
     {
         return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers');
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        ));
     }
 }
