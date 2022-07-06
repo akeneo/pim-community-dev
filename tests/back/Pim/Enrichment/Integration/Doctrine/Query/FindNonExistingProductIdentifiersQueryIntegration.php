@@ -5,7 +5,6 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Test\Integration\TestCase;
-use PHPUnit\Framework\Assert;
 
 class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
 {
@@ -75,14 +74,16 @@ class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }
 
-    protected function getUserId(string $username): int
+    private function getUserId(string $username): int
     {
         $query = <<<SQL
             SELECT id FROM oro_user WHERE username = :username
         SQL;
         $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
         $id = $stmt->fetchOne();
-        Assert::assertNotNull($id);
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
 
         return \intval($id);
     }

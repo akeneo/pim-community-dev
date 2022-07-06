@@ -6,7 +6,6 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProductCompletenessRatio;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
@@ -117,7 +116,9 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
         SQL;
         $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
         $id = $stmt->fetchOne();
-        Assert::assertNotNull($id);
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
 
         return \intval($id);
     }

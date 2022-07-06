@@ -2,11 +2,11 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Common\Saver;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
-use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -88,12 +88,14 @@ class RemovingProductIntegration extends TestCase
         SQL;
         $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
         $id = $stmt->fetchOne();
-        Assert::assertNotNull($id);
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
 
         return \intval($id);
     }
 
-    private function createProduct(string $identifier)
+    private function createProduct(string $identifier): ProductInterface
     {
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),

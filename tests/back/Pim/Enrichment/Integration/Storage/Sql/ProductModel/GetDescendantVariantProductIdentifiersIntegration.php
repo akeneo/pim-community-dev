@@ -36,9 +36,9 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
             'attribute' => 'a_simple_select',
             'labels' => ['en_US' => 'C option'],
         ]);
-        $constraints = $this->get('validator')->validate($attributeOption);
-        if (count($constraints) > 0) {
-            throw new \InvalidArgumentException((string)$constraints);
+        $violations = $this->get('validator')->validate($attributeOption);
+        if (count($violations) > 0) {
+            throw new \InvalidArgumentException((string)$violations);
         }
         $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
 
@@ -270,7 +270,9 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
         SQL;
         $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
         $id = $stmt->fetchOne();
-        Assert::assertNotNull($id);
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
 
         return \intval($id);
     }

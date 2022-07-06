@@ -243,10 +243,7 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
             $product,
             ['parent' => null]
         );
-        $violations = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::assertCount(0, $violations, sprintf('The product is not valid: %s', $violations));
-
-        $this->get('pim_catalog.saver.product')->save($product);
+        $this->upsertProduct($product->getIdentifier());
     }
 
     private function createProductModel(array $data): void
@@ -282,7 +279,9 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
         SQL;
         $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
         $id = $stmt->fetchOne();
-        Assert::assertNotNull($id);
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
 
         return \intval($id);
     }

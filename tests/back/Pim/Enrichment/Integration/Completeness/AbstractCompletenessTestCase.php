@@ -13,8 +13,6 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\TestCase;
-use PHPUnit\Framework\Assert;
-use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Julien Janvier <j.janvier@gmail.com>
@@ -51,8 +49,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
         bool $scopable = false,
         array $localesSpecific = [],
         AttributeGroup $group = null
-    ): AttributeInterface
-    {
+    ): AttributeInterface {
         if (null === $group) {
             $group = $this->get('pim_api.repository.attribute_group')->findOneByIdentifier('other');
         }
@@ -98,7 +95,9 @@ abstract class AbstractCompletenessTestCase extends TestCase
         SQL;
         $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
         $id = $stmt->fetchOne();
-        Assert::assertNotNull($id);
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
 
         return \intval($id);
     }

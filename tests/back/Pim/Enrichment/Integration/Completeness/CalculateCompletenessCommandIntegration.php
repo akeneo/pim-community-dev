@@ -14,7 +14,6 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use PHPUnit\Framework\Assert;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 class CalculateCompletenessCommandIntegration extends TestCase
@@ -144,7 +143,9 @@ class CalculateCompletenessCommandIntegration extends TestCase
         SQL;
         $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
         $id = $stmt->fetchOne();
-        Assert::assertNotNull($id);
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
 
         return \intval($id);
     }
