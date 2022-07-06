@@ -44,3 +44,4 @@ deployments-ucs/tenant/Chart.lock
 /pim-enterprise-cloud
 connectors/*
 .terraform*
+.DS_Store
