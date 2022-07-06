@@ -204,3 +204,5 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetActivatedFamilyAttributesCodesQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\FamilyCriterionEvaluationRepository'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\HashText: ~

@@ -35,6 +35,9 @@ final class GetNumberOfWordsQueryIntegration extends DataQualityInsightsTestCase
         $dictionaryWordRepository->save(new TextCheckerDictionaryWord($enUS, new DictionaryWord('Ziggy')));
         $dictionaryWordRepository->save(new TextCheckerDictionaryWord($enUS, new DictionaryWord('Akeneo')));
         $dictionaryWordRepository->save(new TextCheckerDictionaryWord($frFR, new DictionaryWord('Akeneo')));
+        $dictionaryWordRepository->save(new TextCheckerDictionaryWord($enUS, new DictionaryWord('foo')));
+
+        $this->deleteWord('en_US', 'foo');
 
         $numberOfWords = $this->get(GetNumberOfWordsQuery::class)->byLocales(['en_US', 'fr_FR']);
 
@@ -47,5 +50,18 @@ final class GetNumberOfWordsQueryIntegration extends DataQualityInsightsTestCase
 TRUNCATE TABLE pimee_data_quality_insights_text_checker_dictionary;
 SQL
         );
+    }
+
+    private function deleteWord(string $locale, string $word): void
+    {
+        $sql = <<<SQL
+SELECT id FROM pimee_data_quality_insights_text_checker_dictionary
+WHERE locale_code = :locale AND word = :word;
+SQL;
+
+        $wordId = $this->get('database_connection')->executeQuery($sql, ['locale' => $locale, 'word' => $word])->fetchOne();
+        $this->assertNotFalse($wordId);
+
+        $this->get(TextCheckerDictionaryRepository::class)->deleteWord((int)$wordId);
     }
 }

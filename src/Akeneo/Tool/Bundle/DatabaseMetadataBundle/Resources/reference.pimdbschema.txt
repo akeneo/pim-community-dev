@@ -805,6 +805,8 @@ pim_versioning_version | pending | NO | tinyint(1) | MUL
 pimee_data_quality_insights_text_checker_dictionary | id | NO | int | PRI
 pimee_data_quality_insights_text_checker_dictionary | locale_code | NO | varchar(20) | MUL
 pimee_data_quality_insights_text_checker_dictionary | word | NO | varchar(250) |
+pimee_data_quality_insights_text_checker_dictionary | enabled | YES | tinyint |
+pimee_data_quality_insights_text_checker_dictionary | updated_at | YES | datetime |
 pimee_dqi_attribute_locale_quality | attribute_code | NO | varchar(100) | PRI
 pimee_dqi_attribute_locale_quality | locale | NO | varchar(20) | PRI
 pimee_dqi_attribute_locale_quality | quality | NO | varchar(20) |

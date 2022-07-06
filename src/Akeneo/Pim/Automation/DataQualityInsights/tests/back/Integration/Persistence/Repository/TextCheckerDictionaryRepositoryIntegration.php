@@ -162,14 +162,50 @@ final class TextCheckerDictionaryRepositoryIntegration extends TestCase
         $this->assertFalse($this->repository->isEmptyForLocale($enUS));
     }
 
+    public function test_it_deletes_a_word()
+    {
+        $this->createWords();
+
+        $this->assertCount(3, $this->repository->findByLocaleCode(new LocaleCode('en_US')));
+
+        $sql = <<<SQL
+SELECT id FROM pimee_data_quality_insights_text_checker_dictionary
+WHERE enabled = 1 AND locale_code = 'en_US'
+LIMIT 1;
+SQL;
+        $wordId = $this->get('database_connection')->executeQuery($sql)->fetchOne();
+
+        $this->repository->deleteWord((int) $wordId);
+        $this->assertCount(2, $this->repository->findByLocaleCode(new LocaleCode('en_US')));
+    }
+
+    public function test_it_saves_without_changing_the_date_when_the_word_is_already_enabled(): void
+    {
+        $this->createWords();
+
+        $alreadyEnabledWord = new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('samsung'));
+
+        $this->repository->saveAll([$alreadyEnabledWord]);
+        $this->repository->save($alreadyEnabledWord);
+
+        $query = <<<SQL
+SELECT updated_at FROM pimee_data_quality_insights_text_checker_dictionary
+WHERE locale_code = 'en_US' AND word = 'samsung';
+SQL;
+
+        $updatedAt = $this->get('database_connection')->executeQuery($query)->fetchOne();
+        $this->assertEquals('2022-06-03 11:45:27', $updatedAt);
+    }
+
     private function createWords()
     {
         $query = <<<SQL
- INSERT INTO pimee_data_quality_insights_text_checker_dictionary (locale_code, word)
+ INSERT INTO pimee_data_quality_insights_text_checker_dictionary (locale_code, word, enabled, updated_at)
  VALUES
-    ('en_US', 'samsung'),
-    ('en_US', 'Sony'),
-    ('en_US', 'LG')
+    ('en_US', 'samsung', 1, '2022-06-03 11:45:27'),
+    ('en_US', 'Sony', 1, '2022-06-03 11:45:27'),
+    ('en_US', 'LG', 1, '2022-06-03 11:45:27'),
+    ('en_US', 'Asus', 0, '2022-06-03 11:45:27')
 ;
 SQL;
         $this->get('database_connection')->executeQuery($query);
@@ -179,7 +215,7 @@ SQL;
     {
         $query = <<<SQL
 SELECT 1 FROM pimee_data_quality_insights_text_checker_dictionary
-WHERE locale_code = :locale AND BINARY word = :word;
+WHERE locale_code = :locale AND BINARY word = :word AND enabled = 1;
 SQL;
 
         $wordExists = $this->get('database_connection')->executeQuery($query, ['locale' => $locale, 'word' => $word])->fetchColumn();
