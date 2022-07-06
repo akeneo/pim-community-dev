@@ -5,7 +5,7 @@ import {StatusCriterionState} from '../criteria/StatusCriterion';
 import {FamilyCriterionState} from '../criteria/FamilyCriterion';
 
 export type CriterionModule<State> = {
-    state: State;
+    state: State & any;
     onChange: (state: State) => void;
     onRemove: () => void;
     errors: CriterionErrors;

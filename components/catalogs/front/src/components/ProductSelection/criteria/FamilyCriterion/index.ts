@@ -7,7 +7,7 @@ const Criterion: FamilyCriterion = {
     factory: (state?: Partial<FamilyCriterionState>): FamilyCriterionState => ({
         field: 'family',
         operator: state?.operator !== undefined ? state.operator : Operator.IS_NOT_EMPTY,
-        value: state?.value !== undefined ? state.value : true,
+        value: state?.value !== undefined ? state.value : [],
     }),
 };
 
