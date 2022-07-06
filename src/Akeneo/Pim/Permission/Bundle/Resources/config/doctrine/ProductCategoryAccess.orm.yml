@@ -1,5 +1,3 @@
-Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface: ~
-
 Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess:
     type: entity
     table: pimee_security_product_category_access
@@ -39,7 +37,7 @@ Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess:
                 default: false
     manyToOne:
         category:
-            targetEntity: Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
             joinColumns:
                 category_id:
                     referencedColumnName: id
