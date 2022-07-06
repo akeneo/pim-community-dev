@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Repository\InMemory;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Code;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 
 class InMemoryRepository implements Repository
 {

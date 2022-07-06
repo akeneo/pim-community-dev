@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Query\Sql;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\GetAllSuppliersWithContributors;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\Model\SupplierWithContributors;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetAllSuppliersWithContributors;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContributors;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetAllSuppliersWithContributors implements GetAllSuppliersWithContributors

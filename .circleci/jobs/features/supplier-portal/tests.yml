@@ -1,7 +1,7 @@
 executor-machine: &executor-machine
 
 jobs:
-    test_back_onboarder:
+    test_back_supplier_portal:
         machine:
             image: *executor-machine
             docker_layer_caching: true
@@ -10,7 +10,7 @@ jobs:
                     at: ~/
             -   run:
                     name: Create Behat acceptance output directory
-                    command: mkdir -p var/tests/behat/onboarder-serenity-acceptance ~/.cache/yarn
+                    command: mkdir -p var/tests/behat/supplier-portal-acceptance ~/.cache/yarn
             -   run:
                     name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                     command: |
@@ -33,11 +33,11 @@ jobs:
                     name: Launch PHP static analyzer & check Sf services
                     command: PIM_CONTEXT=test make static-back
             -   run:
-                    name: Run tests for Onboarder Serenity
-                    command: PIM_CONTEXT=onboarder-serenity make tests-back-onboarder
+                    name: Run tests for Supplier Portal
+                    command: PIM_CONTEXT=supplier-portal make tests-back-supplier-portal
             - store_test_results:
                 path: var/tests/phpunit
-    test_front_onboarder:
+    test_front_supplier_portal:
         machine:
             image: *executor-machine
             docker_layer_caching: true
@@ -55,7 +55,7 @@ jobs:
             -   run:
                     name: Install supplier front dependencies
                     command:  |
-                        PIM_CONTEXT=onboarder-serenity make install-front-dependencies-supplier
+                        PIM_CONTEXT=supplier-portal make install-front-dependencies-supplier
             -   run:
                     name: Run tests front for Onboarder Serenity
-                    command: PIM_CONTEXT=onboarder-serenity make tests-front-onboarder
+                    command: PIM_CONTEXT=supplier-portal make tests-front-supplier-portal

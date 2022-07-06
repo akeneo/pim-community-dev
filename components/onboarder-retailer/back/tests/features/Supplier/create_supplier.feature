@@ -1,4 +1,4 @@
-Feature: Onboarder Serenity - Suppliers management - create supplier
+Feature: Supplier Portal - Suppliers management - create supplier
 
   Scenario: Create a supplier
     Given there is no supplier

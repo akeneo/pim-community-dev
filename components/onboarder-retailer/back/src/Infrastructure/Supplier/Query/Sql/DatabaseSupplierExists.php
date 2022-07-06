@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Query\Sql;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\SupplierExists;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseSupplierExists implements SupplierExists

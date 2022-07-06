@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Install;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Install;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class InstallOnboarderSerenityTables implements EventSubscriberInterface
+final class InstallSupplierPortalTables implements EventSubscriberInterface
 {
-    public const ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA = [
-        'code' => 'onboarder_serenity_xlsx_supplier_import',
-        'label' => 'Onboarder Serenity XLSX Supplier Import',
-        'job_name' => 'onboarder_serenity_xlsx_supplier_import',
-        'connector' => 'Onboarder Serenity',
+    public const SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA = [
+        'code' => 'supplier_portal_xlsx_supplier_import',
+        'label' => 'Supplier Portal XLSX Supplier Import',
+        'job_name' => 'supplier_portal_xlsx_supplier_import',
+        'connector' => 'Supplier Portal',
         'raw_parameters' => 'a:0:{}',
         'type' => 'import',
     ];
@@ -25,15 +25,15 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [InstallerEvents::POST_DB_CREATE => ['installOnboarderSerenityTables', 100]];
+        return [InstallerEvents::POST_DB_CREATE => ['installSupplierPortalTables', 100]];
     }
 
-    public function installOnboarderSerenityTables(): void
+    public function installSupplierPortalTables(): void
     {
         $this->addSupplierTable();
         $this->addSupplierContributorTable();
         $this->addContributorAccountTable();
-        $this->addOnboarderSerenityXlsxSupplierImportJob();
+        $this->addSupplierPortalXlsxSupplierImportJob();
     }
 
     private function addSupplierTable(): void
@@ -92,9 +92,9 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
         $this->connection->executeStatement($sql);
     }
 
-    private function addOnboarderSerenityXlsxSupplierImportJob(): void
+    private function addSupplierPortalXlsxSupplierImportJob(): void
     {
-        if ($this->onboarderSerenityXlsxSupplierImportJobExists()) {
+        if ($this->SupplierPortalXlsxSupplierImportJobExists()) {
             return;
         }
 
@@ -106,16 +106,16 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
         $this->connection->executeStatement(
             $sql,
             [
-                'code' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['code'],
-                'label' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['label'],
-                'connector' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['connector'],
-                'rawParameters' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['raw_parameters'],
-                'type' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['type'],
+                'code' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['code'],
+                'label' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['label'],
+                'connector' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['connector'],
+                'rawParameters' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['raw_parameters'],
+                'type' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['type'],
             ],
         );
     }
 
-    private function onboarderSerenityXlsxSupplierImportJobExists(): bool
+    private function SupplierPortalXlsxSupplierImportJobExists(): bool
     {
         $sql = <<<SQL
             SELECT COUNT(*)
@@ -125,7 +125,7 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
 
         return 1 === (int) $this
             ->connection
-            ->executeQuery($sql, ['code' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['code']])
+            ->executeQuery($sql, ['code' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['code']])
             ->fetchOne()
         ;
     }

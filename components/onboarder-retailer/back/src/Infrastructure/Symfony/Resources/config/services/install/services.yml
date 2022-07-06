@@ -1,5 +1,5 @@
 services:
-    Akeneo\OnboarderSerenity\Retailer\Infrastructure\Install\InstallOnboarderSerenityTables:
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Install\InstallSupplierPortalTables:
         arguments:
             - '@database_connection'
         tags:

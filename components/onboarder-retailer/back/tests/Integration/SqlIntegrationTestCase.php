@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Test\Integration;
+namespace Akeneo\SupplierPortal\Retailer\Test\Integration;
 
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -26,7 +26,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
             DELETE FROM `akeneo_batch_job_execution`;
         SQL);
 
-        $this->addOnboarderSerenityXlsxSupplierImportJob();
+        $this->addSupplierPortalXlsxSupplierImportJob();
     }
 
     protected function get(string $service): ?object
@@ -42,9 +42,9 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
         $this->ensureKernelShutdown();
     }
 
-    private function addOnboarderSerenityXlsxSupplierImportJob(): void
+    private function addSupplierPortalXlsxSupplierImportJob(): void
     {
-        if ($this->onboarderSerenityXlsxSupplierImportJobExists()) {
+        if ($this->SupplierPortalXlsxSupplierImportJobExists()) {
             return;
         }
 
@@ -56,16 +56,16 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
         $this->connection->executeStatement(
             $sql,
             [
-                'code' => 'onboarder_serenity_xlsx_supplier_import',
-                'label' => 'Onboarder Serenity XLSX Supplier Import',
-                'connector' => 'Onboarder Serenity',
+                'code' => 'supplier_portal_xlsx_supplier_import',
+                'label' => 'Supplier Portal XLSX Supplier Import',
+                'connector' => 'Supplier Portal',
                 'rawParameters' => 'a:0:{}',
                 'type' => 'import',
             ],
         );
     }
 
-    private function onboarderSerenityXlsxSupplierImportJobExists(): bool
+    private function SupplierPortalXlsxSupplierImportJobExists(): bool
     {
         $sql = <<<SQL
             SELECT COUNT(*)
@@ -75,7 +75,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
 
         return 1 === (int) $this
                 ->connection
-                ->executeQuery($sql, ['code' => 'onboarder_serenity_xlsx_supplier_import'])
+                ->executeQuery($sql, ['code' => 'supplier_portal_xlsx_supplier_import'])
                 ->fetchOne()
             ;
     }

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Query\InMemory;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 
 final class InMemorySupplierContributorsBelongingToAnotherSupplier implements SupplierContributorsBelongingToAnotherSupplier
 {

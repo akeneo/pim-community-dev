@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Controller;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller;
 
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\DeleteSupplier;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\DeleteSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplierHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 

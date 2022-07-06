@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Test\Integration\Infrastructure\Supplier\Import;
+namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplier\Import;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\OnboarderSerenity\Retailer\Test\Integration\SqlIntegrationTestCase;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -28,7 +28,7 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
             static::$kernel->getProjectDir(),
         );
 
-        $this->runOnboarderSerenityXlsxSupplierImportJob($filePath);
+        $this->runSupplierPortalXlsxSupplierImportJob($filePath);
         $supplier = $this->findSupplierByCode('supplier_1');
 
         static::assertNotNull($supplier);
@@ -44,15 +44,15 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
             static::$kernel->getProjectDir(),
         );
 
-        $this->runOnboarderSerenityXlsxSupplierImportJob($filePath);
+        $this->runSupplierPortalXlsxSupplierImportJob($filePath);
 
         static::assertSame(0, $this->countSuppliers());
     }
 
-    private function runOnboarderSerenityXlsxSupplierImportJob(string $filePath): void
+    private function runSupplierPortalXlsxSupplierImportJob(string $filePath): void
     {
         $jobInstanceRepository = $this->get('pim_enrich.repository.job_instance');
-        $jobInstance = $jobInstanceRepository->findOneBy(['code' => 'onboarder_serenity_xlsx_supplier_import']);
+        $jobInstance = $jobInstanceRepository->findOneBy(['code' => 'supplier_portal_xlsx_supplier_import']);
 
         $jobParameters = new JobParameters(['filePath' => $filePath]);
         $jobExecution = new JobExecution();
@@ -69,7 +69,7 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
 
         $input = new ArrayInput([
             'command' => 'akeneo:batch:job',
-            'code' => 'onboarder_serenity_xlsx_supplier_import',
+            'code' => 'supplier_portal_xlsx_supplier_import',
             'execution' => $jobExecution->getId(),
         ]);
 

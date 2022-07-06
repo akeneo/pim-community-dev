@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Controller;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller;
 
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\Exception\InvalidData;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\Exception\SupplierDoesNotExist;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\UpdateSupplier;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\UpdateSupplierHandler;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\InvalidData;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\SupplierDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read;
+namespace Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 
 interface GetIdentifierFromCode
 {

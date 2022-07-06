@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\Model;
+namespace Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model;
 
 final class SupplierWithContributorCount
 {

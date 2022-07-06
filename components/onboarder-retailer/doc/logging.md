@@ -1,21 +1,21 @@
 # Logging
 
-This page describes the best-practices to follow when adding logs in the Onboarder Serenity application.
+This page describes the best-practices to follow when adding logs in the Supplier Portal application.
 
 ## Adding Logs In The Back-End
 
 ### The Basics
 
-In Onboarder Serenity back-end, we log through [the Symfony logger](https://symfony.com/doc/current/logging.html),
+In Supplier Portal back-end, we log through [the Symfony logger](https://symfony.com/doc/current/logging.html),
 a [PSR-3](https://www.php-fig.org/psr/psr-3/) compatible logger, backed-up by [Monolog](https://seldaek.github.io/monolog/)
 which provides additional functionalities, like separation of logs by channels, more configuration options, etc…
 
-To use the logger, we simply need to inject the `@monolog.logger.onboarder_serenity` service, as you can see in the following example.
+To use the logger, we simply need to inject the `@monolog.logger.supplier_portal` service, as you can see in the following example.
 
 ```yaml
 Foo\Bar:
     arguments:
-        - '@monolog.logger.onboarder_serenity'
+        - '@monolog.logger.supplier_portal'
 ```
 
 ```php
@@ -54,7 +54,7 @@ The [PSR-3](https://www.php-fig.org/psr/psr-3/) describes several [level of logs
 You can find a description of each level and when to use them in the [LoggerInterface](https://github.com/php-fig/log/blob/master/src/LoggerInterface.php).
 The interface provides a dedicated method for each level.
 
-In Onboarder Serenity, we mostly use 4 levels:
+In Supplier Portal, we mostly use 4 levels:
 - `debug`: Use it to log any data that can be useful while developing and testing. Don't be shy with that one, as those
   logs will not be generated in production (we filter and keep only `info` and higher levels in the Symfony `prod`
   environment used in production).

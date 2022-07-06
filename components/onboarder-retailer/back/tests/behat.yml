@@ -1,10 +1,10 @@
 acceptance:
   suites:
-    onboarder_serenity_retailer_acceptance:
+    supplier_portal_retailer_acceptance:
       paths:
         - '%paths.base%/features'
       contexts:
-        - Akeneo\OnboarderSerenity\Retailer\Test\Acceptance\Context\SupplierContext
+        - Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\SupplierContext
 
   extensions:
     Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~

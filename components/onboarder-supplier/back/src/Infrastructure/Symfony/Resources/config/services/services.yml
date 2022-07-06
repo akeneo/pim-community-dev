@@ -3,4 +3,4 @@ services:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer\SendSwiftmailerEmail
         arguments:
             - '@mailer'
-            - '@monolog.logger.onboarder_serenity'
+            - '@monolog.logger.supplier_portal'

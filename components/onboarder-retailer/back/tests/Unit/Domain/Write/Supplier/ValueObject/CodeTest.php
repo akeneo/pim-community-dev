@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Test\Unit\Domain\Write\Supplier\ValueObject;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\Write\Supplier\ValueObject;
 
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use PHPUnit\Framework\TestCase;
 
 final class CodeTest extends TestCase

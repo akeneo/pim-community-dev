@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Controller;
+namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller;
 
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\CreateSupplier;
-use Akeneo\OnboarderSerenity\Retailer\Application\Supplier\CreateSupplierHandler;
-use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplier;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
