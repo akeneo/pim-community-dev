@@ -18,7 +18,7 @@ workflows:
 
             - security-hunter/scan-image:
                   severity: "CRITICAL"
-                  secrets_only: true
+                  only_secrets: true
                   requires:
                     - build_srnt_dev
 
