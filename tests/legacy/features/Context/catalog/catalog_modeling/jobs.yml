@@ -260,6 +260,7 @@ jobs:
         configuration:
             delimiter:  ;
             enclosure:  '"'
+            withHeader: true
             storage:
                 type: none
             filters:
