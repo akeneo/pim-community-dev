@@ -11,38 +11,38 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\RouterInterface;
 
-class ConnectorProductNormalizerSpec extends ObjectBehavior
+class ConnectorProductWithUuidNormalizerSpec extends ObjectBehavior
 {
     function let(
-        ProductValueNormalizer $productValuesNormalizer,
+        ProductValueNormalizer $productValueNormalizer,
         RouterInterface $router,
         AttributeRepositoryInterface $attributeRepository
     ) {
         $this->beConstructedWith(
-            new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()),
+            new ValuesNormalizer($productValueNormalizer->getWrappedObject(), $router->getWrappedObject()),
             new DateTimeNormalizer(),
             $attributeRepository
         );
-        $productValuesNormalizer->normalize(Argument::type(ReadValueCollection::class), 'standard')->willReturn([]);
     }
 
     function it_is_a_normalizer_of_a_list_of_connector_products()
     {
-        $this->shouldBeAnInstanceOf(ConnectorProductNormalizer::class);
+        $this->shouldBeAnInstanceOf(ConnectorProductWithUuidNormalizer::class);
     }
 
-    function it_normalizes_a_list_of_products()
-    {
+    function it_normalizes_a_list_of_products(
+        ProductValueNormalizer $productValueNormalizer
+    ) {
         $connector1 = new ConnectorProduct(
             Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_1',
@@ -142,7 +142,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             new ConnectorProductList(3, [$connector1, $connector2, $connector3])
         )->shouldBeLike([
             [
-                'identifier' => 'identifier_1',
+                'uuid' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'created' => '2019-04-23T15:55:50+00:00',
                 'updated' => '2019-04-25T15:55:50+00:00',
                 'enabled' => true,
@@ -153,12 +153,12 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'values' => (object) [],
                 'associations' => [
                     'X_SELL' => [
-                        'products' => ['product_code_1', null],
+                        'products' => ['95341071-a0dd-47c6-81b1-315913952c43', '905addae-b005-41c4-a277-9fe8804f43f5'],
                         'product_models' => [],
                         'groups' => ['group_code_2']
                     ],
                     'UPSELL' => [
-                        'products' => ['product_code_4'],
+                        'products' => ['0c14f70a-18c0-40d1-ab25-9994dd17c486'],
                         'product_models' => ['product_model_5'],
                         'groups' => ['group_code_3']
                     ]
@@ -167,7 +167,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                     'PRODUCT_SET' => [
                         'products' => [
                             [
-                                'identifier' => 'product_identifier_1',
+                                'uuid' => '77ff41a7-69fc-4b4a-898c-3117e08e60da',
                                 'quantity' => 8,
                             ],
                         ],
@@ -189,7 +189,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 ]
             ],
             [
-                'identifier' => 'identifier_2',
+                'uuid' => 'd9f573cc-8905-4949-8151-baf9d5328f26',
                 'created' => '2019-04-23T15:55:50+00:00',
                 'updated' => '2019-04-25T15:55:50+00:00',
                 'enabled' => true,
@@ -203,7 +203,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'metadata' => ['a_metadata' => 'viande'],
             ],
             [
-                'identifier' => 'identifier_3',
+                'uuid' => 'fdf6f091-3f75-418f-98af-8c19db8b0000',
                 'created' => '2019-04-23T15:55:50+00:00',
                 'updated' => '2019-04-25T15:55:50+00:00',
                 'enabled' => true,
@@ -220,8 +220,10 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_normalize_a_single_connection_product()
-    {
+    function it_normalize_a_single_connection_product(
+        ProductValueNormalizer $productValueNormalizer
+    ) {
+        $skuValue = ScalarValue::value('sku', 'identifier1');
         $connector = new ConnectorProduct(
             Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_1',
@@ -257,13 +259,20 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 ],
             ],
             [],
-            new ReadValueCollection(),
+            new ReadValueCollection([
+                $skuValue
+            ]),
             null,
             null
         );
 
+        $productValueNormalizer
+            ->normalize($skuValue, 'standard')
+            ->shouldBeCalled()
+            ->willReturn(['normalizedIdentifier']);
+
         $this->normalizeConnectorProduct($connector)->shouldBeLike([
-            'identifier' => 'identifier_1',
+            'uuid' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
             'created' => '2019-04-23T15:55:50+00:00',
             'updated' => '2019-04-25T15:55:50+00:00',
             'enabled' => true,
@@ -271,10 +280,12 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             'categories' => ['category_code_1', 'category_code_2'],
             'groups' => ['group_code_1', 'group_code_2'],
             'parent' => 'parent_product_model_code',
-            'values' => (object) [],
+            'values' => [
+                'sku' => [['normalizedIdentifier']],
+            ],
             'associations' => [
                 'X_SELL' => [
-                    'products' => ['product_code_1'],
+                    'products' => ['95341071-a0dd-47c6-81b1-315913952c43'],
                     'product_models' => [],
                     'groups' => ['group_code_2']
                 ],
@@ -283,7 +294,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'PRODUCT_SET' => [
                     'products' => [
                         [
-                            'identifier' => 'product_identifier_1',
+                            'uuid' => '77ff41a7-69fc-4b4a-898c-3117e08e60da',
                             'quantity' => 8,
                         ],
                     ],

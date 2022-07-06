@@ -12,14 +12,17 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormaliz
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
- * @author    Anael Chardan <anael.chardan@akeneo.com>
- * @author    Mathias Métayer <mathias.metayer@akeneo.com>
- * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
+ * This connector is the equivalent of the ConnectorProductNormalizer, with some differences:
+ * - The associated products return uuid instead of identifiers
+ * - The quantified associated products return uuid instead+quantity of identifiers+quantity
+ * - The identifier attribute value is not removed from the value collection
+ * - The identifier attribute is not normalized at the root of the normalized product
+ * - The uuid is normalized at the root of the normalized product
  *
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ConnectorProductNormalizer
+final class ConnectorProductWithUuidNormalizer
 {
     public function __construct(
         private ValuesNormalizer $valuesNormalizer,
@@ -41,14 +44,13 @@ final class ConnectorProductNormalizer
     public function normalizeConnectorProduct(ConnectorProduct $connectorProduct): array
     {
         $values = $this->valuesNormalizer->normalize($connectorProduct->values());
-        $values = $this->removeIdentifierValue($values);
         $qualityScores = $connectorProduct->qualityScores();
         $completenesses = $connectorProduct->completenesses();
         $associations = $this->normalizeAssociations($connectorProduct->associations());
         $quantifiedAssociations = $this->normalizeQuantifiedAssociations($connectorProduct->quantifiedAssociations());
 
         $normalizedProduct =  [
-            'identifier' => $connectorProduct->identifier(),
+            'uuid' => $connectorProduct->uuid()->toString(),
             'enabled' => $connectorProduct->enabled(),
             'family' => $connectorProduct->familyCode(),
             'categories' => $connectorProduct->categoryCodes(),
@@ -107,16 +109,8 @@ final class ConnectorProductNormalizer
         return $completenesses;
     }
 
-    private function removeIdentifierValue(array $values): array
-    {
-        $identifierCode = $this->attributeRepository->getIdentifierCode();
-        unset($values[$identifierCode]);
-
-        return $values;
-    }
-
     /**
-     * This method keeps only the identifier value from the associated products and removes the uuid from result.
+     * This method keeps only the uuid value from the associated products.
      *
      * @param array $associations
      * Example
@@ -137,7 +131,7 @@ final class ConnectorProductNormalizer
             $result[$associationType] = [];
             foreach ($associationsByType as $entityType => $associationsByEntityType) {
                 $result[$associationType][$entityType] = $entityType === 'products' ?
-                    array_map(fn (array $associatedObject): ?string => $associatedObject['identifier'], $associationsByEntityType) :
+                    array_map(fn (array $associatedObject): ?string => $associatedObject['uuid'], $associationsByEntityType) :
                     $associationsByEntityType;
             }
         }
@@ -146,8 +140,7 @@ final class ConnectorProductNormalizer
     }
 
     /**
-     * This method keeps only the identifier and quantity values from the associated products and removes the uuid from
-     * result.
+     * This method keeps only uuid identifier and quantity values from the associated products.
      *
      * @param array $quantifiedAssociations
      * Example
@@ -172,7 +165,7 @@ final class ConnectorProductNormalizer
                     array_map(
                         fn (array $associatedObject): array => array_filter(
                             $associatedObject,
-                            fn (string $key): bool => in_array($key, ['identifier', 'quantity']),
+                            fn (string $key): bool => in_array($key, ['uuid', 'quantity']),
                             ARRAY_FILTER_USE_KEY
                         ),
                         $associationsByEntityType
