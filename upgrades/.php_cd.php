@@ -23,8 +23,6 @@ $rules = [
             // Required for accessing DBAL & ES services:
             'Symfony\Component\DependencyInjection\ContainerAwareInterface',
             'Symfony\Component\DependencyInjection\ContainerInterface',
-            // Supplier Portal dependencies:
-            'Akeneo\SupplierPortal\Retailer\Infrastructure\Install\InstallOnboarderSerenityTables',
 
             // Dangerous dependencies, migrations shouldn't rely on services
             'Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid',
