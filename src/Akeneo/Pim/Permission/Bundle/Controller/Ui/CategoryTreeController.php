@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
+use Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface;
 use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController as BaseCategoryTreeController;
 use Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;

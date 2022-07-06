@@ -3,7 +3,7 @@
 namespace AkeneoTestEnterprise\Pim\Enrichment\Category\Integration;
 
 use Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer;
-use Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType;
+use Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType;
 use Akeneo\Test\Integration\TestCase;
 
 class CategoryFormViewNormalizerIntegration extends TestCase

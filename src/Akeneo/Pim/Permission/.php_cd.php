@@ -22,7 +22,7 @@ $rules = [
         'Ramsey\Uuid\Uuid',
         'Ramsey\Uuid\UuidInterface',
         // it implements a CE query differently for permissions
-        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query',
+        'Akeneo\Category\Domain\Component\CategoryTree\Query',
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory',
         'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct',

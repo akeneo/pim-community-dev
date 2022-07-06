@@ -1,3 +1,5 @@
+Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface: ~
+
 Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess:
     type: entity
     table: pimee_security_product_category_access
