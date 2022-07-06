@@ -325,7 +325,7 @@ class JobInstanceController
 
             $rawParameters['storage'] = [
                 'type' => LocalStorage::TYPE,
-                'file_path' => $this->getDefaultFilePath($jobInstance->getType(), $jobInstance->getCode())
+                'file_path' => $this->getDefaultFilePath($jobInstance->getType(), $jobInstance->getCode()),
             ];
             $jobInstance->setRawParameters($rawParameters);
         }
@@ -570,7 +570,7 @@ class JobInstanceController
 
     private function getDefaultFilePath(string $jobType, string $jobCode): string
     {
-        //TODO: this will works in Saas but we have to find a safer way to handle custom job in Paas
+        // TODO RAB-665: this will work in SaaS but we have to find a safer way to handle custom job in Paas
         $fileExtension = explode('_', $jobCode)[0];
 
         return sprintf('%s%s%s_%s_%s.%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $jobType, '%job_label%', '%datetime%', $fileExtension);

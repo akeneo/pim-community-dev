@@ -2,7 +2,7 @@ import BaseView = require('pimui/js/view/base');
 import {ValidationError, formatParameters, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageForm, StorageFormProps, Storage} from '@akeneo-pim-community/import-export';
 
-type StorageFormControllerConfig = {tabCode?: string, jobType: 'import' | 'export', fileExtension: string};
+type StorageFormControllerConfig = {tabCode?: string; jobType: 'import' | 'export'; fileExtension: string};
 
 class StorageFormController extends BaseView {
   public config: StorageFormControllerConfig;

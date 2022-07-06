@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
@@ -12,7 +14,7 @@ class StorageValidator extends ConstraintValidator
 
     public function __construct(iterable $storageConstraints)
     {
-        //TODO: Use feature flags to invalidate usage of local and sftp if flags are disabled
+        // TODO RAB-665: Use feature flags to invalidate usage of local and sftp if flags are disabled
         $this->storageConstraints = $storageConstraints instanceof \Traversable
             ? iterator_to_array($storageConstraints)
             : $storageConstraints;
@@ -31,8 +33,8 @@ class StorageValidator extends ConstraintValidator
                     '{{ available_types }}' => implode(', ', $this->getStorageTypes()),
                 ],
             )
-            ->atPath('[type]')
-            ->addViolation();
+                ->atPath('[type]')
+                ->addViolation();
 
             return;
         }
