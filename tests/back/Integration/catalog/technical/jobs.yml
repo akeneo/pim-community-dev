@@ -67,6 +67,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'
             enabled:            true
@@ -83,6 +84,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed: true
             delimiter: ;
             enclosure: '"'
             enabled: true

@@ -32,6 +32,7 @@ class SimpleYamlImport implements DefaultValuesProviderInterface
     {
         return [
             'storage'                  => ['type' => 'none'],
+            'uploadAllowed'             => true,
             'invalid_items_file_format' => 'yaml',
             'user_to_notify'            => null,
             'is_user_authenticated'     => false,

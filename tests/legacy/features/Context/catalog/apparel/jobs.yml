@@ -7,6 +7,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed:     true
             delimiter:         ;
             enclosure:         '"'
             enabled:            true
@@ -23,6 +24,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed:      true
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family
@@ -177,6 +179,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed:       true
             delimiter:           ;
             enclosure:           '"'
     category_export:
@@ -198,6 +201,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
     association_type_export:
@@ -219,6 +223,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
     group_export:
@@ -250,6 +255,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
     attribute_export:
@@ -271,6 +277,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
     option_export:

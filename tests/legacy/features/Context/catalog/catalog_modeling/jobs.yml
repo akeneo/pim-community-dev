@@ -135,6 +135,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed:     true
             delimiter:         ;
             enclosure:         '"'
             enabled:            true
@@ -151,6 +152,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed:      true
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family
@@ -165,6 +167,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
     csv_catalog_modeling_family_variant_import:
@@ -175,6 +178,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
     xlsx_catalog_modeling_family_variant_import:
@@ -185,6 +189,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed: true
     xlsx_catalog_modeling_family_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_family_import
@@ -193,6 +198,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed: true
     csv_catalog_modeling_family_variant_export:
         connector: Akeneo CSV Connector
         alias:     csv_family_variant_export
@@ -222,6 +228,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed: true
             delimiter: ;
             enclosure: '"'
             enabled: true
@@ -238,6 +245,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed: true
             enabled: true
             categoriesColumn: categories
             familyVariantColumn: family_variant
