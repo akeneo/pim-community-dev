@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -19,8 +19,8 @@ final class CriterionEvaluation
     private ?CriterionEvaluationResult $result = null;
 
     public function __construct(
-        private CriterionCode $criterionCode,
-        private ProductEntityIdInterface $productId,
+        private CriterionCode             $criterionCode,
+        private ProductEntityIdInterface  $entityId,
         private CriterionEvaluationStatus $status
     ) {
     }
@@ -73,9 +73,9 @@ final class CriterionEvaluation
         return $this->criterionCode;
     }
 
-    public function getProductId(): ProductEntityIdInterface
+    public function getEntityId(): ProductEntityIdInterface
     {
-        return $this->productId;
+        return $this->entityId;
     }
 
     public function getEvaluatedAt(): ?\DateTimeImmutable

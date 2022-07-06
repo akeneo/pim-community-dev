@@ -274,7 +274,7 @@ class FixturesContext extends BaseFixturesContext
         $this->getContainer()->get('doctrine')->getConnection()->update(
             'pim_catalog_product',
             ['created' => $createdAt],
-            ['id' => $product->getId()]
+            ['uuid' => $product->getUuid()->getBytes()]
         );
 
         $this->refresh($product);
@@ -2395,7 +2395,11 @@ class FixturesContext extends BaseFixturesContext
         $comment->setRepliedAt($createdAt);
         $comment->setBody($data['message']);
         $comment->setResourceName(ClassUtils::getClass($resource));
-        $comment->setResourceId($resource->getId());
+        if ($resource instanceof ProductInterface) {
+            $comment->setResourceUuid($resource->getUuid());
+        } else {
+            $comment->setResourceId($resource->getId());
+        }
 
         if (isset($data['parent']) && !empty($data['parent'])) {
             $parent = $comments[$data['parent']];

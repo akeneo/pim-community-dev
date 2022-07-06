@@ -12,6 +12,6 @@ class OnlySerenityFeatureFlag implements FeatureFlag
 
     public function isEnabled(): bool
     {
-        return $this->edition === 'SERENITY_EDITION';
+        return $this->edition === 'serenity_instance';
     }
 }

@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormaliz
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\RouterInterface;
 
 class ConnectorProductNormalizerSpec extends ObjectBehavior
@@ -35,7 +36,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_list_of_products()
     {
         $connector1 = new ConnectorProduct(
-            1,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_1',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -81,7 +82,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 ],
             ]),
             new ProductCompletenessCollection(
-                1,
+                Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
                 [
                     new ProductCompleteness('ecommerce', 'en_US', 10, 5),
                     new ProductCompleteness('ecommerce', 'fr_FR', 10, 1),
@@ -90,7 +91,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
         );
 
         $connector2 = new ConnectorProduct(
-            2,
+            Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'),
             'identifier_2',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -108,7 +109,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
         );
 
         $connector3 = new ConnectorProduct(
-            3,
+            Uuid::fromString('fdf6f091-3f75-418f-98af-8c19db8b0000'),
             'identifier_3',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -122,7 +123,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             ['a_metadata' => 'viande'],
             new ReadValueCollection(),
             null,
-            new ProductCompletenessCollection(3, [])
+            new ProductCompletenessCollection(Uuid::fromString('fdf6f091-3f75-418f-98af-8c19db8b0000'), [])
         );
 
         $this->normalizeConnectorProductList(
@@ -210,7 +211,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
     function it_normalize_a_single_connection_product()
     {
         $connector = new ConnectorProduct(
-            1,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_1',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),

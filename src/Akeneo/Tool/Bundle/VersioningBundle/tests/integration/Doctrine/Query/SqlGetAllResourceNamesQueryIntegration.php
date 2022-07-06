@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\tests\integration\Doctrine\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetAllResourceNamesQuery;
@@ -22,7 +22,7 @@ class SqlGetAllResourceNamesQueryIntegration extends TestCase
     public function it_returns_all_the_versions_resource_names(): void
     {
         $expectedResourceNames = [
-            Product::class,
+            ProductModel::class,
             Attribute::class,
         ];
 
@@ -58,7 +58,7 @@ class SqlGetAllResourceNamesQueryIntegration extends TestCase
 
         foreach ($resourceNames as $resourceName) {
             for ($versionNumber = 1; $versionNumber < 3; $versionNumber++) {
-                $version = new Version($resourceName, 42, 'system');
+                $version = new Version($resourceName, 42, null, 'system');
                 $version->setVersion($versionNumber);
                 $entityManager->persist($version);
             }

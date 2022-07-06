@@ -6,7 +6,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Message;
 
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\Event;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -21,7 +22,9 @@ class ProductCreated extends Event
     public function __construct(Author $author, array $data, int $timestamp = null, string $uuid = null)
     {
         Assert::keyExists($data, 'identifier');
-        Assert::stringNotEmpty($data['identifier']);
+        Assert::nullOrString($data['identifier']);
+        Assert::keyExists($data, 'uuid');
+        Assert::true(Uuid::isValid($data['uuid']));
 
         parent::__construct($author, $data, $timestamp, $uuid);
     }
@@ -31,8 +34,13 @@ class ProductCreated extends Event
         return 'product.created';
     }
 
-    public function getIdentifier(): string
+    public function getIdentifier(): ?string
     {
         return $this->data['identifier'];
+    }
+
+    public function getProductUuid(): UuidInterface
+    {
+        return $this->data['uuid'];
     }
 }

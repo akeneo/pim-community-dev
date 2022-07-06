@@ -25,18 +25,18 @@ interface PimVersion
      * Despite these issues, please do not change it or remove without extreme care. This name is a contract used by tools above.
      * Changing would break the tools or have an impact on PIM tracker data.
      *
-     * At the opposite, the edition code is more standardized:
-     * - "COMMUNITY_EDITION"
-     * - "SERENITY_EDITION"
-     * - "GROWTH_EDITION"
-     * - "FREE_TRIAL_EDITION"
+     * At the opposite, the edition code is more standardized (but not perfect):
+     * - "community_edition_instance"
+     * - "serenity_instance"
+     * - "growth_edition_instance"
+     * - "pim_trial_instance"
      */
     public function editionName(): string;
     public function isSaas(): bool;
 
     /**
-     * Version can change between different requests in Saas. Therefore, the version is not bind to an artifact.
-     * This method returns if the current version corresponds to the edition code of the current process.
+     * Version can change between different requests in Saas. Therefore, the version is not hardcoded in an artifact.
+     * This method returns if the current version corresponds to the edition code of the current request context.
 
      */
     public function isEditionCode(string $editionCode): bool;

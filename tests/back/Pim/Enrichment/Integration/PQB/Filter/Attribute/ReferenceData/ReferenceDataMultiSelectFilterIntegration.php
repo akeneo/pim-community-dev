@@ -5,7 +5,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\ReferenceData;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceDataValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -33,7 +33,7 @@ class ReferenceDataMultiSelectFilterIntegration extends AbstractProductQueryBuil
             'product_one',
             [
                 new SetFamily('a_family'),
-                new SetMultiReferenceEntityValue('a_ref_data_multi_select', null, null, [
+                new SetMultiReferenceDataValue('a_ref_data_multi_select', null, null, [
                     'aertex',
                     'ballisticnylon',
                 ]),
@@ -44,7 +44,7 @@ class ReferenceDataMultiSelectFilterIntegration extends AbstractProductQueryBuil
             'product_two',
             [
                 new SetFamily('a_family'),
-                new SetMultiReferenceEntityValue('a_ref_data_multi_select', null, null, [
+                new SetMultiReferenceDataValue('a_ref_data_multi_select', null, null, [
                     'argentanlace',
                     'ballisticnylon',
                 ]),
@@ -55,7 +55,7 @@ class ReferenceDataMultiSelectFilterIntegration extends AbstractProductQueryBuil
             'product_three',
             [
                 new SetFamily('a_family'),
-                new SetMultiReferenceEntityValue('a_ref_data_multi_select', null, null, [
+                new SetMultiReferenceDataValue('a_ref_data_multi_select', null, null, [
                     'betacloth',
                     'bobbinet',
                 ]),

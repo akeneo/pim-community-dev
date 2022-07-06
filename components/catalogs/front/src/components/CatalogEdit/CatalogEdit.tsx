@@ -1,22 +1,21 @@
-import React, {forwardRef, PropsWithRef} from 'react';
+import React, {FC, PropsWithChildren} from 'react';
 import {Edit} from './components/Edit';
 import {ErrorBoundary} from '../ErrorBoundary';
+import {CatalogFormContext} from './contexts/CatalogFormContext';
+import {CatalogForm} from './hooks/useCatalogForm';
 
-type CatalogEditRef = {
-    save: () => void;
-} | null;
 type Props = {
-    id: string;
-    onChange: (isDirty: boolean) => void;
+    form: CatalogForm;
 };
 
-const CatalogEdit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id, onChange}, ref) => {
+const CatalogEdit: FC<PropsWithChildren<Props>> = ({form}) => {
     return (
         <ErrorBoundary>
-            <Edit id={id} onChange={onChange} ref={ref} />
+            <CatalogFormContext.Provider value={form.dispatch}>
+                <Edit values={form.values} errors={form.errors} />
+            </CatalogFormContext.Provider>
         </ErrorBoundary>
     );
-});
+};
 
 export {CatalogEdit};
-export type {CatalogEditRef};

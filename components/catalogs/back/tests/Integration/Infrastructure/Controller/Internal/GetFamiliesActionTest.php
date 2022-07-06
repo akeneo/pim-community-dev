@@ -87,30 +87,6 @@ class GetFamiliesActionTest extends IntegrationTestCase
         Assert::assertCount(1, $secondPageFamilies);
     }
 
-    public function testItAnswersABadRequestIfPageIsNotANumber(): void
-    {
-        $client = $this->getAuthenticatedInternalApiClient('admin');
-        $this->insertFamilies(['tshirt', 'pants', 'guitare']);
-
-        $client->request(
-            'GET',
-            '/rest/catalogs/families',
-            [],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ],
-        );
-
-        $response = $client->getResponse();
-        Assert::assertEquals(200, $response->getStatusCode());
-
-        $families = \json_decode($response->getContent(), true);
-        Assert::assertCount(3, $families);
-        Assert::assertArrayHasKey('code', $families[0]);
-        Assert::assertArrayHasKey('label', $families[0]);
-    }
-
     private function insertFamilies(array $codes): void
     {
         foreach ($codes as $code) {

@@ -12,6 +12,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -56,10 +57,10 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
         $sql = <<<SQL
 WITH
 filtered_product AS (
-    SELECT id FROM pim_catalog_product WHERE identifier IN (:productIdentifiers)
+    SELECT uuid FROM pim_catalog_product WHERE identifier IN (:productIdentifiers)
 )
 SELECT
-    product.id AS id,
+    BIN_TO_UUID(product.uuid) AS uuid,
     product.identifier AS identifier,
     family.code AS familyCode,
     JSON_MERGE(
@@ -68,17 +69,16 @@ SELECT
            product.raw_values
     ) AS rawValues
 FROM filtered_product
-    INNER JOIN pim_catalog_product product ON filtered_product.id = product.id
+    INNER JOIN pim_catalog_product product ON filtered_product.uuid = product.uuid
     LEFT JOIN pim_catalog_family family ON product.family_id = family.id
     LEFT JOIN pim_catalog_product_model pm1 ON product.product_model_id = pm1.id
     LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
-GROUP BY product.identifier
 SQL;
 
         $rows = array_map(
             function (array $row): array {
                 return [
-                    'id' => $row['id'],
+                    'id' => $row['uuid'],
                     'identifier' => $row['identifier'],
                     'familyCode' => $row['familyCode'],
                     'cleanedRawValues' => json_decode($row['rawValues'], true),
@@ -98,11 +98,12 @@ SQL;
      * {@inheritdoc}
      */
     public function fromValueCollection(
-        int $id,
+        $id,
         string $identifier,
         string $familyCode,
         WriteValueCollection $values
     ): CompletenessProductMask {
+        Assert::true(\is_int($id) || \is_string($id));
         $row = [
             'id' => $id,
             'identifier' => $identifier,
@@ -127,7 +128,7 @@ SQL;
         $result = [];
         foreach ($rows as $row) {
             $result[] = new CompletenessProductMask(
-                intval($row['id']),
+                (string) $row['id'],
                 $row['identifier'],
                 $row['familyCode'],
                 $this->getMask($row['cleanedRawValues'], $attributes)

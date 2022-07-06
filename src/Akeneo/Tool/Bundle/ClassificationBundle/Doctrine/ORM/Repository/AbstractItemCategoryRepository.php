@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -76,8 +77,14 @@ abstract class AbstractItemCategoryRepository implements
             $config['relation']
         );
 
+        if ($item instanceof ProductInterface && get_class($item) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface') {
+            $id = $item->getUuid()->getBytes();
+        } else {
+            $id = $item->getId();
+        }
+
         $stmt = $this->em->getConnection()->prepare($sql);
-        $stmt->bindValue('itemId', $item->getId());
+        $stmt->bindValue('itemId', $id);
         $items = $stmt->executeQuery()->fetchAllAssociative();
 
         return $this->buildItemCountByTree($items, $config['categoryClass']);

@@ -89,6 +89,7 @@ const MicroFrontendDependenciesProvider = ({
     setElement: () => view,
     render: () => {},
     remove: () => {},
+    setData: () => {},
   };
 
   useEffect(() => {
@@ -146,7 +147,7 @@ const MicroFrontendDependenciesProvider = ({
         );
       },
       viewBuilder: {
-        build: async (_viewName: string) => Promise.resolve(view),
+        build: async (_viewName: string) => view,
       },
       mediator: {
         trigger: (event: string, _options?: unknown) => console.log('Triggering', event),

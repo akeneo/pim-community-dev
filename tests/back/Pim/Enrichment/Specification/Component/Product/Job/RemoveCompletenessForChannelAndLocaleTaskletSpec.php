@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Job;
 
-use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
-use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -23,26 +22,35 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
 {
-    public function it_executes_the_job_cleans_products_and_channel(
-        StepExecution $stepExecution,
+    public function let(
+        EntityManagerClearerInterface $cacheClearer,
         NotifierInterface $notifier,
         SimpleFactoryInterface $notificationFactory,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        ProductQueryBuilderInterface $pqb,
         CursorableRepositoryInterface $productRepository,
-        CursorInterface $productsCursor,
-        EntityManagerClearerInterface $cacheClearer,
         ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository,
-        ChannelInterface $ecommerce,
-        LocaleInterface $enUs,
-        LocaleInterface $frFR,
-        BulkSaverInterface $localeBulkSaver,
-        BulkSaverInterface $productBulkSaver
-    ): void {
+        BulkSaverInterface $productBulkSaver,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $enUS = new Locale();
+        $enUS->setCode('en_US');
+        $frFr = new Locale();
+        $frFr->setCode('fr_FR');
+        $esEs = new Locale();
+        $esEs->setCode('es_ES');
+        $channel = new Channel();
+        $channel->addLocale($enUS);
+        $channel->addLocale($frFr);
+        $channel->addLocale($esEs);
+
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channel);
+        $channelRepository->findOneByIdentifier(Argument::not('ecommerce'))->willReturn(null);
+
         $this->beConstructedWith(
             $cacheClearer,
             $notifier,
@@ -50,22 +58,83 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
             $productQueryBuilderFactory,
             $productRepository,
             $channelRepository,
-            $localeRepository,
-            $localeBulkSaver,
             $productBulkSaver,
             2
         );
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
         $this->setStepExecution($stepExecution);
+    }
 
+    function it_does_nothing_if_locales_are_still_bound_to_channel(
+        NotifierInterface $notifier,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        JobParameters $jobParameters
+    ) {
+        $jobParameters->get('channel_code')->willReturn('ecommerce');
+        $jobParameters->get('locales_identifier')->willReturn(['en_US', 'fr_FR']);
+        $productQueryBuilderFactory->create()->shouldNotBeCalled();
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
+
+        $this->execute();
+    }
+
+    function it_executes_the_job_if_channel_does_not_exist_anymore(
+        NotifierInterface $notifier,
+        SimpleFactoryInterface $notificationFactory,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        CursorableRepositoryInterface $productRepository,
+        BulkSaverInterface $productBulkSaver,
+        JobParameters $jobParameters,
+        ProductQueryBuilderInterface $pqb,
+        CursorInterface $productsCursor,
+    ) {
+        $jobParameters->get('channel_code')->willReturn('unknown');
+        $jobParameters->get('locales_identifier')->willReturn(['de_DE', 'it_IT']);
+        $jobParameters->get('username')->willReturn('willypapa');
+
+        $jeanProduct = (new Product())->setIdentifier('jean');
+
+        $startNotification = new Notification();
+        $doneNotification = new Notification();
+        $notificationFactory->create()->willReturn($startNotification, $doneNotification);
+        $notifier->notify($startNotification, ['willypapa'])->shouldBeCalled();
+        $notifier->notify($doneNotification, ['willypapa'])->shouldBeCalled();
+
+        $productQueryBuilderFactory->create()->willReturn($pqb);
+        $pqb->execute()->willReturn($productsCursor);
+
+        $productsCursor->rewind()->shouldBeCalled();
+        $productsCursor->current()->willReturn(
+            new IdentifierResult('jean', ProductInterface::class),
+        );
+        $productsCursor->next()->shouldBeCalled();
+        $productsCursor->valid()->willReturn(true, false);
+
+        $productRepository->getItemsFromIdentifiers(['jean'])->willReturn([$jeanProduct]);
+
+        $productBulkSaver->saveAll([$jeanProduct], ['force_save' => true])->shouldBeCalledOnce();
+
+        $this->execute();
+    }
+
+    function it_executes_the_job_cleans_products_and_channel(
+        EntityManagerClearerInterface $cacheClearer,
+        NotifierInterface $notifier,
+        SimpleFactoryInterface $notificationFactory,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        CursorableRepositoryInterface $productRepository,
+        BulkSaverInterface $productBulkSaver,
+        JobParameters $jobParameters,
+        ProductQueryBuilderInterface $pqb,
+        CursorInterface $productsCursor
+    ): void {
         $jeanProduct = (new Product())->setIdentifier('jean');
         $shoeProduct = (new Product())->setIdentifier('shoe');
         $hatProduct = (new Product())->setIdentifier('hat');
-        $jobParameters = new JobParameters([
-            'locales_identifier' => ['en_US', 'fr_FR'],
-            'channel_code' => 'ecommerce',
-            'username' => 'willypapa'
-        ]);
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
+
+        $jobParameters->get('channel_code')->willReturn('ecommerce');
+        $jobParameters->get('locales_identifier')->willReturn(['de_DE', 'it_IT']);
+        $jobParameters->get('username')->willReturn('willypapa');
 
         $startNotification = new Notification();
         $doneNotification = new Notification();
@@ -91,13 +160,6 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
 
         $productBulkSaver->saveAll([$jeanProduct, $shoeProduct], ['force_save' => true])->shouldBeCalledOnce();
         $productBulkSaver->saveAll([$hatProduct], ['force_save' => true])->shouldBeCalledOnce();
-
-        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
-        $localeRepository->findBy(['code' => ['en_US', 'fr_FR']])->willReturn([$enUs, $frFR]);
-        $enUs->removeChannel($ecommerce)->shouldBeCalled();
-        $frFR->removeChannel($ecommerce)->shouldBeCalled();
-
-        $localeBulkSaver->saveAll([$enUs, $frFR])->shouldBeCalled();
 
         $this->execute();
     }

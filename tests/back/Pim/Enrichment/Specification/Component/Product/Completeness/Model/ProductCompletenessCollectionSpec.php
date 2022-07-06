@@ -5,12 +5,13 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness\Mod
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class ProductCompletenessCollectionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(42, []);
+        $this->beConstructedWith(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), []);
     }
 
     function it_is_a_product_completeness_collection()
@@ -25,20 +26,20 @@ class ProductCompletenessCollectionSpec extends ObjectBehavior
 
     function it_can_only_store_product_completenesses()
     {
-        $this->beConstructedWith(42, [new \stdClass()]);
+        $this->beConstructedWith(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [new \stdClass()]);
         $this->shouldThrow(\TypeError::class)->duringInstantiation();
     }
 
-    function it_exposes_a_product_id()
+    function it_exposes_a_product_uuid()
     {
-        $this->productId()->shouldReturn(42);
+        $this->productUuid()->toString()->shouldReturn('54162e35-ff81-48f1-96d5-5febd3f00fd5');
     }
 
     function it_can_store_product_completenesses()
     {
         $completeness = new ProductCompleteness('ecommerce', 'en_US', 4, 1);
         $otherCompleteness = new ProductCompleteness('ecommerce', 'fr_FR', 4, 2);
-        $this->beConstructedWith(42, [$completeness, $otherCompleteness]);
+        $this->beConstructedWith(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [$completeness, $otherCompleteness]);
 
         $this->getIterator()->count()->shouldReturn(2);
         $this->getIterator()->getArrayCopy()->shouldReturn(
@@ -58,7 +59,7 @@ class ProductCompletenessCollectionSpec extends ObjectBehavior
             5,
             2
         );
-        $this->beConstructedWith(42, [$completeness, $otherCompleteness]);
+        $this->beConstructedWith(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [$completeness, $otherCompleteness]);
 
         $this->getIterator()->count()->shouldReturn(1);
         $this->getIterator()->getArrayCopy()->shouldReturn(['ecommerce-en_US' => $otherCompleteness]);
@@ -68,7 +69,7 @@ class ProductCompletenessCollectionSpec extends ObjectBehavior
     {
         $completeness = new ProductCompleteness('ecommerce', 'en_US', 4, 0);
         $otherCompleteness = new ProductCompleteness('ecommerce', 'fr_FR', 4, 0);
-        $this->beConstructedWith(42, [$completeness, $otherCompleteness]);
+        $this->beConstructedWith(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [$completeness, $otherCompleteness]);
 
         $this->getCompletenessForChannelAndLocale('ecommerce', 'fr_FR')->shouldReturn($otherCompleteness);
         $this->getCompletenessForChannelAndLocale('other_channel', 'en_US')->shouldReturn(null);

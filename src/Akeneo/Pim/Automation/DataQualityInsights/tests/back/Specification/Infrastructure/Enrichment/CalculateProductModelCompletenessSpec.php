@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CompletenessCalculationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\GetProductModelAttributesMaskQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
@@ -43,7 +43,7 @@ class CalculateProductModelCompletenessSpec extends ObjectBehavior
     public function it_throws_exception_when_product_model_id_is_invalid()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('calculate', [
-            new ProductId(42)
+            ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')
         ]);
     }
 
