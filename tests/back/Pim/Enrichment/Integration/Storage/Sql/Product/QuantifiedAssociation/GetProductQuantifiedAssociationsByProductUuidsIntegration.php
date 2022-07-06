@@ -67,8 +67,8 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
             $uuidProductC->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'productA', 'quantity' => 8],
-                        ['identifier' => 'productB', 'quantity' => 6],
+                        ['identifier' => 'productA', 'quantity' => 8, 'uuid' => $this->getProductUuidFromIdentifier('productA')->toString()],
+                        ['identifier' => 'productB', 'quantity' => 6, 'uuid' => $this->getProductUuidFromIdentifier('productB')->toString()],
                     ],
                 ],
             ],
@@ -141,24 +141,24 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
             $uuidProductC->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'productA', 'quantity' => 3],
-                        ['identifier' => 'productB', 'quantity' => 2],
+                        ['identifier' => 'productA', 'quantity' => 3, 'uuid' => $this->getProductUuidFromIdentifier('productA')->toString()],
+                        ['identifier' => 'productB', 'quantity' => 2, 'uuid' => $this->getProductUuidFromIdentifier('productB')->toString()],
                     ],
                 ],
             ],
             $uuidProductD->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'productB', 'quantity' => 1],
+                        ['identifier' => 'productB', 'quantity' => 1, 'uuid' => $this->getProductUuidFromIdentifier('productB')->toString()],
                     ],
                 ],
             ],
             $uuidVariantProduct1->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'productA', 'quantity' => 5],
-                        ['identifier' => 'productC', 'quantity' => 6],
-                        ['identifier' => 'productB', 'quantity' => 7],
+                        ['identifier' => 'productA', 'quantity' => 5, 'uuid' => $this->getProductUuidFromIdentifier('productA')->toString()],
+                        ['identifier' => 'productC', 'quantity' => 6, 'uuid' => $this->getProductUuidFromIdentifier('productC')->toString()],
+                        ['identifier' => 'productB', 'quantity' => 7, 'uuid' => $this->getProductUuidFromIdentifier('productB')->toString()],
                     ],
                 ],
             ],
@@ -207,7 +207,7 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
             $uuidProductA->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'associated_product', 'quantity' => 3],
+                        ['identifier' => 'associated_product', 'quantity' => 3, 'uuid' => $this->getProductUuidFromIdentifier('associated_product')->toString()],
                     ],
                 ],
             ],
@@ -239,7 +239,7 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
             $uuidProductB->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'productA', 'quantity' => 3],
+                        ['identifier' => 'productA', 'quantity' => 3, 'uuid' => $this->getProductUuidFromIdentifier('productA')->toString()],
                     ],
                 ],
             ],
@@ -277,7 +277,7 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
             $uuidProductB->toString() => [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'productA', 'quantity' => 3],
+                        ['identifier' => 'productA', 'quantity' => 3, 'uuid' => $this->getProductUuidFromIdentifier('productA')->toString()],
                     ],
                 ],
             ],
