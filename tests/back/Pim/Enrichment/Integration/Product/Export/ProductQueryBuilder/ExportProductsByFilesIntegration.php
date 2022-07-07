@@ -23,9 +23,10 @@ class ExportProductsByFilesIntegration extends AbstractExportTestCase
 
     public function testProductExportWithFilterEqualsOnFileValue()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;an_image
-product_1;;1;;;files/product_1/an_image/akeneo.png
+uuid;sku;categories;enabled;family;groups;an_image
+%s;product_1;;1;;;files/product_1/an_image/akeneo.png
 
 CSV;
 
@@ -45,15 +46,17 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
     }
 
     public function testProductExportWithFilterStartWithOnFileValue()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;an_image
-product_1;;1;;;files/product_1/an_image/akeneo.png
-product_2;;1;;;files/product_2/an_image/akeneo.jpg
+uuid;sku;categories;enabled;family;groups;an_image
+%s;product_1;;1;;;files/product_1/an_image/akeneo.png
+%s;product_2;;1;;;files/product_2/an_image/akeneo.jpg
 
 CSV;
 
@@ -73,6 +76,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
     }
 }

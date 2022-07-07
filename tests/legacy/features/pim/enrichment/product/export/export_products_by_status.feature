@@ -25,7 +25,7 @@ Feature: Export products according to their statuses
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
       """
-      sku;categories;enabled;family;groups;name-en_US
-      SNKRS-1B;summer_collection;1;rangers;;Black rangers
-      SNKRS-1R;summer_collection;0;rangers;;Black rangers
+      uuid;sku;categories;enabled;family;groups;name-en_US
+      %uuid%;SNKRS-1B;summer_collection;1;rangers;;Black rangers
+      %uuid%;SNKRS-1R;summer_collection;0;rangers;;Black rangers
       """

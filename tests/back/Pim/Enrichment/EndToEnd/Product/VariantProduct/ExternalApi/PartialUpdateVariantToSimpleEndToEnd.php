@@ -39,11 +39,8 @@ class PartialUpdateVariantToSimpleEndToEnd extends AbstractProductTestCase
             'categories' => ['master', 'categoryA2'],
             'enabled' => true,
             'values' => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_family_variant_yes'],
-                ],
                 'a_price' => [
-                    'data' => [
+                    [
                         'data' => [
                             ['amount' => '400.00', 'currency' => 'CNY'],
                             ['amount' => '50.00', 'currency' => 'EUR'],
@@ -67,28 +64,12 @@ class PartialUpdateVariantToSimpleEndToEnd extends AbstractProductTestCase
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [
-                'PACK' => [
-                    'products' => [],
-                    'product_models' => [],
-                    'groups' => [],
-                ],
-                'SUBSTITUTION' => [
-                    'products' => [],
-                    'product_models' => [],
-                    'groups' => [],
-                ],
-                'UPSELL' => [
-                    'products' => [],
-                    'product_models' => [],
-                    'groups' => [],
-                ],
-                'X_SELL' => [
-                    'products' => [],
-                    'product_models' => [],
-                    'groups' => [],
-                ],
+                'PACK' => ['products' => [], 'product_models' => [], 'groups' => []],
+                'SUBSTITUTION' => ['products' => [], 'product_models' => [], 'groups' => []],
+                'UPSELL' => ['products' => [], 'product_models' => [], 'groups' => []],
+                'X_SELL' => ['products' => [], 'product_models' => [], 'groups' => []],
             ],
-            'quantified_associations' => [],
+            'quantified_associations' => new \stdClass(),
         ];
 
         $client = $this->createAuthenticatedClient();
@@ -141,9 +122,6 @@ class PartialUpdateVariantToSimpleEndToEnd extends AbstractProductTestCase
             'categories' => ['categoryA1', 'categoryA2'],
             'enabled' => true,
             'values' => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_family_variant_no'],
-                ],
                 'a_number_float' => [['data' => '12.5000', 'locale' => null, 'scope' => null]],
                 'a_localized_and_scopable_text_area' => [
                     [
@@ -159,28 +137,12 @@ class PartialUpdateVariantToSimpleEndToEnd extends AbstractProductTestCase
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [
-                'PACK' => [
-                    'products' => [],
-                    'product_models' => [],
-                    'groups' => [],
-                ],
-                'SUBSTITUTION' => [
-                    'products' => [],
-                    'product_models' => [],
-                    'groups' => [],
-                ],
-                'UPSELL' => [
-                    'products' => [],
-                    'product_models' => [],
-                    'groups' => [],
-                ],
-                'X_SELL' => [
-                    'products' => [],
-                    'product_models' => [],
-                    'groups' => [],
-                ],
+                'PACK' => ['products' => [], 'product_models' => [], 'groups' => []],
+                'SUBSTITUTION' => ['products' => [], 'product_models' => [], 'groups' => []],
+                'UPSELL' => ['products' => [], 'product_models' => [], 'groups' => []],
+                'X_SELL' => ['products' => [], 'product_models' => [], 'groups' => []],
             ],
-            'quantified_associations' => [],
+            'quantified_associations' => new \stdClass(),
         ];
 
         $client = $this->createAuthenticatedClient();

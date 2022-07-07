@@ -33,10 +33,10 @@ Feature: Export products according to multi select reference data values
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
       """
-      sku;categories;color;description-en_US-mobile;enabled;family;groups;heel_color;manufacturer;name-en_US;price-EUR;side_view;size;sole_color;sole_fabric;top_view
-      HEEL-1;;;;1;heels;;;;"The heel 1";;;;;cashmerewool;
-      HEEL-2;;;;1;heels;;;;"The heel 2";;;;;cashmerewool;
-      HEEL-3;;;;1;heels;;;;"The heel 3";;;;;cashmerewool,neoprene;
-      HEEL-6;;;;1;heels;;;;"The heel 6";;;;;silknoil;
-      HEEL-7;;;;1;heels;;;;"The heel 7";;;;;silknoil;
+      uuid;sku;categories;color;description-en_US-mobile;enabled;family;groups;heel_color;manufacturer;name-en_US;price-EUR;side_view;size;sole_color;sole_fabric;top_view
+      %uuid%;HEEL-1;;;;1;heels;;;;"The heel 1";;;;;cashmerewool;
+      %uuid%;HEEL-2;;;;1;heels;;;;"The heel 2";;;;;cashmerewool;
+      %uuid%;HEEL-3;;;;1;heels;;;;"The heel 3";;;;;cashmerewool,neoprene;
+      %uuid%;HEEL-6;;;;1;heels;;;;"The heel 6";;;;;silknoil;
+      %uuid%;HEEL-7;;;;1;heels;;;;"The heel 7";;;;;silknoil;
       """

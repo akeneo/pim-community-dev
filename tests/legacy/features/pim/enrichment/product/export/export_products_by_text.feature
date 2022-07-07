@@ -45,6 +45,6 @@ Feature: Export products according to text attribute filter
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;comment;name-en_US;title;title_2;title_3
-    SNKRS-1B;summer_collection;1;rangers;;Awesome;"Ranger 1B";"My title";"Awesome title";
+    uuid;sku;categories;enabled;family;groups;comment;name-en_US;title;title_2;title_3
+    %uuid%;SNKRS-1B;summer_collection;1;rangers;;Awesome;"Ranger 1B";"My title";"Awesome title";
     """

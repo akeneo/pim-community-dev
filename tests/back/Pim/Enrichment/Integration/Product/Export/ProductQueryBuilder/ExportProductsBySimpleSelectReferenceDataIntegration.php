@@ -40,9 +40,10 @@ class ExportProductsBySimpleSelectReferenceDataIntegration extends AbstractExpor
 
     public function testProductExportByFilteringOnOneOption()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_baby_blue');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_ref_data_simple_select
-product_option_baby_blue;;1;a_family;;baby-blue
+uuid;sku;categories;enabled;family;groups;a_ref_data_simple_select
+%s;product_option_baby_blue;;1;a_family;;baby-blue
 
 CSV;
 
@@ -62,15 +63,17 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
     }
 
     public function testProductExportByFilteringOnTwoOptions()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_baby_blue');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_champagne');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_ref_data_simple_select
-product_option_baby_blue;;1;a_family;;baby-blue
-product_option_champagne;;1;a_family;;champagne
+uuid;sku;categories;enabled;family;groups;a_ref_data_simple_select
+%s;product_option_baby_blue;;1;a_family;;baby-blue
+%s;product_option_champagne;;1;a_family;;champagne
 
 CSV;
 
@@ -90,15 +93,17 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
     }
 
     public function testProductExportByFilteringWithEmpty()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_option');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_option_attribute');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_ref_data_simple_select
-product_without_option;;1;a_family;;
-product_without_option_attribute;;1;a_family;;
+uuid;sku;categories;enabled;family;groups;a_ref_data_simple_select
+%s;product_without_option;;1;a_family;;
+%s;product_without_option_attribute;;1;a_family;;
 
 CSV;
 
@@ -118,7 +123,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
     }
 
     public function testProductExportByFilteringWithAnEmptyList()

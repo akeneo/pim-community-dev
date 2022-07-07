@@ -35,6 +35,7 @@ JSON;
             'family' => 'familyA',
             'parent' => 'amor',
             'groups' => [],
+            'categories' => ['categoryA2', 'master'],
             'enabled' => true,
             'values' => [
                 'a_localized_and_scopable_text_area' => [['locale' => 'en_US', 'scope' => 'ecommerce', 'data' => 'my pink tshirt']],
@@ -44,24 +45,23 @@ JSON;
                 ],
                 'a_simple_select' => [['locale' => null, 'scope' => null, 'data' => 'optionB']],
                 'a_yes_no' => [['locale' => null, 'scope' => null, 'data' => true]],
-                'sku' => [['locale' => null, 'scope' => null, 'data' => 'product_family_variant']],
             ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
-            'associations' => [],
-            'quantified_associations' => [],
+            'associations'  => [
+                'PACK' => ['groups' => [], 'product_models' => [], 'products' => []],
+                'SUBSTITUTION' => ['groups' => [], 'product_models' => [], 'products' => []],
+                'UPSELL' => ['groups' => [], 'product_models' => [], 'products' => []],
+                'X_SELL' => ['groups' => [], 'product_models' => [], 'products' => []],
+            ],
+            'quantified_associations' => new \stdClass(),
         ];
 
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertEventCount(1, ProductUpdated::class);
 
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_family_variant');
-        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
-        unset($standardizedProduct['categories']);
-        NormalizedProductCleaner::clean($expectedProduct);
-        NormalizedProductCleaner::clean($standardizedProduct);
-        $this->assertEquals($standardizedProduct, $expectedProduct);
+       $this->assertSameProducts($expectedProduct, 'product_family_variant');
 
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame(

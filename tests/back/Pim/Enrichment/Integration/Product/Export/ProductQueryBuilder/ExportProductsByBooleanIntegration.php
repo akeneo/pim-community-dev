@@ -40,9 +40,10 @@ class ExportProductsByBooleanIntegration extends AbstractExportTestCase
 
     public function testProductExportWithBooleanFilterEqualsTrue()
     {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_boolean_true');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_yes_no
-product_with_boolean_true;;1;;;1
+uuid;sku;categories;enabled;family;groups;a_yes_no
+%s;product_with_boolean_true;;1;;;1
 
 CSV;
 
@@ -62,14 +63,15 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product->getUuid()->toString()), $config);
     }
 
     public function testProductExportWithBooleanFilterEqualsFalse()
     {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_boolean_false');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_yes_no
-product_with_boolean_false;;1;;;0
+uuid;sku;categories;enabled;family;groups;a_yes_no
+%s;product_with_boolean_false;;1;;;0
 
 CSV;
 
@@ -89,14 +91,15 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product->getUuid()->toString()), $config);
     }
 
     public function testProductExportWithLocalisableAndScopableBooleanFilter()
     {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_localisable_scopable_boolean');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_boolean_scopable_localizable-en_US-tablet
-product_with_localisable_scopable_boolean;;1;;;1
+uuid;sku;categories;enabled;family;groups;a_boolean_scopable_localizable-en_US-tablet
+%s;product_with_localisable_scopable_boolean;;1;;;1
 
 CSV;
 
@@ -117,6 +120,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product->getUuid()->toString()), $config);
     }
 }

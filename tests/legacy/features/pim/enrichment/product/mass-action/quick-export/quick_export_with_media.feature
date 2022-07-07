@@ -45,9 +45,9 @@ Feature: Quick export many products with media from datagrid
     Then I should see the text "COMPLETED"
     And the names of the exported files of "xlsx_product_quick_export" should be "1_products_export_en_US_tablet.xlsx"
     And exported xlsx file of "xlsx_product_quick_export" should contain:
-      | sku      | 123 | categories        | color | description-en_US-tablet | enabled | family   | groups | lace_color | manufacturer | name-en_US    | price-EUR | price-USD | rating | side_view                            | size | top_view | weather_conditions |
-      | boots    | aaa | winter_collection | black |                          | 1       | boots    |        |            |              | Amazing boots | 20        | 25        |        | files/boots/side_view/akeneo.jpg     | 40   |          |                    |
-      | sneakers | bbb | summer_collection | white |                          | 1       | sneakers |        |            |              | Sneakers      | 50        | 60        |        | files/sneakers/side_view/akeneo2.jpg | 42   |          |                    |
+      |  uuid  | sku      | 123 | categories        | color | description-en_US-tablet | enabled | family   | groups | lace_color | manufacturer | name-en_US    | price-EUR | price-USD | rating | side_view                            | size | top_view | weather_conditions |
+      | %uuid% | boots    | aaa | winter_collection | black |                          | 1       | boots    |        |            |              | Amazing boots | 20        | 25        |        | files/boots/side_view/akeneo.jpg     | 40   |          |                    |
+      | %uuid% | sneakers | bbb | summer_collection | white |                          | 1       | sneakers |        |            |              | Sneakers      | 50        | 60        |        | files/sneakers/side_view/akeneo2.jpg | 42   |          |                    |
 
   Scenario: Successfully quick export products with media without selecting the attribute media in the grid
     Given I am on the products grid
@@ -63,7 +63,7 @@ Feature: Quick export many products with media from datagrid
     Then I should see the text "COMPLETED"
     And first exported file of "csv_product_grid_context_quick_export" should contain:
       """
-      sku;enabled;family
-      boots;1;boots
-      sandals;1;sandals
+      uuid;sku;enabled;family
+      %uuid%;boots;1;boots
+      %uuid%;sandals;1;sandals
       """

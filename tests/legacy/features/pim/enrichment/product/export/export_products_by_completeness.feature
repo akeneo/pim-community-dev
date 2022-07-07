@@ -36,9 +36,9 @@ Feature: Export products according to a completeness policy
     And I wait for the "csv_product_export" job to finish
     Then exported file of "csv_product_export" should contain:
       """
-      sku;categories;enabled;family;groups;name-en_US;name-fr_FR
-      french;default;1;localized;;;French
-      english;default;1;localized;;English;
-      complete;default;1;localized;;Complete;Complete
-      empty;default;1;localized;;;
+      uuid;sku;categories;enabled;family;groups;name-en_US;name-fr_FR
+      %uuid%;french;default;1;localized;;;French
+      %uuid%;english;default;1;localized;;English;
+      %uuid%;complete;default;1;localized;;Complete;Complete
+      %uuid%;empty;default;1;localized;;;
       """

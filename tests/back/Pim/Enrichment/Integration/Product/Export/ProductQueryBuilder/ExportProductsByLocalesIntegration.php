@@ -97,13 +97,18 @@ class ExportProductsByLocalesIntegration extends AbstractExportTestCase
 
     public function testProductExportWithFrenchData()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('complete');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('empty');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('english');
+        $product4 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('french');
+        $product5 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('withLocaleSpecificAttribute');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;description-fr_FR;name-fr_FR
-complete;;1;localized;;"French desc";"French name"
-empty;;1;localized;;;
-english;;1;localized;;"French desc";
-french;;1;localized;;"French desc";"French name"
-withLocaleSpecificAttribute;;1;accessories;;;
+uuid;sku;categories;enabled;family;groups;description-fr_FR;name-fr_FR
+%s;complete;;1;localized;;"French desc";"French name"
+%s;empty;;1;localized;;;
+%s;english;;1;localized;;"French desc";
+%s;french;;1;localized;;"French desc";"French name"
+%s;withLocaleSpecificAttribute;;1;accessories;;;
 
 CSV;
 
@@ -117,18 +122,30 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf(
+            $expectedCsv,
+            $product1->getUuid()->toString(),
+            $product2->getUuid()->toString(),
+            $product3->getUuid()->toString(),
+            $product4->getUuid()->toString(),
+            $product5->getUuid()->toString(),
+        ), $config);
     }
 
     public function testProductExportWithEnglishAndFrenchData()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('complete');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('empty');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('english');
+        $product4 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('french');
+        $product5 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('withLocaleSpecificAttribute');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;description-fr_FR;localeSpecificAttribute;name-en_US;name-fr_FR
-complete;;1;localized;;"French desc";;"English name";"French name"
-empty;;1;localized;;;;;
-english;;1;localized;;"French desc";;"English name";
-french;;1;localized;;"French desc";;;"French name"
-withLocaleSpecificAttribute;;1;accessories;;;"Locale Specific Value";"English name";
+uuid;sku;categories;enabled;family;groups;description-fr_FR;localeSpecificAttribute;name-en_US;name-fr_FR
+%s;complete;;1;localized;;"French desc";;"English name";"French name"
+%s;empty;;1;localized;;;;;
+%s;english;;1;localized;;"French desc";;"English name";
+%s;french;;1;localized;;"French desc";;;"French name"
+%s;withLocaleSpecificAttribute;;1;accessories;;;"Locale Specific Value";"English name";
 
 CSV;
 
@@ -142,7 +159,14 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf(
+            $expectedCsv,
+            $product1->getUuid()->toString(),
+            $product2->getUuid()->toString(),
+            $product3->getUuid()->toString(),
+            $product4->getUuid()->toString(),
+            $product5->getUuid()->toString(),
+        ), $config);
     }
 
     public function testProductExportAfterRemovingFrenchLocaleFromTabletChannel()
@@ -151,11 +175,14 @@ CSV;
         $this->get('pim_catalog.updater.channel')->update($channel, ['locales' => ['en_US']]);
         $this->get('pim_catalog.saver.channel')->save($channel);
 
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('complete');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('english');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('withLocaleSpecificAttribute');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;localeSpecificAttribute;name-en_US
-complete;;1;localized;;;"English name"
-english;;1;localized;;;"English name"
-withLocaleSpecificAttribute;;1;accessories;;"Locale Specific Value";"English name"
+uuid;sku;categories;enabled;family;groups;localeSpecificAttribute;name-en_US
+%s;complete;;1;localized;;;"English name"
+%s;english;;1;localized;;;"English name"
+%s;withLocaleSpecificAttribute;;1;accessories;;"Locale Specific Value";"English name"
 
 CSV;
 
@@ -175,6 +202,11 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf(
+            $expectedCsv,
+            $product1->getUuid()->toString(),
+            $product2->getUuid()->toString(),
+            $product3->getUuid()->toString(),
+        ), $config);
     }
 }

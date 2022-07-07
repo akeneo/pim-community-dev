@@ -39,11 +39,14 @@ class ExportProductsWithAttributesIntegration extends AbstractExportTestCase
 
     public function testProductExportBySelectingOnlyOneAttribute()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_4');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_text_area
-product_1;;1;my_family;;Amazing
-product_2;;1;my_family;;
-product_4;;1;;;
+uuid;sku;categories;enabled;family;groups;a_text_area
+%s;product_1;;1;my_family;;Amazing
+%s;product_2;;1;my_family;;
+%s;product_4;;1;;;
 
 CSV;
 
@@ -58,16 +61,24 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf(
+            $expectedCsv,
+            $product1->getUuid()->toString(),
+            $product2->getUuid()->toString(),
+            $product3->getUuid()->toString(),
+        ), $config);
     }
 
     public function testProductExportWithAttributesInTheSameOrderAsTheFilter()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_4');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_text_area;a_text
-product_1;;1;my_family;;Amazing;Awesome
-product_2;;1;my_family;;;"Awesome product"
-product_4;;1;;;;
+uuid;sku;categories;enabled;family;groups;a_text_area;a_text
+%s;product_1;;1;my_family;;Amazing;Awesome
+%s;product_2;;1;my_family;;;"Awesome product"
+%s;product_4;;1;;;;
 
 CSV;
 
@@ -82,13 +93,18 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf(
+            $expectedCsv,
+            $product1->getUuid()->toString(),
+            $product2->getUuid()->toString(),
+            $product3->getUuid()->toString(),
+        ), $config);
 
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_text;a_text_area
-product_1;;1;my_family;;Awesome;Amazing
-product_2;;1;my_family;;"Awesome product";
-product_4;;1;;;;
+uuid;sku;categories;enabled;family;groups;a_text;a_text_area
+%s;product_1;;1;my_family;;Awesome;Amazing
+%s;product_2;;1;my_family;;"Awesome product";
+%s;product_4;;1;;;;
 
 CSV;
 
@@ -105,7 +121,12 @@ CSV;
 
         $csv = $this->jobLauncher->launchSubProcessExport('csv_product_export', null, $config);
 
-        $this->assertSame($expectedCsv, $csv);
+        $this->assertSame(\sprintf(
+            $expectedCsv,
+            $product1->getUuid()->toString(),
+            $product2->getUuid()->toString(),
+            $product3->getUuid()->toString(),
+        ), $csv);
     }
 
     /**
@@ -113,10 +134,12 @@ CSV;
      */
     public function testProductExportByExportingTheAttributesOnlyOnce()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_text_area;a_text
-product_1;;1;my_family;;Amazing;Awesome
-product_2;;1;my_family;;;"Awesome product"
+uuid;sku;categories;enabled;family;groups;a_text_area;a_text
+%s;product_1;;1;my_family;;Amazing;Awesome
+%s;product_2;;1;my_family;;;"Awesome product"
 
 CSV;
 
@@ -137,6 +160,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
     }
 }
