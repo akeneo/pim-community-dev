@@ -33,9 +33,9 @@ Feature: Export products with only selected attributes
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;lace_color;weather_conditions
-    BOOT-1;;1;boots;;;
-    BOOT-2;;1;boots;;;dry
+    uuid;sku;categories;enabled;family;groups;lace_color;weather_conditions
+    %uuid%;BOOT-1;;1;boots;;;
+    %uuid%;BOOT-2;;1;boots;;;dry
     """
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
@@ -48,7 +48,7 @@ Feature: Export products with only selected attributes
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;weather_conditions;lace_color
-    BOOT-1;;1;boots;;;
-    BOOT-2;;1;boots;;dry;
+    uuid;sku;categories;enabled;family;groups;weather_conditions;lace_color
+    %uuid%;BOOT-1;;1;boots;;;
+    %uuid%;BOOT-2;;1;boots;;dry;
     """

@@ -12,7 +12,6 @@ class ExportProductsByCategoriesIntegration extends AbstractExportTestCase
      */
     protected function loadFixtures() : void
     {
-
         $this->createProduct('product_with_categories', [
             new SetCategories(['categoryA', 'categoryA1', 'categoryA2'])
         ]);
@@ -30,10 +29,12 @@ class ExportProductsByCategoriesIntegration extends AbstractExportTestCase
 
     public function testProductExportWithCategoryFilter()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_categories');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_single_category_A');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups
-product_with_categories;categoryA,categoryA1,categoryA2;1;;
-product_with_single_category_A;categoryA;1;;
+uuid;sku;categories;enabled;family;groups
+%s;product_with_categories;categoryA,categoryA1,categoryA2;1;;
+%s;product_with_single_category_A;categoryA;1;;
 
 CSV;
 
@@ -53,6 +54,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
     }
 }

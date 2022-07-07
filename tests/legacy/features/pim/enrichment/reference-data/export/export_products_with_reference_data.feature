@@ -28,7 +28,7 @@ Feature: Export products
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;color;description-en_US-mobile;heel_color;manufacturer;name-en_US;price-EUR;price-USD;side_view;size;sole_color;sole_fabric;top_view
-    SNKRS-1B;summer_collection;1;heels;;black;;red;;Model 1;50.00;70.00;;45;blue;silk;
-    SNKRS-1R;summer_collection;1;heels;;red;;red;;Model 1;50.00;70.00;;45;red;neoprene,silk;
+    uuid;sku;categories;enabled;family;groups;color;description-en_US-mobile;heel_color;manufacturer;name-en_US;price-EUR;price-USD;side_view;size;sole_color;sole_fabric;top_view
+    %uuid%;SNKRS-1B;summer_collection;1;heels;;black;;red;;Model 1;50.00;70.00;;45;blue;silk;
+    %uuid%;SNKRS-1R;summer_collection;1;heels;;red;;red;;Model 1;50.00;70.00;;45;red;neoprene,silk;
     """

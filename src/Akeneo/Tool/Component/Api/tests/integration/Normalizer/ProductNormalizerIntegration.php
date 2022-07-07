@@ -24,7 +24,9 @@ class ProductNormalizerIntegration extends TestCase
 
     public function testEmptyDisabledProduct()
     {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bar');
         $expected = [
+            'uuid' => $product->getUuid()->toString(),
             'identifier'              => 'bar',
             'family'                  => null,
             'parent'                  => null,
@@ -43,7 +45,9 @@ class ProductNormalizerIntegration extends TestCase
 
     public function testEmptyEnabledProduct()
     {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('baz');
         $expected = [
+            'uuid' => $product->getUuid()->toString(),
             'identifier'              => 'baz',
             'family'                  => null,
             'parent'                  => null,
@@ -62,7 +66,9 @@ class ProductNormalizerIntegration extends TestCase
 
     public function testProductWithAllAttributes()
     {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
         $expected = [
+            'uuid' => $product->getUuid()->toString(),
             'identifier'    => 'foo',
             'family'        => 'familyA',
             'parent'        => null,
@@ -274,7 +280,9 @@ class ProductNormalizerIntegration extends TestCase
 
     public function testProductWithFilteredAttributes()
     {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
         $expected = [
+            'uuid' => $product->getUuid()->toString(),
             'identifier'    => 'foo',
             'family'        => 'familyA',
             'parent'        => null,

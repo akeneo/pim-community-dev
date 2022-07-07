@@ -47,11 +47,11 @@ Feature: Quick export many products from datagrid
     And the names of the exported files of "csv_product_quick_export" should be "1_products_export_en_US_tablet.csv"
     And first exported file of "csv_product_quick_export" should contain:
       """
-      sku;123;categories;color;description-en_US-tablet;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
-      boots;aaa;winter_collection;black;;1;boots;;;;"Amazing boots";20;25;;;40;;
-      sneakers;bbb;summer_collection;white;;1;sneakers;;;;Sneakers;50;60;;;42;;
-      sandals;ccc;summer_collection;red;;1;sandals;;;;Sandals;5;5;;;40;;
-      pump;ddd;summer_collection;blue;;1;;;;;Pump;15;20;;;41;;
+      uuid;sku;123;categories;color;description-en_US-tablet;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+      %uuid%;boots;aaa;winter_collection;black;;1;boots;;;;"Amazing boots";20;25;;;40;;
+      %uuid%;sneakers;bbb;summer_collection;white;;1;sneakers;;;;Sneakers;50;60;;;42;;
+      %uuid%;sandals;ccc;summer_collection;red;;1;sandals;;;;Sandals;5;5;;;40;;
+      %uuid%;pump;ddd;summer_collection;blue;;1;;;;;Pump;15;20;;;41;;
       """
 
   @critical
@@ -74,6 +74,6 @@ Feature: Quick export many products from datagrid
     Then I should see the text "COMPLETED"
     And the names of the exported files of "xlsx_product_quick_export" should be "1_products_export_en_US_tablet.xlsx"
     And exported xlsx file 1 of "xlsx_product_quick_export" should contain:
-      | sku      | 123 | categories        | color | description-en_US-tablet | enabled | family   | groups | lace_color | manufacturer | name-en_US    | price-EUR | price-USD | rating | side_view | size | top_view | weather_conditions |
-      | boots    | aaa | winter_collection | black |                          | 1       | boots    |        |            |              | Amazing boots | 20        | 25        |        |           | 40   |          |                    |
-      | sneakers | bbb | summer_collection | white |                          | 1       | sneakers |        |            |              | Sneakers      | 50        | 60        |        |           | 42   |          |                    |
+      |  uuid  | sku      | 123 | categories        | color | description-en_US-tablet | enabled | family   | groups | lace_color | manufacturer | name-en_US    | price-EUR | price-USD | rating | side_view | size | top_view | weather_conditions |
+      | %uuid% | boots    | aaa | winter_collection | black |                          | 1       | boots    |        |            |              | Amazing boots | 20        | 25        |        |           | 40   |          |                    |
+      | %uuid% | sneakers | bbb | summer_collection | white |                          | 1       | sneakers |        |            |              | Sneakers      | 50        | 60        |        |           | 42   |          |                    |

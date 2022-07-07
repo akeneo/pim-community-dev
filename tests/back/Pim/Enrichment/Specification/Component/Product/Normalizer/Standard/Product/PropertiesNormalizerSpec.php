@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PropertiesNormalizerSpec extends ObjectBehavior
@@ -48,6 +49,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $values->getIterator()->willReturn($iterator);
 
         $family->getCode()->willReturn('my_family');
+        $uuid = Uuid::uuid4();
+        $product->getUuid()->willReturn($uuid);
         $product->isVariant()->willReturn(false);
         $product->getFamily()->willReturn($family);
         $product->getGroupCodes()->willReturn([]);
@@ -75,6 +78,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($updated, 'standard')->willReturn('2010-06-23T23:00:00+01:00');
 
         $this->normalize($product, 'standard', $context)->shouldReturn([
+            'uuid' => $uuid->toString(),
             'identifier'    => 'my_code',
             'family'        => 'my_family',
             'parent'        => null,
@@ -107,6 +111,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $values->getIterator()->willReturn($iterator);
 
         $family->getCode()->willReturn('my_family');
+        $uuid = Uuid::uuid4();
+        $product->getUuid()->willReturn($uuid);
         $product->isVariant()->willReturn(true);
         $product->getFamily()->willReturn($family);
         $product->getGroupCodes()->willReturn([]);
@@ -136,6 +142,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($updated, 'standard')->willReturn('2010-06-23T23:00:00+01:00');
 
         $this->normalize($product, 'standard', $context)->shouldReturn([
+            'uuid' => $uuid->toString(),
             'identifier'    => 'my_code',
             'family'        => 'my_family',
             'parent'        => 'parent_code',

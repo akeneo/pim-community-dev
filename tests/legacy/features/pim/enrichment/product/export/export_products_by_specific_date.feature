@@ -19,9 +19,9 @@ Feature: Export products according to a date
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
       """
-      sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
-      SNKRS-1B;summer_collection;black;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
-      SNKRS-1R;summer_collection;red;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
+      uuid;sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+      %uuid%;SNKRS-1B;summer_collection;black;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
+      %uuid%;SNKRS-1R;summer_collection;red;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
       """
     When I edit the "SNKRS-1B" product
     And I change the "Weather conditions" to "Hot"
@@ -32,6 +32,6 @@ Feature: Export products according to a date
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
       """
-      sku;categories;enabled;family;groups;color;description-en_US-mobile;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
-      SNKRS-1B;summer_collection;1;sneakers;;black;;;;Model 1;;;;50.00;70.00;;;45;;;;;;;;hot;;;
+      uuid;sku;categories;enabled;family;groups;color;description-en_US-mobile;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+      %uuid%;SNKRS-1B;summer_collection;1;sneakers;;black;;;;Model 1;;;;50.00;70.00;;;45;;;;;;;;hot;;;
       """
