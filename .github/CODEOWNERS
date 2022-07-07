@@ -2,7 +2,7 @@
 
 ## Supplier Portal code base
 components/supplier-portal-supplier/ @akeneo/squad-suricates
-components/onboarder-retailer/ @akeneo/squad-suricates
+components/supplier-portal-retailer/ @akeneo/squad-suricates
 
 ## Supplier Portal CI
 .circleci/workflows/squads/suricates.yml @cha-ser @akeneo/squad-suricates
