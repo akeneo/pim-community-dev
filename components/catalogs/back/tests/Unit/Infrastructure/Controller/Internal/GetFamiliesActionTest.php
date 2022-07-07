@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetFamiliesAction;
+use Akeneo\Catalogs\Infrastructure\Persistence\GetFamiliesByCodeQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\SearchFamilyQuery;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,11 +16,52 @@ class GetFamiliesActionTest extends TestCase
 {
     private ?GetFamiliesAction $getFamiliesAction;
     private ?SearchFamilyQuery $searchFamilyQuery;
+    private ?GetFamiliesByCodeQuery $getFamiliesByCodeQuery;
 
     protected function setUp(): void
     {
         $this->searchFamilyQuery = $this->createMock(SearchFamilyQuery::class);
-        $this->getFamiliesAction = new GetFamiliesAction($this->searchFamilyQuery);
+        $this->getFamiliesByCodeQuery = $this->createMock(GetFamiliesByCodeQuery::class);
+        $this->getFamiliesAction = new GetFamiliesAction(
+            $this->searchFamilyQuery,
+            $this->getFamiliesByCodeQuery,
+        );
+    }
+
+    public function testItCallsTheSearchQueryWhenCodesIsEmpty(): void
+    {
+        $this->searchFamilyQuery->expects($this->once())
+            ->method('execute')
+            ->with(null, 1, 20);
+
+        ($this->getFamiliesAction)(
+            new Request(
+                query: [
+                    'codes' => ' ',
+                ],
+                server: [
+                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                ],
+            )
+        );
+    }
+
+    public function testItCallsTheGetFamiliesQueryWithDefaultValues(): void
+    {
+        $this->getFamiliesByCodeQuery->expects($this->once())
+            ->method('execute')
+            ->with(['foo', 'bar'], 1, 20);
+
+        ($this->getFamiliesAction)(
+            new Request(
+                query: [
+                    'codes' => 'foo,bar'
+                ],
+                server: [
+                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                ],
+            )
+        );
     }
 
     public function testItRedirectsIfTheRequestIsNotAnXMLHTTPRequest(): void
@@ -31,53 +73,103 @@ class GetFamiliesActionTest extends TestCase
     }
 
     /**
-     * @dataProvider query
+     * @dataProvider queryWillThrow
      */
-    public function testItAnswersABadRequestIfTheQueryIsInvalid(array $query, string $message): void
+    public function testItAnswersABadRequestIfTheQueryIsInvalid(array $query): void
     {
         $this->expectException(BadRequestHttpException::class);
-        $this->expectExceptionMessage($message);
 
-        ($this->getFamiliesAction)(new Request(
-            query: $query,
-            server: [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ],
-        ));
+        ($this->getFamiliesAction)(
+            new Request(
+                query: $query,
+                server: [
+                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                ],
+            )
+        );
     }
 
-    public function query(): array
+    public function queryWillThrow(): array
     {
         return [
             'page must be a numeric' => [
                 [
                     'page' => 'foo',
                 ],
-                'Page and limit must be a number.',
             ],
             'limit must be a numeric' => [
                 [
                     'limit' => 'foo',
                 ],
-                'Page and limit must be a number.',
             ],
             'page must be positive' => [
                 [
-                    'page' => -2,
+                    'page' => 0,
                 ],
-                'Page and limit must be positive.',
             ],
             'limit must be positive' => [
                 [
-                    'limit' => '-2',
+                    'limit' => 0,
                 ],
-                'Page and limit must be positive.',
             ],
-            'search must be string or null' => [
+            'search must a string' => [
                 [
                     'search' => 42,
                 ],
-                'Search must must be a string or null.',
+            ],
+            'codes must a string' => [
+                [
+                    'codes' => 42,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider queryWillNotThrow
+     */
+    public function testItAnswersIfTheQueryIsValid(array $query): void
+    {
+        $this->expectNotToPerformAssertions();
+
+        ($this->getFamiliesAction)(
+            new Request(
+                query: $query,
+                server: [
+                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                ],
+            )
+        );
+    }
+
+    public function queryWillNotThrow(): array
+    {
+        return [
+            'limit and page are positive' => [
+                [
+                    'page' => 1,
+                    'limit' => 1,
+                ],
+            ],
+            'search is string' => [
+                [
+                    'search' => 'foo',
+                ],
+            ],
+            'search is null' => [
+                [
+                    'search' => null,
+                ],
+            ],
+            'codes is string' => [
+                [
+                    'codes' => 'foo',
+                ],
+            ],
+            'codes is null' => [
+                [
+                    'codes' => null,
+                ],
             ],
         ];
     }
