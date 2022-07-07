@@ -46,7 +46,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
     }
 
     public function testProductExportWithFilterStartWithOnFileValue()
@@ -76,6 +76,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
     }
 }

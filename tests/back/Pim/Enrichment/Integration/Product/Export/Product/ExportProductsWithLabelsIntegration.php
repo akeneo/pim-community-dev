@@ -34,7 +34,7 @@ uuid;[sku];Catégories;Activé;Famille;Parent;Groupes;Couleur;"Est-ce en vente ?
 
 CSV;
         $this->assertProductExport(
-            $expectedCsvWithTranslations,
+            \sprintf($expectedCsvWithTranslations, $apollonPinkM->getUuid()->toString(), $summerShirt->getUuid()->toString()),
             ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'fr_FR']
         );
     }
@@ -50,7 +50,7 @@ CSV;
 
 CSV;
         $this->assertProductExport(
-            $expectedCsvWithNoTranslations,
+            \sprintf($expectedCsvWithNoTranslations, $apollonPinkM->getUuid()->toString(), $summerShirt->getUuid()->toString()),
             ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'unknown_locale']
         );
     }

@@ -46,7 +46,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
     }
 
     public function testProductExportWithFilterInferiorToADate()
@@ -74,6 +74,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
     }
 }

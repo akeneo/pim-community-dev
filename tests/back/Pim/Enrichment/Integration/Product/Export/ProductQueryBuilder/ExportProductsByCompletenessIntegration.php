@@ -81,7 +81,12 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf(
+            $expectedCsv,
+            $product1->getUuid()->toString(),
+            $product2->getUuid()->toString(),
+            $product3->getUuid()->toString(),
+        ), $config);
     }
 
     public function testProductExportWithCompleteProductsOnAllLocales()
@@ -112,7 +117,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
     }
 
     public function testProductExportWithIncompleteProductsOnAllLocales()
@@ -143,7 +148,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
     }
 
     public function testProductExportWithoutFilterOnCompleteness()
@@ -171,6 +176,12 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf(
+            $expectedCsv,
+            $product1->getUuid()->toString(),
+            $product2->getUuid()->toString(),
+            $product3->getUuid()->toString(),
+            $product4->getUuid()->toString(),
+        ), $config);
     }
 }
