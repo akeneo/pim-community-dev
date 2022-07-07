@@ -273,7 +273,7 @@ SQL;
                 return $doc['_id'];
             }, $results['hits']['hits']);
 
-            $diff = array_reduce(
+            $diff = array_diff($existingMysqlIdentifiers, $esIdentifiers);
                 $rows,
                 function ($carry, $item) use ($esIdentifiers) {
                     if(!in_array($item['_id'], $esIdentifiers)) {
