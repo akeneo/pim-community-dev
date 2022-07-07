@@ -1,25 +1,25 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
+namespace Specification\Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
 
-use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory as NormalizerChildCategory;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory as ReadModelChildCategory;
 use PhpSpec\ObjectBehavior;
 
 class ChildCategorySpec extends ObjectBehavior
 {
     function it_is_a_child_category_normalizer()
     {
-        $this->shouldHaveType(\Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory::class);
+        $this->shouldHaveType(NormalizerChildCategory::class);
     }
 
     function it_normalize_a_list_of_children_categories()
     {
         $categories = [
-            new ChildCategory(1, 'child_1', 'Child 1', false, false, 2, [
-                new ChildCategory(2, 'child_2', 'Child 2', true, true, 1, []),
+            new ReadModelChildCategory(1, 'child_1', 'Child 1', false, false, 2, [
+                new ReadModelChildCategory(2, 'child_2', 'Child 2', true, true, 1, []),
             ]),
-            new ChildCategory(3, 'child_3', 'Child 3', false, false, 3, []),
+            new ReadModelChildCategory(3, 'child_3', 'Child 3', false, false, 3, []),
         ];
 
         $this->normalizeList($categories)->shouldReturn([

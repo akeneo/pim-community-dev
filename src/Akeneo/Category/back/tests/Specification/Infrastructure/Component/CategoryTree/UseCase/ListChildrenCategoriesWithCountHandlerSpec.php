@@ -1,13 +1,14 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
+namespace Specification\Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase;
 
+use Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountIncludingSubCategories;
+use Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountNotIncludingSubCategories;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCount;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;
 
@@ -16,8 +17,8 @@ class ListChildrenCategoriesWithCountHandlerSpec extends ObjectBehavior
     function let(
         CategoryRepositoryInterface                                                                                   $categoryRepository,
         UserContext                                                                                                   $userContext,
-        \Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountIncludingSubCategories    $listIncludingSubCategories,
-        \Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountNotIncludingSubCategories $listNotIncludingSubCategories
+        ListChildrenCategoriesWithCountIncludingSubCategories    $listIncludingSubCategories,
+        ListChildrenCategoriesWithCountNotIncludingSubCategories $listNotIncludingSubCategories
     ) {
         $this->beConstructedWith(
             $categoryRepository,

@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
+namespace Specification\Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
 
-use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory as NormalizerRootCategory;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory as ReadModelRootCategory;
 use PhpSpec\ObjectBehavior;
 
 
@@ -11,14 +11,14 @@ class RootCategorySpec extends ObjectBehavior
 {
     function it_is_a_root_category_normalizer()
     {
-        $this->shouldHaveType(\Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory::class);
+        $this->shouldHaveType(NormalizerRootCategory::class);
     }
 
     function it_normalize_a_list_of_root_categories()
     {
         $categories = [
-            new RootCategory(1, 'tree_1', 'Tree 1', 2, true),
-            new RootCategory(2, 'tree_2', 'Tree 2', 1, false),
+            new ReadModelRootCategory(1, 'tree_1', 'Tree 1', 2, true),
+            new ReadModelRootCategory(2, 'tree_2', 'Tree 2', 1, false),
         ];
 
         $this->normalizeList($categories)->shouldReturn([

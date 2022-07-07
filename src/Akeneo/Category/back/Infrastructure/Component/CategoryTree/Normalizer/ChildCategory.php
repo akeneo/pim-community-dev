@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
 class ChildCategory
 {
     /**
-     * @param \Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory[] $categories
+     * @param ReadModel\ChildCategory[] $categories
      *
      * @return array
      */
@@ -41,11 +41,11 @@ class ChildCategory
     /**
      * Ideally, CSS calculation should be done on front-end side.
      *
-     * @param \Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory $category
+     * @param ReadModel\ChildCategory $category
      *
      * @return string
      */
-    private function state(\Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory $category): string
+    private function state(ReadModel\ChildCategory $category): string
     {
         $state = $category->isLeaf() ? 'leaf' : 'closed';
         if ($category->expanded()) {

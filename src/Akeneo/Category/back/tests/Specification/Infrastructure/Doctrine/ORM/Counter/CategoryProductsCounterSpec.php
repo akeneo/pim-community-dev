@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter;
+namespace Specification\Akeneo\Category\Infrastructure\Doctrine\ORM\Counter;
 
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use PhpSpec\ObjectBehavior;
 
 class CategoryProductsCounterSpec extends ObjectBehavior
 {
