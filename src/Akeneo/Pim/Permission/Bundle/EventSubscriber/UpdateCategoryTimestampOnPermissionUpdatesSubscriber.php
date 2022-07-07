@@ -2,8 +2,9 @@
 
 namespace Akeneo\Pim\Permission\Bundle\EventSubscriber;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver;
 use Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -47,6 +48,8 @@ class UpdateCategoryTimestampOnPermissionUpdatesSubscriber implements EventSubsc
         if (!$subject instanceof ProductCategoryAccess) {
             return;
         }
+
+        /** @var Category $category */
         $category = $subject->getCategory();
 
         if (!$category instanceof CategoryInterface) {
@@ -84,6 +87,7 @@ class UpdateCategoryTimestampOnPermissionUpdatesSubscriber implements EventSubsc
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         foreach ($categories as $category) {
+            /** @var Category $category */
             $category->setUpdated($now);
         }
 

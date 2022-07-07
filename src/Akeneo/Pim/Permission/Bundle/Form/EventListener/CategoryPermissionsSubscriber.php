@@ -11,10 +11,10 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Form\EventListener;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Form\Type\CategoryPermissionsType;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\Common\Collections\ArrayCollection;

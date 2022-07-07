@@ -11,12 +11,12 @@
 
 namespace Akeneo\Pim\Permission\Bundle\User;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
-use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\UserManagement\Bundle\Context\UserContext as BaseUserContext;
 use Symfony\Component\HttpFoundation\RequestStack;

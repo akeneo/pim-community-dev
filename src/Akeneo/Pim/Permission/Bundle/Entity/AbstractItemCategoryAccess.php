@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Entity;
 
-use Akeneo\Pim\Permission\Component\Model\CategoryAccessInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Pim\Permission\Component\Model\CategoryAccessInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 
 /**
