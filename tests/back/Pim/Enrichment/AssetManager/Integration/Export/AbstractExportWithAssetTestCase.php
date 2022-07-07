@@ -45,6 +45,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
@@ -246,24 +247,16 @@ abstract class AbstractExportWithAssetTestCase extends AbstractExportTestCase
         $this->createProduct(
             'product_1',
             [
-                'parent' => null,
-                'values' => [
-                    'asset_attribute' => [['locale' => null, 'scope' => null, 'data' => ['asset1', 'asset2']]],
-                ],
+                new SetAssetValue('asset_attribute', null, null, ['asset1', 'asset2'])
             ]
         );
 
         $this->createProduct(
             'product_2',
             [
-                'parent' => null,
-                'values' => [
-                    'localizable_asset_attribute' => [
-                        ['locale' => 'en_US', 'scope' => null, 'data' => ['asset1', 'asset2']],
-                        ['locale' => 'fr_FR', 'scope' => null, 'data' => ['asset2']],
-                        ['locale' => 'de_DE', 'scope' => null, 'data' => ['asset1']],
-                    ],
-                ],
+                new SetAssetValue('localizable_asset_attribute', null, 'en_US', ['asset1', 'asset2']),
+                new SetAssetValue('localizable_asset_attribute', null, 'fr_FR', ['asset2']),
+                new SetAssetValue('localizable_asset_attribute', null, 'de_DE', ['asset1']),
             ]
         );
     }
