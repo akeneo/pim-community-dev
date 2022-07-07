@@ -82,7 +82,7 @@
         </testsuite>
 
         <testsuite name="Category">
-            <directory suffix="Integration.php">src/Akeneo/Category/back/Test/Integration</directory>
+            <directory suffix="Integration.php">src/Akeneo/Category/back/Tests/Integration</directory>
         </testsuite>
     </testsuites>
 </phpunit>

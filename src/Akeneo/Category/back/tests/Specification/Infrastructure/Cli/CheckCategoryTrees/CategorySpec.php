@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\Command\Category\CheckCategoryTrees;
+namespace Specification\Akeneo\Category\Infrastructure\Cli\CheckCategoryTrees;
 
 use Akeneo\Category\Infrastructure\Cli\CheckCategoryTrees\Category;
 use PhpSpec\ObjectBehavior;
