@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorA
 
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler;
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event\ContributorAccountCreated;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\ContributorAccountCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class SendWelcomeEmailOnContributorAccountCreated implements EventSubscriberInterface

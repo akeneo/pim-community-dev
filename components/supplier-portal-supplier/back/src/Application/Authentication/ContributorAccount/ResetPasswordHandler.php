@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount;
 
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\PasswordReset;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event\PasswordReset;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 

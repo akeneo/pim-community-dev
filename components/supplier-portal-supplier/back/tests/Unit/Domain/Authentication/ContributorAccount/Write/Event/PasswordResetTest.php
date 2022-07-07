@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Domain\Authentication\ContributorAccount\Write\Event;
 
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event\PasswordReset;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\PasswordReset;
 use PHPUnit\Framework\TestCase;
 
 final class PasswordResetTest extends TestCase

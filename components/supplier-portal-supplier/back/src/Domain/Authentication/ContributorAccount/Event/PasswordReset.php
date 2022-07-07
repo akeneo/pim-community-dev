@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event;
+namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event;
 
 final class PasswordReset
 {

@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\Co
 
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\ResetPassword;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler;
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event\PasswordReset;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\PasswordReset;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
