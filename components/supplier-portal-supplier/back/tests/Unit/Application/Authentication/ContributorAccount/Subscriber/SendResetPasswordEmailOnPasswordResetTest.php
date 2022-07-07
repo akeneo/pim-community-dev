@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount\Subscriber;
 
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendResetPasswordEmailOnPasswordReset;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\PasswordReset;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendResetPasswordEmail;
 use PHPUnit\Framework\TestCase;
 
 final class SendResetPasswordEmailOnPasswordResetTest extends TestCase
@@ -21,17 +21,17 @@ final class SendResetPasswordEmailOnPasswordResetTest extends TestCase
     }
 
     /** @test */
-    public function itCallsTheSendResetPasswordEmailHandler(): void
+    public function itCallsTheSendResetPasswordEmailService(): void
     {
         $event = new PasswordReset('test@example.com', 'foo');
 
-        $sendResetPasswordEmailHandler = $this->createMock(SendResetPasswordEmailHandler::class);
-        $sendResetPasswordEmailHandler
+        $sendResetPasswordEmail = $this->createMock(SendResetPasswordEmail::class);
+        $sendResetPasswordEmail
             ->expects($this->once())
             ->method('__invoke')
             ->with('test@example.com', 'foo');
 
-        $sut = new SendResetPasswordEmailOnPasswordReset($sendResetPasswordEmailHandler);
+        $sut = new SendResetPasswordEmailOnPasswordReset($sendResetPasswordEmail);
 
         $sut->sendResetPasswordEmail($event);
     }

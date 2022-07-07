@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Domain\Authentication\ContributorAccount;
 
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendResetPasswordEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
 use PHPUnit\Framework\TestCase;
 
-final class SendResetPasswordEmailHandlerTest extends TestCase
+final class SendResetPasswordEmailTest extends TestCase
 {
     /** @test */
     public function itSendsAResetPasswordEmail(): void
@@ -36,7 +36,7 @@ final class SendResetPasswordEmailHandlerTest extends TestCase
             ->method('__invoke')
             ->with($email);
 
-        $sut = new SendResetPasswordEmailHandler($sendEmail, $buildResetPasswordEmail);
+        $sut = new SendResetPasswordEmail($sendEmail, $buildResetPasswordEmail);
         ($sut)($contributorAccountEmail, 'foo');
     }
 }

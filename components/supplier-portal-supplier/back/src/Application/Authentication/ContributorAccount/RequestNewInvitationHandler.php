@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount;
 
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\ContributorAccountDoesNotExist;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\AccessToken;
@@ -14,7 +15,7 @@ final class RequestNewInvitationHandler
 {
     public function __construct(
         private ContributorAccountRepository $contributorAccountRepository,
-        private SendWelcomeEmailHandler $sendWelcomeEmailHandler,
+        private SendWelcomeEmail $sendWelcomeEmail,
     ) {
     }
 
@@ -42,7 +43,7 @@ final class RequestNewInvitationHandler
 
         $this->contributorAccountRepository->save($contributorAccount);
 
-        ($this->sendWelcomeEmailHandler)(
+        ($this->sendWelcomeEmail)(
             $newAccessToken,
             $requestNewInvitation->email,
         );

@@ -33,13 +33,13 @@ services:
 
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendWelcomeEmailOnContributorAccountCreated:
         arguments:
-            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail'
         tags:
             - 'kernel.event_subscriber'
 
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendResetPasswordEmailOnPasswordReset:
         arguments:
-            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendResetPasswordEmail'
         tags:
             - 'kernel.event_subscriber'
 
@@ -78,7 +78,7 @@ services:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@event_dispatcher'
 
-    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler:
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail'
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail'
@@ -93,14 +93,14 @@ services:
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
-            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail'
 
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@event_dispatcher'
 
-    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler:
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendResetPasswordEmail:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail'
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail'

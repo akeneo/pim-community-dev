@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Domain\Authentication\ContributorAccount;
 
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
 use PHPUnit\Framework\TestCase;
 
-class SendWelcomeEmailHandlerTest extends TestCase
+class SendWelcomeEmailTest extends TestCase
 {
     /** @test */
     public function itSendsAWelcomeEmail(): void
@@ -36,7 +36,7 @@ class SendWelcomeEmailHandlerTest extends TestCase
             ->method('__invoke')
             ->with($email);
 
-        $sut = new SendWelcomeEmailHandler($sendEmail, $buildWelcomeEmail);
+        $sut = new SendWelcomeEmail($sendEmail, $buildWelcomeEmail);
         ($sut)($contributorEmail, 'access-token');
     }
 }

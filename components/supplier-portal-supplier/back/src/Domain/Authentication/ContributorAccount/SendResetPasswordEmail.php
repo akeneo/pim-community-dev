@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount;
 
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
 
-class SendResetPasswordEmailHandler
+class SendResetPasswordEmail
 {
     public function __construct(
         private SendEmail $sendEmail,
