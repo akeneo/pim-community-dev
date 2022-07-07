@@ -1,0 +1,58 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {FileInput} from './FileInput.tsx';
+import {useFakeMediaStorage, FullscreenPreview} from '../../../storybook';
+import {IconButton, Button} from '../../../components';
+import {DownloadIcon, FullscreenIcon} from '../../../icons';
+import {useBooleanState} from '../../../hooks'; import styled from 'styled-components';
+
+<Meta
+  title="Components/Inputs/File input"
+  component={FileInput}
+  args={{
+    value: null,
+    uploadButtonLabel: 'Browse your files',
+    clearTitle: 'Clear',
+    uploadingLabel: 'Uploading...',
+    fileDraggingLabel: 'Drag & drop your file here',
+    uploadingPlaceholder: 'It will be ready soon...',
+    uploadErrorLabel: 'An error occurred during upload',
+  }}
+/>
+
+# File input
+
+## Usage
+
+File input allows the user to enter content when the expected user input is a file.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [thumbnailUrl, uploader] = useFakeMediaStorage('https://picsum.photos/seed/akeneo/200');
+      const [value, setValue] = useState(null);
+        const FileExtension = styled.span`color: #A1A9B7;`;
+        const PlaceholderUploadAlternative = styled.div`text-align: center; color: #A1A9B7;`;
+      const Placeholder = <div>
+          <strong>Drag & drop</strong> your file <FileExtension>(xlsx)</FileExtension> to launch the upload
+          <PlaceholderUploadAlternative>- or -</PlaceholderUploadAlternative>
+      </div>;
+      return (
+        <>
+          <FileInput
+            {...args}
+              placeholder={Placeholder}
+            value={value}
+            onChange={setValue}
+            uploader={uploader}
+          >
+          </FileInput>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />

@@ -1,6 +1,7 @@
 export * from './BooleanInput/BooleanInput';
 export * from './common';
 export * from './ColorInput/ColorInput';
+export * from './FileInput/FileInput';
 export * from './MediaFileInput/FileInfo';
 export * from './MediaFileInput/MediaFileInput';
 export * from './MediaLinkInput/MediaLinkInput';
