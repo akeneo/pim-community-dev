@@ -32,6 +32,7 @@
             "AkeneoEnterprise\\Channel\\": "src/Akeneo/Channel/back",
             "Akeneo\\Platform\\JobAutomation\\": "components/job-automation/back/src",
             "Akeneo\\Catalogs\\": "vendor/akeneo/pim-community-dev/components/catalogs/back/src",
+            "Akeneo\\Category\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Category/back",
             "Akeneo\\FreeTrial\\": "tria/src/Akeneo/FreeTrial/back"
         },
         "exclude-from-classmap": [
