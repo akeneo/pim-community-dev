@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Category\Infrastructure\Query;
+namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Query;
 
 use Akeneo\Category\Domain\Query\GetViewableCategories;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;

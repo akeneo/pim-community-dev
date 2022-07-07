@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\Form\Type;
+namespace Specification\Akeneo\Category\Form\Type;
 
 use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation;

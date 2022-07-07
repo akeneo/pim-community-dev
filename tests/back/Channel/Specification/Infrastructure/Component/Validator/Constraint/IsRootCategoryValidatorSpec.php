@@ -2,10 +2,10 @@
 
 namespace Specification\Akeneo\Channel\Infrastructure\Component\Validator\Constraint;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Category\Infrastructure\Component\Category\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsRootCategory;
 use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsRootCategoryValidator;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
