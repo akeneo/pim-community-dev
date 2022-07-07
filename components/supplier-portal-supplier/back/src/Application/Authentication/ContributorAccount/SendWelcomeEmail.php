@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorA
 
 final class SendWelcomeEmail
 {
-    public function __construct(public string $accessToken, public string $email)
+    public function __construct(public string $email, public string $accessToken)
     {
     }
 }

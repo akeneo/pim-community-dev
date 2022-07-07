@@ -38,6 +38,6 @@ class SendWelcomeEmailHandlerTest extends TestCase
             ->with($email);
 
         $sut = new SendWelcomeEmailHandler($sendEmail, $buildWelcomeEmail);
-        ($sut)(new SendWelcomeEmail('access-token', $contributorEmail));
+        ($sut)(new SendWelcomeEmail($contributorEmail, 'access-token'));
     }
 }
