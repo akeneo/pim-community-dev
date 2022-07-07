@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGr
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ConvertToSimpleProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
@@ -239,11 +240,8 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
         if (!$product->isVariant()) {
             throw new \InvalidArgumentException('The "%s" product is already simple', $product->getIdentifier());
         }
-        $this->get('pim_catalog.entity_with_family_variant.remove_parent_from_product')->from(
-            $product,
-            ['parent' => null]
-        );
-        $this->upsertProduct($product->getIdentifier());
+
+        $this->product = $this->upsertProduct($product->getIdentifier(), [new ConvertToSimpleProduct()]);
     }
 
     private function createProductModel(array $data): void
