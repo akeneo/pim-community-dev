@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\Co
 
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\ResetPassword;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\ResetPasswordHandler;
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event\ResetPasswordRequested;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event\PasswordReset;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
@@ -40,7 +40,7 @@ final class ResetPasswordHandlerTest extends TestCase
 
         $dispatchedEvents = $eventDispatcherStub->getDispatchedEvents();
         static::assertCount(1, $dispatchedEvents);
-        static::assertInstanceOf(ResetPasswordRequested::class, $dispatchedEvents[0]);
+        static::assertInstanceOf(PasswordReset::class, $dispatchedEvents[0]);
         static::assertNotSame($oldPassword, $newContributorAccount->getPassword());
         static::assertNull($newContributorAccount->getPassword());
     }

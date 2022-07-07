@@ -6,25 +6,25 @@ namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\Co
 
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmail;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler;
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendResetPasswordEmailOnPasswordResetRequested;
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event\ResetPasswordRequested;
+use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendResetPasswordEmailOnPasswordReset;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event\PasswordReset;
 use PHPUnit\Framework\TestCase;
 
-final class SendResetPasswordEmailOnPasswordResetRequestedTest extends TestCase
+final class SendResetPasswordEmailOnPasswordResetTest extends TestCase
 {
     /** @test */
-    public function itSubscribesToResetPasswordRequestedEvent(): void
+    public function itSubscribesToPasswordResetEvent(): void
     {
         $this->assertSame(
-            [ResetPasswordRequested::class],
-            array_keys(SendResetPasswordEmailOnPasswordResetRequested::getSubscribedEvents()),
+            [PasswordReset::class],
+            array_keys(SendResetPasswordEmailOnPasswordReset::getSubscribedEvents()),
         );
     }
 
     /** @test */
     public function itCallsTheSendResetPasswordEmailHandler(): void
     {
-        $event = new ResetPasswordRequested('test@example.com', 'foo');
+        $event = new PasswordReset('test@example.com', 'foo');
 
         $sendResetPasswordEmailHandler = $this->createMock(SendResetPasswordEmailHandler::class);
         $sendResetPasswordEmailHandler
@@ -32,7 +32,7 @@ final class SendResetPasswordEmailOnPasswordResetRequestedTest extends TestCase
             ->method('__invoke')
             ->with(new SendResetPasswordEmail('test@example.com', 'foo'));
 
-        $sut = new SendResetPasswordEmailOnPasswordResetRequested($sendResetPasswordEmailHandler);
+        $sut = new SendResetPasswordEmailOnPasswordReset($sendResetPasswordEmailHandler);
 
         $sut->sendResetPasswordEmail($event);
     }

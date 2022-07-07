@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Domain\Authentication\ContributorAccount\Write\Event;
 
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event\ResetPasswordRequested;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event\PasswordReset;
 use PHPUnit\Framework\TestCase;
 
-final class ResetPasswordRequestedTest extends TestCase
+final class PasswordResetTest extends TestCase
 {
     /** @test */
     public function itOnlyContainsTheContributorAccountEmailAndItsAccessToken(): void
     {
-        $resetPasswordRequestedReflectionClass = new \ReflectionClass(ResetPasswordRequested::class);
+        $resetPasswordRequestedReflectionClass = new \ReflectionClass(PasswordReset::class);
         $properties = $resetPasswordRequestedReflectionClass->getProperties();
 
         static::assertCount(2, $properties);
