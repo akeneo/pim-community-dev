@@ -1,7 +1,7 @@
 envVarsDeployDev: &envVarsDeployDev
-envVarsDeployUCS: &envVarsDeployUCS
+envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
 dockerCloudDeployerNext: &dockerCloudDeployerNext
-  dockerCloudDeployerUCS: &dockerCloudDeployerUCS
+dockerCloudDeployerUCS: &dockerCloudDeployerUCS
 executor-machine: &executor-machine
 
 jobs:
@@ -70,7 +70,7 @@ jobs:
                 type: string
                 default: ""
         environment:
-            <<: *envVarsDeployUCS
+            <<: *envVarsDeployPIMSaaSDev
         <<: *dockerCloudDeployerUCS
         resource_class: small
         steps:
@@ -112,7 +112,7 @@ jobs:
                 type: string
                 default: ""
         environment:
-            <<: *envVarsDeployUCS
+            <<: *envVarsDeployPIMSaaSDev
         <<: *dockerCloudDeployerUCS
         resource_class: small
         steps:

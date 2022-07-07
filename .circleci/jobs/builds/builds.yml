@@ -1,5 +1,5 @@
 envVarsDeployDev: &envVarsDeployDev
-envVarsDeployUCS: &envVarsDeployUCS
+envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
 executor-machine: &executor-machine
 
 orbs:
