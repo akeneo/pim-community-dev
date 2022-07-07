@@ -25,9 +25,9 @@ class SupplierManagement extends ReactController {
     renderRoute() {
         mediator.trigger('pim_menu:highlight:tab', {
             extension: 'pim-menu-connect',
-            columnExtension: 'pim-menu-onboarder-column',
+            columnExtension: 'pim-menu-supplier-portal-column',
         });
-        mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-connect-onboarder-supplier-list'});
+        mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-connect-supplier-portal-supplier-list'});
 
         return super.renderRoute();
     }

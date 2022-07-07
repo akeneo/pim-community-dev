@@ -3,7 +3,7 @@ DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV = $(DOCKER_COMPOSE) run --rm -e APP_ENV=tes
 
 .PHONY: install-front-dependencies-supplier
 install-front-dependencies-supplier: #Doc: Install front dependencies for the Supplier part of Supplier Portal
-	$(YARN_RUN) --cwd=components/onboarder-supplier/front install
+	$(YARN_RUN) --cwd=components/supplier-portal-supplier/front install
 
 .PHONY: lint-back-retailer
 lint-back-retailer: #Doc: Run PHPStan and PHPCSFixer for the retailer part of Supplier Portal
@@ -12,8 +12,8 @@ lint-back-retailer: #Doc: Run PHPStan and PHPCSFixer for the retailer part of Su
 
 .PHONY: lint-back-supplier
 lint-back-supplier: #Doc: Run PHPStan and PHPCSFixer for the supplier part of Supplier Portal
-	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/onboarder-supplier/back/tests/phpstan.neon
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/onboarder-supplier/back/tests/.php_cs.php components/onboarder-supplier/back
+	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/supplier-portal-supplier/back/tests/phpstan.neon
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/supplier-portal-supplier/back/tests/.php_cs.php components/supplier-portal-supplier/back
 
 .PHONY: lint-back
 lint-back: lint-back-retailer lint-back-supplier #Doc: Run PHPStan and PHPCSFixer for Supplier Portal
@@ -24,7 +24,7 @@ fix-phpcs-retailer: #Doc: Run PHP-CS-Fixer for the retailer part of Supplier Por
 
 .PHONY: fix-phpcs-supplier
 fix-phpcs-supplier: #Doc: Run PHP-CS-Fixer for the supplier part of Supplier Portal
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/onboarder-supplier/back/tests/.php_cs.php components/onboarder-supplier/back
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/supplier-portal-supplier/back/tests/.php_cs.php components/supplier-portal-supplier/back
 
 .PHONY: fix-phpcs
 fix-phpcs: fix-phpcs-retailer fix-phpcs-supplier #Doc: Run PHP-CS-Fixer for Supplier Portal
@@ -35,7 +35,7 @@ lint-front-retailer: #Doc: Run Prettier and Eslint for the retailer part of Supp
 
 .PHONY: lint-front-supplier
 lint-front-supplier: #Doc: Run Prettier and Eslint for the supplier part of Supplier Portal
-	$(NODE_RUN) /bin/sh -c "cd components/onboarder-supplier/front" && $(YARN_RUN) --cwd=components/onboarder-supplier/front lint:check
+	$(NODE_RUN) /bin/sh -c "cd components/supplier-portal-supplier/front" && $(YARN_RUN) --cwd=components/supplier-portal-supplier/front lint:check
 
 lint-front: lint-front-retailer lint-front-supplier #Doc: Run Prettier and Eslint for Supplier Portal
 
@@ -45,7 +45,7 @@ fix-frontcs-retailer: #Doc: Run front fix code style for the retailer part of Su
 
 .PHONY: fix-frontcs-supplier
 fix-frontcs-supplier: #Doc: Run front fix code style for the supplier part of Supplier Portal
-	$(NODE_RUN) /bin/sh -c "cd components/onboarder-supplier/front" && $(YARN_RUN) run --cwd=components/onboarder-supplier/front lint:fix
+	$(NODE_RUN) /bin/sh -c "cd components/supplier-portal-supplier/front" && $(YARN_RUN) run --cwd=components/supplier-portal-supplier/front lint:fix
 
 fix-frontcs: fix-frontcs-retailer fix-frontcs-supplier #Doc: Fix front CS for Supplier Portal
 
@@ -55,7 +55,7 @@ coupling-retailer: #Doc: Run coupling detector for the retailer part of Supplier
 
 .PHONY: coupling-supplier
 coupling-supplier: #Doc: Run coupling detector for the supplier part of Supplier Portal
-	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=components/onboarder-supplier/back/tests/.php_cd.php components/onboarder-supplier/back
+	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=components/supplier-portal-supplier/back/tests/.php_cd.php components/supplier-portal-supplier/back
 
 .PHONY: coupling
 coupling: coupling-retailer coupling-supplier #Doc: Run coupling detector for Supplier Portal
@@ -67,7 +67,7 @@ coupling-list-unused-requirements-retailer: #Doc: List unused coupling detector 
 
 .PHONY: coupling-list-unused-requirements-supplier
 coupling-list-unused-requirements-supplier: #Doc: List unused coupling detector requirements for the supplier part of Supplier Portal
-	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=components/onboarder-supplier/back/tests/.php_cd.php components/onboarder-supplier/back
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=components/supplier-portal-supplier/back/tests/.php_cd.php components/supplier-portal-supplier/back
 
 .PHONY: coupling-list-unused-requirements
 coupling-list-unused-requirements: coupling-list-unused-requirements-retailer coupling-list-unused-requirements-supplier #Doc: List unused coupling detector requirements for Supplier Portal
@@ -78,7 +78,7 @@ unit-back-retailer: #Doc: Run unit back tests for the retailer part of Supplier 
 
 .PHONY: unit-back-supplier
 unit-back-supplier: #Doc: Run unit back tests for the supplier part of Supplier Portal
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Supplier_Portal_Supplier_Unit_Test --configuration components/onboarder-supplier/back/tests/phpunit.xml.dist ${ARGS}
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Supplier_Portal_Supplier_Unit_Test --configuration components/supplier-portal-supplier/back/tests/phpunit.xml.dist ${ARGS}
 
 .PHONY: unit-back
 unit-back: unit-back-retailer unit-back-supplier #Doc: Run unit back tests for Supplier Portal
@@ -89,7 +89,7 @@ unit-front-retailer: #Doc: Run unit front tests for the retailer part of Supplie
 
 .PHONY: unit-front-supplier
 unit-front-supplier: #Doc: Run unit front tests for the supplier part of Supplier Portal
-	$(NODE_RUN) /bin/sh -c "cd components/onboarder-supplier/front" && $(YARN_RUN) run --cwd=components/onboarder-supplier/front test:unit:run
+	$(NODE_RUN) /bin/sh -c "cd components/supplier-portal-supplier/front" && $(YARN_RUN) run --cwd=components/supplier-portal-supplier/front test:unit:run
 
 .PHONY: unit-front
 unit-front: unit-front-retailer unit-front-supplier #Doc: Run unit front tests for Supplier Portal
@@ -105,9 +105,9 @@ endif
 .PHONY: acceptance-back-supplier
 acceptance-back-supplier: #Doc: Run Behat acceptance back tests for the supplier part of Supplier Portal
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder-supplier/back/tests/behat.yml --profile acceptance --format pim --out var/tests/behat/supplier-portal-acceptance --format progress --out std --colors $(O)
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/supplier-portal-supplier/back/tests/behat.yml --profile acceptance --format pim --out var/tests/behat/supplier-portal-acceptance --format progress --out std --colors $(O)
 else
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder-supplier/back/tests/behat.yml --profile acceptance ${ARGS}
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/supplier-portal-supplier/back/tests/behat.yml --profile acceptance ${ARGS}
 endif
 
 .PHONY: acceptance-back
@@ -126,7 +126,7 @@ integration-back-supplier: #Doc: Run integration back tests for the supplier par
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Supplier_Portal_Supplier_Integration_Test
 else
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Supplier_Portal_Supplier_Integration_Test --configuration components/onboarder-supplier/back/tests/phpunit.xml.dist ${ARGS}
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Supplier_Portal_Supplier_Integration_Test --configuration components/supplier-portal-supplier/back/tests/phpunit.xml.dist ${ARGS}
 endif
 
 .PHONY: integration-back
@@ -150,8 +150,12 @@ tests-supplier-portal-supplier: lint-front-supplier unit-front-supplier lint-bac
 
 .PHONY: extract-front-translations
 extract-front-translations: #Doc: Extract translations for Crowdin
-	$(YARN_RUN) run --cwd=components/onboarder-supplier/front i18n-extract 'src/**/*.{ts,tsx}' --ignore '**/*.{test,d}.{ts,tsx}' --format simple --out-file src/translations/messages.en.json
+	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front i18n-extract 'src/**/*.{ts,tsx}' --ignore '**/*.{test,d}.{ts,tsx}' --format simple --out-file src/translations/messages.en.json
 
 .PHONY: build-supplier-portal-supplier-front-app
 build-supplier-portal-supplier-front-app: #Doc: Build Onboarder supplier frontend application
-	$(YARN_RUN) run --cwd=components/onboarder-supplier/front app:build
+	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front app:build
+
+.PHONY: start-supplier-portal-supplier-front-app
+start-supplier-portal-supplier-front-app: #Doc: Build Onboarder supplier frontend application
+	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front app:start

@@ -1,38 +1,38 @@
 extensions:
-    pim-menu-connect-onboarder:
+    pim-menu-connect-supplier-portal:
         module: pim/menu/item
         parent: pim-menu-connect-navigation-block
         position: 100
         config:
-            title: Onboarder
+            title: Supplier Portal
             to: supplier_portal_retailer_supplier_list
         feature: onboarder_serenity
 
-    pim-menu-onboarder-column:
+    pim-menu-supplier-portal-column:
         module: pim/menu/column
         parent: pim-menu
         targetZone: column
         config:
             tab: pim-menu-connect
-            stateCode: pim-menu-onboarder
+            stateCode: pim-menu-supplier-portal
             navigationTitle: pim_menu.navigation_block.connection
             backLink:
                 title: pim_menu.navigation_back.connection
                 route: akeneo_connectivity_connection_audit_index
         feature: onboarder_serenity
 
-    pim-menu-connect-onboarder-block:
+    pim-menu-connect-supplier-portal-block:
         module: pim/menu/navigation-block
-        parent: pim-menu-onboarder-column
+        parent: pim-menu-supplier-portal-column
         targetZone: navigation
         position: 100
         config:
             title: onboarder.menu_block_title
         feature: onboarder_serenity
 
-    pim-menu-connect-onboarder-supplier-list:
+    pim-menu-connect-supplier-portal-supplier-list:
         module: pim/menu/item
-        parent: pim-menu-connect-onboarder-block
+        parent: pim-menu-connect-supplier-portal-block
         position: 10
         config:
             title: onboarder.supplier.supplier_list.menu_item
