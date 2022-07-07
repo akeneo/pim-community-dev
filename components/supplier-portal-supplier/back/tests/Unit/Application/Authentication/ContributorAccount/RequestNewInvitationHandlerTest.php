@@ -39,7 +39,7 @@ final class RequestNewInvitationHandlerTest extends TestCase
         $mockSendWelcomeEmail
             ->expects($this->once())
             ->method('__invoke')
-            ->withAnyParameters()
+            ->with($contributorEmail, $this->isType('string'))
         ;
 
         $sut = new RequestNewInvitationHandler($contributorAccountRepository, $mockSendWelcomeEmail);
