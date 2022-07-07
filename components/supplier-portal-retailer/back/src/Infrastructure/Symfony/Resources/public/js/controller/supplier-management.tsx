@@ -3,7 +3,7 @@ import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/re
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {SupplierApp} from '@akeneo-pim-enterprise/onboarder-retailer';
+import {SupplierApp} from '@akeneo-pim-enterprise/supplier-portal-retailer';
 
 const mediator = require('oro/mediator');
 
@@ -25,9 +25,9 @@ class SupplierManagement extends ReactController {
     renderRoute() {
         mediator.trigger('pim_menu:highlight:tab', {
             extension: 'pim-menu-connect',
-            columnExtension: 'pim-menu-onboarder-column',
+            columnExtension: 'pim-menu-supplier-portal-column',
         });
-        mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-connect-onboarder-supplier-list'});
+        mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-connect-supplier-portal-supplier-list'});
 
         return super.renderRoute();
     }
