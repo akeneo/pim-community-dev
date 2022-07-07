@@ -6,7 +6,6 @@ namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorA
 
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
-use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\Email;
 
 class SendWelcomeEmailHandler
 {
@@ -18,15 +17,8 @@ class SendWelcomeEmailHandler
 
     public function __invoke(SendWelcomeEmail $command): void
     {
-        $emailContent = ($this->buildWelcomeEmail)($command->accessToken, $command->email);
+        $email = ($this->buildWelcomeEmail)($command->accessToken, $command->email);
 
-        $email = new Email(
-            "You've received an invitation to contribute to Akeneo Supplier Portal",
-            $emailContent->htmlContent,
-            $emailContent->textContent,
-            'noreply@akeneo.com',
-            $command->email,
-        );
         ($this->sendEmail)($email);
     }
 }

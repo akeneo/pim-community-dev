@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount;
 
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
-use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\EmailContent;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\SetUpPasswordUrl;
 use Twig\Environment;
 
@@ -17,7 +17,7 @@ class BuildTwigWelcomeEmail implements BuildWelcomeEmail
     ) {
     }
 
-    public function __invoke(string $email, string $accessToken): EmailContent
+    public function __invoke(string $email, string $accessToken): Email
     {
         $setUpPasswordUrl = sprintf(SetUpPasswordUrl::VALUE, $this->domain, $accessToken);
 
@@ -37,6 +37,12 @@ class BuildTwigWelcomeEmail implements BuildWelcomeEmail
             ],
         );
 
-        return new EmailContent($htmlContent, $textContent);
+        return new Email(
+            "You've received an invitation to contribute to Akeneo Supplier Portal",
+            $htmlContent,
+            $textContent,
+            'noreply@akeneo.com',
+            $email,
+        );
     }
 }
