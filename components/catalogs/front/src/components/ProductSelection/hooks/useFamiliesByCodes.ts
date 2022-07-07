@@ -23,7 +23,12 @@ export const useFamiliesByCodes = (codes: string[]): Result => {
     const unknownCodes = codes.filter(code => cachedCodes.indexOf(code) === -1);
     const slicedUnknownCodes = unknownCodes.slice(0, LIMIT);
 
-    const {data: families} = useInfiniteFamilies({
+    const {
+        data: families,
+        isLoading,
+        isError,
+        error,
+    } = useInfiniteFamilies({
         codes: slicedUnknownCodes,
         limit: LIMIT,
     });
@@ -52,9 +57,9 @@ export const useFamiliesByCodes = (codes: string[]): Result => {
     }, [cachedCodes, families, setCache]);
 
     return {
-        isLoading: true,
-        isError: false,
+        isLoading: isLoading,
+        isError: isError,
         data: Object.values(cache),
-        error: null,
+        error: error,
     };
 };

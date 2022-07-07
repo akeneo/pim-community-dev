@@ -8,7 +8,7 @@ export const useUniqueFamilies = (selection?: Family[], results?: Family[]): Fam
         }
 
         if (results === undefined || results.length === 0) {
-            return selection || [];
+            return selection;
         }
 
         const codes = selection.map(family => family.code);

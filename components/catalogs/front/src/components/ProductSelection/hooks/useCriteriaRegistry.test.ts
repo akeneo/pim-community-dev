@@ -12,6 +12,10 @@ test('it returns factories & a function to find a criterion', () => {
                 label: 'akeneo_catalogs.product_selection.criteria.status.label',
                 factory: expect.any(Function),
             },
+            {
+                label: 'akeneo_catalogs.product_selection.criteria.family.label',
+                factory: expect.any(Function),
+            },
         ],
         getCriterionByField: expect.any(Function),
     });
@@ -23,7 +27,7 @@ test('it throws when searching for an unknown field', async () => {
     await expect(async () => await result.current.getCriterionByField('foo')).rejects.not.toBeNull();
 });
 
-const criterions: string[] = ['enabled'];
+const criterions: string[] = ['enabled', 'family'];
 
 test.each(criterions)('it returns a criterion when searching for "%s"', async field => {
     const {result} = renderHook(() => useCriteriaRegistry());

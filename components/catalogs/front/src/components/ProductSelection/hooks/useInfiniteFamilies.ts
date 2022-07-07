@@ -26,7 +26,7 @@ type Result = {
     fetchNextPage: () => Promise<void>;
 };
 
-export const useInfiniteFamilies = ({search = '', codes = [], limit = 20}: QueryParams): Result => {
+export const useInfiniteFamilies = ({search = '', codes = [], limit = 20}: QueryParams = {}): Result => {
     const fetchFamilies = useCallback(
         async ({pageParam}: {pageParam?: PageParam}): Promise<Page> => {
             const _page = pageParam?.number || 1;
