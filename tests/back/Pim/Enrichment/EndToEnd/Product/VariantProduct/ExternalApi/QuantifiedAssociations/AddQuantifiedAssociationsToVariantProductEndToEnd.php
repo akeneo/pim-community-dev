@@ -74,14 +74,16 @@ JSON;
                 ],
                 "a_yes_no"=>[
                     ["data" => true, "locale" => null, "scope" => null]
-                ],
-                "sku" => [
-                    ["data" => "garden_table_set-black-gold", "locale" => null, "scope" => null]
                 ]
             ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
-            'associations' => [],
+            'associations' => [
+                'PACK' => ['groups' => [], 'product_models' => [],  'products' => []],
+                'SUBSTITUTION' => ['groups' => [], 'product_models' => [],  'products' => []],
+                'UPSELL' => ['groups' => [], 'product_models' => [],  'products' => []],
+                'X_SELL' => ['groups' => [], 'product_models' => [],  'products' => []],
+            ],
             'quantified_associations' => [
                 'PRODUCTSET' => [
                     'products' => [

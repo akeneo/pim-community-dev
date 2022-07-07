@@ -43,6 +43,6 @@ Feature: Export product by attribute date
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;delivery_date;destocking_date;purchase_date
-    CD-RATM;2014_collection;1;CD;;2015-09-17;2016-08-13;
+    uuid;sku;categories;enabled;family;groups;delivery_date;destocking_date;purchase_date
+    %uuid%;CD-RATM;2014_collection;1;CD;;2015-09-17;2016-08-13;
     """

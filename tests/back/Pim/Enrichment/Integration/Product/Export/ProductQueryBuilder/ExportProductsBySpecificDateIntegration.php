@@ -21,11 +21,14 @@ class ExportProductsBySpecificDateIntegration extends AbstractExportTestCase
 
     public function testProductExportByFilteringOnDateSinceLastJob()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_3');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_metric;a_metric-unit;a_number_float
-product_1;;1;familyA2;;;;
-product_2;;1;familyA2;;;;
-product_3;;1;familyA2;;;;
+uuid;sku;categories;enabled;family;groups;a_metric;a_metric-unit;a_number_float
+%s;product_1;;1;familyA2;;;;
+%s;product_2;;1;familyA2;;;;
+%s;product_3;;1;familyA2;;;;
 
 CSV;
 
@@ -45,7 +48,12 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf(
+            $expectedCsv,
+            $product1->getUuid()->toString(),
+            $product2->getUuid()->toString(),
+            $product3->getUuid()->toString(),
+        ), $config);
 
         // wait before updating the product in order to have updated_date > SINCE LAST JOB
         sleep(2);
@@ -53,23 +61,26 @@ CSV;
         $this->updateProduct('product_3', ['family' => 'familyA1']);
 
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_date;a_file;a_localizable_image-en_US
-product_3;;1;familyA1;;;;
+uuid;sku;categories;enabled;family;groups;a_date;a_file;a_localizable_image-en_US
+%s;product_3;;1;familyA1;;;;
 
 CSV;
 
         $csv = $this->jobLauncher->launchSubProcessExport('csv_product_export', null, $config);
 
-        $this->assertSame($expectedCsv, $csv);
+        $this->assertSame(\sprintf($expectedCsv, $product3->getUuid()->toString()), $csv);
     }
 
     public function testProductExportByFilteringSinceASpecificDate()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_3');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_metric;a_metric-unit;a_number_float
-product_1;;1;familyA2;;;;
-product_2;;1;familyA2;;;;
-product_3;;1;familyA2;;;;
+uuid;sku;categories;enabled;family;groups;a_metric;a_metric-unit;a_number_float
+%s;product_1;;1;familyA2;;;;
+%s;product_2;;1;familyA2;;;;
+%s;product_3;;1;familyA2;;;;
 
 CSV;
 
@@ -89,7 +100,12 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf(
+            $expectedCsv,
+            $product1->getUuid()->toString(),
+            $product2->getUuid()->toString(),
+            $product3->getUuid()->toString(),
+        ), $config);
     }
 
     public function testProductExportByFilteringUntilASpecificDate()

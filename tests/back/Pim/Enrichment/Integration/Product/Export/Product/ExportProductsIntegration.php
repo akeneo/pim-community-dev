@@ -145,14 +145,14 @@ class ExportProductsIntegration extends AbstractExportTestCase
 
     public function testVariantProductExport()
     {
-        $this->createProduct('apollon_pink_m', [
+        $apollonPinkM = $this->createProduct('apollon_pink_m', [
             new SetFamily('clothing'),
             new ChangeParent('apollon_pink'),
             new SetCategories(['spring']),
             new SetSimpleSelectValue('size', null, null, 'm'),
             new SetTextValue('ean', null, null, '12345678')
         ]);
-        $this->createProduct(
+        $apollonPinkL =  $this->createProduct(
             'apollon_pink_l',
             [
                 new SetFamily('clothing'),
@@ -161,7 +161,7 @@ class ExportProductsIntegration extends AbstractExportTestCase
                 new SetTextValue('ean', null, null, '12345679')
             ]
         );
-        $this->createProduct(
+        $apollonPinkXL = $this->createProduct(
             'apollon_pink_xl',
             [
                 new SetFamily('clothing'),
@@ -173,29 +173,36 @@ class ExportProductsIntegration extends AbstractExportTestCase
         );
 
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;parent;groups;color;ean;name-en_US;size;variation_name
-apollon_pink_l;round-neck,tshirt;1;clothing;apollon_pink;;pink;12345679;;l;"my pink tshirt"
-apollon_pink_m;round-neck,spring,tshirt;1;clothing;apollon_pink;;pink;12345678;;m;"my pink tshirt"
-apollon_pink_xl;round-neck,summer,tshirt;1;clothing;apollon_pink;;pink;12345465;;xl;"my pink tshirt"
+uuid;sku;categories;enabled;family;parent;groups;color;ean;name-en_US;size;variation_name
+%s;apollon_pink_l;round-neck,tshirt;1;clothing;apollon_pink;;pink;12345679;;l;"my pink tshirt"
+%s;apollon_pink_m;round-neck,spring,tshirt;1;clothing;apollon_pink;;pink;12345678;;m;"my pink tshirt"
+%s;apollon_pink_xl;round-neck,summer,tshirt;1;clothing;apollon_pink;;pink;12345465;;xl;"my pink tshirt"
 
 CSV;
+
+        $expectedCsv = \sprintf(
+            $expectedCsv,
+            $apollonPinkL->getUuid()->toString(),
+            $apollonPinkM->getUuid()->toString(),
+            $apollonPinkXL->getUuid()->toString()
+        );
 
         $this->assertProductExport($expectedCsv, []);
     }
 
     public function testItEscapeCharacterCorrectly()
     {
-        $this->createProduct('product_1', [
+        $product = $this->createProduct('product_1', [
             new SetFamily('a_family'),
             new SetTextareaValue('a_text_area', null, null, 'test "1234" DLE test  \" joli produit ; vive la data "')
         ]);
 
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_text_area
-product_1;;1;a_family;;"test ""1234"" DLE test  \"" joli produit ; vive la data """
+uuid;sku;categories;enabled;family;groups;a_text_area
+%s;product_1;;1;a_family;;"test ""1234"" DLE test  \"" joli produit ; vive la data """
 
 CSV;
 
-        $this->assertProductExport($expectedCsv, []);
+        $this->assertProductExport(\sprintf($expectedCsv, $product->getUuid()->toString()), []);
     }
 }

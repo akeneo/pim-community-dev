@@ -24,12 +24,14 @@ class GenerateZipArchiveEndToEnd extends InternalApiTestCase
             'admin',
             []
         );
-        Assert::assertSame(<<<CSV
-            sku;categories;enabled;family;groups;an_image;a_file
-            sku1;categoryA;1;familyA;;files/sku1/an_image/akeneo.png;files/sku1/a_file/akeneo.pdf
-            sku2;categoryA;1;familyA;;files/sku2/an_image/akeneo.jpg;
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('sku1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('sku2');
+        Assert::assertSame(\sprintf(<<<CSV
+            uuid;sku;categories;enabled;family;groups;an_image;a_file
+            %s;sku1;categoryA;1;familyA;;files/sku1/an_image/akeneo.png;files/sku1/a_file/akeneo.pdf
+            %s;sku2;categoryA;1;familyA;;files/sku2/an_image/akeneo.jpg;
             
-            CSV,
+            CSV, $product1->getUuid()->toString(), $product2->getUuid()->toString()),
             $csv
         );
 

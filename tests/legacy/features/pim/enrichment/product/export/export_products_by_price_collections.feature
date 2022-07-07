@@ -36,6 +36,6 @@ Feature: Export products according to price attribute filter
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;price-EUR;price-USD;provider_price-EUR
-    SNKRS-1B;summer_collection;1;rangers;;20.00;30.00;
+    uuid;sku;categories;enabled;family;groups;price-EUR;price-USD;provider_price-EUR
+    %uuid%;SNKRS-1B;summer_collection;1;rangers;;20.00;30.00;
     """

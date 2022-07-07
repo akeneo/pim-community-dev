@@ -27,6 +27,7 @@ class ProductStandardSortedCollectionIntegration extends TestCase
             ->build();
 
         $expected = [
+            'uuid' => $product->getUuid()->toString(),
             'identifier' => 'my-product',
             'family' => null,
             'parent' => null,
@@ -86,6 +87,7 @@ class ProductStandardSortedCollectionIntegration extends TestCase
             ->build();
 
         $expected = [
+            'uuid' => $product->getUuid()->toString(),
             'identifier' => 'my-product',
             'family' => null,
             'parent' => null,
@@ -141,6 +143,7 @@ class ProductStandardSortedCollectionIntegration extends TestCase
             ->build();
 
         $expected = [
+            'uuid' => $product->getUuid()->toString(),
             'identifier' => 'my-product',
             'family' => null,
             'parent' => null,

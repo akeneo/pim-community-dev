@@ -27,7 +27,7 @@ Feature: Export products according to simple select values
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
       """
-      sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;rating;side_view;size;top_view;weather_conditions
-      BOOT-1;;;;1;boots;;;Nike;"The boot 1";;;;;;
-      BOOT-2;;;;1;boots;;;Converse;"The boot 2";;;;;;
+      uuid;sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;rating;side_view;size;top_view;weather_conditions
+      %uuid%;BOOT-1;;;;1;boots;;;Nike;"The boot 1";;;;;;
+      %uuid%;BOOT-2;;;;1;boots;;;Converse;"The boot 2";;;;;;
       """

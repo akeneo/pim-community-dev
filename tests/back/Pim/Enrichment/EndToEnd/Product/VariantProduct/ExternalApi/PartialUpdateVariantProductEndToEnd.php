@@ -19,6 +19,29 @@ class PartialUpdateVariantProductEndToEnd extends AbstractProductTestCase
 {
     use AssertEventCountTrait;
 
+    private array $emptyAssociations = [
+        'PACK' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ],
+        'SUBSTITUTION' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ],
+        'UPSELL' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ],
+        'X_SELL' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ]
+    ];
+
     /** @var Collection */
     private $products;
 
@@ -101,6 +124,8 @@ class PartialUpdateVariantProductEndToEnd extends AbstractProductTestCase
         }
     }
 JSON;
+        $client->request('PATCH', 'api/rest/v1/products/product_variant_create_with_identifier', [], [], [], $data);
+
         $expectedProduct = [
             'identifier'    => 'product_variant_create_with_identifier',
             'family'        => "familyA",
@@ -109,9 +134,6 @@ JSON;
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_variant_create_with_identifier'],
-                ],
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
@@ -151,11 +173,9 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->emptyAssociations,
+            'quantified_associations' => new \stdClass(),
         ];
-
-        $client->request('PATCH', 'api/rest/v1/products/product_variant_create_with_identifier', [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -175,6 +195,8 @@ JSON;
 
         $data = '{}';
 
+        $client->request('PATCH', 'api/rest/v1/products/product_create_without_identifier', [], [], [], $data);
+
         $expectedProduct = [
             'identifier'    => 'product_create_without_identifier',
             'family'        => null,
@@ -182,18 +204,12 @@ JSON;
             'groups'        => [],
             'categories'    => [],
             'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_create_without_identifier'],
-                ],
-            ],
+            'values'        => new \stdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->emptyAssociations,
+            'quantified_associations' => new \stdClass(),
         ];
-
-        $client->request('PATCH', 'api/rest/v1/products/product_create_without_identifier', [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -425,9 +441,6 @@ JSON;
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
-                ],
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
@@ -467,8 +480,8 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->emptyAssociations,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -511,9 +524,6 @@ JSON;
             'categories'    => ["master"],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
-                ],
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
@@ -553,8 +563,8 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->emptyAssociations,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -598,9 +608,6 @@ JSON;
             'categories'    => ["categoryA"],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
-                ],
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
@@ -640,8 +647,8 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->emptyAssociations,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -685,9 +692,6 @@ JSON;
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
-                ],
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
@@ -727,8 +731,8 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->emptyAssociations,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -781,9 +785,6 @@ JSON;
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
-                ],
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
@@ -845,7 +846,7 @@ JSON;
                     'product_models' => [],
                 ],
             ],
-            'quantified_associations' => [],
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -894,9 +895,6 @@ JSON;
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
-                ],
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
@@ -942,7 +940,7 @@ JSON;
                 'UPSELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
                 'X_SELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
             ],
-            'quantified_associations' => [],
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -991,9 +989,6 @@ JSON;
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
-                ],
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
@@ -1039,7 +1034,7 @@ JSON;
                 'UPSELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
                 'X_SELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
             ],
-            'quantified_associations' => [],
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -1084,9 +1079,6 @@ JSON;
             'categories'    => [],
             'enabled'       => false,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
-                ],
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
@@ -1126,8 +1118,8 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->emptyAssociations,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -1178,9 +1170,6 @@ JSON;
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
-                ],
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
@@ -1220,8 +1209,8 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->emptyAssociations,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -1380,9 +1369,6 @@ JSON;
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
-                ],
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
@@ -1422,8 +1408,8 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->emptyAssociations,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -1538,9 +1524,6 @@ JSON;
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
-                ],
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
@@ -1580,8 +1563,8 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->emptyAssociations,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -1614,6 +1597,8 @@ JSON;
     }
 JSON;
 
+        $client->request('PATCH', 'api/rest/v1/products/apollon_optionb_false', [], [], [], $data);
+
         $expectedProduct = [
             'identifier'    => 'apollon_optionb_false',
             'family'        => "familyA",
@@ -1622,9 +1607,6 @@ JSON;
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
-                ],
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
@@ -1664,11 +1646,9 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->emptyAssociations,
+            'quantified_associations' => new \stdClass(),
         ];
-
-        $client->request('PATCH', 'api/rest/v1/products/apollon_optionb_false', [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -1744,6 +1724,8 @@ JSON;
         }
     }
 JSON;
+        $client->request('PATCH', 'api/rest/v1/products/apollon_optionb_false', [], [], [], $data);
+
         $expectedProduct = [
             'identifier'    => 'apollon_optionb_false',
             'family'        => "familyA",
@@ -1788,17 +1770,12 @@ JSON;
                         "data"   => false,
                     ],
                 ],
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
-                ],
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->emptyAssociations,
+            'quantified_associations' => new \stdClass(),
         ];
-
-        $client->request('PATCH', 'api/rest/v1/products/apollon_optionb_false', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame('', $response->getContent());

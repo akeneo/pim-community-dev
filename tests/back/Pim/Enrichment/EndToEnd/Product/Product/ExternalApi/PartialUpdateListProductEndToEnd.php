@@ -7,11 +7,33 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use PHPUnit\Framework\Assert;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListProductEndToEnd extends AbstractProductTestCase
 {
+    private array $emptyAssociations = [
+        'PACK' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ],
+        'SUBSTITUTION' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ],
+        'UPSELL' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ],
+        'X_SELL' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ]
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -58,15 +80,11 @@ JSON;
                 'groups'        => [],
                 'categories'    => [],
                 'enabled'       => true,
-                'values'        => [
-                    'sku' => [
-                        ['locale' => null, 'scope' => null, 'data' => 'product_family'],
-                    ],
-                ],
+                'values'        => new \stdClass(),
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
-                'associations'  => [],
-                'quantified_associations' => [],
+                'associations'  => $this->emptyAssociations,
+                'quantified_associations' => new \stdClass(),
             ],
             'my_identifier'  => [
                 'identifier'    => 'my_identifier',
@@ -75,15 +93,11 @@ JSON;
                 'groups'        => [],
                 'categories'    => [],
                 'enabled'       => true,
-                'values'        => [
-                    'sku' => [
-                        ['locale' => null, 'scope' => null, 'data' => 'my_identifier'],
-                    ],
-                ],
+                'values'        => new \stdClass(),
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
-                'associations'  => [],
-                'quantified_associations' => [],
+                'associations'  => $this->emptyAssociations,
+                'quantified_associations' => new \stdClass(),
             ],
         ];
 

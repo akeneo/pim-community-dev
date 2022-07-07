@@ -36,6 +36,6 @@ Feature: Export products according to metric attribute filter
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;length;length-unit;width;width-unit
-    SNKRS-1R;summer_collection;1;rangers;;20;CENTIMETER;;CENTIMETER
+    uuid;sku;categories;enabled;family;groups;length;length-unit;width;width-unit
+    %uuid%;SNKRS-1R;summer_collection;1;rangers;;20;CENTIMETER;;CENTIMETER
     """

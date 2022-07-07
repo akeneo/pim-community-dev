@@ -111,15 +111,19 @@ abstract class AbstractProductTestCase extends ApiTestCase
      */
     protected function assertSameProducts(array $expectedProduct, $identifier)
     {
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = 'admin'
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query);
+        $id = $stmt->fetchOne();
+        // use same normalizer as in ExternalApi
+        $product = $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers')->fromProductIdentifier($identifier, intval($id));
+        $standardizedProduct = $this->get('pim_api.normalizer.connector_products')->normalizeConnectorProduct($product);
 
-        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
-
-        NormalizedProductCleaner::clean($expectedProduct);
         NormalizedProductCleaner::clean($standardizedProduct);
+        NormalizedProductCleaner::clean($expectedProduct);
 
-        Assert::assertSame($expectedProduct, $standardizedProduct);
+        $this->assertEquals($expectedProduct, $standardizedProduct);
     }
 
     protected function getUserId(string $username): int

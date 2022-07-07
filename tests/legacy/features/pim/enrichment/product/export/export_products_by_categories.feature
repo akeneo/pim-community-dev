@@ -65,10 +65,10 @@ Feature: Export products from any given categories
     And I wait for the "csv_product_export" job to finish
     Then exported file of "csv_product_export" should contain:
       """
-      sku;categories;enabled;family;groups
-      toys_games;toys_games;1;default;
-      action_figures;action_figures;1;default;
-      product_numbered;1234;1;default;
+      uuid;sku;categories;enabled;family;groups
+      %uuid%;toys_games;toys_games;1;default;
+      %uuid%;action_figures;action_figures;1;default;
+      %uuid%;product_numbered;1234;1;default;
       """
     When I am on the "csv_product_export" export job edit page
     And I visit the "Content" tab

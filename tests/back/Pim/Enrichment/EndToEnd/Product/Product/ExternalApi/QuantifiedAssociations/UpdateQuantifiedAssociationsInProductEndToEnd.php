@@ -86,14 +86,15 @@ JSON;
             'groups' => [],
             'categories' => [],
             'enabled' => true,
-            'values' => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => $identifier],
-                ],
-            ],
+            'values' => new \stdClass(),
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
-            'associations' => [],
+            'associations' => [
+                'PACK' => ['groups' => [],'product_models' => [],'products' => []],
+                'SUBSTITUTION' => ['groups' => [],'product_models' => [],'products' => []],
+                'UPSELL' => ['groups' => [],'product_models' => [],'products' => []],
+                'X_SELL' => ['groups' => [],'product_models' => [],'products' => []],
+            ],
             'quantified_associations' => [
                 '1234' => [
                     'products' => [

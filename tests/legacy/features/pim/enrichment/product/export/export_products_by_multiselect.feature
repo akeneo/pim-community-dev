@@ -31,8 +31,8 @@ Feature: Export products according to multi select values
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
       """
-      sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;rating;side_view;size;top_view;weather_conditions
-      BOOT-2;;;;1;boots;;;;"The boot 2";;;;;;dry
-      BOOT-3;;;;1;boots;;;;"The boot 3";;;;;;dry,wet
-      BOOT-6;;;;1;boots;;;;"The boot 6";;;;;;cold
+      uuid;sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;rating;side_view;size;top_view;weather_conditions
+      %uuid%;BOOT-2;;;;1;boots;;;;"The boot 2";;;;;;dry
+      %uuid%;BOOT-3;;;;1;boots;;;;"The boot 3";;;;;;dry,wet
+      %uuid%;BOOT-6;;;;1;boots;;;;"The boot 6";;;;;;cold
       """
