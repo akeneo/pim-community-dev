@@ -7,8 +7,8 @@ namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\Co
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
-use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\Email;
 use PHPUnit\Framework\TestCase;
 
 class SendWelcomeEmailHandlerTest extends TestCase

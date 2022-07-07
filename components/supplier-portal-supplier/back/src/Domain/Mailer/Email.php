@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject;
+namespace Akeneo\SupplierPortal\Supplier\Domain\Mailer;
 
 final class Email
 {

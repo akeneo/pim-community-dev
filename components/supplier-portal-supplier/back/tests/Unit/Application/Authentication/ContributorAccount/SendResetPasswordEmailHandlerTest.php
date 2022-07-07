@@ -7,8 +7,8 @@ namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\Co
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmail;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
-use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\Email;
 use PHPUnit\Framework\TestCase;
 
 final class SendResetPasswordEmailHandlerTest extends TestCase

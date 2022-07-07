@@ -2,7 +2,7 @@
 
 namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount;
 
-use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\Email;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\Email;
 
 interface BuildResetPasswordEmail
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount;
 
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
-use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\Email;
+use Akeneo\SupplierPortal\Supplier\Domain\Mailer\Email;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\SetUpPasswordUrl;
 use Twig\Environment;
 
