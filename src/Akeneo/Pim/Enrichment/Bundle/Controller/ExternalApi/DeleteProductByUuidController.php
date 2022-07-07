@@ -2,17 +2,11 @@
 
 declare(strict_types=1);
 
-/**
- * Controller to remove products using their Uuid
- *
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownProductException;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
@@ -23,6 +17,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * Controller to remove products using their Uuid
+ *
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
 class DeleteProductByUuidController
 {
     public function __construct(
@@ -40,7 +40,7 @@ class DeleteProductByUuidController
         }
 
         try {
-            $product = $this->productRepository->findOneByUuid(Uuid::fromString($uuid));
+            $product = $this->productRepository->find(Uuid::fromString($uuid));
         } catch (InvalidUuidStringException) {
             throw new BadRequestException("The provided uuid is not valid");
         }
