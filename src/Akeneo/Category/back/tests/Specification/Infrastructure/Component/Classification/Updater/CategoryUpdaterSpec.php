@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Category\Infrastructure\Component\Classification\Updater;
+namespace Specification\Akeneo\Category\Infrastructure\Component\Classification\Updater;
 
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\IsCategoryTreeLinkedToChannel;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
