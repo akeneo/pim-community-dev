@@ -13,6 +13,15 @@ const Inputs = styled.div`
     gap: 20px;
 `;
 
+const DefaultInputContainer = styled.div`
+    flex-basis: 200px;
+    flex-shrink: 0;
+`;
+
+const LargeInputContainer = styled.div`
+    flex-basis: auto;
+`;
+
 const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, onChange, onRemove}) => {
     const translate = useTranslate();
     const [showFamilies, setShowFamilies] = useState<boolean>(false);
@@ -28,8 +37,14 @@ const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, onCh
             </List.TitleCell>
             <List.Cell width='auto'>
                 <Inputs>
-                    <FamilyOperatorInput state={state} onChange={onChange} />
-                    {showFamilies && <FamilySelectInput state={state} onChange={onChange} />}
+                    <DefaultInputContainer>
+                        <FamilyOperatorInput state={state} onChange={onChange} />
+                    </DefaultInputContainer>
+                    {showFamilies && (
+                        <LargeInputContainer>
+                            <FamilySelectInput state={state} onChange={onChange} />
+                        </LargeInputContainer>
+                    )}
                 </Inputs>
             </List.Cell>
             <List.RemoveCell>
