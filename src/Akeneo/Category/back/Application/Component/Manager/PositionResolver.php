@@ -29,7 +29,7 @@ class PositionResolver implements PositionResolverInterface
     }
 
     /**
-     * @param array<string, int> $children
+     * @param array<string, array{code: string, row_num: int}> $children
      */
     private function getCategoryPositionAmongChildren(CategoryInterface $category, array $children): int
     {

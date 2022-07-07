@@ -9,6 +9,13 @@ namespace Akeneo\Category\Api;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
+/**
+ * @phpstan-type Locale string
+ * @phpstan-type LocalizedLabels array<Locale, string>
+ * @phpstan-type NormalizedCategoryTree array{id?:int, code?: string, labels?: LocalizedLabels}
+ */
+
 class CategoryTree
 {
     public const ID = 'id';
@@ -17,8 +24,14 @@ class CategoryTree
 
     public int $id;
     public string $code;
+    /**
+     * @var LocalizedLabels $labels
+     */
     public array $labels = [];
 
+    /**
+     * @return NormalizedCategoryTree
+     */
     public function normalize(): array
     {
         return [
