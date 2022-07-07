@@ -33,35 +33,35 @@ const routes = {
 
 const client = new QueryClient();
 
-// <React.StrictMode>
 ReactDOM.render(
-    <ThemeProvider theme={pimTheme}>
-        <QueryClientProvider client={client}>
-            <MicroFrontendDependenciesProvider
-                routes={routes}
-                translations={{
-                    locale: 'en_US',
-                    messages: {},
-                }}
-            >
-                <Router>
-                    <FakePIM>
-                        <Switch>
-                            <Route path='/:id'>
-                                <FakeCatalogEditContainer />
-                            </Route>
-                            <Route path='/'>
-                                <FakeCatalogListContainer />
-                            </Route>
-                        </Switch>
-                    </FakePIM>
-                </Router>
-            </MicroFrontendDependenciesProvider>
-        </QueryClientProvider>
-    </ThemeProvider>,
+    <React.StrictMode>
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={client}>
+                <MicroFrontendDependenciesProvider
+                    routes={routes}
+                    translations={{
+                        locale: 'en_US',
+                        messages: {},
+                    }}
+                >
+                    <Router>
+                        <FakePIM>
+                            <Switch>
+                                <Route path='/:id'>
+                                    <FakeCatalogEditContainer />
+                                </Route>
+                                <Route path='/'>
+                                    <FakeCatalogListContainer />
+                                </Route>
+                            </Switch>
+                        </FakePIM>
+                    </Router>
+                </MicroFrontendDependenciesProvider>
+            </QueryClientProvider>
+        </ThemeProvider>
+    </React.StrictMode>,
     document.getElementById('root')
 );
-// {/*</React.StrictMode>,*/}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
