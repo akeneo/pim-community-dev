@@ -63,7 +63,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product->getUuid()->toString()), $config);
     }
 
     public function testProductExportWithBooleanFilterEqualsFalse()
@@ -91,7 +91,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product->getUuid()->toString()), $config);
     }
 
     public function testProductExportWithLocalisableAndScopableBooleanFilter()
@@ -120,6 +120,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport(\sprintf($expectedCsv, $product->getUuid()->toString()), $config);
     }
 }
