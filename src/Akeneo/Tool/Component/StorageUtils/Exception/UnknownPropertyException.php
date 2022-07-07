@@ -29,7 +29,7 @@ class UnknownPropertyException extends PropertyException
      *
      * @return UnknownPropertyException
      */
-    public static function unknownProperty($propertyName, \Exception $previous = null)
+    public static function unknownProperty(string $propertyName, \Exception $previous = null)
     {
         return new static(
             $propertyName,
