@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
+namespace Specification\Akeneo\Category\Infrastructure\Doctrine\ORM\Repository;
 
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

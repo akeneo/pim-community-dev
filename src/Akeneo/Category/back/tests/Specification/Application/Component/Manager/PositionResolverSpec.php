@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Manager;
+namespace Specification\Akeneo\Category\Application\Component\Manager;
 
 use Akeneo\Category\Application\Component\Manager\PositionResolver;
 use Akeneo\Category\Domain\Component\Manager\PositionResolverInterface;

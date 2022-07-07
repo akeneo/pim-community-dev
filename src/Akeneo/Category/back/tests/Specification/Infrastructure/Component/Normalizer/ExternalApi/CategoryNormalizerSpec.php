@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi;
+namespace Specification\Akeneo\Category\Infrastructure\Component\Normalizer\ExternalApi;
 
 use Akeneo\Category\Domain\Component\Manager\PositionResolverInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
