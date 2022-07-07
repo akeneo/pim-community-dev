@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cae4c771c1299f4e0acdc24a13d57d36",
+    "content-hash": "ae0164d1a82d9bf0b7be91ea8da0daa7",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -2802,27 +2802,28 @@
         },
         {
             "name": "google/cloud-pubsub",
-            "version": "v1.29.1",
+            "version": "v1.38.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-pubsub.git",
-                "reference": "25e2b60c1c35b8417182d70ccbed06e788959b6b"
+                "reference": "c9c1bbcb95fb5b20d90e38fa3faa8d79fb2302bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-pubsub/zipball/25e2b60c1c35b8417182d70ccbed06e788959b6b",
-                "reference": "25e2b60c1c35b8417182d70ccbed06e788959b6b",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-pubsub/zipball/c9c1bbcb95fb5b20d90e38fa3faa8d79fb2302bc",
+                "reference": "c9c1bbcb95fb5b20d90e38fa3faa8d79fb2302bc",
                 "shasum": ""
             },
             "require": {
-                "google/cloud-core": "^1.39",
+                "google/cloud-core": "^1.46",
                 "google/gax": "^1.1"
             },
             "require-dev": {
                 "erusev/parsedown": "^1.6",
-                "phpdocumentor/reflection": "^3.0",
-                "phpunit/phpunit": "^4.8|^5.0",
-                "squizlabs/php_codesniffer": "2.*"
+                "phpdocumentor/reflection": "^3.0||^4.0",
+                "phpunit/phpunit": "^4.8|^5.0|^8.0",
+                "squizlabs/php_codesniffer": "2.*",
+                "yoast/phpunit-polyfills": "^1.0"
             },
             "suggest": {
                 "ext-grpc": "The gRPC extension enables use of the performant gRPC transport",
@@ -2849,9 +2850,9 @@
             ],
             "description": "Cloud PubSub Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-pubsub/tree/v1.29.1"
+                "source": "https://github.com/googleapis/google-cloud-php-pubsub/tree/v1.38.2"
             },
-            "time": "2020-10-13T13:31:20+00:00"
+            "time": "2022-06-23T19:38:04+00:00"
         },
         {
             "name": "google/common-protos",
@@ -15757,5 +15758,5 @@
         "ext-openssl": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }
