@@ -169,11 +169,14 @@ $rules = [
         'Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels',
 
         // category bounded context
+        'Akeneo\Category\Infrastructure\Component\Model\Category',
         'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory',
         'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory',
         'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
@@ -258,6 +261,7 @@ $rules = [
 
         // category bounded context
         'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
     ])->in('Akeneo\Pim\Permission\Component'),
 ];
 
