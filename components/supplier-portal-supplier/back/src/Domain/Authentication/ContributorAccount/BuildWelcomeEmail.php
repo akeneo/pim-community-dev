@@ -8,5 +8,5 @@ use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\EmailContent;
 
 interface BuildWelcomeEmail
 {
-    public function __invoke(string $accessToken, string $email): EmailContent;
+    public function __invoke(string $email, string $accessToken): EmailContent;
 }

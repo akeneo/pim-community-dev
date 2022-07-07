@@ -17,7 +17,7 @@ class BuildTwigWelcomeEmail implements BuildWelcomeEmail
     ) {
     }
 
-    public function __invoke(string $accessToken, string $email): EmailContent
+    public function __invoke(string $email, string $accessToken): EmailContent
     {
         $setUpPasswordUrl = sprintf(SetUpPasswordUrl::VALUE, $this->domain, $accessToken);
 

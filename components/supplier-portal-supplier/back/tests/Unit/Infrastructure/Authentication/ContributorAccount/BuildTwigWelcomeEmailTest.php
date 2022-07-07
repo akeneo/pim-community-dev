@@ -42,7 +42,7 @@ final class BuildTwigWelcomeEmailTest extends TestCase
             );
 
         $sut = new BuildTwigWelcomeEmail($twig, $domain);
-        $emailContent = ($sut)('foo', $contributorEmail);
+        $emailContent = ($sut)($contributorEmail, 'foo');
 
         static::assertSame('htmlContent', $emailContent->htmlContent);
         static::assertSame('textContent', $emailContent->textContent);
