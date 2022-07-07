@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount\Subscriber;
 
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmail;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendResetPasswordEmailOnPasswordReset;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\PasswordReset;
@@ -30,7 +29,7 @@ final class SendResetPasswordEmailOnPasswordResetTest extends TestCase
         $sendResetPasswordEmailHandler
             ->expects($this->once())
             ->method('__invoke')
-            ->with(new SendResetPasswordEmail('test@example.com', 'foo'));
+            ->with('test@example.com', 'foo');
 
         $sut = new SendResetPasswordEmailOnPasswordReset($sendResetPasswordEmailHandler);
 

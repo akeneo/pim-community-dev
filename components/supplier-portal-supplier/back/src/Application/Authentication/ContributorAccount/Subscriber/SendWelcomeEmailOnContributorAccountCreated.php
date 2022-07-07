@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber;
 
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\ContributorAccountCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,11 +23,6 @@ final class SendWelcomeEmailOnContributorAccountCreated implements EventSubscrib
 
     public function sendWelcomeEmail(ContributorAccountCreated $event): void
     {
-        ($this->sendWelcomeEmailHandler)(
-            new SendWelcomeEmail(
-                $event->contributorAccount->email(),
-                $event->contributorAccount->accessToken(),
-            )
-        );
+        ($this->sendWelcomeEmailHandler)($event->contributorAccount->email(), $event->contributorAccount->accessToken());
     }
 }

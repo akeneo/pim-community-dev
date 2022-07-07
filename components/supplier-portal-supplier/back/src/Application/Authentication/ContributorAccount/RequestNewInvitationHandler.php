@@ -43,10 +43,8 @@ final class RequestNewInvitationHandler
         $this->contributorAccountRepository->save($contributorAccount);
 
         ($this->sendWelcomeEmailHandler)(
-            new SendWelcomeEmail(
-                $newAccessToken,
-                $requestNewInvitation->email,
-            )
+            $newAccessToken,
+            $requestNewInvitation->email,
         );
     }
 }

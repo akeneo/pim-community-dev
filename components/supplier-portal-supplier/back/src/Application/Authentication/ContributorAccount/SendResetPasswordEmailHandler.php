@@ -15,12 +15,9 @@ class SendResetPasswordEmailHandler
     ) {
     }
 
-    public function __invoke(SendResetPasswordEmail $sendResetPasswordEmail): void
+    public function __invoke(string $recipientEmail, string $accessToken): void
     {
-        $email = ($this->buildResetPasswordEmail)(
-            $sendResetPasswordEmail->email,
-            $sendResetPasswordEmail->accessToken
-        );
+        $email = ($this->buildResetPasswordEmail)($recipientEmail, $accessToken);
 
         ($this->sendEmail)($email);
     }

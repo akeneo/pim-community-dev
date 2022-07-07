@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber;
 
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmail;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendResetPasswordEmailHandler;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\PasswordReset;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,11 +23,6 @@ final class SendResetPasswordEmailOnPasswordReset implements EventSubscriberInte
 
     public function sendResetPasswordEmail(PasswordReset $event): void
     {
-        ($this->sendResetPasswordEmailHandler)(
-            new SendResetPasswordEmail(
-                $event->contributorAccountEmail,
-                $event->accessToken,
-            )
-        );
+        ($this->sendResetPasswordEmailHandler)($event->contributorAccountEmail, $event->accessToken);
     }
 }

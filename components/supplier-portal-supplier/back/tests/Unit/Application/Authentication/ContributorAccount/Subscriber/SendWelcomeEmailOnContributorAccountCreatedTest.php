@@ -2,7 +2,6 @@
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount\Subscriber;
 
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendWelcomeEmailOnContributorAccountCreated;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\ContributorAccountCreated;
@@ -30,7 +29,7 @@ class SendWelcomeEmailOnContributorAccountCreatedTest extends TestCase
         $sendWelcomeEmailHandlerSpy
             ->expects($this->once())
             ->method('__invoke')
-            ->with(new SendWelcomeEmail($contributorAccount->email(), $contributorAccount->accessToken()));
+            ->with($contributorAccount->email(), $contributorAccount->accessToken());
 
         $sut = new SendWelcomeEmailOnContributorAccountCreated($sendWelcomeEmailHandlerSpy);
 

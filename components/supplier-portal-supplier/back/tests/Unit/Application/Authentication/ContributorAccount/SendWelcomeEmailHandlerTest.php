@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount;
 
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\Email;
@@ -38,6 +37,6 @@ class SendWelcomeEmailHandlerTest extends TestCase
             ->with($email);
 
         $sut = new SendWelcomeEmailHandler($sendEmail, $buildWelcomeEmail);
-        ($sut)(new SendWelcomeEmail($contributorEmail, 'access-token'));
+        ($sut)($contributorEmail, 'access-token');
     }
 }
