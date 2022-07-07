@@ -1,0 +1,7 @@
+services:
+    Akeneo\SupplierPortal\Retailer\Test\Acceptance\Context\SupplierContext:
+        - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
+        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierList'
+        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplierHandler'
+        - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler'

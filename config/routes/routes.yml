@@ -158,9 +158,9 @@ akeneo_channel:
     resource: "@AkeneoChannelBundle/Resources/config/routing.yml"
     prefix:   /
 
-onboarder_serenity_retailer:
-    resource: "@AkeneoOnboarderSerenityRetailerBundle/Resources/config/routing.yml"
-    prefix: /onboarder-retailer/v2
+supplier_portal_retailer:
+    resource: "@AkeneoSupplierPortalRetailerBundle/Resources/config/routing.yml"
+    prefix: /retailer-portal
 
 akeneo_supplier_portal:
     resource: "@AkeneoSupplierPortalSupplierBundle/Resources/config/routing.yml"

@@ -46,7 +46,7 @@ class TextCheckerDictionaryRepository implements TextCheckerDictionaryRepository
         $query = <<<SQL
 SELECT locale_code, word
 FROM pimee_data_quality_insights_text_checker_dictionary
-WHERE locale_code = :localeCode
+WHERE locale_code = :localeCode AND enabled = 1
 SQL;
 
         $statement = $this->db->executeQuery($query, [
@@ -72,6 +72,7 @@ SQL;
 SELECT word
 FROM pimee_data_quality_insights_text_checker_dictionary
 WHERE locale_code = :localeCode AND word IN (:words)
+    AND enabled = 1
 SQL;
 
         $dictionaryWords = $this->db->executeQuery(
@@ -92,8 +93,9 @@ SQL;
     public function save(Write\TextCheckerDictionaryWord $dictionaryWord): void
     {
         $query = <<<SQL
-INSERT IGNORE INTO  pimee_data_quality_insights_text_checker_dictionary (locale_code, word)
-VALUES (:localeCode, :word)
+INSERT INTO  pimee_data_quality_insights_text_checker_dictionary (locale_code, word, enabled, updated_at)
+VALUES (:localeCode, :word, 1, NOW())
+ON DUPLICATE KEY UPDATE enabled = 1, updated_at = IF(enabled = 0, NOW(), updated_at);
 SQL;
 
         $this->db->executeUpdate(
@@ -121,7 +123,7 @@ SQL;
             Assert::isInstanceOf($dictionaryWord, Write\TextCheckerDictionaryWord::class);
             $locale = sprintf('locale_%s', $index);
             $word = sprintf('word_%s', $index);
-            $values[] = sprintf('(:%s, :%s)', $locale, $word);
+            $values[] = sprintf('(:%s, :%s, 1, NOW())', $locale, $word);
             $queryParameters[$locale] = $dictionaryWord->getLocaleCode();
             $queryParameters[$word] = mb_strtolower(strval($dictionaryWord->getWord()));
         }
@@ -129,7 +131,9 @@ SQL;
         $values = implode(',', $values);
 
         $query = <<<SQL
-INSERT IGNORE INTO pimee_data_quality_insights_text_checker_dictionary (locale_code, word) VALUES $values;
+INSERT IGNORE INTO pimee_data_quality_insights_text_checker_dictionary (locale_code, word, enabled, updated_at)
+VALUES $values
+ON DUPLICATE KEY UPDATE enabled = 1, updated_at = IF(enabled = 0, NOW(), updated_at);
 SQL;
         $this->db->executeQuery($query, $queryParameters);
     }
@@ -145,7 +149,8 @@ SQL;
                     'locale_code',
                     $qb->createPositionalParameter(strval($localeCode), ParameterType::STRING)
                 )
-            );
+            )
+            ->andWhere('enabled = 1');
 
         if (!empty($search)) {
             $search = '%' . $search . '%';
@@ -174,14 +179,20 @@ SQL;
 
     public function deleteWord(int $wordId): void
     {
-        $this->db->delete('pimee_data_quality_insights_text_checker_dictionary', ['id' => $wordId]);
+        $query = <<<SQL
+UPDATE pimee_data_quality_insights_text_checker_dictionary
+SET enabled = 0, updated_at = NOW()
+WHERE id = :wordId;
+SQL;
+
+        $this->db->executeQuery($query, ['wordId' => $wordId], ['wordId' => \PDO::PARAM_INT]);
     }
 
     public function isEmptyForLocale(LocaleCode $localeCode): bool
     {
         $query = <<<SQL
 SELECT 1 FROM pimee_data_quality_insights_text_checker_dictionary
-WHERE locale_code = :locale
+WHERE locale_code = :locale AND enabled = 1
 LIMIT 1;
 SQL;
 

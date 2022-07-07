@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\OnboarderSerenity\Retailer\Infrastructure\Install\InstallOnboarderSerenityTables;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -24,11 +23,11 @@ final class Version_7_0_20220421150300_onboarder_serenity_add_supplier_import_jo
         $this->addSql(
             $sql,
             [
-                'code' => InstallOnboarderSerenityTables::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['code'],
-                'label' => InstallOnboarderSerenityTables::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['label'],
-                'connector' => InstallOnboarderSerenityTables::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['connector'],
-                'rawParameters' => InstallOnboarderSerenityTables::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['raw_parameters'],
-                'type' => InstallOnboarderSerenityTables::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['type'],
+                'code' => 'supplier_portal_xlsx_supplier_import',
+                'label' => 'Supplier Portal XLSX Supplier Import',
+                'connector' => 'Supplier Portal',
+                'rawParameters' => 'a:0:{}',
+                'type' => 'import',
             ]
         );
     }
@@ -50,7 +49,7 @@ final class Version_7_0_20220421150300_onboarder_serenity_add_supplier_import_jo
                 ->connection
                 ->executeQuery(
                     $sql,
-                    ['code' => InstallOnboarderSerenityTables::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['code']]
+                    ['code' => 'supplier_portal_xlsx_supplier_import']
                 )
                 ->fetchOne()
             ;

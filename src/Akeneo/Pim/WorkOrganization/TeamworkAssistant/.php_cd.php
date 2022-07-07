@@ -72,6 +72,10 @@ $rules = [
 
         // TIP-1023: CatalogContext should be dropped
         'Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext',
+
+        // Installer bundle
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
     ])->in('Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle'),
     $builder->only([
         'Symfony\Component',

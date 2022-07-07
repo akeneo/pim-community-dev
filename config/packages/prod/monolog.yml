@@ -9,7 +9,7 @@ monolog:
       level:      '%env(LOGGING_LEVEL)%'
       path:       'php://stderr'
       formatter:  'monolog.formatter.json'
-      channels:   ['!event_api', '!business_event', '!api_requests', '!onboarder_serenity']
+      channels:   ['!event_api', '!business_event', '!api_requests', '!supplier_portal']
       include_stacktraces: true
     event_and_business_api:
       type: stream
@@ -17,10 +17,10 @@ monolog:
       level: info
       channels: ['event_api','business_event']
       formatter: 'monolog.formatter.json'
-    onboarder_serenity:
+    supplier_portal:
       type: stream
       path: 'php://stderr'
       level: info
-      channels: 'onboarder_serenity'
+      channels: 'supplier_portal'
       formatter: 'monolog.formatter.json'
       include_stacktraces: true

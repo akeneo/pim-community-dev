@@ -1,0 +1,10 @@
+config:
+  config:
+    pim/controller-registry:
+      controllers:
+        supplier_portal_retailer_supplier_list:
+          module: supplier-portal/controller/supplier-management
+        supplier_portal_retailer_supplier_edit:
+          module: supplier-portal/controller/supplier-management
+  paths:
+    supplier-portal/controller/supplier-management: akeneosupplierportalretailer/js/controller/supplier-management.tsx

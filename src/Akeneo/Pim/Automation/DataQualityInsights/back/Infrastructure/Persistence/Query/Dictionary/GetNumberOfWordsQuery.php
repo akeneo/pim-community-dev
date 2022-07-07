@@ -31,7 +31,7 @@ class GetNumberOfWordsQuery implements GetNumberOfWordsQueryInterface
         $query = <<<SQL
 SELECT locale_code, COUNT(word) AS total_words
 FROM pimee_data_quality_insights_text_checker_dictionary
-WHERE locale_code IN (:locales)
+WHERE locale_code IN (:locales) AND enabled = 1
 GROUP BY locale_code;
 SQL;
 
