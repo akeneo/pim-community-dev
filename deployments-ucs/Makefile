@@ -127,11 +127,11 @@ help: #Doc: display this help
 .PHONY: pim-image-prod
 pim-image-prod: #Doc: build docker image for pim-enterprise-dev with the prod tag
 	echo "${RELEASE_NAME}" > "$(PIM_SRC_PATH)/version.txt"
-	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag $(GOOGLE_CLUSTER_REGION).docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(PIM_SRC_PATH)/Dockerfile ${PIM_ROOT_DIR}
+	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(PIM_SRC_PATH)/Dockerfile ${PIM_ROOT_DIR}
 
 .PHONY: push-pim-image-prod
 push-pim-image-prod: #Doc: push docker image to docker hub
-	docker push $(GOOGLE_CLUSTER_REGION).docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev --all-tags
+	docker push $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev --all-tags
 
 ## Deploy tenants
 .PHONY: deploy_tenant
