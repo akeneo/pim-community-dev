@@ -6,7 +6,6 @@ namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorA
 
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
-use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\Email;
 
 class SendResetPasswordEmailHandler
 {
@@ -18,17 +17,9 @@ class SendResetPasswordEmailHandler
 
     public function __invoke(SendResetPasswordEmail $sendResetPasswordEmail): void
     {
-        $resetPasswordEmailContent = ($this->buildResetPasswordEmail)(
+        $email = ($this->buildResetPasswordEmail)(
             $sendResetPasswordEmail->email,
             $sendResetPasswordEmail->accessToken
-        );
-
-        $email = new Email(
-            'Reset your password',
-            $resetPasswordEmailContent->htmlContent,
-            $resetPasswordEmailContent->textContent,
-            'noreply@akeneo.com',
-            $sendResetPasswordEmail->email,
         );
 
         ($this->sendEmail)($email);

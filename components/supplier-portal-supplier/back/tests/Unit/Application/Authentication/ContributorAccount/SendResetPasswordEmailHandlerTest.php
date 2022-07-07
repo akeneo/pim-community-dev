@@ -9,7 +9,6 @@ use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\Email;
-use Akeneo\SupplierPortal\Supplier\Domain\Mailer\ValueObject\EmailContent;
 use PHPUnit\Framework\TestCase;
 
 final class SendResetPasswordEmailHandlerTest extends TestCase
@@ -18,24 +17,25 @@ final class SendResetPasswordEmailHandlerTest extends TestCase
     public function itSendsAResetPasswordEmail(): void
     {
         $contributorAccountEmail = 'test@example.com';
+        $email = new Email(
+            'Reset your password',
+            'htmlContent',
+            'textContent',
+            'noreply@akeneo.com',
+            $contributorAccountEmail,
+        );
 
         $buildResetPasswordEmail = $this->createMock(BuildResetPasswordEmail::class);
         $buildResetPasswordEmail
             ->expects($this->once())
             ->method('__invoke')
-            ->willReturn(new EmailContent('htmlContent', 'textContent'));
+            ->willReturn($email);
 
         $sendEmail = $this->createMock(SendEmail::class);
         $sendEmail
             ->expects($this->once())
             ->method('__invoke')
-            ->with(new Email(
-                'Reset your password',
-                'htmlContent',
-                'textContent',
-                'noreply@akeneo.com',
-                $contributorAccountEmail,
-            ));
+            ->with($email);
 
         $sut = new SendResetPasswordEmailHandler($sendEmail, $buildResetPasswordEmail);
         ($sut)(new SendResetPasswordEmail($contributorAccountEmail, 'foo'));
