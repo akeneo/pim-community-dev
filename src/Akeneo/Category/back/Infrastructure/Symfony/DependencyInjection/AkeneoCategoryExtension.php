@@ -25,6 +25,7 @@ class AkeneoCategoryExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('cli.yml');
+        $loader->load('feature_flags.yml');
         $loader->load('controllers.yml');
         $loader->load('entities.yml');
         $loader->load('forms.yml');
