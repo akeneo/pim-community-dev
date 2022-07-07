@@ -70,7 +70,7 @@ JSON;
         $this->assertProductNotDeleted('product_not_owned_by_redactor');
     }
 
-    public function testProductNotDeletableByUuidByUserWhoCanEditBuIsNotOwner()
+    public function testProductNotDeletableByUuidByUserWhoCanEditButIsNotOwner()
     {
         $product = $this->createProduct('product_not_owned_by_redactor', [
             'categories' => ['categoryA']
