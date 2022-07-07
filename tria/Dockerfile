@@ -144,7 +144,7 @@ COPY components components
 COPY grth grth
 COPY tria/upgrades upgrades
 COPY tria/front-packages front-packages
-COPY tria/composer.json tria/package.json tria/yarn.lock tria/.env tria/tsconfig.json tria/*.js tria/version.txt .
+COPY tria/composer.json tria/package.json tria/yarn.lock tria/.env tria/tsconfig.json tria/*.js tria/version.txt ./
 
 ENV APP_ENV=prod
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
@@ -193,7 +193,7 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
 COPY --from=builder --chown=www-data:www-data /srv/pim/templates templates
 COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod
 COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
-COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php /srv/pim/composer.lock .
+COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php /srv/pim/composer.lock ./
 COPY --from=builder --chown=www-data:www-data /srv/pim/version.txt .
 
 # Prepare the application
