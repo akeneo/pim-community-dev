@@ -20,7 +20,7 @@ PIM_CONTEXT=supplier-portal make unit-front
 
 Watch the Supplier Portal unit front tests:
 ```
-docker-compose -f ./docker-compose.yml -f ./docker-compose.override.yml run --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node yarn --cwd=components/onboarder-retailer/front test:unit:watch
+docker-compose -f ./docker-compose.yml -f ./docker-compose.override.yml run --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node yarn --cwd=components/supplier-portal-retailer/front test:unit:watch
 ```
 
 # Integration tests

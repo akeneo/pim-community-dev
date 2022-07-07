@@ -37,7 +37,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/Category/front",
     "vendor/akeneo/pim-community-dev/components/catalogs/front",
     "vendor/akeneo/pim-enterprise-dev",
-    "vendor/akeneo/pim-enterprise-dev/components/onboarder-retailer/front",
+    "vendor/akeneo/pim-enterprise-dev/components/supplier-portal-retailer/front",
     "vendor/akeneo/pim-enterprise-dev/components/tailored-export/front",
     "vendor/akeneo/pim-enterprise-dev/components/tailored-import/front",
     "vendor/akeneo/pim-enterprise-dev/components/job-automation/front",

@@ -24,7 +24,7 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
     public function itImportsSuppliersFromAXlsxFile(): void
     {
         $filePath = sprintf(
-            '%s/components/onboarder-retailer/back/tests/Integration/files/suppliers_import.xlsx',
+            '%s/components/supplier-portal-retailer/back/tests/Integration/files/suppliers_import.xlsx',
             static::$kernel->getProjectDir(),
         );
 
@@ -40,7 +40,7 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
     public function itImportsNothingIfThereIsNoSuppliersInTheXlsxFile(): void
     {
         $filePath = sprintf(
-            '%s/components/onboarder-retailer/back/tests/Integration/files/suppliers_import_empty.xlsx',
+            '%s/components/supplier-portal-retailer/back/tests/Integration/files/suppliers_import_empty.xlsx',
             static::$kernel->getProjectDir(),
         );
 
