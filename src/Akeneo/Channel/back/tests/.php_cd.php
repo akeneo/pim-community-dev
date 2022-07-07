@@ -36,7 +36,7 @@ $rules = [
         'Doctrine\Persistence',
         'Akeneo\Tool\Component',
         // TIP-942: Channel should not be linked to Category
-        'Akeneo\Category\Infrastructure\Component\Category\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
 
         // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface',
@@ -54,8 +54,8 @@ $rules = [
         'Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager',
 
         // PIM-10485: Get Category Tree without apply permission
-        'Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree',
-        'Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees',
+        'Akeneo\Category\Api\CategoryTree',
+        'Akeneo\Category\Api\FindCategoryTrees',
 
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
     ])->in('Akeneo\Channel\Infrastructure'),

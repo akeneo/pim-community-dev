@@ -127,7 +127,25 @@ $rules = [
         'Akeneo\Pim\Enrichment\Product\API\Command\UserIntent',
         'Akeneo\Pim\Enrichment\Product\API\MessageBus',
         'Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat',
-        'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode'
+        'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode',
+
+        // Category Bounded Context
+        'Akeneo\Category\Api', // legit
+        'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Model\Category',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory',
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
+        'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCount',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCount',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCountHandler',
 
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
@@ -256,6 +274,16 @@ $rules = [
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+
+        // Category Bounded Context
+        'Akeneo\Category\Api', // legit
+        'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryFilterableRepositoryInterface'
+
+
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 
