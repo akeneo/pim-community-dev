@@ -23,8 +23,6 @@ $rules = [
         'Ramsey\Uuid\UuidInterface',
         // it implements a CE query differently for permissions
         'Akeneo\Category\Domain\Component\CategoryTree\Query',
-        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
-        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory',
         'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface',
@@ -73,7 +71,6 @@ $rules = [
         'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
 
         //TODO: Link by id instead of reference
-        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
@@ -171,6 +168,13 @@ $rules = [
         'Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts',
         'Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels',
 
+        // category bounded context
+        'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory',
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -251,6 +255,9 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface',
+
+        // category bounded context
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
     ])->in('Akeneo\Pim\Permission\Component'),
 ];
 
