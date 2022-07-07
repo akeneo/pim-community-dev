@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByFamiliesIntegration extends AbstractExportTestCase
@@ -11,9 +12,9 @@ class ExportProductsByFamiliesIntegration extends AbstractExportTestCase
      */
     protected function loadFixtures() : void
     {
-        $this->createProduct('product_1', ['family' => 'familyA']);
-        $this->createProduct('product_2', ['family' => 'familyA1']);
-        $this->createProduct('product_3', ['family' => 'familyA2']);
+        $this->createProduct('product_1', [new SetFamily('familyA')]);
+        $this->createProduct('product_2', [new SetFamily('familyA1')]);
+        $this->createProduct('product_3', [new SetFamily('familyA2')]);
         $this->createProduct('product_4');
     }
 

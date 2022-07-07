@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByDateIntegration extends AbstractExportTestCase
@@ -12,19 +13,11 @@ class ExportProductsByDateIntegration extends AbstractExportTestCase
     protected function loadFixtures() : void
     {
         $this->createProduct('product_1', [
-            'values'     => [
-                'a_date' => [
-                    ['data' => '2025-12-31', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetDateValue('a_date', null, null, new \DateTime('2025-12-31'))
         ]);
 
         $this->createProduct('product_2', [
-            'values'     => [
-                'a_date' => [
-                    ['data' => '2016-06-15', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetDateValue('a_date', null, null, new \DateTime('2016-06-15'))
         ]);
     }
 
