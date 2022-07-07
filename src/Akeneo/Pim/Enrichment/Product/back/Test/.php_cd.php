@@ -16,11 +16,21 @@ $rules = [
         'Symfony\Component\Messenger\MessageBusInterface',
         'Symfony\Component\Messenger\Stamp\HandledStamp',
         'Ramsey\Uuid\UuidInterface',
+        'Symfony\Component\Messenger\Stamp',
     ])->in('Akeneo\Pim\Enrichment\Product\API'),
 
     $builder->only([
+        'Akeneo\Pim\Enrichment\Product\API',
+
         // Libs
         'Webmozart\Assert\Assert',
+
+        // PIM
+        'Akeneo\Pim\Structure\Component\AttributeTypes',
+        'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException',
+        'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+        'Akeneo\Pim\Structure\Component\AttributeTypes',
         'Ramsey\Uuid\UuidInterface',
 
         // API
@@ -41,6 +51,10 @@ $rules = [
         'Akeneo\Tool\Component\StorageUtils\Exception\PropertyException',
         'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
         'Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface',
+
+        // Public APIs
+        'Akeneo\Pim\Structure\Component\AttributeTypes',
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface'
     ])->in('Akeneo\Pim\Enrichment\Product\Application'),
 
     $builder->only([

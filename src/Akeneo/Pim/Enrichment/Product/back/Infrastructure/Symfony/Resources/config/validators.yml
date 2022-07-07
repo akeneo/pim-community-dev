@@ -49,6 +49,8 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
+    Akeneo\Pim\Enrichment\Product\Domain\StandardFormat\Validator\QuantifiedAssociationsStructureValidator: ~
+
     # PQB
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\PQB\SearchFiltersValidator:
         arguments:

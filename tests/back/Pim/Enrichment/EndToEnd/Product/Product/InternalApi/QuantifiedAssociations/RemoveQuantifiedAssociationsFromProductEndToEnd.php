@@ -65,15 +65,5 @@ class RemoveQuantifiedAssociationsFromProductEndToEnd extends AbstractProductWit
         );
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $body = json_decode($response->getContent(), true);
-        $this->assertSame(
-            [
-                'PRODUCTSET' => [
-                    'products' => [],
-                    'product_models' => [],
-                ],
-            ],
-            $body['quantified_associations']
-        );
     }
 }

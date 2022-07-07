@@ -11,6 +11,12 @@ services:
         tags:
             - { name: 'akeneo.pim.enrichment.product.handler', command: 'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand' }
 
+    Akeneo\Pim\Enrichment\Product\Application\StandardFormat\ConvertStandardFormatIntoUserIntentsHandler:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Domain\UserIntent\UserIntentFactoryRegistry'
+        tags:
+            - { name: 'akeneo.pim.enrichment.product.query_handler', query: 'Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat'}
+
     Akeneo\Pim\Enrichment\Product\Application\PQB\GetProductUuidsHandler:
         arguments:
             - '@Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductQueryBuilderInterface'
