@@ -135,7 +135,7 @@ SQL;
         } while (count($resultsPage)>0);
     }
 
-    private function doDeindex(iterable $chunkedProductIdentifiersAncestorsCodes, ProgressBar $progressBar): int
+    private function removeDocumentFromIndex(iterable $chunkedProductIdentifiersAncestorsCodes, ProgressBar $progressBar): int
     {
         $indexedProductCount = 0;
         $progressBar->start();
