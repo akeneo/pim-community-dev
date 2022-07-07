@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui;
 
 use Akeneo\Category\Api\CategoryTree;
-use Akeneo\Category\Api\FindCategoryTrees;
+use Akeneo\Category\Api\FindGrantedCategoryTrees;
 use Akeneo\Category\Api\GetCategoryChildrenCodesPerTreeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,14 +17,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CategoryTreeController
 {
-    private FindCategoryTrees $findCategoryTrees;
+    private FindGrantedCategoryTrees $findGrantedCategoryTrees;
     private GetCategoryChildrenCodesPerTreeInterface $getCategoryChildrenCodesPerTree;
 
     public function __construct(
-        FindCategoryTrees $findCategoryTrees,
+        FindGrantedCategoryTrees $findGrantedCategoryTrees,
         GetCategoryChildrenCodesPerTreeInterface $getCategoryChildrenCodesPerTree
     ) {
-        $this->findCategoryTrees = $findCategoryTrees;
+        $this->findGrantedCategoryTrees = $findGrantedCategoryTrees;
         $this->getCategoryChildrenCodesPerTree = $getCategoryChildrenCodesPerTree;
     }
 
@@ -61,7 +61,7 @@ class CategoryTreeController
 
                 return $result;
             },
-            $this->findCategoryTrees->execute()
+            $this->findGrantedCategoryTrees->execute()
         );
     }
 

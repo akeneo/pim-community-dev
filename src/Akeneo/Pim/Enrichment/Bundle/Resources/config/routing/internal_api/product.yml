@@ -24,7 +24,7 @@ pim_enrich_product_rest_create:
 
 pim_enrich_product_rest_post:
     path: /rest/{uuid}
-    defaults: { _controller: pim_enrich.controller.rest.product:postAction }
+    defaults: { _controller: Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\Product\UpdateProductController }
     requirements:
         uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [POST]

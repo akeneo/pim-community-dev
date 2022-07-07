@@ -45,7 +45,7 @@ final class IsUserOwnerOfTheProductValidator extends ConstraintValidator
 
         if ([] === $this->getOwnedCategories->forUserId($productCategoryCodes, $command->userId())) {
             $this->context->buildViolation($constraint->message)
-                ->setCode((string) ViolationCode::PERMISSION)
+                ->setCode((string) (ViolationCode::buildGlobalViolationCode(ViolationCode::USER_IS_NOT_OWNER, ViolationCode::PERMISSION)))
                 ->atPath('userId')
                 ->addViolation();
         }

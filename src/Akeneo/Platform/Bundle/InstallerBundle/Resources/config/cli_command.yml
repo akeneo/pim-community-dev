@@ -41,3 +41,11 @@ services:
             - '%kernel.bundles%'
         tags:
             - { name: console.command }
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\MigrateZddCommand:
+        arguments:
+            - '@database_connection'
+            - '@monolog.logger'
+            - !tagged_iterator { tag: 'akeneo.pim.zdd_migration' }
+        tags:
+            - { name: 'console.command' }

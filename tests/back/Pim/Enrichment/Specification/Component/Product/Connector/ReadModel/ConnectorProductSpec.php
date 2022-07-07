@@ -28,12 +28,17 @@ class ConnectorProductSpec extends ObjectBehavior
             'parent_product_model_code',
             [
                 'X_SELL' => [
-                    'products' => ['product_code_1', 'product_code_2'],
+                    'products' => [
+                        ['uuid' => '11cd5db0-c69f-4f12-819c-ab55240d5ac3', 'identifier' => 'product_code_1'],
+                        ['uuid' => 'b1c75d2b-cb38-4f1f-9f63-512220c3d3ef', 'identifier' => 'product_code_2'],
+                    ],
                     'product_models' => [],
                     'groups' => ['group_code_2']
                 ],
                 'UPSELL' => [
-                    'products' => ['product_code_4'],
+                    'products' => [
+                        ['uuid' => '15f19a58-535d-4348-9a97-1eb0fb57ca3f', 'identifier' => 'product_code_4'],
+                    ],
                     'product_models' => ['product_model_5', 'product_model_6'],
                     'groups' => ['group_code_3']
                 ]
@@ -41,8 +46,8 @@ class ConnectorProductSpec extends ObjectBehavior
             [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'product_1', 'quantity' => 1],
-                        ['identifier' => 'product_2', 'quantity' => 2]
+                        ['identifier' => 'product_1', 'quantity' => 1, 'uuid' => 'b9c3b775-d6ef-4748-b384-a99a759e469a'],
+                        ['identifier' => 'product_2', 'quantity' => 2, 'uuid' => '894631da-832f-4818-a2ae-44d70c16e679'],
                     ],
                     'product_models' => [
                         ['identifier' => 'product_model_1', 'quantity' => 3],
@@ -51,8 +56,8 @@ class ConnectorProductSpec extends ObjectBehavior
                 ],
                 'PRODUCT_SET1' => [
                     'products' => [
-                        ['identifier' => 'product_1', 'quantity' => 2],
-                        ['identifier' => 'product_3', 'quantity' => 9]
+                        ['identifier' => 'product_1', 'quantity' => 2, 'uuid' => 'b9c3b775-d6ef-4748-b384-a99a759e469a'],
+                        ['identifier' => 'product_3', 'quantity' => 9, 'uuid' => '77ff41a7-69fc-4b4a-898c-3117e08e60da'],
                     ],
                     'product_models' => [
                         ['identifier' => 'product_model_1', 'quantity' => 2],
@@ -97,7 +102,9 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct->associations()->shouldBeLike(
             [
                 'X_SELL' => [
-                    'products' => ['product_code_1'],
+                    'products' => [
+                        ['uuid' => '11cd5db0-c69f-4f12-819c-ab55240d5ac3', 'identifier' => 'product_code_1'],
+                    ],
                     'product_models' => [],
                     'groups' => ['group_code_2']
                 ],
@@ -117,12 +124,17 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct->associations()->shouldBeLike(
             [
                 'X_SELL' => [
-                    'products' => ['product_code_1', 'product_code_2'],
+                    'products' => [
+                        ['uuid' => '11cd5db0-c69f-4f12-819c-ab55240d5ac3', 'identifier' => 'product_code_1'],
+                        ['uuid' => 'b1c75d2b-cb38-4f1f-9f63-512220c3d3ef', 'identifier' => 'product_code_2'],
+                    ],
                     'product_models' => [],
                     'groups' => ['group_code_2']
                 ],
                 'UPSELL' => [
-                    'products' => ['product_code_4'],
+                    'products' => [
+                        ['uuid' => '15f19a58-535d-4348-9a97-1eb0fb57ca3f', 'identifier' => 'product_code_4']
+                    ],
                     'product_models' => ['product_model_5'],
                     'groups' => ['group_code_3']
                 ]
@@ -145,7 +157,7 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct->quantifiedAssociations()->shouldReturn([
             'PRODUCT_SET' => [
                 'products' => [
-                    ['identifier' => 'product_2', 'quantity' => 2]
+                    ['identifier' => 'product_2', 'quantity' => 2, 'uuid' => '894631da-832f-4818-a2ae-44d70c16e679'],
                 ],
                 'product_models' => [
                     ['identifier' => 'product_model_1', 'quantity' => 3],
@@ -177,8 +189,8 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct->quantifiedAssociations()->shouldReturn([
             'PRODUCT_SET' => [
                 'products' => [
-                    ['identifier' => 'product_1', 'quantity' => 1],
-                    ['identifier' => 'product_2', 'quantity' => 2]
+                    ['identifier' => 'product_1', 'quantity' => 1, 'uuid' => 'b9c3b775-d6ef-4748-b384-a99a759e469a'],
+                    ['identifier' => 'product_2', 'quantity' => 2, 'uuid' => '894631da-832f-4818-a2ae-44d70c16e679']
                 ],
                 'product_models' => [
                     ['identifier' => 'product_model_2', 'quantity' => 4],
@@ -186,8 +198,8 @@ class ConnectorProductSpec extends ObjectBehavior
             ],
             'PRODUCT_SET1' => [
                 'products' => [
-                    ['identifier' => 'product_1', 'quantity' => 2],
-                    ['identifier' => 'product_3', 'quantity' => 9]
+                    ['identifier' => 'product_1', 'quantity' => 2, 'uuid' => 'b9c3b775-d6ef-4748-b384-a99a759e469a'],
+                    ['identifier' => 'product_3', 'quantity' => 9, 'uuid' => '77ff41a7-69fc-4b4a-898c-3117e08e60da']
                 ],
                 'product_models' => [],
             ],

@@ -26,7 +26,7 @@ class VersionProviderIntegration extends KernelTestCase
     {
         $versionProvider = new VersionProvider(
             [new TestCommunityVersion(), new TestSerenityVersion()],
-            'COMMUNITY_EDITION',
+            'community_edition_instance',
             __DIR__
         );
 
@@ -37,7 +37,7 @@ class VersionProviderIntegration extends KernelTestCase
     {
         $versionProvider = new VersionProvider(
             [new TestCommunityVersion(), new TestSerenityVersion()],
-            'COMMUNITY_EDITION',
+            'community_edition_instance',
             __DIR__
         );
 
@@ -48,7 +48,7 @@ class VersionProviderIntegration extends KernelTestCase
     {
         $versionProvider = new VersionProvider(
             [new TestCommunityVersion(), new TestSerenityVersion()],
-            'COMMUNITY_EDITION',
+            'community_edition_instance',
             __DIR__
         );
         Assert::assertSame('12.42.20', $versionProvider->getPatch());
@@ -58,7 +58,7 @@ class VersionProviderIntegration extends KernelTestCase
     {
         $versionProvider = new VersionProvider(
             [new TestCommunityVersion(), new TestSerenityVersion()],
-            'COMMUNITY_EDITION',
+            'community_edition_instance',
             __DIR__
         );
         Assert::assertSame('12.42', $versionProvider->getMinorVersion());
@@ -68,7 +68,7 @@ class VersionProviderIntegration extends KernelTestCase
     {
         $versionProvider = new VersionProvider(
             [new TestCommunityVersion(), new TestSerenityVersion()],
-            'COMMUNITY_EDITION',
+            'community_edition_instance',
             __DIR__
         );
         Assert::assertSame('CE 12.42.20-BETA2 STATIC TEST VERSION', $versionProvider->getFullVersion());
@@ -78,7 +78,7 @@ class VersionProviderIntegration extends KernelTestCase
     {
         $versionProvider = new VersionProvider(
             [new TestCommunityVersion(), new TestSerenityVersion()],
-            'COMMUNITY_EDITION',
+            'community_edition_instance',
             __DIR__
         );
         Assert::assertFalse($versionProvider->isSaaSVersion());
@@ -88,7 +88,7 @@ class VersionProviderIntegration extends KernelTestCase
     {
         $versionProvider = new VersionProvider(
             [new TestCommunityVersion(), new TestSerenityVersion()],
-            'SERENITY_EDITION',
+            'serenity_instance',
             __DIR__
         );
         Assert::assertSame('Serenity', $versionProvider->getEdition());
@@ -98,7 +98,7 @@ class VersionProviderIntegration extends KernelTestCase
     {
         $versionProvider = new VersionProvider(
             [new TestCommunityVersion(), new TestSerenityVersion()],
-            'SERENITY_EDITION',
+            'serenity_instance',
             __DIR__
         );
         Assert::assertSame('12.42.20-BETA2', $versionProvider->getPatch());
@@ -108,7 +108,7 @@ class VersionProviderIntegration extends KernelTestCase
     {
         $versionProvider = new VersionProvider(
             [new TestCommunityVersion(), new TestSerenityVersion()],
-            'SERENITY_EDITION',
+            'serenity_instance',
             __DIR__
         );
         Assert::assertSame('12.42.20-BETA2', $versionProvider->getMinorVersion());
@@ -118,7 +118,7 @@ class VersionProviderIntegration extends KernelTestCase
     {
         $versionProvider = new VersionProvider(
             [new TestCommunityVersion(), new TestSerenityVersion()],
-            'SERENITY_EDITION',
+            'serenity_instance',
             __DIR__
         );
         Assert::assertSame('Serenity 12.42.20-BETA2 STATIC TEST VERSION', $versionProvider->getFullVersion());
@@ -128,7 +128,7 @@ class VersionProviderIntegration extends KernelTestCase
     {
         $versionProvider = new VersionProvider(
             [new TestCommunityVersion(), new TestSerenityVersion()],
-            'SERENITY_EDITION',
+            'serenity_instance',
             __DIR__
         );
         Assert::assertTrue($versionProvider->isSaaSVersion());
@@ -137,7 +137,7 @@ class VersionProviderIntegration extends KernelTestCase
 
     public function test_that_it_provides_the_serenity_version()
     {
-        $_ENV['PIM_EDITION'] = 'SERENITY_EDITION';
+        $_ENV['PIM_EDITION'] = 'serenity_instance';
 
         $versionProvider = static::$kernel->getContainer()->get('pim_catalog.version_provider');
 
@@ -146,7 +146,7 @@ class VersionProviderIntegration extends KernelTestCase
 
     public function test_that_it_provides_the_growth_edition_version()
     {
-        $_ENV['PIM_EDITION'] = 'GROWTH_EDITION';
+        $_ENV['PIM_EDITION'] = 'growth_edition_instance';
         $versionProvider = static::$kernel->getContainer()->get('pim_catalog.version_provider');
 
         Assert::assertSame('Growth Edition', $versionProvider->getEdition());
@@ -160,7 +160,7 @@ class VersionProviderIntegration extends KernelTestCase
      */
     public function test_that_it_provides_the_community_version()
     {
-        $_ENV['PIM_EDITION'] = 'COMMUNITY_EDITION';
+        $_ENV['PIM_EDITION'] = 'community_edition_instance';
 
         $versionProvider = static::$kernel->getContainer()->get('pim_catalog.version_provider');
 
@@ -208,7 +208,7 @@ class TestCommunityVersion implements PimVersion
 
     public function isEditionCode(string $editionCode): bool
     {
-        return $editionCode === 'COMMUNITY_EDITION';
+        return $editionCode === 'community_edition_instance';
     }
 }
 
@@ -245,6 +245,6 @@ class TestSerenityVersion implements PimVersion
 
     public function isEditionCode(string $editionCode): bool
     {
-        return $editionCode === 'SERENITY_EDITION';
+        return $editionCode === 'serenity_instance';
     }
 }

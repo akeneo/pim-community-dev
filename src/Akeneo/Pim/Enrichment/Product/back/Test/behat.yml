@@ -1,0 +1,20 @@
+default:
+    suites:
+        acceptance:
+            paths:
+                - '%paths.base%/Feature'
+            contexts:
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ExceptionContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\AttributeContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserIntentContext
+            filters:
+                tags: '@acceptance-back'
+    extensions:
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: config/bootstrap.php
+            kernel:
+                path: src/Kernel.php
+                class: Kernel
+                environment: test_fake
+                debug: false

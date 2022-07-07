@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductV
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEventDataBuilder;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\Webhook\Context;
@@ -34,11 +35,13 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function let(
         GetConnectorProducts $getConnectorProductsQuery,
         ProductValueNormalizer $productValuesNormalizer,
-        RouterInterface $router
+        RouterInterface $router,
+        AttributeRepositoryInterface $attributeRepository
     ): void {
         $connectorProductNormalizer = new ConnectorProductNormalizer(
             new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()),
             new DateTimeNormalizer(),
+            $attributeRepository->getWrappedObject()
         );
         $productValuesNormalizer->normalize(Argument::type(ReadValueCollection::class), 'standard')->willReturn([]);
 

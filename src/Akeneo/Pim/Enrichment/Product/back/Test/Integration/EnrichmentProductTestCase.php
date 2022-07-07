@@ -21,7 +21,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 abstract class EnrichmentProductTestCase extends TestCase
 {
-    protected MessageBusInterface $messageBus;
+    protected MessageBusInterface $commandMessageBus;
+    protected MessageBusInterface $queryMessageBus;
 
     /**
      * {@inheritdoc}
@@ -30,7 +31,8 @@ abstract class EnrichmentProductTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->messageBus = $this->get('pim_enrich.product.message_bus');
+        $this->commandMessageBus = $this->get('pim_enrich.product.message_bus');
+        $this->queryMessageBus = $this->get('pim_enrich.product.query_message_bus');
     }
 
     protected function getConfiguration(): Configuration
@@ -48,7 +50,7 @@ abstract class EnrichmentProductTestCase extends TestCase
         $this->createCategory(['code' => 'suppliers']);
         $this->createCategory(['code' => 'sales']);
 
-        if (FeatureHelper::isPermissionFeatureActivated()) {
+        if (FeatureHelper::isPermissionFeatureAvailable()) {
             $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('All', [
                 'own' => ['all' => false, 'identifiers' => []],
                 'edit' => ['all' => false, 'identifiers' => []],
@@ -97,7 +99,7 @@ abstract class EnrichmentProductTestCase extends TestCase
             productIdentifier: $identifier,
             userIntents: $userIntents
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->clearDoctrineUoW();
     }
@@ -211,7 +213,7 @@ abstract class EnrichmentProductTestCase extends TestCase
         SQL;
         $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
         $id = $stmt->fetchOne();
-        Assert::assertNotNull($id);
+        Assert::assertNotFalse($id, \sprintf('The "%s" user does not exist', $username));
 
         return \intval($id);
     }
@@ -298,5 +300,10 @@ abstract class EnrichmentProductTestCase extends TestCase
         $associationType = $factory->create();
         $updater->update($associationType, ['code' => $code, 'is_quantified' => true]);
         $saver->save($associationType);
+    }
+
+    protected function refreshIndex(): void
+    {
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 }

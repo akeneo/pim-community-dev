@@ -1,0 +1,50 @@
+batch_jobs:
+  csv_currency_export:
+    label: Export des devises en CSV
+    export.label: Export des devises
+  csv_locale_export:
+    export.label: Export des locales
+  csv_locale_import:
+    label: Import des locales en CSV
+    import.label: Import des locales
+  xlsx_locale_export:
+    label: Export des locales en XLSX
+    export.label: Export des locales
+  xlsx_locale_import:
+    label: Import des locales en XLSX
+    import.label: Import des locales
+  csv_channel_export:
+    label: Export des canaux en CSV
+    export.label: Export des canaux
+  csv_channel_import:
+    label: Import des canaux en CSV
+    import.label: Import des canaux
+  xlsx_channel_export:
+    label: Export des canaux en XLSX
+    export.label: Export des canaux
+  xlsx_channel_import:
+    label: Import des canaux en XLSX
+    import.label: Import des canaux
+pim_enrich.entity.channel:
+  label: canal
+  uppercase_label: Canal
+  flash:
+    update:
+      success: Le canal a bien été mis à jour.
+      fail: Le canal n'a pas pu être mis à jour.
+    create:
+      success: Canal créé avec succès.
+      fail: Le canal n'a pas pu être créé.
+    delete:
+      success: Le canal a bien été supprimé
+      fail: Impossible de supprimer ce canal
+  module:
+    create:
+      button: Créer un canal
+pim_enrich.entity.locale:
+  label: locale
+  uppercase_label: Locale
+  plural_label: Locales
+  grid:
+    columns:
+      code: Locales activées

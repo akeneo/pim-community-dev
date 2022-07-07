@@ -26,7 +26,7 @@ final class TransformCommonCriterionResultDataIds implements TransformResultData
         foreach ($resultData as $dataType => $dataByIds) {
             switch ($dataType) {
                 case TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates']:
-                    $dataByCodes['attributes_with_rates'] = $this->transformResultAttributeRatesIdsToCodes($dataByIds);
+                    $dataByCodes['attributes_with_rates'] = $this->transformResultAttributeDataIdsToCodes($dataByIds);
                     break;
                 case TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['total_number_of_attributes']:
                     $dataByCodes['total_number_of_attributes'] =
@@ -36,26 +36,29 @@ final class TransformCommonCriterionResultDataIds implements TransformResultData
                     $dataByCodes['number_of_improvable_attributes'] =
                         $this->transformChannelLocaleDataIds->transformToCodes($dataByIds, fn ($number) => $number);
                     break;
+                case TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['hashed_values']:
+                    $dataByCodes['hashed_values'] = $this->transformResultAttributeDataIdsToCodes($dataByIds);
+                    break;
             }
         }
 
         return $dataByCodes;
     }
 
-    private function transformResultAttributeRatesIdsToCodes(array $resultAttributeIdsRates): array
+    private function transformResultAttributeDataIdsToCodes(array $resultAttributeIdsData): array
     {
-        return $this->transformChannelLocaleDataIds->transformToCodes($resultAttributeIdsRates, function (array $attributeRates) {
-            $attributeCodesRates = [];
-            $attributesCodes = $this->attributes->getCodesByIds(array_keys($attributeRates));
+        return $this->transformChannelLocaleDataIds->transformToCodes($resultAttributeIdsData, function (array $attributeData) {
+            $attributeCodesData = [];
+            $attributesCodes = $this->attributes->getCodesByIds(array_keys($attributeData));
 
-            foreach ($attributeRates as $attributeId => $attributeRate) {
+            foreach ($attributeData as $attributeId => $data) {
                 $attributeCode = $attributesCodes[$attributeId] ?? null;
                 if (null !== $attributeCode) {
-                    $attributeCodesRates[$attributeCode] = $attributeRate;
+                    $attributeCodesData[$attributeCode] = $data;
                 }
             }
 
-            return $attributeCodesRates;
+            return $attributeCodesData;
         });
     }
 }
