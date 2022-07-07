@@ -3,7 +3,7 @@ backup:
 
 image:
   pim:
-    repository: eu.gcr.io/akecld-blackhawk-sandbox/pim-enterprise-dev
+    repository: europe-west1.docker.pkg.dev/akecld-prd-pim-saas-dev/pim-enterprise-dev/pim-enterprise-dev
 
 pim:
   secret: 5f559ffb-5b36-4922-9481-022057992057

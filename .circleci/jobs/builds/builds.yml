@@ -643,7 +643,7 @@ jobs:
 
     build_ucs:
         environment:
-            <<: *envVarsDeployUCS
+            <<: *envVarsDeployPIMSaaSDev
         machine:
             image: *executor-machine
         resource_class: medium
@@ -717,7 +717,7 @@ jobs:
                 type: string
                 default: "srnt"
         environment:
-            <<: *envVarsDeployUCS
+            <<: *envVarsDeployPIMSaaSDev
         machine:
             image: *executor-machine
         resource_class: medium
@@ -733,7 +733,7 @@ jobs:
                       TYPE_LONG=serenity
                       PRODUCT_REFERENCE_TYPE="${TYPE_LONG}_instance"
                       PRODUCT_REFERENCE_CODE="${TYPE_LONG}_${ENV_NAME}"
-                      IMAGE_TAG=$(gcloud container images list-tags eu.gcr.io/${GOOGLE_PROJECT_ID_PROD}/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                      IMAGE_TAG=$(gcloud container images list-tags $(GOOGLE_CLUSTER_REGION).docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-prod/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
                       IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
                       IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
                       RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
@@ -758,19 +758,19 @@ jobs:
             - run:
                   name: Docker pull and push image on registry
                   command: |
-                      docker pull eu.gcr.io/${GOOGLE_PROJECT_ID_PROD}/pim-enterprise-dev:${IMAGE_TAG}
-                      docker tag eu.gcr.io/${GOOGLE_PROJECT_ID_PROD}/pim-enterprise-dev:${IMAGE_TAG} eu.gcr.io/${GOOGLE_PROJECT_ID}/pim-enterprise-dev:${IMAGE_TAG}
-                      docker push eu.gcr.io/${GOOGLE_PROJECT_ID}/pim-enterprise-dev:${IMAGE_TAG}
-            - run:
-                  name: Push Terraform modules to GCS
-                  command: |
-                      STATUS_CODE=0
-                      # Push only if directories doesn't exist
-                      gsutil ls gs://akecld-blackhawk-sandbox-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/ > /dev/null 2>&1 || STATUS_CODE=1
-                      if [[ "${STATUS_CODE}" == "1" ]]; then
-                          echo "BOTO_CONFIG=/dev/null gsutil -m cp -r deployments-ucs/ gs://${GOOGLE_PROJECT_ID}-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/"
-                          BOTO_CONFIG=/dev/null gsutil -m cp -r deployments-ucs/ gs://${GOOGLE_PROJECT_ID}-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/
-                      fi
+                      docker pull $(GOOGLE_CLUSTER_REGION).docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-prod/pim-enterprise-dev:${IMAGE_TAG}
+                      docker tag $(GOOGLE_CLUSTER_REGION).docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-prod/pim-enterprise-dev:${IMAGE_TAG} $(GOOGLE_CLUSTER_REGION).docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG}
+                      docker push $(GOOGLE_CLUSTER_REGION).docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG}
+            # - run:
+            #       name: Push Terraform modules to GCS
+            #       command: |
+            #           STATUS_CODE=0
+            #           # Push only if directories doesn't exist
+            #           gsutil ls gs://akecld-blackhawk-sandbox-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/ > /dev/null 2>&1 || STATUS_CODE=1
+            #           if [[ "${STATUS_CODE}" == "1" ]]; then
+            #               echo "BOTO_CONFIG=/dev/null gsutil -m cp -r deployments-ucs/ gs://${GOOGLE_PROJECT_ID}-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/"
+            #               BOTO_CONFIG=/dev/null gsutil -m cp -r deployments-ucs/ gs://${GOOGLE_PROJECT_ID}-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/
+            #           fi
             - run:
                   name: Persist env vars for next jobs
                   command: |

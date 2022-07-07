@@ -42,7 +42,7 @@ func readDocument(ctx context.Context, client *firestore.Client, collection stri
 
 func main() {
     ctx := context.Background()
-    projectID := "akecld-blackhawk-sandbox"
+    projectID := "akecld-prd-pim-saas-dev"
 
     // Firestore
     clientFirestore := createClientFirestore(ctx, projectID)
@@ -54,12 +54,12 @@ func main() {
     deployment_version := os.Args[5]
     data := map[string]interface{}{
         "values": `{
-            "AKENEO_PIM_URL": "https://` + instance_name + `.bh.akeneo.ch",
+            "AKENEO_PIM_URL": "https://` + instance_name + `.dev.akeneo.ch",
             "APP_DATABASE_HOST": "pim-mysql.` + pfid + `.svc.cluster.local",
             "APP_INDEX_HOSTS": "elasticsearch-client.` + pfid + `.svc.cluster.local",
             "APP_TENANT_ID": "` + pfid + `",
             "MAILER_PASSWORD": "` + email_password + `",
-            "MAILER_URL": "smtp://smtp.mailgun.org:2525?encryption=tls&auth_mode=login&username=` + instance_name + `-akecld-bh-sandbox@mg.bh.akeneo.ch&password=` + email_password + `&sender_address=no-reply-` + pfid + `.bh.akeneo.ch",
+            "MAILER_URL": "smtp://smtp.mailgun.org:2525?encryption=tls&auth_mode=login&username=` + instance_name + `-akecld-prd-pim-saas-dev@mg.dev.akeneo.ch&password=` + email_password + `&sender_address=no-reply-` + pfid + `.bh.akeneo.ch",
             "MAILER_USER": "` + instance_name + `-akecld-bh-sandbox@mg.bh.akeneo.ch",
             "MEMCACHED_SVC": "memcached.` + pfid + `.svc.cluster.local",
             "APP_DATABASE_PASSWORD": "` + mysql_password + `",

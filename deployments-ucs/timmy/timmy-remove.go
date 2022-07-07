@@ -42,7 +42,7 @@ func readDocument(ctx context.Context, client *firestore.Client, collection stri
 
 func main() {
     ctx := context.Background()
-    projectID := "akecld-blackhawk-sandbox"
+    projectID := "akecld-prd-pim-saas-dev"
 
     // Firestore
     clientFirestore := createClientFirestore(ctx, projectID)

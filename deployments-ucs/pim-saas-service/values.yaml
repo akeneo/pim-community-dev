@@ -71,7 +71,7 @@ free_trial:
 
 image:
   pim:
-    repository: eu.gcr.io/akeneo-cloud/pim-enterprise-dev
+    repository: europe-west1.docker.pkg.dev/akecld-prd-pim-saas-dev/pim-enterprise-prod/pim-enterprise-dev
     pullPolicy: IfNotPresent
     tag: master
   httpd:

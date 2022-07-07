@@ -9,7 +9,7 @@ INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?=  $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG_SHORTED)
 PFID ?= $(TYPE)-$(INSTANCE_NAME)
 TYPE_LONG ?= serenity
-ENV_NAME ?= sandbox
+ENV_NAME ?= dev
 PRODUCT_REFERENCE_TYPE ?= $(TYPE_LONG)_instance
 PRODUCT_REFERENCE_CODE ?= $(TYPE_LONG)_$(ENV_NAME)
 PRODUCT_REFERENCE_SIZE ?= S
@@ -33,14 +33,14 @@ endif
 BUCKET ?= serenity-edition-dev
 IMAGE_TAG ?= latest
 
-GOOGLE_PROJECT_ID ?= akecld-blackhawk-$(ENV_NAME)
+GOOGLE_PROJECT_ID ?= akecld-prd-pim-saas-$(ENV_NAME)
 GOOGLE_CLUSTER_REGION ?= europe-west1
-GOOGLE_CLUSTER_ZONE ?= europe-west1-b
-GOOGLE_CLUSTER_NAME ?= bh-cluster-sandbox
-GOOGLE_MANAGED_ZONE_DNS ?= bh.akeneo.ch
-GOOGLE_MANAGED_ZONE_NAME ?= bh-akeneo-ch
+GOOGLE_COMPUTE_ZONE ?= europe-west1-b
+GOOGLE_CLUSTER_NAME ?= akecld-prd-pim-saas-dev-europe-west1
+GOOGLE_MANAGED_ZONE_DNS ?= dev.akeneo.ch
+GOOGLE_MANAGED_ZONE_NAME ?= dev-akeneo-ch
 STORAGE_LOCATION ?= EU
-CLUSTER_DNS_NAME ?= $(GOOGLE_CLUSTER_ZONE)-akecld-blackhawk-$(ENV_NAME).bh.akeneo.ch.
+CLUSTER_DNS_NAME ?= $(GOOGLE_CLUSTER_ZONE)-$(GOOGLE_PROJECT_ID).$(GOOGLE_MANAGED_ZONE_DNS).
 
 FIRESTORE_COLLECTION ?= tenant_contexts
 
@@ -62,7 +62,6 @@ MYSQL_USER_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 22)')
 MYSQL_ROOT_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 22)')
 MONITORING_AUTHENTICATION_TOKEN := $(shell bash -c 'echo $$(pwgen -sB 32)')
 DEPLOYMENT_HASH ?=
-BUCKET_PIM_SRC_DIR ?= gcs::https://www.googleapis.com/storage/v1/akecld-blackhawk-sandbox-terraform-modules/$(BUCKET)/$(DEPLOYMENT_HASH)
 
 MAILGUN_DOMAIN ?= mg.cloud.akeneo.com
 MAILGUN_LOGIN ?= $(PFID)-$(GOOGLE_PROJECT_ID)@$(MAILGUN_DOMAIN)
@@ -128,11 +127,11 @@ help: #Doc: display this help
 .PHONY: pim-image-prod
 pim-image-prod: #Doc: build docker image for pim-enterprise-dev with the prod tag
 	echo "${RELEASE_NAME}" > "$(PIM_SRC_PATH)/version.txt"
-	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev:${IMAGE_TAG} --tag eu.gcr.io/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev:latest --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(PIM_SRC_PATH)/Dockerfile ${PIM_ROOT_DIR}
+	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag $(GOOGLE_CLUSTER_REGION).docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(PIM_SRC_PATH)/Dockerfile ${PIM_ROOT_DIR}
 
 .PHONY: push-pim-image-prod
 push-pim-image-prod: #Doc: push docker image to docker hub
-	docker push eu.gcr.io/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev --all-tags
+	docker push $(GOOGLE_CLUSTER_REGION).docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev --all-tags
 
 ## Deploy tenants
 .PHONY: deploy_tenant
@@ -231,7 +230,7 @@ deploy_tenant_go:
 
 ## Cleanup tenants
 .PHONY: delete_tenant
-delete_tenant: generate_deployment_files
+delete_tenant:
 	helm3 delete $(PFID) --namespace $(PFID)
 	kubectl delete ns $(PFID)
 	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-remove.go $(PFID)
