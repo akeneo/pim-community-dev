@@ -89,7 +89,7 @@
         "sensio/framework-extra-bundle": "^5.4",
         "symfony/acl-bundle": " 1.0.1",
         "symfony/asset": "4.4.25",
-        "symfony/config": "4.4.25",
+        "symfony/config": "4.4.42",
         "symfony/dependency-injection": "4.4.25",
         "symfony/dotenv": "4.4.25",
         "symfony/event-dispatcher": "4.4.25",
