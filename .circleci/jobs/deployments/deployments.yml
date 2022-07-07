@@ -524,7 +524,7 @@ jobs:
         - add_ssh_keys:
             fingerprints:
               - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-        - set_gcloud_config_ucs
+        - set_gcloud_config_pim_saas_dev
         - restore_persisted_env_vars
         - install_yq
         - run:
@@ -688,7 +688,7 @@ jobs:
                       equal: [true, << parameters.CLUSTER_NEXT >> ]
                   steps:
                       - modify_cluster
-            - set_gcloud_config_ucs
+            - set_gcloud_config_pim_saas_dev
             - restore_persisted_env_vars
             - install_yq
             - run:
@@ -762,7 +762,7 @@ jobs:
         - add_ssh_keys:
             fingerprints:
               - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-        - set_gcloud_config_ucs
+        - set_gcloud_config_pim_saas_dev
         - restore_persisted_env_vars
         - run:
             name: Add ingresses (pim-web and pim-api)
