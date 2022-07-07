@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Category\Form\Type;
+namespace Specification\Akeneo\Category\Infrastructure\Symfony\Form\Type;
 
 use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation;
