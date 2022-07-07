@@ -25,8 +25,8 @@ catalogs-fixtures:
 catalogs-tests:
 	$(MAKE) catalogs-lint-back
 	$(MAKE) catalogs-coupling-back
-	$(MAKE) catalogs-mutation-unit-back
 	$(MAKE) catalogs-coverage-back
+	$(MAKE) catalogs-mutation-unit-back
 	$(MAKE) catalogs-acceptance-back
 	$(MAKE) catalogs-lint-front
 	$(MAKE) catalogs-unit-front
