@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
+use Akeneo\Catalogs\Infrastructure\Persistence\GetFamiliesByCodeQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\SearchFamilyQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,6 +21,7 @@ class GetFamiliesAction
 {
     public function __construct(
         private SearchFamilyQuery $searchFamilyQuery,
+        private GetFamiliesByCodeQuery $getFamiliesByCodeQuery,
     ) {
     }
 
@@ -30,21 +32,34 @@ class GetFamiliesAction
         }
 
         $search = $request->query->get('search', null);
-        $page = $request->query->get('page', 1);
-        $limit = $request->query->get('limit', 20);
+        $codes = $request->query->get('codes', null);
+        $page = (int) $request->query->get('page', 1);
+        $limit = (int) $request->query->get('limit', 20);
 
-        if (!\is_numeric($page) || !\is_numeric($limit)) {
-            throw new BadRequestHttpException('Page and limit must be a number.');
-        }
-        if ((int) $page < 1 || (int) $limit < 1) {
+        if ($page < 1 || $limit < 1) {
             throw new BadRequestHttpException('Page and limit must be positive.');
         }
         if (!\is_string($search) && null !== $search) {
-            throw new BadRequestHttpException('Search must must be a string or null.');
+            throw new BadRequestHttpException('Search must be a string or null.');
+        }
+        if (!\is_string($codes) && null !== $codes) {
+            throw new BadRequestHttpException('Codes must be a string or null.');
         }
 
-        $families = $this->searchFamilyQuery->execute($search, (int) $page, (int) $limit);
+        $families = $this->getFamilies($search, $codes, $page, $limit);
 
         return new JsonResponse($families);
+    }
+
+    /**
+     * @return array<array{code: string, label: string}>
+     */
+    private function getFamilies(?string $search, ?string $codes, int $page, int $limit): array
+    {
+        if (\is_string($codes) && \strlen(\trim($codes)) > 0) {
+            return $this->getFamiliesByCodeQuery->execute(\explode(',', $codes), $page, $limit);
+        }
+
+        return $this->searchFamilyQuery->execute($search, $page, $limit);
     }
 }

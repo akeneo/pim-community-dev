@@ -71,3 +71,7 @@ services:
     Akeneo\Catalogs\Infrastructure\Persistence\SearchFamilyQuery:
         arguments:
             - '@pim_enrich.repository.family.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetFamiliesByCodeQuery:
+        arguments:
+            - '@pim_enrich.repository.family.search'

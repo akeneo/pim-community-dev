@@ -49,6 +49,30 @@ class GetFamiliesActionTest extends IntegrationTestCase
         Assert::assertArrayHasKey('label', $families[0]);
     }
 
+    public function testItGetsFamiliesByCodes(): void
+    {
+        $client = $this->getAuthenticatedInternalApiClient('admin');
+        $this->insertFamilies(['tshirt', 'pants', 'guitare']);
+
+        $client->request(
+            'GET',
+            '/rest/catalogs/families',
+            ['codes' => 'tshirt,guitare'],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ],
+        );
+
+        $response = $client->getResponse();
+        Assert::assertEquals(200, $response->getStatusCode());
+
+        $families = \json_decode($response->getContent(), true);
+        Assert::assertCount(2, $families);
+        Assert::assertArrayHasKey('code', $families[0]);
+        Assert::assertArrayHasKey('label', $families[0]);
+    }
+
     public function testItPaginatesAndSearchesForFamilies(): void
     {
         $client = $this->getAuthenticatedInternalApiClient('admin');
