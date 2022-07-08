@@ -239,6 +239,18 @@ delete_tenant: generate_deployment_files
 ###################
 ### infra				###
 ###################
+## Plan terraform infrastructure
+.PHONY: plan_terraform
+plan_terraform:
+	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) init -reconfigure
+	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) plan
+
+## Deploy terraform infrastructure
+.PHONY: deploy_terraform
+deploy_terraform:
+	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) init -reconfigure
+	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) apply -auto-approve -input=false
+	
 ## Deploy argocd
 .PHONY: deploy_argocd
 deploy_argocd:
