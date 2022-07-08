@@ -3,6 +3,7 @@
 namespace  Akeneo\Test\Category\EndToEnd\ExternalApi;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +13,7 @@ class ListCategoryEndToEnd extends ApiTestCase
     /**
      * @group critical
      */
-    public function testListAllPaginatedCategories()
+    public function testListAllPaginatedCategories(): void
     {
         $categories = $this->getStandardizedCategories();
         $firstPageClient = $this->createAuthenticatedClient();
@@ -74,7 +75,7 @@ JSON;
     }
 
     /**
-     * @param array $data
+     * @param array<string, mixed> $data
      *
      * @return CategoryInterface
      */
@@ -88,7 +89,7 @@ JSON;
         return $category;
     }
 
-    public function testListCategoriesByParent()
+    public function testListCategoriesByParent(): void
     {
         $this->createCategory(['parent' => 'categoryA1', 'code' => 'categoryA1-1']);
         $this->createCategory(['parent' => 'categoryA1-1', 'code' => 'categoryA1-1-1']);
@@ -146,7 +147,7 @@ JSON;
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
-    public function testListCategoriesWithCount()
+    public function testListCategoriesWithCount(): void
     {
         $categories = $this->getStandardizedCategories();
         $client = $this->createAuthenticatedClient();
@@ -182,7 +183,7 @@ JSON;
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
-    public function testListCategoriesByCodes()
+    public function testListCategoriesByCodes(): void
     {
         $categories = $this->getStandardizedCategories();
         $search = '{"code":[{"operator":"IN","value":["master","categoryA2","master_china"]}]}';
@@ -216,7 +217,7 @@ JSON;
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
-    public function testOutOfRangeListCategories()
+    public function testOutOfRangeListCategories(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -248,7 +249,7 @@ JSON;
     }
 
 
-    public function testListCategoriesWithPosition()
+    public function testListCategoriesWithPosition(): void
     {
         $categories = $this->getStandardizedCategorieswithPositionInformation();
         $client = $this->createAuthenticatedClient();
@@ -286,11 +287,14 @@ JSON;
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public function getStandardizedCategories(): array
     {
         $categories['master'] = <<<JSON
@@ -391,6 +395,9 @@ JSON;
         return $categories;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getStandardizedCategorieswithPositionInformation(): array
     {
         $categories['master'] = <<<JSON
@@ -498,7 +505,7 @@ JSON;
         return $categories;
     }
 
-    private function assertSameResponse(string $expectedJson, Response $actualResponse)
+    private function assertSameResponse(string $expectedJson, Response $actualResponse): void
     {
         $this->assertSame(Response::HTTP_OK, $actualResponse->getStatusCode());
 
@@ -511,7 +518,11 @@ JSON;
         $this->assertEquals($expectedContent, $responseContent);
     }
 
-    private function normalizeCategories(array &$categories)
+    /**
+     * @param array<string, mixed> $categories
+     * @return void
+     */
+    private function normalizeCategories(array &$categories): void
     {
         foreach ($categories as &$category) {
             NormalizedCategoryCleaner::clean($category);

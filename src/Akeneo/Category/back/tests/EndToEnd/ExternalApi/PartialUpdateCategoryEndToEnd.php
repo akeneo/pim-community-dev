@@ -2,13 +2,14 @@
 
 namespace  Akeneo\Test\Category\EndToEnd\ExternalApi;
 
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateCategoryEndToEnd extends ApiTestCase
 {
-    public function testHttpHeadersInResponseWhenACategoryIsUpdated()
+    public function testHttpHeadersInResponseWhenACategoryIsUpdated(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -28,7 +29,7 @@ JSON;
         $this->assertSame('', $response->getContent());
     }
 
-    public function testHttpHeadersInResponseWhenACategoryIsCreated()
+    public function testHttpHeadersInResponseWhenACategoryIsCreated(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -49,7 +50,7 @@ JSON;
         $this->assertSame(null, json_decode($response->getContent(), true));
     }
 
-    public function testStandardFormatWhenACategoryIsCreatedButIncompleted()
+    public function testStandardFormatWhenACategoryIsCreatedButIncompleted(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -80,7 +81,7 @@ JSON;
         $this->assertSame($categoryStandard, $normalizedCategory);
     }
 
-    public function testStandardFormatWhenACategoryIsCreatedWithAnEmptyContent()
+    public function testStandardFormatWhenACategoryIsCreatedWithAnEmptyContent(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -109,7 +110,7 @@ JSON;
     /**
      * @group critical
      */
-    public function testCompleteCategoryCreationWithCodeProvided()
+    public function testCompleteCategoryCreationWithCodeProvided(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -148,7 +149,7 @@ JSON;
         $this->assertSame($categoryStandard, $normalizedCategory);
     }
 
-    public function testCompleteCategoryCreationWithoutCodeProvided()
+    public function testCompleteCategoryCreationWithoutCodeProvided(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -185,7 +186,7 @@ JSON;
         $this->assertSame($categoryStandard, $normalizedCategory);
     }
 
-    public function testPartialUpdateWithAnEmptyContent()
+    public function testPartialUpdateWithAnEmptyContent(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -214,7 +215,7 @@ JSON;
         $this->assertSame($categoryStandard, $normalizedCategory);
     }
 
-    public function testPartialUpdateWithCodeProvided()
+    public function testPartialUpdateWithCodeProvided(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -251,7 +252,7 @@ JSON;
         $this->assertSame($categoryStandard, $normalizedCategory);
     }
 
-    public function testPartialUpdateWithoutCodeProvided()
+    public function testPartialUpdateWithoutCodeProvided(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -287,7 +288,7 @@ JSON;
         $this->assertSame($categoryStandard, $normalizedCategory);
     }
 
-    public function testPartialUpdateWithEmptyLabels()
+    public function testPartialUpdateWithEmptyLabels(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -320,7 +321,7 @@ JSON;
         $this->assertSame($categoryStandard, $normalizedCategory);
     }
 
-    public function testResponseWhenContentIsEmpty()
+    public function testResponseWhenContentIsEmpty(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -337,7 +338,7 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenContentIsNotValid()
+    public function testResponseWhenContentIsNotValid(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -354,7 +355,7 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenValidationFailed()
+    public function testResponseWhenValidationFailed(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -383,7 +384,7 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenAPropertyIsNotExpected()
+    public function testResponseWhenAPropertyIsNotExpected(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -411,7 +412,7 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenLabelsIsNull()
+    public function testResponseWhenLabelsIsNull(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -439,7 +440,7 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenACategoryIsCreatedWithInconsistentCodes()
+    public function testResponseWhenACategoryIsCreatedWithInconsistentCodes(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -462,7 +463,7 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenParentIsMovedInChildren()
+    public function testResponseWhenParentIsMovedInChildren(): void
     {
         $client = $this->createAuthenticatedClient();
         $categoryId = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA')->getId();
@@ -476,7 +477,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
-    public function testResponseWhenRootCategoryIsMovedToSubCategory()
+    public function testResponseWhenRootCategoryIsMovedToSubCategory(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -500,7 +501,7 @@ JSON;
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }

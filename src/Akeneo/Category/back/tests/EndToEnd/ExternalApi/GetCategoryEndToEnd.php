@@ -1,7 +1,8 @@
 <?php
 
-namespace  Akeneo\Test\Category\EndToEnd\ExternalApi;
+namespace Akeneo\Test\Category\EndToEnd\ExternalApi;
 
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +12,7 @@ class GetCategoryEndToEnd extends ApiTestCase
     /**
      * @group critical
      */
-    public function testGetACategory()
+    public function testGetACategory(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -30,7 +31,7 @@ class GetCategoryEndToEnd extends ApiTestCase
         $this->assertResponse($response, $expectedCategory);
     }
 
-    public function testGetACompleteCategory()
+    public function testGetACompleteCategory(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -41,8 +42,8 @@ class GetCategoryEndToEnd extends ApiTestCase
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
-                'en_US'=> 'Category A',
-                'fr_FR'=> 'Catégorie A',
+                'en_US' => 'Category A',
+                'fr_FR' => 'Catégorie A',
             ],
         ];
 
@@ -52,7 +53,7 @@ class GetCategoryEndToEnd extends ApiTestCase
         $this->assertResponse($response, $expectedCategory);
     }
 
-    public function testNotFoundACategory()
+    public function testNotFoundACategory(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -67,7 +68,7 @@ class GetCategoryEndToEnd extends ApiTestCase
     }
 
 
-    public function testGetACategoryWithPosition()
+    public function testGetACategoryWithPosition(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -79,8 +80,8 @@ class GetCategoryEndToEnd extends ApiTestCase
             'updated' => '2016-06-14T13:12:50+02:00',
             'position' => 1,
             'labels' => [
-                'en_US'=> 'Category A',
-                'fr_FR'=> 'Catégorie A',
+                'en_US' => 'Category A',
+                'fr_FR' => 'Catégorie A',
             ],
         ];
 
@@ -108,7 +109,8 @@ class GetCategoryEndToEnd extends ApiTestCase
         );
     }
 
-    private function assertResponse(Response $response, array $expected)
+    // @phpstan-ignore-next-line
+    private function assertResponse(Response $response, array $expected): void
     {
         $result = json_decode($response->getContent(), true);
 
@@ -121,7 +123,7 @@ class GetCategoryEndToEnd extends ApiTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }

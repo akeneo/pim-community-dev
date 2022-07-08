@@ -2,6 +2,7 @@
 
 namespace  Akeneo\Test\Category\EndToEnd\ExternalApi;
 
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
@@ -12,7 +13,7 @@ class PartialUpdateListCategoryEndToEnd extends ApiTestCase
     /**
      * @group critical
      */
-    public function testCreateAndUpdateAListOfCategories()
+    public function testCreateAndUpdateAListOfCategories(): void
     {
         $data =
 <<<JSON
@@ -55,7 +56,7 @@ JSON;
         $this->assertSameCategories($expectedCategories['categoryD'], 'categoryD');
     }
 
-    public function testCreateAndUpdateSameCategory()
+    public function testCreateAndUpdateSameCategory(): void
     {
         $data =
 <<<JSON
@@ -76,19 +77,20 @@ JSON;
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testPartialUpdateListWithMaxNumberOfResourcesAllowed()
+    public function testPartialUpdateListWithMaxNumberOfResourcesAllowed(): void
     {
         $maxNumberResources = $this->getMaxNumberResources();
 
-        for ($i = 0; $i < $maxNumberResources; $i++) {
-            $data[] = sprintf('{"code": "my_code_%s"}', $i);
-        }
-        $data = implode(PHP_EOL, $data);
+        $dataRows = [];
+        $expectedContentRows = [];
 
         for ($i = 0; $i < $maxNumberResources; $i++) {
-            $expectedContent[] = sprintf('{"line":%s,"code":"my_code_%s","status_code":201}', $i + 1, $i);
+            $dataRows[] = sprintf('{"code": "my_code_%s"}', $i);
+            $expectedContentRows[] = sprintf('{"line":%s,"code":"my_code_%s","status_code":201}', $i + 1, $i);
         }
-        $expectedContent = implode(PHP_EOL, $expectedContent);
+
+        $data = implode(PHP_EOL, $dataRows);
+        $expectedContent = implode(PHP_EOL, $expectedContentRows);
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/categories', [], [], [], $data);
         $httpResponse = $response['http_response'];
@@ -97,17 +99,18 @@ JSON;
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testPartialUpdateListWithTooManyResources()
+    public function testPartialUpdateListWithTooManyResources(): void
     {
         $client = $this->createAuthenticatedClient();
         $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
 
         $maxNumberResources = $this->getMaxNumberResources();
 
+        $dataRows = [];
         for ($i = 0; $i < $maxNumberResources + 1; $i++) {
-            $data[] = sprintf('{"identifier": "my_code_%s"}', $i);
+            $dataRows[] = sprintf('{"identifier": "my_code_%s"}', $i);
         }
-        $data = implode(PHP_EOL, $data);
+        $data = implode(PHP_EOL, $dataRows);
 
         $expectedContent =
 <<<JSON
@@ -124,7 +127,7 @@ JSON;
         $this->assertSame(Response::HTTP_REQUEST_ENTITY_TOO_LARGE, $response->getStatusCode());
     }
 
-    public function testPartialUpdateListWithInvalidAndTooLongLines()
+    public function testPartialUpdateListWithInvalidAndTooLongLines(): void
     {
         $line = [
             'invalid_json_1'  => str_repeat('a', $this->getBufferSize() - 1),
@@ -175,7 +178,7 @@ JSON;
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
     }
 
-    public function testErrorWhenIdentifierIsMissing()
+    public function testErrorWhenIdentifierIsMissing(): void
     {
         $data =
 <<<JSON
@@ -202,7 +205,7 @@ JSON;
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testUpdateCategoryWhenUpdaterFailed()
+    public function testUpdateCategoryWhenUpdaterFailed(): void
     {
         $data =
 <<<JSON
@@ -221,7 +224,7 @@ JSON;
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testUpdateCategoryWhenValidationFailed()
+    public function testUpdateCategoryWhenValidationFailed(): void
     {
         $data =
 <<<JSON
@@ -240,7 +243,7 @@ JSON;
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testPartialUpdateListWithBadContentType()
+    public function testPartialUpdateListWithBadContentType(): void
     {
         $data =
 <<<JSON
@@ -264,21 +267,21 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
-    protected function getBufferSize()
+    protected function getBufferSize(): mixed
     {
         return $this->getParameter('api_input_buffer_size');
     }
 
-    protected function getMaxNumberResources()
+    protected function getMaxNumberResources(): mixed
     {
         return $this->getParameter('api_input_max_resources_number');
     }
 
     /**
-     * @param array  $expectedCategory normalized data of the category that should be created
+     * @param array<string, mixed>  $expectedCategory normalized data of the category that should be created
      * @param string $code             code of the category that should be created
      */
-    protected function assertSameCategories(array $expectedCategory, $code)
+    protected function assertSameCategories(array $expectedCategory, $code): void
     {
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier($code);
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
@@ -293,7 +296,7 @@ JSON;
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }

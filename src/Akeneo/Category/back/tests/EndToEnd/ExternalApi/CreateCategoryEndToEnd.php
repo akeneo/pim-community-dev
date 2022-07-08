@@ -1,19 +1,20 @@
 <?php
 
-namespace  Akeneo\Test\Category\EndToEnd\ExternalApi;
+namespace Akeneo\Test\Category\EndToEnd\ExternalApi;
 
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateCategoryEndToEnd extends ApiTestCase
 {
-    public function testHttpHeadersInResponseWhenACategoryIsCreated()
+    public function testHttpHeadersInResponseWhenACategoryIsCreated(): void
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "new_category_headers"
     }
@@ -28,12 +29,12 @@ JSON;
         $this->assertSame('', $response->getContent());
     }
 
-    public function testStandardFormatWhenACategoryIsCreatedButIncompleted()
+    public function testStandardFormatWhenACategoryIsCreatedButIncompleted(): void
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "new_category_incompleted"
     }
@@ -43,7 +44,7 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('new_category_incompleted');
         $categoryStandard = [
-            'code'   => 'new_category_incompleted',
+            'code' => 'new_category_incompleted',
             'parent' => null,
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
@@ -62,12 +63,12 @@ JSON;
     /**
      * @group critical
      */
-    public function testCompleteCategoryCreation()
+    public function testCompleteCategoryCreation(): void
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "categoryD",
         "parent": "master",
@@ -81,7 +82,7 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryD');
         $categoryStandard = [
-            'code'   => 'categoryD',
+            'code' => 'categoryD',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
@@ -100,12 +101,12 @@ JSON;
         $this->assertSame($categoryStandard, $categoryNormalized);
     }
 
-    public function testCategoryCreationWithEmptyLabels()
+    public function testCategoryCreationWithEmptyLabels(): void
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "empty_label_category",
         "parent": "master",
@@ -120,7 +121,7 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('empty_label_category');
         $categoryStandard = [
-            'code'   => 'empty_label_category',
+            'code' => 'empty_label_category',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
@@ -138,14 +139,14 @@ JSON;
         $this->assertSame($categoryStandard, $categoryNormalized);
     }
 
-    public function testResponseWhenContentIsEmpty()
+    public function testResponseWhenContentIsEmpty(): void
     {
         $client = $this->createAuthenticatedClient();
 
         $data = '';
 
         $expectedContent = [
-            'code'    => 400,
+            'code' => 400,
             'message' => 'Invalid json message received',
         ];
 
@@ -155,14 +156,14 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenContentIsNotValid()
+    public function testResponseWhenContentIsNotValid(): void
     {
         $client = $this->createAuthenticatedClient();
 
         $data = '{';
 
         $expectedContent = [
-            'code'    => 400,
+            'code' => 400,
             'message' => 'Invalid json message received',
         ];
 
@@ -172,24 +173,24 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenCategoryCodeAlreadyExists()
+    public function testResponseWhenCategoryCodeAlreadyExists(): void
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "categoryA"
     }
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Validation failed.',
-            'errors'  => [
+            'errors' => [
                 [
                     'property' => 'code',
-                    'message'  => 'This value is already used.',
+                    'message' => 'This value is already used.',
                 ]
             ],
         ];
@@ -201,24 +202,24 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenValidationFailed()
+    public function testResponseWhenValidationFailed(): void
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": ""
     }
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Validation failed.',
-            'errors'  => [
+            'errors' => [
                 [
                     'property' => 'code',
-                    'message'  => 'This value should not be blank.',
+                    'message' => 'This value should not be blank.',
                 ],
             ],
         ];
@@ -230,12 +231,12 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenAPropertyIsNotExpected()
+    public function testResponseWhenAPropertyIsNotExpected(): void
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "sales",
         "extra_property": ""
@@ -243,9 +244,9 @@ JSON;
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
-            '_links'  => [
+            '_links' => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_categories'
                 ],
@@ -259,21 +260,21 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenLabelsIsNull()
+    public function testResponseWhenLabelsIsNull(): void
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "labels": null
     }
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Property "labels" expects an array as data, "NULL" given. Check the expected format on the API documentation.',
-            '_links'  => [
+            '_links' => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_categories'
                 ],
@@ -287,12 +288,12 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenLocaleCodeInLabelsIsEmpty()
+    public function testResponseWhenLocaleCodeInLabelsIsEmpty(): void
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "test_empty_locale",
         "labels": {
@@ -302,12 +303,12 @@ JSON;
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Validation failed.',
-            'errors'  => [
+            'errors' => [
                 [
                     'property' => 'labels',
-                    'message'  => 'The locale "" does not exist.',
+                    'message' => 'The locale "" does not exist.',
                 ],
             ],
         ];
@@ -319,12 +320,12 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenLocaleCodeDoesNotExist()
+    public function testResponseWhenLocaleCodeDoesNotExist(): void
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "test_unknown_locale",
         "labels": {
@@ -334,12 +335,12 @@ JSON;
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Validation failed.',
-            'errors'  => [
+            'errors' => [
                 [
                     'property' => 'labels',
-                    'message'  => 'The locale "foo" does not exist.',
+                    'message' => 'The locale "foo" does not exist.',
                 ],
             ],
         ];
@@ -354,7 +355,7 @@ JSON;
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }
