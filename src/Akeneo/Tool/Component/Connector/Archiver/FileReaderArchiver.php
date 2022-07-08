@@ -76,7 +76,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      */
     protected function isReaderUsable(ItemReaderInterface $reader)
     {
-        return $reader instanceof FileReaderInterface ;
+        return $reader instanceof FileReaderInterface;
     }
 
     /**
