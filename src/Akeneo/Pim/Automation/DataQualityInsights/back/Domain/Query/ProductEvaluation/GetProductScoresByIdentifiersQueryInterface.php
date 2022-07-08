@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -13,13 +14,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 interface GetProductScoresByIdentifiersQueryInterface
 {
     /**
-     * Returns collections of product scores indexed by their product identifiers
+     * Returns collections of product scores indexed by their product uuid
      *
-     * @param string[] $productIdentifiers
+     * @param UuidInterface[] $productUuids
      *
      * @return Read\Scores[]
      */
-    public function byProductIdentifiers(array $productIdentifiers): array;
+    public function byProductUuids(array $productUuids): array;
 
-    public function byProductIdentifier(string $identifier): Read\Scores;
+    public function byProductUuid(UuidInterface $uuid): Read\Scores;
+
 }

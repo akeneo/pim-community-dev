@@ -25,7 +25,7 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
         }
 
         return $product->buildWithQualityScores(
-            $this->getProductScoresQuery->byProductIdentifier($product->identifier())
+            $this->getProductScoresQuery->byProductUuid($product->uuid())
         );
     }
 
@@ -62,12 +62,12 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
 
     private function getProductsQualityScores(ConnectorProductList $connectorProductList): array
     {
-        $productIdentifiers = array_map(
-            fn (ConnectorProduct $connectorProduct) => $connectorProduct->identifier(),
+        $productUuids = array_map(
+            fn (ConnectorProduct $connectorProduct) => $connectorProduct->uuid(),
             $connectorProductList->connectorProducts()
         );
 
-        return $this->getProductScoresQuery->byProductIdentifiers($productIdentifiers);
+        return $this->getProductScoresQuery->byProductUuids($productUuids);
     }
 
     private function filterProductQualityScores(QualityScoreCollection $productQualityScores, ?string $channel, array $locales): QualityScoreCollection

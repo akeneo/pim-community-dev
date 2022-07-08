@@ -81,10 +81,10 @@ final class GetProductScoresByIdentifiersQueryIntegration extends DataQualityIns
             ),
         ];
 
-        $productScores = $this->get(GetProductScoresByIdentifiersQuery::class)->byProductIdentifiers([
-            $productA->getIdentifier(),
-            $productB->getIdentifier(),
-            $productD->getIdentifier(),
+        $productScores = $this->get(GetProductScoresByIdentifiersQuery::class)->byProductUuids([
+            $productA->getUuid(),
+            $productB->getUuid(),
+            $productD->getUuid(),
         ]);
 
         $this->assertEqualsCanonicalizing($expectedProductsScores, $productScores);
