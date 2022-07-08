@@ -15,9 +15,9 @@ category-lint-back: #Doc: launch PHPStan for category bounded context
 category-unit-back: #Doc: launch PHPSpec for category bounded context
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Category/back/tests/Specification
 
-#.PHONY: category-integration-back
-#category-integration-back: #Doc: launch PHPUnit integration tests for category bounded context
-#	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Category/back/tests --testsuite Category_Integration_Test $(O)
+.PHONY: category-integration-back
+category-integration-back: #Doc: launch PHPUnit integration tests for category bounded context
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Category/back/tests --testsuite Category_Integration_Test $(F)
 
 #.PHONY: category-acceptance-back
 #category-acceptance-back: #Doc: launch PHPUnit acceptance tests for category bounded context
