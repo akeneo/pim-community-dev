@@ -41,6 +41,7 @@ pim_title:
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Créer une app de test
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: Supprimer l'app de test
   akeneo_connectivity_connection_connect_connected_apps_open: Ouvrir l'app
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Modifier le catalogue
 akeneo_connectivity.connection:
   connect:
     marketplace:

@@ -123,13 +123,6 @@ services:
         tags:
             - { name: 'pim_repository' }
 
-    pim_api.repository.product:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi\ProductRepository'
-        arguments:
-            - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
-            - '@pim_catalog.repository.product'
-
     pim_api.repository.category:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi\CategoryRepository'
         arguments:

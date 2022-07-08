@@ -18,7 +18,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -39,7 +38,6 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         private GetProductModelQuantifiedAssociationsByProductUuids $getProductModelQuantifiedAssociationsByProductUuids,
         private GetCategoryCodesByProductUuids $getCategoryCodesByProductUuids,
         private ReadValueCollectionFactory $readValueCollectionFactory,
-        private AttributeRepositoryInterface $attributeRepository,
         private Connection $connection
     ) {
     }
@@ -82,8 +80,6 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
     ): ConnectorProductList {
-        $identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
-
         $productUuids = $this->getProductUuidsFromProductIdentifiers($productIdentifiers);
 
         $rowsByUuid = array_replace_recursive(
@@ -101,7 +97,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 continue;
             }
 
-            $rawValues = $this->removeIdentifierValue($rows[$identifier]['raw_values'], $identifierAttributeCode);
+            $rawValues = $rows[$identifier]['raw_values'];
             if (null !== $attributesToFilterOn) {
                 $rawValues = $this->filterByAttributeCodes($rawValues, $attributesToFilterOn);
             }

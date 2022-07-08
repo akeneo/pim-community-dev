@@ -193,6 +193,7 @@ class Select2Decorator extends ElementDecorator
     public function getAvailableValues()
     {
         $widget = $this->getWidget();
+
         $results = [];
 
         $resultElements = $this->spin(function () use ($widget) {

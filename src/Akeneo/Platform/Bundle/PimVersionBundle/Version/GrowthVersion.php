@@ -24,7 +24,7 @@ final class GrowthVersion implements PimVersion
     private const EDITION_NAME = 'Growth Edition';
 
     /** @staticvar string **/
-    private const EDITION_CODE = 'GROWTH_EDITION';
+    private const EDITION_CODE = 'growth_edition_instance';
 
     public function versionCodename(): string
     {

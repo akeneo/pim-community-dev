@@ -23,6 +23,10 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             - Regex:
                 pattern: '/^(?!\s)[^,;]+(?<!\s)$/'
                 message: 'regex.comma_or_semicolon_or_surrounding_space.message'
+            - Regex:
+                pattern: '/[\r\n]/'
+                message: 'regex.line_break.message'
+                match: false
             - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length:
                 max: 255
                 attributeCode: 'identifier'

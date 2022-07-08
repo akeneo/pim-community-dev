@@ -18,7 +18,7 @@ final class CommunityVersion implements PimVersion
     private const EDITION_NAME = 'CE';
 
     /** @staticvar string **/
-    private const EDITION_CODE = 'COMMUNITY_EDITION';
+    private const EDITION_CODE = 'community_edition_instance';
 
     public function versionCodename(): string
     {

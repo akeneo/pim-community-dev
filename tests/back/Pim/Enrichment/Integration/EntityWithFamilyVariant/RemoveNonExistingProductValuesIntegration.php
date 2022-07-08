@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\EntityWithFamilyVariant;
 
-use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver;
@@ -33,21 +35,26 @@ final class RemoveNonExistingProductValuesIntegration extends TestCase
         $attributeOption->setAttribute($this->get('pim_api.repository.attribute')->findOneByIdentifier('brand'));
         $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
 
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('1111111184');
-        $value = OptionValue::value('brand', 'akeneo');
-        $product->addValue($value);
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'hiking_shoes',
+            userIntents: [
+                new SetFamily('shoes'),
+                new SetSimpleSelectValue('brand', null, null, 'akeneo')
+            ]
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->get('doctrine.orm.default_entity_manager')->clear();
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $this->removeOption('brand', 'akeneo');
-        $this->assertNotNull($this->getDataValueForProduct('1111111184', 'brand'));
+        $this->assertNotNull($this->getDataValueForProduct('hiking_shoes', 'brand'));
 
         $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
-        $this->assertNull($this->getDataValueForProduct('1111111184', 'brand'));
+        $this->assertNull($this->getDataValueForProduct('hiking_shoes', 'brand'));
     }
 
     public function test_it_removes_the_non_existing_values_from_product_model()
@@ -141,5 +148,19 @@ final class RemoveNonExistingProductValuesIntegration extends TestCase
         }
 
         $this->get('akeneo_batch.saver.job_instance')->save($jobInstance);
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
+
+        return \intval($id);
     }
 }

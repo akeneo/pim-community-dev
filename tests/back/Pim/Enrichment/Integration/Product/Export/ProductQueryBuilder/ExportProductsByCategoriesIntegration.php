@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByCategoriesIntegration extends AbstractExportTestCase
@@ -13,15 +14,15 @@ class ExportProductsByCategoriesIntegration extends AbstractExportTestCase
     {
 
         $this->createProduct('product_with_categories', [
-            'categories' => ['categoryA', 'categoryA1', 'categoryA2']
+            new SetCategories(['categoryA', 'categoryA1', 'categoryA2'])
         ]);
 
         $this->createProduct('product_with_single_category_A', [
-            'categories' => ['categoryA']
+            new SetCategories(['categoryA'])
         ]);
 
         $this->createProduct('product_with_single_category_B', [
-            'categories' => ['categoryB']
+            new SetCategories(['categoryB'])
         ]);
 
         $this->createProduct('product_without_category');
