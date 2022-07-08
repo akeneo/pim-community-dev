@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\GetScoresByCriteriaStr
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresByIdentifiersQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresByUuidsQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Ramsey\Uuid\UuidInterface;
@@ -20,8 +20,8 @@ use Ramsey\Uuid\UuidInterface;
 class GetProductScoresQuery implements GetProductScoresQueryInterface
 {
     public function __construct(
-        private GetProductScoresByIdentifiersQuery $getProductScoresByIdentifiersQuery,
-        private GetScoresByCriteriaStrategy $getScoresByCriteria,
+        private GetProductScoresByUuidsQuery $getProductScoresByUuidsQuery,
+        private GetScoresByCriteriaStrategy  $getScoresByCriteria,
     ) {
     }
 
@@ -30,7 +30,7 @@ class GetProductScoresQuery implements GetProductScoresQueryInterface
      */
     public function byProductUuids(array $productUuids): array
     {
-        $scoresByUuid = $this->getProductScoresByIdentifiersQuery->byProductUuids($productUuids);
+        $scoresByUuid = $this->getProductScoresByUuidsQuery->byProductUuids($productUuids);
 
         return array_map(
             fn (Read\Scores $scores) => $this->qualityScoreCollection(($this->getScoresByCriteria)($scores)),
@@ -40,7 +40,7 @@ class GetProductScoresQuery implements GetProductScoresQueryInterface
 
     public function byProductUuid(UuidInterface $productUuid): QualityScoreCollection
     {
-        $scores = $this->getProductScoresByIdentifiersQuery->byProductUuid($productUuid);
+        $scores = $this->getProductScoresByUuidsQuery->byProductUuid($productUuid);
 
         return $this->qualityScoreCollection(($this->getScoresByCriteria)($scores));
     }

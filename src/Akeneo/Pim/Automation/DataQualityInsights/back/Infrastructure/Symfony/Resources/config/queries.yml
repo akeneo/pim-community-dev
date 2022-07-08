@@ -255,7 +255,7 @@ services:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresByIdentifiersQuery:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresByUuidsQuery:
         arguments:
             - '@database_connection'
 

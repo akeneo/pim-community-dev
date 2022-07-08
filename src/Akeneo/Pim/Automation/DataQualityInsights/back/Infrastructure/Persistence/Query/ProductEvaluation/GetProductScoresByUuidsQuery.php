@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresByIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresByUuidsQueryInterface;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\UuidInterface;
 
@@ -14,8 +14,7 @@ use Ramsey\Uuid\UuidInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-// TODO Rename
-final class GetProductScoresByIdentifiersQuery implements GetProductScoresByIdentifiersQueryInterface
+final class GetProductScoresByUuidsQuery implements GetProductScoresByUuidsQueryInterface
 {
     private Connection $dbConnection;
 

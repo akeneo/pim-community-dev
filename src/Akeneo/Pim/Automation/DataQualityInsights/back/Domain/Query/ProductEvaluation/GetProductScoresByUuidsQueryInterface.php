@@ -11,7 +11,7 @@ use Ramsey\Uuid\UuidInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface GetProductScoresByIdentifiersQueryInterface
+interface GetProductScoresByUuidsQueryInterface
 {
     /**
      * Returns collections of product scores indexed by their product uuid
