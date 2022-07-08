@@ -36,17 +36,15 @@ define([
      * {@inheritdoc}
      */
     render() {
-      if (FeatureFlags.isEnabled('free_trial')) {
-        return this;
-      }
-
-      this.$el.html('');
-      if (!this.isCopying) {
-        this.$el.html(
-          this.template({
-            label: __('pim_enrich.entity.product.module.copy.label'),
-          })
-        );
+      if (!FeatureFlags.isEnabled('free_trial')) {
+        this.$el.html('');
+        if (!this.isCopying) {
+          this.$el.html(
+            this.template({
+              label: __('pim_enrich.entity.product.module.copy.label'),
+            })
+          );
+        }
       }
     },
 

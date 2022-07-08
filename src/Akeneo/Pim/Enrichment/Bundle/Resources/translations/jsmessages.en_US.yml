@@ -50,6 +50,7 @@ pim_enrich.entity.product:
         download_pdf:
             label: PDF
         copy:
+            button_label: Compare
             label: Compare / Translate
             select: Select
             all_visible: All visible
