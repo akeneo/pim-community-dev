@@ -23,5 +23,4 @@ interface GetProductScoresByUuidsQueryInterface
     public function byProductUuids(array $productUuids): array;
 
     public function byProductUuid(UuidInterface $uuid): Read\Scores;
-
 }

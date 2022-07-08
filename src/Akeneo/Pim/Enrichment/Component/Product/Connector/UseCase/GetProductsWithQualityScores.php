@@ -38,8 +38,8 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
         $productsQualityScores = $this->getProductsQualityScores($connectorProductList);
 
         $productsWithQualityScores = array_map(function (ConnectorProduct $product) use ($productsQualityScores, $channel, $locales) {
-            if (isset($productsQualityScores[$product->identifier()])) {
-                $productQualityScores = $this->filterProductQualityScores($productsQualityScores[$product->identifier()], $channel, $locales);
+            if (isset($productsQualityScores[$product->uuid()->toString()])) {
+                $productQualityScores = $this->filterProductQualityScores($productsQualityScores[$product->uuid()->toString()], $channel, $locales);
                 return $product->buildWithQualityScores($productQualityScores);
             }
 
