@@ -12,17 +12,19 @@ workflows:
         jobs:
             - security-hunter/scan-latest-commits:
                   since_when: "2022-07-07"
-                  blocking: true
+                  exit_code_when_failure: 1
 
             - security-hunter/scan-dir:
-                  severity: "CRITICAL"
-                  only_secrets: true
+                  severity: "HIGH,CRITICAL"
+                  only_secrets: false
+                  exit_code_when_failure: 1
                   requires:
                     - checkout
 
             - security-hunter/scan-image:
-                  severity: "CRITICAL"
-                  only_secrets: true
+                  severity: "HIGH,CRITICAL"
+                  only_secrets: false
+                  exit_code_when_failure: 1
                   requires:
                     - build_srnt_dev
 
