@@ -116,6 +116,92 @@ final class UserIntentContext implements Context
                     'scope' => null,
                     'locale' => 'en_US',
                 ]],
+            ],
+        ]);
+
+        $this->expectedResult = [
+            new ConvertToSimpleProduct(),
+            new SetFamily('accessories'),
+            new SetCategories(['print', 'sales']),
+            new SetEnabled(false),
+            new SetGroups(['group1', 'group2']),
+            new SetIdentifierValue('ean', '123456789'),
+            new SetTextValue('name', null, null, 'Bonjour'),
+            new SetTextareaValue('a_textarea', 'ecommerce', 'en_US', '<p>textarea text</p>'),
+            new SetBooleanValue('a_boolean', null, 'en_US', false),
+            new SetBooleanValue('a_boolean', null, 'fr_FR', true),
+            new SetMeasurementValue('a_metric', 'ecommerce', 'fr_FR', 10, 'KILOGRAM'),
+            new SetMeasurementValue('a_metric', 'ecommerce', 'en_US', '20.15', 'KILOGRAM'),
+            new SetDateValue('a_date', 'ecommerce', 'en_US', \DateTime::createFromFormat('Y-m-d', '2020-01-01')),
+            new SetFileValue('a_file', 'mobile', null, 'a/b/file.pdf'),
+            new SetImageValue('an_image', 'mobile', null, 'a/b/image.png'),
+            new SetNumberValue('a_number', null, null, '4.5000'),
+            new SetMultiSelectValue('a_multiselect', null, null, ['codeA', 'codeB']),
+            new SetSimpleSelectValue('a_simpleselect', null, 'en_US', 'the_code'),
+            new SetPriceCollectionValue('a_price', null, 'en_US', [new PriceValue('10.55', 'EUR'), new PriceValue('11', 'USD')]),
+            new ReplaceAssociatedProducts('PACK', ['associated_product']),
+            new ReplaceAssociatedProductModels('PACK', []),
+            new ReplaceAssociatedGroups('PACK', ['RELATED']),
+            new ReplaceAssociatedProducts('SUBSTITUTION', []),
+            new ReplaceAssociatedProductModels('SUBSTITUTION', ['associated_product_model']),
+            new ReplaceAssociatedGroups('SUBSTITUTION', []),
+            new ReplaceAssociatedQuantifiedProducts('bundle', [new QuantifiedEntity('associated_product', 12)]),
+            new ReplaceAssociatedQuantifiedProductModels('bundle', [new QuantifiedEntity('associated_product_model', 21)]),
+        ];
+    }
+
+    /**
+     * @When /I ask to convert standard format into user intents with enterprise attributes/
+     */
+    public function askToConvertStandardFormatIntoUserIntentsEnterprise(): void
+    {
+        $this->dispatchToConverter([
+            'parent' => null,
+            'family' => 'accessories',
+            'categories' => ['print', 'sales'],
+            'enabled' => false,
+            'groups' => ['group1', 'group2'],
+            'associations' => [
+                'PACK' => [
+                    'groups' => ['RELATED'],
+                    'products' => ['associated_product'],
+                    'product_models' => [],
+                ],
+                'SUBSTITUTION' => [
+                    'groups' => [],
+                    'products' => [],
+                    'product_models' => ['associated_product_model'],
+                ],
+            ],
+            'quantified_associations' => [
+                'bundle' => [
+                    'products' => [['identifier' => 'associated_product', 'quantity' => 12]],
+                    'product_models' => [['identifier' => 'associated_product_model', 'quantity' => 21]],
+                ]
+            ],
+            'values' => [
+                'ean' => [['data' => '123456789', 'scope' => null, 'locale' => null]],
+                'name' => [['data' => 'Bonjour', 'scope' => null, 'locale' => null]],
+                'a_textarea' => [['data' => '<p>textarea text</p>', 'scope' => 'ecommerce', 'locale' => 'en_US']],
+                'a_boolean' => [
+                    ['data' => false, 'scope' => null, 'locale' => 'en_US'],
+                    ['data' => true, 'scope' => null, 'locale' => 'fr_FR'],
+                ],
+                'a_metric' => [
+                    ['data' => ['amount' => 10, 'unit' => 'KILOGRAM'], 'scope' => 'ecommerce', 'locale' => 'fr_FR'],
+                    ['data' => ['amount' => '20.15', 'unit' => 'KILOGRAM'], 'scope' => 'ecommerce', 'locale' => 'en_US'],
+                ],
+                'a_date' => [['data' => '2020-01-01', 'scope' => 'ecommerce', 'locale' => 'en_US']],
+                'a_file' => [['data' => 'a/b/file.pdf', 'scope' => 'mobile', 'locale' => null]],
+                'an_image' => [['data' => 'a/b/image.png', 'scope' => 'mobile', 'locale' => null]],
+                'a_number' => [['data' => '4.5000', 'scope' => null, 'locale' => null]],
+                'a_multiselect' => [['data' => ['codeA', 'codeB'], 'scope' => null, 'locale' => null]],
+                'a_simpleselect' => [['data' => 'the_code', 'scope' => null, 'locale' => 'en_US']],
+                'a_price' => [[
+                    'data' => [['amount' => '10.55', 'currency' => 'EUR'], ['amount' => '11', 'currency' => 'USD']],
+                    'scope' => null,
+                    'locale' => 'en_US',
+                ]],
                 'a_table' => [[
                     'data' => [
                         ['ingredient' => 'butter', 'quantity' => 2],

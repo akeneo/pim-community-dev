@@ -40,7 +40,7 @@ services:
         public: true
         arguments:
             - '@pim_catalog.repository.locale'
-            - '@Akeneo\Channel\Locale\API\Query\IsLocaleEditable'
+            - '@Akeneo\Channel\API\Query\IsLocaleEditable'
 
     Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\AttributeContext:
         public: true
@@ -71,7 +71,7 @@ services:
         arguments:
             - '@pim_user.repository.user'
 
-    Akeneo\Channel\Locale\API\Query\IsLocaleEditable:
+    Akeneo\Channel\API\Query\IsLocaleEditable:
         class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryIsLocaleEditable
         arguments:
             - '@pim_user.repository.user'

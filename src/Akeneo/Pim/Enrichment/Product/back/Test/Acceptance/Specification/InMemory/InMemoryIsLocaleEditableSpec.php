@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
 
-use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
+use Akeneo\Channel\API\Query\IsLocaleEditable;
 use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryIsLocaleEditable;
 use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
 use Akeneo\UserManagement\Component\Model\Group;
@@ -49,7 +49,7 @@ class InMemoryIsLocaleEditableSpec extends ObjectBehavior
 
     function it_returns_all_activated_locale_codes()
     {
-        $this->addOwnedCategoryCode('admin', 'en_US');
+        $this->addEditableLocaleCodeForGroup('admin', 'en_US');
 
         $this->forUserId('en_US', 1)->shouldReturn(false);
         $this->forUserId('fr_FR', 1)->shouldReturn(false);

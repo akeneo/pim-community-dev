@@ -31,7 +31,7 @@ final class AttributeContext implements Context
     /**
      * @Given /the following attributes?:/
      */
-    public function theFollowingAttribute(TableNode $table)
+    public function theFollowingAttribute(TableNode $table): void
     {
         foreach ($table->getHash() as $attributeData) {
             Assert::keyExists($attributeData, 'code');

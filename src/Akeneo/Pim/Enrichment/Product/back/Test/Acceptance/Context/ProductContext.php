@@ -103,7 +103,7 @@ final class ProductContext implements Context
     {
         $violations = $this->validator->validate($command);
         $this->constraintViolationsContext->add($violations);
-        // @TODO later: call the handler (we cannot do that now because legacy validation is not in memory)
+        // @TODO later: call the handler (we cannot do that now because legacy validations are not in memory)
     }
 
     private function getUserId(string $username): int

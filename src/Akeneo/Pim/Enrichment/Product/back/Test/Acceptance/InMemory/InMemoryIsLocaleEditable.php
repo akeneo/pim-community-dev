@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
 
-use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
+use Akeneo\Channel\API\Query\IsLocaleEditable;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 
