@@ -2,8 +2,8 @@
 
 namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount;
 
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\ContributorAccountCreated;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Event\ContributorAccountCreated;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
