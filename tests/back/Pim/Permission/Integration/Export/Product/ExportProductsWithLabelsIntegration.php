@@ -14,9 +14,10 @@ class ExportProductsWithLabelsIntegration extends ExportTestCase
 {
     public function testProductExportWithLabels()
     {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('a_product');
         $expectedCsvWithTranslations = <<<CSV
-[sku];Catégories;Activé;Famille;Groupes;"Collection images";"Les designers";"Les couleurs"
-a_product;;Oui;[clothing];;Nike,Addidas;"Philippe Starck";"Philippe Starck,Marc Jacobs"
+uuid;[sku];Catégories;Activé;Famille;Groupes;"Collection images";"Les designers";"Les couleurs"
+{$product->getUuid()->toString()};a_product;;Oui;[clothing];;Nike,Addidas;"Philippe Starck";"Philippe Starck,Marc Jacobs"
 
 CSV;
         $this->assertProductExport(
@@ -27,15 +28,13 @@ CSV;
 
     public function testProductExportWithMissingLabelsForTheLocale()
     {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('a_product');
         $expectedCsvWithNoTranslations = <<<CSV
-[sku];[categories];[enabled];[family];[groups];[assets];[creator];[designer_influence]
-a_product;;[yes];[clothing];;[nike],[addidas];[starck];[starck],[jacobs]
+[uuid];[sku];[categories];[enabled];[family];[groups];[assets];[creator];[designer_influence]
+{$product->getUuid()->toString()};a_product;;[yes];[clothing];;[nike],[addidas];[starck];[starck],[jacobs]
 
 CSV;
-        $this->assertProductExport(
-            $expectedCsvWithNoTranslations,
-            ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'unknown_locale']
-        );
+        $this->assertProductExport($expectedCsvWithNoTranslations,['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'unknown_locale']);
     }
 
     /**

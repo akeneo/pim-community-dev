@@ -44,7 +44,9 @@ JSON;
 
         $this->assertCreated($data);
 
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('variant_product_creation');
         $expectedProduct = [
+            'uuid' => $product->getUuid()->toString(),
             'identifier'   => 'variant_product_creation',
             'family'       => 'family_permission',
             'parent'       => 'sub_product_model',

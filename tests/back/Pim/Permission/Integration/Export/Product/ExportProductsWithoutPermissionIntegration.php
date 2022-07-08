@@ -18,12 +18,16 @@ class ExportProductsWithoutPermissionIntegration extends AbstractProductExportTe
 {
     public function testProductViewableByRedactorWithoutPermissionApplied()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_not_viewable_by_redactor');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_2');
+        $product4 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_category');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_localizable_image-de_DE;a_localizable_image-en_US;a_localizable_image-fr_FR;a_localized_and_scopable_text_area-de_DE-tablet;a_localized_and_scopable_text_area-en_US-tablet;a_localized_and_scopable_text_area-fr_FR-tablet;a_metric_without_decimal_negative;a_metric_without_decimal_negative-unit;a_number_float;PACK-groups;PACK-products;PACK-product_models;SUBSTITUTION-groups;SUBSTITUTION-products;SUBSTITUTION-product_models;UPSELL-groups;UPSELL-products;UPSELL-product_models;X_SELL-groups;X_SELL-products;X_SELL-product_models
-product_not_viewable_by_redactor;categoryB;1;;;;;;;;;;;;;;;;;;;;;;;
-product_viewable_by_everybody_1;categoryA2;1;;;files/product_viewable_by_everybody_1/a_localizable_image/de_DE/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/en_US/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/fr_FR/akeneo.jpg;"DE tablet";"EN tablet";"FR tablet";-10;CELSIUS;12.0500;;;;;;;;;;;;
-product_viewable_by_everybody_2;categoryA2,categoryB;1;;;;;;;;;;;;;;;;;;;;;;;
-product_without_category;;1;;;;;;;;;;;;;;;;;;;;;;product_not_viewable_by_redactor,product_viewable_by_everybody_2;
+uuid;sku;categories;enabled;family;groups;a_localizable_image-de_DE;a_localizable_image-en_US;a_localizable_image-fr_FR;a_localized_and_scopable_text_area-de_DE-tablet;a_localized_and_scopable_text_area-en_US-tablet;a_localized_and_scopable_text_area-fr_FR-tablet;a_metric_without_decimal_negative;a_metric_without_decimal_negative-unit;a_number_float;PACK-groups;PACK-products;PACK-product_models;SUBSTITUTION-groups;SUBSTITUTION-products;SUBSTITUTION-product_models;UPSELL-groups;UPSELL-products;UPSELL-product_models;X_SELL-groups;X_SELL-products;X_SELL-product_models
+{$product1->getUuid()->toString()};product_not_viewable_by_redactor;categoryB;1;;;;;;;;;;;;;;;;;;;;;;;
+{$product2->getUuid()->toString()};product_viewable_by_everybody_1;categoryA2;1;;;files/product_viewable_by_everybody_1/a_localizable_image/de_DE/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/en_US/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/fr_FR/akeneo.jpg;"DE tablet";"EN tablet";"FR tablet";-10;CELSIUS;12.0500;;;;;;;;;;;;
+{$product3->getUuid()->toString()};product_viewable_by_everybody_2;categoryA2,categoryB;1;;;;;;;;;;;;;;;;;;;;;;;
+{$product4->getUuid()->toString()};product_without_category;;1;;;;;;;;;;;;;;;;;;;;;;product_not_viewable_by_redactor,product_viewable_by_everybody_2;
 
 CSV;
 
@@ -44,12 +48,16 @@ CSV;
 
     public function testProductViewableByManagerWithoutPermissionApplied()
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_not_viewable_by_redactor');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_2');
+        $product4 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_category');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_localizable_image-de_DE;a_localizable_image-en_US;a_localizable_image-fr_FR;a_localized_and_scopable_text_area-de_DE-tablet;a_localized_and_scopable_text_area-en_US-tablet;a_localized_and_scopable_text_area-fr_FR-tablet;a_metric_without_decimal_negative;a_metric_without_decimal_negative-unit;a_number_float;PACK-groups;PACK-products;PACK-product_models;SUBSTITUTION-groups;SUBSTITUTION-products;SUBSTITUTION-product_models;UPSELL-groups;UPSELL-products;UPSELL-product_models;X_SELL-groups;X_SELL-products;X_SELL-product_models
-product_not_viewable_by_redactor;categoryB;1;;;;;;;;;;;;;;;;;;;;;;;
-product_viewable_by_everybody_1;categoryA2;1;;;files/product_viewable_by_everybody_1/a_localizable_image/de_DE/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/en_US/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/fr_FR/akeneo.jpg;"DE tablet";"EN tablet";"FR tablet";-10;CELSIUS;12.0500;;;;;;;;;;;;
-product_viewable_by_everybody_2;categoryA2,categoryB;1;;;;;;;;;;;;;;;;;;;;;;;
-product_without_category;;1;;;;;;;;;;;;;;;;;;;;;;product_not_viewable_by_redactor,product_viewable_by_everybody_2;
+uuid;sku;categories;enabled;family;groups;a_localizable_image-de_DE;a_localizable_image-en_US;a_localizable_image-fr_FR;a_localized_and_scopable_text_area-de_DE-tablet;a_localized_and_scopable_text_area-en_US-tablet;a_localized_and_scopable_text_area-fr_FR-tablet;a_metric_without_decimal_negative;a_metric_without_decimal_negative-unit;a_number_float;PACK-groups;PACK-products;PACK-product_models;SUBSTITUTION-groups;SUBSTITUTION-products;SUBSTITUTION-product_models;UPSELL-groups;UPSELL-products;UPSELL-product_models;X_SELL-groups;X_SELL-products;X_SELL-product_models
+{$product1->getUuid()->toString()};product_not_viewable_by_redactor;categoryB;1;;;;;;;;;;;;;;;;;;;;;;;
+{$product2->getUuid()->toString()};product_viewable_by_everybody_1;categoryA2;1;;;files/product_viewable_by_everybody_1/a_localizable_image/de_DE/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/en_US/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/fr_FR/akeneo.jpg;"DE tablet";"EN tablet";"FR tablet";-10;CELSIUS;12.0500;;;;;;;;;;;;
+{$product3->getUuid()->toString()};product_viewable_by_everybody_2;categoryA2,categoryB;1;;;;;;;;;;;;;;;;;;;;;;;
+{$product4->getUuid()->toString()};product_without_category;;1;;;;;;;;;;;;;;;;;;;;;;product_not_viewable_by_redactor,product_viewable_by_everybody_2;
 
 CSV;
 
@@ -83,12 +91,16 @@ CSV;
 
         $user = $this->get('pim_user.provider.user')->loadUserByUsername('mary');
 
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_not_viewable_by_redactor');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_2');
+        $product4 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_category');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_localizable_image-de_DE;a_localizable_image-en_US;a_localizable_image-fr_FR;a_localized_and_scopable_text_area-de_DE-tablet;a_localized_and_scopable_text_area-en_US-tablet;a_localized_and_scopable_text_area-fr_FR-tablet;a_metric_without_decimal_negative;a_metric_without_decimal_negative-unit;a_number_float;PACK-groups;PACK-products;PACK-product_models;SUBSTITUTION-groups;SUBSTITUTION-products;SUBSTITUTION-product_models;UPSELL-groups;UPSELL-products;UPSELL-product_models;X_SELL-groups;X_SELL-products;X_SELL-product_models
-product_not_viewable_by_redactor;categoryB;1;;;;;;;;;;;;;;;;;;;;;;;
-product_viewable_by_everybody_1;categoryA2;1;;;files/product_viewable_by_everybody_1/a_localizable_image/de_DE/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/en_US/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/fr_FR/akeneo.jpg;"DE tablet";"EN tablet";"FR tablet";-10;CELSIUS;12.0500;;;;;;;;;;;;
-product_viewable_by_everybody_2;categoryA2,categoryB;1;;;;;;;;;;;;;;;;;;;;;;;
-product_without_category;;1;;;;;;;;;;;;;;;;;;;;;;product_not_viewable_by_redactor,product_viewable_by_everybody_2;
+uuid;sku;categories;enabled;family;groups;a_localizable_image-de_DE;a_localizable_image-en_US;a_localizable_image-fr_FR;a_localized_and_scopable_text_area-de_DE-tablet;a_localized_and_scopable_text_area-en_US-tablet;a_localized_and_scopable_text_area-fr_FR-tablet;a_metric_without_decimal_negative;a_metric_without_decimal_negative-unit;a_number_float;PACK-groups;PACK-products;PACK-product_models;SUBSTITUTION-groups;SUBSTITUTION-products;SUBSTITUTION-product_models;UPSELL-groups;UPSELL-products;UPSELL-product_models;X_SELL-groups;X_SELL-products;X_SELL-product_models
+{$product1->getUuid()->toString()};product_not_viewable_by_redactor;categoryB;1;;;;;;;;;;;;;;;;;;;;;;;
+{$product2->getUuid()->toString()};product_viewable_by_everybody_1;categoryA2;1;;;files/product_viewable_by_everybody_1/a_localizable_image/de_DE/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/en_US/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/fr_FR/akeneo.jpg;"DE tablet";"EN tablet";"FR tablet";-10;CELSIUS;12.0500;;;;;;;;;;;;
+{$product3->getUuid()->toString()};product_viewable_by_everybody_2;categoryA2,categoryB;1;;;;;;;;;;;;;;;;;;;;;;;
+{$product4->getUuid()->toString()};product_without_category;;1;;;;;;;;;;;;;;;;;;;;;;product_not_viewable_by_redactor,product_viewable_by_everybody_2;
 
 CSV;
         $config = [

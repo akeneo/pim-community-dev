@@ -40,7 +40,9 @@ JSON;
 
         $this->assertUpdated('variant_product', $data);
 
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('variant_product');
         $expectedProduct = [
+            'uuid' => $product->getUuid()->toString(),
             'identifier'   => 'variant_product',
             'family'       => 'family_permission',
             'parent'       => 'sub_product_model',
@@ -111,7 +113,9 @@ JSON;
 
         $this->assertUpdated('variant_product', $data);
 
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('variant_product');
         $expectedProduct = [
+            'uuid' => $product->getUuid()->toString(),
             'identifier'    => 'variant_product',
             'family'        => 'family_permission',
             'parent'        => 'sub_product_model',

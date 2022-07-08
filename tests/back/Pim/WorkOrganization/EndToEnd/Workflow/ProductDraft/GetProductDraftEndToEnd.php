@@ -26,9 +26,11 @@ class GetProductDraftEndToEnd extends ApiTestCase
         $this->createDefaultProductDraft('mary', 'product_with_draft');
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_draft');
         $expectedResponse =
 <<<JSON
 {
+  "uuid": "{$product->getUuid()->toString()}",
   "identifier": "product_with_draft",
   "family": null,
   "parent": null,

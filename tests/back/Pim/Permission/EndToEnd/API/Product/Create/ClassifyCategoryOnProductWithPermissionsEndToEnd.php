@@ -71,7 +71,9 @@ class ClassifyCategoryOnProductWithPermissionsEndToEnd extends AbstractProductTe
      */
     private function assertProduct($identifier, array $categories)
     {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $expectedProduct = [
+            'uuid' => $product->getUuid()->toString(),
             'identifier'    => $identifier,
             'family'        => null,
             'parent'        => null,

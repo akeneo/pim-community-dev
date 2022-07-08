@@ -26,6 +26,6 @@ Feature: Export products according to the granted permissions
     And I wait for the "tablet_product_export" job to finish
     Then exported file of "tablet_product_export" should contain:
     """
-    sku;categories;enabled;family;groups
-    product-viewable-by-redactor;men_2015;1;tshirts;
+    uuid;sku;categories;enabled;family;groups
+    %uuid%;product-viewable-by-redactor;men_2015;1;tshirts;
     """
