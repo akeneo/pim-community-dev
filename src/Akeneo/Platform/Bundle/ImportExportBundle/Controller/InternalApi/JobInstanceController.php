@@ -335,6 +335,11 @@ class JobInstanceController
      */
     protected function deleteAction($code): Response
     {
+        $jobInstance = $this->getJobInstance($code);
+        if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.delete')) {
+            throw new AccessDeniedHttpException();
+        }
+
         $sql = <<<SQL
             DELETE FROM akeneo_batch_job_instance as ji WHERE ji.code = :code
         SQL;
