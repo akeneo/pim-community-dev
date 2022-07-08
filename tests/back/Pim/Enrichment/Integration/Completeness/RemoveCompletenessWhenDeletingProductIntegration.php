@@ -2,7 +2,13 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 
 
@@ -71,6 +77,7 @@ class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompleten
     protected function setUp(): void
     {
         parent::setUp();
+        $adminUserId = $this->createAdminUser()->getId();
         $family = $this->get('pim_catalog.factory.family')->create();
         $family->setCode('family');
         $this->get('pim_catalog.saver.family')->save($family);
@@ -78,36 +85,39 @@ class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompleten
         $this->createProduct(
             'my_product1',
             [
-                'family' => 'family',
-                'values' => [
-                    'a_text' => [['scope' => null, 'locale' => null, 'data' => true]],
-                ],
-            ]
+                new SetFamily('family'),
+                new SetBooleanValue('a_text', null, null, true)
+            ],
+            $adminUserId
         );
         $this->createProduct(
             'my_product2',
             [
-                'family' => 'family',
-                'values' => [
-                    'a_text' => [['scope' => null, 'locale' => null, 'data' => true]],
-                ],
-            ]
+                new SetFamily('family'),
+                new SetBooleanValue('a_text', null, null, true)
+            ],
+            $adminUserId
         );
         $this->createProduct(
             'my_product3',
             [
-                'family' => 'family',
-                'values' => [
-                    'a_text' => [['scope' => null, 'locale' => null, 'data' => true]],
-                ],
-            ]
+                new SetFamily('family'),
+                new SetBooleanValue('a_text', null, null, true)
+            ],
+            $adminUserId
         );
     }
 
-    private function createProduct(string $identifier, array $data): void
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createProduct(string $identifier, array $userIntents, int $userId): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $userId,
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }
 }

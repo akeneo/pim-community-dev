@@ -2,8 +2,8 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductIdentifiersQueryInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Test\Integration\TestCase;
 
 class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
@@ -14,6 +14,7 @@ class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->createAdminUser();
         $this->findNonExistingProductIdentifiersQuery = $this->get(
             'akeneo.pim.enrichment.product.query.find_non_existing_product_identifiers_query'
         );
@@ -37,17 +38,11 @@ class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
      */
     public function it_returns_the_product_identifiers_that_does_not_exists()
     {
-        $existingProductIdentifiers = [
-            'product_1',
-            'product_2',
-            'product_3',
-            'product_4',
-            'product_5',
-        ];
-
-        foreach ($existingProductIdentifiers as $productIdentifier) {
-            $this->createProduct($productIdentifier);
-        }
+        $this->createProduct('product_1');
+        $this->createProduct('product_2');
+        $this->createProduct('product_3');
+        $this->createProduct('product_4');
+        $this->createProduct('product_5');
 
         $lookupProductIdentifiers = [
             'product_1',
@@ -71,22 +66,25 @@ class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
 
     private function createProduct(string $productIdentifier): void
     {
-        $product = new Product();
-        $this->get('pim_catalog.updater.product')->update(
-            $product,
-            [
-                'values' => [
-                    'sku' => [
-                        [
-                            'scope' => null,
-                            'locale' => null,
-                            'data' => $productIdentifier,
-                        ],
-                    ],
-                ],
-            ]
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $productIdentifier,
+            userIntents: []
         );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+    }
 
-        $this->get('pim_catalog.saver.product')->save($product);
+    private function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
+
+        return \intval($id);
     }
 }

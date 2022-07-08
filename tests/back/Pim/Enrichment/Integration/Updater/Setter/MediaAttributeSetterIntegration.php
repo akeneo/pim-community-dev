@@ -2,6 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 
@@ -24,16 +27,12 @@ class MediaAttributeSetterIntegration extends TestCase
     {
         $attributeName = 'a_localizable_image';
 
-        $parameters = [
-            'values' => [
-                $attributeName => [
-                    [
-                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
-                        'locale' => 'fr_FR',
-                        'scope'  => null,
-                    ],
-                ],
-            ],
+        $userIntents = [
+            new SetImageValue(
+                $attributeName,
+                null,
+                'fr_FR',
+                $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'))
         ];
 
         $result = [
@@ -44,23 +43,20 @@ class MediaAttributeSetterIntegration extends TestCase
             ],
         ];
 
-        $this->assertCommandMedia($parameters, $result, $attributeName);
+        $this->assertCommandMedia($userIntents, $result, $attributeName);
     }
 
     public function testMediaWithChannel()
     {
         $attributeName = 'a_scopable_image';
 
-        $parameters = [
-            'values' => [
-                $attributeName => [
-                    [
-                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1C-t.png'),
-                        'locale' => null,
-                        'scope'  => 'tablet',
-                    ],
-                ],
-            ],
+        $userIntents = [
+            new SetImageValue(
+                $attributeName,
+                'tablet',
+                null,
+                $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1C-t.png')
+            )
         ];
 
         $result = [
@@ -71,23 +67,20 @@ class MediaAttributeSetterIntegration extends TestCase
             ],
         ];
 
-        $this->assertCommandMedia($parameters, $result, $attributeName);
+        $this->assertCommandMedia($userIntents, $result, $attributeName);
     }
 
     public function testMediaWithLocaleAndChannel()
     {
         $attributeName = 'a_localizable_scopable_image';
 
-        $parameters = [
-            'values' => [
-                $attributeName => [
-                    [
-                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
-                        'locale' => 'fr_FR',
-                        'scope'  => 'tablet',
-                    ],
-                ],
-            ],
+        $userIntents = [
+            new SetImageValue(
+                $attributeName,
+                'tablet',
+                'fr_FR',
+                $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png')
+            )
         ];
 
         $result = [
@@ -98,30 +91,16 @@ class MediaAttributeSetterIntegration extends TestCase
             ],
         ];
 
-        $this->assertCommandMedia($parameters, $result, $attributeName);
+        $this->assertCommandMedia($userIntents, $result, $attributeName);
     }
 
     public function testIsSameMedia()
     {
         $attributeName = 'a_localizable_scopable_image';
 
-        $parameters = [
-            'values' => [
-                $attributeName => [
-                    [
-                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
-                        'locale' => 'fr_FR',
-                        'scope'  => 'tablet',
-                    ],
-                ],
-                $attributeName => [
-                    [
-                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
-                        'locale' => 'fr_FR',
-                        'scope'  => 'tablet',
-                    ],
-                ],
-            ],
+        $userIntents = [
+            new SetImageValue($attributeName, 'tablet', 'fr_FR', $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png')),
+            new SetImageValue($attributeName, 'tablet', 'fr_FR', $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png')),
         ];
 
         $result = [
@@ -132,17 +111,24 @@ class MediaAttributeSetterIntegration extends TestCase
             ],
         ];
 
-        $this->assertCommandMedia($parameters, $result, $attributeName);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('The value for attribute a_localizable_scopable_image is being updated multiple times');
+
+        $this->assertCommandMedia($userIntents, $result, $attributeName);
     }
 
-    protected function assertCommandMedia(array $parameters, array $result, $attributeName)
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    protected function assertCommandMedia(array $userIntents, array $result, string $attributeName)
     {
-        $productUpdater = $this->get('pim_catalog.updater.product');
-
-        $product = $this->get('pim_catalog.builder.product')->createProduct('product_media');
-        $productUpdater->update($product, $parameters);
-
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'product_media',
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_media');
 
         $standardProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
 
@@ -166,5 +152,19 @@ class MediaAttributeSetterIntegration extends TestCase
         }
 
         return $data;
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
+
+        return \intval($id);
     }
 }
