@@ -1,5 +1,5 @@
 orbs: 
-  security-hunter: akeneo-orbs/security-hunter@1.0.1
+  security-hunter: akeneo-orbs/security-hunter@1.0.2
 
 workflows:
     pull_request:
@@ -9,6 +9,7 @@ workflows:
         jobs:
             - security-hunter/scan-latest-commits:
                   since_when: "2022-07-07"
+                  blocking: false
 
             - security-hunter/scan-dir:
                   severity: "CRITICAL"
