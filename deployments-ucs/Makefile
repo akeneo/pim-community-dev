@@ -241,7 +241,7 @@ delete_tenant: generate_deployment_files
 ###################
 ## Plan terraform infrastructure
 .PHONY: plan_terraform
-plan_terraform
+plan_terraform:
 	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) init -reconfigure
 	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) plan
 
