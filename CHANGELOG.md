@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10515: Fix 'add associations' button visibility for quantified associations & category permissions
 - PIM-10487: Fix import of very tiny measurement values (e.g. 0.000075 GRAM)
 - PIM-10215: Fixed last operation widget job type translation key
 - PIM-10233: Fix the saved value by an empty wysiwyg

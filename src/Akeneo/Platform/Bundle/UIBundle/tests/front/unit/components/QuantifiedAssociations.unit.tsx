@@ -298,3 +298,28 @@ test('It notifies when a product model error is detected', async () => {
 
   expect(dependencies.notify).toBeCalledWith('error', 'a.product.model.error.occured');
 });
+
+/**
+ * @see https://akeneo.atlassian.net/browse/PIM-10515
+ */
+test('It does not display the add association button if the user is not owner of the product', async () => {
+  jest.mock('pim/security-context', () => {}, {virtual: true});
+
+  await act(async () => {
+    renderDOMWithProviders(
+      <QuantifiedAssociations
+        quantifiedAssociations={quantifiedAssociationCollection}
+        parentQuantifiedAssociations={{products: [{identifier: 'bag', quantity: 1}], product_models: []}}
+        errors={[]}
+        isUserOwner={false}
+        onAssociationsChange={jest.fn()}
+        onOpenPicker={jest.fn()}
+      />,
+      container
+    );
+  });
+
+  expect(
+    queryByText(container, 'pim_enrich.entity.product.module.associations.add_associations')
+  ).not.toBeInTheDocument();
+});
