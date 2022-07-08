@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoEnterprise\Pim\Enrichment\Category\Infrastructure\Symfony;
+namespace AkeneoEnterprise\Category\Infrastructure\Symfony;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class AkeneoPimEnterpriseEnrichmentCategoryBundle extends Bundle
+final class AkeneoEnterpriseCategoryBundle extends Bundle
 {
 }

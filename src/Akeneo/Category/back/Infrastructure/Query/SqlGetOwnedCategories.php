@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoEnterprise\Pim\Enrichment\Category\Infrastructure\Query;
+namespace AkeneoEnterprise\Category\Infrastructure\Query;
 
 use Akeneo\Category\Domain\Query\GetOwnedCategories;
 use Doctrine\DBAL\Connection;

@@ -92,7 +92,7 @@ return [
     Akeneo\Platform\Bundle\MonitoringBundle\AkeneoMonitoringBundle::class => ['all' => true],
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoPimEnterpriseDataQualityInsightsBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Product\Bundle\AkeneoPimEnterpriseProductEnrichmentBundle::class => ['all' => true],
-    AkeneoEnterprise\Pim\Enrichment\Category\Infrastructure\Symfony\AkeneoPimEnterpriseEnrichmentCategoryBundle::class => ['all' => true],
+    AkeneoEnterprise\Category\Infrastructure\Symfony\AkeneoEnterpriseCategoryBundle::class => ['all' => true],
     Akeneo\Pim\Structure\Bundle\AkeneoPimEnterpriseStructureBundle::class => ['all' => true],
     Akeneo\SharedCatalog\AkeneoSharedCatalogBundle::class => ['all' => true],
     AkeneoEnterprise\Connectivity\Connection\Infrastructure\Symfony\AkeneoEnterpriseConnectivityConnectionBundle::class => ['all' => true],

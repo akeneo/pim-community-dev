@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoEnterprise\Pim\Enrichment\Category\Infrastructure\Symfony\DependencyInjection;
+namespace AkeneoEnterprise\Category\Infrastructure\Symfony\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-final class AkeneoPimEnterpriseEnrichmentCategoryExtension extends Extension
+final class AkeneoEnterpriseCategoryExtension extends Extension
 {
     /**
      * {@inheritdoc}

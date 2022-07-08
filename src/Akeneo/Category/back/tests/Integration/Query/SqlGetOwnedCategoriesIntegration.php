@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoEnterprise\Test\Pim\Enrichment\Category\Integration\Query;
+namespace AkeneoEnterprise\Category\Integration\Query;
 
 use Akeneo\Category\Domain\Query\GetOwnedCategories;
 use Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver;

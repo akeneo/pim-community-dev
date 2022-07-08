@@ -1,0 +1,10 @@
+services:
+    Akeneo\Category\Domain\Query\GetOwnedCategories:
+        class: AkeneoEnterprise\Category\Infrastructure\Query\SqlGetOwnedCategories
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Category\Domain\Query\GetViewableCategories:
+        class: AkeneoEnterprise\Category\Infrastructure\Query\SqlGetViewableCategories
+        arguments:
+            - '@database_connection'
