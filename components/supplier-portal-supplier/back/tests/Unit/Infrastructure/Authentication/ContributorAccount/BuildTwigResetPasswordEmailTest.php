@@ -42,9 +42,12 @@ final class BuildTwigResetPasswordEmailTest extends TestCase
             );
 
         $sut = new BuildTwigResetPasswordEmail($twig, $domain);
-        $emailContent = ($sut)($contributorEmail, 'foo');
+        $email = ($sut)($contributorEmail, 'foo');
 
-        static::assertSame('htmlContent', $emailContent->htmlContent);
-        static::assertSame('textContent', $emailContent->textContent);
+        static::assertSame('Reset your password', $email->subject);
+        static::assertSame('htmlContent', $email->htmlContent);
+        static::assertSame('textContent', $email->txtContent);
+        static::assertSame('noreply@akeneo.com', $email->from);
+        static::assertSame($contributorEmail, $email->to);
     }
 }
