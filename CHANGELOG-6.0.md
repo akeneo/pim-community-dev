@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10494: Fix performance issue when deleting job instance with lot of execution and warning
+
 # 6.0.35 (2022-07-12)
 
 # 6.0.34 (2022-07-05)
