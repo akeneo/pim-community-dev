@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\UserManagement\Integration\Bundle;
 
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\ImmutableFeatureFlags;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -73,7 +73,7 @@ class ApplyFeatureFlagOnAclGroupsIntegration extends TestCase
         foreach ($flags as $flag => $enabled) {
             $registry->add($flag, new FakeFeatureFlag($enabled));
         }
-        $features = new FeatureFlags($registry);
+        $features = new ImmutableFeatureFlags($registry);
         return new AclGroupsExtension(
             [
                 'FeatureFlagOnAclGroupsTestBundle' => FeatureFlagOnAclGroupsTestBundle::class,

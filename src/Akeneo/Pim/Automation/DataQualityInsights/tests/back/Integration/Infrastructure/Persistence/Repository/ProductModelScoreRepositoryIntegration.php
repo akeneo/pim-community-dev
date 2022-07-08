@@ -8,7 +8,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductModelScoreRepository;
@@ -31,18 +32,22 @@ final class ProductModelScoreRepositoryIntegration extends DataQualityInsightsTe
         $localeFr = new LocaleCode('fr_FR');
 
         $productModelScoreA = new ProductScores(
-            new ProductId($productModelIdA),
+            new ProductModelId($productModelIdA),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(89))
-                ->addRate($channelMobile, $localeFr, new Rate(42))
+                ->addRate($channelMobile, $localeFr, new Rate(42)),
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate(89))
         );
         $productModelScoreB = new ProductScores(
-            new ProductId($productModelIdB),
+            new ProductModelId($productModelIdB),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))
-                ->addRate($channelMobile, $localeFr, new Rate(0))
+                ->addRate($channelMobile, $localeFr, new Rate(0)),
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate(71))
         );
 
         // Test that scores of new product models are well inserted
@@ -54,11 +59,13 @@ final class ProductModelScoreRepositoryIntegration extends DataQualityInsightsTe
         $this->assertProductModelScoreExists($productModelScoreB);
 
         $updatedProductModelScoreA = new ProductScores(
-            new ProductId($productModelIdA),
+            new ProductModelId($productModelIdA),
             new \DateTimeImmutable('2020-11-17'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(96))
-                ->addRate($channelMobile, $localeFr, new Rate(36))
+                ->addRate($channelMobile, $localeFr, new Rate(36)),
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate(96))
         );
 
         // Test that scores of existing product models are well updated
@@ -85,20 +92,27 @@ SELECT * FROM pim_data_quality_insights_product_model_score
 WHERE product_model_id = :productModelId AND evaluated_at = :evaluatedAt;
 SQL,
             [
-                'productModelId' => $expectedProductModelScore->getProductId()->toInt(),
+                'productModelId' => $expectedProductModelScore->getEntityId()->toInt(),
                 'evaluatedAt' => $expectedProductModelScore->getEvaluatedAt()->format('Y-m-d'),
             ]
         )->fetchAssociative();
 
         $this->assertNotEmpty($productModelScore);
 
-        $expectedScores = $expectedProductModelScore->getScores()->mapWith(function (Rate $score) {
+        $expectedScores = $this->formatScoresForComparison($expectedProductModelScore->getScores());
+        $this->assertEquals($expectedScores, \json_decode($productModelScore['scores'], true));
+
+        $expectedScoresPartialCriteria = $this->formatScoresForComparison($expectedProductModelScore->getScoresPartialCriteria());
+        $this->assertEquals($expectedScoresPartialCriteria, \json_decode($productModelScore['scores_partial_criteria'], true));
+    }
+
+    private function formatScoresForComparison(ChannelLocaleRateCollection $scores): array
+    {
+        return $scores->mapWith(function (Rate $score) {
             return [
                 'rank' => Rank::fromRate($score)->toInt(),
                 'value' => $score->toInt(),
             ];
         });
-
-        $this->assertEquals($expectedScores, \json_decode($productModelScore['scores'], true));
     }
 }

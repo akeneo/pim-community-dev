@@ -159,7 +159,7 @@ pim_import_export:
   batch_status:
     1: 完了
     2: 開始中...
-    3: In progress
+    3: 処理中
     4: 停止中
     5: 停止
     6: 失敗
@@ -168,6 +168,7 @@ pim_import_export:
   job_status:
     COMPLETED: 完了
     STARTING: 開始中...
+    STARTED: 処理中
     STOPPING: 停止中
     STOPPED: 停止
     FAILED: 失敗

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
@@ -142,15 +142,16 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         $productImageLocale = $context['catalogLocale'] ?? $this->catalogContext->getLocaleCode();
 
         $normalizedProduct['meta'] = [
-            'form'              => $this->formProvider->getForm($product),
-            'id'                => $product->getId(),
-            'created'           => $created,
-            'updated'           => $updated,
-            'model_type'        => 'product',
+            'form' => $this->formProvider->getForm($product),
+            'id' => $product->getUuid()->toString(),
+            'uuid' => $product->getUuid()->toString(),
+            'created' => $created,
+            'updated' => $updated,
+            'model_type' => 'product',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'completenesses'    => $this->completenessCollectionNormalizer->normalize($completenesses),
+            'completenesses' => $this->completenessCollectionNormalizer->normalize($completenesses),
             'required_missing_attributes' => $this->missingRequiredAttributesNormalizer->normalize($completenesses),
-            'image'             => $this->normalizeImage($product->getImage(), $productImageScope, $productImageLocale),
+            'image' => $this->normalizeImage($product->getImage(), $productImageScope, $productImageLocale),
             'quantified_associations_for_this_level' => $this->quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations($product, 'standard', $context),
             'parent_quantified_associations' => $this->quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations($product, 'standard', $context),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
@@ -233,7 +234,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         $completenessCollection = $this->missingRequiredAttributesCalculator->fromEntityWithFamily($product);
 
         if (null === $completenessCollection) {
-            $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection($product->getId(), []);
+            $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection($product->getUuid(), []);
         }
 
         return $completenessCollection;

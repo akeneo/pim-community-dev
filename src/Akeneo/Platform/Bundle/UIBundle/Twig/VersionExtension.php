@@ -2,7 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Twig\TwigFunction;
 
 /**

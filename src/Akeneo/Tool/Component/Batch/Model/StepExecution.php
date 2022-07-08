@@ -56,7 +56,7 @@ class StepExecution
     /** @var \DateTime */
     private $startTime;
 
-    /** @var \DateTime */
+    /** @var \DateTime | null */
     private $endTime;
 
     /* @var ExecutionContext $executionContext */
@@ -158,7 +158,7 @@ class StepExecution
     /**
      * Returns the time that this execution ended
      *
-     * @return \DateTime time that this execution ended
+     * @return \DateTime | null time that this execution ended
      */
     public function getEndTime()
     {
@@ -472,9 +472,18 @@ class StepExecution
         }
 
         if (is_object($data)) {
+            $id = '[unknown]';
+            if (\method_exists($data, 'getUuid')
+                && get_class($data) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
+            ) {
+                $id = $data->getUuid()->toString();
+            } elseif (\method_exists($data, 'getId')) {
+                $id = $data->getId();
+            }
+
             $data = [
                 'class'  => ClassUtils::getClass($data),
-                'id'     => method_exists($data, 'getId') ? $data->getId() : '[unknown]',
+                'id'     => $id,
                 'string' => method_exists($data, '__toString') ? (string) $data : '[unknown]',
             ];
         }
@@ -539,9 +548,9 @@ class StepExecution
      *
      * @return mixed
      */
-    public function getSummaryInfo($key)
+    public function getSummaryInfo($key, mixed $defaultValue = '')
     {
-        return isset($this->summary[$key]) ? $this->summary[$key] : '';
+        return isset($this->summary[$key]) ? $this->summary[$key] : $defaultValue;
     }
 
     /**

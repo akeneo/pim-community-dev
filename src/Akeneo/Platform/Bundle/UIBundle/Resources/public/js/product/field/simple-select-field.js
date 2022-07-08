@@ -123,7 +123,9 @@ define([
 
                 this.choicePromise.then(
                   function (response) {
-                    var selected = _.findWhere(response, {code: id});
+                    var selected = _.find(response, function (result) {
+                      return id.toLowerCase() === (result.code ?? '').toLowerCase();
+                    });
 
                     if (!selected) {
                       selected = _.findWhere(response.results, {id: id});

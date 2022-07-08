@@ -290,3 +290,8 @@ mappings:
                 path_match: 'data_quality_insights.scores.*'
                 mapping:
                     type: 'short'
+        -
+            data_quality_insights_scores_partial_criteria:
+                path_match: 'data_quality_insights.scores_partial_criteria.*'
+                mapping:
+                    type: 'short'

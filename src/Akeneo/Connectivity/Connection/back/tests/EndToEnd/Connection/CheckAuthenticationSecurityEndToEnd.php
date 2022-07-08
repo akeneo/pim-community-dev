@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Connection;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler;
+use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
@@ -259,24 +262,20 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
     private function regenerateClientSecret(string $connectionCode): void
     {
         $command = new RegenerateConnectionSecretCommand($connectionCode);
-        $this
-            ->get('akeneo_connectivity.connection.application.handler.regenerate_connection_secret')
-            ->handle($command);
+        $this->get(RegenerateConnectionSecretHandler::class)->handle($command);
     }
 
     private function regenerateUserPassword(string $connectionCode): void
     {
         $command = new RegenerateConnectionPasswordCommand($connectionCode);
-        $this
-            ->get('akeneo_connectivity.connection.application.handler.regenerate_connection_password')
-            ->handle($command);
+        $this->get(RegenerateConnectionPasswordHandler::class)->handle($command);
     }
 
     private function findAConnection(string $connectionCode): ConnectionWithCredentials
     {
         $query = new FindAConnectionQuery($connectionCode);
 
-        return $this->get('akeneo_connectivity.connection.application.handler.find_a_connection')->handle($query);
+        return $this->get(FindAConnectionHandler::class)->handle($query);
     }
 
     /**

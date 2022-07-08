@@ -102,18 +102,29 @@ oro_config:
       tab:
         system:
           title: 시스템
+      save_ok: 구성을 성공적으로 저장했습니다
+      save_error: 죄송합니다. 구성을 저장할 수 없습니다({{ reason }})
       group:
         localization:
-          title: 지역화
-          system_locale: 언어
+          title: 로그인 페이지 설정
+          fields:
+            system_locale:
+              label: 언어
         notification:
-          title: 알림
-          system_notification: 새 버전 알림
+          title: 새 버전 알림
+          helper: 활성화하면 새 버전을 사용할 수 있을 때 알림이 수신됩니다.
+          fields:
+            enabler:
+              label: 활성화됨
         loading_message:
-          title: 로딩 메시지
-          label: 로딩 메시지 활성화
-        loading_messages:
-          label: 사용 가능한 로딩 메시지
+          title: 사용자 지정된 로딩 메시지
+          helper: 로딩 화면의 메시지를 사용자 지정하여 사용자에게 즐거움을 줄 수 있습니다.
+          placeholder: 로딩 화면에 표시될 고유한 메시지를 작성해보십시오
+          fields:
+            enabler:
+              label: 로딩 메시지 활성화
+            messages:
+              label: 고유한 로딩 메시지 추가
 pim_ui:
   flash:
     unsaved_changes: '저장되지 않은 변경 사항이 있습니다. 그래도 나가시겠습니까?'

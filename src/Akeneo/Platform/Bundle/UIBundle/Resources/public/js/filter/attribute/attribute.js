@@ -225,6 +225,7 @@ define([
         scopeEvent.scopeCode = this.getScope();
       } else {
         this.setScope(scopeEvent.scopeCode, {silent: true});
+        this.trigger('pim_enrich:form:entity:post_update');
       }
     },
 
@@ -240,6 +241,7 @@ define([
         localeEvent.localeCode = this.getLocale();
       } else {
         this.setLocale(localeEvent.localeCode, {silent: true});
+        this.trigger('pim_enrich:form:entity:post_update');
       }
     },
 

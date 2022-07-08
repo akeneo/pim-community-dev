@@ -9,9 +9,15 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthentica
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\UserConsentRequiredException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetConnectedAppScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -29,58 +35,46 @@ use Symfony\Component\Routing\RouterInterface;
  */
 final class AuthorizeAction
 {
-    private RequestAppAuthorizationHandler $requestAppAuthorizationHandler;
-    private RouterInterface $router;
-    private FeatureFlag $featureFlag;
-    private AppAuthorizationSessionInterface $appAuthorizationSession;
-    private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
-    private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
-    private ConnectedPimUserProvider $connectedPimUserProvider;
-    private RequestAppAuthenticationHandler $requestAppAuthenticationHandler;
-
-    private SecurityFacade $security;
-
     public function __construct(
-        RequestAppAuthorizationHandler $requestAppAuthorizationHandler,
-        RouterInterface $router,
-        FeatureFlag $featureFlag,
-        AppAuthorizationSessionInterface $appAuthorizationSession,
-        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
-        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
-        ConnectedPimUserProvider $connectedPimUserProvider,
-        RequestAppAuthenticationHandler $requestAppAuthenticationHandler,
-        SecurityFacade $security,
+        private RequestAppAuthorizationHandler $requestAppAuthorizationHandler,
+        private RouterInterface $router,
+        private FeatureFlag $marketplaceActivateFeatureFlag,
+        private AppAuthorizationSessionInterface $appAuthorizationSession,
+        private GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+        private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
+        private ConnectedPimUserProvider $connectedPimUserProvider,
+        private RequestAppAuthenticationHandler $requestAppAuthenticationHandler,
+        private SecurityFacade $security,
+        private GetAppQueryInterface $getAppQuery,
+        private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        private ScopeListComparatorInterface $scopeListComparator,
+        private UpdateConnectedAppScopesWithAuthorizationHandler $updateConnectedAppScopesWithAuthorizationHandler,
     ) {
-        $this->requestAppAuthorizationHandler = $requestAppAuthorizationHandler;
-        $this->router = $router;
-        $this->featureFlag = $featureFlag;
-        $this->appAuthorizationSession = $appAuthorizationSession;
-        $this->getAppConfirmationQuery = $getAppConfirmationQuery;
-        $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
-        $this->connectedPimUserProvider = $connectedPimUserProvider;
-        $this->requestAppAuthenticationHandler = $requestAppAuthenticationHandler;
-        $this->security = $security;
     }
 
     public function __invoke(Request $request): Response
     {
-        if (!$this->featureFlag->isEnabled()) {
+        if (!$this->marketplaceActivateFeatureFlag->isEnabled()) {
             throw new NotFoundHttpException();
         }
 
-        if (
-            !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')
-            && !$this->security->isGranted('akeneo_connectivity_connection_open_apps')
-        ) {
-            throw new AccessDeniedHttpException();
+        $clientId = $request->query->get('client_id', '');
+
+        if ('' === $clientId || null === $app = $this->getAppQuery->execute($clientId)) {
+            return new RedirectResponse(
+                '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authorize', [
+                    'error' => 'akeneo_connectivity.connection.connect.apps.error.app_not_found',
+                ])
+            );
         }
 
-        $clientId = $request->query->get('client_id', '');
+        $this->denyAccessUnlessGrantedToManageOrOpen($app);
 
         $command = new RequestAppAuthorizationCommand(
             $clientId,
             $request->query->get('response_type', ''),
             $request->query->get('scope', ''),
+            $app->getCallbackUrl(),
             $request->query->get('state', null),
         );
 
@@ -99,13 +93,32 @@ final class AuthorizeAction
             throw new \LogicException('There is no active app authorization in session');
         }
 
-        // Check if the App is authorized
+        // Check if the App is already connected
         $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);
+
+        $originalScopes = $this->getConnectedAppScopesQuery->execute($clientId);
+        $requestedScopes = $appAuthorization->getAuthorizationScopes()->getScopes();
+
+        $hasNewScopes = false === empty($this->scopeListComparator->diff(
+            $requestedScopes,
+            $originalScopes
+        ));
+
         if (null === $appConfirmation) {
+            $this->denyAccessUnlessGrantedToManage($app);
+        }
+
+        if ((null === $appConfirmation || $hasNewScopes) && $this->isGrantedToManage($app)) {
             return new RedirectResponse(
                 '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authorize', [
                     'client_id' => $command->getClientId(),
                 ])
+            );
+        }
+
+        if ($this->isGrantedToManage($app)) {
+            $this->updateConnectedAppScopesWithAuthorizationHandler->handle(
+                new UpdateConnectedAppScopesWithAuthorizationCommand($clientId)
             );
         }
 
@@ -121,7 +134,6 @@ final class AuthorizeAction
             return new RedirectResponse(
                 '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authenticate', [
                     'client_id' => $e->getAppId(),
-                    'new_authentication_scopes' => \implode(',', $e->getNewAuthenticationScopes()),
                 ])
             );
         }
@@ -133,5 +145,43 @@ final class AuthorizeAction
         );
 
         return new RedirectResponse($redirectUrl);
+    }
+
+    private function isGrantedToManage(App $app): bool
+    {
+        return
+            (
+                $app->isTestApp() &&
+                $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
+            ) || (
+                !$app->isTestApp() &&
+                $this->security->isGranted('akeneo_connectivity_connection_manage_apps')
+            );
+    }
+
+    private function isGrantedToOpen(App $app): bool
+    {
+        return
+            (
+                $app->isTestApp() &&
+                $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
+            ) || (
+                !$app->isTestApp() &&
+                $this->security->isGranted('akeneo_connectivity_connection_open_apps')
+            );
+    }
+
+    private function denyAccessUnlessGrantedToManage(App $app): void
+    {
+        if (!$this->isGrantedToManage($app)) {
+            throw new AccessDeniedHttpException();
+        }
+    }
+
+    private function denyAccessUnlessGrantedToManageOrOpen(App $app): void
+    {
+        if (!$this->isGrantedToManage($app) && !$this->isGrantedToOpen($app)) {
+            throw new AccessDeniedHttpException();
+        }
     }
 }

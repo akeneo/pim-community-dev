@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Tool\Bundle\MessengerBundle\Serialization;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer;
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -63,6 +64,27 @@ class JsonSerializerSpec extends ObjectBehavior
             ->shouldReturn([
                 'body' => '{"some_property":"Some value!"}',
                 'headers' => ['class' => \stdClass::class],
+            ]);
+    }
+
+    public function it_encodes_an_envelope_with_tenant_id($normalizer): void
+    {
+        $message = new \stdClass();
+        $envelope = new Envelope($message, [new TenantIdStamp('my_tenant_id_value')]);
+
+        $normalizer->supportsNormalization($message, 'json', [])
+            ->willReturn(true);
+
+        $normalizer->normalize($message, 'json', [])
+            ->willReturn(['some_property' => 'Some value!']);
+
+        $this->encode($envelope)
+            ->shouldReturn([
+                'body' => '{"some_property":"Some value!"}',
+                'headers' => [
+                    'class' => \stdClass::class,
+                    'tenant_id' => 'my_tenant_id_value',
+                ],
             ]);
     }
 }

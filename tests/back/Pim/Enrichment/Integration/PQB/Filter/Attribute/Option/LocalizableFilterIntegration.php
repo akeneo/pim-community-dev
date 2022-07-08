@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Option;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -44,26 +46,18 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_simple_select' => [
-                    ['data' => 'orange', 'locale' => 'en_US', 'scope' => null],
-                    ['data' => 'black', 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetSimpleSelectValue('a_localizable_simple_select', null, 'en_US', 'orange'),
+            new SetSimpleSelectValue('a_localizable_simple_select', null, 'fr_FR', 'black'),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_simple_select' => [
-                    ['data' => 'black', 'locale' => 'en_US', 'scope' => null],
-                    ['data' => 'black', 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetSimpleSelectValue('a_localizable_simple_select', null, 'en_US', 'black'),
+            new SetSimpleSelectValue('a_localizable_simple_select', null, 'fr_FR', 'black'),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorIn()

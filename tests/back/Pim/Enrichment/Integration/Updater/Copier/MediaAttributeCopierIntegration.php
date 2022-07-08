@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Updater\Copier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 
 /**
@@ -16,15 +17,12 @@ class MediaAttributeCopierIntegration extends AbstractCopierTestCase
     {
         $sku = 'test_localizable_media';
         $parameters = [
-            'values' => [
-                'a_scopable_image' => [
-                    [
-                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
-                        'locale' => null,
-                        'scope'  => 'tablet',
-                    ],
-                ],
-            ],
+            new SetImageValue(
+                'a_scopable_image',
+                'tablet',
+                null,
+                $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png')
+            )
         ];
 
         $product = $this->createProduct($sku, $parameters);
@@ -56,15 +54,12 @@ class MediaAttributeCopierIntegration extends AbstractCopierTestCase
     {
         $sku = 'test_scopable_media';
         $parameters = [
-            'values' => [
-                'a_localizable_image' => [
-                    [
-                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
-                        'locale' => 'fr_FR',
-                        'scope'  => null,
-                    ],
-                ],
-            ],
+            new SetImageValue(
+                'a_localizable_image',
+                null,
+                'fr_FR',
+                $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png')
+            )
         ];
 
         $product = $this->createProduct($sku, $parameters);
@@ -96,15 +91,7 @@ class MediaAttributeCopierIntegration extends AbstractCopierTestCase
     {
         $sku = 'test_scopable_localizable_media';
         $parameters = [
-            'values' => [
-                'an_image' => [
-                    [
-                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
-                        'locale' => null,
-                        'scope'  => null,
-                    ],
-                ],
-            ],
+            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'))
         ];
 
         $product = $this->createProduct($sku, $parameters);

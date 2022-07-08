@@ -1,0 +1,57 @@
+services:
+    # WEBHOOK
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectWebhookSecretQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSaveWebhookSecretQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\UpdateConnectionWebhookQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectActiveWebhooksQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalGetAConnectionWebhookQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalCountActiveEventSubscriptionsQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalUpdateEventsApiRequestCountQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery:
+        arguments:
+            - '@database_connection'
+
+    # EVENTS API DEBUG
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\SearchEventSubscriptionDebugLogsQuery:
+        arguments:
+            - '@akeneo_connectivity.client.events_api_debug'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\GetAllEventSubscriptionDebugLogsQuery:
+        arguments:
+            - '@akeneo_connectivity.client.events_api_debug'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiSuccessLogsQuery:
+        arguments:
+            - '@akeneo_connectivity.client.events_api_debug'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiErrorLogsQuery:
+        arguments:
+            - '@akeneo_connectivity.client.events_api_debug'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository:
+        arguments:
+            - '@akeneo_connectivity.client.events_api_debug'

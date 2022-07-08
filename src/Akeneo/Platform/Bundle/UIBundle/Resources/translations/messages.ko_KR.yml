@@ -468,7 +468,7 @@ Change History: 기록 변경
 Data Audit: 데이터 감사
 Data Audit - System: '데이터 감사 - 시스템'
 Action: 작업
-Version: 버전
+Version: 버전 
 Entity type: 엔터티 유형
 Entity name: 엔터티 이름
 Entity id: 엔터티 ID
@@ -552,3 +552,4 @@ pim_login:
   footer:
     powered: '제공자:'
     powered_image_title: logo Akeneo
+pim_system.acl_group.developer_mode: 개발자 모드

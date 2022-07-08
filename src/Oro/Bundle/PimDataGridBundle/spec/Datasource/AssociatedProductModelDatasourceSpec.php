@@ -22,6 +22,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssociatedProductModelDatasourceSpec extends ObjectBehavior
@@ -121,9 +122,9 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
         ]);
 
         $associatedProduct1->getIdentifier()->willReturn('associated_product_1');
-        $associatedProduct1->getId()->willReturn('2');
+        $associatedProduct1->getUuid()->willReturn(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'));
         $associatedProduct2->getIdentifier()->willReturn('associated_product_2');
-        $associatedProduct2->getId()->willReturn('3');
+        $associatedProduct2->getUuid()->willReturn(Uuid::fromString('0cc93a87-0b93-4246-939a-9d9d7a84302d'));
         $associatedProductModel->getCode()->willReturn('associated_product_model_1');
         $associatedProductModel->getId()->willReturn('2');
         $currentProduct->getAllAssociations()->willReturn($associationCollection);
@@ -301,8 +302,8 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
         $results['data']->shouldBeArray();
         $results['data']->shouldHaveCount(3);
         $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);
-        $results['data'][0]->getValue('id')->shouldReturn('product-2');
-        $results['data'][1]->getValue('id')->shouldReturn('product-3');
+        $results['data'][0]->getValue('id')->shouldReturn('product-57700274-9b48-4857-b17d-a7da106cd150');
+        $results['data'][1]->getValue('id')->shouldReturn('product-0cc93a87-0b93-4246-939a-9d9d7a84302d');
         $results['data'][2]->getValue('id')->shouldReturn('product-model-2');
         $results['meta']->shouldBe([
             'source' => $productSourceNormalized,

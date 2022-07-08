@@ -6,6 +6,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Message;
 
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\Event;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -15,12 +17,14 @@ use Webmozart\Assert\Assert;
 class ProductRemoved extends Event
 {
     /**
-     * @var array{identifier: string, category_codes: array<string> } $data
+     * @param array{identifier: string, category_codes: array<string> } $data
      */
     public function __construct(Author $author, array $data, int $timestamp = null, string $uuid = null)
     {
         Assert::keyExists($data, 'identifier');
-        Assert::stringNotEmpty($data['identifier']);
+        Assert::nullOrString($data['identifier']);
+        Assert::keyExists($data, 'uuid');
+        Assert::true(Uuid::isValid($data['uuid']));
 
         Assert::keyExists($data, 'category_codes');
         Assert::allStringNotEmpty($data['category_codes']);
@@ -33,7 +37,7 @@ class ProductRemoved extends Event
         return 'product.removed';
     }
 
-    public function getIdentifier(): string
+    public function getIdentifier(): ?string
     {
         return $this->data['identifier'];
     }
@@ -44,5 +48,10 @@ class ProductRemoved extends Event
     public function getCategoryCodes(): array
     {
         return $this->data['category_codes'];
+    }
+
+    public function getProductUuid(): UuidInterface
+    {
+        return $this->data['uuid'];
     }
 }

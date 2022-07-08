@@ -163,15 +163,15 @@ Akeneo\UserManagement\Component\Model\User:
                         onDelete: CASCADE
     manyToOne:
         catalogLocale:
-            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface
             nullable: false
         uiLocale:
-            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface
             joinColumn:
               name: ui_locale_id
               nullable: false
         catalogScope:
-            targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface
             nullable: false
         defaultTree:
             targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface

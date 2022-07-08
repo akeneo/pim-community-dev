@@ -88,7 +88,7 @@ class IndexProductCommand extends Command
 
         if (true === $input->getOption('all')) {
             $chunkedProductIdentifiers = $this->getAllProductIdentifiers($batchSize);
-            $productCount = $this->getTotalNumberOfProducts();
+            $productCount = 0;
         } elseif (!empty($input->getArgument('identifiers'))) {
             $requestedIdentifiers = $input->getArgument('identifiers');
             $existingIdentifiers = $this->getExistingProductIdentifiers($requestedIdentifiers);
@@ -164,11 +164,6 @@ SQL;
             $formerId = (int)end($rows)['id'];
             yield array_column($rows, 'identifier');
         }
-    }
-
-    private function getTotalNumberOfProducts(): int
-    {
-        return (int)$this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchOne();
     }
 
     private function getExistingProductIdentifiers(array $identifiers): array

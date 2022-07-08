@@ -22,7 +22,7 @@ final class AkeneoContentSecurityPolicyProvider implements ContentSecurityPolicy
         return [
             'default-src' => ["'self'", "*.akeneo.com", "'unsafe-inline'"],
             'script-src' => ["'self'", "'unsafe-eval'", sprintf("'nonce-%s'", $generatedNonce)],
-            'img-src' => ["'self'", "data:"],
+            'img-src' => ["'self'", "data:", "*.akeneo.com"],
             'frame-src' => ["*"],
             'font-src' => ["'self'", "data:"],
             'connect-src'=> ["'self'", "*.akeneo.com"],

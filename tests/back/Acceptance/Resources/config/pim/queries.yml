@@ -34,6 +34,16 @@ services:
         arguments:
             - '@pim_catalog.repository.product_model'
 
+    akeneo.pim.enrichment.product.query.find_id:
+        class: 'AkeneoTest\Acceptance\Product\InMemoryFindProductId'
+        arguments:
+            - '@pim_catalog.repository.product'
+
+    akeneo.pim.enrichment.product_model.query.find_id:
+        class: 'AkeneoTest\Acceptance\ProductModel\InMemoryFindProductModelId'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+
     akeneo.pim.enrichment.product.query.find_quantified_association_codes:
         class: Akeneo\Test\Acceptance\AssociationType\InMemoryFindQuantifiedAssociationTypeCodes
         arguments:

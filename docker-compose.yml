@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   php:
-    image: 'akeneo/pim-php-dev:6.0'
+    image: 'akeneo/pim-php-dev:master'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       COMPOSER_HOME: '/var/www/.composer'
@@ -16,12 +16,13 @@ services:
       - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
     working_dir: '/srv/pim'
     command: 'php'
+    user: 'www-data'
     init: true
     networks:
       - 'pim'
 
   fpm:
-    image: 'akeneo/pim-php-dev:6.0'
+    image: 'akeneo/pim-php-dev:master'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
@@ -39,7 +40,7 @@ services:
       - 'pim'
 
   node:
-    image: 'akeneo/node:12'
+    image: 'akeneo/node:14'
     environment:
       YARN_CACHE_FOLDER: '/home/node/.yarn'
       CYPRESS_CACHE_FOLDER: '/home/node/.cypress'
@@ -77,8 +78,8 @@ services:
       - 'pim'
 
   mysql:
-    image: 'mysql:8.0.22'
-    command: '--default-authentication-plugin=mysql_native_password'
+    image: 'mysql:8.0.26'
+    command: '--default-authentication-plugin=mysql_native_password --log_bin_trust_function_creators=1'
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_USER: '${APP_DATABASE_USER}'
@@ -92,7 +93,7 @@ services:
       - 'pim'
 
   elasticsearch:
-    image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.1'
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:7.16.2'
     environment:
       ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
       discovery.type: 'single-node'
@@ -121,7 +122,7 @@ services:
       - 'pim'
 
   pubsub-emulator:
-    image: 'google/cloud-sdk:331.0.0'
+    image: 'google/cloud-sdk:375.0.0-emulators'
     command: 'gcloud --user-output-enabled --log-http beta emulators pubsub start --host-port=0.0.0.0:8085'
     networks:
       - 'pim'

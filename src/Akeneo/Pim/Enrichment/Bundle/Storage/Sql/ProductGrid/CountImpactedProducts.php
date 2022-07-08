@@ -17,18 +17,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
  */
 class CountImpactedProducts
 {
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productAndProductModelQueryBuilderFactory;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
-
     public function __construct(
-        ProductQueryBuilderFactoryInterface $productAndProductModelQueryBuilderFactory,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+        private ProductQueryBuilderFactoryInterface $productAndProductModelQueryBuilderFactory
     ) {
-        $this->productAndProductModelQueryBuilderFactory = $productAndProductModelQueryBuilderFactory;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
     }
 
     /**

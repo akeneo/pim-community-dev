@@ -4,12 +4,13 @@ setup: true
 
 orbs:
     continuation: circleci/continuation@0.2.0
+    git-shallow-clone: guitarrapc/git-shallow-clone@2.4.0
 
 jobs:
     merge_config:
         executor: continuation/default
         steps:
-            - checkout
+            - git-shallow-clone/checkout
             - run:
                   name: Install yq
                   command: |

@@ -159,7 +159,7 @@ pim_import_export:
   batch_status:
     1: Completato
     2: In avvio
-    3: In progress
+    3: In corso
     4: In fase di interruzione
     5: Fermato
     6: Fallito
@@ -168,6 +168,7 @@ pim_import_export:
   job_status:
     COMPLETED: Completato
     STARTING: In avvio
+    STARTED: In corso
     STOPPING: In fase di interruzione
     STOPPED: Fermato
     FAILED: Fallito

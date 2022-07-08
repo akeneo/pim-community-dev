@@ -36,7 +36,10 @@ class ApiErrorCollection
 
     public function add(ApiErrorInterface $error): void
     {
-        $this->apiErrors[(string) $error->type()][] = $error;
+        /** @phpstan-var ErrorTypes::* $errorType */
+        $errorType = (string) $error->type();
+
+        $this->apiErrors[$errorType][] = $error;
     }
 
     public function count(?string $errorType = null): int

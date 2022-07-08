@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Comma
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -75,12 +76,17 @@ final class PurgeOutdatedDataCommand extends Command
             false
         );
 
-        if (!$this->getHelper('question')->ask($input, $output, $question)) {
+        if (!$this->getQuestionHelper()->ask($input, $output, $question)) {
             $output->writeln('Purge aborted');
 
             return false;
         };
 
         return true;
+    }
+
+    private function getQuestionHelper(): QuestionHelper
+    {
+        return $this->getHelper('question');
     }
 }

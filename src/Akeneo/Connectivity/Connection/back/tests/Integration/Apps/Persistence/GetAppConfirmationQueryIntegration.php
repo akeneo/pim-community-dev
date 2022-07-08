@@ -12,8 +12,8 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppConfirmationQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -44,18 +44,18 @@ class GetAppConfirmationQueryIntegration extends TestCase
         $this->createConnection = $this->get(CreateConnection::class);
         $this->clientProvider = $this->get(ClientProvider::class);
         $this->createUserGroup = $this->get(CreateUserGroup::class);
-        $this->createUser = $this->get('akeneo_connectivity.connection.service.user.create_user');
+        $this->createUser = $this->get(CreateUser::class);
     }
 
     private function createConnectedApp(string $appPublicId): void
     {
         $group = $this->createUserGroup->execute('userGroup_' . $appPublicId);
 
-        $user = $this->createUser->execute(
+        $userId = $this->createUser->execute(
             'username_' . $appPublicId,
             'firstname_' . $appPublicId,
-            'lastname_' . $appPublicId,
-            [$group->getName()]
+            [$group->getName()],
+            ['ROLE_USER'],
         );
 
         $client = $this->clientProvider->findOrCreateClient(
@@ -76,7 +76,7 @@ class GetAppConfirmationQueryIntegration extends TestCase
             'Connector_' . $appPublicId,
             FlowType::OTHER,
             $client->getId(),
-            $user->id()
+            $userId,
         );
 
         $this->createConnectedAppQuery->execute(
@@ -88,6 +88,7 @@ class GetAppConfirmationQueryIntegration extends TestCase
                 'http://www.example.com/path/to/logo',
                 'author',
                 'userGroup_' . $appPublicId,
+                'username_' . $appPublicId,
                 [],
                 false,
                 'partner'

@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\VariantProduct\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
@@ -67,18 +71,10 @@ class PartialUpdateVariantProductEndToEnd extends AbstractProductTestCase
 
         // apollon_blue_m & apollon_blue_l, categorized in 2 trees (master and categoryA1)
         $this->createVariantProduct('apollon_optionb_false', [
-            'categories' => ['master'],
-            'parent' => 'amor',
-            'groups' => ['groupA'],
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => false,
-                    ],
-                ],
-            ],
+            new SetCategories(['master']),
+            new ChangeParent('amor'),
+            new SetGroups(['groupA']),
+            new SetBooleanValue('a_yes_no', null, null, false)
         ]);
 
         $this->products = $this->get('pim_catalog.repository.product')->findAll();

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\GetUpToDateProductModelScoresQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -15,14 +15,23 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 class GetProductModelScores
 {
     public function __construct(
-        private GetUpToDateProductModelScoresQuery $getUpToDateProductModelScoresQuery,
-        private GetLocalesByChannelQueryInterface  $getLocalesByChannelQuery
+        private GetProductModelScoresQueryInterface $getProductModelScoresQuery,
+        private GetLocalesByChannelQueryInterface   $getLocalesByChannelQuery,
+        private GetScoresByCriteriaStrategy         $getScoresByCriteria,
     ) {
     }
 
-    public function get(ProductId $productId): array
+    /**
+     * Eventually returns all quality scores by channel and locale.
+     * @return array{'evaluations_available':false} | array{'evaluations_available': true, 'scores': array }
+     */
+    public function get(ProductModelId $productModelId): array
     {
-        $productScores = $this->getUpToDateProductModelScoresQuery->byProductModelId($productId);
+        $productScores = ($this->getScoresByCriteria)($this->getProductModelScoresQuery->byProductModelId($productModelId));
+
+        if ($productScores->isEmpty()) {
+            return ["evaluations_available" => false];
+        }
 
         $formattedProductScores = [];
         foreach ($this->getLocalesByChannelQuery->getChannelLocaleCollection() as $channelCode => $locales) {
@@ -32,6 +41,6 @@ class GetProductModelScores
             }
         }
 
-        return $formattedProductScores;
+        return ["evaluations_available" => true, "scores" => $formattedProductScores];
     }
 }

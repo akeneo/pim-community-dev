@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
 
 /**
@@ -13,5 +13,5 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask
  */
 interface GetProductModelAttributesMaskQueryInterface
 {
-    public function execute(ProductId $productModelId): ?RequiredAttributesMask;
+    public function execute(ProductModelId $productModelId): ?RequiredAttributesMask;
 }

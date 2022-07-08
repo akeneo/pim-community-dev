@@ -115,6 +115,9 @@ pim_catalog:
       association_type_does_not_exist: Ten typ powiązania nie istnieje. Upewnij się, że nie został usunięty w międzyczasie.
       association_type_is_not_quantified: '"{{ association_type }}" nie może być użyty do powiązań z ilościami. Wybierz inny typ powiązania z ilościami lub użyj właściwości "associations".'
       association_type_should_not_be_quantified: '"{{ association_type }}" może być użyty wyłącznie do powiązań z ilościami. Wybierz inny typ powiązania lub użyj właściwości "quantified_associations".'
+    boolean:
+      boolean_value_is_required: 'Atrybut {{ attribute_code }} wymaga wartości logicznej (prawda lub fałsz) w charakterze danych. Wykryto następujący typ danych: {{ given_type }}'
+      boolean_value_is_required_in_import: 'Atrybut {{ attribute_code }} wymaga wartości logicznej (1 lub 0) w charakterze danych. Wykryto następujący typ danych: {{ given_type }}'
 mass_edit:
   edit_common_attributes:
     invalid_values: W formularzu atrybutów występują błędy

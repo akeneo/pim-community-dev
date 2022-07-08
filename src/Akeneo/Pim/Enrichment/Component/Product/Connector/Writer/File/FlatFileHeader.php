@@ -40,9 +40,6 @@ final class FlatFileHeader
     /** @var array */
     private $channelCurrencyCodes;
 
-    /** @var array */
-    private $allCurrencyCodes;
-
     /** @var bool */
     private $isLocaleSpecific;
 
@@ -59,7 +56,6 @@ final class FlatFileHeader
         ?bool $usesUnit = false,
         ?bool $usesCurrencies = false,
         ?array $channelCurrencyCodes = [],
-        ?array $allCurrencyCodes = [],
         ?bool $isLocaleSpecific = false,
         ?array $specificToLocales = []
     ) {
@@ -89,7 +85,6 @@ final class FlatFileHeader
 
         $this->usesCurrencies = $usesCurrencies;
         $this->channelCurrencyCodes = $channelCurrencyCodes;
-        $this->allCurrencyCodes = $allCurrencyCodes;
 
         $this->isLocaleSpecific = $isLocaleSpecific;
         $this->specificToLocales = $specificToLocales;
@@ -106,7 +101,6 @@ final class FlatFileHeader
         bool $localizable,
         array $localeCodes,
         array $channelCurrencyCodes,
-        array $activatedCurrencyCodes,
         array $specificToLocales
     ): FlatFileHeader {
         $mediaAttributeTypes = [
@@ -124,7 +118,6 @@ final class FlatFileHeader
             (AttributeTypes::METRIC === $attributeType),
             (AttributeTypes::PRICE_COLLECTION === $attributeType),
             $channelCurrencyCodes,
-            $activatedCurrencyCodes,
             !empty($specificToLocales),
             $specificToLocales
         );
@@ -173,12 +166,7 @@ final class FlatFileHeader
 
         if ($this->usesCurrencies) {
             foreach ($prefixes as $prefix) {
-                if ($this->isScopable) {
-                    $currencyCodesToUse = $this->channelCurrencyCodes;
-                } else {
-                    $currencyCodesToUse = $this->allCurrencyCodes;
-                }
-                foreach ($currencyCodesToUse as $currencyCode) {
+                foreach ($this->channelCurrencyCodes as $currencyCode) {
                     $headers[] = sprintf('%s-%s', $prefix, $currencyCode);
                 }
             }

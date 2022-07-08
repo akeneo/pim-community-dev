@@ -232,6 +232,7 @@ SQL;
 
         $sql = <<<SQL
             SELECT 
+            /*+ SET_VAR(sort_buffer_size = 1000000) */
                 pm_root.code,
                 a_image.code as attribute_code,
                 pm_child.raw_values,
@@ -332,7 +333,7 @@ SQL;
                     a_image.code AS attribute_code,
                     a_image.is_localizable,
                     a_image.is_scopable,
-                    JSON_EXTRACT(product_child.raw_values, CONCAT('$.', a_image.code)) AS image_values,
+                    JSON_EXTRACT(product_child.raw_values, CONCAT('$."', a_image.code, '"')) AS image_values,
                     JSON_EXTRACT(
                         product_child.raw_values,
                         CONCAT('$."', a_image.code, '".', IF(is_scopable = 1, '":channel_code"', '"<all_channels>"'), '.', IF(is_localizable = 1, '":locale_code"', '"<all_locales>"'))

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\GetProductModelAttributesMaskQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\BuildSqlMaskField;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
 use Doctrine\DBAL\Connection;
@@ -16,45 +18,20 @@ use Doctrine\DBAL\Connection;
  */
 class GetNonRequiredProductModelAttributesMaskQuery implements GetProductModelAttributesMaskQueryInterface
 {
-    /** @var Connection */
-    private $dbConnection;
-
-    public function __construct(Connection $dbConnection)
-    {
-        $this->dbConnection = $dbConnection;
+    public function __construct(
+        private Connection        $dbConnection,
+        private BuildSqlMaskField $mask,
+    ) {
     }
 
-    public function execute(ProductId $productModelId): ?RequiredAttributesMask
+    public function execute(ProductModelId $productModelId): ?RequiredAttributesMask
     {
-        $sql = <<<SQL
+        $sql = "
 SELECT
     family.code AS family_code,
     channel_code,
     locale_code,
-    JSON_ARRAYAGG(
-        CONCAT(
-            IF(
-                attribute.attribute_type = 'pim_catalog_price_collection',
-                CONCAT(
-                    attribute.code,
-                    '-',
-                    (
-                        SELECT GROUP_CONCAT(currency.code ORDER BY currency.code SEPARATOR '-')
-                        FROM pim_catalog_channel channel
-                        JOIN pim_catalog_channel_currency pccc ON channel.id = pccc.channel_id
-                        JOIN pim_catalog_currency currency ON pccc.currency_id = currency.id
-                        WHERE channel.code  = channel_code
-                        GROUP BY channel.id
-                    )
-                ),
-                attribute.code
-            ),
-            '-',
-            IF(attribute.is_scopable, channel_locale.channel_code, '<all_channels>'),
-            '-',
-            IF(attribute.is_localizable, channel_locale.locale_code, '<all_locales>')
-        )
-    ) AS mask
+    " . $this->mask->__invoke() . "
 FROM pim_catalog_product_model AS product_model
 INNER JOIN pim_catalog_family_variant AS family_variant ON family_variant.id = product_model.family_variant_id
 INNER JOIN pim_catalog_family AS family ON family.id = family_variant.family_id
@@ -89,7 +66,7 @@ WHERE product_model.id = :productModelId
           AND (product_model.parent_id IS NULL OR attribute_set.level = 2)
     )
 GROUP BY family.code, channel_code, locale_code;
-SQL;
+";
         $rows = $this->dbConnection->executeQuery(
             $sql,
             ['productModelId' => $productModelId->toInt()],

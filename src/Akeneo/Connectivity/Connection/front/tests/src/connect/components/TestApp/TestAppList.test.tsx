@@ -27,7 +27,9 @@ jest.mock('@src/connect/components/TestApp/TestAppCard', () => ({
 const testApp1 = {
     id: 'id1',
     name: 'testApp1',
+    logo: null,
     author: 'AuthorName',
+    url: null,
     activate_url: 'test_app_1_activate_url',
     callback_url: 'test_app_1_callback_url',
     connected: false,
@@ -36,7 +38,9 @@ const testApp1 = {
 const testApp2 = {
     id: 'id2',
     name: 'testApp2',
+    logo: null,
     author: null,
+    url: null,
     activate_url: 'test_app_2_activate_url',
     callback_url: 'test_app_2_callback_url',
     connected: true,

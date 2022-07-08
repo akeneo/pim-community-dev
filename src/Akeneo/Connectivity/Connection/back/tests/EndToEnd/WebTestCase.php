@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
@@ -29,14 +30,15 @@ abstract class WebTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->client = self::$container->get('test.client');
+        $this->client = static::getContainer()->get('test.client');
     }
 
     protected function createConnection(string $code, string $label, string $flowType, bool $auditable): ConnectionWithCredentials
     {
         $createConnectionCommand = new CreateConnectionCommand($code, $label, $flowType, $auditable);
 
-        return $this->get('akeneo_connectivity.connection.application.handler.create_connection')
+        return $this
+            ->get(CreateConnectionHandler::class)
             ->handle($createConnectionCommand);
     }
 

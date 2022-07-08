@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\Internal;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
-use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
@@ -56,16 +56,13 @@ SQL;
     {
         parent::setUp();
 
-        /** @var FakeFeatureFlag $featureFlagMarketplaceActivate */
-        $featureFlagMarketplaceActivate = $this->get(
-            'akeneo_connectivity.connection.marketplace_activate.feature'
-        );
+        /** @var FilePersistedFeatureFlags $featureFlags */
+        $featureFlags = $this->get('feature_flags')->enable('marketplace_activate');
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
         $this->connection = $this->get('database_connection');
 
         $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
-        $featureFlagMarketplaceActivate->enable();
     }
 
     protected function getConfiguration(): Configuration

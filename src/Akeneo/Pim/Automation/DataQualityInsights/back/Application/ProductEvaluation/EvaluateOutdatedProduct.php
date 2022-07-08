@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -19,13 +20,14 @@ class EvaluateOutdatedProduct
     public function __construct(
         private HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
         private EvaluateProducts $evaluateProducts,
+        private ProductUuidFactory $factory
     ) {
     }
 
-    public function __invoke(ProductId $productId): void
+    public function __invoke(ProductUuid $productUuid): void
     {
-        if (false === $this->hasUpToDateEvaluationQuery->forProductId($productId)) {
-            ($this->evaluateProducts)(ProductIdCollection::fromProductId($productId));
+        if (false === $this->hasUpToDateEvaluationQuery->forEntityId($productUuid)) {
+            ($this->evaluateProducts)($this->factory->createCollection([(string) $productUuid]));
         }
     }
 }

@@ -8,14 +8,14 @@ import {ConnectedAppsContainerIsLoading} from '../components/ConnectedApps/Conne
 import {ConnectedAppsContainer} from '../components/ConnectedApps/ConnectedAppsContainer';
 import {useConnectedApps} from '../hooks/use-connected-apps';
 import {DeveloperModeTag} from '../components/DeveloperModeTag';
-import {useDeveloperMode} from '../hooks/use-developer-mode';
+import {useAppDeveloperMode} from '../hooks/use-app-developer-mode';
 
 export const ConnectedAppsListPage: FC = () => {
     const translate = useTranslate();
     const generateUrl = useRouter();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const connectedApps = useConnectedApps();
-    const isDeveloperModeEnabled = useDeveloperMode();
+    const isAppDeveloperModeEnabled = useAppDeveloperMode();
 
     const breadcrumb = (
         <Breadcrumb>
@@ -24,7 +24,7 @@ export const ConnectedAppsListPage: FC = () => {
         </Breadcrumb>
     );
 
-    const tag = isDeveloperModeEnabled ? <DeveloperModeTag /> : null;
+    const tag = isAppDeveloperModeEnabled ? <DeveloperModeTag /> : null;
 
     return (
         <>

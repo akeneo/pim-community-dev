@@ -175,7 +175,7 @@ pim_enrich:
       stop_job: Arresta un job in corso
   acl_group:
     association_type: Tipi di associazione
-    attribute: Atributi
+    attribute: Attributi
     attribute_group: Gruppi di attributi
     category: Categorie
     channel: Canali
@@ -552,3 +552,4 @@ pim_login:
   footer:
     powered: Con tecnologia
     powered_image_title: logo Akeneo
+pim_system.acl_group.developer_mode: Modalità sviluppatore

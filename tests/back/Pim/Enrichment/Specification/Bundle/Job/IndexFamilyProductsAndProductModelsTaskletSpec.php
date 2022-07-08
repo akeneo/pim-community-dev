@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Job;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Job\IndexFamilyProductsAndProductModelsTasklet;
@@ -48,7 +49,6 @@ class IndexFamilyProductsAndProductModelsTaskletSpec extends ObjectBehavior
     ];
 
     function let(
-        StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
         ItemReaderInterface $familyReader,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
@@ -96,39 +96,23 @@ class IndexFamilyProductsAndProductModelsTaskletSpec extends ObjectBehavior
         ProductQueryBuilderInterface $productModelQueryBuilder,
         StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
-        ProductInterface $productA1,
-        ProductInterface $productA2,
-        ProductInterface $productA3,
-        ProductInterface $productB1,
-        ProductInterface $productB2,
-        ProductInterface $productB3,
-        ProductInterface $productC1,
-        ProductInterface $productC2,
         ProductModelInterface $productModel1
     ) {
         $familyA->getCode()->willReturn('family_code_a');
         $familyB->getCode()->willReturn('family_code_b');
         $familyReader->read()->willReturn($familyA, $familyB, null);
 
-        $productA1->getIdentifier()->willReturn('batchA_product1');
-        $productA2->getIdentifier()->willReturn('batchA_product2');
-        $productA3->getIdentifier()->willReturn('batchA_product3');
-        $productB1->getIdentifier()->willReturn('batchB_product1');
-        $productB2->getIdentifier()->willReturn('batchB_product2');
-        $productB3->getIdentifier()->willReturn('batchB_product3');
-        $productC1->getIdentifier()->willReturn('batchC_product1');
-        $productC2->getIdentifier()->willReturn('batchC_product2');
         $productModel1->getCode()->willReturn('minerva');
 
         $productCursor = new FakeCursor([
-            $productA1->getWrappedObject(),
-            $productA2->getWrappedObject(),
-            $productA3->getWrappedObject(),
-            $productB1->getWrappedObject(),
-            $productB2->getWrappedObject(),
-            $productB3->getWrappedObject(),
-            $productC1->getWrappedObject(),
-            $productC2->getWrappedObject(),
+            new IdentifierResult('batchA_product1', ProductInterface::class),
+            new IdentifierResult('batchA_product2', ProductInterface::class),
+            new IdentifierResult('batchA_product3', ProductInterface::class),
+            new IdentifierResult('batchB_product1', ProductInterface::class),
+            new IdentifierResult('batchB_product2', ProductInterface::class),
+            new IdentifierResult('batchB_product3', ProductInterface::class),
+            new IdentifierResult('batchC_product1', ProductInterface::class),
+            new IdentifierResult('batchC_product2', ProductInterface::class),
         ]);
 
         $productModelCursor = new FakeCursor([

@@ -69,13 +69,13 @@ final class RunUniqueProcessJob
         $this->logger->info('Job execution "{job_id}" is starting', ['message' => 'job_execution_started', 'job_id' => $jobExecution->getId()]);
 
         try {
-            $this->executionManager->updateHealthCheck($jobExecutionMessage);
+            $this->executionManager->updateHealthCheck($jobExecutionMessage->getJobExecutionId());
             $process = $this->initializeProcess($jobInstance, $jobExecution);
             $process->start();
 
             while ($process->isRunning()) {
                 sleep(self::RUNNING_PROCESS_CHECK_INTERVAL);
-                $this->executionManager->updateHealthCheck($jobExecutionMessage);
+                $this->executionManager->updateHealthCheck($jobExecutionMessage->getJobExecutionId());
                 $this->writeProcessOutput($process);
             }
         } catch (\Throwable $e) {
@@ -87,7 +87,7 @@ final class RunUniqueProcessJob
             ]);
         } finally {
             // update status if the job execution failed due to an uncaught error as a fatal error
-            $exitStatus = $this->executionManager->getExitStatus($jobExecutionMessage);
+            $exitStatus = $this->executionManager->getExitStatus($jobExecutionMessage->getJobExecutionId());
             if ($exitStatus->isRunning()) {
                 $this->executionManager->markAsFailed($jobExecutionMessage->getJobExecutionId());
             }

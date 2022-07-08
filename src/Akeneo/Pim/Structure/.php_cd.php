@@ -38,16 +38,10 @@ $rules = [
         'Akeneo\UserManagement\Component\Model\UserInterface',
 
         // TIP-910: PIM/Structure should not be linked to Channel
-        'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
 
         // TIP-939: Remove filter system for permissions
         'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
-
-        // TIP-1005: Clean UI form types
-        'Akeneo\Platform\Bundle\UIBundle\Form\Type\AsyncSelectType',
-        'Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType',
-        'Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber',
-        'Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType',
 
         // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
@@ -70,13 +64,13 @@ $rules = [
         'Doctrine\ORM\QueryBuilder',
 
         // TIP-910: PIM/Structure should not be linked to Channel
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-        'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
 
         // TIP-908: Entities should not be linked directly to Locale for translation purposes
         // TIP-909: PIM/Structure should not be linked to Locale
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
-        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
 
         //TIP-906: Functionnal problem -> used to check if we can remove a family / family variant
         'Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountProductsWithFamilyInterface',
@@ -86,7 +80,7 @@ $rules = [
         // TIP-1021: Mass edit should not be linked to Enrichment
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor',
 
-        // TIP-907: Functionnal problem we should not create empty associations
+        // TIP-907: Functional problem we should not create empty associations
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
 
         // TIP-1011: Create a Versioning component
@@ -112,6 +106,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer',
 
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
     ])->in('Akeneo\Pim\Structure\Component'),
 ];
 

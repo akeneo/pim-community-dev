@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator;
 
-use Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository;
-use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Doctrine\Repository\ChannelRepository;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateChannel;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

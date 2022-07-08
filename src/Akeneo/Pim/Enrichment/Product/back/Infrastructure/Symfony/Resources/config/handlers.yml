@@ -5,8 +5,23 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.saver.product'
-            - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
             - '@event_dispatcher'
+            - '@Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry'
         tags:
             - { name: 'akeneo.pim.enrichment.product.handler', command: 'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand' }
+
+    Akeneo\Pim\Enrichment\Product\Application\StandardFormat\ConvertStandardFormatIntoUserIntentsHandler:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Domain\UserIntent\UserIntentFactoryRegistry'
+        tags:
+            - { name: 'akeneo.pim.enrichment.product.query_handler', query: 'Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat'}
+
+    Akeneo\Pim\Enrichment\Product\Application\PQB\GetProductUuidsHandler:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductQueryBuilderInterface'
+            - '@akeneo.pim.enrichment.use_cases.apply_product_search_query_parameters_to_pqb'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductUuidQueryFetcher'
+            - '@validator'
+        tags:
+            - { name: 'akeneo.pim.enrichment.product.query_handler', query: 'Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery' }

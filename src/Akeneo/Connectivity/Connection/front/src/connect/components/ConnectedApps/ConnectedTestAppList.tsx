@@ -4,7 +4,7 @@ import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {ConnectedAppCard} from './ConnectedAppCard';
 import {useTranslate} from '../../../shared/translate';
 import {CardGrid} from '../Section';
-import {useDeveloperMode} from '../../hooks/use-developer-mode';
+import {useAppDeveloperMode} from '../../hooks/use-app-developer-mode';
 
 type Props = {
     connectedTestApps: ConnectedApp[];
@@ -12,7 +12,7 @@ type Props = {
 
 export const ConnectedTestAppList: FC<Props> = ({connectedTestApps}) => {
     const translate = useTranslate();
-    const isDeveloperModeEnabled = useDeveloperMode();
+    const isDeveloperModeEnabled = useAppDeveloperMode();
 
     if (!isDeveloperModeEnabled || connectedTestApps.length === 0) {
         return null;

@@ -12,73 +12,25 @@ use Webmozart\Assert\Assert;
 
 final class SqlGetAttributeTranslationsIntegration extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->loadFixture();
+    }
+
     public function test_it_gets_attribute_translations_by_giving_attribute_codes_and_locale_code(): void
     {
-        $query = $this->getQuery();
-
-        $this->givenAttributes([
-            [
-                'code' => 'a_boolean',
-                'type' => AttributeTypes::BOOLEAN,
-                'localizable' => false,
-                'scopable' => false,
-                'group' => 'other',
-                'labels' => [
-                    'en_US' => 'a boolean',
-                    'fr_FR' => 'un booléen'
-                ]
-            ],
-            [
-                'code' => 'a_textarea',
-                'type' => AttributeTypes::TEXTAREA,
-                'localizable' => false,
-                'scopable' => false,
-                'group' => 'other',
-                'labels' => [
-                    'en_US' => 'a textarea',
-                    'fr_FR' => 'une zone de texte'
-                ]
-            ]
-        ]);
-
         $expected = [
             'a_textarea' => 'une zone de texte',
             'a_boolean' => 'un booléen',
         ];
-        $actual = $query->byAttributeCodesAndLocale(['a_boolean', 'a_textarea'], 'fr_FR');
+        $actual = $this->getQuery()->byAttributeCodesAndLocale(['a_boolean', 'a_textarea'], 'fr_FR');
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
     public function test_it_gets_attribute_translations_by_giving_attribute_codes(): void
     {
-        $query = $this->getQuery();
-
-        $this->givenAttributes([
-            [
-                'code' => 'a_boolean',
-                'type' => AttributeTypes::BOOLEAN,
-                'localizable' => false,
-                'scopable' => false,
-                'group' => 'other',
-                'labels' => [
-                    'en_US' => 'a boolean',
-                    'fr_FR' => 'un booléen'
-                ]
-            ],
-            [
-                'code' => 'a_textarea',
-                'type' => AttributeTypes::TEXTAREA,
-                'localizable' => false,
-                'scopable' => false,
-                'group' => 'other',
-                'labels' => [
-                    'en_US' => 'a textarea',
-                    'fr_FR' => 'une zone de texte'
-                ]
-            ]
-        ]);
-
         $expected = [
             'a_textarea' => [
                 'en_US' => 'a textarea',
@@ -89,7 +41,31 @@ final class SqlGetAttributeTranslationsIntegration extends TestCase
                 'fr_FR' => 'un booléen'
             ],
         ];
-        $actual = $query->byAttributeCodes(['a_boolean', 'a_textarea']);
+        $actual = $this->getQuery()->byAttributeCodes(['a_boolean', 'a_textarea']);
+
+        $this->assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    public function test_it_returns_nothing_when_searching_on_a_specific_locale_and_attribute_does_not_have_translations(): void
+    {
+        $expected = [];
+        $actual = $this->getQuery()->byAttributeCodesAndLocale(['an_attribute_without_translations'], 'fr_FR');
+
+        $this->assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    public function test_it_returns_nothing_when_attribute_does_not_have_translation_on_a_given_locale(): void
+    {
+        $expected = [];
+        $actual = $this->getQuery()->byAttributeCodesAndLocale(['a_textarea'], 'br_FR');
+
+        $this->assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    public function test_it_returns_nothing_when_attribute_does_not_have_translations(): void
+    {
+        $expected = [];
+        $actual = $this->getQuery()->byAttributeCodes(['an_attribute_without_translations']);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
@@ -117,5 +93,41 @@ final class SqlGetAttributeTranslationsIntegration extends TestCase
         }, $attributes);
 
         $this->get('pim_catalog.saver.attribute')->saveAll($attributes);
+    }
+
+    private function loadFixture()
+    {
+        $this->givenAttributes([
+            [
+                'code' => 'a_boolean',
+                'type' => AttributeTypes::BOOLEAN,
+                'localizable' => false,
+                'scopable' => false,
+                'group' => 'other',
+                'labels' => [
+                    'en_US' => 'a boolean',
+                    'fr_FR' => 'un booléen'
+                ]
+            ],
+            [
+                'code' => 'a_textarea',
+                'type' => AttributeTypes::TEXTAREA,
+                'localizable' => false,
+                'scopable' => false,
+                'group' => 'other',
+                'labels' => [
+                    'en_US' => 'a textarea',
+                    'fr_FR' => 'une zone de texte'
+                ]
+            ],
+            [
+                'code' => 'an_attribute_without_translations',
+                'type' => AttributeTypes::TEXTAREA,
+                'localizable' => false,
+                'scopable' => false,
+                'group' => 'other',
+                'labels' => []
+            ]
+        ]);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Widget;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Model\JobExecutionTracking;
 use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetJobExecutionTracking;
 use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetLastOperationsInterface;

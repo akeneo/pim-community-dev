@@ -15,7 +15,7 @@ class UserConsentRequiredExceptionSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith('an_app_id', 1234, ['a_scope', 'another_scope']);
+        $this->beConstructedWith('an_app_id', 1234);
     }
 
     public function it_is_initializable(): void
@@ -32,13 +32,5 @@ class UserConsentRequiredExceptionSpec extends ObjectBehavior
     public function it_gets_the_pim_user_id(): void
     {
         $this->getPimUserId()->shouldReturn(1234);
-    }
-
-    public function it_gets_the_new_authentication_scopes_list(): void
-    {
-        $this->getNewAuthenticationScopes()->shouldReturn([
-            'a_scope',
-            'another_scope',
-        ]);
     }
 }

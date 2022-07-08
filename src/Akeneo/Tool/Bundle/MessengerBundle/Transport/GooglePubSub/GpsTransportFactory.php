@@ -40,6 +40,6 @@ final class GpsTransportFactory implements TransportFactoryInterface
 
     public function supports(string $dsn, array $options): bool
     {
-        return 0 === strpos($dsn, 'gps:');
+        return str_starts_with($dsn, 'gps:');
     }
 }

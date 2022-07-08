@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Classification\Updater;
 
-use Akeneo\Channel\Component\Query\PublicApi\IsCategoryTreeLinkedToChannel;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\IsCategoryTreeLinkedToChannel;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;

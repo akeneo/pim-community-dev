@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {AppIllustration, Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
+import {AppIllustration, Breadcrumb, DangerIcon, Helper, TabBar, useTabBar} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
@@ -16,6 +16,14 @@ import {useFetchConnectedAppMonitoringSettings} from '../../hooks/use-fetch-conn
 import {MonitoringSettings} from '../../../model/Apps/monitoring-settings';
 import {ConnectedAppErrorMonitoring} from './ErrorMonitoring/ConnectedAppErrorMonitoring';
 import {DeveloperModeTag} from '../DeveloperModeTag';
+import isGrantedOnProduct from '../../is-granted-on-product';
+import isGrantedOnCatalog from '../../is-granted-on-catalog';
+import {CatalogList} from '@akeneo-pim-community/catalogs';
+import styled from 'styled-components';
+
+const ConnectedAppCatalogList = styled.div`
+    margin-top: 10px;
+`;
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -23,6 +31,7 @@ type Props = {
 
 const settingsTabName = '#connected-app-tab-settings';
 const permissionsTabName = '#connected-app-tab-permissions';
+const catalogsTabName = '#connected-app-tab-catalogs';
 const errorMonitoringTabName = '#connected-app-tab-error-monitoring';
 
 export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
@@ -161,7 +170,19 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
         [monitoringSettings, setMonitoringSettings, setHasUnsavedChanges]
     );
 
+    const handleCatalogClick = (catalogId: string) => {
+        const catalogEditUrl = generateUrl('akeneo_connectivity_connection_connect_connected_apps_catalogs_edit', {
+            connectionCode: connectedApp.connection_code,
+            catalogId: catalogId,
+        });
+
+        history.push(catalogEditUrl);
+    };
+
     const tag = connectedApp.is_test_app ? <DeveloperModeTag /> : null;
+
+    const isAtLeastGrantedToViewProducts = isGrantedOnProduct(connectedApp, 'view');
+    const isAtLeastGrantedToViewCatalogs = isGrantedOnCatalog(connectedApp, 'view');
 
     return (
         <>
@@ -177,7 +198,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                             <Translate id='pim_common.delete' />
                         </DropdownLink>
                     </SecondaryActionsDropdownButton>,
-                    <SaveButton key={0} />,
+                    <SaveButton key={1} />,
                 ]}
                 userButtons={<UserButtons />}
                 state={<FormState />}
@@ -199,7 +220,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                     >
                         {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')}
                     </TabBar.Tab>
-                    {null !== providers && providers.length > 0 && (
+                    {null !== providers && providers.length > 0 && isAtLeastGrantedToViewProducts && (
                         <TabBar.Tab
                             isActive={isCurrent(permissionsTabName)}
                             onClick={() => {
@@ -208,6 +229,17 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                             }}
                         >
                             {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')}
+                        </TabBar.Tab>
+                    )}
+                    {isAtLeastGrantedToViewCatalogs && (
+                        <TabBar.Tab
+                            isActive={isCurrent(catalogsTabName)}
+                            onClick={() => {
+                                setActiveTab(catalogsTabName);
+                                switchTo(catalogsTabName);
+                            }}
+                        >
+                            {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.catalogs')}
                         </TabBar.Tab>
                     )}
                     <TabBar.Tab
@@ -220,7 +252,11 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                         {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.error_monitoring')}
                     </TabBar.Tab>
                 </TabBar>
-
+                {isCurrent(settingsTabName) && connectedApp.is_pending && (
+                    <Helper icon={<DangerIcon />} level='warning'>
+                        {translate('akeneo_connectivity.connection.connect.connected_apps.edit.settings.pending')}
+                    </Helper>
+                )}
                 {isCurrent(settingsTabName) && (
                     <ConnectedAppSettings
                         connectedApp={connectedApp}
@@ -229,12 +265,19 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                     />
                 )}
 
-                {isCurrent(permissionsTabName) && null !== providers && (
+                {isCurrent(permissionsTabName) && null !== providers && isAtLeastGrantedToViewProducts && (
                     <ConnectedAppPermissions
                         providers={providers}
                         setProviderPermissions={handleSetProviderPermissions}
                         permissions={permissions}
+                        onlyDisplayViewPermissions={!isGrantedOnProduct(connectedApp, 'edit')}
                     />
+                )}
+
+                {isCurrent(catalogsTabName) && isAtLeastGrantedToViewCatalogs && (
+                    <ConnectedAppCatalogList>
+                        <CatalogList owner={connectedApp.connection_username} onCatalogClick={handleCatalogClick} />
+                    </ConnectedAppCatalogList>
                 )}
 
                 {isCurrent(errorMonitoringTabName) && <ConnectedAppErrorMonitoring connectedApp={connectedApp} />}

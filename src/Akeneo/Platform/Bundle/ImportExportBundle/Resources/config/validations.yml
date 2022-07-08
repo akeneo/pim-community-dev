@@ -1,0 +1,18 @@
+services:
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\StorageValidator:
+    arguments:
+      - !tagged_iterator { tag: 'akeneo.import_export.validation.storage_constraint', index_by: 'key' }
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage\None\NoneStorage:
+    tags:
+      - { name: 'akeneo.import_export.validation.storage_constraint', key: 'none' }
+
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage\Local\LocalStorage:
+    tags:
+      - { name: 'akeneo.import_export.validation.storage_constraint', key: 'local' }
+
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage\ManualUpload\ManualUploadStorage:
+    tags:
+      - { name: 'akeneo.import_export.validation.storage_constraint', key: 'manual_upload' }

@@ -74,7 +74,7 @@ class MetricPresenter extends NumberPresenter
         $amount = isset($value['amount']) ? parent::present($value['amount'], $options) : null;
         $unit = isset($value['unit']) && $value['unit'] !== '' ? $unitLabel : null;
 
-        return join(' ', array_filter([$amount, $unit]));
+        return join(' ', array_filter([$amount, $unit], fn ($value) => null !== $value && '' !== $value));
     }
 
     /**

@@ -2,6 +2,11 @@
 
 namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle;
 
+use Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterReferenceDataConfigurationsPass;
+use Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\DependencyInjection\Compiler\VolumeQueryPass;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -11,4 +16,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimCatalogVolumeMonitoringBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new VolumeQueryPass());
+    }
 }

@@ -2,23 +2,22 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Query;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsResolverInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 
 class ProductQueryBuilderSpec extends ObjectBehavior
@@ -53,7 +52,10 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         CursorFactoryInterface $cursorFactory,
         CursorInterface $cursor,
         FieldFilterInterface $filterField,
-        $filterRegistry
+        FilterRegistryInterface $filterRegistry,
+        SearchQueryBuilder $searchQb,
+        SorterRegistryInterface $sorterRegistry,
+        FieldSorterInterface $sorter
     ) {
         $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
@@ -68,8 +70,13 @@ class ProductQueryBuilderSpec extends ObjectBehavior
             ["locale" => "en_US", "scope" => "print"]
         )->shouldBeCalled();
 
-        $this->execute()->shouldReturn($cursor);
+        $searchQb->getQuery(Argument::any())->shouldBeCalledOnce()->willReturn([]);
+        $searchQb->hasSort('identifier')->willReturn(false);
+        $sorterRegistry->getFieldSorter('identifier')->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addFieldSorter('identifier', Argument::cetera())->willReturn($sorter);
 
+        $this->execute()->shouldReturn($cursor);
     }
 
     function it_adds_a_field_filter($repository, $filterRegistry, FieldFilterInterface $filter)
@@ -250,11 +257,14 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         CursorFactoryInterface $cursorFactory,
         CursorInterface $cursor,
         FieldFilterInterface $filterField,
-        $filterRegistry
+        FilterRegistryInterface $filterRegistry
     ) {
         $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
         $searchQb->getQuery()->willReturn([]);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
+
+        $searchQb->getQuery(Argument::any())->shouldBeCalledOnce()->willReturn([]);
+        $searchQb->hasSort('identifier')->willReturn(true);
 
         $this->execute()->shouldReturn($cursor);
     }

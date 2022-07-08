@@ -115,6 +115,9 @@ pim_catalog:
       association_type_does_not_exist: この関連タイプは存在しません。削除されていないことを確認してください。
       association_type_is_not_quantified: '「{{ association_type }}」は数量との関連付けに使用できません。数量に別の関連タイプを選択するか、「associations」プロパティを使用してください。'
       association_type_should_not_be_quantified: '「{{ association_type }}」は数量との関連付けにしか使用できません。別の関連タイプを選択するか、「quantified_associations」プロパティを使用してください。'
+    boolean:
+      boolean_value_is_required: '{{ attribute_code }} 属性には、データとしてブール値 (true または false) が必要です。{{ given_type }} が検出されました。'
+      boolean_value_is_required_in_import: '{{ attribute_code }} 属性には、データとしてブール値 (1 または 0) が必要です。{{ given_type }} が検出されました。'
 mass_edit:
   edit_common_attributes:
     invalid_values: 属性フォームにエラーがあります。

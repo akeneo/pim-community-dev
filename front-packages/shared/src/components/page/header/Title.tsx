@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {SkeletonPlaceholder} from 'akeneo-design-system';
 import styled from 'styled-components';
 
-const Container = styled.div`
+const Container = styled.div<{noTextTransform: boolean}>`
   color: ${({theme}) => theme.color.purple100};
   font-size: ${({theme}) => theme.fontSize.title};
   line-height: 34px;
@@ -14,18 +14,22 @@ const Container = styled.div`
   flex-grow: 1;
 
   &:first-letter {
-    text-transform: uppercase;
+    text-transform: ${({noTextTransform}) => (noTextTransform ? 'initial' : 'capitalize')};
   }
 `;
 
-type Props = {
+type TitleProps = {
   showPlaceholder?: boolean;
+  noTextTransform?: boolean;
 };
 
-const Title: FC<Props> = ({children, showPlaceholder}) => {
+const Title: FC<TitleProps> = ({children, showPlaceholder, noTextTransform}) => {
   return (
-    <Container>{showPlaceholder ? <SkeletonPlaceholder>{children}</SkeletonPlaceholder> : <>{children}</>}</Container>
+    <Container noTextTransform={noTextTransform ?? false}>
+      {showPlaceholder ? <SkeletonPlaceholder>{children}</SkeletonPlaceholder> : <>{children}</>}
+    </Container>
   );
 };
 
 export {Title};
+export type {TitleProps};

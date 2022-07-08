@@ -2,6 +2,12 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\Product;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 /**
@@ -139,46 +145,37 @@ class ExportProductsIntegration extends AbstractExportTestCase
 
     public function testVariantProductExport()
     {
-        $this->createVariantProduct(
-            'apollon_pink_m',
-            [
-                'family' => 'clothing',
-                'parent' => 'apollon_pink',
-                'categories' => ['spring'],
-                'values'  => [
-                    'size'  => [['data' => 'm', 'locale' => null, 'scope' => null]],
-                    'ean'  => [['data' => '12345678', 'locale' => null, 'scope' => null]],
-                ]
-            ]
-        );
-        $this->createVariantProduct(
+        $this->createProduct('apollon_pink_m', [
+            new SetFamily('clothing'),
+            new ChangeParent('apollon_pink'),
+            new SetCategories(['spring']),
+            new SetSimpleSelectValue('size', null, null, 'm'),
+            new SetTextValue('ean', null, null, '12345678')
+        ]);
+        $this->createProduct(
             'apollon_pink_l',
             [
-                'family' => 'clothing',
-                'parent' => 'apollon_pink',
-                'values'  => [
-                    'size'  => [['data' => 'l', 'locale' => null, 'scope' => null]],
-                    'ean'  => [['data' => '12345679', 'locale' => null, 'scope' => null]],
-                ]
+                new SetFamily('clothing'),
+                new ChangeParent('apollon_pink'),
+                new SetSimpleSelectValue('size', null, null, 'l'),
+                new SetTextValue('ean', null, null, '12345679')
             ]
         );
-        $this->createVariantProduct(
+        $this->createProduct(
             'apollon_pink_xl',
             [
-                'family' => 'clothing',
-                'parent' => 'apollon_pink',
-                'categories' => ['tshirt','summer'],
-                'values'  => [
-                    'size'  => [['data' => 'xl', 'locale' => null, 'scope' => null]],
-                    'ean'  => [['data' => '12345465', 'locale' => null, 'scope' => null]],
-                ]
+                new SetFamily('clothing'),
+                new ChangeParent('apollon_pink'),
+                new SetCategories(['tshirt','summer']),
+                new SetSimpleSelectValue('size', null, null, 'xl'),
+                new SetTextValue('ean', null, null, '12345465')
             ]
         );
 
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;parent;groups;color;ean;name-en_US;size;variation_name
-apollon_pink_m;round-neck,spring,tshirt;1;clothing;apollon_pink;;pink;12345678;;m;"my pink tshirt"
 apollon_pink_l;round-neck,tshirt;1;clothing;apollon_pink;;pink;12345679;;l;"my pink tshirt"
+apollon_pink_m;round-neck,spring,tshirt;1;clothing;apollon_pink;;pink;12345678;;m;"my pink tshirt"
 apollon_pink_xl;round-neck,summer,tshirt;1;clothing;apollon_pink;;pink;12345465;;xl;"my pink tshirt"
 
 CSV;
@@ -189,12 +186,8 @@ CSV;
     public function testItEscapeCharacterCorrectly()
     {
         $this->createProduct('product_1', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_text_area' => [
-                    ['data' => 'test "1234" DLE test  \" joli produit ; vive la data "', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetTextareaValue('a_text_area', null, null, 'test "1234" DLE test  \" joli produit ; vive la data "')
         ]);
 
         $expectedCsv = <<<CSV

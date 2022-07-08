@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
@@ -22,97 +22,47 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
 {
     public function test_it_save_multiple_products_scores(): void
     {
-        $productIdA = $this->createProduct('product_A')->getId();
-        $productIdB = $this->createProduct('product_B')->getId();
+        $productUuidA = $this->createProduct('product_A')->getUuid()->toString();
+        $productUuidB = $this->createProduct('product_B')->getUuid()->toString();
 
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
         $productScoreA1 = new ProductScores(
-            new ProductId($productIdA),
+            ProductUuid::fromString($productUuidA),
             new \DateTimeImmutable('2020-11-17'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(96))
-                ->addRate($channelMobile, $localeFr, new Rate(36))
-        );
-        $productScoreA2 = new ProductScores(
-            new ProductId($productIdA),
-            new \DateTimeImmutable('2020-11-16'),
+                ->addRate($channelMobile, $localeFr, new Rate(36)),
             (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(89))
-                ->addRate($channelMobile, $localeFr, new Rate(42))
+                ->addRate($channelMobile, $localeEn, new Rate(96))
         );
         $productScoreB = new ProductScores(
-            new ProductId($productIdB),
+            ProductUuid::fromString($productUuidB),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))
-                ->addRate($channelMobile, $localeFr, new Rate(0))
+                ->addRate($channelMobile, $localeFr, new Rate(0)),
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate(71))
         );
         // To ensure that it doesn't crash when saving a unknown product
         $unknownProductScore = new ProductScores(
-            new ProductId($productIdB),
+            ProductUuid::fromString($productUuidB),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))
-                ->addRate($channelMobile, $localeFr, new Rate(0))
+                ->addRate($channelMobile, $localeFr, new Rate(0)),
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate(65))
         );
 
         $this->resetProductsScores();
-        $this->get(ProductScoreRepository::class)->saveAll([$productScoreA1, $productScoreA2, $unknownProductScore, $productScoreB]);
+        $this->get(ProductScoreRepository::class)->saveAll([$productScoreA1, $unknownProductScore, $productScoreB]);
 
-        $this->assertCountProductsScores(3);
+        $this->assertCountProductsScores(2);
         $this->assertProductScoreExists($productScoreA1);
-        $this->assertProductScoreExists($productScoreA2);
-        $this->assertProductScoreExists($productScoreB);
-    }
-
-    public function test_it_purges_scores_older_than_a_given_date(): void
-    {
-        $productIdA = $this->createProduct('product_A')->getId();
-        $productIdB = $this->createProduct('product_B')->getId();
-
-        $channelMobile = new ChannelCode('mobile');
-        $localeEn = new LocaleCode('en_US');
-        $localeFr = new LocaleCode('fr_FR');
-
-        $productScoreA1 = new ProductScores(
-            new ProductId($productIdA),
-            new \DateTimeImmutable('2020-11-18'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(96))
-                ->addRate($channelMobile, $localeFr, new Rate(36))
-        );
-        $productScoreA2 = new ProductScores(
-            new ProductId($productIdA),
-            new \DateTimeImmutable('2020-11-17'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(79))
-                ->addRate($channelMobile, $localeFr, new Rate(12))
-        );
-        $productScoreA3 = new ProductScores(
-            new ProductId($productIdA),
-            new \DateTimeImmutable('2020-11-16'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(89))
-                ->addRate($channelMobile, $localeFr, new Rate(42))
-        );
-        $productScoreB = new ProductScores(
-            new ProductId($productIdB),
-            new \DateTimeImmutable('2020-11-16'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(71))
-                ->addRate($channelMobile, $localeFr, new Rate(0))
-        );
-
-        $this->resetProductsScores();
-        $this->get(ProductScoreRepository::class)->saveAll([$productScoreA1, $productScoreA2, $productScoreA3, $productScoreB]);
-        $this->get(ProductScoreRepository::class)->purgeUntil(new \DateTimeImmutable('2020-11-17'));
-
-        $this->assertCountProductsScores(3);
-        $this->assertProductScoreExists($productScoreA1);
-        $this->assertProductScoreExists($productScoreA2);
         $this->assertProductScoreExists($productScoreB);
     }
 
@@ -129,24 +79,32 @@ SQL
     private function assertProductScoreExists(ProductScores $expectedProductScore): void
     {
         $productScore = $this->get('database_connection')->executeQuery(<<<SQL
-SELECT * FROM pim_data_quality_insights_product_score
-WHERE product_id = :productId AND evaluated_at = :evaluatedAt;
+SELECT * FROM pim_data_quality_insights_product_score score
+    JOIN pim_catalog_product product ON product.uuid = score.product_uuid
+WHERE product.uuid = :productUuid AND evaluated_at = :evaluatedAt;
 SQL,
             [
-                'productId' => $expectedProductScore->getProductId()->toInt(),
+                'productUuid' => $expectedProductScore->getEntityId()->toBytes(),
                 'evaluatedAt' => $expectedProductScore->getEvaluatedAt()->format('Y-m-d'),
             ]
         )->fetchAssociative();
 
         $this->assertNotEmpty($productScore);
 
-        $expectedScore = $expectedProductScore->getScores()->mapWith(function (Rate $score) {
+        $expectedScores = $this->formatScoresForComparison($expectedProductScore->getScores());
+        $this->assertEquals($expectedScores, json_decode($productScore['scores'], true));
+
+        $expectedScoresPartialCriteria = $this->formatScoresForComparison($expectedProductScore->getScoresPartialCriteria());
+        $this->assertEquals($expectedScoresPartialCriteria, json_decode($productScore['scores_partial_criteria'], true));
+    }
+
+    private function formatScoresForComparison(ChannelLocaleRateCollection $scores): array
+    {
+        return $scores->mapWith(function (Rate $score) {
             return [
                 'rank' => Rank::fromRate($score)->toInt(),
                 'value' => $score->toInt(),
             ];
         });
-
-        $this->assertEquals($expectedScore, json_decode($productScore['scores'], true));
     }
 }

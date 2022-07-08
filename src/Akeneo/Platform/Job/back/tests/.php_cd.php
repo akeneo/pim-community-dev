@@ -28,12 +28,8 @@ $rules = [
             'Akeneo\Platform\Job\Application',
             'Akeneo\Platform\Job\Domain',
             'Doctrine\DBAL\Connection',
-            'Doctrine\DBAL\Types',
-            'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
             'Symfony\Component',
-            'Symfony\Contracts',
-            'Webmozart\Assert\Assert',
         ],
     )->in('Akeneo\Platform\Job\Infrastructure'),
 ];

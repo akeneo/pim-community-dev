@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
@@ -25,26 +24,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    protected NormalizerInterface $normalizer;
-    protected IdentifiableObjectRepositoryInterface $channelRepository;
-    protected AttributeRepositoryInterface $attributeRepository;
-    protected FillMissingValuesInterface $fillMissingProductModelValues;
-    private ?GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
-
     protected ?StepExecution $stepExecution = null;
 
     public function __construct(
-        NormalizerInterface $normalizer,
-        IdentifiableObjectRepositoryInterface $channelRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        FillMissingValuesInterface $fillMissingProductModelValues,
-        ?GetProductsWithQualityScoresInterface $getProductsWithQualityScores = null
+        protected NormalizerInterface $normalizer,
+        protected IdentifiableObjectRepositoryInterface $channelRepository,
+        protected AttributeRepositoryInterface $attributeRepository,
+        protected FillMissingValuesInterface $fillMissingProductModelValues,
+        private GetNormalizedQualityScoresInterface $getNormalizedQualityScores
     ) {
-        $this->normalizer          = $normalizer;
-        $this->channelRepository   = $channelRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->fillMissingProductModelValues = $fillMissingProductModelValues;
-        $this->getProductsWithQualityScores = $getProductsWithQualityScores;
     }
 
     /**
@@ -85,10 +73,9 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
-        if (null !== $this->getProductsWithQualityScores && $product instanceof ProductInterface && $this->hasFilterOnQualityScore($parameters)) {
-            $productStandard = $this->getProductsWithQualityScores->fromNormalizedProduct(
-                $product->getIdentifier(),
-                $productStandard,
+        if ($this->hasFilterOnQualityScore($parameters)) {
+            $productStandard['quality_scores'] = ($this->getNormalizedQualityScores)(
+                $product instanceof ProductModelInterface ? $product->getCode() : $product->getIdentifier(),
                 $structure['scope'] ?? null,
                 $structure['locales'] ?? []
             );

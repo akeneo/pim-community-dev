@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -13,5 +13,5 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 interface GetEvaluableProductValuesQueryInterface
 {
-    public function byProductId(ProductId $productId): ProductValuesCollection;
+    public function byProductId(ProductEntityIdInterface $productId): ProductValuesCollection;
 }

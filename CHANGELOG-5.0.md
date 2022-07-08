@@ -1,5 +1,83 @@
 # 5.0.x
 
+# 5.0.101 (2022-07-01)
+
+# 5.0.100 (2022-06-29)
+
+# 5.0.99 (2022-06-21)
+
+# 5.0.98 (2022-06-08)
+
+## Bug fixes
+
+- PIM-10477: [Backport PIM-10220] Fixed issues where association has NaN error
+- PIM-10472: Fix attributes list limit in the family mass edit
+
+# 5.0.97 (2022-05-30)
+
+# 5.0.96 (2022-05-24)
+
+# 5.0.95 (2022-05-13)
+
+## Bug fixes
+
+- PIM-10428: [Backport PIM-10049] Add custom strip filter to avoid segmentation fault
+- PIM-10439: Add CLI command in order to fix broken order on categories
+
+# 5.0.94 (2022-05-11)
+
+## Bug fixes
+
+- PIM-10419: [Backport] PIM-10350: Fix simple and multi select filtering and comparison
+
+# 5.0.93 (2022-05-03)
+
+## Bug fixes
+
+- PIM-10424: [Backport] Increase product grid filters limit display in user settings
+
+# 5.0.92 (2022-04-28)
+
+# 5.0.91 (2022-04-13)
+
+# 5.0.90 (2022-04-06)
+
+# 5.0.89 (2022-04-01)
+
+## Bug fixes
+
+- PIM-10374: Revert PIM-10333 + Fix category translations are not displayed in the category tree when locale is not xx_XX
+
+# 5.0.88 (2022-03-23)
+
+# 5.0.87 (2022-03-23)
+
+## Bug fixes
+
+- CPM-562 Fix product grid loading when attribute as image has a numeric code
+- PIM-10364: Fix broken permissions on Associations with Quantity
+
+# 5.0.86 (2022-03-17)
+
+## Bug fixes
+
+- PIM-10335: Fix locale not saved for localizable attribute in product exports
+
+# 5.0.85 (2022-03-17)
+
+## Bug fixes
+
+- PIM-10430: add missing translation in attribute group import job page
+- PIM-10333: Import category without correct locale should be impossible
+
+# 5.0.84 (2022-03-15)
+
+# 5.0.83 (2022-02-28)
+
+## Bug fixes
+
+- PIM-10296: Fix measurement attributes with value zero not displayed correctly in product grid
+
 # 5.0.82 (2022-02-25)
 
 ## Bug fixes

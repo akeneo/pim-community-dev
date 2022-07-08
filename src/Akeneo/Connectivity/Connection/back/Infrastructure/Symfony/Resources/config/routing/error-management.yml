@@ -1,6 +1,0 @@
-get_connection_business_errors:
-    path: '/{connection_code}/business-errors'
-    controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\ErrorManagement\ErrorManagementAction
-    methods: [GET]
-    requirements:
-        connection_code: '[a-zA-Z0-9_]+'

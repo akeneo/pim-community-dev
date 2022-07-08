@@ -22,6 +22,7 @@ use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PHPUnit\Framework\Assert;
@@ -140,13 +141,11 @@ final class ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTre
     {
         /** @var JobRegistry $jobRegistry */
         $jobRegistry = $this->get('akeneo_batch.job.job_registry');
+        $jobRepository = $this->get('akeneo_batch.job_repository');
         try {
-            $jobRegistry->register(new class($jobName) implements JobInterface {
-                private string $jobName;
-
-                public function __construct(string $jobName)
+            $jobRegistry->register(new class($jobName, $jobRepository) implements JobInterface {
+                public function __construct(private string $jobName, private JobRepositoryInterface $jobRepository)
                 {
-                    $this->jobName = $jobName;
                 }
 
                 public function getName(): string
@@ -156,6 +155,11 @@ final class ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTre
 
                 public function execute(JobExecution $execution): void
                 {
+                }
+
+                public function getJobRepository(): JobRepositoryInterface
+                {
+                    return $this->jobRepository;
                 }
 
             }, 'export', 'Akeneo CSV Connector');

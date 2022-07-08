@@ -6,6 +6,7 @@ namespace Akeneo\Test\Integration;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -51,6 +52,10 @@ abstract class TestCase extends KernelTestCase
 
         // Some messages can be in the queue after a failing test. To prevent error we remove then before each tests.
         $this->get('akeneo_integration_tests.launcher.job_launcher')->flushJobQueue();
+
+        /** @var FilePersistedFeatureFlags $featureFlags*/
+        $featureFlags = $this->get('feature_flags');
+        $featureFlags->deleteFile();
     }
 
     /**
@@ -60,7 +65,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function get(string $service)
     {
-        return self::$container->get($service);
+        return static::getContainer()->get($service);
     }
 
     /**
@@ -70,7 +75,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function getParameter(string $parameter)
     {
-        return self::$container->getParameter($parameter);
+        return static::getContainer()->getParameter($parameter);
     }
 
     /**
@@ -80,7 +85,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function hasParameter(string $parameter)
     {
-        return self::$container->hasParameter($parameter);
+        return static::getContainer()->hasParameter($parameter);
     }
 
     /**

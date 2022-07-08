@@ -11,6 +11,8 @@ default:
                 - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ChannelContext
                 - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\LocaleContext
                 - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\AttributeContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ExceptionContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserIntentContext
             filters:
                 tags: '@acceptance-back'
     extensions:

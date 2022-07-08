@@ -3,6 +3,10 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Price;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -37,45 +41,35 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_localizable_price' => [
-                    [
-                        'data'   => [['amount' => '-5.00', 'currency' => 'USD']],
-                        'locale' => 'en_US',
-                        'scope'  => 'ecommerce',
-                    ],
-                    ['data' => [['amount' => '14', 'currency' => 'USD']], 'locale' => 'en_US', 'scope' => 'tablet'],
-                    [
-                        'data'   => [['amount' => '100', 'currency' => 'USD']],
-                        'locale' => 'fr_FR',
-                        'scope'  => 'tablet',
-                    ],
-                ],
-            ],
+            new SetFamily('a_family'),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'ecommerce', 'en_US',
+                [new PriceValue('-5.00', 'USD')]
+            ),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'tablet', 'en_US',
+                [new PriceValue('14', 'USD')]
+            ),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'tablet', 'fr_FR',
+                [new PriceValue('100', 'USD')]
+            ),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_localizable_price' => [
-                    [
-                        'data'   => [['amount' => '-5.00', 'currency' => 'USD']],
-                        'locale' => 'en_US',
-                        'scope'  => 'ecommerce',
-                    ],
-                    ['data' => [['amount' => '10', 'currency' => 'USD']], 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => [['amount' => '75', 'currency' => 'USD']], 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    [
-                        'data'   => [['amount' => '75', 'currency' => 'USD']],
-                        'locale' => 'fr_FR',
-                        'scope'  => 'ecommerce',
-                    ],
-                ],
-            ],
+            new SetFamily('a_family'),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'ecommerce', 'en_US',
+                [new PriceValue('-5.00', 'USD')]
+            ),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'tablet', 'en_US',
+                [new PriceValue('10', 'USD')]
+            ),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'tablet', 'fr_FR',
+                [new PriceValue('75', 'USD')]
+            ),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'ecommerce', 'fr_FR',
+                [new PriceValue('75', 'USD')]
+            ),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorInferior()

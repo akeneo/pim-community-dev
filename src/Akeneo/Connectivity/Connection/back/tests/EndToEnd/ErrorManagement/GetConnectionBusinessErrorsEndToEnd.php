@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\ElasticsearchBusinessErrorRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
@@ -61,7 +62,7 @@ class GetConnectionBusinessErrorsEndToEnd extends WebTestCase
     private function insertBusinessErrors(ConnectionCode $connectionCode, array $errors): void
     {
         /** @var BusinessErrorRepositoryInterface */
-        $repository = $this->get('akeneo_connectivity.connection.persistence.repository.business_error');
+        $repository = $this->get(ElasticsearchBusinessErrorRepository::class);
         $repository->bulkInsert($connectionCode, $errors);
 
         /** @var Client */

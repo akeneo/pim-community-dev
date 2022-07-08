@@ -19,15 +19,6 @@ class QuantifiedAssociationsStructureValidator implements QuantifiedAssociations
         }
 
         foreach ($data as $associationTypeCode => $associationTypeValues) {
-            if (!is_string($associationTypeCode)) {
-                throw InvalidPropertyTypeException::validArrayStructureExpected(
-                    $field,
-                    'association type code should be a string',
-                    static::class,
-                    $data
-                );
-            }
-
             if (!is_array($associationTypeValues)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,

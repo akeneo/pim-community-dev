@@ -61,7 +61,6 @@ class DompdfBuilder implements PdfBuilderInterface
             'chroot' => $this->publicDir
         ]);
         $this->dompdf = new Dompdf($options);
-
         $html = $this->arabicHtmlFormatter->formatHtml($html);
         $this->dompdf->loadHtml($html);
         $this->dompdf->render();

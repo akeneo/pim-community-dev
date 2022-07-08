@@ -13,12 +13,11 @@ beforeEach(() => {
 
 test('it fetches the test apps', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
-        isEnabled: (feature: string) => {
-            switch (feature) {
-                case 'app_developer_mode':
-                    return true;
-            }
-        },
+        isEnabled: (feature: string) =>
+            ({
+                app_developer_mode: true,
+                marketplace_activate: true,
+            }[feature] ?? false),
     }));
 
     const expected = {
@@ -55,12 +54,11 @@ test('it fetches the test apps', async () => {
 
 test('it returns an empty response if the developer mode is disabled', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
-        isEnabled: (feature: string) => {
-            switch (feature) {
-                case 'app_developer_mode':
-                    return false;
-            }
-        },
+        isEnabled: (feature: string) =>
+            ({
+                app_developer_mode: false,
+                marketplace_activate: true,
+            }[feature] ?? false),
     }));
 
     const {result} = renderHook(() => useFetchTestApps());

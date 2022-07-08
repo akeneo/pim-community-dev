@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetScoresPropertyStrategy;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -16,21 +17,16 @@ use PhpSpec\ObjectBehavior;
  */
 final class QualityScoreFilterSpec extends ObjectBehavior
 {
-    public function let(SearchQueryBuilder $queryBuilder)
+    public function let(SearchQueryBuilder $queryBuilder, GetScoresPropertyStrategy $getScoresPropertyStrategy)
     {
+        $getScoresPropertyStrategy->__invoke()->willReturn('scores');
+
+        $this->beConstructedWith($getScoresPropertyStrategy);
         $this->setQueryBuilder($queryBuilder);
     }
 
     public function it_adds_filter_on_quality_score_with_letter_values($queryBuilder)
     {
-        $queryBuilder->addMustNot(
-            [
-                'term' => [
-                    'document_type' => 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface'
-                ],
-            ]
-        )->shouldBeCalled();
-
         $queryBuilder->addFilter(
             [
                 'terms' => [
@@ -44,14 +40,6 @@ final class QualityScoreFilterSpec extends ObjectBehavior
 
     public function it_adds_filter_on_quality_score_with_integer_values($queryBuilder)
     {
-        $queryBuilder->addMustNot(
-            [
-                'term' => [
-                    'document_type' => 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface'
-                ],
-            ]
-        )->shouldBeCalled();
-
         $queryBuilder->addFilter(
             [
                 'terms' => [

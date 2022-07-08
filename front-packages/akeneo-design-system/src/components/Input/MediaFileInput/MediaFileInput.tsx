@@ -4,7 +4,8 @@ import {Key, Override} from '../../../shared';
 import {InputProps} from '../common/InputProps';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {ImportIllustration} from '../../../illustrations';
-import {IconButton, IconButtonProps, Image} from '../../../components';
+import {IconButton, IconButtonProps} from '../../IconButton/IconButton';
+import {Image} from '../../Image/Image';
 import {ProgressBar} from '../../ProgressBar/ProgressBar';
 import {CloseIcon, LockIcon} from '../../../icons';
 import {useBooleanState, useShortcut} from '../../../hooks';
@@ -277,6 +278,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
               width={isCompact ? 47 : 120}
               src={displayedThumbnailUrl}
               alt={value.originalFilename}
+              fit="contain"
               onError={() => setDisplayedThumbnailUrl(DefaultPictureIllustration)}
             />
             {readOnly ? (

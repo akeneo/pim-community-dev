@@ -6,13 +6,14 @@ use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Abstract product
@@ -27,6 +28,8 @@ abstract class AbstractProduct implements ProductInterface
 
     /** @var int|string */
     protected $id;
+
+    protected UuidInterface $uuid;
 
     protected array $rawValues;
 
@@ -68,6 +71,7 @@ abstract class AbstractProduct implements ProductInterface
 
     public function __construct()
     {
+        $this->uuid = Uuid::uuid4();
         $this->values = new WriteValueCollection();
         $this->categories = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
@@ -82,17 +86,12 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getId()
     {
-        return $this->id;
+        throw new \LogicException('Product getId() should not be called');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setId($id)
+    public function getUuid(): UuidInterface
     {
-        $this->id = $id;
-
-        return $this;
+        return $this->uuid;
     }
 
     /**
@@ -1081,5 +1080,13 @@ abstract class AbstractProduct implements ProductInterface
         $associationsCollection->add($association);
 
         return $associationsCollection;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isNew(): bool
+    {
+        return null === $this->created;
     }
 }

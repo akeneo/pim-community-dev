@@ -9,6 +9,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
@@ -51,7 +54,7 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
                 'foo',
                 MediaValue::value('an_image', $akeneoImage),
                 31,
-                $product1->getId(),
+                $product1->getUuid()->toString(),
                 'sub_product_model',
                 new WriteValueCollection([
                     ScalarValue::value('sku', 'foo'),
@@ -68,7 +71,7 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
                 '[baz]',
                 null,
                 null,
-                $product2->getId(),
+                $product2->getUuid()->toString(),
                 null,
                 new WriteValueCollection([
                     ScalarValue::value('sku', 'baz'),
@@ -173,19 +176,29 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
 
     private function createVariantProduct(string $identifier, string $parentCode): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-
-        $this->get('pim_catalog.updater.product')->update($product, [
-            'parent' => $parentCode,
-            'values' => [
-                'a_simple_select' => [
-                    ['data' => 'optionA', 'locale' => null, 'scope' => null],
-                ],
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: [
+                new ChangeParent($parentCode),
+                new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')
             ]
-        ]);
-        $errors = $this->get('validator')->validate($product);
-        Assert::same(0, $errors->count());
-        $this->get('pim_catalog.saver.product')->save($product);
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
+
+        return \intval($id);
     }
 }
 

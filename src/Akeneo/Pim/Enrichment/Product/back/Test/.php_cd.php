@@ -14,11 +14,27 @@ $rules = [
         'Symfony\Component\Validator\ConstraintViolationList',
         'Symfony\Component\Messenger\Envelope',
         'Symfony\Component\Messenger\MessageBusInterface',
+        'Symfony\Component\Messenger\Stamp\HandledStamp',
+        'Ramsey\Uuid\UuidInterface',
+        'Symfony\Component\Messenger\Stamp',
     ])->in('Akeneo\Pim\Enrichment\Product\API'),
 
     $builder->only([
+        'Akeneo\Pim\Enrichment\Product\API',
+
         // Libs
         'Webmozart\Assert\Assert',
+
+        // PIM
+        'Akeneo\Pim\Structure\Component\AttributeTypes',
+        'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException',
+        'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+        'Akeneo\Pim\Structure\Component\AttributeTypes',
+        'Ramsey\Uuid\UuidInterface',
+
+        // API
+        'Akeneo\Pim\Enrichment\Product\API\Query\ProductUuidCursorInterface',
     ])->in('Akeneo\Pim\Enrichment\Product\Domain'),
 
     $builder->only([
@@ -33,27 +49,40 @@ $rules = [
         // Legacy
         'Akeneo\Pim\Enrichment\Component',
         'Akeneo\Tool\Component\StorageUtils\Exception\PropertyException',
-        'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException',
         'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
         'Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface',
+
+        // Public APIs
+        'Akeneo\Pim\Structure\Component\AttributeTypes',
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface'
     ])->in('Akeneo\Pim\Enrichment\Product\Application'),
 
     $builder->only([
         'Akeneo\Pim\Enrichment\Product\API',
-        'Akeneo\Pim\Enrichment\Product\Application',
         'Akeneo\Pim\Enrichment\Product\Domain',
 
         // Public APIs
         'Akeneo\Pim\Enrichment\Category\API',
-        'Akeneo\Channel\Component\Query\PublicApi',
+        'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
-        'Akeneo\Channel\Locale\API',
+        'Akeneo\Channel\API',
 
         // Non public APIs
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+        'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder',
         'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
+        'Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface',
+        'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
+        'Akeneo\Pim\Enrichment\Component\Product\Query',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator',
+        'Akeneo\Tool\Component\Api\Exception\InvalidQueryException',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
+        'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes',
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
 
         // Symfony, Doctrine DBAL and other libs
         'Webmozart\Assert\Assert',
+        'Ramsey\Uuid',
         'Symfony\Component\Validator',
         'Symfony\Component\DependencyInjection',
         'Symfony\Component\HttpKernel',

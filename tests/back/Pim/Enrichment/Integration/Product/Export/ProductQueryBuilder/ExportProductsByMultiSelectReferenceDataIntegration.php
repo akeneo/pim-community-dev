@@ -2,6 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByMultiSelectReferenceDataIntegration extends AbstractExportTestCase
@@ -17,42 +20,26 @@ class ExportProductsByMultiSelectReferenceDataIntegration extends AbstractExport
         ]);
 
         $this->createProduct('product_airguard', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_ref_data_multi_select' => [
-                    ['data' => ['airguard'], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiReferenceEntityValue('a_ref_data_multi_select', null, null, ['airguard'])
         ]);
 
         $this->createProduct('product_braid', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_ref_data_multi_select' => [
-                    ['data' => ['braid'], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiReferenceEntityValue('a_ref_data_multi_select', null, null, ['braid'])
         ]);
 
         $this->createProduct('product_airguard_braid', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_ref_data_multi_select' => [
-                    ['data' => ['airguard', 'braid'], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiReferenceEntityValue('a_ref_data_multi_select', null, null, ['airguard', 'braid'])
         ]);
 
         $this->createProduct('product_without_option', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_ref_data_multi_select' => [
-                    ['data' => [], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new ClearValue('a_ref_data_multi_select', null, null)
         ]);
 
-        $this->createProduct('product_without_option_attribute', ['family' => 'a_family']);
+        $this->createProduct('product_without_option_attribute', [new SetFamily('a_family')]);
     }
 
     public function testProductExportByFilteringOnOneOption()
@@ -88,8 +75,8 @@ CSV;
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;a_ref_data_multi_select
 product_airguard;;1;a_family;;airguard
-product_braid;;1;a_family;;braid
 product_airguard_braid;;1;a_family;;airguard,braid
+product_braid;;1;a_family;;braid
 
 CSV;
 

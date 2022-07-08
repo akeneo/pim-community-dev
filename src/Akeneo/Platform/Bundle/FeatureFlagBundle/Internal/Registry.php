@@ -22,6 +22,9 @@ class Registry
         $this->flags[$feature] = $flag;
     }
 
+    /**
+     * @throws \InvalidArgumentException if the feature flag is not declared in the application
+     */
     public function get(string $feature): FeatureFlag
     {
         if (!array_key_exists($feature, $this->flags)) {

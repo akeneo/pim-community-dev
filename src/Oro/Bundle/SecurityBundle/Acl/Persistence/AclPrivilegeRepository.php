@@ -112,6 +112,7 @@ class AclPrivilegeRepository implements EventDispatcherAware
                     $name = self::ROOT_PRIVILEGE_NAME;
                     $group = '';
                     $order = 0;
+                    $visible = true;
                 } else {
                     /** @var AclClassInfo $class */
                     $class = $classes[$oid->getType()];
@@ -121,6 +122,7 @@ class AclPrivilegeRepository implements EventDispatcherAware
                     }
                     $group = $class->getGroup();
                     $order = $class->getOrder();
+                    $visible = $class->isVisible();
                 }
 
                 $privilege = new AclPrivilege();
@@ -133,7 +135,8 @@ class AclPrivilegeRepository implements EventDispatcherAware
                     )
                     ->setGroup($group)
                     ->setExtensionKey($extensionKey)
-                    ->setOrder($order);
+                    ->setOrder($order)
+                    ->setVisible($visible);
 
                 $this->addPermissions($sid, $privilege, $oid, $acls, $extension, $rootAcl);
 

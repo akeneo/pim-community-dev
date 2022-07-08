@@ -8,7 +8,9 @@ test('it displays test app', () => {
     const testApp = {
         id: 'id1',
         name: 'Name of the test app',
+        logo: null,
         author: 'Author Name',
+        url: null,
         activate_url: 'test_app_1_activate_url',
         callback_url: 'test_app_1_callback_url',
         connected: false,
@@ -25,7 +27,9 @@ test('it displays test app with removed author', () => {
     const testApp = {
         id: 'id1',
         name: 'Name of the test app',
+        logo: null,
         author: null,
+        url: null,
         activate_url: 'test_app_1_activate_url',
         callback_url: 'test_app_1_callback_url',
         connected: false,

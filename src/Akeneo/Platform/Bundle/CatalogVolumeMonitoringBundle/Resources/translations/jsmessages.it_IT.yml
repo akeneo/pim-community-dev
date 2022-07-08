@@ -20,7 +20,7 @@ pim_catalog_volume:
     count_localizable_and_scopable_attributes: Attributi localizzabili e personalizzabili per canale
     count_localizable_attributes: Attributi localizzabili
     count_families: Famiglie
-    count_attributes: Atributi
+    count_attributes: Attributi
     average_max_options_per_attribute: Opzioni per attributo
     count_categories: Categorie
     count_category_trees: Albero della categoria

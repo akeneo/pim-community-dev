@@ -155,6 +155,27 @@ define([
                     results = results.results;
                   }
 
+                  // PIM-10418: the selected codes could be in the wrong case. We need to fix them otherwise select2
+                  // is lost between code with good/wrong cases.
+                  var sanitizedValues = _.map(
+                    $(element).val().split(','),
+                    function (choice) {
+                      var option = _.find(results, function (result) {
+                        return choice.toLowerCase() === (result.code ?? '').toLowerCase();
+                      });
+                      if (option) {
+                        if (option.code !== choice) {
+                          return option.code;
+                        }
+                      }
+
+                      return choice;
+                    }.bind(this)
+                  ).join(',');
+                  if ($(element).val() !== sanitizedValues) {
+                    $(element).val(sanitizedValues);
+                  }
+
                   var choices = _.map(
                     $(element).val().split(','),
                     function (choice) {

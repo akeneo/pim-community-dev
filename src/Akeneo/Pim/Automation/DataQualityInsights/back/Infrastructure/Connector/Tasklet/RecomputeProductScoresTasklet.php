@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\RecomputeProductScoresParameters;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -21,31 +21,17 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
 {
     private StepExecution $stepExecution;
 
-    private ConsolidateProductScores $consolidateProductScores;
-
-    private Connection $connection;
-
-    private LoggerInterface $logger;
-
-    private JobLauncherInterface $queueJobLauncher;
-
-    private JobInstanceRepository $jobInstanceRepository;
-
     private const TIMEBOX_IN_SECONDS_ALLOWED = 900; // 15 minutes
     private const BULK_SIZE = 1000;
 
     public function __construct(
-        ConsolidateProductScores $consolidateProductScores,
-        Connection $connection,
-        JobLauncherInterface $queueJobLauncher,
-        JobInstanceRepository $jobInstanceRepository,
-        LoggerInterface $logger
+        private ConsolidateProductScores $consolidateProductScores,
+        private Connection $connection,
+        private JobLauncherInterface $queueJobLauncher,
+        private JobInstanceRepository $jobInstanceRepository,
+        private LoggerInterface $logger,
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
-        $this->consolidateProductScores = $consolidateProductScores;
-        $this->connection = $connection;
-        $this->queueJobLauncher = $queueJobLauncher;
-        $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->logger = $logger;
     }
 
     public function execute(): void
@@ -62,15 +48,18 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
                 if (empty($productIds)) {
                     return;
                 }
-                $this->consolidateProductScores->consolidate(ProductIdCollection::fromInts($productIds));
+
+                $this->consolidateProductScores->consolidate(
+                    $this->idFactory->createCollection(array_map(fn ($productId) => (string) $productId, $productIds))
+                );
                 $lastProductId = end($productIds);
-            } while ($this->isTimeboxReached($startTime) === false);
+            } while (false === $this->isTimeboxReached($startTime));
         } catch (\Exception $exception) {
             $this->stepExecution->addFailureException($exception);
             $this->logger->error('Compute products scores failed', [
                 'step_execution_id' => $this->stepExecution->getId(),
                 'last_product_id' => $lastProductId,
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
             ]);
         }
 
@@ -91,7 +80,7 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
         );
 
         return array_map(function ($resultRow) {
-            return (int)$resultRow['id'];
+            return (int) $resultRow['id'];
         }, $stmt->fetchAllAssociative());
     }
 

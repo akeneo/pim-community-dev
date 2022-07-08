@@ -13,6 +13,7 @@ import {ThemeProvider} from 'styled-components';
 import AxisEvaluation from './component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
 import {Criterion, Icon} from './component/ProductEditForm/TabContent/DataQualityInsights';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import QualityScorePortal from './component/ProductEditForm/QualityScorePortal';
 
 interface ProductModelEditFormAppProps {
   catalogChannel: string;
@@ -46,6 +47,7 @@ const ProductModelEditFormApp: FunctionComponent<ProductModelEditFormAppProps> =
                 </Criterion>
               </AxisEvaluation>
             </DataQualityInsightsTabContent>
+            <QualityScorePortal />
           </AxesContextProvider>
         </Provider>
       </ThemeProvider>

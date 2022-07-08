@@ -9,7 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader;
-use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,13 +20,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetConnectedAppActionEndToEnd extends WebTestCase
 {
-    private FakeFeatureFlag $featureFlagMarketplaceActivate;
+    private FilePersistedFeatureFlags $featureFlags;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
+        $this->featureFlags = $this->get('feature_flags');
     }
 
     protected function getConfiguration(): Configuration
@@ -36,7 +36,7 @@ class GetConnectedAppActionEndToEnd extends WebTestCase
 
     public function test_it_gets_connected_app(): void
     {
-        $this->featureFlagMarketplaceActivate->enable();
+        $this->featureFlags->enable('marketplace_activate');
         $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
 
@@ -55,7 +55,7 @@ class GetConnectedAppActionEndToEnd extends WebTestCase
             null
         );
 
-        $this->getConnectionLoader()->createConnection('connectionCodeA', 'Connector A', FlowType::DATA_DESTINATION, false);
+        $connectionA = $this->getConnectionLoader()->createConnection('connectionCodeA', 'Connector A', FlowType::DATA_DESTINATION, false);
         $this->getUserGroupLoader()->create(['name' => 'app_123456abcdef']);
         $this->getConnectedAppLoader()->createConnectedApp(
             '0dfce574-2238-4b13-b8cc-8d257ce7645b',
@@ -78,10 +78,13 @@ class GetConnectedAppActionEndToEnd extends WebTestCase
             'logo' => 'http://www.example.com/path/to/logo/a',
             'author' => 'author A',
             'user_group_name' => 'app_123456abcdef',
+            'connection_username' => $connectionA->username(),
             'categories' => ['category A1', 'category A2'],
             'certified' => false,
             'partner' => 'partner A',
             'is_test_app' => false,
+            'is_pending' => false,
+            'has_outdated_scopes' => false,
         ];
 
         $this->client->request(

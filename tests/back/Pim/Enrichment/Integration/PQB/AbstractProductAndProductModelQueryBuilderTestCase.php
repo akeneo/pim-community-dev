@@ -79,6 +79,6 @@ abstract class AbstractProductAndProductModelQueryBuilderTestCase extends TestCa
         sort($entities);
         sort($expected);
 
-        $this->assertSame($entities, $expected);
+        $this->assertSame($expected, $entities);
     }
 }

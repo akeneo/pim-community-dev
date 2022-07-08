@@ -70,7 +70,7 @@ final class GetAllAppsResult
     }
 
     /**
-     * @return array{total:int, apps:array}
+     * @return array{total:int, apps:mixed[]}
      */
     public function normalize(): array
     {

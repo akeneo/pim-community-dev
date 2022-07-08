@@ -159,7 +159,7 @@ pim_import_export:
   batch_status:
     1: Valmis
     2: Alkaa
-    3: In progress
+    3: Työn alla
     4: Päättyy
     5: Päättynyt
     6: Epäonnistunut
@@ -168,6 +168,7 @@ pim_import_export:
   job_status:
     COMPLETED: Valmis
     STARTING: Alkaa
+    STARTED: Työn alla
     STOPPING: Päättyy
     STOPPED: Päättynyt
     FAILED: Epäonnistunut

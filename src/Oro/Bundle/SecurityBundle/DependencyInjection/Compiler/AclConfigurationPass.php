@@ -2,10 +2,13 @@
 
 namespace Oro\Bundle\SecurityBundle\DependencyInjection\Compiler;
 
+use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
 use Oro\Bundle\SecurityBundle\Acl\Cache\AclCache;
+use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Yaml\Yaml;
 
 class AclConfigurationPass implements CompilerPassInterface
 {
@@ -39,6 +42,7 @@ class AclConfigurationPass implements CompilerPassInterface
         $this->configureDefaultAclProvider($container);
         $this->configureDefaultAclCache($container);
         $this->configureDefaultAclVoter($container);
+        $this->loadAclFeatureFlagRegistry($container);
     }
 
     /**
@@ -165,5 +169,26 @@ class AclConfigurationPass implements CompilerPassInterface
             },
             $extensions
         );
+    }
+
+    protected function loadAclFeatureFlagRegistry(ContainerBuilder $container)
+    {
+        $config = [];
+        $aclFeatureFlagRegistry = $container->getDefinition('oro_security.acl.acl_feature_flags');
+
+        foreach ($container->getParameter('kernel.bundles') as $bundle) {
+            $reflection = new \ReflectionClass($bundle);
+            $file = dirname($reflection->getFilename()) .'/Resources/config/acl.yml';
+
+            if (!is_file($file)) {
+                continue;
+            }
+
+            $config = Yaml::parse(file_get_contents(realpath($file)));
+            foreach ($config as $aclName => $aclConfig) {
+                $feature = $aclConfig['feature'] ?? null;
+                $aclFeatureFlagRegistry->addMethodCall('add', [$aclName, $feature]);
+            }
+        }
     }
 }

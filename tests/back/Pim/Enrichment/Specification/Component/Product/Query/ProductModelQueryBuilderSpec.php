@@ -13,7 +13,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsReso
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
@@ -52,12 +51,20 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         CursorInterface $cursor,
         FieldFilterInterface $filterField,
         SearchQueryBuilder $searchQb,
-        FilterRegistryInterface $filterRegistry
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
+        FieldSorterInterface $sorter
     ) {
         $this->setQueryBuilder($searchQb);
+        $searchQb->getQuery(Argument::any())->shouldBeCalledOnce()->willReturn([]);
         $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
         $filterField->setQueryBuilder(Argument::any())->shouldBeCalled();
+
+        $searchQb->hasSort('identifier')->willReturn(false);
+        $sorterRegistry->getFieldSorter('identifier')->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addFieldSorter('identifier', Argument::cetera())->willReturn($sorter);
 
         $filterField->addFieldFilter(
             "entity_type",
@@ -282,6 +289,8 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         $searchQb->getQuery()->willReturn([]);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
 
+        $searchQb->hasSort('identifier')->willReturn(true);
+
         $this->execute()->shouldReturn($cursor);
     }
 
@@ -311,6 +320,8 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         $searchQb->getQuery()->willReturn([]);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
         $searchQb->addFacet('document_type_facet', 'document_type')->shouldBeCalledOnce();
+
+        $searchQb->hasSort('identifier')->willReturn(true);
 
         $this->execute()->shouldReturn($cursor);
     }

@@ -18,20 +18,59 @@ final class FeatureHelper
      */
     public static function skipSpecTestWhenPermissionFeatureIsNotActivated(): void
     {
-        if (!self::isPermissionFeatureActivated()) {
+        if (!self::isPermissionFeatureAvailable()) {
             throw new SkippingException('Permission feature is not available in this scope');
         }
     }
 
-    public static function skipIntegrationTestWhenPermissionFeatureIsNotActivated(): void
+    /**
+     * @throws SkippingException
+     */
+    public static function skipSpecTestWhenReferenceEntityFeatureIsNotActivated(): void
     {
-        if (!self::isPermissionFeatureActivated()) {
+        if (!self::isReferenceEntityFeatureActivated()) {
+            throw new SkippingException('Reference entity feature is not available in this scope');
+        }
+    }
+
+    public static function skipIntegrationTestWhenPermissionFeatureIsNotAvailable(): void
+    {
+        if (!self::isPermissionFeatureAvailable()) {
             Assert::markTestSkipped('Permission feature is not available in this scope');
         }
     }
 
-    public static function isPermissionFeatureActivated(): bool
+    public static function isPermissionFeatureAvailable(): bool
     {
         return \class_exists('Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle');
+    }
+
+    public static function isReferenceEntityFeatureActivated(): bool
+    {
+        return \class_exists('Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle', true);
+    }
+
+    public static function skipIntegrationTestWhenAssetFeatureIsNotActivated(): void
+    {
+        $isAssetFeatureActivated = \class_exists('Akeneo\Pim\Enrichment\AssetManager\Bundle\AkeneoPimEnrichmentAssetManagerBundle');
+        if (!$isAssetFeatureActivated) {
+            Assert::markTestSkipped('Asset feature is not available in this scope');
+        }
+    }
+
+    public static function skipIntegrationTestWhenReferenceEntityIsNotActivated(): void
+    {
+        $isAssetFeatureActivated = \class_exists('Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle');
+        if (!$isAssetFeatureActivated) {
+            Assert::markTestSkipped('Asset feature is not available in this scope');
+        }
+    }
+
+    public static function skipIntegrationTestWhenTableAttributeIsNotActivated(): void
+    {
+        $isTableAttributeFeatureActivated = \class_exists('Akeneo\Pim\TableAttribute\Infrastructure\Symfony\AkeneoPimTableAttributeBundle');
+        if (!$isTableAttributeFeatureActivated) {
+            Assert::markTestSkipped('Table attribute feature is not available in this scope');
+        }
     }
 }

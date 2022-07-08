@@ -15,6 +15,7 @@ services:
             - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_properties'
             - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_attributes'
             - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_locales'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_identifiers_limit'
 
     pim_enrich.connector.use_cases.handler.list_products:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQueryHandler
@@ -39,6 +40,7 @@ services:
             - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes'
             - '@pim_catalog.repository.cached_channel'
             - '@akeneo.pim.enrichment.product_model.query.find_id'
+            - '@akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores'
 
     pim_enrich.connector.use_cases.validator.list_product_models:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductModelsQueryValidator
@@ -96,6 +98,9 @@ services:
         arguments:
             - '@pim_catalog.repository.cached_attribute'
 
+    akeneo.pim.enrichment.use_cases.validator.validate_identifiers_limit:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateIdentifiersLimit
+
     akeneo.pim.enrichment.use_cases.validator.search_locale:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateSearchLocale
         arguments:
@@ -119,10 +124,16 @@ services:
     akeneo.pim.enrichment.use_cases.get_products_with_quality_scores:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScores
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQuery'
             - '@akeneo.pim.automation.data_quality_insights.feature'
 
     akeneo.pim.enrichment.use_cases.get_products_with_completenesses:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenesses
         arguments:
             - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+
+    akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductModelsWithQualityScores
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductModelScoresQuery'
+            - '@akeneo.pim.automation.data_quality_insights.feature'

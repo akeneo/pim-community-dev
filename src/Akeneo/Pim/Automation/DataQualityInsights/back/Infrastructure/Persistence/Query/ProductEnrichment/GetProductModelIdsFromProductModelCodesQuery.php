@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductModelIdsFromProductModelCodesQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -16,6 +16,7 @@ final class GetProductModelIdsFromProductModelCodesQuery implements GetProductMo
 {
     public function __construct(
         private Connection $dbConnection,
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
     }
 
@@ -37,7 +38,7 @@ SQL;
 
         $productModelIds = [];
         while ($productModel = $stmt->fetchAssociative()) {
-            $productModelIds[$productModel['code']] = new ProductId(intval($productModel['id']));
+            $productModelIds[$productModel['code']] = $this->idFactory->create((string)$productModel['id']);
         }
 
         return $productModelIds;

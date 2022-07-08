@@ -50,6 +50,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->booleanNode(FilterUtility::BY_HAVING_KEY)->end()
                             ->booleanNode(FilterUtility::ENABLED_KEY)->end()
+                            ->scalarNode('feature_flag')->end()
                         ->end()
                     ->end()
                 ->end()

@@ -14,6 +14,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 class RequestAccessTokenActionEndToEnd extends WebTestCase
 {
     private FakeWebMarketplaceApi $webMarketplaceApi;
-    private FakeFeatureFlag $featureFlagMarketplaceActivate;
+    private FilePersistedFeatureFlags $featureFlags;
     private ClientProvider $clientProvider;
     private RequestAppAuthorizationHandler $appAuthorizationHandler;
     private string $clientId;
@@ -32,7 +33,6 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
         $this->createApp();
         $authCode = $this->getAuthCode();
 
-        $this->featureFlagMarketplaceActivate->enable();
         $this->client->request(
             'POST',
             '/connect/apps/v1/oauth2/token',
@@ -62,7 +62,6 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
         $this->createApp();
         $authCode = $this->getAuthCode();
 
-        $this->featureFlagMarketplaceActivate->enable();
         $this->client->request(
             'POST',
             '/connect/apps/v1/oauth2/token',
@@ -94,7 +93,6 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
         $this->createApp();
         $authCode = $this->getAuthCode();
 
-        $this->featureFlagMarketplaceActivate->enable();
         $this->client->request(
             'POST',
             '/connect/apps/v1/oauth2/token',
@@ -118,7 +116,7 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
         parent::setUp();
 
         $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
-        $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
+        $this->featureFlags = $this->get('feature_flags');
         $this->clientProvider = $this->get(ClientProvider::class);
         $this->generateAsymmetricKeysHandler = $this->get(GenerateAsymmetricKeysHandler::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
@@ -135,7 +133,7 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
     {
         $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
 
-        $this->featureFlagMarketplaceActivate->enable();
+        $this->featureFlags->enable('marketplace_activate');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $this->authenticateAsAdmin();
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp($appId));

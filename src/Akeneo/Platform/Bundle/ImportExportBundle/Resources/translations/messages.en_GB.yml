@@ -34,6 +34,8 @@ pim_import_export:
       error: Import <strong>%label%</strong> failed
       warning: Import <strong>%label%</strong> finished with some warnings
       success: Import <strong>%label%</strong> finished
+      warnings:
+        xlsx_cell_date_conversion_error: Can not convert cell "{cellName}" with date format to attribute of type {attributeType}
   list: Select a job
   job_profile:
     tab:

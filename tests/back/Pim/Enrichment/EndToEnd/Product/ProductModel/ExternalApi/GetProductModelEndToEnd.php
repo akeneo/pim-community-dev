@@ -108,14 +108,6 @@ class GetProductModelEndToEnd extends ApiTestCase
         $client->request('GET', 'api/rest/v1/product-models/model-biker-jacket-leather');
         $response = $client->getResponse();
 
-        $logger = self::$container->get('monolog.logger.pim_api_acl');
-        assert($logger instanceof TestLogger);
-
-        $this->assertTrue(
-            $logger->hasWarning('User "admin" with roles ROLE_ADMINISTRATOR is not granted "pim_api_product_list"'),
-            'Expected warning not found in the logs.'
-        );
-
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 

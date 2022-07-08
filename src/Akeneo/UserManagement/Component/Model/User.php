@@ -3,8 +3,8 @@
 namespace Akeneo\UserManagement\Component\Model;
 
 use \Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -1228,7 +1228,7 @@ class User implements UserInterface, EquatableInterface
 
     /**
      * Please note this function is inspired by User::isEqualTo
-     * But using AKeneo custom implementations roles are into token not User, and there are a few structural/implementation differences between Akeneo and Symfonu User ...
+     * But using Akeneo custom implementations roles are into token not User, and there are a few structural/implementation differences between Akeneo and Symfonu User ...
      * isAccountNonExpired isAccountNotLocked
      * @see \Symfony\Component\Security\Core\User\User::isEqualTo()
      * {@inheritdoc}

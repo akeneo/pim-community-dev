@@ -1,0 +1,32 @@
+services:
+    Akeneo\Connectivity\Connection\Application\Webhook\Command\CheckWebhookReachabilityHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\WebhookReachabilityChecker'
+
+    Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalGetAConnectionWebhookQuery'
+            - '%webhook_active_event_subscriptions_limit%'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalCountActiveEventSubscriptionsQuery'
+
+    Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectActiveWebhooksQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\GuzzleWebhookClient'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder'
+            - '@monolog.logger.event_api'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger'
+            - '%env(AKENEO_PIM_URL)%'
+
+    Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\UpdateConnectionWebhookQuery'
+            - '@validator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectWebhookSecretQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSecretHandler'
+
+    Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSecretHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\GenerateSecret'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSaveWebhookSecretQuery'

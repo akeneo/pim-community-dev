@@ -72,7 +72,6 @@ services:
             - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
             - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
             - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
-            - '@monolog.logger.pim_api_acl'
             - '@oro_security.security_facade'
             - '@validator'
 
@@ -103,10 +102,10 @@ services:
             - '@pim_api.warmup_query_cache.dummy'
             - '@logger'
             - '%pim_api.configuration%'
-            - '@monolog.logger.pim_api_acl'
             - '@oro_security.security_facade'
             - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
             - '@validator'
+            - '@akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores'
 
     pim_api.controller.category:
         public: true
@@ -163,8 +162,9 @@ services:
             - '@pim_enrich.normalizer.product_violation'
             - '@pim_catalog.builder.product'
             - '@pim_enrich.filter.product_attribute_filter'
-            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
             - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_enrich.product.message_bus'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier'
 
     pim_enrich.controller.rest.product_comment:
         public: true
@@ -384,3 +384,21 @@ services:
         - '@pim_catalog.saver.product_model'
         - '@event_dispatcher'
         - '%pim_api.configuration%'
+
+    Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\Product\UpdateProductController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.validator.product'
+            - '@pim_user.context.user'
+            - '@pim_enrich.filter.product_edit_data'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.comparator.filter.product'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
+            - '@pim_enrich.normalizer.product_violation'
+            - '@pim_enrich.filter.product_attribute_filter'
+            - '@pim_enrich.product.message_bus'
+            - '@pim_enrich.product.query_message_bus'

@@ -97,6 +97,10 @@ abstract class AbstractMetric implements MetricInterface
             return $metric->getData() === $this->data;
         }
 
+        if (!\is_numeric($metric->getData()) || !\is_numeric($this->data)) {
+            return false;
+        }
+
         return 0 === bccomp($metric->getData(), $this->data, 50);
     }
 

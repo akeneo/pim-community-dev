@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductModelEvaluationQuery;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -37,47 +37,47 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    public function test_it_returns_true_if_a_root_product_model_has_an_up_to_date_evaluation()
+    public function testItReturnsTrueIfARootProductModelHasAnUpToDateEvaluation()
     {
         $currentDate = new \DateTimeImmutable('2020-03-02 11:34:27');
 
         $productId1 = $this->givenAProductModelWithAnUpToDateEvaluation($currentDate);
         $this->givenAnUpdatedProductModelWithAnOutdatedEvaluation($currentDate);
 
-        $productHasUpToDateEvaluation = $this->query->forProductId($productId1);
+        $productHasUpToDateEvaluation = $this->query->forEntityId($productId1);
         $this->assertTrue($productHasUpToDateEvaluation);
     }
 
-    public function test_it_returns_false_if_a_root_product_model_has_an_outdated_evaluation()
+    public function testItReturnsFalseIfARootProductModelHasAnOutdatedEvaluation()
     {
         $currentDate = new \DateTimeImmutable('2020-03-02 11:34:27');
 
         $this->givenAProductModelWithAnUpToDateEvaluation($currentDate);
         $productId1 = $this->givenAnUpdatedProductModelWithAnOutdatedEvaluation($currentDate);
 
-        $productHasUpToDateEvaluation = $this->query->forProductId($productId1);
+        $productHasUpToDateEvaluation = $this->query->forEntityId($productId1);
         $this->assertFalse($productHasUpToDateEvaluation);
     }
 
-    public function test_it_returns_false_if_a_sub_product_model_has_an_outdated_evaluation_because_of_its_parent()
+    public function testItReturnsFalseIfASubProductModelHasAnOutdatedEvaluationBecauseOfItsParent()
     {
         $currentDate = new \DateTimeImmutable('2020-03-02 11:34:27');
 
         $productId1 = $this->givenASubProductModelWithAnOutdatedEvaluationComparedToItsParent($currentDate);
-        $productHasUpToDateEvaluation = $this->query->forProductId($productId1);
+        $productHasUpToDateEvaluation = $this->query->forEntityId($productId1);
         $this->assertFalse($productHasUpToDateEvaluation);
     }
 
-    public function test_it_returns_true_if_a_sub_product_model_has_an_up_to_date_evaluation_because_of_its_parent()
+    public function testItReturnsTrueIfASubProductModelHasAnUpToDateEvaluationBecauseOfItsParent()
     {
         $currentDate = new \DateTimeImmutable('2020-03-02 11:34:27');
 
         $productId1 = $this->givenASubProductModelWithAnUpToDateEvaluationComparedToItsParent($currentDate);
-        $productHasUpToDateEvaluation = $this->query->forProductId($productId1);
+        $productHasUpToDateEvaluation = $this->query->forEntityId($productId1);
         $this->assertTrue($productHasUpToDateEvaluation);
     }
 
-    private function givenAProductModelWithAnUpToDateEvaluation(\DateTimeImmutable $currentDate): ProductId
+    private function givenAProductModelWithAnUpToDateEvaluation(\DateTimeImmutable $currentDate): ProductModelId
     {
         $updatedAt = $currentDate->modify('-2 SECOND');
         $productModelId = $this->createProductModel('familyVariantA2');
@@ -87,7 +87,7 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
         return $productModelId;
     }
 
-    private function givenAnUpdatedProductModelWithAnOutdatedEvaluation(\DateTimeImmutable $updatedAt): ProductId
+    private function givenAnUpdatedProductModelWithAnOutdatedEvaluation(\DateTimeImmutable $updatedAt): ProductModelId
     {
         $productModelId = $this->createProductModel('familyVariantA2');
         $this->updateProductModelAt($productModelId, $updatedAt);
@@ -96,7 +96,7 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
         return $productModelId;
     }
 
-    private function givenASubProductModelWithAnOutdatedEvaluationComparedToItsParent(\DateTimeImmutable $updatedAt): ProductId
+    private function givenASubProductModelWithAnOutdatedEvaluationComparedToItsParent(\DateTimeImmutable $updatedAt): ProductModelId
     {
         $parentCode = strval(Uuid::uuid4());
         $this->givenAParentProductModel($parentCode, $updatedAt);
@@ -109,7 +109,7 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $productModelId = new ProductId($productModel->getId());
+        $productModelId = $this->get(ProductModelIdFactory::class)->create((string) $productModel->getId());
 
         $this->updateProductModelAt($productModelId, $updatedAt->modify('-1 HOUR'));
         $this->createProductModelCriteriaEvaluations($productModelId, $updatedAt->modify('-1 SECOND'));
@@ -117,7 +117,7 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
         return $productModelId;
     }
 
-    private function givenASubProductModelWithAnUpToDateEvaluationComparedToItsParent(\DateTimeImmutable $updatedAt): ProductId
+    private function givenASubProductModelWithAnUpToDateEvaluationComparedToItsParent(\DateTimeImmutable $updatedAt): ProductModelId
     {
         $parentCode = strval(Uuid::uuid4());
         $this->givenAParentProductModel($parentCode, $updatedAt);
@@ -130,7 +130,7 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $productModelId = new ProductId($productModel->getId());
+        $productModelId = $this->get(ProductModelIdFactory::class)->create((string) $productModel->getId());
 
         $this->updateProductModelAt($productModelId, $updatedAt->modify('-1 HOUR'));
         $this->createProductModelCriteriaEvaluations($productModelId, $updatedAt->modify('+1 MINUTE'));
@@ -147,13 +147,13 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $productModelId = new ProductId($productModel->getId());
+        $productModelId = $this->get(ProductModelIdFactory::class)->create((string) $productModel->getId());
 
-        $this->updateProductModelAt(new ProductId($productModel->getId()), $updatedAt);
+        $this->updateProductModelAt($productModelId, $updatedAt);
         $this->createProductModelCriteriaEvaluations($productModelId, $updatedAt->modify('+1 SECOND'));
     }
 
-    private function createProductModel(string $familyVariant): ProductId
+    private function createProductModel(string $familyVariant): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode(strval(Uuid::uuid4()))
@@ -162,10 +162,10 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        return new ProductId((int) $productModel->getId());
+        return $this->get(ProductModelIdFactory::class)->create((string) $productModel->getId());
     }
 
-    private function updateProductModelAt(ProductId $productModelId, \DateTimeImmutable $updatedAt)
+    private function updateProductModelAt(ProductModelId $productModelId, \DateTimeImmutable $updatedAt)
     {
         $query = <<<SQL
 UPDATE pim_catalog_product_model SET updated = :evaluated WHERE id = :product_model_id;
@@ -177,24 +177,25 @@ SQL;
         ]);
     }
 
-    private function createProductModelCriteriaEvaluations(ProductId $productModelId, \DateTimeImmutable $createdAt): void
+    private function createProductModelCriteriaEvaluations(ProductModelId $productModelId, \DateTimeImmutable $createdAt): void
     {
+        $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([(string) $productModelId]);
         $this->removeProductModelEvaluations($productModelId);
         $this->get('akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations')
-            ->createAll(ProductIdCollection::fromProductId($productModelId));
+            ->createAll($productModelIdCollection);
         $this->updateProductModelEvaluationsAt($productModelId, $createdAt);
     }
 
-    private function removeProductModelEvaluations(ProductId $productModelId): void
+    private function removeProductModelEvaluations(ProductModelId $productModelId): void
     {
         $query = <<<SQL
 DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation WHERE product_id = :product_id;
 SQL;
 
-        $this->db->executeQuery($query, ['product_id' => $productModelId->toInt(),]);
+        $this->db->executeQuery($query, ['product_id' => $productModelId->toInt()]);
     }
 
-    private function updateProductModelEvaluationsAt(ProductId $productModelId, \DateTimeImmutable $evaluatedAt): void
+    private function updateProductModelEvaluationsAt(ProductModelId $productModelId, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
 UPDATE pim_data_quality_insights_product_model_criteria_evaluation SET evaluated_at = :evaluated_at WHERE product_id = :product_id;

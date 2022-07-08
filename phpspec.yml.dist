@@ -1,18 +1,18 @@
 ## Rename this file in phpspec.yml to customize the phpspec configuration
 suites:
     ## Channel context
-    ChannelLocale:
-        namespace: Akeneo\Channel\Locale
-        psr4_prefix: Akeneo\Channel\Locale
-        spec_path: src/Akeneo/Channel/Locale/back/Test
-        src_path: src/Akeneo/Channel/Locale/back
+    LegacyChannel:
+        namespace: Akeneo\Channel
+        psr4_prefix: Akeneo\Channel
+        spec_path: tests/back/Channel
+        src_path: src/Akeneo/Channel/back
         spec_prefix: Specification
 
     Channel:
         namespace: Akeneo\Channel
         psr4_prefix: Akeneo\Channel
-        spec_path: tests/back/Channel
-        src_path: src/Akeneo/Channel
+        spec_path: src/Akeneo/Channel/back/tests
+        src_path: src/Akeneo/Channel/back
         spec_prefix: Specification
 
     ## Structure context

@@ -67,6 +67,7 @@ pim_common:
   product_models: Tuotemallit
   products: Tuotteet
   properties: Ominaisuudet
+  quality_score: Laatupisteytys
   quantity: Määrä
   remove: Poista
   save: Tallenna
@@ -389,8 +390,8 @@ pim_catalog_image: Kuva
 pim_catalog_boolean: "Kyllä/ei"
 pim_catalog_date: Päivämäärä
 pim_catalog_metric: Mitta
-pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
-pim_reference_data_multiselect: Viitetiedot monivalinta
+pim_reference_data_simpleselect: Viitetiedot (kustomoitu) yksinkertainen valinta
+pim_reference_data_multiselect: Viitetiedot (kustomoitu) monivalinta
 #Locales
 Activated: Aktivoitu
 Edit: Muokkaa
@@ -550,3 +551,4 @@ pim_login:
   footer:
     powered: Powered by
     powered_image_title: logo Akeneo
+pim_system.acl_group.developer_mode: Kehittäjätila

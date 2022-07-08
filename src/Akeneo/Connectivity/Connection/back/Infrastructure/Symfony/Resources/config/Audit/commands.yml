@@ -1,0 +1,14 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Command\PurgeAuditErrorCommand:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\PurgeAuditErrorQuery'
+        tags:
+            - {name: 'console.command'}
+
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Command\UpdateAuditDataCommand:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectHourlyIntervalsToRefreshQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalPurgeAuditProductQuery'
+        tags:
+            - { name: 'console.command' }

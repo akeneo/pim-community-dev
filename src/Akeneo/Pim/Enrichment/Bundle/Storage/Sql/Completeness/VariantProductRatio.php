@@ -70,7 +70,7 @@ SQL;
     {
         return <<<SQL
                 FROM pim_catalog_product_model AS root_product_model
-                INNER JOIN pim_catalog_product product ON product.product_model_id = root_product_model.id
+                INNER JOIN pim_catalog_product product ON product.product_model_id = root_product_model.id AND product.product_model_id IS NOT NULL
 SQL;
     }
 
@@ -89,7 +89,7 @@ SQL;
               (
                 SELECT DISTINCT product.identifier, completeness.locale_id, completeness.channel_id, completeness.missing_count as product_missing_count
                 %s
-                INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id
+                INNER JOIN pim_catalog_completeness completeness ON product.uuid = completeness.product_uuid
                 WHERE
                     root_product_model.id = :root_product_model_id
               ) AS product

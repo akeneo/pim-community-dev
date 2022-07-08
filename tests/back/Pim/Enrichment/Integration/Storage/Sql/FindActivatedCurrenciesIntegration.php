@@ -2,7 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql;
 
-use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 

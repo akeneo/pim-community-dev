@@ -56,16 +56,16 @@ Feature: Export products
     And I wait for the "tablet_product_export" job to finish
     Then exported file of "tablet_product_export" should contain:
     """
-    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-tablet;datasheet;description-en_GB-tablet;description-en_US-tablet;enabled;family;groups;handmade;image;legend-en_GB;legend-en_US;manufacturer;material;name-en_GB;name-en_US;number_in_stock-tablet;price-EUR;price-GBP;price-USD;release_date-tablet;size;thumbnail;washing_temperature;washing_temperature-unit;weight;weight-unit
-    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;1;tshirts;;;;;;american_apparel;cotton;"White t-shirt";"White t-shirt";;10.00;9.00;15.00;;size_M;;;;;
-    tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;1;tshirts;;;;;;american_apparel;cotton;"Black t-shirt";"Black t-shirt";;10.00;9.00;15.00;;size_L;;;;;
+    sku;additional_colors;categories;color;cost-GBP;cost-USD;country_of_manufacture;customer_rating-tablet;datasheet;description-en_GB-tablet;description-en_US-tablet;enabled;family;groups;handmade;image;legend-en_GB;legend-en_US;manufacturer;material;name-en_GB;name-en_US;number_in_stock-tablet;price-EUR;price-GBP;price-USD;release_date-tablet;size;thumbnail;washing_temperature;washing_temperature-unit;weight;weight-unit
+    tshirt-white;;men_2013,men_2014,men_2015;white;;;usa;;;;;1;tshirts;;;;;;american_apparel;cotton;"White t-shirt";"White t-shirt";;10.00;9.00;15.00;;size_M;;;;;
+    tshirt-black;;men_2013,men_2014,men_2015;black;;;usa;;;;;1;tshirts;;;;;;american_apparel;cotton;"Black t-shirt";"Black t-shirt";;10.00;9.00;15.00;;size_L;;;;;
     """
     When I am on the "print_product_export" export job page
     And I launch the export job
     And I wait for the "print_product_export" job to finish
     Then exported file of "print_product_export" should contain:
     """
-    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-print;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-print;description-en_US-print;enabled;family;groups;handmade;image;legend-de_DE;legend-en_US;manufacturer;material;name-de_DE;name-en_US;number_in_stock-print;price-EUR;price-GBP;price-USD;release_date-print;size;thumbnail;washing_temperature;washing_temperature-unit;weight;weight-unit
-    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;;"Ein sehr elegantes weißes T-Shirt";"A really stylish white t-shirt";1;tshirts;;;;;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";;10.00;9.00;15.00;;size_M;;;;;
-    tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;;"Ein sehr elegantes schwarzes T-Shirt";"A really stylish black t-shirt";1;tshirts;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";"Black t-shirt";;10.00;9.00;15.00;;size_L;;;;;
+    sku;additional_colors;categories;color;cost-EUR;cost-USD;country_of_manufacture;customer_rating-print;customs_tax-de_DE-EUR;customs_tax-de_DE-USD;datasheet;description-de_DE-print;description-en_US-print;enabled;family;groups;handmade;image;legend-de_DE;legend-en_US;manufacturer;material;name-de_DE;name-en_US;number_in_stock-print;price-EUR;price-GBP;price-USD;release_date-print;size;thumbnail;washing_temperature;washing_temperature-unit;weight;weight-unit
+    tshirt-white;;men_2013,men_2014,men_2015;white;;;usa;;;;;;"Ein sehr elegantes weißes T-Shirt";"A really stylish white t-shirt";1;tshirts;;;;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";;10.00;9.00;15.00;;size_M;;;;;
+    tshirt-black;;men_2013,men_2014,men_2015;black;;;usa;;;;;;"Ein sehr elegantes schwarzes T-Shirt";"A really stylish black t-shirt";1;tshirts;;;;;american_apparel;cotton;"Schwarzes T-Shirt";"Black t-shirt";;10.00;9.00;15.00;;size_L;;;;;
     """

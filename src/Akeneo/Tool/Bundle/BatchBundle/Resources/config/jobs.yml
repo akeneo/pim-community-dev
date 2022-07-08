@@ -46,6 +46,8 @@ services:
     akeneo_batch.job.job_registry:
         class: '%akeneo_batch.job.job_registry.class%'
         public: true
+        arguments:
+            - '@feature_flags'
 
     akeneo_batch.job.job_stopper:
         class: 'Akeneo\Tool\Component\Batch\Job\JobStopper'

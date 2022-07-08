@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Manager;
 
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -16,33 +17,12 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserManager implements UserProviderInterface
 {
-    /**
-     * @var string
-     */
-    protected $class;
-
-    /**
-     * @var ObjectManager
-     */
-    protected $om;
-
-    /**
-     * @var EncoderFactoryInterface
-     */
-    protected $encoderFactory;
-
-    /**
-     * Constructor
-     *
-     * @param string                  $class          Entity name
-     * @param ObjectManager           $om             Object manager
-     * @param EncoderFactoryInterface $encoderFactory
-     */
-    public function __construct($class, ObjectManager $om, EncoderFactoryInterface $encoderFactory)
-    {
-        $this->class = $class;
-        $this->om = $om;
-        $this->encoderFactory = $encoderFactory;
+    public function __construct(
+        protected string $class,
+        protected ObjectManager $om,
+        protected EncoderFactoryInterface $encoderFactory,
+        private SaverInterface $saver
+    ) {
     }
 
     /**
@@ -68,11 +48,7 @@ class UserManager implements UserProviderInterface
             $user->addRole($role);
         }
 
-        $this->getStorageManager()->persist($user);
-
-        if ($flush) {
-            $this->getStorageManager()->flush();
-        }
+        $this->saver->save($user);
     }
 
     /**

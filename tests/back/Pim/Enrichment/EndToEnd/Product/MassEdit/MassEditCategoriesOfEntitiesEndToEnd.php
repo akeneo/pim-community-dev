@@ -6,7 +6,6 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\MassEdit;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Symfony\Component\HttpFoundation\Response;
 
 class MassEditCategoriesOfEntitiesEndToEnd extends AbstractMassEditEndToEnd
 {

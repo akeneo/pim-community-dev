@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode(PropertyInterface::DATA_NAME_KEY)->isRequired()->end()
                             ->variableNode('apply_callback')->end()
+                            ->scalarNode('feature_flag')->end()
                         ->end()
                     ->end()
                 ->end()

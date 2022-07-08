@@ -34,6 +34,7 @@ final class GetAppQuery implements GetAppQueryInterface
         }
 
         $data = $this->webMarketplaceApi->getApp($id);
+
         if (null === $data) {
             return null;
         }

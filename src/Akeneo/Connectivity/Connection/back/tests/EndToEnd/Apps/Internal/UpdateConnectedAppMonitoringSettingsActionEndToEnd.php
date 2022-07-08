@@ -7,8 +7,11 @@ namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\Internal;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,15 +22,19 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class UpdateConnectedAppMonitoringSettingsActionEndToEnd extends WebTestCase
 {
-    private FakeFeatureFlag $featureFlagMarketplaceActivate;
+    private FilePersistedFeatureFlags $featureFlags;
     private ConnectionLoader $connectionLoader;
+    private UserGroupLoader $userGroupLoader;
+    private ConnectedAppLoader $connectedAppLoader;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
+        $this->featureFlags = $this->get('feature_flags');
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
+        $this->userGroupLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.user_group_loader');
+        $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
     }
 
     protected function getConfiguration(): Configuration
@@ -37,7 +44,7 @@ class UpdateConnectedAppMonitoringSettingsActionEndToEnd extends WebTestCase
 
     public function test_it_updates_connected_app_monitoring_settings(): void
     {
-        $this->featureFlagMarketplaceActivate->enable();
+        $this->featureFlags->enable('marketplace_activate');
         $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
 
@@ -47,6 +54,21 @@ class UpdateConnectedAppMonitoringSettingsActionEndToEnd extends WebTestCase
             FlowType::DATA_DESTINATION,
             false,
             ConnectionType::APP_TYPE
+        );
+
+        $this->userGroupLoader->create(['name' => 'app_7891011ghijkl']);
+
+        $this->connectedAppLoader->createConnectedApp(
+            '2677e764-f852-4956-bf9b-1a1ec1b0d145',
+            'App B',
+            [],
+            'connectionCodeA',
+            'http://www.example.com/path/to/logo/b',
+            'author B',
+            'app_7891011ghijkl',
+            [],
+            true,
+            null
         );
 
         $data = [

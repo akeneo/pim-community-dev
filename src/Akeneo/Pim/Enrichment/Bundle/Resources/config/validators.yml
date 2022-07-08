@@ -333,7 +333,7 @@ services:
     pim_catalog.validator.constraint.unique_product_entity:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntityValidator'
         arguments:
-            - '@pim_catalog.repository.product'
+            - '@akeneo.pim.enrichment.product.query.find_id'
             - '@pim_catalog.validator.unique_value_set'
             - '@pim_catalog.repository.attribute'
         tags:
@@ -342,7 +342,7 @@ services:
     pim_catalog.validator.constraint.unique_product_model_entity:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductModelEntityValidator'
         arguments:
-            - '@pim_catalog.repository.product_model'
+            - '@akeneo.pim.enrichment.product_model.query.find_id'
             - '@pim_catalog.validator.unique_value_set'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_product_model_validator_entity }

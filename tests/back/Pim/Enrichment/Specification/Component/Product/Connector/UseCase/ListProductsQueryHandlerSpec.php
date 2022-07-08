@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
@@ -17,8 +18,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQua
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -26,6 +27,7 @@ use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ListProductsQueryHandlerSpec extends ObjectBehavior
@@ -80,7 +82,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct1 = new ConnectorProduct(
-            1,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_1',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -98,7 +100,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $connectorProduct2 = new ConnectorProduct(
-            2,
+            Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'),
             'identifier_2',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -147,7 +149,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct1 = new ConnectorProduct(
-            1,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_1',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -165,7 +167,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $connectorProduct2 = new ConnectorProduct(
-            2,
+            Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'),
             'identifier_2',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -195,8 +197,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
-        GetConnectorProducts $getConnectorProducts,
-        FindId $findProductId
+        GetConnectorProducts $getConnectorProducts
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -204,18 +205,16 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->searchAfter = 'AN-UPPERCASE-IDENTIFIER';
         $query->userId = 1;
 
-        $findProductId->fromIdentifier('AN-UPPERCASE-IDENTIFIER')->shouldBeCalledOnce()->willReturn('1234');
-
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => 'product_1234',
+            'search_after_unique_key' => 'product_z',
             'search_after' => ['an-uppercase-identifier']
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct1 = new ConnectorProduct(
-            1,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_1',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -233,7 +232,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $connectorProduct2 = new ConnectorProduct(
-            2,
+            Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'),
             'identifier_2',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -358,8 +357,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
         GetConnectorProducts $getConnectorProducts,
-        EventDispatcherInterface $eventDispatcher,
-        FindId $findProductId
+        EventDispatcherInterface $eventDispatcher
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -367,17 +365,16 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->searchAfter = '69';
         $query->userId = 1;
 
-        $findProductId->fromIdentifier('69')->shouldBeCalledOnce()->willReturn('5634');
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => 'product_5634',
+            'search_after_unique_key' => 'product_z',
             'search_after' => ['69']
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct = new ConnectorProduct(
-            5,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_5',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -410,8 +407,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
         GetConnectorProducts $getConnectorProducts,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        FindId $findProductId
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -420,18 +416,16 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->userId = 1;
         $query->withQualityScores = 'true';
 
-        $findProductId->fromIdentifier('69')->shouldBeCalledOnce()->willReturn('44');
-
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => 'product_44',
+            'search_after_unique_key' => 'product_z',
             'search_after' => ['69']
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct = new ConnectorProduct(
-            5,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_5',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -448,7 +442,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             null
         );
         $connectorProductWithQualityScores = $connectorProduct->buildWithQualityScores(
-            ChannelLocaleRateCollection::fromArrayInt(['ecommerce' => ['en_US' => 15]])
+            new QualityScoreCollection(['ecommerce' => ['en_US' => new QualityScore('E', 15)]])
         );
 
         $productList = new ConnectorProductList(1, [$connectorProduct]);
@@ -468,8 +462,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
         GetConnectorProducts $getConnectorProducts,
-        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        FindId $findProductId
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -478,17 +471,16 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->userId = 1;
         $query->withCompletenesses = 'true';
 
-        $findProductId->fromIdentifier('69')->shouldBeCalledOnce()->willReturn(null);
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => '',
+            'search_after_unique_key' => 'product_z',
             'search_after' => ['69']
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct = new ConnectorProduct(
-            5,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_5',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -506,7 +498,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
         $connectorProductWithCompletenesses = $connectorProduct->buildWithCompletenesses(
             new ProductCompletenessCollection(
-                5,
+                Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'),
                 [
                     new ProductCompleteness('ecommerce', 'en_US', 10, 5),
                     new ProductCompleteness('ecommerce', 'fr_FR', 10, 1),

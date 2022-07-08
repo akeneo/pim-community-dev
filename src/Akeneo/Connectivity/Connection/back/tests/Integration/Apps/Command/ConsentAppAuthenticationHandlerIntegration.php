@@ -18,8 +18,8 @@ use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationScopesQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use FOS\OAuthServerBundle\Model\ClientInterface;
@@ -62,7 +62,7 @@ class ConsentAppAuthenticationHandlerIntegration extends TestCase
         $this->createConnection = $this->get(CreateConnection::class);
         $this->clientProvider = $this->get(ClientProvider::class);
         $this->createUserGroup = $this->get(CreateUserGroup::class);
-        $this->createUser = $this->get('akeneo_connectivity.connection.service.user.create_user');
+        $this->createUser = $this->get(CreateUser::class);
         $this->getUserConsentedAuthenticationScopesQuery = $this->get(GetUserConsentedAuthenticationScopesQuery::class);
     }
 
@@ -188,11 +188,11 @@ class ConsentAppAuthenticationHandlerIntegration extends TestCase
     {
         $group = $this->createUserGroup->execute('userGroup_'.$appPublicId);
 
-        $user = $this->createUser->execute(
+        $userId = $this->createUser->execute(
             'username_'.$appPublicId,
             'firstname_'.$appPublicId,
-            'lastname_'.$appPublicId,
-            [$group->getName()]
+            [$group->getName()],
+            ['ROLE_USER'],
         );
 
         $client = $this->clientProvider->findOrCreateClient(
@@ -213,7 +213,7 @@ class ConsentAppAuthenticationHandlerIntegration extends TestCase
             'Connector_'.$appPublicId,
             FlowType::OTHER,
             $client->getId(),
-            $user->id()
+            $userId,
         );
 
         $this->createConnectedAppQuery->execute(
@@ -225,6 +225,7 @@ class ConsentAppAuthenticationHandlerIntegration extends TestCase
                 'http://www.example.com/path/to/logo',
                 'author',
                 'userGroup_'.$appPublicId,
+                'username_'.$appPublicId,
                 [],
                 false,
                 'partner'

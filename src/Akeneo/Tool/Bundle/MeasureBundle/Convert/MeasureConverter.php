@@ -16,7 +16,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
  */
 class MeasureConverter
 {
-    private const SCALE = 12;
+    public const SCALE = 12;
 
     private ?string $family = null;
     private LegacyMeasurementProvider $legacyMeasurementProvider;
@@ -105,14 +105,14 @@ class MeasureConverter
      */
     protected function applyOperation($value, $operator, $operand)
     {
+        if (!is_numeric($value)) {
+            return '0';
+        }
+
         if (is_float($value)) {
             $processedValue = \number_format($value, static::SCALE, '.', '');
         } else {
             $processedValue = (string) $value;
-        }
-
-        if (!is_numeric($processedValue)) {
-            return '0';
         }
 
         switch ($operator) {

@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductEndToEnd extends AbstractProductTestCase
@@ -279,7 +278,7 @@ JSON;
                 "scope": null,
                 "data": {
                     "amount": "987654321987.1234",
-                    "unit": "KILOWATT"
+                    "unit": "Kilowatt"
                 }
             }],
             "a_metric_without_decimal": [{
@@ -287,7 +286,7 @@ JSON;
                 "scope": null,
                 "data": {
                     "amount": 98,
-                    "unit": "CENTIMETER"
+                    "unit": "CentiMeter"
                 }
             }],
             "a_metric_without_decimal_negative": [{
@@ -1009,14 +1008,6 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
         $response = $client->getResponse();
-
-        $logger = self::$container->get('monolog.logger.pim_api_acl');
-        assert($logger instanceof TestLogger);
-
-        $this->assertTrue(
-            $logger->hasWarning('User "admin" with roles ROLE_ADMINISTRATOR is not granted "pim_api_product_edit"'),
-            'Expected warning not found in the logs.'
-        );
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }

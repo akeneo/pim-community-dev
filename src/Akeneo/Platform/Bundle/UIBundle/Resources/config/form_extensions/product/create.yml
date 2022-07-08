@@ -9,6 +9,8 @@ extensions:
            successMessage: pim_enrich.entity.product.flash.create.success
            editRoute: pim_enrich_product_edit
            postUrl: pim_enrich_product_rest_create
+           routerKey: uuid
+           entityIdentifierParamName: meta.id
 
     pim-product-create-sku:
         module: pim/product-edit-form/creation/identifier

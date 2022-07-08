@@ -18,22 +18,20 @@ final class GetAccessTokenQuery implements GetAccessTokenQueryInterface
     {
     }
 
-    public function execute(string $clientId, array $scopes = []): ?string
+    public function execute(string $appId, string $scopes): ?string
     {
         $query = <<<SQL
-SELECT token.token
-FROM pim_api_access_token as token
-LEFT JOIN pim_api_client as client ON token.client = client.id AND client.marketplace_public_app_id = :client_id
-LEFT JOIN akeneo_connectivity_connected_app as app ON app.id = client.marketplace_public_app_id
-WHERE JSON_CONTAINS(app.scopes, :scopes) AND JSON_LENGTH(app.scopes) = :scopesCount
-SQL;
+        SELECT token.token
+        FROM pim_api_access_token as token
+        JOIN pim_api_client as client ON token.client = client.id AND client.marketplace_public_app_id = :app_id
+        WHERE token.scope = :scopes
+        SQL;
 
         $token = $this->connection->fetchOne(
             $query,
             [
-                'client_id' => $clientId,
-                'scopes' => \json_encode($scopes),
-                'scopesCount' => \count($scopes),
+                'app_id' => $appId,
+                'scopes' => $scopes,
             ]
         );
 

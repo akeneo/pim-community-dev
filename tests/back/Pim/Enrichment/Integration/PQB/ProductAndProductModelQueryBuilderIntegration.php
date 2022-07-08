@@ -16,7 +16,6 @@ use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
  */
 class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndProductModelQueryBuilderTestCase
 {
-
     /**
      * @group critical
      */
@@ -95,11 +94,11 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     {
         $productId = IdEncoder::encode(
             IdEncoder::PRODUCT_TYPE,
-            $this->get('pim_catalog.repository.product')->findOneByIdentifier('watch')->getId()
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('watch')->getUuid()->toString()
         );
         $variantProductId = IdEncoder::encode(
             IdEncoder::PRODUCT_TYPE,
-            $this->get('pim_catalog.repository.product')->findOneByIdentifier('tshirt-unique-size-crimson-red')->getId()
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('tshirt-unique-size-crimson-red')->getUuid()->toString()
         );
         $productModelId = IdEncoder::encode(
             IdEncoder::PRODUCT_MODEL_TYPE,

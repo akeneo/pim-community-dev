@@ -26,6 +26,11 @@ pim_enrich:
         second: Выберите операцию
         third: Настроить
         fourth: Подтверждение
+  entity:
+    association_type:
+      property:
+        is_two_way: 2-сторонняя связь
+        is_quantified: Количественная ассоциация
 pim_enrich_attribute_form:
   code: Код
   type: Тип атрибута

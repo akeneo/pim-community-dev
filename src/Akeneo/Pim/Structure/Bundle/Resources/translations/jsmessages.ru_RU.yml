@@ -72,6 +72,9 @@ pim_enrich.entity.attribute_option:
       delete_confirmation_subtitle_msg: Вы уверены, что хотите удалить этот параметр? Это действие нельзя отменить.
 pim_enrich.entity.association_type:
   label: тип ассоциации
+  property:
+    is_two_way: 2-сторонняя связь
+    is_quantified: Количественная ассоциация
   flash:
     update:
       success: Тип связи был успешно удален.
@@ -84,9 +87,15 @@ pim_enrich.entity.association_type:
       fail: Не удается удалить этот тип ассоциации
   module:
     create:
+      title: Создать новый тип ассоциации
       button: Создать тип взаимосвязи
+      is_two_way:
+        message_on_read_only: Тип ассоциации может быть количественным или двусторонним, чтобы выбрать иной, снимите флаг с текущего
+      is_quantified:
+        message_on_read_only: Тип ассоциации может быть количественным или двусторонним, чтобы выбрать иной, снимите флаг с текущего
     delete:
       confirm: Вы действительно хотите удалить этот тип ассоциации?
+  hint: <a href="{{link}}" target="_blank">В этой статье</a> вы найдете все, что вам нужно для создания ассоциации.
 pim_enrich.entity.group_type:
   label: тип группы
   flash:
@@ -183,6 +192,11 @@ pim_enrich.entity.attribute:
     delete:
       confirm: Вы действительно хотите удалить этот атрибут?
       product_count: '{0}0 товаров |{1}1 товар|]1, Inf [{{ count }} товаров'
+      product_model_count: '{0}0 моделей продукта|{1}1 модель продукта|]1, Inf[{{ count }} моделей продукта'
+      used: значения, установленные для этого атрибута, будут удалены.
+      helper:
+        content: Если необходимо изменить тип атрибута, сделать его локализируемым или видимым, сохраняя доступ к существующим значениям атрибутов,
+        link: мы поможем пошагово разобраться.
       type: Пожалуйста, введите "{{ attributeCode }}"
       confirm_from_group: Вы действительно хотите удалить атрибут {{ attribute }} из этой группы атрибутов?
       confirm_from_product: Вы уверены, что хотите удалить этот атрибут из продукта?
@@ -190,6 +204,7 @@ pim_enrich.entity.attribute_group:
   label: группа атрибутов
   uppercase_label: Группа атрибутов
   plural_label: Группы атрибутов
+  result_count: '{0}0 групп атрибутов|{1}1 группа атрибутов|]1, Inf [{{ count }} групп атрибутов'
   flash:
     update:
       success: Группа атрибутов успешно обновлена

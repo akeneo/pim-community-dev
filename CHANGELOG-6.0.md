@@ -1,5 +1,120 @@
 # 6.0.x
 
+# 6.0.34 (2022-07-05)
+
+## Bug fixes
+
+- OCT-77: Fix translation error in the PIM App Store
+
+# 6.0.33 (2022-07-01)
+
+# 6.0.32 (2022-06-28)
+
+## Improvement
+
+- Improvement: Update Composer dependencies and fix ArabicHtmlFormatterSpec
+- Improvement: Update PhpStan to 1.7.14
+
+# 6.0.31 (2022-06-14)
+
+# 6.0.30 (2022-06-08)
+
+## Bug fixes
+
+- PIM-10470: Refresh process tracker job detail page when job execution id param changes
+
+# 6.0.29 (2022-05-25)
+
+## Bug fixes
+
+- PIM-10457: Fixed inconsistency with column oro_user.consecutive_authentication_failure_counter when migrating from v6 to serenity
+- PIM-10449: Remove old table related to old queue system
+- PIM-10451: Add migration to add an index on start_time on the job_execution table
+- MW-373: Prepare the marketplace migration to another subdomain
+- PIM-10452, PIM-10454, PIM-10455, PIM-10456 : Fix migration to set some fields to NOT NULL on job & step execution tables 
+- PIM-10453: Add migration to add an index on updated on pim_catalog_category table
+
+# 6.0.28 (2022-05-13)
+
+# 6.0.27 (2022-05-10)
+
+## Bug fixes
+
+- PIM-10425: Fix notifications can't be displayed because of removed routes
+
+## Improvements
+
+- Use Node v14 in docker-compose files
+
+# 6.0.26 (2022-04-29)
+
+# 6.0.25 (2022-04-14)
+
+# 6.0.24 (2022-04-13)
+
+## Bug fixes
+
+- PIM-10332: [Backport PIM-10331] Fix error when using an association with quantities having an numeric code
+
+# 6.0.23 (2022-04-11)
+
+# 6.0.22 (2022-04-08)
+
+# 6.0.21 (2022-04-06)
+
+## Bug fixes
+
+- PIM-10324: [Backport PIM-10232] Fix "A new entity is found through the relationship" errors in jobs
+- PIM-10385: Fix message "New patch available" is present even if the PIM on the last patch
+
+# 6.0.20 (2022-04-01)
+
+## Bug fixes
+
+- PIM-10323: [Backport PIM-10233] Fix the saved value by an empty wysiwyg
+
+# 6.0.19 (2022-03-28)
+
+- PIM-10369: Fix deprecated migrations present during Standard-Edition upgrade
+
+# 6.0.18 (2022-03-24)
+
+# 6.0.17 (2022-03-24)
+
+# 6.0.16 (2022-03-24)
+
+## Bug fixes
+- PIM-10325: [Backport PIM-10229] Enforce strict samesite policy for session cookies
+- PIM-10321: [Backport PIM-10241] Fix user account disabled can connect regression
+
+# 6.0.15 (2022-03-23)
+
+# 6.0.14 (2022-03-22)
+
+# 6.0.13 (2022-03-18)
+
+# 6.0.12 (2022-03-17)
+
+## Improvement
+- Fix Docker Composer cache
+
+# 6.0.11 (2022-03-16)
+
+# 6.0.10 (2022-03-14)
+
+# 6.0.9 (2022-03-14)
+
+# 6.0.8 (2022-03-11)
+
+## Bug fixes
+- PLG-776: Fix Option page broken issue with small screen when creating a new option
+- PIM-10305: Do not allow disabled user to login
+- PLG-781: Fix migration task related to calculating product quality scores to be independent of the JobExecution implementation
+- RAC-1223: [Backport] RAC-1215: fix error when attributeOption doesn't have label
+- PIM-10308: [Backport PIM-10292] Fix error 500 when role page contain a validation errors
+- PIM-10315: [Backport PIM-10264] Optimize variant product ratio query
+- PIM-10318: [Backport PIM-10259] Add ArPHP library and fix Arabic RTL in PDF Exports
+
 # 6.0.7 (2022-02-25)
 
 # 6.0.6 (2022-02-21)

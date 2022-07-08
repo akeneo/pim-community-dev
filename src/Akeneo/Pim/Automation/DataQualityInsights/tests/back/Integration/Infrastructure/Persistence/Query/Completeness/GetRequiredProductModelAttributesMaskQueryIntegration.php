@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\Completeness;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetRequiredProductModelAttributesMaskQuery;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
@@ -141,7 +142,7 @@ class GetRequiredProductModelAttributesMaskQueryIntegration extends Completeness
             'a_localizable_scopable_locale_specific-tablet-fr_FR'
         ], $tabletFrFr->mask());
 
-        $unknownProductId = new ProductId(42);
+        $unknownProductId = $this->get(ProductModelIdFactory::class)->create('42');
         $this->assertNull($this->get(GetRequiredProductModelAttributesMaskQuery::class)->execute($unknownProductId));
     }
 

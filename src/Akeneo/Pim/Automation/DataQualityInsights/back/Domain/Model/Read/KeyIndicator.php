@@ -43,14 +43,6 @@ final class KeyIndicator
         return $this->totalToImprove;
     }
 
-    public function getRatioGood(): int
-    {
-        $total = $this->totalGood + $this->totalToImprove;
-        $ratio = $total === 0 ? 0 : intval(round($this->totalGood / $total * 100));
-
-        return $this->roundRatioExtremities($ratio);
-    }
-
     public function isEmpty(): bool
     {
         return $this->totalToImprove === 0 && $this->totalGood === 0;
@@ -64,25 +56,9 @@ final class KeyIndicator
     public function toArray(): array
     {
         return [
-            'ratioGood' => $this->getRatioGood(),
-            'totalGood' => $this->totalGood,
-            'totalToImprove' => $this->totalToImprove,
+            'totalGood' => $this->totalGood ?? 0,
+            'totalToImprove' => $this->totalToImprove ?? 0,
             'extraData' => $this->extraData,
         ];
-    }
-
-    /**
-     * Round ratio extremities to avoid having 100% while there's at least one item to improve
-     * And to avoid having 0% while there's at least one good item
-     */
-    private function roundRatioExtremities(int $ratio): int
-    {
-        if (100 === $ratio && $this->totalToImprove > 0) {
-            return 99;
-        } elseif (0 === $ratio && $this->totalGood > 0) {
-            return 1;
-        }
-
-        return $ratio;
     }
 }

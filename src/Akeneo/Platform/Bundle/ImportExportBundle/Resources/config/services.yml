@@ -19,3 +19,12 @@ services:
             - '@akeneo.platform.import_export.purge_job_execution'
         tags:
             - { name: console.command }
+
+    akeneo.platform.import_export.feature_flag.is_remote_storage_enabled:
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag'
+        arguments:
+            - '%env(bool:FLAG_JOB_AUTOMATION_REMOTE_STORAGE_ENABLED)%'
+
+    Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag:
+        arguments:
+            - '@feature_flags'

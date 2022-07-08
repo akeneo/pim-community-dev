@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\EventQueue;
 
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Exception\RuntimeException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -14,12 +15,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class EventNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof Event;
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return is_subclass_of($type, Event::class);
     }
@@ -27,7 +28,7 @@ class EventNormalizer implements NormalizerInterface, DenormalizerInterface
     /**
      * @param Event $object
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         if (false === $this->supportsNormalization($object, $format)) {
             throw new \InvalidArgumentException();
@@ -44,7 +45,7 @@ class EventNormalizer implements NormalizerInterface, DenormalizerInterface
         ];
     }
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): Event
     {
         if (false === $this->supportsDenormalization($data, $type, $format)) {
             throw new \InvalidArgumentException();
@@ -54,11 +55,15 @@ class EventNormalizer implements NormalizerInterface, DenormalizerInterface
             throw new RuntimeException(sprintf('The class "%s" is not defined.', $type));
         }
 
+        $eventData = $data['data'];
+        if (array_key_exists('uuid', $eventData)) {
+            $eventData = array_merge($eventData, ['uuid' => Uuid::fromString($eventData['uuid'])]);
+        }
         // /!\ Do not change to a new format for event without a strategy to
         // support the previous/old format of the events already in the queue (before the migration).
         return new $type(
             Author::fromNameAndType($data['author'], $data['author_type'] ?? Author::TYPE_API),
-            $data['data'],
+            $eventData,
             $data['timestamp'],
             $data['uuid']
         );

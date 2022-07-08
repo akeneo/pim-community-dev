@@ -19,7 +19,9 @@ import {
   DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB,
   PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
   PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME,
+  productEditFormStore,
 } from '@akeneo-pim-community/data-quality-insights/src';
+import {unsetProductAction} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/reducer/ProductEditForm/productReducer';
 const UserContext = require('pim/user-context');
 const BaseView = require('pimui/js/view/base');
 
@@ -181,22 +183,25 @@ class DataQualityInsightsApp extends BaseView {
   public render() {
     const catalogLocale: string = UserContext.get('catalogLocale');
     const catalogChannel: string = UserContext.get('catalogScope');
-    const productData = this.getFormData();
+    const product = this.getFormData();
 
-    ReactDOM.render(
-      productData.meta.model_type === 'product_model' ? (
-        <ProductModelEditFormApp catalogLocale={catalogLocale} catalogChannel={catalogChannel} product={productData} />
-      ) : (
-        <ProductEditFormApp catalogLocale={catalogLocale} catalogChannel={catalogChannel} product={productData} />
-      ),
-      this.el
-    );
+    const FormApp = product.meta.model_type === 'product_model' ? ProductModelEditFormApp : ProductEditFormApp;
+
+    const formAppProps = {
+      catalogLocale,
+      catalogChannel,
+      product,
+    };
+
+    ReactDOM.render(<FormApp {...formAppProps} />, this.el);
 
     return this;
   }
 
   remove() {
     ReactDOM.unmountComponentAtNode(this.el);
+
+    productEditFormStore.dispatch(unsetProductAction());
 
     return super.remove();
   }

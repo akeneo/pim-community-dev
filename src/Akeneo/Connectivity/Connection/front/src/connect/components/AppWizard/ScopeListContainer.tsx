@@ -37,12 +37,20 @@ const NoScope = styled.div`
     }
 `;
 
+const ScopeListTitle = styled.h3`
+    color: ${getColor('grey', 140)};
+    font-size: 17px;
+    font-weight: 600;
+    margin: 30px 0 10px 0;
+`;
+
 interface Props {
     appName: string;
     scopeMessages: ScopeMessage[];
+    oldScopeMessages?: ScopeMessage[] | null;
 }
 
-export const ScopeListContainer: FC<Props> = ({appName, scopeMessages}) => {
+export const ScopeListContainer: FC<Props> = ({appName, scopeMessages, oldScopeMessages}) => {
     const translate = useTranslate();
 
     const title =
@@ -71,7 +79,19 @@ export const ScopeListContainer: FC<Props> = ({appName, scopeMessages}) => {
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.authorize.no_scope')}
                 </NoScope>
             ) : (
-                <ScopeList scopeMessages={scopeMessages} />
+                <>
+                    <ScopeList scopeMessages={scopeMessages} highlightMode={oldScopeMessages ? 'new' : null} />
+                    {oldScopeMessages && oldScopeMessages.length > 0 && (
+                        <>
+                            <ScopeListTitle>
+                                {translate(
+                                    'akeneo_connectivity.connection.connect.apps.wizard.authorize.is_allowed_to'
+                                )}
+                            </ScopeListTitle>
+                            <ScopeList scopeMessages={oldScopeMessages} highlightMode={'old'} />
+                        </>
+                    )}
+                </>
             )}
         </>
     );

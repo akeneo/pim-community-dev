@@ -20,8 +20,6 @@ services:
 
     Akeneo\Platform\Bundle\InstallerBundle\Command\CheckRequirementsCommand:
         arguments:
-            - '%pim_catalog.version.class%'
-            - '%kernel.environment%'
             - '%kernel.project_dir%'
         tags:
             - { name: console.command }
@@ -43,3 +41,11 @@ services:
             - '%kernel.bundles%'
         tags:
             - { name: console.command }
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\MigrateZddCommand:
+        arguments:
+            - '@database_connection'
+            - '@monolog.logger'
+            - !tagged_iterator { tag: 'akeneo.pim.zdd_migration' }
+        tags:
+            - { name: 'console.command' }

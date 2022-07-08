@@ -298,8 +298,8 @@ class NavigationContext extends PimContext implements PageObjectAware
      *
      * @throws \Context\Spin\TimeoutException
      *
-     * @Given /^I edit the "([^"]*)" ((?!user)\w+)$/
-     * @Given /^I am on the "([^"]*)" ((?!channel)(?!family)(?!attribute)(?!user)\w+) page$/
+     * @Given /^I edit the "([^"]*)" ((?!user)(?!product)\w+)$/
+     * @Given /^I am on the "([^"]*)" ((?!channel)(?!family)(?!attribute)(?!user)(?!product)\w+) page$/
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
@@ -310,6 +310,33 @@ class NavigationContext extends PimContext implements PageObjectAware
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
 
         $expectedFullUrl = $this->getPage(sprintf('%s edit', $page))->getUrl(['id' => $entity->getId()]);
+
+        $actualFullUrl = $this->getSession()->getCurrentUrl();
+        $actualUrl     = $this->sanitizeUrl($actualFullUrl);
+        $expectedUrl   = $this->sanitizeUrl($expectedFullUrl);
+        $result        = $expectedUrl === $actualUrl;
+
+        return true === $result;
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @throws \Context\Spin\TimeoutException
+     *
+     * @Given /^I edit the "([^"]*)" product$/
+     * @Given /^I am on the "([^"]*)" product page$/
+     */
+    public function iAmOnTheProductEditPage($identifier)
+    {
+        $page   = 'Product';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+
+        $this->openPage(sprintf('%s edit', $page), ['uuid' => $entity->getUuid()->toString()]);
+
+        $expectedFullUrl = $this->getPage(sprintf('%s edit', $page))->getUrl(['uuid' => $entity->getUuid()->toString()]);
 
         $actualFullUrl = $this->getSession()->getCurrentUrl();
         $actualUrl     = $this->sanitizeUrl($actualFullUrl);
@@ -351,7 +378,7 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $identifier
      * @param string $page
      *
-     * @Given /^I wait to be on the "([^"]*)" (\w+) page$/
+     * @Given /^I wait to be on the "([^"]*)" ((?!product)\w+) page$/
      */
     public function iWaitForTheEntityEditPage($identifier, $page)
     {
@@ -367,8 +394,24 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $identifier
      * @param string $page
      *
-     * @Given /^I show the "([^"]*)" ([\w ]+)$/
-     * @Given /^I am on the "([^"]*)" ([\w ]+) show page$/
+     * @Given /^I wait to be on the "([^"]*)" product page$/
+     */
+    public function iWaitForTheProductEditPage($identifier)
+    {
+        $page   = 'Product';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->setCurrentPage(sprintf('%s edit', $page), ['uuid' => $entity->getUuid()->toString()]);
+
+        $this->wait();
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I show the "([^"]*)" ((?!product)[\w ]+)$/
+     * @Given /^I am on the "([^"]*)" ((?!product)[\w ]+) show page$/
      */
     public function iAmOnTheEntityShowPage($identifier, $page)
     {
@@ -378,6 +421,21 @@ class NavigationContext extends PimContext implements PageObjectAware
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s show', $page), ['id' => $entity->getId()]);
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I show the "([^"]*)" product$/
+     * @Given /^I am on the "([^"]*)" product show page$/
+     */
+    public function iAmOnTheProductShowPage($identifier)
+    {
+        $page = 'Product';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s show', $page), ['uuid' => $entity->getUuid()->toString()]);
     }
 
     /**

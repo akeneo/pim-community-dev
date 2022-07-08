@@ -138,3 +138,9 @@ services:
             - '@pim_user.updater.user'
             - '@validator'
             - '@pim_user.repository.group'
+
+    test.feature_flag.context:
+        public: true
+        class: 'Akeneo\Test\Acceptance\FeatureFlag\FeatureFlagContext'
+        arguments:
+            - '@feature_flags'

@@ -15,6 +15,7 @@ batch_jobs:
     compute_completeness_of_products_family: Calcola la completezza della famiglia di prodotti
     index_family_products: Indicizza famiglia di prodotti e modelli di prodotto
     delete_products_and_product_models: Eliminazione in massa prodotti
+    ensure_attribute_group_order: Controlla ordinamento gruppo di attributi
     clean_attribute:
       register_clean_job: Aggiungi codice a blacklist
       clean_product_model: Modelli di prodotti per la pulizia

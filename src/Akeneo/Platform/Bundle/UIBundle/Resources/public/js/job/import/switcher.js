@@ -7,12 +7,7 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['underscore', 'pim/form', 'pim/edition', 'pim/template/import/switcher'], function (
-  _,
-  BaseForm,
-  pimEdition,
-  template
-) {
+define(['underscore', 'pim/form', 'pim/template/import/switcher'], function (_, BaseForm, template) {
   return BaseForm.extend({
     className: 'AknButtonList',
     template: _.template(template),
@@ -42,7 +37,6 @@ define(['underscore', 'pim/form', 'pim/edition', 'pim/template/import/switcher']
       }
 
       const {configuration} = this.getRoot().getFormData();
-
       this.actions = this.filterByPermission(this.actions, configuration || {});
 
       if (null === this.currentActionCode) {
@@ -82,16 +76,16 @@ define(['underscore', 'pim/form', 'pim/edition', 'pim/template/import/switcher']
     /**
      * Registers a new main action
      *
-     * @param {Object} action
-     * @param {String} action.label The label to display in this switcher
-     * @param {String} action.code  The extension code to display on click
+     * @param {Object} actionToRegister
+     * @param {String} actionToRegister.label The label to display in this switcher
+     * @param {String} actionToRegister.code  The extension code to display on click
      */
-    registerAction: function (action) {
-      if (pimEdition.isCloudEdition() && action.hideForCloudEdition) {
-        return;
-      }
+    registerAction: function (actionToRegister) {
+      const actionExist = this.actions.some(action => action.code === actionToRegister.code);
+      this.actions = actionExist
+        ? this.actions.map(action => (action.code === actionToRegister ? actionToRegister : action))
+        : [...this.actions, actionToRegister];
 
-      this.actions.push(action);
       this.render();
     },
 

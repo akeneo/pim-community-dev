@@ -139,6 +139,11 @@ class SearchQueryBuilder
         return $this;
     }
 
+    public function hasSort(string $field): bool
+    {
+        return \array_key_exists($field, $this->sortClauses);
+    }
+
     public function addFacet(string $name, string $field): self
     {
         $this->aggsClauses[$name] = ['terms' => ['field' => $field]];

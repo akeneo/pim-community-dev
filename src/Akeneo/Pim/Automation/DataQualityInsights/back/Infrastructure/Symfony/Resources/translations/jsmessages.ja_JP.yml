@@ -43,7 +43,10 @@ akeneo_data_quality_insights:
       day: 日
     key_indicators:
       title: 指標
-      products_to_work_on: '{1}作業する<button>商品が 1 個</button>あります。|]1, 200[作業する<button>商品が {{ count }} 個</button>あります。|[200, Inf[作業する<button>商品が {{ count }} 個以上</button>あります。'
+      products: '{1}1 個の商品|]1, 200[{{ count }} 個の商品|[200, Inf[{{ count }} 個以上の商品'
+      product_models: '{1}1 個の商品モデル|]1, 200[{{ count }} 個の商品モデル|[200, Inf[{{ count }} 個以上の商品モデル'
+      entities_to_work_on: '作業する <improvable_products_count_link/> があります。'
+      entities_to_work_on_2_kinds: '作業する <improvable_products_count_link/> と <improvable_product_models_count_link/> があります。'
       list:
         has_image:
           title: 画像付きの商品
@@ -152,5 +155,8 @@ akeneo_data_quality_insights:
       to_improve: 要改善
       "yes": "はい"
       "no": "いいえ"
+  quality_score:
+    pending: 処理中
+    title: "品質スコア:"
 pim_title:
   akeneo_data_quality_insights_dashboard: データ品質インサイト

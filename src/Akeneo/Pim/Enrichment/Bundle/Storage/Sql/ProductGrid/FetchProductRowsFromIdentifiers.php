@@ -10,6 +10,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -76,7 +78,7 @@ final class FetchProductRowsFromIdentifiers
                 $row['label'],
                 $row['image'],
                 $row['completeness'],
-                (int) $row['id'],
+                $row['uuid'],
                 $row['product_model_code'],
                 $row['value_collection']
             );
@@ -89,7 +91,7 @@ final class FetchProductRowsFromIdentifiers
     {
         $sql = <<<SQL
             SELECT 
-                p.id,
+                BIN_TO_UUID(p.uuid) AS uuid,
                 p.identifier,
                 p.family_id,
                 p.is_enabled,
@@ -261,7 +263,7 @@ SQL;
                 FLOOR(100 * (c.required_count - c.missing_count) / c.required_count) AS ratio
             FROM
                 pim_catalog_product p
-                JOIN pim_catalog_completeness c ON c.product_id = p.id
+                JOIN pim_catalog_completeness c ON c.product_uuid = p.uuid
                 JOIN pim_catalog_locale l ON l.id = c.locale_id
                 JOIN pim_catalog_channel ch ON ch.id = c.channel_id
             WHERE 
@@ -328,7 +330,7 @@ SQL;
                 JSON_ARRAYAGG(COALESCE(ft.label, CONCAT("[", g.code, "]"))) AS product_groups 
             FROM
                 pim_catalog_product p
-                JOIN pim_catalog_group_product gp ON gp.product_id = p.id
+                JOIN pim_catalog_group_product gp ON gp.product_uuid = p.uuid
                 JOIN pim_catalog_group g ON g.id = gp.group_id
                 LEFT JOIN pim_catalog_group_translation ft ON ft.foreign_key = g.id AND ft.locale = :locale_code
             WHERE 

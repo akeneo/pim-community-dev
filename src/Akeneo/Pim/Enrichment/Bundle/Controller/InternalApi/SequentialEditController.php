@@ -6,9 +6,11 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Doctrine\DBAL\Connection;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\PimDataGridBundle\Adapter\GridFilterAdapterInterface;
 use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,30 +25,12 @@ class SequentialEditController
 {
     private const MAX_PRODUCT_COUNT = 1000;
 
-    /** @var MassActionParametersParser */
-    protected $parameterParser;
-
-    /** @var GridFilterAdapterInterface */
-    protected $filterAdapter;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $pqbFactory;
-
-    protected UserContext $userContext;
-
-    /**
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     */
     public function __construct(
-        MassActionParametersParser          $parameterParser,
-        GridFilterAdapterInterface          $filterAdapter,
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        UserContext                         $userContext
+        protected MassActionParametersParser $parameterParser,
+        protected GridFilterAdapterInterface $filterAdapter,
+        protected ProductQueryBuilderFactoryInterface $pqbFactory,
+        protected UserContext $userContext
     ) {
-        $this->parameterParser = $parameterParser;
-        $this->filterAdapter = $filterAdapter;
-        $this->pqbFactory = $pqbFactory;
-        $this->userContext = $userContext;
     }
 
     /**

@@ -59,7 +59,7 @@ extensions:
             alias: pim-user-grid
 
     pim-user-index-create-button:
-        module: pim/form/common/index/create-button
+        module: pim/user/form/create-user-button
         parent: pim-user-index
         targetZone: buttons
         position: 100

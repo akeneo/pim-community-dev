@@ -60,4 +60,9 @@ final class ScopeList
     {
         return \implode(' ', $this->scopes);
     }
+
+    public function equals(self $scopeList): bool
+    {
+        return $this->toScopeString() === $scopeList->toScopeString();
+    }
 }

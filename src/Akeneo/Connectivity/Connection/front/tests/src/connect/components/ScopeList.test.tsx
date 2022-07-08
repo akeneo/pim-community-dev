@@ -47,3 +47,17 @@ test('The scope list renders without scopes', () => {
     expect(screen.getByTestId('scope-list')).toBeInTheDocument();
     expect(screen.getByTestId('scope-list')).toBeEmptyDOMElement();
 });
+
+test('The scope list renders with NEW badge', () => {
+    const scopes = [
+        {
+            icon: 'foo',
+            type: 'read',
+            entities: 'foo',
+        },
+    ];
+
+    renderWithProviders(<ScopeList scopeMessages={scopes} highlightMode={'new'} />);
+
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.scope.new')).toBeInTheDocument();
+});

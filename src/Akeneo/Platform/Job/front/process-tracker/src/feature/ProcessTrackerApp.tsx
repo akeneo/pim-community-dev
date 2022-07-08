@@ -6,9 +6,15 @@ import {JobExecutionDetail} from './pages/JobExecutionDetail';
 const ProcessTrackerApp = () => (
   <Router basename="/job">
     <Switch>
-      <Route path="/show/:jobExecutionId">
-        <JobExecutionDetail />
-      </Route>
+      <Route
+        path="/show/:jobExecutionId"
+        render={props => (
+          <JobExecutionDetail
+            key={props.match.params.jobExecutionId}
+            jobExecutionId={props.match.params.jobExecutionId}
+          />
+        )}
+      />
       <Route path="/">
         <JobExecutionList />
       </Route>

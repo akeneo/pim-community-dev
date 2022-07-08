@@ -262,9 +262,6 @@ class XlsxFileContext extends PimContext
      */
     protected function compareLines(array $expectedLines, array $actualLines, $path)
     {
-        $expectedCount = count($expectedLines);
-        $actualCount = count($actualLines);
-
         $headerDiff = array_diff($actualLines[0], $expectedLines[0]);
         if (0 !== count(array_diff($actualLines[0], $expectedLines[0]))) {
             throw new \Exception(
@@ -279,7 +276,6 @@ class XlsxFileContext extends PimContext
 
         unset($actualLines[0]);
         unset($expectedLines[0]);
-
 
         foreach ($expectedLines as $expectedLine) {
             if (false === $this->lineExists($expectedLine, $actualLines)) {

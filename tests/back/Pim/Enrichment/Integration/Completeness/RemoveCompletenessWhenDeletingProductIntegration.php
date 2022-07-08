@@ -2,7 +2,14 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 
 class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompletenessTestCase
@@ -21,17 +28,17 @@ class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompleten
             throw new \RuntimeException("Could not fetch a product identifier='my_product2'.");
         }
 
-        $id = $product1->getId();
+        $uuid = $product1->getUuid();
         $completeness = $this->getProductCompletenesses()
-            ->fromProductId($id);
+            ->fromProductUuid($uuid);
         $this->assertEquals(1, $completeness->count());
         $this->get('pim_catalog.remover.product')
             ->remove($product1);
         $completeness = $this->getProductCompletenesses()
-            ->fromProductId($id);
+            ->fromProductUuid($uuid);
         $this->assertEquals(0, $completeness->count());
         $completeness = $this->getProductCompletenesses()
-            ->fromProductId($product2->getId());
+            ->fromProductUuid($product2->getUuid());
         $this->assertEquals(1, $completeness->count());
     }
 
@@ -45,24 +52,24 @@ class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompleten
         }
         // remove product with even ID from deletion scheme
         $productsToDelete = array_filter($products, function($p) {
-            return $p->getId() % 2 != 0;
+            return $p->getIdentifier() === 'my_product2';
         });
         // create a map of expected completeness
         $expectedCompleteness = [];
         foreach ($products as $product) {
-            $expectedCompleteness[$product->getId()] =
-                $product->getId() % 2 != 0 ? 0 : 1;
+            $expectedCompleteness[$product->getUuid()->toString()] =
+                $product->getIdentifier() === 'my_product2' ? 0 : 1;
         }
 
         // mass remove all products in deletion scheme
         $this->get('pim_catalog.remover.product')
             ->removeAll($productsToDelete);
 
-        foreach ($expectedCompleteness as $id => $cplt) {
+        foreach ($expectedCompleteness as $uuid => $cplt) {
             $this->assertEquals(
                 $cplt,
-                $this->getProductCompletenesses()->fromProductId($id)->count(),
-                sprintf("Check completeness of product %d is %d.", $id, $cplt)
+                $this->getProductCompletenesses()->fromProductUuid(Uuid::fromString($uuid))->count(),
+                sprintf("Check completeness of product %s is %d.", $uuid, $cplt)
             );
         }
     }
@@ -70,6 +77,7 @@ class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompleten
     protected function setUp(): void
     {
         parent::setUp();
+        $adminUserId = $this->createAdminUser()->getId();
         $family = $this->get('pim_catalog.factory.family')->create();
         $family->setCode('family');
         $this->get('pim_catalog.saver.family')->save($family);
@@ -77,36 +85,39 @@ class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompleten
         $this->createProduct(
             'my_product1',
             [
-                'family' => 'family',
-                'values' => [
-                    'a_text' => [['scope' => null, 'locale' => null, 'data' => true]],
-                ],
-            ]
+                new SetFamily('family'),
+                new SetBooleanValue('a_text', null, null, true)
+            ],
+            $adminUserId
         );
         $this->createProduct(
             'my_product2',
             [
-                'family' => 'family',
-                'values' => [
-                    'a_text' => [['scope' => null, 'locale' => null, 'data' => true]],
-                ],
-            ]
+                new SetFamily('family'),
+                new SetBooleanValue('a_text', null, null, true)
+            ],
+            $adminUserId
         );
         $this->createProduct(
             'my_product3',
             [
-                'family' => 'family',
-                'values' => [
-                    'a_text' => [['scope' => null, 'locale' => null, 'data' => true]],
-                ],
-            ]
+                new SetFamily('family'),
+                new SetBooleanValue('a_text', null, null, true)
+            ],
+            $adminUserId
         );
     }
 
-    private function createProduct(string $identifier, array $data): void
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createProduct(string $identifier, array $userIntents, int $userId): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $userId,
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }
 }

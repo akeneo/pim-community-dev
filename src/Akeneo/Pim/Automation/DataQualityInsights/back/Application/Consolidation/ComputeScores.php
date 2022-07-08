@@ -52,11 +52,11 @@ class ComputeScores
         $criteriaRates = [];
         $totalCoefficient = 0;
 
-        foreach ($this->criteriaEvaluationRegistry->getCriterionCodes() as $criterionCode) {
-            $criterionRates = $criteriaEvaluations->getCriterionRates($criterionCode);
-            $criterionRate = null !== $criterionRates ? $criterionRates->getByChannelAndLocale($channelCode, $localeCode) : null;
+        /** @var Read\CriterionEvaluation $criterionEvaluation */
+        foreach ($criteriaEvaluations as $criterionEvaluation) {
+            $criterionRate = $criterionEvaluation->getResult()?->getRates()?->getByChannelAndLocale($channelCode, $localeCode);
             if (null !== $criterionRate) {
-                $coefficient = $this->criteriaEvaluationRegistry->getCriterionCoefficient($criterionCode);
+                $coefficient = $this->criteriaEvaluationRegistry->getCriterionCoefficient($criterionEvaluation->getCriterionCode());
                 $totalCoefficient += $coefficient;
                 $criteriaRates[] = $criterionRate->toInt() * $coefficient;
             }

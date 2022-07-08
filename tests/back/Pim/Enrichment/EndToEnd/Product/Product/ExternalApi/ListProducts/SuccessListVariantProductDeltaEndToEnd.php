@@ -3,6 +3,12 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListProducts;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
@@ -253,25 +259,15 @@ JSON;
     {
         parent::setUp();
         $this->createProduct('product1', [
-            'categories' => ['master'],
-            'values'     => [
-                'a_metric' => [
-                    ['data' => ['amount' => 10, 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
-                ],
-                'a_text' => [
-                    ['data' => 'Text', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetCategories(['master']),
+            new SetMeasurementValue('a_metric', null, null, 10, 'KILOWATT'),
+            new SetTextValue('a_text', null, null, 'Text')
         ]);
         $this->createProduct('product2', [
-            'categories' => ['categoryB'],
-            'values'     => [
-                'a_localizable_image' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'zh_CN', 'scope' => null]
-                ]
-            ]
+            new SetCategories(['categoryB']),
+            new SetImageValue('a_localizable_image', null, 'en_US',  $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetImageValue('a_localizable_image', null, 'fr_FR',  $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetImageValue('a_localizable_image', null, 'zh_CN',  $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
         ]);
         $this->createProductModel(
             [
@@ -314,45 +310,21 @@ JSON;
         );
 
         $this->createVariantProduct('apollon_optionb_false', [
-            'categories' => ['master'],
-            'parent' => 'prod_mod_optB',
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => false,
-                    ]
-                ]
-            ]
+            new SetCategories(['master']),
+            new ChangeParent('prod_mod_optB'),
+            new SetBooleanValue('a_yes_no', null, null, false)
         ]);
 
         $this->createVariantProduct('apollon_optionb_true', [
-            'categories' => ['master'],
-            'parent' => 'prod_mod_optB',
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => true,
-                    ]
-                ]
-            ]
+            new SetCategories(['master']),
+            new ChangeParent('prod_mod_optB'),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
 
         $this->createVariantProduct('apollon_optiona_true', [
-            'categories' => ['master'],
-            'parent' => 'prod_mod_optA',
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => true,
-                    ]
-                ]
-            ]
+            new SetCategories(['master']),
+            new ChangeParent('prod_mod_optA'),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
     }
 

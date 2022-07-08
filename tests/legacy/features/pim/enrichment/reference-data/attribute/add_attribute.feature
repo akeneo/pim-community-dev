@@ -1,4 +1,4 @@
-@javascript
+@javascript @reference-data-feature-enabled
 Feature: Add attribute options
   In order to define choices for a choice attribute
   As a product manager

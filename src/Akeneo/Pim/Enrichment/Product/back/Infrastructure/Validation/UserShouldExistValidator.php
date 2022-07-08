@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
+use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -29,7 +30,9 @@ final class UserShouldExistValidator extends ConstraintValidator
 
         $user = $this->userRepository->findOneBy(['id' => $userId]);
         if (null === $user) {
-            $this->context->buildViolation($constraint->message, ['{{ user_id }}' => $userId])->addViolation();
+            $this->context->buildViolation($constraint->message, ['{{ user_id }}' => $userId])
+                ->setCode((string) ViolationCode::PERMISSION)
+                ->addViolation();
         }
     }
 }

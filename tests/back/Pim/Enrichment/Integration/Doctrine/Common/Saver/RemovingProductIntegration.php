@@ -2,9 +2,12 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Common\Saver;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Test products have been correctly removed from the index after a product has been removed.
@@ -31,38 +34,29 @@ class RemovingProductIntegration extends TestCase
 
     public function testRemovingProductOnUnitaryRemove()
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct('bat');
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bat');
-        $productId = $product->getId();
+        $product = $this->createProduct('bat');
+        $productUuid = $product->getUuid();
 
         $this->get('pim_catalog.remover.product')->remove($product);
 
-        $this->assertNotFoundInProductAndProductModelIndex($productId);
+        $this->assertNotFoundInProductAndProductModelIndex($productUuid);
     }
 
     public function testRemovingProductsOnBulkRemove()
     {
-        $products = [];
-        foreach (['foo', 'bar', 'baz'] as $identifier) {
-            $products[] = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        }
 
-        $this->get('pim_catalog.saver.product')->saveAll($products);
-
-        $productFoo = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
-        $productBar = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bar');
-        $productBaz = $this->get('pim_catalog.repository.product')->findOneByIdentifier('baz');
-        $productFooId = $productFoo->getId();
-        $productBarId = $productBar->getId();
-        $productBazId = $productBaz->getId();
+        $productFoo = $this->createProduct('foo');
+        $productBar = $this->createProduct('bar');
+        $productBaz = $this->createProduct('baz');
+        $productFooUuid = $productFoo->getUuid();
+        $productBarUuid = $productBar->getUuid();
+        $productBazUuid = $productBaz->getUuid();
 
         $this->get('pim_catalog.remover.product')->removeAll([$productFoo, $productBar, $productBaz]);
 
-        $this->assertNotFoundInProductAndProductModelIndex($productFooId);
-        $this->assertNotFoundInProductAndProductModelIndex($productBarId);
-        $this->assertNotFoundInProductAndProductModelIndex($productBazId);
+        $this->assertNotFoundInProductAndProductModelIndex($productFooUuid);
+        $this->assertNotFoundInProductAndProductModelIndex($productBarUuid);
+        $this->assertNotFoundInProductAndProductModelIndex($productBazUuid);
     }
 
     /**
@@ -75,17 +69,41 @@ class RemovingProductIntegration extends TestCase
 
     /**
      * Asserts the given productId does not exists in the product and product model Index.
-     *
-     * @param string $productId
      */
-    private function assertNotFoundInProductAndProductModelIndex(string $productId): void
+    private function assertNotFoundInProductAndProductModelIndex(UuidInterface $productUuid): void
     {
         $found = true;
         try {
-            $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_' . $productId);
-        } catch (Missing404Exception $e) {
+            $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_' . $productUuid->toString());
+        } catch (Missing404Exception) {
             $found = false;
         }
         $this->assertFalse($found);
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
+
+        return \intval($id);
+    }
+
+    private function createProduct(string $identifier): ProductInterface
+    {
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier, //'bat',
+            userIntents: []
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 }

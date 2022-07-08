@@ -163,6 +163,37 @@ class ColumnsMergerSpec extends ObjectBehavior
         $this->merge($row)->shouldReturn($mergedRow);
     }
 
+    function it_merges_columns_which_represents_metric_attribute_value_with_scientific_notation_in_two_columns(
+        $fieldExtractor,
+        AttributeInterface $weight
+    ) {
+        $row = [
+            'weight' => 0.000075,
+            'weight-unit' => 'GRAM'
+        ];
+        $attributeInfoData = [
+            'attribute' => $weight,
+            'locale_code' => null,
+            'scope_code' => null,
+            'metric_unit' => null
+        ];
+        $fieldExtractor->extractColumnInfo('weight')->willReturn($attributeInfoData);
+
+        $attributeInfoUnit = [
+            'attribute' => $weight,
+            'locale_code' => null,
+            'scope_code' => null,
+            'metric_unit' => 'unit'
+        ];
+        $fieldExtractor->extractColumnInfo('weight-unit')->willReturn($attributeInfoUnit);
+
+        $weight->getCode()->willReturn('weight');
+        $weight->getBackendType()->willReturn('metric');
+
+        $mergedRow = ['weight' => '0.000075000000 GRAM'];
+        $this->merge($row)->shouldReturn($mergedRow);
+    }
+
     function it_merges_columns_which_represents_a_localizable_metric_attribute_value_in_a_two_columns(
         $fieldExtractor,
         AttributeInterface $weight

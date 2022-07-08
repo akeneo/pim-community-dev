@@ -8,6 +8,8 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -15,10 +17,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * When a family variant is saved, we need to update all product models and variant products that belong
  * to this family variant because the structure of the family variant could have changed.
- *
- * So we may need to remove values or move values from some level to another.
- *
- * We make sure we do not run this job for new family variants.
+ * The job is not launched if:
+ *  - no changes on level's attribute list
+ *  - no changes in the axes
+ *  - a previous job concerning this family variant is about to start
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -26,38 +28,20 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberInterface
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    public const DISABLE_JOB_LAUNCHING = 'DISABLE_COMPUTE_FAMILY_VARIANT_STRUCTURE_CHANGES_LAUNCHING';
+    public const FORCE_JOB_LAUNCHING = 'FORCE_COMPUTE_FAMILY_VARIANT_STRUCTURE_CHANGES_LAUNCHING';
 
-    /** @var JobLauncherInterface */
-    private $jobLauncher;
+    /** @var array<string, bool> */
+    private array $isFamilyVariantNew = [];
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $jobInstanceRepository;
-
-    /** @var string */
-    private $jobName;
-
-    /** @var bool */
-    private $isFamilyVariantNew;
-
-    /**
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param JobLauncherInterface                  $jobLauncher
-     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
-     * @param string                                $jobName
-     */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        JobLauncherInterface $jobLauncher,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        string $jobName
+        private TokenStorageInterface $tokenStorage,
+        private JobLauncherInterface $jobLauncher,
+        private IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        private Connection $connection,
+        private LoggerInterface $logger,
+        private string $jobName
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->jobLauncher = $jobLauncher;
-        $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->jobName = $jobName;
-        $this->isFamilyVariantNew = true;
     }
 
     /**
@@ -66,30 +50,22 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::PRE_SAVE => 'checkIsFamilyVariantNew',
+            StorageEvents::PRE_SAVE => 'recordIsNewFamilyVariant',
             StorageEvents::POST_SAVE => 'computeVariantStructureChanges',
+            StorageEvents::POST_SAVE_ALL => 'bulkComputeVariantStructureChanges',
         ];
     }
 
-    /**
-     * Method that checks if the given family variant is new. This information is then used in the
-     * `computeVariantStructureChanges` function to determine wether a job should be launched or not.
-     *
-     * @param GenericEvent $event
-     */
-    public function checkIsFamilyVariantNew(GenericEvent $event): void
+    public function recordIsNewFamilyVariant(GenericEvent $event): void
     {
-        $subject = $event->getSubject();
-        if (!$subject instanceof FamilyVariantInterface) {
+        $familyVariant = $event->getSubject();
+        if (!$familyVariant instanceof FamilyVariantInterface) {
             return;
         }
 
-        $this->isFamilyVariantNew = $this->isFamilyVariantNew($subject);
+        $this->isFamilyVariantNew[$familyVariant->getCode()] = null === $familyVariant->getId();
     }
 
-    /**
-     * @param GenericEvent $event
-     */
     public function computeVariantStructureChanges(GenericEvent $event): void
     {
         $familyVariant = $event->getSubject();
@@ -97,31 +73,95 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
             return;
         }
 
-        if ($this->isFamilyVariantNew) {
+        $forceJobLaunching = $event->hasArgument(self::FORCE_JOB_LAUNCHING) && $event->getArgument(self::FORCE_JOB_LAUNCHING);
+        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')
+            || ($event->hasArgument('is_new') && $event->getArgument('is_new'))
+            || ($event->hasArgument(self::DISABLE_JOB_LAUNCHING) && $event->getArgument(self::DISABLE_JOB_LAUNCHING))
+            || (!$forceJobLaunching && !$this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant))
+        ) {
             return;
         }
 
-        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
+        if ($this->noOtherJobExecutionIsPending($jobInstance->getId(), $familyVariant->getCode())) {
+            $user = $this->tokenStorage->getToken()->getUser();
+            $this->jobLauncher->launch($jobInstance, $user, ['family_variant_codes' => [$familyVariant->getCode()]]);
+        }
+    }
+
+    public function bulkComputeVariantStructureChanges(GenericEvent $event): void
+    {
+        $familyVariants = $event->getSubject();
+        if (!is_array($familyVariants)
+            || [] === $familyVariants
+            || !current($familyVariants) instanceof FamilyVariantInterface
+            || ($event->hasArgument(self::DISABLE_JOB_LAUNCHING) && $event->getArgument(self::DISABLE_JOB_LAUNCHING))
+        ) {
+            return;
+        }
+
+        $forceJobLaunching = $event->hasArgument(self::FORCE_JOB_LAUNCHING) && $event->getArgument(self::FORCE_JOB_LAUNCHING);
+
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
+        $familyVariantCodesToCompute = \array_values(\array_map(
+            static fn (FamilyVariantInterface $familyVariant): string => $familyVariant->getCode(),
+            \array_filter(
+                $familyVariants,
+                fn (FamilyVariantInterface $familyVariant): bool =>
+                    !($this->isFamilyVariantNew[$familyVariant->getCode()] ?? false)
+                    && ($forceJobLaunching || $this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant))
+                    && $this->noOtherJobExecutionIsPending($jobInstance->getId(), $familyVariant->getCode())
+            )
+        ));
+
+        $this->isFamilyVariantNew = [];
+        if ([] === $familyVariantCodesToCompute) {
             return;
         }
 
         $user = $this->tokenStorage->getToken()->getUser();
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
-
-        $this->jobLauncher->launch($jobInstance, $user, [
-            'family_variant_codes' => [$familyVariant->getCode()]
-        ]);
+        $this->jobLauncher->launch($jobInstance, $user, ['family_variant_codes' => $familyVariantCodesToCompute]);
     }
 
-    /**
-     * Checks if the given family variant is new.
-     *
-     * @param FamilyVariantInterface $familyVariant
-     *
-     * @return bool
-     */
-    private function isFamilyVariantNew(FamilyVariantInterface $familyVariant): bool
+    private function noOtherJobExecutionIsPending(int $jobInstanceId, string $familyVariantCode): bool
     {
-        return null === $familyVariant->getId();
+        /**
+         * status 2 = STARTING
+         * The check on the create_time is a security in case we have ghost job that are never started.
+         */
+        $query = <<<SQL
+        SELECT id
+        FROM akeneo_batch_job_execution abje
+        WHERE job_instance_id = :instanceId
+            AND status = 2
+            AND :familyVariantCode MEMBER OF (JSON_EXTRACT(raw_parameters, '$.family_variant_codes'))
+            AND create_time > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 DAY)
+        ORDER BY id DESC
+        LIMIT 1
+        SQL;
+        $jobId = $this->connection->executeQuery(
+            $query,
+            ['instanceId' => $jobInstanceId, 'familyVariantCode' => $familyVariantCode]
+        )->fetchOne();
+
+        if (false === $jobId) {
+            return true;
+        }
+
+        $this->logger->notice(
+            'ComputeFamilyVariantStructureChangesSubscriber: Another job execution is still running (id = {job_id})',
+            ['message' => 'another_job_execution_is_still_running', 'job_id' => $jobId]
+        );
+
+        return false;
+    }
+
+    private function variantAttributeSetOfFamilyVariantIsUpdated(FamilyVariantInterface $familyVariant): bool
+    {
+        // Warning: releaseEvents can be called only once by family variant (events are cleared after the first call)
+        $events = $familyVariant->releaseEvents();
+
+        return \in_array(FamilyVariantInterface::AXES_WERE_UPDATED_ON_LEVEL, $events)
+            || \in_array(FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL, $events);
     }
 }

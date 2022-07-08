@@ -11,13 +11,6 @@ aliases:
                   webhook: $SLACK_NIGHTLY_STATUS
                   fail_only: true
 
-    - &slack-post-step
-        post-steps:
-            - slack/status:
-                  channel: ci
-                  webhook: $SLACK_NIGHTLY_STATUS
-                  fail_only: false
-
 workflows:
     version: 2
 
@@ -53,6 +46,17 @@ workflows:
                   <<: *slack-fail-post-step
                   requires:
                       - build_dev
+
+    nightly_docker:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "nightly_docker_master", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout_ce
+            - build_docker_images:
+                requires:
+                    - checkout_ce
 
     on_demand:
         when:

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Attributes\AttributesInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Channels\ChannelsInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Locales\LocalesInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -22,6 +25,7 @@ final class TransformCriterionEvaluationResultCodes
         'attributes_with_rates' => 1,
         'total_number_of_attributes' => 2,
         'number_of_improvable_attributes' => 3,
+        'hashed_values' => 4,
     ];
 
     public const STATUS_ID = [
@@ -31,17 +35,11 @@ final class TransformCriterionEvaluationResultCodes
         CriterionEvaluationResultStatus::NOT_APPLICABLE => 4,
     ];
 
-    private Attributes $attributes;
-
-    private Channels $channels;
-
-    private Locales $locales;
-
-    public function __construct(Attributes $attributes, Channels $channels, Locales $locales)
-    {
-        $this->attributes = $attributes;
-        $this->channels = $channels;
-        $this->locales = $locales;
+    public function __construct(
+        private AttributesInterface $attributes,
+        private ChannelsInterface $channels,
+        private LocalesInterface $locales
+    ) {
     }
 
     public function transformToIds(array $evaluationResult): array
@@ -75,8 +73,9 @@ final class TransformCriterionEvaluationResultCodes
         foreach ($resultDataByCodes as $dataType => $dataByCodes) {
             switch ($dataType) {
                 case 'attributes_with_rates':
-                    $resultDataByIds[self::DATA_TYPES_ID['attributes_with_rates']] =
-                        $this->transformResultAttributeRatesCodesToIds($dataByCodes);
+                case 'hashed_values':
+                    $resultDataByIds[self::DATA_TYPES_ID[$dataType]] =
+                        $this->transformChannelLocaleDataByAttributesFromCodesToIds($dataByCodes);
                     break;
                 case 'number_of_improvable_attributes':
                 case 'total_number_of_attributes':
@@ -114,20 +113,20 @@ final class TransformCriterionEvaluationResultCodes
         return $channelLocaleDataByIds;
     }
 
-    private function transformResultAttributeRatesCodesToIds(array $resultAttributeCodesRates): array
+    private function transformChannelLocaleDataByAttributesFromCodesToIds(array $dataByAttributes): array
     {
-        return $this->transformChannelLocaleDataFromCodesToIds($resultAttributeCodesRates, function (array $attributeRates) {
-            $attributeIdsRates = [];
-            $attributesIds = $this->attributes->getIdsByCodes(array_keys($attributeRates));
+        return $this->transformChannelLocaleDataFromCodesToIds($dataByAttributes, function (array $attributeData) {
+            $attributeIdsData = [];
+            $attributesIds = $this->attributes->getIdsByCodes(array_keys($attributeData));
 
-            foreach ($attributeRates as $attributeCode => $attributeRate) {
+            foreach ($attributeData as $attributeCode => $data) {
                 $attributeId = $attributesIds[$attributeCode] ?? null;
                 if (null !== $attributeId) {
-                    $attributeIdsRates[$attributeId] = $attributeRate;
+                    $attributeIdsData[$attributeId] = $data;
                 }
             }
 
-            return $attributeIdsRates;
+            return $attributeIdsData;
         });
     }
 

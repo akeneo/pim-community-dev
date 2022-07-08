@@ -1,4 +1,4 @@
-@javascript
+@javascript @reference-data-feature-enabled
 Feature: Display the attribute history
   In order to know who, when and what changes has been made to an attribute
   As a product manager

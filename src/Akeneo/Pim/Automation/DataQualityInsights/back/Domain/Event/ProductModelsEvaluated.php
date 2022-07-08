@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Event;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -13,11 +13,11 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
 final class ProductModelsEvaluated
 {
     public function __construct(
-        private ProductIdCollection $productModelIdCollection
+        private ProductEntityIdCollection $productModelIdCollection
     ) {
     }
 
-    public function getProductModelIds(): ProductIdCollection
+    public function getProductModelIds(): ProductEntityIdCollection
     {
         return $this->productModelIdCollection;
     }

@@ -80,6 +80,14 @@ class StepExecutionSpec extends ObjectBehavior
         $this->getSummaryInfo('counter')->shouldReturn(4);
     }
 
+    public function it_gives_summary_info()
+    {
+        $this->getSummaryInfo('counter')->shouldReturn('');
+        $this->getSummaryInfo('counter', 0)->shouldReturn(0);
+        $this->incrementSummaryInfo('counter');
+        $this->getSummaryInfo('counter', 90)->shouldReturn(1);
+    }
+
     function it_is_displayable()
     {
         $this->__toString()->shouldReturn('id=0, name=[myStepName], status=[2], exitCode=[EXECUTING], exitDescription=[]');

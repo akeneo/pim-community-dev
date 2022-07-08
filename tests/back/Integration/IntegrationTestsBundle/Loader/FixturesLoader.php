@@ -151,7 +151,16 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->jobLauncher->flushJobQueue();
 
         $this->systemUserAuthenticator->createSystemUser();
+    }
 
+    public function purge(): void
+    {
+        $this->deleteAllDocumentsInElasticsearch();
+        $this->databaseSchemaHandler->reset();
+        $this->resetFilesystem();
+        $this->clearAclCache();
+        $this->jobLauncher->flushJobQueue();
+        $this->systemUserAuthenticator->createSystemUser();
     }
 
     protected function purgeMessengerEvents()

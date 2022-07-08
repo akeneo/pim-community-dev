@@ -327,14 +327,6 @@ JSON;
         $result = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
         $response = $result['http_response'];
 
-        $logger = self::$container->get('monolog.logger.pim_api_acl');
-        assert($logger instanceof TestLogger);
-
-        $this->assertTrue(
-            $logger->hasWarning('User "admin" with roles ROLE_ADMINISTRATOR is not granted "pim_api_product_edit"'),
-            'Expected warning not found in the logs.'
-        );
-
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
@@ -366,7 +358,7 @@ JSON;
 
             $completenesses = $this
                 ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
-                ->fromProductId($product->getId());
+                ->fromProductUuid($product->getUuid());
             Assert::assertCount(6, $completenesses); // 3 channels * 2 locales
         }
     }

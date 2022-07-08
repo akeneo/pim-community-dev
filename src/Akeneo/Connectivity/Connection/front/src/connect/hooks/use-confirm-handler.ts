@@ -62,10 +62,12 @@ export const useConfirmHandler = (
         }
 
         for (const provider of providers) {
-            try {
-                await provider.save(userGroup, permissions[provider.key]);
-            } catch {
-                notifyPermissionProviderError(provider.label);
+            if (permissions[provider.key]) {
+                try {
+                    await provider.save(userGroup, permissions[provider.key]);
+                } catch {
+                    notifyPermissionProviderError(provider.label);
+                }
             }
         }
 

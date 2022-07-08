@@ -4,29 +4,32 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
 {
     public function let(
-        FeatureFlag               $dataQualityInsightsFeature,
-        CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
-        LoggerInterface           $logger
-    )
-    {
+        FeatureFlag                     $dataQualityInsightsFeature,
+        CreateCriteriaEvaluations       $createProductsCriteriaEvaluations,
+        LoggerInterface                 $logger,
+        ProductEntityIdFactoryInterface $idFactory
+    ) {
         $this->beConstructedWith(
             $dataQualityInsightsFeature,
             $createProductsCriteriaEvaluations,
-            $logger
+            $logger,
+            $idFactory
         );
     }
 
@@ -51,8 +54,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
         ProductInterface $product
-    )
-    {
+    ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(false);
         $createProductsCriteriaEvaluations->createAll(Argument::any())->shouldNotBeCalled();
 
@@ -63,8 +65,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
         ProductInterface $product
-    ): void
-    {
+    ) {
         $dataQualityInsightsFeature->isEnabled()->shouldNotBeCalled();
         $createProductsCriteriaEvaluations->createAll(Argument::any())->shouldNotBeCalled();
 
@@ -75,12 +76,17 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function it_creates_criteria_on_unitary_product_post_save(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
+        $idFactory,
         ProductInterface $product
     )
     {
-        $product->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createProductsCriteriaEvaluations->createAll(ProductIdCollection::fromInt(12345))->shouldBeCalled();
+
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
+        $productIdCollection = ProductUuidCollection::fromStrings(['54162e35-ff81-48f1-96d5-5febd3f00fd5']);
+        $idFactory->createCollection(['54162e35-ff81-48f1-96d5-5febd3f00fd5'])->willReturn($productIdCollection);
+
+        $createProductsCriteriaEvaluations->createAll($productIdCollection)->shouldBeCalled();
 
         $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => true]));
     }
@@ -89,13 +95,17 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
         $logger,
+        ProductEntityIdFactoryInterface $idFactory,
         ProductInterface $product
-    )
-    {
-        $product->getId()->willReturn(12345);
+    ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
+        $productUuidCollection = ProductUuidCollection::fromStrings(['54162e35-ff81-48f1-96d5-5febd3f00fd5']);
+        $idFactory->createCollection(['54162e35-ff81-48f1-96d5-5febd3f00fd5'])->willReturn($productUuidCollection);
+
         $createProductsCriteriaEvaluations
-            ->createAll(ProductIdCollection::fromInt(12345))
+            ->createAll($productUuidCollection)
             ->willThrow(\Exception::class);
 
         $logger->error('Unable to create product criteria evaluation', Argument::any())->shouldBeCalledOnce();

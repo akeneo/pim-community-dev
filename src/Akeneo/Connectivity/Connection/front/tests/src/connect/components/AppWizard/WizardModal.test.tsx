@@ -24,7 +24,7 @@ test('it renders a single step wizard modal', () => {
             steps={[
                 {
                     name: 'authentication',
-                    action: 'confirm',
+                    requires_explicit_approval: true,
                 },
             ]}
         >
@@ -34,7 +34,7 @@ test('it renders a single step wizard modal', () => {
 
     expect(renderChildren).toBeCalledWith({
         name: 'authentication',
-        action: 'confirm',
+        requires_explicit_approval: true,
     });
 
     expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.cancel')).toBeInTheDocument();
@@ -67,11 +67,11 @@ test('it renders a multi steps wizard modal', () => {
             steps={[
                 {
                     name: 'authentication',
-                    action: 'next',
+                    requires_explicit_approval: true,
                 },
                 {
                     name: 'authorizations',
-                    action: 'confirm',
+                    requires_explicit_approval: true,
                 },
             ]}
         >
@@ -81,13 +81,15 @@ test('it renders a multi steps wizard modal', () => {
 
     expect(renderChildren).toBeCalledWith({
         name: 'authentication',
-        action: 'next',
+        requires_explicit_approval: true,
     });
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.previous')
     ).not.toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.next')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next')
+    ).toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.progress.authentication')
     ).toBeInTheDocument();
@@ -99,12 +101,12 @@ test('it renders a multi steps wizard modal', () => {
     ).not.toBeInTheDocument();
 
     act(() => {
-        fireEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.next'));
+        fireEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
     });
 
     expect(renderChildren).toBeCalledWith({
         name: 'authorizations',
-        action: 'confirm',
+        requires_explicit_approval: true,
     });
 
     expect(
@@ -138,11 +140,11 @@ test('it prevents going further than first step', () => {
             steps={[
                 {
                     name: 'authentication',
-                    action: 'next',
+                    requires_explicit_approval: true,
                 },
                 {
                     name: 'authorizations',
-                    action: 'confirm',
+                    requires_explicit_approval: true,
                 },
             ]}
         >
@@ -150,13 +152,13 @@ test('it prevents going further than first step', () => {
         </WizardModal>
     );
 
-    expect(renderChildren).toBeCalledWith({name: 'authentication', action: 'next'});
+    expect(renderChildren).toBeCalledWith({name: 'authentication', requires_explicit_approval: true});
 
     act(() => {
-        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.next'));
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
     });
 
-    expect(renderChildren).not.toBeCalledWith({name: 'authorizations', action: 'confirm'});
+    expect(renderChildren).not.toBeCalledWith({name: 'authorizations', requires_explicit_approval: true});
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')
@@ -175,15 +177,15 @@ test('it prevents going further than max allowed step', () => {
             steps={[
                 {
                     name: 'authentication',
-                    action: 'allow_and_next',
+                    requires_explicit_approval: true,
                 },
                 {
                     name: 'permissions',
-                    action: 'next',
+                    requires_explicit_approval: false,
                 },
                 {
                     name: 'authorizations',
-                    action: 'confirm',
+                    requires_explicit_approval: true,
                 },
             ]}
         >
@@ -191,17 +193,17 @@ test('it prevents going further than max allowed step', () => {
         </WizardModal>
     );
 
-    expect(renderChildren).toBeCalledWith({name: 'authentication', action: 'allow_and_next'});
+    expect(renderChildren).toBeCalledWith({name: 'authentication', requires_explicit_approval: true});
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
     });
-    expect(renderChildren).toBeCalledWith({name: 'permissions', action: 'next'});
+    expect(renderChildren).toBeCalledWith({name: 'permissions', requires_explicit_approval: false});
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.next'));
     });
-    expect(renderChildren).not.toBeCalledWith({name: 'authorizations', action: 'confirm'});
+    expect(renderChildren).not.toBeCalledWith({name: 'authorizations', requires_explicit_approval: true});
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')
     ).not.toBeInTheDocument();
@@ -209,16 +211,16 @@ test('it prevents going further than max allowed step', () => {
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.previous'));
     });
-    expect(renderChildren).toBeCalledWith({name: 'authentication', action: 'allow_and_next'});
+    expect(renderChildren).toBeCalledWith({name: 'authentication', requires_explicit_approval: true});
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
     });
-    expect(renderChildren).toBeCalledWith({name: 'permissions', action: 'next'});
+    expect(renderChildren).toBeCalledWith({name: 'permissions', requires_explicit_approval: false});
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.next'));
     });
-    expect(renderChildren).not.toBeCalledWith({name: 'authorizations', action: 'confirm'});
+    expect(renderChildren).not.toBeCalledWith({name: 'authorizations', requires_explicit_approval: true});
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')
     ).not.toBeInTheDocument();
@@ -236,15 +238,15 @@ test('it prevents confirming on last step', () => {
             steps={[
                 {
                     name: 'authentication',
-                    action: 'allow_and_next',
+                    requires_explicit_approval: true,
                 },
                 {
                     name: 'permissions',
-                    action: 'next',
+                    requires_explicit_approval: false,
                 },
                 {
                     name: 'authorizations',
-                    action: 'confirm',
+                    requires_explicit_approval: true,
                 },
             ]}
         >
@@ -252,16 +254,16 @@ test('it prevents confirming on last step', () => {
         </WizardModal>
     );
 
-    expect(renderChildren).toBeCalledWith({name: 'authentication', action: 'allow_and_next'});
+    expect(renderChildren).toBeCalledWith({name: 'authentication', requires_explicit_approval: true});
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
     });
-    expect(renderChildren).toBeCalledWith({name: 'permissions', action: 'next'});
+    expect(renderChildren).toBeCalledWith({name: 'permissions', requires_explicit_approval: false});
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.next'));
     });
-    expect(renderChildren).toBeCalledWith({name: 'authorizations', action: 'confirm'});
+    expect(renderChildren).toBeCalledWith({name: 'authorizations', requires_explicit_approval: true});
     expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')).toBeInTheDocument();
 
     act(() => {
@@ -282,15 +284,15 @@ test('it is able to confirm with unknown max allowed step', () => {
             steps={[
                 {
                     name: 'authentication',
-                    action: 'allow_and_next',
+                    requires_explicit_approval: true,
                 },
                 {
                     name: 'permissions',
-                    action: 'next',
+                    requires_explicit_approval: false,
                 },
                 {
                     name: 'authorizations',
-                    action: 'confirm',
+                    requires_explicit_approval: true,
                 },
             ]}
         >
@@ -298,16 +300,16 @@ test('it is able to confirm with unknown max allowed step', () => {
         </WizardModal>
     );
 
-    expect(renderChildren).toBeCalledWith({name: 'authentication', action: 'allow_and_next'});
+    expect(renderChildren).toBeCalledWith({name: 'authentication', requires_explicit_approval: true});
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
     });
-    expect(renderChildren).toBeCalledWith({name: 'permissions', action: 'next'});
+    expect(renderChildren).toBeCalledWith({name: 'permissions', requires_explicit_approval: false});
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.next'));
     });
-    expect(renderChildren).toBeCalledWith({name: 'authorizations', action: 'confirm'});
+    expect(renderChildren).toBeCalledWith({name: 'authorizations', requires_explicit_approval: true});
     expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')).toBeInTheDocument();
 
     act(() => {
@@ -328,7 +330,7 @@ test('it prevents confirming with a single step', () => {
             steps={[
                 {
                     name: 'authentication',
-                    action: 'confirm',
+                    requires_explicit_approval: true,
                 },
             ]}
         >
@@ -336,7 +338,7 @@ test('it prevents confirming with a single step', () => {
         </WizardModal>
     );
 
-    expect(renderChildren).toBeCalledWith({name: 'authentication', action: 'confirm'});
+    expect(renderChildren).toBeCalledWith({name: 'authentication', requires_explicit_approval: true});
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));

@@ -19,11 +19,9 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class JobInstanceUpdater implements ObjectUpdaterInterface
 {
-    /** @var JobParametersFactory */
-    protected $jobParametersFactory;
+    protected JobParametersFactory $jobParametersFactory;
 
-    /** @var JobRegistry */
-    protected $jobRegistry;
+    protected JobRegistry $jobRegistry;
 
     /**
      * @param JobParametersFactory $jobParametersFactory

@@ -204,7 +204,11 @@ SQL;
         ], array_keys($payload));
 
         Assert::assertEquals('bearer', $payload['token_type']);
-        Assert::assertEquals('delete_products read_association_types read_attribute_options read_catalog_structure read_categories read_channel_localization read_channel_settings write_products', $payload['scope']);
+
+        $scopes = \explode(' ', $payload['scope']);
+        Assert::assertContains('read_products', $scopes);
+        Assert::assertContains('write_products', $scopes);
+        Assert::assertContains('delete_products', $scopes);
     }
 
     /**
@@ -246,10 +250,14 @@ SQL;
         ], array_keys($payload));
 
         Assert::assertEquals('bearer', $payload['token_type']);
-        Assert::assertEquals(
-            'delete_products email openid profile read_association_types read_attribute_options read_catalog_structure read_categories read_channel_localization read_channel_settings write_products',
-            $payload['scope']
-        );
+
+        $scopes = \explode(' ', $payload['scope']);
+        Assert::assertContains('read_products', $scopes);
+        Assert::assertContains('write_products', $scopes);
+        Assert::assertContains('delete_products', $scopes);
+        Assert::assertContains('openid', $scopes);
+        Assert::assertContains('profile', $scopes);
+        Assert::assertContains('email', $scopes);
     }
 
     /** @AfterScenario */

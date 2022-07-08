@@ -4,9 +4,8 @@ import {SkeletonPlaceholder} from 'akeneo-design-system';
 
 const QualityScoreLoader = () => {
   return (
-    <Container>
+    <Container data-testid="quality-score-loader">
       <Skeleton />
-      <Border />
     </Container>
   );
 };
@@ -20,11 +19,6 @@ const Container = styled.div`
   height: 25px;
   top: 1px;
   padding-top: 2px;
-  margin-right: 20px;
-`;
-
-const Border = styled.div`
-  border-right: 1px ${({theme}) => theme.color.grey80} solid;
 `;
 
 const Skeleton = styled(SkeletonPlaceholder)`

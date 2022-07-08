@@ -136,6 +136,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.category.class%'
             - '@pim_catalog.repository.category'
+            - '@validator'
 
     pim_enrich.repository.category:
         public: true

@@ -12,7 +12,6 @@ Feature: Display the completeness of a product
       | sku              | family   | manufacturer | weather_conditions | color | name-en_US | name-fr_FR  | price          | rating | size | lace_color  |
       | sneakers         | sneakers | Converse     | hot                | blue  | Sneakers   | Espadrilles | 69 EUR, 99 USD | 4      | 43   | laces_white |
       | sandals          | sandals  |              |                    | white |            | Sandales    |                |        |      |             |
-      | my_nice_sneakers |          |              |                    |       |            |             |                |        |      |             |
     And the following product values:
       | product  | attribute   | value                 | locale | scope  |
       | sneakers | description | Great sneakers        | en_US  | mobile |

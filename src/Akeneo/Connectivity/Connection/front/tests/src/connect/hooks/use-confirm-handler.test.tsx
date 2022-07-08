@@ -110,17 +110,25 @@ test('it redirects when the confirmation succeeded', async () => {
     (useNotify as jest.Mock).mockImplementation(() => notify);
     (useConfirmAuthorization as jest.Mock).mockImplementation(() => confirmAuthorization);
 
-    const provider = {
+    const provider1 = {
         save: jest.fn(),
         key: 'provider_1',
-        label: 'Provider Label',
+        label: 'Provider 1 Label',
+        renderForm: jest.fn(),
+        renderSummary: jest.fn(),
+        loadPermissions: jest.fn(),
+    };
+    const provider2 = {
+        save: jest.fn(),
+        key: 'provider_2',
+        label: 'Provider 2 Label',
         renderForm: jest.fn(),
         renderSummary: jest.fn(),
         loadPermissions: jest.fn(),
     };
 
     const {result, waitForNextUpdate} = renderHook(() =>
-        useConfirmHandler('client id', [provider], {provider_1: 'foo'})
+        useConfirmHandler('client id', [provider1, provider2], {provider_1: 'foo'})
     );
     expect(typeof result.current.confirm).toBe('function');
     expect(result.current.processing).toBe(false);
@@ -133,8 +141,10 @@ test('it redirects when the confirmation succeeded', async () => {
 
     await waitFor(() => expect(global.window.location.assign).toBeCalled());
 
-    expect(provider.save).toBeCalledWith('admin', 'foo');
+    expect(provider1.save).toBeCalledWith('admin', 'foo');
+    expect(provider2.save).not.toBeCalled();
 
+    expect(notify).toBeCalledTimes(1);
     expect(notify).toBeCalledWith(
         NotificationLevel.SUCCESS,
         'akeneo_connectivity.connection.connect.apps.wizard.flash.success'

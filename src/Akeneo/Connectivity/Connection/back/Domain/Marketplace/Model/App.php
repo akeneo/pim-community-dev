@@ -10,20 +10,6 @@ namespace Akeneo\Connectivity\Connection\Domain\Marketplace\Model;
  */
 class App
 {
-    private string $id;
-    private string $name;
-    private ?string $logo;
-    private ?string $author;
-    private ?string $partner;
-    private ?string $description;
-    private ?string $url;
-    private bool $certified;
-    /** @var array<string> */
-    private array $categories;
-    private string $activateUrl;
-    private string $callbackUrl;
-    private bool $connected;
-
     private const MARKETPLACE_REQUIRED_KEYS = [
         'id',
         'name',
@@ -42,24 +28,58 @@ class App
         'callback_url',
     ];
 
-    private function __construct()
-    {
+    /**
+     * @param string $id
+     * @param string $name
+     * @param string|null $logo
+     * @param string|null $author
+     * @param string|null $partner
+     * @param string|null $description
+     * @param string|null $url
+     * @param bool $certified
+     * @param array<string> $categories
+     * @param string $activateUrl
+     * @param string $callbackUrl
+     * @param bool $connected
+     * @param bool $isPending
+     * @param bool $isTestApp
+     */
+    private function __construct(
+        private string $id,
+        private string $name,
+        private ?string $logo,
+        private ?string $author,
+        private ?string $partner,
+        private ?string $description,
+        private ?string $url,
+        private bool $certified,
+        private array $categories,
+        private string $activateUrl,
+        private string $callbackUrl,
+        private bool $connected,
+        private bool $isPending,
+        private bool $isTestApp,
+    ) {
+        if (true === $this->isPending && true === $this->connected) {
+            throw new \DomainException('An App can not be both connected and pending.');
+        }
     }
 
     /**
      * @param array{
-     *     id: string,
-     *     name: string,
-     *     logo: string,
-     *     author: string,
+     *     id?: string,
+     *     name?: string,
+     *     logo?: string,
+     *     author?: string,
      *     partner?: string,
      *     description?: string,
-     *     url: string,
-     *     categories: array<string>,
+     *     url?: string,
+     *     categories?: array<string>,
      *     certified?: bool,
-     *     activate_url: string,
-     *     callback_url: string,
+     *     activate_url?: string,
+     *     callback_url?: string,
      *     connected?: bool,
+     *     isPending?: bool,
      * } $values
      */
     public static function fromWebMarketplaceValues(array $values): self
@@ -70,32 +90,50 @@ class App
             }
         }
 
-        $self = new self();
+        /** @phpstan-var array{
+         *     id: string,
+         *     name: string,
+         *     logo: string,
+         *     author: string,
+         *     partner?: string,
+         *     description?: string,
+         *     url: string,
+         *     categories: array<string>,
+         *     certified?: bool,
+         *     activate_url: string,
+         *     callback_url: string,
+         *     connected?: bool,
+         *     isPending?: bool,
+         * } $values
+         */
 
-        $self->id = $values['id'];
-        $self->name = $values['name'];
-        $self->logo = $values['logo'];
-        $self->author = $values['author'];
-        $self->partner = $values['partner'] ?? null;
-        $self->description = $values['description'] ?? null;
-        $self->url = $values['url'];
-        $self->categories = $values['categories'];
-        $self->certified = $values['certified'] ?? false;
-        $self->activateUrl = $values['activate_url'];
-        $self->callbackUrl = $values['callback_url'];
-        $self->connected = $values['connected'] ?? false;
-
-        return $self;
+        return new self(
+            $values['id'],
+            $values['name'],
+            $values['logo'],
+            $values['author'],
+            $values['partner'] ?? null,
+            $values['description'] ?? null,
+            $values['url'],
+            $values['certified'] ?? false,
+            $values['categories'],
+            $values['activate_url'],
+            $values['callback_url'],
+            $values['connected'] ?? false,
+            $values['isPending'] ?? false,
+            false,
+        );
     }
 
     /**
      * @param array{
-     *     id: string,
-     *     name: string,
+     *     id?: string,
+     *     name?: string,
      *     author?: string,
-     *     activate_url: string,
-     *     callback_url: string,
+     *     activate_url?: string,
+     *     callback_url?: string,
      *     connected?: bool,
+     *     isPending?: bool,
      * } $values
      */
     public static function fromTestAppValues(array $values): self
@@ -106,22 +144,49 @@ class App
             }
         }
 
-        $self = new self();
+        /** @phpstan-var array{
+         *     id: string,
+         *     name: string,
+         *     logo: string,
+         *     author: string,
+         *     partner?: string,
+         *     description?: string,
+         *     url: string,
+         *     categories: array<string>,
+         *     certified?: bool,
+         *     activate_url: string,
+         *     callback_url: string,
+         *     connected?: bool,
+         * } $values
+         */
 
-        $self->id = $values['id'];
-        $self->name = $values['name'];
-        $self->logo = null;
-        $self->author = $values['author'] ?? null;
-        $self->partner = null;
-        $self->description = null;
-        $self->url = null;
-        $self->categories = [];
-        $self->certified = false;
-        $self->activateUrl = $values['activate_url'];
-        $self->callbackUrl = $values['callback_url'];
-        $self->connected = $values['connected'] ?? false;
+        /** @phpstan-var array{
+         *     id: string,
+         *     name: string,
+         *     author?: string,
+         *     activate_url: string,
+         *     callback_url: string,
+         *     connected?: bool,
+         *     isPending?: bool,
+         * } $values
+         */
 
-        return $self;
+        return new self(
+            $values['id'],
+            $values['name'],
+            null,
+            $values['author'] ?? null,
+            null,
+            null,
+            null,
+            false,
+            [],
+            $values['activate_url'],
+            $values['callback_url'],
+            $values['connected'] ?? false,
+            $values['isPending'] ?? false,
+            true,
+        );
     }
 
     /**
@@ -135,7 +200,7 @@ class App
             return $this;
         }
 
-        $values['url'] = static::appendQueryParametersToUrl($values['url'], $queryParameters);
+        $values['url'] = self::appendQueryParametersToUrl($values['url'], $queryParameters);
 
         /* @phpstan-ignore-next-line */
         return self::fromWebMarketplaceValues($values);
@@ -147,22 +212,32 @@ class App
     public function withPimUrlSource(array $queryParameters): self
     {
         $app = clone $this;
-        $app->activateUrl = static::appendQueryParametersToUrl(
+        $app->activateUrl = self::appendQueryParametersToUrl(
             $app->activateUrl,
             $queryParameters
         );
 
-        return  $app;
+        return $app;
     }
 
-    /**
-     * @param bool $isConnected
-     * @return App
-     */
     public function withConnectedStatus(bool $isConnected): self
     {
-        $this->connected = $isConnected;
-        return $this;
+        return new self(
+            $this->id,
+            $this->name,
+            $this->logo,
+            $this->author,
+            $this->partner,
+            $this->description,
+            $this->url,
+            $this->certified,
+            $this->categories,
+            $this->activateUrl,
+            $this->callbackUrl,
+            $isConnected,
+            $this->isPending,
+            $this->isTestApp,
+        );
     }
 
     /**
@@ -195,6 +270,7 @@ class App
      *  activate_url: string,
      *  callback_url: string,
      *  connected: bool,
+     *  isTestApp: bool,
      * }
      */
     public function normalize(): array
@@ -212,6 +288,8 @@ class App
             'activate_url' => $this->activateUrl,
             'callback_url' => $this->callbackUrl,
             'connected' => $this->connected,
+            'isPending' => $this->isPending,
+            'isTestApp' => $this->isTestApp,
         ];
     }
 
@@ -271,5 +349,35 @@ class App
     public function getCategories(): array
     {
         return $this->categories;
+    }
+
+    public function isTestApp(): bool
+    {
+        return $this->isTestApp;
+    }
+
+    public function isPending(): bool
+    {
+        return $this->isPending;
+    }
+
+    public function withIsPending(): self
+    {
+        return new self(
+            $this->id,
+            $this->name,
+            $this->logo,
+            $this->author,
+            $this->partner,
+            $this->description,
+            $this->url,
+            $this->certified,
+            $this->categories,
+            $this->activateUrl,
+            $this->callbackUrl,
+            false,
+            true,
+            $this->isTestApp,
+        );
     }
 }

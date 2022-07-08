@@ -39,3 +39,7 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases:
         arguments:
             - '@pim_catalog.version_provider'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\ContentSecurityPolicy\MarketplaceContentSecurityPolicy:
+        tags:
+            - { name: akeneo.pim.security.content_security_policy_provider }

@@ -102,18 +102,29 @@ oro_config:
       tab:
         system:
           title: Systeem
+      save_ok: De configuratie is opgeslagen
+      save_error: Kan de configuratie niet opslaan ({{ reason }})
       group:
         localization:
-          title: Lokalisatie
-          system_locale: Taal
+          title: Instelling van aanmeldpagina
+          fields:
+            system_locale:
+              label: Taal
         notification:
-          title: Meldingen
-          system_notification: Meldingen nieuwe versies
+          title: Meldingen over nieuwe versies
+          helper: Als u dit inschakelt, ontvangt u een melding wanneer er een nieuwe versie voor u beschikbaar is.
+          fields:
+            enabler:
+              label: Ingeschakeld
         loading_message:
-          title: Laadberichten
-          label: Schakel laadberichten in
-        loading_messages:
-          label: Beschikbare laadberichten
+          title: Aangepaste berichten tijdens laden
+          helper: Laat uw gebruikers tijdens het laden van een scherm aangepaste berichten zien.
+          placeholder: Schrijf uw eigen bericht dat wordt weergegeven op het laadscherm
+          fields:
+            enabler:
+              label: Schakel laadberichten in
+            messages:
+              label: Voeg eigen berichten toe die worden getoond tijdens het laden
 pim_ui:
   flash:
     unsaved_changes: 'Er zijn niet opgeslagen wijzigingen. Wilt u de pagina toch verlaten?'

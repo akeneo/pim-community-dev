@@ -15,7 +15,7 @@ interface SearchEventSubscriptionDebugLogsQueryInterface
      * to the following call.
      *
      * @param array{
-     *  levels?: array,
+     *  levels?: mixed[],
      *  timestamp_from?: int,
      *  timestamp_to?: int,
      *  text?: string,
@@ -27,7 +27,7 @@ interface SearchEventSubscriptionDebugLogsQueryInterface
      *    level: string,
      *    message: string,
      *    connection_code: ?string,
-     *    context: array
+     *    context: mixed[]
      *  }>,
      *  total: int,
      *  search_after: string

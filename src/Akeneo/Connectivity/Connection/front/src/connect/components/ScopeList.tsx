@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {
     AddAttributeIcon,
     AssociateIcon,
+    BookIcon,
     CategoryIcon,
     getColor,
     getFontSize,
@@ -16,13 +17,17 @@ import {
     AssetsIcon,
     AkeneoThemedProps,
     FontSize,
+    Badge,
 } from 'akeneo-design-system';
 import ScopeMessage from '../../model/Apps/scope-message';
 
-export const ScopeItem = styled.li.attrs((props: {fontSize?: keyof FontSize} & AkeneoThemedProps) => ({
-    fontSize: props.fontSize || 'bigger',
-}))`
-    color: ${getColor('grey', 140)};
+export const ScopeItem = styled.li.attrs(
+    (props: {fontSize?: keyof FontSize; highlightMode?: 'new' | 'old' | null} & AkeneoThemedProps) => ({
+        fontSize: props.fontSize || 'bigger',
+        highlightMode: props.highlightMode,
+    })
+)`
+    color: ${props => getColor('grey', props.highlightMode === 'old' ? 120 : 140)};
     font-size: ${props => getFontSize(props.fontSize)};
     font-weight: normal;
     line-height: 24px;
@@ -34,6 +39,10 @@ export const ScopeItem = styled.li.attrs((props: {fontSize?: keyof FontSize} & A
         margin-right: 10px;
         color: ${getColor('grey', 100)};
     }
+`;
+
+const NewBadge = styled(Badge)`
+    margin-left: 10px;
 `;
 
 const iconsMap: {[key: string]: React.ElementType} = {
@@ -48,14 +57,16 @@ const iconsMap: {[key: string]: React.ElementType} = {
     reference_entity_record: EntityIcon,
     asset_families: AssetsIcon,
     assets: AssetsIcon,
+    catalogs: BookIcon,
 };
 
 interface Props {
     scopeMessages: ScopeMessage[];
     itemFontSize?: string;
+    highlightMode?: 'new' | 'old' | null;
 }
 
-export const ScopeList: FC<Props> = ({scopeMessages, itemFontSize}) => {
+export const ScopeList: FC<Props> = ({scopeMessages, itemFontSize, highlightMode}) => {
     const translate = useTranslate();
 
     return (
@@ -67,20 +78,27 @@ export const ScopeList: FC<Props> = ({scopeMessages, itemFontSize}) => {
                 const Icon = iconsMap[scopeMessage.icon] ?? CheckRoundIcon;
 
                 return (
-                    <ScopeItem key={key} fontSize={itemFontSize}>
+                    <ScopeItem key={key} fontSize={itemFontSize} highlightMode={highlightMode}>
                         <Icon title={entities} size={24} />
                         <div
                             dangerouslySetInnerHTML={{
                                 __html: translate(
                                     `akeneo_connectivity.connection.connect.apps.scope.type.${scopeMessage.type}`,
                                     {
-                                        entities: `<span class='AknConnectivityConnection-helper--highlight'>
+                                        entities: `<span class='AknConnectivityConnection-helper--highlight${
+                                            'old' === highlightMode ? '--lighter' : ''
+                                        }'>
                                                     ${entities}
                                                 </span>`,
                                     }
                                 ),
                             }}
                         />
+                        {'new' === highlightMode && (
+                            <NewBadge level={'secondary'}>
+                                {translate('akeneo_connectivity.connection.connect.apps.scope.new')}
+                            </NewBadge>
+                        )}
                     </ScopeItem>
                 );
             })}

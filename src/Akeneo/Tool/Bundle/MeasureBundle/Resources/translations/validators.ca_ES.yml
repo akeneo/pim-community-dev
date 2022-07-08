@@ -1,0 +1,32 @@
+pim_measurements:
+  validation:
+    common:
+      code:
+        pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
+        limit_reached: 'No podeu crear la família de mesures "%measurement_family_code%" perquè heu assolit el límit de famílies de mesures %limit%'
+    measurement_family:
+      standard_unit_code:
+        is_required: 'Es requereix la unitat estàndard.'
+        should_be_in_the_list_of_units: 'El codi d''unitat estàndard "%standard_unit_code%" no existeix a la llista d''unitats per a la família de mesures "%measurement_family_code%".'
+        cannot_be_changed: 'El codi d''unitat estàndard de la família de mesures "%measurement_family_code%" no es pot canviar'
+        operation_should_be_multiply_by_one: 'El codi d''unitat estàndard de la família de mesures "%measurement_family_code%" hauria de ser una operació de multiplicació per 1'
+      should_contain_max_elements: 'Heu assolit el límit de %limit% de famílies de mesura.'
+      code:
+        must_be_unique: 'Aquest codi de família de mesures ja existeix.'
+      convert:
+        value_should_be_a_number_in_a_string: 'El valor de l''operació ha de ser un número vàlid'
+        should_contain_min_elements: 'Es requereix un mínim d''una operació de conversió per unitat.'
+        should_contain_max_elements: 'Heu assolit el límit de %limit% d''operacions de conversió per unitat.'
+      measurement_family_units_is_locked_for_updates: 'Un atribut de producte està vinculat a aquesta família de mesures. Només podeu editar les etiquetes i el símbol traduïts d''una unitat.'
+      measurement_family_unit_operations_locked_for_updates: 'Un atribut de producte està vinculat a aquesta família de mesures. Només podeu editar les etiquetes i el símbol traduïts d''una unitat'
+      units:
+        should_contain_min_elements: 'Es requereix un mínim d''una operació de conversió per unitat.'
+        should_contain_max_elements: 'Heu assolit el límit de %limit% d''operacions de conversió per unitat.'
+        operation:
+          invalid_operator: 'L''operador {{ value }} no és vàlid, si us plau, utilitzeu {{ choices }}.'
+        should_contain_at_least_one_unit: 'Hi ha d''haver almenys una unitat %limit% a la família de mesures.'
+        should_not_contain_duplicates: 'Hem trobat algunes unitats duplicades a la família de mesures. La família de mesures requereix unitats úniques.'
+        must_be_indexed_by_code: 'L''índex no coincideix amb el codi de la unitat.'
+    unit:
+      code:
+        must_be_unique: 'Aquest codi d''unitat ja existeix.'

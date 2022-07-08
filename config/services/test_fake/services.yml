@@ -6,6 +6,7 @@ imports:
     - { resource: ../../../tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/pim/queries.yml }
     - { resource: ../../../tests/back/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../../tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/behat/services.yml }
+    - { resource: ../../../tests/back/Platform/Acceptance/ImportExport/Resources/config/services.yml }
     - { resource: ../../../tests/back/Pim/Enrichment/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../../tests/back/Platform/Acceptance/Analytics/Resources/config/queries.yml }
     # Akeneo/Connectivity/Connection
@@ -13,6 +14,8 @@ imports:
     - { resource: ../../../src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
     # AkeneoJobBundle
     - { resource: ../../../src/Akeneo/Platform/Job/back/tests/Acceptance/Resources/config/services.yml }
+    # FeatureFlag
+    - { resource: ../../../src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_fake_services.yml }
     # Enrichment
     - { resource: ../../../src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance/Resources/config/services.yml }
 

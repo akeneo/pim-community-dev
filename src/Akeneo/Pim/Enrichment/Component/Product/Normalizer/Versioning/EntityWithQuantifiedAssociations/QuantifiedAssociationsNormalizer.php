@@ -23,8 +23,8 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
         foreach ($quantifiedAssociationsNormalized as $associationTypeCode => $linkTypes) {
             $results = array_merge(
                 $results,
-                $this->normalizeQuantifiedProductLinks($linkTypes['products'], $associationTypeCode),
-                $this->normalizeQuantifiedProductModelLinks($linkTypes['product_models'], $associationTypeCode),
+                $this->normalizeQuantifiedProductLinks($linkTypes['products'], (string) $associationTypeCode),
+                $this->normalizeQuantifiedProductModelLinks($linkTypes['product_models'], (string) $associationTypeCode),
             );
         }
 

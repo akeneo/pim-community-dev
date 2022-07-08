@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context;
 
+use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetAttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
@@ -11,6 +12,7 @@ use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -22,6 +24,7 @@ final class AttributeContext implements Context
         private InMemoryAttributeRepository $attributeRepository,
         private ObjectUpdaterInterface $attributeUpdater,
         private InMemoryAttributeGroupRepository $attributeGroupRepository,
+        private InMemoryGetAttributeTypes $getAttributeTypes
     ) {
     }
 
@@ -31,6 +34,9 @@ final class AttributeContext implements Context
     public function theFollowingAttribute(TableNode $table)
     {
         foreach ($table->getHash() as $attributeData) {
+            Assert::keyExists($attributeData, 'code');
+            Assert::keyExists($attributeData, 'type');
+
             // "group" is mandatory to be able to create a valid attribute entity.
             // But in guerkins, this information can be completely useless and add noise on it
             // that's why we create on the fly a group if this data is missing.
@@ -57,6 +63,7 @@ final class AttributeContext implements Context
             $attribute = new Attribute();
             $this->attributeUpdater->update($attribute, $attributeData);
             $this->attributeRepository->save($attribute);
+            $this->getAttributeTypes->saveAttribute($attributeData['code'], $attributeData['type']);
         }
     }
 }

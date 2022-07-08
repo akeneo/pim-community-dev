@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Widget;
@@ -6,7 +7,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Widget;
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 
 /**
- * Widget to display last import/export operations
+ * Widget to display last import/export operations.
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

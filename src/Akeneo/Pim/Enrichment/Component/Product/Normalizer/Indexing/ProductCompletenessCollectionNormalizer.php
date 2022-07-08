@@ -19,7 +19,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface, Ca
     /**
      * {@inheritdoc}
      *
-     * @var ProductCompletenessCollection $completenesses
+     * @param ProductCompletenessCollection $completenesses
      */
     public function normalize($completenesses, $format = null, array $context = [])
     {

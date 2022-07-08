@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Options;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -49,26 +51,18 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_multi_select' => [
-                    ['data' => ['orange'], 'locale' => 'en_US', 'scope' => null],
-                    ['data' => ['black', 'purple'], 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiSelectValue('a_localizable_multi_select', null, 'en_US', ['orange']),
+            new SetMultiSelectValue('a_localizable_multi_select', null, 'fr_FR', ['black', 'purple']),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_multi_select' => [
-                    ['data' => ['black', 'orange'], 'locale' => 'en_US', 'scope' => null],
-                    ['data' => ['black', 'orange'], 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiSelectValue('a_localizable_multi_select', null, 'en_US', ['black', 'orange']),
+            new SetMultiSelectValue('a_localizable_multi_select', null, 'fr_FR', ['black', 'orange']),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorIn()

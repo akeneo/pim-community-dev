@@ -21,9 +21,13 @@ trait DenormalizeConnectedAppTrait
      *    logo: string,
      *    author: string,
      *    user_group_name: string,
+     *    connection_username: string,
      *    categories: string,
      *    certified: bool,
      *    partner: ?string,
+     *    is_test_app: ?bool,
+     *    is_pending: ?bool,
+     *    has_outdated_scopes: bool,
      * } $dataRow
      */
     private function denormalizeRow(array $dataRow): ConnectedApp
@@ -36,10 +40,13 @@ trait DenormalizeConnectedAppTrait
             $dataRow['logo'],
             $dataRow['author'],
             $dataRow['user_group_name'],
+            $dataRow['connection_username'],
             \json_decode($dataRow['categories'], true),
             (bool) $dataRow['certified'],
             $dataRow['partner'],
             (bool) ($dataRow['is_test_app'] ?? false),
+            (bool) ($dataRow['is_pending'] ?? false),
+            (bool) $dataRow['has_outdated_scopes'],
         );
     }
 }

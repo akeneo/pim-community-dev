@@ -7,16 +7,17 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutio
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobWithStepsInterface;
 use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use League\Flysystem\FilesystemReader;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,7 +28,7 @@ use ZipStream\Option\Archive;
 use ZipStream\ZipStream;
 
 /**
- * Job execution tracker controller
+ * Job execution tracker controller.
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -68,9 +69,9 @@ class JobTrackerController
     }
 
     /**
-     * Download an archived file
+     * Download an archived file.
      *
-     * @param int $id
+     * @param int    $id
      * @param string $archiver
      * @param string $key
      */
@@ -137,10 +138,10 @@ class JobTrackerController
     }
 
     /**
-     * Returns if a user has read permission on an import or export
+     * Returns if a user has read permission on an import or export.
      *
      * @param JobExecution $jobExecution
-     * @param mixed $object The object
+     * @param mixed        $object
      */
     protected function isJobGranted($jobExecution, $object = null): bool
     {
@@ -153,7 +154,7 @@ class JobTrackerController
     }
 
     /**
-     * Set the Job status to Stopping
+     * Set the Job status to Stopping.
      */
     public function stopJobAction(int $id): JsonResponse
     {
@@ -174,15 +175,19 @@ class JobTrackerController
     {
         $jobInstance = $jobExecution->getJobInstance();
         $job = $this->jobRegistry->get($jobInstance->getJobName());
+        if (!$job instanceof JobWithStepsInterface) {
+            return 'archive.zip';
+        }
+
         foreach ($job->getSteps() as $step) {
             if ($step instanceof ItemStep) {
                 $writer = $step->getWriter();
-                if ($writer instanceof ArchivableWriterInterface) {
+                if ($writer instanceof ArchivableWriterInterface && $writer instanceof StepExecutionAwareInterface) {
                     foreach ($jobExecution->getStepExecutions() as $stepExecution) {
                         if ($stepExecution->getStepName() === $step->getName()) {
-                            $step->getWriter()->setStepExecution($stepExecution);
+                            $writer->setStepExecution($stepExecution);
 
-                            return \sprintf('%s.zip', pathinfo($step->getWriter()->getPath(), PATHINFO_FILENAME));
+                            return \sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME));
                         }
                     }
                 }

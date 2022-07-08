@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\InternalApiTestCase;
 use PHPUnit\Framework\Assert;
@@ -32,20 +32,16 @@ class DownloadProductPdfEndToEnd extends InternalApiTestCase
             'simple',
             'familyA',
             [
-                'values' => [
-                    'an_image' => [
-                        [
-                            'locale' => null,
-                            'scope' => null,
-                            'data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
-                        ],
-                    ],
-                ],
+                new SetImageValue(
+                    'an_image',
+                    null,
+                    null,
+                    $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')))
             ]
         );
 
         $url = $this->getRouter()->generate('pim_pdf_generator_download_product_pdf', [
-            'id' => $product->getId(),
+            'uuid' => $product->getUuid()->toString(),
             'dataLocale' => 'en_US',
             'dataScope' => 'ecommerce',
         ]);
@@ -60,7 +56,7 @@ class DownloadProductPdfEndToEnd extends InternalApiTestCase
         $product = $this->createProduct('simple', null, []);
 
         $url = $this->getRouter()->generate('pim_pdf_generator_download_product_pdf', [
-            'id' => $product->getId(),
+            'uuid' => $product->getUuid()->toString(),
             'dataLocale' => 'en_US',
             'dataScope' => 'ecommerce',
         ]);

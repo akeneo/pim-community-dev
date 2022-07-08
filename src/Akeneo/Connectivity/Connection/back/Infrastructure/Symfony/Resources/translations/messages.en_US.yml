@@ -3,3 +3,7 @@ akeneo_connectivity.connection:
     acl.manage_apps: Manage apps
     acl.manage_test_apps: Manage test apps
     acl.open_apps: Open apps
+
+pim_notification:
+    connected_app_authorizations:
+        message: 'The <strong>%app_name%</strong> App requires an authorization update. Please open the app to proceed.'

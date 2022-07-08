@@ -109,6 +109,7 @@ extensions:
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.product.flash.delete.success
                 fail: pim_enrich.entity.product.flash.delete.fail
+                buttonText: pim_common.delete
             redirect: pim_enrich_product_index
 
     pim-product-edit-form-download-pdf:

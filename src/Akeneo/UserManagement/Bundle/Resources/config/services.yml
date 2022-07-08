@@ -5,7 +5,11 @@ parameters:
 services:
     pim_user.manager:
         class: 'Akeneo\UserManagement\Bundle\Manager\UserManager'
-        arguments: ['%pim_user.entity.user.class%', "@doctrine.orm.entity_manager", "@security.encoder_factory"]
+        arguments:
+            - '%pim_user.entity.user.class%'
+            - "@doctrine.orm.entity_manager"
+            - "@security.encoder_factory"
+            - "@pim_user.saver.user"
 
     pim_user.security.login:
         class: 'Akeneo\UserManagement\Bundle\EventListener\LoginSubscriber'
@@ -44,3 +48,7 @@ services:
             - '%pim_user.account_lock.duration%'
             - '%pim_user.account_lock.max_consecutive_failures%'
             - '%security.authentication.hide_user_not_found%'
+
+    security.user_checker:
+        class: Akeneo\UserManagement\Bundle\Provider\CustomUserChecker
+        abstract: false

@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -39,15 +40,14 @@ final class IsUserOwnerOfTheProductValidator extends ConstraintValidator
 
         $productCategoryCodes = $this->getCategoryCodes->fromProductIdentifiers([$productIdentifier])[$productIdentifier->asString()] ?? null;
         if (null === $productCategoryCodes || [] === $productCategoryCodes) {
-            // null => product does not exist
-            // [] => product exists and has no category
-            // A new product without category is always granted (from a category permission point of view).
-            // TODO later: if we create/add with a category, we have to check the category is granted
             return;
         }
 
         if ([] === $this->getOwnedCategories->forUserId($productCategoryCodes, $command->userId())) {
-            $this->context->buildViolation($constraint->message)->addViolation();
+            $this->context->buildViolation($constraint->message)
+                ->setCode((string) (ViolationCode::buildGlobalViolationCode(ViolationCode::USER_IS_NOT_OWNER, ViolationCode::PERMISSION)))
+                ->atPath('userId')
+                ->addViolation();
         }
     }
 }

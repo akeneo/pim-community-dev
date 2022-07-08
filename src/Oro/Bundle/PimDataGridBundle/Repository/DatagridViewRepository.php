@@ -5,6 +5,7 @@ namespace Oro\Bundle\PimDataGridBundle\Repository;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 
 /**
@@ -44,9 +45,9 @@ SQL;
      */
     public function findDatagridViewBySearch(
         UserInterface $user,
-        string $alias,
-        string $term = '',
-        array $options = []
+        string        $alias,
+        string        $term = '',
+        array         $options = []
     ): array {
         $options += ['limit' => 20, 'page' => 1];
         $offset = (int)$options['limit'] * ((int)$options['page'] - 1);
@@ -56,17 +57,10 @@ SQL;
             $identifiers = $options['identifiers'];
         }
 
-        $qb = $this->createQueryBuilder('v')
-                   ->where('v.type = :public_type OR (v.type = :private_type AND v.owner = :owner)')
-                   ->setParameter('public_type', DatagridView::TYPE_PUBLIC)
-                   ->setParameter('private_type', DatagridView::TYPE_PRIVATE)
-                   ->setParameter('owner', $user)
-                   ->andWhere('v.datagridAlias = :alias')
-                   ->setParameter('alias', $alias)
-                   ->andWhere('v.label LIKE :term')
-                   ->setParameter('term', sprintf('%%%s%%', $term))
-                   ->setMaxResults((int)$options['limit'])
-                   ->setFirstResult($offset);
+        $qb = $this->buildQueryForListingViews($user, $alias, $term);
+
+        $qb->setMaxResults((int)$options['limit'])
+            ->setFirstResult($offset);
 
         if (null !== $identifiers) {
             $qb->andWhere('v.id IN (:ids)');
@@ -74,6 +68,28 @@ SQL;
         }
 
         return $qb->getQuery()->execute();
+    }
+
+    public function findAllDatagridViewsBySearch(
+        UserInterface $user,
+        string        $alias,
+        string        $term = ''
+    ): array {
+        $qb = $this->buildQueryForListingViews($user, $alias, $term);
+        return $qb->getQuery()->execute();
+    }
+
+    private function buildQueryForListingViews(UserInterface $user, string $alias, string $term): QueryBuilder
+    {
+        return $this->createQueryBuilder('v')
+            ->where('v.type = :public_type OR (v.type = :private_type AND v.owner = :owner)')
+            ->setParameter('public_type', DatagridView::TYPE_PUBLIC)
+            ->setParameter('private_type', DatagridView::TYPE_PRIVATE)
+            ->setParameter('owner', $user)
+            ->andWhere('v.datagridAlias = :alias')
+            ->setParameter('alias', $alias)
+            ->andWhere('v.label LIKE :term')
+            ->setParameter('term', sprintf('%%%s%%', $term));
     }
 
     public function findPublicDatagridViewByLabel(string $label): ?DatagridView

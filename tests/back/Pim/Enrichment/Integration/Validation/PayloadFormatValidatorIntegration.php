@@ -36,6 +36,9 @@ final class PayloadFormatValidatorIntegration extends TestCase
                     ['locale' => 'en_US', 'scope' => null, 'data' => [['amount' => 100, 'currency' => 'USD']]],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => [['amount' => '100', 'currency' => 'USD']]],
                 ],
+                'a_yes_no' => [
+                    ['locale' => null, 'scope' => null, 'data' => false],
+                ],
             ],
         ]);
     }
@@ -53,7 +56,7 @@ final class PayloadFormatValidatorIntegration extends TestCase
         $violations = $this->validator->validate($payload, new PayloadFormat());
         self::assertStringContainsString(
             'Property "a_text" expects an array with the key "data". Check the expected format on the API documentation.',
-            (string) $violations,
+            (string)$violations,
             \sprintf('Violation message is not found, have: %s', $violations)
         );
 
@@ -65,7 +68,7 @@ final class PayloadFormatValidatorIntegration extends TestCase
         $violations = $this->validator->validate($payload, new PayloadFormat());
         self::assertStringContainsString(
             'Property "a_text" expect to be an array of array',
-            (string) $violations,
+            (string)$violations,
             \sprintf('Violation message is not found, have: %s', $violations)
         );
     }
@@ -107,10 +110,28 @@ final class PayloadFormatValidatorIntegration extends TestCase
             $violations = $this->validator->validate($payload, new PayloadFormat());
             self::assertStringContainsString(
                 'The data format sent for the "a_price" attribute is wrong. Please, fill in one value per amount field.',
-                (string) $violations,
+                (string)$violations,
                 \sprintf('Violation message is not found, have: %s', $violations)
             );
         }
+    }
+
+    /** @test */
+    public function it_adds_violations_when_validating_a_wrong_boolean_value_format(): void
+    {
+        $payload = [
+            'values' => [
+                'a_yes_no' => [
+                    ['locale' => null, 'scope' => null, 'data' => 0],
+                ],
+            ],
+        ];
+        $violations = $this->validator->validate($payload, new PayloadFormat());
+        self::assertStringContainsString(
+            'The a_yes_no attribute requires a boolean value (true or false) as data, a integer was detected.',
+            (string)$violations,
+            \sprintf('Violation message is not found, have: %s', $violations)
+        );
     }
 
     private function assertNoViolationForPayload(array $payload): void

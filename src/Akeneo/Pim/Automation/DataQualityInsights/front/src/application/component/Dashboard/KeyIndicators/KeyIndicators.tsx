@@ -1,25 +1,104 @@
-import React, {Children, FC} from 'react';
-import {useFetchKeyIndicators} from '../../../../infrastructure/hooks';
+import React, {FC} from 'react';
 import styled from 'styled-components';
-import {keyIndicatorMap} from '../../../../domain';
+
+import {useTranslate} from '@akeneo-pim-community/shared';
+import {Helper, LockIcon, useTheme} from 'akeneo-design-system';
+
+import {useFetchKeyIndicators} from '../../../../infrastructure/hooks';
+import {
+  isKeyIndicatorProducts,
+  KeyIndicatorAttributes,
+  KeyIndicatorMap,
+  KeyIndicatorProducts,
+} from '../../../../domain';
+
 import {SectionTitle} from './SectionTitle';
 import {EmptyKeyIndicators} from './EmptyKeyIndicators';
-import {Helper, LockIcon, useTheme} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {AttributesKeyIndicatorLinkCallback, ProductsKeyIndicatorLinkCallback} from '../../../user-actions';
+import {KeyIndicatorAboutProducts} from './KeyIndicatorAboutProducts';
+import {KeyIndicatorAboutAttributes} from './KeyIndicatorAboutAttributes';
 
 const featureFlags = require('pim/feature-flags');
+
+interface KeyIndicatorAboutProductsDescriptor {
+  titleI18nKey: string;
+  followResults: ProductsKeyIndicatorLinkCallback;
+  icon: React.ReactNode;
+}
+
+interface KeyIndicatorAboutAttributesDescriptor {
+  titleI18nKey: string;
+  followResults: AttributesKeyIndicatorLinkCallback;
+  icon: React.ReactNode;
+}
+
+export type KeyIndicatorDescriptors = {
+  [code in KeyIndicatorProducts]?: KeyIndicatorAboutProductsDescriptor;
+} & {
+  [code in KeyIndicatorAttributes]?: KeyIndicatorAboutAttributesDescriptor;
+};
 
 type Props = {
   channel: string;
   locale: string;
   family: string | null;
   category: string | null;
+  keyIndicatorDescriptors: KeyIndicatorDescriptors;
 };
 
-const KeyIndicators: FC<Props> = ({children, channel, locale, family, category}) => {
-  const keyIndicators: keyIndicatorMap | null = useFetchKeyIndicators(channel, locale, family, category);
+const KeyIndicators: FC<Props> = ({channel, locale, family, category, keyIndicatorDescriptors}) => {
+  const countsMap: KeyIndicatorMap | null = useFetchKeyIndicators(channel, locale, family, category);
   const theme = useTheme();
   const translate = useTranslate();
+
+  let keyIndicatorContents: React.ReactNode = (function () {
+    if (countsMap === null) {
+      return <div data-testid={'dqi-key-indicator-loading'} className="AknLoadingMask" />;
+    }
+    const codes = Object.keys(countsMap) as (KeyIndicatorProducts | KeyIndicatorAttributes)[];
+    if (codes.length === 0) {
+      return <EmptyKeyIndicators />;
+    }
+    return codes.map((code: KeyIndicatorProducts | KeyIndicatorAttributes) => {
+      if (isKeyIndicatorProducts(code)) {
+        const {[code]: descriptor} = keyIndicatorDescriptors;
+        if (!descriptor) {
+          return null;
+        }
+        const {titleI18nKey, followResults} = descriptor;
+
+        return (
+          <KeyIndicatorAboutProducts
+            key={code}
+            type={code}
+            title={titleI18nKey}
+            counts={countsMap[code]!}
+            followResults={followResults}
+          >
+            {descriptor.icon}
+          </KeyIndicatorAboutProducts>
+        );
+      }
+
+      const {[code]: descriptor} = keyIndicatorDescriptors;
+      if (!descriptor) {
+        return null;
+      }
+      const {titleI18nKey, followResults} = descriptor;
+
+      return (
+        <KeyIndicatorAboutAttributes
+          key={code}
+          type={code}
+          title={titleI18nKey}
+          counts={countsMap[code]!}
+          followResults={followResults}
+        >
+          {descriptor.icon}
+        </KeyIndicatorAboutAttributes>
+      );
+    });
+  })();
 
   return (
     <div>
@@ -35,32 +114,7 @@ const KeyIndicators: FC<Props> = ({children, channel, locale, family, category})
         <Helper level="info">{translate('free_trial.dqi.dashboard.helper')}</Helper>
       )}
 
-      <KeyIndicatorContainer>
-        {keyIndicators === null && <div data-testid={'dqi-key-indicator-loading'} className="AknLoadingMask" />}
-        {keyIndicators !== null && Object.keys(keyIndicators).length === 0 && <EmptyKeyIndicators />}
-        {keyIndicators !== null &&
-          Object.keys(keyIndicators).length > 0 &&
-          Children.map(children, child => {
-            if (!React.isValidElement(child)) {
-              return;
-            }
-
-            const keyIndicatorData = keyIndicators.hasOwnProperty(child.props.type)
-              ? keyIndicators[child.props.type]
-              : null;
-
-            return React.cloneElement(
-              child,
-              keyIndicatorData !== null
-                ? {
-                    ratioGood: parseFloat(keyIndicatorData.ratioGood.toString()),
-                    totalToImprove: keyIndicatorData.totalToImprove,
-                    extraData: keyIndicatorData?.extraData,
-                  }
-                : {}
-            );
-          })}
-      </KeyIndicatorContainer>
+      <KeyIndicatorContainer>{keyIndicatorContents}</KeyIndicatorContainer>
     </div>
   );
 };

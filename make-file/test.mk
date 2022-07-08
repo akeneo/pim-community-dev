@@ -1,12 +1,12 @@
 var/tests/%:
-	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
+	$(DOCKER_COMPOSE) run --rm php mkdir -p $@
 
 .PHONY: find-legacy-translations
 find-legacy-translations:
 	.circleci/find_legacy_translations.sh
 
 .PHONY: coupling-back
-coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back job-coupling-back data-quality-insights-coupling-back enrichment-product-coupling-back
+coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back import-export-coupling-back job-coupling-back data-quality-insights-coupling-back enrichment-product-coupling-back
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
 
 ### Static tests
@@ -24,17 +24,20 @@ check-sf-services:
 ### Lint tests
 .PHONY: lint-back
 lint-back:
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
-	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
-	$(DOCKER_COMPOSE) run -u www-data --rm php php -d memory_limit=1G vendor/bin/phpstan analyse src/Akeneo/Pim --level 2
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
+	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
+	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bin/console cache:warmup
+	$(DOCKER_COMPOSE) run --rm php php -d memory_limit=1G vendor/bin/phpstan analyse src/Akeneo/Pim --level 2
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 	$(MAKE) connectivity-connection-lint-back
 	$(MAKE) communication-channel-lint-back
 	$(MAKE) data-quality-insights-lint-back
 	$(MAKE) data-quality-insights-phpstan
+	$(MAKE) import-export-lint-back
 	$(MAKE) job-lint-back
 	$(MAKE) enrichment-product-lint-back
+	$(MAKE) channel-lint-back
+	# Cache was created with debug enabled, removing it allows a faster one to be created for upcoming tests
+	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
 
 .PHONY: lint-front
 lint-front:
@@ -45,7 +48,7 @@ lint-front:
 .PHONY: unit-back
 unit-back: var/tests/phpspec
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+	$(DOCKER_COMPOSE) run -T --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	.circleci/find_non_executed_phpspec.sh
 else
 	${PHP_RUN} vendor/bin/phpspec run
@@ -60,7 +63,9 @@ unit-front:
 .PHONY: acceptance-back
 acceptance-back:
 	APP_ENV=behat ${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
+	$(MAKE) import-export-acceptance-back
 	$(MAKE) job-acceptance-back
+	$(MAKE) channel-acceptance-back
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Measurement_Acceptance
 else
@@ -77,7 +82,7 @@ integration-front:
 	$(YARN_RUN) integration
 
 .PHONY: pim-integration-back
-pim-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back job-integration-back
+pim-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back job-integration-back channel-integration-back
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Integration_Test
 else
@@ -125,5 +130,5 @@ endif
 
 .PHONY: test-database-structure
 test-database-structure: #Doc: test database structure
-	$(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bash -c 'bin/console pimee:database:inspect -f --env=test && bin/console pimee:database:diff --env=test'
+	$(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bash -c 'bin/console pimee:database:inspect -f --env=test && bin/console pimee:database:diff --env=test'
 

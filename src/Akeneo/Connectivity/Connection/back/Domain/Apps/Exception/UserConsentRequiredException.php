@@ -12,19 +12,15 @@ class UserConsentRequiredException extends \Exception
 {
     private string $appId;
     private int $pimUserId;
-    /** @var string[] */
-    private array $newAuthenticationScopes;
 
-    /**
-     * @param string[] $newAuthenticationScopes
-     */
-    public function __construct(string $appId, int $pimUserId, array $newAuthenticationScopes)
-    {
+    public function __construct(
+        string $appId,
+        int $pimUserId,
+    ) {
         parent::__construct();
 
         $this->appId = $appId;
         $this->pimUserId = $pimUserId;
-        $this->newAuthenticationScopes = $newAuthenticationScopes;
     }
 
     public function getAppId(): string
@@ -35,13 +31,5 @@ class UserConsentRequiredException extends \Exception
     public function getPimUserId(): int
     {
         return $this->pimUserId;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getNewAuthenticationScopes(): array
-    {
-        return $this->newAuthenticationScopes;
     }
 }

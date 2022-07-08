@@ -23,6 +23,7 @@ final class CreateAppTableQuery
         connection_code VARCHAR(100) NOT NULL,
         scopes JSON NOT NULL,
         user_group_name VARCHAR(255) NOT NULL,
+        has_outdated_scopes TINYINT DEFAULT 0 NOT NULL,
         CONSTRAINT FK_CONNECTIVITY_CONNECTED_APP_connection_code FOREIGN KEY (connection_code) REFERENCES akeneo_connectivity_connection (code),
         CONSTRAINT FK_CONNECTIVITY_CONNECTED_APP_user_group_name FOREIGN KEY (user_group_name) REFERENCES oro_access_group (name)
     ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC

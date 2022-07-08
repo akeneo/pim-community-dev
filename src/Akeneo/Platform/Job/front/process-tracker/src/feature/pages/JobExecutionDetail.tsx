@@ -1,5 +1,4 @@
 import React from 'react';
-import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {
   PageContent,
@@ -77,13 +76,16 @@ const canDownloadArchive = ({isGranted}: Security, jobExecution: JobExecution | 
   return true;
 };
 
-const JobExecutionDetail = () => {
+type JobExecutionDetailProps = {
+  jobExecutionId: string;
+};
+
+const JobExecutionDetail = ({jobExecutionId}: JobExecutionDetailProps) => {
   const translate = useTranslate();
   const security = useSecurity();
   const router = useRouter();
 
   const jobTypeWithProfile = ['import', 'export'];
-  const {jobExecutionId} = useParams<{jobExecutionId: string}>();
   const [jobExecution, error, reloadJobExecution, isAutoRefreshing] = useJobExecution(jobExecutionId);
 
   const handleStop = async () => {

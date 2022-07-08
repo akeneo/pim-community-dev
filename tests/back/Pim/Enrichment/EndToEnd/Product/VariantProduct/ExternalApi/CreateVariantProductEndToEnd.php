@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\VariantProduct\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
@@ -49,12 +52,8 @@ class CreateVariantProductEndToEnd extends AbstractProductTestCase
         );
 
         $this->createVariantProduct('simple', [
-            'parent' => 'amor',
-            'values'  => [
-                'a_yes_no' => [
-                    ['locale' => null, 'scope' => null, 'data' => false],
-                ],
-            ],
+            new ChangeParent('amor'),
+            new SetBooleanValue('a_yes_no', null, null, false)
         ]);
     }
 
@@ -1051,17 +1050,9 @@ JSON;
     public function testProductVariantCreationWithSameIdentifier()
     {
         $this->createVariantProduct('apollon_option_b_true', [
-            'categories' => ['master'],
-            'parent' => 'amor',
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => false,
-                    ],
-                ],
-            ],
+            new SetCategories(['master']),
+            new ChangeParent('amor'),
+            new SetBooleanValue('a_yes_no', null, null, false)
         ]);
 
         $client = $this->createAuthenticatedClient();

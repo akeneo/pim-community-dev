@@ -1,0 +1,142 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {SpaceContainer} from '../../storybook';
+import {BlockButton} from './BlockButton';
+import {PlusIcon, CloseIcon, ArrowDownIcon} from '../../icons';
+import {Dropdown, Block, IconButton} from '../../components';
+import {useBooleanState} from '../../hooks';
+import * as Icons from '../../icons';
+
+<Meta
+  title="Components/Buttons/BlockButton"
+  component={BlockButton}
+  argTypes={{
+    icon: {
+      control: {type: 'select'},
+      options: Object.keys(Icons),
+      table: {type: {summary: 'ReactElement<IconProps>'}},
+    },
+    disabled: {control: {type: 'boolean'}},
+    onClick: {action: 'Clicked'},
+    children: {control: {type: 'text'}},
+  }}
+  args={{
+    children: 'Add block',
+    icon: 'ArrowDownIcon',
+  }}
+/>
+
+# BlockButton
+
+## Usage
+
+BlockButtons express what action will occur when the users clicks. BlockButtons are used to initialize an action, either in the background or foreground of an experience.
+
+## Playground
+
+Use this playground to test the BlockButton component
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <BlockButton {...args} icon={React.createElement(Icons[args.icon])} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Disabled
+
+<Canvas>
+  <Story name="Disabled">
+    {args => {
+      return (
+        <>
+          <BlockButton {...args} icon={<ArrowDownIcon />}>
+            Default
+          </BlockButton>
+          <BlockButton {...args} disabled={true} icon={<ArrowDownIcon />}>
+            Disabled
+          </BlockButton>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With an Icon (children)
+
+<Canvas>
+  <Story name="With an Icon (children)">
+    {args => {
+      return (
+        <>
+          <BlockButton {...args} icon={<ArrowDownIcon />}>
+            <PlusIcon /> Before
+          </BlockButton>
+          <BlockButton {...args} icon={<ArrowDownIcon />}>
+            After <PlusIcon />
+          </BlockButton>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With Dropdown and Blocks
+
+<Canvas>
+  <Story name="With Dropdown and Blocks">
+    {args => {
+      const [blockValues, setBlockValues] = useState([]);
+      const [isOpen, open, close] = useBooleanState(false);
+      return (
+        <SpaceContainer gap={10}>
+          {blockValues.map(blockValue => (
+            <Block
+              key={blockValue}
+              action={
+                <IconButton
+                  key="remove"
+                  icon={<CloseIcon />}
+                  title="Remove"
+                  onClick={() => setBlockValues(blockValues.filter(current => current !== blockValue))}
+                />
+              }
+            >
+              {blockValue}
+            </Block>
+          ))}
+          <Dropdown>
+            <BlockButton {...args} onClick={open} disabled={blockValues.length === 3} icon={<ArrowDownIcon />}>
+              Add a block
+            </BlockButton>
+            {isOpen && (
+              <Dropdown.Overlay onClose={close} fullWidth={true}>
+                <Dropdown.Header>
+                  <Dropdown.Title>Blocks</Dropdown.Title>
+                </Dropdown.Header>
+                <Dropdown.ItemCollection>
+                  {['Block 1', 'Block 2', 'Block 3']
+                    .filter(blockValue => !blockValues.includes(blockValue))
+                    .map(option => (
+                      <Dropdown.Item
+                        key={option}
+                        onClick={() => {
+                          setBlockValues(blockValues => [...blockValues, option]);
+                          close();
+                        }}
+                      >
+                        {option}
+                      </Dropdown.Item>
+                    ))}
+                </Dropdown.ItemCollection>
+              </Dropdown.Overlay>
+            )}
+          </Dropdown>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>

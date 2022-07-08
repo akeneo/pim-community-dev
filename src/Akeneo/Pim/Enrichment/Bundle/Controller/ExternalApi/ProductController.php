@@ -170,8 +170,6 @@ class ProductController
 
     private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses;
 
-    private LoggerInterface $apiProductAclLogger;
-
     private SecurityFacade $security;
 
     public function __construct(
@@ -208,7 +206,6 @@ class ProductController
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
         RemoveParentInterface $removeParent,
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        LoggerInterface $apiProductAclLogger,
         SecurityFacade $security,
         private ValidatorInterface $validator
     ) {
@@ -245,7 +242,6 @@ class ProductController
         $this->getProductsWithQualityScores = $getProductsWithQualityScores;
         $this->removeParent = $removeParent;
         $this->getProductsWithCompletenesses = $getProductsWithCompletenesses;
-        $this->apiProductAclLogger = $apiProductAclLogger;
         $this->security = $security;
     }
 
@@ -827,7 +823,7 @@ class ProductController
      */
     protected function needUpdateFromVariantToSimple(ProductInterface $product, array $data): bool
     {
-        return null !== $product->getId() && $product->isVariant() &&
+        return null !== $product->getCreated() && $product->isVariant() &&
             array_key_exists('parent', $data) && null === $data['parent'];
     }
 
@@ -911,16 +907,6 @@ class ProductController
     private function denyAccessUnlessAclIsGranted(string $acl): void
     {
         if (!$this->security->isGranted($acl)) {
-            $user = $this->tokenStorage->getToken()->getUser();
-            Assert::isInstanceOf($user, UserInterface::class);
-
-            $this->apiProductAclLogger->warning(sprintf(
-                'User "%s" with roles %s is not granted "%s"',
-                $user->getUsername(),
-                implode(',', $user->getRoles()),
-                $acl
-            ));
-
             throw new AccessDeniedHttpException($this->deniedAccessMessage($acl));
         }
     }

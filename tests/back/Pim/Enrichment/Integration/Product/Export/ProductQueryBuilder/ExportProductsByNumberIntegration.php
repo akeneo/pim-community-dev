@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByNumberIntegration extends AbstractExportTestCase
@@ -12,19 +13,11 @@ class ExportProductsByNumberIntegration extends AbstractExportTestCase
     protected function loadFixtures() : void
     {
         $this->createProduct('product_1', [
-            'values'     => [
-                'a_number_integer' => [
-                    ['data' => 100, 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetNumberValue('a_number_integer', null, null, 100),
         ]);
 
         $this->createProduct('product_2', [
-            'values' => [
-                'a_number_integer' => [
-                    ['data' => 110, 'locale' => null, 'scope' => null]
-                ]
-            ],
+            new SetNumberValue('a_number_integer', null, null, 110),
         ]);
 
         $this->createProduct('product_3');

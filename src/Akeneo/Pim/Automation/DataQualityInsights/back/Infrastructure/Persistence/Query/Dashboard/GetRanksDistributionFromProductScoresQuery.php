@@ -4,37 +4,25 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard;
 
-use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetRanksDistributionFromProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetCategoryChildrenCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetScoresPropertyStrategy;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
 final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistributionFromProductScoresQueryInterface
 {
-    private Connection $connection;
-
-    private Client $elasticsearchClient;
-
-    private GetCategoryChildrenCodesQueryInterface $getCategoryChildrenIdsQuery;
-
-    private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes;
-
     public function __construct(
-        Connection                             $connection,
-        Client                                 $elasticsearchClient,
-        GetCategoryChildrenCodesQueryInterface $getCategoryChildrenIdsQuery,
-        GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes
+        private Client                                 $elasticsearchClient,
+        private GetCategoryChildrenCodesQueryInterface $getCategoryChildrenIdsQuery,
+        private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes,
+        private GetScoresPropertyStrategy              $getScoresProperty,
     ) {
-        $this->connection = $connection;
-        $this->elasticsearchClient = $elasticsearchClient;
-        $this->getCategoryChildrenIdsQuery = $getCategoryChildrenIdsQuery;
-        $this->getChannelCodeWithLocaleCodes = $getChannelCodeWithLocaleCodes;
     }
 
     public function forWholeCatalog(\DateTimeImmutable $date): RanksDistributionCollection
@@ -68,20 +56,20 @@ final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistri
      * It would be possible to calculate all consolidation scores from Elasticsearch
      * in one request, by using multi level aggregation:
      * {
-     *	 "aggs": {
-     *	 	"fe_case.cs_CZ": {
-     *	 		"terms": {
-     *	 			"field": "data_quality_insights.scores.fe_case.cs_CZ"
-     *	 		},
-     *	 		"aggs": {
-     *	 			"agg2": {
-     *	 				"terms": {
-     *	 					"field": "family.code"
-     *	 				}
-     *	 			}
-     *	 		}
-     *	 	}
-     *	 }
+     *     "aggs": {
+     *        "fe_case.cs_CZ": {
+     *            "terms": {
+     *                "field": "data_quality_insights.scores.fe_case.cs_CZ"
+     *            },
+     *            "aggs": {
+     *                "agg2": {
+     *                    "terms": {
+     *                        "field": "family.code"
+     *                    }
+     *                }
+     *            }
+     *        }
+     *     }
      * }
      *
      * But actually, there is a limit of the number of buckets that we can return:
@@ -98,7 +86,7 @@ final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistri
         $query = $this->buildRankDistributionQuery();
         $query['query']['constant_score']['filter']['bool']['filter'][] = [
             'term' => [
-                'family.code' => (string) $familyCode
+                'family.code' => (string)$familyCode
             ]
         ];
         $elasticsearchResult = $this->elasticsearchClient->search($query);
@@ -111,6 +99,7 @@ final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistri
      */
     private function buildRankDistributionQuery(): array
     {
+        $scoresProperty = ($this->getScoresProperty)();
         $channels = $this->getChannelCodeWithLocaleCodes->findAll();
         $elasticsearchAggs = [];
         foreach ($channels as ['channelCode' => $channelCode, 'localeCodes' => $localeCodes]) {
@@ -118,7 +107,7 @@ final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistri
                 $channelLocaleKey = "$channelCode.$localeCode";
                 $elasticsearchAggs[$channelLocaleKey] = [
                     'terms' => [
-                        'field' => "data_quality_insights.scores.$channelLocaleKey"
+                        'field' => "data_quality_insights.$scoresProperty.$channelLocaleKey"
                     ]
                 ];
             }
