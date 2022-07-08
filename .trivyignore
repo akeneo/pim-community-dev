@@ -1,0 +1,17 @@
+# minimist needs to be updated from 1.2.5 -> 1.2.6.
+# Leads to DoS or RCE under very specific conditions
+# https://security.snyk.io/vuln/SNYK-JS-MINIMIST-559764
+
+CVE-2021-44906
+
+# url-parse needs to be upgraded from 1.5.3 -> 1.5.8.
+# It can lead to SSRF, Open Redirect or any other vulnerability which depends on the hostname field of parsed url.
+# https://huntr.dev/bounties/55fd06cd-9054-4d80-83be-eb5a454be78c/
+
+CVE-2022-0686
+
+# immer needs to be upgraded from 8.0.1 -> 9.0.6
+# Leads to DoS or RCE under very specific conditions
+# https://security.snyk.io/vuln/SNYK-JS-IMMER-1540542
+
+CVE-2021-23436

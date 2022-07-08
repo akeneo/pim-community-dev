@@ -144,7 +144,7 @@ COPY components components
 COPY grth grth
 COPY tria tria
 COPY upgrades upgrades
-COPY composer.json package.json yarn.lock .env tsconfig.json *.js version.txt .
+COPY composer.json package.json yarn.lock .env tsconfig.json *.js version.txt ./
 
 ENV APP_ENV=prod
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1

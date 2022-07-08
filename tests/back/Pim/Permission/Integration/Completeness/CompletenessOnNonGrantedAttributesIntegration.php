@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use AkeneoTest\Pim\Enrichment\Integration\Completeness\AbstractCompletenessTestCase;
@@ -41,13 +43,11 @@ final class CompletenessOnNonGrantedAttributesIntegration extends AbstractComple
         $this->get('pim_catalog.saver.family')->save($family);
 
         $this->createProductWithStandardValues(
-            $family,
             'another_product',
             [
-                'values' => [
-                    'a_text' => [['locale' => null, 'scope'  => null, 'data'   => 'a text']],
-                    'non_granted_text' => [['locale' => null, 'scope'  => null, 'data'   => 'another text']]
-                ],
+                new SetFamily($family->getCode()),
+                new SetTextValue('a_text', null, null, 'a text'),
+                new SetTextValue('non_granted_text', null, null, 'another text'),
             ]
         );
 
@@ -93,6 +93,7 @@ final class CompletenessOnNonGrantedAttributesIntegration extends AbstractComple
     {
         parent::setUp();
 
+        $this->createAdminUser();
         $user = $this->get('pim_user.factory.user')->create();
         $user->setUsername('mary');
         $user->setPlainPassword('mary');
