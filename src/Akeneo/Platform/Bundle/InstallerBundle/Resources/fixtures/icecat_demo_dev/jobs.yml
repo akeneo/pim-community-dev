@@ -7,7 +7,7 @@ jobs:
         configuration:
             storage:
                 type: none
-            uploadAllowed: true
+            uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'
             enabled:            true
@@ -92,7 +92,7 @@ jobs:
         configuration:
             storage:
                 type: none
-            uploadAllowed: true
+            uploadAllowed:       true
             delimiter:           ;
             enclosure:           '"'
     csv_category_export:
@@ -136,6 +136,7 @@ jobs:
         configuration:
             storage:
                 type: none
+            uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
     csv_group_export:
@@ -149,7 +150,6 @@ jobs:
             withHeader: true
             storage:
                 type: none
-            uploadAllowed: true
     csv_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
@@ -427,7 +427,7 @@ jobs:
         configuration:
             storage:
                 type: none
-            uploadAllowed: true
+            uploadAllowed:      true
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family
@@ -848,7 +848,6 @@ jobs:
         configuration:
             storage:
                 type: none
-            uploadAllowed: true
     csv_user_role_import:
         connector: Akeneo CSV Connector
         alias: csv_user_role_import
