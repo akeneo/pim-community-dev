@@ -131,7 +131,10 @@ SQL;
                 'type' => 'import',
                 'configuration' =>
                     [
-                        'filePath' => '/tmp/footwear_products.csv',
+                        'storage' => [
+                            'type' => 'local',
+                            'file_path' => '/tmp/footwear_products.csv',
+                        ],
                         'delimiter' => ';',
                         'enclosure' => '"',
                         'escape' => '\\',

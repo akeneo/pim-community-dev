@@ -103,7 +103,7 @@ class PublishToJobQueueIntegration extends TestCase
         $jobExecution = $this->getJobExecution();
 
         $config = json_decode($jobExecution['raw_parameters'], true);
-        $this->assertEquals($filePath, $config['filePath']);
+        $this->assertEquals($filePath, $config['storage']['file_path']);
 
         $this->jobLauncher->launchConsumerOnce();
 
