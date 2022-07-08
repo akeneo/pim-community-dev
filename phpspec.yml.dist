@@ -8,6 +8,13 @@ suites:
         src_path: src/Akeneo/Channel/back
         spec_prefix: Specification
 
+    ChannelAcceptance:
+        namespace: Akeneo\Test\Channel\Acceptance
+        psr4_prefix: Akeneo\Test\Channel\Acceptance
+        spec_path: src/Akeneo/Channel/back/tests/Acceptance
+        src_path: src/Akeneo/Channel/back/tests/Acceptance
+        spec_prefix: Specification
+
     Channel:
         namespace: Akeneo\Channel
         psr4_prefix: Akeneo\Channel

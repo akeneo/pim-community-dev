@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
+namespace Akeneo\Test\Channel\Acceptance\InMemory;
 
 use Akeneo\Channel\API\Query\IsLocaleEditable;
 use Akeneo\UserManagement\Component\Model\UserInterface;

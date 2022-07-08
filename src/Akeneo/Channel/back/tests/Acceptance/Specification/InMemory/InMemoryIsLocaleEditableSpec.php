@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
+namespace Specification\Akeneo\Test\Channel\Acceptance\InMemory;
 
 use Akeneo\Channel\API\Query\IsLocaleEditable;
-use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryIsLocaleEditable;
 use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
+use Akeneo\Test\Channel\Acceptance\InMemory\InMemoryIsLocaleEditable;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
