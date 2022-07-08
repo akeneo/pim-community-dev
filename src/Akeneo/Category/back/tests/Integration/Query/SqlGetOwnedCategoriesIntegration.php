@@ -104,6 +104,11 @@ final class SqlGetOwnedCategoriesIntegration extends TestCase
         return $userGroup;
     }
 
+    /**
+     * @param string $username
+     * @param Group[] $groups
+     * @return User
+     */
     private function createUser(string $username, array $groups): User
     {
         $user = $this->get('pim_user.factory.user')->create();
