@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
+use Akeneo\Category\Api\CategoryTree;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlFindGrantedCategoryTrees;
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -55,7 +55,7 @@ final class SqlFindGrantedCategoryTreesIntegration extends TestCase
     public function it_applies_permission_on_category_trees(): void
     {
         $this->findGrantedCategoryTrees = $this->createQuery(new DenySalesCategory());
-        
+
         $actual = $this->findGrantedCategoryTrees->execute();
 
         $masterTree = new CategoryTree();
