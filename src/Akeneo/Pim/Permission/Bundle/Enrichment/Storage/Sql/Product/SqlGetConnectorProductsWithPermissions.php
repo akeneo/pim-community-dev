@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product;
 
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
+use Akeneo\Channel\API\Query\FindAllViewableLocalesForUser;
+use Akeneo\Channel\API\Query\Locale;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
@@ -25,36 +26,25 @@ use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductModel;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductIdentifiers;
+use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
 {
-    private GetConnectorProducts $getConnectorProducts;
-    private GetViewableCategoryCodes $getViewableCategoryCodes;
-    private GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser;
-    private GetAllViewableLocalesForUserInterface $getViewableLocaleCodesForUser;
-    private FetchUserRightsOnProduct $fetchUserRightsOnProduct;
-    private FetchUserRightsOnProductModel $fetchUserRightsOnProductModel;
-    private GetWorkflowStatusFromProductIdentifiers $getWorkflowStatusFromProductIdentifiers;
-
     public function __construct(
-        GetConnectorProducts $getConnectorProducts,
-        GetViewableCategoryCodes $getViewableCategoryCodes,
-        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
-        GetAllViewableLocalesForUserInterface $getViewableLocaleCodesForUser,
-        FetchUserRightsOnProduct $fetchUserRightsOnProduct,
-        FetchUserRightsOnProductModel $fetchUserRightsOnProductModel,
-        GetWorkflowStatusFromProductIdentifiers $getWorkflowStatusFromProductIdentifiers
+        private GetConnectorProducts $getConnectorProducts,
+        private GetViewableCategoryCodes $getViewableCategoryCodes,
+        private GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
+        private FindAllViewableLocalesForUser $getViewableLocaleCodesForUser,
+        private FetchUserRightsOnProduct $fetchUserRightsOnProduct,
+        private FetchUserRightsOnProductModel $fetchUserRightsOnProductModel,
+        private GetWorkflowStatusFromProductIdentifiers $getWorkflowStatusFromProductIdentifiers,
+        private Connection $connection
     ) {
-        $this->getConnectorProducts = $getConnectorProducts;
-        $this->getViewableCategoryCodes = $getViewableCategoryCodes;
-        $this->getViewableAttributeCodesForUser = $getViewableAttributeCodesForUser;
-        $this->getViewableLocaleCodesForUser = $getViewableLocaleCodesForUser;
-        $this->fetchUserRightsOnProduct = $fetchUserRightsOnProduct;
-        $this->fetchUserRightsOnProductModel = $fetchUserRightsOnProductModel;
-        $this->getWorkflowStatusFromProductIdentifiers = $getWorkflowStatusFromProductIdentifiers;
     }
 
     /**
@@ -115,6 +105,53 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $productsWithPermissionApplied);
     }
 
+    public function fromProductUuid(UuidInterface $productUuid, int $userId): ConnectorProduct
+    {
+        // TODO: change the fetchUserRights query to use uuids
+        $productIdentifier = $this->getProductIdentifiersByUuid([$productUuid])[$productUuid->toString()];
+        $userRights = $this->fetchUserRightsOnProduct->fetchByIdentifier($productIdentifier, $userId);
+        if (!$userRights->isProductViewable()) {
+            throw new ObjectNotFoundException(sprintf('Product "%s" is not viewable by user id "%s".', $productUuid->toString(), $userId));
+        }
+
+        $productWithoutPermissionApplied = $this->getConnectorProducts->fromProductUuid($productUuid, $userId);
+
+        return $this->fromConnectorProductsWithoutPermission([$productWithoutPermissionApplied], $userId)[0];
+    }
+
+    public function fromProductUuids(
+        array $productUuids,
+        int $userId,
+        ?array $attributesToFilterOn,
+        ?string $channelToFilterOn,
+        ?array $localesToFilterOn
+    ): ConnectorProductList {
+        // TODO: change the fetch user rights query to use uuids
+        $productIdentifiers = $this->getProductIdentifiersByUuid($productUuids);
+        $viewableProductIdentifiers = $this->filterViewableProductIdentifiers(\array_values($productIdentifiers), $userId);
+        $viewableProductUuids = \array_keys(
+            \array_filter(
+                $productIdentifiers,
+                static fn (string $identifier): bool => \in_array($identifier, $viewableProductIdentifiers)
+            )
+        );
+
+        $connectorProductList = $this->getConnectorProducts->fromProductUuids(
+            \array_map(
+                static fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
+                $viewableProductUuids
+            ),
+            $userId,
+            $attributesToFilterOn,
+            $channelToFilterOn,
+            $localesToFilterOn
+        );
+
+        $productsWithPermissionApplied = $this->fromConnectorProductsWithoutPermission($connectorProductList->connectorProducts(), $userId);
+
+        return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $productsWithPermissionApplied);
+    }
+
     private function fromConnectorProductsWithoutPermission(array $products, int $userId): array
     {
         $filteredProducts = $this->filterNotGrantedCategoryCodes($products, $userId);
@@ -151,7 +188,10 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         $attributeCodes = !empty($attributeCodes) ? array_unique(array_merge(...$attributeCodes)) : [];
 
         $grantedAttributeCodes = $this->getViewableAttributeCodesForUser->forAttributeCodes($attributeCodes, $userId);
-        $grantedLocaleCodes = $this->getViewableLocaleCodesForUser->fetchAll($userId);
+        $grantedLocaleCodes = \array_map(
+            static fn (Locale $locale): string => $locale->getCode(),
+            $this->getViewableLocaleCodesForUser->findAll($userId)
+        );
 
         return array_map(function (ConnectorProduct $product) use ($grantedAttributeCodes, $grantedLocaleCodes) {
             return $product->filterValuesByAttributeCodesAndLocaleCodes($grantedAttributeCodes, $grantedLocaleCodes);
@@ -233,7 +273,7 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         }, $products);
     }
 
-    private function filterViewableProductIdentifiers(array $productIdentifiers, int $userId)
+    private function filterViewableProductIdentifiers(array $productIdentifiers, int $userId): array
     {
         $productRights = $this->fetchUserRightsOnProduct->fetchByIdentifiers($productIdentifiers, $userId);
         $viewableAssociatedProducts = array_filter($productRights, function (UserRightsOnProduct $productRight) {
@@ -245,7 +285,7 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         }, $viewableAssociatedProducts);
     }
 
-    private function filterViewableProductModelCodes(array $productModelCodes, int $userId)
+    private function filterViewableProductModelCodes(array $productModelCodes, int $userId): array
     {
         $productModelRights = $this->fetchUserRightsOnProductModel->fetchByIdentifiers($productModelCodes, $userId);
         $viewableAssociatedProductModels = array_filter($productModelRights, function (UserRightsOnProductModel $productModelRight) {
@@ -255,5 +295,17 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         return array_map(function (UserRightsOnProductModel $productModelRight) {
             return $productModelRight->productModelCode();
         }, $viewableAssociatedProductModels);
+    }
+
+    /**
+     * @param UuidInterface[] $uuids
+     */
+    private function getProductIdentifiersByUuid(array $uuids): array
+    {
+        return $this->connection->executeQuery(
+            'SELECT BIN_TO_UUID(uuid), identifier FROM pim_catalog_product WHERE uuid in (:uuids)',
+            ['uuids' => \array_map(static fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['uuids' => Connection::PARAM_STR_ARRAY]
+        )->fetchAllKeyValue();
     }
 }
