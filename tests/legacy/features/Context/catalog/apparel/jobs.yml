@@ -41,7 +41,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path: /tmp/products.csv
             filters:
                 data:
                     -
@@ -75,7 +76,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path: /tmp/products.csv
             filters:
                 data:
                     -
@@ -104,7 +106,8 @@ jobs:
         type:      export
         configuration:
             storage:
-                type: none
+                type: local
+                file_path: /tmp/products.xlsx
             linesPerFile: 10000
             withHeader: true
             filters:
@@ -138,7 +141,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path: /tmp/products.csv
             filters:
                 data:
                     -
@@ -170,7 +174,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path: /tmp/families.csv
     category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
@@ -192,7 +197,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path: /tmp/category.csv
     association_type_import:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_import
@@ -214,7 +220,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path: /tmp/association_type.csv
     group_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_import
@@ -236,7 +243,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path: /tmp/group.csv
     xlsx_group_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_export
@@ -246,7 +254,8 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             storage:
-                type: none
+                type: local
+                file_path: /tmp/xlsx_group_export.xlsx
     attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
@@ -268,7 +277,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path: /tmp/attribute.csv
     option_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_import
@@ -290,7 +300,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path: /tmp/option.csv
     update_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     update_product_value
