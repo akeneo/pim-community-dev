@@ -17,6 +17,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
+use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -63,12 +64,19 @@ final class ProductQueryBuilderAdapter extends AbstractEntityWithValuesQueryBuil
         $this->setQueryBuilder(new SearchQueryBuilder());
     }
 
-    public function buildQuery(int $userId): array
+    public function buildQuery(?int $userId, ?UuidInterface $searchAfterUuid = null): array
     {
-        $this->applyPermissions($userId);
+        if (null !== $userId) {
+            $this->applyPermissions($userId);
+        }
         $this->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
 
-        return $this->getQueryBuilder()->getQuery();
+        $query = $this->getQueryBuilder()->getQuery();
+        if ($searchAfterUuid) {
+            $query['search_after'] = ['product_' . $searchAfterUuid->toString()];
+        }
+
+        return $query;
     }
 
     private function applyPermissions(int $userId): void
