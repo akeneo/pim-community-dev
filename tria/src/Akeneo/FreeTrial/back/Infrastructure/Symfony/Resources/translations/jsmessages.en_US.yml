@@ -29,9 +29,6 @@ free_trial:
         unauthorized_email:
           title: Invitation couldn't be sent
           description: Please make sure the email is a business email
-  product-edit-form:
-    compare_translate:
-      button_title: Compare
   menu:
     assets: Assets
     entities: Entities
