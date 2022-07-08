@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
+namespace Akeneo\Test\Acceptance\Attribute;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
+namespace spec\Akeneo\Test\Acceptance\Attribute;
 
-use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryIsAttributeEditable;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable;
+use Akeneo\Test\Acceptance\Attribute\InMemoryIsAttributeEditable;
 use PhpSpec\ObjectBehavior;
 
 /**

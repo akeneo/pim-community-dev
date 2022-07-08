@@ -66,8 +66,5 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
 
-    Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable:
-        class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryIsAttributeEditable
-
     Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes:
         class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetAttributeTypes
