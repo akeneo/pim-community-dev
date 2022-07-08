@@ -66,11 +66,6 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
 
-    Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories:
-        class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetOwnedCategories
-        arguments:
-            - '@pim_user.repository.user'
-
     Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable:
         class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryIsAttributeEditable
 
