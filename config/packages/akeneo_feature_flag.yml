@@ -24,3 +24,4 @@ akeneo_feature_flag:
         - { feature: 'read_only_product_attribute', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'sso_configuration', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'job_automation_remote_storage', service: 'akeneo.platform.import_export.feature_flag.is_remote_storage_enabled'}
+        - { feature: 'supplier_portal_supplier_file_dropping', service: 'akeneo.supplier_portal_supplier_file_dropping.feature' }
