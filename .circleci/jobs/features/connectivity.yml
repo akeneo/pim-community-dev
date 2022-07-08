@@ -146,7 +146,7 @@ jobs:
                     name: Start containers
                     command: |
                         docker load -i php-pim-image.tar
-                        APP_ENV=behat docker-compose -f docker-compose.yml -f src/Akeneo/Connectivity/Connection/tests/docker-compose.yml up -d --remove-orphans fpm mysql elasticsearch httpd object-storage selenium pubsub-emulator
+                        APP_ENV=behat docker-compose -f docker-compose.yml up -d --remove-orphans fpm mysql elasticsearch httpd object-storage selenium pubsub-emulator
                         docker/wait_docker_up.sh
             -   run:
                     name: Install database

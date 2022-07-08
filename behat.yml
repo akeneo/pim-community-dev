@@ -108,6 +108,9 @@ legacy:
                                     - "--headless"
                                 prefs:
                                     foo: "Just because prefs must be a dictionnary"
+                            extra_capabilities:
+                                goog:chromeOptions:
+                                    w3c: false
         FriendsOfBehat\SymfonyExtension:
             bootstrap: config/bootstrap.php
             kernel:
