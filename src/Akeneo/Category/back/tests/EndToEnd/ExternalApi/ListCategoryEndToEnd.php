@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Test\Category\End2End\ExternalApi;
+namespace  Akeneo\Test\Category\EndToEnd\ExternalApi;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;

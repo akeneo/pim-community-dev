@@ -23,6 +23,10 @@ category-unit-back: #Doc: launch PHPSpec for category bounded context
 #category-acceptance-back: #Doc: launch PHPUnit acceptance tests for category bounded context
 #	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Category/back/tests --testsuite Category_Acceptance_Test $(O)
 
+.PHONY: category-end-to-end-back
+category-end-to-end-back: #Doc: launch PHPUnit end-to-end tests for category bounded context
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Category/back/tests --testsuite Category_EndToEnd_Test $(F)
+
 .PHONY: category-ci-back
 category-ci-back: category-lint-back category-coupling-back category-unit-back category-acceptance-back category-integration-back
 
