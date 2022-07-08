@@ -19,6 +19,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Doctrine\ORM\EntityManager;
 use League\Flysystem\FilesystemOperator;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -37,6 +38,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Doctrine\DBAL\Connection;
 
 /**
  * JobInstance rest controller
@@ -47,6 +49,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class JobInstanceController
 {
+    protected Connection $connection;
     protected IdentifiableObjectRepositoryInterface $repository;
     protected JobRegistry $jobRegistry;
     protected NormalizerInterface $jobInstanceNormalizer;
@@ -69,6 +72,7 @@ class JobInstanceController
     protected SecurityFacade $securityFacade;
 
     public function __construct(
+        Connection $connection,
         IdentifiableObjectRepositoryInterface $repository,
         JobRegistry $jobRegistry,
         NormalizerInterface $jobInstanceNormalizer,
@@ -90,6 +94,7 @@ class JobInstanceController
         FilesystemOperator $filesystem,
         SecurityFacade $securityFacade
     ) {
+        $this->connection = $connection;
         $this->repository = $repository;
         $this->jobRegistry = $jobRegistry;
         $this->jobInstanceNormalizer = $jobInstanceNormalizer;
@@ -330,12 +335,11 @@ class JobInstanceController
      */
     protected function deleteAction($code): Response
     {
-        $jobInstance = $this->getJobInstance($code);
-        if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.delete')) {
-            throw new AccessDeniedHttpException();
-        }
+        $sql = <<<SQL
+            DELETE FROM akeneo_batch_job_instance as ji WHERE ji.code = :code
+        SQL;
 
-        $this->remover->remove($jobInstance);
+        $this->connection->executeQuery($sql, ['code' => $code]);
 
         return new JsonResponse(null, 204);
     }

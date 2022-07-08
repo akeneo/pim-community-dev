@@ -25,6 +25,7 @@ services:
         public: true
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi\JobInstanceController'
         arguments:
+            - '@database_connection'
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch.job.job_registry'
             - '@pim_catalog.normalizer.standard.job_instance'
