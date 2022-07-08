@@ -248,7 +248,6 @@ plan_terraform
 ## Deploy terraform infrastructure
 .PHONY: deploy_terraform
 deploy_terraform:
-    cd $(DEPLOYMENT_DIR)/terraform/$(ENV_NAME)
 	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) init -reconfigure
 	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) apply -auto-approve -input=false
 	
