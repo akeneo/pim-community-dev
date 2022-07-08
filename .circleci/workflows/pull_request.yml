@@ -1,28 +1,9 @@
-orbs: 
-  security-hunter: akeneo-orbs/security-hunter@1.0.2
-
 workflows:
     pull_request:
         when:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
         jobs:
-            - security-hunter/scan-latest-commits:
-                  since_when: "2022-07-07"
-                  blocking: false
-
-            - security-hunter/scan-dir:
-                  severity: "CRITICAL"
-                  only_secrets: true
-                  requires:
-                    - checkout
-
-            - security-hunter/scan-image:
-                  severity: "CRITICAL"
-                  only_secrets: true
-                  requires:
-                    - build_srnt_dev
-
             - ready_to_build?:
                   type: approval
                   filters:
@@ -183,6 +164,3 @@ workflows:
                       - test_back_data_migrations
                       - test_grth
                       - test_tria
-                      - security-hunter/scan-latest-commits
-                      - security-hunter/scan-dir
-                      - security-hunter/scan-image
