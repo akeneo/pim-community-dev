@@ -27,7 +27,7 @@ class GetCategoryEndToEnd extends ApiTestCase
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertResponse($response,$expectedCategory );
+        $this->assertResponse($response, $expectedCategory);
     }
 
     public function testGetACompleteCategory()
@@ -104,8 +104,8 @@ class GetCategoryEndToEnd extends ApiTestCase
                 'code' => 400,
                 'message' => 'In order to search on category codes you must send an array of category codes as value, integer given. This value should be of type iterable.'
             ],
-            json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR));
-
+            json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR)
+        );
     }
 
     private function assertResponse(Response $response, array $expected)
