@@ -33,7 +33,7 @@ const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, onCh
     return (
         <List.Row>
             <List.TitleCell width={150}>
-                {translate('akeneo_catalogs.product_selection.criteria.status.label')}
+                {translate('akeneo_catalogs.product_selection.criteria.family.label')}
             </List.TitleCell>
             <List.Cell width='auto'>
                 <Inputs>
