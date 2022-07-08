@@ -65,7 +65,7 @@ final class UserIntentContext implements Context
     }
 
     /**
-     * @When /I ask to convert standard format into user intents/
+     * @When /I ask to convert standard format into user intents$/
      */
     public function askToConvertStandardFormatIntoUserIntents(): void
     {
