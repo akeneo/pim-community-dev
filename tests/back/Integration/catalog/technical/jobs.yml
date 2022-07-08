@@ -66,7 +66,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path: /tmp/footwear_products.csv
             uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'
@@ -83,7 +84,8 @@ jobs:
         type: import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path: /tmp/product_model.csv
             uploadAllowed: true
             delimiter: ;
             enclosure: '"'
@@ -127,7 +129,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path: /tmp/products.csv
             filters:
                 data:
                     -
@@ -170,7 +173,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path: /tmp/product_models.csv
             filters:
                 data: []
                 structure:
