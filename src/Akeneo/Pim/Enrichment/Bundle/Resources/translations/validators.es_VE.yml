@@ -36,7 +36,7 @@ pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'El atributo "%attribute%" no debe estar vacío, ya que se define como un eje para esta entidad'
     product_model_with_same_axis_value_already_exists: 'No se puede establecer el valor "%values%" para los atributos de ejes "%attributes%" al modelo de producto "%validated_entity%", como a modelo de producto "%sibling_with_same_value%" ya tienen este valor'
-    variant_product_with_same_axis_value_already_exists: 'No se puede establecer el valor "%values%" oara los atributos de ejes "%attributes%" a la variante de producto "%validated_entity%", como a variante de producto "%sibling_with_same_value%" ya tienen este valor'
+    variant_product_with_same_axis_value_already_exists: 'No se puede establecer el valor "%values%" para los atributos de ejes "%attributes%" la variante de producto "%validated_entity%", como a variante de producto "%sibling_with_same_value%" ya tienen este valor'
     can_have_family_variant_unexpected_attribute: 'No se puede establecer la propiedad "%attribute%" a esta entidad debido a que no está en la configuración de atributos'
     cannot_have_product_model_as_parent: 'El modelo de producto "%product_model%" no puede tener el modelo de producto %parent_product_model% como padre'
     cannot_have_parent: 'El modelo de producto "%product_model%" no puede tener un padre'
