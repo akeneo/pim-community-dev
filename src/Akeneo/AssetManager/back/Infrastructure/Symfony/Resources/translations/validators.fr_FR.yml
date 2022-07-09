@@ -24,7 +24,7 @@ pim_asset_manager:
         locale_should_exist: 'La locale "%locale_code%" n''est pas activée ou n''existe pas'
         extrapolated_attribute_type_should_not_have_one_value_per_channel: 'L''attribut "%attribute_code%" ne peut pas être utilisé pour extrapolation car il a une valeur par canal'
         extrapolated_attribute_type_should_not_have_one_value_per_locale: 'L''attribut "%attribute_code%" ne peut pas être utilisé pour extrapolation car il a une valeur par locale'
-        assignment_mode_not_supported: 'Mode d''affectation non valide "%assignment_mode%" trouvé dans une règle de lien de produit, qui devrait être "replace" ou "add"'
+        assignment_mode_not_supported: 'Le mode d''affectation "%assignment_mode%" trouvé dans une règle de rattachement aux produits n''est pas valide. Seuls les modes suivants sont acceptés : "replace" (remplacer) ou "add" (ajouter).'
         channel_not_supported_for_field: 'Vous ne pouvez pas spécifier de canal pour le champ "%product_field%"'
         locale_not_supported_for_field: 'Vous ne pouvez pas spécifier de locale pour le champ "%product_field%"'
         assignmement_attribute_does_not_support_this_asset_family: 'L''attribut de produit "%product_attribute_code%" ne peut pas contenir de ressources de la famille de ressources "%asset_family_identifier%"'
