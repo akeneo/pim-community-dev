@@ -67,9 +67,9 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
                     ];
                 }, $attributePaths);
 
-                $clause = $this->addBooleanClause($clauses);
-                $this->searchQueryBuilder->addFilter($clause);
-                break;
+            $clause = $this->addBooleanClause($clauses);
+            $this->searchQueryBuilder->addFilter($clause);
+            break;
 
             case Operators::NOT_EQUAL:
                 $clauses = array_map(function ($attributePath) use ($value) {
@@ -79,20 +79,20 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
                         ],
                     ];
                 }, $attributePaths);
-                $mustNotClause = $this->addBooleanClause($clauses);
+            $mustNotClause = $this->addBooleanClause($clauses);
 
-                $clauses = array_map(function ($attributePath) {
-                    return [
-                        'exists' => [
-                            'field' => $attributePath,
-                        ],
-                    ];
-                }, $attributePaths);
-                $filterClause = $this->addBooleanClause($clauses);
+            $clauses = array_map(function ($attributePath) {
+                return [
+                    'exists' => [
+                        'field' => $attributePath,
+                    ],
+                ];
+            }, $attributePaths);
+            $filterClause = $this->addBooleanClause($clauses);
 
-                $this->searchQueryBuilder->addMustNot($mustNotClause);
-                $this->searchQueryBuilder->addFilter($filterClause);
-                break;
+            $this->searchQueryBuilder->addMustNot($mustNotClause);
+            $this->searchQueryBuilder->addFilter($filterClause);
+            break;
 
             case Operators::IS_NOT_EMPTY:
                 $clauses = array_map(function ($attributePath) {
@@ -102,10 +102,10 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
                         ],
                     ];
                 }, $attributePaths);
-                $filterClause = $this->addBooleanClause($clauses);
+            $filterClause = $this->addBooleanClause($clauses);
 
-                $this->searchQueryBuilder->addFilter($filterClause);
-                break;
+            $this->searchQueryBuilder->addFilter($filterClause);
+            break;
 
             case Operators::IS_EMPTY:
                 $mustNotClauses = array_map(function ($attributePath) {
@@ -116,31 +116,31 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
                     ];
                 }, $attributePaths);
 
-                $mustNotClause = $this->addBooleanClause($mustNotClauses);
-                $this->searchQueryBuilder->addMustNot($mustNotClause);
+            $mustNotClause = $this->addBooleanClause($mustNotClauses);
+            $this->searchQueryBuilder->addMustNot($mustNotClause);
 
-                $attributeInEntityClauses = [
-                    [
-                        'terms' => [
-                            self::ATTRIBUTES_FOR_THIS_LEVEL_ES_ID => [$attribute->getCode()],
-                        ],
+            $attributeInEntityClauses = [
+                [
+                    'terms' => [
+                        self::ATTRIBUTES_FOR_THIS_LEVEL_ES_ID => [$attribute->getCode()],
                     ],
-                    [
-                        'terms' => [
-                            self::ATTRIBUTES_OF_ANCESTORS_ES_ID => [$attribute->getCode()],
-                        ],
-                    ]
-                ];
+                ],
+                [
+                    'terms' => [
+                        self::ATTRIBUTES_OF_ANCESTORS_ES_ID => [$attribute->getCode()],
+                    ],
+                ]
+            ];
 
-                $this->searchQueryBuilder->addFilter(
-                    [
-                        'bool' => [
-                            'should' => $attributeInEntityClauses,
-                            'minimum_should_match' => 1,
-                        ],
-                    ]
-                );
-                break;
+            $this->searchQueryBuilder->addFilter(
+                [
+                    'bool' => [
+                        'should' => $attributeInEntityClauses,
+                        'minimum_should_match' => 1,
+                    ],
+                ]
+            );
+            break;
 
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);

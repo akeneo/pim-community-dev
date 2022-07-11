@@ -31,7 +31,7 @@ final class SelectOptionDetails implements ArrayConverterInterface
                     foreach ($data as $localeCode => $label) {
                         $converted[\sprintf('label-%s', $localeCode)] = $label;
                     }
-                    break;
+                break;
                 default:
                     break;
             }

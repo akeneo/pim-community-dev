@@ -91,8 +91,8 @@ class JobProfileAccessUpdater implements ObjectUpdaterInterface
                         $data
                     );
                 }
-                $jobProfileAccess->setJobProfile($jobProfile);
-                break;
+            $jobProfileAccess->setJobProfile($jobProfile);
+            break;
             case 'user_group':
                 $group = $this->groupRepository->findOneByIdentifier($data);
                 if (null === $group) {
@@ -104,8 +104,8 @@ class JobProfileAccessUpdater implements ObjectUpdaterInterface
                         $data
                     );
                 }
-                $jobProfileAccess->setUserGroup($group);
-                break;
+            $jobProfileAccess->setUserGroup($group);
+            break;
             case 'execute_job_profile':
                 $jobProfileAccess->setExecuteJobProfile($data);
                 break;
@@ -114,8 +114,8 @@ class JobProfileAccessUpdater implements ObjectUpdaterInterface
                     $jobProfileAccess->setExecuteJobProfile($data);
                 }
 
-                $jobProfileAccess->setEditJobProfile($data);
-                break;
+            $jobProfileAccess->setEditJobProfile($data);
+            break;
         }
     }
 }

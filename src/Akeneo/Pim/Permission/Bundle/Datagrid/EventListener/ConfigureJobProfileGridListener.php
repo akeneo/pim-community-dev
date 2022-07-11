@@ -60,6 +60,6 @@ class ConfigureJobProfileGridListener
         return !$this->authorizationChecker->isGranted(Attributes::EDIT, $record->getRootEntity())
             ? ['edit' => false]
             : null
-            ;
+        ;
     }
 }

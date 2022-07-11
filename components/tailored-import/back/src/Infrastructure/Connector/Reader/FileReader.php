@@ -111,7 +111,7 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
         $columnCount = count($productLine);
 
         if ($headerCount < count($productLine)) {
-            throw new InvalidItemException('pim_connector.steps.file_reader.invalid_item_columns_count', new FileInvalidItem($productLine, ($this->stepExecution->getSummaryInfo('item_position'))), ['%totalColumnsCount%' => $headerCount, '%itemColumnsCount%' => $columnCount, '%filePath%' => $jobParameters->get('filePath'), '%lineno%' => $this->fileIterator->key()]);
+            throw new InvalidItemException('pim_connector.steps.file_reader.invalid_item_columns_count', new FileInvalidItem($productLine, $this->stepExecution->getSummaryInfo('item_position')), ['%totalColumnsCount%' => $headerCount, '%itemColumnsCount%' => $columnCount, '%filePath%' => $jobParameters->get('filePath'), '%lineno%' => $this->fileIterator->key()]);
         }
     }
 }
