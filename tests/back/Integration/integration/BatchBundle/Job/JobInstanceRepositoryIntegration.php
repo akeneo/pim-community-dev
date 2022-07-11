@@ -17,7 +17,7 @@ class JobInstanceRepositoryIntegration extends TestCase
 {
     public function testItDeleteAJobInstanceAndRemovesItJobExecutions(): void
     {
-        $jobInstanceCode = 'csv_product_quick_export';
+        $jobInstanceCode = 'csv_product_export';
         $jobExecutionId = $this->createJobExecution($jobInstanceCode);
 
         $this->assertTrue($this->jobInstanceExists($jobInstanceCode));
