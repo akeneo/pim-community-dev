@@ -6,7 +6,7 @@ namespace Akeneo\Test\Pim\Enrichment\Product\Helper;
 
 class DummyHandler
 {
-    public function __invoke($command): void
+    public function __invoke($command)
     {
     }
 }

@@ -89,7 +89,7 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     public function testOperatorDifferent()
     {
-        $barProduct = $this->get('pim_api.repository.product')->findOneByIdentifier('bar');
+        $barProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bar');
         $updatedAt = $barProduct->getUpdated();
         $updatedAt->setTimezone(new \DateTimeZone('UTC'));
 

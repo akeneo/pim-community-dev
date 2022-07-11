@@ -239,7 +239,6 @@ services:
             $getProductModelQuantifiedAssociationsByProductUuids: '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductUuids'
             $getCategoryCodesByProductUuids: '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids'
             $readValueCollectionFactory: '@akeneo.pim.enrichment.factory.read_value_collection'
-            $attributeRepository: '@pim_catalog.repository.attribute'
             $connection: '@database_connection'
 
     akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options:

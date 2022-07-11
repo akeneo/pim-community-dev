@@ -18,7 +18,7 @@ final class FeatureHelper
      */
     public static function skipSpecTestWhenPermissionFeatureIsNotActivated(): void
     {
-        if (!self::isPermissionFeatureActivated()) {
+        if (!self::isPermissionFeatureAvailable()) {
             throw new SkippingException('Permission feature is not available in this scope');
         }
     }
@@ -33,14 +33,14 @@ final class FeatureHelper
         }
     }
 
-    public static function skipIntegrationTestWhenPermissionFeatureIsNotActivated(): void
+    public static function skipIntegrationTestWhenPermissionFeatureIsNotAvailable(): void
     {
-        if (!self::isPermissionFeatureActivated()) {
+        if (!self::isPermissionFeatureAvailable()) {
             Assert::markTestSkipped('Permission feature is not available in this scope');
         }
     }
 
-    public static function isPermissionFeatureActivated(): bool
+    public static function isPermissionFeatureAvailable(): bool
     {
         return \class_exists('Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle');
     }

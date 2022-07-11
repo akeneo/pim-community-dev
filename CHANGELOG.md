@@ -55,6 +55,7 @@
 - PIM-10514: Fix associations normalization for published products
 - PIM-10516: Fix remove completeness job when deactivating and reactivating a locale
 - PIM-10508: Fix attribute creation when label contains an '&' character
+- PIM-10501: Fix identifier validation for product and product model imports to disallow line breaks
 
 ## Improvements
 

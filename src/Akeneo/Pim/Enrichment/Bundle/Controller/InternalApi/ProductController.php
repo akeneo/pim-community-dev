@@ -7,8 +7,6 @@ use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
@@ -17,7 +15,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ConvertToSimpleProduct;
-use Akeneo\Pim\Enrichment\Product\API\MessageBus;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -35,6 +32,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -70,8 +68,8 @@ class ProductController
         protected ProductBuilderInterface $variantProductBuilder,
         protected AttributeFilterInterface $productAttributeFilter,
         private Client $productAndProductModelClient,
-        private MessageBus $messageBus,
-        private FindIdentifier $findIdentifier
+        private MessageBusInterface $commandMessageBus,
+        private FindIdentifier $findIdentifier,
     ) {
     }
 
@@ -131,7 +129,7 @@ class ProductController
             );
 
             if (isset($data['values'])) {
-                $this->updateProduct($product, $data);
+                $this->createProduct($product, $data);
             }
         } else {
             $product = $this->productBuilder->createProduct(
@@ -150,62 +148,6 @@ class ProductController
                 'internal_api',
                 $this->getNormalizationContext()
             ));
-        }
-
-        $normalizedViolations = $this->normalizeViolations($violations, $product);
-
-        return new JsonResponse($normalizedViolations, 400);
-    }
-
-    /**
-     * @param Request $request
-     * @param string  $uuid
-     *
-     * @return Response
-     * @throws AccessDeniedHttpException If the user does not have right to edit the product
-     *
-     * @throws NotFoundHttpException     If product is not found or the user cannot see it
-     */
-    public function postAction(Request $request, $uuid)
-    {
-        if (!$request->isXmlHttpRequest()) {
-            return new RedirectResponse('/');
-        }
-
-        $product = $this->findProductOr404($uuid);
-        if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
-            throw new AccessDeniedHttpException();
-        }
-        $data = json_decode($request->getContent(), true);
-        try {
-            $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $product]);
-        } catch (ObjectNotFoundException $e) {
-            throw new BadRequestHttpException();
-        }
-        try {
-            $this->updateProduct($product, $data);
-        } catch (TwoWayAssociationWithTheSameProductException $e) {
-            return new JsonResponse(
-                [
-                    'message' => $e->getMessage(),
-                    'global' => true],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
-
-        $violations = $this->validator->validate($product);
-        $violations->addAll($this->localizedConverter->getViolations());
-
-        if (0 === $violations->count()) {
-            $this->productSaver->save($product);
-
-            $normalizedProduct = $this->normalizer->normalize(
-                $product,
-                'internal_api',
-                $this->getNormalizationContext()
-            );
-
-            return new JsonResponse($normalizedProduct);
         }
 
         $normalizedViolations = $this->normalizeViolations($violations, $product);
@@ -299,7 +241,7 @@ class ProductController
                 $productIdentifier,
                 [new ConvertToSimpleProduct()]
             );
-            $this->messageBus->dispatch($command);
+            $this->commandMessageBus->dispatch($command);
         } catch (ViolationsException $e) {
             $hasPermissionException = \count(
                 \array_filter(
@@ -377,28 +319,18 @@ class ProductController
         return $attribute;
     }
 
-    /**
-     * Updates product with the provided request data
-     *
-     * @param ProductInterface $product
-     * @param array            $data
-     */
-    protected function updateProduct(ProductInterface $product, array $data)
+    protected function createProduct(ProductInterface $product, array $data)
     {
         $values = $this->productValueConverter->convert($data['values']);
-
         $values = $this->localizedConverter->convertToDefaultFormats($values, [
             'locale' => $this->userContext->getUiLocale()->getCode()
         ]);
-
         $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $values]);
-
         if (!empty($dataFiltered)) {
             $data = array_replace($data, $dataFiltered);
         } else {
             $data['values'] = [];
         }
-
         // don't filter during creation, because identifier is needed
         // but not sent by the frontend during creation (it sends the sku in the values)
         if (!$product->isNew() && $product->isVariant()) {
