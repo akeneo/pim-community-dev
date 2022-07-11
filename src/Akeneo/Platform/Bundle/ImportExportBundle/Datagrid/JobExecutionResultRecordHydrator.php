@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Datagrid;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetJobExecutionTracking;
+use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetWarningCount;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
@@ -20,11 +21,19 @@ class JobExecutionResultRecordHydrator implements HydratorInterface
 {
     private JobRegistry $registry;
     private GetJobExecutionTracking $getJobExecutionTracking;
+    /** @TODO pull up to 6.0 remove this line */
+    private ?GetWarningCount $getWarningCount;
 
-    public function __construct(JobRegistry $registry, GetJobExecutionTracking $getJobExecutionTracking)
-    {
+    public function __construct(
+        JobRegistry $registry,
+        GetJobExecutionTracking $getJobExecutionTracking,
+        /** @TODO pull up to 6.0 remove this line */
+        GetWarningCount $getWarningCount = null
+    ) {
         $this->registry = $registry;
         $this->getJobExecutionTracking = $getJobExecutionTracking;
+        /** @TODO pull up to 6.0 remove this line */
+        $this->getWarningCount = $getWarningCount;
     }
 
     /**
@@ -43,6 +52,8 @@ class JobExecutionResultRecordHydrator implements HydratorInterface
                 array_merge(
                     $record,
                     [
+                        /** @TODO pull up to 6.0 remove this line */
+                        'warningCount' => $this->getWarningCount ? $this->getWarningCount->execute($record['id']) : 0,
                         'isStoppable'     => $isStoppable,
                         'currentStep'     => $jobExecutionTracking->currentStep,
                         'totalSteps'       => $jobExecutionTracking->totalSteps,

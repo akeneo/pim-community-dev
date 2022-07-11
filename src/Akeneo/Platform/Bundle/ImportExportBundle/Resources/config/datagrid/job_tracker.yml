@@ -66,8 +66,6 @@ datagrid:
                     data_name: statusLabel
                 username:
                     data_name: user
-                warning:
-                    data_name: warningCount
             default:
                 started_at: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:

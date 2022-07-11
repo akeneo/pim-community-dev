@@ -26,3 +26,4 @@ services:
         arguments:
             - '@akeneo_batch.job.job_registry'
             - '@pim_import_export.query.get_job_execution_tracking'
+            - '@pim_import_export.query.get_warning_count' # @TODO pull up to 6.0 remove this line
