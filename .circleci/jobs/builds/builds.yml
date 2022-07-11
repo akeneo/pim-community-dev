@@ -690,10 +690,10 @@ jobs:
             - run:
                   name: Push the Serenity Edition prod image on docker registry
                   command: make -C deployments-ucs/ push-pim-image-prod
-            - run:
-                  name: Push Terraform modules to GCS
-                  command: |
-                      BOTO_CONFIG=/dev/null gsutil -m cp -r deployments-ucs/ gs://${GOOGLE_PROJECT_ID}-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/
+            # - run:
+            #       name: Push Terraform modules to GCS
+            #       command: |
+            #           BOTO_CONFIG=/dev/null gsutil -m cp -r deployments-ucs/ gs://${GOOGLE_PROJECT_ID}-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/
             - run:
                   name: Persist env vars for next jobs
                   command: |
@@ -733,7 +733,7 @@ jobs:
                       TYPE_LONG=serenity
                       PRODUCT_REFERENCE_TYPE="${TYPE_LONG}_instance"
                       PRODUCT_REFERENCE_CODE="${TYPE_LONG}_${ENV_NAME}"
-                      IMAGE_TAG=$(gcloud container images list-tags $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-prod/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                      IMAGE_TAG=$(gcloud container images list-tags $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
                       IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
                       IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
                       RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
@@ -755,12 +755,12 @@ jobs:
                       echo "Product reference type: ${PRODUCT_REFERENCE_TYPE}"
                       echo "Product reference code: ${PRODUCT_REFERENCE_CODE}"
                       echo "Deployement hash: ${DEPLOYMENT_HASH}"
-            - run:
-                  name: Docker pull and push image on registry
-                  command: |
-                      docker pull $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-prod/pim-enterprise-dev:${IMAGE_TAG}
-                      docker tag $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-prod/pim-enterprise-dev:${IMAGE_TAG} $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG}
-                      docker push $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG}
+            # - run:
+            #       name: Docker pull and push image on registry
+            #       command: |
+            #           docker pull $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG}
+            #           docker tag $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG} $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG}
+            #           docker push $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG}
             # - run:
             #       name: Push Terraform modules to GCS
             #       command: |
