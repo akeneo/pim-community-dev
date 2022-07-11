@@ -5,7 +5,6 @@ parameters:
     pimee_workflow.repository.published_association.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository\PublishedAssociationRepository
     pimee_workflow.repository.delegating_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository\DelegatingProductRepository
 
-
 services:
     pimee_workflow.object_manager.product_draft:
         alias: doctrine.orm.entity_manager

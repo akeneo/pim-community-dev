@@ -13,15 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\HashText;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateCriterionInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\MultipleTextsChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dictionary\GetDictionaryLastUpdateDateByLocaleQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriterionEvaluationByProductIdAndCriterionCodeQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -43,43 +46,31 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     private const TEXT_FAULT_WEIGHT = 24;
     private const TEXTAREA_FAULT_WEIGHT = 12;
 
-    /** @var GetLocalesByChannelQueryInterface */
-    private $localesByChannelQuery;
-
-    /** @var SupportedLocaleValidator */
-    private $supportedLocaleValidator;
-
-    /** @var FilterProductValuesForSpelling */
-    private $filterProductValuesForSpelling;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var MultipleTextsChecker */
-    private $checker;
-
     public function __construct(
-        MultipleTextsChecker $checker,
-        GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        SupportedLocaleValidator $supportedLocaleValidator,
-        FilterProductValuesForSpelling $filterProductValuesForSpelling,
-        LoggerInterface $logger
+        private MultipleTextsChecker                                            $checker,
+        private GetLocalesByChannelQueryInterface                               $localesByChannelQuery,
+        private GetCriterionEvaluationByProductIdAndCriterionCodeQueryInterface $getCriterionEvaluationResultQuery,
+        private SupportedLocaleValidator                                        $supportedLocaleValidator,
+        private FilterProductValuesForSpelling                                  $filterProductValuesForSpelling,
+        private LoggerInterface                                                 $logger,
+        private HashText                                                        $hashText,
+        private GetDictionaryLastUpdateDateByLocaleQueryInterface               $getDictionaryLastUpdateDateByLocaleQuery
     ) {
-        $this->checker = $checker;
-        $this->localesByChannelQuery = $localesByChannelQuery;
-        $this->supportedLocaleValidator = $supportedLocaleValidator;
-        $this->logger = $logger;
-        $this->filterProductValuesForSpelling = $filterProductValuesForSpelling;
     }
 
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
     {
+        $previousEvaluation = $this->getCriterionEvaluationResultQuery->execute(
+            $criterionEvaluation->getEntityId(),
+            $this->getCode()
+        );
+
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
 
         $evaluationResult = new Write\CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localesCodes) {
             foreach ($localesCodes as $localeCode) {
-                $this->evaluateChannelLocaleRate($evaluationResult, $channelCode, $localeCode, $productValues);
+                $this->evaluateChannelLocaleRate($evaluationResult, $channelCode, $localeCode, $productValues, $previousEvaluation);
             }
         }
 
@@ -88,55 +79,76 @@ class EvaluateSpelling implements EvaluateCriterionInterface
 
     private function evaluateChannelLocaleRate(
         Write\CriterionEvaluationResult $evaluationResult,
-        ChannelCode $channelCode,
-        LocaleCode $localeCode,
-        ProductValuesCollection $productValues
+        ChannelCode                     $channelCode,
+        LocaleCode                      $localeCode,
+        ProductValuesCollection         $productValues,
+        ?Read\CriterionEvaluation       $previousEvaluationResult,
     ): void {
         if (!$this->supportedLocaleValidator->isSupported($localeCode)) {
             $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::notApplicable());
             return;
         }
 
-        $values = $this->filterProductValuesForSpelling->getFilteredProductValues($productValues);
+        $valuesToCheck = $this->filterProductValuesForSpelling->getFilteredProductValues($productValues);
+        list('values' => $valuesToCheck, 'weights' => $weights) = $this->prepareSpellCheck($valuesToCheck, $channelCode, $localeCode);
 
-        try {
-            $attributesRates = $this->evaluateAttributesRates($channelCode, $localeCode, $values);
-        } catch (TextCheckFailedException $exception) {
-            $this->logTextCheckError($exception, $channelCode, $localeCode, $values);
-            $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::error());
-            return;
-        }
-
-        if (empty($attributesRates)) {
+        if (empty($valuesToCheck)) {
             $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::notApplicable());
             return;
         }
 
-        $attributesRates = $this->getRateByAttributes($attributesRates);
+        $hashedValues = [];
+        $unchangedAttributeRates = [];
+        $dictionaryLastUpdateDate = $this->getDictionaryLastUpdateDateByLocaleQuery->execute($localeCode);
+
+        if ($previousEvaluationResult !== null && $dictionaryLastUpdateDate !== null) {
+            $dateComparisonResult = $previousEvaluationResult->getEvaluatedAt() > $dictionaryLastUpdateDate;
+        } else {
+            $dateComparisonResult = true;
+        }
+
+        foreach ($valuesToCheck as $attributeCode => $value) {
+            $hashedValue = $this->hashText->hash($value);
+            $hashedValues[$attributeCode] = $hashedValue;
+            $previousHashedValue =
+                $previousEvaluationResult
+                    ?->getResult()
+                    ?->getData()['hashed_values'][(string)$channelCode][(string)$localeCode][$attributeCode]
+                ?? null;
+            $previousRate =
+                $previousEvaluationResult
+                    ?->getResult()
+                    ?->getData()['attributes_with_rates'][(string)$channelCode][(string)$localeCode][$attributeCode]
+                ?? null;
+
+            if ($dateComparisonResult && null !== $previousRate && $previousHashedValue === $hashedValue) {
+                $unchangedAttributeRates[$attributeCode] = $previousRate;
+                unset($valuesToCheck[$attributeCode]);
+            }
+        }
+
+        try {
+            $spellcheckResults = $this->checker->check($valuesToCheck, $localeCode);
+        } catch (TextCheckFailedException $exception) {
+            $this->logTextCheckError($exception, $channelCode, $localeCode, $valuesToCheck);
+            $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::error());
+            return;
+        }
+
+        $attributesRates = array_merge(
+            $this->computeSpellcheckResult($spellcheckResults, $weights),
+            $unchangedAttributeRates
+        );
+
         $rate = $this->calculateChannelLocaleRate($attributesRates);
 
         $evaluationResult
             ->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::done())
             ->addRate($channelCode, $localeCode, $rate)
             ->addRateByAttributes($channelCode, $localeCode, $attributesRates)
-        ;
+            ->addData('hashed_values', $channelCode, $localeCode, $hashedValues);
     }
 
-    /**
-     * @throws TextCheckFailedException
-     */
-    private function evaluateAttributesRates(ChannelCode $channelCode, LocaleCode $localeCode, array $productValues): array
-    {
-        list('values' => $values, 'weights' => $weights) = $this->prepareSpellCheck($productValues, $channelCode, $localeCode);
-
-        if (empty($values)) {
-            return [];
-        }
-
-        $results = $this->checker->check($values, $localeCode);
-
-        return $this->computeSpellcheckResult($results, $weights);
-    }
 
     public function getCode(): CriterionCode
     {
@@ -176,23 +188,16 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         return true;
     }
 
-    private function computeProductValueRate(TextCheckResultCollection $checkTextResult, int $faultWeight): Rate
+    private function computeProductValueRate(TextCheckResultCollection $checkTextResult, int $faultWeight): int
     {
         $rate = 100 - count($checkTextResult) * $faultWeight;
 
-        return new Rate(max(0, $rate));
+        return max(0, $rate);
     }
 
     private function calculateChannelLocaleRate(array $channelLocaleRates): Rate
     {
-        return new Rate((int) round(array_sum($channelLocaleRates) / count($channelLocaleRates), 0, PHP_ROUND_HALF_DOWN));
-    }
-
-    private function getRateByAttributes(array $attributesRates): array
-    {
-        return array_map(function (Rate $attributeRate) {
-            return $attributeRate->toInt();
-        }, $attributesRates);
+        return new Rate((int)round(array_sum($channelLocaleRates) / count($channelLocaleRates), 0, PHP_ROUND_HALF_DOWN));
     }
 
     private function prepareSpellCheck(array $productValues, ChannelCode $channelCode, LocaleCode $localeCode): array
@@ -258,17 +263,12 @@ class EvaluateSpelling implements EvaluateCriterionInterface
 
     private function logTextCheckError(TextCheckFailedException $exception, ChannelCode $channelCode, LocaleCode $localeCode, array $productValues): void
     {
-        $formattedValues = array_map(fn (ProductValues $productValues) => [
-            'attribute' => \strval($productValues->getAttribute()->getCode()),
-            'data' => $productValues->getValueByChannelAndLocale($channelCode, $localeCode)
-        ], $productValues);
-
         $this->logger->error('An error occurred during spelling evaluation', [
             'error_code' => 'error_during_spelling_evaluation',
             'exception' => $exception->getPrevious() ?? $exception,
-            'channel' => strval($channelCode),
-            'locale' => strval($localeCode),
-            'product_values' => $formattedValues,
+            'channel' => (string)$channelCode,
+            'locale' => (string)$localeCode,
+            'product_values' => $productValues,
         ]);
     }
 }

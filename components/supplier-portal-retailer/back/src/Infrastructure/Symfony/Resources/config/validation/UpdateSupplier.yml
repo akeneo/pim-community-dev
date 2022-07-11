@@ -1,0 +1,15 @@
+Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier:
+  properties:
+    label:
+      - NotBlank:
+          allowNull: true
+      - Length:
+          max: 200
+    contributorEmails:
+      - Unique: ~
+      - All:
+          - Email: ~
+          - Length:
+              max: 255
+          - Akeneo\SupplierPortal\Retailer\Application\Supplier\Validation\UniqueContributorEmail: ~
+

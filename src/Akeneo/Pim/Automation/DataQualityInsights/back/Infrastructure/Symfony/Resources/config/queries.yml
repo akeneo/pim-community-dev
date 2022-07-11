@@ -194,3 +194,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\AddTableAttributeCase:
         tags:
             - { name: akeneo.pim.automation.data_quality_insights.completeness.add_attribute_case }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dictionary\CachedGetDictionaryLastUpdateDateByLocaleQuery:
+        arguments:
+            - '@database_connection'

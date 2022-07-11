@@ -142,7 +142,7 @@ COPY grth/src src
 COPY components components
 COPY grth/upgrades upgrades
 COPY grth/front-packages front-packages
-COPY grth/composer.json grth/package.json grth/yarn.lock grth/.env grth/tsconfig.json grth/*.js grth/version.txt .
+COPY grth/composer.json grth/package.json grth/yarn.lock grth/.env grth/tsconfig.json grth/*.js grth/version.txt ./
 
 ENV APP_ENV=prod
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1

@@ -1,7 +1,0 @@
-services:
-    Akeneo\OnboarderSerenity\Retailer\Test\Acceptance\Context\SupplierContext:
-        - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository'
-        - '@Akeneo\OnboarderSerenity\Retailer\Application\Supplier\CreateSupplierHandler'
-        - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\GetSupplierList'
-        - '@Akeneo\OnboarderSerenity\Retailer\Application\Supplier\DeleteSupplierHandler'
-        - '@Akeneo\OnboarderSerenity\Retailer\Application\Supplier\UpdateSupplierHandler'

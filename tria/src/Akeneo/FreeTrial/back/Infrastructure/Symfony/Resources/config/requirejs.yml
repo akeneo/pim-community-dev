@@ -10,7 +10,6 @@ config:
     pim/analytics: akeneofreetrial/js/pim-analytics.ts
     pim/controller/invite-user:  akeneofreetrial/js/invite-user/controller.tsx
     pim/menu/user-navigation: akeneofreetrial/js/menu/user-navigation.ts
-    pim/free-trial/product-edit-form/start-copy: akeneofreetrial/js/product-edit-form/start-copy.ts
     pim/free-trial/menu/usergroups: akeneofreetrial/js/menu/user-groups-menu-item.ts
     pim/free-trial/onboarding: akeneofreetrial/js/onboarding/appcues-onboarding.ts
     pim/free-trial/messaging: akeneofreetrial/js/messaging/crisp-messaging.ts

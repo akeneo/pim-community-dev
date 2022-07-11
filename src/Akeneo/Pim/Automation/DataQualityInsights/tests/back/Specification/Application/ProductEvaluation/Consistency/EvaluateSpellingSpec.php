@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\HashText;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\FilterProductValuesForSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\MultipleTextsChecker;
@@ -21,10 +22,15 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedEx
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleDataCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dictionary\GetDictionaryLastUpdateDateByLocaleQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriterionEvaluationByProductIdAndCriterionCodeQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
@@ -41,14 +47,33 @@ use Psr\Log\LoggerInterface;
 
 class EvaluateSpellingSpec extends ObjectBehavior
 {
+    private const PRODUCT_UUID_WITHOUT_PREVIOUS_EVALUATION = 'df470d52-7723-4890-85a0-e79be625e2ed';
+
     public function let(
-        MultipleTextsChecker $textChecker,
-        GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        SupportedLocaleValidator $supportedLocaleValidator,
-        FilterProductValuesForSpelling $filterProductValuesForSpelling,
-        LoggerInterface $logger
+        MultipleTextsChecker                                            $textChecker,
+        GetLocalesByChannelQueryInterface                               $localesByChannelQuery,
+        GetCriterionEvaluationByProductIdAndCriterionCodeQueryInterface $getCriterionEvaluationQuery,
+        SupportedLocaleValidator                                        $supportedLocaleValidator,
+        FilterProductValuesForSpelling                                  $filterProductValuesForSpelling,
+        LoggerInterface                                                 $logger,
+        HashText                                                        $hashText,
+        GetDictionaryLastUpdateDateByLocaleQueryInterface               $getDictionaryLastUpdateDateByLocaleQuery
     ) {
-        $this->beConstructedWith($textChecker, $localesByChannelQuery, $supportedLocaleValidator, $filterProductValuesForSpelling, $logger);
+        $productEntityId = ProductUuid::fromString(self::PRODUCT_UUID_WITHOUT_PREVIOUS_EVALUATION);
+        $getCriterionEvaluationQuery
+            ->execute($productEntityId, new CriterionCode(EvaluateSpelling::CRITERION_CODE))
+            ->willReturn(null);
+
+        $this->beConstructedWith(
+            $textChecker,
+            $localesByChannelQuery,
+            $getCriterionEvaluationQuery,
+            $supportedLocaleValidator,
+            $filterProductValuesForSpelling,
+            $logger,
+            $hashText,
+            $getDictionaryLastUpdateDateByLocaleQuery
+        );
     }
 
     public function it_evaluates_rates_for_textarea_and_text_values(
@@ -56,6 +81,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $localesByChannelQuery,
         $supportedLocaleValidator,
         $filterProductValuesForSpelling,
+        $hashText,
         TextCheckResultCollection $textCheckResultTextareaEcommerceEn,
         TextCheckResultCollection $textCheckResultTextareaPrintEn,
         TextCheckResultCollection $textCheckResultTextareaEcommerceFr,
@@ -63,7 +89,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         TextCheckResultCollection $textCheckResultTextEcommerceFR,
         TextCheckResultCollection $textCheckResultTextPrintEn
     ) {
-        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(self::PRODUCT_UUID_WITHOUT_PREVIOUS_EVALUATION);
         $criterionEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productUuid,
@@ -142,22 +168,148 @@ class EvaluateSpellingSpec extends ObjectBehavior
             ->check(['a_text' => 'Typos hapen.', 'a_textarea' => 'Typos happen.'], $localeEn)
             ->willReturn(['a_text' => $textCheckResultTextPrintEn, 'a_textarea' => $textCheckResultTextareaPrintEn]);
 
+        $hashText->hash('Typos happen.')->willReturn('123451');
+        $hashText->hash('Typos hapen.')->willReturn('123452');
+        $hashText->hash('Les fautes de frappe arrivent')->willReturn('123453');
+        $hashText->hash('Les fautes de frappe arrivent.')->willReturn('123454');
+
         $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelEcommerce, $localeEn, new Rate(94))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelEcommerce, $localeEn, ['a_text' => 100, 'a_textarea' => 88])
+            ->addData('hashed_values', $channelEcommerce, $localeEn, ['a_text' => '123451', 'a_textarea' => '123452'])
 
             ->addRate($channelEcommerce, $localeFr, new Rate(100))
             ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelEcommerce, $localeFr, ['a_text' => 100, 'a_textarea' => 100])
+            ->addData('hashed_values', $channelEcommerce, $localeFr, ['a_text' => '123453', 'a_textarea' => '123454'])
 
             ->addStatus($channelEcommerce, $localeIt, CriterionEvaluationResultStatus::notApplicable())
 
             ->addRate($channelPrint, $localeEn, new Rate(88))
             ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelPrint, $localeEn, ['a_text' => 76, 'a_textarea' => 100])
+            ->addData('hashed_values', $channelPrint, $localeEn, ['a_text' => '123452', 'a_textarea' => '123451'])
 
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::notApplicable())
+        ;
+
+        $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedEvaluationResult);
+    }
+
+    public function it_does_not_call_spellcheck_for_unchanged_values(
+        $textChecker,
+        $localesByChannelQuery,
+        $supportedLocaleValidator,
+        $filterProductValuesForSpelling,
+        $hashText,
+        $getCriterionEvaluationQuery,
+        TextCheckResultCollection $textCheckResultTextareaEcommerceEn,
+        TextCheckResultCollection $textCheckResultTextEcommerceFR,
+    ) {
+        $productUuid = ProductUuid::fromString('fd470d52-7723-4890-85a0-e79be625e2de');
+        $criterionEvaluation = new Write\CriterionEvaluation(
+            new CriterionCode(EvaluateSpelling::CRITERION_CODE),
+            $productUuid,
+            CriterionEvaluationStatus::pending()
+        );
+
+        $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
+            'ecommerce' => ['en_US', 'fr_FR'],
+        ]));
+
+        $attributeText = $this->givenALocalizableAttributeOfTypeText('a_text');
+        $attributeTextarea = $this->givenALocalizableAttributeOfTypeTextarea('a_textarea');
+
+        $textareaValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '<p>Typos happen.</p>',
+                'fr_FR' => '<p>Les fautes de frappe arrivent</p>',
+            ],
+        ], function ($value) { return $value; });
+
+        $textValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => 'Typos hapen.',
+                'fr_FR' => 'Les fotes de frappe arivve',
+            ],
+        ], function ($value) { return $value; });
+
+        $productTextValues = new ProductValues($attributeText, $textValues);
+        $productTextareaValues = new ProductValues($attributeTextarea, $textareaValues);
+
+        $productValues = (new ProductValuesCollection())
+            ->add($productTextValues)
+            ->add($productTextareaValues);
+
+        $filterProductValuesForSpelling->getFilteredProductValues($productValues)->willReturn([$productTextValues, $productTextareaValues]);
+
+        $channelEcommerce = new ChannelCode('ecommerce');
+        $localeEn = new LocaleCode('en_US');
+        $localeFr = new LocaleCode('fr_FR');
+
+        $supportedLocaleValidator->isSupported($localeEn)->willReturn(true);
+        $supportedLocaleValidator->isSupported($localeFr)->willReturn(true);
+
+        $textCheckResultTextareaEcommerceEn->count()->willReturn(0);
+        $textCheckResultTextEcommerceFR->count()->willReturn(2);
+
+        $criterionCode = new CriterionCode(EvaluateSpelling::CRITERION_CODE);
+        $previousResult = new Read\CriterionEvaluationResult(
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelEcommerce, $localeEn, new Rate(89))
+                ->addRate($channelEcommerce, $localeFr, new Rate(73)),
+            (new CriterionEvaluationResultStatusCollection())
+                ->add($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
+                ->add($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done()),
+            [
+                'attributes_with_rates' => [
+                    'ecommerce' => [
+                        'en_US' => ['a_text' => 88, 'a_textarea' => 93],
+                        'fr_FR' => ['a_text' => 95, 'a_textarea' => 100],
+                    ],
+                ],
+                'hashed_values' => [
+                    'ecommerce' => [
+                        'en_US' => ['a_text' => '123451', 'a_textarea' => '543210'],
+                        'fr_FR' => ['a_text' => '765434', 'a_textarea' => '123454'],
+                    ],
+                ],
+            ]
+        );
+        $previousEvaluation = new Read\CriterionEvaluation(
+            $criterionCode,
+            $productUuid,
+            new \DateTimeImmutable('2022-06-09 23:59:45'),
+            CriterionEvaluationStatus::done(),
+            $previousResult
+        );
+
+        $getCriterionEvaluationQuery->execute($productUuid, $criterionCode)->willReturn($previousEvaluation);
+
+        $textChecker
+            ->check(['a_textarea' => 'Typos happen.'], $localeEn)
+            ->willReturn(['a_textarea' => $textCheckResultTextareaEcommerceEn]);
+
+        $textChecker
+            ->check(['a_text' => 'Les fotes de frappe arivve'], $localeFr)
+            ->willReturn(['a_text' => $textCheckResultTextEcommerceFR]);
+
+        $hashText->hash('Typos hapen.')->willReturn('123451');
+        $hashText->hash('Typos happen.')->willReturn('123452');
+        $hashText->hash('Les fotes de frappe arivve')->willReturn('123453');
+        $hashText->hash('Les fautes de frappe arrivent')->willReturn('123454');
+
+        $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
+            ->addRate($channelEcommerce, $localeEn, new Rate(94))
+            ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes($channelEcommerce, $localeEn, ['a_text' => 88, 'a_textarea' => 100])
+            ->addData('hashed_values', $channelEcommerce, $localeEn, ['a_text' => '123451', 'a_textarea' => '123452'])
+
+            ->addRate($channelEcommerce, $localeFr, new Rate(76))
+            ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes($channelEcommerce, $localeFr, ['a_text' => 52, 'a_textarea' => 100])
+            ->addData('hashed_values', $channelEcommerce, $localeFr, ['a_text' => '123453', 'a_textarea' => '123454'])
         ;
 
         $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedEvaluationResult);
@@ -168,9 +320,10 @@ class EvaluateSpellingSpec extends ObjectBehavior
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleValidator $supportedLocaleValidator,
         TextCheckResultCollection $textCheckResultTextareaPrintEn,
-        FilterProductValuesForSpelling $filterProductValuesForSpelling
+        FilterProductValuesForSpelling $filterProductValuesForSpelling,
+        $hashText
     ) {
-        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(self::PRODUCT_UUID_WITHOUT_PREVIOUS_EVALUATION);
         $criterionEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productUuid,
@@ -206,10 +359,14 @@ class EvaluateSpellingSpec extends ObjectBehavior
 
         $textChecker->check(['a_textarea' => 'Fail'], $localeFr)->willThrow(new TextCheckFailedException());
 
+        $hashText->hash('Success')->willReturn('123451');
+        $hashText->hash('Fail')->willReturn('123452');
+
         $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelPrint, $localeEn, new Rate(100))
             ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelPrint, $localeEn, ['a_textarea' => 100])
+            ->addData('hashed_values', $channelPrint, $localeEn, ['a_textarea' => '123451'])
 
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::error())
         ;
@@ -223,7 +380,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $supportedLocaleValidator,
         $filterProductValuesForSpelling
     ) {
-        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(self::PRODUCT_UUID_WITHOUT_PREVIOUS_EVALUATION);
         $criterionEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productUuid,
@@ -344,7 +501,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         SupportedLocaleValidator $supportedLocaleValidator,
         FilterProductValuesForSpelling $filterProductValuesForSpelling
     ) {
-        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(self::PRODUCT_UUID_WITHOUT_PREVIOUS_EVALUATION);
         $criterionEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productUuid,
@@ -377,6 +534,130 @@ class EvaluateSpellingSpec extends ObjectBehavior
 
         $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::notApplicable());
+
+        $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedEvaluationResult);
+    }
+
+    public function it_calls_spellcheck_for_unchanged_values_if_dictionary_modified_since_last_evaluation(
+        $textChecker,
+        $localesByChannelQuery,
+        $supportedLocaleValidator,
+        $filterProductValuesForSpelling,
+        $hashText,
+        $getCriterionEvaluationQuery,
+        TextCheckResultCollection $textCheckResultTextareaEcommerceEn,
+        TextCheckResultCollection $textCheckResultTextEcommerceFR,
+        TextCheckResultCollection $textCheckResultTextareaEcommerceFr,
+        $getDictionaryLastUpdateDateByLocaleQuery
+    ) {
+        $productUuid = ProductUuid::fromString('fd470d52-7723-4890-85a0-e79be625e2de');
+        $criterionEvaluation = new Write\CriterionEvaluation(
+            new CriterionCode(EvaluateSpelling::CRITERION_CODE),
+            $productUuid,
+            CriterionEvaluationStatus::pending()
+        );
+
+        $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
+            'ecommerce' => ['en_US', 'fr_FR'],
+        ]));
+
+        $attributeText = $this->givenALocalizableAttributeOfTypeText('a_text');
+        $attributeTextarea = $this->givenALocalizableAttributeOfTypeTextarea('a_textarea');
+
+        $textareaValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '<p>Typos happen.</p>',
+                'fr_FR' => '<p>Les fautes de frappe arrivent</p>',
+            ],
+        ], function ($value) { return $value; });
+
+        $textValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => 'Typos hapen.',
+                'fr_FR' => 'Les fotes de frappe arivve',
+            ],
+        ], function ($value) { return $value; });
+
+        $productTextValues = new ProductValues($attributeText, $textValues);
+        $productTextareaValues = new ProductValues($attributeTextarea, $textareaValues);
+
+        $productValues = (new ProductValuesCollection())
+            ->add($productTextValues)
+            ->add($productTextareaValues);
+
+        $filterProductValuesForSpelling->getFilteredProductValues($productValues)->willReturn([$productTextValues, $productTextareaValues]);
+
+        $channelEcommerce = new ChannelCode('ecommerce');
+        $localeEn = new LocaleCode('en_US');
+        $localeFr = new LocaleCode('fr_FR');
+
+        $supportedLocaleValidator->isSupported($localeEn)->willReturn(true);
+        $supportedLocaleValidator->isSupported($localeFr)->willReturn(true);
+
+        $textCheckResultTextareaEcommerceEn->count()->willReturn(0);
+        $textCheckResultTextEcommerceFR->count()->willReturn(2);
+        $textCheckResultTextareaEcommerceFr->count()->willReturn(0);
+
+        $criterionCode = new CriterionCode(EvaluateSpelling::CRITERION_CODE);
+        $previousResult = new Read\CriterionEvaluationResult(
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelEcommerce, $localeEn, new Rate(89))
+                ->addRate($channelEcommerce, $localeFr, new Rate(73)),
+            (new CriterionEvaluationResultStatusCollection())
+                ->add($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
+                ->add($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done()),
+            [
+                'attributes_with_rates' => [
+                    'ecommerce' => [
+                        'en_US' => ['a_text' => 88, 'a_textarea' => 93],
+                        'fr_FR' => ['a_text' => 95, 'a_textarea' => 100],
+                    ],
+                ],
+                'hashed_values' => [
+                    'ecommerce' => [
+                        'en_US' => ['a_text' => '123451', 'a_textarea' => '543210'],
+                        'fr_FR' => ['a_text' => '765434', 'a_textarea' => '123454'],
+                    ],
+                ],
+            ]
+        );
+        $previousEvaluation = new Read\CriterionEvaluation(
+            $criterionCode,
+            $productUuid,
+            new \DateTimeImmutable('2022-06-09 23:59:45'),
+            CriterionEvaluationStatus::done(),
+            $previousResult
+        );
+
+        $getCriterionEvaluationQuery->execute($productUuid, $criterionCode)->willReturn($previousEvaluation);
+
+        $getDictionaryLastUpdateDateByLocaleQuery->execute($localeEn)->willReturn($previousEvaluation->getEvaluatedAt()->modify('-1 day'));
+        $getDictionaryLastUpdateDateByLocaleQuery->execute($localeFr)->willReturn($previousEvaluation->getEvaluatedAt()->modify('+1 day'));
+
+        $textChecker
+            ->check(['a_textarea' => 'Typos happen.'], $localeEn)
+            ->willReturn(['a_textarea' => $textCheckResultTextareaEcommerceEn]);
+
+        $textChecker
+            ->check(['a_text' => 'Les fotes de frappe arivve', 'a_textarea' => 'Les fautes de frappe arrivent'], $localeFr)
+            ->willReturn(['a_text' => $textCheckResultTextEcommerceFR, 'a_textarea' => $textCheckResultTextareaEcommerceFr]);
+
+        $hashText->hash('Typos hapen.')->willReturn('123451');
+        $hashText->hash('Typos happen.')->willReturn('123452');
+        $hashText->hash('Les fotes de frappe arivve')->willReturn('123453');
+        $hashText->hash('Les fautes de frappe arrivent')->willReturn('123454');
+
+        $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
+            ->addRate($channelEcommerce, $localeEn, new Rate(94))
+            ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes($channelEcommerce, $localeEn, ['a_text' => 88, 'a_textarea' => 100])
+            ->addData('hashed_values', $channelEcommerce, $localeEn, ['a_text' => '123451', 'a_textarea' => '123452'])
+
+            ->addRate($channelEcommerce, $localeFr, new Rate(76))
+            ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes($channelEcommerce, $localeFr, ['a_text' => 52, 'a_textarea' => 100])
+            ->addData('hashed_values', $channelEcommerce, $localeFr, ['a_text' => '123453', 'a_textarea' => '123454'])
+        ;
 
         $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedEvaluationResult);
     }

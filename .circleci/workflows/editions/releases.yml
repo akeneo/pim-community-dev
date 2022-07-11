@@ -83,11 +83,11 @@ workflows:
                   <<: *slack-fail-post-step
                   requires:
                       - build_srnt_dev
-            - test_front_onboarder:
+            - test_front_supplier_portal:
                   <<: *slack-fail-post-step
                   requires:
                       - build_srnt_dev
-            - test_back_onboarder:
+            - test_back_supplier_portal:
                   <<: *slack-fail-post-step
                   requires:
                       - build_srnt_dev
@@ -110,8 +110,8 @@ workflows:
                       - test_back_phpunit
                       - test_back_integration_bounded_contexts
                       - test_onboarder_bundle
-                      - test_front_onboarder
-                      - test_back_onboarder
+                      - test_front_supplier_portal
+                      - test_back_supplier_portal
                       - test_back_performance
                       - test_back_behat_legacy
                       - test_back_data_migrations
@@ -258,10 +258,10 @@ workflows:
             - test_onboarder_bundle:
                   requires:
                       - "[srnt] Build dev"
-            - test_front_onboarder:
+            - test_front_supplier_portal:
                   requires:
                       - "[srnt] Build dev"
-            - test_back_onboarder:
+            - test_back_supplier_portal:
                   requires:
                       - "[srnt] Build dev"
             - test_back_behat_legacy:
@@ -311,8 +311,8 @@ workflows:
                       - test_back_phpunit
                       - test_back_integration_bounded_contexts
                       - test_onboarder_bundle
-                      - test_back_onboarder
-                      - test_front_onboarder
+                      - test_back_supplier_portal
+                      - test_front_supplier_portal
                       - test_back_performance
                       - test_back_behat_legacy
                       - test_back_data_migrations
