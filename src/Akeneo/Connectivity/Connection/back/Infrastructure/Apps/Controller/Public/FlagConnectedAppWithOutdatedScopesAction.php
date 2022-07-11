@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByUserIdQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByUserIdentifierQueryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ final class FlagConnectedAppWithOutdatedScopesAction
 {
     public function __construct(
         private TokenStorageInterface $tokenStorage,
-        private FindOneConnectedAppByUserIdQueryInterface $findOneConnectedAppByUserIdQuery,
+        private FindOneConnectedAppByUserIdentifierQueryInterface $findOneConnectedAppByUserIdentifierQuery,
         private FlagAppContainingOutdatedScopesHandler $flagAppContainingOutdatedScopesHandler,
     ) {
     }
@@ -38,7 +38,7 @@ final class FlagConnectedAppWithOutdatedScopesAction
             throw new \LogicException();
         }
 
-        $connectedApp = $this->findOneConnectedAppByUserIdQuery->execute($user->getId());
+        $connectedApp = $this->findOneConnectedAppByUserIdentifierQuery->execute($user->getUserIdentifier());
         if (null === $connectedApp) {
             throw new AccessDeniedHttpException('Not an authenticated App');
         }

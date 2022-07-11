@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByUserIdQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByUserIdentifierQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FindOneConnectedAppByUserIdQuery implements FindOneConnectedAppByUserIdQueryInterface
+final class FindOneConnectedAppByUserIdentifierQuery implements FindOneConnectedAppByUserIdentifierQueryInterface
 {
     use DenormalizeConnectedAppTrait;
 
@@ -20,7 +20,7 @@ class FindOneConnectedAppByUserIdQuery implements FindOneConnectedAppByUserIdQue
     {
     }
 
-    public function execute(int $userId): ?ConnectedApp
+    public function execute(string $userIdentifier): ?ConnectedApp
     {
         $selectQuery = <<<SQL
         SELECT
@@ -41,10 +41,10 @@ class FindOneConnectedAppByUserIdQuery implements FindOneConnectedAppByUserIdQue
         JOIN akeneo_connectivity_connection connection ON connection.code = connected_app.connection_code
         JOIN oro_user ON oro_user.id = connection.user_id
         LEFT JOIN akeneo_connectivity_test_app test_app ON test_app.client_id = connected_app.id
-        WHERE connection.user_id = :id
+        WHERE oro_user.username = :username
         SQL;
 
-        $dataRow = $this->connection->executeQuery($selectQuery, ['id' => $userId])->fetchAssociative();
+        $dataRow = $this->connection->executeQuery($selectQuery, ['username' => $userIdentifier])->fetchAssociative();
 
         return $dataRow ? $this->denormalizeRow($dataRow) : null;
     }
