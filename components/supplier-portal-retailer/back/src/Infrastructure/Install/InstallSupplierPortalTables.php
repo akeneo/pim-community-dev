@@ -34,6 +34,7 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
         $this->addSupplierContributorTable();
         $this->addContributorAccountTable();
         $this->addSupplierPortalXlsxSupplierImportJob();
+        $this->addSupplierFileTable();
     }
 
     private function addSupplierTable(): void
@@ -128,5 +129,23 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
             ->executeQuery($sql, ['code' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['code']])
             ->fetchOne()
         ;
+    }
+
+    private function addSupplierFileTable(): void
+    {
+        $sql = <<<SQL
+            CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_supplier_file` (
+                `id` bigint UNSIGNED AUTO_INCREMENT NOT NULL,
+                `filename` varchar(255) NOT NULL,
+                `path` varchar(255) NOT NULL,     
+                `uploaded_by_contributor` varchar(36) DEFAULT NULL,
+                `uploaded_by_supplier` varchar(36) NOT NULL,
+                `uploaded_at` DATETIME NOT NULL,
+                `downloaded_at` DATETIME DEFAULT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        SQL;
+
+        $this->connection->executeStatement($sql);
     }
 }
