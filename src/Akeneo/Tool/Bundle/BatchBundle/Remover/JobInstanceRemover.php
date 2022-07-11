@@ -73,7 +73,7 @@ class JobInstanceRemover implements RemoverInterface, BulkRemoverInterface
         );
     }
 
-    private function validateObject(mixed $object)
+    private function validateObject(mixed $object): void
     {
         if (!$object instanceof JobInstance) {
             throw new \InvalidArgumentException(
