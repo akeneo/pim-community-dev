@@ -274,7 +274,7 @@ class ExportProfilesContext extends ImportExportContext
             return;
         }
         $jobInstance = $this->getFixturesContext()->getJobInstance($code);
-        $path = dirname($jobInstance->getRawParameters()['filePath']);
+        $path = dirname($jobInstance->getRawParameters()['storage']['file_path']);
 
         $this->checkExportDirectoryFiles(true, $table, $path);
     }
@@ -290,7 +290,7 @@ class ExportProfilesContext extends ImportExportContext
     public function exportDirectoryOfShouldNotContainTheFollowingMedia($code, TableNode $table)
     {
         $jobInstance = $this->getFixturesContext()->getJobInstance($code);
-        $path = dirname($jobInstance->getRawParameters()['filePath']);
+        $path = dirname($jobInstance->getRawParameters()['storage']['file_path']);
 
         $this->checkExportDirectoryFiles(false, $table, $path);
     }
