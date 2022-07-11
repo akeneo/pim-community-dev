@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Controller;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DataGridManager;
@@ -83,7 +84,9 @@ class ProductExportController
 
         foreach (self::FILE_PATH_KEYS as $filePathKey) {
             if (isset($rawParameters[$filePathKey])) {
-                $rawParameters[$filePathKey] = $this->buildFilePath($rawParameters[$filePathKey], $contextParameters);
+                //TODO RAB-665 handle local storage on PaaS version
+                $rawParameters['storage']['type'] = NoneStorage::TYPE;
+                $rawParameters['storage'][$filePathKey] = $this->buildFilePath($rawParameters[$filePathKey], $contextParameters);
             }
         }
 

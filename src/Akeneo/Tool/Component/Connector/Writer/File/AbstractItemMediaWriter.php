@@ -30,7 +30,7 @@ abstract class AbstractItemMediaWriter implements
     StepExecutionAwareInterface,
     ArchivableWriterInterface
 {
-    protected const DEFAULT_FILE_PATH = 'filePath';
+    protected const DEFAULT_FILE_PATH = 'file_path';
 
     protected ArrayConverterInterface $arrayConverter;
     protected FlatItemBufferFlusher $flusher;
@@ -181,8 +181,8 @@ abstract class AbstractItemMediaWriter implements
         $storage = $parameters->get('storage');
 
         $filePath = LocalStorage::TYPE === $storage['type'] ?
-            $storage['file_path'] :
-            sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
+            $storage[$this->jobParamFilePath] :
+            sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage[$this->jobParamFilePath]);
 
         if (false !== \strpos($filePath, '%')) {
             $datetime = $this->stepExecution->getStartTime()->format($this->datetimeFormat);
