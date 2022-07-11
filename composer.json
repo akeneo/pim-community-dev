@@ -81,7 +81,7 @@
         "friends-of-behat/mink-extension": "^2.5.0",
         "friends-of-behat/symfony-extension": "^2.2.1",
         "friends-of-phpspec/phpspec-code-coverage": "^6.1.0",
-        "friendsofphp/php-cs-fixer": "^3.0",
+        "friendsofphp/php-cs-fixer": "3.8.0",
         "instaclick/php-webdriver": "1.4.7",
         "jfcherng/php-diff": "^6.10",
         "league/flysystem-aws-s3-v3": "^2.0",
