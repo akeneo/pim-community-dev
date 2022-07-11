@@ -1,7 +1,8 @@
+import {useCallback, useMemo} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {AnyCriterion, AnyCriterionState} from '../models/Criterion';
 import StatusCriterion from '../criteria/StatusCriterion';
-import {useCallback, useMemo} from 'react';
+import FamilyCriterion from '../criteria/FamilyCriterion';
 
 type Factory = {
     label: string;
@@ -22,6 +23,10 @@ export const useCriteriaRegistry = (): Result => {
                 label: translate('akeneo_catalogs.product_selection.criteria.status.label'),
                 factory: StatusCriterion.factory,
             },
+            {
+                label: translate('akeneo_catalogs.product_selection.criteria.family.label'),
+                factory: FamilyCriterion.factory,
+            },
         ],
         [translate]
     );
@@ -30,6 +35,8 @@ export const useCriteriaRegistry = (): Result => {
         switch (field) {
             case 'enabled':
                 return Promise.resolve(StatusCriterion);
+            case 'family':
+                return Promise.resolve(FamilyCriterion);
         }
 
         return Promise.reject();
