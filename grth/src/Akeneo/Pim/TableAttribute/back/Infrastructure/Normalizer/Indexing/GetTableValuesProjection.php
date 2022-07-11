@@ -34,7 +34,7 @@ class GetTableValuesProjection implements GetAdditionalPropertiesForProductProje
     /**
      * {@inheritDoc}
      */
-    public function fromProductIdentifiers(array $productIdentifiers, array $context = []): array
+    public function fromProductUuids(array $productUuids, array $context = []): array
     {
         Assert::keyExists($context, 'value_collections');
 
@@ -52,14 +52,14 @@ class GetTableValuesProjection implements GetAdditionalPropertiesForProductProje
     }
 
     /**
-     * @param array<string, ReadValueCollection> $valueCollectionIndexedByIdentifier
+     * @param array<string, ReadValueCollection> $valueCollectionIndexedByUuid
      * @return array<string, array<mixed>>
      *
      * Create table value projection from value collections.
      *
      * The resulted projections are:
      *  {
-     *      "id1": {
+     *      "uuid1": {
      *          "table_values": {
      *              "nutrition": [
      *                  {
@@ -74,7 +74,7 @@ class GetTableValuesProjection implements GetAdditionalPropertiesForProductProje
      *              ]
      *          }
      *      }
-     *      "id2": {
+     *      "uuid2": {
      *          "table_values": {
      *              "packaging": [
      *                  {
@@ -89,21 +89,21 @@ class GetTableValuesProjection implements GetAdditionalPropertiesForProductProje
      *      }
      *  }
      */
-    private function fromMultipleValueCollection(array $valueCollectionIndexedByIdentifier): array
+    private function fromMultipleValueCollection(array $valueCollectionIndexedByUuid): array
     {
-        if ([] === $valueCollectionIndexedByIdentifier) {
+        if ([] === $valueCollectionIndexedByUuid) {
             return [];
         }
 
         $results = [];
-        foreach ($valueCollectionIndexedByIdentifier as $identifier => $valueCollection) {
+        foreach ($valueCollectionIndexedByUuid as $uuid => $valueCollection) {
             foreach ($valueCollection as $value) {
                 if (!$value instanceof TableValue) {
                     continue;
                 }
                 $attributeCode = $value->getAttributeCode();
-                $results[$identifier]['table_values'][$attributeCode] = array_merge(
-                    $results[$identifier]['table_values'][$attributeCode] ?? [],
+                $results[$uuid]['table_values'][$attributeCode] = array_merge(
+                    $results[$uuid]['table_values'][$attributeCode] ?? [],
                     $this->convertValueToArrayProjection($value)
                 );
             }
