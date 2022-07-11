@@ -1,6 +1,6 @@
 jest.unmock('./Criterion');
 
-import React from 'react';
+import React, {FC} from 'react';
 import {fireEvent, render, screen} from '@testing-library/react';
 import {mocked} from 'ts-jest/utils';
 import {ThemeProvider} from 'styled-components';
@@ -9,13 +9,13 @@ import {Criterion} from './Criterion';
 import {StatusCriterionState} from '../criteria/StatusCriterion';
 import {Operator} from '../models/Operator';
 import {useCriteriaRegistry} from '../hooks/useCriteriaRegistry';
-import {AnyCriterion, AnyCriterionState} from '../models/Criterion';
+import {AnyCriterion, AnyCriterionState, CriterionModule} from '../models/Criterion';
 import {ProductSelectionContext} from '../contexts/ProductSelectionContext';
 import {ProductSelectionActions} from '../reducers/ProductSelectionReducer';
 
 const mockGetCriterionByField = () =>
     Promise.resolve({
-        component: ({state, onChange, onRemove}) => {
+        component: (({state, onChange, onRemove}) => {
             const toggle = () => {
                 onChange({
                     ...state,
@@ -30,7 +30,7 @@ const mockGetCriterionByField = () =>
                     <button onClick={onRemove}>[RemoveCriterion]</button>
                 </div>
             );
-        },
+        }) as FC<CriterionModule<any>>,
         factory: (): AnyCriterionState => ({
             field: 'enabled',
             operator: Operator.EQUALS,
