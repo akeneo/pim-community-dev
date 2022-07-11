@@ -75,10 +75,10 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                     ];
                 }, $attributePaths);
 
-            $clause = $this->addBooleanClause($clauses);
-            $this->searchQueryBuilder->addFilter($clause);
+                $clause = $this->addBooleanClause($clauses);
+                $this->searchQueryBuilder->addFilter($clause);
 
-            break;
+                break;
             case Operators::LOWER_THAN:
                 $clauses = array_map(function ($attributePath) use ($attributeCode, $value) {
                     return [
@@ -90,10 +90,10 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                     ];
                 }, $attributePaths);
 
-            $clause = $this->addBooleanClause($clauses);
-            $this->searchQueryBuilder->addFilter($clause);
+                $clause = $this->addBooleanClause($clauses);
+                $this->searchQueryBuilder->addFilter($clause);
 
-            break;
+                break;
             case Operators::GREATER_THAN:
                 $clauses = array_map(function ($attributePath) use ($attributeCode, $value) {
                     return [
@@ -105,10 +105,10 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                     ];
                 }, $attributePaths);
 
-            $clause = $this->addBooleanClause($clauses);
-            $this->searchQueryBuilder->addFilter($clause);
+                $clause = $this->addBooleanClause($clauses);
+                $this->searchQueryBuilder->addFilter($clause);
 
-            break;
+                break;
             case Operators::BETWEEN:
                 $clauses = array_map(function ($attributePath) use ($attributeCode, $value) {
                     $values = array_values($value);
@@ -123,10 +123,10 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                     ];
                 }, $attributePaths);
 
-            $clause = $this->addBooleanClause($clauses);
-            $this->searchQueryBuilder->addFilter($clause);
+                $clause = $this->addBooleanClause($clauses);
+                $this->searchQueryBuilder->addFilter($clause);
 
-            break;
+                break;
             case Operators::NOT_BETWEEN:
                 $clauses = array_map(function ($attributePath) use ($attributeCode, $value) {
                     $values = array_values($value);
@@ -140,50 +140,50 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                         ]
                     ];
                 }, $attributePaths);
-            $betweenClause = $this->addBooleanClause($clauses);
+                $betweenClause = $this->addBooleanClause($clauses);
 
-            $clauses = array_map(function ($attributePath) {
-                return [
-                    'exists' => ['field' => $attributePath]
-                ];
-            }, $attributePaths);
-            $existsClause = $this->addBooleanClause($clauses);
+                $clauses = array_map(function ($attributePath) {
+                    return [
+                        'exists' => ['field' => $attributePath]
+                    ];
+                }, $attributePaths);
+                $existsClause = $this->addBooleanClause($clauses);
 
-            $this->searchQueryBuilder->addMustNot($betweenClause);
-            $this->searchQueryBuilder->addFilter($existsClause);
+                $this->searchQueryBuilder->addMustNot($betweenClause);
+                $this->searchQueryBuilder->addFilter($existsClause);
 
-            break;
+                break;
             case Operators::IS_EMPTY:
                 $clauses = array_map(function ($attributePath) {
                     return [
                         'exists' => ['field' => $attributePath]
                     ];
                 }, $attributePaths);
-            $existsClause = $this->addBooleanClause($clauses);
+                $existsClause = $this->addBooleanClause($clauses);
 
-            $this->searchQueryBuilder->addMustNot($existsClause);
+                $this->searchQueryBuilder->addMustNot($existsClause);
 
-            $attributeInEntityClauses = [
-                [
-                    'terms' => [
-                        self::ATTRIBUTES_FOR_THIS_LEVEL_ES_ID => [$attribute->getCode()],
+                $attributeInEntityClauses = [
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_FOR_THIS_LEVEL_ES_ID => [$attribute->getCode()],
+                        ],
                     ],
-                ],
-                [
-                    'terms' => [
-                        self::ATTRIBUTES_OF_ANCESTORS_ES_ID => [$attribute->getCode()],
-                    ],
-                ]
-            ];
-            $this->searchQueryBuilder->addFilter(
-                [
-                    'bool' => [
-                        'should' => $attributeInEntityClauses,
-                        'minimum_should_match' => 1,
-                    ],
-                ]
-            );
-            break;
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_OF_ANCESTORS_ES_ID => [$attribute->getCode()],
+                        ],
+                    ]
+                ];
+                $this->searchQueryBuilder->addFilter(
+                    [
+                        'bool' => [
+                            'should' => $attributeInEntityClauses,
+                            'minimum_should_match' => 1,
+                        ],
+                    ]
+                );
+                break;
 
             case Operators::IS_NOT_EMPTY:
                 $clauses = array_map(function ($attributePath) {
@@ -191,11 +191,11 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                         'exists' => ['field' => $attributePath]
                     ];
                 }, $attributePaths);
-            $existsClause = $this->addBooleanClause($clauses);
+                $existsClause = $this->addBooleanClause($clauses);
 
-            $this->searchQueryBuilder->addFilter($existsClause);
+                $this->searchQueryBuilder->addFilter($existsClause);
 
-            break;
+                break;
             case Operators::NOT_EQUAL:
                 $clauses = array_map(function ($attributePath) use ($attributeCode, $value) {
                     return [
@@ -204,19 +204,19 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                         ]
                     ];
                 }, $attributePaths);
-            $mustNotClause = $this->addBooleanClause($clauses);
+                $mustNotClause = $this->addBooleanClause($clauses);
 
-            $clauses = array_map(function ($attributePath) {
-                return [
-                    'exists' => ['field' => $attributePath]
-                ];
-            }, $attributePaths);
-            $existsClause = $this->addBooleanClause($clauses);
+                $clauses = array_map(function ($attributePath) {
+                    return [
+                        'exists' => ['field' => $attributePath]
+                    ];
+                }, $attributePaths);
+                $existsClause = $this->addBooleanClause($clauses);
 
-            $this->searchQueryBuilder->addMustNot($mustNotClause);
-            $this->searchQueryBuilder->addFilter($existsClause);
+                $this->searchQueryBuilder->addMustNot($mustNotClause);
+                $this->searchQueryBuilder->addFilter($existsClause);
 
-            break;
+                break;
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
         }
@@ -251,26 +251,26 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                     throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                 }
 
-            if (2 !== count($value)) {
-                throw InvalidPropertyTypeException::validArrayStructureExpected(
-                    $field,
-                    sprintf('should contain 2 strings with the format "%s"', static::HUMAN_DATETIME_FORMAT),
-                    static::class,
-                    $value
-                );
-            }
+                if (2 !== count($value)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        $field,
+                        sprintf('should contain 2 strings with the format "%s"', static::HUMAN_DATETIME_FORMAT),
+                        static::class,
+                        $value
+                    );
+                }
 
-            foreach ($value as $singleValue) {
-                FieldFilterHelper::checkDateTime(
-                    $field,
-                    $singleValue,
-                    static::DATETIME_FORMAT,
-                    static::HUMAN_DATETIME_FORMAT,
-                    static::class
-                );
-            }
+                foreach ($value as $singleValue) {
+                    FieldFilterHelper::checkDateTime(
+                        $field,
+                        $singleValue,
+                        static::DATETIME_FORMAT,
+                        static::HUMAN_DATETIME_FORMAT,
+                        static::class
+                    );
+                }
 
-            break;
+                break;
             case Operators::IS_EMPTY:
             case Operators::IS_NOT_EMPTY:
                 break;

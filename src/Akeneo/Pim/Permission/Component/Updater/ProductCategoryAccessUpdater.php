@@ -92,8 +92,8 @@ class ProductCategoryAccessUpdater implements ObjectUpdaterInterface
                         $data
                     );
                 }
-            $categoryAccess->setCategory($category);
-            break;
+                $categoryAccess->setCategory($category);
+                break;
             case 'user_group':
                 $group = $this->groupRepository->findOneByIdentifier($data);
                 if (null === $group) {
@@ -105,8 +105,8 @@ class ProductCategoryAccessUpdater implements ObjectUpdaterInterface
                         $data
                     );
                 }
-            $categoryAccess->setUserGroup($group);
-            break;
+                $categoryAccess->setUserGroup($group);
+                break;
             case 'view_items':
                 $categoryAccess->setViewItems($data);
                 break;
@@ -114,15 +114,15 @@ class ProductCategoryAccessUpdater implements ObjectUpdaterInterface
                 if (true === $data) {
                     $categoryAccess->setViewItems($data);
                 }
-            $categoryAccess->setEditItems($data);
-            break;
+                $categoryAccess->setEditItems($data);
+                break;
             case 'own_items':
                 if (true === $data) {
                     $categoryAccess->setViewItems($data);
                     $categoryAccess->setEditItems($data);
                 }
-            $categoryAccess->setOwnItems($data);
-            break;
+                $categoryAccess->setOwnItems($data);
+                break;
         }
     }
 }

@@ -61,6 +61,7 @@
     "require-dev": {
         "akeneo/php-coupling-detector": "^0.7.0",
         "blackfire/php-sdk": "^1.25",
+        "friendsofphp/php-cs-fixer": "^3.0,<3.9.1",
         "jfcherng/php-diff": "^6.10",
         "league/flysystem-aws-s3-v3": "^2.0",
         "league/flysystem-memory": "^2.0",

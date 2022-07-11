@@ -34,7 +34,7 @@ class DatabaseSchemaDiffCommand extends Command
             ->setDescription("This command outputs the differences between the given database schema file and a the reference for this branch.")
             ->addArgument('filename', InputArgument::OPTIONAL, "The filename of the database structure export.", IntrospectDatabaseCommand::DEFAULT_FILENAME)
             ->addOption('color', 'c', InputOption::VALUE_NONE, "Use color in output.", null)
-        ;
+            ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
