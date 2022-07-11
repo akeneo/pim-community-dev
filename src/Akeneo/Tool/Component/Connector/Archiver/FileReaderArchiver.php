@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
-use Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader;
+use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
 use League\Flysystem\Filesystem;
 
 /**
@@ -76,7 +76,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      */
     protected function isReaderUsable(ItemReaderInterface $reader)
     {
-        return $reader instanceof Reader;
+        return $reader instanceof FileReaderInterface;
     }
 
     /**
