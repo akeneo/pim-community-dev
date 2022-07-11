@@ -49,7 +49,7 @@ final class ImportExportFileContext extends PimContext implements SnippetAccepti
     public function entitiesAreImportedViaTheJobWithOptions(string $entities, string $jobName, TableNode $jobOptions)
     {
         $newJobOptions = new TableNode(
-            array_merge($jobOptions->getTable(), [['filePath', self::$placeholderValues['%file to import%']]])
+            array_merge($jobOptions->getTable(), [['storage' => ['type' => 'local', 'file_path' => self::$placeholderValues['%file to import%']]]])
         );
 
         $this->launchJob($jobName, $newJobOptions);
