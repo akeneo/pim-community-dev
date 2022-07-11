@@ -295,7 +295,7 @@ class JobInstanceController
                 return new JsonResponse($errors, 400);
             }
 
-            $jobFileLocation = new JobFileLocation($code.DIRECTORY_SEPARATOR.$file->getClientOriginalName(), true);
+            $jobFileLocation = new JobFileLocation($code . DIRECTORY_SEPARATOR . $file->getClientOriginalName(), true);
 
             if ($this->filesystem->fileExists($jobFileLocation->path())) {
                 $this->filesystem->delete($jobFileLocation->path());
@@ -308,7 +308,8 @@ class JobInstanceController
             }
 
             $rawParameters = $jobInstance->getRawParameters();
-            $filePath = $this->remoteStorageFeatureFlag->isEnabled($code) ? $jobFileLocation->path() : $jobFileLocation->isRemote();
+            $filePath = $this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName()) ?
+                $jobFileLocation->path() : $jobFileLocation->isRemote();
             $rawParameters['storage'] = [
                 'type' => ManualUploadStorage::TYPE,
                 'file_path' => $filePath,
@@ -325,7 +326,7 @@ class JobInstanceController
 
             $rawParameters['storage'] = [
                 'type' => LocalStorage::TYPE,
-                'file_path' => $this->getDefaultFilePath($jobInstance->getType(), $jobInstance->getCode()),
+                'file_path' => $this->getDefaultFilePath($jobInstance->getType(), $jobInstance->getJobName()),
             ];
             $jobInstance->setRawParameters($rawParameters);
         }
@@ -343,7 +344,7 @@ class JobInstanceController
         }
 
         return new JsonResponse([
-            'redirectUrl' => '#'.$this->router->generate(
+            'redirectUrl' => '#' . $this->router->generate(
                 'akeneo_job_process_tracker_details',
                 ['id' => $jobExecution->getId()]
             ),
@@ -404,7 +405,7 @@ class JobInstanceController
         $accessor = PropertyAccess::createPropertyAccessorBuilder()->getPropertyAccessor();
         if (count($parametersViolations) > 0) {
             foreach ($parametersViolations as $error) {
-                $accessor->setValue($errors, '[configuration]'.$error->getPropertyPath(), $error->getMessage());
+                $accessor->setValue($errors, '[configuration]' . $error->getPropertyPath(), $error->getMessage());
                 $errors['normalized_errors'][] = $this->constraintViolationNormalizer->normalize(
                     $error,
                     'internal_api',
@@ -568,11 +569,32 @@ class JobInstanceController
         return $request->server->get('CONTENT_LENGTH') > 0;
     }
 
-    private function getDefaultFilePath(string $jobType, string $jobCode): string
+    // TODO RAB-665: we need to find a proper way to determine the extension of a job
+    private function getDefaultFilePath(string $jobType, string $jobName): string
     {
-        // TODO RAB-665: this will work in SaaS but we have to find a safer way to handle custom job in Paas
-        $fileExtension = explode('_', $jobCode)[0];
+        $fileExtension = $this->guessExtension($jobName);
 
-        return sprintf('%s%s%s_%s_%s.%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $jobType, '%job_label%', '%datetime%', $fileExtension);
+        return sprintf(
+            '%s%s%s_%s_%s.%s',
+            sys_get_temp_dir(),
+            DIRECTORY_SEPARATOR,
+            $jobType,
+            '%job_label%',
+            '%datetime%',
+            $fileExtension,
+        );
+    }
+
+    private function guessExtension(string $jobName): string
+    {
+        if (false !== strpos($jobName, 'yml')) {
+            return 'yml';
+        }
+
+        if (false !== strpos($jobName, 'csv')) {
+            return 'csv';
+        }
+
+        return 'xlsx';
     }
 }
