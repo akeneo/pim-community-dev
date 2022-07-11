@@ -89,8 +89,8 @@ class ProjectUpdater implements ObjectUpdaterInterface
                     $dateTime = null;
                 }
 
-                $project->setDueDate($dateTime);
-                break;
+            $project->setDueDate($dateTime);
+            break;
             case 'description':
                 $project->setDescription($value);
                 break;
@@ -105,8 +105,8 @@ class ProjectUpdater implements ObjectUpdaterInterface
                         $value
                     );
                 }
-                $project->setOwner($user);
-                break;
+            $project->setOwner($user);
+            break;
             case 'datagrid_view':
                 if (!$value instanceof DatagridView) {
                     throw new InvalidPropertyException(
@@ -116,8 +116,8 @@ class ProjectUpdater implements ObjectUpdaterInterface
                         sprintf('Wrong datagrid view type: given %s, expected %s', gettype($value), DatagridView::class)
                     );
                 }
-                $project->setDatagridView($value);
-                break;
+            $project->setDatagridView($value);
+            break;
             case 'product_filters':
                 if (!is_array($value)) {
                     throw new InvalidPropertyException(
@@ -127,8 +127,8 @@ class ProjectUpdater implements ObjectUpdaterInterface
                         sprintf('Product filters must be an array, given %s,', gettype($value))
                     );
                 }
-                $project->setProductFilters($value);
-                break;
+            $project->setProductFilters($value);
+            break;
             case 'channel':
                 $channel = $this->channelRepository->findOneByIdentifier($value);
                 if (null === $channel) {
@@ -140,8 +140,8 @@ class ProjectUpdater implements ObjectUpdaterInterface
                         $value
                     );
                 }
-                $project->setChannel($channel);
-                break;
+            $project->setChannel($channel);
+            break;
             case 'locale':
                 $locale = $this->localeRepository->findOneByIdentifier($value);
                 if (null === $locale) {
@@ -153,8 +153,8 @@ class ProjectUpdater implements ObjectUpdaterInterface
                         $value
                     );
                 }
-                $project->setLocale($locale);
-                break;
+            $project->setLocale($locale);
+            break;
         }
     }
 

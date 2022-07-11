@@ -62,17 +62,17 @@ class CellDataTypesShouldMatchValidator extends ConstraintValidator
                         if (!is_string($data)) {
                             $this->addViolation('string', $data, $rowIndex, $stringColumnCode);
                         }
-                        break;
+                    break;
                     case 'number':
                         if (!is_numeric($data)) {
                             $this->addViolation('numeric', $data, $rowIndex, $stringColumnCode);
                         }
-                        break;
+                    break;
                     case 'boolean':
                         if (!is_bool($data)) {
                             $this->addViolation('boolean', $data, $rowIndex, $stringColumnCode);
                         }
-                        break;
+                    break;
                     case 'measurement':
                         $unitCode = $data['unit'] ?? null;
                         $amount = $data['amount'] ?? null;
@@ -88,7 +88,7 @@ class CellDataTypesShouldMatchValidator extends ConstraintValidator
                                 ->atPath(sprintf('[%d].%s', $rowIndex, $stringColumnCode))
                                 ->addViolation();
                         }
-                        break;
+                    break;
                     default:
                         throw new \LogicException(
                             sprintf('Cannot validate the "%s" data type', $column->dataType()->asString())

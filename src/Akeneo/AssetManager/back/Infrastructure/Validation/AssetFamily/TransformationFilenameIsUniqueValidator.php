@@ -72,7 +72,7 @@ class TransformationFilenameIsUniqueValidator extends ConstraintValidator
         return $source1['attribute'] === $source2['attribute']
             && $source1['channel'] === $source2['channel']
             && $source1['locale'] === $source2['locale']
-            ;
+        ;
     }
 
     /**

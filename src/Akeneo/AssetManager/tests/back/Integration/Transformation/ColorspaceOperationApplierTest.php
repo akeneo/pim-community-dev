@@ -31,7 +31,7 @@ class ColorspaceOperationApplierTest extends AbstractOperationApplierTest
     }
 
     /** @test */
-// TODO: fix CMYK=>RGB fails: colorspace is not changed.
+    // TODO: fix CMYK=>RGB fails: colorspace is not changed.
 //    public function it_can_convert_tiff_rgb_to_cmyk()
 //    {
 //        //ColorspaceOperationApplier
