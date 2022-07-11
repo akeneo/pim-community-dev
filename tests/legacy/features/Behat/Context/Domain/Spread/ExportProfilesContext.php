@@ -254,7 +254,7 @@ class ExportProfilesContext extends ImportExportContext
     public function exportDirectoryOfShouldContainTheFollowingFile($code, TableNode $table)
     {
         $jobInstance = $this->getFixturesContext()->getJobInstance($code);
-        $path = dirname($jobInstance->getRawParameters()['filePath']);
+        $path = dirname($jobInstance->getRawParameters()['storage']['file_path']);
 
         $this->checkExportDirectoryFiles(true, $table, $path);
     }
