@@ -56,7 +56,7 @@ final class RoleWithPermissions implements ArrayConverterInterface
                     } else {
                         $convertedItem[$property] = \explode(',', $data);
                     }
-                    break;
+                break;
                 default:
                     $convertedItem[$property] = (string) $data;
             }

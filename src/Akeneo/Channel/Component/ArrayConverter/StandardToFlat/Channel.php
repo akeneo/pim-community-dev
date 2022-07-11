@@ -29,8 +29,8 @@ class Channel extends AbstractSimpleArrayConverter implements ArrayConverterInte
                     return sprintf('%s:%s', trim($key), trim($data[$key]));
                 }, array_keys(array_filter($data)));
 
-                $convertedItem[$property] = implode(',', $formattedConvertedUnits);
-                break;
+            $convertedItem[$property] = implode(',', $formattedConvertedUnits);
+            break;
             case 'category_tree':
                 $convertedItem['tree'] = (string) $data;
                 break;
@@ -39,7 +39,7 @@ class Channel extends AbstractSimpleArrayConverter implements ArrayConverterInte
                     $labelKey = sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
                 }
-                break;
+            break;
             default:
                 $convertedItem[$property] = (string) $data;
         }

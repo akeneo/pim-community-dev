@@ -51,7 +51,7 @@ class ProcessorDecorator
                             $node
                         );
                         break;
-                    // replace all overrides in other nodes
+                        // replace all overrides in other nodes
                     default:
                         $source[self::ROOT][$nodeName] = array_replace_recursive(
                             $source[self::ROOT][$nodeName],

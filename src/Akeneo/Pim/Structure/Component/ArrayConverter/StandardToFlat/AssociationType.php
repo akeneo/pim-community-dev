@@ -25,7 +25,7 @@ class AssociationType extends AbstractSimpleArrayConverter implements ArrayConve
                     $labelKey = sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
                 }
-                break;
+            break;
             case 'is_two_way':
                 $convertedItem['is_two_way'] = (int) $data;
                 break;

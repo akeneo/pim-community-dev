@@ -25,7 +25,7 @@ class AttributeOption extends AbstractSimpleArrayConverter implements ArrayConve
                     $labelKey = sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
                 }
-                break;
+            break;
             default:
                 $convertedItem[$property] = (string) $data;
         }

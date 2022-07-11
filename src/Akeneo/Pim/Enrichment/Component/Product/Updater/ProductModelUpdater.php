@@ -112,7 +112,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                 if (isset($context['parent_associations'])) {
                     $data = $this->filterParentAssociations($data, $context['parent_associations']);
                 }
-                break;
+            break;
             case 'quantified_associations':
                 $this->quantifiedAssociationsStructureValidator->validate('quantified_associations', $data);
                 $data = $this->filterQuantifiedAssociationsFromAncestors($productModel, $data);

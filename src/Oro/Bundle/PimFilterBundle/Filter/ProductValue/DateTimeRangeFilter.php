@@ -55,10 +55,10 @@ class DateTimeRangeFilter extends AbstractDateFilter
                     $data['value']['start']->setTime(0, 0, 0);
                     $data['values']['start'] = $this->applyTimeZone($userTimeZone, $data['value']['start']);
                 }
-                if (isset($data['value']['end']) && $data['value']['end'] instanceof \DateTime) {
-                    $data['value']['end']->setTime(23, 59, 59);
-                    $data['values']['end'] = $this->applyTimeZone($userTimeZone, $data['value']['end']);
-                }
+            if (isset($data['value']['end']) && $data['value']['end'] instanceof \DateTime) {
+                $data['value']['end']->setTime(23, 59, 59);
+                $data['values']['end'] = $this->applyTimeZone($userTimeZone, $data['value']['end']);
+            }
         }
 
         return parent::parseData($data);

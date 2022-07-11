@@ -72,8 +72,8 @@ abstract class AbstractProperty implements PropertyInterface
                 if ($value instanceof \DateTime) {
                     $value = $value->format(\DateTime::ISO8601);
                 }
-                $result = (string)$value;
-                break;
+            $result = (string)$value;
+            break;
             case self::TYPE_STRING:
                 $result = (string)$value;
                 break;

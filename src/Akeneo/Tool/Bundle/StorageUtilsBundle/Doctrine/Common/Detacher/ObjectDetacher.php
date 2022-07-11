@@ -116,7 +116,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
                     foreach ($relatedEntities as $relatedEntity) {
                         $this->doDetachScheduled($relatedEntity, $visited);
                     }
-                    break;
+                break;
 
                 case (null !== $relatedEntities):
                     $this->doDetachScheduled($relatedEntities, $visited);

@@ -25,7 +25,7 @@ class AttributeGroup extends AbstractSimpleArrayConverter implements ArrayConver
                     $labelKey = sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
                 }
-                break;
+            break;
             case 'attributes':
                 $convertedItem[$property] = implode(',', $data);
                 break;

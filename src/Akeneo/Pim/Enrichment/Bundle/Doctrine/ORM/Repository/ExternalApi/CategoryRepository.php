@@ -128,7 +128,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                             $qb->andWhere($qb->expr()->eq($field, $parameter));
                             $qb->setParameter($parameter, $criterion['value']);
                         }
-                        break;
+                    break;
                     case 'IN':
                         $qb->andWhere($qb->expr()->in($field, $parameter));
                         $qb->setParameter($parameter, $criterion['value']);

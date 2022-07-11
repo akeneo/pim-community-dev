@@ -279,7 +279,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, CacheableSuppo
                 if (null !== $value) {
                     $ancestorsLabels['<all_channels>']['<all_locales>'] = $value->getData();
                 }
-                break;
+            break;
         }
 
         return $ancestorsLabels;

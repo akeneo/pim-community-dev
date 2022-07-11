@@ -131,7 +131,7 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
             $this->group,
             $this->label,
             $this->permissions
-            ] = unserialize($serialized);
+        ] = unserialize($serialized);
     }
 
     public function getOrder(): int

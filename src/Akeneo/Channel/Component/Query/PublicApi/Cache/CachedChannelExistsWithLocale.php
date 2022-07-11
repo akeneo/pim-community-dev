@@ -61,7 +61,7 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
         return isset($this->indexedChannelsWithLocales[$channelCode])
             ? in_array($localeCode, $this->indexedChannelsWithLocales[$channelCode]['localeCodes'])
             : false
-            ;
+        ;
     }
 
     /**

@@ -592,7 +592,7 @@ class ProductEditForm extends Form
                 if (preg_match('| ([\w ]+)$|', $actual) && !preg_match('| ([\w ]+)$|', $expected)) {
                     $actual = preg_replace('| [\w ]+$|', '', $actual);
                 }
-                return [$expected, $actual];
+            return [$expected, $actual];
             case 'multiSelect':
                 $actual = $this->getMultiSelectFieldValueLabels($subContainer);
                 $expected = $this->listToArray($expected);
@@ -606,11 +606,11 @@ class ProductEditForm extends Form
                 if ($expected == $actual) {
                     return [$expected, $actual];
                 }
-                $actual = $this->getSelectFieldValueLabel($subContainer);
-                if (preg_match('|^\[(.*)\]$|', $actual, $matches)) {
-                    $actual = $matches[1];
-                }
-                return [$expected, $actual];
+            $actual = $this->getSelectFieldValueLabel($subContainer);
+            if (preg_match('|^\[(.*)\]$|', $actual, $matches)) {
+                $actual = $matches[1];
+            }
+            return [$expected, $actual];
             case 'media':
                 return [$expected, $this->getMediaFieldValue($subContainer)];
             case 'switch':
@@ -622,8 +622,8 @@ class ProductEditForm extends Form
                     $label = sprintf('%s in %s', $label, $matches[1]);
                     $expected = preg_replace('| [A-Z]{3}$|', '', $expected);
                 }
-                $actual = $this->findField($label)->getValue();
-                return [$expected, $actual];
+            $actual = $this->findField($label)->getValue();
+            return [$expected, $actual];
             case 'text':
             case 'date':
             case 'number':

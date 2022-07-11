@@ -70,7 +70,7 @@ class AttributeValidationContext extends PimContext
                         } else {
                             Assert::assertEquals(explode(',', $value), $attribute->getAllowedExtensions());
                         }
-                        break;
+                    break;
                     case 'available_locales':
                         Assert::assertEquals(explode(',', $value), $attribute->getAvailableLocales()->toArray());
                         break;
@@ -80,21 +80,21 @@ class AttributeValidationContext extends PimContext
                         } else {
                             Assert::assertEquals($value, $attribute->getReferenceDataName());
                         }
-                        break;
+                    break;
                     case 'number_min':
                         if ('' === $value) {
                             Assert::assertNull($attribute->getNumberMin());
                         } else {
                             Assert::assertEquals((float) $value, (float) $attribute->getNumberMin());
                         }
-                        break;
+                    break;
                     case 'number_max':
                         if ('' === $value) {
                             Assert::assertNull($attribute->getNumberMax());
                         } else {
                             Assert::assertEquals((float) $value, (float) $attribute->getNumberMax());
                         }
-                        break;
+                    break;
                     case 'metric_family':
                         Assert::assertEquals($value, $attribute->getMetricFamily());
                         break;
@@ -121,13 +121,13 @@ class AttributeValidationContext extends PimContext
                         if (null !== $date) {
                             Assert::assertEquals($value, $date->format('Y-m-d'));
                         }
-                        break;
+                    break;
                     case 'date_max':
                         $date = $attribute->getDateMax();
                         if (null !== $date) {
                             Assert::assertEquals($value, $date->format('Y-m-d'));
                         }
-                        break;
+                    break;
                     case 'is_read_only':
                         Assert::assertEquals(($data['is_read_only'] == 1), $attribute->getProperty('is_read_only'));
                         break;

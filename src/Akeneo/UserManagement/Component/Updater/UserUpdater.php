@@ -193,15 +193,15 @@ class UserUpdater implements ObjectUpdaterInterface
                     $roles[] = $this->findRole($code);
                 }
 
-                $user->setRoles($roles);
-                break;
+            $user->setRoles($roles);
+            break;
             case 'groups':
                 $groups = [];
                 foreach ($data as $code) {
                     $groups[] = $this->findGroup($code);
                 }
-                $user->setGroups($groups);
-                break;
+            $user->setGroups($groups);
+            break;
             case 'phone':
                 $user->setPhone($data);
                 break;
@@ -219,19 +219,19 @@ class UserUpdater implements ObjectUpdaterInterface
                     $user->setProductGridFilters(explode(',', $data));
                     break;
                 }
-                if (is_array($data) && [] !== $data) {
-                    $user->setProductGridFilters($data);
-                    break;
-                }
-
-                $user->setProductGridFilters([]);
+            if (is_array($data) && [] !== $data) {
+                $user->setProductGridFilters($data);
                 break;
+            }
+
+            $user->setProductGridFilters([]);
+            break;
             case 'properties':
                 foreach ($data as $propertyName => $propertyValue) {
                     $user->addProperty($propertyName, $propertyValue);
                 }
 
-                break;
+            break;
             case 'profile':
                 $user->setProfile($data);
                 break;
@@ -243,16 +243,16 @@ class UserUpdater implements ObjectUpdaterInterface
                     return;
                 }
 
-                $matches = null;
-                // Example: default_product_grid_view
-                if (preg_match('/^default_(?P<alias>[a-z_]+)_view$/', $field, $matches)) {
-                    $alias = str_replace('_', '-', $matches['alias']);
-                    $user->setDefaultGridView($alias, $this->findDefaultGridView($alias, $data));
+            $matches = null;
+            // Example: default_product_grid_view
+            if (preg_match('/^default_(?P<alias>[a-z_]+)_view$/', $field, $matches)) {
+                $alias = str_replace('_', '-', $matches['alias']);
+                $user->setDefaultGridView($alias, $this->findDefaultGridView($alias, $data));
 
-                    return;
-                }
+                return;
+            }
 
-                throw UnknownPropertyException::unknownProperty($field);
+            throw UnknownPropertyException::unknownProperty($field);
         }
     }
 

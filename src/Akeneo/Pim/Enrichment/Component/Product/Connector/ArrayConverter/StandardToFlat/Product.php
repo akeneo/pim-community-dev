@@ -53,7 +53,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 if (null !== $data && '' !== $data) {
                     $convertedItem[$property] = (string) $data;
                 }
-                break;
+            break;
             case 'groups':
                 $convertedItem = $this->convertGroups($data, $convertedItem);
                 break;
@@ -61,12 +61,12 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 foreach ($data as $code => $attribute) {
                     $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($code, $attribute);
                 }
-                break;
+            break;
             case 'quality_scores':
                 if (is_array($data)) {
                     $convertedItem = $this->convertQualityScores($data, $convertedItem);
                 }
-                break;
+            break;
             case 'identifier':
             case 'created':
             case 'updated':

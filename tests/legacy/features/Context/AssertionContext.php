@@ -409,8 +409,8 @@ class AssertionContext extends PimContext
                 'Can not find change of the property "%s", found %s',
                 $expectedProperty,
                 join(', ', array_map(function ($change) {
-                    return sprintf('"%s"', $change[0]->getText());
-                }, $changes))
+                        return sprintf('"%s"', $change[0]->getText());
+                    }, $changes))
             ));
 
             if (array_key_exists('before', $data)) {

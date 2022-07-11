@@ -242,11 +242,11 @@ class PimRequirements
             case 'g':
             case 'gb':
                 $val *= 1024;
-            // no break
+                // no break
             case 'm':
             case 'mb':
                 $val *= 1024;
-            // no break
+                // no break
             case 'k':
             case 'kb':
                 $val *= 1024;

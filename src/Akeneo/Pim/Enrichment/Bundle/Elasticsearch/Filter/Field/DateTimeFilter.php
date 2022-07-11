@@ -162,19 +162,19 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                     );
                 }
 
-                $lastCompletedJobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
-                if (null === $lastCompletedJobExecution) {
-                    return $this;
-                }
+            $lastCompletedJobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
+            if (null === $lastCompletedJobExecution) {
+                return $this;
+            }
 
-                return $this->addFieldFilter(
-                    $field,
-                    Operators::GREATER_THAN,
-                    $lastCompletedJobExecution->getStartTime()->setTimezone(new \DateTimeZone('UTC')),
-                    $locale,
-                    $channel,
-                    $options
-                );
+            return $this->addFieldFilter(
+                $field,
+                Operators::GREATER_THAN,
+                $lastCompletedJobExecution->getStartTime()->setTimezone(new \DateTimeZone('UTC')),
+                $locale,
+                $channel,
+                $options
+            );
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
         }
@@ -221,38 +221,38 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                     throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                 }
 
-                if (2 !== count($value)) {
-                    throw InvalidPropertyTypeException::validArrayStructureExpected(
-                        $field,
-                        sprintf('should contain 2 strings with the format "%s"', "yyyy-mm-dd H:i:s"),
-                        static::class,
-                        $value
-                    );
-                }
+            if (2 !== count($value)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $field,
+                    sprintf('should contain 2 strings with the format "%s"', "yyyy-mm-dd H:i:s"),
+                    static::class,
+                    $value
+                );
+            }
 
-                foreach ($value as $singleValue) {
-                    FieldFilterHelper::checkDateTime(
-                        $field,
-                        $singleValue,
-                        static::DATETIME_FORMAT,
-                        'yyyy-mm-dd H:i:s',
-                        static::class
-                    );
-                }
+            foreach ($value as $singleValue) {
+                FieldFilterHelper::checkDateTime(
+                    $field,
+                    $singleValue,
+                    static::DATETIME_FORMAT,
+                    'yyyy-mm-dd H:i:s',
+                    static::class
+                );
+            }
 
-                break;
+            break;
             case Operators::SINCE_LAST_JOB:
                 if (!is_string($value)) {
                     throw InvalidPropertyTypeException::stringExpected($field, static::class, $value);
                 }
 
-                break;
+            break;
             case Operators::SINCE_LAST_N_DAYS:
                 if (!is_int($value)) {
                     throw InvalidPropertyTypeException::integerExpected($field, static::class, $value);
                 }
 
-                break;
+            break;
             case Operators::IS_EMPTY:
             case Operators::IS_NOT_EMPTY:
                 break;

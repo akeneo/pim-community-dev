@@ -23,7 +23,7 @@ class FamilyVariant extends AbstractSimpleArrayConverter implements ArrayConvert
                     $labelKey = sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
                 }
-                break;
+            break;
             case 'variant_attribute_sets':
                 foreach ($data as $normalizedAttributeSet) {
                     $axesKey = sprintf('variant-axes_%d', $normalizedAttributeSet['level']);
@@ -31,7 +31,7 @@ class FamilyVariant extends AbstractSimpleArrayConverter implements ArrayConvert
                     $convertedItem[$axesKey] = implode(',', $normalizedAttributeSet['axes']);
                     $convertedItem[$attributesKey] = implode(',', $normalizedAttributeSet['attributes']);
                 }
-                break;
+            break;
             default:
                 $convertedItem[$property] = (string) $data;
         }

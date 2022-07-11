@@ -211,26 +211,26 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                     throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                 }
 
-                if (2 !== count($value)) {
-                    throw InvalidPropertyTypeException::validArrayStructureExpected(
-                        $field,
-                        sprintf('should contain 2 strings with the format "%s"', static::HUMAN_DATETIME_FORMAT),
-                        static::class,
-                        $value
-                    );
-                }
+            if (2 !== count($value)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $field,
+                    sprintf('should contain 2 strings with the format "%s"', static::HUMAN_DATETIME_FORMAT),
+                    static::class,
+                    $value
+                );
+            }
 
-                foreach ($value as $singleValue) {
-                    FieldFilterHelper::checkDateTime(
-                        $field,
-                        $singleValue,
-                        static::DATETIME_FORMAT,
-                        static::HUMAN_DATETIME_FORMAT,
-                        static::class
-                    );
-                }
+            foreach ($value as $singleValue) {
+                FieldFilterHelper::checkDateTime(
+                    $field,
+                    $singleValue,
+                    static::DATETIME_FORMAT,
+                    static::HUMAN_DATETIME_FORMAT,
+                    static::class
+                );
+            }
 
-                break;
+            break;
             case Operators::IS_EMPTY:
             case Operators::IS_NOT_EMPTY:
                 break;

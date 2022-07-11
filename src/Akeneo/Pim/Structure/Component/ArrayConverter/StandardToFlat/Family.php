@@ -25,13 +25,13 @@ class Family extends AbstractSimpleArrayConverter implements ArrayConverterInter
                     $labelKey = sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
                 }
-                break;
+            break;
             case 'attribute_requirements':
                 foreach ($data as $scopeCode => $attributes) {
                     $requirementKey = sprintf('requirements-%s', $scopeCode);
                     $convertedItem[$requirementKey] = implode(',', $attributes);
                 }
-                break;
+            break;
             case 'attributes':
                 $convertedItem[$property] = implode(',', $data);
                 break;

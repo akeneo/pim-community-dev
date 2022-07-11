@@ -121,7 +121,7 @@ class MeasureConverter
                 if ($operand !== '0') {
                     $processedValue = bcdiv($processedValue, $operand, static::SCALE);
                 }
-                break;
+            break;
             case "mul":
                 $processedValue = bcmul($processedValue, $operand, static::SCALE);
                 break;
@@ -196,7 +196,7 @@ class MeasureConverter
                 if ($operand !== '0') {
                     $processedValue = bcdiv($processedValue, $operand, static::SCALE);
                 }
-                break;
+            break;
             case "add":
                 $processedValue = bcsub($processedValue, $operand, static::SCALE);
                 break;

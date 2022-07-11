@@ -36,7 +36,7 @@ class Attribute extends AbstractSimpleArrayConverter implements ArrayConverterIn
                     $labelKey = sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
                 }
-                break;
+            break;
             case 'options':
             case 'available_locales':
             case 'allowed_extensions':
@@ -48,14 +48,14 @@ class Attribute extends AbstractSimpleArrayConverter implements ArrayConverterIn
                     break;
                 }
 
-                $convertedItem[$property] = (true === $data) ? '1' : '0';
-                break;
+            $convertedItem[$property] = (true === $data) ? '1' : '0';
+            break;
             case 'guidelines':
                 foreach ($data as $localeCode => $label) {
                     $key = sprintf('guidelines-%s', $localeCode);
                     $convertedItem[$key] = $label;
                 }
-                break;
+            break;
             case 'table_configuration':
                 $convertedItem[$property] = \json_encode($data);
                 break;

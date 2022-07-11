@@ -198,7 +198,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                         $attribute->addGuidelines($localeCode, $localeGuidelines);
                     }
                 }
-                break;
+            break;
             case 'table_configuration':
                 $attribute->setRawTableConfiguration($data);
                 break;

@@ -71,8 +71,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                         ],
                     ];
                 }
-                $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
-                break;
+            $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
+            break;
 
             case Operators::ALL_COMPLETE:
                 $mustClauses = [];
@@ -89,8 +89,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                         ],
                     ];
                 }
-                $this->searchQueryBuilder->addFilter(['bool' => ['must' => $mustClauses]]);
-                break;
+            $this->searchQueryBuilder->addFilter(['bool' => ['must' => $mustClauses]]);
+            break;
 
             case Operators::AT_LEAST_INCOMPLETE:
                 $shouldClause = [];
@@ -107,8 +107,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                         ],
                     ];
                 }
-                $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClause]]);
-                break;
+            $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClause]]);
+            break;
 
             case Operators::ALL_INCOMPLETE:
                 $mustClauses = [];
@@ -125,8 +125,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                         ],
                     ];
                 }
-                $this->searchQueryBuilder->addFilter(['bool' => ['must' => $mustClauses]]);
-                break;
+            $this->searchQueryBuilder->addFilter(['bool' => ['must' => $mustClauses]]);
+            break;
 
             case Operators::EQUALS:
                 $shouldClauses = [];
@@ -142,8 +142,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                     $shouldClauses[] = $clause;
                 }
 
-                $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
-                break;
+            $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
+            break;
 
             case Operators::LOWER_THAN:
                 $shouldClauses = [];
@@ -160,8 +160,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
 
                     $shouldClauses[] = $clause;
                 }
-                $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
-                break;
+            $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
+            break;
 
             case Operators::GREATER_THAN:
                 $shouldClauses = [];
@@ -178,8 +178,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
 
                     $shouldClauses[] = $clause;
                 }
-                $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
-                break;
+            $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
+            break;
 
             case Operators::NOT_EQUAL:
                 $filterClauses = [];
@@ -198,13 +198,13 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                     ];
                     $this->searchQueryBuilder->addFilter($completenessExists);
                 }
-                $mustNotClause = [
-                    'bool' => [
-                        'filter' => $filterClauses,
-                    ],
-                ];
-                $this->searchQueryBuilder->addMustNot($mustNotClause);
-                break;
+            $mustNotClause = [
+                'bool' => [
+                    'filter' => $filterClauses,
+                ],
+            ];
+            $this->searchQueryBuilder->addMustNot($mustNotClause);
+            break;
 
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);

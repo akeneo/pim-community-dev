@@ -25,7 +25,7 @@ class Category extends AbstractSimpleArrayConverter implements ArrayConverterInt
                     $labelKey = sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
                 }
-                break;
+            break;
             default:
                 $convertedItem[$property] = (string) $data;
         }

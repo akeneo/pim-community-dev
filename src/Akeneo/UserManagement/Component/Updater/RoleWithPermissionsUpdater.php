@@ -42,8 +42,8 @@ final class RoleWithPermissionsUpdater implements ObjectUpdaterInterface
                     if (!\is_array($value)) {
                         throw InvalidPropertyTypeException::arrayExpected($property, self::class, $value);
                     }
-                    $this->setPermissions($roleWithPermissions, $value);
-                    break;
+                $this->setPermissions($roleWithPermissions, $value);
+                break;
                 default:
                     throw UnknownPropertyException::unknownProperty($property);
             }

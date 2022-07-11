@@ -50,7 +50,7 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
                 foreach ($data as $code => $attribute) {
                     $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($code, $attribute);
                 }
-                break;
+            break;
             case 'created':
             case 'updated':
                 break;

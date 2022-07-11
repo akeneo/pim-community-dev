@@ -220,10 +220,10 @@ class AclManager extends AbstractAclManager
                                 $ace->getStrategy()
                             );
                         }
-                        if ($hasChanges) {
-                            $this->aclProvider->updateAcl($acl);
-                        }
-                        break;
+                    if ($hasChanges) {
+                        $this->aclProvider->updateAcl($acl);
+                    }
+                    break;
                     case BatchItem::STATE_UPDATE:
                         $this->aclProvider->updateAcl($item->getAcl());
                         break;

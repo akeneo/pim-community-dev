@@ -110,9 +110,9 @@ class FamilyVariant implements ArrayConverterInterface
                         $convertedItem['variant_attribute_sets'][$level - 1]['level'] = $level;
                     }
 
-                    $convertedItem['variant_attribute_sets'][$level - 1]['axes'] = explode(',', $data);
+                $convertedItem['variant_attribute_sets'][$level - 1]['axes'] = explode(',', $data);
 
-                    break;
+                break;
                 case (false !== strpos($field, 'variant-attributes_')):
                     $matches = null;
                     preg_match('/^variant-attributes_(?P<level>.*)$/', $field, $matches);
@@ -124,12 +124,12 @@ class FamilyVariant implements ArrayConverterInterface
                         $convertedItem['variant_attribute_sets'][$level - 1]['level'] = $level;
                     }
 
-                    $convertedItem['variant_attribute_sets'][$level - 1]['attributes'] = explode(
-                        ',',
-                        $data
-                    );
+                $convertedItem['variant_attribute_sets'][$level - 1]['attributes'] = explode(
+                    ',',
+                    $data
+                );
 
-                    break;
+                break;
             }
         }
 

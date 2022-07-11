@@ -25,7 +25,7 @@ class Group extends AbstractSimpleArrayConverter implements ArrayConverterInterf
                     $labelKey = sprintf('label-%s', $localeCode);
                     $convertedItem[$labelKey] = $label;
                 }
-                break;
+            break;
             default:
                 $convertedItem[$property] = (string) $data;
         }

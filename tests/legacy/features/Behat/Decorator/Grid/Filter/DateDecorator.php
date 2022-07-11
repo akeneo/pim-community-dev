@@ -51,10 +51,10 @@ class DateDecorator extends ElementDecorator
                 if ($inputStart->isVisible()) {
                     $inputStart->setValue('');
                 }
-                if ($inputEnd->isVisible()) {
-                    $inputEnd->setValue('');
-                }
-                break;
+            if ($inputEnd->isVisible()) {
+                $inputEnd->setValue('');
+            }
+            break;
         }
 
         // We submit the filter

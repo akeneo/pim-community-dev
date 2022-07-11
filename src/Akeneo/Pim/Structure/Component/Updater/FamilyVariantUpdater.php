@@ -88,26 +88,26 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                     throw InvalidPropertyTypeException::stringExpected($field, static::class, $value);
                 }
 
-                $familyVariant->setCode($value);
-                break;
+            $familyVariant->setCode($value);
+            break;
             case 'labels':
                 if (!is_array($value)) {
                     throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                 }
 
-                foreach ($value as $label) {
-                    if (null !== $label && !is_scalar($label)) {
-                        throw InvalidPropertyTypeException::validArrayStructureExpected(
-                            $field,
-                            sprintf('one of the %s is not a scalar', $field),
-                            static::class,
-                            $label
-                        );
-                    }
+            foreach ($value as $label) {
+                if (null !== $label && !is_scalar($label)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        $field,
+                        sprintf('one of the %s is not a scalar', $field),
+                        static::class,
+                        $label
+                    );
                 }
+            }
 
-                $this->translationUpdater->update($familyVariant, $value);
-                break;
+            $this->translationUpdater->update($familyVariant, $value);
+            break;
             case 'family':
                 if (null === $family = $this->familyRepository->findOneByIdentifier($value)) {
                     throw InvalidPropertyException::validEntityCodeExpected(
@@ -119,8 +119,8 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                     );
                 }
 
-                $familyVariant->setFamily($family);
-                break;
+            $familyVariant->setFamily($family);
+            break;
             case 'variant_attribute_sets':
                 $isNew = null === $familyVariant->getId();
 
@@ -128,73 +128,73 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                     throw InvalidPropertyTypeException::arrayOfObjectsExpected($field, static::class, $value);
                 }
 
-                if (!$isNew &&
-                    $familyVariant->getNumberOfLevel() < $this->getNumberOfLevel($value)
-                ) {
-                    throw new ImmutablePropertyException(
-                        'variant_attribute_sets',
-                        $this->getNumberOfLevel($value),
+            if (!$isNew &&
+                $familyVariant->getNumberOfLevel() < $this->getNumberOfLevel($value)
+            ) {
+                throw new ImmutablePropertyException(
+                    'variant_attribute_sets',
+                    $this->getNumberOfLevel($value),
+                    static::class,
+                    'The number of variant attribute sets cannot be changed.'
+                );
+            }
+
+            foreach ($value as $attributeSetData) {
+                if (!is_array($attributeSetData)) {
+                    throw InvalidPropertyTypeException::arrayOfObjectsExpected(
+                        $field,
                         static::class,
-                        'The number of variant attribute sets cannot be changed.'
+                        $attributeSetData
+                    );
+                }
+                if (!isset($attributeSetData['level'])) {
+                    continue;
+                }
+
+                if (isset($attributeSetData['axes']) && !is_array($attributeSetData['axes'])) {
+                    throw InvalidPropertyTypeException::arrayExpected(
+                        sprintf('%s" in the property "%s', 'axes', $field),
+                        static::class,
+                        $attributeSetData['axes']
                     );
                 }
 
-                foreach ($value as $attributeSetData) {
-                    if (!is_array($attributeSetData)) {
-                        throw InvalidPropertyTypeException::arrayOfObjectsExpected(
-                            $field,
-                            static::class,
-                            $attributeSetData
-                        );
-                    }
-                    if (!isset($attributeSetData['level'])) {
-                        continue;
-                    }
-
-                    if (isset($attributeSetData['axes']) && !is_array($attributeSetData['axes'])) {
-                        throw InvalidPropertyTypeException::arrayExpected(
-                            sprintf('%s" in the property "%s', 'axes', $field),
-                            static::class,
-                            $attributeSetData['axes']
-                        );
-                    }
-
-                    if (isset($attributeSetData['attributes']) && !is_array($attributeSetData['attributes'])) {
-                        throw InvalidPropertyTypeException::arrayExpected(
-                            sprintf('%s" in the property "%s', 'attributes', $field),
-                            static::class,
-                            $attributeSetData['attributes']
-                        );
-                    }
-
-                    if (!is_integer($attributeSetData['level'])) {
-                        throw InvalidPropertyTypeException::integerExpected(
-                            sprintf('%s" in the property "%s', 'level', $field),
-                            static::class,
-                            $attributeSetData['level']
-                        );
-                    }
-
-                    if (null === $attributeSet = $familyVariant->getVariantAttributeSet($attributeSetData['level'])) {
-                        $attributeSet = $this->attributeSetFactory->create();
-                        $attributeSet->setLevel($attributeSetData['level']);
-
-                        $familyVariant->addVariantAttributeSet($attributeSet);
-                    }
-
-                    if (isset($attributeSetData['axes'])) {
-                        $attributeSet->setAxes(
-                            $this->getAttributes($attributeSetData['axes'], $attributeSetData['level'])
-                        );
-                    }
-
-                    if (isset($attributeSetData['attributes'])) {
-                        $attributeSet->setAttributes(
-                            $this->getAttributes($attributeSetData['attributes'], $attributeSetData['level'])
-                        );
-                    }
+                if (isset($attributeSetData['attributes']) && !is_array($attributeSetData['attributes'])) {
+                    throw InvalidPropertyTypeException::arrayExpected(
+                        sprintf('%s" in the property "%s', 'attributes', $field),
+                        static::class,
+                        $attributeSetData['attributes']
+                    );
                 }
-                break;
+
+                if (!is_integer($attributeSetData['level'])) {
+                    throw InvalidPropertyTypeException::integerExpected(
+                        sprintf('%s" in the property "%s', 'level', $field),
+                        static::class,
+                        $attributeSetData['level']
+                    );
+                }
+
+                if (null === $attributeSet = $familyVariant->getVariantAttributeSet($attributeSetData['level'])) {
+                    $attributeSet = $this->attributeSetFactory->create();
+                    $attributeSet->setLevel($attributeSetData['level']);
+
+                    $familyVariant->addVariantAttributeSet($attributeSet);
+                }
+
+                if (isset($attributeSetData['axes'])) {
+                    $attributeSet->setAxes(
+                        $this->getAttributes($attributeSetData['axes'], $attributeSetData['level'])
+                    );
+                }
+
+                if (isset($attributeSetData['attributes'])) {
+                    $attributeSet->setAttributes(
+                        $this->getAttributes($attributeSetData['attributes'], $attributeSetData['level'])
+                    );
+                }
+            }
+            break;
             default:
                 throw UnknownPropertyException::unknownProperty($field);
         }

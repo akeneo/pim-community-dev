@@ -186,6 +186,6 @@ class Acl implements \Serializable
             $this->group,
             $this->label,
             $this->order,
-            ) = unserialize($serialized);
+        ) = unserialize($serialized);
     }
 }

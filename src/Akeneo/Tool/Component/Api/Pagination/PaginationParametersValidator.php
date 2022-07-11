@@ -40,7 +40,7 @@ class PaginationParametersValidator implements ParameterValidatorInterface
                 } else {
                     throw new PaginationParametersException('Pagination type is not supported.');
                 }
-                break;
+            break;
             case PaginationTypes::OFFSET:
                 $this->validateLimit($parameters);
                 $this->validatePage($parameters);

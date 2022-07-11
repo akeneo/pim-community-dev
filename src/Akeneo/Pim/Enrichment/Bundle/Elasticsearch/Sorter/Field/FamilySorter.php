@@ -62,15 +62,15 @@ class FamilySorter extends BaseFieldSorter
                     $this->searchQueryBuilder->addSort($sortFamilyLabelClause);
                 }
 
-                $sortFamilyCodeClause = [
-                    'family.code' => [
-                        'order'   => 'ASC',
-                        'missing' => '_last',
-                    ],
-                ];
-                $this->searchQueryBuilder->addSort($sortFamilyCodeClause);
+            $sortFamilyCodeClause = [
+                'family.code' => [
+                    'order'   => 'ASC',
+                    'missing' => '_last',
+                ],
+            ];
+            $this->searchQueryBuilder->addSort($sortFamilyCodeClause);
 
-                break;
+            break;
             case Directions::DESCENDING:
                 if (null !== $familyLabelPath) {
                     $sortFamilyLabelClause = [
@@ -83,16 +83,16 @@ class FamilySorter extends BaseFieldSorter
                     $this->searchQueryBuilder->addSort($sortFamilyLabelClause);
                 }
 
-                $sortFamilyCodeClause = [
-                    'family.code' => [
-                        'order'   => 'DESC',
-                        'missing' => '_last',
-                    ],
-                ];
+            $sortFamilyCodeClause = [
+                'family.code' => [
+                    'order'   => 'DESC',
+                    'missing' => '_last',
+                ],
+            ];
 
-                $this->searchQueryBuilder->addSort($sortFamilyCodeClause);
+            $this->searchQueryBuilder->addSort($sortFamilyCodeClause);
 
-                break;
+            break;
             default:
                 throw InvalidDirectionException::notSupported($direction, static::class);
         }

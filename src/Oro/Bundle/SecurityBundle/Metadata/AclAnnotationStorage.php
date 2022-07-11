@@ -253,7 +253,7 @@ class AclAnnotationStorage implements \Serializable
         list(
             $data,
             $this->classes
-            ) = unserialize($serialized);
+        ) = unserialize($serialized);
 
         $this->annotations = [];
         foreach ($data as $d) {
