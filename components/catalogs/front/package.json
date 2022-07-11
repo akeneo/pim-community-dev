@@ -23,7 +23,8 @@
     "eslint": "eslint --config .eslintrc.json src/**/*.{ts,tsx}",
     "prettier": "prettier --config .prettierrc.json src/**/*.{ts,tsx}",
     "jest": "jest --config jest.config.js",
-    "test:unit": "jest --config jest.unit.js",
+    "unit": "jest --config jest.unit.js",
+    "integration": "jest --config jest.integration.js",
     "depcruise": "depcruise -c dependency-cruiser.js src"
   },
   "eslintConfig": {
