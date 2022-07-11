@@ -46,7 +46,7 @@ commands:
                       echo ${GCLOUD_SERVICE_KEY_PIM_SAAS_DEV} > ${HOME}/gcloud-service-key.json
                       echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
                       export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
-                      gcloud auth configure-docker --quiet
+                      gcloud auth configure-docker ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev --quiet
 
     restore_persisted_env_vars:
         description: "Restore env vars that have been persisted by the previous job."
