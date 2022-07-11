@@ -88,42 +88,42 @@ class ColumnFilter implements ColumnTypeFilter
                         ],
                     ];
                 }
-            $searchQueryBuilder->addFilter($filterClause);
+                $searchQueryBuilder->addFilter($filterClause);
 
-            $clause = $this->getChannelAndLocaleFilters($attributeCode, $locale, $channel);
-            $clause['nested']['query']['bool']['filter'][] = [
-                'term' => [
-                    \sprintf('%s.column', $attributePath) => $column->code()->asString(),
-                ],
-            ];
-            if (null === $rowCode && !$isFirstColumn) {
-                // Check we don't have the is_column_complete equals true. Meaning either there is no value in the column
-                // or one or several values are missing.
+                $clause = $this->getChannelAndLocaleFilters($attributeCode, $locale, $channel);
                 $clause['nested']['query']['bool']['filter'][] = [
                     'term' => [
-                        \sprintf('%s.is_column_complete', $attributePath) => true,
+                        \sprintf('%s.column', $attributePath) => $column->code()->asString(),
                     ],
                 ];
-                $searchQueryBuilder->addMustNot($clause);
-            } elseif (null === $rowCode) {
-                // Weird case, as the first column is always complete.
-                // We just have to check that the table is not empty.
-                $clause['nested']['query']['bool']['filter'][] = [
-                    'exists' => [
-                        'field' => \sprintf('%s.row', $attributePath),
-                    ],
-                ];
-                $searchQueryBuilder->addMustNot($clause);
-            } else {
-                // We have a row code and a column code. We have to check that the cell defined by the column and the row is empty.
-                $clause['nested']['query']['bool']['filter'][] = [
-                    'term' => [
-                        \sprintf('%s.row', $attributePath) => $rowCode,
-                    ],
-                ];
-                $searchQueryBuilder->addMustNot($clause);
-            }
-            break;
+                if (null === $rowCode && !$isFirstColumn) {
+                    // Check we don't have the is_column_complete equals true. Meaning either there is no value in the column
+                    // or one or several values are missing.
+                    $clause['nested']['query']['bool']['filter'][] = [
+                        'term' => [
+                            \sprintf('%s.is_column_complete', $attributePath) => true,
+                        ],
+                    ];
+                    $searchQueryBuilder->addMustNot($clause);
+                } elseif (null === $rowCode) {
+                    // Weird case, as the first column is always complete.
+                    // We just have to check that the table is not empty.
+                    $clause['nested']['query']['bool']['filter'][] = [
+                        'exists' => [
+                            'field' => \sprintf('%s.row', $attributePath),
+                        ],
+                    ];
+                    $searchQueryBuilder->addMustNot($clause);
+                } else {
+                    // We have a row code and a column code. We have to check that the cell defined by the column and the row is empty.
+                    $clause['nested']['query']['bool']['filter'][] = [
+                        'term' => [
+                            \sprintf('%s.row', $attributePath) => $rowCode,
+                        ],
+                    ];
+                    $searchQueryBuilder->addMustNot($clause);
+                }
+                break;
             case Operators::EQUALS:
                 $this->assertValueIsScalar($attributeCode, $value);
                 $clause = $this->getColumnRowChannelAndLocaleFilters($attributeCode, $column, $rowCode, $locale, $channel);
@@ -243,14 +243,14 @@ class ColumnFilter implements ColumnTypeFilter
                     $searchQueryBuilder->addFilter($clause);
                 }
 
-            $clause = $this->getColumnRowChannelAndLocaleFilters($attributeCode, $column, $rowCode, $locale, $channel);
-            $clause['nested']['query']['bool']['filter'][] = [
-                'terms' => [
-                    \sprintf('%s.value-%s', $attributePath, $column->dataType()->asString()) => $value,
-                ],
-            ];
-            $searchQueryBuilder->addMustNot($clause);
-            break;
+                $clause = $this->getColumnRowChannelAndLocaleFilters($attributeCode, $column, $rowCode, $locale, $channel);
+                $clause['nested']['query']['bool']['filter'][] = [
+                    'terms' => [
+                        \sprintf('%s.value-%s', $attributePath, $column->dataType()->asString()) => $value,
+                    ],
+                ];
+                $searchQueryBuilder->addMustNot($clause);
+                break;
             case Operators::NOT_EQUAL:
                 $this->assertValueIsScalar($attributeCode, $value);
                 $filterClause = $this->getColumnRowChannelAndLocaleFilters($attributeCode, $column, $rowCode, $locale, $channel);

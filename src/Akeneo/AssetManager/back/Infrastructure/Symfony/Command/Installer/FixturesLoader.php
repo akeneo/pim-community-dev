@@ -335,9 +335,9 @@ class FixturesLoader
                 if (null !== $this->namingConvention) {
                     $assetFamily->updateNamingConvention($this->namingConvention);
                 }
-            $this->assetFamilyRepository->create($assetFamily);
+                $this->assetFamilyRepository->create($assetFamily);
 
-            return $assetFamily;
+                return $assetFamily;
         }
     }
 

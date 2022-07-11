@@ -91,8 +91,8 @@ class AttributeGroupAccessUpdater implements ObjectUpdaterInterface
                         $data
                     );
                 }
-            $groupAccess->setAttributeGroup($attributeGroup);
-            break;
+                $groupAccess->setAttributeGroup($attributeGroup);
+                break;
             case 'user_group':
                 $group = $this->userGroupRepo->findOneByIdentifier($data);
                 if (null === $group) {
@@ -104,8 +104,8 @@ class AttributeGroupAccessUpdater implements ObjectUpdaterInterface
                         $data
                     );
                 }
-            $groupAccess->setUserGroup($group);
-            break;
+                $groupAccess->setUserGroup($group);
+                break;
             case 'view_attributes':
                 $groupAccess->setViewAttributes($data);
                 break;
@@ -113,8 +113,8 @@ class AttributeGroupAccessUpdater implements ObjectUpdaterInterface
                 if (true === $data) {
                     $groupAccess->setViewAttributes($data);
                 }
-            $groupAccess->setEditAttributes($data);
-            break;
+                $groupAccess->setEditAttributes($data);
+                break;
         }
     }
 }
