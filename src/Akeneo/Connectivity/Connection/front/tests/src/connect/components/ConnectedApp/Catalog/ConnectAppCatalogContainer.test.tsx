@@ -1,34 +1,21 @@
-import React, {forwardRef, PropsWithRef, useImperativeHandle} from 'react';
+import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {act, screen} from '@testing-library/react';
 import {renderWithProviders} from '../../../../../test-utils';
 import {ConnectedAppCatalogContainer} from '@src/connect/components/ConnectedApp/Catalog/ConnectedAppCatalogContainer';
 import userEvent from '@testing-library/user-event';
+import {useCatalogForm} from '@akeneo-pim-community/catalogs';
+import {mocked} from 'ts-jest/utils';
 
 beforeEach(() => {
     jest.clearAllMocks();
 });
 
-const CatalogEditRefSave = jest.fn();
-type CatalogEditRef = {
-    save: () => void;
-} | null;
-type CatalogEditProps = {
-    id: string;
-    onChange: (isDirty: boolean) => void;
-};
 jest.mock('@akeneo-pim-community/catalogs', () => ({
-    CatalogEdit: forwardRef<CatalogEditRef, PropsWithRef<CatalogEditProps>>(({id, onChange}, ref) => {
-        useImperativeHandle(ref, () => ({
-            save: CatalogEditRefSave,
-        }));
-
-        return (
-            <div data-testid='edit-catalog' onClick={() => onChange(true)}>
-                [Catalog Edit]
-            </div>
-        );
-    }),
+    CatalogEdit: () => {
+        return <div>[Catalog Edit]</div>;
+    },
+    useCatalogForm: jest.fn(() => [{}, jest.fn(), false]),
 }));
 
 test('The catalog container renders', () => {
@@ -58,13 +45,25 @@ test('The catalog container renders', () => {
 
     renderWithProviders(<ConnectedAppCatalogContainer connectedApp={connectedApp} catalog={catalog} />);
 
-    expect(screen.queryByText('App A')).toBeInTheDocument();
-    expect(screen.queryAllByText('Store FR')).toHaveLength(2);
-    expect(screen.queryByText('[Catalog Edit]')).toBeInTheDocument();
+    expect(screen.getByText('App A')).toBeInTheDocument();
+    expect(screen.getAllByText('Store FR')).toHaveLength(2);
+    expect(screen.getByText('[Catalog Edit]')).toBeInTheDocument();
     expect(screen.queryByText('pim_common.entity_updated')).not.toBeInTheDocument();
 });
 
-test('The save button click triggers ref save call', () => {
+test('The save button click triggers save', () => {
+    const save = jest.fn();
+
+    mocked(useCatalogForm).mockImplementation(() => [
+        {
+            values: {},
+            dispatch: jest.fn(),
+            errors: {},
+        },
+        save,
+        true,
+    ]);
+
     const connectedApp = {
         id: '12345',
         name: 'App A',
@@ -91,15 +90,7 @@ test('The save button click triggers ref save call', () => {
 
     renderWithProviders(<ConnectedAppCatalogContainer connectedApp={connectedApp} catalog={catalog} />);
 
-    act(() => {
-        userEvent.click(screen.getByTestId('edit-catalog'));
-    });
+    act(() => userEvent.click(screen.getByText('pim_common.save')));
 
-    expect(screen.queryByText('pim_common.entity_updated')).toBeInTheDocument();
-
-    act(() => {
-        userEvent.click(screen.getByText('pim_common.save'));
-    });
-
-    expect(CatalogEditRefSave).toHaveBeenCalled();
+    expect(save).toHaveBeenCalled();
 });

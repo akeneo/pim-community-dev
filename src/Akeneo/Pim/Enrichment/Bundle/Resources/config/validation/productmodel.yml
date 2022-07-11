@@ -17,6 +17,10 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
             - Regex:
                 pattern: '/^(?!\s)[^,;]+(?<!\s)$/'
                 message: 'regex.comma_or_semicolon_or_surrounding_space.message'
+            - Regex:
+                pattern: '/[\r\n]/'
+                message: 'regex.line_break.message'
+                match: false
             - Length:
                 max: 255
         familyVariant:

@@ -164,11 +164,6 @@ class DatabaseCommand extends Command
             InstallerEvents::POST_DB_CREATE
         );
 
-        // TODO: Should be in an event subscriber
-        if (!$input->getOption('doNotDropDatabase')) {
-            $this->createNotMappedTables($output);
-        }
-
         $this->setLatestKnownMigration($input);
 
         if (false === $input->getOption('withoutFixtures')) {
@@ -208,54 +203,6 @@ class DatabaseCommand extends Command
         foreach ($clients as $client) {
             $client->resetIndex();
         }
-    }
-
-    protected function createNotMappedTables(OutputInterface $output)
-    {
-        $output->writeln('<info>Create session table</info>');
-        $sessionTableSql = "CREATE TABLE pim_session (
-                `sess_id` VARBINARY(128) NOT NULL PRIMARY KEY,
-                `sess_data` BLOB NOT NULL,
-                `sess_time` INTEGER UNSIGNED NOT NULL,
-                `sess_lifetime` INTEGER UNSIGNED NOT NULL
-            ) COLLATE utf8mb4_bin, ENGINE = InnoDB;";
-        $this->connection->exec($sessionTableSql);
-
-        $output->writeln('<info>Create configuration table</info>');
-        $configTableSql = "CREATE TABLE pim_configuration (
-                `code` VARCHAR(128) NOT NULL PRIMARY KEY,
-                `values` JSON NOT NULL
-            ) COLLATE utf8mb4_unicode_ci, ENGINE = InnoDB;";
-        $this->connection->exec($configTableSql);
-
-        $output->writeln('<info>Create messenger table</info>');
-        $messengerTableSql = "CREATE TABLE IF NOT EXISTS messenger_messages (
-                `id` bigint(20) NOT NULL AUTO_INCREMENT,
-                `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-                `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-                `queue_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime)',
-                `available_at` datetime NOT NULL COMMENT '(DC2Type:datetime)',
-                `delivered_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime)',
-                PRIMARY KEY (`id`),
-                KEY `IDX_75EA56E0FB7336F0` (`queue_name`),
-                KEY `IDX_75EA56E0E3BD61CE` (`available_at`),
-                KEY `IDX_75EA56E016BA31DB` (`delivered_at`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;";
-        $this->connection->exec($messengerTableSql);
-
-        $output->writeln('<info>Create one time task table</info>');
-        $oneTimeTaskTableSql = <<<SQL
-            CREATE TABLE IF NOT EXISTS pim_one_time_task (
-                `code` VARCHAR(100) PRIMARY KEY,
-                `status` VARCHAR(100) NOT NULL,
-                `start_time` DATETIME,
-                `end_time` DATETIME,
-                `values` JSON NOT NULL
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-        SQL;
-
-        $this->connection->exec($oneTimeTaskTableSql);
     }
 
     protected function loadFixturesStep(InputInterface $input, OutputInterface $output): DatabaseCommand

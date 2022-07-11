@@ -1,39 +1,44 @@
-import React, {FC, PropsWithChildren, useRef, useState} from 'react';
+import React, {FC, PropsWithChildren} from 'react';
 import {useParams} from 'react-router';
-import {CatalogEdit, CatalogEditRef} from './components/CatalogEdit';
+import {CatalogEdit, useCatalogForm} from './components/CatalogEdit';
 import {Button} from 'akeneo-design-system';
 import styled from 'styled-components';
 
-const SaveButton = styled(Button)`
+const TopRightContainer = styled.div`
     position: absolute;
     top: 40px;
     right: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+`;
+
+const DirtyWarning = styled.div`
+    font-style: italic;
+    color: #11324d;
+    border-bottom: 1px solid #f8b441;
+    margin: 8px 0 0;
 `;
 
 type Props = {};
 
 const FakeCatalogEditContainer: FC<PropsWithChildren<Props>> = () => {
     const {id} = useParams<{id: string}>();
-    const catalogEditRef = useRef<CatalogEditRef>(null);
-    const [isDirty, setIsDirty] = useState<boolean>(false);
+    const [form, save, isDirty] = useCatalogForm(id);
 
-    const handleChange = (isDirty: boolean) => {
-        setIsDirty(isDirty);
-    };
+    if (undefined === form) {
+        return null;
+    }
 
     return (
         <>
-            <SaveButton
-                level='primary'
-                onClick={() => {
-                    catalogEditRef.current && catalogEditRef.current.save();
-                }}
-                disabled={!isDirty}
-                className={'AknButton'}
-            >
-                Save
-            </SaveButton>
-            <CatalogEdit id={id} onChange={handleChange} ref={catalogEditRef} />
+            <TopRightContainer>
+                <Button level='primary' onClick={save} disabled={!isDirty} className={'AknButton'}>
+                    Save
+                </Button>
+                {isDirty && <DirtyWarning>⚠️ There are unsaved changes.</DirtyWarning>}
+            </TopRightContainer>
+            <CatalogEdit form={form} />
         </>
     );
 };

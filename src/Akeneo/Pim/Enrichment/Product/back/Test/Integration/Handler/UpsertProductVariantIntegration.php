@@ -26,7 +26,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 
         $this->loadEnrichmentProductFunctionalFixtures();
 
-        $this->messageBus = $this->get('pim_enrich.product.message_bus');
+        $this->commandMessageBus = $this->get('pim_enrich.product.message_bus');
         $this->productRepository = $this->get('pim_catalog.repository.product');
     }
 
@@ -48,7 +48,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
                 new SetSimpleSelectValue('main_color', null, null, 'green'),
             ]
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
 
@@ -57,7 +57,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
             productIdentifier: 'variant_product',
             parentUserIntent: new ChangeParent('root')
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
 
         $product = $this->productRepository->findOneByIdentifier('variant_product');
@@ -69,7 +69,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
             productIdentifier: 'variant_product',
             parentUserIntent: new ChangeParent('root2')
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
 
         $product = $this->productRepository->findOneByIdentifier('variant_product');
@@ -81,7 +81,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
             productIdentifier: 'variant_product',
             parentUserIntent: new ConvertToSimpleProduct()
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
 
         $product = $this->productRepository->findOneByIdentifier('variant_product');
@@ -122,7 +122,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
                 new SetSimpleSelectValue('main_color', null, null, 'green'),
             ]
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
 
@@ -134,14 +134,14 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('New parent "root2" of variant product "variant_product" must have the same family variant "color_variant_accessories" than the previous parent');
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
             parentUserIntent: new ConvertToSimpleProduct()
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
 
         $product = $this->productRepository->findOneByIdentifier('variant_product');
@@ -153,7 +153,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
             productIdentifier: 'variant_product',
             parentUserIntent: new ChangeParent('root2')
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
 
         $product = $this->productRepository->findOneByIdentifier('variant_product');
@@ -173,6 +173,6 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('Property "parent" expects a valid parent code. The parent product model does not exist, "unknown" given.');
 
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
     }
 }

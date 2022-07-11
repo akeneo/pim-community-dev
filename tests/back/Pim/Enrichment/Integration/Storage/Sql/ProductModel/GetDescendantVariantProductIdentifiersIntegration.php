@@ -6,6 +6,11 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -25,6 +30,18 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
 
     public function test_that_it_gets_descendant_identifiers_of_sub_product_models()
     {
+        $attributeOption = $this->get('pim_catalog.factory.attribute_option')->create();
+        $this->get('pim_catalog.updater.attribute_option')->update($attributeOption, [
+            'code' => 'optionC',
+            'attribute' => 'a_simple_select',
+            'labels' => ['en_US' => 'C option'],
+        ]);
+        $violations = $this->get('validator')->validate($attributeOption);
+        if (count($violations) > 0) {
+            throw new \InvalidArgumentException((string)$violations);
+        }
+        $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
+
         $this->createFamilyVariant(
             [
                 'code' => 'shirt_size',
@@ -34,10 +51,10 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
                 ],
             ]
         );
-        $shirtProductModel = $this->createProductModel(['code' => 'a_shirt', 'family_variant' => 'shirt_size']);
-        $this->createProduct('a_small_shirt', 'clothing_size_color', $shirtProductModel);
-        $this->createProduct('a_medium_shirt', 'clothing_size_color', $shirtProductModel);
-        $this->createProduct('a_large_shirt', 'clothing_size_color', $shirtProductModel);
+        $this->createProductModel(['code' => 'a_shirt', 'family_variant' => 'shirt_size']);
+        $this->createProduct('a_small_shirt', 'familyA', 'a_shirt', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')]);
+        $this->createProduct('a_medium_shirt', 'familyA', 'a_shirt', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionB')]);
+        $this->createProduct('a_large_shirt', 'familyA', 'a_shirt', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionC')]);
 
         $this->createFamilyVariant(
             [
@@ -48,10 +65,10 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
                 ],
             ]
         );
-        $shoeProductModel = $this->createProductModel(['code' => 'a_shoe', 'family_variant' => 'shoe_size']);
-        $this->createProduct('a_small_shoe', 'clothing_size_color', $shoeProductModel);
-        $this->createProduct('a_medium_shoe', 'clothing_size_color', $shoeProductModel);
-        $this->createProduct('a_large_shoe', 'clothing_size_color', $shoeProductModel);
+        $this->createProductModel(['code' => 'a_shoe', 'family_variant' => 'shoe_size']);
+        $this->createProduct('a_small_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')]);
+        $this->createProduct('a_medium_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionB')]);
+        $this->createProduct('a_large_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionC')]);
 
         Assert::assertEqualsCanonicalizing(
             ['a_small_shirt', 'a_medium_shirt', 'a_large_shirt', 'a_small_shoe', 'a_medium_shoe', 'a_large_shoe'],
@@ -73,7 +90,7 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
             ]
         );
         $this->createProductModel(['code' => 'a_shirt', 'family_variant' => 'shirt_size_color']);
-        $mediumShirtProductModel = $this->createProductModel(
+        $this->createProductModel(
             [
                 'code' => 'a_medium_shirt',
                 'family_variant' => 'shirt_size_color',
@@ -85,7 +102,7 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
                 ],
             ]
         );
-        $largeShirtProductModel = $this->createProductModel(
+        $this->createProductModel(
             [
                 'code' => 'a_large_shirt',
                 'family_variant' => 'shirt_size_color',
@@ -97,9 +114,9 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
                 ],
             ]
         );
-        $this->createProduct('a_medium_red_shirt', 'shirt_size_color', $mediumShirtProductModel);
-        $this->createProduct('a_medium_blue_shirt', 'shirt_size_color', $mediumShirtProductModel);
-        $this->createProduct('a_large_black_shirt', 'shirt_size_color', $largeShirtProductModel);
+        $this->createProduct('a_medium_red_shirt', 'familyA', 'a_medium_shirt');
+        $this->createProduct('a_medium_blue_shirt', 'familyA', 'a_medium_shirt');
+        $this->createProduct('a_large_black_shirt', 'familyA', 'a_large_shirt');
 
         $this->createFamilyVariant(
             [
@@ -112,7 +129,7 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
             ]
         );
         $this->createProductModel(['code' => 'a_shoe', 'family_variant' => 'shoe_size_color']);
-        $largeShoeProductModel = $this->createProductModel(
+        $this->createProductModel(
             [
                 'code' => 'a_large_shoe',
                 'family_variant' => 'shoe_size_color',
@@ -124,8 +141,8 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
                 ],
             ]
         );
-        $this->createProduct('a_large_red_shoe', 'shoe_size_color', $largeShoeProductModel);
-        $this->createProduct('a_large_green_shoe', 'shoe_size_color', $largeShoeProductModel);
+        $this->createProduct('a_large_red_shoe', 'familyA', 'a_large_shoe');
+        $this->createProduct('a_large_green_shoe', 'familyA', 'a_large_shoe');
 
         Assert::assertEqualsCanonicalizing(
             ['a_medium_red_shirt', 'a_medium_blue_shirt', 'a_large_black_shirt', 'a_large_red_shoe', 'a_large_green_shoe'],
@@ -147,7 +164,7 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
             ]
         );
         $this->createProductModel(['code' => 'a_shirt', 'family_variant' => 'shirt_size_color']);
-        $mediumShirtProductModel = $this->createProductModel(
+        $this->createProductModel(
             [
                 'code' => 'a_medium_shirt',
                 'family_variant' => 'shirt_size_color',
@@ -159,7 +176,7 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
                 ],
             ]
         );
-        $largeShirtProductModel = $this->createProductModel(
+        $this->createProductModel(
             [
                 'code' => 'a_large_shirt',
                 'family_variant' => 'shirt_size_color',
@@ -171,9 +188,9 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
                 ],
             ]
         );
-        $this->createProduct('a_medium_red_shirt', 'shirt_size_color', $mediumShirtProductModel);
-        $this->createProduct('a_medium_blue_shirt', 'shirt_size_color', $mediumShirtProductModel);
-        $this->createProduct('a_large_black_shirt', 'shirt_size_color', $largeShirtProductModel);
+        $this->createProduct('a_medium_red_shirt', 'familyA', 'a_medium_shirt');
+        $this->createProduct('a_medium_blue_shirt', 'familyA', 'a_medium_shirt');
+        $this->createProduct('a_large_black_shirt', 'familyA', 'a_large_shirt');
 
         $this->createFamilyVariant(
             [
@@ -184,9 +201,9 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
                 ],
             ]
         );
-        $shoeProductModel = $this->createProductModel(['code' => 'a_shoe', 'family_variant' => 'shoe_size']);
-        $this->createProduct('a_large_shoe', 'shoe_size_color', $shoeProductModel);
-        $this->createProduct('a_medium_shoe', 'shoe_size_color', $shoeProductModel);
+        $this->createProductModel(['code' => 'a_shoe', 'family_variant' => 'shoe_size']);
+        $this->createProduct('a_large_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')]);
+        $this->createProduct('a_medium_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionB')]);
 
         Assert::assertEqualsCanonicalizing(
             ['a_medium_red_shirt', 'a_medium_blue_shirt', 'a_large_black_shirt', 'a_large_shoe', 'a_medium_shoe'],
@@ -226,20 +243,43 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
         return $productModel;
     }
 
-    private function createProduct(
-        string $identifier,
-        ?string $familyCode,
-        ?ProductModelInterface $productModel,
-        array $values = []
-    ): ProductInterface {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
-        if (null !== $productModel) {
-            $product->setParent($productModel);
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createProduct(string $identifier, string $familyCode, string $parentCode, array $userIntents = []): ProductInterface {
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: \array_merge(
+                [
+                    new SetFamily($familyCode),
+                    new ChangeParent($parentCode)
+                ],
+                $userIntents
+            )
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
         }
 
-        $this->get('pim_catalog.updater.product')->update($product, ['values' => $values]);
-        $this->get('pim_catalog.saver.product')->save($product);
+        return \intval($id);
+    }
 
-        return $product;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->createAdminUser();
     }
 }

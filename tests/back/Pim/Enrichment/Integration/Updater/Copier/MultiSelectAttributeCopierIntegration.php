@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Updater\Copier;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
@@ -14,15 +15,7 @@ class MultiSelectAttributeCopierIntegration extends AbstractCopierTestCase
     public function testCopyMultiSelectAttributeValue()
     {
         $product = $this->createProduct('test-copy-multi-select', [
-            'values' => [
-                'a_multi_select' => [
-                    [
-                        'data' => ['optionA', 'optionB'],
-                        'locale' => null,
-                        'scope' => null,
-                    ],
-                ],
-            ],
+            new SetMultiSelectValue('a_multi_select', null, null, ['optionA', 'optionB'])
         ]);
 
         $this->get('pim_catalog.updater.property_copier')->copyData(

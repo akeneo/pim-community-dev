@@ -25,11 +25,18 @@ akeneo_catalogs:
             search: search criterion
             no_results: no matches found
             section_system: system
+        action:
+            open: Open
+            remove: Remove
         criteria:
             status:
                 label: Status
                 enabled: Enabled
                 disabled: Disabled
+            family:
+                label: Family
+                no_matches: No matches found
+                placeholder: Select your families
         operators:
             "STARTS WITH": starts with
             "ENDS WITH": ends with

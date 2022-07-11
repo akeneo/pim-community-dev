@@ -23,6 +23,8 @@ module.exports = {
         'draft-js',
         'react-draft-wysiwyg',
         'html-to-draftjs',
+        // It's useless to mock contexts
+        '/contexts/',
     ],
     moduleNameMapper: {
         '\\.(svg|css)$': '<rootDir>/tests/test-file-stub.ts',
@@ -31,9 +33,9 @@ module.exports = {
     coverageThreshold: {
         global: {
             branches: 0,
-            functions: 100,
-            lines: 100,
-            statements: 100,
+            functions: 0,
+            lines: 0,
+            statements: 0,
         },
     },
 };

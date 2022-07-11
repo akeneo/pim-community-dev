@@ -69,3 +69,5 @@ config:
         oro/datagrid/duplicate-user-action:               pimuser/js/datagrid/action/duplicate-user-action.tsx
         pim/user/form/fields/select-profile:              pimuser/js/form/fields/select-profile.ts
         pim/templates/user/form/fields/select-profile-container: pimuser/templates/form/fields/select-profile-container.html
+        pim/user/form/user-profile-tab-content:           pimuser/js/form/user-profile-tab-content.ts
+        pim/user/form/create-user-button:                 pimuser/js/form/create-user-button.ts
