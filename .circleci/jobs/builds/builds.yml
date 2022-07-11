@@ -669,7 +669,6 @@ jobs:
                       RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
                       PRODUCT_REFERENCE_TYPE="serenity_instance"
                       PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
-                      DEPLOYMENT_HASH=$(find deployments-ucs -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -d' ' -f1)
 
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
@@ -679,21 +678,15 @@ jobs:
                       echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                      echo export DEPLOYMENT_HASH=${DEPLOYMENT_HASH} >> $BASH_ENV
 
                       echo "Image tag: ${IMAGE_TAG}"
                       echo "Serenity release name: ${RELEASE_NAME}"
-                      echo "Deployement hash: ${DEPLOYMENT_HASH}"
             - run:
                   name: Build the Serenity Edition prod image
                   command: make -C deployments-ucs/ pim-image-prod
             - run:
                   name: Push the Serenity Edition prod image on docker registry
                   command: make -C deployments-ucs/ push-pim-image-prod
-            # - run:
-            #       name: Push Terraform modules to GCS
-            #       command: |
-            #           BOTO_CONFIG=/dev/null gsutil -m cp -r deployments-ucs/ gs://${GOOGLE_PROJECT_ID}-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/
             - run:
                   name: Persist env vars for next jobs
                   command: |
@@ -705,7 +698,6 @@ jobs:
                       echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
-                      echo export DEPLOYMENT_HASH=${DEPLOYMENT_HASH} >> persisted_env_vars
             - persist_to_workspace:
                   root: ~/
                   paths:
@@ -737,7 +729,6 @@ jobs:
                       IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
                       IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
                       RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
-                      DEPLOYMENT_HASH=$(find deployments-ucs -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -d' ' -f1)
 
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
@@ -747,30 +738,12 @@ jobs:
                       echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                      echo export DEPLOYMENT_HASH=${DEPLOYMENT_HASH} >> $BASH_ENV
 
                       echo "Type: ${TYPE}"
                       echo "Type long: ${TYPE_LONG}"
                       echo "Image tag: ${IMAGE_TAG}"
                       echo "Product reference type: ${PRODUCT_REFERENCE_TYPE}"
                       echo "Product reference code: ${PRODUCT_REFERENCE_CODE}"
-                      echo "Deployement hash: ${DEPLOYMENT_HASH}"
-            # - run:
-            #       name: Docker pull and push image on registry
-            #       command: |
-            #           docker pull $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG}
-            #           docker tag $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG} $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG}
-            #           docker push $(GOOGLE_CLUSTER_REGION)-docker.pkg.dev/$(GOOGLE_PROJECT_ID)/pim-enterprise-dev/pim-enterprise-dev:${IMAGE_TAG}
-            # - run:
-            #       name: Push Terraform modules to GCS
-            #       command: |
-            #           STATUS_CODE=0
-            #           # Push only if directories doesn't exist
-            #           gsutil ls gs://akecld-blackhawk-sandbox-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/ > /dev/null 2>&1 || STATUS_CODE=1
-            #           if [[ "${STATUS_CODE}" == "1" ]]; then
-            #               echo "BOTO_CONFIG=/dev/null gsutil -m cp -r deployments-ucs/ gs://${GOOGLE_PROJECT_ID}-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/"
-            #               BOTO_CONFIG=/dev/null gsutil -m cp -r deployments-ucs/ gs://${GOOGLE_PROJECT_ID}-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/
-            #           fi
             - run:
                   name: Persist env vars for next jobs
                   command: |
@@ -782,7 +755,6 @@ jobs:
                       echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
-                      echo export DEPLOYMENT_HASH=${DEPLOYMENT_HASH} >> persisted_env_vars
             - persist_to_workspace:
                   root: ~/
                   paths:

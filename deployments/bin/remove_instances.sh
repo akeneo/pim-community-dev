@@ -29,7 +29,7 @@ NS_LIST=${NS}
 FORCE_DELETE=true
 if [[ -z "${NS_LIST}" ]]; then
     # Namespaces are environments names, we remove only srnt-pimci* & srnt-pimup* & grth-pimci* & grth-pimup* & tria-pimci* environments
-    NS_LIST=$(kubectl get ns | grep Active | egrep "${TYPE}-pim(ci|up)" | awk '{print $1}')
+    NS_LIST=$(kubectl get ns | grep Active | egrep "${TYPE}-pim(ci|up)|${TYPE}-ge2ee-last" | awk '{print $1}')
     FORCE_DELETE=false
 fi
 
@@ -137,6 +137,17 @@ for NAMESPACE in ${NS_LIST}; do
         if [[ -z "${DEPLOY_TIME}" ]] || [[ ${DAY_DIFF} -ge 1 ]]; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimci-pr
+        fi
+    fi
+
+        # Theses environments are related to ge2srnt project  and must not live more than 2 day
+    if [[ ${INSTANCE_NAME} == ge2ee-last* ]] ; then
+        DEPLOY_TIME=$(helm3 list -n ${NAMESPACE} | grep ${NAMESPACE} | awk -F\\t '{print $4}' | awk '{print $1" "$2}')
+        DAY_DIFF=$(( ($(date +%s) - $(date -d "${DEPLOY_TIME}" +%s)) / (60*60*24) ))
+        echo "  Day diff :              ${DAY_DIFF}"
+        if [[ -z "${DEPLOY_TIME}" ]] || [[ ${DAY_DIFF} -ge 2 ]]; then
+            DELETE_INSTANCE=true
+            INSTANCE_NAME_PREFIX=ge2ee-last
         fi
     fi
 
