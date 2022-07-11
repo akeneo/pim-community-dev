@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10523: fix CSV import profiles have the `download read file` option in Process Tracker but not XLSX import profiles
+
 # 5.0.102 (2022-07-07)
 
 ## Bug fixes
