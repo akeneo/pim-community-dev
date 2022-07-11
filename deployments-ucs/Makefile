@@ -61,8 +61,6 @@ MYSQL_DSIK_NAME ?= projects/$(GOOGLE_PROJECT_ID)/zones/$(GOOGLE_CLUSTER_ZONE)/di
 MYSQL_USER_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 22)')
 MYSQL_ROOT_PASSWORD := $(shell bash -c 'echo $$(pwgen -sB 22)')
 MONITORING_AUTHENTICATION_TOKEN := $(shell bash -c 'echo $$(pwgen -sB 32)')
-DEPLOYMENT_HASH ?=
-BUCKET_PIM_SRC_DIR ?= gcs::https://www.googleapis.com/storage/v1/akecld-blackhawk-sandbox-terraform-modules/$(BUCKET)/$(DEPLOYMENT_HASH)
 
 MAILGUN_DOMAIN ?= mg.cloud.akeneo.com
 MAILGUN_LOGIN ?= $(PFID)-$(GOOGLE_PROJECT_ID)@$(MAILGUN_DOMAIN)
@@ -227,7 +225,7 @@ deploy_tenant_helm:
 
 .PHONY: deploy_tenant_go
 deploy_tenant_go:
-	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-create.go $(PFID) $(INSTANCE_NAME) $(MYSQL_USER_PASSWORD) $(MAILGUN_PASSWORD) $(DEPLOYMENT_HASH)
+	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-create.go $(PFID) $(INSTANCE_NAME) $(MYSQL_USER_PASSWORD) $(MAILGUN_PASSWORD)
 
 ## Cleanup tenants
 .PHONY: delete_tenant
@@ -239,6 +237,18 @@ delete_tenant: generate_deployment_files
 ###################
 ### infra				###
 ###################
+## Plan terraform infrastructure
+.PHONY: plan_terraform
+plan_terraform:
+	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) init -reconfigure
+	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) plan
+
+## Deploy terraform infrastructure
+.PHONY: deploy_terraform
+deploy_terraform:
+	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) init -reconfigure
+	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) apply -auto-approve -input=false
+	
 ## Deploy argocd
 .PHONY: deploy_argocd
 deploy_argocd:

@@ -82,18 +82,6 @@ jobs:
             - set_gcloud_config_ucs
             - restore_persisted_env_vars
             - run:
-                  name: Get information from firestore
-                  command: |
-                      unset DEPLOYMENT_HASH
-                      DEPLOYMENT_HASH=$(cd deployments-ucs/timmy && go run timmy-read.go ${TYPE}-${INSTANCE_NAME})
-                      echo ${DEPLOYMENT_HASH}
-                      echo export DEPLOYMENT_HASH=${DEPLOYMENT_HASH} >> $BASH_ENV
-            - run:
-                  name: Get template for the corresponding tenant
-                  command: |
-                      rm -r ./deployments-ucs
-                      BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-blackhawk-sandbox-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/deployments-ucs/ .
-            - run:
                   name: Delete environments
                   no_output_timeout: 30m
                   command: |
