@@ -1,27 +1,21 @@
-import React, {FC, useState} from 'react';
-import {BooleanInput, Field} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
-import styled from 'styled-components';
+import React, {FC} from 'react';
+import {CatalogFormErrors} from '../models/CatalogFormErrors';
+import {findFirstError} from '../utils/findFirstError';
+import {EnabledInput} from './EnabledInput';
 
-const EnableField = styled(Field)`
-    margin: 20px 0;
-`;
+type Settings = {
+    enabled: boolean;
+};
 
-const Settings: FC = () => {
-    const translate = useTranslate();
-    const [enabled, setEnabled] = useState(false);
+type Props = {
+    settings: Settings;
+    errors: CatalogFormErrors;
+};
 
+const Settings: FC<Props> = ({settings, errors}) => {
     return (
         <>
-            <EnableField label={translate('akeneo_catalogs.settings.fields.enabled')}>
-                <BooleanInput
-                    noLabel={translate('akeneo_catalogs.settings.inputs.no')}
-                    value={enabled}
-                    yesLabel={translate('akeneo_catalogs.settings.inputs.yes')}
-                    readOnly={false}
-                    onChange={() => setEnabled(!enabled)}
-                />
-            </EnableField>
+            <EnabledInput value={settings.enabled} error={findFirstError(errors, '[enabled]')} />
         </>
     );
 };

@@ -12,7 +12,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueWithLinkedData;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLinkedData;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * This read model is dedicated to export product data for the connector, such as the API.
@@ -40,6 +42,89 @@ final class ConnectorProduct
         private ?QualityScoreCollection $qualityScores,
         private ?ProductCompletenessCollection $completenesses
     ) {
+        try {
+            $this->validateAssociationsFormat();
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Malformed associations parameter: %s',
+                    \json_encode($this->associations)
+                ),
+                0,
+                $e
+            );
+        }
+
+        try {
+            $this->validateQuantifiedAssociationsFormat();
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Malformed quantified associations parameter %s',
+                    \json_encode($this->quantifiedAssociations)
+                ),
+                0,
+                $e
+            );
+        }
+    }
+
+    private function validateAssociationsFormat(): void
+    {
+        Assert::allIsMap($this->associations);
+        foreach ($this->associations as $associationsByType) {
+            Assert::allRegex(array_keys($associationsByType), '/products|product_models|groups/');
+            Assert::isMap($associationsByType);
+            if (array_key_exists('products', $associationsByType)) {
+                Assert::isArray($associationsByType['products']);
+                foreach ($associationsByType['products'] as $associatedProduct) {
+                    Assert::isMap($associatedProduct);
+                    Assert::keyExists($associatedProduct, 'uuid');
+                    Assert::stringNotEmpty($associatedProduct['uuid']);
+                    Assert::true(Uuid::isValid($associatedProduct['uuid']), sprintf('The associated product "%s" is not a valid uuid', $associatedProduct['uuid']));
+                    Assert::keyExists($associatedProduct, 'identifier');
+                    Assert::nullOrString($associatedProduct['identifier']);
+                }
+            }
+            if (array_key_exists('product_models', $associationsByType)) {
+                Assert::isArray($associationsByType['product_models']);
+                Assert::allStringNotEmpty($associationsByType['product_models']);
+            }
+            if (array_key_exists('groups', $associationsByType)) {
+                Assert::isArray($associationsByType['groups']);
+                Assert::allStringNotEmpty($associationsByType['groups']);
+            }
+        }
+    }
+
+    private function validateQuantifiedAssociationsFormat(): void
+    {
+        Assert::allIsMap($this->quantifiedAssociations);
+        foreach ($this->quantifiedAssociations as $quantifiedAssociationsByType) {
+            Assert::allRegex(array_keys($quantifiedAssociationsByType), '/products|product_models/');
+            Assert::isMap($quantifiedAssociationsByType);
+            if (array_key_exists('products', $quantifiedAssociationsByType)) {
+                Assert::isArray($quantifiedAssociationsByType['products']);
+                foreach ($quantifiedAssociationsByType['products'] as $quantifiedAssociatedProduct) {
+                    Assert::isMap($quantifiedAssociatedProduct);
+                    Assert::keyExists($quantifiedAssociatedProduct, 'uuid');
+                    Assert::stringNotEmpty($quantifiedAssociatedProduct['uuid']);
+                    Assert::true(Uuid::isValid($quantifiedAssociatedProduct['uuid']), sprintf('The associated product "%s" is not a valid uuid', $quantifiedAssociatedProduct['uuid']));
+                    Assert::keyExists($quantifiedAssociatedProduct, 'identifier');
+                    Assert::nullOrString($quantifiedAssociatedProduct['identifier']);
+                    Assert::keyExists($quantifiedAssociatedProduct, 'quantity');
+                }
+            }
+            if (array_key_exists('product_models', $quantifiedAssociationsByType)) {
+                Assert::isArray($quantifiedAssociationsByType['product_models']);
+                foreach ($quantifiedAssociationsByType['product_models'] as $quantifiedAssociatedProductModel) {
+                    Assert::isMap($quantifiedAssociatedProductModel);
+                    Assert::keyExists($quantifiedAssociatedProductModel, 'identifier');
+                    Assert::nullOrString($quantifiedAssociatedProductModel['identifier']);
+                    Assert::keyExists($quantifiedAssociatedProductModel, 'quantity');
+                }
+            }
+        }
     }
 
     public function uuid(): UuidInterface
@@ -162,18 +247,18 @@ final class ConnectorProduct
                     $value->getScopeCode(),
                     $value->getLocaleCode(),
                     [
-                        "attribute" => $value->getAttributeCode(),
-                        "code"=> $value->getData(),
-                        "labels" => $optionLabels[$value->getAttributeCode()][$value->getData()] ?? []
+                        'attribute' => $value->getAttributeCode(),
+                        'code' => $value->getData(),
+                        'labels' => $optionLabels[$value->getAttributeCode()][$value->getData()] ?? []
                     ],
                 );
             } elseif ($value instanceof OptionsValue) {
                 $linkedData = [];
                 foreach ($value->getData() as $optionCode) {
                     $linkedData[$optionCode] = [
-                        "attribute" => $value->getAttributeCode(),
-                        "code"=> $optionCode,
-                        "labels" => $optionLabels[$value->getAttributeCode()][$optionCode] ?? [],
+                        'attribute' => $value->getAttributeCode(),
+                        'code' => $optionCode,
+                        'labels' => $optionLabels[$value->getAttributeCode()][$optionCode] ?? [],
                     ];
                 }
 
@@ -262,7 +347,10 @@ final class ConnectorProduct
     {
         $associatedProducts = [];
         foreach ($this->associations as $associationType => $associations) {
-            $associatedProducts[] = $associations['products'];
+            $associatedProducts[] = array_map(
+                fn (array $associatedProduct): string => $associatedProduct['identifier'],
+                $associations['products']
+            );
         }
 
         return !empty($associatedProducts) ? array_unique(array_merge(...$associatedProducts)) : [];
@@ -407,9 +495,9 @@ final class ConnectorProduct
     {
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
-            $filteredAssociations[$associationType]['products'] = array_values(array_intersect(
+            $filteredAssociations[$associationType]['products'] = array_values(array_filter(
                 $association['products'],
-                $productIdentifiersToFilter
+                fn (array $associatedProduct): bool => in_array($associatedProduct['identifier'], $productIdentifiersToFilter)
             ));
             $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
@@ -436,7 +524,7 @@ final class ConnectorProduct
 
     public function filterByCategoryCodes(array $categoryCodesToFilter): ConnectorProduct
     {
-        $categoryCodes =  array_values(array_intersect($this->categoryCodes, $categoryCodesToFilter));
+        $categoryCodes = array_values(array_intersect($this->categoryCodes, $categoryCodesToFilter));
 
         return new self(
             $this->uuid,

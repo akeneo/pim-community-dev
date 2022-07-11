@@ -24,7 +24,7 @@ final class FlexibilityVersion implements PimVersion
     const EDITION_NAME = 'EE';
 
     /** @staticvar string **/
-    private const EDITION_CODE = 'FLEXIBILITY_EDITION';
+    private const EDITION_CODE = 'flexibility_instance';
 
     public function versionCodename(): string
     {

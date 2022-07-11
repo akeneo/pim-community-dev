@@ -12,6 +12,6 @@ class OnlyFreeTrialFeatureFlag implements FeatureFlag
 
     public function isEnabled(): bool
     {
-        return $this->edition === 'TRIAL_EDITION';
+        return $this->edition === 'pim_trial_instance';
     }
 }

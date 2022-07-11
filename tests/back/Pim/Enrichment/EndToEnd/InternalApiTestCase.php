@@ -10,7 +10,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\HttpKernelBrowser;
@@ -105,7 +104,9 @@ abstract class InternalApiTestCase extends TestCase
         SQL;
         $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
         $id = $stmt->fetchOne();
-        Assert::assertNotNull($id);
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
 
         return \intval($id);
     }

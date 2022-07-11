@@ -42,13 +42,13 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $this->productRepository = $this->get('pim_catalog.repository.product');
 
         $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'identifier');
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         Assert::assertEmpty($product->getAssociations());
 
         $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product_identifier');
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $associatedProduct = $this->productRepository->findOneByIdentifier('associated_product_identifier');
         Assert::assertNotNull($associatedProduct);
 
@@ -62,7 +62,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
             new AssociateProducts('X_SELL', ['associated_product_identifier'])
         ]);
 
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['associated_product_identifier'], $this->getAssociatedProductIdentifiers($updatedProduct));
     }
@@ -76,7 +76,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('Property "associations" expects a valid product identifier. The product does not exist, "unknown" given.');
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
     }
 
     /** @test */
@@ -88,7 +88,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('Property "associations" expects a valid association type code. The association type does not exist or is quantified, "UNKNOWN" given.');
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
     }
 
     /** @test */
@@ -98,7 +98,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
             new AssociateProducts('X_SELL', ['associated_product_identifier'])
         ]);
 
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['associated_product_identifier'], $this->getAssociatedProductIdentifiers($updatedProduct));
         $this->clearDoctrineUoW();
@@ -106,7 +106,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new DissociateProducts('X_SELL', ['associated_product_identifier'])
         ]);
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertEmpty($this->getAssociatedProductIdentifiers($updatedProduct));
     }
@@ -118,13 +118,13 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
             new AssociateProducts('X_SELL', ['associated_product_identifier'])
         ]);
 
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['associated_product_identifier'], $this->getAssociatedProductIdentifiers($updatedProduct));
         $this->clearDoctrineUoW();
 
         $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'other_associated_product_identifier');
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $associatedProduct = $this->productRepository->findOneByIdentifier('other_associated_product_identifier');
         Assert::assertNotNull($associatedProduct);
 
@@ -133,7 +133,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new ReplaceAssociatedProducts('X_SELL', ['other_associated_product_identifier'])
         ]);
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['other_associated_product_identifier'], $this->getAssociatedProductIdentifiers($updatedProduct));
@@ -148,7 +148,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
             new AssociateProductModels('X_SELL', ['product_model_identifier'])
         ]);
 
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['product_model_identifier'], $this->getAssociatedProductModelIdentifiers($updatedProduct));
     }
@@ -162,7 +162,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('Property "associations" expects a valid product model identifier. The product model does not exist, "unknown" given.');
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
     }
 
     /** @test */
@@ -174,14 +174,14 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
             new AssociateProductModels('X_SELL', ['product_model_identifier'])
         ]);
 
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['product_model_identifier'], $this->getAssociatedProductModelIdentifiers($updatedProduct));
 
         $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new DissociateProductModels('X_SELL', ['product_model_identifier'])
         ]);
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertEmpty($this->getAssociatedProductModelIdentifiers($updatedProduct));
     }
@@ -194,7 +194,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
             new AssociateProductModels('X_SELL', ['product_model_identifier'])
         ]);
 
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['product_model_identifier'], $this->getAssociatedProductModelIdentifiers($updatedProduct));
         $this->clearDoctrineUoW();
@@ -203,7 +203,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new ReplaceAssociatedProductModels('X_SELL', ['other_product_model'])
         ]);
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['other_product_model'], $this->getAssociatedProductModelIdentifiers($updatedProduct));
@@ -218,7 +218,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
             new AssociateGroups('X_SELL', ['associated_group_code'])
         ]);
 
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['associated_group_code'], $this->getAssociatedGroupIdentifiers($updatedProduct));
     }
@@ -231,7 +231,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
             new AssociateGroups('X_SELL', ['associated_group_code'])
         ]);
 
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['associated_group_code'], $this->getAssociatedGroupIdentifiers($updatedProduct));
         $this->clearDoctrineUoW();
@@ -239,7 +239,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new DissociateGroups('X_SELL', ['associated_group_code'])
         ]);
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertEmpty($this->getAssociatedGroupIdentifiers($updatedProduct));
     }
@@ -253,7 +253,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new AssociateGroups('X_SELL', ['associated_group_code'])
         ]);
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
 
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['associated_group_code'], $this->getAssociatedGroupIdentifiers($updatedProduct));
@@ -263,7 +263,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new ReplaceAssociatedGroups('X_SELL', ['other_associated_group_code'])
         ]);
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $this->clearDoctrineUoW();
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['other_associated_group_code'], $this->getAssociatedGroupIdentifiers($updatedProduct));
@@ -283,7 +283,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
             new AssociateProductModels('TWO_WAY', ['product_model1']),
             new AssociateGroups('TWO_WAY', ['group1'])
         ]);
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
 
         $myProduct = $this->productRepository->findOneByIdentifier('my_product');
         $myAssociatedProduct = $this->productRepository->findOneByIdentifier('my_associated_product');

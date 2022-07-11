@@ -8,7 +8,6 @@ use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use League\Flysystem\FilesystemOperator;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -50,7 +49,7 @@ class CreateProductMediaFileEndToEnd extends ApiTestCase
         $this->assertSame('catalogStorage', $fileInfo->getStorage());
 
         // check if product value has been created
-        $product = $this->get('pim_api.repository.product')->findOneByIdentifier('foo');
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
         $this->assertCount(2, $product->getValues());
         $this->assertSame('foo', $product->getIdentifier());
 
@@ -346,7 +345,9 @@ JSON;
         SQL;
         $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
         $id = $stmt->fetchOne();
-        Assert::assertNotNull($id);
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
 
         return \intval($id);
     }

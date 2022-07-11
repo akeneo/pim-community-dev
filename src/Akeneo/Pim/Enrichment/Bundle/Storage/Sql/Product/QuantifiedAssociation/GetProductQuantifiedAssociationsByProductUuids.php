@@ -37,7 +37,7 @@ final class GetProductQuantifiedAssociationsByProductUuids
      *      'productA' => [
      *          'PACK' => [
      *              'products' => [
-     *                  ['identifier' => 'productB','quantity' => 5]
+     *                  ['identifier' => 'productB','quantity' => 5, 'uuid' => 'uuidProductB']
      *              ]
      *          ]
      *      ]
@@ -136,7 +136,8 @@ SQL;
                 }
                 $uniqueQuantifiedAssociations[$identifier] = [
                     'identifier' => $identifier,
-                    'quantity' => (int)$associationWithProductId['quantity']
+                    'quantity' => (int)$associationWithProductId['quantity'],
+                    'uuid' => $associationWithProductId['uuid'],
                 ];
             }
             if (!empty($uniqueQuantifiedAssociations)) {

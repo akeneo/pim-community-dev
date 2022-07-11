@@ -24,7 +24,7 @@ final class SerenityVersion implements PimVersion
     private const EDITION_NAME = 'Serenity';
 
     /** @staticvar string **/
-    private const EDITION_CODE = 'SERENITY_EDITION';
+    private const EDITION_CODE = 'serenity_instance';
 
     public function versionCodename(): string
     {

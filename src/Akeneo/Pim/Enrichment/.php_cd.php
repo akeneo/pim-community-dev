@@ -20,6 +20,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
         'Akeneo\Platform\Job\Domain\Model\Status',
+        'Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Liip\ImagineBundle',
@@ -121,9 +122,11 @@ $rules = [
         'ArPHP\I18N\Arabic',
 
         'Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException',
+        'Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException',
         'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand',
         'Akeneo\Pim\Enrichment\Product\API\Command\UserIntent',
         'Akeneo\Pim\Enrichment\Product\API\MessageBus',
+        'Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat',
         'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode'
 
     ])->in('Akeneo\Pim\Enrichment\Bundle'),

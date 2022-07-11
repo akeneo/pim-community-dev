@@ -37,16 +37,16 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->productRepository = $this->get('pim_catalog.repository.product');
 
-        $this->messageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'identifier'));
+        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'identifier'));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('identifier'));
 
-        $this->messageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product1'));
+        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product1'));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product1'));
 
-        $this->messageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product2'));
+        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product2'));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product1'));
 
-        $this->messageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product3'));
+        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product3'));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product3'));
 
         $this->createProductModel('product_model1', 'color_variant_accessories', []);
@@ -61,7 +61,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
     public function it_associates_a_quantified_product(): void
     {
         Assert::assertEmpty($this->getAssociatedQuantifiedProducts('identifier'));
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new AssociateQuantifiedProducts('bundle', [new QuantifiedEntity('associated_product1', 5)]),
         ]));
         Assert::assertEquals(
@@ -71,7 +71,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new AssociateQuantifiedProducts('bundle', [new QuantifiedEntity('associated_product1', 8)]),
         ]));
         Assert::assertEquals(
@@ -86,7 +86,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
         $this->expectException(LegacyViolationsException::class);
         $this->expectExceptionMessage("The following products don't exist: unknown. Please make sure the products haven't been deleted in the meantime.");
 
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new AssociateQuantifiedProducts('bundle', [new QuantifiedEntity('unknown', 5)]),
         ]));
     }
@@ -94,7 +94,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
     /** @test */
     public function it_dissociates_a_quantified_product(): void
     {
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new AssociateQuantifiedProducts('bundle', [
                 new QuantifiedEntity('associated_product1', 5),
                 new QuantifiedEntity('associated_product2', 4),
@@ -107,7 +107,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new DissociateQuantifiedProducts('bundle', ['associated_product1']),
         ]));
         Assert::assertEquals(
@@ -115,7 +115,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
             $this->getAssociatedQuantifiedProducts('identifier')
         );
 
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new DissociateQuantifiedProducts('bundle', ['associated_product2', 'unknown']),
         ]));
         Assert::assertEmpty($this->getAssociatedQuantifiedProducts('identifier'));
@@ -124,7 +124,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
     /** @test */
     public function it_replaces_associated_quantified_products(): void
     {
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new ReplaceAssociatedQuantifiedProducts('bundle', [
                 new QuantifiedEntity('associated_product1', 5),
                 new QuantifiedEntity('associated_product2', 4),
@@ -137,7 +137,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new ReplaceAssociatedQuantifiedProducts('bundle', [
                 new QuantifiedEntity('associated_product1', 50),
                 new QuantifiedEntity('associated_product3', 2),
@@ -153,7 +153,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
     public function it_associates_a_quantified_product_model(): void
     {
         Assert::assertEmpty($this->getAssociatedQuantifiedProductModels('identifier'));
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new AssociateQuantifiedProductModels('bundle', [new QuantifiedEntity('product_model1', 5)]),
         ]));
         Assert::assertEquals(
@@ -163,7 +163,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new AssociateQuantifiedProductModels('bundle', [new QuantifiedEntity('product_model1', 8)]),
         ]));
         Assert::assertEquals(
@@ -175,7 +175,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
     /** @test */
     public function it_dissociates_a_quantified_product_model(): void
     {
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new AssociateQuantifiedProductModels('bundle', [
                 new QuantifiedEntity('product_model1', 5),
                 new QuantifiedEntity('product_model2', 4),
@@ -188,7 +188,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new DissociateQuantifiedProductModels('bundle', ['product_model1']),
         ]));
         Assert::assertEquals(
@@ -196,7 +196,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
             $this->getAssociatedQuantifiedProductModels('identifier')
         );
 
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new DissociateQuantifiedProductModels('bundle', ['product_model2', 'unknown']),
         ]));
         Assert::assertEmpty($this->getAssociatedQuantifiedProductModels('identifier'));
@@ -205,7 +205,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
     /** @test */
     public function it_replaces_associated_quantified_product_models(): void
     {
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new ReplaceAssociatedQuantifiedProductModels('bundle', [
                 new QuantifiedEntity('product_model1', 5),
                 new QuantifiedEntity('product_model2', 4),
@@ -218,7 +218,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new ReplaceAssociatedQuantifiedProductModels('bundle', [
                 new QuantifiedEntity('product_model1', 50),
                 new QuantifiedEntity('product_model3', 2),

@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByMetricsIntegration extends AbstractExportTestCase
@@ -12,19 +13,11 @@ class ExportProductsByMetricsIntegration extends AbstractExportTestCase
     protected function loadFixtures() : void
     {
         $this->createProduct('product_1', [
-            'values'     => [
-                'a_metric_without_decimal_negative' => [
-                    ['data' => ['amount' => -10, 'unit' => 'CELSIUS'], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetMeasurementValue('a_metric_without_decimal_negative', null, null, -10, 'CELSIUS'),
         ]);
 
         $this->createProduct('product_2', [
-            'values' => [
-                'a_metric_without_decimal_negative' => [
-                    ['data' => ['amount' => 20, 'unit' => 'CELSIUS'], 'locale' => null, 'scope' => null]
-                ]
-            ],
+            new SetMeasurementValue('a_metric_without_decimal_negative', null, null, 20, 'CELSIUS'),
         ]);
 
         $this->createProduct('product_3');

@@ -15,6 +15,11 @@ test('it renders without error', () => {
                 state={{field: 'enabled', operator: Operator.EQUALS, value: true}}
                 onChange={jest.fn()}
                 onRemove={jest.fn()}
+                errors={{
+                    field: null,
+                    operator: null,
+                    value: null,
+                }}
             />
         </ThemeProvider>
     );
@@ -22,6 +27,26 @@ test('it renders without error', () => {
     expect(screen.getByText('akeneo_catalogs.product_selection.criteria.status.label')).toBeInTheDocument();
     expect(screen.getByText(Operator.EQUALS)).toBeInTheDocument();
     expect(screen.getByText('akeneo_catalogs.product_selection.criteria.status.enabled')).toBeInTheDocument();
+});
+
+test('it renders inputs with validation errors', () => {
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <StatusCriterion
+                state={{field: 'enabled', operator: Operator.EQUALS, value: true}}
+                onChange={jest.fn()}
+                onRemove={jest.fn()}
+                errors={{
+                    field: null,
+                    operator: 'Invalid operator.',
+                    value: 'Invalid value.',
+                }}
+            />
+        </ThemeProvider>
+    );
+
+    expect(screen.getByText('Invalid operator.')).toBeInTheDocument();
+    expect(screen.getByText('Invalid value.')).toBeInTheDocument();
 });
 
 test('it calls onChange when the operator changes', () => {
@@ -33,6 +58,11 @@ test('it calls onChange when the operator changes', () => {
                 state={{field: 'enabled', operator: Operator.EQUALS, value: true}}
                 onChange={onChange}
                 onRemove={jest.fn()}
+                errors={{
+                    field: null,
+                    operator: null,
+                    value: null,
+                }}
             />
         </ThemeProvider>
     );
@@ -58,6 +88,11 @@ test('it calls onChange when the value changes', () => {
                 state={{field: 'enabled', operator: Operator.EQUALS, value: true}}
                 onChange={onChange}
                 onRemove={jest.fn()}
+                errors={{
+                    field: null,
+                    operator: null,
+                    value: null,
+                }}
             />
         </ThemeProvider>
     );

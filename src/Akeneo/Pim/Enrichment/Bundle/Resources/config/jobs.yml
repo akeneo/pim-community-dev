@@ -130,8 +130,6 @@ services:
             - '@pim_catalog.query.product_identifier_query_builder_factory'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.saver.locale'
             - '@pim_catalog.saver.product'
             - '%pim_job_product_batch_size%'
         public: false

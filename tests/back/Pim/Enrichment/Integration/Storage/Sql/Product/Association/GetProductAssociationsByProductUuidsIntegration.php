@@ -90,7 +90,11 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
         ];
         $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE, $uuidProductC, $uuidProductD]);
 
-        $this->assertEqualsCanonicalizing($expected, $actual);
+        $this->assertEqualsCanonicalizing(\array_keys($actual), \array_keys($expected));
+        foreach ($actual as $productUuid => $actualAssociations) {
+            $expectedAssociations = $expected[$productUuid];
+            $this->assertEqualsCanonicalizing($actualAssociations, $expectedAssociations);
+        }
     }
 
     public function testOnMultipleWithProductModels()
@@ -105,9 +109,14 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
             $uuidProductC->toString() => $this->getAssociationsFormattedAfterFetch([], [], [], ['productA']),
             $uuidVariantProduct1->toString() => $this->getAssociationsFormattedAfterFetch(['productF', 'productD'], ['productA', 'productC', 'productG'], ['productB'], ['productE']),
         ];
+        ksort($expected);
         $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE, $uuidProductC, $uuidProductD, $uuidVariantProduct1]);
 
-        $this->assertEqualsCanonicalizing($expected, $actual);
+        $this->assertEqualsCanonicalizing(\array_keys($actual), \array_keys($expected));
+        foreach ($actual as $productUuid => $actualAssociations) {
+            $expectedAssociations = $expected[$productUuid];
+            $this->assertEqualsCanonicalizing($actualAssociations, $expectedAssociations);
+        }
     }
 
     private function getQuery(): GetProductAssociationsByProductUuids
@@ -186,12 +195,17 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
     private function getAssociationsFormattedAfterFetch(array $crossSell = [], array $pack = [], array $substitutions = [], array $upsell = [], array $aNewType = []): array
     {
         return [
-            'X_SELL' => ['products' => $crossSell],
-            'PACK' => ['products' => $pack],
-            'SUBSTITUTION' => ['products' => $substitutions],
-            'UPSELL' => ['products' => $upsell],
-            'A_NEW_TYPE' => ['products' => $aNewType]
+            'X_SELL' => ['products' => $this->formatAssociation($crossSell)],
+            'PACK' => ['products' => $this->formatAssociation($pack)],
+            'SUBSTITUTION' => ['products' => $this->formatAssociation($substitutions)],
+            'UPSELL' => ['products' => $this->formatAssociation($upsell)],
+            'A_NEW_TYPE' => ['products' => $this->formatAssociation($aNewType)],
         ];
+    }
+
+    private function formatAssociation($identifiers): array
+    {
+        return array_map(fn (string $identifier): array => ['uuid' => $this->getProductUuidFromIdentifier($identifier)->toString(), 'identifier' => $identifier], $identifiers);
     }
 
     protected function getConfiguration()

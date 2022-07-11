@@ -16,7 +16,7 @@ class GetSystemInformationEndToEnd extends ApiTestCase
      */
     public function test_to_get_system_information_through_the_api(): void
     {
-        putenv('PIM_EDITION=COMMUNITY_EDITION');
+        putenv('PIM_EDITION=community_edition_instance');
 
         $apiConnectionEcommerce = $this->createConnection('ecommerce', 'Ecommerce');
         $apiClient = $this->createAuthenticatedClient(

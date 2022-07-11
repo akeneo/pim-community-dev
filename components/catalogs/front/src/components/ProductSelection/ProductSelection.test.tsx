@@ -1,4 +1,5 @@
 jest.unmock('./ProductSelection');
+jest.unmock('./reducers/ProductSelectionReducer');
 
 import React from 'react';
 import {fireEvent, render, screen} from '@testing-library/react';
@@ -7,15 +8,15 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {ProductSelection} from './ProductSelection';
 import {Operator} from './models/Operator';
-import {Criterion} from './models/Criterion';
-import {AddCriterionDropdown} from './components/AddCriterionDropdown';
 import {StatusCriterionState} from './criteria/StatusCriterion';
-import {StatusCriterion} from './criteria/StatusCriterion/types';
+import {useProductSelectionContext} from './contexts/ProductSelectionContext';
+import {ProductSelectionActions} from './reducers/ProductSelectionReducer';
+import {Criterion} from './components/Criterion';
 
 test('it renders the empty message', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <ProductSelection criteria={[]} setCriteria={jest.fn()} onChange={jest.fn()} />
+            <ProductSelection criteria={{}} onChange={jest.fn()} errors={{}} />
         </ThemeProvider>
     );
 
@@ -23,147 +24,67 @@ test('it renders the empty message', () => {
 });
 
 test('it renders a list of criteria', () => {
-    const criterion1: StatusCriterion = {
-        id: 'da23',
-        module: () => <div>[FooCriterion]</div>,
-        state: {
+    const criteria = {
+        a: {
             field: 'enabled',
             operator: Operator.EQUALS,
             value: true,
-        },
-    };
-    const criterion2: StatusCriterion = {
-        id: '4dbe',
-        module: () => <div>[BarCriterion]</div>,
-        state: {
+        } as StatusCriterionState,
+        b: {
             field: 'enabled',
-            operator: Operator.NOT_EQUAL,
+            operator: Operator.EQUALS,
             value: false,
-        },
+        } as StatusCriterionState,
     };
-    const criteria = [criterion1, criterion2];
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <ProductSelection criteria={criteria} setCriteria={jest.fn()} onChange={jest.fn()} />
+            <ProductSelection criteria={criteria} onChange={jest.fn()} errors={{}} />
         </ThemeProvider>
     );
 
-    expect(screen.getByText('[FooCriterion]')).toBeInTheDocument();
-    expect(screen.getByText('[BarCriterion]')).toBeInTheDocument();
+    expect(screen.getAllByText('[criterion:enabled]')).toHaveLength(2);
 });
 
 test('it updates the state when a criterion changes', () => {
-    const FooCriterionModule = jest.fn(({onChange}) => (
-        <button onClick={() => onChange({field: 'enabled', operator: Operator.NOT_EQUAL, value: true})}>
-            [ToggleFooCriterionValue]
-        </button>
-    ));
+    mocked(Criterion).mockImplementation(({id, state}) => {
+        const dispatch = useProductSelectionContext();
 
-    const criterion1: StatusCriterion = {
-        id: 'foo',
-        module: FooCriterionModule,
-        state: {
+        const toggle = () =>
+            dispatch({
+                type: ProductSelectionActions.UPDATE_CRITERION,
+                id: id,
+                state: {
+                    ...state,
+                    value: !state.value,
+                },
+            });
+
+        return <button onClick={toggle}>[ToggleCriterionValue]</button>;
+    });
+
+    const onChange = jest.fn();
+
+    const criteria = {
+        a: {
             field: 'enabled',
             operator: Operator.EQUALS,
             value: true,
-        },
+        } as StatusCriterionState,
     };
-    const criterion2: StatusCriterion = {
-        id: 'bar',
-        module: () => <div>[BarCriterion]</div>,
-        state: {
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <ProductSelection criteria={criteria} onChange={onChange} errors={{}} />
+        </ThemeProvider>
+    );
+
+    fireEvent.click(screen.getByText('[ToggleCriterionValue]'));
+    expect(onChange).toHaveBeenCalledWith({
+        a: {
             field: 'enabled',
-            operator: Operator.NOT_EQUAL,
+            operator: Operator.EQUALS,
             value: false,
         },
-    };
-    const criteria = [criterion1, criterion2];
-    const setCriteria = jest.fn();
-    const onChange = jest.fn();
-
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <ProductSelection criteria={criteria} setCriteria={setCriteria} onChange={onChange} />
-        </ThemeProvider>
-    );
-
-    fireEvent.click(screen.getByText('[ToggleFooCriterionValue]'));
-    expect(setCriteria).toHaveBeenCalledWith([
-        expect.objectContaining({
-            state: {
-                field: 'enabled',
-                operator: Operator.NOT_EQUAL,
-                value: true,
-            },
-        }),
-        expect.objectContaining({
-            state: {
-                field: 'enabled',
-                operator: Operator.NOT_EQUAL,
-                value: false,
-            },
-        }),
-    ]);
-    expect(onChange).toHaveBeenCalledWith(true);
-});
-
-test('it updates the state when a criterion is added', () => {
-    const FooCriterion = (): Criterion<StatusCriterionState> => ({
-        id: (Math.random() + 1).toString(36).substring(7),
-        module: () => <div>[FooCriterion]</div>,
-        state: {
-            field: 'enabled',
-            operator: Operator.EQUALS,
-            value: true,
-        },
     });
-    mocked(AddCriterionDropdown).mockImplementation(({onNewCriterion}) => (
-        <button onClick={() => onNewCriterion(FooCriterion())}>[AddCriterion]</button>
-    ));
-    const setCriteria = jest.fn();
-    const onChange = jest.fn();
-
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <ProductSelection criteria={[]} setCriteria={setCriteria} onChange={onChange} />
-        </ThemeProvider>
-    );
-
-    fireEvent.click(screen.getByText('[AddCriterion]'));
-    expect(setCriteria).toHaveBeenCalledWith([
-        expect.objectContaining({
-            state: {
-                field: 'enabled',
-                operator: Operator.EQUALS,
-                value: true,
-            },
-        }),
-    ]);
-    expect(onChange).toHaveBeenCalledWith(true);
-});
-
-test('it updates the state when a criterion is removed', () => {
-    const FooCriterion = (): Criterion<StatusCriterionState> => ({
-        id: (Math.random() + 1).toString(36).substring(7),
-        module: ({onRemove}) => <button onClick={onRemove}>[RemoveFooCriteria]</button>,
-        state: {
-            field: 'enabled',
-            operator: Operator.EQUALS,
-            value: true,
-        },
-    });
-    const setCriteria = jest.fn();
-    const onChange = jest.fn();
-
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <ProductSelection criteria={[FooCriterion()]} setCriteria={setCriteria} onChange={onChange} />
-        </ThemeProvider>
-    );
-
-    expect(screen.getByText('[RemoveFooCriteria]')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('[RemoveFooCriteria]'));
-    expect(setCriteria).toHaveBeenCalledWith([]);
-    expect(onChange).toHaveBeenCalledWith(true);
 });

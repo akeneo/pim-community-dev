@@ -25,8 +25,8 @@ catalogs-fixtures:
 catalogs-tests:
 	$(MAKE) catalogs-lint-back
 	$(MAKE) catalogs-coupling-back
-	$(MAKE) catalogs-mutation-unit-back
 	$(MAKE) catalogs-coverage-back
+	$(MAKE) catalogs-mutation-unit-back
 	$(MAKE) catalogs-acceptance-back
 	$(MAKE) catalogs-lint-front
 	$(MAKE) catalogs-unit-front
@@ -119,6 +119,7 @@ catalogs-lint-front: yarn-policies
 	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs prettier --check
 	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs eslint
 	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs tsc --noEmit --strict
+	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs depcruise
 
 .PHONY: catalogs-unit-front
 catalogs-unit-front: yarn-policies

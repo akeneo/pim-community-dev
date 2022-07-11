@@ -7,7 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Pub
 use Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByUserIdQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByUserIdentifierQueryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\InputBag;
@@ -21,12 +21,12 @@ class FlagConnectedAppWithOutdatedScopesActionSpec extends ObjectBehavior
 {
     public function let(
         TokenStorageInterface $tokenStorage,
-        FindOneConnectedAppByUserIdQueryInterface $findOneConnectedAppByUserIdQuery,
+        FindOneConnectedAppByUserIdentifierQueryInterface $findOneConnectedAppByUserIdentifierQuery,
         FlagAppContainingOutdatedScopesHandler $flagAppContainingOutdatedScopesHandler,
     ): void {
         $this->beConstructedWith(
             $tokenStorage,
-            $findOneConnectedAppByUserIdQuery,
+            $findOneConnectedAppByUserIdentifierQuery,
             $flagAppContainingOutdatedScopesHandler,
         );
     }
@@ -72,14 +72,14 @@ class FlagConnectedAppWithOutdatedScopesActionSpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
         UserInterface $user,
-        FindOneConnectedAppByUserIdQueryInterface $findOneConnectedAppByUserIdQuery,
+        FindOneConnectedAppByUserIdentifierQueryInterface $findOneConnectedAppByUserIdentifierQuery,
         Request $request,
     ): void {
-        $user->getId()->willReturn(42);
+        $user->getUserIdentifier()->willReturn('userIdentifier');
         $token->getUser()->willReturn($user);
         $tokenStorage->getToken()->willReturn($token);
 
-        $findOneConnectedAppByUserIdQuery->execute(42)->willReturn(null);
+        $findOneConnectedAppByUserIdentifierQuery->execute('userIdentifier')->willReturn(null);
 
         $this
             ->shouldThrow(new AccessDeniedHttpException('Not an authenticated App'))
@@ -90,11 +90,11 @@ class FlagConnectedAppWithOutdatedScopesActionSpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
         UserInterface $user,
-        FindOneConnectedAppByUserIdQueryInterface $findOneConnectedAppByUserIdQuery,
+        FindOneConnectedAppByUserIdentifierQueryInterface $findOneConnectedAppByUserIdentifierQuery,
         FlagAppContainingOutdatedScopesHandler $flagAppContainingOutdatedScopesHandler,
         Request $request,
     ): void {
-        $user->getId()->willReturn(42);
+        $user->getUserIdentifier()->willReturn('userIdentifier');
         $token->getUser()->willReturn($user);
         $tokenStorage->getToken()->willReturn($token);
 
@@ -109,7 +109,7 @@ class FlagConnectedAppWithOutdatedScopesActionSpec extends ObjectBehavior
             'an_username',
         );
 
-        $findOneConnectedAppByUserIdQuery->execute(42)->willReturn($connectedApp);
+        $findOneConnectedAppByUserIdentifierQuery->execute('userIdentifier')->willReturn($connectedApp);
 
         $request->query = new InputBag(['scopes' => 'some other scopes']);
 
@@ -125,11 +125,11 @@ class FlagConnectedAppWithOutdatedScopesActionSpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
         UserInterface $user,
-        FindOneConnectedAppByUserIdQueryInterface $findOneConnectedAppByUserIdQuery,
+        FindOneConnectedAppByUserIdentifierQueryInterface $findOneConnectedAppByUserIdentifierQuery,
         FlagAppContainingOutdatedScopesHandler $flagAppContainingOutdatedScopesHandler,
         Request $request,
     ): void {
-        $user->getId()->willReturn(42);
+        $user->getUserIdentifier()->willReturn('userIdentifier');
         $token->getUser()->willReturn($user);
         $tokenStorage->getToken()->willReturn($token);
 
@@ -144,7 +144,7 @@ class FlagConnectedAppWithOutdatedScopesActionSpec extends ObjectBehavior
             'an_username',
         );
 
-        $findOneConnectedAppByUserIdQuery->execute(42)->willReturn($connectedApp);
+        $findOneConnectedAppByUserIdentifierQuery->execute('userIdentifier')->willReturn($connectedApp);
 
         $request->query = new InputBag();
 
