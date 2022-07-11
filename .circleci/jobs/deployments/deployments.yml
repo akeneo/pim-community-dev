@@ -537,7 +537,7 @@ jobs:
 
               GOOGLE_CLOUD_PROJECT=${GOOGLE_PROJECT_ID}
               GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
-              PIM_MASTER_DOMAIN="${INSTANCE_NAME}.bh.akeneo.ch"
+              PIM_MASTER_DOMAIN="${INSTANCE_NAME}.${GOOGLE_DOMAIN}"
               WORKLOAD_IDENTITY_KSA="${CIRCLE_BRANCH_LOWER}-ksa-workload-identity"
               WORKLOAD_IDENTITY_KSA_NAMESPACE=workload
               WORKLOAD_IDENTITY_GSA=gsa-account-workload-id
@@ -645,7 +645,7 @@ jobs:
               ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
               # Login to argocd
-              argocd login --insecure argocd.bh.akeneo.ch --username admin --password ${ARGOCD_PASSWORD}
+              argocd login --insecure argocd.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
 
               # Force synchro
               argocd app get ${CIRCLE_BRANCH_LOWER}-pim-argocd --hard-refresh
@@ -660,7 +660,7 @@ jobs:
               # argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-daemon --async
 
               echo "============================"
-              echo "url : https://argocd.bh.akeneo.ch"
+              echo "url : https://argocd.${GOOGLE_DOMAIN}"
               echo "user : admin"
               echo "password : ${ARGOCD_PASSWORD}"
               echo "============================"
@@ -780,10 +780,10 @@ jobs:
               cp /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-ingress.yaml /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
 
               ## {INSTANCE_NAME}-pim-web-ingress.yaml
-              sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.bh\.akeneo\.ch#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
+              sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.${GOOGLE_DOMAIN}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
               sed -i "s#pim-external-{{ \.Values\.global\.extraLabels\.instanceName }}#pim-external-${INSTANCE_NAME}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
               ## {INSTANCE_NAME}-pim-api-ingress.yaml
-              sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.bh\.akeneo\.ch#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
+              sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.${GOOGLE_DOMAIN}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
               sed -i "s#pim-api-external-{{ \.Values\.global\.extraLabels\.instanceName }}#pim-api-external-${INSTANCE_NAME}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
 
               git add deployments-ucs/pim-saas-service
@@ -798,7 +798,7 @@ jobs:
               ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
               # Login to argocd
-              argocd login --insecure argocd.bh.akeneo.ch --username admin --password ${ARGOCD_PASSWORD}
+              argocd login --insecure argocd.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
 
               # Force synchro
               argocd app get ${CIRCLE_BRANCH_LOWER}-pim-argocd --hard-refresh
