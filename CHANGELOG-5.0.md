@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.104 (2022-07-11)
+
 # 5.0.103 (2022-07-11)
 
 # 5.0.102 (2022-07-07)
@@ -16,6 +18,7 @@
 
 - Fix PHP alternative to 7.4 in Dockerfile
 - PIM-10491: [Backport PIM-9871] Fix Published Product Grid takes long time to load for high number of attribute usable in grid
+- PIM-10505 : Fix throwing exception when rejecting proposals from a product with an attribute with digits only code
 
 # 5.0.99 (2022-06-21)
 
