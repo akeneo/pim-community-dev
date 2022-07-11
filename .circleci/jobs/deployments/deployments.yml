@@ -700,12 +700,14 @@ jobs:
                       WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
                       WORKLOAD_IDENTITY_KSA_NAMESPACE=workload
                       WORKLOAD_IDENTITY_GSA=gsa-account-workload-id
+                      GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
 
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA_NAMESPACE=${WORKLOAD_IDENTITY_KSA_NAMESPACE} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_GSA=${WORKLOAD_IDENTITY_GSA} >> $BASH_ENV
+                      echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
 
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
@@ -719,6 +721,8 @@ jobs:
                       yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
                       yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityKSANamespace "${WORKLOAD_IDENTITY_KSA_NAMESPACE}"
                       yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityGSA "${WORKLOAD_IDENTITY_GSA}"
+                      yq w -i deployments-ucs/tenant/values.yaml common.googleZone "${GOOGLE_ZONE}"
+
             - run:
                   name: Deploy PIM on kubernetes
                   command: |
