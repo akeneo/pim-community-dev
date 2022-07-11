@@ -119,16 +119,6 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function fromProductIdentifiers(array $productIdentifiers): iterable
-    {
-        $productUuids = $this->sqlFindProductUuids->fromIdentifiers($productIdentifiers);
-
-        return $this->fromProductUuids($productUuids);
-    }
-
     private function fetchRows(array $productUuids): array
     {
         $sql = <<<SQL

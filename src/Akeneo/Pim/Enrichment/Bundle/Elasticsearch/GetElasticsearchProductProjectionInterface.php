@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Doctrine\DBAL\Exception;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
@@ -26,13 +25,4 @@ interface GetElasticsearchProductProjectionInterface
      * @throws ExceptionInterface
      */
     public function fromProductUuids(array $productUuids): iterable;
-
-    /**
-     * @return iterable<string, ElasticsearchProductProjection>
-     *
-     * @throws ObjectNotFoundException when one or several of the product are not found
-     *
-     * @deprecated Use fromProductUuids
-     */
-    public function fromProductIdentifiers(array $productIdentifiers): iterable;
 }
