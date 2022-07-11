@@ -37,7 +37,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Doctrine\DBAL\Connection;
 
 /**
  * JobInstance rest controller
@@ -48,7 +47,6 @@ use Doctrine\DBAL\Connection;
  */
 class JobInstanceController
 {
-    protected Connection $connection;
     protected IdentifiableObjectRepositoryInterface $repository;
     protected JobRegistry $jobRegistry;
     protected NormalizerInterface $jobInstanceNormalizer;
@@ -71,7 +69,6 @@ class JobInstanceController
     protected SecurityFacade $securityFacade;
 
     public function __construct(
-        Connection $connection,
         IdentifiableObjectRepositoryInterface $repository,
         JobRegistry $jobRegistry,
         NormalizerInterface $jobInstanceNormalizer,
@@ -93,7 +90,6 @@ class JobInstanceController
         FilesystemOperator $filesystem,
         SecurityFacade $securityFacade
     ) {
-        $this->connection = $connection;
         $this->repository = $repository;
         $this->jobRegistry = $jobRegistry;
         $this->jobInstanceNormalizer = $jobInstanceNormalizer;
@@ -339,11 +335,7 @@ class JobInstanceController
             throw new AccessDeniedHttpException();
         }
 
-        $sql = <<<SQL
-            DELETE FROM akeneo_batch_job_instance as ji WHERE ji.code = :code
-        SQL;
-
-        $this->connection->executeQuery($sql, ['code' => $code]);
+        $this->remover->remove($jobInstance);
 
         return new JsonResponse(null, 204);
     }

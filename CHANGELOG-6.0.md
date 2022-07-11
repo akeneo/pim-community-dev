@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-- PIM-10494: Fix performance issue when deleting job instance with lot of execution and warning
+- PIM-10494: Fix memory issue when trying to delete a job profile with many warnings
 
 # 6.0.35 (2022-07-12)
 
