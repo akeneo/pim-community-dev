@@ -33,13 +33,11 @@ class JobInstanceRepository extends EntityRepository implements IdentifiableObje
 
     public function remove(string $identifier): void
     {
-        $connection = $this->getEntityManager()->getConnection();
-
         $sql = <<<SQL
     DELETE FROM akeneo_batch_job_instance
     WHERE code = :code
 SQL;
 
-        $connection->executeQuery($sql, ['code' => $identifier]);
+        $this->getEntityManager()->getConnection()->executeQuery($sql, ['code' => $identifier]);
     }
 }
