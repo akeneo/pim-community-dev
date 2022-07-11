@@ -18,13 +18,15 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTestEnterprise\Pim\Permission\Integration\Persistence\Sql\UserRightsFixturesLoader;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class FetchUserRightsOnProductIntegration extends TestCase
 {
     /**
      * @test
      */
-    public function it_fetches_user_rights_of_an_uncategorized_product()
+    public function it_fetches_user_rights_of_an_uncategorized_product_uuid()
     {
         $fixtureLoader = new UserRightsFixturesLoader(static::$kernel->getContainer());
         $fixtureLoader->loadProductAndProductModels();
@@ -35,7 +37,10 @@ class FetchUserRightsOnProductIntegration extends TestCase
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
-        $productRights = $fetchUserRightOnProduct->fetchByIdentifier('not_categorized_variant_product', $userId);
+        $productRights = $fetchUserRightOnProduct->fetchByUuid(
+            $this->getProductUuid('not_categorized_variant_product'),
+            $userId
+        );
         Assert::assertFalse($productRights->canApplyDraftOnProduct());
         Assert::assertTrue($productRights->isProductEditable());
     }
@@ -43,7 +48,7 @@ class FetchUserRightsOnProductIntegration extends TestCase
     /**
      * @test
      */
-    public function it_fetches_user_rights_of_a_variant_product_with_editable_categories_and_owned_categories()
+    public function it_fetches_user_rights_of_a_variant_product_uuid_with_editable_categories_and_owned_categories()
     {
         $fixtureLoader = new UserRightsFixturesLoader(static::$kernel->getContainer());
         $fixtureLoader->loadProductAndProductModels();
@@ -54,7 +59,10 @@ class FetchUserRightsOnProductIntegration extends TestCase
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
-        $productRights = $fetchUserRightOnProduct->fetchByIdentifier('owned_variant_product', $userId);
+        $productRights = $fetchUserRightOnProduct->fetchByUuid(
+            $this->getProductUuid('owned_variant_product'),
+            $userId
+        );
         Assert::assertFalse($productRights->canApplyDraftOnProduct());
         Assert::assertTrue($productRights->isProductEditable());
         Assert::assertTrue($productRights->isProductViewable());
@@ -63,7 +71,7 @@ class FetchUserRightsOnProductIntegration extends TestCase
     /**
      * @test
      */
-    public function it_fetches_user_rights_of_a_variant_product_with_only_editable_categories()
+    public function it_fetches_user_rights_of_a_variant_product_uuid_with_only_editable_categories()
     {
         $fixtureLoader = new UserRightsFixturesLoader(static::$kernel->getContainer());
         $fixtureLoader->loadProductAndProductModels();
@@ -74,7 +82,10 @@ class FetchUserRightsOnProductIntegration extends TestCase
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
-        $productRights = $fetchUserRightOnProduct->fetchByIdentifier('editable_variant_product', $userId);
+        $productRights = $fetchUserRightOnProduct->fetchByUuid(
+            $this->getProductUuid('editable_variant_product'),
+            $userId
+        );
         Assert::assertTrue($productRights->canApplyDraftOnProduct());
         Assert::assertFalse($productRights->isProductEditable());
     }
@@ -82,7 +93,7 @@ class FetchUserRightsOnProductIntegration extends TestCase
     /**
      * @test
      */
-    public function it_fetches_user_rights_of_a_product_with_non_viewable_categories()
+    public function it_fetches_user_rights_of_a_product_uuid_with_non_viewable_categories()
     {
 
         $fixtureLoader = new UserRightsFixturesLoader(static::$kernel->getContainer());
@@ -94,7 +105,10 @@ class FetchUserRightsOnProductIntegration extends TestCase
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
-        $productRights = $fetchUserRightOnProduct->fetchByIdentifier('not_viewable_variant_product', $userId);
+        $productRights = $fetchUserRightOnProduct->fetchByUuid(
+            $this->getProductUuid('not_viewable_variant_product'),
+            $userId
+        );
         Assert::assertFalse($productRights->canApplyDraftOnProduct());
         Assert::assertFalse($productRights->isProductEditable());
         Assert::assertFalse($productRights->isProductViewable());
@@ -103,7 +117,7 @@ class FetchUserRightsOnProductIntegration extends TestCase
     /**
      * @test
      */
-    public function it_fetches_multiple_products_at_the_same_time()
+    public function it_fetches_multiple_products_uuids_at_the_same_time()
     {
         $fixtureLoader = new UserRightsFixturesLoader(static::$kernel->getContainer());
         $fixtureLoader->loadProductAndProductModels();
@@ -114,8 +128,11 @@ class FetchUserRightsOnProductIntegration extends TestCase
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
-        $productRights = $fetchUserRightOnProduct->fetchByIdentifiers(
-            ['not_viewable_variant_product', 'editable_variant_product'],
+        $productRights = $fetchUserRightOnProduct->fetchByUuids(
+            [
+                $this->getProductUuid('not_viewable_variant_product'),
+                $this->getProductUuid('editable_variant_product')
+            ],
             $userId
         );
         Assert::assertCount(2, $productRights);
@@ -124,7 +141,7 @@ class FetchUserRightsOnProductIntegration extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_product_does_not_exist()
+    public function it_throws_an_exception_when_product_uuid_does_not_exist()
     {
         $this->expectException(ObjectNotFoundException::class);
 
@@ -134,7 +151,7 @@ class FetchUserRightsOnProductIntegration extends TestCase
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
-        $fetchUserRightOnProduct->fetchByIdentifier('foo', $userId);
+        $fetchUserRightOnProduct->fetchByUuid(Uuid::uuid4(), $userId);
     }
 
     /**
@@ -143,5 +160,14 @@ class FetchUserRightsOnProductIntegration extends TestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function getProductUuid(string $productIdentifier): UuidInterface
+    {
+        $result = $this
+            ->get('database_connection')
+            ->fetchOne('SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier=:identifier', ['identifier' => $productIdentifier]);
+
+        return Uuid::fromString($result);
     }
 }

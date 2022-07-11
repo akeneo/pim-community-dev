@@ -168,7 +168,6 @@ services:
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product_model'
             - '@pimee_workflow.query.get_workflow_status_from_product_identifiers'
-            - '@database_connection'
 
     akeneo.pim.enrichment.product.connector.get_product_model_from_codes_with_permissions:
         class: Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel\SqlGetConnectorProductModelsWithPermissions
