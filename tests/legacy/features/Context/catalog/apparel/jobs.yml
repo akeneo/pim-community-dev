@@ -175,7 +175,7 @@ jobs:
             withHeader: true
             storage:
                 type: local
-                file_path: /tmp/families.csv
+                file_path: /tmp/family.csv
     category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import

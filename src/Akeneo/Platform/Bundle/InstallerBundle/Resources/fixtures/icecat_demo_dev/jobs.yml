@@ -6,7 +6,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:           /tmp/product.csv
             uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'
@@ -24,7 +25,8 @@ jobs:
         type: import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path: /tmp/product_model.csv
             uploadAllowed: true
             delimiter: ;
             enclosure: '"'
@@ -91,7 +93,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:            /tmp/category.csv
             uploadAllowed:       true
             delimiter:           ;
             enclosure:           '"'
@@ -105,7 +108,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path:   /tmp/category.csv
     csv_association_type_import:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_import
@@ -113,7 +117,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:      /tmp/association_type.csv
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -127,7 +132,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path:   /tmp/association_type.csv
     csv_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_import
@@ -135,7 +141,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:      /tmp/group.csv
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -149,7 +156,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path:   /tmp/group.csv
     csv_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
@@ -157,7 +165,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:      /tmp/attribute.csv
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -171,7 +180,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path:   /tmp/attribute.csv
     csv_attribute_option_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_import
@@ -179,7 +189,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:      /tmp/option.csv
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -190,7 +201,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:      /tmp/family.csv
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -201,7 +213,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:      /tmp/family_variant.csv
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -215,7 +228,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path:   /tmp/option.csv
     update_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     update_product_value
@@ -325,7 +339,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path:   /tmp/family.csv
     csv_family_variant_export:
         connector: Akeneo CSV Connector
         alias:     csv_family_variant_export
@@ -336,7 +351,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: none
+                type: local
+                file_path:   /tmp/family_variant.csv
     xlsx_product_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_export
@@ -396,7 +412,8 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             storage:
-                type: none
+                type: local
+                file_path:   /tmp/group.xlsx
     xlsx_product_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_quick_export
@@ -426,7 +443,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:           /tmp/product.xlsx
             uploadAllowed:      true
             enabled:            true
             categoriesColumn:   categories
@@ -442,7 +460,8 @@ jobs:
         type: import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path: /tmp/product_model.xlsx
             uploadAllowed: true
             enabled: true
             categoriesColumn: categories
@@ -457,8 +476,9 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
-            uploadAllowed: true
+                type: local
+                file_path:            /tmp/category.xlsx
+            uploadAllowed:       true
     xlsx_association_type_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_association_type_import
@@ -466,7 +486,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:      /tmp/association_type.xlsx
             uploadAllowed: true
     xlsx_attribute_import:
         connector: Akeneo XLSX Connector
@@ -475,7 +496,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:      /tmp/attribute.xlsx
             uploadAllowed: true
     xlsx_attribute_option_import:
         connector: Akeneo XLSX Connector
@@ -484,7 +506,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:      /tmp/option.xlsx
             uploadAllowed: true
     xlsx_family_import:
         connector: Akeneo XLSX Connector
@@ -493,7 +516,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:      /tmp/family.xlsx
             uploadAllowed: true
     xlsx_family_variant_import:
         connector: Akeneo XLSX Connector
@@ -502,7 +526,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:      /tmp/family_variant.xlsx
             uploadAllowed: true
     xlsx_group_import:
         connector: Akeneo XLSX Connector
@@ -511,7 +536,8 @@ jobs:
         type:      import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path:      /tmp/group.xlsx
             uploadAllowed: true
     xlsx_family_export:
         connector: Akeneo XLSX Connector
@@ -522,7 +548,8 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             storage:
-                type: none
+                type: local
+                file_path: /tmp/family.xlsx
     xlsx_family_variant_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_family_variant_export
@@ -532,7 +559,8 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             storage:
-                type: none
+                type: local
+                file_path: /tmp/family_variant.xlsx
     xlsx_category_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_category_export
@@ -542,7 +570,8 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             storage:
-                type: none
+                type: local
+                file_path:   /tmp/category.xlsx
     xlsx_attribute_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_attribute_export
@@ -552,7 +581,8 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             storage:
-                type: none
+                type: local
+                file_path:   /tmp/attribute.xlsx
     xlsx_attribute_option_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_attribute_option_export
@@ -562,7 +592,8 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             storage:
-                type: none
+                type: local
+                file_path:   /tmp/option.xlsx
     xlsx_association_type_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_association_type_export
@@ -572,7 +603,8 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             storage:
-                type: none
+                type: local
+                file_path:   /tmp/association_type.xlsx
     csv_channel_export:
         connector: Akeneo CSV Connector
         alias:     csv_channel_export
@@ -624,8 +656,6 @@ jobs:
         label:     Demo CSV currency import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -635,8 +665,6 @@ jobs:
         label:     Demo CSV channel import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -646,8 +674,6 @@ jobs:
         label:     Demo CSV locale import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -657,8 +683,6 @@ jobs:
         label:     Demo CSV group_type import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -668,8 +692,6 @@ jobs:
         label:     Demo CSV attribute_group import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -679,8 +701,6 @@ jobs:
         label:     Demo XLSX currency import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
     xlsx_channel_import:
         connector: Akeneo XLSX Connector
@@ -688,8 +708,6 @@ jobs:
         label:     Demo XLSX channel import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
     xlsx_locale_import:
         connector: Akeneo XLSX Connector
@@ -697,8 +715,6 @@ jobs:
         label:     Demo XLSX locale import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
     xlsx_group_type_import:
         connector: Akeneo XLSX Connector
@@ -706,8 +722,6 @@ jobs:
         label:     Demo XLSX group_type import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
     xlsx_attribute_group_import:
         connector: Akeneo XLSX Connector
@@ -715,8 +729,6 @@ jobs:
         label:     Demo XLSX attribute_group import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
     xlsx_channel_export:
         connector: Akeneo XLSX Connector
@@ -816,7 +828,8 @@ jobs:
         type: import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path: /tmp/user_group.csv
             uploadAllowed: true
             delimiter: ;
             enclosure: '"'
@@ -827,7 +840,8 @@ jobs:
         type: import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path: /tmp/user_group.xlsx
             uploadAllowed: true
     csv_user_import:
         connector: Akeneo CSV Connector
@@ -836,7 +850,8 @@ jobs:
         type: import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path: /tmp/user.csv
             uploadAllowed: true
             delimiter: ;
             enclosure: '"'
@@ -847,7 +862,8 @@ jobs:
         type: import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path: /tmp/user.xlsx
     csv_user_role_import:
         connector: Akeneo CSV Connector
         alias: csv_user_role_import
@@ -855,7 +871,8 @@ jobs:
         type: import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path: /tmp/user_role.csv
             uploadAllowed: true
             delimiter: ;
             enclosure: '"'
@@ -866,7 +883,8 @@ jobs:
         type: import
         configuration:
             storage:
-                type: none
+                type: local
+                file_path: /tmp/user_role.xlsx
             uploadAllowed: true
     compute_completeness_of_products_family:
         connector: internal
