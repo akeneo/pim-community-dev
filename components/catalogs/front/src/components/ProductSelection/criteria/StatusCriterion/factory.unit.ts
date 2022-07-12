@@ -1,17 +1,10 @@
-jest.unmock('./index');
+jest.unmock('./factory');
 
-import criterion from './index';
+import factory from './factory';
 import {Operator} from '../../models/Operator';
 
-test('it provides a component and the state factory', () => {
-    expect(criterion).toMatchObject({
-        component: expect.any(Function),
-        factory: expect.any(Function),
-    });
-});
-
-test('it creates a StatusCriterion state with empty values', () => {
-    expect(criterion.factory()).toMatchObject({
+test('it creates a StatusCriterion state with default values', () => {
+    expect(factory()).toMatchObject({
         field: 'enabled',
         operator: Operator.EQUALS,
         value: true,
@@ -20,7 +13,7 @@ test('it creates a StatusCriterion state with empty values', () => {
 
 test('it creates a StatusCriterion state with given values', () => {
     expect(
-        criterion.factory({
+        factory({
             operator: Operator.NOT_EQUAL,
             value: false,
         })

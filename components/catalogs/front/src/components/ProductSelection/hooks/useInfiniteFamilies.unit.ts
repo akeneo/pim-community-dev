@@ -132,3 +132,22 @@ test('it searches with a string', async () => {
         fetchNextPage: expect.any(Function),
     });
 });
+
+test('it stops fetching if there is no more pages', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify([]));
+
+    const {result, waitForNextUpdate} = renderHook(() => useInfiniteFamilies(), {
+        wrapper: ReactQueryWrapper,
+    });
+
+    await waitForNextUpdate();
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(result.current).toMatchObject({
+        hasNextPage: false,
+    });
+
+    await result.current.fetchNextPage();
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+});

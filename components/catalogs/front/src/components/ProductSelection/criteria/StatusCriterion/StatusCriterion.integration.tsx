@@ -1,12 +1,11 @@
-jest.unmock('./StatusCriterion');
-
 import React from 'react';
-import {act, render, screen, within} from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import {fireEvent, render, screen, within} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {StatusCriterion} from './StatusCriterion';
 import {Operator} from '../../models/Operator';
+
+jest.mock('../../hooks/useOperatorTranslator');
 
 test('it renders without error', () => {
     render(
@@ -69,8 +68,8 @@ test('it calls onChange when the operator changes', () => {
 
     const container = screen.getByTestId('operator');
 
-    act(() => userEvent.click(within(container).getByRole('textbox')));
-    act(() => userEvent.click(screen.getByText(Operator.NOT_EQUAL)));
+    fireEvent.click(within(container).getByRole('textbox'));
+    fireEvent.click(screen.getByText(Operator.NOT_EQUAL));
 
     expect(onChange).toHaveBeenCalledWith({
         field: 'enabled',
@@ -99,8 +98,8 @@ test('it calls onChange when the value changes', () => {
 
     const container = screen.getByTestId('value');
 
-    act(() => userEvent.click(within(container).getByRole('textbox')));
-    act(() => userEvent.click(screen.getByText('akeneo_catalogs.product_selection.criteria.status.disabled')));
+    fireEvent.click(within(container).getByRole('textbox'));
+    fireEvent.click(screen.getByText('akeneo_catalogs.product_selection.criteria.status.disabled'));
 
     expect(onChange).toHaveBeenCalledWith({
         field: 'enabled',

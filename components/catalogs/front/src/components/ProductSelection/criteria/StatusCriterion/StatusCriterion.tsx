@@ -77,7 +77,13 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                 </Fields>
             </List.Cell>
             <List.RemoveCell>
-                <IconButton ghost='borderless' level='tertiary' icon={<CloseIcon />} title='' onClick={onRemove} />
+                <IconButton
+                    ghost='borderless'
+                    level='tertiary'
+                    icon={<CloseIcon />}
+                    title='remove'
+                    onClick={onRemove}
+                />
             </List.RemoveCell>
         </List.Row>
     );

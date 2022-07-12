@@ -32,7 +32,7 @@ const criterions: string[] = ['enabled', 'family'];
 test.each(criterions)('it returns a criterion when searching for "%s"', async field => {
     const {result} = renderHook(() => useCriteriaRegistry());
 
-    await expect(await result.current.getCriterionByField(field)).toMatchObject({
+    expect(await result.current.getCriterionByField(field)).toMatchObject({
         component: expect.any(Function),
         factory: expect.any(Function),
     });

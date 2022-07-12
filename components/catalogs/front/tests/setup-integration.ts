@@ -1,14 +1,12 @@
 // Autoload the extend expect
 import '@testing-library/jest-dom';
 import {useEffect, useState} from 'react';
-import {useTranslate, useSessionStorageState} from '@akeneo-pim-community/shared';
+import {useSessionStorageState, useTranslate} from '@akeneo-pim-community/shared';
 
-(useTranslate as jest.Mock).mockImplementation(() => (key: string) => key);
-
+jest.mock('@akeneo-pim-community/shared');
 require('jest-fetch-mock').enableMocks();
 
-jest.unmock('./ReactQueryWrapper');
-
+(useTranslate as jest.Mock).mockImplementation(() => (key: string) => key);
 (useSessionStorageState as jest.Mock).mockImplementation((defaultValue: any, key: string) => {
     const storageValue = sessionStorage.getItem(key) as string;
     const [value, setValue] = useState<any>(null !== storageValue ? JSON.parse(storageValue) : defaultValue);
