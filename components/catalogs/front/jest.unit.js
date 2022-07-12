@@ -14,9 +14,10 @@ module.exports = {
     collectCoverage: true,
     collectCoverageFrom: [
         '<rootDir>/src/**/use*.ts',
-        '<rootDir>/src/**/hooks/*.ts',
         '<rootDir>/src/**/*Reducer.ts',
+        '<rootDir>/src/**/hooks/*.ts',
         '<rootDir>/src/**/reducers/*.ts',
+        '<rootDir>/src/**/utils/*.ts',
     ],
     coverageThreshold: {
         global: {

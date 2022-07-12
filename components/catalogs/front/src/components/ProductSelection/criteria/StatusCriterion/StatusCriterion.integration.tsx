@@ -1,5 +1,3 @@
-jest.unmock('./StatusCriterion');
-
 import React from 'react';
 import {act, render, screen, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -7,6 +5,8 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {StatusCriterion} from './StatusCriterion';
 import {Operator} from '../../models/Operator';
+
+jest.mock('../../hooks/useOperatorTranslator');
 
 test('it renders without error', () => {
     render(

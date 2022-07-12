@@ -1,5 +1,3 @@
-jest.unmock('./ErrorBoundary');
-
 import React from 'react';
 import {render, screen} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
@@ -25,7 +23,7 @@ test('it renders a fallback message when an error is thrown', () => {
 
     // mute the error in the output
     jest.spyOn(console, 'error');
-    (console.error as jest.Mock).mockImplementation(() => {});
+    (console.error as jest.Mock).mockImplementation(() => null);
 
     render(
         <ThemeProvider theme={pimTheme}>
