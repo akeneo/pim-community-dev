@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -31,20 +32,24 @@ class ComputeAndPersistProductCompletenesses
     }
 
     /**
-     * @param string $productIdentifier
-     */
-    public function fromProductIdentifier(string $productIdentifier): void
-    {
-        $this->fromProductIdentifiers([$productIdentifier]);
-    }
-
-    /**
      * @param string[] $productIdentifiers
+     * @deprecated
      */
     public function fromProductIdentifiers(array $productIdentifiers): void
     {
         foreach (array_chunk($productIdentifiers, self::CHUNK_SIZE) as $identifiersChunk) {
             $completenessCollections = $this->completenessCalculator->fromProductIdentifiers($identifiersChunk);
+            $this->saveProductCompletenesses->saveAll($completenessCollections);
+        }
+    }
+
+    /**
+     * @param UuidInterface[] $productUuids
+     */
+    public function fromProductUuids(array $productUuids): void
+    {
+        foreach (array_chunk($productUuids, self::CHUNK_SIZE) as $uuidsChunk) {
+            $completenessCollections = $this->completenessCalculator->fromProductUuids($uuidsChunk);
             $this->saveProductCompletenesses->saveAll($completenessCollections);
         }
     }

@@ -82,7 +82,6 @@ final class ComputeProductAndAncestorsSubscriber implements EventSubscriberInter
             $productModelCodes
         );
         if (!empty($variantProductUuids)) {
-            // TODO
             $this->computeAndPersistProductCompletenesses->fromProductUuids($variantProductUuids);
         }
 
