@@ -90,6 +90,7 @@ final class ComputeProductAndAncestorsSubscriber implements EventSubscriberInter
             return;
         }
 
+        // TODO
         $variantProductIdentifiers = $this->getDescendantVariantProductIdentifiers->fromProductModelCodes(
             $productModelCodes
         );

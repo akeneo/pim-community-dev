@@ -36,11 +36,17 @@ class ProductAndAncestorsIndexer
      */
     public function indexFromProductIdentifiers(array $identifiers, array $options = []): void
     {
-        $ancestorProductModelCodes = $this->getAncestorProductModelCodes->fromProductIdentifiers($identifiers);
+        $uuids = $this->sqlFindProductUuids->fromIdentifiers($identifiers);
+
+        $this->indexFromProductUuids($uuids, $options);
+    }
+
+    public function indexFromProductUuids(array $uuids, array $options = []): void
+    {
+        $ancestorProductModelCodes = $this->getAncestorProductModelCodes->fromProductUuids($uuids);
         if (!empty($ancestorProductModelCodes)) {
             $this->productModelIndexer->indexFromProductModelCodes($ancestorProductModelCodes, $options);
         }
-        $uuids = $this->sqlFindProductUuids->fromIdentifiers($identifiers);
         $this->productIndexer->indexFromProductUuids($uuids, $options);
     }
 
