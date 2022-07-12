@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain\Query;
 
+use Ramsey\Uuid\UuidInterface;
+
 interface FindQualityScoresInterface
 {
-    public function forProduct(string $productIdentifier, string $channel, string $locale): ?string;
+    public function forProduct(UuidInterface $productUuid, string $channel, string $locale): ?string;
 }

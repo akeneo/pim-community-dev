@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Query\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface;
+use Ramsey\Uuid\UuidInterface;
 
 class FindQualityScores implements FindQualityScoresInterface
 {
@@ -23,9 +24,9 @@ class FindQualityScores implements FindQualityScoresInterface
     ) {
     }
 
-    public function forProduct(string $productIdentifier, string $channel, string $locale): ?string
+    public function forProduct(UuidInterface $productUuid, string $channel, string $locale): ?string
     {
-        $productScoreCollection = $this->getProductScoresQuery->byProductIdentifier($productIdentifier);
+        $productScoreCollection = $this->getProductScoresQuery->byProductUuid($productUuid);
         $productScore = $productScoreCollection->getQualityScoreByChannelAndLocale($channel, $locale);
 
         return null !== $productScore ? $productScore->getLetter() : null;
