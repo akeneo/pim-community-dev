@@ -26,7 +26,7 @@ class ExportProductsByImagesIntegration extends AbstractExportTestCase
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;an_image
-%s;product_1;;1;;;files/product_1/an_image/akeneo.jpg
+{$product1->getUuid()->toString()};product_1;;1;;;files/product_1/an_image/akeneo.jpg
 
 CSV;
 
@@ -46,7 +46,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportWithFilterStartWithOnFileValue()
@@ -54,7 +54,7 @@ CSV;
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;an_image
-%s;product_2;;1;;;files/product_2/an_image/ziggy.png
+{$product1->getUuid()->toString()};product_2;;1;;;files/product_2/an_image/ziggy.png
 
 CSV;
 
@@ -74,6 +74,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 }

@@ -104,11 +104,11 @@ class ExportProductsByLocalesIntegration extends AbstractExportTestCase
         $product5 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('withLocaleSpecificAttribute');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;description-fr_FR;name-fr_FR
-%s;complete;;1;localized;;"French desc";"French name"
-%s;empty;;1;localized;;;
-%s;english;;1;localized;;"French desc";
-%s;french;;1;localized;;"French desc";"French name"
-%s;withLocaleSpecificAttribute;;1;accessories;;;
+{$product1->getUuid()->toString()};complete;;1;localized;;"French desc";"French name"
+{$product2->getUuid()->toString()};empty;;1;localized;;;
+{$product3->getUuid()->toString()};english;;1;localized;;"French desc";
+{$product4->getUuid()->toString()};french;;1;localized;;"French desc";"French name"
+{$product5->getUuid()->toString()};withLocaleSpecificAttribute;;1;accessories;;;
 
 CSV;
 
@@ -122,14 +122,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-            $product4->getUuid()->toString(),
-            $product5->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportWithEnglishAndFrenchData()
@@ -141,11 +134,11 @@ CSV;
         $product5 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('withLocaleSpecificAttribute');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;description-fr_FR;localeSpecificAttribute;name-en_US;name-fr_FR
-%s;complete;;1;localized;;"French desc";;"English name";"French name"
-%s;empty;;1;localized;;;;;
-%s;english;;1;localized;;"French desc";;"English name";
-%s;french;;1;localized;;"French desc";;;"French name"
-%s;withLocaleSpecificAttribute;;1;accessories;;;"Locale Specific Value";"English name";
+{$product1->getUuid()->toString()};complete;;1;localized;;"French desc";;"English name";"French name"
+{$product2->getUuid()->toString()};empty;;1;localized;;;;;
+{$product3->getUuid()->toString()};english;;1;localized;;"French desc";;"English name";
+{$product4->getUuid()->toString()};french;;1;localized;;"French desc";;;"French name"
+{$product5->getUuid()->toString()};withLocaleSpecificAttribute;;1;accessories;;;"Locale Specific Value";"English name";
 
 CSV;
 
@@ -159,14 +152,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-            $product4->getUuid()->toString(),
-            $product5->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportAfterRemovingFrenchLocaleFromTabletChannel()
@@ -180,9 +166,9 @@ CSV;
         $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('withLocaleSpecificAttribute');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;localeSpecificAttribute;name-en_US
-%s;complete;;1;localized;;;"English name"
-%s;english;;1;localized;;;"English name"
-%s;withLocaleSpecificAttribute;;1;accessories;;"Locale Specific Value";"English name"
+{$product1->getUuid()->toString()};complete;;1;localized;;;"English name"
+{$product2->getUuid()->toString()};english;;1;localized;;;"English name"
+{$product3->getUuid()->toString()};withLocaleSpecificAttribute;;1;accessories;;"Locale Specific Value";"English name"
 
 CSV;
 
@@ -202,11 +188,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 }

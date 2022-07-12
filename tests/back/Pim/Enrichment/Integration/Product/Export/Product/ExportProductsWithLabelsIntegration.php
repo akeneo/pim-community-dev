@@ -29,13 +29,13 @@ class ExportProductsWithLabelsIntegration extends AbstractExportTestCase
         $apollonPinkM = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_pink_m');
         $summerShirt = $this->get('pim_catalog.repository.product')->findOneByIdentifier('summer_shirt');
         $expectedCsvWithTranslations = <<<CSV
-[uuid];[sku];Catégories;Activé;Famille;Parent;Groupes;Couleur;"Est-ce en vente ?";"Une métrique";"Une métrique (Unité)";"Nom (anglais États-Unis)";"Pack Groupes";"Pack Produits";"Pack Modèles de produits";"Association avec des quantitées Produits";"Association avec des quantitées Produits Quantité";"Association avec des quantitées Modèles de produits";"Association avec des quantitées Modèles de produits Quantité";Taille;"Remplacement Groupes";"Remplacement Produits";"Remplacement Modèles de produits";"Vente incitative Groupes";"Vente incitative Produits";"Vente incitative Modèles de produits";"Vente croisée Groupes";"Vente croisée Produits";"Vente croisée Modèles de produits"
-%s;apollon_pink_m;T-shirt;Oui;Vêtements;"Tshirt Appolon";;Bleu,Rose;Oui;12;Kilogramme;;;;;;;;;"Taille M";;;;;;;;;
-%s;summer_shirt;Été,T-shirt;Oui;Vêtements;;;Bleu,Rose;Non;12;Kilogramme;;;;;"Tshirt Appolon";12;"Tshirt Appolon";5;"Taille L";;;;;;;;"Tshirt Appolon";"Tshirt Appolon"
+uuid;[sku];Catégories;Activé;Famille;Parent;Groupes;Couleur;"Est-ce en vente ?";"Une métrique";"Une métrique (Unité)";"Nom (anglais États-Unis)";"Pack Groupes";"Pack Produits";"Pack Modèles de produits";"Association avec des quantitées Produits";"Association avec des quantitées Produits Quantité";"Association avec des quantitées Modèles de produits";"Association avec des quantitées Modèles de produits Quantité";Taille;"Remplacement Groupes";"Remplacement Produits";"Remplacement Modèles de produits";"Vente incitative Groupes";"Vente incitative Produits";"Vente incitative Modèles de produits";"Vente croisée Groupes";"Vente croisée Produits";"Vente croisée Modèles de produits"
+{$apollonPinkM->getUuid()->toString()};apollon_pink_m;T-shirt;Oui;Vêtements;"Tshirt Appolon";;Bleu,Rose;Oui;12;Kilogramme;;;;;;;;;"Taille M";;;;;;;;;
+{$summerShirt->getUuid()->toString()};summer_shirt;Été,T-shirt;Oui;Vêtements;;;Bleu,Rose;Non;12;Kilogramme;;;;;"Tshirt Appolon";12;"Tshirt Appolon";5;"Taille L";;;;;;;;"Tshirt Appolon";"Tshirt Appolon"
 
 CSV;
         $this->assertProductExport(
-            \sprintf($expectedCsvWithTranslations, $apollonPinkM->getUuid()->toString(), $summerShirt->getUuid()->toString()),
+            $expectedCsvWithTranslations,
             ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'fr_FR']
         );
     }
@@ -46,12 +46,12 @@ CSV;
         $summerShirt = $this->get('pim_catalog.repository.product')->findOneByIdentifier('summer_shirt');
         $expectedCsvWithNoTranslations = <<<CSV
 [uuid];[sku];[categories];[enabled];[family];[parent];[groups];[color];[is_on_sale];[metric];"[metric] ([unit])";"[name] ([en_US])";"[PACK] [groups]";"[PACK] [products]";"[PACK] [product_models]";"[QUANTITY] [products]";"[QUANTITY] [products] [quantity]";"[QUANTITY] [product_models]";"[QUANTITY] [product_models] [quantity]";[size];"[SUBSTITUTION] [groups]";"[SUBSTITUTION] [products]";"[SUBSTITUTION] [product_models]";"[UPSELL] [groups]";"[UPSELL] [products]";"[UPSELL] [product_models]";"[X_SELL] [groups]";"[X_SELL] [products]";"[X_SELL] [product_models]"
-%s;apollon_pink_m;[tshirt];[yes];[clothing];[apollon];;[blue],[pink];[yes];12;[KILOGRAM];;;;;;;;;[m];;;;;;;;;
-%s;summer_shirt;[summer],[tshirt];[yes];[clothing];;;[blue],[pink];[no];12;[KILOGRAM];;;;;[apollon_pink_m];12;[apollon];5;[l];;;;;;;;[apollon_pink_m];[apollon]
+{$apollonPinkM->getUuid()->toString()};apollon_pink_m;[tshirt];[yes];[clothing];[apollon];;[blue],[pink];[yes];12;[KILOGRAM];;;;;;;;;[m];;;;;;;;;
+{$summerShirt->getUuid()->toString()};summer_shirt;[summer],[tshirt];[yes];[clothing];;;[blue],[pink];[no];12;[KILOGRAM];;;;;[apollon_pink_m];12;[apollon];5;[l];;;;;;;;[apollon_pink_m];[apollon]
 
 CSV;
         $this->assertProductExport(
-            \sprintf($expectedCsvWithNoTranslations, $apollonPinkM->getUuid()->toString(), $summerShirt->getUuid()->toString()),
+            $expectedCsvWithNoTranslations,
             ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'unknown_locale']
         );
     }

@@ -48,8 +48,8 @@ class ExportProductsByMultiSelectReferenceDataIntegration extends AbstractExport
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_airguard_braid');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_ref_data_multi_select
-%s;product_airguard;;1;a_family;;airguard
-%s;product_airguard_braid;;1;a_family;;airguard,braid
+{$product1->getUuid()->toString()};product_airguard;;1;a_family;;airguard
+{$product1->getUuid()->toString()};product_airguard_braid;;1;a_family;;airguard,braid
 
 CSV;
 

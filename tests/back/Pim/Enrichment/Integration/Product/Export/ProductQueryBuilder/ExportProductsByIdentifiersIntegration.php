@@ -20,7 +20,7 @@ class ExportProductsByIdentifiersIntegration extends AbstractExportTestCase
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups
-%s;product_1;;1;;
+{$product1->getUuid()->toString()};product_1;;1;;
 
 CSV;
 
@@ -40,7 +40,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportWithFilterOnAListOfIdentifiers()
@@ -49,8 +49,8 @@ CSV;
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups
-%s;product_1;;1;;
-%s;product_2;;1;;
+{$product1->getUuid()->toString()};product_1;;1;;
+{$product2->getUuid()->toString()};product_2;;1;;
 
 CSV;
 
@@ -70,6 +70,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 }

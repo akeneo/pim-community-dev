@@ -33,8 +33,8 @@ class ExportProductsByCategoriesIntegration extends AbstractExportTestCase
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_single_category_A');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups
-%s;product_with_categories;categoryA,categoryA1,categoryA2;1;;
-%s;product_with_single_category_A;categoryA;1;;
+{$product1->getUuid()->toString()};product_with_categories;categoryA,categoryA1,categoryA2;1;;
+{$product2->getUuid()->toString()};product_with_single_category_A;categoryA;1;;
 
 CSV;
 
@@ -54,6 +54,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 }

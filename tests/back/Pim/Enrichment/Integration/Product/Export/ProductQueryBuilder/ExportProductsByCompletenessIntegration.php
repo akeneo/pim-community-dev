@@ -56,9 +56,9 @@ class ExportProductsByCompletenessIntegration extends AbstractExportTestCase
         $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('french');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;name-en_US
-%s;complete;;1;localized;;"English complete"
-%s;english;;1;localized;;"English name"
-%s;french;;1;localized;;
+{$product1->getUuid()->toString()};complete;;1;localized;;"English complete"
+{$product2->getUuid()->toString()};english;;1;localized;;"English name"
+{$product3->getUuid()->toString()};french;;1;localized;;
 
 CSV;
 
@@ -81,12 +81,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportWithCompleteProductsOnAllLocales()
@@ -94,7 +89,7 @@ CSV;
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('complete');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;name-en_US
-%s;complete;;1;localized;;"English complete"
+{$product1->getUuid()->toString()};complete;;1;localized;;"English complete"
 
 CSV;
 
@@ -117,7 +112,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportWithIncompleteProductsOnAllLocales()
@@ -125,7 +120,7 @@ CSV;
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('empty');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;name-en_US
-%s;empty;;1;localized;;
+{$product1->getUuid()->toString()};empty;;1;localized;;
 
 CSV;
 
@@ -148,7 +143,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportWithoutFilterOnCompleteness()
@@ -159,10 +154,10 @@ CSV;
         $product4 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('french');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;name-en_US
-%s;complete;;1;localized;;"English complete"
-%s;empty;;1;localized;;
-%s;english;;1;localized;;"English name"
-%s;french;;1;localized;;
+{$product1->getUuid()->toString()};complete;;1;localized;;"English complete"
+{$product2->getUuid()->toString()};empty;;1;localized;;
+{$product3->getUuid()->toString()};english;;1;localized;;"English name"
+{$product4->getUuid()->toString()};french;;1;localized;;
 
 CSV;
 
@@ -176,12 +171,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-            $product4->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 }

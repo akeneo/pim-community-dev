@@ -174,18 +174,11 @@ class ExportProductsIntegration extends AbstractExportTestCase
 
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;parent;groups;color;ean;name-en_US;size;variation_name
-%s;apollon_pink_l;round-neck,tshirt;1;clothing;apollon_pink;;pink;12345679;;l;"my pink tshirt"
-%s;apollon_pink_m;round-neck,spring,tshirt;1;clothing;apollon_pink;;pink;12345678;;m;"my pink tshirt"
-%s;apollon_pink_xl;round-neck,summer,tshirt;1;clothing;apollon_pink;;pink;12345465;;xl;"my pink tshirt"
+{$apollonPinkL->getUuid()->toString()};apollon_pink_l;round-neck,tshirt;1;clothing;apollon_pink;;pink;12345679;;l;"my pink tshirt"
+{$apollonPinkM->getUuid()->toString()};apollon_pink_m;round-neck,spring,tshirt;1;clothing;apollon_pink;;pink;12345678;;m;"my pink tshirt"
+{$apollonPinkXL->getUuid()->toString()};apollon_pink_xl;round-neck,summer,tshirt;1;clothing;apollon_pink;;pink;12345465;;xl;"my pink tshirt"
 
 CSV;
-
-        $expectedCsv = \sprintf(
-            $expectedCsv,
-            $apollonPinkL->getUuid()->toString(),
-            $apollonPinkM->getUuid()->toString(),
-            $apollonPinkXL->getUuid()->toString()
-        );
 
         $this->assertProductExport($expectedCsv, []);
     }
@@ -199,10 +192,10 @@ CSV;
 
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_text_area
-%s;product_1;;1;a_family;;"test ""1234"" DLE test  \"" joli produit ; vive la data """
+{$product->getUuid()->toString()};product_1;;1;a_family;;"test ""1234"" DLE test  \"" joli produit ; vive la data """
 
 CSV;
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product->getUuid()->toString()), []);
+        $this->assertProductExport($expectedCsv, []);
     }
 }
