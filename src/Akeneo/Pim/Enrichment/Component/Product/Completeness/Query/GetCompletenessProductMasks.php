@@ -22,15 +22,6 @@ interface GetCompletenessProductMasks
     public function fromValueCollection($id, string $identifier, string $familyCode, WriteValueCollection $values): CompletenessProductMask;
 
     /**
-     * @param string[] $productIdentifiers
-     *
-     * @return CompletenessProductMask[]
-     *
-     * @deprecated
-     */
-    public function fromProductIdentifiers(array $productIdentifiers): array;
-
-    /**
      * @param UuidInterface[] $productUuids
      *
      * @return CompletenessProductMask[]

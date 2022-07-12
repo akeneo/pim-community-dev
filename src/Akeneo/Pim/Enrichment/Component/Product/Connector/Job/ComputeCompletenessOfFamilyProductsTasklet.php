@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -35,27 +36,16 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
     private const BATCH_SIZE = 100;
 
     private StepExecution $stepExecution;
-    private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
-    private ItemReaderInterface $familyReader;
-    private EntityManagerClearerInterface $cacheClearer;
-    private JobRepositoryInterface $jobRepository;
-    private CompletenessCalculator $completenessCalculator;
-    private SaveProductCompletenesses $saveProductCompletenesses;
 
     public function __construct(
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        ItemReaderInterface $familyReader,
-        EntityManagerClearerInterface $cacheClearer,
-        JobRepositoryInterface $jobRepository,
-        CompletenessCalculator $completenessCalculator,
-        SaveProductCompletenesses $saveProductCompletenesses
+        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private ItemReaderInterface $familyReader,
+        private EntityManagerClearerInterface $cacheClearer,
+        private JobRepositoryInterface $jobRepository,
+        private CompletenessCalculator $completenessCalculator,
+        private SaveProductCompletenesses $saveProductCompletenesses,
+        private SqlFindProductUuids $sqlFindProductUuids
     ) {
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
-        $this->familyReader = $familyReader;
-        $this->cacheClearer = $cacheClearer;
-        $this->jobRepository = $jobRepository;
-        $this->completenessCalculator = $completenessCalculator;
-        $this->saveProductCompletenesses = $saveProductCompletenesses;
     }
 
     /**
@@ -108,7 +98,8 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
 
     private function computeCompleteness(array $productIdentifiers): void
     {
-        $completenessCollections = $this->completenessCalculator->fromProductIdentifiers($productIdentifiers);
+        $uuids = $this->sqlFindProductUuids->fromIdentifiers($productIdentifiers);
+        $completenessCollections = $this->completenessCalculator->fromProductUuids($uuids);
         $this->saveProductCompletenesses->saveAll($completenessCollections);
 
         $this->stepExecution->incrementProcessedItems(count($productIdentifiers));

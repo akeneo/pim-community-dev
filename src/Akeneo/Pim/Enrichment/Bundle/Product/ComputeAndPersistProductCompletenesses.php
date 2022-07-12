@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Product;
 
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Ramsey\Uuid\UuidInterface;
@@ -17,18 +18,11 @@ class ComputeAndPersistProductCompletenesses
 {
     private const CHUNK_SIZE = 1000;
 
-    /** @var CompletenessCalculator */
-    private $completenessCalculator;
-
-    /** @var SaveProductCompletenesses */
-    private $saveProductCompletenesses;
-
     public function __construct(
-        CompletenessCalculator $completenessCalculator,
-        SaveProductCompletenesses $saveProductCompletenesses
+        private CompletenessCalculator $completenessCalculator,
+        private SaveProductCompletenesses $saveProductCompletenesses,
+        private SqlFindProductUuids $sqlFindProductUuids
     ) {
-        $this->completenessCalculator = $completenessCalculator;
-        $this->saveProductCompletenesses = $saveProductCompletenesses;
     }
 
     /**
@@ -37,10 +31,9 @@ class ComputeAndPersistProductCompletenesses
      */
     public function fromProductIdentifiers(array $productIdentifiers): void
     {
-        foreach (array_chunk($productIdentifiers, self::CHUNK_SIZE) as $identifiersChunk) {
-            $completenessCollections = $this->completenessCalculator->fromProductIdentifiers($identifiersChunk);
-            $this->saveProductCompletenesses->saveAll($completenessCollections);
-        }
+        $uuids = $this->sqlFindProductUuids->fromIdentifiers($productIdentifiers);
+
+        $this->fromProductUuids($uuids);
     }
 
     /**
