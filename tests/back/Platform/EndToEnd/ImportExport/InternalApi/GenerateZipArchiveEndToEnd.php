@@ -31,7 +31,7 @@ class GenerateZipArchiveEndToEnd extends InternalApiTestCase
             {$product1->getUuid()->toString()};sku1;categoryA;1;familyA;;files/sku1/an_image/akeneo.png;files/sku1/a_file/akeneo.pdf
             {$product2->getUuid()->toString()};sku2;categoryA;1;familyA;;files/sku2/an_image/akeneo.jpg;
             
-            CSV, $product1->getUuid()->toString(), $product2->getUuid()->toString()),
+            CSV,
             $csv
         );
 

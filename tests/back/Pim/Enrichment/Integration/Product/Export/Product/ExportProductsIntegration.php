@@ -180,13 +180,6 @@ uuid;sku;categories;enabled;family;parent;groups;color;ean;name-en_US;size;varia
 
 CSV;
 
-        $expectedCsv = \sprintf(
-            $expectedCsv,
-            $apollonPinkL->getUuid()->toString(),
-            $apollonPinkM->getUuid()->toString(),
-            $apollonPinkXL->getUuid()->toString()
-        );
-
         $this->assertProductExport($expectedCsv, []);
     }
 
@@ -203,6 +196,6 @@ uuid;sku;categories;enabled;family;groups;a_text_area
 
 CSV;
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product->getUuid()->toString()), []);
+        $this->assertProductExport($expectedCsv, []);
     }
 }
