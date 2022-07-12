@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import {SelectInput} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
 import {useOperatorTranslator} from '../../hooks/useOperatorTranslator';
@@ -12,12 +12,27 @@ type Props = {
 const FamilyOperatorInput: FC<Props> = ({state, onChange}) => {
     const translateOperator = useOperatorTranslator();
 
+    const handleChange = useCallback(
+        (operator: string) => {
+            const containsFamilies = [Operator.IN_LIST, Operator.NOT_IN_LIST].includes(
+                operator as FamilyCriterionOperator
+            );
+
+            onChange({
+                ...state,
+                operator: operator as FamilyCriterionOperator,
+                value: containsFamilies ? state.value : [],
+            });
+        },
+        [state, onChange]
+    );
+
     return (
         <SelectInput
             emptyResultLabel=''
             openLabel=''
             value={state.operator}
-            onChange={v => onChange({...state, operator: v as FamilyCriterionOperator})}
+            onChange={handleChange}
             clearable={false}
             data-testid='operator'
         >

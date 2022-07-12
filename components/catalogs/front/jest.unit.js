@@ -5,6 +5,7 @@ module.exports = {
             tsconfig: './tsconfig.json',
         },
     },
+    clearMocks: true,
     testMatch: ['<rootDir>/src/**/*.test.(ts|tsx)'],
     setupFilesAfterEnv: ['<rootDir>/tests/setup-unit.ts'],
     moduleDirectories: ['<rootDir>/../../../node_modules/'],
