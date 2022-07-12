@@ -11,8 +11,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category;
 
 use Akeneo\Category\Api\CategoryTree;
 use Akeneo\Category\Api\FindGrantedCategoryTrees;
+use Akeneo\Category\Domain\Component\Model\Category;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
 

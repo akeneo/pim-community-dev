@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete;
 
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDescendentCategoryCodes;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;

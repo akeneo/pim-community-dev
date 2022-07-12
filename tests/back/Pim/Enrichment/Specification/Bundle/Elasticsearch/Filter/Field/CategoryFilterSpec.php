@@ -2,17 +2,17 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\CategoryFilter;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use PhpSpec\ObjectBehavior;
 
 class CategoryFilterSpec extends ObjectBehavior
 {

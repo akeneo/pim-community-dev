@@ -2,7 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export;
 
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;

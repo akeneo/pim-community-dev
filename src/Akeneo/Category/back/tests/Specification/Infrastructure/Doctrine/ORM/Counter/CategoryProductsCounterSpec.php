@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Infrastructure\Doctrine\ORM\Counter;
 
+use Akeneo\Category\Domain\Component\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;

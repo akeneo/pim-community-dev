@@ -2,14 +2,14 @@
 
 namespace spec\Akeneo\Tool\Bundle\ApiBundle\Checker;
 
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
+use Akeneo\Category\Domain\Component\Model\CategoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
-use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersChecker;
+use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 

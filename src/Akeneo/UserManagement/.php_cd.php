@@ -42,7 +42,7 @@ $rules = [
         // These files moved from Tool to Category bounded context
         // Usermanagement BC should query BC via exposed Commands
         // Ticket created : GRF-180
-        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface'
     ])->in('Akeneo\UserManagement\Component'),
     $builder->only([
@@ -89,7 +89,7 @@ $rules = [
         // These files moved from Tool to Category bounded context
         // Usermanagement BC should query BC via exposed Commands
         // Ticket created : GRF-180
-        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface'
 
     ])->in('Akeneo\UserManagement\Bundle'),

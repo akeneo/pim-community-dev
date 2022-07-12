@@ -2,9 +2,9 @@
 
 namespace Specification\Akeneo\UserManagement\Component\Model;
 
+use Akeneo\Category\Domain\Component\Classification\Model\Category;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Channel\Infrastructure\Component\Model\Locale;
-use Akeneo\Category\Infrastructure\Component\Classification\Model\Category;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\User;

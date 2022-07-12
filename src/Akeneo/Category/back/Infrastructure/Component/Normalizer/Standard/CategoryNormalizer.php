@@ -2,7 +2,7 @@
 
 namespace Akeneo\Category\Infrastructure\Component\Normalizer\Standard;
 
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;

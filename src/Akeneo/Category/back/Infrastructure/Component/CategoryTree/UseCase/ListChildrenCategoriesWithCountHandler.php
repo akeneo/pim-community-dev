@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase;
 
+use Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountIncludingSubCategories;
+use Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountNotIncludingSubCategories;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 
 /**
@@ -21,23 +22,23 @@ class ListChildrenCategoriesWithCountHandler
     /** @var UserContext */
     private $userContext;
 
-    /** @var \Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountIncludingSubCategories */
+    /** @var ListChildrenCategoriesWithCountIncludingSubCategories */
     private $listAndCountIncludingSubCategories;
 
-    /** @var \Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountNotIncludingSubCategories */
+    /** @var ListChildrenCategoriesWithCountNotIncludingSubCategories */
     private $listAndCountNotIncludingSubCategories;
 
     /**
      * @param CategoryRepositoryInterface                                    $categoryRepository
      * @param UserContext                                                    $userContext
-     * @param \Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountIncludingSubCategories    $listAndCountIncludingSubCategories
-     * @param \Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
+     * @param ListChildrenCategoriesWithCountIncludingSubCategories    $listAndCountIncludingSubCategories
+     * @param ListChildrenCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
      */
     public function __construct(
         CategoryRepositoryInterface                                                                                   $categoryRepository,
         UserContext                                                                                                   $userContext,
-        \Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountIncludingSubCategories    $listAndCountIncludingSubCategories,
-        \Akeneo\Category\Domain\Component\CategoryTree\Query\ListChildrenCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
+        ListChildrenCategoriesWithCountIncludingSubCategories    $listAndCountIncludingSubCategories,
+        ListChildrenCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->userContext = $userContext;
@@ -48,7 +49,7 @@ class ListChildrenCategoriesWithCountHandler
     /**
      * @param ListChildrenCategoriesWithCount $query
      *
-     * @return \Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory[]
+     * @return ChildCategory[]
      */
     public function handle(ListChildrenCategoriesWithCount $query): array
     {

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
+use Akeneo\Category\Domain\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Structure\Component\AttributeTypes;

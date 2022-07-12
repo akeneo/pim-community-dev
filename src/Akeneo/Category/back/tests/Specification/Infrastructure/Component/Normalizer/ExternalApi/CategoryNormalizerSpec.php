@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\Component\Normalizer\ExternalApi;
 
+use Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Domain\Component\Manager\PositionResolverInterface;
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Normalizer\ExternalApi\CategoryNormalizer;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

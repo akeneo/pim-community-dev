@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Category\Integration;
 
-use Akeneo\Category\Infrastructure\Component\Model\Category;
+use Akeneo\Category\Domain\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

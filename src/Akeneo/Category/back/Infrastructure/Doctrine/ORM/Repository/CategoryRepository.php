@@ -2,7 +2,7 @@
 
 namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Repository;
 
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;

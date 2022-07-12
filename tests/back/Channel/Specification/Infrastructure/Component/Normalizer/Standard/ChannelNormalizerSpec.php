@@ -2,11 +2,11 @@
 
 namespace Specification\Akeneo\Channel\Infrastructure\Component\Normalizer\Standard;
 
-use Akeneo\Channel\Infrastructure\Component\Normalizer\Standard\ChannelNormalizer;
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Infrastructure\Component\Normalizer\Standard\ChannelNormalizer;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

@@ -1,4 +1,4 @@
-Akeneo\Category\Infrastructure\Component\Model\Category:
+Akeneo\Category\Domain\Component\Model\Category:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
@@ -18,7 +18,7 @@ Akeneo\Category\Infrastructure\Component\Model\Category:
         translations:
             - Valid: ~
 
-Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation:
+Akeneo\Category\Domain\Component\Model\CategoryTranslation:
     properties:
         label:
             - Length:

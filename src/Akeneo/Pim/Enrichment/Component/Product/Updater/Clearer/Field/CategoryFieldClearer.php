@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field;
 
-use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
+use Akeneo\Category\Domain\Component\Classification\CategoryAwareInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
 use Webmozart\Assert\Assert;
 

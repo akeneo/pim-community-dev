@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
+use Akeneo\Category\Domain\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;

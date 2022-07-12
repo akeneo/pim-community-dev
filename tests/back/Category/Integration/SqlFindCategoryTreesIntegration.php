@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Test\Category\Integration;
 
 use Akeneo\Category\Api\CategoryTree;
-use Akeneo\Category\Infrastructure\Component\Model\Category;
-use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlFindCategoryTrees;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

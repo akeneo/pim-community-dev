@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Channel\Infrastructure\Component\Validator\Constraint;
 
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Model\CategoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsRootCategory;
 use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsRootCategoryValidator;
 use PhpSpec\ObjectBehavior;

@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\Component\Normalizer\Versioning;
 
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Normalizer\Versioning\CategoryNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer;
 use PhpSpec\ObjectBehavior;

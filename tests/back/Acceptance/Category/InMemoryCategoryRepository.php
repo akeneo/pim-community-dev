@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Category;
 
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
-use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Classification\CategoryAwareInterface;
+use Akeneo\Category\Domain\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;

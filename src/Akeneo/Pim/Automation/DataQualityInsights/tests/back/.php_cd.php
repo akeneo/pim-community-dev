@@ -107,7 +107,7 @@ $rules = [
             'Symfony\Component\Process',
 
             //Necessary for the Dashboard
-            'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+            'Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface',
             'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
 
             // Necessary for the particular AddProductModelScoreProperty

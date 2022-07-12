@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
 use Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface;

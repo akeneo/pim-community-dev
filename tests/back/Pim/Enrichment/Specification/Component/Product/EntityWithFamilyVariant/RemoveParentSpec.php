@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
+use Akeneo\Category\Domain\Component\Classification\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event\ParentHasBeenRemovedFromVariantProduct;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParent;
@@ -15,12 +16,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
-use Akeneo\Category\Infrastructure\Component\Classification\Model\Category;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RemoveParentSpec extends ObjectBehavior

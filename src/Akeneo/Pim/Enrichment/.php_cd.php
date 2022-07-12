@@ -131,14 +131,14 @@ $rules = [
 
         // Category Bounded Context
         'Akeneo\Category\Api', // legit
-        'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
-        'Akeneo\Category\Infrastructure\Component\Model\Category',
+        'Akeneo\Category\Domain\Component\Model\CategoryInterface',
+        'Akeneo\Category\Domain\Component\Model\Category',
         'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory',
         'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory',
-        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
-        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
+        'Akeneo\Category\Domain\Component\Classification\CategoryAwareInterface',
         'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface',
         'Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory',
         'Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory',
@@ -277,10 +277,10 @@ $rules = [
 
         // Category Bounded Context
         'Akeneo\Category\Api', // legit
-        'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
-        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Domain\Component\Model\CategoryInterface',
+        'Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
-        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
+        'Akeneo\Category\Domain\Component\Classification\CategoryAwareInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryFilterableRepositoryInterface'
 
 

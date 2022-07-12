@@ -2,7 +2,7 @@
 
 namespace Akeneo\Channel\Infrastructure\Component\Model;
 
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Model\CategoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Event\ChannelCategoryHasBeenUpdated;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;

@@ -2,9 +2,9 @@
 
 namespace Specification\Akeneo\UserManagement\Component\Normalizer;
 
+use Akeneo\Category\Domain\Component\Classification\Model\Category;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Channel\Infrastructure\Component\Model\Locale;
-use Akeneo\Category\Infrastructure\Component\Classification\Model\Category;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Normalizer\UserNormalizer;

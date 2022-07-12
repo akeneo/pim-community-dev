@@ -2,7 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\EventListener;
 
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;

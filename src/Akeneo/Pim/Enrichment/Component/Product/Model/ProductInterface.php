@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
+use Akeneo\Category\Domain\Component\Classification\CategoryAwareInterface;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentSubjectInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;

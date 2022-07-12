@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\Symfony\Form\Type;
 
-use Akeneo\Category\Infrastructure\Component\Model\Category;
-use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation;
+use Akeneo\Category\Domain\Component\Model\Category;
+use Akeneo\Category\Domain\Component\Model\CategoryTranslation;
 use Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType;
 use Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber;
 use Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType;

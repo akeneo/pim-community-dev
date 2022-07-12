@@ -2,7 +2,7 @@
 
 namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Counter;
 
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 

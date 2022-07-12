@@ -2,9 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Common\Saver;
 
+use Akeneo\Category\Domain\Component\Model\Category;
+use Akeneo\Category\Domain\Component\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Category\Infrastructure\Component\Model\Category;
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Normalizer\Standard\CategoryNormalizer;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver;
 use Akeneo\Test\Integration\Configuration;

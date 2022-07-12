@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Category\Integration;
 
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Model\CategoryInterface;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 

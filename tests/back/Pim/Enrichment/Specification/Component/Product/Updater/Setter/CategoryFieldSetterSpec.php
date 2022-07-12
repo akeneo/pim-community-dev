@@ -2,14 +2,14 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
-use Akeneo\Category\Infrastructure\Component\Model\Category;
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Model\Category;
+use Akeneo\Category\Domain\Component\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\CategoryFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
-use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;

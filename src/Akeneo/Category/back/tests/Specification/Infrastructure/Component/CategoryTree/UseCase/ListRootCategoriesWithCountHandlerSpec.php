@@ -4,10 +4,10 @@ namespace Specification\Akeneo\Category\Infrastructure\Component\CategoryTree\Us
 
 use Akeneo\Category\Domain\Component\CategoryTree\Query\ListRootCategoriesWithCountIncludingSubCategories;
 use Akeneo\Category\Domain\Component\CategoryTree\Query\ListRootCategoriesWithCountNotIncludingSubCategories;
+use Akeneo\Category\Domain\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCount;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCountHandler;
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;

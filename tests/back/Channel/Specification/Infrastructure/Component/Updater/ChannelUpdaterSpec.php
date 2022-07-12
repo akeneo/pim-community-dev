@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Channel\Infrastructure\Component\Updater;
 
+use Akeneo\Category\Domain\Component\Model\CategoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelTranslationInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
@@ -16,7 +17,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 

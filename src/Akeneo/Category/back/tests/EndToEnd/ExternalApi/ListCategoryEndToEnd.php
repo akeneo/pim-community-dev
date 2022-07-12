@@ -2,7 +2,7 @@
 
 namespace  Akeneo\Test\Category\EndToEnd\ExternalApi;
 
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Domain\Component\Model\CategoryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;

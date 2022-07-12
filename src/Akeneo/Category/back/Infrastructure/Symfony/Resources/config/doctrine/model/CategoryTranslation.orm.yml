@@ -1,4 +1,4 @@
-Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation:
+Akeneo\Category\Domain\Component\Model\CategoryTranslation:
     type: entity
     table: pim_catalog_category_translation
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -22,7 +22,7 @@ Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Domain\Component\Model\CategoryInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:
