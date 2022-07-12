@@ -131,7 +131,6 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
             ['updated' => [['operator' => '>', 'value' => $dateInTheFuture]]],
             0
         ));
-        Assert::assertCount(2, $uuids);
     }
 
     /** @test */
