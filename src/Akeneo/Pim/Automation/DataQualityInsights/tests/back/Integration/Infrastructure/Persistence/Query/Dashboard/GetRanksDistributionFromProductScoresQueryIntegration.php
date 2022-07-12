@@ -15,6 +15,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetRanksDistributionFromProductScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Akeneo\Test\Integration\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -164,10 +165,11 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
     {
         $consolidationDate = new \DateTimeImmutable(self::CONSOLIDATION_DATE);
 
-        $productIdentifiers = [];
+        $productUuids = [];
         for ($i = 0; $i < $nbProducts; $i++) {
+            /** @var ProductUuid $productUuid */
             $productUuid = $createProduct();
-            $productIdentifiers[] = 'product_' . $this->lastInsertedProductIdentifier;
+            $productUuids[] = Uuid::fromString($productUuid->__toString());
 
             $this->get('database_connection')->executeQuery(
                 "DELETE FROM pim_data_quality_insights_product_score WHERE product_uuid = ?",
@@ -186,7 +188,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
             ]);
         }
 
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifiers($productIdentifiers);
+        $this->getProductIndexer()->indexFromProductUuids($productUuids);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
@@ -245,5 +247,10 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
     private function getRateFromRank(int $rank): Rate
     {
         return new Rate(100 - $rank*10);
+    }
+
+    private function getProductIndexer(): ProductIndexer
+    {
+        return $this->get('pim_catalog.elasticsearch.indexer.product');
     }
 }

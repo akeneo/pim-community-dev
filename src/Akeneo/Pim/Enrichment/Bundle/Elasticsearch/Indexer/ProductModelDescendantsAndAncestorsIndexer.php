@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetAncestorAndDescendantProductModelCodes;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
@@ -24,21 +25,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerI
  */
 class ProductModelDescendantsAndAncestorsIndexer
 {
-    private ProductIndexerInterface $productIndexer;
-    private ProductModelIndexerInterface $productModelIndexer;
-    private GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers;
-    private GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes;
-
     public function __construct(
-        ProductIndexerInterface $productIndexer,
-        ProductModelIndexerInterface $productModelIndexer,
-        GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
+        private ProductIndexerInterface $productIndexer,
+        private ProductModelIndexerInterface $productModelIndexer,
+        private GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
+        private GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes,
+        private SqlFindProductUuids $sqlFindProductUuids
     ) {
-        $this->productIndexer = $productIndexer;
-        $this->productModelIndexer = $productModelIndexer;
-        $this->getDescendantVariantProductIdentifiers = $getDescendantVariantProductIdentifiers;
-        $this->getAncestorAndDescendantProductModelCodes = $getAncestorAndDescendantProductModelCodes;
     }
 
     /**
@@ -64,7 +57,8 @@ class ProductModelDescendantsAndAncestorsIndexer
             $productModelCodes
         );
         if (!empty($variantProductIdentifiers)) {
-            $this->productIndexer->indexFromProductIdentifiers($variantProductIdentifiers);
+            $uuids = $this->sqlFindProductUuids->fromIdentifiers($variantProductIdentifiers);
+            $this->productIndexer->indexFromProductUuids($uuids);
         }
     }
 
