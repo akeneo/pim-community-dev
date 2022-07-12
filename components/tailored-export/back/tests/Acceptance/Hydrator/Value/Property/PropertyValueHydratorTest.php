@@ -43,8 +43,6 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
      */
     public function it_returns_value_properties_from_product(PropertySource $source, SourceValueInterface $expectedValue): void
     {
-        $this->loadQualityScores();
-
         $parentCategory = new Category();
         $parentCategory->setCode('a_parent_category_code');
 
@@ -80,6 +78,8 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
         $this->product->setFamilyVariant($familyVariant);
         $this->product->addGroup($group);
         $this->product->addGroup($anotherGroup);
+
+        $this->loadQualityScores();
 
         $valueHydrated = $this->getHydrator()->hydrate($source, $this->product);
         $this->assertEquals($expectedValue, $valueHydrated);
