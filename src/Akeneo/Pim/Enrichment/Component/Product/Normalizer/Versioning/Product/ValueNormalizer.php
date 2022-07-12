@@ -62,13 +62,15 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
 
         $result = null;
 
-        if (is_array($data)) {
-            $data = new ArrayCollection($data);
-        }
-
-
         $type = $attribute->getType();
         $backendType = $attribute->getBackendType();
+
+        if (is_array($data)) {
+            $data = new ArrayCollection($data);
+        } elseif (AttributeTypes::OPTION_SIMPLE_SELECT === $type) {
+            // PIM-10518: Transform the string value of the option to have the same behaviour as multiselect
+            $data = new ArrayCollection([$data]);
+        }
 
         if (AttributeTypes::BOOLEAN === $type) {
             $result = [$fieldName => (string) (int) $data];
@@ -87,7 +89,7 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
             // even when an empty collection is passed
             if ('prices' === $backendType && $data instanceof Collection && $data->isEmpty()) {
                 $result = [];
-            } elseif ('options' === $backendType && $data instanceof Collection && $data->isEmpty() === false) {
+            } elseif (in_array($backendType, ['option', 'options']) && $data instanceof Collection && $data->isEmpty() === false) {
                 $data = $this->sortOptions($data, $attribute);
                 $context['field_name'] = $fieldName;
                 $result = $this->normalizer->normalize($data, $format, $context);
