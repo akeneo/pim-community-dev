@@ -26,14 +26,14 @@ SCRIPT_PATH=$(dirname $(realpath -s $0))
 echo "Shutdown all containers"
 cd $SCRIPT_PATH/../../../
 make down
-cd $SCRIPT_PATH/../../
+cd $SCRIPT_PATH/../../../grth
 make down
 
 echo "Create database in GE and EE"
 cd $SCRIPT_PATH/../../../
 export_schema "/tmp/ee_schema.sql"
 make down
-cd $SCRIPT_PATH/../../
+cd $SCRIPT_PATH/../../../grth
 export_schema "/tmp/ge_schema.sql"
 
 echo "Generate database diff"
