@@ -5,7 +5,7 @@ import {Storage, isValidStorageType, getDefaultStorage, JobType, getEnabledStora
 import {getStorageConfigurator} from './StorageConfigurator';
 
 type StorageFormProps = {
-  jobCode: string;
+  jobName: string;
   jobType: JobType;
   fileExtension: string;
   storage: Storage;
@@ -14,7 +14,7 @@ type StorageFormProps = {
 };
 
 const StorageForm = ({
-  jobCode,
+  jobName,
   jobType,
   fileExtension,
   storage,
@@ -24,15 +24,15 @@ const StorageForm = ({
   const translate = useTranslate();
   const featureFlags = useFeatureFlags();
 
-  if (shouldHideForm(featureFlags, jobCode)) {
+  if (shouldHideForm(featureFlags, jobName)) {
     return null;
   }
 
   const handleTypeChange = (type: string) =>
-    isValidStorageType(type, featureFlags, jobCode) && onStorageChange(getDefaultStorage(jobType, type, fileExtension));
+    isValidStorageType(type, featureFlags, jobName) && onStorageChange(getDefaultStorage(jobType, type, fileExtension));
 
-  const storageTypes = getEnabledStorageTypes(featureFlags, jobCode);
-  const StorageConfigurator = getStorageConfigurator(storage.type, featureFlags, jobCode);
+  const storageTypes = getEnabledStorageTypes(featureFlags, jobName);
+  const StorageConfigurator = getStorageConfigurator(storage.type, featureFlags, jobName);
 
   return (
     <Section>
