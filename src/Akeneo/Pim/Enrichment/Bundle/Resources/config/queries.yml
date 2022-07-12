@@ -317,8 +317,8 @@ services:
             - '@pim_catalog.normalizer.indexing_product.product.product_value_collection'
             - !tagged akeneo.pim.enrichment.product_model.query.indexing_additional_properties
 
-    akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductIdentifiers'
+    akeneo.pim.enrichment.product.query.get_descendant_variant_product_uuids:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductUuids'
         public: true
         arguments:
             - '@database_connection'

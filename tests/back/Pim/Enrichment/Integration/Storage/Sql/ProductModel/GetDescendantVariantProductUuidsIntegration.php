@@ -21,7 +21,7 @@ use PHPUnit\Framework\Assert;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetDescendantVariantProductIdentifiersIntegration extends TestCase
+class GetDescendantVariantProductUuidsIntegration extends TestCase
 {
     protected function getConfiguration()
     {
@@ -52,9 +52,9 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
             ]
         );
         $this->createProductModel(['code' => 'a_shirt', 'family_variant' => 'shirt_size']);
-        $this->createProduct('a_small_shirt', 'familyA', 'a_shirt', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')]);
-        $this->createProduct('a_medium_shirt', 'familyA', 'a_shirt', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionB')]);
-        $this->createProduct('a_large_shirt', 'familyA', 'a_shirt', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionC')]);
+        $aSmallShirt = $this->createProduct('a_small_shirt', 'familyA', 'a_shirt', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')]);
+        $aMediumShirt = $this->createProduct('a_medium_shirt', 'familyA', 'a_shirt', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionB')]);
+        $aLargeShirt = $this->createProduct('a_large_shirt', 'familyA', 'a_shirt', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionC')]);
 
         $this->createFamilyVariant(
             [
@@ -66,13 +66,13 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
             ]
         );
         $this->createProductModel(['code' => 'a_shoe', 'family_variant' => 'shoe_size']);
-        $this->createProduct('a_small_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')]);
-        $this->createProduct('a_medium_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionB')]);
-        $this->createProduct('a_large_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionC')]);
+        $aSmallShoe = $this->createProduct('a_small_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')]);
+        $aMediumShoe = $this->createProduct('a_medium_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionB')]);
+        $aLargeShoe = $this->createProduct('a_large_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionC')]);
 
         Assert::assertEqualsCanonicalizing(
-            ['a_small_shirt', 'a_medium_shirt', 'a_large_shirt', 'a_small_shoe', 'a_medium_shoe', 'a_large_shoe'],
-            $this->get('akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers')
+            [$aSmallShirt->getUuid(), $aMediumShirt->getUuid(), $aLargeShirt->getUuid(), $aSmallShoe->getUuid(), $aMediumShoe->getUuid(), $aLargeShoe->getUuid()],
+            $this->get('akeneo.pim.enrichment.product.query.get_descendant_variant_product_uuids')
                 ->fromProductModelCodes(['a_shirt', 'a_shoe'])
         );
     }
@@ -114,9 +114,9 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
                 ],
             ]
         );
-        $this->createProduct('a_medium_red_shirt', 'familyA', 'a_medium_shirt');
-        $this->createProduct('a_medium_blue_shirt', 'familyA', 'a_medium_shirt');
-        $this->createProduct('a_large_black_shirt', 'familyA', 'a_large_shirt');
+        $aMediumRedShirt = $this->createProduct('a_medium_red_shirt', 'familyA', 'a_medium_shirt');
+        $aMediumBlueShirt = $this->createProduct('a_medium_blue_shirt', 'familyA', 'a_medium_shirt');
+        $aLargeBlackShirt = $this->createProduct('a_large_black_shirt', 'familyA', 'a_large_shirt');
 
         $this->createFamilyVariant(
             [
@@ -141,12 +141,12 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
                 ],
             ]
         );
-        $this->createProduct('a_large_red_shoe', 'familyA', 'a_large_shoe');
-        $this->createProduct('a_large_green_shoe', 'familyA', 'a_large_shoe');
+        $aLargeRedShoe = $this->createProduct('a_large_red_shoe', 'familyA', 'a_large_shoe');
+        $aLargeGreenShoe = $this->createProduct('a_large_green_shoe', 'familyA', 'a_large_shoe');
 
         Assert::assertEqualsCanonicalizing(
-            ['a_medium_red_shirt', 'a_medium_blue_shirt', 'a_large_black_shirt', 'a_large_red_shoe', 'a_large_green_shoe'],
-            $this->get('akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers')
+            [$aMediumRedShirt->getUuid(), $aMediumBlueShirt->getUuid(), $aLargeBlackShirt->getUuid(), $aLargeRedShoe->getUuid(), $aLargeGreenShoe->getUuid()],
+            $this->get('akeneo.pim.enrichment.product.query.get_descendant_variant_product_uuids')
                 ->fromProductModelCodes(['a_shirt', 'a_shoe'])
         );
     }
@@ -188,9 +188,9 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
                 ],
             ]
         );
-        $this->createProduct('a_medium_red_shirt', 'familyA', 'a_medium_shirt');
-        $this->createProduct('a_medium_blue_shirt', 'familyA', 'a_medium_shirt');
-        $this->createProduct('a_large_black_shirt', 'familyA', 'a_large_shirt');
+        $aMediumRedShirt = $this->createProduct('a_medium_red_shirt', 'familyA', 'a_medium_shirt');
+        $aMediumBlueShirt = $this->createProduct('a_medium_blue_shirt', 'familyA', 'a_medium_shirt');
+        $aLargeBlackShirt = $this->createProduct('a_large_black_shirt', 'familyA', 'a_large_shirt');
 
         $this->createFamilyVariant(
             [
@@ -202,12 +202,12 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
             ]
         );
         $this->createProductModel(['code' => 'a_shoe', 'family_variant' => 'shoe_size']);
-        $this->createProduct('a_large_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')]);
-        $this->createProduct('a_medium_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionB')]);
+        $aLargeShoe = $this->createProduct('a_large_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')]);
+        $aMediumShoe = $this->createProduct('a_medium_shoe', 'familyA', 'a_shoe', [new SetSimpleSelectValue('a_simple_select', null, null, 'optionB')]);
 
         Assert::assertEqualsCanonicalizing(
-            ['a_medium_red_shirt', 'a_medium_blue_shirt', 'a_large_black_shirt', 'a_large_shoe', 'a_medium_shoe'],
-            $this->get('akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers')
+            [$aMediumRedShirt->getUuid(), $aMediumBlueShirt->getUuid(), $aLargeBlackShirt->getUuid(), $aLargeShoe->getUuid(), $aMediumShoe->getUuid()],
+            $this->get('akeneo.pim.enrichment.product.query.get_descendant_variant_product_uuids')
                 ->fromProductModelCodes(['a_shirt', 'a_shoe'])
         );
     }
