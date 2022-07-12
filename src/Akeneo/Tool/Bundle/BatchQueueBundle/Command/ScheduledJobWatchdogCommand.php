@@ -69,7 +69,7 @@ final class ScheduledJobWatchdogCommand extends Command
             $process = new Process($processArguments);
             $process->setTimeout(null);
 
-            $this->logger->notice('Launching job execution "{job_execution_id}".', [
+            $this->logger->notice('Launching job execution "{code}".', [
                 'code' => $scheduledJobCode,
             ]);
             $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
