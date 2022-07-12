@@ -36,7 +36,7 @@ class ExportProductsByPriceCollectionsIntegration extends AbstractExportTestCase
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_price-EUR;a_price-USD
-%s;product_2;;1;;;20.00;10.00
+{$product1->getUuid()->toString()};product_2;;1;;;20.00;10.00
 
 CSV;
 
@@ -56,6 +56,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 }
