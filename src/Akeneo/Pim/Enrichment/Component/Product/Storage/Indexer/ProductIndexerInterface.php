@@ -15,15 +15,6 @@ use Ramsey\Uuid\UuidInterface;
 interface ProductIndexerInterface
 {
     /**
-     * @param string $productIdentifier
-     * @param array  $options
-     *
-     * @throws ObjectNotFoundException if the identifier is unknown
-     * @deprecated
-     */
-    public function indexFromProductIdentifier(string $productIdentifier, array $options = []): void;
-
-    /**
      * @param string[] $productIdentifiers
      * @param array    $options
      *

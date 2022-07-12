@@ -39,23 +39,6 @@ class ProductIndexerSpec extends ObjectBehavior
         $this->shouldImplement(ProductIndexerInterface::class);
     }
 
-    function it_indexes_a_single_product_from_uuid(
-        Client $productAndProductModelIndexClient,
-        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
-    ) {
-        $uuid = Uuid::uuid4();
-        $iterable = [$this->getElasticSearchProjection('identifier_1', $uuid)];
-        $getElasticsearchProductProjection->fromProductUuids([$uuid])->willReturn($iterable);
-        $productAndProductModelIndexClient
-            ->bulkIndexes(
-                $iterable,
-                'id',
-                Refresh::disable()
-            )->shouldBeCalled();
-
-        $this->indexFromProductUuid($uuid);
-    }
-
     function it_bulk_indexes_products_from_uuids(
         Client $productAndProductModelIndexClient,
         GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection

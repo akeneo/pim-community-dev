@@ -35,27 +35,6 @@ class ProductIndexer implements ProductIndexerInterface
     }
 
     /**
-     * Indexes a product in the product_and_product_model index from its identifier.
-     *
-     * {@inheritdoc}
-     * @deprecated
-     */
-    public function indexFromProductIdentifier(string $productIdentifier, array $options = []): void
-    {
-        $this->indexFromProductIdentifiers([$productIdentifier], $options);
-    }
-
-    /**
-     * Indexes a product in the product_and_product_model index from its uuid.
-     *
-     * {@inheritdoc}
-     */
-    public function indexFromProductUuid(string $productUuid, array $options = []): void
-    {
-        $this->indexFromProductUuids([$productUuid], $options);
-    }
-
-    /**
      * Indexes a list of products in the product_and_product_model index from their identifiers.
      *
      * If the index_refresh is provided, it uses the refresh strategy defined.
