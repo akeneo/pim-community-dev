@@ -226,34 +226,6 @@ class ProductIndexerSpec extends ObjectBehavior
         $this->indexFromProductIdentifiers($identifiers, ['index_refresh' => Refresh::enable()]);
     }
 
-    // TODO Remove this one
-    function it_indexes_a_single_product_from_identifier(
-        Client $productAndProductModelIndexClient,
-        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection,
-        Connection $connection
-    ) {
-        $identifier = 'foobar';
-        $uuid = Uuid::uuid4();
-
-        $connection
-            ->fetchAllKeyValue(Argument::any(), ['identifiers' => ['foobar']], Argument::any())
-            ->shouldBeCalled()
-            ->willReturn([
-                'foobar' => $uuid
-            ]);
-
-        $iterable = [$this->getElasticSearchProjection('foobar')];
-        $getElasticsearchProductProjection->fromProductUuids([$uuid])->willReturn($iterable);
-        $productAndProductModelIndexClient
-            ->bulkIndexes(
-                $iterable,
-                'id',
-                Refresh::disable()
-            )->shouldBeCalled();
-
-        $this->indexFromProductIdentifier($identifier);
-    }
-
     private function getElasticSearchProjection(string $identifier, $uuid = null): ElasticsearchProductProjection
     {
         return new ElasticsearchProductProjection(
