@@ -26,7 +26,7 @@ class ExportProductsByDateIntegration extends AbstractExportTestCase
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_date
-%s;product_1;;1;;;2025-12-31
+{$product1->getUuid()->toString()};product_1;;1;;;2025-12-31
 
 CSV;
 
@@ -46,7 +46,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportWithFilterInferiorToADate()
@@ -54,7 +54,7 @@ CSV;
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_date
-%s;product_2;;1;;;2016-06-15
+{$product1->getUuid()->toString()};product_2;;1;;;2016-06-15
 
 CSV;
 
@@ -74,6 +74,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 }
