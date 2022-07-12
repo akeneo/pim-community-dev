@@ -57,7 +57,7 @@ final class ProductValueInDatabaseDictionarySource implements DictionarySource
                         && !filter_var($word, FILTER_VALIDATE_FLOAT)
                         && !filter_var($word, FILTER_VALIDATE_INT)
                         && count($authorizedCharactersOnly) === 1
-                        ;
+                    ;
                 });
 
                 if (empty($filteredArrayOfWords)) {
