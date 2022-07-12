@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetAncestorAndDescendantProductModelCodes;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 
@@ -28,7 +28,7 @@ class ProductModelDescendantsAndAncestorsIndexer
     public function __construct(
         private ProductIndexerInterface $productIndexer,
         private ProductModelIndexerInterface $productModelIndexer,
-        private GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
+        private GetDescendantVariantProductUuids $getDescendantVariantProductUuids,
         private GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
     }
@@ -52,7 +52,7 @@ class ProductModelDescendantsAndAncestorsIndexer
             \array_unique(\array_merge($productModelCodes, $ancestorAndDescendantsProductModelCodes))
         );
 
-        $variantProductUuids = $this->getDescendantVariantProductIdentifiers->fromProductModelCodes_TO_USE(
+        $variantProductUuids = $this->getDescendantVariantProductUuids->fromProductModelCodes(
             $productModelCodes
         );
 

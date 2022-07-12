@@ -101,7 +101,7 @@ SQL;
         /*
         $variantProductIdentifiers = $this
             ->container
-            ->get('akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers')
+            ->get('akeneo.pim.enrichment.product.query.get_descendant_variant_product_uuids')
             ->fromProductModelCodes($productModelCodes);
         if (!empty($variantProductIdentifiers)) {
             $this

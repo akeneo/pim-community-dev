@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,23 +24,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class ComputeProductAndAncestorsSubscriber implements EventSubscriberInterface
 {
-    /** @var ComputeAndPersistProductCompletenesses */
-    private $computeAndPersistProductCompletenesses;
-
-    /** @var ProductModelDescendantsAndAncestorsIndexer */
-    private $productModelDescendantsAndAncestorsIndexer;
-
-    /** @var GetDescendantVariantProductIdentifiers */
-    private $getDescendantVariantProductIdentifiers;
-
     public function __construct(
-        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
-        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
-        GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers
+        private ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
+        private ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
+        private GetDescendantVariantProductUuids $getDescendantVariantProductUuids
     ) {
-        $this->computeAndPersistProductCompletenesses = $computeAndPersistProductCompletenesses;
-        $this->productModelDescendantsAndAncestorsIndexer = $productModelDescendantsAndAncestorsIndexer;
-        $this->getDescendantVariantProductIdentifiers = $getDescendantVariantProductIdentifiers;
     }
 
     public static function getSubscribedEvents(): array
@@ -90,12 +78,12 @@ final class ComputeProductAndAncestorsSubscriber implements EventSubscriberInter
             return;
         }
 
-        // TODO
-        $variantProductIdentifiers = $this->getDescendantVariantProductIdentifiers->fromProductModelCodes(
+        $variantProductUuids = $this->getDescendantVariantProductUuids->fromProductModelCodes(
             $productModelCodes
         );
-        if (!empty($variantProductIdentifiers)) {
-            $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($variantProductIdentifiers);
+        if (!empty($variantProductUuids)) {
+            // TODO
+            $this->computeAndPersistProductCompletenesses->fromProductUuids($variantProductUuids);
         }
 
         $this->productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes($productModelCodes);

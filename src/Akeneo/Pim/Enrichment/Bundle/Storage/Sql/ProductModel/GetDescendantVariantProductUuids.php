@@ -13,46 +13,11 @@ use Ramsey\Uuid\UuidInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-// TODO Rename to ProductUuids
-class GetDescendantVariantProductIdentifiers
+class GetDescendantVariantProductUuids
 {
     public function __construct(
         private Connection $connection
     ) {
-    }
-
-    /**
-     * @deprecated
-     */
-    public function fromProductModelCodes(array $productModelCodes): array
-    {
-        if (empty($productModelCodes)) {
-            return [];
-        }
-
-        $sql = <<<SQL
-WITH
-filter_product_model AS (
-    SELECT id, parent_id, code FROM pim_catalog_product_model WHERE code IN (:codes)
-)
-SELECT
-    product.identifier
-FROM filter_product_model
-    INNER JOIN pim_catalog_product product ON filter_product_model.id = product.product_model_id
-UNION DISTINCT
-SELECT
-    product.identifier
-FROM filter_product_model
-    INNER JOIN pim_catalog_product_model product_model ON filter_product_model.id = product_model.parent_id
-        AND product_model.parent_id IS NOT NULL
-    INNER JOIN pim_catalog_product product             ON product_model.id = product.product_model_id
-SQL;
-
-        return $this->connection->executeQuery(
-            $sql,
-            ['codes' => $productModelCodes],
-            ['codes' => Connection::PARAM_STR_ARRAY]
-        )->fetchFirstColumn();
     }
 
     /**
@@ -62,7 +27,7 @@ SQL;
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */
-    public function fromProductModelCodes_TO_USE(array $productModelCodes): array
+    public function fromProductModelCodes(array $productModelCodes): array
     {
         if (empty($productModelCodes)) {
             return [];
