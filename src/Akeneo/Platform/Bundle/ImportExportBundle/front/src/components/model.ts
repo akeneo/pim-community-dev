@@ -28,9 +28,9 @@ const STORAGE_TYPES = ['none'];
 
 const REMOTE_STORAGE_JOB_CODES = [
   'xlsx_product_export',
-  'xlsx_product_tailored_export',
   'xlsx_product_import',
-  'xlsx_product_tailored_import',
+  'xlsx_tailored_product_export',
+  'xlsx_tailored_product_import',
 ];
 
 const localStorageIsEnabled = (featureFlags: FeatureFlags): boolean =>
