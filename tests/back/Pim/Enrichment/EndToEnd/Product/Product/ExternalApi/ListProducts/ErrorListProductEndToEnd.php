@@ -243,7 +243,7 @@ class ErrorListProductEndToEnd extends AbstractProductTestCase
     "message":"${message}",
     "_links":{
         "documentation":{
-            "href": "http:\/\/api.akeneo.com\/documentation\/pagination.html#search-after-type"
+            "href": "http:\/\/api.akeneo.com\/documentation\/pagination.html#the-search-after-method"
         }
     }
 }
