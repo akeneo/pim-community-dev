@@ -8,7 +8,7 @@ parameters:
 
     akeneo.tailored_import.supported_attribute_types:
 #        - 'akeneo_reference_entity_collection'
-#        - 'akeneo_reference_entity'
+        - 'akeneo_reference_entity'
 #        - 'pim_catalog_asset_collection'
         - 'pim_catalog_boolean'
         - 'pim_catalog_date'
