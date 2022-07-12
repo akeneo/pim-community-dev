@@ -22,4 +22,15 @@ class CredentialsEncrypterRegistry
 
         return $data;
     }
+
+    public function decryptCredentials(array $data): array
+    {
+        foreach ($this->credentialsEncrypters as $credentialsEncrypter) {
+            if ($credentialsEncrypter->support($data)) {
+                return $credentialsEncrypter->decryptCredentials($data);
+            }
+        }
+
+        return $data;
+    }
 }
