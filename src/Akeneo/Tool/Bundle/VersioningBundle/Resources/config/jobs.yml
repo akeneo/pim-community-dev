@@ -1,0 +1,44 @@
+parameters:
+    pim_catalog.tasklet.compute_completeness_of_products_family.class: Akeneo\Pim\Enrichment\Component\Product\Job\ComputeCompletenessOfProductsFamilyTasklet
+
+    pim_catalog.compute_completeness_of_products_family.job_type: 'compute_completeness_of_products_family'
+    pim_catalog.compute_completeness_of_products_family.job_name: 'compute_completeness_of_products_family'
+    pim_catalog.compute_completeness_of_products_family.tasklet_name: 'compute_completeness_of_products_family'
+    pim_catalog.compute_completeness_of_products_family.connector_name: 'compute completeness of products family'
+
+services:
+    pim_catalog.tasklet.compute_completeness_of_products_family:
+        class: '%pim_catalog.tasklet.compute_completeness_of_products_family.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_connector.doctrine.cache_clearer'
+        public: false
+
+    pim_catalog.step.compute_completeness_of_products_family:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pim_catalog.compute_completeness_of_products_family.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_catalog.tasklet.compute_completeness_of_products_family'
+        public: false
+
+    pim_catalog.job.compute_completeness_of_products_family:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_catalog.compute_completeness_of_products_family.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.compute_completeness_of_products_family'
+            - true
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: '%pim_catalog.compute_completeness_of_products_family.connector_name%'
+                type: '%pim_catalog.compute_completeness_of_products_family.job_type%'

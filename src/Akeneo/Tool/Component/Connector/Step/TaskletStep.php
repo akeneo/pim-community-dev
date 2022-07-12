@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\AbstractStep;
 use Akeneo\Tool\Component\Batch\Step\TrackableStepInterface;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -18,14 +19,8 @@ class TaskletStep extends AbstractStep implements TrackableStepInterface
 {
     protected TaskletInterface $tasklet;
 
-    /**
-     * @param string                   $name
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobRepositoryInterface   $jobRepository
-     * @param TaskletInterface         $tasklet
-     */
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         TaskletInterface $tasklet

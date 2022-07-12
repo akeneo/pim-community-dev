@@ -3,14 +3,13 @@
 namespace Akeneo\Tool\Bundle\VersioningBundle\Command;
 
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectManager;
 use Monolog\Handler\StreamHandler;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,18 +26,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RefreshCommand extends Command
 {
     protected static $defaultName = 'pim:versioning:refresh';
+    protected static $defaultDescription = 'Version any updated entities';
 
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var VersionManager */
-    private $versionManager;
-
-    /** @var BulkObjectDetacherInterface */
-    private $bulkObjectDetacher;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private LoggerInterface $logger;
+    private VersionManager $versionManager;
+    private BulkObjectDetacherInterface $bulkObjectDetacher;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         LoggerInterface $logger,
@@ -60,7 +53,6 @@ class RefreshCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Version any updated entities')
             ->addOption(
                 'show-log',
                 null,
@@ -85,7 +77,7 @@ class RefreshCommand extends Command
         if (!$noDebug) {
             $this->logger->pushHandler(new StreamHandler('php://stdout'));
         }
-        $totalPendings = (int) $this->versionManager
+        $totalPendings = (int)$this->versionManager
             ->getVersionRepository()
             ->getPendingVersionsCount();
 
@@ -109,7 +101,11 @@ class RefreshCommand extends Command
         while ($nbPendings > 0) {
             $previousVersions = [];
             foreach ($pendingVersions as $pending) {
-                $key = sprintf('%s_%s', $pending->getResourceName(), $pending->getResourceId() ?? $pending->getResourceUuid()->toString());
+                $key = sprintf(
+                    '%s_%s',
+                    $pending->getResourceName(),
+                    $pending->getResourceId() ?? $pending->getResourceUuid()->toString()
+                );
 
                 $previousVersion = isset($previousVersions[$key]) ? $previousVersions[$key] : null;
                 $version = $this->createVersion($pending, $previousVersion);
@@ -134,13 +130,7 @@ class RefreshCommand extends Command
         return Command::SUCCESS;
     }
 
-    /**
-     * @param Version $version
-     * @param Version $previousVersion
-     *
-     * @return Version|null
-     */
-    protected function createVersion(Version $version, Version $previousVersion = null)
+    protected function createVersion(Version $version, Version $previousVersion = null): ?Version
     {
         $version = $this->versionManager->buildPendingVersion($version, $previousVersion);
 
