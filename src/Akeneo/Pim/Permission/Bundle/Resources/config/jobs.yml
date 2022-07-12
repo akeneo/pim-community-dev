@@ -126,6 +126,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_catalog.completeness.calculator'
             - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids'
 
     pim_catalog.tasklet.compute_family_variant_structure_changes:
         class: '%pim_catalog.tasklet.compute_family_variant_structure_changes.class%'
