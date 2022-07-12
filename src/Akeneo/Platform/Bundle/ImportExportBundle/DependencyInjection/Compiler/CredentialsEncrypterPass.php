@@ -12,7 +12,7 @@ class CredentialsEncrypterPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container)
     {
-        $registry = $container->get('Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry');
+        $registry = $container->getDefinition('Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry');
         $taggedServices = $container->findTaggedServiceIds(self::CREDENTIALS_ENCRYPTER_TAG);
 
         foreach ($taggedServices as $id => $attributes) {
