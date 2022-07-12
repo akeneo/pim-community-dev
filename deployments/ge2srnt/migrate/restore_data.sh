@@ -30,9 +30,8 @@ echo "Add all missing doctrine migrations"
 readonly FPM_TARGET_POD=$(kubectl get pods --no-headers --namespace=${TARGET_PFID} -l component=pim-web | awk 'NR==1{print $1}')
 kubectl exec -i --namespace ${TARGET_PFID} ${FPM_TARGET_POD} -- /bin/bash -c 'bin/console doctrine:migration:version --add --all --no-interaction'
 
-#echo "Launch DQI calculation into the queue"
-#readonly FPM_TARGET_POD=$(kubectl get pods --no-headers --namespace=${TARGET_PFID} -l component=pim-web | awk 'NR==1{print $1}')
-#kubectl exec -i --namespace ${TARGET_PFID} ${FPM_TARGET_POD} -- /bin/bash -c 'bin/console doctrine:migration:version --add --all --no-interaction'
+echo "Launch DQI calculation into the queue"
+kubectl exec -i --namespace ${TARGET_PFID} ${FPM_TARGET_POD} -- /bin/bash -c 'bin/console pim:data-quality-insights:initialize-growth-edition-double-score'
 
 echo "Re-index in ES"
 kubectl exec -i --namespace ${TARGET_PFID} ${FPM_TARGET_POD} -- bin/console akeneo:elasticsearch:reset-indexes -n
