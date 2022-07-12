@@ -70,7 +70,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportByFilteringOnTwoOptions()
@@ -102,12 +102,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportByFilteringWithEmpty()
@@ -137,7 +132,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportByFilteringWithAnEmptyList()

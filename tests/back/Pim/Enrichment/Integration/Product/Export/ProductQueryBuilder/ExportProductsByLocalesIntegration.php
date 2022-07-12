@@ -122,14 +122,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-            $product4->getUuid()->toString(),
-            $product5->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportWithEnglishAndFrenchData()
@@ -159,14 +152,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-            $product4->getUuid()->toString(),
-            $product5->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportAfterRemovingFrenchLocaleFromTabletChannel()
@@ -202,11 +188,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 }
