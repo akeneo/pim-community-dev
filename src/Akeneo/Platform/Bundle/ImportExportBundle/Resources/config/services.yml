@@ -29,6 +29,4 @@ services:
         arguments:
             - '@feature_flags'
 
-    Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\Encrypter:
-        arguments:
-            - '%env(APP_SECRET)%'
+    Akeneo\Platform\Bundle\ImportExportBundle\Security\DummyCredentialsEncrypter: ~

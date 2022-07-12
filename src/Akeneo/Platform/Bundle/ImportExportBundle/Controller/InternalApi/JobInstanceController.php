@@ -8,7 +8,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\Encrypter;
+use Akeneo\Platform\Bundle\ImportExportBundle\Security\CredentialsEncrypter;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -72,7 +72,7 @@ class JobInstanceController
         private FilesystemOperator $filesystem,
         private SecurityFacade $securityFacade,
         private RemoteStorageFeatureFlag $remoteStorageFeatureFlag,
-        private Encrypter $encrypter,
+        private CredentialsEncrypter $credentialsEncrypter,
     ) {
     }
 
@@ -212,7 +212,7 @@ class JobInstanceController
         }
 
         $data = json_decode($request->getContent(), true);
-        $data = $this->encryptPassword($data);
+        $data = $this->credentialsEncrypter->encryptCredentials($data);
 
         try {
             $this->eventDispatcher->dispatch(
@@ -562,31 +562,5 @@ class JobInstanceController
     private function isFileUpload(Request $request): bool
     {
         return $request->server->get('CONTENT_LENGTH') > 0;
-    }
-
-    private function encryptPassword(array $data): array
-    {
-        $canEncrypt = isset($data['configuration']['storage']['type'])
-            && isset($data['configuration']['storage']['username'])
-            && isset($data['configuration']['storage']['host'])
-            && isset($data['configuration']['storage']['port'])
-            && 'sftp' === $data['configuration']['storage']['type']
-        ;
-
-        if (!$canEncrypt) return $data;
-
-        $encryptionKey = sprintf(
-            '%s@%s:%s',
-            $data['configuration']['storage']['username'],
-            $data['configuration']['storage']['host'],
-            $data['configuration']['storage']['port']
-        );
-
-        $data['configuration']['storage']['password'] = $this->encrypter->encrypt(
-            $data['configuration']['storage']['password'],
-            $encryptionKey
-        );
-
-        return $data;
     }
 }
