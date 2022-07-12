@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetAncestorProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 use Ramsey\Uuid\UuidInterface;
@@ -22,27 +23,25 @@ use Ramsey\Uuid\UuidInterface;
  */
 class ProductAndAncestorsIndexer
 {
-    private ProductIndexerInterface $productIndexer;
-    private ProductModelIndexerInterface $productModelIndexer;
-    private GetAncestorProductModelCodes $getAncestorProductModelCodes;
-
     public function __construct(
-        ProductIndexerInterface $productIndexer,
-        ProductModelIndexerInterface $productModelIndexer,
-        GetAncestorProductModelCodes $getAncestorProductModelCodes
+        private ProductIndexerInterface $productIndexer,
+        private ProductModelIndexerInterface $productModelIndexer,
+        private GetAncestorProductModelCodes $getAncestorProductModelCodes,
+        private SqlFindProductUuids $sqlFindProductUuids
     ) {
-        $this->productIndexer = $productIndexer;
-        $this->productModelIndexer = $productModelIndexer;
-        $this->getAncestorProductModelCodes = $getAncestorProductModelCodes;
     }
 
+    /**
+     * @deprecated
+     */
     public function indexFromProductIdentifiers(array $identifiers, array $options = []): void
     {
         $ancestorProductModelCodes = $this->getAncestorProductModelCodes->fromProductIdentifiers($identifiers);
         if (!empty($ancestorProductModelCodes)) {
             $this->productModelIndexer->indexFromProductModelCodes($ancestorProductModelCodes, $options);
         }
-        $this->productIndexer->indexFromProductIdentifiers($identifiers, $options);
+        $uuids = $this->sqlFindProductUuids->fromIdentifiers($identifiers);
+        $this->productIndexer->indexFromProductUuids($uuids, $options);
     }
 
     /**

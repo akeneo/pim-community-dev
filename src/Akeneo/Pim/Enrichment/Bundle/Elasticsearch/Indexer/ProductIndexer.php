@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
@@ -29,29 +28,8 @@ class ProductIndexer implements ProductIndexerInterface
 
     public function __construct(
         private Client $productAndProductModelClient,
-        private GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection,
-        private SqlFindProductUuids $sqlFindProductUuids
+        private GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
-    }
-
-    /**
-     * Indexes a list of products in the product_and_product_model index from their identifiers.
-     *
-     * If the index_refresh is provided, it uses the refresh strategy defined.
-     * Otherwise the waitFor strategy is by default.
-     *
-     * {@inheritdoc}
-     * @deprecated
-     */
-    public function indexFromProductIdentifiers(array $productIdentifiers, array $options = []): void
-    {
-        if (empty($productIdentifiers)) {
-            return;
-        }
-
-        $productUuids = $this->sqlFindProductUuids->fromIdentifiers($productIdentifiers);
-
-        $this->indexFromProductUuids($productUuids, $options);
     }
 
     /**

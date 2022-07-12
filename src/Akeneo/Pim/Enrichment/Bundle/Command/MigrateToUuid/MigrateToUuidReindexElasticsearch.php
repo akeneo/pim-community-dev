@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StatusAwareTrait;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -28,7 +29,8 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
         private Connection $connection,
         private LoggerInterface $logger,
         private Client $esClient,
-        private ProductIndexerInterface $productIndexer
+        private ProductIndexerInterface $productIndexer,
+        private SqlFindProductUuids $sqlFindProductUuids
     ) {
     }
 
@@ -63,13 +65,14 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
                 $logContext->addContext('substep', 'reindex_product_uuid_batch');
                 if (!$context->dryRun()) {
                     $existingIdentifiers = $this->deleteNonExistingIdentifiers($batch);
+                    $existingUuids = $this->sqlFindProductUuids->fromIdentifiers($existingIdentifiers);
                     try {
-                        $this->productIndexer->indexFromProductIdentifiers($existingIdentifiers);
+                        $this->productIndexer->indexFromProductUuids($existingUuids);
                     } catch (ObjectNotFoundException) {
                         // handle the case where a product was deleted right after checking for its existence in DB,
                         // and just before computing the ES projections
                         $existingIdentifiers = $this->deleteNonExistingIdentifiers($existingIdentifiers);
-                        $this->productIndexer->indexFromProductIdentifiers($existingIdentifiers);
+                        $this->productIndexer->indexFromProductUuids($existingUuids);
                     }
                 }
                 $processedItems += \count($batch);
