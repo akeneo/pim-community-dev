@@ -39,7 +39,7 @@ class SimpleCsvImport implements ConstraintCollectionProviderInterface
         return new Collection(
             [
                 'fields' => [
-                    'storage'   => new Storage(['csv']),
+                    'storage'   => new Storage(['csv', 'zip']),
                     'delimiter' => [
                         new NotBlank(),
                         new Choice(

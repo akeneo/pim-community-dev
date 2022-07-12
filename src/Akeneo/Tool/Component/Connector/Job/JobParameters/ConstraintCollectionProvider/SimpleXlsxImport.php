@@ -38,7 +38,7 @@ class SimpleXlsxImport implements ConstraintCollectionProviderInterface
         return new Collection(
             [
                 'fields' => [
-                    'storage'   => new Storage(['xlsx']),
+                    'storage'   => new Storage(['xlsx', 'zip']),
                     'withHeader'    => new Type('bool'),
                     'uploadAllowed' => [
                         new Type('bool'),
