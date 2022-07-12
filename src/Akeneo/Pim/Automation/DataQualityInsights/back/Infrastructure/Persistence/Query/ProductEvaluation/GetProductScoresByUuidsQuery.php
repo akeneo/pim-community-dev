@@ -6,14 +6,15 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresByIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresByUuidsQueryInterface;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetProductScoresByIdentifiersQuery implements GetProductScoresByIdentifiersQueryInterface
+final class GetProductScoresByUuidsQuery implements GetProductScoresByUuidsQueryInterface
 {
     private Connection $dbConnection;
 
@@ -22,39 +23,41 @@ final class GetProductScoresByIdentifiersQuery implements GetProductScoresByIden
         $this->dbConnection = $dbConnection;
     }
 
-    public function byProductIdentifier(string $identifier): Read\Scores
+    public function byProductUuid(UuidInterface $uuid): Read\Scores
     {
-        $productScores = $this->byProductIdentifiers([$identifier]);
+        $productScores = $this->byProductUuids([$uuid]);
 
-        return $productScores[$identifier] ?? new Read\Scores(
+        return $productScores[$uuid->toString()] ?? new Read\Scores(
             new ChannelLocaleRateCollection(),
             new ChannelLocaleRateCollection()
         );
     }
 
-    public function byProductIdentifiers(array $productIdentifiers): array
+    public function byProductUuids(array $productUuids): array
     {
-        if (empty($productIdentifiers)) {
+        if (empty($productUuids)) {
             return [];
         }
 
         $query = <<<SQL
-SELECT product.identifier, product_score.scores, product_score.scores_partial_criteria
+SELECT BIN_TO_UUID(product.uuid) AS uuid, product_score.scores, product_score.scores_partial_criteria
 FROM pim_catalog_product product
 INNER JOIN pim_data_quality_insights_product_score AS product_score 
     ON product_score.product_uuid = product.uuid
-WHERE product.identifier IN(:product_identifiers);
+WHERE product.uuid IN(:productUuids);
 SQL;
+
+        $uuidsAsBytes = array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
-            ['product_identifiers' => $productIdentifiers],
-            ['product_identifiers' => Connection::PARAM_STR_ARRAY]
+            ['productUuids' => $uuidsAsBytes],
+            ['productUuids' => Connection::PARAM_STR_ARRAY]
         );
 
         $productsScores = [];
         while ($row = $stmt->fetchAssociative()) {
-            $productsScores[$row['identifier']] = new Read\Scores(
+            $productsScores[$row['uuid']] = new Read\Scores(
                 $this->hydrateScores($row['scores']),
                 $this->hydrateScores($row['scores_partial_criteria'] ?? '{}'),
             );

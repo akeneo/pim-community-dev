@@ -11,7 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresByIdentifiersQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresByUuidsQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -19,7 +19,7 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetProductScoresByIdentifiersQueryIntegration extends DataQualityInsightsTestCase
+final class GetProductScoresByUuidsQueryIntegration extends DataQualityInsightsTestCase
 {
     public function test_it_returns_the_scores_by_product_identifiers()
     {
@@ -81,10 +81,10 @@ final class GetProductScoresByIdentifiersQueryIntegration extends DataQualityIns
             ),
         ];
 
-        $productScores = $this->get(GetProductScoresByIdentifiersQuery::class)->byProductIdentifiers([
-            $productA->getIdentifier(),
-            $productB->getIdentifier(),
-            $productD->getIdentifier(),
+        $productScores = $this->get(GetProductScoresByUuidsQuery::class)->byProductUuids([
+            $productA->getUuid(),
+            $productB->getUuid(),
+            $productD->getUuid(),
         ]);
 
         $this->assertEqualsCanonicalizing($expectedProductsScores, $productScores);
