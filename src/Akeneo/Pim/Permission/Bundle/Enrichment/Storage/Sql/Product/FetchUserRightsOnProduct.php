@@ -123,7 +123,7 @@ SQL;
         $rights = $this->fetchByUuids([$productUuid], $userId);
         if (empty($rights)) {
             throw new ObjectNotFoundException(
-                sprintf('UserRights does not exist for product identifier "%s" user id "%s".', $productUuid->toString(), $userId)
+                sprintf('UserRights does not exist for product uuid "%s" user id "%s".', $productUuid->toString(), $userId)
             );
         }
 
@@ -185,25 +185,23 @@ SQL;
 SQL;
 
         $productUuidsAsBytes = array_map(
-            fn(UuidInterface $productUuid) => $productUuid->getBytes(),
+            fn (UuidInterface $productUuid) => $productUuid->getBytes(),
             $productUuids
         );
 
         $result = $this->connection->executeQuery(
             $sql,
-            ['productUuids' => $productUuidsAsBytes, 'user_id' =>$userId],
+            ['productUuids' => $productUuidsAsBytes, 'user_id' => $userId],
             ['productUuids' => Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
-        return array_map(function (array $row) use ($userId) {
-            return new UserRightsOnProductUuid(
-                Uuid::fromString($row['uuid']),
-                $userId,
-                (int) $row['count_editable_categories'],
-                (int) $row['count_ownable_categories'],
-                (int) $row['count_viewable_categories'],
-                (int) $row['number_categories']
-            );
-        }, $result);
+        return array_map(fn (array $row) => new UserRightsOnProductUuid(
+            Uuid::fromString($row['uuid']),
+            $userId,
+            (int) $row['count_editable_categories'],
+            (int) $row['count_ownable_categories'],
+            (int) $row['count_viewable_categories'],
+            (int) $row['number_categories']
+        ), $result);
     }
 }
