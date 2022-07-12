@@ -43,7 +43,7 @@ class ExportProductsBySimpleSelectReferenceDataIntegration extends AbstractExpor
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_baby_blue');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_ref_data_simple_select
-%s;product_option_baby_blue;;1;a_family;;baby-blue
+{$product1->getUuid()->toString()};product_option_baby_blue;;1;a_family;;baby-blue
 
 CSV;
 
@@ -63,7 +63,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportByFilteringOnTwoOptions()
@@ -72,8 +72,8 @@ CSV;
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_champagne');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_ref_data_simple_select
-%s;product_option_baby_blue;;1;a_family;;baby-blue
-%s;product_option_champagne;;1;a_family;;champagne
+{$product1->getUuid()->toString()};product_option_baby_blue;;1;a_family;;baby-blue
+{$product2->getUuid()->toString()};product_option_champagne;;1;a_family;;champagne
 
 CSV;
 
@@ -93,7 +93,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportByFilteringWithEmpty()
@@ -102,8 +102,8 @@ CSV;
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_option_attribute');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_ref_data_simple_select
-%s;product_without_option;;1;a_family;;
-%s;product_without_option_attribute;;1;a_family;;
+{$product1->getUuid()->toString()};product_without_option;;1;a_family;;
+{$product2->getUuid()->toString()};product_without_option_attribute;;1;a_family;;
 
 CSV;
 
@@ -123,7 +123,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportByFilteringWithAnEmptyList()

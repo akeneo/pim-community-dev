@@ -26,9 +26,9 @@ class ExportProductsBySpecificDateIntegration extends AbstractExportTestCase
         $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_3');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_metric;a_metric-unit;a_number_float
-%s;product_1;;1;familyA2;;;;
-%s;product_2;;1;familyA2;;;;
-%s;product_3;;1;familyA2;;;;
+{$product1->getUuid()->toString()};product_1;;1;familyA2;;;;
+{$product2->getUuid()->toString()};product_2;;1;familyA2;;;;
+{$product3->getUuid()->toString()};product_3;;1;familyA2;;;;
 
 CSV;
 
@@ -48,12 +48,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv, $config);
 
         // wait before updating the product in order to have updated_date > SINCE LAST JOB
         sleep(2);
@@ -62,13 +57,13 @@ CSV;
 
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_date;a_file;a_localizable_image-en_US
-%s;product_3;;1;familyA1;;;;
+{$product3->getUuid()->toString()};product_3;;1;familyA1;;;;
 
 CSV;
 
         $csv = $this->jobLauncher->launchSubProcessExport('csv_product_export', null, $config);
 
-        $this->assertSame(\sprintf($expectedCsv, $product3->getUuid()->toString()), $csv);
+        $this->assertSame($expectedCsv, $csv);
     }
 
     public function testProductExportByFilteringSinceASpecificDate()
@@ -78,9 +73,9 @@ CSV;
         $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_3');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_metric;a_metric-unit;a_number_float
-%s;product_1;;1;familyA2;;;;
-%s;product_2;;1;familyA2;;;;
-%s;product_3;;1;familyA2;;;;
+{$product1->getUuid()->toString()};product_1;;1;familyA2;;;;
+{$product2->getUuid()->toString()};product_2;;1;familyA2;;;;
+{$product3->getUuid()->toString()};product_3;;1;familyA2;;;;
 
 CSV;
 
@@ -100,12 +95,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportByFilteringUntilASpecificDate()

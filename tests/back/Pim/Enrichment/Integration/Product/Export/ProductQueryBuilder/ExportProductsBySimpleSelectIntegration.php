@@ -43,7 +43,7 @@ class ExportProductsBySimpleSelectIntegration extends AbstractExportTestCase
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_A');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_simple_select
-%s;product_option_A;;1;a_family;;optionA
+{$product1->getUuid()->toString()};product_option_A;;1;a_family;;optionA
 
 CSV;
 
@@ -63,7 +63,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportByFilteringOnTwoOptions()
@@ -72,8 +72,8 @@ CSV;
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_option_B');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_simple_select
-%s;product_option_A;;1;a_family;;optionA
-%s;product_option_B;;1;a_family;;optionB
+{$product1->getUuid()->toString()};product_option_A;;1;a_family;;optionA
+{$product2->getUuid()->toString()};product_option_B;;1;a_family;;optionB
 
 CSV;
 
@@ -93,7 +93,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportByFilteringWithEmpty()
@@ -102,8 +102,8 @@ CSV;
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_option_attribute');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_simple_select
-%s;product_without_option;;1;a_family;;
-%s;product_without_option_attribute;;1;a_family;;
+{$product1->getUuid()->toString()};product_without_option;;1;a_family;;
+{$product2->getUuid()->toString()};product_without_option_attribute;;1;a_family;;
 
 CSV;
 
@@ -123,7 +123,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportByFilteringWithAnEmptyList()

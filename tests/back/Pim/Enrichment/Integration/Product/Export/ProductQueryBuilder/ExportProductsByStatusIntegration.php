@@ -25,8 +25,8 @@ class ExportProductsByStatusIntegration extends AbstractExportTestCase
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_3');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups
-%s;product_1;;1;;
-%s;product_3;;1;;
+{$product1->getUuid()->toString()};product_1;;1;;
+{$product2->getUuid()->toString()};product_3;;1;;
 
 CSV;
 
@@ -54,7 +54,7 @@ CSV;
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups
-%s;product_2;;0;;
+{$product1->getUuid()->toString()};product_2;;0;;
 
 CSV;
 
@@ -74,7 +74,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportWithoutFilterOnStatus()
@@ -84,9 +84,9 @@ CSV;
         $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_3');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups
-%s;product_1;;1;;
-%s;product_2;;0;;
-%s;product_3;;1;;
+{$product1->getUuid()->toString()};product_1;;1;;
+{$product2->getUuid()->toString()};product_2;;0;;
+{$product3->getUuid()->toString()};product_3;;1;;
 
 CSV;
 
@@ -100,11 +100,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 }
