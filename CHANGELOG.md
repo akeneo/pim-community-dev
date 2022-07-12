@@ -57,6 +57,7 @@
 - PIM-10508: Fix attribute creation when label contains an '&' character
 - PIM-10501: Fix identifier validation for product and product model imports to disallow line breaks
 - PIM-10527: Fix associated groups grid
+- PIM-10528: Fix escaped special characters in page titles
 
 ## Improvements
 
