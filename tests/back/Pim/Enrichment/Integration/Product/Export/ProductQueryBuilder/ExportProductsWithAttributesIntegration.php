@@ -44,9 +44,9 @@ class ExportProductsWithAttributesIntegration extends AbstractExportTestCase
         $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_4');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_text_area
-%s;product_1;;1;my_family;;Amazing
-%s;product_2;;1;my_family;;
-%s;product_4;;1;;;
+{$product1->getUuid()->toString()};product_1;;1;my_family;;Amazing
+{$product2->getUuid()->toString()};product_2;;1;my_family;;
+{$product3->getUuid()->toString()};product_4;;1;;;
 
 CSV;
 
@@ -61,12 +61,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv,$config);
     }
 
     public function testProductExportWithAttributesInTheSameOrderAsTheFilter()
@@ -76,9 +71,9 @@ CSV;
         $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_4');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_text_area;a_text
-%s;product_1;;1;my_family;;Amazing;Awesome
-%s;product_2;;1;my_family;;;"Awesome product"
-%s;product_4;;1;;;;
+{$product1->getUuid()->toString()};product_1;;1;my_family;;Amazing;Awesome
+{$product2->getUuid()->toString()};product_2;;1;my_family;;;"Awesome product"
+{$product3->getUuid()->toString()};product_4;;1;;;;
 
 CSV;
 
@@ -93,18 +88,13 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-        ), $config);
+        $this->assertProductExport($expectedCsv,$config);
 
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_text;a_text_area
-%s;product_1;;1;my_family;;Awesome;Amazing
-%s;product_2;;1;my_family;;"Awesome product";
-%s;product_4;;1;;;;
+{$product1->getUuid()->toString()};product_1;;1;my_family;;Awesome;Amazing
+{$product2->getUuid()->toString()};product_2;;1;my_family;;"Awesome product";
+{$product3->getUuid()->toString()};product_4;;1;;;;
 
 CSV;
 
@@ -121,12 +111,7 @@ CSV;
 
         $csv = $this->jobLauncher->launchSubProcessExport('csv_product_export', null, $config);
 
-        $this->assertSame(\sprintf(
-            $expectedCsv,
-            $product1->getUuid()->toString(),
-            $product2->getUuid()->toString(),
-            $product3->getUuid()->toString(),
-        ), $csv);
+        $this->assertSame($expectedCsv, $csv);
     }
 
     /**
@@ -138,8 +123,8 @@ CSV;
         $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_text_area;a_text
-%s;product_1;;1;my_family;;Amazing;Awesome
-%s;product_2;;1;my_family;;;"Awesome product"
+{$product1->getUuid()->toString()};product_1;;1;my_family;;Amazing;Awesome
+{$product2->getUuid()->toString()};product_2;;1;my_family;;;"Awesome product"
 
 CSV;
 
@@ -160,6 +145,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString(), $product2->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 }

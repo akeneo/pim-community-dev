@@ -28,7 +28,7 @@ class ExportProductsByNumberIntegration extends AbstractExportTestCase
         $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_number_integer
-%s;product_1;;1;;;100
+{$product1->getUuid()->toString()};product_1;;1;;;100
 
 CSV;
 
@@ -48,6 +48,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product1->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 }
