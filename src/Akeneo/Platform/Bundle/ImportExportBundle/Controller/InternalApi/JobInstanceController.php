@@ -295,7 +295,7 @@ class JobInstanceController
                 return new JsonResponse($errors, 400);
             }
 
-            $jobFileLocation = new JobFileLocation($code . DIRECTORY_SEPARATOR . $file->getClientOriginalName(), true);
+            $jobFileLocation = new JobFileLocation($code.DIRECTORY_SEPARATOR.$file->getClientOriginalName(), true);
 
             if ($this->filesystem->fileExists($jobFileLocation->path())) {
                 $this->filesystem->delete($jobFileLocation->path());
@@ -344,7 +344,7 @@ class JobInstanceController
         }
 
         return new JsonResponse([
-            'redirectUrl' => '#' . $this->router->generate(
+            'redirectUrl' => '#'.$this->router->generate(
                 'akeneo_job_process_tracker_details',
                 ['id' => $jobExecution->getId()]
             ),
@@ -405,7 +405,7 @@ class JobInstanceController
         $accessor = PropertyAccess::createPropertyAccessorBuilder()->getPropertyAccessor();
         if (count($parametersViolations) > 0) {
             foreach ($parametersViolations as $error) {
-                $accessor->setValue($errors, '[configuration]' . $error->getPropertyPath(), $error->getMessage());
+                $accessor->setValue($errors, '[configuration]'.$error->getPropertyPath(), $error->getMessage());
                 $errors['normalized_errors'][] = $this->constraintViolationNormalizer->normalize(
                     $error,
                     'internal_api',
