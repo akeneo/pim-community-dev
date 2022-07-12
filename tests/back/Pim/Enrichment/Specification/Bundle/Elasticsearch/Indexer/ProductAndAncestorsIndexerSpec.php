@@ -40,7 +40,7 @@ class ProductAndAncestorsIndexerSpec extends ObjectBehavior
         Connection $connection
     ) {
         $uuids = [Uuid::uuid4(), Uuid::uuid4()];
-        $getAncestorProductModelCodes->fromProductIdentifiers(['simple_product', 'other_product'])->willReturn([]);
+        $getAncestorProductModelCodes->fromProductUuids($uuids)->willReturn([]);
         $connection
             ->fetchAllKeyValue(Argument::any(), ['identifiers' => ['simple_product', 'other_product']], Argument::any())
             ->shouldBeCalled()
@@ -63,7 +63,7 @@ class ProductAndAncestorsIndexerSpec extends ObjectBehavior
     ) {
         $uuids = [Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4()];
         $productIdentifiers = ['variant_A1', 'variant_A2', 'simple', 'variant_B_1', 'variant_B_2'];
-        $getAncestorProductModelCodes->fromProductIdentifiers($productIdentifiers)
+        $getAncestorProductModelCodes->fromProductUuids($uuids)
             ->willReturn(['rootA', 'sub_pm_B', 'root_B']);
 
         $connection
@@ -91,7 +91,7 @@ class ProductAndAncestorsIndexerSpec extends ObjectBehavior
     ) {
         $uuid = Uuid::uuid4();
         $options = ['index_refresh' => 'somerefreshoption'];
-        $getAncestorProductModelCodes->fromProductIdentifiers(['a_variant'])->willReturn(['a_product_model']);
+        $getAncestorProductModelCodes->fromProductUuids([$uuid])->willReturn(['a_product_model']);
 
         $connection
             ->fetchAllKeyValue(Argument::any(), ['identifiers' => ['a_variant']], Argument::any())

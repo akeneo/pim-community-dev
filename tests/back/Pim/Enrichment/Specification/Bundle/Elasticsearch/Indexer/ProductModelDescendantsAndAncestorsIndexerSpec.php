@@ -3,12 +3,10 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetAncestorAndDescendantProductModelCodes;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
-use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
@@ -19,15 +17,13 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes,
-        Connection $connection
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
         $this->beConstructedWith(
             $productIndexer,
             $productModelIndexer,
             $getDescendantVariantProductIdentifiers,
-            $getAncestorAndDescendantProductModelCodes,
-            new SqlFindProductUuids($connection->getWrappedObject())
+            $getAncestorAndDescendantProductModelCodes
         );
     }
 
@@ -40,25 +36,14 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes,
-        Connection $connection
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
         $uuids = [Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4()];
-        $getDescendantVariantProductIdentifiers->fromProductModelCodes(['pm1', 'pm2'])
-            ->willReturn(['foo', 'bar', 'pika', 'chu']);
+        $getDescendantVariantProductIdentifiers->fromProductModelCodes_TO_USE(['pm1', 'pm2'])
+            ->willReturn($uuids);
 
         $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(['pm1', 'pm2'])
             ->willReturn([]);
-
-        $connection
-            ->fetchAllKeyValue(Argument::any(), ['identifiers' => ['foo', 'bar', 'pika', 'chu']], Argument::any())
-            ->shouldBeCalled()
-            ->willReturn([
-                'foo' => $uuids[0],
-                'bar' => $uuids[1],
-                'pika' => $uuids[2],
-                'chu' => $uuids[3],
-            ]);
 
         $productModelIndexer->indexFromProductModelCodes(['pm1', 'pm2'])->shouldBeCalled();
         $productIndexer->indexFromProductUuids($uuids)->shouldBeCalled();
@@ -70,25 +55,14 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes,
-        Connection $connection
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
         $uuids = [Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4()];
-        $getDescendantVariantProductIdentifiers->fromProductModelCodes(['pm1', 'pm2'])
-            ->willReturn(['foo', 'bar', 'pika', 'chu']);
+        $getDescendantVariantProductIdentifiers->fromProductModelCodes_TO_USE(['pm1', 'pm2'])
+            ->willReturn($uuids);
 
         $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(['pm1', 'pm2'])
             ->willReturn(['sub_pm1', 'sub_pm2']);
-
-        $connection
-            ->fetchAllKeyValue(Argument::any(), ['identifiers' => ['foo', 'bar', 'pika', 'chu']], Argument::any())
-            ->shouldBeCalled()
-            ->willReturn([
-                'foo' => $uuids[0],
-                'bar' => $uuids[1],
-                'pika' => $uuids[2],
-                'chu' => $uuids[3],
-            ]);
 
         $productModelIndexer->indexFromProductModelCodes(['pm1', 'pm2', 'sub_pm1', 'sub_pm2'])->shouldBeCalled();
         $productIndexer->indexFromProductUuids($uuids)->shouldBeCalled();
@@ -104,7 +78,7 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
     ) {
         $productIndexer->indexFromProductUuids(Argument::cetera())->shouldNotBeCalled();
         $productModelIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
-        $getDescendantVariantProductIdentifiers->fromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
+        $getDescendantVariantProductIdentifiers->fromProductModelCodes_TO_USE(Argument::cetera())->shouldNotBeCalled();
         $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
 
         $this->indexFromProductModelCodes([]);

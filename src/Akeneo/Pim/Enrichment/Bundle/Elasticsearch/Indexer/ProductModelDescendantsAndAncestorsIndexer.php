@@ -29,8 +29,7 @@ class ProductModelDescendantsAndAncestorsIndexer
         private ProductIndexerInterface $productIndexer,
         private ProductModelIndexerInterface $productModelIndexer,
         private GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        private GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes,
-        private SqlFindProductUuids $sqlFindProductUuids
+        private GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
     }
 
@@ -53,12 +52,12 @@ class ProductModelDescendantsAndAncestorsIndexer
             \array_unique(\array_merge($productModelCodes, $ancestorAndDescendantsProductModelCodes))
         );
 
-        $variantProductIdentifiers = $this->getDescendantVariantProductIdentifiers->fromProductModelCodes(
+        $variantProductUuids = $this->getDescendantVariantProductIdentifiers->fromProductModelCodes_TO_USE(
             $productModelCodes
         );
-        if (!empty($variantProductIdentifiers)) {
-            $uuids = $this->sqlFindProductUuids->fromIdentifiers($variantProductIdentifiers);
-            $this->productIndexer->indexFromProductUuids($uuids);
+
+        if (!empty($variantProductUuids)) {
+            $this->productIndexer->indexFromProductUuids($variantProductUuids);
         }
     }
 
