@@ -3,40 +3,35 @@ import styled from 'styled-components';
 import {
     AkeneoThemedProps,
     Button,
-    FileInfo,
     getColor,
     getFontSize,
     Helper,
-    InputProps,
     Key,
-    Override,
     ProgressBar,
     UploadIcon,
     useBooleanState,
     useShortcut,
 } from 'akeneo-design-system';
+import {ErrorResponse} from '../hooks';
+import {BadRequestError} from '../../../api/BadRequestError';
 
-type FileInputProps = Override<
-    Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps<FileInfo | null>>,
-    {
-        onChange: (newValue: FileInfo | null) => void;
-        value: FileInfo | null;
-        uploader: (file: File, onProgress: (ratio: number) => void) => Promise<FileInfo>;
-        placeholder: string | ReactElement;
-        uploadButtonLabel: string;
-        uploadingLabel: string;
-        fileDraggingLabel: string;
-        uploadingPlaceholder: string;
-        uploadErrorLabel: string;
-        invalid?: boolean;
-    }
->;
+type FileInputProps = {
+    onFileUploaded: (isSuccess: boolean) => void;
+    uploader: (file: File, onProgress: (ratio: number) => void) => Promise<BadRequestError<ErrorResponse>>;
+    placeholder: string | ReactElement;
+    uploadButtonLabel: string;
+    uploadingLabel: string;
+    fileDraggingLabel: string;
+    uploadingPlaceholder: string;
+    uploadErrorLabel: string;
+    generateUploadSuccessLabel: (filename: string) => string;
+    invalid?: boolean;
+};
 
-const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
+const FileInput = React.forwardRef(
     (
         {
-            onChange,
-            value,
+            onFileUploaded,
             uploadingLabel,
             uploadingPlaceholder,
             uploadButtonLabel,
@@ -44,9 +39,8 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
             uploader,
             placeholder,
             uploadErrorLabel,
+            generateUploadSuccessLabel,
             invalid = false,
-            className,
-            ...rest
         }: FileInputProps,
         forwardedRef: Ref<HTMLInputElement>
     ) => {
@@ -56,25 +50,34 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
         const [hasUploadFailed, uploadFailed, uploadSucceeded] = useBooleanState(false);
         const [isDraggingFile, setIsDraggingFile] = useState(false);
         const [progress, setProgress] = useState<number>(0);
+        const [successMessage, setSuccessMessage] = useState<null | string>();
+        const [errorMessage, setErrorMessage] = useState<null | string>();
         forwardedRef = forwardedRef ?? internalInputRef;
 
         const openFileExplorer = () => {
-            if (forwardedRef && 'function' !== typeof forwardedRef && forwardedRef.current && onChange) {
+            if (forwardedRef && 'function' !== typeof forwardedRef && forwardedRef.current) {
                 forwardedRef.current.click();
             }
         };
 
         const handleUpload = async (file: File) => {
+            //If file is not excel -> error message
             startUploading();
             setIsDraggingFile(false);
 
             try {
-                const uploadedFile = await uploader(file, setProgress);
+                await uploader(file, setProgress);
                 uploadSucceeded();
-                onChange?.(uploadedFile);
+                setErrorMessage(null);
+                setSuccessMessage(generateUploadSuccessLabel(file.name));
+                onFileUploaded(true);
             } catch (error) {
                 uploadFailed();
-                console.error(error);
+                setSuccessMessage(null);
+                onFileUploaded(false);
+                if (error instanceof BadRequestError) {
+                    setErrorMessage(error.data.error);
+                }
             } finally {
                 setProgress(0);
                 stopUploading();
@@ -85,6 +88,7 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
             event.preventDefault();
             event.stopPropagation();
             uploadSucceeded();
+            setSuccessMessage(null);
             if (event.target.files) void handleUpload(event.target.files[0]);
         };
 
@@ -98,7 +102,6 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
                     ref={containerRef}
                     tabIndex={0}
                     invalid={invalid || hasUploadFailed}
-                    className={className}
                     isDragging={isDraggingFile}
                 >
                     {!isUploading && (
@@ -110,7 +113,6 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
                                 onDragOver={() => setIsDraggingFile(true)}
                                 onDragLeave={() => setIsDraggingFile(false)}
                                 data-testid="file-input"
-                                {...rest}
                             />
                             {!isDraggingFile && (
                                 <>
@@ -125,7 +127,12 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
                                     </MediaFilePlaceholder>
                                     {hasUploadFailed && (
                                         <Helper inline={true} level="error">
-                                            {uploadErrorLabel}
+                                            {errorMessage ? errorMessage : uploadErrorLabel}
+                                        </Helper>
+                                    )}
+                                    {successMessage && (
+                                        <Helper inline={true} level="success">
+                                            {successMessage}
                                         </Helper>
                                     )}
                                 </>
@@ -149,6 +156,7 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
         );
     }
 );
+
 const FileInputContainer = styled.div<{isDragging: boolean} & AkeneoThemedProps>`
     position: relative;
     display: flex;
@@ -165,6 +173,8 @@ const FileInputContainer = styled.div<{isDragging: boolean} & AkeneoThemedProps>
     box-sizing: border-box;
     background-color: ${({isDragging}) => getColor(isDragging ? 'brand20' : 'blue10')};
     overflow: hidden;
+    width: 740px;
+    margin: auto;
 
     &:focus {
         box-shadow: 0 0 0 2px ${getColor('blue', 40)};
