@@ -43,7 +43,7 @@ class ExportProductsByBooleanIntegration extends AbstractExportTestCase
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_boolean_true');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_yes_no
-%s;product_with_boolean_true;;1;;;1
+{$product->getUuid()->toString()};product_with_boolean_true;;1;;;1
 
 CSV;
 
@@ -63,7 +63,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportWithBooleanFilterEqualsFalse()
@@ -71,7 +71,7 @@ CSV;
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_boolean_false');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_yes_no
-%s;product_with_boolean_false;;1;;;0
+{$product->getUuid()->toString()};product_with_boolean_false;;1;;;0
 
 CSV;
 
@@ -91,7 +91,7 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 
     public function testProductExportWithLocalisableAndScopableBooleanFilter()
@@ -99,7 +99,7 @@ CSV;
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_localisable_scopable_boolean');
         $expectedCsv = <<<CSV
 uuid;sku;categories;enabled;family;groups;a_boolean_scopable_localizable-en_US-tablet
-%s;product_with_localisable_scopable_boolean;;1;;;1
+{$product->getUuid()->toString()};product_with_localisable_scopable_boolean;;1;;;1
 
 CSV;
 
@@ -120,6 +120,6 @@ CSV;
             ],
         ];
 
-        $this->assertProductExport(\sprintf($expectedCsv, $product->getUuid()->toString()), $config);
+        $this->assertProductExport($expectedCsv, $config);
     }
 }

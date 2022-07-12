@@ -56,7 +56,7 @@ class PropertiesNormalizer implements NormalizerInterface, CacheableSupportsMeth
         $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
         $data = [];
 
-        if (get_class($product) != 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
+        if (get_class($product) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
             $data[self::UUID] = $product->getUuid()->toString();
         }
         $data[self::FIELD_IDENTIFIER] = $product->getIdentifier();
