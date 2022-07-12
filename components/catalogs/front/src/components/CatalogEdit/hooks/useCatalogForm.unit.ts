@@ -98,6 +98,7 @@ test('it calls the API when save is called', async () => {
 
     const {result} = renderHook(() => useCatalogForm('a4ecb5c7-7e80-44a8-baa1-549db0707f79'));
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     const [form, save, isDirty] = result.current;
 
     await act(async () => {
@@ -149,7 +150,8 @@ test('it returns validation errors if the API call failed', async () => {
 
     const {result} = renderHook(() => useCatalogForm('a4ecb5c7-7e80-44a8-baa1-549db0707f79'));
 
-    let [form, save, isDirty] = result.current;
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+    const [form, save, isDirty] = result.current;
 
     await act(async () => {
         await save();
@@ -164,7 +166,7 @@ test('it returns validation errors if the API call failed', async () => {
     ]);
 });
 
-test('it returns dirty at true after dispatching a change', async () => {
+test('it returns dirty at true after dispatching a change', () => {
     mocked(useCatalog).mockImplementation(() => ({
         isLoading: false,
         isError: false,
@@ -185,18 +187,20 @@ test('it returns dirty at true after dispatching a change', async () => {
 
     const {result} = renderHook(() => useCatalogForm('a4ecb5c7-7e80-44a8-baa1-549db0707f79'));
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     let [form, save, isDirty] = result.current;
 
     act(() => {
         form && form.dispatch({type: CatalogFormActions.SET_ENABLED, value: true});
     });
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     [form, save, isDirty] = result.current;
 
     expect(isDirty).toBeTruthy();
 });
 
-test("it forward the action to dispatch when it's a non-altering event", async () => {
+test("it forward the action to dispatch when it's a non-altering event", () => {
     mocked(useCatalog).mockImplementation(() => ({
         isLoading: false,
         isError: false,
@@ -217,6 +221,7 @@ test("it forward the action to dispatch when it's a non-altering event", async (
 
     const {result} = renderHook(() => useCatalogForm('a4ecb5c7-7e80-44a8-baa1-549db0707f79'));
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     let [form, save, isDirty] = result.current;
 
     act(() => {
@@ -236,6 +241,7 @@ test("it forward the action to dispatch when it's a non-altering event", async (
             });
     });
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     [form, save, isDirty] = result.current;
 
     expect(isDirty).toBeFalsy();

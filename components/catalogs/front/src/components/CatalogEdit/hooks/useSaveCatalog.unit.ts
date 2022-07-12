@@ -85,7 +85,8 @@ test('it throws when the API is broken', async () => {
 
     // mute the error in the output
     jest.spyOn(console, 'error');
-    (console.error as jest.Mock).mockImplementation(() => {});
+    /* eslint-disable-next-line no-console */
+    (console.error as jest.Mock).mockImplementation(() => null);
 
     await expect(async () => {
         await act(async () => {

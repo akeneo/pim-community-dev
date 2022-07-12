@@ -23,6 +23,7 @@ test('it renders a fallback message when an error is thrown', () => {
 
     // mute the error in the output
     jest.spyOn(console, 'error');
+    /* eslint-disable-next-line no-console */
     (console.error as jest.Mock).mockImplementation(() => null);
 
     render(
