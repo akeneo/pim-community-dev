@@ -226,6 +226,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_catalog.completeness.calculator'
             - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids'
 
     pim_connector.tasklet.xlsx_family.compute_data_related_to_family_root_product_models:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet'

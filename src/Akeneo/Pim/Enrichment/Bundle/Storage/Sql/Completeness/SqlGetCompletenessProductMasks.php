@@ -45,58 +45,7 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
         $this->getAttributes = $getAttributes;
         $this->valuesNormalizer = $valuesNormalizer;
     }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated
-     */
-    public function fromProductIdentifiers(array $productIdentifiers): array
-    {
-        // TODO - TIP-1212: Replace the first LEFT JOIN (to pim_catalog_family) by an INNER JOIN
-        // PIM-9783: the initial query didn't use the CTE, we filtered directly the product in the main SELECT. There
-        // was some performance issues with a big number of productIdentifier. The CTE allows to fix it (please check
-        // the issue for further information).
-        $sql = <<<SQL
-WITH
-filtered_product AS (
-    SELECT uuid FROM pim_catalog_product WHERE identifier IN (:productIdentifiers)
-)
-SELECT
-    BIN_TO_UUID(product.uuid) AS uuid,
-    product.identifier AS identifier,
-    family.code AS familyCode,
-    JSON_MERGE(
-           COALESCE(pm1.raw_values, '{}'),
-           COALESCE(pm2.raw_values, '{}'),
-           product.raw_values
-    ) AS rawValues
-FROM filtered_product
-    INNER JOIN pim_catalog_product product ON filtered_product.uuid = product.uuid
-    LEFT JOIN pim_catalog_family family ON product.family_id = family.id
-    LEFT JOIN pim_catalog_product_model pm1 ON product.product_model_id = pm1.id
-    LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
-SQL;
-
-        $rows = array_map(
-            function (array $row): array {
-                return [
-                    'id' => $row['uuid'],
-                    'identifier' => $row['identifier'],
-                    'familyCode' => $row['familyCode'],
-                    'cleanedRawValues' => json_decode($row['rawValues'], true),
-                ];
-            },
-            $this->connection->executeQuery(
-                $sql,
-                ['productIdentifiers' => $productIdentifiers],
-                ['productIdentifiers' => Connection::PARAM_STR_ARRAY]
-            )->fetchAllAssociative()
-        );
-
-        return $this->buildProductMasks($rows);
-    }
-
+    
     /**
      * {@inheritdoc}
      */

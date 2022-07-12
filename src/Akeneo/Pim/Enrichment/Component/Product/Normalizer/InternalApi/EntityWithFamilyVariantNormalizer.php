@@ -225,8 +225,9 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface, Cacheabl
         }
 
         if ($entity instanceof ProductInterface && $entity->isVariant()) {
-            $completenessCollection = $this->completenessCalculator->fromProductIdentifier($entity->getIdentifier());
+            $completenessCollection = $this->completenessCalculator->fromProductUuid($entity->getUuid());
             if (null === $completenessCollection) {
+                // TODO There is a remaining getId()
                 $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection($entity->getId(), []);
             }
 
