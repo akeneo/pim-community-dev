@@ -6,7 +6,7 @@ module.exports = {
         },
     },
     clearMocks: true,
-    testMatch: ['<rootDir>/src/**/*.test.(ts|tsx)'],
+    testMatch: ['<rootDir>/src/**/*.unit.(ts|tsx)'],
     setupFilesAfterEnv: ['<rootDir>/tests/setup-unit.ts'],
     moduleDirectories: ['<rootDir>/../../../node_modules/'],
     moduleNameMapper: {
