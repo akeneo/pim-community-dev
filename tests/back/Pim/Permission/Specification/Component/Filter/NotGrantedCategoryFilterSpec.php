@@ -2,19 +2,17 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Filter;
 
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Util\ClassUtils;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Akeneo\Pim\Permission\Component\Filter\NotGrantedCategoryFilter;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
-use Prophecy\Argument;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Util\ClassUtils;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class NotGrantedCategoryFilterSpec extends ObjectBehavior
