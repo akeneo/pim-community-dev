@@ -25,6 +25,15 @@ interface GetCompletenessProductMasks
      * @param string[] $productIdentifiers
      *
      * @return CompletenessProductMask[]
+     *
+     * @deprecated
      */
     public function fromProductIdentifiers(array $productIdentifiers): array;
+
+    /**
+     * @param UuidInterface[] $productUuids
+     *
+     * @return CompletenessProductMask[]
+     */
+    public function fromProductUuids(array $productUuids): array;
 }
