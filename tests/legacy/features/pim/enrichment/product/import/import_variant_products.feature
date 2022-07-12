@@ -42,15 +42,15 @@ Feature: Import variant products through CSV import
     And 1 event of type "product.updated" should have been raised
 
   Scenario Outline: Convert a variant product to a simple product via import or not, depending on the convertVariantToSimple job parameter
-    Given the following job "csv_catalog_modeling_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
-      | enabledComparison      | <enabledComparison>      |
-      | convertVariantToSimple | <convertVariantToSimple> |
-    And the following CSV file to import:
+    Given the following CSV file to import:
       """
       sku;family;parent;color;enabled
       1111111121;clothing;;red;0
       """
+    And the following job "csv_catalog_modeling_product_import" configuration:
+      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | enabledComparison      | <enabledComparison>      |
+      | convertVariantToSimple | <convertVariantToSimple> |
     When the products are imported via the job csv_catalog_modeling_product_import
     Then the "1111111121" product should <toBeOrNotToBe> variant
     And product "1111111121" should be disabled

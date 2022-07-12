@@ -309,7 +309,7 @@ class JobInstanceController
 
             $rawParameters = $jobInstance->getRawParameters();
             $filePath = $this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName()) ?
-                $jobFileLocation->path() : $jobFileLocation->isRemote();
+                $jobFileLocation->path() : $jobFileLocation->url();
             $rawParameters['storage'] = [
                 'type' => ManualUploadStorage::TYPE,
                 'file_path' => $filePath,
