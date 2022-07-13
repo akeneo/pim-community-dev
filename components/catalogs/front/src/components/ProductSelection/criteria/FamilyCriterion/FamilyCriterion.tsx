@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {CloseIcon, Helper, IconButton, List} from 'akeneo-design-system';
+import {CloseIcon, IconButton, List} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
 import {CriterionModule} from '../../models/Criterion';
 import styled from 'styled-components';
@@ -38,21 +38,11 @@ const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, erro
             <List.Cell width='auto'>
                 <Fields>
                     <Field>
-                        <FamilyOperatorInput state={state} onChange={onChange} />
-                        {errors.operator !== null && (
-                            <Helper inline level='error'>
-                                {errors.operator}
-                            </Helper>
-                        )}
+                        <FamilyOperatorInput state={state} onChange={onChange} error={errors.operator} />
                     </Field>
                     {showFamilies && (
                         <LargeField>
-                            <FamilySelectInput state={state} onChange={onChange} />
-                            {errors.value !== null && (
-                                <Helper inline level='error'>
-                                    {errors.value}
-                                </Helper>
-                            )}
+                            <FamilySelectInput state={state} onChange={onChange} error={errors.value} />
                         </LargeField>
                     )}
                 </Fields>

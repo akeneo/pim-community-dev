@@ -35,7 +35,7 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                             value={state.operator}
                             onChange={v => onChange({...state, operator: v as StatusCriterionOperator})}
                             clearable={false}
-                            invalid={errors.operator !== null}
+                            invalid={errors.operator !== undefined}
                             data-testid='operator'
                         >
                             <SelectInput.Option value={Operator.EQUALS}>
@@ -45,7 +45,7 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                                 {translateOperator(Operator.NOT_EQUAL)}
                             </SelectInput.Option>
                         </SelectInput>
-                        {errors.operator !== null && (
+                        {errors.operator !== undefined && (
                             <Helper inline level='error'>
                                 {errors.operator}
                             </Helper>
@@ -58,7 +58,7 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                             value={state.value.toString()}
                             onChange={v => onChange({...state, value: v === 'true'})}
                             clearable={false}
-                            invalid={errors.value !== null}
+                            invalid={errors.value !== undefined}
                             data-testid='value'
                         >
                             <SelectInput.Option value='true'>
@@ -68,7 +68,7 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                                 {translate('akeneo_catalogs.product_selection.criteria.status.disabled')}
                             </SelectInput.Option>
                         </SelectInput>
-                        {errors.value !== null && (
+                        {errors.value !== undefined && (
                             <Helper inline level='error'>
                                 {errors.value}
                             </Helper>

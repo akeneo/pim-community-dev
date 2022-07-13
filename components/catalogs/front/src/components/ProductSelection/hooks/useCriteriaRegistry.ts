@@ -3,6 +3,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {AnyCriterion, AnyCriterionState} from '../models/Criterion';
 import StatusCriterion from '../criteria/StatusCriterion';
 import FamilyCriterion from '../criteria/FamilyCriterion';
+import CompletenessCriterion from '../criteria/CompletenessCriterion';
 
 type Factory = {
     label: string;
@@ -27,6 +28,10 @@ export const useCriteriaRegistry = (): Result => {
                 label: translate('akeneo_catalogs.product_selection.criteria.family.label'),
                 factory: FamilyCriterion.factory,
             },
+            {
+                label: translate('akeneo_catalogs.product_selection.criteria.completeness.label'),
+                factory: CompletenessCriterion.factory,
+            },
         ],
         [translate]
     );
@@ -37,6 +42,8 @@ export const useCriteriaRegistry = (): Result => {
                 return Promise.resolve(StatusCriterion);
             case 'family':
                 return Promise.resolve(FamilyCriterion);
+            case 'completeness':
+                return Promise.resolve(CompletenessCriterion);
         }
 
         return Promise.reject();
