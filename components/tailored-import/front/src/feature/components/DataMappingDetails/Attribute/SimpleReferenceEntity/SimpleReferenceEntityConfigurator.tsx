@@ -18,7 +18,9 @@ const SimpleReferenceEntityConfigurator = ({
   const target = dataMapping.target;
 
   if (!isSimpleReferenceEntityTarget(target)) {
-    throw new InvalidAttributeTargetError(`Invalid target data "${target.code}" for simple reference entity configurator`);
+    throw new InvalidAttributeTargetError(
+      `Invalid target data "${target.code}" for simple reference entity configurator`
+    );
   }
 
   return (
