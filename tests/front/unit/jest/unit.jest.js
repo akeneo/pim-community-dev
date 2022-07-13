@@ -32,6 +32,7 @@ const unitConfig = {
     '/node_modules/',
     '/front-packages/',
     '<rootDir>/components/',
+    '<rootDir>/vendors/',
     '<rootDir>/src/Akeneo/Connectivity/',
     '<rootDir>/src/Akeneo/Category/',
   ],
