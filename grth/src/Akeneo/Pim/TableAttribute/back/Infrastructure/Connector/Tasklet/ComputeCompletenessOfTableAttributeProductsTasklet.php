@@ -107,6 +107,7 @@ class ComputeCompletenessOfTableAttributeProductsTasklet implements TaskletInter
 
         $handledStamp = $envelope->last(HandledStamp::class);
         Assert::notNull($handledStamp, 'The bus does not return any result');
+        Assert::isInstanceOf($handledStamp, HandledStamp::class);
 
         return $handledStamp->getResult();
     }

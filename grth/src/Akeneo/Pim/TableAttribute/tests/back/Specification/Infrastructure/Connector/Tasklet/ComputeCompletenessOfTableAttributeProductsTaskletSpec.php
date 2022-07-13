@@ -16,10 +16,10 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexe
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\ComputeCompletenessOfTableAttributeProductsTasklet;
+use Akeneo\Test\Common\FakeCursor;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
@@ -58,7 +58,6 @@ class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehav
         ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
-        CursorInterface $cursor,
         MessageBusInterface $messageBus
     ) {
         $uuids = [Uuid::uuid4(), Uuid::uuid4()];
@@ -66,13 +65,9 @@ class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehav
         $jobParameters->get('attribute_code')->willReturn('nutrition');
         $jobParameters->get('family_codes')->willReturn(['food']);
 
-        $cursor->count()->willReturn(2);
-        $cursor->rewind()->shouldBeCalledOnce();
-        $cursor->valid()->shouldBeCalledTimes(3)->willReturn(true, true, false);
-        $cursor->next()->shouldBeCalledTimes(2);
-        $cursor->current()->shouldBeCalledTimes(2)->willReturn($uuids[0], $uuids[1]);
         $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
 
+        $cursor = new FakeCursor($uuids);
         $messageBus->dispatch(Argument::type(GetProductUuidsQuery::class))->willReturn(
             new Envelope(new \stdClass(), [new HandledStamp($cursor, '')])
         );
