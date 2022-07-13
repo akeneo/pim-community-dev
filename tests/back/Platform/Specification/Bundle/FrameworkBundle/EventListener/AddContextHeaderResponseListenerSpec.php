@@ -40,7 +40,7 @@ class AddContextHeaderResponseListenerSpec extends ObjectBehavior
 
         $response->headers = $headers;
 
-        $this->beConstructedWith($boundedContextResolver);
+        $this->beConstructedWith($boundedContextResolver, $findCurrentAppId);
         $this->shouldHaveType(AddContextHeaderResponseListener::class);
 
         $headers->set('x-akeneo-context', 'my_context')->shouldBeCalled();
