@@ -79,7 +79,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         $getRequiredAttributesMasks->fromFamilyCodes(['tshirt'])->willReturn(['tshirt' => $requiredAttributesMask]);
 
         $getCompletenessProductMasks->fromProductUuids([$michelUuid, $jeanUuid])->willReturn([$michelCompleteness, $anotherCompleteness]);
-        $this->fromProduct([$michelUuid, $jeanUuid])->shouldBeLike([
+        $this->fromProductUuids([$michelUuid, $jeanUuid])->shouldBeLike([
             $michelUuid->toString() => new ProductCompletenessWithMissingAttributeCodesCollection($michelUuid, [
                 new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 2, [1 => 'view']),
                 new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, [])

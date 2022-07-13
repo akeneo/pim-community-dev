@@ -99,7 +99,7 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
     private function computeCompleteness(array $productIdentifiers): void
     {
         $uuids = $this->sqlFindProductUuids->fromIdentifiers($productIdentifiers);
-        $completenessCollections = $this->completenessCalculator->fromProductUuids($uuids);
+        $completenessCollections = $this->completenessCalculator->fromProductUuids(\array_values($uuids));
         $this->saveProductCompletenesses->saveAll($completenessCollections);
 
         $this->stepExecution->incrementProcessedItems(count($productIdentifiers));

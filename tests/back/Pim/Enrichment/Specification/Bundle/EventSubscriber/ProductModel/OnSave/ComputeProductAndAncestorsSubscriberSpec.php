@@ -64,7 +64,7 @@ class ComputeProductAndAncestorsSubscriberSpec extends ObjectBehavior
         $uuids = [Uuid::uuid4(), Uuid::uuid4()];
         $getDescendantVariantProductUuids->fromProductModelCodes(['pm'])->willReturn($uuids);
 
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers($uuids)->shouldBeCalled();
+        $computeAndPersistProductCompletenesses->fromProductUuids($uuids)->shouldBeCalled();
         $productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes(['pm'])->shouldBeCalled();
 
         $this->onProductModelSave($event);
@@ -80,7 +80,7 @@ class ComputeProductAndAncestorsSubscriberSpec extends ObjectBehavior
         $productModel->getCode()->willReturn('pm');
         $getDescendantVariantProductUuids->fromProductModelCodes(['pm'])->willReturn([]);
 
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
+        $computeAndPersistProductCompletenesses->fromProductUuids(Argument::cetera())->shouldNotBeCalled();
         $productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes(['pm'])->shouldBeCalled();
 
         $this->onProductModelSave($event);
@@ -95,7 +95,7 @@ class ComputeProductAndAncestorsSubscriberSpec extends ObjectBehavior
         $event = new GenericEvent($productModel->getWrappedObject(), ['unitary' => false]);
 
         $getDescendantVariantProductUuids->fromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
+        $computeAndPersistProductCompletenesses->fromProductUuids(Argument::cetera())->shouldNotBeCalled();
         $productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
 
         $this->onProductModelSave($event);
@@ -109,7 +109,7 @@ class ComputeProductAndAncestorsSubscriberSpec extends ObjectBehavior
         $event = new GenericEvent(new \stdClass(), ['unitary' => true]);
 
         $getDescendantVariantProductUuids->fromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
+        $computeAndPersistProductCompletenesses->fromProductUuids(Argument::cetera())->shouldNotBeCalled();
         $productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
 
         $this->onProductModelSave($event);
@@ -142,7 +142,7 @@ class ComputeProductAndAncestorsSubscriberSpec extends ObjectBehavior
         $event = new GenericEvent([new \stdClass(), new \stdClass()]);
 
         $getDescendantVariantProductUuids->fromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
+        $computeAndPersistProductCompletenesses->fromProductUuids(Argument::cetera())->shouldNotBeCalled();
         $productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
 
         $this->onProductModelSaveAll($event);
