@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Job;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -20,6 +21,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -40,6 +42,7 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
         private ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         private ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
         private EntityManagerClearerInterface $cacheClearer,
+        private SqlFindProductUuids $sqlFindProductUuids, // TODO Use PQB instead once CPM-678 is merged
         private int $batchSize = self::DEFAULT_BATCH_SIZE
     ) {
     }
@@ -85,14 +88,16 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
             $productIdentifiersToIndex[] = $productIdentifier->getIdentifier();
 
             if (count($productIdentifiersToIndex) >= $this->batchSize) {
-                $this->indexProducts($productIdentifiersToIndex);
+                $productUuidsToIndex = $this->sqlFindProductUuids->fromIdentifiers($productIdentifiersToIndex);
+                $this->indexProducts(\array_values($productUuidsToIndex));
                 $this->cacheClearer->clear();
                 $productIdentifiersToIndex = [];
             }
         }
 
         if (count($productIdentifiersToIndex) > 0) {
-            $this->indexProducts($productIdentifiersToIndex);
+            $productUuidsToIndex = $this->sqlFindProductUuids->fromIdentifiers($productIdentifiersToIndex);
+            $this->indexProducts(\array_values($productUuidsToIndex));
         }
 
         foreach ($productModels as $productModel) {
@@ -154,13 +159,13 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
     }
 
     /**
-     * @param string[] $productIdentifiers
+     * @param UuidInterface[] $productUuids
      */
-    private function indexProducts(array $productIdentifiers): void
+    private function indexProducts(array $productUuids): void
     {
-        $this->productAndAncestorsIndexer->indexFromProductIdentifiers($productIdentifiers);
+        $this->productAndAncestorsIndexer->indexFromProductUuids($productUuids);
 
-        $productCount = count($productIdentifiers);
+        $productCount = count($productUuids);
 
         $this->stepExecution->incrementProcessedItems($productCount);
         $this->stepExecution->incrementSummaryInfo('process', $productCount);

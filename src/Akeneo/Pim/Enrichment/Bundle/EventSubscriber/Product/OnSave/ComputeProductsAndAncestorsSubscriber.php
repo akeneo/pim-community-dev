@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexe
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -22,18 +23,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInterface
 {
-    /** @var ComputeAndPersistProductCompletenesses */
-    private $computeAndPersistProductCompletenesses;
-
-    /** @var ProductAndAncestorsIndexer */
-    private $productAndAncestorsIndexer;
-
     public function __construct(
-        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
-        ProductAndAncestorsIndexer $productAndAncestorsIndexer
+        private ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
+        private ProductAndAncestorsIndexer $productAndAncestorsIndexer
     ) {
-        $this->computeAndPersistProductCompletenesses = $computeAndPersistProductCompletenesses;
-        $this->productAndAncestorsIndexer = $productAndAncestorsIndexer;
     }
 
     public static function getSubscribedEvents(): array
@@ -68,18 +61,16 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
             }
         );
 
-        $productIdentifiers = array_map(
-            function (ProductInterface $product): string {
-                return $product->getIdentifier();
-            },
+        $productUuids = array_map(
+            fn (ProductInterface $product): UuidInterface => $product->getUuid(),
             $products
         );
 
-        if (empty($productIdentifiers)) {
+        if (empty($productUuids)) {
             return;
         }
 
-        $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($productIdentifiers);
-        $this->productAndAncestorsIndexer->indexFromProductIdentifiers($productIdentifiers);
+        $this->computeAndPersistProductCompletenesses->fromProductUuids($productUuids);
+        $this->productAndAncestorsIndexer->indexFromProductUuids($productUuids);
     }
 }

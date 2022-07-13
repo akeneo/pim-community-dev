@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Job\IndexFamilyProductsAndProductModelsTasklet;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -20,8 +21,10 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -29,25 +32,6 @@ use Prophecy\Argument;
  */
 class IndexFamilyProductsAndProductModelsTaskletSpec extends ObjectBehavior
 {
-    private const PRODUCT_BATCHES = [
-        ['batchA_product1', 'batchA_product2', 'batchA_product3'],
-        ['batchB_product1', 'batchB_product2', 'batchB_product3'],
-        ['batchC_product1', 'batchC_product2'],
-    ];
-    private const PRODUCT_IDENTIFIERS = [
-        'batchA_product1',
-        'batchA_product2',
-        'batchA_product3',
-        'batchB_product1',
-        'batchB_product2',
-        'batchB_product3',
-        'batchC_product1',
-        'batchC_product2'
-    ];
-    private const PRODUCT_MODEL_CODES = [
-        'minerva',
-    ];
-
     function let(
         JobRepositoryInterface $jobRepository,
         ItemReaderInterface $familyReader,
@@ -55,7 +39,8 @@ class IndexFamilyProductsAndProductModelsTaskletSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $productModelQueryBuilderFactory,
         ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
-        EntityManagerClearerInterface $cacheClearer
+        EntityManagerClearerInterface $cacheClearer,
+        Connection $connection
     ) {
         $this->beConstructedWith(
             $jobRepository,
@@ -65,6 +50,7 @@ class IndexFamilyProductsAndProductModelsTaskletSpec extends ObjectBehavior
             $productAndAncestorsIndexer,
             $productModelDescendantsAndAncestorsIndexer,
             $cacheClearer,
+            new SqlFindProductUuids($connection->getWrappedObject()),
             3
         );
     }
@@ -96,8 +82,24 @@ class IndexFamilyProductsAndProductModelsTaskletSpec extends ObjectBehavior
         ProductQueryBuilderInterface $productModelQueryBuilder,
         StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
-        ProductModelInterface $productModel1
+        ProductModelInterface $productModel1,
+        Connection $connection
     ) {
+        $productIndentifiers = [
+            'batchA_product1' => Uuid::uuid4(),
+            'batchA_product2' => Uuid::uuid4(),
+            'batchA_product3' => Uuid::uuid4(),
+            'batchB_product1' => Uuid::uuid4(),
+            'batchB_product2' => Uuid::uuid4(),
+            'batchB_product3' => Uuid::uuid4(),
+            'batchC_product1' => Uuid::uuid4(),
+            'batchC_product2' => Uuid::uuid4()
+        ];
+
+        $productModelCodes = [
+            'minerva',
+        ];
+
         $familyA->getCode()->willReturn('family_code_a');
         $familyB->getCode()->willReturn('family_code_b');
         $familyReader->read()->willReturn($familyA, $familyB, null);
@@ -105,14 +107,14 @@ class IndexFamilyProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $productModel1->getCode()->willReturn('minerva');
 
         $productCursor = new FakeCursor([
-            new IdentifierResult('batchA_product1', ProductInterface::class),
-            new IdentifierResult('batchA_product2', ProductInterface::class),
-            new IdentifierResult('batchA_product3', ProductInterface::class),
-            new IdentifierResult('batchB_product1', ProductInterface::class),
-            new IdentifierResult('batchB_product2', ProductInterface::class),
-            new IdentifierResult('batchB_product3', ProductInterface::class),
-            new IdentifierResult('batchC_product1', ProductInterface::class),
-            new IdentifierResult('batchC_product2', ProductInterface::class),
+            new IdentifierResult(\array_keys($productIndentifiers)[0], ProductInterface::class),
+            new IdentifierResult(\array_keys($productIndentifiers)[1], ProductInterface::class),
+            new IdentifierResult(\array_keys($productIndentifiers)[2], ProductInterface::class),
+            new IdentifierResult(\array_keys($productIndentifiers)[3], ProductInterface::class),
+            new IdentifierResult(\array_keys($productIndentifiers)[4], ProductInterface::class),
+            new IdentifierResult(\array_keys($productIndentifiers)[5], ProductInterface::class),
+            new IdentifierResult(\array_keys($productIndentifiers)[6], ProductInterface::class),
+            new IdentifierResult(\array_keys($productIndentifiers)[7], ProductInterface::class),
         ]);
 
         $productModelCursor = new FakeCursor([
@@ -130,27 +132,52 @@ class IndexFamilyProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $productQueryBuilder->execute()->willReturn($productCursor);
         $productModelQueryBuilder->execute()->willReturn($productModelCursor);
 
-        $stepExecution->setTotalItems(count(self::PRODUCT_IDENTIFIERS) + count(self::PRODUCT_MODEL_CODES))->shouldBeCalled();
+        $stepExecution->setTotalItems(count($productIndentifiers) + count($productModelCodes))->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
 
         $productQueryBuilderFactory->create()->willReturn($productQueryBuilder);
         $productModelQueryBuilderFactory->create()->willReturn($productModelQueryBuilder);
 
-        $productAndAncestorsIndexer->indexFromProductIdentifiers(self::PRODUCT_BATCHES[0])->shouldBeCalledOnce();
-        $productAndAncestorsIndexer->indexFromProductIdentifiers(self::PRODUCT_BATCHES[1])->shouldBeCalledOnce();
-        $productAndAncestorsIndexer->indexFromProductIdentifiers(self::PRODUCT_BATCHES[2])->shouldBeCalledOnce();
-        $productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes(self::PRODUCT_MODEL_CODES)->shouldBeCalledOnce();
+        $connection
+            ->fetchAllKeyValue(Argument::any(), ['identifiers' => ['batchA_product1', 'batchA_product2', 'batchA_product3']], Argument::any())
+            ->shouldBeCalled()
+            ->willReturn([
+                'batchA_product1' => $productIndentifiers['batchA_product1'],
+                'batchA_product2' => $productIndentifiers['batchA_product2'],
+                'batchA_product3' => $productIndentifiers['batchA_product3'],
+            ]);
+        $connection
+            ->fetchAllKeyValue(Argument::any(), ['identifiers' => ['batchB_product1', 'batchB_product2', 'batchB_product3']], Argument::any())
+            ->shouldBeCalled()
+            ->willReturn([
+                'batchB_product1' => $productIndentifiers['batchB_product1'],
+                'batchB_product2' => $productIndentifiers['batchB_product2'],
+                'batchB_product3' => $productIndentifiers['batchB_product3'],
+            ]);
+        $connection
+            ->fetchAllKeyValue(Argument::any(), ['identifiers' => ['batchC_product1', 'batchC_product2', 'batchC_product3']], Argument::any())
+            ->shouldBeCalled()
+            ->willReturn([
+                'batchC_product1' => $productIndentifiers['batchC_product1'],
+                'batchC_product2' => $productIndentifiers['batchC_product2'],
+                'batchC_product3' => $productIndentifiers['batchC_product3'],
+            ]);
 
-        $stepExecution->incrementProcessedItems(count(self::PRODUCT_BATCHES[0]))->shouldBeCalled();
-        $stepExecution->incrementProcessedItems(count(self::PRODUCT_BATCHES[1]))->shouldBeCalled();
-        $stepExecution->incrementProcessedItems(count(self::PRODUCT_BATCHES[2]))->shouldBeCalled();
-        $stepExecution->incrementProcessedItems(count(self::PRODUCT_MODEL_CODES))->shouldBeCalled();
+        $productAndAncestorsIndexer->indexFromProductUuids(array_slice(\array_values($productIndentifiers), 0, 3))->shouldBeCalledOnce();
+        $productAndAncestorsIndexer->indexFromProductUuids(array_slice(\array_values($productIndentifiers), 3, 3))->shouldBeCalledOnce();
+        $productAndAncestorsIndexer->indexFromProductUuids(array_slice(\array_values($productIndentifiers), 6, 2))->shouldBeCalledOnce();
+        $productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes($productModelCodes)->shouldBeCalledOnce();
 
-        $stepExecution->incrementSummaryInfo('process', count(self::PRODUCT_BATCHES[0]))->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('process', count(self::PRODUCT_BATCHES[1]))->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('process', count(self::PRODUCT_BATCHES[2]))->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('process', count(self::PRODUCT_MODEL_CODES))->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(3)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(3)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalled();
+
+        $stepExecution->incrementSummaryInfo('process', 3)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process', 3)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledTimes(4);
 

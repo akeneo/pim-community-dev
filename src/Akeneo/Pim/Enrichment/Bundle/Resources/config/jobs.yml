@@ -298,6 +298,7 @@ services:
             - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
             - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
             - '@pim_connector.doctrine.cache_clearer'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids'
             - '%pim_job_product_batch_size%'
 
     pim_connector.job.csv_group_import:
