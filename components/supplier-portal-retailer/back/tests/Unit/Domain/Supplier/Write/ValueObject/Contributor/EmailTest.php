@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\Write\Supplier\ValueObject\Contributor;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\Supplier\Write\ValueObject\Contributor;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Contributor\Email;
 use PHPUnit\Framework\TestCase;

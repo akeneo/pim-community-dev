@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\Write\Supplier\ValueObject;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\Supplier\Write\ValueObject;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Label;
 use PHPUnit\Framework\TestCase;
