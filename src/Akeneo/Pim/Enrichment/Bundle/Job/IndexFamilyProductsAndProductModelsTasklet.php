@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Job;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
@@ -22,6 +20,8 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Webmozart\Assert\Assert;
 
 /**
@@ -37,12 +37,11 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
     public function __construct(
         private JobRepositoryInterface $jobRepository,
         private ItemReaderInterface $familyReader,
-        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         private ProductQueryBuilderFactoryInterface $productModelQueryBuilderFactory,
         private ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         private ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
         private EntityManagerClearerInterface $cacheClearer,
-        private SqlFindProductUuids $sqlFindProductUuids, // TODO Use PQB instead once CPM-678 is merged
+        private MessageBusInterface $messageBus,
         private int $batchSize = self::DEFAULT_BATCH_SIZE
     ) {
     }
@@ -74,30 +73,26 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
             return;
         }
 
-        $productIdentifiers = $this->getProductIdentifiersForFamilies($familyCodes);
+        $productUuids = $this->getProductUuidsForFamilies($familyCodes);
         $productModels = $this->getProductModelsForFamilies($familyCodes);
 
-        $this->stepExecution->setTotalItems($productIdentifiers->count() + $productModels->count());
+        $this->stepExecution->setTotalItems($productUuids->count() + $productModels->count());
 
-        $productIdentifiersToIndex = [];
+        $productUuidsToIndex = [];
         $productModelCodesToIndex = [];
 
-        /** @var IdentifierResult $productIdentifier */
-        foreach ($productIdentifiers as $productIdentifier) {
-            Assert::same($productIdentifier->getType(), ProductInterface::class);
-            $productIdentifiersToIndex[] = $productIdentifier->getIdentifier();
+        foreach ($productUuids as $productUuid) {
+            $productUuidsToIndex[] = $productUuid;
 
-            if (count($productIdentifiersToIndex) >= $this->batchSize) {
-                $productUuidsToIndex = $this->sqlFindProductUuids->fromIdentifiers($productIdentifiersToIndex);
-                $this->indexProducts(\array_values($productUuidsToIndex));
+            if (count($productUuidsToIndex) >= $this->batchSize) {
+                $this->indexProducts($productUuidsToIndex);
                 $this->cacheClearer->clear();
-                $productIdentifiersToIndex = [];
+                $productUuidsToIndex = [];
             }
         }
 
-        if (count($productIdentifiersToIndex) > 0) {
-            $productUuidsToIndex = $this->sqlFindProductUuids->fromIdentifiers($productIdentifiersToIndex);
-            $this->indexProducts(\array_values($productUuidsToIndex));
+        if (count($productUuidsToIndex) > 0) {
+            $this->indexProducts($productUuidsToIndex);
         }
 
         foreach ($productModels as $productModel) {
@@ -139,12 +134,19 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
     /**
      * @param string[] $familyCodes
      */
-    private function getProductIdentifiersForFamilies(array $familyCodes): CursorInterface
+    private function getProductUuidsForFamilies(array $familyCodes): CursorInterface
     {
-        $productQueryBuilder = $this->productQueryBuilderFactory->create();
-        $productQueryBuilder->addFilter('family', Operators::IN_LIST, $familyCodes);
+        $envelope = $this->messageBus->dispatch(new GetProductUuidsQuery([
+            'family' => [
+                'operator' => Operators::IN_LIST,
+                'value' => $familyCodes
+            ]
+        ], null));
 
-        return $productQueryBuilder->execute();
+        $handledStamp = $envelope->last(HandledStamp::class);
+        Assert::notNull($handledStamp, 'The bus does not return any result');
+
+        return $handledStamp->getResult();
     }
 
     /**
