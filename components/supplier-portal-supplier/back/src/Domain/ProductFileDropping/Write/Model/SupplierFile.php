@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model;
 
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorIdentifier;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Filename;
@@ -12,6 +13,7 @@ use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\
 
 final class SupplierFile
 {
+    private Identifier $identifier;
     private Filename $filename;
     private Path $path;
     private ?ContributorIdentifier $uploadedByContributor;
@@ -21,6 +23,7 @@ final class SupplierFile
     private array $events = [];
 
     private function __construct(
+        string $identifier,
         string $filename,
         string $path,
         ?string $uploadedByContributor,
@@ -28,6 +31,7 @@ final class SupplierFile
         ?\DateTimeInterface $uploadedAt,
         ?\DateTimeInterface $downloadedAt,
     ) {
+        $this->identifier = Identifier::fromString($identifier);
         $this->filename = Filename::fromString($filename);
         $this->path = Path::fromString($path);
         $this->uploadedByContributor = ContributorIdentifier::fromString($uploadedByContributor);
@@ -37,12 +41,14 @@ final class SupplierFile
     }
 
     public static function create(
+        string $identifier,
         string $filename,
         string $path,
         string $uploadedByContributor,
         string $uploadedBySupplier,
     ): self {
         $supplierFile = new self(
+            $identifier,
             $filename,
             $path,
             $uploadedByContributor,
@@ -54,6 +60,11 @@ final class SupplierFile
         $supplierFile->events[] = new SupplierFileAdded($supplierFile);
 
         return $supplierFile;
+    }
+
+    public function identifier(): string
+    {
+        return (string) $this->identifier;
     }
 
     public function filename(): string
