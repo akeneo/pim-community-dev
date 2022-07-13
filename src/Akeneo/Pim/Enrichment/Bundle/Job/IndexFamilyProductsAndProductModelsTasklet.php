@@ -128,6 +128,7 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
     {
         $family = $this->familyReader->read();
         Assert::nullOrIsInstanceOf($family, FamilyInterface::class);
+
         return $family;
     }
 
@@ -138,9 +139,11 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
     {
         $envelope = $this->messageBus->dispatch(new GetProductUuidsQuery([
             'family' => [
-                'operator' => Operators::IN_LIST,
-                'value' => $familyCodes
-            ]
+                [
+                    'operator' => Operators::IN_LIST,
+                    'value' => $familyCodes,
+                ],
+            ],
         ], null));
 
         $handledStamp = $envelope->last(HandledStamp::class);

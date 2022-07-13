@@ -123,8 +123,10 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
     {
         $envelope = $this->messageBus->dispatch(new GetProductUuidsQuery([
             'family' => [
-                'operator' => Operators::IN_LIST,
-                'value' => $familyCodes
+                [
+                    'operator' => Operators::IN_LIST,
+                    'value' => $familyCodes,
+                ],
             ]
         ], null));
 
