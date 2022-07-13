@@ -40,7 +40,7 @@ final class HandleSimpleReferenceEntityTest extends HandleDataMappingTestCase
     public function provider(): array
     {
         return [
-            'it handles text attribute targets' => [
+            'it handles simple reference entity attribute targets' => [
                 'row' => [
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
                     '2d9e967a-5efa-4a31-a254-99f7c50a145c' => 'this_is_a_color',
