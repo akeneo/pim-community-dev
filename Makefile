@@ -44,7 +44,9 @@ help: #Doc: display this help
 ##
 
 $(PIM_SRC_PATH)/yarn.lock: $(PIM_SRC_PATH)/package.json #Doc: run YARN install
+ifeq (,$(wildcard $(PIM_SRC_PATH)/yarn.lock))
 	$(YARN_RUN) install
+endif
 
 $(PIM_SRC_PATH)/node_modules: $(PIM_SRC_PATH)/yarn.lock #Doc: run YARN install --check-files
 	$(YARN_RUN) install --frozen-lockfile --check-files

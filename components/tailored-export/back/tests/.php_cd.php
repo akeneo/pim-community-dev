@@ -28,6 +28,7 @@ $rules = [
     $builder->only(
         [
             'Webmozart\Assert\Assert',
+            'Ramsey\Uuid\UuidInterface',
         ],
     )->in('Akeneo\Platform\TailoredExport\Domain'),
     $builder->only(
@@ -39,6 +40,7 @@ $rules = [
             'Box\Spout\Writer\Common\Creator\WriterEntityFactory',
             'Box\Spout\Writer\Common\Creator\WriterFactory',
             'Box\Spout\Writer\WriterInterface',
+            'Ramsey\Uuid\UuidInterface',
 
             'Akeneo\Platform\TailoredExport\Application',
             'Akeneo\Platform\TailoredExport\Domain',

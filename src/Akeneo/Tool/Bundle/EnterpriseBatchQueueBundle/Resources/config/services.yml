@@ -3,7 +3,15 @@ services:
         class: Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory
         arguments:
             -
-                'Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage': [ 'mass_edit', 'mass_delete', 'execute_rules', 'mass_edit_rule', 'asset_manager_mass_delete_assets' ]
+                'Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage':
+                    - 'mass_edit'
+                    - 'mass_delete'
+                    - 'execute_rules'
+                    - 'mass_edit_rule'
+                    - 'asset_manager_mass_delete_assets'
+                    - 'asset_manager_mass_edit_assets'
+                    - 'reference_entity_mass_delete_records'
+                    - 'asset_manager_execute_naming_convention'
                 'Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage': [ 'import' ]
                 'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': [ 'export', 'quick_export' ]
             - 'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage'

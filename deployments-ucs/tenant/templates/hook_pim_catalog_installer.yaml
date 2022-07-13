@@ -28,6 +28,14 @@ spec:
       serviceAccountName: {{ .Values.common.workloadIdentityKSA | quote }}
       nodeSelector:
         iam.gke.io/gke-metadata-server-enabled: "true"
+      initContainers:
+        - name: workload-identity-initcontainer
+          image: "{{ .Values.image.cloudsdk.repository }}:{{ .Values.image.cloudsdk.tag }}"
+          command:
+          - '/bin/bash'
+          - '-c'
+          - |
+            curl -s -H 'Metadata-Flavor: Google' 'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token' --retry 30 --retry-connrefused --retry-max-time 30 > /dev/null || exit 1
       containers:
         - name: pim-install-catalog
           image:  {{ template "pim.imageNameAndTag" . }}
