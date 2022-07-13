@@ -27,7 +27,7 @@ const unitConfig = {
     '^styled-components$': '<rootDir>/node_modules/styled-components',
     '\\.(jpg|ico|jpeg|png|gif|svg|css)$': `${__dirname}/fileMock.js`,
   },
-  testRegex: '(.*)\\.unit\\.(jsx?|tsx?)$',
+  testMatch: ['<rootDir>/src/**/*.unit.(js|jsx|ts|tsx)'],
   testPathIgnorePatterns: [
     '/node_modules/',
     '/front-packages/',
