@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
 
-use Akeneo\Connectivity\Connection\Application\Security\FindCurrentAppIdInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\Security\FindCurrentAppIdInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\FindCurrentAppId;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
