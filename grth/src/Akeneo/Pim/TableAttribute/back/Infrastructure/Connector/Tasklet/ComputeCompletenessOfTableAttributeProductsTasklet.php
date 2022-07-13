@@ -91,17 +91,23 @@ class ComputeCompletenessOfTableAttributeProductsTasklet implements TaskletInter
     {
         $query = [
             'family' => [
-                'operator' => Operators::IN_LIST,
-                'value' => $familyCodes
+                [
+                    'operator' => Operators::IN_LIST,
+                    'value' => $familyCodes,
+                ],
             ],
             'entity_code' => [
-                'operator' => Operators::EQUALS,
-                'value' => ProductInterface::class
-            ]
+                [
+                    'operator' => Operators::EQUALS,
+                    'value' => ProductInterface::class,
+                ],
+            ],
         ];
         $query[$attributeCode] = [
-            'operator' => Operators::IS_NOT_EMPTY,
-            'value' => null
+            [
+                'operator' => Operators::IS_NOT_EMPTY,
+                'value' => null,
+            ],
         ];
         $envelope = $this->messageBus->dispatch(new GetProductUuidsQuery($query, null));
 
