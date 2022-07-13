@@ -127,8 +127,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Product\API\Command\UserIntent',
         'Akeneo\Pim\Enrichment\Product\API\MessageBus',
         'Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat',
-        'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode'
-
+        'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode',
+        'Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery',
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -141,6 +141,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Psr\Log\LoggerInterface',
         'Ramsey\Uuid',
+        'Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery',
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',
