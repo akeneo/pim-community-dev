@@ -69,6 +69,7 @@
         "friends-of-behat/mink-browserkit-driver": "^1.5.0",
         "friends-of-behat/mink-extension": "^2.5.0",
         "friends-of-behat/symfony-extension": "^2.2.1",
+        "friendsofphp/php-cs-fixer": "^3.0,<3.9.1",
         "instaclick/php-webdriver": "1.4.7",
         "jfcherng/php-diff": "^6.10",
         "liuggio/fastest": "1.8.*",

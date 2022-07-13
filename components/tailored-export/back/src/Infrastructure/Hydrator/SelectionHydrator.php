@@ -319,12 +319,12 @@ class SelectionHydrator
                     );
                 }
 
-            return new SimpleAssociationsLabelSelection(
-                $entityType,
-                $selectionConfiguration['channel'],
-                $selectionConfiguration['locale'],
-                $selectionConfiguration['separator'],
-            );
+                return new SimpleAssociationsLabelSelection(
+                    $entityType,
+                    $selectionConfiguration['channel'],
+                    $selectionConfiguration['locale'],
+                    $selectionConfiguration['separator'],
+                );
             default:
                 throw new \LogicException(sprintf('Selection type "%s" is not supported for SimpleAssociation', $selectionConfiguration['type']));
         }

@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredExport\Test\Acceptance\Hydrator\Value\Property
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
@@ -34,14 +35,14 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInt
 
 class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
 {
+    private ProductInterface $product;
+
     /**
      * @dataProvider valuePropertiesProvider
      * @test
      */
     public function it_returns_value_properties_from_product(PropertySource $source, SourceValueInterface $expectedValue): void
     {
-        $this->loadQualityScores();
-
         $parentCategory = new Category();
         $parentCategory->setCode('a_parent_category_code');
 
@@ -67,18 +68,20 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
         $anotherGroup = new Group();
         $anotherGroup->setCode('another_group_code');
 
-        $product = new Product();
-        $product->setIdentifier('product_code');
-        $product->setParent($parentProductModel);
-        $product->addCategory($category);
-        $product->addCategory($anotherCategory);
-        $product->setEnabled(true);
-        $product->setFamily($family);
-        $product->setFamilyVariant($familyVariant);
-        $product->addGroup($group);
-        $product->addGroup($anotherGroup);
+        $this->product = new Product();
+        $this->product->setIdentifier('product_code');
+        $this->product->setParent($parentProductModel);
+        $this->product->addCategory($category);
+        $this->product->addCategory($anotherCategory);
+        $this->product->setEnabled(true);
+        $this->product->setFamily($family);
+        $this->product->setFamilyVariant($familyVariant);
+        $this->product->addGroup($group);
+        $this->product->addGroup($anotherGroup);
 
-        $valueHydrated = $this->getHydrator()->hydrate($source, $product);
+        $this->loadQualityScores();
+
+        $valueHydrated = $this->getHydrator()->hydrate($source, $this->product);
         $this->assertEquals($expectedValue, $valueHydrated);
     }
 
@@ -153,7 +156,7 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
     private function loadQualityScores(): void
     {
         $inMemoryFindQualityScores = static::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface');
-        $inMemoryFindQualityScores->addQualityScore('product_code', [
+        $inMemoryFindQualityScores->addQualityScore($this->product->getUuid(), [
             'ecommerce' => [
                 'fr_FR' => 'A',
                 'en_US' => 'B',

@@ -91,8 +91,8 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
                         $data
                     );
                 }
-            $localeAccess->setLocale($locale);
-            break;
+                $localeAccess->setLocale($locale);
+                break;
             case 'user_group':
                 $group = $this->groupRepository->findOneByIdentifier($data);
                 if (null === $group) {
@@ -104,8 +104,8 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
                         $data
                     );
                 }
-            $localeAccess->setUserGroup($group);
-            break;
+                $localeAccess->setUserGroup($group);
+                break;
             case 'view_products':
                 $localeAccess->setViewProducts($data);
                 break;
@@ -114,8 +114,8 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
                     $localeAccess->setViewProducts($data);
                 }
 
-            $localeAccess->setEditProducts($data);
-            break;
+                $localeAccess->setEditProducts($data);
+                break;
         }
     }
 }

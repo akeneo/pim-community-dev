@@ -47,7 +47,7 @@ class PropertyValueHydrator
                     throw new \InvalidArgumentException('Cannot hydrate enabled value on Product entity');
                 }
 
-            return new CodeValue($productOrProductModel->getCode());
+                return new CodeValue($productOrProductModel->getCode());
             case 'categories':
                 return new CategoriesValue($productOrProductModel->getCategoryCodes());
             case 'enabled':
@@ -55,7 +55,7 @@ class PropertyValueHydrator
                     throw new \InvalidArgumentException('Cannot hydrate enabled value on ProductModel entity');
                 }
 
-            return new EnabledValue($productOrProductModel->isEnabled());
+                return new EnabledValue($productOrProductModel->isEnabled());
             case 'family':
                 $family = $productOrProductModel->getFamily();
 
@@ -63,7 +63,7 @@ class PropertyValueHydrator
                     return new NullValue();
                 }
 
-            return new FamilyValue($family->getCode());
+                return new FamilyValue($family->getCode());
             case 'family_variant':
                 $familyVariant = $productOrProductModel->getFamilyVariant();
 
@@ -71,19 +71,19 @@ class PropertyValueHydrator
                     return new NullValue();
                 }
 
-            return new FamilyVariantValue($familyVariant->getCode());
+                return new FamilyVariantValue($familyVariant->getCode());
             case 'groups':
                 if (!$productOrProductModel instanceof ProductInterface) {
                     throw new \InvalidArgumentException('Cannot hydrate groups value on ProductModel entity');
                 }
 
-            $groupCodes = $productOrProductModel->getGroupCodes();
+                $groupCodes = $productOrProductModel->getGroupCodes();
 
-            if (empty($groupCodes)) {
-                return new NullValue();
-            }
+                if (empty($groupCodes)) {
+                    return new NullValue();
+                }
 
-            return new GroupsValue($groupCodes);
+                return new GroupsValue($groupCodes);
             case 'parent':
                 $parent = $productOrProductModel->getParent();
 
@@ -91,23 +91,23 @@ class PropertyValueHydrator
                     return new NullValue();
                 }
 
-            return new ParentValue($parent->getCode());
+                return new ParentValue($parent->getCode());
             case 'quality_score':
                 if (!$productOrProductModel instanceof ProductInterface) {
                     throw new \InvalidArgumentException('Cannot hydrate Quality Score value on ProductModel entity');
                 }
 
-            $qualityScore = $this->findQualityScores->forProduct(
-                $productOrProductModel->getIdentifier(),
-                $source->getChannel(),
-                $source->getLocale(),
-            );
+                $qualityScore = $this->findQualityScores->forProduct(
+                    $productOrProductModel->getUuid(),
+                    $source->getChannel(),
+                    $source->getLocale(),
+                );
 
-            if (null === $qualityScore) {
-                return new NullValue();
-            }
+                if (null === $qualityScore) {
+                    return new NullValue();
+                }
 
-            return new QualityScoreValue($qualityScore);
+                return new QualityScoreValue($qualityScore);
             default:
                 throw new \LogicException(sprintf('Unsupported property name "%s"', $source->getName()));
         }

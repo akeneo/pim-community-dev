@@ -55,59 +55,25 @@ echo "GOOGLE_CLUSTER_ZONE=${GOOGLE_CLUSTER_ZONE}"
 echo "ENV=${ENV_NAME}"
 echo "TF_INPUT_FALSE=${TF_INPUT_FALSE}"
 echo "TF_AUTO_APPROVE=${TF_AUTO_APPROVE}"
-echo "  ----------------------- "
+echo "---------------------------------------------------"
 
-
-## Print original main.tf.json
-echo "--- Original main.tf.json ---"
-cat main.tf.json.ori
-echo "-----------------------------"
-
-## Add use_edition_flag=true dans main.tf.json
-echo "--- Adding use_edition_flag in main.tf.json ---"
-jq -r '.module.pim.use_edition_flag |= true ' main.tf.json > main.tf.json.temp && mv main.tf.json.temp main.tf.json
-# Managing pim-monitoring module depreciation
-if [[ $(jq -r '.module  | has("pim-monitoring") ' main.tf.json) == "true" ]]; then
-    jq -r '.module."pim-monitoring".use_edition_flag |= "${module.pim.use_edition_flag}"' main.tf.json  > main.tf.json.temp && mv main.tf.json.temp main.tf.json
-else
-    echo "INFO: This instance doesn't have pim-monitoring terraform module"
-fi
-
-## Remove disk and snapshot from main.tf
-echo "--- Delete mysql disk informations from main.tf.json ---"
-jq -r '.module.pim.mysql_disk_name |= "" ' main.tf.json > main.tf.json.temp && mv main.tf.json.temp main.tf.json
-jq -r '.module.pim.mysql_disk_description |= "" ' main.tf.json > main.tf.json.temp && mv main.tf.json.temp main.tf.json
-jq -r '.module.pim.mysql_source_snapshot |= "" ' main.tf.json > main.tf.json.temp && mv main.tf.json.temp main.tf.json
-
-## Print modified main.tf.json
-echo "--- New main.tf.json -------"
-cat main.tf.json
-echo "-----------------------------"
-## Print diff between Original and New  main.tf.json
-echo "--- Difference between original and modified  main.tf.json -------"
-diff main.tf.json.ori main.tf.json || true
-echo "-----------------------------"
-
-echo "--- Set minimal catalog and enable catalog installation helm hook ---"
-yq w -i values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
-yq w -i values.yaml pim.hook.installPim.enabled true
-
-echo "--- values.yaml ---"
-cat values.yaml
-
-## Terraform init + Terraform Apply
-echo "INFO: Receating Instance with Edition Flags ---"
+## Terraform Init / Plan / Apply
+echo "INFO: Receating Instance with Edition Flags"
+echo "--- terraform init step ---"
 terraform init -reconfigure -upgrade  "${TF_INPUT_FALSE}"
+echo "---------------------------------------------------"
+echo "--- terraform plan step ---"
 terraform plan '-out=upgrades.tfplan' "${TF_INPUT_FALSE}" -compact-warnings
+echo "---------------------------------------------------"
+echo "--- terraform show step ---"
 terraform show -json upgrades.tfplan > upgrades.tfplan.json
+echo "---------------------------------------------------"
+echo "--- terraform apply step ---"
 HELM_DEBUG=true terraform apply "${TF_INPUT_FALSE}" "${TF_AUTO_APPROVE}" upgrades.tfplan
 
-echo "--- Remove minimal catalog after instance recreation ---"
+echo "INFO: Remove minimal catalog after instance recreation"
 yq d -i values.yaml pim.defaultCatalog
 yq d -i values.yaml pim.hook.installPim
-
-echo "--- Print values.yaml without Catalog Install Hook ---"
-cat values.yaml
 
 echo "DEBUG: Show files in $PWD  ---"
 ls -al

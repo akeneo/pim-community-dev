@@ -422,7 +422,7 @@ class EntityWithValuesDraftManager
             foreach ($values as $value) {
                 $draft->setReviewStatusForChange(
                     EntityWithValuesDraftInterface::CHANGE_DRAFT,
-                    $attributeCode,
+                    (string) $attributeCode,
                     $value['locale'],
                     $value['scope']
                 );

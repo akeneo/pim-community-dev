@@ -25,7 +25,7 @@ function execute_step {
 
 if [[ ${DEVTEST:-false} == "true" ]]
     then ENV_NAME=dev
-    else ENV_NAME=prod
+    else ENV_NAME=prod && DEVTEST=false
 fi
 
 if [[ -z "${SOURCE_PFID:-}" ]]; then
@@ -76,6 +76,5 @@ echo "GOOGLE_CLUSTER_ZONE=${GOOGLE_CLUSTER_ZONE}"
 echo " -------------------------------- "
 echo "TARGET_PFID="${TARGET_PFID}""
 echo ""
-echo "Starting: $1  step for PFID: \"${SOURCE_PFID}\""
+
 execute_step $1
-echo "Step: $1 done for PFID: \"${SOURCE_PFID}\""

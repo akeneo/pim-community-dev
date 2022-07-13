@@ -89,7 +89,7 @@ class AttributeValueHydrator
                     throw new \InvalidArgumentException('pim_catalog_identifier can only be hydrated on ProductInterface');
                 }
 
-            return new StringValue($data);
+                return new StringValue($data);
             case 'pim_catalog_textarea':
             case 'pim_catalog_text':
                 return new StringValue($data);
@@ -98,7 +98,7 @@ class AttributeValueHydrator
                     throw new \LogicException('Malformed value for Measurement attribute');
                 }
 
-            return new MeasurementValue($value->getAmount(), $value->getUnit());
+                return new MeasurementValue($value->getAmount(), $value->getUnit());
             case 'pim_catalog_number':
                 return new NumberValue((string) $data);
             case 'pim_catalog_multiselect':
@@ -122,10 +122,10 @@ class AttributeValueHydrator
                     throw new \LogicException('Malformed value for Table attribute');
                 }
 
-            return new StringValue(json_encode(
-                $this->normalizer->normalize($data, 'standard'),
-                JSON_THROW_ON_ERROR,
-            ));
+                return new StringValue(json_encode(
+                    $this->normalizer->normalize($data, 'standard'),
+                    JSON_THROW_ON_ERROR,
+                ));
             default:
                 throw new \InvalidArgumentException(sprintf('Unsupported attribute type "%s"', $attributeType));
         }

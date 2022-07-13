@@ -78,6 +78,10 @@ terraform apply "${TF_INPUT_FALSE}" "${TF_AUTO_APPROVE}" -compact-warnings -targ
 echo "2 - removing deployment and terraform resources"
 export KUBECONFIG=.kubeconfig
 
+# WARNING ! DON'T DELETE release helm before get list of PD
+# Filter the mysql disk that is managed by terraform process
+LIST_PD_NAME=$(kubectl get pv -o json -l app!=mysql | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]' || echo "")
+
 if helm3 list -n "${PFID}" | grep "${PFID}"; then
   helm3 uninstall "${PFID}" -n "${PFID}"
 fi
@@ -137,6 +141,25 @@ if [[ -n "${LIST_PV_NAME}" ]]; then
   for PV_NAME in ${LIST_PV_NAME}; do
     echo "Delete pv ${PV_NAME}"
     kubectl delete pv "${PV_NAME}"
+  done
+fi
+
+# Remove disk on GCP sides
+echo "PD_NAME list : "
+echo "${LIST_PD_NAME}"
+if [[ -n "${LIST_PD_NAME}" ]]; then
+  for PD_NAME in ${LIST_PD_NAME}; do
+    IS_DISK_DETACHED=$(gcloud --project=${GOOGLE_PROJECT_ID} compute disks list --filter="(name=(${PD_NAME}) AND zone:${GOOGLE_CLUSTER_ZONE} AND NOT users:*)" --format="value(name)" )
+    if [[ -z "$IS_DISK_DETACHED" ]]; then
+      echo "WARN: ${PD_NAME} not found on GCP sides"
+      break;
+    fi
+    for i in {1..6}; do
+  		gcloud --quiet compute disks delete ${PD_NAME} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_CLUSTER_ZONE} \
+      && echo "INFO: PD: ${PD_NAME} deleted from GCP" \
+      && break || sleep 10
+  	done
+
   done
 fi
 
