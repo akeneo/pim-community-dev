@@ -26,19 +26,8 @@ class ProductAndAncestorsIndexer
     public function __construct(
         private ProductIndexerInterface $productIndexer,
         private ProductModelIndexerInterface $productModelIndexer,
-        private GetAncestorProductModelCodes $getAncestorProductModelCodes,
-        private SqlFindProductUuids $sqlFindProductUuids
+        private GetAncestorProductModelCodes $getAncestorProductModelCodes
     ) {
-    }
-
-    /**
-     * @deprecated
-     */
-    public function indexFromProductIdentifiers(array $identifiers, array $options = []): void
-    {
-        $uuids = $this->sqlFindProductUuids->fromIdentifiers($identifiers);
-
-        $this->indexFromProductUuids(\array_values($uuids), $options);
     }
 
     public function indexFromProductUuids(array $uuids, array $options = []): void
