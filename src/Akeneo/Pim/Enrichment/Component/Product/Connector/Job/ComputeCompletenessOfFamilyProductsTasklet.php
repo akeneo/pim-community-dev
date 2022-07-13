@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
@@ -20,6 +17,8 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Webmozart\Assert\Assert;
 
 /**
@@ -38,13 +37,12 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
     private StepExecution $stepExecution;
 
     public function __construct(
-        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         private ItemReaderInterface $familyReader,
         private EntityManagerClearerInterface $cacheClearer,
         private JobRepositoryInterface $jobRepository,
         private CompletenessCalculator $completenessCalculator,
         private SaveProductCompletenesses $saveProductCompletenesses,
-        private SqlFindProductUuids $sqlFindProductUuids
+        private MessageBusInterface $messageBus
     ) {
     }
 
@@ -75,35 +73,32 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
             return;
         }
 
-        $identifierResults = $this->getProductIdentifiersForFamilies($familyCodes);
-        $this->stepExecution->setTotalItems($identifierResults->count());
+        $productUuids = $this->getProductUuidsForFamilies($familyCodes);
+        $this->stepExecution->setTotalItems($productUuids->count());
 
-        $productsToCompute = [];
-        /** @var IdentifierResult $identifierResult */
-        foreach ($identifierResults as $identifierResult) {
-            Assert::same($identifierResult->getType(), ProductInterface::class);
-            $productsToCompute[] = $identifierResult->getIdentifier();
+        $productUuidsToCompute = [];
+        foreach ($productUuids as $uuid) {
+            $productUuidsToCompute[] = $uuid;
 
-            if (count($productsToCompute) >= self::BATCH_SIZE) {
-                $this->computeCompleteness($productsToCompute);
+            if (count($productUuidsToCompute) >= self::BATCH_SIZE) {
+                $this->computeCompleteness($productUuidsToCompute);
                 $this->cacheClearer->clear();
-                $productsToCompute = [];
+                $productUuidsToCompute = [];
             }
         }
 
-        if (count($productsToCompute) > 0) {
-            $this->computeCompleteness($productsToCompute);
+        if (count($productUuidsToCompute) > 0) {
+            $this->computeCompleteness($productUuidsToCompute);
         }
     }
 
-    private function computeCompleteness(array $productIdentifiers): void
+    private function computeCompleteness(array $productUuids): void
     {
-        $uuids = $this->sqlFindProductUuids->fromIdentifiers($productIdentifiers);
-        $completenessCollections = $this->completenessCalculator->fromProductUuids(\array_values($uuids));
+        $completenessCollections = $this->completenessCalculator->fromProductUuids($productUuids);
         $this->saveProductCompletenesses->saveAll($completenessCollections);
 
-        $this->stepExecution->incrementProcessedItems(count($productIdentifiers));
-        $this->stepExecution->incrementSummaryInfo('process', count($productIdentifiers));
+        $this->stepExecution->incrementProcessedItems(count($productUuids));
+        $this->stepExecution->incrementSummaryInfo('process', count($productUuids));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
@@ -124,11 +119,18 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
         return $familyCodes;
     }
 
-    private function getProductIdentifiersForFamilies(array $familyCodes): CursorInterface
+    private function getProductUuidsForFamilies(array $familyCodes): CursorInterface
     {
-        $productQueryBuilder = $this->productQueryBuilderFactory->create();
-        $productQueryBuilder->addFilter('family', Operators::IN_LIST, $familyCodes);
+        $envelope = $this->messageBus->dispatch(new GetProductUuidsQuery([
+            'family' => [
+                'operator' => Operators::IN_LIST,
+                'value' => $familyCodes
+            ]
+        ], null));
 
-        return $productQueryBuilder->execute();
+        $handledStamp = $envelope->last(HandledStamp::class);
+        Assert::notNull($handledStamp, 'The bus does not return any result');
+
+        return $handledStamp->getResult();
     }
 }

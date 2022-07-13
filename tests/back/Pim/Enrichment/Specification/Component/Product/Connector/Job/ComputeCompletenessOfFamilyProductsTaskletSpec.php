@@ -10,7 +10,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Test\Common\FakeCursor;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
@@ -21,27 +23,29 @@ use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
 {
     function let(
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ItemReaderInterface $familyReader,
         EntityManagerClearerInterface $cacheClearer,
         JobRepositoryInterface $jobRepository,
         CompletenessCalculator $completenessCalculator,
         SaveProductCompletenesses $saveProductCompletenesses,
         StepExecution $stepExecution,
-        Connection $connection
+        MessageBusInterface $messageBus
     ) {
         $this->beConstructedWith(
-            $productQueryBuilderFactory,
             $familyReader,
             $cacheClearer,
             $jobRepository,
             $completenessCalculator,
             $saveProductCompletenesses,
-            new SqlFindProductUuids($connection->getWrappedObject())
+            $messageBus
         );
 
         $this->setStepExecution($stepExecution);
@@ -59,13 +63,11 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
     }
 
     function it_does_nothing_if_there_is_no_family(
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ItemReaderInterface $familyReader,
         CompletenessCalculator $completenessCalculator,
         SaveProductCompletenesses $saveProductCompletenesses
     ) {
         $familyReader->read()->shouldBeCalledOnce()->willReturn(null);
-        $productQueryBuilderFactory->create()->shouldNotBeCalled();
         $completenessCalculator->fromProductUuids(Argument::any())->shouldNotBeCalled();
         $saveProductCompletenesses->saveAll(Argument::any())->shouldNotBeCalled();
 
@@ -73,8 +75,6 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
     }
 
     function it_compute_and_persists_the_completeness_of_products_of_family(
-        ProductQueryBuilderInterface $productQueryBuilder,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ItemReaderInterface $familyReader,
         CompletenessCalculator $completenessCalculator,
         SaveProductCompletenesses $saveProductCompletenesses,
@@ -82,34 +82,19 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         JobRepositoryInterface $jobRepository,
         FamilyInterface $familyShoes,
         FamilyInterface $familyTshirt,
-        Connection $connection
+        MessageBusInterface $messageBus
     ) {
-        $productQueryBuilderFactory->create()->willReturn($productQueryBuilder);
+        $uuids = [Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4()];
 
         $familyReader->read()->shouldBeCalledTimes(3)->willReturn($familyShoes, $familyTshirt, null);
         $familyShoes->getCode()->willReturn('Shoes');
         $familyTshirt->getCode()->willReturn('Tshirt');
 
-        $productQueryBuilder->addFilter('family', 'IN', ['Shoes', 'Tshirt'])->shouldBeCalled();
-        $productQueryBuilder->execute()->shouldBeCalled()->willReturn(
-            new IdentifierResultCursor([
-                new IdentifierResult('product_shoes_1', ProductInterface::class),
-                new IdentifierResult('product_shoes_2', ProductInterface::class),
-                new IdentifierResult('product_tshirt_1', ProductInterface::class),
-                new IdentifierResult('product_tshirt_2', ProductInterface::class),
-            ]),
-        );
+        $cursor = new FakeCursor($uuids);
 
-        $uuids = [Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4()];
-        $connection
-            ->fetchAllKeyValue(Argument::any(), ['identifiers' => ['product_shoes_1', 'product_shoes_2', 'product_tshirt_1', 'product_tshirt_2']], Argument::any())
-            ->shouldBeCalled()
-            ->willReturn([
-                'product_shoes_1' => $uuids[0],
-                'product_shoes_2' => $uuids[1],
-                'product_tshirt_1' => $uuids[2],
-                'product_tshirt_2' => $uuids[3],
-            ]);
+        $messageBus->dispatch(Argument::type(GetProductUuidsQuery::class))->willReturn(
+            new Envelope(new \stdClass(), [new HandledStamp($cursor, '')])
+        );
 
         $completenessCalculator->fromProductUuids(Argument::any())->shouldBeCalled()->willReturn(['completeness_collection']);
         $saveProductCompletenesses->saveAll(['completeness_collection'])->shouldBeCalled();
@@ -124,8 +109,6 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
     }
 
     function it_compute_and_persists_the_completeness_of_more_than_1000_products(
-        ProductQueryBuilderInterface $productQueryBuilder,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ItemReaderInterface $familyReader,
         CompletenessCalculator $completenessCalculator,
         SaveProductCompletenesses $saveProductCompletenesses,
@@ -133,31 +116,15 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         JobRepositoryInterface $jobRepository,
         FamilyInterface $familyShoes,
         EntityManagerClearerInterface $cacheClearer,
-        Connection $connection
+        MessageBusInterface $messageBus
     ) {
-        $productQueryBuilderFactory->create()->willReturn($productQueryBuilder);
-
         $familyReader->read()->shouldBeCalledTimes(2)->willReturn($familyShoes, null);
         $familyShoes->getCode()->willReturn('Shoes');
 
-        $productQueryBuilder->addFilter('family', 'IN', ['Shoes'])->shouldBeCalled();
-        $productQueryBuilder->execute()->shouldBeCalled()->willReturn(
-            new IdentifierResultCursor(array_map(function (int $i): IdentifierResult {
-                return new IdentifierResult('product_' . $i, ProductInterface::class);
-            }, range(1, 1006)))
+        $cursor = new FakeCursor(array_map(fn (): UuidInterface => Uuid::uuid4(), range(1, 1006)));
+        $messageBus->dispatch(Argument::type(GetProductUuidsQuery::class))->willReturn(
+            new Envelope(new \stdClass(), [new HandledStamp($cursor, '')])
         );
-
-        $connection
-            ->fetchAllKeyValue(Argument::any(), Argument::any(), Argument::any())
-            ->shouldBeCalledTimes(11)
-            ->will(function ($arguments) {
-                $identifiers = $arguments[1]['identifiers'];
-                $result = [];
-                foreach ($identifiers as $identifier) {
-                    $result[$identifier] = Uuid::uuid4();
-                }
-                return $result;
-            });
 
         $completenessCalculator->fromProductUuids(Argument::type('array'))->shouldBeCalledTimes(11);
         $saveProductCompletenesses->saveAll(Argument::type('array'))->shouldBeCalledTimes(11);
