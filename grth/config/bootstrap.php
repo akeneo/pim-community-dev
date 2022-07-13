@@ -1,6 +1,9 @@
 <?php
 
 use Akeneo\Platform\Component\Tenant\FirestoreContextFetcher;
+use Monolog\Formatter\JsonFormatter;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Symfony\Component\Dotenv\Dotenv;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
@@ -10,9 +13,18 @@ $dotenv->usePutenv(true);
 $dotenv->bootEnv(dirname(__DIR__) . '/.env');
 
 if (isset($_ENV['APP_TENANT_ID']) && '' !== $_ENV['APP_TENANT_ID']) {
+    $stream = match($_ENV['APP_ENV'] ?? '') {
+        'prod' => 'php://stderr',
+        default => __DIR__ . '/../var/logs/bootstrap.log',
+    };
+    $handler = new StreamHandler($stream, $_ENV['LOGGING_LEVEL'] ?? Logger::DEBUG);
+    $jsonFormatter = new JsonFormatter();
+    $jsonFormatter->includeStacktraces();
+    $handler->setFormatter($jsonFormatter);
+
     $contextFetcher = new FirestoreContextFetcher(
-        googleProjectId: $_ENV['GOOGLE_CLOUD_PROJECT'],
-        keyFilePath: $_ENV['SRNT_GOOGLE_APPLICATION_CREDENTIALS']
+        logger: new Logger('bootstrap', [$handler]),
+        googleProjectId: $_ENV['GOOGLE_CLOUD_PROJECT']
     );
     $dotenv->populate(
         values: $contextFetcher->getTenantContext($_ENV['APP_TENANT_ID']),
