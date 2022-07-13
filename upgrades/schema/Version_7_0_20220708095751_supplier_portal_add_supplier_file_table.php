@@ -20,7 +20,11 @@ final class Version_7_0_20220708095751_supplier_portal_add_supplier_file_table e
                 `uploaded_by_supplier` varchar(36) NOT NULL,
                 `uploaded_at` DATETIME NOT NULL,
                 `downloaded_at` DATETIME DEFAULT NULL,
-            PRIMARY KEY (`id`)
+            PRIMARY KEY (`id`),
+            CONSTRAINT `uploaded_by_supplier_foreign_key`
+                FOREIGN KEY (`uploaded_by_supplier`)
+                REFERENCES `akeneo_supplier_portal_supplier` (identifier)
+                ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         SQL;
 
