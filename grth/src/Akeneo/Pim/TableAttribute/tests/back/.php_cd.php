@@ -33,6 +33,8 @@ $rules = [
             'Symfony\Component\Form\Extension\Core\Type\FormType',
             'Symfony\Component\Form\FormBuilderInterface',
             'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
+            'Symfony\Component\Messenger\MessageBusInterface',
+            'Symfony\Component\Messenger\Stamp\HandledStamp',
             'Twig\Environment',
 
             // doctrine
@@ -141,6 +143,7 @@ $rules = [
 
             //Enrichment computing
             'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
+            'Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];
