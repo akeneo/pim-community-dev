@@ -256,6 +256,7 @@ $rules = [
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+        'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

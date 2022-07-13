@@ -45,7 +45,7 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
         $this->getAttributes = $getAttributes;
         $this->valuesNormalizer = $valuesNormalizer;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -58,7 +58,7 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
         $sql = <<<SQL
 WITH
 filtered_product AS (
-    SELECT uuid FROM pim_catalog_product WHERE identifier IN (:productUuids)
+    SELECT uuid FROM pim_catalog_product WHERE uuid IN (:productUuids)
 )
 SELECT
     BIN_TO_UUID(product.uuid) AS uuid,

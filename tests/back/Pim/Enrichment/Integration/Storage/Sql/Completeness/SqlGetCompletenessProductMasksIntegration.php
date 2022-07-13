@@ -26,7 +26,7 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
                 'sku-<all_channels>-<all_locales>',
             ])
         ];
-        $result = $this->getCompletenessProductMasks()->fromProductUuids([$product]);
+        $result = $this->getCompletenessProductMasks()->fromProductUuids([$product->getUuid()]);
         $this->assertSameCompletenessProductMasks($expected, $result);
     }
 
