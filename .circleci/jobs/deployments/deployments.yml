@@ -700,7 +700,8 @@ jobs:
 
                       WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
                       WORKLOAD_IDENTITY_KSA_NAMESPACE=workload
-                      WORKLOAD_IDENTITY_GSA=gsa-account-workload-id
+                      # Waiting the new SA
+                      WORKLOAD_IDENTITY_GSA=main-service-account
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
 
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
