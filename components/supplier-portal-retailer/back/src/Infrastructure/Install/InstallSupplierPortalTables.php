@@ -135,14 +135,14 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
     {
         $sql = <<<SQL
             CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_supplier_file` (
-                `id` bigint UNSIGNED AUTO_INCREMENT NOT NULL,
+                `identifier` char(36) NOT NULL,
                 `filename` varchar(255) NOT NULL,
                 `path` varchar(255) NOT NULL,     
                 `uploaded_by_contributor` varchar(36) DEFAULT NULL,
                 `uploaded_by_supplier` varchar(36) NOT NULL,
                 `uploaded_at` DATETIME NOT NULL,
                 `downloaded_at` DATETIME DEFAULT NULL,
-            PRIMARY KEY (`id`),
+            PRIMARY KEY (`identifier`),
             CONSTRAINT `uploaded_by_supplier_foreign_key`
                 FOREIGN KEY (`uploaded_by_supplier`)
                 REFERENCES `akeneo_supplier_portal_supplier` (identifier)

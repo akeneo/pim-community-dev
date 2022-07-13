@@ -420,7 +420,7 @@ akeneo_supplier_portal_supplier_contributor | id | NO | bigint unsigned | PRI
 akeneo_supplier_portal_supplier_contributor | email | NO | varchar(255) | UNI
 akeneo_supplier_portal_supplier_contributor | created_at | NO | datetime |
 akeneo_supplier_portal_supplier_contributor | supplier_identifier | NO | char(36) | MUL
-akeneo_supplier_portal_supplier_file | id | NO | bigint unsigned | PRI
+akeneo_supplier_portal_supplier_file | identifier | NO | char(36) | PRI
 akeneo_supplier_portal_supplier_file | filename | NO | varchar(255) |
 akeneo_supplier_portal_supplier_file | path | NO | varchar(255) |
 akeneo_supplier_portal_supplier_file | uploaded_by_contributor | YES | varchar(36) |
@@ -1061,7 +1061,7 @@ INDEX | akeneo_supplier_portal_supplier | UC_supplier_code | code
 INDEX | akeneo_supplier_portal_supplier_contributor | PRIMARY | id
 INDEX | akeneo_supplier_portal_supplier_contributor | supplier_identifier_foreign_key | supplier_identifier
 INDEX | akeneo_supplier_portal_supplier_contributor | UC_supplier_contributor_email | email
-INDEX | akeneo_supplier_portal_supplier_file | PRIMARY | id
+INDEX | akeneo_supplier_portal_supplier_file | PRIMARY | identifier
 INDEX | akeneo_supplier_portal_supplier_file | uploaded_by_supplier_foreign_key | uploaded_by_supplier
 INDEX | lock_keys | PRIMARY | key_id
 INDEX | messenger_messages | IDX_75EA56E016BA31DB | delivered_at
