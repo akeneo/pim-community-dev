@@ -41,7 +41,7 @@ test('it displays a message when a user drags a file onto the component to uploa
     expect(screen.getByText('Drag & drop your file here')).toBeInTheDocument();
 });
 
-test('it supports file upload', async () => {
+test('it can upload a file', async () => {
     const handleChange = jest.fn();
     const uploader = jest.fn().mockResolvedValue(fileInfo);
 
