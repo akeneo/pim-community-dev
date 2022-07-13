@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
+use Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetProductUuidsFromProductIdentifiers;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\UuidInterface;
 

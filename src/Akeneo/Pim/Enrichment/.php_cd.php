@@ -135,6 +135,7 @@ $rules = [
         'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
         'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface',
         'Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory',//todo
+        'Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetProductUuidsFromProductIdentifiers',
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
