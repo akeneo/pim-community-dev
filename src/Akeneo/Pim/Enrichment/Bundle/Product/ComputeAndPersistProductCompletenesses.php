@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Product;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Ramsey\Uuid\UuidInterface;
@@ -20,20 +19,8 @@ class ComputeAndPersistProductCompletenesses
 
     public function __construct(
         private CompletenessCalculator $completenessCalculator,
-        private SaveProductCompletenesses $saveProductCompletenesses,
-        private SqlFindProductUuids $sqlFindProductUuids
+        private SaveProductCompletenesses $saveProductCompletenesses
     ) {
-    }
-
-    /**
-     * @param string[] $productIdentifiers
-     * @deprecated
-     */
-    public function fromProductIdentifiers(array $productIdentifiers): void
-    {
-        $uuids = $this->sqlFindProductUuids->fromIdentifiers($productIdentifiers);
-
-        $this->fromProductUuids($uuids);
     }
 
     /**
