@@ -81,7 +81,7 @@ elasticsearch:
     tag: 7.16.2
   fullnameOverride: elasticsearch
   sysctlInitContainer:
-    enabled: false
+    enabled: true
   cluster:
     name: "pim-es"
     env:
