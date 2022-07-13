@@ -52,7 +52,6 @@ const eeConfig = {
     'src/Akeneo/AssetManager/tests',
   ],
   coverageThreshold: {
-    ...baseConfig.coverageThreshold,
     'src/Akeneo/AssetManager/': {
       statements: 100,
       functions: 100,

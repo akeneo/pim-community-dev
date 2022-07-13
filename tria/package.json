@@ -21,7 +21,7 @@
     "lint": "yarn prettier:check && yarn --cwd=front-packages/free-trial lint:check",
     "lint-fix": "yarn prettier:run && yarn --cwd=front-packages/free-trial lint:fix",
     "tslint": "node ./node_modules/tslint/bin/tslint",
-    "unit": "jest --coverage --config tests/front/unit/jest/unit.jest.js",
+    "unit": "jest --coverage --config tests/front/unit/jest/unit.jest.js --passWithNoTests",
     "packages:unit": "yarn --cwd=front-packages/free-trial test:unit:run",
     "integration": "jest --maxWorkers=4 --config $npm_package_config_source/tests/front/integration/jest/integration.jest.js",
     "acceptance": "RANDOM_LATENCY=false NODE_PATH=./node_modules cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js",
