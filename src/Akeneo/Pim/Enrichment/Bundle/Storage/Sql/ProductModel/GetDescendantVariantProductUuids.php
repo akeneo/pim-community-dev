@@ -22,7 +22,7 @@ class GetDescendantVariantProductUuids
 
     /**
      * @param string[] $productModelCodes
-     * @return UuidInterface $uuids
+     * @return UuidInterface[] $uuids
      *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
