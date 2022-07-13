@@ -14,7 +14,7 @@ class CountProductsPerCategoriesIntegration extends TestCase
         $category = $this->get('pim_catalog.repository.category')
             ->findOneByCode('master_accessories');
 
-        $productsCount = $this->get('pim_category.doctrine.counter.category_product')
+        $productsCount = $this->get('pim_enrich.doctrine.counter.category_product')
             ->getItemsCountInCategory($category, false);
 
         $this->assertEquals(0, $productsCount);
@@ -30,7 +30,7 @@ class CountProductsPerCategoriesIntegration extends TestCase
         $category = $this->get('pim_catalog.repository.category')
             ->findOneByCode('master_accessories');
 
-        $productsCount = $this->get('pim_category.doctrine.counter.category_product')
+        $productsCount = $this->get('pim_enrich.doctrine.counter.category_product')
             ->getItemsCountInCategory($category, true);
 
         $this->assertEquals(4, $productsCount);
@@ -40,14 +40,14 @@ class CountProductsPerCategoriesIntegration extends TestCase
     {
         $category = $this->get('pim_catalog.repository.category')
             ->findOneByCode('master_men_pants_jeans');
-        $productsCount = $this->get('pim_category.doctrine.counter.category_product')
+        $productsCount = $this->get('pim_enrich.doctrine.counter.category_product')
             ->getItemsCountInCategory($category, false);
 
         $this->assertEquals(12, $productsCount);
 
         $category = $this->get('pim_catalog.repository.category')
             ->findOneByCode('master_women_dresses');
-        $productsCount = $this->get('pim_category.doctrine.counter.category_product')
+        $productsCount = $this->get('pim_enrich.doctrine.counter.category_product')
             ->getItemsCountInCategory($category, false);
 
         $this->assertEquals(21, $productsCount);
@@ -57,7 +57,7 @@ class CountProductsPerCategoriesIntegration extends TestCase
     {
         $category = $this->get('pim_catalog.repository.category')
             ->findOneByCode('master_men_pants');
-        $productsCount = $this->get('pim_category.doctrine.counter.category_product')
+        $productsCount = $this->get('pim_enrich.doctrine.counter.category_product')
             ->getItemsCountInCategory($category, true);
 
         $this->assertEquals(48, $productsCount);

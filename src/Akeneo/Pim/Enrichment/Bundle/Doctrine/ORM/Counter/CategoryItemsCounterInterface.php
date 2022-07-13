@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Counter;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter;
 
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 
