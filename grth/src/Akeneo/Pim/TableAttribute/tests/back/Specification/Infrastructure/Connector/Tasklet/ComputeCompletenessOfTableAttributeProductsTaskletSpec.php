@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\Taskl
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -24,7 +25,10 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehavior
 {
@@ -33,13 +37,15 @@ class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehav
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         JobRepositoryInterface $jobRepository,
         ProductAndAncestorsIndexer $productAndAncestorsIndexer,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        Connection $connection
     ) {
         $this->beConstructedWith(
-        $productQueryBuilderFactory,
-        $computeAndPersistProductCompletenesses,
-        $jobRepository,
-        $productAndAncestorsIndexer
+            $productQueryBuilderFactory,
+            $computeAndPersistProductCompletenesses,
+            $jobRepository,
+            $productAndAncestorsIndexer,
+            new SqlFindProductUuids($connection->getWrappedObject())
         );
 
         $this->setStepExecution($stepExecution);
@@ -60,6 +66,7 @@ class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehav
         JobParameters $jobParameters,
         ProductQueryBuilderInterface $productQueryBuilder,
         CursorInterface $cursor,
+        Connection $connection
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('attribute_code')->willReturn('nutrition');
@@ -82,8 +89,17 @@ class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehav
         $identifierResult2 = new IdentifierResult('identifier2', ProductInterface::class);
         $cursor->current()->shouldBeCalledTimes(2)->willReturn($identifierResult1, $identifierResult2);
 
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers(['identifier1', 'identifier2'])->shouldBeCalledOnce();
-        $productAndAncestorsIndexer->indexFromProductIdentifiers(['identifier1', 'identifier2'])->shouldBeCalledOnce();
+        $uuids = [Uuid::uuid4(), Uuid::uuid4()];
+        $connection
+            ->fetchAllKeyValue(Argument::any(), ['identifiers' => ['identifier1', 'identifier2']], Argument::any())
+            ->shouldBeCalled()
+            ->willReturn([
+                'identifier1' => $uuids[0],
+                'identifier2' => $uuids[1],
+            ]);
+
+        $computeAndPersistProductCompletenesses->fromProductUuids($uuids)->shouldBeCalledOnce();
+        $productAndAncestorsIndexer->indexFromProductUuids($uuids)->shouldBeCalledOnce();
 
         $stepExecution->incrementProcessedItems(2)->shouldBeCalledOnce();
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledOnce();

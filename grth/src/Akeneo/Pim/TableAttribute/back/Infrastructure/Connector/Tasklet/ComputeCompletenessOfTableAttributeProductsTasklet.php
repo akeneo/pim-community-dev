@@ -15,6 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -33,7 +34,8 @@ class ComputeCompletenessOfTableAttributeProductsTasklet implements TaskletInter
         private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         private ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         private JobRepositoryInterface $jobRepository,
-        private ProductAndAncestorsIndexer $productAndAncestorsIndexer
+        private ProductAndAncestorsIndexer $productAndAncestorsIndexer,
+        private SqlFindProductUuids $sqlFindProductUuids // TODO Use PQB instead once CPM-678 is merged
     ) {
     }
 
@@ -73,8 +75,9 @@ class ComputeCompletenessOfTableAttributeProductsTasklet implements TaskletInter
 
     private function computeCompleteness(array $productIdentifiers): void
     {
-        $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($productIdentifiers);
-        $this->productAndAncestorsIndexer->indexFromProductIdentifiers($productIdentifiers);
+        $uuids = \array_values($this->sqlFindProductUuids->fromIdentifiers($productIdentifiers));
+        $this->computeAndPersistProductCompletenesses->fromProductUuids($uuids);
+        $this->productAndAncestorsIndexer->indexFromProductUuids($uuids);
 
         $this->stepExecution->incrementProcessedItems(count($productIdentifiers));
         $this->jobRepository->updateStepExecution($this->stepExecution);
