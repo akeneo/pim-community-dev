@@ -73,6 +73,9 @@ jobs:
       - run:
           name: Unit front
           command: make catalogs-unit-front
+      - run:
+          name: Integration front
+          command: make catalogs-integration-front
 
   test_back_catalogs:
     machine:
