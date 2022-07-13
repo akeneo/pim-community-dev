@@ -296,6 +296,30 @@ class ExportProfilesContext extends ImportExportContext
     }
 
     /**
+     * @Then /^directory "([^"]*)" should contain the following media:$/
+     *
+     * @throws ExpectationException
+     */
+    public function directoryOfShouldContainTheFollowingMedia(string $directory, TableNode $table)
+    {
+        if ($this->getService('pim_catalog.version_provider')->isSaasVersion()) {
+            return;
+        }
+
+        $this->checkExportDirectoryFiles(true, $table, $directory);
+    }
+
+    /**
+     * @Then /^directory "([^"]*)" should not contain the following media:$/
+     *
+     * @throws ExpectationException
+     */
+    public function directoryOfShouldNotContainTheFollowingMedia(string $directory, TableNode $table)
+    {
+        $this->checkExportDirectoryFiles(false, $table, $directory);
+    }
+
+    /**
      * Check if files should be in the export directory of the job with the given $code
      *
      * @param bool      $shouldBeInDirectory true if the files should be in the directory, false otherwise
