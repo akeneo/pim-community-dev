@@ -10,6 +10,11 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\CountRecordsInterface;
 
 class InMemoryCountRecords implements CountRecordsInterface
 {
+    public function all(): int
+    {
+        return 3;
+    }
+
     public function forReferenceEntity(ReferenceEntityIdentifier $identifierToMatch): int
     {
         return 3;
