@@ -51,6 +51,7 @@ test('it returns the default local storage', () => {
 
   expect(getDefaultStorage('export', 'none', 'xlsx')).toEqual({
     type: 'none',
+    file_path: 'export_%job_label%_%datetime%.xlsx',
   });
 
   // @ts-expect-error invalid storage type

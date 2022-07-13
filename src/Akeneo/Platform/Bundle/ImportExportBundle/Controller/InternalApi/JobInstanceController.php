@@ -319,16 +319,8 @@ class JobInstanceController
         }
 
         $rawParameters = $jobInstance->getRawParameters();
-        if (NoneStorage::TYPE === $rawParameters['storage']['type']) {
-            if (JobInstance::TYPE_IMPORT === $jobInstance->getType()) {
-                throw new BadRequestException();
-            }
-
-            $rawParameters['storage'] = [
-                'type' => LocalStorage::TYPE,
-                'file_path' => $this->getDefaultFilePath($jobInstance->getType(), $jobInstance->getJobName()),
-            ];
-            $jobInstance->setRawParameters($rawParameters);
+        if (NoneStorage::TYPE === $rawParameters['storage']['type'] && JobInstance::TYPE_IMPORT === $jobInstance->getType()) {
+            throw new BadRequestException();
         }
 
         $validationGroups = null !== $file ? ['Default', 'Execution', 'UploadExecution'] : ['Default', 'Execution'];
@@ -567,34 +559,5 @@ class JobInstanceController
     private function isFileUpload(Request $request): bool
     {
         return $request->server->get('CONTENT_LENGTH') > 0;
-    }
-
-    // TODO RAB-665: we need to find a proper way to determine the extension of a job
-    private function getDefaultFilePath(string $jobType, string $jobName): string
-    {
-        $fileExtension = $this->guessExtension($jobName);
-
-        return sprintf(
-            '%s%s%s_%s_%s.%s',
-            sys_get_temp_dir(),
-            DIRECTORY_SEPARATOR,
-            $jobType,
-            '%job_label%',
-            '%datetime%',
-            $fileExtension,
-        );
-    }
-
-    private function guessExtension(string $jobName): string
-    {
-        if (false !== strpos($jobName, 'yml')) {
-            return 'yml';
-        }
-
-        if (false !== strpos($jobName, 'csv')) {
-            return 'csv';
-        }
-
-        return 'xlsx';
     }
 }

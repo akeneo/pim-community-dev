@@ -18,6 +18,7 @@ type SftpStorage = {
 
 type NoneStorage = {
   type: 'none';
+  file_path: string;
 };
 
 type Storage = LocalStorage | SftpStorage | NoneStorage;
@@ -90,6 +91,7 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
     case 'none':
       return {
         type: 'none',
+        file_path: getDefaultFilePath(jobType, fileExtension),
       };
     default:
       throw new Error(`Unknown storage type: ${storageType}`);
