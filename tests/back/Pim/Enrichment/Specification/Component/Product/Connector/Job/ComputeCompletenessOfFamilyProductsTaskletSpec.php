@@ -111,7 +111,7 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
                 'product_tshirt_2' => $uuids[3],
             ]);
 
-        $completenessCalculator->fromProductUuids($uuids)->shouldBeCalled()->willReturn(['completeness_collection']);
+        $completenessCalculator->fromProductUuids(Argument::any())->shouldBeCalled()->willReturn(['completeness_collection']);
         $saveProductCompletenesses->saveAll(['completeness_collection'])->shouldBeCalled();
 
         $stepExecution->setTotalItems(4)->shouldBeCalledOnce();
@@ -132,7 +132,8 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
         FamilyInterface $familyShoes,
-        EntityManagerClearerInterface $cacheClearer
+        EntityManagerClearerInterface $cacheClearer,
+        Connection $connection
     ) {
         $productQueryBuilderFactory->create()->willReturn($productQueryBuilder);
 
@@ -145,6 +146,18 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
                 return new IdentifierResult('product_' . $i, ProductInterface::class);
             }, range(1, 1006)))
         );
+
+        $connection
+            ->fetchAllKeyValue(Argument::any(), Argument::any(), Argument::any())
+            ->shouldBeCalledTimes(11)
+            ->will(function ($arguments) {
+                $identifiers = $arguments[1]['identifiers'];
+                $result = [];
+                foreach ($identifiers as $identifier) {
+                    $result[$identifier] = Uuid::uuid4();
+                }
+                return $result;
+            });
 
         $completenessCalculator->fromProductUuids(Argument::type('array'))->shouldBeCalledTimes(11);
         $saveProductCompletenesses->saveAll(Argument::type('array'))->shouldBeCalledTimes(11);

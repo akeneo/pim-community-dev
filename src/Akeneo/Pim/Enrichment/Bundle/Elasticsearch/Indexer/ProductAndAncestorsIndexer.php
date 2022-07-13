@@ -38,7 +38,7 @@ class ProductAndAncestorsIndexer
     {
         $uuids = $this->sqlFindProductUuids->fromIdentifiers($identifiers);
 
-        $this->indexFromProductUuids($uuids, $options);
+        $this->indexFromProductUuids(\array_values($uuids), $options);
     }
 
     public function indexFromProductUuids(array $uuids, array $options = []): void

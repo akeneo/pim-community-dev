@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdentifierFromProductUuidQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
@@ -22,11 +21,9 @@ use Ramsey\Uuid\Uuid;
 class CalculateProductCompletenessSpec extends ObjectBehavior
 {
     public function let(
-        GetProductIdentifierFromProductUuidQueryInterface $getProductIdentifierFromProductUuidQuery,
-        CompletenessCalculator                            $completenessCalculator
-    )
-    {
-        $this->beConstructedWith($getProductIdentifierFromProductUuidQuery, $completenessCalculator);
+        CompletenessCalculator $completenessCalculator
+    ) {
+        $this->beConstructedWith($completenessCalculator);
     }
 
     public function it_calculate_product_completeness()
@@ -42,16 +39,12 @@ class CalculateProductCompletenessSpec extends ObjectBehavior
     }
 
     public function it_evaluates_the_completeness_criterion(
-        GetProductIdentifierFromProductUuidQueryInterface $getProductIdentifierFromProductUuidQuery,
-        CompletenessCalculator                            $completenessCalculator
-    )
-    {
+        CompletenessCalculator $completenessCalculator
+    ) {
         $uuid = 'df470d52-7723-4890-85a0-e79be625e2ed';
         $productUuid = ProductUuid::fromString($uuid);
-        $productIdentifier = new ProductIdentifier('ziggy_mug');
-        $getProductIdentifierFromProductUuidQuery->execute($productUuid)->willReturn($productIdentifier);
 
-        $completenessCalculator->fromProductUuid($productUuid)->willReturn(new ProductCompletenessWithMissingAttributeCodesCollection(
+        $completenessCalculator->fromProductUuid(Uuid::fromString($uuid))->willReturn(new ProductCompletenessWithMissingAttributeCodesCollection(
             $uuid, [
                 new ProductCompletenessWithMissingAttributeCodes(
                     'ecommerce', 'en_US', 10, [
