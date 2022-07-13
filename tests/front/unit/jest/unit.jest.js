@@ -31,11 +31,12 @@ const unitConfig = {
   testPathIgnorePatterns: [
     '/node_modules/',
     '/front-packages/',
+    '<rootDir>/components/',
     '<rootDir>/src/Akeneo/Connectivity/',
     '<rootDir>/src/Akeneo/Category/',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  moduleDirectories: ['node_modules', `<rootDir>/public/bundles/`],
+  moduleDirectories: ['node_modules', '<rootDir>/public/bundles/'],
   globals: {
     __moduleConfig: {},
     'ts-jest': {
