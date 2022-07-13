@@ -7,6 +7,7 @@ namespace Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Read\Model;
 final class SupplierFile
 {
     public function __construct(
+        public string $identifier,
         public string $filename,
         public string $path,
         public string $uploadedByContributor,
@@ -17,6 +18,7 @@ final class SupplierFile
     public function toArray(): array
     {
         return [
+            'identifier' => $this->identifier,
             'filename' => $this->filename,
             'path' => $this->path,
             'uploadedByContributor' => $this->uploadedByContributor,
