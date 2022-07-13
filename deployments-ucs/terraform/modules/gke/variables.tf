@@ -1,5 +1,5 @@
 variable "project" {
-  description = "Project to deploy to"
+  description = "Project wich will hosts the clusters"
   type        = string
 }
 
@@ -17,7 +17,7 @@ variable "regions" {
   description = "List of regions where gke is deployed"
   type        = list(string)
   default = [
-    "europe-west-2",
+    "europe-west-1",
     "europe-west-3",
     "us-central-1",
     "asia-east-2",

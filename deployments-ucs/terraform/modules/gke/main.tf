@@ -47,7 +47,7 @@ resource "google_container_cluster" "gke" {
   }
   private_cluster_config {
     enable_private_nodes    = true
-    enable_private_endpoint = false #false during the POC
+    enable_private_endpoint = true
     master_ipv4_cidr_block = jsondecode(
       data.google_secret_manager_secret_version.network_config.secret_data
     )[each.value].extra_ranges.gke
