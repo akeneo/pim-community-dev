@@ -203,8 +203,8 @@ jobs:
             -   run:
                     name: Build front libraries
                     command: |
-                        [ ! -d "~/project/front-packages/akeneo-design-system/lib" ] && docker-compose run -u node --rm node yarn dsm:build
-                        [ ! -d "~/project/front-packages/shared/lib" ] && docker-compose run -u node --rm node yarn shared:build
+                        [ ! -d "~/project/front-packages/akeneo-design-system/lib" ] || docker-compose run -u node --rm node yarn dsm:build
+                        [ ! -d "~/project/front-packages/shared/lib" ] || docker-compose run -u node --rm node yarn shared:build
             -   persist_to_workspace:
                     root: ~/
                     paths:
