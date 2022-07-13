@@ -59,6 +59,7 @@ class StorageFormController extends BaseView {
   getDefaultStorage(): Storage {
     return {
       type: 'none',
+      file_path: ''
     };
   }
 
