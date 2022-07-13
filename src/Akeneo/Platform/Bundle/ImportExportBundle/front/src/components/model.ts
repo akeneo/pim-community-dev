@@ -37,7 +37,7 @@ const localStorageIsEnabled = (featureFlags: FeatureFlags): boolean =>
   featureFlags.isEnabled('job_automation_local_storage');
 
 const remoteStorageIsEnabled = (featureFlags: FeatureFlags, jobCode: string): boolean =>
-  featureFlags.isEnabled('job_automation_remote_storage') && REMOTE_STORAGE_JOB_CODES.includes(jobCode);
+  REMOTE_STORAGE_JOB_CODES.includes(jobCode);
 
 const shouldHideForm = (featureFlags: FeatureFlags, jobCode: string): boolean =>
   !localStorageIsEnabled(featureFlags) && !remoteStorageIsEnabled(featureFlags, jobCode);

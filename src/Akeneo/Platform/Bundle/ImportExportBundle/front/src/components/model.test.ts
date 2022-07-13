@@ -10,7 +10,6 @@ import {
 
 const featureFlagCollection = {
   job_automation_local_storage: false,
-  job_automation_remote_storage: false,
 };
 
 const enableFeatureFlag = (featureFlag: string) => (featureFlagCollection[featureFlag] = true);
@@ -21,15 +20,12 @@ const featureFlags: FeatureFlags = {
 
 beforeEach(() => {
   featureFlagCollection.job_automation_local_storage = false;
-  featureFlagCollection.job_automation_remote_storage = false;
 });
 
 test('it says if a storage type is valid', () => {
   expect(isValidStorageType('local', featureFlags, 'xlsx_product_export')).toBe(false);
-  expect(isValidStorageType('sftp', featureFlags, 'xlsx_product_export')).toBe(false);
 
   enableFeatureFlag('job_automation_local_storage');
-  enableFeatureFlag('job_automation_remote_storage');
 
   expect(isValidStorageType('none', featureFlags, 'xlsx_product_export')).toBe(true);
   expect(isValidStorageType('local', featureFlags, 'xlsx_product_export')).toBe(true);
@@ -78,7 +74,7 @@ test('it check if local storage is enabled', () => {
   enableFeatureFlag('job_automation_local_storage');
   expect(localStorageIsEnabled(featureFlags)).toBe(true);
   expect(remoteStorageIsEnabled(featureFlags, 'xlsx_product_import')).toBe(false);
-  enableFeatureFlag('job_automation_remote_storage');
+
   expect(remoteStorageIsEnabled(featureFlags, 'xlsx_product_import')).toBe(true);
   expect(remoteStorageIsEnabled(featureFlags, 'csv_attribute_import')).toBe(false);
 });
