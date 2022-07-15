@@ -144,7 +144,7 @@ module.exports = {
                 'from.pathNot re of the not-to-dev-dep rule in the dependency-cruiser configuration',
             from: {
                 path: '^(src)',
-                pathNot: '(spec|test|reportWebVitals)\\.(js|mjs|cjs|ts|tsx|ls|coffee|litcoffee|coffee\\.md)$',
+                pathNot: '(unit|integration|reportWebVitals)\\.(js|mjs|cjs|ts|tsx|ls|coffee|litcoffee|coffee\\.md)$',
             },
             to: {
                 dependencyTypes: ['npm-dev'],
@@ -168,6 +168,7 @@ module.exports = {
             severity: 'error',
             from: {
                 path: '^src/components/([^/]+)/.+',
+                pathNot: '\\.(unit|integration)\\.(ts|tsx)$',
             },
             to: {
                 path: '^src/components/([^/]+)/(?!index).+',

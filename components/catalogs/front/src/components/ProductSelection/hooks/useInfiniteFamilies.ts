@@ -3,8 +3,8 @@ import {useCallback} from 'react';
 import {Family} from '../models/Family';
 
 type PageParam = {
-    number?: number;
-    search?: string;
+    number: number;
+    search: string;
 };
 type Page = {
     data: Family[];
@@ -31,7 +31,7 @@ export const useInfiniteFamilies = ({search = '', codes = [], limit = 20}: Query
         async ({pageParam}: {pageParam?: PageParam}): Promise<Page> => {
             const _page = pageParam?.number || 1;
             const _search = search || pageParam?.search || '';
-            const _codes = (codes || []).join(',');
+            const _codes = codes.join(',');
 
             const response = await fetch(
                 `/rest/catalogs/families?page=${_page}&limit=${limit}&codes=${_codes}&search=${_search}`,
@@ -59,7 +59,7 @@ export const useInfiniteFamilies = ({search = '', codes = [], limit = 20}: Query
         {
             keepPreviousData: true,
             getNextPageParam: last =>
-                last.data.length >= limit && last.page?.number
+                last.data.length >= limit
                     ? {
                           number: last.page.number + 1,
                           search: search,

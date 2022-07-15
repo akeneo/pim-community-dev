@@ -28,6 +28,7 @@ const FamilySelectInput: FC<Props> = ({state, onChange}) => {
             onChange={v => onChange({...state, value: v})}
             onNextPage={fetchNextPage}
             onSearchChange={setSearch}
+            data-testid='value'
         >
             {families.map(family => (
                 <MultiSelectInput.Option key={family.code} title={family.label} value={family.code}>

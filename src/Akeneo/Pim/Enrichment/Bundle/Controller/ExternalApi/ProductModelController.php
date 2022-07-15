@@ -330,7 +330,7 @@ class ProductModelController
                 && 'illegal_argument_exception' === $message['error']['root_cause'][0]['type']
                 && 0 === strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')) {
                 throw new DocumentedHttpException(
-                    Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
+                    Documentation::URL_DOCUMENTATION . 'pagination.html#the-search-after-method',
                     'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
                     $e
                 );

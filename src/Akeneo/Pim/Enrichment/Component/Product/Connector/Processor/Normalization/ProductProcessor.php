@@ -75,7 +75,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
 
         if ($this->hasFilterOnQualityScore($parameters)) {
             $productStandard['quality_scores'] = ($this->getNormalizedQualityScores)(
-                $product instanceof ProductModelInterface ? $product->getCode() : $product->getIdentifier(),
+                $product instanceof ProductModelInterface ? $product->getCode() : $product->getUuid(),
                 $structure['scope'] ?? null,
                 $structure['locales'] ?? []
             );

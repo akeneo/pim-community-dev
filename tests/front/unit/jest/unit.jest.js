@@ -27,15 +27,17 @@ const unitConfig = {
     '^styled-components$': '<rootDir>/node_modules/styled-components',
     '\\.(jpg|ico|jpeg|png|gif|svg|css)$': `${__dirname}/fileMock.js`,
   },
-  testRegex: '(.*)\\.unit\\.(jsx?|tsx?)$',
+  testMatch: ['<rootDir>/src/**/*.unit.(js|jsx|ts|tsx)'],
   testPathIgnorePatterns: [
     '/node_modules/',
     '/front-packages/',
+    '<rootDir>/components/',
+    '<rootDir>/vendors/',
     '<rootDir>/src/Akeneo/Connectivity/',
     '<rootDir>/src/Akeneo/Category/',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  moduleDirectories: ['node_modules', `<rootDir>/public/bundles/`],
+  moduleDirectories: ['node_modules', '<rootDir>/public/bundles/'],
   globals: {
     __moduleConfig: {},
     'ts-jest': {

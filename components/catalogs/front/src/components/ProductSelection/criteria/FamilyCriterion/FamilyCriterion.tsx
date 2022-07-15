@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {CloseIcon, IconButton, List} from 'akeneo-design-system';
+import {CloseIcon, Helper, IconButton, List} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
 import {CriterionModule} from '../../models/Criterion';
 import styled from 'styled-components';
@@ -8,21 +8,21 @@ import {FamilyCriterionState} from './types';
 import {FamilyOperatorInput} from './FamilyOperatorInput';
 import {FamilySelectInput} from './FamilySelectInput';
 
-const Inputs = styled.div`
+const Fields = styled.div`
     display: flex;
     gap: 20px;
 `;
 
-const DefaultInputContainer = styled.div`
+const Field = styled.div`
     flex-basis: 200px;
     flex-shrink: 0;
 `;
 
-const LargeInputContainer = styled.div`
+const LargeField = styled.div`
     flex-basis: auto;
 `;
 
-const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, onChange, onRemove}) => {
+const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, errors, onChange, onRemove}) => {
     const translate = useTranslate();
     const [showFamilies, setShowFamilies] = useState<boolean>(false);
 
@@ -36,16 +36,26 @@ const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, onCh
                 {translate('akeneo_catalogs.product_selection.criteria.family.label')}
             </List.TitleCell>
             <List.Cell width='auto'>
-                <Inputs>
-                    <DefaultInputContainer>
+                <Fields>
+                    <Field>
                         <FamilyOperatorInput state={state} onChange={onChange} />
-                    </DefaultInputContainer>
+                        {errors.operator !== null && (
+                            <Helper inline level='error'>
+                                {errors.operator}
+                            </Helper>
+                        )}
+                    </Field>
                     {showFamilies && (
-                        <LargeInputContainer>
+                        <LargeField>
                             <FamilySelectInput state={state} onChange={onChange} />
-                        </LargeInputContainer>
+                            {errors.value !== null && (
+                                <Helper inline level='error'>
+                                    {errors.value}
+                                </Helper>
+                            )}
+                        </LargeField>
                     )}
-                </Inputs>
+                </Fields>
             </List.Cell>
             <List.RemoveCell>
                 <IconButton ghost='borderless' level='tertiary' icon={<CloseIcon />} title='' onClick={onRemove} />

@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10515: Fix 'add associations' button visibility for quantified associations & category permissions
 - PIM-10487: Fix import of very tiny measurement values (e.g. 0.000075 GRAM)
 - PIM-10215: Fixed last operation widget job type translation key
 - PIM-10233: Fix the saved value by an empty wysiwyg
@@ -56,6 +57,9 @@
 - PIM-10516: Fix remove completeness job when deactivating and reactivating a locale
 - PIM-10508: Fix attribute creation when label contains an '&' character
 - PIM-10501: Fix identifier validation for product and product model imports to disallow line breaks
+- PIM-10527: Fix associated groups grid
+- PIM-10518: Normalize simple select option value like multi select
+- PIM-10528: Fix escaped special characters in page titles
 
 ## Improvements
 

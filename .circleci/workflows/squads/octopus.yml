@@ -153,6 +153,11 @@ workflows:
                   name: test_cat_back
                   requires:
                       - install_back_dependencies
+            - build_dev:
+                  name: build
+                  is_ee_built: false
+                  requires:
+                      - checkout_catalogs
             - pull_request_success:
                   requires:
                       - test_cat_front

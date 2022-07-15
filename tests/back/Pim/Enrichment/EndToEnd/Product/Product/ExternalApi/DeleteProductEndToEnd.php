@@ -29,8 +29,9 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $this->assertCount(7, $this->get('pim_catalog.repository.product')->findAll());
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
 
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier('foo');
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductUuids([$product->getUuid()]);
         $client->request('DELETE', 'api/rest/v1/products/foo');
 
         $response = $client->getResponse();
@@ -50,7 +51,7 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
         $testProduct = $this->createProduct('test_uuid', []);
         $this->assertCount(8, $this->get('pim_catalog.repository.product')->findAll());
 
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier('test_uuid');
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductUuids([$testProduct->getUuid()]);
         $client->request('DELETE', 'api/rest/v1/products-uuid/' . $testProduct->getUuid()->toString());
 
         $response = $client->getResponse();
