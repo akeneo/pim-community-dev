@@ -24,7 +24,7 @@ class SimpleYamlExportSpec extends ObjectBehavior
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
         $fields->shouldHaveCount(3);
-        $fields->shouldHaveKey('filePath');
+        $fields->shouldHaveKey('storage');
         $fields->shouldHaveKey('user_to_notify');
         $fields->shouldHaveKey('is_user_authenticated');
     }

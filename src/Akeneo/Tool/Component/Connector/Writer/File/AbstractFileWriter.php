@@ -2,7 +2,9 @@
 
 namespace Akeneo\Tool\Component\Connector\Writer\File;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -43,12 +45,18 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
     public function getPath(array $placeholders = []): string
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $filePath = $parameters->get('filePath');
+        $jobExecution = $this->stepExecution->getJobExecution();
+
+        // TODO RAB-907: Remove this condition
+        if ($parameters->has('storage')) {
+            $filePath = $parameters->get('storage')['file_path'];
+        } else {
+            $filePath = $parameters->get('filePath');
+        }
 
         if (false !== strpos($filePath, '%')) {
             $datetime = $this->stepExecution->getStartTime()->format($this->datetimeFormat);
             $defaultPlaceholders = ['%datetime%' => $datetime, '%job_label%' => ''];
-            $jobExecution = $this->stepExecution->getJobExecution();
 
             if (isset($placeholders['%job_label%'])) {
                 $placeholders['%job_label%'] = $this->sanitize($placeholders['%job_label%']);

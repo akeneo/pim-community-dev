@@ -102,7 +102,10 @@ final class ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTre
             ->setType('export')
             ->setJobName($jobName)
             ->setRawParameters([
-                'filePath' => '/tmp/export.csv',
+                'storage' => [
+                    'type' => 'local',
+                    'file_path' => '/tmp/export.csv',
+                ],
                 'delimiter' => ';',
                 'withHeader' => true,
                 'filters' => [

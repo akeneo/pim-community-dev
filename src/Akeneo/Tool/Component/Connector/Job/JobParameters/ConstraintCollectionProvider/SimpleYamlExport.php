@@ -2,11 +2,10 @@
 
 namespace Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileExtension;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -37,15 +36,7 @@ class SimpleYamlExport implements ConstraintCollectionProviderInterface
         return new Collection(
             [
                 'fields' => [
-                    'filePath' => [
-                        new NotBlank(['groups' => ['Execution']]),
-                        new FileExtension(
-                            [
-                                'allowedExtensions' => ['yml', 'yaml'],
-                                'groups'            => ['Execution']
-                            ]
-                        )
-                    ],
+                    'storage'   => new Storage(['yml', 'yaml']),
                     'user_to_notify' => new Type('string'),
                     'is_user_authenticated' => new Type('bool'),
                 ]

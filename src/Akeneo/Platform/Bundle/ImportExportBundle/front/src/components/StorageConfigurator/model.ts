@@ -26,7 +26,7 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags, jobCode: str
     enabledStorageConfigurators['local'] = LocalStorageConfigurator;
   }
 
-  if (remoteStorageIsEnabled(featureFlags, jobCode)) {
+  if (remoteStorageIsEnabled(jobCode)) {
     enabledStorageConfigurators['sftp'] = SftpStorageConfigurator;
   }
 
@@ -57,9 +57,5 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
   );
 };
 
-type StorageConnectionCheckerProps = {
-  storage: Storage;
-};
-
-export type {StorageConfiguratorProps, StorageConnectionCheckerProps};
+export type {StorageConfiguratorProps};
 export {isLocalStorage, isSftpStorage, getStorageConfigurator};

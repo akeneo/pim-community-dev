@@ -24,7 +24,7 @@ class SimpleXlsxExportSpec extends ObjectBehavior
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
         $fields->shouldHaveCount(5);
-        $fields->shouldHaveKey('filePath');
+        $fields->shouldHaveKey('storage');
         $fields->shouldHaveKey('withHeader');
         $fields->shouldHaveKey('linesPerFile');
         $fields->shouldHaveKey('user_to_notify');

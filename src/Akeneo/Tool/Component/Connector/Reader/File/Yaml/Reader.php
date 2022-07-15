@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\File\Yaml;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
@@ -130,7 +131,12 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
     protected function getFileData()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('filePath');
+
+        // TODO RAB-907: Remove this condition
+        $filePath = $jobParameters->has('storage')
+            ? $jobParameters->get('storage')['file_path']
+            : $jobParameters->get('filePath');
+
         $fileContent = file_get_contents($filePath);
         if (false !== $fileContent) {
             if (null !== $this->stepExecution) {

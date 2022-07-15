@@ -22,7 +22,7 @@ Feature: Import media with products
       fanatic-freewave-76;media_family;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And import directory of "csv_footwear_product_import" contains the following media:
       | bic-core-148.gif        |
       | bic-core-148.txt        |
@@ -45,7 +45,7 @@ Feature: Import media with products
       fanatic-freewave-76;media_family;;;"Fanatic Freewave 76";;2014_collection
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And import directory of "csv_footwear_product_import" contains the following media:
       | bic-core-148.gif |
       | bic-core-148.txt |
@@ -71,7 +71,7 @@ Feature: Import media with products
       | filename            | size |
       | sneakers-manual.txt | 3    |
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And import directory of "csv_footwear_product_import" contains the following media:
       | sneakers-manual.txt |
       | bic-core-148.txt    |
@@ -94,7 +94,7 @@ Feature: Import media with products
       | filename            | size |
       | sneakers-manual.txt | 3    |
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And import directory of "csv_footwear_product_import" contains the following media:
       | fanatic-freewave-76.txt |
       | warranty.txt            |
@@ -125,7 +125,7 @@ Feature: Import media with products
       fanatic-freewave-37;Fanatic Freewave 37;
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And import directory of "csv_footwear_product_import" contains the following media:
       | bic-core-148.txt        |
       | fanatic-freewave-76.txt |

@@ -163,7 +163,7 @@ Feature: Import products coming from an external application
       SKU-002;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames;"100 EUR, 90 USD";37;red
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath          | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
       | enabledComparison | yes              |
       | categoriesColumn  | catégories       |
       | groupsColumn      | groupes          |

@@ -35,7 +35,7 @@ define(['underscore', 'oro/translator', 'pim/form', 'pim/template/import/file-pa
       this.$el.html(
         this.template({
           path: isSftp ? configuration.storage.host : configuration.filePath,
-          label: __(isSftp ? 'akeneo.job_automation.storage.host.label' : this.config.label),
+          label: __(isSftp ? 'pim_import_export.form.job_instance.storage_form.host.label' : this.config.label),
         })
       );
 

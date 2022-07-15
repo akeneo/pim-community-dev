@@ -6,7 +6,6 @@ import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 
 const featureFlagCollection = {
   job_automation_local_storage: false,
-  job_automation_remote_storage: false,
 };
 
 const enableFeatureFlag = (featureFlag: string) => (featureFlagCollection[featureFlag] = true);
@@ -46,8 +45,6 @@ test('it returns storage configurator', () => {
   enableFeatureFlag('job_automation_local_storage');
   expect(getStorageConfigurator('local', featureFlags, 'xlsx_product_export')).toBe(LocalStorageConfigurator);
 
-  expect(getStorageConfigurator('sftp', featureFlags, 'xlsx_product_export')).toBe(null);
-  enableFeatureFlag('job_automation_remote_storage');
   expect(getStorageConfigurator('sftp', featureFlags, 'xlsx_attribute_export')).toBe(null);
   expect(getStorageConfigurator('sftp', featureFlags, 'xlsx_product_export')).toBe(SftpStorageConfigurator);
 

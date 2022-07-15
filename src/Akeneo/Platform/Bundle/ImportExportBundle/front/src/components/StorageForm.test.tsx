@@ -20,11 +20,12 @@ beforeEach(() => {
 test('it renders the storage form', () => {
   const storage: NoneStorage = {
     type: 'none',
+    file_path: '/tmp/file.xlsx',
   };
 
   renderWithProviders(
     <StorageForm
-      jobCode="xlsx_product_export"
+      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -45,11 +46,12 @@ test('it hides the storage form when local and remote storage are disabled', () 
 
   const storage: NoneStorage = {
     type: 'none',
+    file_path: '/tmp/file.xlsx',
   };
 
   renderWithProviders(
     <StorageForm
-      jobCode="xlsx_attribute_export"
+      jobName="xlsx_attribute_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -73,7 +75,7 @@ test('it triggers onStorageChange callback when storage configurator onStorageCh
 
   renderWithProviders(
     <StorageForm
-      jobCode="xlsx_product_export"
+      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -96,11 +98,12 @@ test('it triggers onStorageChange callback when storage configurator onStorageCh
 test('it does not render the storage form configurator if storage is none', () => {
   const storage: NoneStorage = {
     type: 'none',
+    file_path: '/tmp/file.xlsx',
   };
 
   renderWithProviders(
     <StorageForm
-      jobCode="xlsx_product_export"
+      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -122,7 +125,7 @@ test('it renders the storage form configurator if storage is local', () => {
 
   renderWithProviders(
     <StorageForm
-      jobCode="xlsx_product_export"
+      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -149,7 +152,7 @@ test('it renders the storage form configurator if storage is sftp', () => {
 
   renderWithProviders(
     <StorageForm
-      jobCode="xlsx_product_export"
+      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -169,13 +172,14 @@ test('it renders the storage form configurator if storage is sftp', () => {
 test('it can select a local storage', () => {
   const storage: NoneStorage = {
     type: 'none',
+    file_path: '/tmp/file.xlsx',
   };
 
   const onStorageChange = jest.fn();
 
   renderWithProviders(
     <StorageForm
-      jobCode="xlsx_product_export"
+      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"
@@ -196,13 +200,14 @@ test('it can select a local storage', () => {
 test('it can select a sftp storage', () => {
   const storage: NoneStorage = {
     type: 'none',
+    file_path: '/tmp/file.xlsx',
   };
 
   const onStorageChange = jest.fn();
 
   renderWithProviders(
     <StorageForm
-      jobCode="xlsx_product_export"
+      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="csv"
@@ -249,7 +254,7 @@ test('it displays validation errors', () => {
 
   renderWithProviders(
     <StorageForm
-      jobCode="xlsx_product_export"
+      jobName="xlsx_product_export"
       jobType="export"
       storage={storage}
       fileExtension="xlsx"

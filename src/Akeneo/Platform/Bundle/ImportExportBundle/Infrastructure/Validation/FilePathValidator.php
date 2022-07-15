@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -13,14 +14,6 @@ class FilePathValidator extends ConstraintValidator
     {
         if (!$constraint instanceof FilePath) {
             throw new UnexpectedTypeException($constraint, FilePath::class);
-        }
-
-        $this->context->getValidator()->inContext($this->context)->validate($value, [
-            new NotBlank(),
-        ]);
-
-        if (0 < $this->context->getViolations()->count()) {
-            return;
         }
 
         $this->validateFileExtension($value, $constraint->getSupportedFileExtensions());
