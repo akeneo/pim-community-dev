@@ -49,7 +49,8 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
 
         // TODO RAB-907: Remove this condition
         if ($parameters->has('storage')) {
-            $filePath = $parameters->get('storage')['file_path'];
+            $storage = $parameters->get('storage');
+            $filePath = sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
         } else {
             $filePath = $parameters->get('filePath');
         }
