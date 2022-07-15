@@ -49,11 +49,7 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
 
         // TODO RAB-907: Remove this condition
         if ($parameters->has('storage')) {
-            $storage = $parameters->get('storage');
-            $workingDirectory = $jobExecution->getExecutionContext()->get(
-                JobInterface::WORKING_DIRECTORY_PARAMETER
-            );
-            $filePath = sprintf('%s%s%s', $workingDirectory, DIRECTORY_SEPARATOR, $storage['file_path']);
+            $filePath = $parameters->get('storage')['file_path'];
         } else {
             $filePath = $parameters->get('filePath');
         }
