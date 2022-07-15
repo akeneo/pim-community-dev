@@ -101,6 +101,6 @@ variable "default_region" {
 }
 
 variable "gke_sa_email" {
-  type = string
+  type        = string
   description = "Email of the gke service account"
 }
