@@ -36,8 +36,7 @@ class XlsxUserReaderSpec extends ObjectBehavior
         FileIteratorInterface $fileIterator
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParams);
-        $jobParams->has('storage')->willReturn(true);
-        $jobParams->get('storage')->willReturn(['type' => 'local', 'file_path' => '/tmp/batch_dir/users.zip']);
+        $jobParams->get('filePath')->willReturn('/tmp/batch_dir/users.zip');
         $fileIterator->getDirectoryPath()->willReturn('/tmp/batch_dir/users');
         $fileIteratorFactory->create('/tmp/batch_dir/users.zip', [])->willReturn($fileIterator);
 

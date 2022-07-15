@@ -74,11 +74,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->has('storage')->willReturn(true);
-        $jobParameters->get('storage')->willReturn([
-            'type' => 'local',
-            'file_path' => '/my/path/product.csv',
-        ]);
+        $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
         $jobParameters->get('filters')->willReturn(
             [
                 'structure' => ['scope' => 'mobile', 'locales' => ['en_US', 'fr_FR']]
@@ -149,11 +145,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->has('storage')->willReturn(true);
-        $jobParameters->get('storage')->willReturn([
-            'type' => 'local',
-            'file_path' => '/my/path/product.csv',
-        ]);
+        $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
         $jobParameters->get('filters')->willReturn(
             [
                 'structure' => ['scope' => 'mobile', 'locales' => ['en_US', 'fr_FR']]

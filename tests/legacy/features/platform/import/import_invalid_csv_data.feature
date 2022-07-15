@@ -23,7 +23,7 @@ Feature: Handle import of invalid CSV data
       SKU-010;boots
       """
     And the following job "csv_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     And I am logged in as "Julia"
     And I am on the "csv_footwear_product_import" export job page
     And I launch the "csv_footwear_product_import" import job

@@ -17,7 +17,7 @@ Feature: Import attributes
 
     """
     And the following job "csv_footwear_attribute_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_attribute_import" job to finish
@@ -39,7 +39,7 @@ Feature: Import attributes
 
     """
     And the following job "csv_footwear_attribute_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_attribute_import" job to finish

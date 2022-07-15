@@ -21,7 +21,7 @@ Feature: Export products according to price attribute filter
 
   Scenario: Successfully export products by their price values
     Given the following job "csv_footwear_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
+      | filePath | %tmp%/product_export/product_export.csv |
     And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     When I add available attributes Price

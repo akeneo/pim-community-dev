@@ -49,8 +49,7 @@ class XlsxUserWriterSpec extends ObjectBehavior
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn('/tmp/akeneo_batch1234/');
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobParameters->has('storage')->willReturn(true);
-        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => '/tmp/output_dir/users.xlsx']);
+        $jobParameters->get('filePath')->willReturn('/tmp/output_dir/users.xlsx');
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->has('linesPerFile')->willReturn(true);
         $jobParameters->get('linesPerFile')->willReturn(10000);

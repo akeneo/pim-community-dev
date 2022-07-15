@@ -16,7 +16,7 @@ Feature: Create product models through CSV import
       code-002;code-001;shoes_size;master_men;sku;42
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
@@ -32,7 +32,7 @@ Feature: Create product models through CSV import
       code-002;code-001;clothing_color_size;master_men_blazers;;;;;;Blazers;composition;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
@@ -48,7 +48,7 @@ Feature: Create product models through CSV import
       code-001;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;blue;Blazers;composition;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
@@ -63,7 +63,7 @@ Feature: Create product models through CSV import
       code-002;code-001;clothing_color_size;master_men_blazers;Spring2017;description;Blazers_1654;100 EUR;blue;Blazers;composition;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
@@ -77,7 +77,7 @@ Feature: Create product models through CSV import
       code-001;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
@@ -101,7 +101,7 @@ Feature: Create product models through CSV import
       new_hades_red;;new_hades;;;;;;;;red;;Hades red;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
@@ -121,7 +121,7 @@ Feature: Create product models through CSV import
       hades_red;;hades;;;;;;;;red;;Hades red;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
@@ -141,7 +141,7 @@ Feature: Create product models through CSV import
       hades_red;;supplier_zaro,master_men;hades;red
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish

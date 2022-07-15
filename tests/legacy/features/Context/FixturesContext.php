@@ -1434,7 +1434,7 @@ class FixturesContext extends BaseFixturesContext
             ->getJobInstance($code)
             ->getRawParameters();
 
-        $path = dirname($configuration['storage']['file_path']);
+        $path = dirname($configuration['filePath']);
 
         foreach ($table->getRows() as $data) {
             copy(__DIR__ . '/fixtures/'. $data[0], rtrim($path, '/') . '/' .$data[0]);

@@ -30,12 +30,7 @@ class YamlWriterIntegration extends KernelTestCase
         $this->filePath = static::$kernel->getProjectDir().'/var/a_dump.yml';
         $this->header = 'a_header';
 
-        $jobParameters = new JobParameters([
-            'storage' => [
-                'type' => 'local',
-                'file_path' => $this->filePath,
-            ],
-        ]);
+        $jobParameters = new JobParameters(['filePath' => $this->filePath]);
         $jobExecution = new JobExecution();
         $jobExecution->setJobParameters($jobParameters);
         $stepExecution = new StepExecution('a_step', $jobExecution);

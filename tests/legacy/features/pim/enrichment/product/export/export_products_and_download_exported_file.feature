@@ -7,7 +7,7 @@ Feature: Export and download exported products file
   Scenario: Successfully export products and be able to download exported file
     Given an "apparel" catalog configuration
     And the following job "ecommerce_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/ecommerce_product_export/ecommerce_product_export.csv"} |
+      | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
     And the following products:
       | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture | thumbnail                 |
       | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    | %fixtures%/SNKRS-1C-s.png |

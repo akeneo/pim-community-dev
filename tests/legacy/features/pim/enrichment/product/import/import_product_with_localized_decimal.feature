@@ -17,7 +17,7 @@ Feature: Import product information with decimal
       SKU-003;10,00
       """
     And the following job "csv_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath         | %file to import% |
       | decimalSeparator | ,                |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
@@ -39,7 +39,7 @@ Feature: Import product information with decimal
       SKU-003;425,00;GRAM
       """
     And the following job "csv_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath         | %file to import% |
       | decimalSeparator | ,                |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
@@ -61,7 +61,7 @@ Feature: Import product information with decimal
       SKU-003;425,00 GRAM
       """
     And the following job "csv_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath         | %file to import% |
       | decimalSeparator | ,                |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
@@ -87,7 +87,7 @@ Feature: Import product information with decimal
       SKU-007;"EUR,USD";"sku 007"
       """
     And the following job "csv_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath         | %file to import% |
       | decimalSeparator | ,                |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
@@ -118,7 +118,7 @@ Feature: Import product information with decimal
       SKU-004;"";"";"sku 004"
       """
     And the following job "csv_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath         | %file to import% |
       | decimalSeparator | ,                |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
@@ -142,7 +142,7 @@ Feature: Import product information with decimal
       SKU-003;"125,00 EUR, 199,00 USD"
       """
     And the following job "csv_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath         | %file to import% |
       | decimalSeparator | .                |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job

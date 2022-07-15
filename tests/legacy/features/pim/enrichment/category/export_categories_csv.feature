@@ -8,7 +8,7 @@ Feature: Export categories
   Scenario: Successfully export categories in CSV
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_category_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/category_export/category_export.csv"} |
+      | filePath | %tmp%/category_export/category_export.csv |
     And I am logged in as "Julia"
     And I am on the "csv_footwear_category_export" export job page
     When I launch the export job

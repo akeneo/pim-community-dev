@@ -10,7 +10,7 @@ Feature: Export groups in XLSX
 
   Scenario: Successfully export groups in xlsx with headers
     Given the following job "xlsx_group_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/xlsx_group_export/xlsx_group_export.xlsx"} |
+      | filePath | %tmp%/xlsx_group_export/xlsx_group_export.xlsx |
     When I am on the "xlsx_group_export" export job page
     And I launch the export job
     And I wait for the "xlsx_group_export" job to finish

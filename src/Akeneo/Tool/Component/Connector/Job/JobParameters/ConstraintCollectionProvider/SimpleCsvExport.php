@@ -2,12 +2,13 @@
 
 namespace Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -38,7 +39,14 @@ class SimpleCsvExport implements ConstraintCollectionProviderInterface
         return new Collection(
             [
                 'fields' => [
-                    'storage'   => new Storage(['csv']),
+                    'filePath'   => [
+                        new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
+                        new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
+                        new Regex([
+                            'pattern' => '/.\.csv$/',
+                            'message' => 'The extension file must be ".csv"'
+                        ])
+                    ],
                     'delimiter'  => [
                         new NotBlank(['groups' => ['Default', 'FileConfiguration']]),
                         new Choice(

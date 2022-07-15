@@ -8,11 +8,11 @@ Feature: Export products
   Scenario: Successfully export products to multiple channels
     Given an "apparel" catalog configuration
     And the following job "ecommerce_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/ecommerce_product_export/ecommerce_product_export.csv"} |
+      | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
     And the following job "tablet_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/tablet_product_export/tablet_product_export.csv"} |
+      | filePath | %tmp%/tablet_product_export/tablet_product_export.csv |
     And the following job "print_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/print_product_export/print_product_export.csv"} |
+      | filePath | %tmp%/print_product_export/print_product_export.csv |
     And the following products:
       | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture |
       | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |

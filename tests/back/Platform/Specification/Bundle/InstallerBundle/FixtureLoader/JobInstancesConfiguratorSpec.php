@@ -19,14 +19,8 @@ class JobInstancesConfiguratorSpec extends ObjectBehavior
         $myInstallerPath = dirname($myFilePath);
         $myFileName = str_replace($myInstallerPath, '', $myFilePath);
         $pathProvider->getFixturesPath('minimal')->willReturn($myInstallerPath);
-        $instance->getRawParameters()->willReturn(['storage' => [
-            'type' => 'local',
-            'file_path' => $myFileName
-        ]]);
-        $instance->setRawParameters(['storage' => [
-            'type' => 'local',
-            'file_path' => $myInstallerPath . $myFileName
-        ]])->shouldBeCalled();
+        $instance->getRawParameters()->willReturn(['filePath' => $myFileName]);
+        $instance->setRawParameters(['filePath' => $myInstallerPath.$myFileName])->shouldBeCalled();
 
         $this->configureJobInstancesWithInstallerData('minimal', [$instance]);
     }
@@ -43,14 +37,8 @@ class JobInstancesConfiguratorSpec extends ObjectBehavior
             ]
         ];
         $instance->getCode()->willReturn('my_original_code');
-        $instance->getRawParameters()->willReturn(['storage' => [
-            'type' => 'local',
-            'file_path' => $myFileName
-        ]]);
-        $instance->setRawParameters(['storage' => [
-            'type' => 'local',
-            'file_path' => $myReplacementFilePath
-        ]])->shouldBeCalled();
+        $instance->getRawParameters()->willReturn(['filePath' => $myFileName]);
+        $instance->setRawParameters(['filePath' => $myReplacementFilePath])->shouldBeCalled();
         $instance->setCode('my_original_code0')->shouldBeCalled();
 
         $configuredInstances = $this->configureJobInstancesWithReplacementPaths([$instance], $replacementPaths);
@@ -68,24 +56,12 @@ class JobInstancesConfiguratorSpec extends ObjectBehavior
             $myFileName  => [$myReplacementFileCommunity, $myReplacementFileEnterprise]
         ];
         $instance->getCode()->willReturn('my_original_code');
-        $instance->getRawParameters()->willReturn(['storage' => [
-            'type' => 'local',
-            'file_path' => $myFileName
-        ]]);
-        $instance->setRawParameters(['storage' => [
-            'type' => 'local',
-            'file_path' => $myReplacementFileCommunity
-        ]])->shouldBeCalled();
+        $instance->getRawParameters()->willReturn(['filePath' => $myFileName]);
+        $instance->setRawParameters(['filePath' => $myReplacementFileCommunity])->shouldBeCalled();
         $instance->setCode('my_original_code0')->shouldBeCalled();
 
-        $instance->getRawParameters()->willReturn(['storage' => [
-            'type' => 'local',
-            'file_path' => $myFileName
-        ]]);
-        $instance->setRawParameters(['storage' => [
-            'type' => 'local',
-            'file_path' => $myReplacementFileEnterprise
-        ]])->shouldBeCalled();
+        $instance->getRawParameters()->willReturn(['filePath' => $myFileName]);
+        $instance->setRawParameters(['filePath' => $myReplacementFileEnterprise])->shouldBeCalled();
         $instance->setCode('my_original_code1')->shouldBeCalled();
 
         $configuredInstances = $this->configureJobInstancesWithReplacementPaths([$instance], $replacementPaths);

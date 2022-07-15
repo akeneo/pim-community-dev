@@ -41,7 +41,7 @@ Feature: Export products from any given categories
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     And the following job "csv_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
+      | filePath | %tmp%/product_export/product_export.csv                           |
       | filters  | {"structure":{"locales":["en_US"],"scope":"ecommerce"},"data":[]} |
     And I am logged in as "Julia"
 

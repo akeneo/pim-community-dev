@@ -10,7 +10,7 @@ Feature: Export categories in XLSX
 
   Scenario: Successfully export categories
     Given the following job "xlsx_footwear_category_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/category_export/category_export.xlsx"} |
+      | filePath | %tmp%/category_export/category_export.xlsx |
     And I am on the "xlsx_footwear_category_export" export job page
     When I launch the export job
     And I wait for the "xlsx_footwear_category_export" job to finish

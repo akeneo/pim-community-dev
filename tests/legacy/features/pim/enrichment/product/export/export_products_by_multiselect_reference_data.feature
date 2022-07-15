@@ -18,7 +18,7 @@ Feature: Export products according to multi select reference data values
       | HEEL-8 | heels  | The heel 8 |                        | 2014_collection |
       | HEEL-9 | heels  | The heel 9 |                        | 2014_collection |
     And the following job "csv_footwear_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/product_export/footwear_product_export.csv"} |
+      | filePath | %tmp%/product_export/footwear_product_export.csv |
 
   Scenario: Export only the product values with multiple selected reference data values
     Given I am logged in as "Julia"

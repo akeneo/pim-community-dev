@@ -22,7 +22,7 @@ Feature: Import Xlsx groups
       AKENEO_NEW;US;XSELL
       """
     And the following job "xlsx_footwear_group_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "xlsx_footwear_group_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_group_import" job to finish

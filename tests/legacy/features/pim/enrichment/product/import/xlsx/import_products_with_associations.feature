@@ -20,7 +20,7 @@ Feature: Execute a job
       SKU-003;sneakers;;sandals;;;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
       """
     And the following job "xlsx_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "xlsx_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish
@@ -37,7 +37,7 @@ Feature: Execute a job
       SKU-001;boots;CROSS;unknown,travel;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
     And the following job "xlsx_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "xlsx_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish
@@ -51,7 +51,7 @@ Feature: Execute a job
       SKU-001;boots;CROSS;;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
     And the following job "xlsx_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "xlsx_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish
@@ -72,7 +72,7 @@ Feature: Execute a job
       SKU-003;sneakers;;unknown;;;After
       """
     And the following job "xlsx_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "xlsx_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish
@@ -100,7 +100,7 @@ Feature: Execute a job
       SKU-001;SKU-002
       """
     And the following job "xlsx_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "xlsx_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish
@@ -124,7 +124,7 @@ Feature: Execute a job
       SKU-001;
       """
     And the following job "xlsx_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "xlsx_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish
@@ -141,7 +141,7 @@ Feature: Execute a job
       123;boots;CROSS;CROSS
       """
     And the following job "xlsx_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     And I am on the "xlsx_footwear_product_import" import job page
     When I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish

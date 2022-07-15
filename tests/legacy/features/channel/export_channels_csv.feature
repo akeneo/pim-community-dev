@@ -7,7 +7,7 @@ Feature: Export channels
   Scenario: Successfully export channels
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_channel_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/channel_export/channel_export.csv"} |
+      | filePath | %tmp%/channel_export/channel_export.csv |
     And I am logged in as "Julia"
     And I am on the "csv_footwear_channel_export" export job page
     When I launch the export job

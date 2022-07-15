@@ -21,7 +21,7 @@ Feature: Export product by attribute date
 
   Scenario: Successfully export products filtered with empty, greater than and between filters on date attributes
     Given the following job "csv_footwear_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
+      | filePath | %tmp%/product_export/product_export.csv |
     And I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab

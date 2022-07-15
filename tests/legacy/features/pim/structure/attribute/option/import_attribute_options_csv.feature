@@ -37,7 +37,7 @@ Feature: Import options
       unknown;option_code;Converse
       """
     And the following job "csv_footwear_option_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_footwear_option_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_option_import" job to finish

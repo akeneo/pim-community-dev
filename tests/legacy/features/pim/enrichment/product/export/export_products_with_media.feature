@@ -7,7 +7,7 @@ Feature: Export products with media
   Background:
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/product_export/product_export.csv"} |
+      | filePath | %tmp%/product_export/product_export.csv |
     And I am logged in as "Julia"
 
   Scenario: Successfully export products with media

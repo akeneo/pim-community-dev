@@ -133,8 +133,6 @@ jobs:
         label:     CSV catalog modeling product import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed:     true
             delimiter:         ;
             enclosure:         '"'
@@ -150,8 +148,6 @@ jobs:
         label:     XLSX catalog modeling product import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed:      true
             enabled:            true
             categoriesColumn:   categories
@@ -165,8 +161,6 @@ jobs:
         label:     CSV catalog modeling family import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -176,8 +170,6 @@ jobs:
         label:     CSV catalog modeling family variant import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -187,8 +179,6 @@ jobs:
         label:     XLSX catalog modeling family variant import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
     xlsx_catalog_modeling_family_import:
         connector: Akeneo XLSX Connector
@@ -196,8 +186,6 @@ jobs:
         label:     XLSX catalog modeling family import
         type:      import
         configuration:
-            storage:
-                type: none
             uploadAllowed: true
     csv_catalog_modeling_family_variant_export:
         connector: Akeneo CSV Connector
@@ -208,9 +196,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            storage:
-                type: local
-                file_path: /tmp/family_variant.csv
+            filePath:   /tmp/family_variant.csv
     xlsx_catalog_modeling_family_variant_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_family_variant_export
@@ -218,9 +204,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            storage:
-                type: local
-                file_path: /tmp/family_variant.xlsx
+            filePath:   /tmp/family_variant.xlsx
 
     csv_catalog_modeling_product_model_import:
         connector: Akeneo CSV Connector
@@ -228,9 +212,7 @@ jobs:
         label: CSV catalog modeling product model import
         type: import
         configuration:
-            storage:
-                type: local
-                file_path: /tmp/product_model.csv
+            filePath: /tmp/product_model.csv
             uploadAllowed: true
             delimiter: ;
             enclosure: '"'
@@ -246,9 +228,7 @@ jobs:
         label: XLSX catalog modeling product model import
         type: import
         configuration:
-            storage:
-                type: local
-                file_path: /tmp/product_model.xlsx
+            filePath: /tmp/product_model.xlsx
             uploadAllowed: true
             enabled: true
             categoriesColumn: categories
@@ -265,9 +245,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            storage:
-                type: local
-                file_path: /tmp/products.csv
+            filePath: /tmp/products.csv
             filters:
                 data:
                     -
@@ -297,9 +275,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            storage:
-                type: local
-                file_path: /tmp/products.csv
+            filePath: /tmp/products.csv
     xlsx_summer_2016_shoes_products_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_export
@@ -307,9 +283,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            storage:
-                type: local
-                file_path: /tmp/products.xlsx
+            filePath: /tmp/products.xlsx
             filters:
                 data:
                     -
@@ -337,9 +311,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
-            storage:
-                type: local
-                file_path: /tmp/product_models.xlsx
+            filePath: /tmp/product_models.xlsx
             filters:
                 data:
                     -

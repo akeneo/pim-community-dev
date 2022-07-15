@@ -51,7 +51,7 @@ Feature: Import attributes
       pim_catalog_metric;new_length;"New length";info;0;0;0;0;;Length;INVALID_LENGTH;0
       """
     And the following job "csv_footwear_attribute_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_attribute_import" job to finish
@@ -71,7 +71,7 @@ Feature: Import attributes
       pim_catalog_simpleselect;manufacturer;Meine große Code;My awesome code;Mon super code;marketing;0;1;0;0;en_US,fr_FR;3
       """
     And the following job "csv_footwear_attribute_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_attribute_import" job to finish

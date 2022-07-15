@@ -16,7 +16,7 @@ Feature: Check that imported date is properly displayed
       postit;2014-05-01
       """
     And the following job "csv_default_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_default_product_import" import job page
     And I launch the import job
     And I wait for the "csv_default_product_import" job to finish

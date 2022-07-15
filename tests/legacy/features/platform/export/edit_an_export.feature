@@ -11,10 +11,11 @@ Feature: Edit an export
   Scenario: Successfully update export job configuration
     Given I am on the "csv_footwear_product_export" export job edit page
     When I visit the "Global settings" tab
-    Then I should see the Delimiter, Enclosure, With header and Decimal separator fields
+    Then I should see the Delimiter, Enclosure, With header, File path and Decimal separator fields
     And I fill in the following information:
       | Delimiter         | \|            |
       | Enclosure         | '             |
+      | File path         | /tmp/file.csv |
       | Decimal separator | ,             |
       | Date format       | yyyy-mm-dd    |
     And I uncheck the "With header" switch
@@ -31,6 +32,8 @@ Feature: Edit an export
     Then I should not see the text "There are unsaved changes"
     And I press the "Edit" button
     When I visit the "Global settings" tab
+    Then I should see the text "File path"
+    And the "File path" field should contain "/tmp/file.csv"
     And I should see the text "Delimiter"
     And the "Delimiter" field should contain "|"
     And I should see the text "Enclosure"

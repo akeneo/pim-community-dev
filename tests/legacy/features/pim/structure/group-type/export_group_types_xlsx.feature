@@ -7,7 +7,7 @@ Feature: Export group types
   Scenario: Successfully export group types in xlsx with headers:
     Given an "footwear" catalog configuration
     And the following job "xlsx_footwear_group_type_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/xlsx_footwear_group_type_export/xlsx_footwear_group_type_export.xlsx"} |
+      | filePath | %tmp%/xlsx_footwear_group_type_export/xlsx_footwear_group_type_export.xlsx |
     And I am logged in as "Julia"
     When I am on the "xlsx_footwear_group_type_export" export job page
     And I launch the export job

@@ -52,6 +52,13 @@ class ValidateLocalStorageTest extends AbstractValidationTest
                     'type' => 'invalid',
                 ],
             ],
+            'local storage without file_path' => [
+                'This field is missing.',
+                '[file_path]',
+                [
+                    'type' => 'local',
+                ],
+            ],
             'local storage with additional fields' => [
                 'This field was not expected.',
                 '[additional]',

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileExtension;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -38,7 +38,15 @@ class SimpleYamlImport implements ConstraintCollectionProviderInterface
         return new Collection(
             [
                 'fields' => [
-                    'storage'   => new Storage(['yml', 'yaml']),
+                    'filePath' => [
+                        new NotBlank(['groups' => ['Execution', 'UploadExecution']]),
+                        new FileExtension(
+                            [
+                                'allowedExtensions' => ['yml', 'yaml'],
+                                'groups'            => ['Execution', 'UploadExecution']
+                            ]
+                        )
+                    ],
                     'uploadAllowed' => [
                         new Type('bool'),
                         new IsTrue(['groups' => 'UploadExecution']),

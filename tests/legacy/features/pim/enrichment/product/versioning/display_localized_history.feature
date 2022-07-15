@@ -18,7 +18,7 @@ Feature: Display the localized product history
       boots;20.80;25.35;12.1234;GRAM;98.7654
       """
     And the following job "csv_footwear_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish

@@ -7,11 +7,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\Co
 use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocale;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -34,7 +31,7 @@ class ProductAndProductModelQuickExport implements ConstraintCollectionProviderI
      * @param ConstraintCollectionProviderInterface $simple
      * @param array                                 $supportedJobNames
      */
-    public function __construct(ConstraintCollectionProviderInterface $simple, array $supportedJobNames, private string $filePathExtension)
+    public function __construct(ConstraintCollectionProviderInterface $simple, array $supportedJobNames)
     {
         $this->simpleConstraint = $simple;
         $this->supportedJobNames = $supportedJobNames;
@@ -47,15 +44,8 @@ class ProductAndProductModelQuickExport implements ConstraintCollectionProviderI
     {
         $baseConstraint = $this->simpleConstraint->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
-        $constraintFilePath = [
-            new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
-            new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
-            new Regex([
-                'pattern' => sprintf('/.\.%s$/', $this->filePathExtension),
-                'message' => sprintf('The extension file must be ".%s"', $this->filePathExtension)
-            ])
-        ];
-        unset($constraintFields['filePath']);
+        $constraintFilePath = $constraintFields['filePath'];
+        $constraintFields['filePath'] = null;
         $constraintFields['filePathProduct'] = $constraintFilePath;
         $constraintFields['filePathProductModel'] = $constraintFilePath;
         $constraintFields['with_label'] = new Type(

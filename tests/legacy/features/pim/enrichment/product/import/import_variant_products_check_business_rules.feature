@@ -40,7 +40,7 @@ Feature: Import variant products
       code-001;shoes;master_men;EAN;SKU-001;100;GRAM;m
       """
     And the following job "csv_catalog_modeling_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_product_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_import" job to finish
@@ -56,7 +56,7 @@ Feature: Import variant products
       code-001;clothing;master_men;EAN;SKU-001;100;GRAM;m
       """
     And the following job "csv_catalog_modeling_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_product_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_import" job to finish
@@ -78,7 +78,7 @@ Feature: Import variant products
       apollon;clothing;master_men;EAN;apollon_blue_medium;100;GRAM;m
       """
     And the following job "csv_catalog_modeling_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_product_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_import" job to finish
@@ -101,7 +101,7 @@ Feature: Import variant products
       apollon_blue;clothing;master_men;67890;apollon_blue_large;100;GRAM;
       """
     And the following job "csv_catalog_modeling_product_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_product_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_import" job to finish

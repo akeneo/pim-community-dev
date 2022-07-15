@@ -40,7 +40,7 @@ Feature: Export products with localized dates
 
   Scenario: Export dates attributes in a specified format
     Given the following job "ecommerce_product_export" configuration:
-      | storage | {"type": "local", "file_path": "%tmp%/ecommerce_product_export/ecommerce_product_export.csv"} |
+      | filePath   | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
       | dateFormat | dd/MM/yyyy                                                  |
     When I am on the "ecommerce_product_export" export job page
     And I press the "Edit" button

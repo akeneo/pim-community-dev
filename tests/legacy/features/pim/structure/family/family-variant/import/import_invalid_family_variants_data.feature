@@ -17,7 +17,7 @@ Feature: Create valid variants of family through CSV import
       another_clothing_color_size;;Kleidung nach Farbe/Größe;Clothing by color/size;Vêtements par couleur/taille;color,size;;name,image,variation_image,composition;
       """
     And the following job "csv_catalog_modeling_family_variant_import" configuration:
-      | storage | {"type": "local", "file_path": "%file to import%"} |
+      | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_family_variant_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_family_variant_import" job to finish

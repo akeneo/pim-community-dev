@@ -43,8 +43,13 @@ class ValidateFilePathTest extends AbstractValidationTest
     public function invalidFilePath(): array
     {
         return [
+            'blank file path type' => [
+                'This value should not be blank.',
+                '',
+                '',
+            ],
             'file path with bad extension' => [
-                'pim_import_export.form.job_instance.validation.file_path.unsupported_extension',
+                'akeneo.job_automation.validation.file_path.unsupported_extension',
                 '',
                 '/tmp/file.csv',
             ],
