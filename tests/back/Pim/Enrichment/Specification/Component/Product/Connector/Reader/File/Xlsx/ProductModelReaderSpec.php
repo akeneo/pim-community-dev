@@ -45,6 +45,7 @@ class ProductModelReaderSpec extends ObjectBehavior
         $filePath = __DIR__ . '/../../../../../../../../tests/legacy/features/Context/fixtures/with_media.csv';
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('storage')->willReturn(true);
         $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
         $jobParameters->get('familyVariantColumn')->willReturn('familyVariant');
         $jobParameters->get('categoriesColumn')->willReturn('categories');

@@ -33,6 +33,7 @@ class ReaderSpec extends ObjectBehavior
         $filePath = $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv';
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->has('storage')->willReturn(true);
         $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -63,6 +64,7 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->has('storage')->willReturn(true);
         $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
 
         $data = [
@@ -102,6 +104,7 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->has('storage')->willReturn(true);
         $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
 
         $data = [

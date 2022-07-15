@@ -35,6 +35,7 @@ class ReaderSpec extends ObjectBehavior
         $filePath = __DIR__ . '/features/Context/fixtures/product_with_carriage_return.xlsx';
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('storage')->willReturn(true);
         $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
         $fileIterator->valid()->willReturn(true, true, true, false);
         $fileIterator->current()->willReturn(null);
@@ -54,6 +55,7 @@ class ReaderSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('storage')->willReturn(true);
         $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $this->initFilePath()]);
 
         $this->initFileIterator($fileIteratorFactory, $fileIterator);
@@ -130,6 +132,7 @@ class ReaderSpec extends ObjectBehavior
     private function initStepExecution(\PhpSpec\Wrapper\Collaborator $stepExecution, $jobParameters): void
     {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('storage')->willReturn(true);
         $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $this->initFilePath()]);
 
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();

@@ -52,6 +52,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $step->getReader()->willReturn($reader);
 
         $jobExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('storage')->willReturn(true);
         $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $pathname]);
 
         $filesystem->writeStream(

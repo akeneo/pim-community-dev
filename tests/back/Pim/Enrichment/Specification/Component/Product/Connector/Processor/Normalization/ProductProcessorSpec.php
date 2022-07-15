@@ -74,6 +74,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('storage')->willReturn(true);
         $jobParameters->get('storage')->willReturn([
             'type' => 'local',
             'file_path' => '/my/path/product.csv',
@@ -148,6 +149,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('storage')->willReturn(true);
         $jobParameters->get('storage')->willReturn([
             'type' => 'local',
             'file_path' => '/my/path/product.csv',
