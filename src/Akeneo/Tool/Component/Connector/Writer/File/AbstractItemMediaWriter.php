@@ -182,11 +182,7 @@ abstract class AbstractItemMediaWriter implements
         // TODO RAB-907: Remove this condition
         if ($parameters->has('storage')) {
             $storage = $parameters->get('storage');
-            $workingDirectory = $this->stepExecution->getJobExecution()->getExecutionContext()->get(
-                JobInterface::WORKING_DIRECTORY_PARAMETER
-            );
-
-            $filePath = sprintf('%s%s%s', $workingDirectory, DIRECTORY_SEPARATOR, $storage[$this->jobParamFilePath]);
+            $filePath = sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage[$this->jobParamFilePath]);
         } else {
             $filePath = $parameters->get($this->jobParamFilePath);
         }
