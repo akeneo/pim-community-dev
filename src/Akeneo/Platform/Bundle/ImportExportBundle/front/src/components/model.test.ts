@@ -75,6 +75,6 @@ test('it check if local storage is enabled', () => {
   enableFeatureFlag('job_automation_local_storage');
   expect(localStorageIsEnabled(featureFlags)).toBe(true);
 
-  expect(remoteStorageIsEnabled(featureFlags, 'xlsx_product_import')).toBe(true);
-  expect(remoteStorageIsEnabled(featureFlags, 'csv_attribute_import')).toBe(false);
+  expect(remoteStorageIsEnabled('xlsx_product_import')).toBe(true);
+  expect(remoteStorageIsEnabled('csv_attribute_import')).toBe(false);
 });

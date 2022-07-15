@@ -26,7 +26,7 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags, jobCode: str
     enabledStorageConfigurators['local'] = LocalStorageConfigurator;
   }
 
-  if (remoteStorageIsEnabled(featureFlags, jobCode)) {
+  if (remoteStorageIsEnabled(jobCode)) {
     enabledStorageConfigurators['sftp'] = SftpStorageConfigurator;
   }
 

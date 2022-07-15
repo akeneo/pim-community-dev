@@ -20,6 +20,7 @@ beforeEach(() => {
 test('it renders the storage form', () => {
   const storage: NoneStorage = {
     type: 'none',
+    file_path: '/tmp/file.xlsx',
   };
 
   renderWithProviders(
@@ -45,6 +46,7 @@ test('it hides the storage form when local and remote storage are disabled', () 
 
   const storage: NoneStorage = {
     type: 'none',
+    file_path: '/tmp/file.xlsx',
   };
 
   renderWithProviders(
@@ -96,6 +98,7 @@ test('it triggers onStorageChange callback when storage configurator onStorageCh
 test('it does not render the storage form configurator if storage is none', () => {
   const storage: NoneStorage = {
     type: 'none',
+    file_path: '/tmp/file.xlsx',
   };
 
   renderWithProviders(
@@ -169,6 +172,7 @@ test('it renders the storage form configurator if storage is sftp', () => {
 test('it can select a local storage', () => {
   const storage: NoneStorage = {
     type: 'none',
+    file_path: '/tmp/file.xlsx',
   };
 
   const onStorageChange = jest.fn();
@@ -196,6 +200,7 @@ test('it can select a local storage', () => {
 test('it can select a sftp storage', () => {
   const storage: NoneStorage = {
     type: 'none',
+    file_path: '/tmp/file.xlsx',
   };
 
   const onStorageChange = jest.fn();
