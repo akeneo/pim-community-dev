@@ -54,6 +54,10 @@ $rules = [
             // Supplier Portal coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
             'Akeneo\SupplierPortal\Supplier\Application',
+
+            // PIM coupling
+            'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
+
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
             'Psr\Log\LoggerInterface',
