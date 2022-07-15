@@ -8,6 +8,12 @@ const AttributeLabel = styled(Table.Cell)`
   width: 50px;
 `;
 
+const DisplayedLabel = styled.span`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 type AttributeLabelCellProps = {
   attributeCode: string;
 };
@@ -19,7 +25,11 @@ const AttributeLabelCell = ({attributeCode}: AttributeLabelCellProps) => {
 
   return (
     <AttributeLabel rowTitle={true}>
-      {isFetching ? <SkeletonPlaceholder>{attributeLabel}</SkeletonPlaceholder> : attributeLabel}
+      {isFetching ? (
+        <SkeletonPlaceholder>{attributeLabel}</SkeletonPlaceholder>
+      ) : (
+        <DisplayedLabel title={attributeLabel}>{attributeLabel}</DisplayedLabel>
+      )}
     </AttributeLabel>
   );
 };
