@@ -5,7 +5,6 @@ define([
   'pim/form-builder',
   'pim/user-context',
   'oro/mediator',
-  'pim/page-title',
   'routing',
   'pim/fetcher-registry',
   'pim/provider/sequential-edit-provider',
@@ -16,7 +15,6 @@ define([
   FormBuilder,
   UserContext,
   mediator,
-  PageTitle,
   Routing,
   fetcherRegistry,
   sequentialEditProvider

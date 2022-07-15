@@ -25,7 +25,7 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
         }
 
         return $product->buildWithQualityScores(
-            $this->getProductScoresQuery->byProductIdentifier($product->identifier())
+            $this->getProductScoresQuery->byProductUuid($product->uuid())
         );
     }
 
@@ -38,8 +38,8 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
         $productsQualityScores = $this->getProductsQualityScores($connectorProductList);
 
         $productsWithQualityScores = array_map(function (ConnectorProduct $product) use ($productsQualityScores, $channel, $locales) {
-            if (isset($productsQualityScores[$product->identifier()])) {
-                $productQualityScores = $this->filterProductQualityScores($productsQualityScores[$product->identifier()], $channel, $locales);
+            if (isset($productsQualityScores[$product->uuid()->toString()])) {
+                $productQualityScores = $this->filterProductQualityScores($productsQualityScores[$product->uuid()->toString()], $channel, $locales);
                 return $product->buildWithQualityScores($productQualityScores);
             }
 
@@ -62,12 +62,12 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
 
     private function getProductsQualityScores(ConnectorProductList $connectorProductList): array
     {
-        $productIdentifiers = array_map(
-            fn (ConnectorProduct $connectorProduct) => $connectorProduct->identifier(),
+        $productUuids = array_map(
+            fn (ConnectorProduct $connectorProduct) => $connectorProduct->uuid(),
             $connectorProductList->connectorProducts()
         );
 
-        return $this->getProductScoresQuery->byProductIdentifiers($productIdentifiers);
+        return $this->getProductScoresQuery->byProductUuids($productUuids);
     }
 
     private function filterProductQualityScores(QualityScoreCollection $productQualityScores, ?string $channel, array $locales): QualityScoreCollection

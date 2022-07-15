@@ -66,6 +66,7 @@ type QuantifiedAssociationsProps = {
   quantifiedAssociations: QuantifiedAssociation;
   parentQuantifiedAssociations: QuantifiedAssociation;
   errors: ValidationError[];
+  isUserOwner?: boolean;
   isCompact?: boolean;
   onAssociationsChange: (quantifiedAssociations: QuantifiedAssociation) => void;
   onOpenPicker: () => Promise<Row[]>;
@@ -76,6 +77,7 @@ const QuantifiedAssociations = ({
   parentQuantifiedAssociations,
   errors,
   isCompact = false,
+  isUserOwner = true,
   onOpenPicker,
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {
@@ -98,7 +100,7 @@ const QuantifiedAssociations = ({
   );
   const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
   const inputRef = useRef<HTMLInputElement>(null);
-  const canAddAssociation = isGranted('pim_enrich_associations_edit');
+  const canAddAssociation = isGranted('pim_enrich_associations_edit') && isUserOwner;
 
   useAutoFocus(inputRef);
 
@@ -209,6 +211,7 @@ const QuantifiedAssociations = ({
               <QuantifiedAssociationRow
                 key={index}
                 row={row}
+                isUserOwner={isUserOwner}
                 isCompact={isCompact}
                 parentQuantifiedLink={parentQuantifiedAssociations[getProductsType(row.productType)].find(
                   quantifiedAssociation => quantifiedAssociation.identifier === row.quantifiedLink.identifier

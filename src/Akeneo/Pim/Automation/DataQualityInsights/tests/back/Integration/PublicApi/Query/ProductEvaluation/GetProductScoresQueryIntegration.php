@@ -47,10 +47,10 @@ final class getProductScoresQueryIntegration extends DataQualityInsightsTestCase
             ]),
         ];
 
-        $qualityScoreCollections = $this->get(GetProductScoresQuery::class)->byProductIdentifiers([
-            $productA->getIdentifier(),
-            $productB->getIdentifier(),
-            $productD->getIdentifier(),
+        $qualityScoreCollections = $this->get(GetProductScoresQuery::class)->byProductUuids([
+            $productA->getUuid(),
+            $productB->getUuid(),
+            $productD->getUuid(),
         ]);
 
         $this->assertEqualsCanonicalizing($expectedQualityScoreCollections, $qualityScoreCollections);
@@ -67,7 +67,7 @@ final class getProductScoresQueryIntegration extends DataQualityInsightsTestCase
                 ],
         ]);
 
-        $qualityScoreCollection = $this->get(GetProductScoresQuery::class)->byProductIdentifier($productA->getIdentifier());
+        $qualityScoreCollection = $this->get(GetProductScoresQuery::class)->byProductUuid($productA->getUuid());
 
         $this->assertEqualsCanonicalizing($expectedQualityScoreCollection, $qualityScoreCollection);
     }
