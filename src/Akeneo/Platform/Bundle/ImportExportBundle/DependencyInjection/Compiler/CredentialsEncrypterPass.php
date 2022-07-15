@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class CredentialsEncrypterPass implements CompilerPassInterface
 {
-    const CREDENTIALS_ENCRYPTER_TAG = 'pim_import_export.credentials_encrypter';
+    public const CREDENTIALS_ENCRYPTER_TAG = 'pim_import_export.credentials_encrypter';
 
     public function process(ContainerBuilder $container)
     {
