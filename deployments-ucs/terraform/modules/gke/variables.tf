@@ -86,16 +86,21 @@ variable "cluster_developers" {
 }
 
 variable "viewer_members" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 
 variable "admin_members" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 
 variable "default_region" {
-  type = string
+  type    = string
   default = "europe-west1"
+}
+
+variable "gke_sa_email" {
+  type = string
+  description = "Email of the gke service account"
 }

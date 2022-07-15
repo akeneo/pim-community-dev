@@ -1,15 +1,3 @@
-resource "google_service_account" "gke" {
-  project      = var.project
-  account_id   = "gke-${data.google_project.current.project_id}"
-  display_name = "GKE service account"
-}
-
-resource "google_project_iam_member" "gke_container_admin" {
-  project = var.project
-  role    = "roles/container.admin"
-  member  = "serviceAccount:${google_service_account.gke.email}"
-}
-
 resource "google_project_iam_member" "gke_container_dev" {
   for_each = toset(var.cluster_developers)
   project  = var.project
@@ -91,7 +79,7 @@ resource "google_container_node_pool" "gke" {
     machine_type    = lookup(each.value, "machine_type", "n1-standard-16")
     labels          = lookup(var.node_pool_labels, each.key, {})
     tags            = concat([data.google_project.current.project_id], lookup(var.node_pool_tags, each.key, []))
-    service_account = google_service_account.gke.email
+    service_account = var.gke_sa_email
 
     dynamic "taint" {
       for_each = var.node_pools_taints[each.value.name]

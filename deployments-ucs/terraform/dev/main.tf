@@ -8,11 +8,16 @@ locals {
   regions         = ["europe-west1"]
 }
 
+module "iam" {
+  source     = "../modules/iam"
+  project_id = local.project_id
+}
+
 module "registry" {
   source         = "../modules/registry"
   project_id     = local.project_id
   admin_members  = concat(["serviceAccount:${local.ci_sa}"], local.admins)
-  viewer_members = local.viewers
+  viewer_members = concat(local.viewers, ["serviceAccount:${module.iam.gke_sa_email}"])
 }
 
 module "gke" {
@@ -20,6 +25,7 @@ module "gke" {
   project            = local.project_id
   host_project_id    = local.host_project_id
   shared_vpc_name    = local.shared_vpc_name
+  gke_sa_email       = module.iam.gke_sa_email
   regions            = local.regions
   cluster_developers = concat(["serviceAccount:${local.ci_sa}"], local.admins)
   viewer_members     = local.viewers
