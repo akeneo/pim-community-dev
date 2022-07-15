@@ -60,6 +60,7 @@
 - PIM-10527: Fix associated groups grid
 - PIM-10518: Normalize simple select option value like multi select
 - PIM-10528: Fix escaped special characters in page titles
+- PIM-10541: Fix SetTableValue userIntent to allow null data in enrichment Service Api
 
 ## Improvements
 
