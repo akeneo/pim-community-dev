@@ -6,11 +6,13 @@ import {
   getDefaultMeasurementTarget,
   getDefaultMultiSelectTarget,
   getDefaultNumberTarget,
+  getDefaultSimpleReferenceEntityTarget,
   getDefaultSimpleSelectTarget,
   getDefaultTextTarget,
   MeasurementTarget,
   MultiSelectTarget,
   NumberTarget,
+  SimpleReferenceEntityTarget,
   SimpleSelectTarget,
   TextTarget,
 } from '../components';
@@ -25,6 +27,7 @@ type AttributeTarget =
   | MeasurementTarget
   | MultiSelectTarget
   | NumberTarget
+  | SimpleReferenceEntityTarget
   | SimpleSelectTarget
   | TextTarget;
 
@@ -43,6 +46,8 @@ const createAttributeTarget = (
   locale: LocaleReference
 ): AttributeTarget => {
   switch (attribute.type) {
+    case 'akeneo_reference_entity':
+      return getDefaultSimpleReferenceEntityTarget(attribute, channel, locale);
     case 'pim_catalog_metric':
       return getDefaultMeasurementTarget(attribute, channel, locale);
     case 'pim_catalog_number':
