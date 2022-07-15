@@ -52,15 +52,16 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
 
         $jobParameters = $jobExecution->getJobParameters();
 
-        if (
-            null === $jobParameters ||
-            !$jobParameters->has('storage') ||
-            JobInstance::TYPE_IMPORT !== $jobExecution->getJobInstance()->getType()
-        ) {
+        if (null === $jobParameters || JobInstance::TYPE_IMPORT !== $jobExecution->getJobInstance()->getType()) {
             return;
         }
 
-        $jobFileLocation = JobFileLocation::parseUrl($jobParameters->get('storage')['file_path']);
+        // TODO RAB-907: Remove this condition
+        $filePath = $jobParameters->has('storage')
+            ? $jobParameters->get('storage')['file_path']
+            : $jobParameters->get('filePath');
+
+        $jobFileLocation = JobFileLocation::parseUrl($filePath);
 
         if (true === $jobFileLocation->isRemote()) {
             $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);

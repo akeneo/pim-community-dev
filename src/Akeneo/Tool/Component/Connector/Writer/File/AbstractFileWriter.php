@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Writer\File;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -44,16 +45,22 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
     public function getPath(array $placeholders = []): string
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $storage = $parameters->get('storage');
+        $jobExecution = $this->stepExecution->getJobExecution();
 
-        $filePath = LocalStorage::TYPE === $storage['type'] ?
-            $storage['file_path'] :
-            sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
+        // TODO RAB-907: Remove this condition
+        if ($parameters->has('storage')) {
+            $storage = $parameters->get('storage');
+            $workingDirectory = $jobExecution->getExecutionContext()->get(
+                JobInterface::WORKING_DIRECTORY_PARAMETER
+            );
+            $filePath = sprintf('%s%s%s', $workingDirectory, DIRECTORY_SEPARATOR, $storage['file_path']);
+        } else {
+            $filePath = $parameters->get('filePath');
+        }
 
         if (false !== strpos($filePath, '%')) {
             $datetime = $this->stepExecution->getStartTime()->format($this->datetimeFormat);
             $defaultPlaceholders = ['%datetime%' => $datetime, '%job_label%' => ''];
-            $jobExecution = $this->stepExecution->getJobExecution();
 
             if (isset($placeholders['%job_label%'])) {
                 $placeholders['%job_label%'] = $this->sanitize($placeholders['%job_label%']);

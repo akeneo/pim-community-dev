@@ -68,7 +68,12 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
     public function read()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('storage')['file_path'];
+
+        // TODO RAB-907: Remove this condition
+        $filePath = $jobParameters->has('storage')
+            ? $jobParameters->get('storage')['file_path']
+            : $jobParameters->get('filePath');
+
         if (null === $this->fileIterator) {
             $this->fileIterator = $this->createFileIterator($jobParameters, $filePath);
             $this->fileIterator->rewind();
