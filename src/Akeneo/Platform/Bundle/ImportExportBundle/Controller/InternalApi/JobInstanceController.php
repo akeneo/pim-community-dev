@@ -9,6 +9,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -73,6 +74,7 @@ class JobInstanceController
         private FilesystemOperator $filesystem,
         private SecurityFacade $securityFacade,
         private RemoteStorageFeatureFlag $remoteStorageFeatureFlag,
+        private CredentialsEncrypterRegistry $credentialsEncrypterRegistry,
     ) {
     }
 
@@ -212,6 +214,7 @@ class JobInstanceController
         }
 
         $data = json_decode($request->getContent(), true);
+        $data = $this->credentialsEncrypterRegistry->encryptCredentials($data);
 
         try {
             $this->eventDispatcher->dispatch(
