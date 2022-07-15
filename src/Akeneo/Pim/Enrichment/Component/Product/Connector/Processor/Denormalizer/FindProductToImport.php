@@ -17,37 +17,32 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  */
 class FindProductToImport
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $productRepository;
-
-    /** @var ProductBuilderInterface */
-    private $productBuilder;
-
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param ProductBuilderInterface               $productBuilder
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productRepository,
-        ProductBuilderInterface $productBuilder
+        private IdentifiableObjectRepositoryInterface $productRepository,
+        private ProductBuilderInterface $productBuilder
     ) {
-        $this->productRepository = $productRepository;
-        $this->productBuilder = $productBuilder;
     }
 
     /**
      * Find the product to import
-     *
-     * @param string $productIdentifierCode
-     * @param string $familyCode
-     *
-     * @return ProductInterface
      */
     public function fromFlatData(
         string $productIdentifierCode,
-        string $familyCode
+        string $familyCode,
+        ?string $uuid,
     ): ProductInterface {
-        $product = $this->productRepository->findOneByIdentifier($productIdentifierCode);
+        $product = null;
+        if (null !== $uuid) {
+            $product = $this->productRepository->find($uuid);
+        }
+
+        if (null === $product) {
+            $product = $this->productRepository->findOneByIdentifier($productIdentifierCode);
+        }
 
         if (null === $product) {
             return $this->productBuilder->createProduct($productIdentifierCode, $familyCode);

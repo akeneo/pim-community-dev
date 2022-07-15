@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Converts a flat product field to a structured format
@@ -66,6 +67,8 @@ class FieldConverter implements FieldConverterInterface
             return new ConvertedField($fieldName, (bool) $value);
         } elseif (in_array($fieldName, ['family', 'parent'])) {
             return new ConvertedField($fieldName, $value);
+        } elseif ('uuid' === $fieldName) {
+            return new ConvertedField($fieldName, Uuid::fromString($value));
         }
 
         throw new \LogicException(sprintf('No converters found for attribute type "%s"', $fieldName));
@@ -81,7 +84,7 @@ class FieldConverter implements FieldConverterInterface
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
         $quantifiedAssociationFields = $this->assocFieldResolver->resolveQuantifiedAssociationColumns();
 
-        $fields = array_merge(['categories', 'groups', 'enabled', 'family', 'parent'], $associationFields, $quantifiedAssociationFields);
+        $fields = array_merge(['uuid', 'categories', 'groups', 'enabled', 'family', 'parent'], $associationFields, $quantifiedAssociationFields);
 
         return in_array($column, $fields);
     }
