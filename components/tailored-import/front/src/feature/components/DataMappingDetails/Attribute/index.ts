@@ -7,6 +7,8 @@ export * from './MultiSelect/model';
 export * from './MultiSelect/MultiSelectConfigurator';
 export * from './Number/model';
 export * from './Number/NumberConfigurator';
+export * from './SimpleReferenceEntity/model';
+export * from './SimpleReferenceEntity/SimpleReferenceEntityConfigurator';
 export * from './SimpleSelect/model';
 export * from './SimpleSelect/SimpleSelectConfigurator';
 export * from './Text/model';

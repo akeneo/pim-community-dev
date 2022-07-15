@@ -14,6 +14,7 @@ import {
   IdentifierConfigurator,
   MeasurementConfigurator,
   NumberConfigurator,
+  SimpleReferenceEntityConfigurator,
   SimpleSelectConfigurator,
   MultiSelectConfigurator,
   BooleanConfigurator,
@@ -26,6 +27,7 @@ import {ErrorBoundary} from './ErrorBoundary';
 const attributeDataMappingConfigurators: {
   [attributeType: string]: FunctionComponent<AttributeDataMappingConfiguratorProps>;
 } = {
+  akeneo_reference_entity: SimpleReferenceEntityConfigurator,
   pim_catalog_date: DateConfigurator,
   pim_catalog_identifier: IdentifierConfigurator,
   pim_catalog_metric: MeasurementConfigurator,
