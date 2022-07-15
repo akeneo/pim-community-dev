@@ -103,7 +103,7 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters = new JobParameters(
             [
                 'linesPerFile' => 10000,
-                'filePath' => $this->directory . '%job_label%_product.xlsx',
+                'storage' => ['type' => 'local', 'file_path' => $this->directory . '%job_label%_product.xlsx'],
                 'with_label' => false,
                 'withHeader' => false,
                 'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
@@ -125,13 +125,13 @@ class ProductWriterSpec extends ObjectBehavior
             $this->directory . 'XLSX_Product_export_product.xlsx',
             10000
         )
-                ->shouldBeCalled()
-                ->willReturn(
-                    [
-                        $this->directory . 'XLSX_Product_export_product1.xlsx',
-                        $this->directory . 'XLSX_Product_export_product2.xlsx',
-                    ]
-                );
+            ->shouldBeCalled()
+            ->willReturn(
+                [
+                    $this->directory . 'XLSX_Product_export_product1.xlsx',
+                    $this->directory . 'XLSX_Product_export_product2.xlsx',
+                ]
+            );
 
         $this->initialize();
         $this->flush();
@@ -162,7 +162,7 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters = new JobParameters(
             [
                 'linesPerFile' => 10000,
-                'filePath' => $this->directory . '%job_label%_product.xlsx',
+                'storage' => ['type' => 'local', 'file_path' => $this->directory . '%job_label%_product.xlsx'],
                 'with_label' => false,
                 'withHeader' => true,
                 'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],

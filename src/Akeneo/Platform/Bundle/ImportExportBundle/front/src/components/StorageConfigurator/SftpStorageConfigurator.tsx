@@ -33,14 +33,14 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         required={true}
         value={storage.file_path}
         label={translate('pim_import_export.form.job_instance.storage_form.file_path.label')}
-        onChange={(file_path: string) => onStorageChange({...storage, file_path})}
+        onChange={file_path => onStorageChange({...storage, file_path})}
         errors={filterErrors(validationErrors, '[file_path]')}
       />
       <TextField
         required={true}
         value={storage.host}
         label={translate('pim_import_export.form.job_instance.storage_form.host.label')}
-        onChange={(host: string) => onStorageChange({...storage, host})}
+        onChange={host => onStorageChange({...storage, host})}
         errors={filterErrors(validationErrors, '[host]')}
       />
       <Field
@@ -51,7 +51,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         <NumberInput
           min={1}
           max={65535}
-          onChange={(port: string) => onStorageChange({...storage, port: parseInt(port, 10)})}
+          onChange={port => onStorageChange({...storage, port: parseInt(port, 10)})}
           invalid={0 < portValidationErrors.length}
           value={storage.port.toString()}
         />

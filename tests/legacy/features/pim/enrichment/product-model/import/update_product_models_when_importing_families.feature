@@ -18,7 +18,7 @@ Feature: Update product models when importing families
       accessories;Accessories;Accessories;Accessories;brand,collection,color,composition,ean,erp_name,image,keywords,meta_description,meta_title,name,notice,price,size,sku,supplier,variation_image,variation_name,weight;image;name;name,sku,variation_name,weight;collection,name,sku,variation_name,weight;collection,name,sku,variation_name,weight
       """
     And the following job "csv_catalog_modeling_family_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_catalog_modeling_family_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_family_import" job to finish
@@ -43,7 +43,7 @@ Feature: Update product models when importing families
       accessories;Accessories;Accessories;Accessories;brand,collection,color,composition,ean,erp_name,image,keywords,meta_description,meta_title,name,notice,price,size,sku,supplier,variation_image,variation_name,weight;image;name;name,sku,variation_name,weight;collection,name,sku,variation_name,weight;collection,name,sku,variation_name,weight
       """
     And the following job "xlsx_catalog_modeling_family_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "xlsx_catalog_modeling_family_import" import job page
     And I launch the import job
     And I wait for the "xlsx_catalog_modeling_family_import" job to finish

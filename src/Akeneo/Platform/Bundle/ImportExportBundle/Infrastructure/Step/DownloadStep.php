@@ -11,6 +11,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Step;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageCommand;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageHandler;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscriber\UpdateJobExecutionStorageSummarySubscriber;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
@@ -61,6 +62,10 @@ final class DownloadStep extends AbstractStep
 
         $outputFilePath = $this->downloadFileFromStorageHandler->handle($command);
 
-        $jobExecution->getJobParameters()->set('filePath', $outputFilePath);
+        $storage = [
+            'type' => LocalStorage::TYPE,
+            'file_path' => $outputFilePath,
+        ];
+        $jobExecution->getJobParameters()->set('storage', $storage);
     }
 }

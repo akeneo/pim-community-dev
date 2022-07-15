@@ -18,6 +18,7 @@ type SftpStorage = {
 
 type NoneStorage = {
   type: 'none';
+  file_path: string;
 };
 
 type Storage = LocalStorage | SftpStorage | NoneStorage;
@@ -28,19 +29,18 @@ const STORAGE_TYPES = ['none'];
 
 const REMOTE_STORAGE_JOB_CODES = [
   'xlsx_product_export',
-  'xlsx_product_tailored_export',
   'xlsx_product_import',
-  'xlsx_product_tailored_import',
+  'xlsx_tailored_product_export',
+  'xlsx_tailored_product_import',
 ];
 
 const localStorageIsEnabled = (featureFlags: FeatureFlags): boolean =>
   featureFlags.isEnabled('job_automation_local_storage');
 
-const remoteStorageIsEnabled = (featureFlags: FeatureFlags, jobCode: string): boolean =>
-  featureFlags.isEnabled('job_automation_remote_storage') && REMOTE_STORAGE_JOB_CODES.includes(jobCode);
+const remoteStorageIsEnabled = (jobCode: string): boolean => REMOTE_STORAGE_JOB_CODES.includes(jobCode);
 
 const shouldHideForm = (featureFlags: FeatureFlags, jobCode: string): boolean =>
-  !localStorageIsEnabled(featureFlags) && !remoteStorageIsEnabled(featureFlags, jobCode);
+  !localStorageIsEnabled(featureFlags) && !remoteStorageIsEnabled(jobCode);
 
 const getEnabledStorageTypes = (featureFlags: FeatureFlags, jobCode: string): string[] => {
   const enabledStorageTypes = [...STORAGE_TYPES];
@@ -49,7 +49,7 @@ const getEnabledStorageTypes = (featureFlags: FeatureFlags, jobCode: string): st
     enabledStorageTypes.push('local');
   }
 
-  if (remoteStorageIsEnabled(featureFlags, jobCode)) {
+  if (remoteStorageIsEnabled(jobCode)) {
     enabledStorageTypes.push('sftp');
   }
 
@@ -60,16 +60,12 @@ const isValidStorageType = (
   storageType: string,
   featureFlags: FeatureFlags,
   jobCode: string
-): storageType is StorageType => {
-  const enabledStorageTypes = getEnabledStorageTypes(featureFlags, jobCode);
-  return enabledStorageTypes.includes(storageType);
-};
+): storageType is StorageType => getEnabledStorageTypes(featureFlags, jobCode).includes(storageType);
 
 const isExport = (jobType: JobType) => 'export' === jobType;
 
-const getDefaultFilePath = (jobType: JobType, fileExtension: string) => {
-  return isExport(jobType) ? `${jobType}_%job_label%_%datetime%.${fileExtension}` : `myfile.${fileExtension}`;
-};
+const getDefaultFilePath = (jobType: JobType, fileExtension: string) =>
+  isExport(jobType) ? `${jobType}_%job_label%_%datetime%.${fileExtension}` : `myfile.${fileExtension}`;
 
 const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExtension: string): Storage => {
   switch (storageType) {
@@ -90,6 +86,7 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
     case 'none':
       return {
         type: 'none',
+        file_path: getDefaultFilePath(jobType, fileExtension),
       };
     default:
       throw new Error(`Unknown storage type: ${storageType}`);
@@ -97,7 +94,6 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
 };
 
 export type {JobType, Storage, StorageType, LocalStorage, SftpStorage, NoneStorage};
-
 export {
   getDefaultStorage,
   isValidStorageType,

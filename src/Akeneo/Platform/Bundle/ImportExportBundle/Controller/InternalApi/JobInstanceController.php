@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
@@ -27,6 +28,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -308,22 +310,19 @@ class JobInstanceController
             }
 
             $rawParameters = $jobInstance->getRawParameters();
-            $rawParameters['filePath'] = $jobFileLocation->url();
-            if ($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
-                $rawParameters['storage'] = [
-                    'type' => ManualUploadStorage::TYPE,
-                    'file_path' => $jobFileLocation->path(),
-                ];
-            }
+            $filePath = $this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName()) ?
+                $jobFileLocation->path() : $jobFileLocation->url();
+            $rawParameters['storage'] = [
+                'type' => ManualUploadStorage::TYPE,
+                'file_path' => $filePath,
+            ];
 
             $jobInstance->setRawParameters($rawParameters);
         }
 
-        /* TODO remove it when we will migrate to storage unification */
-        if ($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
-            $rawParameters = $jobInstance->getRawParameters();
-            $rawParameters['filePath'] = '/tmp/fake_path.xlsx';
-            $jobInstance->setRawParameters($rawParameters);
+        $rawParameters = $jobInstance->getRawParameters();
+        if (NoneStorage::TYPE === $rawParameters['storage']['type'] && JobInstance::TYPE_IMPORT === $jobInstance->getType()) {
+            throw new BadRequestException();
         }
 
         $validationGroups = null !== $file ? ['Default', 'Execution', 'UploadExecution'] : ['Default', 'Execution'];

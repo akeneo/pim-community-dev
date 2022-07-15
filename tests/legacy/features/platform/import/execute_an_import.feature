@@ -10,7 +10,7 @@ Feature: Execute a job
 
   Scenario: Fail to see the import button of a job with validation errors
     Given the following job "csv_footwear_product_import" configuration:
-      | filePath |  |
+      | storage | {"type": "none", "file_path": ""} |
     When I am on the "csv_footwear_product_import" import job page
     Then I should not see the "Import now" link
 

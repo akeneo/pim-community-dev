@@ -24,7 +24,7 @@ class SimpleCsvImportSpec extends ObjectBehavior
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
         $fields->shouldHaveCount(9);
-        $fields->shouldHaveKey('filePath');
+        $fields->shouldHaveKey('storage');
         $fields->shouldHaveKey('delimiter');
         $fields->shouldHaveKey('enclosure');
         $fields->shouldHaveKey('withHeader');
