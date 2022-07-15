@@ -10,10 +10,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Model\AffectedByMigrationProjection;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Integration tests to check that the projection of the product is correctly fetched from the database.
@@ -485,13 +485,15 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
     {
         $this->expectException(ObjectNotFoundException::class);
 
-        $this->getProductProjection('unknown_product');
+        $uuid = Uuid::uuid4();
+        $query = $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection');
+        $productProjections = $query->fromProductUuids([$uuid]);
+        \iterator_to_array($productProjections);
     }
 
     public function test_that_it_returns_uuid_if_column_is_filled()
     {
         $this->createProductWithFamily();
-        /** @var AffectedByMigrationProjection $normalizedProductProjection */
         $normalizedProductProjection = $this->getProductProjection('bar');
 
         $id = $normalizedProductProjection->toArray()['id'];
@@ -714,13 +716,14 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
 
     private function getProductProjection(string $identifier): ElasticsearchProductProjection
     {
+        $uuid = $this->getProductUuidFromIdentifier($identifier);
         $query = $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection');
-        $productProjections = $query->fromProductIdentifiers([$identifier]);
+        $productProjections = $query->fromProductUuids([$uuid]);
         if (!\is_array($productProjections)) {
             $productProjections = \iterator_to_array($productProjections);
         }
 
-        return $productProjections[$identifier];
+        return $productProjections[$uuid->toString()];
     }
 
     private static function sanitizeData(array &$productProjection): void
@@ -753,5 +756,12 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
     private function getConnection(): Connection
     {
         return $this->get('database_connection');
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        ));
     }
 }

@@ -7,13 +7,16 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -23,44 +26,43 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 {
     private const INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX = 'indexing_product_and_product_model';
 
-    private Connection $connection;
-    private NormalizerInterface $valuesNormalizer;
-    private ReadValueCollectionFactory $readValueCollectionFactory;
-    /** @var GetAdditionalPropertiesForProductProjectionInterface[] */
-    private iterable $additionalDataProviders;
-
     public function __construct(
-        Connection $connection,
-        NormalizerInterface $valuesNormalizer,
-        ReadValueCollectionFactory $readValueCollectionFactory,
-        iterable $additionalDataProviders = []
+        private Connection $connection,
+        private NormalizerInterface $valuesNormalizer,
+        private ReadValueCollectionFactory $readValueCollectionFactory,
+        private SqlFindProductUuids $sqlFindProductUuids,
+        private iterable $additionalDataProviders = []
     ) {
-        $this->connection = $connection;
-        $this->valuesNormalizer = $valuesNormalizer;
-        $this->readValueCollectionFactory = $readValueCollectionFactory;
-        $this->additionalDataProviders = $additionalDataProviders;
+        Assert::allIsInstanceOf(
+            $this->additionalDataProviders,
+            GetAdditionalPropertiesForProductProjectionInterface::class
+        );
     }
 
-    public function fromProductIdentifiers(array $productIdentifiers): iterable
+    /**
+     * {@inheritdoc}
+     */
+    public function fromProductUuids(array $productUuids): iterable
     {
-        if (empty($productIdentifiers)) {
+        if (empty($productUuids)) {
             return [];
         }
 
-        $rows = $this->fetchRows($productIdentifiers);
+        $rows = $this->fetchRows($productUuids);
         $rows = $this->calculateAttributeCodeAncestors($rows);
         $rows = $this->calculateAttributeCodeForOwnLevel($rows);
 
-        $rowIdentifiers = \array_map(
-            static fn (array $row): string => (string) $row['identifier'],
+        $rowUuids = \array_map(
+            static fn (array $row): string => (string) $row['uuid'],
             $rows
         );
-        $diffIdentifiers = \array_diff(
-            array_map('strtolower', $productIdentifiers),
-            array_map('strtolower', $rowIdentifiers)
+        $notFetchedUuids = \array_diff(
+            array_map(fn (UuidInterface $uuid): string => $uuid->toString(), $productUuids),
+            $rowUuids
         );
-        if (\count($diffIdentifiers) > 0) {
-            throw new ObjectNotFoundException(\sprintf('Product identifiers "%s" were not found.', \implode(',', $diffIdentifiers)));
+
+        if (\count($notFetchedUuids) > 0) {
+            throw new ObjectNotFoundException(\sprintf('Product uuids "%s" were not found.', \implode(',', $notFetchedUuids)));
         }
 
         $rows = $this->createValueCollectionInBatchFromRows($rows);
@@ -70,16 +72,17 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
             $rows
         )];
         $additionalData = [];
+        /** @var GetAdditionalPropertiesForProductProjectionInterface $additionalDataProvider */
         foreach ($this->additionalDataProviders as $additionalDataProvider) {
             $additionalData = \array_replace_recursive(
                 $additionalData,
-                $additionalDataProvider->fromProductIdentifiers($productIdentifiers, $context)
+                $additionalDataProvider->fromProductUuids($productUuids, $context)
             );
         }
 
         $platform = $this->connection->getDatabasePlatform();
         foreach ($rows as $row) {
-            $productIdentifier = (string) $row['identifier'];
+            $productUuid = (string) $row['uuid'];
             $rawValues = $row['raw_values'];
 
             $productLabels = [];
@@ -112,11 +115,11 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
                 $row['attribute_codes_for_this_level']
             );
 
-            yield $productIdentifier => $projection->addAdditionalData($additionalData[$productIdentifier] ?? []);
+            yield $productUuid => $projection->addAdditionalData($additionalData[$productUuid] ?? []);
         }
     }
 
-    private function fetchRows(array $productIdentifiers): array
+    private function fetchRows(array $productUuids): array
     {
         $sql = <<<SQL
 WITH
@@ -152,7 +155,7 @@ WITH
             LEFT JOIN pim_catalog_family_variant family_variant ON family_variant.id = sub_product_model.family_variant_id
             LEFT JOIN pim_catalog_attribute attribute ON attribute.id = family.label_attribute_id
         WHERE
-            product.identifier IN (:identifiers)
+            product.uuid IN (:uuids)
     ),
     product_categories AS (
         SELECT
@@ -290,9 +293,11 @@ WITH
         LEFT JOIN variant_product_attributes ON variant_product_attributes.family_variant_id = product.family_variant_id
 SQL;
 
+        $productUuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+
         return $this
             ->connection
-            ->fetchAllAssociative($sql, ['identifiers' => $productIdentifiers], ['identifiers' => Connection::PARAM_STR_ARRAY]);
+            ->fetchAllAssociative($sql, ['uuids' => $productUuidsAsBytes], ['uuids' => Connection::PARAM_STR_ARRAY]);
     }
 
     private function calculateAttributeCodeAncestors(array $rows): array
@@ -366,22 +371,22 @@ SQL;
      */
     private function createValueCollectionInBatchFromRows(array $rows): array
     {
-        $rowsIndexedByProductIdentifier = [];
+        $rowsIndexedByProductUuid = [];
         foreach ($rows as $row) {
             $row['raw_values'] = \json_decode($row['raw_values'], true);
-            $rowsIndexedByProductIdentifier[$row['identifier']] = $row;
+            $rowsIndexedByProductUuid[$row['uuid']] = $row;
         }
 
         $valueCollections = $this->readValueCollectionFactory->createMultipleFromStorageFormat(
             \array_map(
                 static fn (array $row): array => $row['raw_values'],
-                $rowsIndexedByProductIdentifier
+                $rowsIndexedByProductUuid
             )
         );
-        foreach ($valueCollections as $identifier => $valueCollection) {
-            $rowsIndexedByProductIdentifier[$identifier]['values'] = $valueCollection;
+        foreach ($valueCollections as $uuid => $valueCollection) {
+            $rowsIndexedByProductUuid[$uuid]['values'] = $valueCollection;
         }
 
-        return $rowsIndexedByProductIdentifier;
+        return $rowsIndexedByProductUuid;
     }
 }

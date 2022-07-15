@@ -1,7 +1,6 @@
 'use strict';
 
 define([
-  'underscore',
   'oro/translator',
   'pim/controller/front',
   'pim/form-builder',
@@ -10,7 +9,7 @@ define([
   'pim/dialog',
   'pim/page-title',
   'pim/i18n',
-], function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, i18n) {
+], function (__, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, i18n) {
   return BaseController.extend({
     initialize: function () {
       this.config = __moduleConfig;
@@ -27,9 +26,7 @@ define([
             return;
           }
 
-          var label = _.escape(i18n.getLabel(group.labels, UserContext.get('catalogLocale'), group.code));
-
-          PageTitle.set({'group.label': label});
+          PageTitle.set({'group.label': i18n.getLabel(group.labels, UserContext.get('catalogLocale'), group.code)});
 
           return FormBuilder.build(group.meta.form).then(form => {
             this.on('pim:controller:can-leave', function (event) {

@@ -6,10 +6,10 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductUuidsFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
+use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -20,31 +20,28 @@ final class GetDataQualityInsightsPropertiesForProductProjection implements GetA
 {
     public function __construct(
         private GetProductScoresQueryInterface $getProductScoresQuery,
-        private GetProductUuidsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
         private ComputeProductsKeyIndicators $getProductsKeyIndicators,
         private ProductEntityIdFactoryInterface $idFactory
     ) {
     }
 
     /**
-     * @param array<string> $productIdentifiers
+     * @param array<UuidInterface> $productUuids
      * @param array<string, mixed> $context
      *
      * @return array<string, array{data_quality_insights: array{scores: array, key_indicators: array}}>
      */
-    public function fromProductIdentifiers(array $productIdentifiers, array $context = []): array
+    public function fromProductUuids(array $productUuids, array $context = []): array
     {
-        $productIdentifierIds = $this->getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers);
-
-        $productIdCollection = $this->idFactory->createCollection(array_map(fn ($productId) => (string) $productId, array_values($productIdentifierIds)));
-        Assert::isInstanceOf($productIdCollection, ProductUuidCollection::class);
-        $productScores = $this->getProductScoresQuery->byProductUuidCollection($productIdCollection);
-        $productKeyIndicators = $this->getProductsKeyIndicators->compute($productIdCollection);
+        $productUuidCollection = $this->idFactory->createCollection(array_map(fn (UuidInterface $productUuid) => $productUuid->toString(), array_values($productUuids)));
+        Assert::isInstanceOf($productUuidCollection, ProductUuidCollection::class);
+        $productScores = $this->getProductScoresQuery->byProductUuidCollection($productUuidCollection);
+        $productKeyIndicators = $this->getProductsKeyIndicators->compute($productUuidCollection);
 
         $additionalProperties = [];
-        foreach ($productIdentifierIds as $productIdentifier => $productId) {
-            $index = (string)$productId;
-            $additionalProperties[$productIdentifier] = [
+        foreach ($productUuidCollection as $productUuid) {
+            $index = (string) $productUuid;
+            $additionalProperties[$index] = [
                 'data_quality_insights' => [
                     'scores' => isset($productScores[$index]) ? $productScores[$index]->allCriteria()->toArrayIntRank() : [],
                     'scores_partial_criteria' => isset($productScores[$index]) ? $productScores[$index]->partialCriteria()->toArrayIntRank() : [],
