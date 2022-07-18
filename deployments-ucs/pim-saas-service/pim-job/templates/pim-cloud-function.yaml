@@ -14,20 +14,7 @@ spec:
     triggerHttp: true
     region: "{{ .Values.pim.cloudFunction.region }}"
     environmentVariables:
-      projectId: "{{ .Values.projectId }}"
+      projectId: "{{ .Values.common.gcpProjectID }}"
       tenantContext: "tenant_contexts"
-  providerConfigRef:
-    name: "provider-config-jet-gcp"
----
-apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
-kind: FunctionIAMMember
-metadata:
-  name: {{ .Values.pim.cloudFunction.name }} 
-spec:
-  forProvider:
-    cloudFunction: {{ .Values.pim.cloudFunction.name }} 
-    member: "allAuthenticatedUsers"
-    role: "roles/cloudfunctions.invoker"
-    region: "{{ .Values.pim.cloudFunction.region }}"
   providerConfigRef:
     name: "provider-config-jet-gcp"

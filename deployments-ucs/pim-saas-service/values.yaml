@@ -1,6 +1,5 @@
 region: europe-west1
 env: sandbox
-projectId: akecld-blackhawk-sandbox
 nameOverride: ""
 global:
   extraLabels:
@@ -385,7 +384,6 @@ pim:
   onboarder_serenity:
     settings:
       enabled: false
-  prefixJob: "ucs-pim-job"
   cloudFunction:
     name: null # Generated
     memory: 512
@@ -393,3 +391,4 @@ pim:
     sourceSode: null # Generated
     region: null # Generated
     serviceAccountEmail: null # Generated
+    timeZone: "Europe/Paris"
