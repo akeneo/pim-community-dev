@@ -64,6 +64,7 @@
 - PIM-10543: Fix selected categories sent to listCategories
 - PIM-10561: Fix associationUserIntentFactory to cast int to string
 - PIM-10557: Fix notifications not displayed for obsolete route parameters
+- PIM-10530: Fix case issue when querying products with attribute options
 
 ## Improvements
 
