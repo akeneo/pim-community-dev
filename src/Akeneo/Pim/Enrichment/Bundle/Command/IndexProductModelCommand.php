@@ -82,7 +82,7 @@ class IndexProductModelCommand extends Command
                 'diff',
                 'd',
                 InputOption::VALUE_NONE,
-               ' Index both missing product models present in Mysql and not in ES and outdated product model documents in ES. It does not remove product model documents present in ES but not in Mysql. See pim:product-model:clean-removed-products for that. This option does not work with "all" option. '            
+                'Index both missing product models present in Mysql and not in ES and outdated product model documents in ES. It does not remove product model documents present in ES but not in Mysql. See pim:product-model:clean-removed-products for that. This option does not work with "all" option. '
             )
             ->addOption(
                 'batch-size',
