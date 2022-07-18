@@ -274,15 +274,6 @@ SQL;
             }, $results['hits']['hits']);
 
             $diff = array_diff($existingMysqlIdentifiers, $esIdentifiers);
-                $rows,
-                function ($carry, $item) use ($esIdentifiers) {
-                    if (!in_array($item['_id'], $esIdentifiers)) {
-                        $carry[] = $item['code'];
-                    }
-                    return $carry;
-                },
-                []
-            );
 
             yield $diff;
         }
