@@ -15,3 +15,16 @@ spec:
     region: "{{ .Values.cloudFunction.region }}"
   providerConfigRef:
     name: "provider-config-jet-gcp"
+---
+apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
+kind: FunctionIAMMember
+metadata:
+  name: {{ .Values.cloudFunction.name }} 
+spec:
+  forProvider:
+    cloudFunction: {{ .Values.cloudFunction.name }} 
+    member: "allAuthenticatedUsers"
+    role: "roles/cloudfunctions.invoker"
+    region: "{{ .Values.cloudFunction.region }}"
+  providerConfigRef:
+    name: "provider-config-jet-gcp"
