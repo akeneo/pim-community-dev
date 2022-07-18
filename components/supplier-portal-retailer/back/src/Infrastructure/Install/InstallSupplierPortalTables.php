@@ -141,7 +141,7 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
                 `uploaded_by_contributor` varchar(36) DEFAULT NULL,
                 `uploaded_by_supplier` varchar(36) NOT NULL,
                 `uploaded_at` DATETIME NOT NULL,
-                `downloaded_at` DATETIME DEFAULT NULL,
+                `downloaded` BOOLEAN NOT NULL DEFAULT false,
             PRIMARY KEY (`identifier`),
             CONSTRAINT `uploaded_by_supplier_foreign_key`
                 FOREIGN KEY (`uploaded_by_supplier`)
