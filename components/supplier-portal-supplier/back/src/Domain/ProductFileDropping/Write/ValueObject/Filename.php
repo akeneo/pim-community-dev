@@ -8,7 +8,7 @@ final class Filename
 {
     private function __construct(private string $filename)
     {
-        if ('' === $filename) {
+        if ('' === trim($filename)) {
             throw new \InvalidArgumentException('The filename cannot be empty.');
         }
     }

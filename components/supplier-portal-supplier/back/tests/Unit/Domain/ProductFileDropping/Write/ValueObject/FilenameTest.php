@@ -14,7 +14,7 @@ final class FilenameTest extends TestCase
     {
         static::expectExceptionObject(new \InvalidArgumentException('The filename cannot be empty.'));
 
-        Filename::fromString('');
+        Filename::fromString(' ');
     }
 
     /** @test */

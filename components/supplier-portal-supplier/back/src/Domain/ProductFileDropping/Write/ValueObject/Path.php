@@ -8,7 +8,7 @@ final class Path
 {
     private function __construct(private string $path)
     {
-        if ('' === $path) {
+        if ('' === trim($path)) {
             throw new \InvalidArgumentException('The path cannot be empty.');
         }
     }

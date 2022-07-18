@@ -14,7 +14,7 @@ final class PathTest extends TestCase
     {
         static::expectExceptionObject(new \InvalidArgumentException('The path cannot be empty.'));
 
-        Path::fromString('');
+        Path::fromString(' ');
     }
 
     /** @test */
