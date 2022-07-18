@@ -15,6 +15,7 @@ final class FileToTransfer
         private string $fileKey,
         private string $storage,
         private string $outputFileName,
+        private bool $isLocal
     ) {
     }
 
@@ -31,5 +32,10 @@ final class FileToTransfer
     public function getOutputFileName(): string
     {
         return $this->outputFileName;
+    }
+
+    public function isLocal(): bool
+    {
+        return $this->isLocal;
     }
 }

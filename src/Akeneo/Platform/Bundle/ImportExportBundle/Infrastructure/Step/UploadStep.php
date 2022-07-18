@@ -52,7 +52,7 @@ final class UploadStep extends AbstractStep
             throw new \LogicException('malformed job parameters, missing storage configuration');
         }
 
-        if ('local' === $jobParameters[self::STORAGE_KEY]['type'] || 'none' === $jobParameters[self::STORAGE_KEY]['type']) {
+        if ('none' === $jobParameters[self::STORAGE_KEY]['type']) {
             return;
         }
 
@@ -95,6 +95,7 @@ final class UploadStep extends AbstractStep
                 $writtenFile->sourceKey(),
                 $writtenFile->sourceStorage(),
                 $writtenFile->outputFilepath(),
+                $writtenFile->isLocalFile()
             ),
             $writer->getWrittenFiles()
         );
