@@ -182,8 +182,8 @@ abstract class AbstractItemMediaWriter implements
         if ($parameters->has('storage')) {
             $storage = $parameters->get('storage');
             $filePath = LocalStorage::TYPE === $storage['type']
-                ? $storage['file_path']
-                : sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
+                ? $storage[$this->jobParamFilePath]
+                : sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage[$this->jobParamFilePath]);
         } else {
             $filePath = $parameters->get($this->jobParamFilePath);
         }
