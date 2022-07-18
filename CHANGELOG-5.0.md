@@ -1,5 +1,20 @@
 # 5.0.x
 
+# 5.0.104 (2022-07-11)
+
+# 5.0.103 (2022-07-11)
+
+## Bug fixes
+
+- PIM-10523: fix CSV import profiles have the `download read file` option in Process Tracker but not XLSX import profiles
+- PIM-10506: Fix performance issues on process tracker
+
+# 5.0.102 (2022-07-07)
+
+## Bug fixes
+
+- PIM-10502: Fix API error when trying to post/patch a product with non-existing attribute code that is also a number
+
 # 5.0.101 (2022-07-01)
 
 # 5.0.100 (2022-06-29)

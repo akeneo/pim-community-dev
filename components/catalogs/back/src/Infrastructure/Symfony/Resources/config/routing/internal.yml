@@ -16,3 +16,8 @@ akeneo_catalogs_internal_update_catalog:
     methods: [ PATCH ]
     requirements:
         catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+
+akeneo_catalogs_internal_get_families:
+    path: '/rest/catalogs/families'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetFamiliesAction
+    methods: [ GET ]

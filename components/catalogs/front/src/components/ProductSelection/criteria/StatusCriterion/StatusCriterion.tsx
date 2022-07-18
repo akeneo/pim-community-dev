@@ -13,7 +13,8 @@ const Fields = styled.div`
 `;
 
 const Field = styled.div`
-    min-width: 200px;
+    flex-basis: 200px;
+    flex-shrink: 0;
 `;
 
 const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onChange, onRemove, errors}) => {
@@ -76,7 +77,13 @@ const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onCh
                 </Fields>
             </List.Cell>
             <List.RemoveCell>
-                <IconButton ghost='borderless' level='tertiary' icon={<CloseIcon />} title='' onClick={onRemove} />
+                <IconButton
+                    ghost='borderless'
+                    level='tertiary'
+                    icon={<CloseIcon />}
+                    title='remove'
+                    onClick={onRemove}
+                />
             </List.RemoveCell>
         </List.Row>
     );

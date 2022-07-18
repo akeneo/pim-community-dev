@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductUuidCursor;
 use Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductUuidQueryFetcher;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -25,7 +26,7 @@ class GetProductUuidsHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator
     ) {
         $pqb = new class implements ProductQueryBuilderInterface, LegacyProductQueryBuilderInterface {
-            public function buildQuery(int $userId): array
+            public function buildQuery(?int $userId, ?UuidInterface $searchAfterUuid = null): array
             {
                 return ['the query'];
             }

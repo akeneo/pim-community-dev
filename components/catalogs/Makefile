@@ -25,11 +25,12 @@ catalogs-fixtures:
 catalogs-tests:
 	$(MAKE) catalogs-lint-back
 	$(MAKE) catalogs-coupling-back
-	$(MAKE) catalogs-mutation-unit-back
 	$(MAKE) catalogs-coverage-back
+	$(MAKE) catalogs-mutation-unit-back
 	$(MAKE) catalogs-acceptance-back
 	$(MAKE) catalogs-lint-front
 	$(MAKE) catalogs-unit-front
+	$(MAKE) catalogs-integration-front
 
 .PHONY: catalogs-cs-fix
 catalogs-cs-fix: catalogs-lint-front_fix catalogs-lint-back_fix
@@ -123,7 +124,11 @@ catalogs-lint-front: yarn-policies
 
 .PHONY: catalogs-unit-front
 catalogs-unit-front: yarn-policies
-	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs jest --ci --coverage
+	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs jest:unit --ci --coverage
+
+.PHONY: catalogs-integration-front
+catalogs-integration-front: yarn-policies
+	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs jest:integration --ci --runInBand
 
 # UTILS
 

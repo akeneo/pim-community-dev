@@ -45,35 +45,49 @@ final class MigrateZddCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->logger->notice('pim:zdd-migration:migrate start');
+        if (!$this->tableExists('pim_one_time_task')) {
+            $this->logger->warning('%s - skip - Table pim_one_time_task does not exist', [
+                'action' => 'skip',
+            ]);
+
+            return Command::SUCCESS;
+        }
+
+        $this->logger->info(sprintf('%s - start_command', self::$defaultName), [
+            'action' => 'start_command'
+        ]);
 
         $migrationCount = 0;
         /** @var ZddMigration $zddMigration */
         foreach ($this->zddMigrations as $zddMigration) {
             if (!$this->isMigrated($zddMigration)) {
                 try {
-                    $this->logger->notice(
-                        sprintf('pim:zdd-migration:migrate migrate %s', $zddMigration->getName()),
+                    $this->logger->info(
+                        sprintf('%s - start_migration - %s', self::$defaultName, $zddMigration->getName()),
                         [
-                            'name' => $zddMigration->getName(),
+                            'action' => 'start_migration',
+                            'migration_name' => $zddMigration->getName(),
                         ]
                     );
                     $startMigrationTime = \time();
                     $zddMigration->migrate();
-                    $this->logger->notice(
-                        sprintf('pim:zdd-migration:migrate migrated %s', $zddMigration->getName()),
+                    $duration = time() - $startMigrationTime;
+                    $this->logger->info(
+                        sprintf('%s - end_migration - %s in %ss', self::$defaultName, $zddMigration->getName(), $duration),
                         [
-                            'name' => $zddMigration->getName(),
-                            'migration_duration_in_second' => time() - $startMigrationTime,
+                            'action' => 'end_migration',
+                            'migration_name' => $zddMigration->getName(),
+                            'migration_duration_in_second' => $duration,
                         ]
                     );
                     $this->markAsMigrated($zddMigration);
                     $migrationCount++;
                 } catch (\Throwable $e) {
                     $this->logger->error(
-                        sprintf('pim:zdd-migration:migrate errored %s', $zddMigration->getName()),
+                        sprintf('%s - errored_migration - %s', self::$defaultName, $zddMigration->getName()),
                         [
-                            'name' => $zddMigration->getName(),
+                            'action' => 'errored_migration',
+                            'migration_name' => $zddMigration->getName(),
                             'exception' => $e,
                         ]
                     );
@@ -85,7 +99,8 @@ final class MigrateZddCommand extends Command
             }
         }
 
-        $this->logger->notice('pim:zdd-migration:migrate end', [
+        $this->logger->info(sprintf('%s - end_command - %d migration(s) done', self::$defaultName, $migrationCount), [
+            'action' => 'end_command',
             'migrations_done' => $migrationCount,
         ]);
 
@@ -108,6 +123,18 @@ final class MigrateZddCommand extends Command
             'code' => $this->getZddMigrationCode($zddMigration),
             'status' => 'finished',
         ]);
+    }
+
+    private function tableExists(string $tableName): bool
+    {
+        $rows = $this->connection->fetchAllAssociative(
+            <<<SQL
+                SHOW TABLES LIKE :tableName
+            SQL,
+            ['tableName' => $tableName]
+        );
+
+        return count($rows) >= 1;
     }
 
     private function markAsMigrated(ZddMigration $zddMigration): void

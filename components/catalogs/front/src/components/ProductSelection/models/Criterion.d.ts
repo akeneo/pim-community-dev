@@ -2,9 +2,11 @@ import {Operator} from './Operator';
 import {FC} from 'react';
 import {CriterionErrors} from './CriterionErrors';
 import {StatusCriterionState} from '../criteria/StatusCriterion';
+import {FamilyCriterionState} from '../criteria/FamilyCriterion';
 
 export type CriterionModule<State> = {
-    state: State;
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    state: State & any;
     onChange: (state: State) => void;
     onRemove: () => void;
     errors: CriterionErrors;
@@ -13,6 +15,7 @@ export type CriterionModule<State> = {
 export type CriterionState = {
     field: string;
     operator: Operator;
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     value?: any;
 };
 
@@ -21,5 +24,5 @@ export type Criterion<State extends CriterionState> = {
     factory: (state?: Partial<State>) => State;
 };
 
-export type AnyCriterionState = StatusCriterionState;
-export type AnyCriterion = Criterion<StatusCriterionState>;
+export type AnyCriterionState = StatusCriterionState | FamilyCriterionState;
+export type AnyCriterion = Criterion<StatusCriterionState> | Criterion<FamilyCriterionState>;

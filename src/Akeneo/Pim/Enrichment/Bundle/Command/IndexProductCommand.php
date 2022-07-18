@@ -68,6 +68,12 @@ class IndexProductCommand extends Command
                 'Index all existing products into Elasticsearch'
             )
             ->addOption(
+                'diff',
+                'd',
+                InputOption::VALUE_NONE,
+                'Resolve differences between MySQL and Elasticsearch'
+            )
+            ->addOption(
                 'batch-size',
                 false,
                 InputOption::VALUE_REQUIRED,
@@ -88,6 +94,9 @@ class IndexProductCommand extends Command
 
         if (true === $input->getOption('all')) {
             $chunkedProductIdentifiers = $this->getAllProductIdentifiers($batchSize);
+            $productCount = 0;
+        } elseif (true === $input->getOption('diff')) {
+            $chunkedProductIdentifiers = $this->getDiffProductIdentifiers($batchSize);
             $productCount = 0;
         } elseif (!empty($input->getArgument('identifiers'))) {
             $requestedIdentifiers = $input->getArgument('identifiers');
@@ -161,7 +170,7 @@ SQL;
                 return;
             }
 
-            $formerId = (int)end($rows)['id'];
+            $formerId =(int)end($rows)['id'];
             yield array_column($rows, 'identifier');
         }
     }
@@ -197,6 +206,76 @@ SQL;
                     $this->productAndProductModelClient->getIndexName()
                 )
             );
+        }
+    }
+
+    private function getDiffProductIdentifiers(int $batchSize)
+    {
+        $formerId = null;
+        $sql = <<< SQL
+SELECT CONCAT('product_',BIN_TO_UUID(uuid)) AS _id, BIN_TO_UUID(uuid) AS uuid, identifier, DATE_FORMAT(updated, '%Y-%m-%dT%TZ') AS updated
+FROM pim_catalog_product
+WHERE (CASE WHEN :formerId IS NULL THEN TRUE ELSE uuid > :formerId END)
+ORDER BY uuid ASC
+LIMIT :limit
+SQL;
+        while (true) {
+            $rows = $this->connection->executeQuery(
+                $sql,
+                [
+                    'formerId' => $formerId,
+                    'limit' => $batchSize,
+                ],
+                [
+                    'formerId' => \PDO::PARAM_STR,
+                    'limit' => \PDO::PARAM_INT,
+                ]
+            )->fetchAllAssociative();
+
+            if (empty($rows)) {
+                return;
+            }
+
+            $formerId = end($rows)['uuid'];
+
+            $existingMysqlIdentifiers = array_column($rows, '_id');
+            $existingMysqlUpdated = array_column($rows, 'updated');
+
+            $results = $this->productAndProductModelClient->search([
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            'ids' => [
+                                'values' => $existingMysqlIdentifiers
+                            ]
+                        ],
+                        'filter' => [
+                            'terms' => [
+                                'entity_updated' => $existingMysqlUpdated
+                            ]
+                        ]
+                    ]
+                ],
+                '_source' => false,
+                'size' => $batchSize
+            ]);
+
+            $esIdentifiers = array_map(function ($doc) {
+                return $doc['_id'];
+            }, $results["hits"]["hits"]);
+            $diff = array_reduce(
+                $rows,
+                function ($carry, $item) use ($esIdentifiers) {
+                    if (!in_array($item['_id'], $esIdentifiers)) {
+                        $carry[] = $item['identifier'];
+                    }
+
+                    return $carry;
+                },
+                []
+            );
+
+            yield $diff;
         }
     }
 }

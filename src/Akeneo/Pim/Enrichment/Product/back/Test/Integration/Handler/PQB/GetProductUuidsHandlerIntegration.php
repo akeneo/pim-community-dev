@@ -15,6 +15,8 @@ use Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductUuidCursor;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Webmozart\Assert\Assert as WebmozartAssert;
 
@@ -89,6 +91,36 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
     }
 
     /** @test */
+    public function it_returns_a_results_with_search_after(): void
+    {
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('admin'), 'test3', []));
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('admin'), 'test4', []));
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('admin'), 'test5', []));
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('admin'), 'test6', []));
+        $this->refreshIndex();
+
+        $dateInThePast = (new \DateTime('now'))->modify("- 30 minutes")->format('Y-m-d H:i:s');
+        $productUuidCursor = $this->launchPQBCommand(['updated' => [['operator' => '>', 'value' => $dateInThePast]]]);
+
+        $uuids = [];
+        foreach ($productUuidCursor as $uuid) {
+            $uuids[] = $uuid->toString();
+        }
+        Assert::assertCount(6, $productUuidCursor);
+        sort($uuids);
+
+        $productUuidCursor = $this->launchPQBCommand(
+            ['updated' => [['operator' => '>', 'value' => $dateInThePast]]],
+            Uuid::fromString($uuids[2])
+        );
+        $paginatedUuids = [];
+        foreach ($productUuidCursor as $uuid) {
+            $paginatedUuids[] = $uuid->toString();
+        }
+        Assert::assertSame(\array_slice($uuids, 3), $paginatedUuids);
+    }
+
+    /** @test */
     public function it_throws_an_exception_when_the_user_does_not_exist(): void
     {
         $this->expectException(ViolationsException::class);
@@ -111,9 +143,9 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
         $this->launchPQBCommand(['updated' => $dateInTheFuture]);
     }
 
-    private function launchPQBCommand(array $search): ProductUuidCursor
+    private function launchPQBCommand(array $search, ?UuidInterface $searchAfterUuid = null): ProductUuidCursor
     {
-        $envelope = $this->queryMessageBus->dispatch(new GetProductUuidsQuery($search, $this->getUserId('admin')));
+        $envelope = $this->queryMessageBus->dispatch(new GetProductUuidsQuery($search, null, $searchAfterUuid));
         $handledStamp = $envelope->last(HandledStamp::class);
         Assert::assertNotNull($handledStamp, 'The bus does not return any result');
 

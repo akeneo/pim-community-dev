@@ -8,6 +8,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Ramsey\Uuid\UuidInterface;
+use Webmozart\Assert\Assert;
 
 class GetNormalizedProductModelQualityScores implements GetNormalizedQualityScoresInterface
 {
@@ -17,11 +19,12 @@ class GetNormalizedProductModelQualityScores implements GetNormalizedQualityScor
     ) {
     }
 
-    public function __invoke(string $code, string $channel = null, array $locales = []): array
+    public function __invoke(string|UuidInterface $code, string $channel = null, array $locales = []): array
     {
         if (!$this->dataQualityInsightsFeature->isEnabled()) {
             return [];
         }
+        Assert::string($code);
 
         $qualityScoreCollection = $this->getProductModelScoresQuery->byProductModelCode($code);
         $qualityScoreCollection = $this->filterProductModelQualityScores($qualityScoreCollection, $channel, $locales);

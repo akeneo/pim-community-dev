@@ -18,6 +18,7 @@ use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class ProductQueryBuilderAdapterSpec extends ObjectBehavior
 {
@@ -56,7 +57,29 @@ class ProductQueryBuilderAdapterSpec extends ObjectBehavior
         $filterRegistry->getFieldFilter('entity_type', Operators::EQUALS)
             ->shouldBeCalledOnce()->willReturn($fieldFilter);
 
+        $this->buildQuery(null)->shouldReturn(['_source' => ['identifier']]);
+    }
+
+    function it_builds_the_query_with_a_user(
+        FilterRegistryInterface $filterRegistry,
+        FieldFilterInterface $fieldFilter
+    ) {
+        $filterRegistry->getFieldFilter('entity_type', Operators::EQUALS)
+            ->shouldBeCalledOnce()->willReturn($fieldFilter);
+
         $this->buildQuery(1)->shouldReturn(['_source' => ['identifier']]);
+    }
+
+    function it_builds_the_query_with_a_search_after(
+        FilterRegistryInterface $filterRegistry,
+        FieldFilterInterface $fieldFilter
+    ) {
+        $filterRegistry->getFieldFilter('entity_type', Operators::EQUALS)
+            ->shouldBeCalledOnce()->willReturn($fieldFilter);
+
+        $uuid = Uuid::uuid4();
+        $this->buildQuery(null, $uuid)
+            ->shouldReturn(['_source' => ['identifier'], 'search_after' => ['product_' . $uuid->toString()]]);
     }
 
     function it_adds_permission_filters_and_builds_the_query(

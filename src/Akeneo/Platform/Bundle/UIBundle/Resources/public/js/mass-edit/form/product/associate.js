@@ -156,11 +156,13 @@ define([
     },
 
     renderQuantifiedAssociations: function (quantifiedAssociations) {
+      const isUserOwner = this.getFormData().meta.is_owner ?? true;
       const props = {
         quantifiedAssociations,
         parentQuantifiedAssociations: {products: [], product_models: []},
         errors: [],
         isCompact: true,
+        isUserOwner,
         onAssociationsChange: updatedAssociations => {
           const currentAssociationTypeCode = this.getCurrentAssociationTypeCode();
           this.setValue({[currentAssociationTypeCode]: updatedAssociations}, true);
