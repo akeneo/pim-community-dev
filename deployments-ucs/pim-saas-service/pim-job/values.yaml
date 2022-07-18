@@ -3,15 +3,17 @@ env: sandbox
 projectId: akecld-blackhawk-sandbox
 # PIM
 pim:
+  prefixJob: "ucs-pim-job"
   cloudFunction:
-    name: "ucs-job-transform-command"
+    name: null # Generated
     memory: 512
-    bucket: srnt-ucs-pim-cron 
-    sourceSode: ucs-function-cron-transformer.zip 
-    region: "europe-west1"
-    serviceAccountEmail: "akecld-blackhawk-sandbox@appspot.gserviceaccount.com"
+    bucket: null # Generated
+    sourceSode: null # Generated
+    region: null # Generated
+    serviceAccountEmail: null # Generated
   pubsub:
-    ucs_topic_job_schudeler: "scheduled-jobs"
+    topic_job_schudeler: null # Generated
+    subscription_job_schudeler: null # Generated
   jobs:
     versioning-purge:
       enabled: true
