@@ -155,7 +155,3 @@ extract-front-translations: #Doc: Extract translations for Crowdin
 .PHONY: build-supplier-portal-supplier-front-app
 build-supplier-portal-supplier-front-app: #Doc: Build Onboarder supplier frontend application
 	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front app:build
-
-.PHONY: start-supplier-portal-supplier-front-app
-start-supplier-portal-supplier-front-app: #Doc: Build Onboarder supplier frontend application
-	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front app:start
