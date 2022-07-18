@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
+use Akeneo\Pim\Enrichment\Product\API\Query\ProductUuidCursorInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
@@ -16,7 +17,6 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Webmozart\Assert\Assert;
@@ -119,7 +119,7 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
         return $familyCodes;
     }
 
-    private function getProductUuidsForFamilies(array $familyCodes): CursorInterface
+    private function getProductUuidsForFamilies(array $familyCodes): ProductUuidCursorInterface
     {
         $envelope = $this->messageBus->dispatch(new GetProductUuidsQuery([
             'family' => [

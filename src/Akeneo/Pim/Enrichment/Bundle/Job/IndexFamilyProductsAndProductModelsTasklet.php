@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
+use Akeneo\Pim\Enrichment\Product\API\Query\ProductUuidCursorInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
@@ -135,7 +136,7 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
     /**
      * @param string[] $familyCodes
      */
-    private function getProductUuidsForFamilies(array $familyCodes): CursorInterface
+    private function getProductUuidsForFamilies(array $familyCodes): ProductUuidCursorInterface
     {
         $envelope = $this->messageBus->dispatch(new GetProductUuidsQuery([
             'family' => [

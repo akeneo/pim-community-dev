@@ -6,8 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeCompletenessOfFamilyProductsTasklet;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
+use Akeneo\Pim\Enrichment\Product\API\Query\ProductUuidCursorInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Test\Common\FakeCursor;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
@@ -16,6 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Prophecy\Promise\ReturnPromise;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Envelope;
@@ -76,7 +77,8 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         JobRepositoryInterface $jobRepository,
         FamilyInterface $familyShoes,
         FamilyInterface $familyTshirt,
-        MessageBusInterface $messageBus
+        MessageBusInterface $messageBus,
+        ProductUuidCursorInterface $cursor
     ) {
         $uuids = [Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4()];
 
@@ -84,10 +86,14 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         $familyShoes->getCode()->willReturn('Shoes');
         $familyTshirt->getCode()->willReturn('Tshirt');
 
-        $cursor = new FakeCursor($uuids);
+        $cursor->count()->willReturn(4);
+        $cursor->valid()->willReturn(true, true, true, true, false);
+        $cursor->current()->will(new ReturnPromise($uuids));
+        $cursor->rewind()->shouldBeCalled();
+        $cursor->next()->shouldBeCalled();
 
         $messageBus->dispatch(Argument::type(GetProductUuidsQuery::class))->willReturn(
-            new Envelope(new \stdClass(), [new HandledStamp($cursor, '')])
+            new Envelope(new \stdClass(), [new HandledStamp($cursor->getWrappedObject(), '')])
         );
 
         $completenessCalculator->fromProductUuids(Argument::any())->shouldBeCalled()->willReturn(['completeness_collection']);
@@ -110,14 +116,24 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         JobRepositoryInterface $jobRepository,
         FamilyInterface $familyShoes,
         EntityManagerClearerInterface $cacheClearer,
-        MessageBusInterface $messageBus
+        MessageBusInterface $messageBus,
+        ProductUuidCursorInterface $cursor
     ) {
         $familyReader->read()->shouldBeCalledTimes(2)->willReturn($familyShoes, null);
         $familyShoes->getCode()->willReturn('Shoes');
 
-        $cursor = new FakeCursor(array_map(fn (): UuidInterface => Uuid::uuid4(), range(1, 1006)));
+        $cursor->count()->willReturn(1006);
+        $cursorValues = array_map(fn (): bool => true, range(1, 1006));
+        $cursorValues[] = false;
+        $cursor->valid()->will(new ReturnPromise($cursorValues));
+        $cursor->rewind()->shouldBeCalled();
+        $cursor->next()->shouldBeCalled();
+        $cursor->current()->will(new ReturnPromise(
+            array_map(fn (): UuidInterface => Uuid::uuid4(), range(1, 1006)))
+        );
+
         $messageBus->dispatch(Argument::type(GetProductUuidsQuery::class))->willReturn(
-            new Envelope(new \stdClass(), [new HandledStamp($cursor, '')])
+            new Envelope(new \stdClass(), [new HandledStamp($cursor->getWrappedObject(), '')])
         );
 
         $completenessCalculator->fromProductUuids(Argument::type('array'))->shouldBeCalledTimes(11);

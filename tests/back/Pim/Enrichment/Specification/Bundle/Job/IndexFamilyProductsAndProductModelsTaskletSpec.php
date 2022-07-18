@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
+use Akeneo\Pim\Enrichment\Product\API\Query\ProductUuidCursorInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Common\FakeCursor;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
@@ -21,6 +22,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Prophecy\Promise\ReturnPromise;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -79,7 +81,8 @@ class IndexFamilyProductsAndProductModelsTaskletSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
         ProductModelInterface $productModel1,
-        MessageBusInterface $messageBus
+        MessageBusInterface $messageBus,
+        ProductUuidCursorInterface $cursor
     ) {
         $productUuids = [
             Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(),
@@ -97,7 +100,11 @@ class IndexFamilyProductsAndProductModelsTaskletSpec extends ObjectBehavior
 
         $productModel1->getCode()->willReturn('minerva');
 
-        $productCursor = new FakeCursor($productUuids);
+        $cursor->count()->willReturn(8);
+        $cursor->valid()->willReturn(true, true, true, true, true, true, true, true, false);
+        $cursor->current()->will(new ReturnPromise($productUuids));
+        $cursor->rewind()->shouldBeCalled();
+        $cursor->next()->shouldBeCalled();
 
         $productModelCursor = new FakeCursor([
             $productModel1->getWrappedObject(),
@@ -113,7 +120,7 @@ class IndexFamilyProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
 
         $messageBus->dispatch(Argument::type(GetProductUuidsQuery::class))->willReturn(
-            new Envelope(new \stdClass(), [new HandledStamp($productCursor, '')])
+            new Envelope(new \stdClass(), [new HandledStamp($cursor->getWrappedObject(), '')])
         );
 
         $productModelQueryBuilderFactory->create()->willReturn($productModelQueryBuilder);
