@@ -22,7 +22,6 @@ final class Version_7_0_20220704141138_update_job_instance_parameter_path extend
     public function up(Schema $schema): void
     {
         $jobInstances = $this->getJobInstances();
-        $this->skipIf(empty($jobInstances), 'No job instance to migrate.');
 
         foreach ($jobInstances as $jobInstance) {
             $rawParameters = unserialize($jobInstance['raw_parameters']);
