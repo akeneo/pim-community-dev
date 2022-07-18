@@ -49,7 +49,10 @@ final class MigrateZddCommand extends Command
             $this->logger->warning('%s - skip - Table pim_one_time_task does not exist', [
                 'action' => 'skip',
             ]);
+
+            return Command::SUCCESS;
         }
+
         $this->logger->info(sprintf('%s - start_command', self::$defaultName), [
             'action' => 'start_command'
         ]);
