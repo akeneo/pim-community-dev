@@ -17,10 +17,10 @@ spec:
     schedule: '{{ $jobOptions.schedule }}'
     httpTarget:
       - httpMethod: "POST"
-        uri: "https://{{ $tplCtx.Values.region }}-{{ $tplCtx.Values.projectId }}.cloudfunctions.net/{{ $tplCtx.Values.cloudFunction.name }}"
+        uri: "https://{{ $tplCtx.Values.region }}-{{ $tplCtx.Values.projectId }}.cloudfunctions.net/{{ $tplCtx.Values.pim.cloudFunction.name }}"
         oidcToken:
-          - audience: "https://{{ $tplCtx.Values.region }}-{{ $tplCtx.Values.projectId }}.cloudfunctions.net/{{ $tplCtx.Values.cloudFunction.name }}"
-            serviceAccountEmail: "{{ $tplCtx.Values.cloudFunction.serviceAccountEmail }}"
+          - audience: "https://{{ $tplCtx.Values.region }}-{{ $tplCtx.Values.projectId }}.cloudfunctions.net/{{ $tplCtx.Values.pim.cloudFunction.name }}"
+            serviceAccountEmail: "{{ $tplCtx.Values.pim.cloudFunction.serviceAccountEmail }}"
         headers: {"Content-Type": "application/json"}
         body: {{ printf "{\"topicId\": \"%s\",\"code\":  \"%s\",\"env\": \"%s\",\"options\": \"%s\" }" $tplCtx.Values.pim.pubsub.ucs_topic_job_schudeler $jobName $tplCtx.Values.env $jobOptions.pimCommand | squote |  replace "'" ""| b64enc }}
 ---

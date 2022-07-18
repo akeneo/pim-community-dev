@@ -1,3 +1,6 @@
+region: europe-west1
+env: sandbox
+projectId: akecld-blackhawk-sandbox
 nameOverride: ""
 global:
   extraLabels:
@@ -120,6 +123,7 @@ pim:
     subscription_job_queue_ui: null # Generated
     subscription_job_queue_import_export: null # Generated
     subscription_job_queue_data_maintenance: null # Generated
+    ucs_topic_job_schudeler: "scheduled-jobs"
   hook:
     addAdmin:
       enabled: true
@@ -201,7 +205,7 @@ pim:
   jobs:
     versioning-purge:
       enabled: true
-      pimCommand: "pim:versioning:purge --more-than-days 90 --no-interaction --force"
+      pimCommand: "--more-than-days 90 --no-interaction --force"
       schedule: "0 1 * * 0"
       resources:
         requests:
@@ -209,7 +213,7 @@ pim:
           memory: "80Mi"
     batch-purge:
       enabled: true
-      pimCommand: "akeneo:batch:purge-job-execution"
+      pimCommand: ""
       schedule: "0 0 1 * *"
       resources:
         requests:
@@ -217,7 +221,7 @@ pim:
           memory: "192Mi"
     update-connectivity-audit-data:
       enabled: true
-      pimCommand: "akeneo:connectivity-audit:update-data"
+      pimCommand: ""
       schedule: "1 * * * *"
       resources:
         requests:
@@ -225,7 +229,7 @@ pim:
           memory: "10Mi"
     purge-connectivity-connection-error:
       enabled: true
-      pimCommand: "akeneo:connectivity-connection:purge-error"
+      pimCommand: ""
       schedule: "10 * * * *"
       resources:
         requests:
@@ -233,7 +237,7 @@ pim:
           memory: "10Mi"
     purge-connectivity-audit-error-count:
       enabled: true
-      pimCommand: "akeneo:connectivity-audit:purge-error-count"
+      pimCommand: ""
       schedule: "40 12 * * *"
       resources:
         requests:
@@ -241,7 +245,7 @@ pim:
           memory: "10Mi"
     rule-run:
       enabled: true
-      pimCommand: "akeneo:rule:run"
+      pimCommand: ""
       schedule: "0 5,11,17,23 * * *"
       resources:
         requests:
@@ -249,7 +253,7 @@ pim:
           memory: "400Mi"
     versionning-refresh:
       enabled: true
-      pimCommand: "pim:versioning:refresh"
+      pimCommand: ""
       schedule: "0 3 * * *"
       resources:
         requests:
@@ -257,7 +261,7 @@ pim:
           memory: "256Mi"
     volume-aggregate:
       enabled: true
-      pimCommand: "pim:volume:aggregate"
+      pimCommand: ""
       schedule: "0 4 * * *"
       resources:
         requests:
@@ -265,7 +269,7 @@ pim:
           memory: "80Mi"
     project-recalculate:
       enabled: true
-      pimCommand: "pimee:project:recalculate"
+      pimCommand: ""
       schedule: "20 0 * * *"
       resources:
         requests:
@@ -273,7 +277,7 @@ pim:
           memory: "350Mi"
     project-notify-before-due-date:
       enabled: true
-      pimCommand: "pimee:project:notify-before-due-date"
+      pimCommand: ""
       schedule: "0 2 * * *"
       resources:
         requests:
@@ -281,7 +285,7 @@ pim:
           memory: "80Mi"
     reference-entity-refresh-records:
       enabled: true
-      pimCommand: "akeneo:reference-entity:refresh-records"
+      pimCommand: ""
       schedule: "0 23 * * *"
       resources:
         requests:
@@ -297,7 +301,7 @@ pim:
           memory: "10Mi"
     data-quality-insights-periodic-tasks:
       enabled: true
-      pimCommand: "pim:data-quality-insights:schedule-periodic-tasks"
+      pimCommand: ""
       schedule: "15 0 * * *"
       resources:
         requests:
@@ -305,7 +309,7 @@ pim:
           memory: "10Mi"
     data-quality-insights-prepare-evaluations:
       enabled: true
-      pimCommand: "pim:data-quality-insights:prepare-evaluations"
+      pimCommand: ""
       schedule: "*/10 * * * *"
       resources:
         requests:
@@ -313,7 +317,7 @@ pim:
           memory: "50Mi"
     data-quality-insights-evaluations:
       enabled: true
-      pimCommand: "pim:data-quality-insights:evaluations"
+      pimCommand: ""
       schedule: "*/30 * * * *"
       resources:
         requests:
@@ -321,7 +325,7 @@ pim:
           memory: "200Mi"
     purge-events-api-logs:
       enabled: true
-      pimCommand: "akeneo:connectivity-connection:purge-events-api-logs"
+      pimCommand: ""
       schedule: "5 * * * *"
       resources:
         limits:
@@ -331,7 +335,7 @@ pim:
           memory: "10Mi"
     migrate-records-index-mapping:
       enabled: true
-      pimCommand: "akeneo:reference-entity:migrate-records-index-mapping --no-interaction"
+      pimCommand: "--no-interaction"
       schedule: "*/30 * * * *"
       resources:
         requests:
@@ -339,7 +343,7 @@ pim:
           memory: "10Mi"
     migrate-job-execution-warning-count:
       enabled: true
-      pimCommand: "akeneo:batch:migrate-job-execution-warning-count --no-interaction"
+      pimCommand: "--no-interaction"
       schedule: "*/30 * * * *"
       resources:
         requests:
@@ -347,7 +351,7 @@ pim:
           memory: "10Mi"
     connectivity-openid-keys-regenerate:
       enabled: true
-      pimCommand: "akeneo:connectivity-connection:openid-keys:create --no-interaction"
+      pimCommand: "--no-interaction"
       schedule: "4 21 * * 0"
       resources:
         requests:
@@ -355,7 +359,7 @@ pim:
           memory: "10Mi"
     clean-case-sensitive-attribute-option-spellcheck:
       enabled: true
-      pimCommand: "pimee:data-quality-insights:clean-case-sensitive-attribute-option-spellcheck --no-interaction"
+      pimCommand: "--no-interaction"
       schedule: "15 2 * * *"
       resources:
         requests:
@@ -363,7 +367,7 @@ pim:
           memory: "10Mi"
     clean-completeness-evaluation-results:
       enabled: true
-      pimCommand: "pim:data-quality-insights:clean-completeness-evaluation-results --no-interaction"
+      pimCommand: "--no-interaction"
       schedule: "30 0 * * *"
       resources:
         requests:
@@ -371,7 +375,7 @@ pim:
           memory: "256Mi"
     clean-product-scores:
       enabled: true
-      pimCommand: "pim:data-quality-insights:clean-product-scores --no-interaction"
+      pimCommand: "--no-interaction"
       schedule: "1 0 * * *"
       resources:
         requests:
@@ -380,3 +384,10 @@ pim:
   onboarder_serenity:
     settings:
       enabled: false
+  cloudFunction:
+    name: "ucs-job-transform-command"
+    memory: 512
+    bucket: srnt-ucs-pim-cron 
+    sourceSode: usc-function-cron-transformer.zip 
+    region: "europe-west1"
+    serviceAccountEmail: "akecld-blackhawk-sandbox@appspot.gserviceaccount.com"

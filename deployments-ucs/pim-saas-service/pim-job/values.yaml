@@ -1,15 +1,15 @@
 region: europe-west1
 env: sandbox
 projectId: akecld-blackhawk-sandbox
-cloudFunction:
-  name: "ucs-job-transform-command"
-  memory: 512
-  bucket: srnt-ucs-pim-cron 
-  sourceSode: usc-function-cron-transformer.zip 
-  region: "europe-west1"
-  serviceAccountEmail: "akecld-blackhawk-sandbox@appspot.gserviceaccount.com"
 # PIM
 pim:
+  cloudFunction:
+    name: "ucs-job-transform-command"
+    memory: 512
+    bucket: srnt-ucs-pim-cron 
+    sourceSode: usc-function-cron-transformer.zip 
+    region: "europe-west1"
+    serviceAccountEmail: "akecld-blackhawk-sandbox@appspot.gserviceaccount.com"
   pubsub:
     ucs_topic_job_schudeler: "scheduled-jobs"
   jobs:

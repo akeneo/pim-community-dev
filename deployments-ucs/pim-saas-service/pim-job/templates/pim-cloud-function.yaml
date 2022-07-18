@@ -1,18 +1,18 @@
 apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
 kind: Function
 metadata:
-  name: {{ .Values.cloudFunction.name }} 
+  name: {{ .Values.pim.cloudFunction.name }} 
 spec:
   forProvider:
-    availableMemoryMb: {{ .Values.cloudFunction.memory }}
+    availableMemoryMb: {{ .Values.pim.cloudFunction.memory }}
     description: "transform command into pub/sub message"
     entryPoint: "publishCommand"
-    name: {{ .Values.cloudFunction.name }}
+    name: {{ .Values.pim.cloudFunction.name }}
     runtime: "nodejs16"
-    sourceArchiveBucket: "{{ .Values.cloudFunction.bucket}}"
-    sourceArchiveObject: "{{ .Values.cloudFunction.sourceSode }}"
+    sourceArchiveBucket: "{{ .Values.pim.cloudFunction.bucket}}"
+    sourceArchiveObject: "{{ .Values.pim.cloudFunction.sourceSode }}"
     triggerHttp: true
-    region: "{{ .Values.cloudFunction.region }}"
+    region: "{{ .Values.pim.cloudFunction.region }}"
     environmentVariables:
       projectId: "{{ .Values.projectId }}"
       tenantContext: "tenant_contexts"
@@ -22,12 +22,12 @@ spec:
 apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
 kind: FunctionIAMMember
 metadata:
-  name: {{ .Values.cloudFunction.name }} 
+  name: {{ .Values.pim.cloudFunction.name }} 
 spec:
   forProvider:
-    cloudFunction: {{ .Values.cloudFunction.name }} 
+    cloudFunction: {{ .Values.pim.cloudFunction.name }} 
     member: "allAuthenticatedUsers"
     role: "roles/cloudfunctions.invoker"
-    region: "{{ .Values.cloudFunction.region }}"
+    region: "{{ .Values.pim.cloudFunction.region }}"
   providerConfigRef:
     name: "provider-config-jet-gcp"
