@@ -276,7 +276,7 @@ SQL;
             $diff = array_diff($existingMysqlIdentifiers, $esIdentifiers);
                 $rows,
                 function ($carry, $item) use ($esIdentifiers) {
-                    if(!in_array($item['_id'], $esIdentifiers)) {
+                    if (!in_array($item['_id'], $esIdentifiers)) {
                         $carry[] = $item['code'];
                     }
                     return $carry;
