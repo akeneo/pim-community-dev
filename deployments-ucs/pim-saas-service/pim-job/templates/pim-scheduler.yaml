@@ -22,6 +22,6 @@ spec:
           - audience: "https://{{ $tplCtx.Values.region }}-{{ $tplCtx.Values.projectId }}.cloudfunctions.net/{{ $tplCtx.Values.cloudFunction.name }}"
             serviceAccountEmail: "{{ $tplCtx.Values.cloudFunction.serviceAccountEmail }}"
         headers: {"Content-Type": "application/json"}
-        body: {{ printf "{ 'topicId': '{{ $tplCtx.Values.pim.pubsub.ucs_topic_job_schudeler }}','code': '%s','options': '%s' }"  $jobName $jobOptions.pimCommand   | b64enc }}
+        body: {{ printf "{ 'topicId': '%s','code': '%s','options': '%s' }" $tplCtx.Values.pim.pubsub.ucs_topic_job_schudeler $jobName $jobOptions.pimCommand   | b64enc }}
 ---
 {{ end }}
