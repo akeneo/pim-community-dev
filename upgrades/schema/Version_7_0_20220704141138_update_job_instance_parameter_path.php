@@ -45,7 +45,7 @@ final class Version_7_0_20220704141138_update_job_instance_parameter_path extend
         $sql = <<<SQL
 SELECT id, raw_parameters
 FROM akeneo_batch_job_instance
-WHERE connector IN ('Akeneo CSV Connector', 'Akeneo XLSX Connector', 'Akeneo Rule Engine Connector')
+WHERE connector IN ('Akeneo CSV Connector', 'Akeneo XLSX Connector', 'Akeneo Rule Engine Connector', 'Akeneo Tailored Export', 'Akeneo Tailored Import')
 AND type IN ('import', 'export')
 SQL;
 
