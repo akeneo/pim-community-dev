@@ -7,12 +7,15 @@ spec:
     availableMemoryMb: {{ .Values.cloudFunction.memory }}
     description: "transform command into pub/sub message"
     entryPoint: "publishCommand"
-    name:  "ucs-job-transform-command"
+    name: {{ .Values.cloudFunction.name }}
     runtime: "nodejs16"
     sourceArchiveBucket: "{{ .Values.cloudFunction.bucket}}"
     sourceArchiveObject: "{{ .Values.cloudFunction.sourceSode }}"
     triggerHttp: true
     region: "{{ .Values.cloudFunction.region }}"
+    environmentVariables:
+      projectId: "{{ .Values.projectId }}"
+      tenantContext: "tenant_contexts"
   providerConfigRef:
     name: "provider-config-jet-gcp"
 ---
