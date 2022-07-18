@@ -63,3 +63,8 @@ services:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\SimpleReferenceEntityUserIntentFactory
     tags:
       - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.multi_reference_entity:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MultiReferenceEntityUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }

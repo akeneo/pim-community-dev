@@ -4,6 +4,7 @@ import {
   getDefaultBooleanTarget,
   getDefaultDateTarget,
   getDefaultMeasurementTarget,
+  getDefaultMultiReferenceEntityTarget,
   getDefaultMultiSelectTarget,
   getDefaultNumberTarget,
   getDefaultSimpleReferenceEntityTarget,
@@ -11,6 +12,7 @@ import {
   getDefaultTextTarget,
   getDefaultAssetCollectionTarget,
   MeasurementTarget,
+  MultiReferenceEntityTarget,
   MultiSelectTarget,
   NumberTarget,
   SimpleReferenceEntityTarget,
@@ -25,14 +27,15 @@ type TargetNotEmptyAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
 
 type AttributeTarget =
+  | AssetCollectionTarget
   | DateTarget
   | MeasurementTarget
+  | MultiReferenceEntityTarget
   | MultiSelectTarget
   | NumberTarget
   | SimpleReferenceEntityTarget
   | SimpleSelectTarget
-  | TextTarget
-  | AssetCollectionTarget;
+  | TextTarget;
 
 type PropertyTarget = {
   code: string;
@@ -51,6 +54,8 @@ const createAttributeTarget = (
   switch (attribute.type) {
     case 'akeneo_reference_entity':
       return getDefaultSimpleReferenceEntityTarget(attribute, channel, locale);
+    case 'akeneo_reference_entity_collection':
+      return getDefaultMultiReferenceEntityTarget(attribute, channel, locale);
     case 'pim_catalog_metric':
       return getDefaultMeasurementTarget(attribute, channel, locale);
     case 'pim_catalog_number':

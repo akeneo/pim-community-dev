@@ -17,6 +17,7 @@ import {
   SimpleReferenceEntityConfigurator,
   SimpleSelectConfigurator,
   MultiSelectConfigurator,
+  MultiReferenceEntityConfigurator,
   BooleanConfigurator,
   TextConfigurator,
   DateConfigurator,
@@ -28,17 +29,18 @@ import {ErrorBoundary} from './ErrorBoundary';
 const attributeDataMappingConfigurators: {
   [attributeType: string]: FunctionComponent<AttributeDataMappingConfiguratorProps>;
 } = {
+  akeneo_reference_entity_collection: MultiReferenceEntityConfigurator,
   akeneo_reference_entity: SimpleReferenceEntityConfigurator,
+  pim_catalog_asset_collection: AssetCollectionConfigurator,
+  pim_catalog_boolean: BooleanConfigurator,
   pim_catalog_date: DateConfigurator,
   pim_catalog_identifier: IdentifierConfigurator,
   pim_catalog_metric: MeasurementConfigurator,
+  pim_catalog_multiselect: MultiSelectConfigurator,
   pim_catalog_number: NumberConfigurator,
+  pim_catalog_simpleselect: SimpleSelectConfigurator,
   pim_catalog_text: TextConfigurator,
   pim_catalog_textarea: TextConfigurator,
-  pim_catalog_simpleselect: SimpleSelectConfigurator,
-  pim_catalog_multiselect: MultiSelectConfigurator,
-  pim_catalog_boolean: BooleanConfigurator,
-  pim_catalog_asset_collection: AssetCollectionConfigurator,
 };
 
 type AttributeDataMappingDetailsProps = {
