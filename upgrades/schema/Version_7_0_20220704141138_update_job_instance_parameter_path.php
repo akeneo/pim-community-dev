@@ -12,11 +12,6 @@ use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * TODO
- *
- *
- */
 final class Version_7_0_20220704141138_update_job_instance_parameter_path extends AbstractMigration implements ContainerAwareInterface
 {
     private ?ContainerInterface $container;
