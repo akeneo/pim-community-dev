@@ -3,6 +3,7 @@
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\PublishedProduct;
 
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ListPublishedProductWithCompletenessEndToEnd extends AbstractPublishedProductTestCase
@@ -156,5 +157,27 @@ class ListPublishedProductWithCompletenessEndToEnd extends AbstractPublishedProd
 JSON;
 
         $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testMaxPageWithOffsetPaginationType()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('GET', 'api/rest/v1/published-products?page=101&limit=100');
+
+        $message = addslashes('You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead');
+        $expected = <<<JSON
+{
+    "code":422,
+    "message":"${message}",
+    "_links":{
+        "documentation":{
+            "href": "http:\/\/api.akeneo.com\/documentation\/pagination.html#the-search-after-method"
+        }
+    }
+}
+JSON;
+
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
     }
 }

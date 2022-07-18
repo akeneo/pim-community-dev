@@ -99,6 +99,12 @@ workflows:
                   <<: *slack-fail-post-step
                   requires:
                       - build_srnt_dev
+            - test_catalogs:
+                  <<: *slack-fail-post-step
+                  requires:
+                      - build_srnt_dev
+                  context:
+                      - octopus-slack
             - release:
                   <<: *slack-post-step
                   matrix:
@@ -117,6 +123,7 @@ workflows:
                       - test_back_data_migrations
                       - test_deploy
                       - test_upgrade_from_last_release
+                      - test_catalogs
 
     nightly_grth_release:
         when:
@@ -313,7 +320,7 @@ workflows:
                       - test_onboarder_bundle
                       - test_back_supplier_portal
                       - test_front_supplier_portal
-                      - test_back_performance
+#                      - test_back_performance
                       - test_back_behat_legacy
                       - test_back_data_migrations
             - release:

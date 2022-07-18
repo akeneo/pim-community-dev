@@ -16,7 +16,7 @@ export default class Identifier {
   }
 
   public equals(identifier: Identifier): boolean {
-    return this.identifier === identifier.identifier;
+    return this.identifier.toLowerCase() === identifier.identifier.toLowerCase();
   }
 
   public normalize(): NormalizedRecordIdentifier {

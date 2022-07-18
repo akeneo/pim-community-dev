@@ -28,6 +28,7 @@ $rules = [
 
         // TIP-979: Remove ServerErrorResponseException
         'Elasticsearch\Common\Exceptions\ServerErrorResponseException',
+        'Elasticsearch\Common\Exceptions\BadRequest400Exception',
 
         // PIM-10285
         'Elasticsearch\Common\Exceptions\Missing404Exception',

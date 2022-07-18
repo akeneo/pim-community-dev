@@ -98,7 +98,7 @@ class PropertyValueHydrator
                 }
 
                 $qualityScore = $this->findQualityScores->forProduct(
-                    $productOrProductModel->getIdentifier(),
+                    $productOrProductModel->getUuid(),
                     $source->getChannel(),
                     $source->getLocale(),
                 );
