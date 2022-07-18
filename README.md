@@ -1,6 +1,7 @@
 # Akeneo PIM Development Repository
 Welcome to Akeneo PIM Product.
 
+azeaze
 This repository is used to develop the Akeneo PIM product.
 
 Practically, it means the Akeneo PIM source code is present in the src/ directory.
