@@ -15,14 +15,13 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
+use Akeneo\Pim\Enrichment\Product\API\Query\ProductUuidCursorInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
@@ -87,19 +86,13 @@ class ComputeCompletenessOfTableAttributeProductsTasklet implements TaskletInter
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
-    private function getProductUuidsFromTableAttributeCodes(string $attributeCode, array $familyCodes): CursorInterface
+    private function getProductUuidsFromTableAttributeCodes(string $attributeCode, array $familyCodes): ProductUuidCursorInterface
     {
         $query = [
             'family' => [
                 [
                     'operator' => Operators::IN_LIST,
                     'value' => $familyCodes,
-                ],
-            ],
-            'entity_code' => [
-                [
-                    'operator' => Operators::EQUALS,
-                    'value' => ProductInterface::class,
                 ],
             ],
         ];
