@@ -22,6 +22,8 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterfa
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SavePublishedProductCompletenesses;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -95,19 +97,19 @@ final class ComputePublishedProductsSubscriber implements EventSubscriberInterfa
      */
     private function computeAndPersistCompletenesses(array $publishedProducts): void
     {
-        $mappedIds = [];
+        $mappedUuids = [];
         foreach ($publishedProducts as $publishedProduct) {
-            $mappedIds[$publishedProduct->getOriginalProduct()->getIdentifier()] = $publishedProduct->getId();
+            $mappedUuids[$publishedProduct->getOriginalProduct()->getUuid()->toString()] = $publishedProduct->getId();
         }
 
-        $originalProductCompletenessCollections = $this->completenessCalculator->fromProductIdentifiers(
-            array_keys($mappedIds)
+        $originalProductCompletenessCollections = $this->completenessCalculator->fromProductUuids(
+            array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), array_keys($mappedUuids))
         );
 
-        foreach ($mappedIds as $identifier => $publishedProductId) {
+        foreach ($mappedUuids as $uuid => $publishedProductId) {
             $originalProductCompletenesses = [];
-            if (isset($originalProductCompletenessCollections[$identifier])) {
-                $originalProductCompletenesses = iterator_to_array($originalProductCompletenessCollections[$identifier]);
+            if (isset($originalProductCompletenessCollections[$uuid])) {
+                $originalProductCompletenesses = iterator_to_array($originalProductCompletenessCollections[$uuid]);
             }
 
             $publishedProductCompletenesses = array_map(
