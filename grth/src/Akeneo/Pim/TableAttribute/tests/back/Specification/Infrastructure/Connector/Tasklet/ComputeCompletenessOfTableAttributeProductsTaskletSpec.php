@@ -23,6 +23,7 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Prophecy\Promise\ReturnPromise;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -71,7 +72,7 @@ class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehav
 
         $cursor->count()->willReturn(2);
         $cursor->valid()->willReturn(true, true, false);
-        $cursor->current()->willReturn($uuids[0], $uuids[1]);
+        $cursor->current()->will(new ReturnPromise($uuids));
         $cursor->rewind()->shouldBeCalled();
         $cursor->next()->shouldBeCalled();
 

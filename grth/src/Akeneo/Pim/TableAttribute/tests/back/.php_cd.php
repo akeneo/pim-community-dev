@@ -47,6 +47,7 @@ $rules = [
             'Doctrine\ORM\Events',
 
             // pim dependencies
+            'Akeneo\Pim\Enrichment\Product\API',
             'Akeneo\Pim\Structure\Component',
             'Akeneo\Tool\Component\StorageUtils\Cache',
             'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
@@ -143,7 +144,6 @@ $rules = [
 
             //Enrichment computing
             'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
-            'Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];
