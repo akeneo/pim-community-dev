@@ -1,5 +1,5 @@
 import React, {ReactElement, Ref, useRef, useState} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {
     AkeneoThemedProps,
     Button,
@@ -157,16 +157,19 @@ const FileInput = React.forwardRef(
     }
 );
 
-const FileInputContainer = styled.div<{isDragging: boolean} & AkeneoThemedProps>`
+const fileInputBorder = css<{isDragging: boolean; invalid: boolean}>`
+    background-image: ${({isDragging, invalid}) =>
+        `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' rx='2' ry='2' fill='none' stroke='%23${
+            isDragging ? '11324D' : invalid ? 'D4604F' : 'C7CBD4'
+        }FF' stroke-width='2' stroke-dasharray='10' stroke-dashoffset='0' stroke-linecap='butt'/%3e%3c/svg%3e")`};
+`;
+
+const FileInputContainer = styled.div<{isDragging: boolean; invalid: boolean} & AkeneoThemedProps>`
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background-image: ${({isDragging}) =>
-        `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' rx='2' ry='2' fill='none' stroke='%23${
-            isDragging ? '11324D' : 'C7CBD4'
-        }FF' stroke-width='2' stroke-dasharray='10' stroke-dashoffset='0' stroke-linecap='butt'/%3e%3c/svg%3e")`};
     border-radius: 2px;
     height: 400px;
     outline-style: none;
@@ -175,6 +178,8 @@ const FileInputContainer = styled.div<{isDragging: boolean} & AkeneoThemedProps>
     overflow: hidden;
     width: 740px;
     margin: auto;
+
+    ${fileInputBorder};
 
     &:focus {
         box-shadow: 0 0 0 2px ${getColor('blue', 40)};
