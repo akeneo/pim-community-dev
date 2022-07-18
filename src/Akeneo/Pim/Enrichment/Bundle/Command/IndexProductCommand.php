@@ -263,7 +263,6 @@ SQL;
             $esIdentifiers = array_map(function ($doc) {
                 return $doc['_id'];
             }, $results["hits"]["hits"]);
-
             $diff = array_reduce(
                 $rows,
                 function ($carry, $item) use ($esIdentifiers) {
