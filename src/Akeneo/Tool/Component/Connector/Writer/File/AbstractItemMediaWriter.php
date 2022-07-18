@@ -9,7 +9,6 @@ use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -182,7 +181,9 @@ abstract class AbstractItemMediaWriter implements
         // TODO RAB-907: Remove this condition
         if ($parameters->has('storage')) {
             $storage = $parameters->get('storage');
-            $filePath = sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage[$this->jobParamFilePath]);
+            $filePath = LocalStorage::TYPE === $storage['type']
+                ? $storage['file_path']
+                : sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
         } else {
             $filePath = $parameters->get($this->jobParamFilePath);
         }

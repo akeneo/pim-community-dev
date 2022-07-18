@@ -4,7 +4,6 @@ namespace Akeneo\Tool\Component\Connector\Writer\File;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -50,7 +49,9 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
         // TODO RAB-907: Remove this condition
         if ($parameters->has('storage')) {
             $storage = $parameters->get('storage');
-            $filePath = sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
+            $filePath = LocalStorage::TYPE === $storage['type']
+                ? $storage['file_path']
+                : sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
         } else {
             $filePath = $parameters->get('filePath');
         }
