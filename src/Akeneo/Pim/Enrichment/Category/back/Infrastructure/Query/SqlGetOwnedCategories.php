@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoEnterprise\Category\Infrastructure\Query;
+namespace AkeneoEnterprise\Pim\Enrichment\Category\Infrastructure\Query;
 
-use Akeneo\Category\Domain\Query\GetViewableCategories;
+use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
-final class SqlGetViewableCategories implements GetViewableCategories
+final class SqlGetOwnedCategories implements GetOwnedCategories
 {
     public function __construct(private Connection $connection)
     {
@@ -40,8 +40,8 @@ final class SqlGetViewableCategories implements GetViewableCategories
             INNER JOIN pimee_security_product_category_access pca ON pca.category_id = c.id
             INNER JOIN oro_user_access_group ug ON ug.group_id = pca.user_group_id
         WHERE c.code IN (:category_codes) AND ug.user_id = :user_id
-            AND pca.view_items = 1
-        SQL;
+            AND pca.own_items = 1
+SQL;
 
         return $this->connection->executeQuery(
             $query,
