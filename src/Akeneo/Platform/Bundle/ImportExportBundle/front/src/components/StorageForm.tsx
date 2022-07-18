@@ -49,9 +49,7 @@ const StorageForm = ({
         >
           {storageTypes.map(storageType => (
             <SelectInput.Option value={storageType} key={storageType}>
-              {'none' === storageType
-                ? translate(`pim_import_export.form.job_instance.storage_form.connection.${storageType}.${jobType}`)
-                : translate(`pim_import_export.form.job_instance.storage_form.connection.${storageType}`)}
+              {translate(`pim_import_export.form.job_instance.storage_form.connection.${storageType}`)}
             </SelectInput.Option>
           ))}
         </SelectInput>

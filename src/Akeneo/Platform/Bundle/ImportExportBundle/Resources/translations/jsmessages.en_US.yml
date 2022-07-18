@@ -162,9 +162,7 @@ pim_import_export:
                     label: Type
                     local: Local
                     sftp: SFTP
-                    none:
-                        import: No storage configured
-                        export: No storage configured
+                    none: No storage configured
                 file_path.label: File path
                 host.label: Host
                 port.label: Port
