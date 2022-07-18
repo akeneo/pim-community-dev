@@ -13,7 +13,7 @@ final class StoreProductsFileInGCSBucket implements StoreProductsFile
 {
     public function __construct(
         private FilesystemProvider $filesystemProvider,
-        private string $databaseName, // @todo To replace by the tenant id (PIM instance name) once UCS implemented
+        private string $pimTenantName, // @todo To replace by the PIM tenant name once UCS implemented
     ) {
     }
 
@@ -21,7 +21,7 @@ final class StoreProductsFileInGCSBucket implements StoreProductsFile
     {
         $fileSystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
 
-        $fileSystem->createDirectory(sprintf('%s/%s', $this->databaseName, $supplierCode));
-        $fileSystem->write(sprintf('%s/%s/%s', $this->databaseName, $supplierCode, $filename), $content);
+        $fileSystem->createDirectory(sprintf('%s/%s', $this->pimTenantName, $supplierCode));
+        $fileSystem->write(sprintf('%s/%s/%s', $this->pimTenantName, $supplierCode, $filename), $content);
     }
 }

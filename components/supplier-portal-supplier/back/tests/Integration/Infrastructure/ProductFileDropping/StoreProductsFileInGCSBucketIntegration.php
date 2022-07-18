@@ -15,17 +15,17 @@ final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase
     public function itStoresAProductsFileInAGCSBucket(): void
     {
         $filesystemProvider = static::getContainer()->get('akeneo_file_storage.file_storage.filesystem_provider');
-        $sut = new StoreProductsFileInGCSBucket($filesystemProvider, 'customer_database_name');
+        $sut = new StoreProductsFileInGCSBucket($filesystemProvider, 'pim_ucs_tenant_1');
 
         $filesystem = $filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
         $expectedContents = [
-            ['type' => 'dir', 'path' => 'customer_database_name/supplier-a'],
-            ['type' => 'file', 'path' => 'customer_database_name/supplier-a/products.xlsx'],
+            ['type' => 'dir', 'path' => 'pim_ucs_tenant_1/supplier-a'],
+            ['type' => 'file', 'path' => 'pim_ucs_tenant_1/supplier-a/products.xlsx'],
         ];
 
         ($sut)('supplier-a', Filename::fromString('products.xlsx'), 'content');
 
-        $customerFiles = $filesystem->listContents('customer_database_name');
+        $customerFiles = $filesystem->listContents('pim_ucs_tenant_1');
 
         $actualContents = [];
         foreach ($customerFiles as $object) {
@@ -35,7 +35,7 @@ final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase
             ];
         }
 
-        $supplierCustomerFiles = $filesystem->listContents('customer_database_name/supplier-a');
+        $supplierCustomerFiles = $filesystem->listContents('pim_ucs_tenant_1/supplier-a');
         foreach ($supplierCustomerFiles as $object) {
             $actualContents[] = [
                 'type' => $object['type'],
@@ -53,6 +53,6 @@ final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase
         $filesystemProvider = static::getContainer()->get('akeneo_file_storage.file_storage.filesystem_provider');
         $filesystem = $filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
 
-        $filesystem->deleteDirectory('customer_database_name');
+        $filesystem->deleteDirectory('pim_ucs_tenant_1');
     }
 }
