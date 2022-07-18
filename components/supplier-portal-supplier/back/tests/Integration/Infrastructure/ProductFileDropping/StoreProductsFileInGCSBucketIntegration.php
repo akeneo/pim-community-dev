@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Integration\Infrastructure\ProductFileDropping;
 
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\StoreProductsFileInGCSBucket;
@@ -19,12 +20,12 @@ final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase
 
         $filesystem = $filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
         $expectedContents = [
-            ['type' => 'file', 'path' => 'supplier-a/products.xlsx'],
+            ['type' => 'file', 'path' => 'supplier_a/products.xlsx'],
         ];
 
-        ($sut)('supplier-a', Filename::fromString('products.xlsx'), 'content');
+        ($sut)(Code::fromString('supplier_a'), Filename::fromString('products.xlsx'), 'content');
 
-        $customerFiles = $filesystem->listContents('supplier-a');
+        $customerFiles = $filesystem->listContents('supplier_a');
 
         $actualContents = [];
         foreach ($customerFiles as $object) {
@@ -44,6 +45,6 @@ final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase
         $filesystemProvider = static::getContainer()->get('akeneo_file_storage.file_storage.filesystem_provider');
         $filesystem = $filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
 
-        $filesystem->deleteDirectory('supplier-a');
+        $filesystem->deleteDirectory('supplier_a');
     }
 }
