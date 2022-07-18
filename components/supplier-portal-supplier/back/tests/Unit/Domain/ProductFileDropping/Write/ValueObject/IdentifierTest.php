@@ -22,7 +22,7 @@ final class IdentifierTest extends TestCase
     }
 
     /** @test */
-    public function itCreatesAContributorIdentifierIfItsValid(): void
+    public function itCreatesASupplierFileIdentifierIfItsValid(): void
     {
         $uuid = Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02');
 
