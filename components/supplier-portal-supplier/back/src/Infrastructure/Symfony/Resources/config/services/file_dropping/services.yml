@@ -11,5 +11,4 @@ services:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\StoreProductsFileInGCSBucket
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '%env(APP_DATABASE_NAME)%'
         public: true

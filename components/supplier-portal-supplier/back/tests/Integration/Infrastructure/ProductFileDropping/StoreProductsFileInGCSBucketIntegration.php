@@ -15,28 +15,19 @@ final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase
     public function itStoresAProductsFileInAGCSBucket(): void
     {
         $filesystemProvider = static::getContainer()->get('akeneo_file_storage.file_storage.filesystem_provider');
-        $sut = new StoreProductsFileInGCSBucket($filesystemProvider, 'pim_ucs_tenant_1');
+        $sut = new StoreProductsFileInGCSBucket($filesystemProvider);
 
         $filesystem = $filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
         $expectedContents = [
-            ['type' => 'dir', 'path' => 'pim_ucs_tenant_1/supplier-a'],
-            ['type' => 'file', 'path' => 'pim_ucs_tenant_1/supplier-a/products.xlsx'],
+            ['type' => 'file', 'path' => 'supplier-a/products.xlsx'],
         ];
 
         ($sut)('supplier-a', Filename::fromString('products.xlsx'), 'content');
 
-        $customerFiles = $filesystem->listContents('pim_ucs_tenant_1');
+        $customerFiles = $filesystem->listContents('supplier-a');
 
         $actualContents = [];
         foreach ($customerFiles as $object) {
-            $actualContents[] = [
-                'type' => $object['type'],
-                'path' => $object['path'],
-            ];
-        }
-
-        $supplierCustomerFiles = $filesystem->listContents('pim_ucs_tenant_1/supplier-a');
-        foreach ($supplierCustomerFiles as $object) {
             $actualContents[] = [
                 'type' => $object['type'],
                 'path' => $object['path'],
@@ -53,6 +44,6 @@ final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase
         $filesystemProvider = static::getContainer()->get('akeneo_file_storage.file_storage.filesystem_provider');
         $filesystem = $filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
 
-        $filesystem->deleteDirectory('pim_ucs_tenant_1');
+        $filesystem->deleteDirectory('supplier-a');
     }
 }

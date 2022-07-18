@@ -11,17 +11,15 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 
 final class StoreProductsFileInGCSBucket implements StoreProductsFile
 {
-    public function __construct(
-        private FilesystemProvider $filesystemProvider,
-        private string $pimTenantName, // @todo To replace by the PIM tenant name once UCS implemented
-    ) {
+    public function __construct(private FilesystemProvider $filesystemProvider)
+    {
     }
 
     public function __invoke(string $supplierCode, Filename $filename, string $content): void
     {
         $fileSystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
 
-        $fileSystem->createDirectory(sprintf('%s/%s', $this->pimTenantName, $supplierCode));
-        $fileSystem->write(sprintf('%s/%s/%s', $this->pimTenantName, $supplierCode, $filename), $content);
+        $fileSystem->createDirectory($supplierCode);
+        $fileSystem->write(sprintf('%s/%s', $supplierCode, $filename), $content);
     }
 }
