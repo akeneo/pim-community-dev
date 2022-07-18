@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Permission\Bundle\Enrichment\Storage\ElasticsearchAndSql\CategoryTree;
 
-use Akeneo\Category\Domain\Component\CategoryTree\Query\ListRootCategoriesWithCountIncludingSubCategories;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query\ListRootCategoriesWithCountIncludingSubCategories;
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\ElasticsearchAndSql\CategoryTree\ListGrantedRootCategoriesWithCountIncludingSubCategories;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
