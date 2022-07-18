@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Infrastructure\Query;
+namespace Akeneo\Pim\Enrichment\Category\Infrastructure\Query;
 
-use Akeneo\Category\Domain\Query\GetOwnedCategories;
+use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

@@ -1,8 +1,0 @@
-services:
-    Akeneo\Category\Domain\Query\GetOwnedCategories:
-        class: Akeneo\Category\Infrastructure\Query\DummyGetOwnedCategories
-
-    Akeneo\Category\Domain\Query\GetViewableCategories:
-        class: Akeneo\Category\Infrastructure\Query\SqlGetExistingCategories
-        arguments:
-            - '@database_connection'

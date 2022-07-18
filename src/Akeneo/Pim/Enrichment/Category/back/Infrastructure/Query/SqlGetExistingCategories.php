@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Infrastructure\Query;
+namespace Akeneo\Pim\Enrichment\Category\Infrastructure\Query;
 
-use Akeneo\Category\Domain\Query\GetViewableCategories;
+use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 

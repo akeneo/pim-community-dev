@@ -88,10 +88,6 @@ $rules = [
         'Symfony\Component\HttpKernel',
         'Symfony\Component\Config\FileLocator',
         'Doctrine\DBAL\Connection',
-
-        // Category bounded context
-        'Akeneo\Category\Domain\Query\GetViewableCategories',
-        'Akeneo\Category\Domain\Query\GetOwnedCategories'
     ])->in('Akeneo\Pim\Enrichment\Product\Infrastructure'),
 ];
 

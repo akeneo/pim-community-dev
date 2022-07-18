@@ -9,13 +9,13 @@ services:
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProductValidator:
         arguments:
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
-            - '@Akeneo\Category\Domain\Query\GetOwnedCategories'
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
         tags:
             - { name: validator.constraint_validator }
 
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ShouldStayOwnerOfTheProductValidator:
         arguments:
-            - '@Akeneo\Category\Domain\Query\GetOwnedCategories'
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes'
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
         tags:
@@ -45,7 +45,7 @@ services:
 
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeViewableValidator:
         arguments:
-            - '@Akeneo\Category\Domain\Query\GetViewableCategories'
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories'
         tags:
             - { name: validator.constraint_validator }
 
