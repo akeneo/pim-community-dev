@@ -19,42 +19,40 @@ final class SupplierFile
     private ?ContributorIdentifier $uploadedByContributor;
     private SupplierIdentifier $uploadedBySupplier;
     private \DateTimeInterface $uploadedAt;
-    private ?\DateTimeInterface $downloadedAt;
+    private bool $downloaded;
     private array $events = [];
 
     private function __construct(
-        string $identifier,
+        Identifier $identifier,
         string $filename,
         string $path,
         ?string $uploadedByContributor,
         string $uploadedBySupplier,
         ?\DateTimeInterface $uploadedAt,
-        ?\DateTimeInterface $downloadedAt,
+        bool $downloaded = false,
     ) {
-        $this->identifier = Identifier::fromString($identifier);
+        $this->identifier = $identifier;
         $this->filename = Filename::fromString($filename);
         $this->path = Path::fromString($path);
         $this->uploadedByContributor = ContributorIdentifier::fromString($uploadedByContributor);
         $this->uploadedBySupplier = SupplierIdentifier::fromString($uploadedBySupplier);
         $this->uploadedAt = $uploadedAt;
-        $this->downloadedAt = $downloadedAt;
+        $this->downloaded = $downloaded;
     }
 
     public static function create(
-        string $identifier,
         string $filename,
         string $path,
         string $uploadedByContributor,
         string $uploadedBySupplier,
     ): self {
         $supplierFile = new self(
-            $identifier,
+            Identifier::generate(),
             $filename,
             $path,
             $uploadedByContributor,
             $uploadedBySupplier,
             new \DateTimeImmutable(),
-            null,
         );
 
         $supplierFile->events[] = new SupplierFileAdded($supplierFile);
@@ -92,9 +90,9 @@ final class SupplierFile
         return $this->uploadedAt->format('Y-m-d H:i:s');
     }
 
-    public function downloadedAt(): ?string
+    public function downloaded(): bool
     {
-        return $this->downloadedAt?->format('Y-m-d H:i:s');
+        return $this->downloaded;
     }
 
     public function events(): array
