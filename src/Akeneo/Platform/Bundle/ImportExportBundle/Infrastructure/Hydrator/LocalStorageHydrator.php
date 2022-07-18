@@ -17,14 +17,12 @@ use Webmozart\Assert\Assert;
 
 final class LocalStorageHydrator implements StorageHydratorInterface
 {
-    public function __construct(private VersionProviderInterface $versionProvider)
+    public function __construct()
     {
     }
 
     public function hydrate(array $normalizedStorage): StorageInterface
     {
-        Assert::false($this->versionProvider->isSaaSVersion(), 'Local storage is not available in SaaS version');
-
         return new LocalStorage($normalizedStorage['file_path']);
     }
 
