@@ -276,7 +276,7 @@ class FixturesContext extends BaseFixturesContext
         );
 
         $this->refresh($product);
-        $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier($identifier);
+        $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductUuids([$product->getUuid()]);
     }
 
     /**

@@ -30,7 +30,6 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('forms.yml');
         $loader->load('models.yml');
         $loader->load('normalizers.yml');
-        $loader->load('queries.yml');
         $loader->load('readers.yml');
         $loader->load('repositories.yml');
         $loader->load('serializers_standard.yml');

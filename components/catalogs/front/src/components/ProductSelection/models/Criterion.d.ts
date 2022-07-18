@@ -5,6 +5,7 @@ import {StatusCriterionState} from '../criteria/StatusCriterion';
 import {FamilyCriterionState} from '../criteria/FamilyCriterion';
 
 export type CriterionModule<State> = {
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     state: State & any;
     onChange: (state: State) => void;
     onRemove: () => void;
@@ -14,6 +15,7 @@ export type CriterionModule<State> = {
 export type CriterionState = {
     field: string;
     operator: Operator;
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     value?: any;
 };
 

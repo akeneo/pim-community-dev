@@ -1,7 +1,6 @@
 'use strict';
 
 define([
-  'underscore',
   'oro/translator',
   'pim/controller/front',
   'pim/form-builder',
@@ -9,7 +8,7 @@ define([
   'pim/user-context',
   'pim/dialog',
   'pim/page-title',
-], function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle) {
+], function (__, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle) {
   return BaseController.extend({
     /**
      * {@inheritdoc}
@@ -25,7 +24,7 @@ define([
             return;
           }
 
-          PageTitle.set({'job.label': _.escape(jobInstance.label)});
+          PageTitle.set({'job.label': jobInstance.label});
 
           return FormBuilder.build(jobInstance.meta.form + '-' + mode).then(form => {
             this.on('pim:controller:can-leave', event => {

@@ -5,6 +5,7 @@ import {AnyCriterionState} from '../models/Criterion';
 import {useProductSelectionContext} from '../contexts/ProductSelectionContext';
 import {ProductSelectionActions} from '../reducers/ProductSelectionReducer';
 import {useCriteriaRegistry} from '../hooks/useCriteriaRegistry';
+import {generateRandomId} from '../utils/generateRandomId';
 
 type Factory = {
     label: string;
@@ -24,7 +25,7 @@ const Section = React.forwardRef<HTMLDivElement, SectionProps>(({label, factorie
         (state: AnyCriterionState) => {
             dispatch({
                 type: ProductSelectionActions.ADD_CRITERION,
-                id: (Math.random() + 1).toString(36).substring(7),
+                id: generateRandomId(),
                 state: state,
             });
         },

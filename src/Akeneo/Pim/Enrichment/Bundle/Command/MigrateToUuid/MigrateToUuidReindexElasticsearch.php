@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StatusAwareTrait;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -28,7 +29,8 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
         private Connection $connection,
         private LoggerInterface $logger,
         private Client $esClient,
-        private ProductIndexerInterface $productIndexer
+        private ProductIndexerInterface $productIndexer,
+        private SqlFindProductUuids $findProductUuids
     ) {
     }
 
@@ -62,15 +64,14 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
             foreach ($chunkedIdentifiers as $batch) {
                 $logContext->addContext('substep', 'reindex_product_uuid_batch');
                 if (!$context->dryRun()) {
-                    $existingIdentifiers = $this->deleteNonExistingIdentifiers($batch);
                     try {
-                        $this->productIndexer->indexFromProductIdentifiers($existingIdentifiers);
+                        $this->productIndexer->indexFromProductUuids($this->findProductUuids->fromIdentifiers($batch));
                     } catch (ObjectNotFoundException) {
                         // handle the case where a product was deleted right after checking for its existence in DB,
                         // and just before computing the ES projections
-                        $existingIdentifiers = $this->deleteNonExistingIdentifiers($existingIdentifiers);
-                        $this->productIndexer->indexFromProductIdentifiers($existingIdentifiers);
+                        $this->productIndexer->indexFromProductUuids($this->findProductUuids->fromIdentifiers($batch));
                     }
+                    $this->deleteLegacyProductDocuments(\array_keys($batch));
                 }
                 $processedItems += \count($batch);
             }
@@ -123,6 +124,9 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
         ]);
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getProductIdentifiersToIndex(): array
     {
         $identifiers = [];
@@ -135,23 +139,14 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
     }
 
     /**
-     * @param array<int, string> $productIdentifiers
-     *
-     * @return array<string, string>
+     * @param int[] $productIds
      */
-    private function deleteNonExistingIdentifiers(array $productIdentifiers): array
+    private function deleteLegacyProductDocuments(array $productIds): void
     {
-        $existingIdentifiers = $this->connection->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) as uuid, identifier FROM pim_catalog_product WHERE identifier IN (:identifiers)',
-            ['identifiers' => $productIdentifiers],
-            ['identifiers' => Connection::PARAM_STR_ARRAY]
-        )->fetchAllKeyValue();
-
-        $nonExistingUuids = \array_keys(\array_diff_key($productIdentifiers, $existingIdentifiers));
-        $this->productIndexer->removeFromProductUuids(
-            array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $nonExistingUuids)
-        );
-
-        return $existingIdentifiers;
+        if ([] !== $productIds) {
+            $this->esClient->bulkDelete(
+                \array_map(static fn (int $id): string => \sprintf('product_%d', $id), $productIds)
+            );
+        }
     }
 }

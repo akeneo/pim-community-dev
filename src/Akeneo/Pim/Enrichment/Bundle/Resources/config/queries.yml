@@ -184,6 +184,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductIdentifier'
         arguments:
@@ -297,6 +301,7 @@ services:
             - '@database_connection'
             - '@pim_catalog.normalizer.indexing_product.product.product_value_collection'
             - '@akeneo.pim.enrichment.factory.read_value_collection'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids'
             - !tagged akeneo.pim.enrichment.product.query.indexing_additional_properties
 
     akeneo.pim.enrichment.product.query.get_ancestor_product_model_codes:

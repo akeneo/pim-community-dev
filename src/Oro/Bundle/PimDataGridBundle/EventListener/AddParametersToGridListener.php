@@ -80,7 +80,7 @@ class AddParametersToGridListener
              * #proudOfThis
              */
             $value = $this->requestParams->get($paramName, null);
-            if (Uuid::isValid($value)) {
+            if (\is_string($value) && Uuid::isValid($value)) {
                 $value = Uuid::fromString($value)->getBytes();
             }
             $queryParameters[($this->isQueryParam ? ':' : '') . $paramName] = $value;

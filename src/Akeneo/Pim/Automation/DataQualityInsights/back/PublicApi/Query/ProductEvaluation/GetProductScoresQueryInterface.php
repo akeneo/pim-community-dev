@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -13,10 +14,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollec
 interface GetProductScoresQueryInterface
 {
     /**
-     * @param string[] $productIdentifiers
+     * @param UuidInterface[] $productUuids
      * @return QualityScoreCollection[]
      */
-    public function byProductIdentifiers(array $productIdentifiers): array;
+    public function byProductUuids(array $productUuids): array;
 
-    public function byProductIdentifier(string $productIdentifier): QualityScoreCollection;
+    public function byProductUuid(UuidInterface $productUuid): QualityScoreCollection;
 }
