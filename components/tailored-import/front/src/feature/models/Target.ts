@@ -9,12 +9,14 @@ import {
   getDefaultSimpleReferenceEntityTarget,
   getDefaultSimpleSelectTarget,
   getDefaultTextTarget,
+  getDefaultAssetCollectionTarget,
   MeasurementTarget,
   MultiSelectTarget,
   NumberTarget,
   SimpleReferenceEntityTarget,
   SimpleSelectTarget,
   TextTarget,
+  AssetCollectionTarget,
 } from '../components';
 import {Attribute} from './Attribute';
 import {AttributeDataMapping, PropertyDataMapping, DataMapping} from './DataMapping';
@@ -29,7 +31,8 @@ type AttributeTarget =
   | NumberTarget
   | SimpleReferenceEntityTarget
   | SimpleSelectTarget
-  | TextTarget;
+  | TextTarget
+  | AssetCollectionTarget;
 
 type PropertyTarget = {
   code: string;
@@ -64,6 +67,8 @@ const createAttributeTarget = (
       return getDefaultMultiSelectTarget(attribute, channel, locale);
     case 'pim_catalog_boolean':
       return getDefaultBooleanTarget(attribute, channel, locale);
+    case 'pim_catalog_asset_collection':
+      return getDefaultAssetCollectionTarget(attribute, channel, locale);
     default:
       throw new Error(`Invalid attribute target "${attribute.type}"`);
   }

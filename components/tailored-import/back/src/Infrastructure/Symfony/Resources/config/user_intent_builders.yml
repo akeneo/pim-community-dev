@@ -54,6 +54,11 @@ services:
     tags:
       - { name: akeneo.tailored_import.user_intent_factory }
 
+  akeneo.tailored_import.user_intent_factory.asset:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\AssetCollectionUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
   akeneo.tailored_import.user_intent_factory.simple_reference_entity:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\SimpleReferenceEntityUserIntentFactory
     tags:

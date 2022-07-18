@@ -20,6 +20,7 @@ import {
   BooleanConfigurator,
   TextConfigurator,
   DateConfigurator,
+  AssetCollectionConfigurator,
 } from './Attribute';
 import {AttributeDoesNotExist} from './AttributeDoesNotExist';
 import {ErrorBoundary} from './ErrorBoundary';
@@ -37,6 +38,7 @@ const attributeDataMappingConfigurators: {
   pim_catalog_simpleselect: SimpleSelectConfigurator,
   pim_catalog_multiselect: MultiSelectConfigurator,
   pim_catalog_boolean: BooleanConfigurator,
+  pim_catalog_asset_collection: AssetCollectionConfigurator,
 };
 
 type AttributeDataMappingDetailsProps = {

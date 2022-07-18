@@ -15,3 +15,5 @@ export * from './Text/model';
 export * from './Text/TextConfigurator';
 export * from './Boolean/model';
 export * from './Boolean/BooleanConfigurator';
+export * from './AssetCollection/model';
+export * from './AssetCollection/AssetCollectionConfigurator';
