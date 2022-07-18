@@ -7,7 +7,7 @@ pim:
     name: "ucs-job-transform-command"
     memory: 512
     bucket: srnt-ucs-pim-cron 
-    sourceSode: usc-function-cron-transformer.zip 
+    sourceSode: ucs-function-cron-transformer.zip 
     region: "europe-west1"
     serviceAccountEmail: "akecld-blackhawk-sandbox@appspot.gserviceaccount.com"
   pubsub:
