@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -60,7 +58,7 @@ SQL;
             return $rawParameters;
         }
 
-        $rawParameters['storage']['type'] = $this->isSaaSVersion() ? NoneStorage::TYPE : LocalStorage::TYPE;
+        $rawParameters['storage']['type'] = $this->isSaaSVersion() ? 'none' : 'local';
         $rawParameters['storage']['file_path'] = $rawParameters['filePath'];
 
         unset($rawParameters['filePath']);
