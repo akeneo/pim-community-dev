@@ -20,9 +20,6 @@
     </php>
 
     <testsuites>
-        <!--        <testsuite name="Channel_Acceptance_Test">-->
-        <!--            <directory>Acceptance</directory>-->
-        <!--        </testsuite>-->
         <testsuite name="Channel_Integration_Test">
             <directory suffix="Integration.php">Integration</directory>
         </testsuite>

@@ -32,16 +32,16 @@ class Category extends BaseCategory implements CategoryInterface
      *
      * @var string
      */
-    protected $locale;
+    protected string $locale;
 
     /** @var Collection<int, TranslationInterface> */
-    protected $translations;
+    protected Collection $translations;
 
     /** @var Collection<int, Channel> */
-    protected $channels;
+    protected Collection $channels;
 
     /** @var \DateTime */
-    protected $created;
+    protected \DateTime $created;
 
     private \DateTime $updated;
 

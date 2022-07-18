@@ -42,20 +42,20 @@ class ProductGridCategoryTreeController
     private $securityFacade;
 
     /**
-     * @param ListRootCategoriesWithCountHandler     $listRootCategoriesWithCount
+     * @param ListRootCategoriesWithCountHandler $listRootCategoriesWithCount
      * @param ListChildrenCategoriesWithCountHandler $listChildrenCategoriesWithCount
-     * @param RootCategory                $rootCategoryNormalizer
-     * @param ChildCategory               $childCategoryNormalizer
-     * @param UserContext                            $userContext
-     * @param SecurityFacade                         $securityFacade
+     * @param RootCategory $rootCategoryNormalizer
+     * @param ChildCategory $childCategoryNormalizer
+     * @param UserContext $userContext
+     * @param SecurityFacade $securityFacade
      */
     public function __construct(
-        ListRootCategoriesWithCountHandler                                              $listRootCategoriesWithCount,
-        ListChildrenCategoriesWithCountHandler                                          $listChildrenCategoriesWithCount,
+        ListRootCategoriesWithCountHandler $listRootCategoriesWithCount,
+        ListChildrenCategoriesWithCountHandler $listChildrenCategoriesWithCount,
         RootCategory  $rootCategoryNormalizer,
         ChildCategory $childCategoryNormalizer,
-        UserContext                                                                     $userContext,
-        SecurityFacade                                                                  $securityFacade
+        UserContext $userContext,
+        SecurityFacade $securityFacade
     ) {
         $this->listRootCategoriesWithCount = $listRootCategoriesWithCount;
         $this->listChildrenCategoriesWithCount = $listChildrenCategoriesWithCount;
