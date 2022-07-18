@@ -14,6 +14,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.structure.query.search_families:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\SqlSearchFamilies'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values:
         class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Cache\LruCachedGetExistingAttributeOptionsWithValues
         arguments:
