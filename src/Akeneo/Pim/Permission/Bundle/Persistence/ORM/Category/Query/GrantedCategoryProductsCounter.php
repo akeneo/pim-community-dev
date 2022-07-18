@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query;
 
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
-use Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
