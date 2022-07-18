@@ -9,6 +9,7 @@ final class SupplierFile
     public function __construct(
         public string $identifier,
         public string $filename,
+        public bool $downloaded,
         public string $uploadedByContributor,
         public string $uploadedBySupplier,
         public ?string $uploadedAt,
@@ -20,6 +21,7 @@ final class SupplierFile
         return [
             'identifier' => $this->identifier,
             'filename' => $this->filename,
+            'downloaded' => $this->downloaded,
             'uploadedByContributor' => $this->uploadedByContributor,
             'uploadedBySupplier' => $this->uploadedBySupplier,
             'uploadedAt' => $this->uploadedAt,
