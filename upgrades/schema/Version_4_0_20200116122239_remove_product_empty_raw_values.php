@@ -70,7 +70,8 @@ final class Version_4_0_20200116122239_remove_product_empty_raw_values
                     );
                     $productIdentifiersToIndex[] = $row['identifier'];
                     if (count($productIdentifiersToIndex) % self::BATCH_SIZE === 0) {
-                        $this->getProductIndexer()->indexFromProductIdentifiers($productIdentifiersToIndex);
+                        /** This method does not exist anymore, but this migration should not be run in a 7.0 */
+                        //$this->getProductIndexer()->indexFromProductIdentifiers($productIdentifiersToIndex);
                         $productIdentifiersToIndex = [];
                     }
                 }
@@ -78,7 +79,8 @@ final class Version_4_0_20200116122239_remove_product_empty_raw_values
             }
         }
 
-        $this->getProductIndexer()->indexFromProductIdentifiers($productIdentifiersToIndex);
+        /** This method does not exist anymore, but this migration should not be run in a 7.0 */
+        // $this->getProductIndexer()->indexFromProductIdentifiers($productIdentifiersToIndex);
     }
 
     public function down(Schema $schema) : void

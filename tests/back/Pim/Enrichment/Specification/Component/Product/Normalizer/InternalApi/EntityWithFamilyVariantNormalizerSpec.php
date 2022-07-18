@@ -147,7 +147,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 0, [])
         ]);
 
-        $completenessCalculator->fromProductIdentifier('tshirt_white_s')->willReturn($completenessCollection);
+        $completenessCalculator->fromProductUuid(Uuid::fromString('359a2a04-5fa4-4f15-9c08-09b819327c8f'))->willReturn($completenessCollection);
         $completenessCollectionNormalizer->normalize($completenessCollection)->willReturn(['NORMALIZED_COMPLETENESS']);
 
         $simpleSelectOptionNormalizer->normalize($whiteValue, 'fr_FR')->willReturn('Blanc');

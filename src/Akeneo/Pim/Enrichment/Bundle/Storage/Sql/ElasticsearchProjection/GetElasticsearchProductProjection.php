@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Doctrine\DBAL\Connection;
@@ -30,7 +29,6 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
         private Connection $connection,
         private NormalizerInterface $valuesNormalizer,
         private ReadValueCollectionFactory $readValueCollectionFactory,
-        private SqlFindProductUuids $sqlFindProductUuids,
         private iterable $additionalDataProviders = []
     ) {
         Assert::allIsInstanceOf(
