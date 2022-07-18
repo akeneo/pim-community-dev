@@ -163,8 +163,8 @@ pim_import_export:
                     local: Local
                     sftp: SFTP
                     none:
-                        import: Only upload
-                        export: Only download
+                        import: No storage configured
+                        export: No storage configured
                 file_path.label: File path
                 host.label: Host
                 port.label: Port
