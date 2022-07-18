@@ -1,0 +1,17 @@
+apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
+kind: Function
+metadata:
+  name: {{ .Values.cloudFunction.name }} 
+spec:
+  forProvider:
+    availableMemoryMb: {{ .Values.cloudFunction.memory }}
+    description: "transform command into pub/sub message"
+    entryPoint: "publishCommand"
+    name:  "ucs-job-transform-command"
+    runtime: "nodejs16"
+    sourceArchiveBucket: "{{ .Values.cloudFunction.bucket}}"
+    sourceArchiveObject: "{{ .Values.cloudFunction.sourceSode }}"
+    triggerHttp: true
+    region: "{{ .Values.cloudFunction.region }}"
+  providerConfigRef:
+    name: "provider-config-jet-gcp"
