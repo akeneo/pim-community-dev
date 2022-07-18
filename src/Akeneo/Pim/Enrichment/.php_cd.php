@@ -134,18 +134,12 @@ $rules = [
         'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Model\Category',
         'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory',
-        'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory',
         'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
         'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface',
-        'Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory',
         'Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory',
-        'Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCount',
-        'Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler',
-        'Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCount',
-        'Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCountHandler',
 
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([

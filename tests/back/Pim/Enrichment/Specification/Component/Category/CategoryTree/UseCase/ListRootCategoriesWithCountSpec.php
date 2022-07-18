@@ -1,7 +1,8 @@
 <?php
 
-namespace Specification\Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase;
-use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCount;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
+
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCount;
 use PhpSpec\ObjectBehavior;
 
 class ListRootCategoriesWithCountSpec extends ObjectBehavior

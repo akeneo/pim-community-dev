@@ -17,7 +17,7 @@ class ListRootCategoriesWithCountIncludingSubCategoriesSpec extends ObjectBehavi
 
     function it_lists_children_categories_with_count()
     {
-        $this->shouldImplement(\Akeneo\Category\Domain\Component\CategoryTree\Query\ListRootCategoriesWithCountIncludingSubCategories::class);
+        $this->shouldImplement(Query\ListRootCategoriesWithCountIncludingSubCategories::class);
     }
 
     function it_lists_children_categories_with_count_including_sub_categories()

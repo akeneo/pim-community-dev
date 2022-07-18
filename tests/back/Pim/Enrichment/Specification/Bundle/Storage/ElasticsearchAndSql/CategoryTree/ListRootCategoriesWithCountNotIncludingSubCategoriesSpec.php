@@ -17,7 +17,7 @@ class ListRootCategoriesWithCountNotIncludingSubCategoriesSpec extends ObjectBeh
 
     function it_lists_children_categories_with_count()
     {
-        $this->shouldImplement(\Akeneo\Category\Domain\Component\CategoryTree\Query\ListRootCategoriesWithCountNotIncludingSubCategories::class);
+        $this->shouldImplement(Query\ListRootCategoriesWithCountNotIncludingSubCategories::class);
     }
 
     function it_lists_children_categories_with_count_not_including_sub_categories()

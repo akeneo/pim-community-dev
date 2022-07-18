@@ -2,12 +2,12 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
-use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory;
-use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCount;
-use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler;
-use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCount;
-use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCountHandler;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer\ChildCategory;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCount;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCount;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCountHandler;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;

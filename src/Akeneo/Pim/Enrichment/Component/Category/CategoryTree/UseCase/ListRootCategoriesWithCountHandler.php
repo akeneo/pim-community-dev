@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase;
+namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
 
-use Akeneo\Category\Domain\Component\CategoryTree\Query\ListRootCategoriesWithCountIncludingSubCategories;
-use Akeneo\Category\Domain\Component\CategoryTree\Query\ListRootCategoriesWithCountNotIncludingSubCategories;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query\ListRootCategoriesWithCountIncludingSubCategories;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query\ListRootCategoriesWithCountNotIncludingSubCategories;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 
 /**

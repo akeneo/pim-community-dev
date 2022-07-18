@@ -22,7 +22,7 @@ services:
             - '@translator.default'
 
     akeneo.pim.enrichment.category.category_tree.list_root_categories_with_count_handler:
-        class: 'Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCountHandler'
+        class: 'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCountHandler'
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_user.context.user'
@@ -30,7 +30,7 @@ services:
             - '@akeneo.pim.enrichment.category.category_tree.query.list_root_categories_with_count_not_including_sub_categories'
 
     akeneo.pim.enrichment.category.category_tree.list_children_categories_with_count_handler:
-        class: 'Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler'
+        class: 'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler'
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_user.context.user'
@@ -65,4 +65,4 @@ services:
         class: 'Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory'
 
     akeneo.pim.enrichment.category.category_tree.normalizer.child_category:
-        class: 'Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory'
+        class: 'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer\ChildCategory'

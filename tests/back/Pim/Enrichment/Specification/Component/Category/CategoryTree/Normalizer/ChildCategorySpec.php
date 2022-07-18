@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
 
-use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory as NormalizerChildCategory;
-use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory as ReadModelChildCategory;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer\ChildCategory as NormalizerChildCategory;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory as ReadModelChildCategory;
 use PhpSpec\ObjectBehavior;
 
 class ChildCategorySpec extends ObjectBehavior

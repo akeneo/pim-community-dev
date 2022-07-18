@@ -1,8 +1,8 @@
 <?php
 
-namespace Specification\Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
 
-use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory;
 use PhpSpec\ObjectBehavior;
 
 class ChildCategorySpec extends ObjectBehavior
