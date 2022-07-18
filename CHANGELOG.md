@@ -61,6 +61,7 @@
 - PIM-10542: Fix int attribute code breaks ValueUserIntentFactoryRegistry
 - PIM-10528: Fix escaped special characters in page titles
 - PIM-10541: Fix SetTableValue userIntent to allow null data in enrichment Service Api
+- PIM-10543: Fix selected categories sent to listCategories
 
 ## Improvements
 
