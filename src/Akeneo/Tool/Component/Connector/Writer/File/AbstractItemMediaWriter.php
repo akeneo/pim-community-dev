@@ -185,7 +185,8 @@ abstract class AbstractItemMediaWriter implements
                 ? $storage[$this->jobParamFilePath]
                 : sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage[$this->jobParamFilePath]);
         } else {
-            $filePath = $parameters->get($this->jobParamFilePath);
+            $paramFilePath = 'file_path' === $this->jobParamFilePath ? 'filePath' : $this->jobParamFilePath;
+            $filePath = $parameters->get($paramFilePath);
         }
 
         if (false !== \strpos($filePath, '%')) {
