@@ -272,11 +272,12 @@ $rules = [
         // Category Bounded Context
         'Akeneo\Category\Api', // legit
         'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory',
         'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
-        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryFilterableRepositoryInterface'
-
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryFilterableRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
 
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
