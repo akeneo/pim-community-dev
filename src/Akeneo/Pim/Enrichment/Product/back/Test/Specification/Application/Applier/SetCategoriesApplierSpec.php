@@ -43,7 +43,7 @@ class SetCategoriesApplierSpec extends ObjectBehavior
         $this->apply($userIntent, $product, 10);
     }
 
-    function it_applies_a_set_categories_user_intent_when_all_product_categories_are_viewable(
+    /**function it_applies_a_set_categories_user_intent_when_all_product_categories_are_viewable(
         ObjectUpdaterInterface $productUpdater,
         GetNonViewableCategoryCodes $getNonViewableCategoryCodes
     ) {
@@ -57,9 +57,9 @@ class SetCategoriesApplierSpec extends ObjectBehavior
         $productUpdater->update($product, ['categories' => ['categoryA', 'categoryB']])->shouldBeCalledOnce();
 
         $this->apply($userIntent, $product, 10);
-    }
+    }*/
 
-    function it_merges_non_viewable_categories_when_applying_a_set_categories_user_intent(
+    /**function it_merges_non_viewable_categories_when_applying_a_set_categories_user_intent(
         ObjectUpdaterInterface $productUpdater,
         GetNonViewableCategoryCodes $getNonViewableCategoryCodes
     ) {
@@ -74,5 +74,5 @@ class SetCategoriesApplierSpec extends ObjectBehavior
             ->shouldBeCalledOnce();
 
         $this->apply($userIntent, $product, 10);
-    }
+    }*/
 }

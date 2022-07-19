@@ -24,6 +24,8 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 final class UpsertProductWithPermissionIntegration extends EnrichmentProductTestCase
 {
@@ -201,7 +203,9 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_merges_non_viewable_category_on_update(): void
     {
-        $this->createProduct('my_product', [new SetCategories(['print', 'suppliers'])]);
+        $this->createProduct('my_product', [new SetCategories(['print', 'suppliers', 'not_viewable_category'])]);
+
+        $this->logIn('betty');
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
@@ -211,11 +215,13 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->commandMessageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
+
+        $this->logIn('peter');
         $product = $this->productRepository->findOneByIdentifier('my_product');
 
         Assert::assertNotNull($product);
         Assert::assertSame('my_product', $product->getIdentifier());
-        Assert::assertEqualsCanonicalizing(['print', 'sales', 'suppliers'], $product->getCategoryCodes());
+        Assert::assertEqualsCanonicalizing(['print', 'sales', 'suppliers', 'not_viewable_category'], $product->getCategoryCodes());
     }
 
     /** @test */
@@ -361,5 +367,18 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             ],
             $this->getAssociatedQuantifiedProductModels('my_product')
         );
+    }
+
+    private function logIn(string $username): void
+    {
+        $session = $this->get('session');
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $session->set('_security_main', serialize($token));
+        $session->save();
     }
 }

@@ -49,6 +49,7 @@ abstract class EnrichmentProductTestCase extends TestCase
         $this->createCategory(['code' => 'print']);
         $this->createCategory(['code' => 'suppliers']);
         $this->createCategory(['code' => 'sales']);
+        $this->createCategory(['code' => 'not_viewable_category']);
 
         if (FeatureHelper::isPermissionFeatureAvailable()) {
             $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('All', [
@@ -67,9 +68,9 @@ abstract class EnrichmentProductTestCase extends TestCase
                 'view' => ['all' => false, 'identifiers' => ['print', 'sales']],
             ]);
             $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('IT Support', [
-                'own' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
-                'edit' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
-                'view' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
+                'own' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales', 'not_viewable_category']],
+                'edit' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales', 'not_viewable_category']],
+                'view' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales', 'not_viewable_category']],
             ]);
         }
 
