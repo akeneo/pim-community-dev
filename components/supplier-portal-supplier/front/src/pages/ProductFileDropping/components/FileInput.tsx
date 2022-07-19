@@ -223,6 +223,7 @@ const UploadProgress = styled(ProgressBar)`
 const UploadButton = styled(Button)`
     height: 38px;
     border-radius: 19px;
+    background-color: ${getColor('brand100')};
 `;
 
 const Placeholder = styled.div`

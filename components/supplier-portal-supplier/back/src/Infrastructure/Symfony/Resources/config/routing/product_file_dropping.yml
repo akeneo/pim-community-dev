@@ -1,5 +1,5 @@
-supplier_portal_upload_file:
-    path: /upload-file
+supplier_portal_upload_product_file:
+    path: /upload-product-file
     defaults:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\UploadProductFile
         _feature: supplier_portal_supplier_file_dropping

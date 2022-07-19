@@ -5,7 +5,7 @@ import {FormattedMessage, useIntl} from 'react-intl';
 import {FileDroppingPlaceholder, FileInput} from './components';
 import {useUploader} from './hooks';
 
-const FileDropping = () => {
+const ProductFileDropping = () => {
     const [uploader] = useUploader();
     const intl = useIntl();
     const [fileUploadResult, setFileUploadResult] = useState<boolean>(false);
@@ -87,4 +87,4 @@ const Content = styled.div`
     flex-direction: column;
 `;
 
-export {FileDropping};
+export {ProductFileDropping};
