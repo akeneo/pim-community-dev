@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoEnterprise\Category\Integration\Query;
+namespace AkeneoEnterprise\Test\Pim\Enrichment\Category\Integration\Query;
 
-use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
+use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
 use Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -21,7 +21,7 @@ use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 
-final class SqlGetOwnedCategoriesIntegration extends TestCase
+final class SqlGetViewableCategoriesIntegration extends TestCase
 {
     protected function getConfiguration(): Configuration
     {
@@ -29,7 +29,7 @@ final class SqlGetOwnedCategoriesIntegration extends TestCase
     }
 
     /** @test */
-    public function it_returns_category_codes_that_are_owners(): void
+    public function it_returns_category_codes_that_can_be_read(): void
     {
         $this->createCategory(['code' => 'category_a']);
         $this->createCategory(['code' => 'category_b']);
@@ -53,19 +53,23 @@ final class SqlGetOwnedCategoriesIntegration extends TestCase
             'view' => ['all' => false, 'identifiers' => []],
         ]);
         $this->get(UserGroupCategoryPermissionsSaver::class)->save($userGroup1->getName(), [
-            'own' => ['all' => false, 'identifiers' => ['category_a']],
-            'edit' => ['all' => false, 'identifiers' => ['category_a', 'category_b']],
-            'view' => ['all' => false, 'identifiers' => ['category_a', 'category_b', 'category_c']],
+            'own' => ['all' => false, 'identifiers' => []],
+            'edit' => ['all' => false, 'identifiers' => []],
+            'view' => ['all' => false, 'identifiers' => ['category_a']],
         ]);
         $this->get(UserGroupCategoryPermissionsSaver::class)->save($userGroup2->getName(), [
-            'own' => ['all' => false, 'identifiers' => ['category_c']],
-            'edit' => ['all' => false, 'identifiers' => ['category_c', 'category_b']],
-            'view' => ['all' => false, 'identifiers' => ['category_c', 'category_b', 'category_a']],
+            'own' => ['all' => false, 'identifiers' => []],
+            'edit' => ['all' => false, 'identifiers' => []],
+            'view' => ['all' => false, 'identifiers' => ['category_c']],
         ]);
 
-        /** @var GetOwnedCategories $query */
-        $query = $this->get(GetOwnedCategories::class);
+        /** @var GetViewableCategories $query */
+        $query = $this->get(GetViewableCategories::class);
 
+        Assert::assertEqualsCanonicalizing(
+            [],
+            $query->forUserId([], $userWithGroup1And2->getId())
+        );
         Assert::assertEqualsCanonicalizing(
             ['category_a', 'category_c'],
             $query->forUserId(['category_a', 'category_b', 'category_c'], $userWithGroup1And2->getId())
@@ -89,6 +93,10 @@ final class SqlGetOwnedCategoriesIntegration extends TestCase
         Assert::assertEqualsCanonicalizing(
             [],
             $query->forUserId([], $userWithoutGroup->getId())
+        );
+        Assert::assertEqualsCanonicalizing(
+            [],
+            $query->forUserId(['category_a', 'category_b', 'category_c'], $userWithoutGroup->getId())
         );
     }
 
