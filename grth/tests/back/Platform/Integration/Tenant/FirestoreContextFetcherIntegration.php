@@ -9,6 +9,7 @@ use Google\Cloud\Firestore\CollectionReference;
 use Google\Cloud\Firestore\FirestoreClient;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 final class FirestoreContextFetcherIntegration extends TestCase
 {
@@ -26,6 +27,26 @@ final class FirestoreContextFetcherIntegration extends TestCase
         Assert::assertSame(
             ['ONE' => 'two', 'TWO' => 'three'],
             $this->firestoreContextFetcher->getTenantContext('some_other_tenant_id')
+        );
+    }
+
+    /** @test */
+    public function it_caches_the_context_for_subsequent_requests(): void
+    {
+        $initialContext = $this->firestoreContextFetcher->getTenantContext('some_tenant_id');
+        $this->firestoreCollection()->document('some_tenant_id')->set(
+            ['values' => \json_encode(['updated_context' => 'updated_value'])]
+        );
+
+        // get context from cache
+        Assert::assertSame($initialContext, $this->firestoreContextFetcher->getTenantContext('some_tenant_id'));
+
+        // wait until the cache ttl is expired
+        sleep(6);
+
+        Assert::assertSame(
+            ['updated_context' => 'updated_value'],
+            $this->firestoreContextFetcher->getTenantContext('some_tenant_id')
         );
     }
 
@@ -82,8 +103,10 @@ final class FirestoreContextFetcherIntegration extends TestCase
         ]);
 
         $this->firestoreContextFetcher = new FirestoreContextFetcher(
+            logger: new NullLogger(),
             googleProjectId: $_ENV['GOOGLE_CLOUD_PROJECT'],
-            collection: self::TEST_COLLECTION
+            collection: self::TEST_COLLECTION,
+            cacheTtl: 5
         );
     }
 
@@ -92,6 +115,7 @@ final class FirestoreContextFetcherIntegration extends TestCase
         foreach ($this->firestoreCollection()->documents() as $document) {
             $document->reference()->delete();
         }
+        \apcu_clear_cache();
     }
 
     private function firestoreCollection(): CollectionReference

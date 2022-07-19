@@ -56,6 +56,7 @@
 - PIM-10507: Fix product export with labels when a table attribute contains a measurement column
 - PIM-10510: "Automatic link between assets and products" log download returns a 403
 - PIM-10521: Fix product link on asset and reference entity pages
+- PIM-10534: Fix identifier comparison is case-sensitive in RE front
 - PIM-10511: Fix distant server taking to long to respond when reaching media link resources 
 - PIM-10535: Fix 500 error in published product API when reaching the limit of offset pagination type
 

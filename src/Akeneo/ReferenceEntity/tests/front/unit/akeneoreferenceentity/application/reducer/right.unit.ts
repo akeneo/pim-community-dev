@@ -141,6 +141,14 @@ describe('akeneo > reference entity > application > reducer --- right', () => {
       )
     ).toBe(false);
 
-    expect(canEditReferenceEntity([], 'designer')).toBe(false);
+    expect(
+      canEditReferenceEntity(
+        {
+          referenceEntityIdentifier: 'bRaNd',
+          edit: true,
+        },
+        'BrAnD'
+      )
+    ).toBe(true);
   });
 });
