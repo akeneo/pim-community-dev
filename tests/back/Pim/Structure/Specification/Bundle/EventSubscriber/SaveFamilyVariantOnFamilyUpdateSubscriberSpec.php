@@ -4,11 +4,14 @@ namespace Specification\Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Structure\Bundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber;
 use Akeneo\Pim\Structure\Bundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -57,20 +60,12 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $validator,
         BulkSaverInterface $bulkFamilyVariantSaver,
         GenericEvent $event,
-        FamilyInterface $family,
-        Collection $familyVariants,
-        \ArrayIterator $familyVariantsIterator,
-        FamilyVariantInterface $familyVariants1,
-        FamilyVariantInterface $familyVariants2,
         ConstraintViolationList $constraintViolationList
     ) {
-        $family->getFamilyVariants()->willReturn($familyVariants);
-
-        $familyVariants->getIterator()->willReturn($familyVariantsIterator);
-        $familyVariantsIterator->current()->willReturn($familyVariants1, $familyVariants2);
-        $familyVariantsIterator->valid()->willReturn(true, true, false);
-        $familyVariantsIterator->rewind()->shouldBeCalled();
-        $familyVariantsIterator->next()->shouldBeCalled();
+        $familyVariants1 = new FamilyVariant();
+        $familyVariants2 = new FamilyVariant();
+        $family = new Family();
+        $family->setFamilyVariants(new ArrayCollection([$familyVariants1, $familyVariants2]));
 
         $validator->validate($familyVariants1)->willReturn($constraintViolationList);
         $constraintViolationList->count()->willReturn(0);
@@ -79,7 +74,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
 
         $bulkFamilyVariantSaver->saveAll(
             [$familyVariants1, $familyVariants2],
-            [ComputeFamilyVariantStructureChangesSubscriber::FORCE_JOB_LAUNCHING => true]
+            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]
         )->shouldBeCalled();
 
         $event->getSubject()->willReturn($family);
@@ -92,23 +87,14 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $validator,
         BulkSaverInterface $bulkFamilyVariantSaver,
         GenericEvent $event,
-        FamilyInterface $family,
-        Collection $familyVariants,
-        \ArrayIterator $familyVariantsIterator,
-        FamilyVariantInterface $familyVariants1,
-        FamilyVariantInterface $familyVariants2,
-        FamilyVariantInterface $familyVariants3
     ) {
-        $family->getFamilyVariants()->willReturn($familyVariants);
-
-        $familyVariants->getIterator()->willReturn($familyVariantsIterator);
-        $familyVariantsIterator->current()->willReturn($familyVariants1, $familyVariants2, $familyVariants3);
-        $familyVariantsIterator->valid()->willReturn(true, true, true, false);
-        $familyVariantsIterator->rewind()->shouldBeCalled();
-        $familyVariantsIterator->next()->shouldBeCalled();
-
-        $familyVariants1->getCode()->willReturn('family_variant_1');
-        $familyVariants2->getCode()->willReturn('family_variant_2');
+        $familyVariants1 = new FamilyVariant();
+        $familyVariants1->setCode('family_variant_1');
+        $familyVariants2 = new FamilyVariant();
+        $familyVariants2->setCode('family_variant_2');
+        $familyVariants3 = new FamilyVariant();
+        $family = new Family();
+        $family->setFamilyVariants(new ArrayCollection([$familyVariants1, $familyVariants2, $familyVariants3]));
 
         $constraintViolation1 = new ConstraintViolation('Error 1 with family variant', '', [], '', '', '10,45');
         $constraintViolation2 = new ConstraintViolation('Error 2 with family variant', '', [], '', '', '10,45');
@@ -123,7 +109,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
 
         $bulkFamilyVariantSaver->saveAll(
             [$familyVariants3],
-            [ComputeFamilyVariantStructureChangesSubscriber::FORCE_JOB_LAUNCHING => true]
+            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]
         )->shouldBeCalled();
 
         $event->getSubject()->willReturn($family);
@@ -249,23 +235,16 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         ValidatorInterface $validator,
         BulkSaverInterface $bulkFamilyVariantSaver,
         GenericEvent $event,
-        FamilyInterface $family,
-        Collection $familyVariants,
-        \ArrayIterator $familyVariantsIterator,
-        FamilyVariantInterface $familyVariants1,
-        FamilyVariantInterface $familyVariants2,
-        ConstraintViolationList $constraintViolationList
+        ConstraintViolationList $constraintViolationList,
     ) {
+        $familyVariants1 = new FamilyVariant();
+        $familyVariants2 = new FamilyVariant();
+        $family = new Family();
+        $family->setFamilyVariants(new ArrayCollection([$familyVariants1, $familyVariants2]));
+
         $event->getSubject()->willReturn($family);
         $event->hasArgument('unitary')->willReturn(true);
         $event->getArgument('unitary')->willReturn(true);
-
-        $family->getFamilyVariants()->willReturn($familyVariants);
-        $familyVariants->getIterator()->willReturn($familyVariantsIterator);
-        $familyVariantsIterator->current()->willReturn($familyVariants1, $familyVariants2);
-        $familyVariantsIterator->valid()->willReturn(true, true, false);
-        $familyVariantsIterator->rewind()->shouldBeCalled();
-        $familyVariantsIterator->next()->shouldBeCalled();
 
         $validator->validate($familyVariants1)->willReturn($constraintViolationList);
         $constraintViolationList->count()->willReturn(0);
@@ -273,7 +252,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $constraintViolationList->count()->willReturn(0);
         $bulkFamilyVariantSaver->saveAll(
             [$familyVariants1, $familyVariants2],
-            [ComputeFamilyVariantStructureChangesSubscriber::FORCE_JOB_LAUNCHING => false]
+            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]
         )->shouldBeCalled();
 
         $this->onUnitarySave($event);
