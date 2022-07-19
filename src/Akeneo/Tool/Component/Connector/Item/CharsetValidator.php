@@ -48,7 +48,11 @@ class CharsetValidator implements StepExecutionAwareInterface
     public function validate()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('filePath');
+        // TODO RAB-907: Remove this condition
+        $filePath = $jobParameters->has('storage') && isset($jobParameters->get('storage')['file_path'])
+            ? $jobParameters->get('storage')['file_path']
+            : $jobParameters->get('filePath');
+
         $file = new \SplFileInfo($filePath);
         if (!in_array($file->getExtension(), $this->whiteListExtension)) {
             $this->validateEncoding();
@@ -69,7 +73,7 @@ class CharsetValidator implements StepExecutionAwareInterface
     protected function validateEncoding()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('filePath');
+        $filePath = $jobParameters->get('storage')['file_path'];
         $handle = fopen($filePath, 'r');
         if (false === $handle) {
             throw new \Exception(sprintf('Unable to read the file "%s".', $filePath));
@@ -95,7 +99,7 @@ class CharsetValidator implements StepExecutionAwareInterface
 
             throw new CharsetException(
                 sprintf('The file "%s" is not correctly encoded in %s. ', $filePath, $this->charset) .
-                $message
+                    $message
             );
         }
 

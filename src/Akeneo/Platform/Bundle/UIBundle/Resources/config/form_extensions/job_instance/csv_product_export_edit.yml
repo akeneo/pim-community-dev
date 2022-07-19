@@ -96,16 +96,15 @@ extensions:
             label: pim_common.label
             readOnly: false
 
-    pim-job-instance-csv-product-export-edit-properties-file-path:
-        module: pim/job/common/edit/field/file-path
-        parent: pim-job-instance-csv-product-export-edit-global
+    pim-job-instance-csv-product-export-edit-properties-storage:
+        module: pimimportexport/js/job/common/edit/storage-form
+        parent: pim-job-instance-csv-product-export-edit-properties
         position: 120
         targetZone: properties
         config:
-            fieldCode: configuration.filePath
-            readOnly: false
-            label: pim_import_export.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help
+            tabCode: pim-job-instance-properties
+            jobType: export
+            fileExtension: csv
 
     pim-job-instance-csv-product-export-edit-properties-decimal-separator:
         module: pim/job/common/edit/field/decimal-separator

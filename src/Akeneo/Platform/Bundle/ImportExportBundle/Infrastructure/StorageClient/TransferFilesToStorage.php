@@ -11,6 +11,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Event\FileCannotBeExported;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\TransferFilesToStorageInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -31,6 +32,10 @@ final class TransferFilesToStorage implements TransferFilesToStorageInterface
     {
         $destinationStorage = $this->storageClientProvider->getFromStorage($storage);
         foreach ($filesToTransfer as $fileToTransfer) {
+            if ($storage instanceof LocalStorage && $fileToTransfer->isLocal()) {
+                continue;
+            }
+
             $sourceStorage = $this->storageClientProvider->getFromFileToTransfer($fileToTransfer);
 
             try {

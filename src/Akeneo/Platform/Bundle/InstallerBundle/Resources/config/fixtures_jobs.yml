@@ -6,7 +6,9 @@ jobs:
         label:     Currencies data fixtures
         type:      fixtures
         configuration:
-            filePath: currencies.csv
+            storage:
+                type: local
+                file_path: currencies.csv
 
     fixtures_locale_csv:
         order: 10
@@ -15,7 +17,9 @@ jobs:
         label:     Locales data fixtures
         type:      fixtures
         configuration:
-            filePath: locales.csv
+            storage:
+                type: local
+                file_path: locales.csv
 
     fixtures_category_csv:
         order: 30
@@ -24,7 +28,9 @@ jobs:
         label:     Categories data fixtures
         type:      fixtures
         configuration:
-            filePath: categories.csv
+            storage:
+                type: local
+                file_path: categories.csv
 
     fixtures_attribute_group_csv:
         order: 30
@@ -33,7 +39,9 @@ jobs:
         label:     Attribute groups data fixtures
         type:      fixtures
         configuration:
-            filePath: attribute_groups.csv
+            storage:
+                type: local
+                file_path: attribute_groups.csv
 
     fixtures_group_type_csv:
         order: 30
@@ -42,7 +50,9 @@ jobs:
         label:     Group types data fixtures
         type:      fixtures
         configuration:
-            filePath: group_types.csv
+            storage:
+                type: local
+                file_path: group_types.csv
 
     fixtures_channel_csv:
         order: 40
@@ -51,7 +61,9 @@ jobs:
         label:     Channels data fixtures
         type:      fixtures
         configuration:
-            filePath: channels.csv
+            storage:
+                type: local
+                file_path: channels.csv
 
     fixtures_association_type_csv:
         order: 40
@@ -60,7 +72,9 @@ jobs:
         label:     Associations data fixtures
         type:      fixtures
         configuration:
-            filePath: association_types.csv
+            storage:
+                type: local
+                file_path: association_types.csv
 
     fixtures_attribute_csv:
         order: 35
@@ -69,7 +83,9 @@ jobs:
         label:     Attributes data fixtures
         type:      fixtures
         configuration:
-            filePath: attributes.csv
+            storage:
+                type: local
+                file_path: attributes.csv
 
     fixtures_attribute_options_csv:
         order: 50
@@ -78,7 +94,9 @@ jobs:
         label:     Attribute options data fixtures
         type:      fixtures
         configuration:
-            filePath: attribute_options.csv
+            storage:
+                type: local
+                file_path: attribute_options.csv
 
     fixtures_family_csv:
         order: 60
@@ -87,7 +105,9 @@ jobs:
         label:     Families data fixtures
         type:      fixtures
         configuration:
-            filePath: families.csv
+            storage:
+                type: local
+                file_path: families.csv
 
     fixtures_family_variant_csv:
         order: 65
@@ -96,7 +116,9 @@ jobs:
         label:     Family variants data fixtures
         type:      fixtures
         configuration:
-            filePath: family_variants.csv
+            storage:
+                type: local
+                file_path: family_variants.csv
 
     fixtures_group_csv:
         order: 70
@@ -105,7 +127,9 @@ jobs:
         label:     Groups data fixtures
         type:      fixtures
         configuration:
-            filePath: groups.csv
+            storage:
+                type: local
+                file_path: groups.csv
 
     fixtures_user_group_csv:
         order: 25
@@ -114,7 +138,9 @@ jobs:
         label:     User groups data fixtures
         type:      fixtures
         configuration:
-            filePath: user_groups.csv
+            storage:
+                type: local
+                file_path: user_groups.csv
 
     fixtures_user_role_csv:
         order: 75
@@ -123,7 +149,9 @@ jobs:
         label:     User roles data fixtures
         type:      fixtures
         configuration:
-            filePath: user_roles.csv
+            storage:
+                type: local
+                file_path: user_roles.csv
 
     fixtures_user_csv:
         order: 79
@@ -132,7 +160,9 @@ jobs:
         label:     Users data fixtures
         type:      fixtures
         configuration:
-            filePath: users.csv
+            storage:
+                type: local
+                file_path: users.csv
 
     fixtures_product_model_csv:
         order: 80
@@ -141,7 +171,9 @@ jobs:
         label:     Product model data fixtures
         type:      fixtures
         configuration:
-            filePath: product_models.csv
+            storage:
+                type: local
+                file_path: product_models.csv
             withHeader: true
             delimiter: ;
             enclosure: '"'
@@ -160,7 +192,9 @@ jobs:
         label:     Product data fixtures
         type:      fixtures
         configuration:
-            filePath: products.csv
+            storage:
+                type: local
+                file_path: products.csv
             withHeader: true
             delimiter: ;
             enclosure: '"'
@@ -180,4 +214,6 @@ jobs:
         label:     Jobs data fixtures
         type:      fixtures
         configuration:
-            filePath: jobs.yml
+            storage:
+                type: local
+                file_path: jobs.yml

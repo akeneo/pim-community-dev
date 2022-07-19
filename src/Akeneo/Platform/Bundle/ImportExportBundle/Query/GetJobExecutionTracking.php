@@ -79,7 +79,7 @@ class GetJobExecutionTracking
         $jobExecutionTracking->status = (string) $jobExecution->getStatus();
         $jobExecutionTracking->currentStep = count($jobExecution->getStepExecutions());
         $jobExecutionTracking->totalSteps = $job instanceof JobWithStepsInterface ? count($job->getSteps()) : 0;
-        $jobExecutionTracking->steps = $this->createStepExecutionsTrackingWithJob($job, $stepExecutions);
+        $jobExecutionTracking->steps = $this->createStepExecutionsTrackingWithJob($job, $stepExecutions, $jobExecution->getCreateTime());
 
         return $jobExecutionTracking;
     }
@@ -100,7 +100,7 @@ class GetJobExecutionTracking
         return $jobExecutionTracking;
     }
 
-    private function createStepExecutionsTrackingWithJob(JobInterface $job, Collection $stepExecutions): array
+    private function createStepExecutionsTrackingWithJob(JobInterface $job, Collection $stepExecutions, \DateTime $createdTime): array
     {
         if (!$job instanceof JobWithStepsInterface) {
             return [];
@@ -111,6 +111,10 @@ class GetJobExecutionTracking
             $stepName = $step->getName();
             $stepExecutionIndex = $this->searchFirstMatchingStepExecutionIndex($stepExecutions, $stepName);
             if (-1 === $stepExecutionIndex) {
+                if ($this->shouldSkipStep($stepName, $createdTime)) {
+                    continue;
+                }
+
                 $stepsExecutionTracking[] = $this->createNotStartedStepExecutionTracking($step, $job->getName());
                 continue;
             }
@@ -126,6 +130,14 @@ class GetJobExecutionTracking
         }
 
         return $stepsExecutionTracking;
+    }
+
+    // TODO: RAB-875: Remove this method and the check
+    private function shouldSkipStep(string $stepName, \DateTime $createdTime): bool
+    {
+        $downloadUploadStepsMergeDate = \DateTime::createFromFormat('Y-m-d', '2022-07-19');
+
+        return in_array($stepName, ['download_files', 'upload_files']) && $createdTime < $downloadUploadStepsMergeDate;
     }
 
     private function searchFirstMatchingStepExecutionIndex(Collection $stepExecutions, string $stepName): int

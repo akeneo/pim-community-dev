@@ -22,8 +22,8 @@ class TransferFilesToNoneStorageTest extends AcceptanceTestCase
     {
         $storage = ['type' => 'none'];
         $filesToTransfer = [
-            new FileToTransfer('file_key1', 'localFilesystem', 'filename1.csv'),
-            new FileToTransfer('file_key2', 'catalogStorage', 'filename2.csv'),
+            new FileToTransfer('file_key1', 'localFilesystem', 'filename1.csv', false),
+            new FileToTransfer('file_key2', 'catalogStorage', 'filename2.csv', false),
         ];
 
         $this->getHandler()->handle(new TransferFilesToStorageCommand($filesToTransfer, $storage));

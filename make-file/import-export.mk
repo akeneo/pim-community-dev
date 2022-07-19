@@ -30,5 +30,10 @@ import-export-acceptance-back: #Doc: launch PHPUnit acceptance tests for ImportE
 .PHONY: import-export-ci-back
 import-export-ci-back: import-export-lint-back import-export-coupling-back import-export-unit-back import-export-acceptance-back import-export-integration-back
 
+.PHONY: import-export-ci-front
+import-export-ci-front:
+	$(YARN_RUN) workspace @akeneo-pim-community/import-export lint:check
+	$(YARN_RUN) workspace @akeneo-pim-community/import-export test:unit:run
+
 .PHONY: import-export-ci
-import-export-ci: import-export-ci-back
+import-export-ci: import-export-ci-back import-export-ci-front

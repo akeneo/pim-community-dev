@@ -2,13 +2,12 @@
 
 namespace Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -39,14 +38,7 @@ class SimpleXlsxExport implements ConstraintCollectionProviderInterface
         return new Collection(
             [
                 'fields' => [
-                    'filePath'     => [
-                        new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
-                        new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
-                        new Regex([
-                            'pattern' => '/.\.xlsx$/',
-                            'message' => 'The extension file must be ".xlsx"'
-                        ])
-                    ],
+                    'storage'   => new Storage(['xlsx']),
                     'withHeader'   => new Type(
                         [
                             'type'   => 'bool',
