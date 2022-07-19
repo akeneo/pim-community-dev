@@ -192,7 +192,10 @@ class JobInstanceController
             throw new AccessDeniedHttpException();
         }
 
-        return new JsonResponse($this->normalizeJobInstance($jobInstance));
+        $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
+        $normalizedJobInstance = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance);
+
+        return new JsonResponse($normalizedJobInstance);
     }
 
     /**
@@ -244,7 +247,10 @@ class JobInstanceController
             JobInstanceEvents::POST_SAVE
         );
 
-        return new JsonResponse($this->normalizeJobInstance($jobInstance));
+        $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
+        $normalizedJobInstance = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance);
+
+        return new JsonResponse($normalizedJobInstance);
     }
 
     protected function deleteAction(string $code): Response
@@ -548,7 +554,10 @@ class JobInstanceController
             JobInstanceEvents::POST_SAVE
         );
 
-        return new JsonResponse($this->normalizeJobInstance($jobInstance));
+        $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
+        $normalizedJobInstance = $this->credentialsEncrypterRegistry->decryptCredentials($normalizedJobInstance);
+
+        return new JsonResponse($normalizedJobInstance);
     }
 
     /**
