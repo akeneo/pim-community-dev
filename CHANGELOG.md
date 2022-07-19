@@ -58,7 +58,6 @@
 - PIM-10508: Fix attribute creation when label contains an '&' character
 - PIM-10501: Fix identifier validation for product and product model imports to disallow line breaks
 - PIM-10527: Fix associated groups grid
-- PIM-10518: Normalize simple select option value like multi select
 - PIM-10542: Fix int attribute code breaks ValueUserIntentFactoryRegistry
 - PIM-10528: Fix escaped special characters in page titles
 - PIM-10541: Fix SetTableValue userIntent to allow null data in enrichment Service Api
