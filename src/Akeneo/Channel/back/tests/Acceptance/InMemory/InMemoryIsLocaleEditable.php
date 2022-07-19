@@ -26,7 +26,7 @@ final class InMemoryIsLocaleEditable implements IsLocaleEditable
      */
     public function forUserId(string $localeCode, int $userId): bool
     {
-        /** @var UserInterface $user */
+        /** @var UserInterface|null $user */
         $user = $this->userRepository->findOneBy(['id' => $userId]);
         if (null === $user) {
             return false;
