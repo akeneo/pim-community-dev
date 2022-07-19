@@ -27,7 +27,7 @@ class CalculateCompletenessCommandPerformance extends KernelTestCase
         $profileConfig->defineMetric(
             new Metric(
                 'completeness_calculation',
-                '=Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness\\CompletenessCalculator::fromProductIdentifiers'
+                '=Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness\\CompletenessCalculator::fromProductUuids'
             )
         );
 
