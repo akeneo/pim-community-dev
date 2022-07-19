@@ -35,6 +35,7 @@ $rules = [
         'Oro\Bundle\FilterBundle',
         // TODO: dependencies related to the front end, remove twig screens
         'Twig',
+        'Akeneo\Pim\Enrichment\Product\API',
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',
@@ -121,12 +122,6 @@ $rules = [
         // PIM-10259: Add support for Arabic characters in PDF export
         'ArPHP\I18N\Arabic',
 
-        'Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException',
-        'Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException',
-        'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand',
-        'Akeneo\Pim\Enrichment\Product\API\Command\UserIntent',
-        'Akeneo\Pim\Enrichment\Product\API\MessageBus',
-        'Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat',
         'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode',
 
         // Category Bounded Context
@@ -140,7 +135,6 @@ $rules = [
         'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
         'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface',
         'Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory',
-
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -153,6 +147,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Psr\Log\LoggerInterface',
         'Ramsey\Uuid',
+        'Akeneo\Pim\Enrichment\Product\API',
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',
@@ -268,6 +263,7 @@ $rules = [
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+        'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids',
 
         // Category Bounded Context
         'Akeneo\Category\Api', // legit

@@ -22,9 +22,9 @@ interface GetCompletenessProductMasks
     public function fromValueCollection($id, string $identifier, string $familyCode, WriteValueCollection $values): CompletenessProductMask;
 
     /**
-     * @param string[] $productIdentifiers
+     * @param UuidInterface[] $productUuids
      *
      * @return CompletenessProductMask[]
      */
-    public function fromProductIdentifiers(array $productIdentifiers): array;
+    public function fromProductUuids(array $productUuids): array;
 }

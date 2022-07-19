@@ -7,6 +7,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\Command;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -68,6 +70,12 @@ class IndexProductCommand extends Command
                 'Index all existing products into Elasticsearch'
             )
             ->addOption(
+                'diff',
+                'd',
+                InputOption::VALUE_NONE,
+                'Resolve differences between MySQL and Elasticsearch'
+            )
+            ->addOption(
                 'batch-size',
                 false,
                 InputOption::VALUE_REQUIRED,
@@ -87,12 +95,15 @@ class IndexProductCommand extends Command
         $batchSize = (int) $input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
 
         if (true === $input->getOption('all')) {
-            $chunkedProductIdentifiers = $this->getAllProductIdentifiers($batchSize);
+            $chunkedProductUuids = $this->getAllProductUuids($batchSize);
+            $productCount = 0;
+        } elseif (true === $input->getOption('diff')) {
+            $chunkedProductUuids = $this->getDiffProductUuids($batchSize);
             $productCount = 0;
         } elseif (!empty($input->getArgument('identifiers'))) {
             $requestedIdentifiers = $input->getArgument('identifiers');
-            $existingIdentifiers = $this->getExistingProductIdentifiers($requestedIdentifiers);
-            $nonExistingIdentifiers = array_diff($requestedIdentifiers, $existingIdentifiers);
+            $existingUuids = $this->getExistingProductUuids($requestedIdentifiers);
+            $nonExistingIdentifiers = array_diff($requestedIdentifiers, array_keys($existingUuids));
             if (!empty($nonExistingIdentifiers)) {
                 $output->writeln(
                     sprintf(
@@ -101,8 +112,8 @@ class IndexProductCommand extends Command
                     )
                 );
             }
-            $chunkedProductIdentifiers = array_chunk($existingIdentifiers, $batchSize);
-            $productCount = count($existingIdentifiers);
+            $chunkedProductUuids = array_chunk($existingUuids, $batchSize);
+            $productCount = count($existingUuids);
         } else {
             $output->writeln(
                 '<error>Please specify a list of product identifiers to index or use the flag --all to index all products</error>'
@@ -111,7 +122,7 @@ class IndexProductCommand extends Command
             return self::ERROR_CODE_USAGE;
         }
 
-        $numberOfIndexedProducts = $this->doIndex($chunkedProductIdentifiers, new ProgressBar($output, $productCount));
+        $numberOfIndexedProducts = $this->doIndex($chunkedProductUuids, new ProgressBar($output, $productCount));
 
         $output->writeln('');
         $output->writeln(sprintf('<info>%d products indexed</info>', $numberOfIndexedProducts));
@@ -119,43 +130,43 @@ class IndexProductCommand extends Command
         return 0;
     }
 
-    private function doIndex(iterable $chunkedProductIdentifiers, ProgressBar $progressBar): int
+    private function doIndex(iterable $chunkedProductUuids, ProgressBar $progressBar): int
     {
         $indexedProductCount = 0;
 
         $progressBar->start();
-        foreach ($chunkedProductIdentifiers as $productIdentifiers) {
-            $this->productAndAncestorsIndexer->indexFromProductIdentifiers($productIdentifiers);
-            $indexedProductCount += count($productIdentifiers);
-            $progressBar->advance(count($productIdentifiers));
+        foreach ($chunkedProductUuids as $productUuids) {
+            $this->productAndAncestorsIndexer->indexFromProductUuids($productUuids);
+            $indexedProductCount += count($productUuids);
+            $progressBar->advance(count($productUuids));
         }
         $progressBar->finish();
 
         return $indexedProductCount;
     }
 
-    private function getAllProductIdentifiers(int $batchSize): iterable
+    private function getAllProductUuids(int $batchSize): iterable
     {
-        $formerId = 0;
-        $sql = <<< SQL
-SELECT id, identifier
+        $lastUuidAsBytes = '';
+        $sql = <<<SQL
+SELECT uuid
 FROM pim_catalog_product
-WHERE id > :formerId
-ORDER BY id ASC
+WHERE uuid > :lastUuid
+ORDER BY uuid ASC
 LIMIT :limit
 SQL;
         while (true) {
-            $rows = $this->connection->executeQuery(
+            $rows = $this->connection->fetchFirstColumn(
                 $sql,
                 [
-                    'formerId' => $formerId,
+                    'lastUuid' => $lastUuidAsBytes,
                     'limit' => $batchSize,
                 ],
                 [
-                    'formerId' => \PDO::PARAM_INT,
+                    'lastUuid' => \PDO::PARAM_STR,
                     'limit' => \PDO::PARAM_INT,
                 ]
-            )->fetchAllAssociative();
+            );
 
             if (empty($rows)) {
                 return;
@@ -166,23 +177,21 @@ SQL;
         }
     }
 
-    private function getExistingProductIdentifiers(array $identifiers): array
+    private function getExistingProductUuids(array $identifiers): array
     {
         $sql = <<<SQL
-SELECT identifier
+SELECT identifier, BIN_TO_UUID(uuid) AS uuid
 FROM pim_catalog_product
 WHERE identifier IN (:identifiers);
 SQL;
 
-        return $this->connection->executeQuery(
+        $uuids = $this->connection->executeQuery(
             $sql,
-            [
-                'identifiers' => $identifiers,
-            ],
-            [
-                'identifiers' => Connection::PARAM_STR_ARRAY,
-            ]
-        )->fetchFirstColumn();
+            ['identifiers' => $identifiers],
+            ['identifiers' => Connection::PARAM_STR_ARRAY]
+        )->fetchAllKeyValue();
+
+        return array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $uuids);
     }
 
     /**
@@ -197,6 +206,76 @@ SQL;
                     $this->productAndProductModelClient->getIndexName()
                 )
             );
+        }
+    }
+
+    private function getDiffProductUuids(int $batchSize)
+    {
+        $lastUuid = '';
+        $sql = <<< SQL
+SELECT CONCAT('product_',BIN_TO_UUID(uuid)) AS _id, BIN_TO_UUID(uuid) AS uuid, DATE_FORMAT(updated, '%Y-%m-%dT%TZ') AS updated
+FROM pim_catalog_product
+WHERE uuid > :lastUuid
+ORDER BY uuid ASC
+LIMIT :limit
+SQL;
+        while (true) {
+            $rows = $this->connection->executeQuery(
+                $sql,
+                [
+                    'lastUuid' => $lastUuid,
+                    'limit' => $batchSize,
+                ],
+                [
+                    'lastUuid' => \PDO::PARAM_STR,
+                    'limit' => \PDO::PARAM_INT,
+                ]
+            )->fetchAllAssociative();
+
+            if (empty($rows)) {
+                return;
+            }
+
+            $lastUuid = end($rows)['uuid'];
+
+            $existingMysqlIdentifiers = array_column($rows, '_id');
+            $existingMysqlUpdated = array_column($rows, 'updated');
+
+            $results = $this->productAndProductModelClient->search([
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            'ids' => [
+                                'values' => $existingMysqlIdentifiers
+                            ]
+                        ],
+                        'filter' => [
+                            'terms' => [
+                                'entity_updated' => $existingMysqlUpdated
+                            ]
+                        ]
+                    ]
+                ],
+                '_source' => false,
+                'size' => $batchSize
+            ]);
+
+            $esIdentifiers = array_map(function ($doc) {
+                return $doc['_id'];
+            }, $results["hits"]["hits"]);
+            $diff = array_reduce(
+                $rows,
+                function ($carry, $item) use ($esIdentifiers) {
+                    if (!in_array($item['_id'], $esIdentifiers)) {
+                        $carry[] = Uuid::fromString($item['uuid']);
+                    }
+
+                    return $carry;
+                },
+                []
+            );
+
+            yield $diff;
         }
     }
 }

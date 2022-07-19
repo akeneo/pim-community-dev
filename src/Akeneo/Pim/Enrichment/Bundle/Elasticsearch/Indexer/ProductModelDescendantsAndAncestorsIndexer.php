@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetAncestorAndDescendantProductModelCodes;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 
@@ -24,21 +24,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerI
  */
 class ProductModelDescendantsAndAncestorsIndexer
 {
-    private ProductIndexerInterface $productIndexer;
-    private ProductModelIndexerInterface $productModelIndexer;
-    private GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers;
-    private GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes;
-
     public function __construct(
-        ProductIndexerInterface $productIndexer,
-        ProductModelIndexerInterface $productModelIndexer,
-        GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
+        private ProductIndexerInterface $productIndexer,
+        private ProductModelIndexerInterface $productModelIndexer,
+        private GetDescendantVariantProductUuids $getDescendantVariantProductUuids,
+        private GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
-        $this->productIndexer = $productIndexer;
-        $this->productModelIndexer = $productModelIndexer;
-        $this->getDescendantVariantProductIdentifiers = $getDescendantVariantProductIdentifiers;
-        $this->getAncestorAndDescendantProductModelCodes = $getAncestorAndDescendantProductModelCodes;
     }
 
     /**
@@ -60,11 +51,12 @@ class ProductModelDescendantsAndAncestorsIndexer
             \array_unique(\array_merge($productModelCodes, $ancestorAndDescendantsProductModelCodes))
         );
 
-        $variantProductIdentifiers = $this->getDescendantVariantProductIdentifiers->fromProductModelCodes(
+        $variantProductUuids = $this->getDescendantVariantProductUuids->fromProductModelCodes(
             $productModelCodes
         );
-        if (!empty($variantProductIdentifiers)) {
-            $this->productIndexer->indexFromProductIdentifiers($variantProductIdentifiers);
+
+        if (!empty($variantProductUuids)) {
+            $this->productIndexer->indexFromProductUuids($variantProductUuids);
         }
     }
 
