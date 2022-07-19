@@ -90,7 +90,7 @@ final class UploadStep extends AbstractStep
 
     private function extractFileToTransferFromWriter(ArchivableWriterInterface $writer): array
     {
-        $dirname = substr(dirname($writer->getPath()),4);
+        $dirname = substr(dirname($writer->getPath()), 4);
 
         return array_map(
             static fn (WrittenFileInfo $writtenFile) => new FileToTransfer(
