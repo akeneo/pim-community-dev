@@ -29,7 +29,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ProductExportController
 {
     const DATETIME_FORMAT = 'Y-m-d_H:i:s';
-    private const FILE_PATH_KEYS = ['filePath', 'filePathProduct', 'filePathProductModel'];
+    private const FILE_PATH_KEYS = ['filePathProduct', 'filePathProductModel'];
 
     public function __construct(
         private RequestStack $requestStack,
@@ -73,6 +73,12 @@ class ProductExportController
                 $rawParameters['storage']['type'] = $this->versionProvider->isSaaSVersion() ? NoneStorage::TYPE : LocalStorage::TYPE;
                 $rawParameters['storage'][$filePathKey] = $this->buildFilePath($rawParameters[$filePathKey], $contextParameters);
             }
+        }
+
+        if (isset($rawParameters['filePath'])) {
+            $rawParameters['storage']['type'] = $this->versionProvider->isSaaSVersion() ? NoneStorage::TYPE : LocalStorage::TYPE;
+            $rawParameters['storage']['file_path'] = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
+            unset($rawParameters['filePath']);
         }
 
         if ($withGridContext) {
