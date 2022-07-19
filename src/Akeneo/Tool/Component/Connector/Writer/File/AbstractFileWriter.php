@@ -47,7 +47,7 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
         $jobExecution = $this->stepExecution->getJobExecution();
 
         // TODO RAB-907: Remove this condition
-        if ($parameters->has('storage')) {
+        if ($parameters->has('storage') && isset($parameters->get('storage')['file_path'])) {
             $storage = $parameters->get('storage');
             $filePath = LocalStorage::TYPE === $storage['type']
                 ? $storage['file_path']
