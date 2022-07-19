@@ -179,7 +179,7 @@ abstract class AbstractItemMediaWriter implements
     {
         $parameters = $this->stepExecution->getJobParameters();
         // TODO RAB-907: Remove this condition
-        if ($parameters->has('storage') && isset($parameters->get('storage')['file_path'])) {
+        if ($parameters->has('storage') && isset($parameters->get('storage')[$this->jobParamFilePath])) {
             $storage = $parameters->get('storage');
             $filePath = LocalStorage::TYPE === $storage['type']
                 ? $storage[$this->jobParamFilePath]
