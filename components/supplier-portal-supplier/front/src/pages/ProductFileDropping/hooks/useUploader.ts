@@ -24,7 +24,12 @@ const useUploader = () => {
                 if (200 <= xhr.status && 300 > xhr.status) {
                     resolve(JSON.parse(xhr.response));
                 } else {
-                    reject(new BadRequestError(JSON.parse(xhr.response)));
+                    try {
+                        const response = JSON.parse(xhr.response);
+                        reject(new BadRequestError(response ?? {}));
+                    } catch (e) {
+                        reject(new Error());
+                    }
                 }
             });
             xhr.send(formData);
