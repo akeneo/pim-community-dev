@@ -72,6 +72,9 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         $allViolations = $validationResponse['violations'];
 
         Assert::isArray($validFamilyVariants);
+        // This is an optimization to not trigger two times the jobs. Yet, it's not an ideal design because it means the
+        // caller know who are the listener. It means it introduced accidental coupling between the two components that
+        // should not know each other.
         $this->bulkFamilyVariantSaver->saveAll($validFamilyVariants, [
             ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true,
         ]);
@@ -108,6 +111,9 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         $validFamilyVariants = $validationResponse['valid_family_variants'];
         $allViolations = $validationResponse['violations'];
 
+        // This is an optimization to not trigger two times the jobs. Yet, it's not an ideal design because it means the
+        // caller knows who are the listeners. It means it introduced accidental coupling between the two components that
+        // should not know each other.
         $this->bulkFamilyVariantSaver->saveAll(
             $validFamilyVariants,
             [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]
