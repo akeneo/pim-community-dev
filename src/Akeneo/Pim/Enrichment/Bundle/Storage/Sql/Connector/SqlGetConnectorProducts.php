@@ -145,7 +145,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
 
         $products = [];
         foreach ($productUuids as $productUuid) {
-            if (!isset($rows[$productUuid->toString()]['uuid'])) {
+            if (!isset($rows[$productUuid->toString()])) {
                 continue;
             }
             $row = $rows[$productUuid->toString()];
