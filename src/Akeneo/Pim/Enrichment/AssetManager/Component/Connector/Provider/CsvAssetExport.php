@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Provider;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
-use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -31,7 +31,10 @@ class CsvAssetExport implements ConstraintCollectionProviderInterface, DefaultVa
     public function getDefaultValues()
     {
         return [
-            'filePath' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.csv',
+            'storage' => [
+                'type' => 'none',
+                'file_path' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.csv'
+            ],
             'delimiter' => ';',
             'enclosure' => '"',
             'withHeader' => true,
@@ -50,16 +53,7 @@ class CsvAssetExport implements ConstraintCollectionProviderInterface, DefaultVa
         return new Collection(
             [
                 'fields' => [
-                    'filePath' => [
-                        new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
-                        new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
-                        new Regex(
-                            [
-                                'pattern' => '/.\.csv$/',
-                                'message' => 'The extension file must be ".csv"'
-                            ]
-                        )
-                    ],
+                    'storage'   => new Storage(['csv']),
                     'delimiter' => [
                         new NotBlank(['groups' => ['Default', 'FileConfiguration']]),
                         new Choice(

@@ -6,7 +6,9 @@ jobs:
         label:     Attribute group accesses data fixtures
         type:      fixtures
         configuration:
-            filePath: attribute_group_accesses.csv
+            storage:
+                type: local
+                file_path: attribute_group_accesses.csv
 
     fixtures_product_category_access_csv:
         order: 40
@@ -15,7 +17,9 @@ jobs:
         label:     Product category accesses data fixtures
         type:      fixtures
         configuration:
-            filePath: product_category_accesses.csv
+            storage:
+                type: local
+                file_path: product_category_accesses.csv
 
     fixtures_job_profile_access_csv:
         order:     150
@@ -24,7 +28,9 @@ jobs:
         label:     Job profile accesses data fixtures
         type:      fixtures
         configuration:
-            filePath: job_profile_accesses.csv
+            storage:
+                type: local
+                file_path: job_profile_accesses.csv
 
     fixtures_locale_access_csv:
         order:     30
@@ -33,7 +39,9 @@ jobs:
         label:     Locale accesses data fixtures
         type:      fixtures
         configuration:
-            filePath: locale_accesses.csv
+            storage:
+                type: local
+                file_path: locale_accesses.csv
 
     fixtures_rule_yml:
         order:     70
@@ -42,4 +50,6 @@ jobs:
         label:     rules data fixtures
         type:      fixtures
         configuration:
-            filePath: rules.yml
+            storage:
+                type: local
+                file_path: rules.yml

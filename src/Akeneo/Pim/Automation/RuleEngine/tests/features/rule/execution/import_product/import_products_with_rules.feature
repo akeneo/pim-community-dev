@@ -30,7 +30,7 @@ Feature: Import products with rules
       SKU-001;tees;tees;a description
       """
     And the following job "csv_clothing_product_import_with_rules" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And the following products:
       | sku     | family | categories | description-fr_FR-tablet |
       | SKU-001 | tees   | tees       | a description            |
@@ -45,7 +45,7 @@ Feature: Import products with rules
       SKU-001;tees;tees;a description
       """
     And the following job "csv_clothing_product_import_with_rules" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I launch the "csv_clothing_product_import_with_rules" import job
     Then the fr_FR tablet description of "SKU-001" should be "an other description"
 
@@ -57,6 +57,6 @@ Feature: Import products with rules
       SKU-001;tees;tees;a description
       """
     And the following job "xlsx_clothing_product_import_with_rules" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I launch the "xlsx_clothing_product_import_with_rules" import job
     Then the fr_FR tablet description of "SKU-001" should be "an other description"

@@ -89,7 +89,6 @@ data:
   FLAG_ONBOARDER_SERENITY_CONTRIBUTOR_AUTHENTICATION_ENABLED: "1"
   FLAG_SUPPLIER_PORTAL_SUPPLIER_FILE_DROPPING_ENABLED: "1"
   FLAG_TAILORED_IMPORT_ENABLED: "1"
-  FLAG_JOB_AUTOMATION_REMOTE_STORAGE_ENABLED: "1"
   {{- end }}
 
   {{- if eq ((index .Values.global.extraLabels "tags.akeneo.com/product_reference_code") | toString) "growth_edition_dev" }}

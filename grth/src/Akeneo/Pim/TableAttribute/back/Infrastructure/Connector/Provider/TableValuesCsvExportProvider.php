@@ -14,15 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\Provider;
 
 use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocale;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
-use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -38,15 +37,8 @@ final class TableValuesCsvExportProvider implements ConstraintCollectionProvider
         return new Collection(
             [
                 'fields' => [
-                    'filePath'   => [
-                        new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
-                        new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
-                        new Regex([
-                            'pattern' => '/.\.csv$/',
-                            'message' => 'The extension file must be ".csv"'
-                        ])
-                    ],
-                    'delimiter'  => [
+                    'storage' => new Storage(['csv']),
+                    'delimiter' => [
                         new NotBlank(['groups' => ['Default', 'FileConfiguration']]),
                         new Choice(
                             [
@@ -57,7 +49,7 @@ final class TableValuesCsvExportProvider implements ConstraintCollectionProvider
                             ]
                         ),
                     ],
-                    'enclosure'  => [
+                    'enclosure' => [
                         [
                             new NotBlank(['groups' => ['Default', 'FileConfiguration']]),
                             new Choice(
@@ -128,7 +120,10 @@ final class TableValuesCsvExportProvider implements ConstraintCollectionProvider
     public function getDefaultValues(): array
     {
         return [
-            'filePath' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.csv',
+            'storage' => [
+                'type' => 'none',
+                'file_path' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.csv',
+            ],
             'delimiter' => ';',
             'enclosure' => '"',
             'withHeader' => true,
