@@ -22,7 +22,9 @@ $rules = [
         'Ramsey\Uuid\Uuid',
         'Ramsey\Uuid\UuidInterface',
         // it implements a CE query differently for permissions
-        'Akeneo\Category\Domain\Component\CategoryTree\Query',
+        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query',
+        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
+        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory',
         'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface',
@@ -69,6 +71,8 @@ $rules = [
         // TIP-1002: Permissions should not be linked to Channel
         'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
         'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
+        'Akeneo\Channel\API\Query\FindAllViewableLocalesForUser',
+        'Akeneo\Channel\API\Query\Locale',
 
         //TODO: Link by id instead of reference
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',

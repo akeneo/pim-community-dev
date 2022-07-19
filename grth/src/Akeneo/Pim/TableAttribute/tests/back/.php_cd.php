@@ -33,6 +33,8 @@ $rules = [
             'Symfony\Component\Form\Extension\Core\Type\FormType',
             'Symfony\Component\Form\FormBuilderInterface',
             'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
+            'Symfony\Component\Messenger\MessageBusInterface',
+            'Symfony\Component\Messenger\Stamp\HandledStamp',
             'Twig\Environment',
 
             // doctrine
@@ -45,6 +47,7 @@ $rules = [
             'Doctrine\ORM\Events',
 
             // pim dependencies
+            'Akeneo\Pim\Enrichment\Product\API',
             'Akeneo\Pim\Structure\Component',
             'Akeneo\Tool\Component\StorageUtils\Cache',
             'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',

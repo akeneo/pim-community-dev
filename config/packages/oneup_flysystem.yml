@@ -21,3 +21,6 @@ oneup_flysystem:
         local_storage:
             adapter: local_storage_adapter
             mount: localFilesystem
+        supplier_portal:
+            adapter: supplier_portal_storage_adapter
+            mount: supplierPortal

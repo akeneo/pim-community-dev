@@ -153,5 +153,5 @@ extract-front-translations: #Doc: Extract translations for Crowdin
 	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front i18n-extract 'src/**/*.{ts,tsx}' --ignore '**/*.{test,d}.{ts,tsx}' --format simple --out-file src/translations/messages.en.json
 
 .PHONY: build-supplier-portal-supplier-front-app
-build-supplier-portal-supplier-front-app: #Doc: Build Onboarder supplier frontend application
+build-supplier-portal-supplier-front-app: #Doc: Build Supplier Portal supplier frontend application
 	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front app:build
