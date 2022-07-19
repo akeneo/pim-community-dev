@@ -34,9 +34,7 @@ test('it renders the storage form', () => {
     />
   );
 
-  expect(
-    screen.getByText('pim_import_export.form.job_instance.storage_form.connection.none.export')
-  ).toBeInTheDocument();
+  expect(screen.getByText('pim_import_export.form.job_instance.storage_form.connection.none')).toBeInTheDocument();
 });
 
 test('it hides the storage form when local and remote storage are disabled', () => {
@@ -61,7 +59,7 @@ test('it hides the storage form when local and remote storage are disabled', () 
   );
 
   expect(
-    screen.queryByText('pim_import_export.form.job_instance.storage_form.connection.none.export')
+    screen.queryByText('pim_import_export.form.job_instance.storage_form.connection.none')
   ).not.toBeInTheDocument();
 });
 
