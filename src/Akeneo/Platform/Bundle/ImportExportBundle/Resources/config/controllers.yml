@@ -34,7 +34,7 @@ services:
             - '@validator'
             - '@akeneo_batch.job.job_parameters_validator'
             - '@akeneo_batch.job_parameters_factory'
-            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@pim_connector.launcher.authenticated_job_launcher'
             - '@security.token_storage'
             - '@router'
             - '@pim_enrich.provider.form.chained'
