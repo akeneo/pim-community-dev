@@ -13,6 +13,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageCommand;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscriber\UpdateJobExecutionStorageSummarySubscriber;
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\Xlsx\EntityWithValuesWriter;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobWithStepsInterface;
@@ -90,11 +91,13 @@ final class UploadStep extends AbstractStep
 
     private function extractFileToTransferFromWriter(ArchivableWriterInterface $writer): array
     {
+        $dirname = substr(dirname($writer->getPath()),4);
+
         return array_map(
             static fn (WrittenFileInfo $writtenFile) => new FileToTransfer(
                 $writtenFile->sourceKey(),
                 $writtenFile->sourceStorage(),
-                $writtenFile->outputFilepath(),
+                sprintf('%s/%s', $dirname, $writtenFile->outputFilepath()),
                 $writtenFile->isLocalFile()
             ),
             $writer->getWrittenFiles()
