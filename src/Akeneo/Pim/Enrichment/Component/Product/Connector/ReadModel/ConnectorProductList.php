@@ -4,28 +4,23 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
+use Webmozart\Assert\Assert;
+
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ConnectorProductList
 {
-    /** @var int total number of products returned by the search without the pagination */
-    private $totalNumberOfProducts;
-
-    /** @var ConnectorProduct[] paginated list of products for the connectors */
-    private $connectorProducts;
-
     /**
-     * @param int                $totalNumberOfProducts
-     * @param ConnectorProduct[] $connectorProducts
+     * @param int $totalNumberOfProducts total number of products returned by the search without the pagination
+     * @param ConnectorProduct[] $connectorProducts paginated list of products for the connectors
      */
-    public function __construct(int $totalNumberOfProducts, array $connectorProducts)
+    public function __construct(private int $totalNumberOfProducts, private array $connectorProducts)
     {
-        $this->totalNumberOfProducts = $totalNumberOfProducts;
-        $this->connectorProducts = (function (ConnectorProduct ...$connectorProducts) {
-            return $connectorProducts;
-        })(...$connectorProducts);
+        Assert::greaterThanEq($this->totalNumberOfProducts, 0);
+        Assert::allIsInstanceOf($connectorProducts, ConnectorProduct::class);
+        Assert::isList($connectorProducts);
     }
 
     public function totalNumberOfProducts(): int

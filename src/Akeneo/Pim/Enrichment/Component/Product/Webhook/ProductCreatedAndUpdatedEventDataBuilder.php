@@ -15,6 +15,7 @@ use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -46,9 +47,11 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
 
     public function build(BulkEventInterface $bulkEvent, Context $context): EventDataCollection
     {
-        // TODO CPM-676 Change this once GetConnectorProduct is done by Uuids
         $products = $this->getConnectorProducts(
-            $this->getProductIdentifiers($bulkEvent->getEvents()),
+            \array_map(
+                static fn (ProductCreated|ProductUpdated $event): UuidInterface => $event->getProductUuid(),
+                $bulkEvent->getEvents()
+            ),
             $context->getUserId()
         );
 
@@ -74,29 +77,14 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
     }
 
     /**
-     * @param (ProductCreated|ProductUpdated)[] $events
-     *
-     * @return string[]
-     */
-    private function getProductIdentifiers(array $events): array
-    {
-        $identifiers = [];
-        foreach ($events as $event) {
-            $identifiers[] = $event->getIdentifier();
-        }
-
-        return $identifiers;
-    }
-
-    /**
-     * @param string[] $identifiers
+     * @param UuidInterface[] $uuids
      *
      * @return array<string, ConnectorProduct>
      */
-    private function getConnectorProducts(array $identifiers, int $userId): array
+    private function getConnectorProducts(array $uuids, int $userId): array
     {
         $result = $this->getConnectorProductsQuery
-            ->fromProductIdentifiers($identifiers, $userId, null, null, null)
+            ->fromProductUuids($uuids, $userId, null, null, null)
             ->connectorProducts();
 
         $products = [];

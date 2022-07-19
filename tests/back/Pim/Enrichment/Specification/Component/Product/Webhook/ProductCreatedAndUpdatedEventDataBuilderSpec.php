@@ -110,7 +110,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         ]);
 
         $getConnectorProductsQuery
-            ->fromProductIdentifiers(['blue_jean', 'red_jean'], 10, null, null, null)
+            ->fromProductUuids([$blueJeanUuid, $redJeanUuid], 10, null, null, null)
             ->willReturn($productList);
 
         $expectedCollection = new EventDataCollection();
@@ -159,16 +159,16 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $productList = new ConnectorProductList(1, [
             $this->buildConnectorProduct($blueJeanUuid, 'blue_jean')
         ]);
+        $redJeanUuid = Uuid::uuid4();
 
         $getConnectorProductsQuery
-            ->fromProductIdentifiers(['blue_jean', 'red_jean'], 10, null, null, null)
+            ->fromProductUuids([$blueJeanUuid, $redJeanUuid], 10, null, null, null)
             ->willReturn($productList);
 
         $blueJeanEvent = new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'identifier' => 'blue_jean',
             'uuid' => $blueJeanUuid,
         ]);
-        $redJeanUuid = Uuid::uuid4();
         $redJeanEvent = new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'identifier' => 'red_jean',
             'uuid' => $redJeanUuid,
