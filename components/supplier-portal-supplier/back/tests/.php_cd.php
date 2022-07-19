@@ -22,6 +22,9 @@ $rules = [
     // src
     $builder->only(
         [
+            // Supplier Portal retailer coupling
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
+
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
         ],
@@ -29,11 +32,11 @@ $rules = [
 
     $builder->only(
         [
-            // Supplier Portal coupling
-            'Akeneo\SupplierPortal\Supplier\Domain',
-
-            // Onboarder retailer coupling
+            // Supplier Portal retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
+
+            // Supplier Portal supplier coupling
+            'Akeneo\SupplierPortal\Supplier\Domain',
 
             // PIM coupling
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
@@ -51,9 +54,16 @@ $rules = [
 
     $builder->only(
         [
-            // Supplier Portal coupling
+            // Supplier Portal retailer coupling
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
+
+            // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
             'Akeneo\SupplierPortal\Supplier\Application',
+
+            // PIM coupling
+            'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
+
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
             'Psr\Log\LoggerInterface',
@@ -67,9 +77,13 @@ $rules = [
     // tests
     $builder->only(
         [
-            // Supplier Portal coupling
+            // Supplier Portal retailer coupling
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
+            
+            // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
             'Akeneo\SupplierPortal\Supplier\Infrastructure',
+
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
             'Symfony',
@@ -78,15 +92,18 @@ $rules = [
 
     $builder->only(
         [
-            // Supplier Portal coupling
+            // Supplier Portal retailer coupling
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
+
+            // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
             'Akeneo\SupplierPortal\Supplier\Application',
             'Akeneo\SupplierPortal\Supplier\Infrastructure',
-            // Onboarder retailer coupling
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
+
             // PIM coupling
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+
             // External dependencies coupling
             'PHPUnit\Framework',
             'Psr\Log\NullLogger',
@@ -103,14 +120,16 @@ $rules = [
 
     $builder->only(
         [
-            // Supplier Portal coupling
+            // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
             'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\InvalidPassword',
             'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePassword',
             'Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler',
             'Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication',
+
             // PIM coupling
             'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag',
+
             // External dependencies coupling
             'Behat',
             'PHPUnit\Framework',
