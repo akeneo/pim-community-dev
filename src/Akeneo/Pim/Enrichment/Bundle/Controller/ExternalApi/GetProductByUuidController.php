@@ -11,11 +11,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\DBAL\Connection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,8 +37,7 @@ class GetProductByUuidController
         private EventDispatcherInterface $eventDispatcher,
         private GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
         private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        private SecurityFacade $security,
-        private Connection $connection
+        private SecurityFacade $security
     ) {
     }
 
@@ -58,9 +55,12 @@ class GetProductByUuidController
             $user = $this->tokenStorage->getToken()->getUser();
             Assert::isInstanceOf($user, UserInterface::class);
 
-            $identifier = $this->temporaryGetUuidFromIdentifier(Uuid::fromString($uuid));
+            $uuid = Uuid::fromString($uuid);
+            if ($uuid->getVersion() !== 4) {
+                throw new BadRequestException("The provided uuid is not valid");
+            }
 
-            $product = $connectorProductsQuery->fromProductIdentifier($identifier, $user->getId());
+            $product = $connectorProductsQuery->fromProductUuid($uuid, $user->getId());
             $this->eventDispatcher->dispatch(new ReadProductsEvent(1));
 
             if ($request->query->getAlpha('with_quality_scores', 'false') === 'true') {
@@ -69,21 +69,14 @@ class GetProductByUuidController
             if ($request->query->getAlpha('with_completenesses', 'false') === 'true') {
                 $product = $this->getProductsWithCompletenesses->fromConnectorProduct($product);
             }
-        } catch (InvalidUuidStringException $e) {
+        } catch (InvalidUuidStringException) {
             throw new BadRequestException("The provided uuid is not valid");
-        } catch (ObjectNotFoundException $e) {
+        } catch (ObjectNotFoundException) {
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist or you do not have permission to access it.', $uuid));
         }
 
         $normalizedProduct = $this->connectorProductWithUuidNormalizer->normalizeConnectorProduct($product);
 
         return new JsonResponse($normalizedProduct);
-    }
-
-    private function temporaryGetUuidFromIdentifier(UuidInterface $uuid)
-    {
-        return $this->connection->fetchOne(
-            'SELECT identifier FROM pim_catalog_product WHERE uuid = ?', [$uuid->getBytes()]
-        );
     }
 }

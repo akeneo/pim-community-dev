@@ -86,7 +86,6 @@ services:
             - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
             - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
             - '@oro_security.security_facade'
-            - '@database_connection'
 
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
         public: true
