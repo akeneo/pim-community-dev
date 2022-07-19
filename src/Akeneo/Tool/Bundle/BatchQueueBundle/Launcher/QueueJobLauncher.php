@@ -15,7 +15,6 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -65,7 +64,7 @@ class QueueJobLauncher implements JobLauncherInterface
     /**
      * {@inheritdoc}
      */
-    public function launch(JobInstance $jobInstance, ?UserInterface $user, array $configuration = []) : JobExecution
+    public function launch(JobInstance $jobInstance, ?UserInterface $user, array $configuration = []): JobExecution
     {
         $options = ['env' => $this->environment];
         if (isset($configuration['send_email']) && $user && method_exists($user, 'getEmail')) {
@@ -96,7 +95,7 @@ class QueueJobLauncher implements JobLauncherInterface
      *
      * @return JobExecution
      */
-    private function createJobExecution(JobInstance $jobInstance, ?UserInterface $user, array $configuration) : JobExecution
+    private function createJobExecution(JobInstance $jobInstance, ?UserInterface $user, array $configuration): JobExecution
     {
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $configuration = array_merge($jobInstance->getRawParameters(), $configuration);
