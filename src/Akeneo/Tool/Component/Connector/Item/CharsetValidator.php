@@ -49,7 +49,7 @@ class CharsetValidator implements StepExecutionAwareInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         // TODO RAB-907: Remove this condition
-        $filePath = $jobParameters->has('storage')
+        $filePath = $jobParameters->has('storage') && isset($jobParameters->get('storage')['file_path'])
             ? $jobParameters->get('storage')['file_path']
             : $jobParameters->get('filePath');
 
@@ -99,7 +99,7 @@ class CharsetValidator implements StepExecutionAwareInterface
 
             throw new CharsetException(
                 sprintf('The file "%s" is not correctly encoded in %s. ', $filePath, $this->charset) .
-                $message
+                    $message
             );
         }
 

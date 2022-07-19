@@ -41,7 +41,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
             if ($this->isReaderUsable($reader)) {
                 $jobParameters = $jobExecution->getJobParameters();
                 // TODO RAB-907: Remove this condition
-                $filePath = $jobParameters->has('storage')
+                $filePath = $jobParameters->has('storage') && isset($jobParameters->get('storage')['file_path'])
                     ? $jobParameters->get('storage')['file_path']
                     : $jobParameters->get('filePath');
 
