@@ -46,6 +46,4 @@ Akeneo\Tool\Component\Batch\Model\JobInstance:
         jobExecutions:
             targetEntity: Akeneo\Tool\Component\Batch\Model\JobExecution
             mappedBy: jobInstance
-            cascade:
-                - remove
             orphanRemoval: true

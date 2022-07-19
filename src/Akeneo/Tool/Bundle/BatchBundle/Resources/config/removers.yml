@@ -1,10 +1,9 @@
 services:
     akeneo_batch.remover.job_instance:
-        class: '%akeneo_storage_utils.remover.base.class%'
+        class: 'Akeneo\Tool\Bundle\BatchBundle\Remover\JobInstanceRemover'
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@akeneo_batch.job.job_instance_repository'
             - '@event_dispatcher'
-            - '%akeneo_batch.entity.job_instance.class%'
 
     akeneo_batch.delete_job_execution:
         class: 'Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\DeleteJobExecution'

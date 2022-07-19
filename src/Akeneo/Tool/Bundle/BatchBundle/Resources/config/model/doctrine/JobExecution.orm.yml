@@ -84,7 +84,6 @@ Akeneo\Tool\Component\Batch\Model\JobExecution:
             mappedBy: jobExecution
             cascade:
                 - persist
-                - remove
             orphanRemoval: true
     manyToOne:
         jobInstance:
