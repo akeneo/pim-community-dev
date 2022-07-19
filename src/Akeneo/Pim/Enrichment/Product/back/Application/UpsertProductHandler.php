@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -33,7 +34,8 @@ final class UpsertProductHandler
         private SaverInterface $productSaver,
         private ValidatorInterface $productValidator,
         private EventDispatcherInterface $eventDispatcher,
-        private UserIntentApplierRegistry $applierRegistry
+        private UserIntentApplierRegistry $applierRegistry,
+        private TokenStorageInterface $tokenStorage
     ) {
     }
 
@@ -43,6 +45,8 @@ final class UpsertProductHandler
         if (0 < $violations->count()) {
             throw new ViolationsException($violations);
         }
+
+        $this->checkConsistencyWithConnectedUser($command->userId());
 
         $product = $this->productRepository->findOneByIdentifier($command->productIdentifier());
         $isCreation = false;
@@ -119,6 +123,20 @@ final class UpsertProductHandler
             } else {
                 throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($userIntent)));
             }
+        }
+    }
+
+    /**
+     * Legacy update uses context to check permissions on the current connected user rather than using userId passed
+     * as argument. To avoid potential differences between connected user and userId passed to the command, we check
+     * its consistency here
+     */
+    private function checkConsistencyWithConnectedUser(int $userId): void
+    {
+        $connectedUserId = $this->tokenStorage->getToken()->getUser()->getId();
+
+        if ($userId !== $connectedUserId) {
+            throw new \LogicException('User id provided to the command is not the same as the connected user');
         }
     }
 }
