@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model;
 
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorIdentifier;
+use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Path;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\SupplierIdentifier;
@@ -16,7 +16,7 @@ final class SupplierFile
     private Identifier $identifier;
     private Filename $filename;
     private Path $path;
-    private ?ContributorIdentifier $uploadedByContributor;
+    private ?ContributorEmail $uploadedByContributor;
     private SupplierIdentifier $uploadedBySupplier;
     private \DateTimeInterface $uploadedAt;
     private bool $downloaded;
@@ -34,7 +34,7 @@ final class SupplierFile
         $this->identifier = $identifier;
         $this->filename = Filename::fromString($filename);
         $this->path = Path::fromString($path);
-        $this->uploadedByContributor = ContributorIdentifier::fromString($uploadedByContributor);
+        $this->uploadedByContributor = ContributorEmail::fromString($uploadedByContributor);
         $this->uploadedBySupplier = SupplierIdentifier::fromString($uploadedBySupplier);
         $this->uploadedAt = $uploadedAt;
         $this->downloaded = $downloaded;
