@@ -10,7 +10,7 @@ final class SupplierFile
         public string $identifier,
         public string $path,
         public bool $downloaded,
-        public string $uploadedByContributor,
+        public ?string $uploadedByContributor,
         public string $uploadedBySupplier,
         public ?string $uploadedAt,
     ) {
