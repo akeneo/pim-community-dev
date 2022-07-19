@@ -86,6 +86,8 @@ class ProductExportController
             $rawParameters['storage']['file_path'] = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
             if (!in_array($jobInstance->getJobName(), self::PUBLISH_PRODUCT_JOB_NAME)) {
                 unset($rawParameters['filePath']);
+            } else {
+                $rawParameters['filePath']  = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
             }
         }
 
