@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read;
 
-interface GetAllProductFiles
+interface GetSupplierFiles
 {
     public const NUMBER_OF_SUPPLIER_FILES_PER_PAGE = 25;
 
