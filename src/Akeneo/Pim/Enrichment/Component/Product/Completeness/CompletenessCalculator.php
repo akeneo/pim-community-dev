@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProdu
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -16,23 +17,15 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesM
  */
 class CompletenessCalculator
 {
-    /** @var GetCompletenessProductMasks */
-    private $getCompletenessProductMasks;
-
-    /** @var GetRequiredAttributesMasks */
-    private $getRequiredAttributesMasks;
-
     public function __construct(
-        GetCompletenessProductMasks $getCompletenessProductMasks,
-        GetRequiredAttributesMasks $getRequiredAttributesMasks
+        private GetCompletenessProductMasks $getCompletenessProductMasks,
+        private GetRequiredAttributesMasks $getRequiredAttributesMasks
     ) {
-        $this->getCompletenessProductMasks = $getCompletenessProductMasks;
-        $this->getRequiredAttributesMasks = $getRequiredAttributesMasks;
     }
 
-    public function fromProductIdentifiers($productIdentifiers): array
+    public function fromProductUuids(array $productUuids): array
     {
-        $productMasks = $this->getCompletenessProductMasks->fromProductIdentifiers($productIdentifiers);
+        $productMasks = $this->getCompletenessProductMasks->fromProductUuids($productUuids);
 
         $familyCodes = array_map(function (CompletenessProductMask $product) {
             return $product->familyCode();
@@ -43,14 +36,14 @@ class CompletenessCalculator
         $result = [];
         foreach ($productMasks as $productMask) {
             $attributeRequirementMask = $requiredAttributesMasks[$productMask->familyCode()] ?? null;
-            $result[$productMask->identifier()] = $productMask->completenessCollectionForProduct($attributeRequirementMask);
+            $result[$productMask->id()] = $productMask->completenessCollectionForProduct($attributeRequirementMask);
         }
 
         return $result;
     }
 
-    public function fromProductIdentifier($productIdentifier): ?ProductCompletenessWithMissingAttributeCodesCollection
+    public function fromProductUuid(UuidInterface $productUuid): ?ProductCompletenessWithMissingAttributeCodesCollection
     {
-        return $this->fromProductIdentifiers([$productIdentifier])[$productIdentifier] ?? null;
+        return $this->fromProductUuids([$productUuid])[$productUuid->toString()] ?? null;
     }
 }

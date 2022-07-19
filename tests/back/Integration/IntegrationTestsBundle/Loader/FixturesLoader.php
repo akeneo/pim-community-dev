@@ -25,6 +25,8 @@ use League\Flysystem\FilesystemOperator;
 use League\Flysystem\StorageAttributes;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -424,9 +426,12 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function indexProducts(): void
     {
-        $query = 'SELECT identifier FROM pim_catalog_product';
-        $productIdentifiers = $this->dbConnection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN, 0);
-        $this->productIndexer->indexFromProductIdentifiers($productIdentifiers);
+        $query = 'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product';
+        $productUuids = array_map(
+            fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
+            $this->dbConnection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN, 0)
+        );
+        $this->productIndexer->indexFromProductUuids($productUuids);
     }
 
     /**

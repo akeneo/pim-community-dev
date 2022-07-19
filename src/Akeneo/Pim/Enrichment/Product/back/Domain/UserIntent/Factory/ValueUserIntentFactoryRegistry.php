@@ -44,20 +44,29 @@ class ValueUserIntentFactoryRegistry implements UserIntentFactory
     {
         Assert::isArray($data);
 
-        $attributeTypesByCode = \array_change_key_case($this->getAttributeTypes->fromAttributeCodes(\array_keys($data)), \CASE_LOWER);
+        $attributeTypesByCode = $this->getAttributeTypesByCode($data);
         $valueUserIntents = [];
         foreach ($data as $attributeCode => $values) {
-            $attributeType = $attributeTypesByCode[\strtolower($attributeCode)] ?? null;
+            $attributeType = $attributeTypesByCode[\strtolower((string) $attributeCode)] ?? null;
             Assert::notNull($attributeType, \sprintf('Could not find the %s attribute', $attributeCode));
             $factory = $this->valueUserIntentFactoriesByAttributeType[$attributeType] ?? null;
             if (null === $factory) {
                 throw new \InvalidArgumentException(\sprintf('There is no value factory linked to the attribute type %s', $attributeType));
             }
             foreach ($values as $value) {
-                $valueUserIntents[] = $factory->create($attributeType, $attributeCode, $value);
+                $valueUserIntents[] = $factory->create($attributeType, (string) $attributeCode, $value);
             }
         }
 
         return $valueUserIntents;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAttributeTypesByCode(mixed $data): array
+    {
+        $attributeCodes = \array_map(static fn ($attributeCode) => (string) $attributeCode, \array_keys($data));
+        return \array_change_key_case($this->getAttributeTypes->fromAttributeCodes($attributeCodes), \CASE_LOWER);
     }
 }

@@ -5,11 +5,9 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
@@ -19,13 +17,11 @@ class ProductIndexerSpec extends ObjectBehavior
 {
     function let(
         Client $productAndProductModelIndexClient,
-        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection,
-        Connection $connection
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
         $this->beConstructedWith(
             $productAndProductModelIndexClient,
-            $getElasticsearchProductProjection,
-            new SqlFindProductUuids($connection->getWrappedObject())
+            $getElasticsearchProductProjection
         );
     }
 
@@ -94,10 +90,8 @@ class ProductIndexerSpec extends ObjectBehavior
 
     function it_does_not_bulk_index_empty_arrays_of_identifiers(
         Client $productAndProductModelIndexClient,
-        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection,
-        Connection $connection
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
-        $connection->fetchAllKeyValue(Argument::cetera())->shouldNotBeCalled();
         $getElasticsearchProductProjection->fromProductUuids(Argument::cetera())->shouldNotBeCalled();
         $productAndProductModelIndexClient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
 
@@ -190,40 +184,6 @@ class ProductIndexerSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->indexFromProductUuids($uuids, ['index_refresh' => Refresh::enable()]);
-    }
-
-    // TODO Remove this one
-    function it_reindex_from_identifiers_deprecated(
-        Client $productAndProductModelIndexClient,
-        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection,
-        Connection $connection
-    ) {
-        $identifiers = ['foo', 'bar', 'unknown'];
-        $uuids = [Uuid::uuid4(), Uuid::uuid4()];
-        $connection
-            ->fetchAllKeyValue(Argument::any(), ['identifiers' => $identifiers], Argument::any())
-            ->shouldBeCalled()
-            ->willReturn([
-                'foo' => $uuids[0],
-                'bar' => $uuids[1],
-            ]);
-
-        $iterable = [
-            $this->getElasticSearchProjection('identifier_1', $uuids[0]),
-            $this->getElasticSearchProjection('identifier_2', $uuids[1])
-        ];
-        $getElasticsearchProductProjection
-            ->fromProductUuids($uuids)
-            ->shouldBeCalled()
-            ->willReturn($iterable);
-
-        $productAndProductModelIndexClient->bulkIndexes(
-            $iterable,
-            'id',
-            Refresh::enable()
-        )->shouldBeCalled();
-
-        $this->indexFromProductIdentifiers($identifiers, ['index_refresh' => Refresh::enable()]);
     }
 
     private function getElasticSearchProjection(string $identifier, $uuid = null): ElasticsearchProductProjection
