@@ -44,7 +44,7 @@ class GetProductByUuidController
     ) {
     }
 
-    public function getAction(Request $request, string $uuid): JsonResponse
+    public function __invoke(Request $request, string $uuid): JsonResponse
     {
         if (!$this->security->isGranted('pim_api_product_list')) {
             throw new AccessDeniedHttpException('Access forbidden. You are not allowed to list products.');
