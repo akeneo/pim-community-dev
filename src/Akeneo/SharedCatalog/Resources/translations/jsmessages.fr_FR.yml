@@ -10,6 +10,7 @@ shared_catalog:
     placeholder: betty@akeneo.com
     email: Adresse e-mail
     invalid_email: Cette valeur n’est pas une adresse e-mail valide.
+    duplicate_email: Certains destinataires sont déjà dans la liste. Ils seront ignorés. 
     helper: "Ajoutez des destinataires pour leur donner accès à votre nouveau catalogue partagé. Vous pouvez remplir une liste d'adresses avec des séparateurs : espace, virgule, point-virgule et saut de ligne."
     no_result: Désolé, aucun e-mail ne correspond à votre recherche
     no_data: Aucune adresse email déclarée pour le moment
@@ -22,7 +23,13 @@ shared_catalog:
       filesize_too_large: Le fichier que vous avez fourni est trop grand, la taille maximale est de 2MB
       invalid_file: Ce fichier est invalide
       invalid_color: Cette valeur n'est pas une couleur CSS valide.
+    color:
+      label: Configurer la couleur de votre police
     logo:
       label: Télécharger votre logo
+      file_information_helper: "Taille maximale: 2MB; le format de fichier: PNG ou JPG"
+    cover:
+      label: Charger votre image de couverture
+      file_information_helper: Cette image sera utilisée sur la page de connexion du portail Shared Catalogs et sur la page de couverture des exports en PDF. Afin d'afficher une image de qualité, la dimension de l'image doit être au-dessus de 1600px X 2227px. 
   button:
     save: Enregistrer et partager
