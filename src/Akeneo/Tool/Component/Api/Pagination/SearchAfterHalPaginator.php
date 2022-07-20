@@ -35,6 +35,7 @@ class SearchAfterHalPaginator implements PaginatorInterface
             'uri_parameters'      => [],
             'item_identifier_key' => 'code',
             'limit'               => null,
+            'item_route_parameter' => 'code',
         ]);
 
         $this->resolver->setRequired([
@@ -74,7 +75,8 @@ class SearchAfterHalPaginator implements PaginatorInterface
         $embedded = [];
         foreach ($items as $item) {
             $itemIdentifier = $item[$parameters['item_identifier_key']];
-            $itemUriParameters = array_merge($parameters['uri_parameters'], ['code' => $itemIdentifier]);
+            $itemRouteParameter = $parameters['item_route_parameter'];
+            $itemUriParameters = array_merge($parameters['uri_parameters'], [$itemRouteParameter => $itemIdentifier]);
 
             $itemLinks = [
                 $this->createLink($parameters['item_route_name'], $itemUriParameters, null, 'self')
