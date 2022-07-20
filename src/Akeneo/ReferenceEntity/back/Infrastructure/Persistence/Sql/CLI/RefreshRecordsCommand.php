@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\CLI;
 
+use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\FindAllRecordIdentifiers;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecord;
 use Doctrine\DBAL\Connection;
@@ -61,11 +62,16 @@ class RefreshRecordsCommand extends Command
         $recordIdentifiers = $this->findAllRecordIdentifiers->fetch();
         $i = 0;
         foreach ($recordIdentifiers as $recordIdentifier) {
-            $this->refreshRecord->refresh($recordIdentifier);
-            if ($i % self::BULK_SIZE === 0 && $verbose) {
-                $progressBar->advance(self::BULK_SIZE);
+            try {
+                $this->refreshRecord->refresh($recordIdentifier);
+            } catch (RecordNotFoundException) {
+                continue;
+            } finally {
+                if ($i % self::BULK_SIZE === 0 && $verbose) {
+                    $progressBar->advance(self::BULK_SIZE);
+                }
+                $i++;
             }
-            $i++;
         }
         if ($verbose) {
             $progressBar->finish();
