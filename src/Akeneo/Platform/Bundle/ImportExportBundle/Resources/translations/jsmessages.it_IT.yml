@@ -151,6 +151,8 @@ pim_import_export:
             title: Impostazione locale file
             help: Definisci l'impostazione locale in cui visualizzare le etichette
       file_path: Percorso del file
+      storage_form:
+        file_path.label: Percorso del file
   widget:
     last_operations:
       empty: Al momento non ci sono operazioni da visualizzare.

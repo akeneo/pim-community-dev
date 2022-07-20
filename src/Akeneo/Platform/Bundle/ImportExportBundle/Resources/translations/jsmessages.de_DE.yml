@@ -151,6 +151,8 @@ pim_import_export:
             title: Datei Gebietsschema
             help: Definieren Sie das Gebietsschema, in dem die Labels angezeigt werden
       file_path: Dateipfad
+      storage_form:
+        file_path.label: Dateipfad
   widget:
     last_operations:
       empty: Momentan ist keine Operation vorhanden.

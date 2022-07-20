@@ -151,6 +151,8 @@ pim_import_export:
             title: Local de archivo
             help: Definir la configuración regional en la que se muestran las etiquetas
       file_path: Camino del fichero
+      storage_form:
+        file_path.label: Camino del fichero
   widget:
     last_operations:
       empty: No hay ninguna operación para mostrar por ahora.

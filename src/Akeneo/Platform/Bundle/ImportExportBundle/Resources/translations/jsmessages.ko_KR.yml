@@ -151,6 +151,8 @@ pim_import_export:
             title: 파일 로케일
             help: 레이블을 표시할 로케일을 정의합니다.
       file_path: 파일 경로
+      storage_form:
+        file_path.label: 파일 경로
   widget:
     last_operations:
       empty: 현재 표시할 작업이 없습니다.

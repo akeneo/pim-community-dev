@@ -151,6 +151,8 @@ pim_import_export:
             title: ファイルのロケール
             help: ラベル表示のロケールを定義します
       file_path: ファイルのパス
+      storage_form:
+        file_path.label: ファイルパス
   widget:
     last_operations:
       empty: 現在表示する操作はありません。

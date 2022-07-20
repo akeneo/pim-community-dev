@@ -151,6 +151,8 @@ pim_import_export:
             title: Locale du fichier
             help: Définit la langue dans laquelle les libellés vont être affichés.
       file_path: Chemin du fichier
+      storage_form:
+        file_path.label: Chemin du fichier
   widget:
     last_operations:
       empty: Il n'y a aucune opération à afficher pour le moment.

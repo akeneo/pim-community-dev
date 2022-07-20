@@ -151,6 +151,8 @@ pim_import_export:
             title: Landinstelling bestand
             help: Definieer de taal waarin labels worden weergegeven
       file_path: Bestandspad
+      storage_form:
+        file_path.label: Bestandspad
   widget:
     last_operations:
       empty: Er is op dit moment geen bewerking om weer te geven.
