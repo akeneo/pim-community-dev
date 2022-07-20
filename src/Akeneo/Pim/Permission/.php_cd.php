@@ -175,8 +175,8 @@ $rules = [
         // category bounded context
         'Akeneo\Category\Infrastructure\Component\Model\Category',
         'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
-        'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory',
-        'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory',
+        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory',
+        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
         'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
