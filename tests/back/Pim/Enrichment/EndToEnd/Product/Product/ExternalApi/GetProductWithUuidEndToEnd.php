@@ -223,20 +223,6 @@ class GetProductWithUuidEndToEnd extends AbstractProductTestCase
         );
     }
 
-    public function test_it_throws_a_400_with_a_uuid1()
-    {
-        $client = $this->createAuthenticatedClient();
-        $client->request(
-            'GET',
-            sprintf('api/rest/v1/products-uuid/%s', Uuid::uuid1()->toString())
-        );
-
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertSame(\json_decode($response->getContent())->code, Response::HTTP_BAD_REQUEST);
-        $this->assertSame(\json_decode($response->getContent())->message, 'The provided uuid is not valid');
-    }
-
     public function test_it_gets_a_product_with_quality_scores()
     {
         $product = $this->createProduct('product', [new SetFamily('familyA')]);

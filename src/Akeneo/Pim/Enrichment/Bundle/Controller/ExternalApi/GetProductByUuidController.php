@@ -12,10 +12,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProd
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -55,12 +53,7 @@ class GetProductByUuidController
             $user = $this->tokenStorage->getToken()->getUser();
             Assert::isInstanceOf($user, UserInterface::class);
 
-            $uuid = Uuid::fromString($uuid);
-            if ($uuid->getVersion() !== 4) {
-                throw new BadRequestException("The provided uuid is not valid");
-            }
-
-            $product = $connectorProductsQuery->fromProductUuid($uuid, $user->getId());
+            $product = $connectorProductsQuery->fromProductUuid(Uuid::fromString($uuid), $user->getId());
             $this->eventDispatcher->dispatch(new ReadProductsEvent(1));
 
             if ($request->query->getAlpha('with_quality_scores', 'false') === 'true') {
@@ -69,8 +62,6 @@ class GetProductByUuidController
             if ($request->query->getAlpha('with_completenesses', 'false') === 'true') {
                 $product = $this->getProductsWithCompletenesses->fromConnectorProduct($product);
             }
-        } catch (InvalidUuidStringException) {
-            throw new BadRequestException("The provided uuid is not valid");
         } catch (ObjectNotFoundException) {
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist or you do not have permission to access it.', $uuid));
         }

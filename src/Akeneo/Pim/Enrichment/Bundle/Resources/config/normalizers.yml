@@ -20,12 +20,10 @@ services:
             - '@pim_catalog.normalizer.standard.datetime'
             - '@pim_catalog.repository.attribute'
 
-    pim_api.normalizer.connector_products_with_uuid:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer'
+    Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer:
         arguments:
             - '@pim_api.normalizer.values'
             - '@pim_catalog.normalizer.standard.datetime'
-            - '@pim_catalog.repository.attribute'
 
     pim_api.normalizer.connector_product_models:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductModelNormalizer'

@@ -9,10 +9,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -39,11 +37,7 @@ class DeleteProductByUuidController
             throw new AccessDeniedHttpException('Access forbidden. You are not allowed to delete products');
         }
 
-        try {
-            $product = $this->productRepository->find(Uuid::fromString($uuid));
-        } catch (InvalidUuidStringException) {
-            throw new BadRequestException("The provided uuid is not valid");
-        }
+        $product = $this->productRepository->find(Uuid::fromString($uuid));
 
         if (null === $product) {
             $exception = new UnknownProductException($uuid);

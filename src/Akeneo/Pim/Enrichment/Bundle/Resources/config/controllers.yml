@@ -78,7 +78,7 @@ services:
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\GetProductByUuidController:
         public: true
         arguments:
-            - '@pim_api.normalizer.connector_products_with_uuid'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer'
             - '@security.token_storage'
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options'
