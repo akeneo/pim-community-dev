@@ -88,3 +88,21 @@ test('it displays the upload error label when the upload failed', async () => {
     expect(onFileUploaded).toHaveBeenCalledWith(false);
     expect(screen.getByText('bad file')).toBeInTheDocument();
 });
+
+test('it does not upload the file if the file is not an excel file', async () => {
+    const onFileUploaded = jest.fn();
+    const uploader = jest.fn();
+
+    renderWithProviders(<FileInput {...defaultProps} onFileUploaded={onFileUploaded} uploader={uploader} />);
+
+    const file = new File(['foo'], 'foo.png', {type: 'image/png'});
+
+    await act(async () => {
+        userEvent.upload(screen.getByTestId('file-input'), file);
+        await flushPromises();
+    });
+
+    expect(onFileUploaded).toHaveBeenCalledWith(false);
+    expect(uploader).not.toHaveBeenCalled();
+    expect(screen.getByText('This file is not a xlsx file.')).toBeInTheDocument();
+});

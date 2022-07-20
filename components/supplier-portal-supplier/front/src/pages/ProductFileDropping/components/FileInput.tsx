@@ -1,4 +1,4 @@
-import React, {ReactElement, Ref, useRef, useState} from 'react';
+import React, {ReactElement, Ref, useCallback, useRef, useState} from 'react';
 import styled, {css} from 'styled-components';
 import {
     AkeneoThemedProps,
@@ -14,6 +14,7 @@ import {
 } from 'akeneo-design-system';
 import {ErrorResponse} from '../hooks';
 import {BadRequestError} from '../../../api/BadRequestError';
+import {useIntl} from 'react-intl';
 
 type FileInputProps = {
     onFileUploaded: (isSuccess: boolean) => void;
@@ -52,6 +53,7 @@ const FileInput = React.forwardRef(
         const [progress, setProgress] = useState<number>(0);
         const [successMessage, setSuccessMessage] = useState<null | string>();
         const [errorMessage, setErrorMessage] = useState<null | string>();
+        const intl = useIntl();
         forwardedRef = forwardedRef ?? internalInputRef;
 
         const openFileExplorer = () => {
@@ -60,12 +62,23 @@ const FileInput = React.forwardRef(
             }
         };
 
+        const ensureFileIsXlsxFile = useCallback(
+            (file: File) => {
+                if (!file.name.includes('.') || 'xlsx' !== file.name.split('.').pop()) {
+                    throw new BadRequestError({
+                        error: intl.formatMessage({defaultMessage: 'This file is not a xlsx file.', id: 'sbtByd'}),
+                    });
+                }
+            },
+            [intl]
+        );
+
         const handleUpload = async (file: File) => {
-            //If file is not excel -> error message
             startUploading();
             setIsDraggingFile(false);
 
             try {
+                ensureFileIsXlsxFile(file);
                 await uploader(file, setProgress);
                 uploadSucceeded();
                 setErrorMessage(null);
