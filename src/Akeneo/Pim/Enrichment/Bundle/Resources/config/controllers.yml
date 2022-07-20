@@ -87,6 +87,18 @@ services:
             - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
             - '@oro_security.security_facade'
 
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ListProductsByUuidController:
+        public: true
+        arguments:
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '@pim_enrich.connector.use_cases.validator.list_products'
+            - '%pim_api.configuration%'
+            - '@pim_enrich.connector.use_cases.handler.list_products'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer'
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
+
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
         public: true
         arguments:
