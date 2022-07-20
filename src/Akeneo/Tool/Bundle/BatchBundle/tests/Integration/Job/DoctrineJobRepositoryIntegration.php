@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Integration\integration\BatchBundle\Job;
+namespace Akeneo\Tool\Bundle\BatchBundle\tests\Integration\Job;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
