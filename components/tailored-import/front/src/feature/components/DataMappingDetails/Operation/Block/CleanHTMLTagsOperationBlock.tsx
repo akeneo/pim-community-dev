@@ -27,7 +27,13 @@ const CleanHTMLTagsOperationBlock = ({operation, previewData, isLastOperation, o
         title={translate(`akeneo.tailored_import.data_mapping.operations.${operation.type}.title`)}
         actions={
           <>
-            <Button level="secondary" ghost={true} size="small" onClick={isPreviewOpen ? closePreview : openPreview}>
+            <Button
+              level="secondary"
+              ghost={true}
+              active={isPreviewOpen}
+              size="small"
+              onClick={isPreviewOpen ? closePreview : openPreview}
+            >
               {translate('akeneo.tailored_import.data_mapping.preview.button')}
             </Button>
             <IconButton
