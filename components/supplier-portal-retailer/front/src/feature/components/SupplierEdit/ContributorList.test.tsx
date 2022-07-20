@@ -9,18 +9,18 @@ const contributors = ['contributor1@example.com', 'contributor2@example.com', 'a
 
 test('it renders an empty list', () => {
     renderWithProviders(<ContributorList contributors={[]} setContributors={() => {}} />);
-    expect(screen.getByText('onboarder.supplier.supplier_edit.contributors_form.no_contributor')).toBeInTheDocument();
+    expect(screen.getByText('supplier_portal.supplier.supplier_edit.contributors_form.no_contributor')).toBeInTheDocument();
 });
 
 test('it renders a searchable list of contributors', () => {
     renderWithProviders(<ContributorList contributors={contributors} setContributors={() => {}} />);
     expect(
-        screen.queryByText('onboarder.supplier.supplier_edit.contributors_form.no_contributor')
+        screen.queryByText('supplier_portal.supplier.supplier_edit.contributors_form.no_contributor')
     ).not.toBeInTheDocument();
     expect(
-        screen.getByPlaceholderText('onboarder.supplier.supplier_edit.contributors_form.search_by_email_address')
+        screen.getByPlaceholderText('supplier_portal.supplier.supplier_edit.contributors_form.search_by_email_address')
     ).toBeInTheDocument();
-    expect(screen.getByText('onboarder.supplier.supplier_edit.contributors_form.result_counter')).toBeInTheDocument();
+    expect(screen.getByText('supplier_portal.supplier.supplier_edit.contributors_form.result_counter')).toBeInTheDocument();
 
     contributors.map(contributorEmail => expect(screen.getByText(contributorEmail)).toBeInTheDocument());
 });
@@ -34,7 +34,7 @@ test('it allows new contributors to be added without duplicates', () => {
 
     userEvent.type(screen.getByTestId('tag-input'), contributors.join('{space}').concat('{space}'));
     userEvent.type(screen.getByTestId('tag-input'), 'contributor1@example.com{space}');
-    userEvent.click(screen.getByText('onboarder.supplier.supplier_edit.contributors_form.add_button'));
+    userEvent.click(screen.getByText('supplier_portal.supplier.supplier_edit.contributors_form.add_button'));
 
     renderWithProviders(<ContributorList contributors={defaultContributors} setContributors={setContributors} />);
     contributors.map(contributorEmail => expect(screen.queryAllByText(contributorEmail)).toHaveLength(1));
@@ -54,7 +54,7 @@ test('it excludes invalid emails', () => {
         screen.getByTestId('tag-input'),
         invalidContributorEmails.join('{space}').concat('{space}').concat(validEmail).concat('{space}')
     );
-    userEvent.click(screen.getByText('onboarder.supplier.supplier_edit.contributors_form.add_button'));
+    userEvent.click(screen.getByText('supplier_portal.supplier.supplier_edit.contributors_form.add_button'));
 
     renderWithProviders(<ContributorList contributors={defaultContributors} setContributors={setContributors} />);
     expect(screen.getByText(validEmail)).toBeInTheDocument();
@@ -73,6 +73,6 @@ test('it displays a warning helper if a contributor email is not valid', () => {
     userEvent.type(screen.getByTestId('tag-input'), 'invalidemail'.concat('{space}'));
 
     expect(
-        screen.getByText('onboarder.supplier.supplier_edit.contributors_form.invalid_emails_warning')
+        screen.getByText('supplier_portal.supplier.supplier_edit.contributors_form.invalid_emails_warning')
     ).toBeInTheDocument();
 });

@@ -8,7 +8,7 @@ const EmptyContributorList = () => {
     return (
         <Container>
             <CityIllustration size={256} />
-            <div>{translate('onboarder.supplier.supplier_edit.contributors_form.no_contributor')}</div>
+            <div>{translate('supplier_portal.supplier.supplier_edit.contributors_form.no_contributor')}</div>
         </Container>
     );
 };

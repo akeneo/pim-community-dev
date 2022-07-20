@@ -27,7 +27,7 @@ extensions:
         targetZone: navigation
         position: 100
         config:
-            title: onboarder.menu_block_title
+            title: supplier_portal.menu_block_title
         feature: onboarder_serenity
 
     pim-menu-connect-supplier-portal-supplier-list:
@@ -35,6 +35,6 @@ extensions:
         parent: pim-menu-connect-supplier-portal-block
         position: 10
         config:
-            title: onboarder.supplier.supplier_list.menu_item
+            title: supplier_portal.supplier.supplier_list.menu_item
             to: supplier_portal_retailer_supplier_list
         feature: onboarder_serenity

@@ -27,8 +27,8 @@ test('it can save a supplier', async () => {
     renderWithProviders(<CreateSupplier onSupplierCreated={onSupplierCreated} createButtonlabel={'create'} />);
 
     openModal();
-    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.code.label'), 'supplier1');
-    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.label.label'), 'Supplier 1');
+    userEvent.type(screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.code.label'), 'supplier1');
+    userEvent.type(screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.label.label'), 'Supplier 1');
 
     await act(async () => {
         userEvent.click(screen.getByText('pim_common.save'));
@@ -50,8 +50,8 @@ test('it renders an error notification when a supplier with the same code alread
     renderWithProviders(<CreateSupplier onSupplierCreated={onSupplierCreated} createButtonlabel={'create'} />);
 
     openModal();
-    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.code.label'), 'supplier1');
-    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.label.label'), 'Supplier 1');
+    userEvent.type(screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.code.label'), 'supplier1');
+    userEvent.type(screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.label.label'), 'Supplier 1');
 
     await act(async () => {
         userEvent.click(screen.getByText('pim_common.save'));
@@ -62,7 +62,7 @@ test('it renders an error notification when a supplier with the same code alread
     expect(notify).toHaveBeenNthCalledWith(
         1,
         NotificationLevel.ERROR,
-        'onboarder.supplier.supplier_create.error.supplier_already_exists'
+        'supplier_portal.supplier.supplier_create.error.supplier_already_exists'
     );
 });
 
@@ -71,11 +71,11 @@ test('The supplier code can be generated from the supplier label', () => {
 
     openModal();
     userEvent.type(
-        screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.label.label'),
+        screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.label.label'),
         '  Supplier #1     '
     );
 
-    expect(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.code.label')).toHaveValue(
+    expect(screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.code.label')).toHaveValue(
         'supplier__1'
     );
 });
@@ -85,8 +85,8 @@ test('The supplier code is not generated anymore after typing a label', () => {
 
     openModal();
 
-    const codeField = screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.code.label');
-    const labelField = screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.label.label');
+    const codeField = screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.code.label');
+    const labelField = screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.label.label');
 
     userEvent.type(labelField, 'Supplier 1');
     //type() appends instead of replacing. See https://testing-library.com/docs/ecosystem-user-event/#typeelement-text-options
@@ -104,7 +104,7 @@ test('Backend is not called when code or label is empty', async () => {
     renderWithProviders(<CreateSupplier onSupplierCreated={onSupplierCreated} createButtonlabel={'create'} />);
 
     openModal();
-    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.code.label'), 'supplier1');
+    userEvent.type(screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.code.label'), 'supplier1');
 
     await act(async () => {
         userEvent.click(screen.getByText('pim_common.save'));

@@ -73,7 +73,7 @@ test('it saves a supplier', async () => {
     expect(notify).toHaveBeenNthCalledWith(
         1,
         NotificationLevel.SUCCESS,
-        'onboarder.supplier.supplier_edit.success_message'
+        'supplier_portal.supplier.supplier_edit.success_message'
     );
 });
 
@@ -113,7 +113,7 @@ test('it renders an error notification if the saving of the supplier failed', as
     await act(async () => setSupplier(updatedSupplier));
     await act(async () => saveSupplier());
 
-    expect(notify).toHaveBeenNthCalledWith(1, NotificationLevel.ERROR, 'onboarder.supplier.supplier_edit.update_error');
+    expect(notify).toHaveBeenNthCalledWith(1, NotificationLevel.ERROR, 'supplier_portal.supplier.supplier_edit.update_error');
     const [, , , , validationErrors] = result.current;
     expect(validationErrors).toStrictEqual(backendValidationErrors);
 });
@@ -130,7 +130,7 @@ test('it renders an error notification if the loading of the supplier failed', a
         expect(notify).toHaveBeenNthCalledWith(
             1,
             NotificationLevel.ERROR,
-            'onboarder.supplier.supplier_edit.loading_error'
+            'supplier_portal.supplier.supplier_edit.loading_error'
         );
     });
 });

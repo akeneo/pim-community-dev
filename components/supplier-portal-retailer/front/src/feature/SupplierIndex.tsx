@@ -33,17 +33,17 @@ const SecondaryActions = () => {
                     <Dropdown.ItemCollection>
                         <Dropdown.Item>
                             <Link href={importRoute}>
-                                {translate('onboarder.supplier.supplier_list.dropdown.import_suppliers')}
+                                {translate('supplier_portal.supplier.supplier_list.dropdown.import_suppliers')}
                             </Link>
                         </Dropdown.Item>
                         <Dropdown.Item>
                             <Link href={exportRoute}>
-                                {translate('onboarder.supplier.supplier_list.dropdown.export_suppliers')}
+                                {translate('supplier_portal.supplier.supplier_list.dropdown.export_suppliers')}
                             </Link>
                         </Dropdown.Item>
                         <Dropdown.Item>
                             <Link href={downloadTemplateRoute}>
-                                {translate('onboarder.supplier.supplier_list.dropdown.download_template')}
+                                {translate('supplier_portal.supplier.supplier_list.dropdown.download_template')}
                             </Link>
                         </Dropdown.Item>
                     </Dropdown.ItemCollection>
@@ -69,8 +69,8 @@ const SupplierIndex = () => {
             <PageHeader>
                 <PageHeader.Breadcrumb>
                     <Breadcrumb>
-                        <Breadcrumb.Step>{translate('onboarder.supplier.breadcrumb.root')}</Breadcrumb.Step>
-                        <Breadcrumb.Step>{translate('onboarder.supplier.breadcrumb.suppliers')}</Breadcrumb.Step>
+                        <Breadcrumb.Step>{translate('supplier_portal.supplier.breadcrumb.root')}</Breadcrumb.Step>
+                        <Breadcrumb.Step>{translate('supplier_portal.supplier.breadcrumb.suppliers')}</Breadcrumb.Step>
                     </Breadcrumb>
                 </PageHeader.Breadcrumb>
                 <PageHeader.UserActions>
@@ -87,7 +87,7 @@ const SupplierIndex = () => {
                     />
                 </PageHeader.Actions>
                 <PageHeader.Title>
-                    {translate('onboarder.supplier.supplier_list.title', {count: suppliers.length}, suppliers.length)}
+                    {translate('supplier_portal.supplier.supplier_list.title', {count: suppliers.length}, suppliers.length)}
                 </PageHeader.Title>
             </PageHeader>
             <StyledPageContent>

@@ -118,18 +118,18 @@ services:
             - '@monolog.logger.supplier_portal'
 
     # Import
-    onboarder_serenity.job.xlsx_supplier_import:
+    supplier_portal.job.xlsx_supplier_import:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
             - 'supplier_portal_xlsx_supplier_import'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -   - '@pim_connector.step.charset_validator'
-                - '@onboarder_serenity.step.xlsx_supplier.import'
+                - '@supplier_portal.step.xlsx_supplier.import'
         tags:
-            - { name: akeneo_batch.job, connector: 'Akeneo Onboarder XLSX Connector', type: '%pim_connector.job.import_type%', feature: 'onboarder_serenity' }
+            - { name: akeneo_batch.job, connector: 'Akeneo Supplier Portal XLSX Connector', type: '%pim_connector.job.import_type%', feature: 'onboarder_serenity' }
 
-    onboarder_serenity.step.xlsx_supplier.import:
+    supplier_portal.step.xlsx_supplier.import:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
             - 'import'
@@ -139,7 +139,7 @@ services:
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Import\ImportSupplierTasklet:
         arguments:
-            - '@onboarder_serenity.connector.supplier.reader.file.xlsx'
+            - '@supplier_portal.connector.supplier.reader.file.xlsx'
             - '@validator'
             - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler'
             - '@Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler'
@@ -149,20 +149,20 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetIdentifierFromCode'
             - '@monolog.logger.supplier_portal'
 
-    onboarder_serenity.connector.supplier.reader.file.xlsx:
+    supplier_portal.connector.supplier.reader.file.xlsx:
         class: '%pim_connector.reader.file.xlsx.class%'
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Import\FlatToStandard'
 
-    onboarder_serenity.job.job_parameters.default_values_provider.xlsx_supplier_import:
+    supplier_portal.job.job_parameters.default_values_provider.xlsx_supplier_import:
         class: '%pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import.class%'
         arguments:
             - [ 'supplier_portal_xlsx_supplier_import' ]
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
-    onboarder_serenity.job.job_parameters.constraint_collection_provider.xlsx_supplier_import:
+    supplier_portal.job.job_parameters.constraint_collection_provider.xlsx_supplier_import:
         class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import.class%'
         arguments:
             - [ 'supplier_portal_xlsx_supplier_import' ]
@@ -173,7 +173,7 @@ services:
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 
-    onboarder_serenity.supplier.job_instance.form_provider:
+    supplier_portal.supplier.job_instance.form_provider:
         class: Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider
         arguments:
             -   supplier_portal_xlsx_supplier_import: pim-job-instance-xlsx-base-import
