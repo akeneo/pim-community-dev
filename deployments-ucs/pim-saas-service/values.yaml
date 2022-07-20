@@ -80,6 +80,10 @@ image:
     repository: httpd
     tag: 2.4.51
     pullPolicy: IfNotPresent
+  curl:
+    repository: curlimages/curl
+    pullPolicy: IfNotPresent
+    tag: 7.83.1
 
 # Onboarder
 onboarder:
@@ -137,7 +141,7 @@ pim:
   daemons:
     job-consumer-process:
       enabled: true
-      pimJobOptions: "messenger:consume -vv ui_job import_export_job data_maintenance_job --limit=1 --time-limit=3600"
+      pimCommand: "messenger:consume -vv ui_job import_export_job data_maintenance_job --limit=1 --time-limit=3600"
       replicas: 1
       trapped: true
       resources:
@@ -148,7 +152,7 @@ pim:
           cpu: "5m"
     webhook-consumer-process:
       enabled: true
-      pimJobOptions: "messenger:consume --quiet webhook --time-limit=3600 --memory-limit=384M"
+      pimCommand: "messenger:consume --quiet webhook --time-limit=3600 --memory-limit=384M"
       replicas: 1
       trapped: false
       resources:
@@ -207,10 +211,6 @@ pim:
       enabled: true
       pimJobOptions: "--more-than-days 90 --no-interaction --force"
       schedule: "0 1 * * 0"
-      resources:
-        requests:
-          cpu: "100m"
-          memory: "80Mi"
     batch-purge:
       enabled: true
       pimJobOptions: ""
@@ -223,18 +223,10 @@ pim:
       enabled: true
       pimJobOptions: ""
       schedule: "1 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     purge-connectivity-connection-error:
       enabled: true
       pimJobOptions: ""
       schedule: "10 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     purge-connectivity-audit-error-count:
       enabled: true
       pimJobOptions: ""
@@ -247,140 +239,70 @@ pim:
       enabled: true
       pimJobOptions: ""
       schedule: "0 5,11,17,23 * * *"
-      resources:
-        requests:
-          cpu: "800m"
-          memory: "400Mi"
     versionning-refresh:
       enabled: true
       pimJobOptions: ""
       schedule: "0 3 * * *"
-      resources:
-        requests:
-          cpu: "300m"
-          memory: "256Mi"
     volume-aggregate:
       enabled: true
       pimJobOptions: ""
       schedule: "0 4 * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "80Mi"
     project-recalculate:
       enabled: true
       pimJobOptions: ""
       schedule: "20 0 * * *"
-      resources:
-        requests:
-          cpu: "350m"
-          memory: "350Mi"
     project-notify-before-due-date:
       enabled: true
       pimJobOptions: ""
       schedule: "0 2 * * *"
-      resources:
-        requests:
-          cpu: "1m"
-          memory: "80Mi"
     reference-entity-refresh-records:
       enabled: true
       pimJobOptions: ""
       schedule: "0 23 * * *"
-      resources:
-        requests:
-          cpu: "200m"
-          memory: "128Mi"
     sso-log-rotate:
       enabled: true
       pimJobOptions: "pimee:sso:rotate-log 30"
       schedule: "5 22 * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     data-quality-insights-periodic-tasks:
       enabled: true
       pimJobOptions: ""
       schedule: "15 0 * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     data-quality-insights-prepare-evaluations:
       enabled: true
       pimJobOptions: ""
       schedule: "*/10 * * * *"
-      resources:
-        requests:
-          cpu: "120m"
-          memory: "50Mi"
     data-quality-insights-evaluations:
       enabled: true
       pimJobOptions: ""
       schedule: "*/30 * * * *"
-      resources:
-        requests:
-          cpu: "20m"
-          memory: "200Mi"
     purge-events-api-logs:
       enabled: true
       pimJobOptions: ""
       schedule: "5 * * * *"
-      resources:
-        limits:
-          memory: "128Mi"
-        requests:
-          cpu: "100m"
-          memory: "10Mi"
     migrate-records-index-mapping:
       enabled: true
       pimJobOptions: "--no-interaction"
       schedule: "*/30 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     migrate-job-execution-warning-count:
       enabled: true
       pimJobOptions: "--no-interaction"
       schedule: "*/30 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     connectivity-openid-keys-regenerate:
       enabled: true
       pimJobOptions: "--no-interaction"
       schedule: "4 21 * * 0"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     clean-case-sensitive-attribute-option-spellcheck:
       enabled: true
       pimJobOptions: "--no-interaction"
       schedule: "15 2 * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     clean-completeness-evaluation-results:
       enabled: true
       pimJobOptions: "--no-interaction"
       schedule: "30 0 * * *"
-      resources:
-        requests:
-          cpu: "100m"
-          memory: "256Mi"
     clean-product-scores:
       enabled: true
       pimJobOptions: "--no-interaction"
       schedule: "1 0 * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
   onboarder_serenity:
     settings:
       enabled: false
