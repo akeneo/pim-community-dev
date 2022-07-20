@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Structure\Family\Infrastructure\Query;
 
-use Akeneo\Pim\Structure\Family\API\Query\FamilyQuery;
-use Akeneo\Pim\Structure\Family\API\Query\FindFamilyCodes;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyQuery;
 use Doctrine\DBAL\Connection;
 
 class SqlFindFamilyCodes implements FindFamilyCodes
@@ -13,16 +13,7 @@ class SqlFindFamilyCodes implements FindFamilyCodes
     ) {
     }
 
-    public function fromQuery(FamilyQuery $query): array
-    {
-        $sql = $this->getSql($query);
-        $params = $this->getParams($query);
-        $types = $this->getTypes();
-
-        return $this->fetchFamilyCodes($sql, $params, $types);
-    }
-
-    private function getSql(FamilyQuery $query): string
+    public function fromQuery(FindFamilyQuery $query): array
     {
         $searchLanguageCondition = null !== $query->searchLanguage ? 'AND translation.locale = :locale_code' : '';
         $includeCondition = null !== $query->includeCodes ? 'AND code IN (:include_codes)' : '';
@@ -30,7 +21,7 @@ class SqlFindFamilyCodes implements FindFamilyCodes
         $limitClause = null !== $query->limit ? 'LIMIT :limit' : '';
         $offsetClause = null !== $this->getOffset($query->page, $query->limit) ? 'OFFSET :offset' : '';
 
-        return <<<SQL
+        $sql = <<<SQL
             SELECT DISTINCT family.code
             FROM pim_catalog_family family
             LEFT JOIN pim_catalog_family_translation translation ON family.id = translation.foreign_key $searchLanguageCondition
@@ -41,35 +32,28 @@ class SqlFindFamilyCodes implements FindFamilyCodes
             $limitClause
             $offsetClause
         SQL;
-    }
 
-    private function getParams(FamilyQuery $query): array
-    {
-        return [
-            'search' => sprintf('%%%s%%', $query->search),
-            'locale_code' => $query->searchLanguage,
-            'include_codes' => $query->includeCodes,
-            'exclude_codes' => $query->excludeCodes,
-            'limit' => $query->limit,
-            'offset' => $this->getOffset($query->page, $query->limit),
-        ];
-    }
+        $statement = $this->connection->executeQuery(
+            $sql,
+            [
+                'search' => sprintf('%%%s%%', $query->search),
+                'locale_code' => $query->searchLanguage,
+                'include_codes' => $query->includeCodes,
+                'exclude_codes' => $query->excludeCodes,
+                'limit' => $query->limit,
+                'offset' => $this->getOffset($query->page, $query->limit),
+            ],
+            [
+                'search' => \PDO::PARAM_STR,
+                'locale_code' => \PDO::PARAM_STR,
+                'include_codes' => Connection::PARAM_STR_ARRAY,
+                'exclude_codes' => Connection::PARAM_STR_ARRAY,
+                'limit' => \PDO::PARAM_INT,
+                'offset' => \PDO::PARAM_INT,
+            ]
+        );
 
-    private function getTypes(): array
-    {
-        return [
-            'search' => \PDO::PARAM_STR,
-            'locale_code' => \PDO::PARAM_STR,
-            'include_codes' => Connection::PARAM_STR_ARRAY,
-            'exclude_codes' => Connection::PARAM_STR_ARRAY,
-            'limit' => \PDO::PARAM_INT,
-            'offset' => \PDO::PARAM_INT,
-        ];
-    }
-
-    private function fetchFamilyCodes(string $sql, array $params, array $types): array
-    {
-        return $this->connection->executeQuery($sql, $params, $types)->fetchFirstColumn();
+        return $statement->fetchFirstColumn();
     }
 
     private function getOffset(?int $page, ?int $limit): ?int

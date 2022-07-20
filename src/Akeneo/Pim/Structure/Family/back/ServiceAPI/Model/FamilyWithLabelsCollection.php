@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Structure\Family\API\Model;
+namespace Akeneo\Pim\Structure\Family\ServiceAPI\Model;
 
 use Webmozart\Assert\Assert;
 

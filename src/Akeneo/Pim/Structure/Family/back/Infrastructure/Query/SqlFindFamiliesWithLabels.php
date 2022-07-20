@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Structure\Family\Infrastructure\Query;
 
-use Akeneo\Pim\Structure\Family\API\Model\FamilyWithLabels;
-use Akeneo\Pim\Structure\Family\API\Model\FamilyWithLabelsCollection;
-use Akeneo\Pim\Structure\Family\API\Query\FamilyQuery;
-use Akeneo\Pim\Structure\Family\API\Query\FindFamiliesWithLabels;
-use Akeneo\Pim\Structure\Family\API\Query\FindFamilyCodes;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Model\FamilyWithLabels;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Model\FamilyWithLabelsCollection;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamiliesWithLabels;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyQuery;
 use Doctrine\DBAL\Connection;
 
 class SqlFindFamiliesWithLabels implements FindFamiliesWithLabels
@@ -17,12 +17,12 @@ class SqlFindFamiliesWithLabels implements FindFamiliesWithLabels
     ) {
     }
 
-    public function fromQuery(FamilyQuery $query): FamilyWithLabelsCollection
+    public function fromQuery(FindFamilyQuery $query): FamilyWithLabelsCollection
     {
         $familyCodes = $this->findFamilyCodes->fromQuery($query);
         $rawFamiliesWithLabels = $this->fetchFamiliesWithLabels($familyCodes);
 
-        return $this->getFamilyWithLabelsCollection($rawFamiliesWithLabels);
+        return $this->hydrateFamilyWithLabelsCollection($rawFamiliesWithLabels);
     }
 
     private function fetchFamiliesWithLabels(array $familyCodes): array
@@ -48,7 +48,7 @@ class SqlFindFamiliesWithLabels implements FindFamiliesWithLabels
         )->fetchAllAssociative();
     }
 
-    private function getFamilyWithLabelsCollection(array $rawFamiliesWithLabels): FamilyWithLabelsCollection
+    private function hydrateFamilyWithLabelsCollection(array $rawFamiliesWithLabels): FamilyWithLabelsCollection
     {
         $familiesWithLabels = array_map(
             static fn (array $rawFamilyWithLabels) => new FamilyWithLabels(

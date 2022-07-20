@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Structure\Family\API\Model;
+namespace Akeneo\Pim\Structure\Family\ServiceAPI\Model;
 
 use Webmozart\Assert\Assert;
 
@@ -12,6 +12,9 @@ use Webmozart\Assert\Assert;
  */
 class FamilyWithLabels
 {
+    /**
+     * @param array<string, string> $labels ['en_US' => 'My family', 'fr_FR' => 'Ma famille']
+     */
     public function __construct(
         public string $code,
         public array $labels,

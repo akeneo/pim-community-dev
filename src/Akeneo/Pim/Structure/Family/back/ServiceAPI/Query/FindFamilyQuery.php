@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Structure\Family\API\Query;
+namespace Akeneo\Pim\Structure\Family\ServiceAPI\Query;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -8,7 +8,7 @@ namespace Akeneo\Pim\Structure\Family\API\Query;
  *
  * @psalm-immutable
  */
-class FamilyQuery
+class FindFamilyQuery
 {
     public function __construct(
         public ?string $search = null,
