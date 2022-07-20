@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -57,9 +58,14 @@ SQL;
 
     private function migrateRawParameters(array $rawParameters): array
     {
-        if (array_key_exists('filePath', $rawParameters)) {
-            unset($rawParameters['filePath']);
+        if (!array_key_exists('filePath', $rawParameters)) {
+            return $rawParameters;
         }
+
+        $rawParameters['storage']['type'] = $this->isSaaSVersion() ? 'none' : 'local';
+        $rawParameters['storage']['file_path'] = $rawParameters['filePath'];
+
+        unset($rawParameters['filePath']);
 
         return $rawParameters;
     }
@@ -73,5 +79,13 @@ WHERE id = :job_instance_id
 SQL;
 
         $this->addSql($sql, ['job_instance_id' => $jobInstanceId, 'raw_parameters' => $serializedRawParameters]);
+    }
+
+    private function isSaaSVersion(): bool
+    {
+        /** @var VersionProviderInterface $versionProvider */
+        $versionProvider = $this->container->get('pim_catalog.version_provider');
+
+        return $versionProvider->isSaaSVersion();
     }
 }

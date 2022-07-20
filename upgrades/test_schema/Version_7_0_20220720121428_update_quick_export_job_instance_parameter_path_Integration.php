@@ -2,6 +2,9 @@
 
 namespace Pim\Upgrade\Schema\Tests;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
@@ -16,34 +19,40 @@ final class Version_7_0_20220720121428_update_quick_export_job_instance_paramete
 
     private Connection $connection;
     private JobInstanceRepository $jobInstanceRepository;
+    private VersionProviderInterface $versionProvider;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->connection = $this->get('database_connection');
         $this->jobInstanceRepository = $this->get('akeneo_batch.job.job_instance_repository');
+        $this->versionProvider = $this->get('pim_catalog.version_provider');
     }
 
     public function test_it_removes_filepath_parameter_for_a_quick_export()
     {
         $this->createCsvQuickExport();
 
-        $this->assertTrue($this->jobContainsFilepath('csv_product_quick_export'));
+        $this->assertTrue($this->jobContainsOldFilepath('csv_product_quick_export'));
+        $this->assertFalse($this->jobContainsStorage('csv_product_quick_export', '/tmp/quick_export.csv'));
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-        $this->assertFalse($this->jobContainsFilepath('csv_product_quick_export'));
+        $this->assertFalse($this->jobContainsOldFilepath('csv_product_quick_export'));
+        $this->assertTrue($this->jobContainsStorage('csv_product_quick_export', '/tmp/quick_export.csv'));
     }
 
     public function test_it_removes_filepath_parameter_for_a_grid_context_quick_export()
     {
         $this->createXlsxGridContextQuickExport();
 
-        $this->assertTrue($this->jobContainsFilepath('xlsx_product_grid_context_quick_export'));
+        $this->assertTrue($this->jobContainsOldFilepath('xlsx_product_grid_context_quick_export'));
+        $this->assertFalse($this->jobContainsStorage('xlsx_product_grid_context_quick_export', '/tmp/quick_export.xlsx'));
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-        $this->assertFalse($this->jobContainsFilepath('xlsx_product_grid_context_quick_export'));
+        $this->assertFalse($this->jobContainsOldFilepath('xlsx_product_grid_context_quick_export'));
+        $this->assertTrue($this->jobContainsStorage('xlsx_product_grid_context_quick_export', '/tmp/quick_export.xlsx'));
     }
 
     protected function getConfiguration(): Configuration
@@ -120,7 +129,25 @@ SQL;
         ]);
     }
 
-    private function jobContainsFilepath(string $jobCode): bool
+    private function jobContainsStorage(string $jobCode, string $storageFilePath): bool
+    {
+        $this->jobInstanceRepository->clear();
+
+        /** @var JobInstance $jobInstance */
+        $jobInstance = $this->jobInstanceRepository->findOneByCode($jobCode);
+        $rawParameters = $jobInstance->getRawParameters();
+
+        if (!isset($rawParameters['storage'])) return false;
+
+        $expectedStorage = [
+            'file_path' => $storageFilePath,
+            'type' => $this->isSaaSVersion() ? NoneStorage::TYPE : LocalStorage::TYPE
+        ];
+
+        return $rawParameters['storage'] == $expectedStorage;
+    }
+
+    private function jobContainsOldFilepath(string $jobCode): bool
     {
         $this->jobInstanceRepository->clear();
 
@@ -129,5 +156,10 @@ SQL;
         $rawParameters = $jobInstance->getRawParameters();
 
         return isset($rawParameters['filePath']);
+    }
+
+    private function isSaaSVersion(): bool
+    {
+        return $this->versionProvider->isSaaSVersion();
     }
 }
