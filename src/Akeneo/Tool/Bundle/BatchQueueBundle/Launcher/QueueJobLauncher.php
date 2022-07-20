@@ -29,13 +29,6 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class QueueJobLauncher implements JobLauncherInterface
 {
-    private const PUBLISH_PRODUCT_JOB_NAME = [
-        'csv_published_product_quick_export',
-        'csv_published_product_grid_context_quick_export',
-        'xlsx_published_product_quick_export',
-        'xlsx_published_product_grid_context_quick_export',
-    ];
-
     private JobRepositoryInterface $jobRepository;
     private JobParametersFactory $jobParametersFactory;
     private JobRegistry $jobRegistry;
@@ -106,9 +99,6 @@ class QueueJobLauncher implements JobLauncherInterface
     {
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $configuration = array_merge($jobInstance->getRawParameters(), $configuration);
-        if ($jobInstance->getType() === 'quick_export' && isset($configuration['filePath']) && !in_array($jobInstance->getJobName(), self::PUBLISH_PRODUCT_JOB_NAME)) {
-            unset($configuration['filePath']);
-        }
 
         $jobParameters = $this->jobParametersFactory->create($job, $configuration);
 

@@ -27,13 +27,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class ProductExportController
 {
-    private const PUBLISH_PRODUCT_JOB_NAME = [
-        'csv_published_product_quick_export',
-        'csv_published_product_grid_context_quick_export',
-        'xlsx_published_product_quick_export',
-        'xlsx_published_product_grid_context_quick_export',
-    ];
-
     const DATETIME_FORMAT = 'Y-m-d_H:i:s';
     private const FILE_PATH_KEYS = ['filePathProduct', 'filePathProductModel'];
 
@@ -82,13 +75,7 @@ class ProductExportController
         }
 
         if (isset($rawParameters['filePath'])) {
-            $rawParameters['storage']['type'] = $this->versionProvider->isSaaSVersion() ? NoneStorage::TYPE : LocalStorage::TYPE;
-            $rawParameters['storage']['file_path'] = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
-            if (!in_array($jobInstance->getJobName(), self::PUBLISH_PRODUCT_JOB_NAME)) {
-                unset($rawParameters['filePath']);
-            } else {
-                $rawParameters['filePath']  = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
-            }
+            $rawParameters['filePath'] = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
         }
 
         if ($withGridContext) {

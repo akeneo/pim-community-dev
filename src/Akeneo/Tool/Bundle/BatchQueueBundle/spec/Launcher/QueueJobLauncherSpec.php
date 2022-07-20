@@ -62,7 +62,6 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $eventDispatcher
     ) {
         $jobInstance->getJobName()->willReturn('job_instance_name');
-        $jobInstance->getType()->willReturn('export');
         $jobInstance->getRawParameters()->willReturn(['foo' => 'bar']);
         $user->getUsername()->willReturn('julia');
         $jobExecution->getId()->willReturn(1);
@@ -102,7 +101,6 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $eventDispatcher
     ) {
         $jobInstance->getJobName()->willReturn('job_instance_name');
-        $jobInstance->getType()->willReturn('export');
         $jobInstance->getRawParameters()->willReturn(['foo' => 'bar']);
         $user->getUsername()->willReturn('julia');
         $jobExecution->getId()->willReturn(1);
@@ -142,7 +140,6 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $eventDispatcher
     ) {
         $jobInstance->getJobName()->willReturn('job_instance_name');
-        $jobInstance->getType()->willReturn('export');
         $jobInstance->getCode()->willReturn('job_instance_code');
         $jobInstance->getRawParameters()->willReturn(['foo' => 'bar']);
         $user->getUsername()->willReturn('julia');
