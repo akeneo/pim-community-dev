@@ -1,6 +1,13 @@
 ## Rename this file in phpspec.yml to customize the phpspec configuration
 suites:
     ## Category context
+    LegacyCategory:
+        namespace: Akeneo\Test\Category\Acceptance
+        psr4_prefix: Akeneo\Test\Category\Acceptance
+        spec_path: tests/back/Category/Acceptance
+        src_path: tests/back/Category/Acceptance
+        spec_prefix: Specification
+
     Category:
         namespace: Akeneo\Category
         psr4_prefix: Akeneo\Category

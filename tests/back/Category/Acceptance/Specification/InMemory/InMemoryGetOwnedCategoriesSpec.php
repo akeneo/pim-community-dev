@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Category\Test\Acceptance\InMemory;
+namespace Specification\Akeneo\Test\Category\Acceptance\InMemory;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
