@@ -212,6 +212,32 @@ test('it displays the default picture when the image previewer fails', () => {
   expect(thumbnail).toHaveAttribute('src', 'FALLBACK_IMAGE');
 });
 
+
+test('it does not throw an error when component is hidden after upload', async () => {
+  const uploader = jest.fn().mockResolvedValue(fileInfo);
+  const mockedConsole = jest.spyOn(console, "error");
+
+  const {unmount} = render(
+    <MediaFileInput
+      {...defaultProps}
+      value={null}
+      onChange={() => unmount()}
+      uploader={uploader}
+      thumbnailUrl={null}
+    />
+  );
+
+  const fileInput = screen.getByPlaceholderText(/Upload your file here/i);
+
+  await act(async () => {
+    userEvent.upload(fileInput, imageFile);
+    await flushPromises();
+  });
+
+  expect(mockedConsole).not.toHaveBeenCalled();
+  mockedConsole.mockRestore();
+});
+
 test('MediaFileInput supports forwardRef', () => {
   const handleChange = jest.fn();
   const uploader = jest.fn().mockResolvedValue(fileInfo);
