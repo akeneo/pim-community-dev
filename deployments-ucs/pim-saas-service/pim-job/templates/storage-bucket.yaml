@@ -1,0 +1,13 @@
+apiVersion: storage.gcp.crossplane.io/v1alpha3
+kind: Bucket
+metadata:
+  name: "{{ .Values.pim.cloudFunction.bucket }}"
+  labels:
+    ucsCronBucket: {{ .Values.pim.cloudFunction.bucket }}
+    crossplane.io/external-name: {{ .Values.pim.cloudFunction.bucket }} 
+spec:
+  location: {{ .Values.pim.storage.location }}
+  storageClass: STANDARD
+  providerConfigRef:
+    name: "provider-config-gcp"
+  deletionPolicy: Delete
