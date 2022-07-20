@@ -65,7 +65,9 @@ jobs:
         label:     CSV product import
         type:      import
         configuration:
-            filePath:           '/tmp/footwear_products.csv'
+            storage:
+                type: local
+                file_path: /tmp/footwear_products.csv
             uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'
@@ -81,7 +83,9 @@ jobs:
         label: CSV product model import
         type: import
         configuration:
-            filePath: /tmp/product_model.csv
+            storage:
+                type: local
+                file_path: /tmp/product_model.csv
             uploadAllowed: true
             delimiter: ;
             enclosure: '"'
@@ -124,7 +128,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/products.csv
+            storage:
+                type: local
+                file_path: /tmp/products.csv
             filters:
                 data:
                     -
@@ -166,7 +172,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/product_models.csv
+            storage:
+                type: local
+                file_path: /tmp/product_models.csv
             filters:
                 data: []
                 structure:

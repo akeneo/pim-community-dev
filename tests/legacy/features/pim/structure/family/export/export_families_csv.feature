@@ -8,7 +8,7 @@ Feature: Export families
   Scenario: Successfully export catalog families
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_family_export" configuration:
-      | filePath | %tmp%/family_export/family.csv |
+      | storage | {"type": "local", "file_path": "%tmp%/family_export/family.csv"} |
     And I am logged in as "Julia"
     And I am on the "csv_footwear_family_export" export job page
     When I launch the export job

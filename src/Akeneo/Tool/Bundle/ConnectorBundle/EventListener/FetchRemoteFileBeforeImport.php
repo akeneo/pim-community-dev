@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
@@ -44,31 +45,39 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
     {
         $jobExecution = $event->getJobExecution();
 
-        if ($this->remoteStorageFeatureFlag->isEnabled($jobExecution->getJobInstance()->getJobName())) {
+        $jobName = $jobExecution->getJobInstance()->getJobName();
+        if ($this->remoteStorageFeatureFlag->isEnabled($jobName)) {
             return;
         }
 
         $jobParameters = $jobExecution->getJobParameters();
 
-        if (null === $jobParameters ||
-            !$jobParameters->has('filePath') ||
-            JobInstance::TYPE_IMPORT !== $jobExecution->getJobInstance()->getType()) {
+        if (null === $jobParameters || JobInstance::TYPE_IMPORT !== $jobExecution->getJobInstance()->getType()) {
             return;
         }
 
-        $jobFileLocation = JobFileLocation::parseUrl($jobParameters->get('filePath'));
+        // TODO RAB-907: Remove this condition
+        $filePath = $jobParameters->has('storage') && isset($jobParameters->get('storage')['file_path'])
+            ? $jobParameters->get('storage')['file_path']
+            : $jobParameters->get('filePath');
+
+        $jobFileLocation = JobFileLocation::parseUrl($filePath);
 
         if (true === $jobFileLocation->isRemote()) {
             $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
-            $localFilePath = $workingDirectory.DIRECTORY_SEPARATOR.basename($jobFileLocation->path());
+            $localFilePath = $workingDirectory . DIRECTORY_SEPARATOR . basename($jobFileLocation->path());
 
             $remoteStream =  $this->filesystem->readStream($jobFileLocation->path());
 
             file_put_contents($localFilePath, $remoteStream);
             fclose($remoteStream);
 
-            $jobParameters->set('filePath', $localFilePath);
+            $storage = [
+                'type' => LocalStorage::TYPE,
+                'file_path' => $localFilePath
+            ];
+            $jobParameters->set('storage', $storage);
         }
     }
 }

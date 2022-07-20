@@ -86,16 +86,15 @@ extensions:
             label: pim_common.label
             readOnly: false
 
-    pim-job-instance-yml-base-import-edit-properties-file-path:
-        module: pim/job/common/edit/field/file-path
-        parent: pim-job-instance-yml-base-import-edit-global
+    pim-job-instance-yml-base-import-edit-properties-storage:
+        module: pimimportexport/js/job/common/edit/storage-form
+        parent: pim-job-instance-yml-base-import-edit-properties
         position: 120
         targetZone: properties
         config:
-            fieldCode: configuration.filePath
-            readOnly: false
-            label: pim_import_export.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help_import
+            tabCode: pim-job-instance-properties
+            jobType: import
+            fileExtension: yml
 
     pim-job-instance-yml-base-import-edit-properties-file-upload:
         module: pim/job/common/edit/field/allow-file-upload

@@ -235,6 +235,9 @@ class User implements UserInterface, EquatableInterface
         return $this->getUserIdentifier();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getUserIdentifier()
     {
         return $this->username;

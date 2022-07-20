@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
  * This connector is the equivalent of the ConnectorProductNormalizer, with some differences:
@@ -26,8 +25,7 @@ final class ConnectorProductWithUuidNormalizer
 {
     public function __construct(
         private ValuesNormalizer $valuesNormalizer,
-        private DateTimeNormalizer $dateTimeNormalizer,
-        private AttributeRepositoryInterface $attributeRepository
+        private DateTimeNormalizer $dateTimeNormalizer
     ) {
     }
 

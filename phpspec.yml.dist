@@ -16,6 +16,13 @@ suites:
         src_path: src/Akeneo/Channel/back
         spec_prefix: Specification
 
+    ChannelAcceptance:
+        namespace: Akeneo\Test\Channel\Acceptance
+        psr4_prefix: Akeneo\Test\Channel\Acceptance
+        spec_path: src/Akeneo/Channel/back/tests/Acceptance
+        src_path: src/Akeneo/Channel/back/tests/Acceptance
+        spec_prefix: Specification
+
     Channel:
         namespace: Akeneo\Channel
         psr4_prefix: Akeneo\Channel
@@ -44,6 +51,13 @@ suites:
         psr4_prefix: Akeneo\Pim\Enrichment\Product
         src_path: src/Akeneo/Pim/Enrichment/Product/back
         spec_path: src/Akeneo/Pim/Enrichment/Product/back/Test
+        spec_prefix: Specification
+
+    EnrichmentCategoryAcceptance:
+        namespace: Akeneo\Pim\Enrichment\Category\Test\Acceptance
+        psr4_prefix: Akeneo\Pim\Enrichment\Category\Test\Acceptance
+        src_path: src/Akeneo/Pim/Enrichment/Category/back/Test/Acceptance
+        spec_path: src/Akeneo/Pim/Enrichment/Category/back/Test/Acceptance
         spec_prefix: Specification
 
     Enrichment:

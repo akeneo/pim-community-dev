@@ -57,14 +57,24 @@ class InMemoryUserRepositorySpec extends ObjectBehavior
         $this->findOneBy(['username' => 'julia'])->shouldReturn($user);
     }
 
+    function it_finds_a_user_by_id()
+    {
+        $user = new User();
+        $user->setUsername('julia');
+        $user->setId(10);
+        $this->save($user);
+        $this->findOneBy(['id' => 10])->shouldReturn($user);
+        $this->findOneBy(['id' => 11])->shouldReturn(null);
+    }
+
     function it_returns_null_if_the_username_does_not_belong_to_a_user()
     {
         $this->findOneBy(['username' => 'unknown'])->shouldReturn(null);
     }
 
-    function it_throws_if_the_criteria_is_not_username()
+    function it_throws_if_the_criteria_is_neither_username_nor_id()
     {
-        $this->shouldThrow(new \InvalidArgumentException('This method only supports finding by "username"'))
+        $this->shouldThrow(new \InvalidArgumentException('This method only supports finding by "username" or "id"'))
             ->during('findOneBy', [['role' => 'admin']]);
     }
 

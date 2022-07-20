@@ -128,7 +128,7 @@ final class InMemoryLocaleRepository implements LocaleRepositoryInterface, Saver
      */
     public function findAll()
     {
-        return array_values($this->locales->toArray());
+        return $this->locales->toArray();
     }
 
     /**

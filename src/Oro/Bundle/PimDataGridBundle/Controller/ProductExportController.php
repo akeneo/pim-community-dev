@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Controller;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DataGridManager;
@@ -9,7 +12,6 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\PimDataGridBundle\Adapter\GridFilterAdapterInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
-use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -25,36 +27,26 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class ProductExportController
 {
-    const DATETIME_FORMAT = 'Y-m-d_H:i:s';
-    private const FILE_PATH_KEYS = ['filePath', 'filePathProduct', 'filePathProductModel'];
+    private const PUBLISH_PRODUCT_JOB_NAME = [
+        'csv_published_product_quick_export',
+        'csv_published_product_grid_context_quick_export',
+        'xlsx_published_product_quick_export',
+        'xlsx_published_product_grid_context_quick_export',
+    ];
 
-    protected RequestStack $requestStack;
-    protected MassActionDispatcher $massActionDispatcher;
-    protected GridFilterAdapterInterface $gridFilterAdapter;
-    protected IdentifiableObjectRepositoryInterface $jobInstanceRepo;
-    protected TokenStorageInterface $tokenStorage;
-    protected JobLauncherInterface $jobLauncher;
-    protected DataGridManager $datagridManager;
-    protected MassActionParametersParser $parameterParser;
+    const DATETIME_FORMAT = 'Y-m-d_H:i:s';
+    private const FILE_PATH_KEYS = ['filePathProduct', 'filePathProductModel'];
 
     public function __construct(
-        RequestStack $requestStack,
-        MassActionDispatcher $massActionDispatcher,
-        GridFilterAdapterInterface $gridFilterAdapter,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepo,
-        TokenStorageInterface $tokenStorage,
-        JobLauncherInterface $jobLauncher,
-        DataGridManager $datagridManager,
-        MassActionParametersParser $parameterParser
+        private RequestStack $requestStack,
+        private GridFilterAdapterInterface $gridFilterAdapter,
+        private IdentifiableObjectRepositoryInterface $jobInstanceRepo,
+        private TokenStorageInterface $tokenStorage,
+        private JobLauncherInterface $jobLauncher,
+        private DataGridManager $datagridManager,
+        private MassActionParametersParser $parameterParser,
+        private VersionProviderInterface $versionProvider
     ) {
-        $this->requestStack = $requestStack;
-        $this->massActionDispatcher = $massActionDispatcher;
-        $this->gridFilterAdapter = $gridFilterAdapter;
-        $this->jobInstanceRepo = $jobInstanceRepo;
-        $this->tokenStorage = $tokenStorage;
-        $this->jobLauncher = $jobLauncher;
-        $this->datagridManager = $datagridManager;
-        $this->parameterParser = $parameterParser;
     }
 
     /**
@@ -83,7 +75,19 @@ class ProductExportController
 
         foreach (self::FILE_PATH_KEYS as $filePathKey) {
             if (isset($rawParameters[$filePathKey])) {
-                $rawParameters[$filePathKey] = $this->buildFilePath($rawParameters[$filePathKey], $contextParameters);
+                //TODO RAB-665 handle local storage on PaaS version
+                $rawParameters['storage']['type'] = $this->versionProvider->isSaaSVersion() ? NoneStorage::TYPE : LocalStorage::TYPE;
+                $rawParameters['storage'][$filePathKey] = $this->buildFilePath($rawParameters[$filePathKey], $contextParameters);
+            }
+        }
+
+        if (isset($rawParameters['filePath'])) {
+            $rawParameters['storage']['type'] = $this->versionProvider->isSaaSVersion() ? NoneStorage::TYPE : LocalStorage::TYPE;
+            $rawParameters['storage']['file_path'] = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
+            if (!in_array($jobInstance->getJobName(), self::PUBLISH_PRODUCT_JOB_NAME)) {
+                unset($rawParameters['filePath']);
+            } else {
+                $rawParameters['filePath']  = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
             }
         }
 

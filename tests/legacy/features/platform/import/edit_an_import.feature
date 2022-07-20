@@ -11,9 +11,8 @@ Feature: Edit an import
   Scenario: Successfully update import job configuration
     Given I am on the "csv_footwear_product_import" import job edit page
     And I visit the "Global settings" tab
-    Then I should see the File, Allow file upload, Delimiter, Enclosure, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator, Date format fields
+    Then I should see the Allow file upload, Delimiter, Enclosure, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator, Date format fields
     When I fill in the following information:
-      | File              | /tmp/file.csv |
       | Delimiter         | \|            |
       | Enclosure         | '             |
       | Decimal separator | .             |
@@ -28,8 +27,6 @@ Feature: Edit an import
     And I press the "Save" button
     And I should not see the text "There are unsaved changes."
     And I press the "Edit" button
-    Then I should see the text "File path"
-    And the "File path" field should contain "/tmp/file.csv"
     And I should see the text "Delimiter"
     And the "Delimiter" field should contain "|"
     And I should see the text "Enclosure"

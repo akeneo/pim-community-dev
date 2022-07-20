@@ -27,7 +27,10 @@ class JobInstancesBuilderSpec extends ObjectBehavior
             'label' => 'Currencies data fixtures',
             'type' => 'fixtures',
             'configuration' => [
-                'filePath' => 'currencies.csv'
+                'storage' => [
+                    'type' => 'local',
+                    'file_path' => 'currencies.csv',
+                ],
             ]
         ];
         $yamlReader->setStepExecution(Argument::any())->shouldBeCalled();

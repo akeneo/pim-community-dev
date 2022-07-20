@@ -23,6 +23,9 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
 
+    Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable:
+        class: Akeneo\Test\Acceptance\Attribute\InMemoryIsAttributeEditable
+
     ### Catalog
     akeneo.pim.enrichment.product.query.find_non_existing_product_identifiers_query:
         class: 'Akeneo\Test\Acceptance\Product\InMemoryFindNonExistingProductIdentifiersQuery'

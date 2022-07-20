@@ -18,8 +18,8 @@ use Doctrine\Persistence\ObjectRepository;
  */
 class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterface, ObjectRepository
 {
-    /** @var GroupInterface[] */
-    private $groups;
+    /** @var ArrayCollection<GroupInterface> */
+    private ArrayCollection $groups;
 
     public function __construct()
     {
@@ -63,7 +63,7 @@ class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterfac
      */
     public function findAll()
     {
-        throw new NotImplementedException();
+        return $this->groups->toArray();
     }
 
     /**

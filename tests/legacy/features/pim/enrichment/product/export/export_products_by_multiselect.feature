@@ -16,7 +16,7 @@ Feature: Export products according to multi select values
       | BOOT-6 | boots  | The boot 6 | cold               | 2014_collection |
       | BOOT-7 | boots  | The boot 7 |                    | 2014_collection |
     And the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/footwear_product_export.csv |
+      | storage | {"type": "local", "file_path": "%tmp%/product_export/footwear_product_export.csv"} |
 
   Scenario: Export only the product values with selected options
     Given I am logged in as "Julia"

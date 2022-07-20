@@ -5,10 +5,12 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\Co
 use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocale;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -21,20 +23,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class ProductQuickExport implements ConstraintCollectionProviderInterface
 {
-    /** @var ConstraintCollectionProviderInterface */
-    protected $simpleConstraint;
-
-    /** @var array */
-    protected $supportedJobNames;
-
-    /**
-     * @param ConstraintCollectionProviderInterface $simple
-     * @param array                $supportedJobNames
-     */
-    public function __construct(ConstraintCollectionProviderInterface $simple, array $supportedJobNames)
-    {
-        $this->simpleConstraint = $simple;
-        $this->supportedJobNames = $supportedJobNames;
+    public function __construct(
+        private ConstraintCollectionProviderInterface $simpleConstraint,
+        private array $supportedJobNames,
+        private string $filePathExtension
+    ) {
     }
 
     /**
@@ -44,6 +37,15 @@ class ProductQuickExport implements ConstraintCollectionProviderInterface
     {
         $baseConstraint = $this->simpleConstraint->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
+        $constraintFilePath = [
+            new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
+            new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
+            new Regex([
+                'pattern' => sprintf('/.\.%s$/', $this->filePathExtension),
+                'message' => sprintf('The extension file must be ".%s"', $this->filePathExtension)
+            ])
+        ];
+        $constraintFields['filePath'] = $constraintFilePath;
         $constraintFields['filters'] = [];
         $constraintFields['selected_properties'] = null;
         $constraintFields['selected_locales'] = new Optional(null);

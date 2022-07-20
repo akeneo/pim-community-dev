@@ -22,7 +22,7 @@ Feature: Import groups
       AKENEO_NEW;US;XSELL
       """
     And the following job "csv_footwear_group_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_group_import" job to finish

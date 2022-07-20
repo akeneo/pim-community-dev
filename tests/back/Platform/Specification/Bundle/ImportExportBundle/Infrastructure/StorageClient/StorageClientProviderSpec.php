@@ -32,7 +32,7 @@ class StorageClientProviderSpec extends ObjectBehavior
         FilesystemOperator $filesystemOperator,
     ) {
         $filesystemProvider->getFilesystem('local')->willReturn($filesystemOperator);
-        $fileToTransfer = new FileToTransfer('fileKey', 'local', 'outputFileName');
+        $fileToTransfer = new FileToTransfer('fileKey', 'local', 'outputFileName', false);
         $this->getFromFileToTransfer($fileToTransfer)->shouldReturnAnInstanceOf(StorageClientInterface::class);
     }
 
