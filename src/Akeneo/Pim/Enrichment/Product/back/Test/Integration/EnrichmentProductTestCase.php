@@ -18,6 +18,7 @@ use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class EnrichmentProductTestCase extends TestCase
 {
@@ -95,6 +96,7 @@ abstract class EnrichmentProductTestCase extends TestCase
 
     protected function createProduct(string $identifier, array $userIntents): void
     {
+        $this->logIn('peter');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('peter'),
             productIdentifier: $identifier,
@@ -308,5 +310,18 @@ abstract class EnrichmentProductTestCase extends TestCase
     protected function refreshIndex(): void
     {
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+    }
+
+    protected function logIn(string $username): void
+    {
+        $session = $this->get('session');
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $session->set('_security_main', serialize($token));
+        $session->save();
     }
 }

@@ -15,11 +15,13 @@ use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -127,15 +129,19 @@ final class UpsertProductHandler
     }
 
     /**
-     * Legacy update uses context to check permissions on the current connected user rather than using userId passed
-     * as argument. To avoid potential differences between connected user and userId passed to the command, we check
-     * its consistency here
+     * The new service API is for now a wrapper of the legacy implementation to update a product. The legacy
+     * implementation use in some services the user in the token storage and not the user id of the command (mainly to check permissions).
+     * That's why, for now, we check that the user in the token storage is consistent with the provided user id.
+     *
+     * Once we re-implement the legacy implementation to not rely on the token storage, this check and the injection of
+     * the token storage should be removed. Indeed, for the token storage make this service API stateful and not agnostic of the user.
      */
     private function checkConsistencyWithConnectedUser(int $userId): void
     {
-        $connectedUserId = $this->tokenStorage->getToken()->getUser()->getId();
+        $user = $this->tokenStorage->getToken()?->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
 
-        if ($userId !== $connectedUserId) {
+        if ($userId !== $user->getId()) {
             throw new \LogicException('User id provided to the command is not the same as the connected user');
         }
     }

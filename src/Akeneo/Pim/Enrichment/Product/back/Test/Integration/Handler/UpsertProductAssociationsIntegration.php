@@ -40,6 +40,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $this->loadEnrichmentProductFunctionalFixtures();
 
         $this->productRepository = $this->get('pim_catalog.repository.product');
+        $this->logIn('peter');
 
         $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'identifier');
         $this->commandMessageBus->dispatch($command);

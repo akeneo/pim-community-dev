@@ -10,6 +10,7 @@ use Akeneo\Test\Common\EntityBuilder;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * When deleting a value from a product that is unique, it should delete the row from the unique value table.
@@ -69,6 +70,7 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
      */
     private function createProductWithUniqueValue(array $userIntents): void
     {
+        $this->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'foo',
@@ -108,6 +110,19 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
         }
 
         return \intval($id);
+    }
+
+    private function logIn(string $username): void
+    {
+        $session = $this->get('session');
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $session->set('_security_main', serialize($token));
+        $session->save();
     }
 
     protected function setUp(): void

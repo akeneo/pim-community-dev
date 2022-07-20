@@ -15,6 +15,7 @@ use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class CalculateCompletenessCommandIntegration extends TestCase
 {
@@ -125,6 +126,7 @@ class CalculateCompletenessCommandIntegration extends TestCase
      */
     private function createProduct(string $identifier, array $userIntents): void
     {
+        $this->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
@@ -148,6 +150,19 @@ class CalculateCompletenessCommandIntegration extends TestCase
         }
 
         return \intval($id);
+    }
+
+    private function logIn(string $username): void
+    {
+        $session = $this->get('session');
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $session->set('_security_main', serialize($token));
+        $session->save();
     }
 
     private function createProductModel(array $data): void

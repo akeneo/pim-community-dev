@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -44,12 +45,26 @@ SQL;
         $dbalConnection->executeQuery($sqlInsert, ['localeId' => $localeId]);
         $userId = $this->createAdminUser()->getId();
 
+        $this->logIn('admin');
         $command = UpsertProductCommand::createFromCollection((int) $userId, 'foo', []);
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
         Assert::assertNotNull($product);
         $this->fooUuid = $product->getUuid()->toString();
+    }
+
+    private function logIn(string $username): void
+    {
+        $session = $this->get('session');
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $session->set('_security_main', serialize($token));
+        $session->save();
     }
 
     protected function getConfiguration()

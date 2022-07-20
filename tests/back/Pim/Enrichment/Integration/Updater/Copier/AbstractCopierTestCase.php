@@ -6,6 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
+use PHPUnit\Framework\Assert;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)
@@ -27,6 +29,7 @@ class AbstractCopierTestCase extends TestCase
      */
     protected function createProduct(string $identifier, array $userIntents): ProductInterface
     {
+        $this->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
@@ -50,5 +53,18 @@ class AbstractCopierTestCase extends TestCase
         }
 
         return \intval($id);
+    }
+
+    protected function logIn(string $username): void
+    {
+        $session = $this->get('session');
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $session->set('_security_main', serialize($token));
+        $session->save();
     }
 }

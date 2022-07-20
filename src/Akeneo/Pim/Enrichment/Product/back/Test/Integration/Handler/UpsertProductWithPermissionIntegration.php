@@ -78,6 +78,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_creates_a_new_uncategorized_product(): void
     {
+        $this->logIn('mary');
         $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'new_product', valueUserIntents: [
             new SetTextValue('name', null, null, 'foo'),
         ]);
@@ -93,6 +94,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_creates_a_categorized_product(): void
     {
+        $this->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
@@ -114,6 +116,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The "suppliers" category does not exist');
 
+        $this->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
@@ -130,6 +133,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The "suppliers" category does not exist');
 
+        $this->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
@@ -144,6 +148,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage("You should at least keep your product in one category on which you have an own permission");
 
+        $this->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
@@ -160,6 +165,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('You should at least keep your product in one category on which you have an own permission');
 
+        $this->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
@@ -176,6 +182,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('You should at least keep your product in one category on which you have an own permission');
 
+        $this->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
@@ -192,6 +199,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage("You don't have access to products in any tree, please contact your administrator");
 
+        $this->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'my_product',
@@ -206,7 +214,6 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->createProduct('my_product', [new SetCategories(['print', 'suppliers', 'not_viewable_category'])]);
 
         $this->logIn('betty');
-
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'my_product',
@@ -216,6 +223,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
 
         $this->clearDoctrineUoW();
 
+        // we login as a user that access all categories to check they are still linked to product
         $this->logIn('peter');
         $product = $this->productRepository->findOneByIdentifier('my_product');
 
@@ -241,6 +249,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             [new AssociateProducts('X_SELL', ['product_viewable_by_manager', 'product_non_viewable_by_manager'])]
         );
 
+        $this->logIn('betty');
         $command = UpsertProductCommand::createFromCollection(
             $this->getUserId('betty'),
             'my_product',
@@ -252,6 +261,8 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->clearDoctrineUoW();
 
+        // we relog as peter to have full permission on categories
+        $this->logIn('peter');
         $product = $this->productRepository->findOneByIdentifier('my_product');
 
         Assert::assertNotNull($product);
@@ -276,6 +287,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             new AssociateProductModels('X_SELL', ['product_model_non_viewable_by_manager'])
         ]);
 
+        $this->logIn('betty');
         $command = UpsertProductCommand::createFromCollection(
             $this->getUserId('betty'),
             'my_product',
@@ -287,6 +299,8 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->clearDoctrineUoW();
 
+        // we relog as peter to have full permission on categories
+        $this->logIn('peter');
         $product = $this->productRepository->findOneByIdentifier('my_product');
 
         Assert::assertSame('my_product', $product->getIdentifier());
@@ -316,6 +330,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             ])]
         );
 
+        $this->logIn('betty');
         $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection(
             $this->getUserId('betty'),
             'my_product',
@@ -324,6 +339,8 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             ])]
         ));
 
+        // we relog as peter to have full permission on viewable products
+        $this->logIn('peter');
         Assert::assertEqualsCanonicalizing(
             [
                 new QuantifiedEntity('product_viewable_by_manager', 7),
@@ -349,6 +366,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             ]),
         ]);
 
+        $this->logIn('betty');
         $command = UpsertProductCommand::createFromCollection(
             $this->getUserId('betty'),
             'my_product',
@@ -360,6 +378,8 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         );
         $this->commandMessageBus->dispatch($command);
 
+        // we relog as peter to have full permission on viewable products
+        $this->logIn('peter');
         Assert::assertEqualsCanonicalizing(
             [
                 new QuantifiedEntity('product_model_non_viewable_by_manager', 10),
@@ -367,18 +387,5 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             ],
             $this->getAssociatedQuantifiedProductModels('my_product')
         );
-    }
-
-    private function logIn(string $username): void
-    {
-        $session = $this->get('session');
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-
-        $session->set('_security_main', serialize($token));
-        $session->save();
     }
 }

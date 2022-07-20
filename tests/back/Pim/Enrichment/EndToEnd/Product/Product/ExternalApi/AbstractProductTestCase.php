@@ -10,6 +10,7 @@ use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -23,6 +24,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
      */
     protected function createProduct(string $identifier, array $userIntents = []): ProductInterface
     {
+        $this->login('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
@@ -38,6 +40,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
      */
     protected function createVariantProduct(string $identifier, array $userIntents = []) : ProductInterface
     {
+        $this->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
@@ -132,5 +135,18 @@ abstract class AbstractProductTestCase extends ApiTestCase
         }
 
         return \intval($id);
+    }
+
+    protected function logIn(string $username): void
+    {
+        $session = $this->get('session');
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $session->set('_security_main', serialize($token));
+        $session->save();
     }
 }

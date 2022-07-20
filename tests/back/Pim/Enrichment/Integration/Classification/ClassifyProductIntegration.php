@@ -7,11 +7,14 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Test\Integration\TestCase;
+use PHPUnit\Framework\Assert;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ClassifyProductIntegration extends TestCase
 {
     public function testClassify()
     {
+        $this->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'tee',
@@ -48,5 +51,18 @@ class ClassifyProductIntegration extends TestCase
         }
 
         return \intval($id);
+    }
+
+    private function logIn(string $username): void
+    {
+        $session = $this->get('session');
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $session->set('_security_main', serialize($token));
+        $session->save();
     }
 }

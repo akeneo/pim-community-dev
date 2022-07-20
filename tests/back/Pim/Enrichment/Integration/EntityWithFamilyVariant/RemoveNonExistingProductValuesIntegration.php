@@ -11,6 +11,8 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use PHPUnit\Framework\Assert;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -35,6 +37,7 @@ final class RemoveNonExistingProductValuesIntegration extends TestCase
         $attributeOption->setAttribute($this->get('pim_api.repository.attribute')->findOneByIdentifier('brand'));
         $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
 
+        $this->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'hiking_shoes',
@@ -162,5 +165,18 @@ final class RemoveNonExistingProductValuesIntegration extends TestCase
         }
 
         return \intval($id);
+    }
+
+    private function logIn(string $username): void
+    {
+        $session = $this->get('session');
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $session->set('_security_main', serialize($token));
+        $session->save();
     }
 }

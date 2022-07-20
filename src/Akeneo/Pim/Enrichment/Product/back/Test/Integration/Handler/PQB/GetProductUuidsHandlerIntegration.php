@@ -37,6 +37,7 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
     {
         parent::setUp();
         $this->productRepository = $this->get('pim_catalog.repository.product');
+        $this->logIn('admin');
 
         $this->commandMessageBus->dispatch(
             UpsertProductCommand::createFromCollection($this->getUserId('admin'), 'test1', [])

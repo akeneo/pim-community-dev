@@ -16,6 +16,7 @@ use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 final class GetAncestorProductModelCodesIntegration extends TestCase
 {
@@ -113,6 +114,7 @@ final class GetAncestorProductModelCodesIntegration extends TestCase
      */
     private function createProduct(string $identifier, array $userIntents): void
     {
+        $this->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
@@ -133,6 +135,19 @@ final class GetAncestorProductModelCodesIntegration extends TestCase
         }
 
         return \intval($id);
+    }
+
+    private function logIn(string $username): void
+    {
+        $session = $this->get('session');
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $session->set('_security_main', serialize($token));
+        $session->save();
     }
 
     private function getAncestorProductModelCodes(): GetAncestorProductModelCodes

@@ -28,6 +28,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 
         $this->commandMessageBus = $this->get('pim_enrich.product.message_bus');
         $this->productRepository = $this->get('pim_catalog.repository.product');
+        $this->logIn('peter');
     }
 
     /** @test */
