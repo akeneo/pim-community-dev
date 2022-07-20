@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context;
 
 use Akeneo\Category\Infrastructure\Component\Model\Category;
-use Akeneo\Pim\Enrichment\Category\Test\Acceptance\InMemory\InMemoryGetOwnedCategories;
 use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
+use Akeneo\Test\Category\Acceptance\InMemory\InMemoryGetOwnedCategories;
 use Behat\Behat\Context\Context;
 
 /**

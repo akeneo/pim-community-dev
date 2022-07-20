@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Category\Test\Acceptance\InMemory;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
-use Akeneo\Pim\Enrichment\Category\Test\Acceptance\InMemory\InMemoryGetOwnedCategories;
 use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
+use Akeneo\Test\Category\Acceptance\InMemory\InMemoryGetOwnedCategories;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
