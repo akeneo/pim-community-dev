@@ -151,6 +151,8 @@ pim_import_export:
             title: 文件区域
             help: 定义标签显示的区域
       file_path: 文件路径
+      storage_form:
+        file_path.label: 文件路径
   widget:
     last_operations:
       empty: 现在没有要显示的运算。
