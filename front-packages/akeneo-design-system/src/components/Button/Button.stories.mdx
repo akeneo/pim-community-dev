@@ -9,6 +9,7 @@ import {ArrowDownIcon} from '../../icons';
     level: {control: {type: 'select'}, options: ['primary', 'secondary', 'tertiary', 'warning', 'danger']},
     ghost: {control: {type: 'boolean'}},
     disabled: {control: {type: 'boolean'}},
+    active: {control: {type: 'boolean'}},
     size: {control: {type: 'select'}, options: ['default', 'small']},
     onClick: {action: 'Click on the button'},
     children: {control: {type: 'text'}},
@@ -90,11 +91,64 @@ Use this playground to test the button component
     {args => {
       return (
         <>
-          <Button {...args} ghost={false}>
-            Default
+          <Button {...args} ghost={true} level="primary">
+            Primary
           </Button>
-          <Button {...args} ghost={true}>
-            Ghost
+          <Button {...args} ghost={true} level="secondary">
+            Secondary
+          </Button>
+          <Button {...args} ghost={true} level="tertiary">
+            Tertiary
+          </Button>
+          <Button {...args} ghost={true} level="warning">
+            Warning
+          </Button>
+          <Button {...args} ghost={true} level="danger">
+            Danger
+          </Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on active
+
+<Canvas>
+  <Story name="Active">
+    {args => {
+      return (
+        <>
+          <Button {...args} active={true} level="primary">
+            Primary
+          </Button>
+          <Button {...args} active={true} level="secondary">
+            Secondary
+          </Button>
+          <Button {...args} active={true} level="tertiary">
+            Tertiary
+          </Button>
+          <Button {...args} active={true} level="warning">
+            Warning
+          </Button>
+          <Button {...args} active={true} level="danger">
+            Danger
+          </Button>
+          <br />
+          <Button {...args} active={true} ghost={true} level="primary">
+            Primary
+          </Button>
+          <Button {...args} active={true} ghost={true} level="secondary">
+            Secondary
+          </Button>
+          <Button {...args} active={true} ghost={true} level="tertiary">
+            Tertiary
+          </Button>
+          <Button {...args} active={true} ghost={true} level="warning">
+            Warning
+          </Button>
+          <Button {...args} active={true} ghost={true} level="danger">
+            Danger
           </Button>
         </>
       );
