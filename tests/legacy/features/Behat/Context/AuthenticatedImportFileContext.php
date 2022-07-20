@@ -2,17 +2,12 @@
 
 namespace PimEnterprise\Behat\Context;
 
-use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
-use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * This context aims to contain all methods to the launch of a job via the queue and be authentified.
@@ -36,7 +31,12 @@ final class AuthenticatedImportFileContext extends PimContext implements Snippet
      */
     public function authorImportsResourceViaTheJobName(string $author, string $entities, string $jobName)
     {
-        $jobOptions = new TableNode([['filePath', self::$placeholderValues['%file to import%']]]);
+        $jobOptions = new TableNode([[
+            'storage', json_encode([
+                'type' => 'local',
+                'file_path' => self::$placeholderValues['%file to import%'],
+            ]),
+        ]]);
 
         $this->import($jobName, $jobOptions, $author);
     }
@@ -46,7 +46,12 @@ final class AuthenticatedImportFileContext extends PimContext implements Snippet
      */
     public function authorImportsFileForResourceViaTheJobName(string $author, string $filePath, string $entities, string $jobName)
     {
-        $jobOptions = new TableNode([['filePath', self::$placeholderValues['%fixtures%'] . $filePath]]);
+        $jobOptions = new TableNode([[
+            'storage', json_encode([
+                'type' => 'local',
+                'file_path' => self::$placeholderValues['%fixtures%'] . $filePath,
+            ])
+        ]]);
 
         $this->import($jobName, $jobOptions, $author);
     }

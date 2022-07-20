@@ -61,7 +61,10 @@ class JobValidatorTest extends AbstractValidationTest
     private function getValidJobParameters(): array
     {
         return [
-            'filePath' => '/tmp/export_%job_label%_%datetime%.xlsx',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/export_%job_label%_%datetime%.xlsx',
+            ],
             'withHeader' => true,
             'linesPerFile' => 10000,
             'user_to_notify' => null,
@@ -140,7 +143,10 @@ class JobValidatorTest extends AbstractValidationTest
     private function getInvalidJobParameters(): array
     {
         return [
-            'filePath' => '/tmp/export_%job_label%_%datetime%.xlsx',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/export_%job_label%_%datetime%.xlsx',
+            ],
             'withHeader' => true,
             'linesPerFile' => 10000,
             'user_to_notify' => null,

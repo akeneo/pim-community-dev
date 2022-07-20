@@ -76,7 +76,11 @@ class RecordWriterSpec extends ObjectBehavior
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobParameters->get('reference_entity_identifier')->willReturn('brand');
-        $jobParameters->get('filePath')->willReturn($this->directory . 'export_records.csv');
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn([
+            'type' => 'local',
+            'file_path' => $this->directory . 'export_records.csv',
+        ]);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->has('linesPerFile')->willReturn(false);
@@ -110,8 +114,7 @@ class RecordWriterSpec extends ObjectBehavior
         ArrayConverterInterface $arrayConverter,
         FlatItemBuffer $flatRowBuffer,
         JobParameters $jobParameters
-    )
-    {
+    ) {
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->has('with_media')->willReturn(false);
 
@@ -148,8 +151,7 @@ class RecordWriterSpec extends ObjectBehavior
         AbstractAttribute $scopableAttribute,
         AbstractAttribute $localizableAttribute,
         AbstractAttribute $nonScopableNonLocalizableAttribute
-    )
-    {
+    ) {
         $jobParameters->has('with_media')->willReturn(false);
         $jobParameters->get('withHeader')->willReturn(true);
 

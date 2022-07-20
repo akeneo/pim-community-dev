@@ -423,7 +423,7 @@ akeneo_supplier_portal_supplier_contributor | supplier_identifier | NO | char(36
 akeneo_supplier_portal_supplier_file | identifier | NO | char(36) | PRI
 akeneo_supplier_portal_supplier_file | filename | NO | varchar(255) |
 akeneo_supplier_portal_supplier_file | path | NO | varchar(255) |
-akeneo_supplier_portal_supplier_file | uploaded_by_contributor | YES | varchar(36) |
+akeneo_supplier_portal_supplier_file | uploaded_by_contributor | YES | varchar(255) |
 akeneo_supplier_portal_supplier_file | uploaded_by_supplier | NO | varchar(36) | MUL
 akeneo_supplier_portal_supplier_file | uploaded_at | NO | datetime |
 akeneo_supplier_portal_supplier_file | downloaded | NO | tinyint(1) |

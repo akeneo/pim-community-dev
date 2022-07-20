@@ -16,7 +16,9 @@ jobs:
             realTimeVersioning: true
             decimalSeparator:   .
             dateFormat:         yyyy-MM-dd
-            filePath:           /tmp/csv_clothing_product_import.csv
+            storage:
+                type: local
+                file_path:           /tmp/csv_clothing_product_import.csv
     csv_clothing_product_import_with_rules:
         connector: Akeneo CSV Connector
         alias:     csv_product_import_with_rules
@@ -69,7 +71,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/product.csv
+            storage:
+                type: local
+                file_path: /tmp/product.csv
             filters:
                 data:
                     -
@@ -101,7 +105,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/product_model.csv
+            storage:
+                type: local
+                file_path: /tmp/product_model.csv
             filters:
                 data: []
                 structure:
@@ -129,7 +135,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/category.csv
+            storage:
+                type: local
+                file_path: /tmp/category.csv
     csv_clothing_association_type_import:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_import
@@ -149,7 +157,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/association-type.csv
+            storage:
+                type: local
+                file_path: /tmp/association-type.csv
     csv_clothing_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_import
@@ -169,7 +179,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/group.csv
+            storage:
+                type: local
+                file_path: /tmp/group.csv
     csv_clothing_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
@@ -189,7 +201,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/attribute.csv
+            storage:
+                type: local
+                file_path: /tmp/attribute.csv
     csv_clothing_option_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_import
@@ -209,7 +223,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/attribute-option.csv
+            storage:
+                type: local
+                file_path: /tmp/attribute-option.csv
     csv_clothing_mobile_published_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_published_product_export
@@ -219,7 +235,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath: /tmp/published-product.csv
+            storage:
+                type: local
+                file_path: /tmp/published-product.csv
             filters:
                 data:
                     -
@@ -250,7 +268,9 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath: /tmp/published-product.xlsx
+            storage:
+                type: local
+                file_path: /tmp/published-product.xlsx
             filters:
                 data:
                     -
@@ -286,7 +306,9 @@ jobs:
             enabled:          true
             decimalSeparator: .
             dateFormat:       MM/dd/yyyy
-            filePath:         '/tmp/csv_clothing_product_proposal_import.csv'
+            storage:
+                type: local
+                file_path:         '/tmp/csv_clothing_product_proposal_import.csv'
     xlsx_clothing_product_proposal_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_proposal_import
@@ -297,21 +319,27 @@ jobs:
             enabled:          true
             decimalSeparator: .
             dateFormat:       MM/dd/yyyy
-            filePath:         '/tmp/xlsx_clothing_product_proposal_import.xlsx'
+            storage:
+                type: local
+                file_path:         '/tmp/xlsx_clothing_product_proposal_import.xlsx'
     xlsx_clothing_product_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_export
         label:     Demo XLSX product import
         type:      import
         configuration:
-            filePath: '/tmp/xlsx_clothing_product_proposal_import.xlsx'
+            storage:
+                type: local
+                file_path: '/tmp/xlsx_clothing_product_proposal_import.xlsx'
     xlsx_clothing_product_model_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_model_export
         label:     Demo XLSX product model import
         type:      import
         configuration:
-            filePath: '/tmp/xlsx_clothing_product_model_proposal_import.xlsx'
+            storage:
+                type: local
+                file_path: '/tmp/xlsx_clothing_product_model_proposal_import.xlsx'
             filters:
                 data: []
                 structure:

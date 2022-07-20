@@ -25,3 +25,4 @@ hslavich_onelogin_saml:
         authnRequestsSigned: true
         wantNameId: false
         logoutRequestSigned: true
+        requestedAuthnContext: false

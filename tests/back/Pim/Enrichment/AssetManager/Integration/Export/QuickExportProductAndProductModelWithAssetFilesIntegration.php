@@ -47,8 +47,11 @@ final class QuickExportProductAndProductModelWithAssetFilesIntegration extends A
             'with_media' => true,
             'with_label' => false,
             'withHeader' => true,
-            'filePathProduct' => '/tmp/export_products.csv',
-            'filePathProductModel' => '/tmp/export_product_models.csv',
+            'storage' => [
+                'type' => 'local',
+                'filePathProduct' => '/tmp/export_products.csv',
+                'filePathProductModel' => '/tmp/export_product_models.csv',
+            ],
         ];
         $this->launchCsvExport(self::CSV_JOB_CODE, 'admin', $config);
 
@@ -121,8 +124,11 @@ final class QuickExportProductAndProductModelWithAssetFilesIntegration extends A
             'with_media' => true,
             'with_label' => false,
             'withHeader' => true,
-            'filePathProduct' => '/tmp/export_products.csv',
-            'filePathProductModel' => '/tmp/export_product_models.csv',
+            'storage' => [
+                'type' => 'local',
+                'filePathProduct' => '/tmp/export_products.csv',
+                'filePathProductModel' => '/tmp/export_product_models.csv',
+            ]
         ];
         $this->launchCsvExport(self::CSV_JOB_CODE, 'admin', $config);
 

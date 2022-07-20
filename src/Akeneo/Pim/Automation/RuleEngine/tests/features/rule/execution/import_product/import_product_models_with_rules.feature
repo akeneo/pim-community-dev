@@ -69,7 +69,7 @@ Feature: Import product models with rules
       | connector            | type   | alias                               | code                                | label                               |
       | Akeneo CSV Connector | import | csv_product_model_import_with_rules | csv_product_model_import_with_rules | CSV product model import with rules |
     And the following job "csv_product_model_import_with_rules" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I launch the "csv_product_model_import_with_rules" import job
     Then the en_US unscoped name of "bag_model" should be "I have no name"
     And the en_US unscoped name of "another_model" should be "The other bag"
@@ -93,7 +93,7 @@ Feature: Import product models with rules
       | connector             | type   | alias                                | code                                 | label                                |
       | Akeneo XLSX Connector | import | xlsx_product_model_import_with_rules | xlsx_product_model_import_with_rules | XLSX product model import with rules |
     And the following job "xlsx_product_model_import_with_rules" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I launch the "xlsx_product_model_import_with_rules" import job
     Then the en_US unscoped name of "bag_model" should be "I have no name"
     And the en_US unscoped name of "another_model" should be "The other bag"

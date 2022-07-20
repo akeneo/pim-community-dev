@@ -17,6 +17,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileSystemStorageClient;
 use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage;
+use Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter;
 use Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\RemoteStorageClientProviderInterface;
 use League\Flysystem\Filesystem;
 use League\Flysystem\PhpseclibV2\ConnectionProvider;
@@ -29,16 +30,23 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
     private const USE_AGENT = false;
     private const TIMEOUT = 10;
 
+    public function __construct(
+        private Encrypter $encrypter,
+    ) {
+    }
+
     public function getFromStorage(StorageInterface $storage): StorageClientInterface
     {
         if (!$storage instanceof SftpStorage) {
             throw new \InvalidArgumentException('The provider only support SftpStorage');
         }
 
+        $encryptionKey = $this->getEncryptionKey($storage);
+
         $connection = new SftpConnectionProvider(
             $storage->getHost(),
             $storage->getUsername(),
-            $storage->getPassword(),
+            $this->encrypter->decrypt($storage->getPassword(), $encryptionKey),
             null,
             null,
             $storage->getPort(),
@@ -72,5 +80,17 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
             self::TIMEOUT,
             self::MAX_RETRIES,
         );
+    }
+
+    private function getEncryptionKey(SftpStorage $storage): string
+    {
+        $encryptionKey = sprintf(
+            '%s@%s:%s',
+            $storage->getUsername(),
+            $storage->getHost(),
+            $storage->getPort(),
+        );
+
+        return $encryptionKey;
     }
 }

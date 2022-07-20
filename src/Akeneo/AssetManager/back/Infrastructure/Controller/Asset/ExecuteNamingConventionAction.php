@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exception\NamingConventionException;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
@@ -64,13 +65,19 @@ class ExecuteNamingConventionAction
         }
 
         $normalizedAsset = $asset->normalize();
-        $editAssetCommand = $this->editAssetCommandFactory->create(
-            [
-                'asset_family_identifier' => $assetFamilyIdentifier,
-                'code' => $assetCode,
-                'values' => $normalizedAsset['values'],
-            ]
-        );
+
+        try {
+            $editAssetCommand = $this->editAssetCommandFactory->create(
+                [
+                    'asset_family_identifier' => $assetFamilyIdentifier,
+                    'code' => $assetCode,
+                    'values' => $normalizedAsset['values'],
+                ]
+            );
+        } catch (NamingConventionException) {
+            return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
+        }
+
         $violations = $this->validator->validate($editAssetCommand);
         if ($violations->count() > 0) {
             return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_BAD_REQUEST);

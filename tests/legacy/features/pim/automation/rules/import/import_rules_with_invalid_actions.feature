@@ -50,7 +50,7 @@ Feature: Import rules
 
     """
     And the following job "clothing_rule_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish

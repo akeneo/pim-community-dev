@@ -62,6 +62,8 @@ return [
     Akeneo\Platform\Job\Infrastructure\Symfony\AkeneoJobBundle::class => ['all' => true],
     Akeneo\Pim\TableAttribute\Infrastructure\Symfony\AkeneoPimTableAttributeBundle::class => ['all' => true],
     Akeneo\Platform\TailoredExport\Infrastructure\Symfony\AkeneoTailoredExportBundle::class => ['all' => true],
+    Akeneo\Platform\TailoredImport\Infrastructure\Symfony\AkeneoTailoredImportBundle::class => ['all' => true],
+    Akeneo\Platform\JobAutomation\Infrastructure\Symfony\AkeneoJobAutomationBundle::class => ['all' => true],
     Akeneo\Catalogs\Infrastructure\Symfony\AkeneoCatalogsBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\PimVersionBundle\PimVersionBundle::class => ['all' => true],
     Akeneo\Category\Infrastructure\Symfony\AkeneoCategoryBundle::class => ['all' => true],

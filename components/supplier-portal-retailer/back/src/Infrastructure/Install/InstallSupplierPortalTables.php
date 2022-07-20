@@ -138,7 +138,7 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
                 `identifier` char(36) NOT NULL,
                 `filename` varchar(255) NOT NULL,
                 `path` varchar(255) NOT NULL,     
-                `uploaded_by_contributor` varchar(36) DEFAULT NULL,
+                `uploaded_by_contributor` varchar(255) DEFAULT NULL,
                 `uploaded_by_supplier` varchar(36) NOT NULL,
                 `uploaded_at` DATETIME NOT NULL,
                 `downloaded` BOOLEAN NOT NULL DEFAULT false,

@@ -122,6 +122,7 @@ $rules = [
             'Akeneo\Tool\Component\Localization\LabelTranslatorInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\FlatAttributeValueTranslatorInterface',
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
+            'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage',
 
             // Reference Entity
             'Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier',

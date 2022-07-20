@@ -77,7 +77,11 @@ class AssetWriterSpec extends ObjectBehavior
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobParameters->get('asset_family_identifier')->willReturn('packshot');
-        $jobParameters->get('filePath')->willReturn($this->directory . 'export_assets.csv');
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn([
+            'type' => 'local',
+            'file_path' => $this->directory . 'export_assets.csv',
+        ]);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->has('linesPerFile')->willReturn(false);
@@ -331,8 +335,7 @@ class AssetWriterSpec extends ObjectBehavior
         FileInfoInterface $fileInfo,
         FilesystemOperator $assetFilesystem,
         StepExecution $stepExecution
-    )
-    {
+    ) {
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(true);
         $jobParameters->get('withHeader')->willReturn(false);

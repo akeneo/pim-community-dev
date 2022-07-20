@@ -89,10 +89,10 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-GRF-68-move-category-backend-to-own-bounding-context",
-        "akeneo/pim-onboarder" : "dev-GRF-68-move-category-backend-to-own-bounding-context",
+        "ext-openssl": "*",
+        "akeneo/pim-community-dev": "dev-master",
+        "akeneo/pim-onboarder": "dev-master",
         "google/cloud-firestore": "^1.22",
-
         "grpc/grpc": "^1.42.0",
         "hslavich/oneloginsaml-bundle": "2.0.*",
         "jfcherng/php-diff": "^6.10",

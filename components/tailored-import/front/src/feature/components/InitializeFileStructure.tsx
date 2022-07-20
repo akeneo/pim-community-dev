@@ -162,7 +162,10 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
     >
       <div>
         {translate('akeneo.tailored_import.file_structure.placeholder.helper')}{' '}
-        <Link href="https://help.akeneo.com/pim/serenity/articles/tailored-import.html" target="_blank">
+        <Link
+          href="https://help.akeneo.com/pim/serenity/articles/tailored-import.html#define-your-import-structure"
+          target="_blank"
+        >
           {translate('akeneo.tailored_import.file_structure.placeholder.link')}
         </Link>
       </div>

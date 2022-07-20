@@ -14,7 +14,7 @@ Feature: Import attribute groups
       manufacturing;Manufacturing;manufacturer,lace_fabric,sole_fabric;6
       """
     And the following job "csv_footwear_attribute_group_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And I am on the "csv_footwear_attribute_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_attribute_group_import" job to finish
