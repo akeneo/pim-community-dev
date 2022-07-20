@@ -5,7 +5,7 @@ orbs:
   security-hunter: akeneo-orbs/security-hunter@1.0.3
 
 workflows:
-    blackhawks_dev_pull_request:
+    dev_pull_request:
         when:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
@@ -97,7 +97,7 @@ workflows:
                       - security-hunter/scan-dir
                       - security-hunter/scan-image
 
-    blackhawks_deployments_pull_request:
+    deployments_pull_request:
         when:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
