@@ -75,6 +75,7 @@ class TreeAssociate {
           _format: 'json',
           context: 'associate',
           dataLocale: this.dataLocale,
+          selected: JSON.parse(this.selectedCategoryCodesByTreeIdInput.value)[treeId],
         };
         if (typeof this.productUuid !== 'undefined') {
           params.uuid = this.productUuid;

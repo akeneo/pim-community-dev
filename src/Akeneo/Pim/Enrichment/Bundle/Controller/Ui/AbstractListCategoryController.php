@@ -55,9 +55,9 @@ abstract class AbstractListCategoryController extends AbstractController
         }
 
         $categories = null;
-        $selectedCategoryIds = $request->get('selected', null);
-        if (null !== $selectedCategoryIds) {
-            $categories = $this->categoryRepository->getCategoriesByIds($selectedCategoryIds);
+        $selectedCategoryCodes = $request->get('selected', null);
+        if (null !== $selectedCategoryCodes) {
+            $categories = $this->categoryRepository->getCategoriesByCodes($selectedCategoryCodes);
         } elseif (null !== $entityWithCategories) {
             $categories = $entityWithCategories->getCategories();
         }
