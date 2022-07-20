@@ -20,7 +20,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             'product-file.xlsx',
             '1/2/3/4/product-file.xlsx',
             'contributor@example.com',
-            'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7'
+            'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
         );
         $repository->save($supplierFile);
 

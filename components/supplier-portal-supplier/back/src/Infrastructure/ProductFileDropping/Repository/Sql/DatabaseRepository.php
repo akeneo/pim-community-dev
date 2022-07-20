@@ -37,7 +37,7 @@ final class DatabaseRepository implements SupplierFileRepository
                 'uploaded_by_contributor' => $supplierFile->uploadedByContributor(),
                 'uploaded_by_supplier' => $supplierFile->uploadedBySupplier(),
                 'uploaded_at' => $supplierFile->uploadedAt(),
-            ]
+            ],
         );
     }
 }
