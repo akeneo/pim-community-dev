@@ -172,8 +172,9 @@ SQL;
                 return;
             }
 
-            $formerId = (int)end($rows)['id'];
-            yield array_column($rows, 'identifier');
+            $lastUuidAsBytes = end($rows);
+
+            yield array_map(fn (string $uuid): UuidInterface => Uuid::fromBytes($uuid), $rows);
         }
     }
 
@@ -211,9 +212,9 @@ SQL;
 
     private function getDiffProductUuids(int $batchSize)
     {
-        $lastUuid = '';
+        $lastUuidAsBytes = '';
         $sql = <<< SQL
-SELECT CONCAT('product_',BIN_TO_UUID(uuid)) AS _id, BIN_TO_UUID(uuid) AS uuid, DATE_FORMAT(updated, '%Y-%m-%dT%TZ') AS updated
+SELECT CONCAT('product_',BIN_TO_UUID(uuid)) AS _id, uuid, DATE_FORMAT(updated, '%Y-%m-%dT%TZ') AS updated
 FROM pim_catalog_product
 WHERE uuid > :lastUuid
 ORDER BY uuid ASC
@@ -223,7 +224,7 @@ SQL;
             $rows = $this->connection->executeQuery(
                 $sql,
                 [
-                    'lastUuid' => $lastUuid,
+                    'lastUuid' => $lastUuidAsBytes,
                     'limit' => $batchSize,
                 ],
                 [
@@ -236,7 +237,7 @@ SQL;
                 return;
             }
 
-            $lastUuid = end($rows)['uuid'];
+            $lastUuidAsBytes = end($rows)['uuid'];
 
             $existingMysqlIdentifiers = array_column($rows, '_id');
             $existingMysqlUpdated = array_column($rows, 'updated');
@@ -263,11 +264,12 @@ SQL;
             $esIdentifiers = array_map(function ($doc) {
                 return $doc['_id'];
             }, $results["hits"]["hits"]);
+
             $diff = array_reduce(
                 $rows,
                 function ($carry, $item) use ($esIdentifiers) {
                     if (!in_array($item['_id'], $esIdentifiers)) {
-                        $carry[] = Uuid::fromString($item['uuid']);
+                        $carry[] = Uuid::fromBytes($item['uuid']);
                     }
 
                     return $carry;
