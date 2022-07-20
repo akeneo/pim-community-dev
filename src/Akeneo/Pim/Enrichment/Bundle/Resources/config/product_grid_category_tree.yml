@@ -62,7 +62,7 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
 
     akeneo.pim.enrichment.category.category_tree.normalizer.root_category:
-        class: 'Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory'
+        class: 'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer\RootCategory'
 
     akeneo.pim.enrichment.category.category_tree.normalizer.child_category:
         class: 'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer\ChildCategory'

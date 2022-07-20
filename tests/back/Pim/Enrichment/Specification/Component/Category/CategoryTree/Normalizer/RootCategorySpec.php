@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
 
-use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory as NormalizerRootCategory;
-use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory as ReadModelRootCategory;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer\RootCategory as NormalizerRootCategory;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory as ReadModelRootCategory;
 use PhpSpec\ObjectBehavior;
 
 

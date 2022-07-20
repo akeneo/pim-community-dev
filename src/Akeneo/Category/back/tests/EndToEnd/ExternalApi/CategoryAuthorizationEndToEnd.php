@@ -2,13 +2,14 @@
 
 namespace Akeneo\Test\Category\EndToEnd\ExternalApi;
 
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class CategoryAuthorizationEndToEndIntegration extends ApiTestCase
+class CategoryAuthorizationEndToEnd extends ApiTestCase
 {
-    public function testOverallAccessDenied()
+    public function testOverallAccessDenied(): void
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'kevin', 'kevin');
 
@@ -26,7 +27,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
-    public function testAccessGrantedForListingCategories()
+    public function testAccessGrantedForListingCategories(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -36,7 +37,7 @@ JSON;
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
-    public function testAccessDeniedForListingCategories()
+    public function testAccessDeniedForListingCategories(): void
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
 
@@ -54,7 +55,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
-    public function testAccessGrantedForGettingACategory()
+    public function testAccessGrantedForGettingACategory(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -64,7 +65,7 @@ JSON;
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
-    public function testAccessDeniedForGettingACategory()
+    public function testAccessDeniedForGettingACategory(): void
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
 
@@ -82,7 +83,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
-    public function testAccessGrantedForCreatingACategory()
+    public function testAccessGrantedForCreatingACategory(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -98,7 +99,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
     }
 
-    public function testAccessDeniedForCreatingACategory()
+    public function testAccessDeniedForCreatingACategory(): void
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
 
@@ -122,7 +123,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
-    public function testAccessGrantedForPartialUpdatingACategory()
+    public function testAccessGrantedForPartialUpdatingACategory(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -134,7 +135,7 @@ JSON;
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 
-    public function testAccessDeniedForPartialUpdatingACategory()
+    public function testAccessDeniedForPartialUpdatingACategory(): void
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
 
@@ -154,7 +155,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
-    public function testAccessGrantedForPartialUpdatingAListOfCategories()
+    public function testAccessGrantedForPartialUpdatingAListOfCategories(): void
     {
         $client = $this->createAuthenticatedClient();
         $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
@@ -163,7 +164,7 @@ JSON;
 {"code": "a_category"}
 JSON;
 
-        ob_start(function() {
+        ob_start(function () {
             return '';
         });
         $client->request('PATCH', '/api/rest/v1/categories', [], [], [], $data);
@@ -173,7 +174,7 @@ JSON;
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
-    public function testAccessDeniedForPartialUpdatingAListOfCategories()
+    public function testAccessDeniedForPartialUpdatingAListOfCategories(): void
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
         $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
@@ -202,7 +203,7 @@ JSON;
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }

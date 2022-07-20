@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
-use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer\ChildCategory;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer\RootCategory;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCount;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCount;

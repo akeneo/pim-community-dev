@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
 
-use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
