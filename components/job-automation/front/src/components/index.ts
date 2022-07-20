@@ -1,2 +1,1 @@
-export * from './StorageForm';
-export * from './model';
+export * from './Dummy';

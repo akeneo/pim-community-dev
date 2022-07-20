@@ -54,7 +54,12 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
         $jobInstanceRepository = $this->get('pim_enrich.repository.job_instance');
         $jobInstance = $jobInstanceRepository->findOneBy(['code' => 'supplier_portal_xlsx_supplier_import']);
 
-        $jobParameters = new JobParameters(['filePath' => $filePath]);
+        $jobParameters = new JobParameters([
+            'storage' => [
+                'type' => 'local',
+                'file_path' => $filePath,
+            ],
+        ]);
         $jobExecution = new JobExecution();
         $jobExecution->setJobParameters($jobParameters);
         $jobExecution->setJobInstance($jobInstance);

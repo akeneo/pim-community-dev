@@ -71,6 +71,8 @@ $rules = [
         // TIP-1002: Permissions should not be linked to Channel
         'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
         'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
+        'Akeneo\Channel\API\Query\FindAllViewableLocalesForUser',
+        'Akeneo\Channel\API\Query\Locale',
 
         //TODO: Link by id instead of reference
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
@@ -170,7 +172,6 @@ $rules = [
 
         'Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts',
         'Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels',
-
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',

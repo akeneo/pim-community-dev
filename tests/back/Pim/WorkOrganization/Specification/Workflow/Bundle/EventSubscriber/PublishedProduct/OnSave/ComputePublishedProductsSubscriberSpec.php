@@ -82,7 +82,7 @@ class ComputePublishedProductsSubscriberSpec extends ObjectBehavior
         $publishedProduct->setId(42);
         $publishedProduct->setOriginalProduct($product);
 
-        $completenessCalculator->fromProductIdentifiers(['original_product'])
+        $completenessCalculator->fromProductUuids([$product->getUuid()])
             ->willReturn([
                 'original_product' => new ProductCompletenessWithMissingAttributeCodesCollection(
                     56,
@@ -118,7 +118,7 @@ class ComputePublishedProductsSubscriberSpec extends ObjectBehavior
         $otherPublishedProduct->setId(45);
         $otherPublishedProduct->setOriginalProduct($otherProduct);
 
-        $completenessCalculator->fromProductIdentifiers(['original_product', 'other_original_product'])
+        $completenessCalculator->fromProductUuids([$product->getUuid(), $otherProduct->getUuid()])
             ->willReturn(
                 [
                     'original_product' => new ProductCompletenessWithMissingAttributeCodesCollection(

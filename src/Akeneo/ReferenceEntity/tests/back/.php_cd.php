@@ -47,6 +47,8 @@ $rules = [
         'Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery',
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
         'Akeneo\Channel\API',
+        'Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage',
+        'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage',
     ])->in('Akeneo\ReferenceEntity\Infrastructure'),
 ];
 

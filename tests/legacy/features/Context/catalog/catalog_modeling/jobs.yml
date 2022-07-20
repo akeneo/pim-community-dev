@@ -58,7 +58,9 @@ jobs:
         label:     Demo CSV product model import with rules
         type:      import
         configuration:
-            filePath: /tmp/product_model.csv
+            storage:
+                type: local
+                file_path: /tmp/product_model.csv
             uploadAllowed: true
             delimiter: ;
             enclosure: '"'

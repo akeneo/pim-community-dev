@@ -17,7 +17,7 @@ Feature: Import categories
     black_tshirts;tshirts;Black tshirts
     """
     And the following job "csv_clothing_category_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_clothing_category_import" import job page
     And I launch the import job
     And I wait for the "csv_clothing_category_import" job to finish
@@ -48,7 +48,7 @@ Feature: Import categories
     2015_tees;2015_collection;2015 tees
     """
     And the following job "csv_clothing_category_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_clothing_category_import" import job page
     And I launch the import job
     And I wait for the "csv_clothing_category_import" job to finish

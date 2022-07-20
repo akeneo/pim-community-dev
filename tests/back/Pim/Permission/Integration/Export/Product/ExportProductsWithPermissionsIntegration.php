@@ -111,7 +111,7 @@ CSV;
                 'structure' => [
                     'scope'   => 'tablet',
                     'locales' => ['en_US', 'fr_FR', 'de_DE'],
-                    'attributes'=> ['a_metric_without_decimal_negative']
+                    'attributes' => ['a_metric_without_decimal_negative']
                 ],
             ],
         ];
@@ -123,7 +123,7 @@ CSV;
 
     public function testProductViewableByRedactorWithAuthenticatedJobLauncher()
     {
-        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. JobLauncher::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export.csv';
+        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . JobLauncher::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export.csv';
         if (file_exists($filePath)) {
             unlink($filePath);
         }
@@ -150,10 +150,10 @@ CSV;
                 'structure' => [
                     'scope'   => 'tablet',
                     'locales' => ['en_US', 'fr_FR', 'de_DE'],
-                    'attributes'=> ['a_metric_without_decimal_negative']
+                    'attributes' => ['a_metric_without_decimal_negative']
                 ],
             ],
-            'filePath' => $filePath,
+            'storage' => ['type' => 'local', 'file_path' => $filePath],
         ];
 
         $jobExecution = $this->get('pim_connector.launcher.authenticated_job_launcher')->launch($jobInstance, $user, $config);

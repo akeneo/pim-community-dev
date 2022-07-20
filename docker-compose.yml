@@ -125,7 +125,7 @@ services:
 
   object-storage:
     image: 'minio/minio:RELEASE.2021-09-15T04-54-25Z'
-    entrypoint: '/bin/sh -c "mkdir -p /data/asset /data/assetmanager /data/archive /data/catalog/ /data/jobs /data/dataqualityinsights /data/tailoredimport && minio server /data"'
+    entrypoint: '/bin/sh -c "mkdir -p /data/asset /data/assetmanager /data/archive /data/catalog/ /data/jobs /data/dataqualityinsights /data/tailoredimport /data/supplierportal && minio server /data"'
     environment:
       MINIO_ACCESS_KEY: 'AKENEO_OBJECT_STORAGE_ACCESS_KEY'
       MINIO_SECRET_KEY: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'

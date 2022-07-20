@@ -1,1 +1,10 @@
 services:
+    Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter:
+        arguments:
+            - '%env(APP_SECRET)%'
+
+    Akeneo\Platform\JobAutomation\Infrastructure\Security\SftpCredentialsEncrypter:
+        arguments:
+            - '@Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter'
+        tags:
+            - { name: pim_import_export.credentials_encrypter }

@@ -33,6 +33,8 @@ $rules = [
             'Symfony\Component\Form\Extension\Core\Type\FormType',
             'Symfony\Component\Form\FormBuilderInterface',
             'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
+            'Symfony\Component\Messenger\MessageBusInterface',
+            'Symfony\Component\Messenger\Stamp\HandledStamp',
             'Twig\Environment',
 
             // doctrine
@@ -45,6 +47,7 @@ $rules = [
             'Doctrine\ORM\Events',
 
             // pim dependencies
+            'Akeneo\Pim\Enrichment\Product\API',
             'Akeneo\Pim\Structure\Component',
             'Akeneo\Tool\Component\StorageUtils\Cache',
             'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
@@ -119,6 +122,7 @@ $rules = [
             'Akeneo\Tool\Component\Localization\LabelTranslatorInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\FlatAttributeValueTranslatorInterface',
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
+            'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage',
 
             // Reference Entity
             'Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier',
