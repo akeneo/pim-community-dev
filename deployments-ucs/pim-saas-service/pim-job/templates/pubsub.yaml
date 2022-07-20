@@ -16,7 +16,7 @@ spec:
  forProvider:
    ackDeadlineSeconds: 600
    labels:
-     subscription_type: "usc-scheduler"
+     subscription_type: "ucs-jobs-scheduler"
    name: {{ .Values.pim.pubsub.subscription_job_schudeler }}
    topic: {{ .Values.pim.pubsub.topic_job_schudeler }}
  providerConfigRef:
