@@ -1,6 +1,6 @@
 import React from 'react';
 import {MediaFileInput} from './MediaFileInput';
-import {act, fireEvent, render, screen} from '../../../storybook/test-util';
+import {act, cleanup, fireEvent, render, screen} from '../../../storybook/test-util';
 import userEvent from '@testing-library/user-event';
 import {FileInfo} from './FileInfo';
 import {DownloadIcon} from '../../../icons';
@@ -217,11 +217,11 @@ test('it does not throw an error when component is hidden after upload', async (
   const uploader = jest.fn().mockResolvedValue(fileInfo);
   const mockedConsole = jest.spyOn(console, "error");
 
-  const {unmount} = render(
+  render(
     <MediaFileInput
       {...defaultProps}
       value={null}
-      onChange={() => unmount()}
+      onChange={cleanup}
       uploader={uploader}
       thumbnailUrl={null}
     />
