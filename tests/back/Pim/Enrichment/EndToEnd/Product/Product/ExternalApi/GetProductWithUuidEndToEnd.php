@@ -14,31 +14,39 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @group ce
- */
-class GetProductEndToEnd extends AbstractProductTestCase
+class GetProductWithUuidEndToEnd extends AbstractProductTestCase
 {
     public function test_it_gets_a_product_with_attribute_options_simple_select()
     {
-        $this->createProduct('product', [
+        $product = $this->createProduct('product', [
             new SetFamily('familyA'),
             new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')
         ]);
 
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/products/product?with_attribute_options=true');
+        $client->request(
+            'GET',
+            sprintf('api/rest/v1/products-uuid/%s?with_attribute_options=true', $product->getUuid()->toString())
+        );
 
         $expectedProduct = [
-            'identifier' => 'product',
+            'uuid' => $product->getUuid()->toString(),
             'family' => 'familyA',
             'parent' => null,
             'groups' => [],
             'categories' => [],
             'enabled' => true,
             'values' => [
+                'sku' => [
+                    [
+                        'data' => 'product',
+                        'locale' => null,
+                        'scope' => null,
+                    ]
+                ],
                 'a_simple_select' => [
                     [
                         'data' => 'optionA',
@@ -73,22 +81,32 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
     public function test_it_gets_a_product_with_attribute_options_multi_select()
     {
-        $this->createProduct('product', [
+        $product = $this->createProduct('product', [
             new SetFamily('familyA'),
             new SetMultiSelectValue('a_multi_select', null, null, ['optionA', 'optionB'])
         ]);
 
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/products/product?with_attribute_options=true');
+        $client->request(
+            'GET',
+            sprintf('api/rest/v1/products-uuid/%s?with_attribute_options=true', $product->getUuid()->toString())
+        );
 
         $expectedProduct = [
-            'identifier' => 'product',
+            'uuid' => $product->getUuid()->toString(),
             'family' => 'familyA',
             'parent' => null,
             'groups' => [],
             'categories' => [],
             'enabled' => true,
             'values' => [
+                'sku' => [
+                    [
+                        'data' => 'product',
+                        'locale' => null,
+                        'scope' => null,
+                    ]
+                ],
                 'a_multi_select' => [
                     [
                         'data' => ['optionA', 'optionB'],
@@ -135,7 +153,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
      */
     public function test_it_gets_a_product()
     {
-        $this->createProduct('product', [
+        $product = $this->createProduct('product', [
             new SetFamily('familyA1'),
             new SetEnabled(true),
             new SetCategories(['categoryA', 'master', 'master_china']),
@@ -144,16 +162,26 @@ class GetProductEndToEnd extends AbstractProductTestCase
         ]);
 
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/products/product');
+        $client->request(
+            'GET',
+            sprintf('api/rest/v1/products-uuid/%s', $product->getUuid()->toString())
+        );
 
         $standardProduct = [
-            'identifier' => 'product',
+            'uuid' => $product->getUuid()->toString(),
             'family' => 'familyA1',
             'parent' => null,
             'groups' => ['groupA', 'groupB'],
             'categories' => ['categoryA', 'master', 'master_china'],
             'enabled' => true,
             'values' => [
+                'sku' => [
+                    [
+                        'data' => 'product',
+                        'locale' => null,
+                        'scope' => null,
+                    ]
+                ],
                 'a_date' => [
                     ['data' => '2016-06-28T00:00:00+02:00', 'locale' => null, 'scope' => null]
                 ],
@@ -177,15 +205,22 @@ class GetProductEndToEnd extends AbstractProductTestCase
     public function test_it_throws_a_404_response_when_the_product_is_not_found()
     {
         $client = $this->createAuthenticatedClient();
+        $uuid = Uuid::uuid4()->toString();
 
-        $client->request('GET', 'api/rest/v1/products/not_found');
+        $client->request(
+            'GET',
+            sprintf('api/rest/v1/products/%s', $uuid)
+        );
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         $content = json_decode($response->getContent(), true);
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
-        $this->assertSame('Product "not_found" does not exist or you do not have permission to access it.', $content['message']);
+        $this->assertSame(
+            sprintf('Product "%s" does not exist or you do not have permission to access it.', $uuid),
+            $content['message']
+        );
     }
 
     public function test_it_gets_a_product_with_quality_scores()
@@ -197,16 +232,27 @@ class GetProductEndToEnd extends AbstractProductTestCase
         );
 
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/products/product?with_quality_scores=true');
+        $client->request(
+            'GET',
+            sprintf('api/rest/v1/products-uuid/%s?with_quality_scores=true', $product->getUuid()->toString())
+        );
 
         $expectedProduct = [
-            'identifier' => 'product',
+            'uuid' => $product->getUuid()->toString(),
             'family' => 'familyA',
             'parent' => null,
             'groups' => [],
             'categories' => [],
             'enabled' => true,
-            'values' => [],
+            'values' => [
+                'sku' => [
+                    [
+                        'data' => 'product',
+                        'locale' => null,
+                        'scope' => null,
+                    ]
+                ],
+            ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [
@@ -234,22 +280,32 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
     public function test_it_gets_a_product_with_completenesses()
     {
-        $this->createProduct('product', [
+        $product = $this->createProduct('product', [
             new SetFamily('familyA'),
             new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')
         ]);
 
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/products/product?with_completenesses=true');
+        $client->request(
+            'GET',
+            sprintf('api/rest/v1/products-uuid/%s?with_completenesses=true', $product->getUuid()->toString())
+        );
 
         $expectedProduct = [
-            'identifier' => 'product',
+            'uuid' => $product->getUuid()->toString(),
             'family' => 'familyA',
             'parent' => null,
             'groups' => [],
             'categories' => [],
             'enabled' => true,
             'values' => [
+                'sku' => [
+                    [
+                        'data' => 'product',
+                        'locale' => null,
+                        'scope' => null,
+                    ]
+                ],
                 'a_simple_select' => [
                     [
                         'data' => 'optionA',
@@ -285,11 +341,14 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
     public function testAccessDeniedWhenRetrievingProductWithoutTheAcl()
     {
-        $this->createProduct('product', [new SetFamily('familyA')]);
+        $product = $this->createProduct('product', [new SetFamily('familyA')]);
         $client = $this->createAuthenticatedClient();
         $this->removeAclFromRole('action:pim_api_product_list');
 
-        $client->request('GET', 'api/rest/v1/products/product');
+        $client->request(
+            'GET',
+            sprintf('api/rest/v1/products-uuid/%s', $product->getUuid()->toString())
+        );
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
@@ -306,6 +365,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
     private function assertResponse(Response $response, array $expected)
     {
         $result = json_decode($response->getContent(), true);
+        unset($result['metadata']);
 
         NormalizedProductCleaner::clean($expected);
         NormalizedProductCleaner::clean($result);

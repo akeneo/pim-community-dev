@@ -25,13 +25,11 @@ class ConnectorProductWithUuidNormalizerSpec extends ObjectBehavior
 {
     function let(
         ProductValueNormalizer $productValueNormalizer,
-        RouterInterface $router,
-        AttributeRepositoryInterface $attributeRepository
+        RouterInterface $router
     ) {
         $this->beConstructedWith(
             new ValuesNormalizer($productValueNormalizer->getWrappedObject(), $router->getWrappedObject()),
-            new DateTimeNormalizer(),
-            $attributeRepository
+            new DateTimeNormalizer()
         );
     }
 
