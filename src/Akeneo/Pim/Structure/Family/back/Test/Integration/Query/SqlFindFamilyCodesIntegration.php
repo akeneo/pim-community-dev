@@ -2,7 +2,9 @@
 
 namespace Akeneo\Test\Pim\Structure\Family\Integration\Query;
 
-use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyQuery;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQueryPagination;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuerySearch;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
 use Akeneo\Pim\Structure\Family\Infrastructure\Query\SqlFindFamilyCodes;
 use Akeneo\Test\Integration\Configuration;
@@ -26,7 +28,7 @@ class SqlFindFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_code_of_all_families(): void
     {
-        $query = new FindFamilyQuery();
+        $query = new FamilyQuery();
 
         $expectedCodes = ['beers', 'bikes', 'screens', 'tvs'];
 
@@ -37,8 +39,11 @@ class SqlFindFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_code_of_all_families_with_search_language_but_no_search(): void
     {
-        $query = new FindFamilyQuery();
-        $query->searchLanguage = 'fr_FR';
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                labelLocale: 'fr_FR',
+            ),
+        );
 
         $expectedCodes = ['beers', 'bikes', 'screens', 'tvs'];
 
@@ -49,8 +54,11 @@ class SqlFindFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_code_of_filtered_families_by_search(): void
     {
-        $query = new FindFamilyQuery();
-        $query->search = 'Bi';
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                value: 'Bi',
+            ),
+        );
 
         $expectedCodes = ['beers', 'bikes'];
 
@@ -61,9 +69,12 @@ class SqlFindFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_code_of_filtered_families_by_search_and_search_language(): void
     {
-        $query = new FindFamilyQuery();
-        $query->search = 'Bi';
-        $query->searchLanguage = 'en_US';
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                value: 'Bi',
+                labelLocale: 'en_US',
+            ),
+        );
 
         $expectedCodes = ['bikes'];
 
@@ -74,9 +85,12 @@ class SqlFindFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_code_of_filtered_families_among_an_include_codes_list(): void
     {
-        $query = new FindFamilyQuery();
-        $query->search = 't';
-        $query->includeCodes = ['bikes', 'tvs'];
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                value: 't',
+            ),
+            includeCodes: ['bikes', 'tvs'],
+        );
 
         $expectedCodes = ['tvs'];
 
@@ -87,9 +101,12 @@ class SqlFindFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_code_of_filtered_families_among_an_empty_include_codes_list(): void
     {
-        $query = new FindFamilyQuery();
-        $query->search = 'Scr';
-        $query->includeCodes = [];
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                value: 'Scr',
+            ),
+            includeCodes: [],
+        );
 
         $expectedCodes = [];
 
@@ -100,9 +117,12 @@ class SqlFindFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_code_of_filtered_families_with_an_empty_exclude_codes_list(): void
     {
-        $query = new FindFamilyQuery();
-        $query->search = 'Scr';
-        $query->searchLanguage = 'en_US';
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                value: 'Scr',
+                labelLocale: 'en_US',
+            ),
+        );
 
         $expectedCodes = ['screens'];
 
@@ -113,9 +133,12 @@ class SqlFindFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_code_of_filtered_families_with_exclude_codes(): void
     {
-        $query = new FindFamilyQuery();
-        $query->search = 'b';
-        $query->excludeCodes = ['beers'];
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                value: 'b',
+            ),
+            excludeCodes: ['beers'],
+        );
 
         $expectedCodes = ['bikes'];
 
@@ -126,9 +149,12 @@ class SqlFindFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_code_of_filtered_families_with_limit_and_page(): void
     {
-        $query = new FindFamilyQuery();
-        $query->limit = 1;
-        $query->page = 3;
+        $query = new FamilyQuery(
+            pagination: new FamilyQueryPagination(
+                page: 3,
+                limit: 1,
+            )
+        );
 
         $expectedCodes = ['screens'];
 

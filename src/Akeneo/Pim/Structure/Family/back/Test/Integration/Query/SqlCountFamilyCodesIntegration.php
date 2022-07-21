@@ -2,9 +2,10 @@
 
 namespace Akeneo\Test\Pim\Structure\Family\Integration\Query;
 
-use Akeneo\Pim\Structure\Family\ServiceAPI\Query\CountFamilyQuery;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\CountFamilyCodes;
 use Akeneo\Pim\Structure\Family\Infrastructure\Query\SqlCountFamilyCodes;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuerySearch;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
@@ -26,7 +27,7 @@ class SqlCountFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_count_of_all_families(): void
     {
-        $query = new CountFamilyQuery();
+        $query = new FamilyQuery();
 
         $expectedCount = 4;
 
@@ -37,8 +38,11 @@ class SqlCountFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_count_of_all_families_with_search_language_but_no_search(): void
     {
-        $query = new CountFamilyQuery();
-        $query->searchLanguage = 'fr_FR';
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                labelLocale: 'fr_FR',
+            ),
+        );
 
         $expectedCount = 4;
 
@@ -49,8 +53,11 @@ class SqlCountFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_count_of_filtered_families_by_search(): void
     {
-        $query = new CountFamilyQuery();
-        $query->search = 'Bi';
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                value: 'Bi',
+            ),
+        );
 
         $expectedCount = 2;
 
@@ -61,9 +68,12 @@ class SqlCountFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_count_of_filtered_families_by_search_and_search_language(): void
     {
-        $query = new CountFamilyQuery();
-        $query->search = 'Bi';
-        $query->searchLanguage = 'en_US';
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                value: 'Bi',
+                labelLocale: 'en_US',
+            ),
+        );
 
         $expectedCount = 1;
 
@@ -74,9 +84,12 @@ class SqlCountFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_count_of_filtered_families_among_an_include_codes_list(): void
     {
-        $query = new CountFamilyQuery();
-        $query->search = 't';
-        $query->includeCodes = ['bikes', 'tvs'];
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                value: 't',
+            ),
+            includeCodes: ['bikes', 'tvs'],
+        );
 
         $expectedCount = 1;
 
@@ -87,9 +100,12 @@ class SqlCountFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_count_of_filtered_families_among_an_empty_include_codes_list(): void
     {
-        $query = new CountFamilyQuery();
-        $query->search = 'Scr';
-        $query->includeCodes = [];
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                value: 'Scr',
+            ),
+            includeCodes: [],
+        );
 
         $expectedCount = 0;
 
@@ -100,9 +116,12 @@ class SqlCountFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_count_of_filtered_families_with_an_empty_exclude_codes_list(): void
     {
-        $query = new CountFamilyQuery();
-        $query->search = 'Scr';
-        $query->searchLanguage = 'en_US';
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                value: 'Scr',
+                labelLocale: 'en_US',
+            ),
+        );
 
         $expectedCount = 1;
 
@@ -113,9 +132,12 @@ class SqlCountFamilyCodesIntegration extends TestCase
 
     public function test_it_returns_count_of_filtered_families_with_exclude_codes(): void
     {
-        $query = new CountFamilyQuery();
-        $query->search = 'b';
-        $query->excludeCodes = ['beers'];
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                value: 'b',
+            ),
+            excludeCodes: ['beers'],
+        );
 
         $expectedCount = 1;
 

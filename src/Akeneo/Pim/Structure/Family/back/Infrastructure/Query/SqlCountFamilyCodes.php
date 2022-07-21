@@ -3,9 +3,13 @@
 namespace Akeneo\Pim\Structure\Family\Infrastructure\Query;
 
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\CountFamilyCodes;
-use Akeneo\Pim\Structure\Family\ServiceAPI\Query\CountFamilyQuery;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
 use Doctrine\DBAL\Connection;
 
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class SqlCountFamilyCodes implements CountFamilyCodes
 {
     public function __construct(
@@ -13,16 +17,16 @@ class SqlCountFamilyCodes implements CountFamilyCodes
     ) {
     }
 
-    public function fromQuery(CountFamilyQuery $query): int
+    public function fromQuery(FamilyQuery $query): int
     {
-        $searchLanguageCondition = null !== $query->searchLanguage ? 'AND translation.locale = :locale_code' : '';
+        $searchLocaleCondition = null !== $query->search?->labelLocale ? 'AND translation.locale = :locale_code' : '';
         $includeCondition = null !== $query->includeCodes ? 'AND code IN (:include_codes)' : '';
         $excludeCondition = !empty($query->excludeCodes) ? 'AND code NOT IN (:exclude_codes)' : '';
 
         $sql = <<<SQL
             SELECT count(DISTINCT family.code)
             FROM pim_catalog_family family
-            LEFT JOIN pim_catalog_family_translation translation ON family.id = translation.foreign_key $searchLanguageCondition
+            LEFT JOIN pim_catalog_family_translation translation ON family.id = translation.foreign_key $searchLocaleCondition
             WHERE (family.code LIKE :search OR translation.label LIKE :search)
                 $includeCondition
                 $excludeCondition
@@ -30,8 +34,8 @@ class SqlCountFamilyCodes implements CountFamilyCodes
         SQL;
 
         $params = [
-            'search' => sprintf('%%%s%%', $query->search),
-            'locale_code' => $query->searchLanguage,
+            'search' => sprintf('%%%s%%', $query->search?->value),
+            'locale_code' => $query->search?->labelLocale,
             'include_codes' => $query->includeCodes,
             'exclude_codes' => $query->excludeCodes,
         ];
@@ -43,11 +47,6 @@ class SqlCountFamilyCodes implements CountFamilyCodes
             'exclude_codes' => Connection::PARAM_STR_ARRAY,
         ];
 
-        return $this->fetchCount($sql, $params, $types);
-    }
-
-    private function fetchCount(string $sql, array $params, array $types): int
-    {
         return $this->connection->executeQuery($sql, $params, $types)->fetchOne();
     }
 }

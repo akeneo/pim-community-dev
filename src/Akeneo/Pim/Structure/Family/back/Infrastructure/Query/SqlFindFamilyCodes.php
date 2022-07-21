@@ -2,10 +2,15 @@
 
 namespace Akeneo\Pim\Structure\Family\Infrastructure\Query;
 
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQueryPagination;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
-use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyQuery;
 use Doctrine\DBAL\Connection;
 
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class SqlFindFamilyCodes implements FindFamilyCodes
 {
     public function __construct(
@@ -13,18 +18,18 @@ class SqlFindFamilyCodes implements FindFamilyCodes
     ) {
     }
 
-    public function fromQuery(FindFamilyQuery $query): array
+    public function fromQuery(FamilyQuery $query): array
     {
-        $searchLanguageCondition = null !== $query->searchLanguage ? 'AND translation.locale = :locale_code' : '';
+        $searchLocaleCondition = null !== $query->search?->labelLocale ? 'AND translation.locale = :locale_code' : '';
         $includeCondition = null !== $query->includeCodes ? 'AND code IN (:include_codes)' : '';
         $excludeCondition = !empty($query->excludeCodes) ? 'AND code NOT IN (:exclude_codes)' : '';
-        $limitClause = null !== $query->limit ? 'LIMIT :limit' : '';
-        $offsetClause = null !== $this->getOffset($query->page, $query->limit) ? 'OFFSET :offset' : '';
+        $limitClause = null !== $query->pagination?->limit ? 'LIMIT :limit' : '';
+        $offsetClause = null !== $this->getOffset($query->pagination) ? 'OFFSET :offset' : '';
 
         $sql = <<<SQL
             SELECT DISTINCT family.code
             FROM pim_catalog_family family
-            LEFT JOIN pim_catalog_family_translation translation ON family.id = translation.foreign_key $searchLanguageCondition
+            LEFT JOIN pim_catalog_family_translation translation ON family.id = translation.foreign_key $searchLocaleCondition
             WHERE (family.code LIKE :search OR translation.label LIKE :search)
                 $includeCondition
                 $excludeCondition
@@ -36,12 +41,12 @@ class SqlFindFamilyCodes implements FindFamilyCodes
         $statement = $this->connection->executeQuery(
             $sql,
             [
-                'search' => sprintf('%%%s%%', $query->search),
-                'locale_code' => $query->searchLanguage,
+                'search' => sprintf('%%%s%%', $query->search?->value),
+                'locale_code' => $query->search?->labelLocale,
                 'include_codes' => $query->includeCodes,
                 'exclude_codes' => $query->excludeCodes,
-                'limit' => $query->limit,
-                'offset' => $this->getOffset($query->page, $query->limit),
+                'limit' => $query->pagination?->limit,
+                'offset' => $this->getOffset($query->pagination),
             ],
             [
                 'search' => \PDO::PARAM_STR,
@@ -56,12 +61,12 @@ class SqlFindFamilyCodes implements FindFamilyCodes
         return $statement->fetchFirstColumn();
     }
 
-    private function getOffset(?int $page, ?int $limit): ?int
+    private function getOffset(?FamilyQueryPagination $pagination): ?int
     {
-        if (null === $page || null === $limit) {
+        if (null === $pagination || null === $pagination->page || null === $pagination->limit) {
             return null;
         }
 
-        return ($page - 1) * $limit;
+        return ($pagination->page - 1) * $pagination->limit;
     }
 }
