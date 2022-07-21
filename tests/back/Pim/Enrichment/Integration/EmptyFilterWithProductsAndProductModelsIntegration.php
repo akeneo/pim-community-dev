@@ -25,6 +25,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
 {
@@ -264,6 +265,7 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
      */
     private function createProduct(string $identifier, array $userIntents): void
     {
+        $this->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
@@ -331,5 +333,18 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
 
         Assert::assertNotNull($userIntent, 'data must either be a string or an array of string');
         return $userIntent;
+    }
+
+    private function logIn(string $username): void
+    {
+        $session = $this->get('session');
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $session->set('_security_main', serialize($token));
+        $session->save();
     }
 }

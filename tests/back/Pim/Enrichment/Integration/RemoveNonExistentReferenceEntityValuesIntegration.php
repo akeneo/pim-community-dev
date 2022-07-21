@@ -31,6 +31,7 @@ use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\Cre
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
 {
@@ -227,6 +228,7 @@ SQL,
      */
     protected function createProduct(string $identifier, array $userIntents): void
     {
+        $this->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
@@ -281,5 +283,18 @@ SQL,
         Assert::assertNotNull($id);
 
         return \intval($id);
+    }
+
+    private function logIn(string $username): void
+    {
+        $session = $this->get('session');
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $session->set('_security_main', serialize($token));
+        $session->save();
     }
 }
