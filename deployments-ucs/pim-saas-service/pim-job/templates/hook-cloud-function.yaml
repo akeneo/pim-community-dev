@@ -16,6 +16,7 @@ spec:
         app.kubernetes.io/component: "hook-cloud-function"
     spec:
       restartPolicy: Never
+      serviceAccountName: {{ .Values.common.workloadIdentityKSA | quote }}
       containers:
         - name:  push-cloud-function
           image: {{ .Values.image.curl.repository }}:{{ .Values.image.curl.tag }}
