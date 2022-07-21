@@ -174,13 +174,18 @@ abstract class IntegrationTestCase extends WebTestCase
      */
     protected function createProduct(string $identifier, array $intents = [], ?int $userId = null): AbstractProduct
     {
-        $bus = self::getContainer()->get('pim_enrich.product.message_bus');
-
-        if (null === $userId) {
-            $user = self::getContainer()->get('security.token_storage')->getToken()?->getUser();
-            \assert($user instanceof UserInterface);
+        if (null !== $userId) {
+            $user = self::getContainer()->get('pim_user.repository.user')->find($userId);
+        } else {
+            $user = self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier('owner');
+            if (null === $user) {
+                $user = $this->createUser('owner');
+            }
             $userId = $user->getId();
         }
+        $this->logAs($user->getUserIdentifier());
+
+        $bus = self::getContainer()->get('pim_enrich.product.message_bus');
 
         Assert::notNull($userId);
 
