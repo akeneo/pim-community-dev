@@ -66,6 +66,11 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierFromContributorEmail
+        arguments:
+            - '@database_connection'
+
     # Controllers
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\SupplierList:
         public: true
