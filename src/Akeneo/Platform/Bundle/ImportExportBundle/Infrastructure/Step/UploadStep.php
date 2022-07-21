@@ -94,14 +94,13 @@ final class UploadStep extends AbstractStep
 
     private function extractFileToTransferFromWriter(ArchivableWriterInterface $writer): array
     {
-        $dirname = str_replace(sys_get_temp_dir(),'',dirname($writer->getPath()));
+        $dirname = str_replace(sys_get_temp_dir(), '', dirname($writer->getPath()));
 
         return array_map(
-             fn (WrittenFileInfo $writtenFile) => new FileToTransfer(
+            fn (WrittenFileInfo $writtenFile) => new FileToTransfer(
                 $writtenFile->sourceKey(),
                 $writtenFile->sourceStorage(),
-                (LocalStorage::TYPE === $this->jobParameters[self::STORAGE_KEY]['type']) ?
-                    $writtenFile->outputFilepath() : sprintf('%s/%s', $dirname, $writtenFile->outputFilepath()),
+                (LocalStorage::TYPE === $this->jobParameters[self::STORAGE_KEY]['type']) ? $writtenFile->outputFilepath() : sprintf('%s/%s', $dirname, $writtenFile->outputFilepath()),
                 $writtenFile->isLocalFile()
             ),
             $writer->getWrittenFiles()
