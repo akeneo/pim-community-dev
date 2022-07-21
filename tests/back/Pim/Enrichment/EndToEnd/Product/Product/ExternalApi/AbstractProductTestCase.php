@@ -94,13 +94,9 @@ abstract class AbstractProductTestCase extends ApiTestCase
 
         foreach ($result['_embedded']['items'] as $index => $product) {
             NormalizedProductCleaner::clean($result['_embedded']['items'][$index]);
-            // TODO Remove this
-            unset($result['_embedded']['items'][$index]['metadata']);
 
             if (isset($expected['_embedded']['items'][$index])) {
                 NormalizedProductCleaner::clean($expected['_embedded']['items'][$index]);
-                // TODO Remove this
-                unset($expected['_embedded']['items'][$index]['metadata']);
             }
         }
 

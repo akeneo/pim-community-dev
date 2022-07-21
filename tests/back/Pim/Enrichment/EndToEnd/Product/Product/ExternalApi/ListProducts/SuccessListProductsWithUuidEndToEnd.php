@@ -21,6 +21,9 @@ use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class SuccessListProductsWithUuidEndToEnd extends AbstractProductTestCase
 {
     /** @var ProductInterface[] $products */
