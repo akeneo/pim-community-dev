@@ -314,3 +314,5 @@ pim:
     region: null # Generated
     serviceAccountEmail: null # Generated
     timeZone: "Europe/Paris"
+  storage:
+    location: null # Generated example EU, US
