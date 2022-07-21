@@ -2,7 +2,7 @@ client-to-clone-srnt: &client-to-clone-srnt
 client-to-clone-grth: &client-to-clone-grth
 
 orbs:
-  security-hunter: akeneo-orbs/security-hunter@1.0.3
+  security-hunter: akeneo-orbs/security-hunter@1.0.5
 
 workflows:
     dev_pull_request:
@@ -25,18 +25,17 @@ workflows:
                   requires:
                       - checkout
             - security-hunter/scan-latest-commits:
-                  since_when: "2022-07-07"
                   exit_code_when_failure: 1
                   requires:
                       - build_srnt_dev
             - security-hunter/scan-dir:
-                  severity: "HIGH,CRITICAL"
+                  severity: "CRITICAL"
                   only_secrets: false
                   exit_code_when_failure: 1
                   requires:
                       - build_srnt_dev
             - security-hunter/scan-image:
-                  severity: "HIGH,CRITICAL"
+                  severity: "CRITICAL"
                   only_secrets: false
                   exit_code_when_failure: 1
                   requires:
