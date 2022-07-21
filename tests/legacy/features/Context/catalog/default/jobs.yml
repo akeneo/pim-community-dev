@@ -28,7 +28,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/published_products_export_%locale%_%scope%.csv
+            storage:
+                type: none
+                file_path: /tmp/published_products_export_%locale%_%scope%.csv
     csv_published_product_grid_context_quick_export:
         connector: Akeneo Mass Edit Connector
         alias: csv_published_product_grid_context_quick_export
@@ -38,7 +40,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/published_products_export_grid_context_%locale%_%scope%.csv
+            storage:
+                type: none
+                file_path: /tmp/published_products_export_grid_context_%locale%_%scope%.csv
     xlsx_published_product_quick_export:
         connector: Akeneo Mass Edit Connector
         alias: xlsx_published_product_quick_export
@@ -47,7 +51,9 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath:   /tmp/published_products_export_%locale%_%scope%.xlsx
+            storage:
+                type: none
+                file_path: /tmp/published_products_export_%locale%_%scope%.xlsx
     xlsx_published_product_grid_context_quick_export:
         connector: Akeneo Mass Edit Connector
         alias:     xlsx_published_product_grid_context_quick_export
@@ -56,7 +62,9 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath:   /tmp/published_products_export_grid_context_%locale%_%scope%.xlsx
+            storage:
+                type: none
+                file_path: /tmp/published_products_export_grid_context_%locale%_%scope%.xlsx
     rule_impacted_product_count:
         connector: Akeneo Rule Engine Connector
         alias:     rule_impacted_product_count
