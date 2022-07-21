@@ -1,42 +1,38 @@
-import React, {ReactElement, Ref, useRef, useState} from 'react';
-import styled from 'styled-components';
+import React, {ReactElement, Ref, useCallback, useRef, useState} from 'react';
+import styled, {css} from 'styled-components';
 import {
     AkeneoThemedProps,
     Button,
-    FileInfo,
     getColor,
     getFontSize,
     Helper,
-    InputProps,
     Key,
-    Override,
     ProgressBar,
     UploadIcon,
     useBooleanState,
     useShortcut,
 } from 'akeneo-design-system';
+import {ErrorResponse} from '../hooks';
+import {BadRequestError} from '../../../api/BadRequestError';
+import {useIntl} from 'react-intl';
 
-type FileInputProps = Override<
-    Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps<FileInfo | null>>,
-    {
-        onChange: (newValue: FileInfo | null) => void;
-        value: FileInfo | null;
-        uploader: (file: File, onProgress: (ratio: number) => void) => Promise<FileInfo>;
-        placeholder: string | ReactElement;
-        uploadButtonLabel: string;
-        uploadingLabel: string;
-        fileDraggingLabel: string;
-        uploadingPlaceholder: string;
-        uploadErrorLabel: string;
-        invalid?: boolean;
-    }
->;
+type FileInputProps = {
+    onFileUploaded: (isSuccess: boolean) => void;
+    uploader: (file: File, onProgress: (ratio: number) => void) => Promise<BadRequestError<ErrorResponse>>;
+    placeholder: string | ReactElement;
+    uploadButtonLabel: string;
+    uploadingLabel: string;
+    fileDraggingLabel: string;
+    uploadingPlaceholder: string;
+    uploadErrorLabel: string;
+    generateUploadSuccessLabel: (filename: string) => string;
+    invalid?: boolean;
+};
 
-const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
+const FileInput = React.forwardRef(
     (
         {
-            onChange,
-            value,
+            onFileUploaded,
             uploadingLabel,
             uploadingPlaceholder,
             uploadButtonLabel,
@@ -44,9 +40,8 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
             uploader,
             placeholder,
             uploadErrorLabel,
+            generateUploadSuccessLabel,
             invalid = false,
-            className,
-            ...rest
         }: FileInputProps,
         forwardedRef: Ref<HTMLInputElement>
     ) => {
@@ -56,25 +51,46 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
         const [hasUploadFailed, uploadFailed, uploadSucceeded] = useBooleanState(false);
         const [isDraggingFile, setIsDraggingFile] = useState(false);
         const [progress, setProgress] = useState<number>(0);
+        const [successMessage, setSuccessMessage] = useState<null | string>();
+        const [errorMessage, setErrorMessage] = useState<null | string>();
+        const intl = useIntl();
         forwardedRef = forwardedRef ?? internalInputRef;
 
         const openFileExplorer = () => {
-            if (forwardedRef && 'function' !== typeof forwardedRef && forwardedRef.current && onChange) {
+            if (forwardedRef && 'function' !== typeof forwardedRef && forwardedRef.current) {
                 forwardedRef.current.click();
             }
         };
+
+        const ensureFileIsXlsxFile = useCallback(
+            (file: File) => {
+                if (!file.name.includes('.') || 'xlsx' !== file.name.split('.').pop()) {
+                    throw new BadRequestError({
+                        error: intl.formatMessage({defaultMessage: 'This file is not a xlsx file.', id: 'sbtByd'}),
+                    });
+                }
+            },
+            [intl]
+        );
 
         const handleUpload = async (file: File) => {
             startUploading();
             setIsDraggingFile(false);
 
             try {
-                const uploadedFile = await uploader(file, setProgress);
+                ensureFileIsXlsxFile(file);
+                await uploader(file, setProgress);
                 uploadSucceeded();
-                onChange?.(uploadedFile);
+                setErrorMessage(null);
+                setSuccessMessage(generateUploadSuccessLabel(file.name));
+                onFileUploaded(true);
             } catch (error) {
                 uploadFailed();
-                console.error(error);
+                setSuccessMessage(null);
+                onFileUploaded(false);
+                if (error instanceof BadRequestError) {
+                    setErrorMessage(error.data.error);
+                }
             } finally {
                 setProgress(0);
                 stopUploading();
@@ -85,6 +101,7 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
             event.preventDefault();
             event.stopPropagation();
             uploadSucceeded();
+            setSuccessMessage(null);
             if (event.target.files) void handleUpload(event.target.files[0]);
         };
 
@@ -98,7 +115,6 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
                     ref={containerRef}
                     tabIndex={0}
                     invalid={invalid || hasUploadFailed}
-                    className={className}
                     isDragging={isDraggingFile}
                 >
                     {!isUploading && (
@@ -110,7 +126,6 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
                                 onDragOver={() => setIsDraggingFile(true)}
                                 onDragLeave={() => setIsDraggingFile(false)}
                                 data-testid="file-input"
-                                {...rest}
                             />
                             {!isDraggingFile && (
                                 <>
@@ -125,7 +140,12 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
                                     </MediaFilePlaceholder>
                                     {hasUploadFailed && (
                                         <Helper inline={true} level="error">
-                                            {uploadErrorLabel}
+                                            {errorMessage ? errorMessage : uploadErrorLabel}
+                                        </Helper>
+                                    )}
+                                    {successMessage && (
+                                        <Helper inline={true} level="success">
+                                            {successMessage}
                                         </Helper>
                                     )}
                                 </>
@@ -149,22 +169,30 @@ const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
         );
     }
 );
-const FileInputContainer = styled.div<{isDragging: boolean} & AkeneoThemedProps>`
+
+const fileInputBorder = css<{isDragging: boolean; invalid: boolean}>`
+    background-image: ${({isDragging, invalid}) =>
+        `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' rx='2' ry='2' fill='none' stroke='%23${
+            isDragging ? '11324D' : invalid ? 'D4604F' : 'C7CBD4'
+        }FF' stroke-width='2' stroke-dasharray='10' stroke-dashoffset='0' stroke-linecap='butt'/%3e%3c/svg%3e")`};
+`;
+
+const FileInputContainer = styled.div<{isDragging: boolean; invalid: boolean} & AkeneoThemedProps>`
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background-image: ${({isDragging}) =>
-        `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' rx='2' ry='2' fill='none' stroke='%23${
-            isDragging ? '11324D' : 'C7CBD4'
-        }FF' stroke-width='2' stroke-dasharray='10' stroke-dashoffset='0' stroke-linecap='butt'/%3e%3c/svg%3e")`};
     border-radius: 2px;
     height: 400px;
     outline-style: none;
     box-sizing: border-box;
     background-color: ${({isDragging}) => getColor(isDragging ? 'brand20' : 'blue10')};
     overflow: hidden;
+    width: 740px;
+    margin: auto;
+
+    ${fileInputBorder};
 
     &:focus {
         box-shadow: 0 0 0 2px ${getColor('blue', 40)};
@@ -208,6 +236,7 @@ const UploadProgress = styled(ProgressBar)`
 const UploadButton = styled(Button)`
     height: 38px;
     border-radius: 19px;
+    background-color: ${getColor('brand100')};
 `;
 
 const Placeholder = styled.div`

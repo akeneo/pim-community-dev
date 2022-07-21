@@ -18,7 +18,7 @@ import {
   getErrorsForPath,
 } from '@akeneo-pim-community/shared';
 import {useReadColumns} from '../hooks';
-import {Column, FileStructure, getDefaultFileStructure} from '../models';
+import {Column, FileStructure, getDefaultFileStructure, isDefaultFileStructure} from '../models';
 import {FileTemplateConfiguration} from '../components';
 import {FileTemplateUploader} from './FileTemplateConfigurator';
 
@@ -105,6 +105,8 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
     setFileInfo(null);
   };
 
+  const canConfirm = null !== fileInfo && !isDefaultFileStructure(fileStructure);
+
   return isModalOpen ? (
     <Modal onClose={handleClose} closeTitle={translate('pim_common.close')}>
       {fileInfo && (
@@ -115,7 +117,7 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
         </Modal.TopLeftButtons>
       )}
       <Modal.TopRightButtons>
-        <Button disabled={null === fileInfo} onClick={handleConfirm}>
+        <Button disabled={!canConfirm} onClick={handleConfirm}>
           {translate('pim_common.confirm')}
         </Button>
       </Modal.TopRightButtons>

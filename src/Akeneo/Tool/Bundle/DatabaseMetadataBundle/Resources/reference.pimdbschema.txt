@@ -421,8 +421,8 @@ akeneo_supplier_portal_supplier_contributor | email | NO | varchar(255) | UNI
 akeneo_supplier_portal_supplier_contributor | created_at | NO | datetime |
 akeneo_supplier_portal_supplier_contributor | supplier_identifier | NO | char(36) | MUL
 akeneo_supplier_portal_supplier_file | identifier | NO | char(36) | PRI
-akeneo_supplier_portal_supplier_file | filename | NO | varchar(255) |
-akeneo_supplier_portal_supplier_file | path | NO | varchar(255) |
+akeneo_supplier_portal_supplier_file | original_filename | NO | varchar(255) |
+akeneo_supplier_portal_supplier_file | path | NO | text |
 akeneo_supplier_portal_supplier_file | uploaded_by_contributor | YES | varchar(255) |
 akeneo_supplier_portal_supplier_file | uploaded_by_supplier | NO | varchar(36) | MUL
 akeneo_supplier_portal_supplier_file | uploaded_at | NO | datetime |
