@@ -31,6 +31,8 @@ final class UploadStep extends AbstractStep
 {
     private const STORAGE_KEY = 'storage';
 
+    private array $jobParameters = [];
+
     public function __construct(
         $name,
         EventDispatcherInterface $eventDispatcher,
@@ -49,19 +51,19 @@ final class UploadStep extends AbstractStep
             throw new \LogicException('Upload step should not be used for non export job.');
         }
 
-        $jobParameters = $jobExecution->getRawParameters();
-        if (!array_key_exists(self::STORAGE_KEY, $jobParameters)) {
+        $this->jobParameters = $jobExecution->getRawParameters();
+        if (!array_key_exists(self::STORAGE_KEY, $this->jobParameters)) {
             throw new \LogicException('malformed job parameters, missing storage configuration');
         }
 
-        if (NoneStorage::TYPE === $jobParameters[self::STORAGE_KEY]['type'] || LocalStorage::TYPE === $jobParameters[self::STORAGE_KEY]['type']) {
+        if (NoneStorage::TYPE === $this->jobParameters[self::STORAGE_KEY]['type']) {
             return;
         }
 
         $this->eventDispatcher->addSubscriber(new UpdateJobExecutionStorageSummarySubscriber());
         $command = new TransferFilesToStorageCommand(
             $this->extractFileToTransfer($jobExecution),
-            $jobParameters[self::STORAGE_KEY],
+            $this->jobParameters[self::STORAGE_KEY],
         );
 
         $this->transferFilesToStorageHandler->handle($command);
@@ -95,10 +97,11 @@ final class UploadStep extends AbstractStep
         $dirname = str_replace(sys_get_temp_dir(),'',dirname($writer->getPath()));
 
         return array_map(
-            static fn (WrittenFileInfo $writtenFile) => new FileToTransfer(
+             fn (WrittenFileInfo $writtenFile) => new FileToTransfer(
                 $writtenFile->sourceKey(),
                 $writtenFile->sourceStorage(),
-                sprintf('%s/%s', $dirname, $writtenFile->outputFilepath()),
+                (LocalStorage::TYPE === $this->jobParameters[self::STORAGE_KEY]['type']) ?
+                    $writtenFile->outputFilepath() : sprintf('%s/%s', $dirname, $writtenFile->outputFilepath()),
                 $writtenFile->isLocalFile()
             ),
             $writer->getWrittenFiles()
