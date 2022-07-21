@@ -22,7 +22,7 @@ $rules = [
     // src
     $builder->only(
         [
-            // Onboarder coupling
+            // Supplier Portal Retailer coupling
 
             // PIM coupling
 
@@ -33,7 +33,7 @@ $rules = [
 
     $builder->only(
         [
-            // Onboarder coupling
+            // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
 
             // External dependencies coupling
@@ -47,7 +47,7 @@ $rules = [
 
     $builder->only(
         [
-            // Onboarder coupling
+            // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Application',
             // PIM coupling
@@ -82,7 +82,7 @@ $rules = [
     // tests
     $builder->only(
         [
-            // Onboarder coupling
+            // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
             // PIM coupling
@@ -99,7 +99,7 @@ $rules = [
 
     $builder->only(
         [
-            // Onboarder coupling
+            // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Application',
             'Akeneo\SupplierPortal\Retailer\Infrastructure',
@@ -117,7 +117,7 @@ $rules = [
 
     $builder->only(
         [
-            // Onboarder coupling
+            // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Application\Supplier',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier',

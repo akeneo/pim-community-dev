@@ -42,7 +42,7 @@ test('it renders an error notification if the loading of the suppliers failed', 
     expect(notify).toHaveBeenNthCalledWith(
         1,
         NotificationLevel.ERROR,
-        'onboarder.supplier.supplier_list.notification.error.title',
-        'onboarder.supplier.supplier_list.notification.error.content'
+        'supplier_portal.supplier.supplier_list.notification.error.title',
+        'supplier_portal.supplier.supplier_list.notification.error.content'
     );
 });

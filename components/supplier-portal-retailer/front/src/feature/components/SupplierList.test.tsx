@@ -15,7 +15,7 @@ test('it renders no result wording when there is no supplier matching the search
         />
     );
 
-    expect(screen.getByText('onboarder.supplier.supplier_list.no_search_result')).toBeInTheDocument();
+    expect(screen.getByText('supplier_portal.supplier.supplier_list.no_search_result')).toBeInTheDocument();
 });
 
 test('it informs when there is no supplier', () => {
@@ -30,8 +30,8 @@ test('it informs when there is no supplier', () => {
         />
     );
 
-    expect(screen.getByText('onboarder.supplier.supplier_list.no_supplier')).toBeInTheDocument();
-    expect(screen.getByText('onboarder.supplier.supplier_create.create_button.label')).toBeInTheDocument();
+    expect(screen.getByText('supplier_portal.supplier.supplier_list.no_supplier')).toBeInTheDocument();
+    expect(screen.getByText('supplier_portal.supplier.supplier_create.create_button.label')).toBeInTheDocument();
 });
 
 test('it renders the supplier list if there are some', () => {
