@@ -11,7 +11,7 @@ final class Version_7_0_20220421150300_onboarder_serenity_add_supplier_import_jo
 {
     public function up(Schema $schema): void
     {
-        if ($this->onboarderSerenityXlsxSupplierImportJobExists()) {
+        if ($this->supplierPortalXlsxSupplierImportJobExists()) {
             return;
         }
 
@@ -37,7 +37,7 @@ final class Version_7_0_20220421150300_onboarder_serenity_add_supplier_import_jo
         $this->throwIrreversibleMigrationException();
     }
 
-    private function onboarderSerenityXlsxSupplierImportJobExists(): bool
+    private function supplierPortalXlsxSupplierImportJobExists(): bool
     {
         $sql = <<<SQL
             SELECT COUNT(*)
