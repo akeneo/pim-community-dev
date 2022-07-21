@@ -59,7 +59,9 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
             if (409 === response.status) {
                 notify(
                     NotificationLevel.ERROR,
-                    translate('supplier_portal.supplier.supplier_create.error.supplier_already_exists', {supplierCode: code})
+                    translate('supplier_portal.supplier.supplier_create.error.supplier_already_exists', {
+                        supplierCode: code,
+                    })
                 );
                 return;
             }

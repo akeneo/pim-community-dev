@@ -34,7 +34,9 @@ const DeleteSupplier = ({identifier, onSupplierDeleted, onCloseModal}: Props) =>
             <ConfirmationText>
                 {translate('supplier_portal.supplier.supplier_delete.modal.confirmation_question')}
             </ConfirmationText>
-            <StyledHelper level="warning">{translate('supplier_portal.supplier.supplier_delete.modal.warning')}</StyledHelper>
+            <StyledHelper level="warning">
+                {translate('supplier_portal.supplier.supplier_delete.modal.warning')}
+            </StyledHelper>
             <Modal.BottomButtons>
                 <Button level="tertiary" onClick={onCloseModal}>
                     {translate('pim_common.cancel')}

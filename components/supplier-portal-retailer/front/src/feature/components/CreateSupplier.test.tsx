@@ -27,8 +27,14 @@ test('it can save a supplier', async () => {
     renderWithProviders(<CreateSupplier onSupplierCreated={onSupplierCreated} createButtonlabel={'create'} />);
 
     openModal();
-    userEvent.type(screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.code.label'), 'supplier1');
-    userEvent.type(screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.label.label'), 'Supplier 1');
+    userEvent.type(
+        screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.code.label'),
+        'supplier1'
+    );
+    userEvent.type(
+        screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.label.label'),
+        'Supplier 1'
+    );
 
     await act(async () => {
         userEvent.click(screen.getByText('pim_common.save'));
@@ -50,8 +56,14 @@ test('it renders an error notification when a supplier with the same code alread
     renderWithProviders(<CreateSupplier onSupplierCreated={onSupplierCreated} createButtonlabel={'create'} />);
 
     openModal();
-    userEvent.type(screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.code.label'), 'supplier1');
-    userEvent.type(screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.label.label'), 'Supplier 1');
+    userEvent.type(
+        screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.code.label'),
+        'supplier1'
+    );
+    userEvent.type(
+        screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.label.label'),
+        'Supplier 1'
+    );
 
     await act(async () => {
         userEvent.click(screen.getByText('pim_common.save'));
@@ -104,7 +116,10 @@ test('Backend is not called when code or label is empty', async () => {
     renderWithProviders(<CreateSupplier onSupplierCreated={onSupplierCreated} createButtonlabel={'create'} />);
 
     openModal();
-    userEvent.type(screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.code.label'), 'supplier1');
+    userEvent.type(
+        screen.getByPlaceholderText('supplier_portal.supplier.supplier_create.modal.code.label'),
+        'supplier1'
+    );
 
     await act(async () => {
         userEvent.click(screen.getByText('pim_common.save'));

@@ -113,7 +113,11 @@ test('it renders an error notification if the saving of the supplier failed', as
     await act(async () => setSupplier(updatedSupplier));
     await act(async () => saveSupplier());
 
-    expect(notify).toHaveBeenNthCalledWith(1, NotificationLevel.ERROR, 'supplier_portal.supplier.supplier_edit.update_error');
+    expect(notify).toHaveBeenNthCalledWith(
+        1,
+        NotificationLevel.ERROR,
+        'supplier_portal.supplier.supplier_edit.update_error'
+    );
     const [, , , , validationErrors] = result.current;
     expect(validationErrors).toStrictEqual(backendValidationErrors);
 });

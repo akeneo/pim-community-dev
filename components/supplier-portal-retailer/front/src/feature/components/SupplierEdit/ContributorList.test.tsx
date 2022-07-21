@@ -9,7 +9,9 @@ const contributors = ['contributor1@example.com', 'contributor2@example.com', 'a
 
 test('it renders an empty list', () => {
     renderWithProviders(<ContributorList contributors={[]} setContributors={() => {}} />);
-    expect(screen.getByText('supplier_portal.supplier.supplier_edit.contributors_form.no_contributor')).toBeInTheDocument();
+    expect(
+        screen.getByText('supplier_portal.supplier.supplier_edit.contributors_form.no_contributor')
+    ).toBeInTheDocument();
 });
 
 test('it renders a searchable list of contributors', () => {
@@ -20,7 +22,9 @@ test('it renders a searchable list of contributors', () => {
     expect(
         screen.getByPlaceholderText('supplier_portal.supplier.supplier_edit.contributors_form.search_by_email_address')
     ).toBeInTheDocument();
-    expect(screen.getByText('supplier_portal.supplier.supplier_edit.contributors_form.result_counter')).toBeInTheDocument();
+    expect(
+        screen.getByText('supplier_portal.supplier.supplier_edit.contributors_form.result_counter')
+    ).toBeInTheDocument();
 
     contributors.map(contributorEmail => expect(screen.getByText(contributorEmail)).toBeInTheDocument());
 });

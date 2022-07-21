@@ -87,7 +87,11 @@ const SupplierIndex = () => {
                     />
                 </PageHeader.Actions>
                 <PageHeader.Title>
-                    {translate('supplier_portal.supplier.supplier_list.title', {count: suppliers.length}, suppliers.length)}
+                    {translate(
+                        'supplier_portal.supplier.supplier_list.title',
+                        {count: suppliers.length},
+                        suppliers.length
+                    )}
                 </PageHeader.Title>
             </PageHeader>
             <StyledPageContent>
