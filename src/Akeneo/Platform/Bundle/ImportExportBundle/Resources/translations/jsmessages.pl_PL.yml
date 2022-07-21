@@ -151,6 +151,8 @@ pim_import_export:
             title: Język pliku
             help: Zdefiniuj wersję językową, w której wyświetlane są etykiety
       file_path: Ścieżka do pliku
+      storage_form:
+        file_path.label: Ścieżka do pliku
   widget:
     last_operations:
       empty: Obecnie nie ma operacji do wyświetlenia.
