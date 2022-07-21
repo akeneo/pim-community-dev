@@ -19,7 +19,7 @@ imports:
     # Enrichment
     - { resource: ../../../src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance/Resources/config/services.yml }
     # Category
-    - { resource: ../../../src/Akeneo/Pim/Enrichment/Category/back/Test/Acceptance/Resources/config/services.yml }
+    - { resource: ../../../tests/back/Category/Acceptance/Resources/config/services.yml }
     # Channel
     - { resource: ../../../src/Akeneo/Channel/back/tests/Acceptance/Resources/config/services.yml }
 
