@@ -62,7 +62,7 @@ services:
             - '@database_connection'
 
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFiles:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetAllProductFiles
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetSupplierFiles
         arguments:
             - '@database_connection'
 
