@@ -165,7 +165,7 @@ class ListProductsByUuidController
             $parameters = [
                 'query_parameters' => $queryParameters,
                 'search_after' => [
-                    'next' => false !== $lastProduct ? $lastProduct->identifier() : null,
+                    'next' => false !== $lastProduct ? $lastProduct->uuid()->toString() : null,
                     'self' => $query->searchAfter,
                 ],
                 'list_route_name' => 'pim_api_product_uuid_list',

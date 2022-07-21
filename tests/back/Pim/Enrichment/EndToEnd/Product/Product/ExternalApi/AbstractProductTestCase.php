@@ -82,10 +82,12 @@ abstract class AbstractProductTestCase extends ApiTestCase
     }
 
     /**
-     * @param Response $response
-     * @param string   $expected
+     * In the context of response with UUIDs, the response changes each time you will run the tests because UUID
+     * are never the same, and the results are sorted by uuids.
+     * By setting the parameter $sortExpectedByUuid to true, you don't need to sort the expected response, it will
+     * be automatically sorted by uuids.
      */
-    protected function assertListResponse(Response $response, $expected)
+    protected function assertListResponse(Response $response, string $expected, $sortExpectedByUuid = false): void
     {
         $result = json_decode($response->getContent(), true);
         $expected = json_decode($expected, true, 512, JSON_THROW_ON_ERROR);
@@ -100,6 +102,10 @@ abstract class AbstractProductTestCase extends ApiTestCase
             if (isset($expected['_embedded']['items'][$index])) {
                 NormalizedProductCleaner::clean($expected['_embedded']['items'][$index]);
             }
+        }
+
+        if ($sortExpectedByUuid) {
+            usort($expected['_embedded']['items'], fn (array $p1, array $p2): int => \strcmp($p1['uuid'], $p2['uuid']));
         }
 
         Assert::assertEquals($expected, $result);

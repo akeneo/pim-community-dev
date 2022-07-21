@@ -111,14 +111,14 @@ class SearchAfterHalPaginator implements PaginatorInterface
      *
      * @param string      $routeName
      * @param array       $parameters
-     * @param string|null $searchAfterIdentifier
+     * @param string|null $searchAfterIdentifierOrUuid
      * @param string      $linkName
      *
      * @return Link
      */
-    protected function createLink($routeName, array $parameters, ?string $searchAfterIdentifier, string $linkName): Link
+    protected function createLink($routeName, array $parameters, ?string $searchAfterIdentifierOrUuid, string $linkName): Link
     {
-        $parameters['search_after'] = $searchAfterIdentifier;
+        $parameters['search_after'] = $searchAfterIdentifierOrUuid;
 
         $url =  $this->router->generate($routeName, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
 

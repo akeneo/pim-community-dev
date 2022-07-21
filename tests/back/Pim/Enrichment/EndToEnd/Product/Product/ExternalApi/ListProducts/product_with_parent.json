@@ -14,7 +14,7 @@
     "sku": [{
       "locale": null,
       "scope": null,
-      "data": "product_with_parent"
+      "data": "with_parent"
     }],
     "a_simple_select": [{ "locale": null, "scope": null, "data": "optionA" }],
     "a_price": [{ "locale": null, "scope": null, "data": [{ "amount": "50.00", "currency": "EUR" }] }],

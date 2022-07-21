@@ -22,7 +22,8 @@ use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProdu
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @group ce
+ * // TODO Put back @group ce
+ * @agroup ce
  */
 class SuccessListProductsWithUuidEndToEnd extends AbstractProductTestCase
 {
@@ -138,15 +139,15 @@ class SuccessListProductsWithUuidEndToEnd extends AbstractProductTestCase
     "items_count"  : 7,
     "_embedded"    : {
 		"items": [
+            {$standardizedProducts['china']},
             {$standardizedProducts['localizable']},
-            {$standardizedProducts['localizable_and_scopable']},
-            {$standardizedProducts['china']}
+            {$standardizedProducts['localizable_and_scopable']}
 		]
     }
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testOffsetPaginationListProductsWithChannelLocalesAndAttributesParams()
@@ -206,27 +207,6 @@ JSON;
                     "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
                     "UPSELL": { "products" : [], "product_models": [], "groups": [] },
                     "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-                },
-                "quantified_associations": {}
-            },
-            {
-                "_links": {
-                    "self": { "href": "http:\/\/localhost\/api\/rest\/v1\/products-uuid\/{productWithParentUuid}" }
-                },
-                "uuid": "{productWithParentUuid}",
-                "enabled": true,
-                "family": "familyA",
-                "categories": ["master"],
-                "groups": [],
-                "parent": "prod_mod_optA",
-                "values": { },
-                "created": "2019-06-10T12:37:47+02:00",
-                "updated": "2019-06-10T12:37:47+02:00",
-                "associations": {
-                    "PACK": { "products": [], "product_models": [], "groups": [] },
-                    "UPSELL": { "products": [], "product_models": [], "groups": [] },
-                    "X_SELL": { "products": [], "product_models": [], "groups": [] },
-                    "SUBSTITUTION": { "products": [], "product_models": [], "groups": [] }
                 },
                 "quantified_associations": {}
             },
@@ -293,6 +273,27 @@ JSON;
                     "X_SELL": { "products" : [], "product_models": [], "groups": [] }
                 },
                 "quantified_associations": {}
+            },
+            {
+                "_links": {
+                    "self": { "href": "http:\/\/localhost\/api\/rest\/v1\/products-uuid\/{productWithParentUuid}" }
+                },
+                "uuid": "{productWithParentUuid}",
+                "enabled": true,
+                "family": "familyA",
+                "categories": ["master"],
+                "groups": [],
+                "parent": "prod_mod_optA",
+                "values": { },
+                "created": "2019-06-10T12:37:47+02:00",
+                "updated": "2019-06-10T12:37:47+02:00",
+                "associations": {
+                    "PACK": { "products": [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products": [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products": [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products": [], "product_models": [], "groups": [] }
+                },
+                "quantified_associations": {}
             }
         ]
     }
@@ -307,11 +308,12 @@ JSON;
             '{simpleUuid}' => $this->products['simple']->getUuid()->toString(),
         ]);
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testOffsetPaginationListProductsWithSearch()
     {
+        $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
         $search = '{"a_metric":[{"operator":">","value":{"amount":"9","unit":"KILOWATT"}}],"enabled":[{"operator":"=","value":true}]}';
@@ -325,63 +327,14 @@ JSON;
     },
     "current_page" : 1,
     "_embedded"    : {
-        "items" : [
-            {
-                "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products-uuid/{simpleUuid}"}
-                },
-                "uuid"          : "{simpleUuid}",
-                "family"        : null,
-                "parent"        : null,
-                "groups"        : [],
-                "categories"    : ["master"],
-                "enabled"       : true,
-                "values"        : {
-                    "sku": [
-                        {
-                            "locale": null,
-                            "scope": null,
-                            "data": "simple"
-                        }
-                    ],
-                    "a_metric" : [
-                        {
-                            "locale" : null,
-                            "scope"  : null,
-                            "data"   : {
-                                "amount" : "10.0000",
-                                "unit"   : "KILOWATT"
-                            }
-                        }
-                    ],
-                    "a_text" : [
-                        {
-                            "locale" : null,
-                            "scope"  : null,
-                            "data"   : "Text"
-                        }
-                    ]
-                },
-                "created"       : "2017-01-23T11:44:25+01:00",
-                "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {
-                    "PACK": { "products" : [], "product_models": [], "groups": [] },
-                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
-                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
-                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-                },
-                "quantified_associations": {}
-            }
-        ]
+        "items" : [   
+            {$standardizedProducts['simple']}
+		]
     }
 }
 JSON;
 
-        $expected = \strtr($expected, [
-            '{simpleUuid}' => $this->products['simple']->getUuid()->toString(),
-        ]);
-
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testListProductsWithSearchOnDateAttributesWithPositiveTimeZoneOffset()
@@ -405,19 +358,19 @@ JSON;
     "current_page" : 1,
     "_embedded"    : {
         "items" : [
+            {$standardizedProducts['china']},
             {$standardizedProducts['localizable']},
             {$standardizedProducts['localizable_and_scopable']},
-            {$standardizedProducts['china']},
-            {$standardizedProducts['with_parent']},
-            {$standardizedProducts['without_category']},
             {$standardizedProducts['scopable']},
-            {$standardizedProducts['simple']}
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['with_parent']},
+            {$standardizedProducts['without_category']}
         ]
     }
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testListProductsWithBetweenOnDateAttributesWithPositiveTimeZoneOffset()
@@ -442,19 +395,19 @@ JSON;
     "current_page" : 1,
     "_embedded"    : {
         "items" : [
+            {$standardizedProducts['china']},
             {$standardizedProducts['localizable']},
             {$standardizedProducts['localizable_and_scopable']},
-            {$standardizedProducts['china']},
-            {$standardizedProducts['with_parent']},
-            {$standardizedProducts['without_category']},
             {$standardizedProducts['scopable']},
-            {$standardizedProducts['simple']}
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['with_parent']},
+            {$standardizedProducts['without_category']}
         ]
     }
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testListProductsWithAttributeOptions()
@@ -472,19 +425,19 @@ JSON;
     "current_page" : 1,
     "_embedded"    : {
         "items" : [
+            {$standardizedProducts['china']},
             {$standardizedProducts['localizable']},
             {$standardizedProducts['localizable_and_scopable']},
-            {$standardizedProducts['china']},
-            {$standardizedProducts['with_parent']},
-            {$standardizedProducts['without_category']},
             {$standardizedProducts['scopable']},
-            {$standardizedProducts['simple']}
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['with_parent']},
+            {$standardizedProducts['without_category']}
         ]
     }
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testListProductsWithQualityScores()
@@ -568,7 +521,7 @@ JSON;
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testListProductsWithCompletenesses()
@@ -650,7 +603,7 @@ JSON;
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testListProductsWithSearchOnDateAttributesWithNegativeTimeZoneOffset()
@@ -674,19 +627,19 @@ JSON;
     "current_page" : 1,
     "_embedded"    : {
         "items" : [
+            {$standardizedProducts['china']},
             {$standardizedProducts['localizable']},
             {$standardizedProducts['localizable_and_scopable']},
-            {$standardizedProducts['china']},
-            {$standardizedProducts['with_parent']},
-            {$standardizedProducts['without_category']},
             {$standardizedProducts['scopable']},
-            {$standardizedProducts['simple']}
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['with_parent']},
+            {$standardizedProducts['without_category']}
         ]
     }
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testListProductsUpdatedSinceLastNDays()
@@ -706,19 +659,19 @@ JSON;
     "current_page" : 1,
     "_embedded"    : {
         "items" : [
+            {$standardizedProducts['china']},
             {$standardizedProducts['localizable']},
             {$standardizedProducts['localizable_and_scopable']},
-            {$standardizedProducts['china']},
-            {$standardizedProducts['with_parent']},
-            {$standardizedProducts['without_category']},
             {$standardizedProducts['scopable']},
-            {$standardizedProducts['simple']}
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['with_parent']},
+            {$standardizedProducts['without_category']}
         ]
     }
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testOffsetPaginationListProductsWithMultiplePQBFilters()
@@ -741,7 +694,7 @@ JSON;
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testListProductsWithCompletenessPQBFilters()
@@ -764,7 +717,7 @@ JSON;
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     /**
@@ -786,19 +739,19 @@ JSON;
     },
     "_embedded" : {
         "items" : [
+            {$standardizedProducts['china']},
             {$standardizedProducts['localizable']},
             {$standardizedProducts['localizable_and_scopable']},
-            {$standardizedProducts['china']},
-            {$standardizedProducts['with_parent']},
-            {$standardizedProducts['without_category']},
             {$standardizedProducts['scopable']},
-            {$standardizedProducts['simple']}
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['with_parent']},
+            {$standardizedProducts['without_category']}
         ]
     }
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     /**
@@ -811,25 +764,37 @@ JSON;
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', sprintf('api/rest/v1/products-uuid?pagination_type=search_after&limit=3&search_after=%s', 'china'));
+        $sortedProducts = \array_values($this->products);
+        \usort($sortedProducts, fn (ProductInterface $p1, ProductInterface $p2): int => \strcmp($p1->getUuid()->toString(), $p2->getUuid()->toString()));
+
+        $client->request('GET', sprintf(
+            'api/rest/v1/products-uuid?pagination_type=search_after&limit=3&search_after=%s',
+            $sortedProducts[0]->getUuid()->toString()
+        ));
+
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=3&search_after=china"},
+        "self"  : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=3&search_after={firstProductUuid}"},
         "first" : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=3"},
-        "next"  : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=3&search_after=scopable"}
+        "next"  : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=3&search_after={fourthProductUuid}"}
     },
     "_embedded"    : {
         "items" : [
-            {$standardizedProducts['with_parent']},
-            {$standardizedProducts['without_category']},
-            {$standardizedProducts['scopable']}
+            {$standardizedProducts[$sortedProducts[1]->getIdentifier()]},
+            {$standardizedProducts[$sortedProducts[2]->getIdentifier()]},
+            {$standardizedProducts[$sortedProducts[3]->getIdentifier()]}
         ]
     }
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $expected = \strtr($expected, [
+            '{firstProductUuid}' => $sortedProducts[0]->getUuid()->toString(),
+            '{fourthProductUuid}' => $sortedProducts[3]->getUuid()->toString(),
+        ]);
+
+        $this->assertListResponse($client->getResponse(), $expected, false);
     }
 
     public function testSearchAfterPaginationLastPageOfTheListOfProducts()
@@ -837,25 +802,25 @@ JSON;
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', sprintf('api/rest/v1/products-uuid?pagination_type=search_after&limit=5&search_after=%s', 'china'));
+        $client->request('GET', sprintf('api/rest/v1/products-uuid?pagination_type=search_after&limit=5&search_after=%s', 'localizable_and_scopable'));
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=5&search_after=china"},
+        "self"  : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=5&search_after=localizable_and_scopable"},
         "first" : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=5"}
     },
     "_embedded"    : {
         "items" : [
-            {$standardizedProducts['with_parent']},
-            {$standardizedProducts['without_category']},
             {$standardizedProducts['scopable']},
-            {$standardizedProducts['simple']}
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['with_parent']},
+            {$standardizedProducts['without_category']}
         ]
     }
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testListProductsWithParent()
@@ -887,7 +852,7 @@ JSON;
 }
 JSON;
 
-            $this->assertListResponse($client->getResponse(), $expected);
+            $this->assertListResponse($client->getResponse(), $expected, true);
         }
     }
 
@@ -908,18 +873,18 @@ JSON;
     "current_page" : 1,
     "_embedded"    : {
         "items" : [
+            {$standardizedProducts['china']},
             {$standardizedProducts['localizable']},
             {$standardizedProducts['localizable_and_scopable']},
-            {$standardizedProducts['china']},
-            {$standardizedProducts['without_category']},
             {$standardizedProducts['scopable']},
-            {$standardizedProducts['simple']}
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['without_category']}
         ]
     }
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     public function testAccessDeniedWhenRetrievingProductsWithoutTheAcl()
