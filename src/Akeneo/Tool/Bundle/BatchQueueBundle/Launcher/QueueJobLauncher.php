@@ -99,6 +99,9 @@ class QueueJobLauncher implements JobLauncherInterface
     {
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $configuration = array_merge($jobInstance->getRawParameters(), $configuration);
+        if ($jobInstance->getType() === 'quick_export' && isset($configuration['filePath'])) {
+            unset($configuration['filePath']);
+        }
 
         $jobParameters = $this->jobParametersFactory->create($job, $configuration);
 
