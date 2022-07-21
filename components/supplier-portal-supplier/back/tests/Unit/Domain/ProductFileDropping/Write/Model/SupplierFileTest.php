@@ -19,7 +19,7 @@ final class SupplierFileTest extends TestCase
             'contributor@example.com',
             '44ce8069-8da1-4986-872f-311737f46f02',
         );
-        $this->assertEquals('supplier-file.xlsx', $supplierFile->filename());
+        $this->assertEquals('supplier-file.xlsx', $supplierFile->originalFilename());
         $this->assertEquals('2/f/a/4/2fa4afe5465afe5655/supplier-file.xlsx', $supplierFile->path());
         $this->assertEquals('contributor@example.com', $supplierFile->uploadedByContributor());
         $this->assertEquals('44ce8069-8da1-4986-872f-311737f46f02', $supplierFile->uploadedBySupplier());
