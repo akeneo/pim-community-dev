@@ -7,6 +7,8 @@ use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/* TODO: (TO FIX) Test not executed: this class file's name should end with "EndToEnd" to be executed.
+   TODO: But half the tests get a 200 from external api when it should get a 403 Access Forbidden. */
 class CategoryAuthorizationEndToEnd extends ApiTestCase
 {
     public function testOverallAccessDenied(): void
