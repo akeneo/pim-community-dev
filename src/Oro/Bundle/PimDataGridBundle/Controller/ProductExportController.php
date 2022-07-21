@@ -74,8 +74,8 @@ class ProductExportController
             }
         }
 
-        if (isset($rawParameters['filePath'])) {
-            $rawParameters['filePath'] = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
+        if (isset($rawParameters['storage']['file_path'])) {
+            $rawParameters['storage']['file_path'] = $this->buildFilePath($rawParameters['storage']['file_path'], $contextParameters);
         }
 
         if ($withGridContext) {
