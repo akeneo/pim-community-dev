@@ -30,6 +30,47 @@ module "gke" {
   cluster_developers = concat(["serviceAccount:${local.ci_sa}"], local.admins)
   viewer_members     = local.viewers
   admin_members      = local.admins
+
+  node_pool_configs = [
+    {
+      name              = "default"
+      preemptible       = false
+      machine_type      = "n1-standard-16"
+      min_node_count    = 1
+      max_node_count    = 60
+      max_pods_per_node = 64
+    },
+    {
+      name              = "mysql"
+      preemptible       = false
+      machine_type      = "n1-highmem-16"
+      min_node_count    = 1
+      max_node_count    = 60
+      max_pods_per_node = 64
+    },
+  ]
+
+  node_pool_labels = {
+    "default" = {
+      "node-type" = "default"
+    },
+    "mysql" = {
+      component = "mysql",
+      role      = "mysql-server"
+    }
+  }
+
+  node_pools_taints = {
+    default = [],
+    mysql   = []
+  }
+
+  node_locations = {
+    mysql = {
+      "europe-west1" = ["europe-west1b"]
+    }
+  }
+
 }
 
 terraform {
