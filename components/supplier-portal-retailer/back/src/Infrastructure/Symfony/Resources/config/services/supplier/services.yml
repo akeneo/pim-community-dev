@@ -31,8 +31,8 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplier:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplier
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierWithContributors
         arguments:
             - '@database_connection'
 
@@ -86,7 +86,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\GetSupplier:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplier'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\ExportSupplier:
         public: true

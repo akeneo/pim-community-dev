@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
+final class DatabaseGetSupplierWithContributorsIntegration extends SqlIntegrationTestCase
 {
     /** @test */
     public function itReturnsNullIfThereIsNoSupplier(): void
     {
-        static::assertNull(($this->get(GetSupplier::class))(
+        static::assertNull(($this->get(GetSupplierWithContributors::class))(
             Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')
         ));
     }
@@ -26,7 +26,7 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
         $this->createContributor('contributor1@example.com');
         $this->createContributor('contributor2@example.com');
 
-        $supplier = ($this->get(GetSupplier::class))(
+        $supplier = ($this->get(GetSupplierWithContributors::class))(
             Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')
         );
 
@@ -47,7 +47,7 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
     {
         $this->createSupplier();
 
-        $supplier = ($this->get(GetSupplier::class))(
+        $supplier = ($this->get(GetSupplierWithContributors::class))(
             Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')
         );
 
