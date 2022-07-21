@@ -136,8 +136,8 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
         $sql = <<<SQL
             CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_supplier_file` (
                 `identifier` char(36) NOT NULL,
-                `filename` varchar(255) NOT NULL,
-                `path` varchar(255) NOT NULL,     
+                `original_filename` varchar(255) NOT NULL,
+                `path` text NOT NULL,     
                 `uploaded_by_contributor` varchar(255) DEFAULT NULL,
                 `uploaded_by_supplier` varchar(36) NOT NULL,
                 `uploaded_at` DATETIME NOT NULL,
