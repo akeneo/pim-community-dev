@@ -8,3 +8,10 @@ supplier_portal_contributor_login:
 supplier_portal_contributor_logout:
     path: /logout
     methods: GET
+
+supplier_portal_contributor_check_authentication:
+    path: /check-authentication
+    defaults:
+        _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\CheckAuthentication
+        _format: json
+    methods: POST

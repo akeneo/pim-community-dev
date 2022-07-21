@@ -75,6 +75,9 @@ services:
     Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\UploadProductFile:
         public: true
 
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\CheckAuthentication:
+        public: true
+
     #Command handlers
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler:
         arguments:
