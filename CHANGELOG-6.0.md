@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.36 (2022-07-21)
+
 ## Bug fixes
 
 - PIM-10494: Fix memory issue when trying to delete a job profile with many warnings
