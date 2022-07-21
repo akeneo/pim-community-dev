@@ -152,7 +152,25 @@ pim_import_export:
             help: Definir la configuración regional en la que se muestran las etiquetas
       file_path: Camino del fichero
       storage_form:
+        title: Almacenamiento
+        connection:
+          label: Tipo
+          local: Local
+          sftp: SFTP
+          none: No hay almacenamiento configurado
         file_path.label: Camino del fichero
+        host.label: Host
+        port.label: Puerto
+        username.label: Iniciar sesión
+        password.label: Contraseña
+      validation:
+        storage:
+          unavailable_type: Este almacenamiento no está disponible, solo lo está {{ available_types }}.
+        file_path:
+          unsupported_extension: Extensión de archivo no admitida
+      connection_checker:
+        label: Probar ajustes de conexión
+        exception: No se puede establecer la conexión, comprueba tu configuración.
   widget:
     last_operations:
       empty: No hay ninguna operación para mostrar por ahora.
