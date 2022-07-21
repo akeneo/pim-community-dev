@@ -127,7 +127,7 @@ services:
             -   - '@pim_connector.step.charset_validator'
                 - '@supplier_portal.step.xlsx_supplier.import'
         tags:
-            - { name: akeneo_batch.job, connector: 'Akeneo Supplier Portal XLSX Connector', type: '%pim_connector.job.import_type%', feature: 'onboarder_serenity' }
+            - { name: akeneo_batch.job, connector: 'Akeneo Supplier Portal XLSX Connector', type: '%pim_connector.job.import_type%', feature: 'supplier_portal' }
 
     supplier_portal.step.xlsx_supplier.import:
         class: '%pim_connector.step.tasklet.class%'
