@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListProducts;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
@@ -16,8 +17,11 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @group ce
  */
-class SuccessListVariantProductDeltaEndToEnd extends AbstractProductTestCase
+class SuccessListVariantProductDeltaWithUuidEndToEnd extends AbstractProductTestCase
 {
+    /** @var ProductInterface[] $products */
+    private array $products = [];
+
     public function testListVariantProductDeltaWhenUpdatingProductModel()
     {
         $discriminantDatetime = $this->getDiscriminantDatetime();
@@ -45,17 +49,17 @@ JSON;
         $search = sprintf('{"updated":[{"operator":">","value":"%s"}]}', $discriminantDatetime->format('Y-m-d H:i:s'));
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
 
-        $client->request('GET', 'api/rest/v1/products?search=' . $search);
+        $client->request('GET', 'api/rest/v1/products-uuid?search=' . $search);
         $response = $client->getResponse();
 
         $expected = <<<JSON
 {
     "_links":{
         "self":{
-            "href":"http:\/\/localhost\/api\/rest\/v1\/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"
+            "href":"http:\/\/localhost\/api\/rest\/v1\/products-uuid?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"
         },
         "first":{
-            "href":"http:\/\/localhost\/api\/rest\/v1\/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"
+            "href":"http:\/\/localhost\/api\/rest\/v1\/products-uuid?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"
         }
     },
     "current_page":1,
@@ -64,10 +68,10 @@ JSON;
             {
                 "_links":{
                     "self":{
-                        "href":"http:\/\/localhost\/api\/rest\/v1\/products\/apollon_optionb_false"
+                        "href":"http:\/\/localhost\/api\/rest\/v1\/products-uuid\/{apollonOptionBFalseUuid}"
                     }
                 },
-                "identifier":"apollon_optionb_false",
+                "uuid":"{apollonOptionBFalseUuid}",
                 "family":"familyA",
                 "parent":"prod_mod_optB",
                 "groups":[
@@ -78,6 +82,13 @@ JSON;
                 ],
                 "enabled":true,
                 "values":{
+                    "sku": [
+                        {
+                            "locale": null,
+                            "scope": null,
+                            "data": "apollon_optionb_false"
+                        }
+                    ],
                     "a_yes_no":[
                         {
                             "locale":null,
@@ -155,10 +166,10 @@ JSON;
             {
                 "_links":{
                     "self":{
-                        "href":"http:\/\/localhost\/api\/rest\/v1\/products\/apollon_optionb_true"
+                        "href":"http:\/\/localhost\/api\/rest\/v1\/products-uuid\/{apollonOptionBTrueUuid}"
                     }
                 },
-                "identifier":"apollon_optionb_true",
+                "uuid": "{apollonOptionBTrueUuid}",
                 "family":"familyA",
                 "parent":"prod_mod_optB",
                 "groups":[
@@ -169,6 +180,13 @@ JSON;
                 ],
                 "enabled":true,
                 "values":{
+                    "sku": [
+                        {
+                            "locale": null,
+                            "scope": null,
+                            "data": "apollon_optionb_true"
+                        }
+                    ],
                     "a_yes_no":[
                         {
                             "locale":null,
@@ -247,6 +265,12 @@ JSON;
     }
 }
 JSON;
+
+        $expected = \strtr($expected, [
+            '{apollonOptionBFalseUuid}' => $this->products['apollon_optionb_false']->getUuid()->toString(),
+            '{apollonOptionBTrueUuid}' => $this->products['apollon_optionb_true']->getUuid()->toString(),
+        ]);
+
         $this->assertListResponse($response, $expected);
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
@@ -257,12 +281,12 @@ JSON;
     protected function setUp(): void
     {
         parent::setUp();
-        $this->createProduct('product1', [
+        $this->products['product1'] = $this->createProduct('product1', [
             new SetCategories(['master']),
             new SetMeasurementValue('a_metric', null, null, 10, 'KILOWATT'),
             new SetTextValue('a_text', null, null, 'Text')
         ]);
-        $this->createProduct('product2', [
+        $this->products['product2'] = $this->createProduct('product2', [
             new SetCategories(['categoryB']),
             new SetImageValue('a_localizable_image', null, 'en_US',  $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
             new SetImageValue('a_localizable_image', null, 'fr_FR',  $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
@@ -308,19 +332,19 @@ JSON;
             ]
         );
 
-        $this->createVariantProduct('apollon_optionb_false', [
+        $this->products['apollon_optionb_false'] = $this->createVariantProduct('apollon_optionb_false', [
             new SetCategories(['master']),
             new ChangeParent('prod_mod_optB'),
             new SetBooleanValue('a_yes_no', null, null, false)
         ]);
 
-        $this->createVariantProduct('apollon_optionb_true', [
+        $this->products['apollon_optionb_true'] = $this->createVariantProduct('apollon_optionb_true', [
             new SetCategories(['master']),
             new ChangeParent('prod_mod_optB'),
             new SetBooleanValue('a_yes_no', null, null, true)
         ]);
 
-        $this->createVariantProduct('apollon_optiona_true', [
+        $this->products['apollon_optiona_true'] = $this->createVariantProduct('apollon_optiona_true', [
             new SetCategories(['master']),
             new ChangeParent('prod_mod_optA'),
             new SetBooleanValue('a_yes_no', null, null, true)
