@@ -50,13 +50,7 @@ class CleanRemovedProductsCommand extends Command
 
         $batchSize = (int) $input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
 
-        //$deleteProductIdentifiers = $this->getEraseDiffElasticsearchProductIdentifiers($batchSize);
-
         $numberOfIndexedProducts = $this->removeDocumentFromIndex($output, $batchSize) ?? 0;
-        /*if ($deleteProductIdentifiers->valid()) {
-            $numberOfIndexedProducts = $this->removeDocumentFromIndex($deleteProductIdentifiers, new ProgressBar($output, 0));
-        }*/
-        
 
         $output->writeln('');
         $output->writeln(sprintf('<info>%d products de-indexed</info>', $numberOfIndexedProducts));
@@ -64,103 +58,78 @@ class CleanRemovedProductsCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function getEraseDiffElasticsearchProductIdentifiers(int $batchSize): \Generator
-    {
-        $sql = <<< SQL
-SELECT CONCAT('product_', BIN_TO_UUID(uuid)) AS _id, BIN_TO_UUID(uuid) AS uuid, identifier
-FROM pim_catalog_product
-WHERE CONCAT('product_', BIN_TO_UUID(uuid)) IN (:esIdentifiers) 
-SQL;
-
-        $searchAfter = null;
-        do {
-            $params = array_merge(
-                [
-                'sort' => ['id' => 'asc'],
-                'size' => $batchSize,
-                '_source' => ['id', 'identifier','ancestors'],
-                'query' => [
-                    'constant_score' => [
-                        'filter' => [
-                            'bool' => [
-                                'filter' => [
-                                    'term' => [
-                                        'document_type' => ProductInterface::class
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ],
-                $searchAfter ? [
-                'search_after' => $searchAfter
-            ] : []
-            );
-            $results = $this->productAndProductModelClient->search($params);
-            $esIdentifiers = array_map(fn ($doc) => $doc['_id'], $results['hits']['hits']);
-            $esDocuments = $results['hits']['hits'];
-
-            $rows = $this->connection->executeQuery(
-                $sql,
-                [
-                    'esIdentifiers' => $esIdentifiers
-                ],
-                [
-                    'esIdentifiers' => Connection::PARAM_STR_ARRAY,
-                ]
-            )->fetchAllAssociative();
-            $mysqlIds = array_map(function ($item) {
-                return $item['_id'];
-            }, $rows);
-
-            $diff = array_reduce(
-                $esDocuments,
-                function ($carry, $item) use ($mysqlIds): array {
-                    if (!in_array($item['_id'], $mysqlIds)) {
-                        $carry[] = [
-                            '_id' => substr(strstr($item['_id'], '_'), 1),
-                            'ancestor_codes' => $item['_source']['ancestors']['codes'] ?? [],
-                        ];
-                    }
-
-                    return $carry;
-                },
-                []
-            );
-
-            yield from $diff;
-
-            $resultsPage = $results['hits']['hits'];
-            $lastResult = end($resultsPage);
-            $searchAfter = $lastResult['sort'] ?? [];
-        } while (count($resultsPage)>0);
-    }
-
     private function removeDocumentFromIndex(OutputInterface $output, int $batchSize): int
     {
         $indexedProductCount = 0;
         $progressBar = new ProgressBar($output, 0);
         $progressBar->start();
-        
+
         $chunkedProductIdentifiersAncestorsCodes = $this->filterNonExistingProductInMySQL($batchSize);
 
-        foreach ($chunkedProductIdentifiersAncestorsCodes as $arrayProductIdentifierAncestorsCodes) {
-            if ($arrayProductIdentifierAncestorsCodes !== null) {
-                $this->productAndAncestorsIndexer->removeFromProductUuidsAndReindexAncestors(
-                    [Uuid::fromString($arrayProductIdentifierAncestorsCodes['_id'])],
-                    $arrayProductIdentifierAncestorsCodes['ancestor_codes'] ?? []
-                );
-                $indexedProductCount += count($arrayProductIdentifierAncestorsCodes);
-                $progressBar->advance(count($arrayProductIdentifierAncestorsCodes));
-            }
+        while($chunkedProductIdentifiersAncestorsCodes->valid()){
+            $arrayProductIdentifierAncestorsCodes = $chunkedProductIdentifiersAncestorsCodes->current();
+            $this->productAndAncestorsIndexer->removeFromProductUuidsAndReindexAncestors(
+                [Uuid::fromString($arrayProductIdentifierAncestorsCodes['_id'])],
+                $arrayProductIdentifierAncestorsCodes['ancestor_codes'] ?? []
+            );
+            $indexedProductCount += count($arrayProductIdentifierAncestorsCodes);
+            $progressBar->advance(count($arrayProductIdentifierAncestorsCodes));
         }
+
         $progressBar->finish();
 
         return $indexedProductCount;
     }
 
-    private function fetchAllIdentifiersFromEs(int $batchSize): \Generator
+    private function filterNonExistingProductInMySQL(int $batchSize): \Generator
+    {
+        $esDocuments = $this->fetchAllIdentifiersFromEs($batchSize);
+
+        $sql = <<< SQL
+SELECT BIN_TO_UUID(uuid) AS uuid, identifier
+FROM pim_catalog_product
+WHERE BIN_TO_UUID(uuid) IN (:esIdentifiers) 
+SQL;
+
+        foreach($esDocuments as $chunkProducts) {
+            while (count($chunkProducts) > 0) {
+                $chunkProductIdentifiers = array_map(fn($doc): string => substr($doc['_id'], 8), $chunkProducts);
+
+                $rows = $this->connection->executeQuery(
+                    $sql,
+                    [
+                        'esIdentifiers' => $chunkProductIdentifiers
+                    ],
+                    [
+                        'esIdentifiers' => Connection::PARAM_STR_ARRAY,
+                    ]
+                )->fetchAllAssociative();
+
+                $mysqlIds = array_map(function ($item) {
+                    return $item['uuid'];
+                }, $rows);
+
+                $chunkRemovedProductIdentifiers = array_reduce(
+                    $chunkProducts,
+                    function ($carry, $item) use ($mysqlIds): array {
+                        if (!in_array($item['_id'], $mysqlIds)) {
+                            $carry[] = [
+                                '_id' => substr(strstr($item['_id'], '_'), 1),
+                                'ancestor_codes' => $item['_source']['ancestors']['codes'] ?? [],
+                            ];
+                        }
+
+                        return $carry;
+                    },
+                    []
+                );
+
+                yield $chunkRemovedProductIdentifiers;
+            }
+        }
+    }
+
+    private function fetchAllIdentifiersFromEs(int $batchSize): iterable
     {
         $searchAfter = null;
         do {
@@ -188,7 +157,6 @@ SQL;
                 ] : []
             );
             $results = $this->productAndProductModelClient->search($params);
-            var_dump($results);
             $esDocuments = $results['hits']['hits'];
 
             yield $esDocuments;
@@ -199,50 +167,6 @@ SQL;
         } while (count($resultsPage)>0);
     }
 
-    private function filterNonExistingProductInMySQL(int $batchSize): \Generator
-    {
-        $sql = <<< SQL
-SELECT CONCAT('product_', BIN_TO_UUID(uuid)) AS _id, BIN_TO_UUID(uuid) AS uuid, identifier
-FROM pim_catalog_product
-WHERE CONCAT('product_', BIN_TO_UUID(uuid)) IN (:esIdentifiers) 
-SQL;
-
-        $esDocuments = $this->fetchAllIdentifiersFromEs($batchSize);
-        $chunkProductIdentifiers = array_map(fn ($doc) => $doc['_id'], (array)$esDocuments);
-        
-        while (count($chunkProductIdentifiers) > 0) {
-            $rows = $this->connection->executeQuery(
-                $sql,
-                [
-                    'esIdentifiers' => $chunkProductIdentifiers
-                ],
-                [
-                    'esIdentifiers' => Connection::PARAM_STR_ARRAY,
-                ]
-            )->fetchAllAssociative();
-
-            $mysqlIds = array_map(function ($item) {
-                return $item['_id'];
-            }, $rows);
-
-            $chunkRemovedProductIdentifiers = array_reduce(
-                (array)$esDocuments,
-                function ($carry, $item) use ($mysqlIds): array {
-                    if (!in_array($item['_id'], $mysqlIds)) {
-                        $carry[] = [
-                            '_id' => substr(strstr($item['_id'], '_'), 1),
-                            'ancestor_codes' => $item['_source']['ancestors']['codes'] ?? [],
-                        ];
-                    }
-
-                    return $carry;
-                },
-                []
-            );
-            
-            yield $chunkRemovedProductIdentifiers;
-        }
-    }
     private function checkIndexExists(): void
     {
         if (!$this->productAndProductModelClient->hasIndex()) {
