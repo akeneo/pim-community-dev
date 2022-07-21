@@ -8,10 +8,8 @@ use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use League\Flysystem\FilesystemOperator;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class CreateProductMediaFileEndToEnd extends ApiTestCase
 {
@@ -311,7 +309,7 @@ JSON;
 
         $this->fileRepository = $this->get('pim_api.repository.media_file');
 
-        $this->login('admin');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'foo',
@@ -353,18 +351,5 @@ JSON;
         }
 
         return \intval($id);
-    }
-
-    private function logIn(string $username): void
-    {
-        $session = $this->get('session');
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-
-        $session->set('_security_main', serialize($token));
-        $session->save();
     }
 }

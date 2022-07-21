@@ -13,8 +13,6 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\TestCase;
-use PHPUnit\Framework\Assert;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @author    Julien Janvier <j.janvier@gmail.com>
@@ -78,7 +76,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
      */
     protected function createProductWithStandardValues(string $identifier, array $userIntents = []): ProductInterface
     {
-        $this->logIn('admin');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
@@ -214,18 +212,5 @@ abstract class AbstractCompletenessTestCase extends TestCase
         }
 
         return $attributeRequirementToRemove;
-    }
-
-    protected function logIn(string $username): void
-    {
-        $session = $this->get('session');
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-
-        $session->set('_security_main', serialize($token));
-        $session->save();
     }
 }

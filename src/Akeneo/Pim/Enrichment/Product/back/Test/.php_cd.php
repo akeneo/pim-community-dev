@@ -56,6 +56,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\AttributeTypes',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
 
+        // TODO: remove when Upsert product does not use token interface
         'Akeneo\UserManagement\Component\Model\UserInterface',
         'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
     ])->in('Akeneo\Pim\Enrichment\Product\Application'),

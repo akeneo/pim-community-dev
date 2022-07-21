@@ -24,6 +24,6 @@ abstract class ControllerIntegrationTestCase extends IntegrationTestCase
 
     protected function logAs(string $username): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, $username);
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($username, $this->client);
     }
 }

@@ -55,7 +55,6 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 final class UpsertProductIntegration extends TestCase
 {
@@ -75,7 +74,7 @@ final class UpsertProductIntegration extends TestCase
 
         $this->messageBus = $this->get('pim_enrich.product.message_bus');
         $this->productRepository = $this->get('pim_catalog.repository.product');
-        $this->login('admin');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
     }
 
     private function clearDoctrineUoW(): void
@@ -1511,18 +1510,5 @@ final class UpsertProductIntegration extends TestCase
             Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
             ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createRecord);
         }
-    }
-
-    private function logIn(string $username): void
-    {
-        $session = $this->get('session');
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-
-        $session->set('_security_main', serialize($token));
-        $session->save();
     }
 }

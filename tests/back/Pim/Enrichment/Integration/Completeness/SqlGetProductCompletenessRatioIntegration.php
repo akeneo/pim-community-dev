@@ -18,7 +18,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -90,7 +89,7 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
 
     private function createProduct(): ProductInterface
     {
-        $this->logIn('admin');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'test_completeness',
@@ -123,18 +122,5 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
         }
 
         return \intval($id);
-    }
-
-    private function logIn(string $username): void
-    {
-        $session = $this->get('session');
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-
-        $session->set('_security_main', serialize($token));
-        $session->save();
     }
 }

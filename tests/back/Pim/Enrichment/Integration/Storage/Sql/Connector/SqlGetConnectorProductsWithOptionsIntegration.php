@@ -35,7 +35,6 @@ use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
 {
@@ -593,7 +592,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
      */
     protected function createProduct(string $identifier, array $userIntents = []) : ProductInterface
     {
-        $this->logIn('admin');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $this->get('pim_enrich.product.message_bus')->dispatch(UpsertProductCommand::createFromCollection(
             $this->adminUserId,
             $identifier,
@@ -601,19 +600,6 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
         ));
 
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-    }
-
-    private function logIn(string $username): void
-    {
-        $session = $this->get('session');
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-
-        $session->set('_security_main', serialize($token));
-        $session->save();
     }
 
     /**

@@ -5,12 +5,9 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 
 class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompletenessTestCase
@@ -114,7 +111,7 @@ class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompleten
      */
     private function createProduct(string $identifier, array $userIntents, int $userId): void
     {
-        $this->logIn('admin');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $userId,
             productIdentifier: $identifier,

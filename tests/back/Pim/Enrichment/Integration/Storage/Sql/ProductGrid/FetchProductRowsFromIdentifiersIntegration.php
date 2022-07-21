@@ -14,7 +14,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Webmozart\Assert\Assert;
 
 class FetchProductRowsFromIdentifiersIntegration extends TestCase
@@ -177,7 +176,7 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
 
     private function createVariantProduct(string $identifier, string $parentCode): void
     {
-        $this->logIn('admin');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
@@ -201,19 +200,6 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
         }
 
         return \intval($id);
-    }
-
-    protected function logIn(string $username): void
-    {
-        $session = $this->get('session');
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        \PHPUnit\Framework\Assert::assertNotNull($user);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-
-        $session->set('_security_main', serialize($token));
-        $session->save();
     }
 }
 

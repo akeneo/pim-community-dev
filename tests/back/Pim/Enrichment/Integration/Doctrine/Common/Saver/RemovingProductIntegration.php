@@ -7,9 +7,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
-use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Test products have been correctly removed from the index after a product has been removed.
@@ -99,7 +97,7 @@ class RemovingProductIntegration extends TestCase
 
     private function createProduct(string $identifier): ProductInterface
     {
-        $this->logIn('admin');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier, //'bat',
@@ -108,18 +106,5 @@ class RemovingProductIntegration extends TestCase
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
 
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-    }
-
-    private function logIn(string $username): void
-    {
-        $session = $this->get('session');
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-
-        $session->set('_security_main', serialize($token));
-        $session->save();
     }
 }

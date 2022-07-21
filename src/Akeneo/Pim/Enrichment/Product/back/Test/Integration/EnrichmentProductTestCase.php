@@ -96,7 +96,7 @@ abstract class EnrichmentProductTestCase extends TestCase
 
     protected function createProduct(string $identifier, array $userIntents): void
     {
-        $this->logIn('peter');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('peter'),
             productIdentifier: $identifier,
@@ -310,18 +310,5 @@ abstract class EnrichmentProductTestCase extends TestCase
     protected function refreshIndex(): void
     {
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-    }
-
-    protected function logIn(string $username): void
-    {
-        $session = $this->get('session');
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-
-        $session->set('_security_main', serialize($token));
-        $session->save();
     }
 }

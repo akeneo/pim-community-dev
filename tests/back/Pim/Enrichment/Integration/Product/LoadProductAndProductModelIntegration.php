@@ -19,7 +19,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -147,7 +146,7 @@ class LoadProductAndProductModelIntegration extends TestCase
      */
     private function createProduct(string $identifier, array $userIntents): void
     {
-        $this->logIn('admin');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
@@ -179,18 +178,5 @@ class LoadProductAndProductModelIntegration extends TestCase
         Assert::assertCount(0, $violations, \sprintf('The product model is not valid: %s', (string)$violations));
         $this->get('pim_catalog.saver.product_model')->save($productModel);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-    }
-
-    private function logIn(string $username): void
-    {
-        $session = $this->get('session');
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-
-        $session->set('_security_main', serialize($token));
-        $session->save();
     }
 }
