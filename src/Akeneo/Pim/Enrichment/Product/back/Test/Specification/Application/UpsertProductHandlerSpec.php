@@ -77,8 +77,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $product->setIdentifier('identifier1');
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
-        $currentToken = $tokenStorage->getToken()->willReturn($token);
-        $currentToken->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
         $user->getId()->willReturn(1);
         $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn(null);
         $productBuilder->createProduct('identifier1')->shouldBeCalledOnce()->willReturn($product);
@@ -106,8 +106,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $product->setIdentifier('identifier1');
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
-        $currentToken = $tokenStorage->getToken()->willReturn($token);
-        $currentToken->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
         $user->getId()->willReturn(1);
         $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn($product);
         $productBuilder->createProduct('identifier1')->shouldNotBeCalled();
@@ -136,8 +136,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $product->isDirty()->willReturn(false);
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
-        $currentToken = $tokenStorage->getToken()->willReturn($token);
-        $currentToken->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
         $user->getId()->willReturn(1);
         $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn($product);
         $productBuilder->createProduct('identifier1')->shouldNotBeCalled();
@@ -165,8 +165,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ]);
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn($violations);
-        $currentToken = $tokenStorage->getToken()->willReturn($token);
-        $currentToken->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
         $user->getId()->willReturn(1);
         $productSaver->save($product)->shouldNotBeCalled();
 
@@ -190,8 +190,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ]);
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
-        $currentToken = $tokenStorage->getToken()->willReturn($token);
-        $currentToken->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
         $user->getId()->willReturn(1);
         $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn($product);
         $productValidator->validate($product)->shouldBeCalledOnce()->willReturn($violations);
@@ -217,8 +217,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $product->setIdentifier('identifier1');
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
-        $currentToken = $tokenStorage->getToken()->willReturn($token);
-        $currentToken->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
         $user->getId()->willReturn(1);
         $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn($product);
         $applierRegistry->getApplier($setTextUserIntent)->willReturn($userIntentApplier);
@@ -251,8 +251,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $product->setIdentifier('identifier1');
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
-        $currentToken = $tokenStorage->getToken()->willReturn($token);
-        $currentToken->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
         $user->getId()->willReturn(1);
         $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn($product);
 
@@ -305,8 +305,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $product->setIdentifier('identifier1');
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
-        $currentToken = $tokenStorage->getToken()->willReturn($token);
-        $currentToken->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
         $user->getId()->willReturn(1);
         $productRepository->findOneByIdentifier('identifier')->shouldBeCalledOnce()->willReturn($product);
 
@@ -332,8 +332,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $product->setIdentifier('identifier1');
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
-        $currentToken = $tokenStorage->getToken()->willReturn($token);
-        $currentToken->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
         $user->getId()->willReturn(2);
 
         $productUpdater->update($product, Argument::cetera())->shouldNotbeCalled();

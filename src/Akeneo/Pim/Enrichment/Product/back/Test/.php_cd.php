@@ -54,7 +54,10 @@ $rules = [
 
         // Public APIs
         'Akeneo\Pim\Structure\Component\AttributeTypes',
-        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface'
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+
+        'Akeneo\UserManagement\Component\Model\UserInterface',
+        'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
     ])->in('Akeneo\Pim\Enrichment\Product\Application'),
 
     $builder->only([
