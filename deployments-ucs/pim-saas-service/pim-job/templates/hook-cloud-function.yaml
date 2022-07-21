@@ -8,7 +8,6 @@ metadata:
   annotations:
     "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "100"
-    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded
 spec:
   template:
     metadata:
@@ -26,7 +25,11 @@ spec:
             - name: pim-cloud-function-scripts-configmap
               mountPath: /scripts-dir
             - name: pim-cloud-function-source-configmap
-              mountPath: "/tmp/ucs-function-cron-transformer"
+              mountPath: /ucs-function-cron-transformer/package.json
+              subPath: package.json
+            - name: pim-cloud-function-source-configmap
+              mountPath: /ucs-function-cron-transformer/index.js
+              subPath: index.js
       volumes:
         - name: pim-cloud-function-scripts-configmap
           configMap:
@@ -34,3 +37,8 @@ spec:
         - name: pim-cloud-function-source-configmap
           configMap:
             name: cloud-function-source
+            items:
+            - key: package.json
+              path: package.json
+            - key: index.js
+              path: index.js
