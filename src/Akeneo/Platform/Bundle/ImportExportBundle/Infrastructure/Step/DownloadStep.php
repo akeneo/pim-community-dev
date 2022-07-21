@@ -12,6 +12,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Step;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageCommand;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageHandler;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscriber\UpdateJobExecutionStorageSummarySubscriber;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
@@ -49,7 +50,7 @@ final class DownloadStep extends AbstractStep
             throw new \LogicException('malformed job parameters, missing storage configuration');
         }
 
-        if ('local' === $jobParameters[self::STORAGE_KEY]['type'] || 'none' === $jobParameters[self::STORAGE_KEY]['type']) {
+        if (NoneStorage::TYPE === $jobParameters[self::STORAGE_KEY]['type'] || LocalStorage::TYPE === $jobParameters[self::STORAGE_KEY]['type']) {
             return;
         }
 
