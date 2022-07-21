@@ -24,7 +24,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
 {
@@ -149,7 +148,7 @@ final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
         $this->get('pim_catalog.saver.family')->save($family);
 
         // create products with asset values
-        $this->logIn('admin');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $this->createProduct(
             'test1',
             [
@@ -230,18 +229,5 @@ SQL,
         Assert::assertNotFalse($id);
 
         return \intval($id);
-    }
-
-    private function logIn(string $username): void
-    {
-        $session = $this->get('session');
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-
-        $session->set('_security_main', serialize($token));
-        $session->save();
     }
 }
