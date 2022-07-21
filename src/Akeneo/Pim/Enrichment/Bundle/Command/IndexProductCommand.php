@@ -73,7 +73,7 @@ class IndexProductCommand extends Command
                 'diff',
                 'd',
                 InputOption::VALUE_NONE,
-                'Resolve differences between MySQL and Elasticsearch'
+                'Index both missing products present in Mysql and not in ES and outdated product document in ES. It does not remove product documents present in ES but not in Mysql. See pim:product:clean-removed-products for that. This option does not work with "all" option. '
             )
             ->addOption(
                 'batch-size',
@@ -210,7 +210,7 @@ SQL;
         }
     }
 
-    private function getDiffProductUuids(int $batchSize)
+    private function getDiffProductUuids(int $batchSize): iterable
     {
         $lastUuidAsBytes = '';
         $sql = <<< SQL
