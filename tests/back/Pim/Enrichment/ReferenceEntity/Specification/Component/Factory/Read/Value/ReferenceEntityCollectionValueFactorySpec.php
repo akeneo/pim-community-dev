@@ -30,8 +30,8 @@ final class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior
     public function it_keeps_only_unique_value()
     {
         $attribute = $this->getAttribute(false, false);
-        $value = $this->createWithoutCheckingData($attribute, null, null, ['blue', 'blue', 'green']);
-        $value->shouldReturn(ReferenceEntityCollectionValue::value('an_attribute', [RecordCode::fromString('blue'), RecordCode::fromString('green')]));
+        $value = $this->createWithoutCheckingData($attribute, null, null, ['blue', 'green', 'green']);
+        $value->shouldBeLike(ReferenceEntityCollectionValue::value('an_attribute', [RecordCode::fromString('blue'), RecordCode::fromString('green')]));
     }
 
     public function it_creates_a_localizable_and_scopable_value()
