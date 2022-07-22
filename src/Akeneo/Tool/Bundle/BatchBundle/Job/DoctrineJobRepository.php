@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Job;
 use Akeneo\Tool\Bundle\BatchBundle\EntityManager\PersistedConnectionEntityManager;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobWithStepsInterface;
 use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
@@ -39,14 +40,17 @@ class DoctrineJobRepository implements JobRepositoryInterface
     protected ?EntityManagerInterface $jobManager = null;
     protected string $jobExecutionClass;
     protected int $batchSize;
+    protected JobRegistry $jobRegistry;
 
     public function __construct(
         EntityManager $entityManager,
         string $jobExecutionClass,
         string $jobInstanceClass,
         string $jobInstanceRepoClass,
+        JobRegistry $jobRegistry,
         int $batchSize = 100
     ) {
+        $this->jobRegistry = $jobRegistry;
         $currentConn = $entityManager->getConnection();
 
         $currentConnParams = $currentConn->getParams();
@@ -106,13 +110,22 @@ class DoctrineJobRepository implements JobRepositoryInterface
             $this->jobManager->persist($jobInstance);
         }
 
+        if ($job instanceof VisibleJobInterface && $this->jobRegistry->isEnabled($job->getName())) {
+            $isVisible = $job->isVisible();
+        } elseif ($job instanceof VisibleJobInterface && !$this->jobRegistry->isEnabled($job->getName())) {
+            $isVisible = false;
+        } else {
+            $isVisible = true;
+        }
+
+
         /** @var JobExecution $jobExecution */
         $jobExecution = new $this->jobExecutionClass();
         $jobExecution->setJobInstance($jobInstance);
         $jobExecution->setJobParameters($jobParameters);
         $jobExecution->setIsStoppable($job instanceof StoppableJobInterface && $job->isStoppable());
         $jobExecution->setStepCount($job instanceof JobWithStepsInterface ? count($job->getSteps()) : 1);
-        $jobExecution->setIsVisible($job instanceof VisibleJobInterface ? $job->isVisible() : true);
+        $jobExecution->setIsVisible($isVisible);
 
         $this->updateJobExecution($jobExecution);
 

@@ -29,6 +29,9 @@ class GetProductUuidFromIdentifierQueryTest extends IntegrationTestCase
     public function testItGetsProductUuidFromIdentifier(): void
     {
         $user = $this->createUser('shopifi');
+
+        $this->logAs($user->getUserIdentifier());
+
         $product = $this->createProduct('green', [], $user->getId());
         $expected = $product->getUuid();
 

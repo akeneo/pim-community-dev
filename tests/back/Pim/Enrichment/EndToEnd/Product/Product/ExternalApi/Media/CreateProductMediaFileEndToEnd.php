@@ -309,6 +309,7 @@ JSON;
 
         $this->fileRepository = $this->get('pim_api.repository.media_file');
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'foo',

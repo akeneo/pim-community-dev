@@ -69,6 +69,7 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
      */
     private function createProductWithUniqueValue(array $userIntents): void
     {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'foo',

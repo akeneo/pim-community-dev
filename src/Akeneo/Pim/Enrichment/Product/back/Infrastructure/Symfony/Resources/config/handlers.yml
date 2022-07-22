@@ -8,6 +8,7 @@ services:
             - '@pim_catalog.validator.product'
             - '@event_dispatcher'
             - '@Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry'
+            - '@security.token_storage'
         tags:
             - { name: 'akeneo.pim.enrichment.product.handler', command: 'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand' }
 

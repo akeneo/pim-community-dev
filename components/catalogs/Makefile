@@ -74,7 +74,7 @@ catalogs-integration-back:
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
-		--testsuite Catalogs_Integration
+		--testsuite Catalogs_Integration ${O}
 
 .PHONY: catalogs-acceptance-back
 catalogs-acceptance-back:
