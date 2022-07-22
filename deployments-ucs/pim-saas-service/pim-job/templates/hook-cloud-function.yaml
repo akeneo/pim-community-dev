@@ -17,6 +17,8 @@ spec:
     spec:
       restartPolicy: Never
       serviceAccountName: {{ .Values.common.workloadIdentityKSA | quote }}
+      nodeSelector:
+        iam.gke.io/gke-metadata-server-enabled: "true"
       containers:
         - name:  push-cloud-function
           image: {{ .Values.image.curl.repository }}:{{ .Values.image.curl.tag }}
