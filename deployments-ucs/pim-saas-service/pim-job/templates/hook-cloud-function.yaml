@@ -22,6 +22,11 @@ spec:
           image: {{ .Values.image.curl.repository }}:{{ .Values.image.curl.tag }}
           imagePullPolicy: {{ .Values.image.curl.pullPolicy | quote }}
           command: ["sh", "/scripts-dir/hook-cloud-function-scripts.sh"]
+          env:
+            - name: BUCKET_NAME
+              value: {{ .Values.pim.cloudFunction.bucket }}
+            - name: SOURCE_CODE_ZIP
+              value: {{ .Values.pim.cloudFunction.sourceCodeZip }}
           volumeMounts:
             - name: pim-cloud-function-scripts-configmap
               mountPath: /scripts-dir
@@ -37,7 +42,7 @@ spec:
             name: hook-cloud-function-scripts
         - name: pim-cloud-function-source-configmap
           configMap:
-            name: cloud-function-source
+            name: hook-cloud-function-sources
             items:
             - key: package.json
               path: package.json
