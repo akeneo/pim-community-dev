@@ -79,5 +79,36 @@ const isDateOperations = (operations: Object): operations is DateOperations =>
 const isDateSource = (source: Source): source is DateSource =>
   isDateSelection(source.selection) && isDateOperations(source.operations);
 
-export {getDefaultDateSource, isDateSource, isDateFormat, availableDateFormats, isDefaultDateSelection};
+const formatDateFormat = (dateFormat: DateFormat): string => {
+  let formattedDate = dateFormat;
+
+  if (formattedDate.includes('yyyy')) {
+    formattedDate = formattedDate.replace('yyyy', '1998');
+  }
+
+  if (formattedDate.includes('yy')) {
+    formattedDate = formattedDate.replace('yy', '98');
+  }
+
+  if (formattedDate.includes('mm')) {
+    formattedDate = formattedDate.replace('mm', '07');
+  }
+
+  if (formattedDate.includes('m')) {
+    formattedDate = formattedDate.replace('m', '7');
+  }
+
+  formattedDate = formattedDate.replace('dd', '13');
+
+  return `${dateFormat} (${formattedDate})`;
+};
+
+export {
+  getDefaultDateSource,
+  isDateSource,
+  isDateFormat,
+  availableDateFormats,
+  isDefaultDateSelection,
+  formatDateFormat,
+};
 export type {DateSelection, DateSource};
