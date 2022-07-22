@@ -20,7 +20,7 @@ const getDateAttribute = () => ({
   available_locales: [],
 });
 
-test('it displays all date formats when opening the dropdown', async () => {
+test('it displays all formatted date formats when opening the dropdown', async () => {
   const dateAttribute = getDateAttribute();
   const dataMapping = createAttributeDataMapping(dateAttribute, []);
 
@@ -39,9 +39,9 @@ test('it displays all date formats when opening the dropdown', async () => {
 
   userEvent.click(screen.getByTitle('pim_common.open'));
 
-  expect(screen.getAllByText('yyyy-mm-dd')).toHaveLength(2);
-  expect(screen.getByText('dd/mm/yyyy')).toBeInTheDocument();
-  expect(screen.getByText('yyyy.mm.dd')).toBeInTheDocument();
+  expect(screen.getAllByText('yyyy-mm-dd (1998-07-13)')).toHaveLength(2);
+  expect(screen.getByText('dd/mm/yyyy (13/07/1998)')).toBeInTheDocument();
+  expect(screen.getByText('yyyy.mm.dd (1998.07.13)')).toBeInTheDocument();
 });
 
 test('it defines the date format of the target', async () => {
@@ -63,7 +63,7 @@ test('it defines the date format of the target', async () => {
   );
 
   userEvent.click(screen.getByTitle('pim_common.open'));
-  userEvent.click(screen.getByText('yyyy/mm/dd'));
+  userEvent.click(screen.getByText('yyyy/mm/dd (1998/07/13)'));
 
   expect(onTargetChange).toHaveBeenCalledWith({
     ...dataMapping.target,

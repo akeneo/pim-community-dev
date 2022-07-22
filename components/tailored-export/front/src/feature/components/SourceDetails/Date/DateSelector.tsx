@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Collapse, Field, Helper, Pill, SelectInput} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {availableDateFormats, DateSelection, isDateFormat, isDefaultDateSelection} from './model';
+import {availableDateFormats, DateSelection, formatDateFormat, isDateFormat, isDefaultDateSelection} from './model';
 
 type DateSelectorProps = {
   selection: DateSelection;
@@ -42,7 +42,7 @@ const DateSelector = ({selection, validationErrors, onSelectionChange}: DateSele
         >
           {availableDateFormats.map(availableDateFormat => (
             <SelectInput.Option key={availableDateFormat} title={availableDateFormat} value={availableDateFormat}>
-              {availableDateFormat}
+              {formatDateFormat(availableDateFormat)}
             </SelectInput.Option>
           ))}
         </SelectInput>
