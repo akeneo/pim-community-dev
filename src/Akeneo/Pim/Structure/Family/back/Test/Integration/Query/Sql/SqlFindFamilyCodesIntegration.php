@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Test\Pim\Structure\Family\Integration\Query;
+namespace Akeneo\Test\Pim\Structure\Family\Integration\Query\Sql;
 
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQueryPagination;
