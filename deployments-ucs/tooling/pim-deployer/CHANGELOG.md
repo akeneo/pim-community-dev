@@ -1,4 +1,4 @@
-# 1.0 d
+# 1.0.0
 ## Initial release
 
 | Tools            | Previous Version | New Version          |

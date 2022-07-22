@@ -3,10 +3,10 @@ import {Translate} from '@akeneo-pim-community/shared';
 const SAMPLE_DATA_MAX_LENGTH = 100;
 const ELLIPSIS_CHARACTER = '…';
 
-type SampleData = string | null;
+type SampleData = string | null | undefined;
 
 const formatSampleData = (translate: Translate, sampleData: SampleData): string => {
-  if (sampleData === null) {
+  if (!sampleData) {
     return translate('akeneo.tailored_import.data_mapping.preview.placeholder');
   }
 

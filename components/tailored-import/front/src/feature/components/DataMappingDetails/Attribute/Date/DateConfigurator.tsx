@@ -1,7 +1,7 @@
 import React from 'react';
 import {Field, Helper, SelectInput} from 'akeneo-design-system';
 import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
-import {isDateTarget, DateSourceConfiguration, isDateFormat, availableDateFormats} from './model';
+import {isDateTarget, DateSourceConfiguration, isDateFormat, availableDateFormats, formatDateFormat} from './model';
 import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources, ClearIfEmpty} from '../../../../components';
@@ -51,7 +51,7 @@ const DateConfigurator = ({
           >
             {availableDateFormats.map(availableDateFormat => (
               <SelectInput.Option key={availableDateFormat} title={availableDateFormat} value={availableDateFormat}>
-                {availableDateFormat}
+                {formatDateFormat(availableDateFormat)}
               </SelectInput.Option>
             ))}
           </SelectInput>
