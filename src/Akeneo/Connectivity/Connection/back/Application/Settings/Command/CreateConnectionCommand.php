@@ -21,18 +21,22 @@ class CreateConnectionCommand
 
     private ?string $type;
 
+    private ?string $userGroup;
+
     public function __construct(
         string $code,
         string $label,
         string $flowType,
         bool $auditable = false,
-        ?string $type = null
+        ?string $type = null,
+        ?string $userGroup = null,
     ) {
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
         $this->auditable = $auditable;
         $this->type = $type;
+        $this->userGroup = $userGroup;
     }
 
     public function code(): string
@@ -58,5 +62,10 @@ class CreateConnectionCommand
     public function type(): ?string
     {
         return $this->type;
+    }
+
+    public function userGroup(): ?string
+    {
+        return $this->userGroup;
     }
 }

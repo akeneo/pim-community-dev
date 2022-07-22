@@ -57,7 +57,7 @@ class CreateConnectionHandlerSpec extends ObjectBehavior
         $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($client);
 
         $user = new User(42, 'magento_app', 'my_client_pwd');
-        $createUser->execute(Argument::type('string'), 'Magento Connector', ' ')->willReturn($user);
+        $createUser->execute(Argument::type('string'), 'Magento Connector', ' ', null)->willReturn($user);
 
         $repository->create(Argument::type(Connection::class))->shouldBeCalled();
 
@@ -86,7 +86,7 @@ class CreateConnectionHandlerSpec extends ObjectBehavior
         $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($client);
 
         $user = new User(42, 'magento_app', 'my_client_pwd');
-        $createUser->execute(Argument::type('string'), 'Magento Connector', ' ')->willReturn($user);
+        $createUser->execute(Argument::type('string'), 'Magento Connector', ' ', null)->willReturn($user);
 
         $repository->create(Argument::type(Connection::class))->shouldBeCalled();
 
