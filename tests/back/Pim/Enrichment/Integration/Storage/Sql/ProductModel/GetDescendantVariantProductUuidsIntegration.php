@@ -247,6 +247,7 @@ class GetDescendantVariantProductUuidsIntegration extends TestCase
      * @param UserIntent[] $userIntents
      */
     private function createProduct(string $identifier, string $familyCode, string $parentCode, array $userIntents = []): ProductInterface {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,

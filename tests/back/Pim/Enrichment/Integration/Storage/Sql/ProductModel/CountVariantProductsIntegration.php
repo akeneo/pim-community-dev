@@ -210,6 +210,7 @@ class CountVariantProductsIntegration extends TestCase
      */
     private function createVariantProduct($identifier, array $userIntents = []): void
     {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,

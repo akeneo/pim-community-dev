@@ -76,6 +76,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_creates_a_new_uncategorized_product(): void
     {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('mary');
         $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'new_product', valueUserIntents: [
             new SetTextValue('name', null, null, 'foo'),
         ]);
@@ -91,6 +92,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_creates_a_categorized_product(): void
     {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
@@ -112,6 +114,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The "suppliers" category does not exist');
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
@@ -128,6 +131,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The "suppliers" category does not exist');
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
@@ -142,6 +146,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage("You should at least keep your product in one category on which you have an own permission");
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
@@ -158,6 +163,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('You should at least keep your product in one category on which you have an own permission');
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
@@ -174,6 +180,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('You should at least keep your product in one category on which you have an own permission');
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
@@ -190,6 +197,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage("You don't have access to products in any tree, please contact your administrator");
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'my_product',
@@ -201,8 +209,9 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_merges_non_viewable_category_on_update(): void
     {
-        $this->createProduct('my_product', [new SetCategories(['print', 'suppliers'])]);
+        $this->createProduct('my_product', [new SetCategories(['print', 'suppliers', 'not_viewable_category'])]);
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'my_product',
@@ -211,11 +220,14 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->commandMessageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
+
+        // we login as a user that access all categories to check they are still linked to product
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
         $product = $this->productRepository->findOneByIdentifier('my_product');
 
         Assert::assertNotNull($product);
         Assert::assertSame('my_product', $product->getIdentifier());
-        Assert::assertEqualsCanonicalizing(['print', 'sales', 'suppliers'], $product->getCategoryCodes());
+        Assert::assertEqualsCanonicalizing(['print', 'sales', 'suppliers', 'not_viewable_category'], $product->getCategoryCodes());
     }
 
     /** @test */
@@ -235,6 +247,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             [new AssociateProducts('X_SELL', ['product_viewable_by_manager', 'product_non_viewable_by_manager'])]
         );
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = UpsertProductCommand::createFromCollection(
             $this->getUserId('betty'),
             'my_product',
@@ -246,6 +259,8 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->clearDoctrineUoW();
 
+        // we relog as peter to have full permission on categories
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
         $product = $this->productRepository->findOneByIdentifier('my_product');
 
         Assert::assertNotNull($product);
@@ -270,6 +285,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             new AssociateProductModels('X_SELL', ['product_model_non_viewable_by_manager'])
         ]);
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = UpsertProductCommand::createFromCollection(
             $this->getUserId('betty'),
             'my_product',
@@ -281,6 +297,8 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->clearDoctrineUoW();
 
+        // we relog as peter to have full permission on categories
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
         $product = $this->productRepository->findOneByIdentifier('my_product');
 
         Assert::assertSame('my_product', $product->getIdentifier());
@@ -310,6 +328,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             ])]
         );
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection(
             $this->getUserId('betty'),
             'my_product',
@@ -318,6 +337,8 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             ])]
         ));
 
+        // we relog as peter to have full permission on viewable products
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
         Assert::assertEqualsCanonicalizing(
             [
                 new QuantifiedEntity('product_viewable_by_manager', 7),
@@ -343,6 +364,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             ]),
         ]);
 
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = UpsertProductCommand::createFromCollection(
             $this->getUserId('betty'),
             'my_product',
@@ -354,6 +376,8 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         );
         $this->commandMessageBus->dispatch($command);
 
+        // we relog as peter to have full permission on viewable products
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
         Assert::assertEqualsCanonicalizing(
             [
                 new QuantifiedEntity('product_model_non_viewable_by_manager', 10),

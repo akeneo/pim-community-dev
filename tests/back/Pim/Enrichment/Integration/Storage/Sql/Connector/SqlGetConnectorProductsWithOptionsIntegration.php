@@ -592,6 +592,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
      */
     protected function createProduct(string $identifier, array $userIntents = []) : ProductInterface
     {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $this->get('pim_enrich.product.message_bus')->dispatch(UpsertProductCommand::createFromCollection(
             $this->adminUserId,
             $identifier,

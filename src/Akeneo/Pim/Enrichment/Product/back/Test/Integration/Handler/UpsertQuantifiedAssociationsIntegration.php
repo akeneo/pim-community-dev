@@ -36,6 +36,7 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
         $this->loadEnrichmentProductFunctionalFixtures();
 
         $this->productRepository = $this->get('pim_catalog.repository.product');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
 
         $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'identifier'));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('identifier'));

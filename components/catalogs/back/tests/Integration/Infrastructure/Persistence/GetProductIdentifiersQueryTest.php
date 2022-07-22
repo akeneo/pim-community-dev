@@ -30,7 +30,11 @@ class GetProductIdentifiersQueryTest extends IntegrationTestCase
 
     public function testItGetsPaginatedProductsUuids(): void
     {
-        $ownerId = $this->createUser('owner')->getId();
+        $owner = $this->createUser('owner');
+        $ownerId = $owner->getId();
+
+        $this->logAs($owner->getUserIdentifier());
+
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'owner');
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
         $this->createProduct('blue', [new SetEnabled(true)], $ownerId);

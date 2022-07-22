@@ -23,6 +23,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
      */
     protected function createProduct(string $identifier, array $userIntents = []): ProductInterface
     {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
@@ -38,6 +39,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
      */
     protected function createVariantProduct(string $identifier, array $userIntents = []) : ProductInterface
     {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
