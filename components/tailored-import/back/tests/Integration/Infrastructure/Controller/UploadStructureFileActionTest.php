@@ -31,7 +31,7 @@ class UploadStructureFileActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
         $this->filesystemProvider = $this->get('akeneo_file_storage.file_storage.filesystem_provider');
     }

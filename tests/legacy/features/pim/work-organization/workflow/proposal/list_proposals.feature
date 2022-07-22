@@ -81,6 +81,7 @@ Feature: List proposals
       | tshirt  | Mary   | weather_conditions |          | Blue |
 
   @jira https://akeneo.atlassian.net/browse/PIM-5825
+  @skip  @info To be fixed in GRF-206
   Scenario: Successfully display a proposal even when an attribute has been deleted
     Given I am logged in as "Julia"
     And I am on the attributes page

@@ -85,6 +85,7 @@
         }
     },
     "require": {
+        "ext-openssl": "*",
         "akeneo/pim-community-dev": "dev-master",
         "akeneo/pim-onboarder": "^7.0.0",
         "google/cloud-firestore": "^1.22",

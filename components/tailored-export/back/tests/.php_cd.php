@@ -45,6 +45,8 @@ $rules = [
             'Akeneo\Platform\TailoredExport\Application',
             'Akeneo\Platform\TailoredExport\Domain',
 
+            'Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage',
+
             'Akeneo\AssetManager\Infrastructure\PublicApi',
             'Akeneo\Channel\API',
             'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',

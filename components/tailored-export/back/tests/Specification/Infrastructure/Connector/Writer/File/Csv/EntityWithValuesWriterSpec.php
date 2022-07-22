@@ -69,7 +69,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->getTotalItems()->willReturn(10);
         $stepExecution->getJobParameters()->willReturn(new JobParameters([
             'linesPerFile' => 10000,
-            'filePath' => '/tmp/my_custom_export_product.csv',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/my_custom_export_product.csv',
+            ],
             'withHeader' => false,
         ]));
 
@@ -77,7 +80,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
 
         $stepExecution->getJobParameters()->willReturn(new JobParameters([
             'linesPerFile' => 10000,
-            'filePath' => '/tmp/%job_label%_product.csv',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%_product.csv',
+            ],
             'withHeader' => false,
         ]));
 
@@ -85,7 +91,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
 
         $stepExecution->getJobParameters()->willReturn(new JobParameters([
             'linesPerFile' => 10000,
-            'filePath' => '/tmp/%job_label%%datetime%_product.csv',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%%datetime%_product.csv',
+            ],
             'withHeader' => false,
         ]));
 
@@ -94,7 +103,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->getTotalItems()->willReturn(100000);
         $stepExecution->getJobParameters()->willReturn(new JobParameters([
             'linesPerFile' => 10000,
-            'filePath' => '/tmp/%job_label%%datetime%_product.csv',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%%datetime%_product.csv',
+            ],
             'withHeader' => false,
         ]));
 
@@ -109,7 +121,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->getTotalItems()->willReturn(5);
         $jobParameters = new JobParameters([
             'linesPerFile' => 6,
-            'filePath' => '/tmp/%job_label%_product.csv',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%_product.csv',
+            ],
             'withHeader' => false,
         ]);
 
@@ -155,7 +170,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->getTotalItems()->willReturn(5);
         $jobParameters = new JobParameters([
             'linesPerFile' => 6,
-            'filePath' => '/tmp/%job_label%_product.csv',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%_product.csv',
+            ],
             'withHeader' => true,
         ]);
 
@@ -205,7 +223,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->getTotalItems()->willReturn(5);
         $jobParameters = new JobParameters([
             'linesPerFile' => 2,
-            'filePath' => '/tmp/%job_label%_product.csv',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%_product.csv',
+            ],
             'withHeader' => false,
         ]);
 
@@ -266,7 +287,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->getTotalItems()->willReturn(4);
         $jobParameters = new JobParameters([
             'linesPerFile' => 2,
-            'filePath' => '/tmp/%job_label%_product.csv',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%_product.csv',
+            ],
             'withHeader' => false,
         ]);
 

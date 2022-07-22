@@ -116,7 +116,7 @@ acceptance-back: acceptance-back-retailer acceptance-back-supplier #Doc: Run acc
 .PHONY: integration-back-retailer
 integration-back-retailer: #Doc: Run integration back tests for the retailer part of Supplier Portal
 ifeq ($(CI),true)
-	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Supplier_Portal_Retailer_Integration_Test
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh components/supplier-portal-retailer/back/tests/phpunit.xml.dist vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Supplier_Portal_Retailer_Integration_Test
 else
 	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Supplier_Portal_Retailer_Integration_Test --configuration components/supplier-portal-retailer/back/tests/phpunit.xml.dist ${ARGS}
 endif
@@ -124,7 +124,7 @@ endif
 .PHONY: integration-back-supplier
 integration-back-supplier: #Doc: Run integration back tests for the supplier part of Supplier Portal
 ifeq ($(CI),true)
-	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Supplier_Portal_Supplier_Integration_Test
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh components/supplier-portal-supplier/back/tests/phpunit.xml.dist vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Supplier_Portal_Supplier_Integration_Test
 else
 	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Supplier_Portal_Supplier_Integration_Test --configuration components/supplier-portal-supplier/back/tests/phpunit.xml.dist ${ARGS}
 endif
@@ -153,9 +153,5 @@ extract-front-translations: #Doc: Extract translations for Crowdin
 	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front i18n-extract 'src/**/*.{ts,tsx}' --ignore '**/*.{test,d}.{ts,tsx}' --format simple --out-file src/translations/messages.en.json
 
 .PHONY: build-supplier-portal-supplier-front-app
-build-supplier-portal-supplier-front-app: #Doc: Build Onboarder supplier frontend application
+build-supplier-portal-supplier-front-app: #Doc: Build Supplier Portal supplier frontend application
 	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front app:build
-
-.PHONY: start-supplier-portal-supplier-front-app
-start-supplier-portal-supplier-front-app: #Doc: Build Onboarder supplier frontend application
-	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front app:start

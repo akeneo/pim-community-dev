@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Helper;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
@@ -86,7 +87,7 @@ trait EntityBuilderTrait
         return $familyVariant;
     }
 
-    protected function createProduct(string $identifier, array $data): void
+    protected function createProduct(string $identifier, array $data): ProductInterface
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);
@@ -95,6 +96,8 @@ trait EntityBuilderTrait
         Assert::assertCount(0, $violations, \sprintf('The product is not valid: %s', $violations));
         $this->get('pim_catalog.saver.product')->save($product);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     protected function createProductModel(array $data): void

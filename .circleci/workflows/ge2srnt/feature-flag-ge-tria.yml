@@ -122,8 +122,9 @@ workflows:
                   type: approval
                   filters:
                       branches:
-                          ignore:
-                              - "master"
+                          only:
+                              - /.*GE2EE.*/
+                              - /SDO-.*/
             - checkout:
                   requires:
                       - ready_to_build?
@@ -153,8 +154,9 @@ workflows:
                           PRODUCT_TYPE: ["srnt", "grth", "tria"]
                   filters:
                       branches:
-                          ignore:
-                              - "master"
+                          only:
+                              - /.*GE2EE.*/
+                              - /SDO-.*/
             - deploy_pr_environment_with_flags:
                   name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment with flags"
                   matrix:

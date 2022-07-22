@@ -16,7 +16,7 @@ Feature: Display available field options
       | code      | label-en_US | type                 | allowed_extensions | date_min   | max_characters | group | wysiwyg_enabled |
       | info      | Info        | pim_catalog_textarea |                    |            | 25             | other | true            |
     And the following job "csv_clothing_attribute_export" configuration:
-      | filePath | %tmp%/attribute_export/attribute_export.csv |
+      | storage | {"type": "local", "file_path": "%tmp%/attribute_export/attribute_export.csv"} |
     And I am on the "csv_clothing_attribute_export" export job page
     When I launch the export job
     And I wait for the "csv_clothing_attribute_export" job to finish

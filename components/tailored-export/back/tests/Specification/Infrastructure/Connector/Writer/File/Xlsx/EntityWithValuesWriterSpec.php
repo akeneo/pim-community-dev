@@ -69,7 +69,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->getTotalItems()->willReturn(10);
         $stepExecution->getJobParameters()->willReturn(new JobParameters([
             'linesPerFile' => 10000,
-            'filePath' => '/tmp/my_custom_export_product.xlsx',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/my_custom_export_product.xlsx',
+            ],
             'withHeader' => false,
         ]));
 
@@ -77,7 +80,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
 
         $stepExecution->getJobParameters()->willReturn(new JobParameters([
             'linesPerFile' => 10000,
-            'filePath' => '/tmp/%job_label%_product.xlsx',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%_product.xlsx',
+            ],
             'withHeader' => false,
         ]));
 
@@ -85,7 +91,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
 
         $stepExecution->getJobParameters()->willReturn(new JobParameters([
             'linesPerFile' => 10000,
-            'filePath' => '/tmp/%job_label%%datetime%_product.xlsx',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%%datetime%_product.xlsx',
+            ],
             'withHeader' => false,
         ]));
 
@@ -94,7 +103,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->getTotalItems()->willReturn(100000);
         $stepExecution->getJobParameters()->willReturn(new JobParameters([
             'linesPerFile' => 10000,
-            'filePath' => '/tmp/%job_label%%datetime%_product.xlsx',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%%datetime%_product.xlsx',
+            ],
             'withHeader' => false,
         ]));
 
@@ -109,7 +121,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->getTotalItems()->willReturn(5);
         $jobParameters = new JobParameters([
             'linesPerFile' => 6,
-            'filePath' => '/tmp/%job_label%_product.xlsx',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%_product.xlsx',
+            ],
             'withHeader' => false,
         ]);
 
@@ -151,7 +166,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->getTotalItems()->willReturn(5);
         $jobParameters = new JobParameters([
             'linesPerFile' => 6,
-            'filePath' => '/tmp/%job_label%_product.xlsx',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%_product.xlsx',
+            ],
             'withHeader' => true,
         ]);
 
@@ -197,7 +215,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->getTotalItems()->willReturn(5);
         $jobParameters = new JobParameters([
             'linesPerFile' => 2,
-            'filePath' => '/tmp/%job_label%_product.xlsx',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%_product.xlsx',
+            ],
             'withHeader' => false,
         ]);
 
@@ -254,7 +275,10 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->getTotalItems()->willReturn(4);
         $jobParameters = new JobParameters([
             'linesPerFile' => 2,
-            'filePath' => '/tmp/%job_label%_product.xlsx',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%_product.xlsx',
+            ],
             'withHeader' => false,
         ]);
 

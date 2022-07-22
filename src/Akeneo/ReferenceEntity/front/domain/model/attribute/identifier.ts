@@ -20,7 +20,7 @@ export default class AttributeIdentifier {
   }
 
   public equals(identifier: AttributeIdentifier): boolean {
-    return this.identifier === identifier.identifier;
+    return this.identifier.toLowerCase() === identifier.identifier.toLowerCase();
   }
 
   public normalize(): NormalizedAttributeIdentifier {

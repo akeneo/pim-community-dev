@@ -45,6 +45,7 @@ akeneo_structure_version_last_update | BASE TABLE
 akeneo_supplier_portal_contributor_account | BASE TABLE
 akeneo_supplier_portal_supplier | BASE TABLE
 akeneo_supplier_portal_supplier_contributor | BASE TABLE
+akeneo_supplier_portal_supplier_file | BASE TABLE
 lock_keys | BASE TABLE
 messenger_messages | BASE TABLE
 migration_versions | BASE TABLE
@@ -419,6 +420,13 @@ akeneo_supplier_portal_supplier_contributor | id | NO | bigint unsigned | PRI
 akeneo_supplier_portal_supplier_contributor | email | NO | varchar(255) | UNI
 akeneo_supplier_portal_supplier_contributor | created_at | NO | datetime |
 akeneo_supplier_portal_supplier_contributor | supplier_identifier | NO | char(36) | MUL
+akeneo_supplier_portal_supplier_file | identifier | NO | char(36) | PRI
+akeneo_supplier_portal_supplier_file | original_filename | NO | varchar(255) |
+akeneo_supplier_portal_supplier_file | path | NO | text |
+akeneo_supplier_portal_supplier_file | uploaded_by_contributor | YES | varchar(255) |
+akeneo_supplier_portal_supplier_file | uploaded_by_supplier | NO | varchar(36) | MUL
+akeneo_supplier_portal_supplier_file | uploaded_at | NO | datetime |
+akeneo_supplier_portal_supplier_file | downloaded | NO | tinyint(1) |
 lock_keys | key_id | NO | varchar(64) | PRI
 lock_keys | key_token | NO | varchar(44) |
 lock_keys | key_expiration | NO | int unsigned |
@@ -1053,6 +1061,8 @@ INDEX | akeneo_supplier_portal_supplier | UC_supplier_code | code
 INDEX | akeneo_supplier_portal_supplier_contributor | PRIMARY | id
 INDEX | akeneo_supplier_portal_supplier_contributor | supplier_identifier_foreign_key | supplier_identifier
 INDEX | akeneo_supplier_portal_supplier_contributor | UC_supplier_contributor_email | email
+INDEX | akeneo_supplier_portal_supplier_file | PRIMARY | identifier
+INDEX | akeneo_supplier_portal_supplier_file | uploaded_by_supplier_foreign_key | uploaded_by_supplier
 INDEX | lock_keys | PRIMARY | key_id
 INDEX | messenger_messages | IDX_75EA56E016BA31DB | delivered_at
 INDEX | messenger_messages | IDX_75EA56E0E3BD61CE | available_at
@@ -1426,6 +1436,7 @@ FOREIGN CONSTRAINT | user_group_foreign_key | akeneo_reference_entity_reference_
 FOREIGN CONSTRAINT | FK_C0477CAA7E366551 | akeneo_rule_engine_rule_definition_translation.foreign_key | akeneo_rule_engine_rule_definition.id
 FOREIGN CONSTRAINT | FK_F7D0C461744E0351 | akeneo_rule_engine_rule_relation.rule_id | akeneo_rule_engine_rule_definition.id
 FOREIGN CONSTRAINT | supplier_identifier_foreign_key | akeneo_supplier_portal_supplier_contributor.supplier_identifier | akeneo_supplier_portal_supplier.identifier
+FOREIGN CONSTRAINT | uploaded_by_supplier_foreign_key | akeneo_supplier_portal_supplier_file.uploaded_by_supplier | akeneo_supplier_portal_supplier.identifier
 FOREIGN CONSTRAINT | FK_DAF6DF5524DB0683 | oro_config_value.config_id | oro_config.id
 FOREIGN CONSTRAINT | FK_F82840BC6ED78C3 | oro_user.file_info_id | akeneo_file_storage_file_info.id
 FOREIGN CONSTRAINT | FK_F82840BC7BBFC60C | oro_user.catalogLocale_id | pim_catalog_locale.id

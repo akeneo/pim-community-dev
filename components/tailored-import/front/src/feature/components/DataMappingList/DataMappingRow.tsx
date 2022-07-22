@@ -27,6 +27,18 @@ const RemoveCell = styled(Table.ActionCell)`
   width: 50px;
 `;
 
+const DisplayedSources = styled.span`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const DisplayedProperty = styled.span`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 const DataMappingRow = ({
   dataMapping,
   columns,
@@ -54,16 +66,23 @@ const DataMappingRow = ({
     onRemove(dataMapping.uuid);
   };
 
+  const joinedSourcesList =
+    0 === sources.length ? translate('akeneo.tailored_import.data_mapping_list.no_sources') : sources.join(', ');
+
   return (
     <>
       <Table.Row onClick={() => onSelect(dataMapping.uuid)} isSelected={isSelected}>
         {isAttributeDataMapping(dataMapping) ? (
           <AttributeLabelCell attributeCode={dataMapping.target.code} />
         ) : (
-          <PropertyLabelCell rowTitle={true}>{translate(`pim_common.${dataMapping.target.code}`)}</PropertyLabelCell>
+          <PropertyLabelCell rowTitle={true}>
+            <DisplayedProperty title={translate(`pim_common.${dataMapping.target.code}`)}>
+              {translate(`pim_common.${dataMapping.target.code}`)}
+            </DisplayedProperty>
+          </PropertyLabelCell>
         )}
         <Table.Cell>
-          {0 === sources.length ? translate('akeneo.tailored_import.data_mapping_list.no_sources') : sources.join(', ')}
+          <DisplayedSources title={joinedSourcesList}>{joinedSourcesList}</DisplayedSources>
           <Spacer />
           {hasError && <Pill level="danger" />}
         </Table.Cell>

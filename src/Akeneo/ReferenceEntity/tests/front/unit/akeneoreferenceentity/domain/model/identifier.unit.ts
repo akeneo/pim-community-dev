@@ -14,5 +14,6 @@ describe('akeneo > reference entity > domain > model --- identifier', () => {
   test('I can compare two identifiers', () => {
     expect(createIdentifier('michel').equals(createIdentifier('didier'))).toBe(false);
     expect(createIdentifier('didier').equals(createIdentifier('didier'))).toBe(true);
+    expect(createIdentifier('DiDiEr').equals(createIdentifier('dIdIeR'))).toBe(true);
   });
 });

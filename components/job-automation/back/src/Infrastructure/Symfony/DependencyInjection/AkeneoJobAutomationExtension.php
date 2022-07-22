@@ -29,8 +29,6 @@ class AkeneoJobAutomationExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('handlers.yml');
         $loader->load('hydrators.yml');
-        $loader->load('job_constraints.yml');
-        $loader->load('job_default_values.yml');
         $loader->load('services.yml');
         $loader->load('storage_client.yml');
         $loader->load('validations.yml');

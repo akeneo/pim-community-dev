@@ -131,7 +131,6 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file', 'pim_catalog_image', 'pim_catalog_asset_collection']
-            - 'filePath'
 
     pimee_workflow.job.csv_published_product_quick_export:
         class: '%pim_connector.job.simple_job.class%'
@@ -172,7 +171,6 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file', 'pim_catalog_image', 'pim_catalog_asset_collection']
-            - 'filePath'
 
     pimee_workflow.job.xlsx_published_product_quick_export:
         class: '%pim_connector.job.simple_job.class%'

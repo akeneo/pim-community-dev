@@ -4,11 +4,11 @@ namespace Akeneo\SharedCatalog\Query;
 
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
 use Akeneo\SharedCatalog\Model\SharedCatalog;
-use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Webmozart\Assert\Assert;
 
 class FindProductUuidsQuery implements FindProductUuidsQueryInterface
 {
@@ -27,7 +27,7 @@ class FindProductUuidsQuery implements FindProductUuidsQueryInterface
         $envelope = $this->messageBus->dispatch(new GetProductUuidsQuery([], null, $searchAfterProductUuid));
 
         $handledStamp = $envelope->last(HandledStamp::class);
-        Assert::assertNotNull($handledStamp, 'The bus does not return any result');
+        Assert::notNull($handledStamp, 'The bus does not return any result');
 
         $productUuidCursor = $handledStamp->getResult();
 

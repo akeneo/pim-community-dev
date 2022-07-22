@@ -114,6 +114,7 @@ test('it displays validation errors when read columns fails', async () => {
 
   userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
   userEvent.click(screen.getByText('Upload file'));
+  userEvent.click(screen.getByText('Change file structure'));
   await act(async () => {
     userEvent.click(screen.getByText('pim_common.confirm'));
   });
@@ -141,6 +142,7 @@ test('it displays global validation errors', async () => {
 
   userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
   userEvent.click(screen.getByText('Upload file'));
+  userEvent.click(screen.getByText('Change file structure'));
   await act(async () => {
     userEvent.click(screen.getByText('pim_common.confirm'));
   });
