@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsByUuidQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductsQueryValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
@@ -37,7 +37,7 @@ class ListProductsByUuidController
         private PaginatorInterface $searchAfterPaginator,
         private ListProductsQueryValidator $listProductsQueryValidator,
         private array $apiConfiguration,
-        private ListProductsQueryHandler $listProductsQueryHandler,
+        private ListProductsByUuidQueryHandler $listProductsByUuidQueryHandler,
         private ConnectorProductWithUuidNormalizer $connectorProductWithUuidNormalizer,
         private TokenStorageInterface $tokenStorage,
         private SecurityFacade $security
@@ -83,7 +83,7 @@ class ListProductsByUuidController
 
         try {
             $this->listProductsQueryValidator->validate($query);
-            $products = $this->listProductsQueryHandler->handle($query); // in try block as PQB is doing validation also
+            $products = $this->listProductsByUuidQueryHandler->handle($query); // in try block as PQB is doing validation also
         } catch (InvalidQueryException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (BadRequest400Exception $e) {

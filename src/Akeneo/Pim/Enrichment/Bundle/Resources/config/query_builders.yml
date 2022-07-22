@@ -622,7 +622,11 @@ services:
         class: '%pim_catalog.query.elasticsearch.sorter.family.class%'
         arguments:
             - '@pim_catalog.repository.locale'
-            - ['family']
+            - [ 'family' ]
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\UuidSorter:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 

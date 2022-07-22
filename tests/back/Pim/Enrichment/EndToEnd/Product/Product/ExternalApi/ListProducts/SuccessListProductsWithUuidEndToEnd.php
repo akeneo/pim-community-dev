@@ -22,8 +22,7 @@ use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProdu
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * // TODO Put back @group ce
- * @agroup ce
+ * @group ce
  */
 class SuccessListProductsWithUuidEndToEnd extends AbstractProductTestCase
 {
@@ -127,6 +126,9 @@ class SuccessListProductsWithUuidEndToEnd extends AbstractProductTestCase
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
+        $sortedProducts = \array_values($this->products);
+        \usort($sortedProducts, fn (ProductInterface $p1, ProductInterface $p2): int => \strcmp($p1->getUuid()->toString(), $p2->getUuid()->toString()));
+
         $client->request('GET', 'api/rest/v1/products-uuid?with_count=true&limit=3');
         $expected = <<<JSON
 {
@@ -139,9 +141,9 @@ class SuccessListProductsWithUuidEndToEnd extends AbstractProductTestCase
     "items_count"  : 7,
     "_embedded"    : {
 		"items": [
-            {$standardizedProducts['china']},
-            {$standardizedProducts['localizable']},
-            {$standardizedProducts['localizable_and_scopable']}
+            {$standardizedProducts[$sortedProducts[0]->getIdentifier()]},
+            {$standardizedProducts[$sortedProducts[1]->getIdentifier()]},
+            {$standardizedProducts[$sortedProducts[2]->getIdentifier()]}
 		]
     }
 }
@@ -767,31 +769,33 @@ JSON;
         $sortedProducts = \array_values($this->products);
         \usort($sortedProducts, fn (ProductInterface $p1, ProductInterface $p2): int => \strcmp($p1->getUuid()->toString(), $p2->getUuid()->toString()));
 
+        $searchAfterIndex = 1;
+
         $client->request('GET', sprintf(
             'api/rest/v1/products-uuid?pagination_type=search_after&limit=3&search_after=%s',
-            $sortedProducts[0]->getUuid()->toString()
+            $sortedProducts[$searchAfterIndex]->getUuid()->toString()
         ));
 
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=3&search_after={firstProductUuid}"},
+        "self"  : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=3&search_after={searchAfterProductUuid}"},
         "first" : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=3"},
-        "next"  : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=3&search_after={fourthProductUuid}"}
+        "next"  : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=3&search_after={lastProductUuid}"}
     },
     "_embedded"    : {
         "items" : [
-            {$standardizedProducts[$sortedProducts[1]->getIdentifier()]},
-            {$standardizedProducts[$sortedProducts[2]->getIdentifier()]},
-            {$standardizedProducts[$sortedProducts[3]->getIdentifier()]}
+            {$standardizedProducts[$sortedProducts[$searchAfterIndex + 1]->getIdentifier()]},
+            {$standardizedProducts[$sortedProducts[$searchAfterIndex + 2]->getIdentifier()]},
+            {$standardizedProducts[$sortedProducts[$searchAfterIndex + 3]->getIdentifier()]}
         ]
     }
 }
 JSON;
 
         $expected = \strtr($expected, [
-            '{firstProductUuid}' => $sortedProducts[0]->getUuid()->toString(),
-            '{fourthProductUuid}' => $sortedProducts[3]->getUuid()->toString(),
+            '{searchAfterProductUuid}' => $sortedProducts[$searchAfterIndex]->getUuid()->toString(),
+            '{lastProductUuid}' => $sortedProducts[$searchAfterIndex + 3]->getUuid()->toString(),
         ]);
 
         $this->assertListResponse($client->getResponse(), $expected, false);
@@ -802,23 +806,35 @@ JSON;
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', sprintf('api/rest/v1/products-uuid?pagination_type=search_after&limit=5&search_after=%s', 'localizable_and_scopable'));
+        $sortedProducts = \array_values($this->products);
+        \usort($sortedProducts, fn (ProductInterface $p1, ProductInterface $p2): int => \strcmp($p1->getUuid()->toString(), $p2->getUuid()->toString()));
+
+        $searchAfterIndex = 2;
+
+        $client->request('GET', sprintf(
+            'api/rest/v1/products-uuid?pagination_type=search_after&limit=5&search_after=%s',
+            $sortedProducts[$searchAfterIndex]->getUuid()->toString()
+        ));
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=5&search_after=localizable_and_scopable"},
+        "self"  : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=5&search_after={searchAfterProductUuid}"},
         "first" : {"href": "http://localhost/api/rest/v1/products-uuid?with_count=false&pagination_type=search_after&limit=5"}
     },
     "_embedded"    : {
         "items" : [
-            {$standardizedProducts['scopable']},
-            {$standardizedProducts['simple']},
-            {$standardizedProducts['with_parent']},
-            {$standardizedProducts['without_category']}
+            {$standardizedProducts[$sortedProducts[$searchAfterIndex + 1]->getIdentifier()]},
+            {$standardizedProducts[$sortedProducts[$searchAfterIndex + 2]->getIdentifier()]},
+            {$standardizedProducts[$sortedProducts[$searchAfterIndex + 3]->getIdentifier()]},
+            {$standardizedProducts[$sortedProducts[$searchAfterIndex + 4]->getIdentifier()]}
         ]
     }
 }
 JSON;
+
+        $expected = \strtr($expected, [
+            '{searchAfterProductUuid}' => $sortedProducts[$searchAfterIndex]->getUuid()->toString(),
+        ]);
 
         $this->assertListResponse($client->getResponse(), $expected, true);
     }

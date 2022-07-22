@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
@@ -21,65 +20,24 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @author    Pierre Allard <pierre.allard@akeneo.com>
- * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
- * @author    Mathias Métayer <mathias.metayer@akeneo.com>
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ListProductsQueryHandler
+final class ListProductsByUuidQueryHandler
 {
-    /** @var ApplyProductSearchQueryParametersToPQB */
-    private $applyProductSearchQueryParametersToPQB;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $fromSizePqbFactory;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $searchAfterPqbFactory;
-
-    /** @var GetConnectorProducts */
-    private $getConnectorProductsQuery;
-
-    /** @var GetConnectorProducts */
-    private $getConnectorProductsQuerywithOptions;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $channelRepository;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    private GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
-
-    private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses;
-
     public function __construct(
-        IdentifiableObjectRepositoryInterface $channelRepository,
-        ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
-        ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
-        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        GetConnectorProducts $getConnectorProductsQuery,
-        GetConnectorProducts $getConnectorProductsQuerywithOptions,
-        EventDispatcherInterface $eventDispatcher,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
+        private IdentifiableObjectRepositoryInterface $channelRepository,
+        private ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
+        private ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
+        private ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
+        private GetConnectorProducts $getConnectorProductsQuery,
+        private GetConnectorProducts $getConnectorProductsQuerywithOptions,
+        private EventDispatcherInterface $eventDispatcher,
+        private GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
     ) {
-        $this->channelRepository = $channelRepository;
-        $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
-        $this->fromSizePqbFactory = $fromSizePqbFactory;
-        $this->searchAfterPqbFactory = $searchAfterPqbFactory;
-        $this->getConnectorProductsQuery = $getConnectorProductsQuery;
-        $this->getConnectorProductsQuerywithOptions = $getConnectorProductsQuerywithOptions;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->getProductsWithQualityScores = $getProductsWithQualityScores;
-        $this->getProductsWithCompletenesses = $getProductsWithCompletenesses;
     }
 
-    /**
-     * @param ListProductsQuery $query
-     * @return ConnectorProductList
-     */
     public function handle(ListProductsQuery $query): ConnectorProductList
     {
         $pqb = $this->getSearchPQB($query);
@@ -102,7 +60,7 @@ final class ListProductsQueryHandler
             throw new InvalidQueryException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $pqb->addSorter('identifier', Directions::ASCENDING);
+        $pqb->addSorter('id', Directions::ASCENDING);
 
         $connectorProductsQuery = $query->withAttributeOptionsAsBoolean() ?
             $this->getConnectorProductsQuerywithOptions :
@@ -149,10 +107,9 @@ final class ListProductsQueryHandler
         $pqbOptions = ['limit' => (int)$query->limit];
 
         if (null !== $query->searchAfter) {
-            // @TODO CPM-596: use product_<uuid> once the uuid migration will be done
-            // Today we cannot use it, because during the migration some products are indexed with id, and others by uuid
+            // @see ListProductsQueryHandler comment
             $pqbOptions['search_after_unique_key'] = 'product_z';
-            $pqbOptions['search_after'] = [\mb_strtolower($query->searchAfter)];
+            $pqbOptions['search_after'] = [sprintf('product_%s', $query->searchAfter)];
         }
 
         return $this->searchAfterPqbFactory->create($pqbOptions);
