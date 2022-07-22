@@ -56,14 +56,14 @@ const SupplierList = ({
             <StyledSearch
                 onSearchChange={onSearchChange}
                 searchValue={searchValue}
-                placeholder={translate('onboarder.supplier.supplier_list.search_by_supplier')}
+                placeholder={translate('supplier_portal.supplier.supplier_list.search_by_supplier')}
             />
 
             {0 === totalSuppliers && '' !== searchValue && (
                 <StyledNoDataSection>
                     <CityIllustration size={256} />
                     <StyledNoDataText>
-                        {translate('onboarder.supplier.supplier_list.no_search_result')}
+                        {translate('supplier_portal.supplier.supplier_list.no_search_result')}
                     </StyledNoDataText>
                 </StyledNoDataSection>
             )}
@@ -80,10 +80,10 @@ const SupplierList = ({
                     <Table>
                         <Table.Header>
                             <Table.HeaderCell>
-                                {translate('onboarder.supplier.supplier_list.columns.supplier')}
+                                {translate('supplier_portal.supplier.supplier_list.columns.supplier')}
                             </Table.HeaderCell>
                             <Table.HeaderCell>
-                                {translate('onboarder.supplier.supplier_list.columns.number_of_contributors')}
+                                {translate('supplier_portal.supplier.supplier_list.columns.number_of_contributors')}
                             </Table.HeaderCell>
                             <Table.HeaderCell></Table.HeaderCell>
                         </Table.Header>

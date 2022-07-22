@@ -15,7 +15,7 @@ const useSupplier = (identifier: string) => {
         const response = await fetch(getSupplierRoute, {method: 'GET'});
 
         if (!response.ok) {
-            notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_edit.loading_error'));
+            notify(NotificationLevel.ERROR, translate('supplier_portal.supplier.supplier_edit.loading_error'));
             return;
         }
 
@@ -37,12 +37,12 @@ const useSupplier = (identifier: string) => {
         if (!response.ok) {
             const errors: ValidationError[] = await response.json();
             setValidationErrors(errors);
-            notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_edit.update_error'));
+            notify(NotificationLevel.ERROR, translate('supplier_portal.supplier.supplier_edit.update_error'));
             return;
         }
 
         setValidationErrors([]);
-        notify(NotificationLevel.SUCCESS, translate('onboarder.supplier.supplier_edit.success_message'));
+        notify(NotificationLevel.SUCCESS, translate('supplier_portal.supplier.supplier_edit.success_message'));
         await loadSupplier();
     }, [saveSupplierRoute, supplier, notify, translate, loadSupplier]);
 

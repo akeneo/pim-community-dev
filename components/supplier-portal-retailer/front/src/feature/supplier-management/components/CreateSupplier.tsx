@@ -59,12 +59,14 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
             if (409 === response.status) {
                 notify(
                     NotificationLevel.ERROR,
-                    translate('onboarder.supplier.supplier_create.error.supplier_already_exists', {supplierCode: code})
+                    translate('supplier_portal.supplier.supplier_create.error.supplier_already_exists', {
+                        supplierCode: code,
+                    })
                 );
                 return;
             }
 
-            notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_create.error.unknown_error'));
+            notify(NotificationLevel.ERROR, translate('supplier_portal.supplier.supplier_create.error.unknown_error'));
 
             return;
         }
@@ -72,8 +74,8 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
         onSupplierCreated();
         notify(
             NotificationLevel.SUCCESS,
-            translate('onboarder.supplier.supplier_create.notification.title'),
-            translate('onboarder.supplier.supplier_create.notification.content')
+            translate('supplier_portal.supplier.supplier_create.notification.title'),
+            translate('supplier_portal.supplier.supplier_create.notification.content')
         );
         onCloseModal();
     };
@@ -95,23 +97,23 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
                     illustration={<NoResultsIllustration />}
                 >
                     <Modal.SectionTitle color="brand">
-                        {translate('onboarder.supplier.supplier_create.modal.title')}
+                        {translate('supplier_portal.supplier.supplier_create.modal.title')}
                     </Modal.SectionTitle>
                     <Modal.Title>{translate('pim_common.create')}</Modal.Title>
-                    <StyledField label={translate('onboarder.supplier.supplier_create.modal.label.label')}>
+                    <StyledField label={translate('supplier_portal.supplier.supplier_create.modal.label.label')}>
                         <TextInput
                             onChange={onChangeLabel}
                             maxLength={LABEL_AND_CODE_MAX_LENGTH}
                             value={label}
-                            placeholder={translate('onboarder.supplier.supplier_create.modal.label.label')}
+                            placeholder={translate('supplier_portal.supplier.supplier_create.modal.label.label')}
                         />
                     </StyledField>
-                    <StyledField label={translate('onboarder.supplier.supplier_create.modal.code.label')}>
+                    <StyledField label={translate('supplier_portal.supplier.supplier_create.modal.code.label')}>
                         <TextInput
                             onChange={manuallyUpdateCode}
                             value={code}
                             maxLength={LABEL_AND_CODE_MAX_LENGTH}
-                            placeholder={translate('onboarder.supplier.supplier_create.modal.code.label')}
+                            placeholder={translate('supplier_portal.supplier.supplier_create.modal.code.label')}
                         />
                     </StyledField>
                     <Modal.BottomButtons>

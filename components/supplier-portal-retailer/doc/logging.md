@@ -39,7 +39,7 @@ class Bar
 }
 ```
 
-PS: our `onboarder_serenity` monolog channel is defined into `monolog` configuration, you can [found it there](https://github.com/akeneo/pim-enterprise-dev/blob/c9d3d2e3e2f8d12ea40a9e4da4476b3ca1356dd1/config/packages/prod/monolog.yml#L20-L25)
+PS: our `supplier_portal` monolog channel is defined into `monolog` configuration, you can [found it there](https://github.com/akeneo/pim-enterprise-dev/blob/c9d3d2e3e2f8d12ea40a9e4da4476b3ca1356dd1/config/packages/prod/monolog.yml#L20-L25)
 
 ### Where to log
 

@@ -1,6 +1,6 @@
 services:
-    akeneo.onboarder_serenity.feature:
+    akeneo.supplier_portal.feature:
         class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
         arguments:
-            - '%env(bool:FLAG_ONBOARDER_SERENITY_ENABLED)%'
+            - '%env(bool:FLAG_SUPPLIER_PORTAL_ENABLED)%'
         public: true

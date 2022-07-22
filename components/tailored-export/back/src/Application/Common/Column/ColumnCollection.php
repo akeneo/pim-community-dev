@@ -26,6 +26,7 @@ class ColumnCollection implements \IteratorAggregate
 
     private function __construct(array $columns)
     {
+        Assert::notEmpty($columns, 'Export structure has not been configured for this job.');
         Assert::allIsInstanceOf($columns, Column::class);
 
         $this->columns = $columns;

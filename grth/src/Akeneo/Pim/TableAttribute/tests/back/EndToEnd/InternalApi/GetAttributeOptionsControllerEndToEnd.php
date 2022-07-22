@@ -43,7 +43,7 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
     /** @test */
     public function it_returns_select_options_for_an_attribute_code(): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->addAttributeOptions(2);
         $this->webClientHelper->callApiRoute(
             $this->client,
@@ -88,7 +88,7 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
 
     public function it_returns_20000_options_max(): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->addAttributeOptions(20050);
         $this->webClientHelper->callApiRoute(
             $this->client,
@@ -106,7 +106,7 @@ final class GetAttributeOptionsControllerEndToEnd extends ControllerEndToEndTest
     /** @test */
     public function it_returns_422_when_source_attribute_is_not_a_select(): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_attribute_options',

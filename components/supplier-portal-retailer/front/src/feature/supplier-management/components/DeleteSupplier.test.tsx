@@ -24,6 +24,6 @@ test('it can delete a supplier', async () => {
     expect(notify).toHaveBeenNthCalledWith(
         1,
         NotificationLevel.SUCCESS,
-        'onboarder.supplier.supplier_delete.sucess_message'
+        'supplier_portal.supplier.supplier_delete.sucess_message'
     );
 });

@@ -100,15 +100,15 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
     private function createSupplierFile(string $path, \DateTimeImmutable $uploadedAt, bool $downloaded = false): void
     {
         $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier_file` (identifier, filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at, downloaded)
-            VALUES (:identifier, :filename, :path, :contributorEmail, :supplierIdentifier, :uploadedAt, :downloaded)
+            INSERT INTO `akeneo_supplier_portal_supplier_file` (identifier, original_filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at, downloaded)
+            VALUES (:identifier, :original_filename, :path, :contributorEmail, :supplierIdentifier, :uploadedAt, :downloaded)
         SQL;
 
         $this->get(Connection::class)->executeQuery(
             $sql,
             [
                 'identifier' => Uuid::uuid4()->toString(),
-                'filename' => 'file.xlsx',
+                'original_filename' => 'file.xlsx',
                 'path' => $path,
                 'contributorEmail' => 'contributor@megasupplier.com',
                 'supplierIdentifier' => '44ce8069-8da1-4986-872f-311737f46f00',

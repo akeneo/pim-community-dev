@@ -26,23 +26,23 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
 
         $savedSupplierFile = $this->findSupplierFile('product-file.xlsx');
 
-        $this->assertSame($supplierFile->filename(), $savedSupplierFile['filename']);
+        $this->assertSame($supplierFile->originalFilename(), $savedSupplierFile['original_filename']);
         $this->assertSame($supplierFile->path(), $savedSupplierFile['path']);
         $this->assertSame($supplierFile->uploadedByContributor(), $savedSupplierFile['uploaded_by_contributor']);
         $this->assertSame($supplierFile->uploadedBySupplier(), $savedSupplierFile['uploaded_by_supplier']);
         $this->assertFalse((bool) $savedSupplierFile['downloaded']);
     }
 
-    private function findSupplierFile(string $filename): ?array
+    private function findSupplierFile(string $originalFilename): ?array
     {
         $sql = <<<SQL
             SELECT *
             FROM `akeneo_supplier_portal_supplier_file`
-            WHERE filename = :filename
+            WHERE original_filename = :original_filename
         SQL;
 
         $supplierFile = $this->get(Connection::class)
-            ->executeQuery($sql, ['filename' => $filename])
+            ->executeQuery($sql, ['original_filename' => $originalFilename])
             ->fetchAssociative()
         ;
 

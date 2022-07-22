@@ -6,7 +6,7 @@ extensions:
         config:
             title: Supplier Portal
             to: supplier_portal_retailer_supplier_list
-        feature: onboarder_serenity
+        feature: supplier_portal
 
     pim-menu-supplier-portal-column:
         module: pim/menu/column
@@ -19,7 +19,7 @@ extensions:
             backLink:
                 title: pim_menu.navigation_back.connection
                 route: akeneo_connectivity_connection_audit_index
-        feature: onboarder_serenity
+        feature: supplier_portal
 
     pim-menu-connect-supplier-portal-block:
         module: pim/menu/navigation-block
@@ -27,14 +27,14 @@ extensions:
         targetZone: navigation
         position: 100
         config:
-            title: onboarder.menu_block_title
-        feature: onboarder_serenity
+            title: supplier_portal.menu_block_title
+        feature: supplier_portal
 
     pim-menu-connect-supplier-portal-supplier-list:
         module: pim/menu/item
         parent: pim-menu-connect-supplier-portal-block
         position: 10
         config:
-            title: onboarder.supplier.supplier_list.menu_item
+            title: supplier_portal.supplier.supplier_list.menu_item
             to: supplier_portal_retailer_supplier_list
-        feature: onboarder_serenity
+        feature: supplier_portal
