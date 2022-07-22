@@ -152,7 +152,25 @@ pim_import_export:
             help: 定义标签显示的区域
       file_path: 文件路径
       storage_form:
+        title: 存储
+        connection:
+          label: 类型
+          local: 本地
+          sftp: SFTP
+          none: 未配置存储
         file_path.label: 文件路径
+        host.label: 主机
+        port.label: 端口
+        username.label: 登录
+        password.label: 密码
+      validation:
+        storage:
+          unavailable_type: 此存储不可用，仅 {{ available_types }} 可用。
+        file_path:
+          unsupported_extension: 不支持的文件扩展名
+      connection_checker:
+        label: 测试连接设置
+        exception: 无法建立连接，请检查您的设置。
   widget:
     last_operations:
       empty: 现在没有要显示的运算。
