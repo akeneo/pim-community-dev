@@ -124,6 +124,7 @@ jobs:
                       kubectl delete ns ${CIRCLE_BRANCH_LOWER}-pim-web
                       kubectl delete ns ${CIRCLE_BRANCH_LOWER}-pim-api
                       kubectl delete ns ${CIRCLE_BRANCH_LOWER}-pim-daemon
+                      kubectl delete ns ${CIRCLE_BRANCH_LOWER}-pim-job
                       kubectl delete ns ${CIRCLE_BRANCH_LOWER}-pim-argocd
 
     delete_environments_hourly:
