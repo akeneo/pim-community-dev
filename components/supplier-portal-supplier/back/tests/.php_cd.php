@@ -24,6 +24,7 @@ $rules = [
         [
             // Supplier Portal retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
 
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
@@ -59,6 +60,7 @@ $rules = [
         [
             // Supplier Portal retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
@@ -82,13 +84,15 @@ $rules = [
         [
             // Supplier Portal retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
-            
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
+
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
             'Akeneo\SupplierPortal\Supplier\Infrastructure',
 
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
+            'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Test\Integration'),

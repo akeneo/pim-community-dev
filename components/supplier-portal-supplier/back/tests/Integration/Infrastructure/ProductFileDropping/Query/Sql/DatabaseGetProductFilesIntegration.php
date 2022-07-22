@@ -36,7 +36,6 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
         $supplierProductFiles = ($sut)($supplierIdentifier);
 
         $expectedProductFilenames = [];
-
         for ($i = 0; 25 > $i; $i++) {
             $expectedProductFilenames[] = sprintf('products_%d.xlsx', $i+1);
         }

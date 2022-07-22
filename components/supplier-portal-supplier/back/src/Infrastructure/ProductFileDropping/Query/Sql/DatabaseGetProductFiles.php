@@ -46,7 +46,6 @@ final class DatabaseGetProductFiles implements GetProductFiles
             ['supplierIdentifier' => $supplierIdentifier],
         )->fetchAllAssociative();
 
-
         $supplierFiles = [];
         foreach ($supplierFileRows as $supplierFileRow) {
             $supplierFiles[] = new SupplierFile(
