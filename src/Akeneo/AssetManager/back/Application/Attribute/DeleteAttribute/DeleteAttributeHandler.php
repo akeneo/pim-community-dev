@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -19,6 +20,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsMainMediaInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\CantDeleteAttributeUsedAsLabelException;
+use Akeneo\AssetManager\Domain\Repository\CantDeleteMainMediaException;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
@@ -49,24 +52,12 @@ class DeleteAttributeHandler
 
         $labelReference = $this->findAttributeAsLabel($attribute->getAssetFamilyIdentifier());
         if (!$labelReference->isEmpty() && $labelReference->getIdentifier()->equals($attributeIdentifier)) {
-            throw new \LogicException(
-                sprintf(
-                    'Attribute "%s" cannot be deleted for the asset family "%s"  as it is used as attribute as label.',
-                    $attributeIdentifier,
-                    $attribute->getAssetFamilyIdentifier()
-                )
-            );
+            throw CantDeleteAttributeUsedAsLabelException::withAttribute($attribute, $attributeIdentifier);
         }
 
         $mainMediaReference = $this->findAttributeAsMainMedia($attribute->getAssetFamilyIdentifier());
         if (!$mainMediaReference->isEmpty() && $mainMediaReference->getIdentifier()->equals($attributeIdentifier)) {
-            throw new \LogicException(
-                sprintf(
-                    'Attribute "%s" cannot be deleted for the asset family "%s"  as it is used as attribute as main media.',
-                    $attributeIdentifier,
-                    $attribute->getAssetFamilyIdentifier()
-                )
-            );
+            throw CantDeleteMainMediaException::withIdentifier($attribute, $attributeIdentifier);
         }
 
         $this->attributeRepository->deleteByIdentifier($attributeIdentifier);
