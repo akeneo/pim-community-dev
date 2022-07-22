@@ -1,5 +1,5 @@
 services:
-    #feature flag
+    # feature flag
     akeneo.supplier_portal_supplier_file_dropping.feature:
         class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
         arguments:
@@ -13,7 +13,7 @@ services:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
         public: true
 
-    #Repositories
+    # Repositories
     Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\SupplierFileRepository:
         public: true
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Repository\Sql\DatabaseRepository
@@ -28,3 +28,10 @@ services:
             - '@Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\StoreProductsFile'
             - '@event_dispatcher'
             - '@monolog.logger.supplier_portal'
+
+    # Queries
+    Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFiles:
+        public: true
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFiles
+        arguments:
+            - '@database_connection'
