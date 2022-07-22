@@ -10,7 +10,7 @@ interface StoreProductsFile
 {
     public function __invoke(
         Code $supplierCode,
-        Filename $filename,
+        Filename $originalFilename,
         Identifier $identifier,
         string $temporaryPath,
     ): string;

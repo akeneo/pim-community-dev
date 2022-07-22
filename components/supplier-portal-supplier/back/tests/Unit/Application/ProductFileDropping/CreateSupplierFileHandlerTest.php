@@ -52,7 +52,7 @@ final class CreateSupplierFileHandlerTest extends TestCase
             ->method('__invoke')
             ->with(
                 Code::fromString($supplier->code()),
-                Filename::fromString($createSupplierFile->filename),
+                Filename::fromString($createSupplierFile->originalFilename),
                 $this->isInstanceOf(Identifier::class),
                 $createSupplierFile->temporaryPath,
             )->willReturn('a_path');

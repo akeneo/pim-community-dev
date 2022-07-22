@@ -36,13 +36,13 @@ final class CreateSupplierFileHandler
 
         $storedProductFilePath = ($this->storeProductsFile)(
             Code::fromString($supplier->code),
-            Filename::fromString($createSupplierFile->filename),
+            Filename::fromString($createSupplierFile->originalFilename),
             Identifier::generate(),
             $createSupplierFile->temporaryPath,
         );
 
         $supplierFile = SupplierFile::create(
-            $createSupplierFile->filename,
+            $createSupplierFile->originalFilename,
             $storedProductFilePath,
             $createSupplierFile->uploadedByContributor,
             $supplier->identifier,
@@ -53,10 +53,10 @@ final class CreateSupplierFileHandler
         $this->eventDispatcher->dispatch(new SupplierFileAdded($supplierFile));
 
         $this->logger->debug(
-            sprintf('Supplier file "%s" created.', $createSupplierFile->filename),
+            sprintf('Supplier file "%s" created.', $createSupplierFile->originalFilename),
             [
                 'data' => [
-                    'filename' => $createSupplierFile->filename,
+                    'filename' => $createSupplierFile->originalFilename,
                     'path' => $storedProductFilePath,
                     'uploaded_by_contributor' => $createSupplierFile->uploadedByContributor,
                 ],
