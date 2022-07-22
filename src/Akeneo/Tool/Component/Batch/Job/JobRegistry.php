@@ -63,6 +63,22 @@ class JobRegistry
         return $this->jobs[$jobName]['job'];
     }
 
+    /**
+     *
+     * @throws UndefinedJobException
+     */
+    public function isEnabled(string $jobName): bool
+    {
+        if (!isset($this->jobs[$jobName])) {
+            throw new UndefinedJobException(
+                sprintf('The job "%s" is not registered', $jobName)
+            );
+        }
+        $feature = $this->jobs[$jobName]['feature'];
+
+        return null === $feature || $this->featureFlags->isEnabled($feature);
+    }
+
     public function has(string $jobName): bool
     {
         return isset($this->jobs[$jobName]);

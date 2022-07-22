@@ -38,6 +38,21 @@ class JobRegistrySpec extends ObjectBehavior
         $this->get('reference_entity_job')->shouldReturn($referenceEntityJob);
     }
 
+    function it_return_if_a_job_is_activated_to_make_it_visible_or_not_in_the_process_tracker_for_example(JobInterface $assetJob)
+    {
+        $this->isEnabled('asset_manager_job')->shouldReturn(true);
+    }
+
+    function it_return_if_a_job_is_disabled_to_make_it_invisible_or_not_in_the_process_tracker_for_example(JobInterface $assetJob)
+    {
+        $this->isEnabled('reference_entity_job')->shouldReturn(false);
+    }
+
+    function it_throws_an_exception_when_checking_if_an_non_existent_job_is_activated_or_not(JobInterface $referenceEntityJob)
+    {
+        $this->shouldThrow(UndefinedJobException::class)->during('isEnabled', ['foo']);
+    }
+
     function it_gets_a_job_when_no_feature_flag_configured_for_it(JobInterface $productExportJob)
     {
         $this->get('product_export_job')->shouldReturn($productExportJob);
