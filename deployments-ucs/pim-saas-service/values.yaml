@@ -27,6 +27,7 @@ common:
   extraLabels: {}
   gcpProjectID: null # Generated
   googleZone: null # Generated
+  location: null # Generated example EU, US
   pimMasterDomain: null # Generated
   workloadIdentityKSA: null # Generated
   workloadIdentityKSANamespace: null # Generated
@@ -48,7 +49,6 @@ common:
     value: "22527" # E_ALL & ~E_DEPRECATED & ~E_STRICT
   - name: "PHP_CONF_DATE_TIMEZONE"
     value: "Etc/UTC"
-
   phpConfCLI:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "0"
@@ -215,10 +215,6 @@ pim:
       enabled: true
       pimJobOptions: ""
       schedule: "0 0 1 * *"
-      resources:
-        requests:
-          cpu: "200m"
-          memory: "192Mi"
     update-connectivity-audit-data:
       enabled: true
       pimJobOptions: ""
@@ -231,10 +227,6 @@ pim:
       enabled: true
       pimJobOptions: ""
       schedule: "40 12 * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     rule-run:
       enabled: true
       pimJobOptions: ""
@@ -303,7 +295,7 @@ pim:
       enabled: true
       pimJobOptions: "--no-interaction"
       schedule: "1 0 * * *"
-  onboarder_serenity:
+  supplier_portal:
     settings:
       enabled: false
   cloudFunction:
@@ -314,5 +306,3 @@ pim:
     region: null # Generated
     serviceAccountEmail: null # Generated
     timeZone: "Europe/Paris"
-  storage:
-    location: null # Generated example EU, US

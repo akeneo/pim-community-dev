@@ -6,7 +6,7 @@ metadata:
     ucsCronBucket: {{ .Values.pim.cloudFunction.bucket }}
     crossplane.io/external-name: {{ .Values.pim.cloudFunction.bucket }} 
 spec:
-  location: {{ .Values.pim.storage.location }}
+  location: {{ .Values.common.location }}
   storageClass: STANDARD
   providerConfigRef:
     name: "provider-config-gcp"
