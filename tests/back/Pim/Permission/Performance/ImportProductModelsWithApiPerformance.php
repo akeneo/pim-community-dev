@@ -40,7 +40,7 @@ class ImportProductModelsWithApiPerformance extends AbstractApiPerformance
         $profileConfig->setTitle('Import product models with the API');
 
         $profileConfig->defineMetric(
-            new Metric('completeness_calculation', '=Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness\\CompletenessCalculator::fromProductIdentifiers')
+            new Metric('completeness_calculation', '=Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness\\CompletenessCalculator::fromProductUuids')
         );
 
         // Original value was 1236.

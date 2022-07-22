@@ -100,3 +100,4 @@ pim_reference_entity:
     validation:
       record_should_exist: 'La propiedad "%attribute_code%" espera un código de registro válido. El registro "%invalid_record%" no existe'
       records_should_exist: 'La propiedad "%attribute_code%" espera códigos de registro válidos. Los siguientes registros no existen: "%invalid_records%"'
+      records_should_not_contains_duplicates: '{1} El siguiente registro se utilizó varias veces: «{{ duplicate_codes }}». Vuelva a comprobar la lista de registros.|]1, +Inf] Los siguientes registros se utilizaron varias veces: «{{ duplicate_codes }}». Vuelva a comprobar la lista de registros.'

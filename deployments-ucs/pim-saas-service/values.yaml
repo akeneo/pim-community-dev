@@ -377,6 +377,6 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
-  onboarder_serenity:
+  supplier_portal:
     settings:
       enabled: false

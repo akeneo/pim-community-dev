@@ -8,3 +8,7 @@ enrichment-product-unit-back:
 .PHONY: enrichment-product-integration-back
 enrichment-product-integration-back:
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite Enrichment_Product_EE $(O)
+
+.PHONY: enrichment-product-acceptance-back
+enrichment-product-acceptance-back: var/tests/behat/enrichment-product
+	$(PHP_RUN) vendor/bin/behat --config vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Product/back/Test/behat.yml --suite=acceptance_ee --format pim --out var/tests/behat/enrichment-product --format progress --out std --colors $(O)

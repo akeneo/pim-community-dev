@@ -370,7 +370,10 @@ abstract class AbstractExportWithAssetTestCase extends AbstractExportTestCase
             unlink($filePath);
         }
 
-        $config['filePath'] = $filePath;
+        $config['storage'] = [
+            'type' => 'local',
+            'file_path' => $filePath,
+        ];
         $this->launchCsvExport($jobCode, $username, $config);
 
         return $this->getResultsFromExportedFile($filePath);

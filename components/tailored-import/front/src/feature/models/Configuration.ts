@@ -38,6 +38,13 @@ const getDefaultFileStructure = (): FileStructure => ({
   unique_identifier_column: 0,
 });
 
+const isDefaultFileStructure = (fileStructure: FileStructure): boolean =>
+  fileStructure.header_row === 1 &&
+  fileStructure.first_column === 0 &&
+  fileStructure.first_product_row === 2 &&
+  fileStructure.sheet_name === null &&
+  fileStructure.unique_identifier_column === 0;
+
 export type {StructureConfiguration, FileStructure, ErrorAction};
 export {
   MAX_COLUMN_COUNT,
@@ -46,5 +53,6 @@ export {
   MAXIMUM_HEADER_ROW,
   MINIMUM_HEADER_ROW,
   getDefaultFileStructure,
+  isDefaultFileStructure,
   isValidErrorAction,
 };

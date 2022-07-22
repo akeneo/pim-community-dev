@@ -18,7 +18,7 @@ Feature: Handle import of invalid CSV data
       my-jacket 2;0;My desc
       """
     And the following job "csv_clothing_product_proposal_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And I am logged in as "Julia"
     And I am on the "csv_clothing_product_proposal_import" import job page
     And I launch the "csv_clothing_product_proposal_import" import job

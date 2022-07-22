@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractedMedia;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProcessedTailoredExport;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
@@ -111,9 +112,18 @@ abstract class AbstractItemMediaWriter implements ItemWriterInterface, Initializ
      */
     public function getPath(): string
     {
-        $parameters = $this->getStepExecution()->getJobParameters();
+        $jobParameters = $this->getStepExecution()->getJobParameters();
         $jobExecution = $this->getStepExecution()->getJobExecution();
-        $filePath = $parameters->get('filePath');
+
+        // TODO RAB-907: Remove this condition
+        if ($jobParameters->has('storage') && isset($jobParameters->get('storage')['file_path'])) {
+            $storage = $jobParameters->get('storage');
+            $filePath = LocalStorage::TYPE === $storage['type']
+                ? $storage['file_path']
+                : sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
+        } else {
+            $filePath = $jobParameters->get('filePath');
+        }
 
         if (!str_contains($filePath, '%')) {
             return $filePath;

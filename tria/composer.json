@@ -15,7 +15,9 @@
         },
         "psr-4": {
             "Akeneo\\FreeTrial\\": ["src/Akeneo/FreeTrial/back", "vendor/akeneo/pim-community-dev/src/Akeneo/FreeTrial/back"],
-            "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/"
+            "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/",
+            "Akeneo\\Platform\\TailoredImport\\": "components/tailored-import/back/src/",
+            "Akeneo\\Platform\\JobAutomation\\": "components/job-automation/back/src/"
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -42,7 +44,9 @@
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Category/back/Test",
             "Akeneo\\Test\\Channel\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Channel/back/tests",
             "Akeneo\\Test\\FreeTrial\\": "src/Akeneo/FreeTrial/tests/back",
-            "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/tests"
+            "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/tests",
+            "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-import/back/tests",
+            "Akeneo\\Platform\\JobAutomation\\Test\\": "components/job-automation/back/tests"
         }
     },
     "require": {
@@ -61,6 +65,7 @@
     "require-dev": {
         "akeneo/php-coupling-detector": "^0.7.0",
         "blackfire/php-sdk": "^1.25",
+        "friendsofphp/php-cs-fixer": "^3.0,<3.9.1",
         "jfcherng/php-diff": "^6.10",
         "league/flysystem-aws-s3-v3": "^2.0",
         "league/flysystem-memory": "^2.0",

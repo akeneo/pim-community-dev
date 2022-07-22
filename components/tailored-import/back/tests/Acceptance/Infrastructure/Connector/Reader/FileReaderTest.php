@@ -98,8 +98,8 @@ class FileReaderTest extends AcceptanceTestCase
     public function it_check_that_file_column_match_with_column_configuration(): void
     {
         $this->expectExceptionObject(new MismatchedFileHeadersException(
-            ['Sku','Price','Name','Enabled','Release date','Price with tax'],
-            ['Sku','Name','Price','Enabled','Release date','Price with tax'],
+            ['Sku', 'Price', 'Name', 'Enabled', 'Release date', 'Price with tax'],
+            ['Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax'],
         ));
         $columnConfiguration = [
             ['label' => 'Sku', 'uuid' => '25621f5a-504f-4893-8f0c-9f1b0076e53e', 'index' => 0],
@@ -142,10 +142,13 @@ class FileReaderTest extends AcceptanceTestCase
                 'sheet_name' => $sheetName,
                 'unique_identifier_column' => 0,
             ],
-            'filePath' => 'components/tailored-import/back/tests/Common/simple_import.xlsx',
+            'storage' => [
+                'type' => 'local',
+                'file_path' => 'components/tailored-import/back/tests/Common/simple_import.xlsx',
+            ],
             'import_structure' => [
-                'columns' => $columnConfiguration
-            ]
+                'columns' => $columnConfiguration,
+            ],
         ]);
 
         $jobExecution = new JobExecution();

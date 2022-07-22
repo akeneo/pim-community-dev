@@ -10,7 +10,7 @@ Feature: Export published products in XLSX
 
   Scenario: Successfully export published products into several files
     Given the following job "xlsx_clothing_mobile_published_product_export" configuration:
-      | filePath     | %tmp%/ecommerce_product_export/xlsx_clothing_mobile_published_product_export.xlsx |
+      | storage | {"type": "local", "file_path": "%tmp%/ecommerce_product_export/xlsx_clothing_mobile_published_product_export.xlsx"} |
       | linesPerFile | 2                                                                                 |
       | filters      | {"structure":{"locales":["en_US", "fr_FR", "de_DE"],"scope":"mobile"},"data":[]}  |
     And the following products:

@@ -350,7 +350,7 @@ pim:
         requests:
           cpu: "350m"
           memory: "350Mi"
-  onboarder_serenity:
+  supplier_portal:
     settings:
       enabled: false
 

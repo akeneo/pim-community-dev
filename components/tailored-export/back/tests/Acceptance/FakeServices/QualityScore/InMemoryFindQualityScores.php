@@ -14,18 +14,19 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\QualityScore;
 
 use Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface;
+use Ramsey\Uuid\UuidInterface;
 
 final class InMemoryFindQualityScores implements FindQualityScoresInterface
 {
     private array $qualityScores;
 
-    public function addQualityScore(string $productIdentifier, array $qualityScore): void
+    public function addQualityScore(UuidInterface $productUuid, array $qualityScore): void
     {
-        $this->qualityScores[$productIdentifier] = $qualityScore;
+        $this->qualityScores[$productUuid->toString()] = $qualityScore;
     }
 
-    public function forProduct(string $productIdentifier, string $channel, string $locale): ?string
+    public function forProduct(UuidInterface $productUuid, string $channel, string $locale): ?string
     {
-        return $this->qualityScores[$productIdentifier][$channel][$locale] ?? null;
+        return $this->qualityScores[$productUuid->toString()][$channel][$locale] ?? null;
     }
 }

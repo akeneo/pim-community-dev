@@ -1,33 +1,15 @@
 client-to-clone-srnt: &client-to-clone-srnt
 client-to-clone-grth: &client-to-clone-grth
 
-orbs: 
-  security-hunter: akeneo-orbs/security-hunter@1.0.3
+orbs:
+  security-hunter: akeneo-orbs/security-hunter@1.0.5
 
 workflows:
-    blackhawks_dev_pull_request:
+    dev_pull_request:
         when:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
         jobs:
-            - security-hunter/scan-latest-commits:
-                  since_when: "2022-07-07"
-                  exit_code_when_failure: 1
-
-            - security-hunter/scan-dir:
-                  severity: "HIGH,CRITICAL"
-                  only_secrets: false
-                  exit_code_when_failure: 1
-                  requires:
-                    - checkout
-
-            - security-hunter/scan-image:
-                  severity: "HIGH,CRITICAL"
-                  only_secrets: false
-                  exit_code_when_failure: 1
-                  requires:
-                    - build_srnt_dev
-
             - ready_to_build?:
                   type: approval
                   filters:
@@ -42,6 +24,22 @@ workflows:
             - build_srnt_dev:
                   requires:
                       - checkout
+            - security-hunter/scan-latest-commits:
+                  exit_code_when_failure: 1
+                  requires:
+                      - build_srnt_dev
+            - security-hunter/scan-dir:
+                  severity: "CRITICAL"
+                  only_secrets: false
+                  exit_code_when_failure: 1
+                  requires:
+                      - build_srnt_dev
+            - security-hunter/scan-image:
+                  severity: "CRITICAL"
+                  only_secrets: false
+                  exit_code_when_failure: 1
+                  requires:
+                      - build_srnt_dev
             - test_back_integration_bounded_contexts:
                   requires:
                       - build_srnt_dev
@@ -98,7 +96,7 @@ workflows:
                       - security-hunter/scan-dir
                       - security-hunter/scan-image
 
-    blackhawks_deployments_pull_request:
+    deployments_pull_request:
         when:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]

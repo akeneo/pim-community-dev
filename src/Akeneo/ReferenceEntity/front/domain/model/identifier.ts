@@ -14,7 +14,7 @@ export default class Identifier {
   }
 
   public equals(identifier: Identifier): boolean {
-    return this.stringValue() === identifier.stringValue();
+    return this.stringValue().toLowerCase() === identifier.stringValue().toLowerCase();
   }
 
   public stringValue(): string {

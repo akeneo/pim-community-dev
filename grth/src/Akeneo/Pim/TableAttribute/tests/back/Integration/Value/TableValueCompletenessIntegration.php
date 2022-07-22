@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
@@ -81,7 +82,7 @@ final class TableValueCompletenessIntegration extends TestCase
             ],
         ]);
 
-        $this->createProduct('test1', [
+        $product = $this->createProduct('test1', [
             'categories' => ['master'],
             'family' => 'familyA',
             'values' => [
@@ -106,8 +107,7 @@ final class TableValueCompletenessIntegration extends TestCase
             ],
         ]);
 
-        $completenesses = $this->get('pim_catalog.completeness.calculator')->fromProductIdentifiers(['test1']);
-        $completenessForProduct = $completenesses['test1'] ?? null;
+        $completenessForProduct = $this->getCompletenessCalculator()->fromProductUuid($product->getUuid());
         Assert::assertInstanceOf(ProductCompletenessWithMissingAttributeCodesCollection::class, $completenessForProduct);
 
         Assert::assertEquals(2, $completenessForProduct->getCompletenessForChannelAndLocale('ecommerce', 'en_US')->requiredCount());
@@ -173,7 +173,7 @@ final class TableValueCompletenessIntegration extends TestCase
             ],
         ]);
 
-        $this->createProduct('test1', [
+        $product = $this->createProduct('test1', [
             'categories' => ['master'],
             'family' => 'familyA',
             'values' => [
@@ -205,8 +205,7 @@ final class TableValueCompletenessIntegration extends TestCase
             ],
         ]);
 
-        $completenesses = $this->get('pim_catalog.completeness.calculator')->fromProductIdentifiers(['test1']);
-        $completenessForProduct = $completenesses['test1'] ?? null;
+        $completenessForProduct = $this->getCompletenessCalculator()->fromProductUuid($product->getUuid());
         Assert::assertInstanceOf(ProductCompletenessWithMissingAttributeCodesCollection::class, $completenessForProduct);
 
         Assert::assertEquals(2, $completenessForProduct->getCompletenessForChannelAndLocale('ecommerce', 'en_US')->requiredCount());
@@ -222,5 +221,10 @@ final class TableValueCompletenessIntegration extends TestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function getCompletenessCalculator(): CompletenessCalculator
+    {
+        return $this->get('pim_catalog.completeness.calculator');
     }
 }

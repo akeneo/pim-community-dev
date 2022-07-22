@@ -44,7 +44,13 @@ const SplitOperationBlock = ({operation, previewData, isLastOperation, onChange,
         collapseButtonLabel={translate('akeneo.tailored_import.data_mapping.operations.common.collapse')}
         actions={
           <>
-            <Button level="secondary" ghost={true} size="small" onClick={isPreviewOpen ? closePreview : openPreview}>
+            <Button
+              level="secondary"
+              ghost={true}
+              active={isPreviewOpen}
+              size="small"
+              onClick={isPreviewOpen ? closePreview : openPreview}
+            >
               {translate('akeneo.tailored_import.data_mapping.preview.button')}
             </Button>
             <IconButton

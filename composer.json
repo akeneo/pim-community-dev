@@ -85,6 +85,7 @@
         }
     },
     "require": {
+        "ext-openssl": "*",
         "akeneo/pim-community-dev": "dev-master",
         "akeneo/pim-onboarder": "^7.0.0",
         "google/cloud-firestore": "^1.22",
@@ -108,7 +109,7 @@
         "friends-of-behat/mink-extension": "^2.5.0",
         "friends-of-behat/symfony-extension": "^2.2.1",
         "friends-of-phpspec/phpspec-code-coverage": "^6.1.0",
-        "friendsofphp/php-cs-fixer": "^3.0",
+        "friendsofphp/php-cs-fixer": "^3.0,<3.9.1",
         "instaclick/php-webdriver": "1.4.7",
         "league/flysystem-aws-s3-v3": "^2.0",
         "liuggio/fastest": "1.8.*",

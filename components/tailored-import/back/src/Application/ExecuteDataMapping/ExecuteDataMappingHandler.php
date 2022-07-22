@@ -110,21 +110,21 @@ class ExecuteDataMappingHandler
             return $processedValues[0];
         }
 
-        $value = array_reduce(
+        $values = array_reduce(
             $processedValues,
-            static function (array $reducedValue, ValueInterface $processedValue) {
+            static function (array $reducedValues, ValueInterface $processedValue) {
                 if ($processedValue instanceof ArrayValue) {
-                    return [...$reducedValue, ...$processedValue->getValue()];
+                    return [...$reducedValues, ...$processedValue->getValue()];
                 } else {
-                    return [...$reducedValue, $processedValue->getValue()];
+                    return [...$reducedValues, $processedValue->getValue()];
                 }
             },
             [],
         );
 
-        $uniqueValue = array_values(array_unique($value));
+        $uniqueValues = array_filter(array_values(array_unique($values)));
 
-        return new ArrayValue($uniqueValue);
+        return empty($uniqueValues) ? new NullValue() : new ArrayValue($uniqueValues);
     }
 
     private function getClearIfEmptyUserIntent(TargetInterface $target): UserIntent

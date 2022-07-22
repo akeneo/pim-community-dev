@@ -51,10 +51,10 @@ data:
   {{- else }}
   FLAG_ONBOARDER_ENABLED: "0"
   {{- end }}
-  {{- if .Values.pim.onboarder_serenity.settings.enabled }}
-  FLAG_ONBOARDER_SERENITY_ENABLED: "1"
+  {{- if .Values.pim.supplier_portal.settings.enabled }}
+  FLAG_SUPPLIER_PORTAL_ENABLED: "1"
   {{- else }}
-  FLAG_ONBOARDER_SERENITY_ENABLED: "0"
+  FLAG_SUPPLIER_PORTAL_ENABLED: "0"
   {{- end }}
   {{- if .Values.pim.comm_panel_api_url }}
   COMM_PANEL_API_URL: {{ .Values.pim.comm_panel_api_url | quote }}
@@ -99,6 +99,7 @@ data:
   FLAG_MARKETPLACE_ACTIVATE_ENABLED: "1"
   FLAG_MARKETPLACE_FAKE_APPS_ENABLED: "1"
   FLAG_APP_DEVELOPER_MODE_ENABLED: "1"
-  FLAG_ONBOARDER_SERENITY_ENABLED: "1"
-  FLAG_ONBOARDER_SERENITY_CONTRIBUTOR_AUTHENTICATION_ENABLED: "1"
+  FLAG_SUPPLIER_PORTAL_ENABLED: "1"
+  FLAG_SUPPLIER_PORTAL_CONTRIBUTOR_AUTHENTICATION_ENABLED: "1"
+  FLAG_SUPPLIER_PORTAL_SUPPLIER_FILE_DROPPING_ENABLED: "1"
   {{- end }}

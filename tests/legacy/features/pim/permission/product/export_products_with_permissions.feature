@@ -8,7 +8,7 @@ Feature: Export products according to the granted permissions
   Scenario: Successfully apply permission on product export with the UI
     Given an "apparel" catalog configuration
     And the following job "tablet_product_export" configuration:
-      | filePath | %tmp%/tablet_product_export/tablet_product_export.csv                                 |
+      | storage | {"type": "local", "file_path": "%tmp%/tablet_product_export/tablet_product_export.csv"} |
       | filters  | {"structure":{"locales":["en_US"],"scope":"tablet","attributes":["sku"]}, "data": []} |
     And the following categories:
       | code                | label-en_US         | parent   |

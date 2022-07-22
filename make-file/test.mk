@@ -109,6 +109,7 @@ acceptance-back: var/tests/behat growth-acceptance-back #Doc: launch Behat accep
 	PIM_CONTEXT=tailored-import $(MAKE) acceptance-back
 	PIM_CONTEXT=job-automation $(MAKE) acceptance-back
 	PIM_CONTEXT=channel $(MAKE) channel-acceptance-back
+	PIM_CONTEXT=enrichment-product $(MAKE) enrichment-product-acceptance-back
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-community-dev/behat.yml -p acceptance --no-interaction --format=progress --strict
 

@@ -12,34 +12,37 @@ declare(strict_types=1);
  */
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
+use Akeneo\Pim\Enrichment\Product\API\Query\ProductUuidCursorInterface;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\ComputeCompletenessOfTableAttributeProductsTasklet;
+use Akeneo\Test\Common\FakeCursor;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Prophecy\Promise\ReturnPromise;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehavior
 {
     function let(
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         JobRepositoryInterface $jobRepository,
         ProductAndAncestorsIndexer $productAndAncestorsIndexer,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        MessageBusInterface $messageBus
     ) {
         $this->beConstructedWith(
-        $productQueryBuilderFactory,
-        $computeAndPersistProductCompletenesses,
-        $jobRepository,
-        $productAndAncestorsIndexer
+            $computeAndPersistProductCompletenesses,
+            $jobRepository,
+            $productAndAncestorsIndexer,
+            $messageBus
         );
 
         $this->setStepExecution($stepExecution);
@@ -52,38 +55,33 @@ class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehav
 
     /** @test */
     function it_compute_and_persists_the_completeness_of_products_of_table_attributes(
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         JobRepositoryInterface $jobRepository,
         ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
-        ProductQueryBuilderInterface $productQueryBuilder,
-        CursorInterface $cursor,
+        MessageBusInterface $messageBus,
+        ProductUuidCursorInterface $cursor
     ) {
+        $uuids = [Uuid::uuid4(), Uuid::uuid4()];
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('attribute_code')->willReturn('nutrition');
         $jobParameters->get('family_codes')->willReturn(['food']);
 
-        $productQueryBuilderFactory->create()->shouldBeCalled()->willReturn($productQueryBuilder);
-        $productQueryBuilder->addFilter('family', Operators::IN_LIST, ['food'])->shouldBeCalled();
-        $productQueryBuilder->addFilter('nutrition', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
-        $productQueryBuilder->addFilter('entity_type', Operators::EQUALS, ProductInterface::class)->shouldBeCalled();
-        $productQueryBuilder->execute()
-            ->shouldBeCalledOnce()
-            ->willReturn($cursor);
+        $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
 
         $cursor->count()->willReturn(2);
-        $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
-        $cursor->rewind()->shouldBeCalledOnce();
-        $cursor->valid()->shouldBeCalledTimes(3)->willReturn(true, true, false);
-        $cursor->next()->shouldBeCalledTimes(2);
-        $identifierResult1 = new IdentifierResult('identifier1', ProductInterface::class);
-        $identifierResult2 = new IdentifierResult('identifier2', ProductInterface::class);
-        $cursor->current()->shouldBeCalledTimes(2)->willReturn($identifierResult1, $identifierResult2);
+        $cursor->valid()->willReturn(true, true, false);
+        $cursor->current()->will(new ReturnPromise($uuids));
+        $cursor->rewind()->shouldBeCalled();
+        $cursor->next()->shouldBeCalled();
 
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers(['identifier1', 'identifier2'])->shouldBeCalledOnce();
-        $productAndAncestorsIndexer->indexFromProductIdentifiers(['identifier1', 'identifier2'])->shouldBeCalledOnce();
+        $messageBus->dispatch(Argument::type(GetProductUuidsQuery::class))->willReturn(
+            new Envelope(new \stdClass(), [new HandledStamp($cursor->getWrappedObject(), '')])
+        );
+
+        $computeAndPersistProductCompletenesses->fromProductUuids($uuids)->shouldBeCalledOnce();
+        $productAndAncestorsIndexer->indexFromProductUuids($uuids)->shouldBeCalledOnce();
 
         $stepExecution->incrementProcessedItems(2)->shouldBeCalledOnce();
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledOnce();
