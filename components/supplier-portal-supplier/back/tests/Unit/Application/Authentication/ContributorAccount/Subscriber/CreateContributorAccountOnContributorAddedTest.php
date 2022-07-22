@@ -2,8 +2,7 @@
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\ContributorAccount\Subscriber;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\InMemoryFeatureFlags;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccount;
@@ -37,17 +36,17 @@ class CreateContributorAccountOnContributorAddedTest extends TestCase
             ->with(new CreateContributorAccount('contrib1@example.com'));
 
 
-        $featureFlagRegistry = new Registry();
-        $featureFlagRegistry->add('supplier_portal_contributor_authentication', new class implements FeatureFlag {
-            public function isEnabled(): bool
-            {
-                return true;
-            }
-        });
+        $featureFlags = $this->createMock(InMemoryFeatureFlags::class);
+        $featureFlags
+            ->expects($this->once())
+            ->method('isEnabled')
+            ->with('supplier_portal_contributor_authentication')
+            ->willReturn(true)
+        ;
 
         $sut = new CreateContributorAccountOnContributorAdded(
             $createContributorAccountHandlerSpy,
-            $featureFlagRegistry,
+            $featureFlags,
         );
 
         $sut->contributorAdded($contributorAddedEvent);

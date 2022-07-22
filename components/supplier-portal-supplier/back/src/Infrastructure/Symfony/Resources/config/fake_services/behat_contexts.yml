@@ -1,5 +1,5 @@
 services:
     Akeneo\SupplierPortal\Supplier\Test\Acceptance\Context\Authentication\ContributorAccountContext:
         - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
-        - '@akeneo.feature_flag.service.registry'
+        - '@feature_flags'
         - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler'

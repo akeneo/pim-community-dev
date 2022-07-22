@@ -27,7 +27,7 @@ services:
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler'
-            - '@akeneo.feature_flag.service.registry'
+            - '@feature_flags'
         tags:
             - 'kernel.event_subscriber'
 
