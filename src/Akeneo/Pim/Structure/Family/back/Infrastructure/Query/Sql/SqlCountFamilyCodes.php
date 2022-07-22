@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Structure\Family\Infrastructure\Query;
+namespace Akeneo\Pim\Structure\Family\Infrastructure\Query\Sql;
 
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\CountFamilyCodes;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
