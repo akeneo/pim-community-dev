@@ -59,20 +59,20 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
 
     return (
         <TabContainer>
-            <Helper level="info">{translate('onboarder.supplier.supplier_edit.contributors_form.info')}</Helper>
+            <Helper level="info">{translate('supplier_portal.supplier.supplier_edit.contributors_form.info')}</Helper>
 
-            <Field label={translate('onboarder.supplier.supplier_edit.contributors_form.add_contributors')}>
+            <Field label={translate('supplier_portal.supplier.supplier_edit.contributors_form.add_contributors')}>
                 <FieldContent>
                     <TagInputContainer>
                         <TagInput onChange={onChangeNewContributors} value={newContributors} />
                     </TagInputContainer>
                     <Button level="tertiary" onClick={handleNewContributorsAdd}>
-                        {translate('onboarder.supplier.supplier_edit.contributors_form.add_button')}
+                        {translate('supplier_portal.supplier.supplier_edit.contributors_form.add_button')}
                     </Button>
                 </FieldContent>
                 {displayInvalidContributorEmailsWarning && (
                     <Helper level="warning">
-                        {translate('onboarder.supplier.supplier_edit.contributors_form.invalid_emails_warning')}
+                        {translate('supplier_portal.supplier.supplier_edit.contributors_form.invalid_emails_warning')}
                     </Helper>
                 )}
             </Field>
@@ -84,12 +84,12 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
                         onSearchChange={setSearchValue}
                         searchValue={searchValue}
                         placeholder={translate(
-                            'onboarder.supplier.supplier_edit.contributors_form.search_by_email_address'
+                            'supplier_portal.supplier.supplier_edit.contributors_form.search_by_email_address'
                         )}
                     >
                         <Search.ResultCount>
                             {translate(
-                                'onboarder.supplier.supplier_edit.contributors_form.result_counter',
+                                'supplier_portal.supplier.supplier_edit.contributors_form.result_counter',
                                 {count: filteredContributors.length},
                                 filteredContributors.length
                             )}
@@ -99,7 +99,7 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
                     {0 < contributorsBelongingToAnotherSupplier.length && (
                         <StyledHelper level={'warning'}>
                             {translate(
-                                'onboarder.supplier.supplier_edit.contributors_form.emails_belonging_to_other_suppliers_warning'
+                                'supplier_portal.supplier.supplier_edit.contributors_form.emails_belonging_to_other_suppliers_warning'
                             )}
                         </StyledHelper>
                     )}
@@ -107,7 +107,7 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
                     <Table hasWarningRows={0 < contributorsBelongingToAnotherSupplier.length}>
                         <Table.Header>
                             <Table.HeaderCell>
-                                {translate('onboarder.supplier.supplier_edit.contributors_form.columns.email')}
+                                {translate('supplier_portal.supplier.supplier_edit.contributors_form.columns.email')}
                             </Table.HeaderCell>
                             <Table.HeaderCell />
                         </Table.Header>

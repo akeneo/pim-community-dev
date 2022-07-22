@@ -1,0 +1,18 @@
+workflows:
+    pim_deployer:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - ready_to_build?:
+                  type: approval
+                  filters:
+                      branches:
+                          only:
+                              - /TOOL-.*/
+            - checkout:
+                  requires:
+                      - ready_to_build?
+            - build_and_push_pim_deployer:
+                  requires:
+                      - checkout

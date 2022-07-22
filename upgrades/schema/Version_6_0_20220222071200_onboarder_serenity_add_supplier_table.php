@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * This migration adds the Onboarder Serenity supplier table
+ * This migration adds the Supplier Portal supplier table
  */
 final class Version_6_0_20220222071200_onboarder_serenity_add_supplier_table extends AbstractMigration
 {

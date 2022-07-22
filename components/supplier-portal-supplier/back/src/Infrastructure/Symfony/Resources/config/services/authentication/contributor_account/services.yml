@@ -1,9 +1,9 @@
 services:
     #feature flag
-    akeneo.onboarder_serenity_contributor_authentication.feature:
+    akeneo.supplier_portal_contributor_authentication.feature:
         class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
         arguments:
-            - '%env(bool:FLAG_ONBOARDER_SERENITY_CONTRIBUTOR_AUTHENTICATION_ENABLED)%'
+            - '%env(bool:FLAG_SUPPLIER_PORTAL_CONTRIBUTOR_AUTHENTICATION_ENABLED)%'
         public: true
 
     #Repositories
@@ -27,7 +27,7 @@ services:
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler'
-            - '@akeneo.onboarder_serenity_contributor_authentication.feature'
+            - '@akeneo.supplier_portal_contributor_authentication.feature'
         tags:
             - 'kernel.event_subscriber'
 
@@ -73,6 +73,9 @@ services:
         public: true
 
     Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\UploadProductFile:
+        public: true
+
+    Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\CheckAuthentication:
         public: true
 
     #Command handlers

@@ -57,9 +57,9 @@ const SupplierEdit = () => {
             <PageHeader>
                 <PageHeader.Breadcrumb>
                     <Breadcrumb>
-                        <Breadcrumb.Step>{translate('onboarder.supplier.breadcrumb.root')}</Breadcrumb.Step>
+                        <Breadcrumb.Step>{translate('supplier_portal.supplier.breadcrumb.root')}</Breadcrumb.Step>
                         <Breadcrumb.Step href={history.createHref({pathname: '/'})}>
-                            {translate('onboarder.supplier.breadcrumb.suppliers')}
+                            {translate('supplier_portal.supplier.breadcrumb.suppliers')}
                         </Breadcrumb.Step>
                         <Breadcrumb.Step>{supplier.label}</Breadcrumb.Step>
                     </Breadcrumb>
@@ -82,13 +82,13 @@ const SupplierEdit = () => {
             <StyledPageContent>
                 <TabBar moreButtonTitle="More">
                     <TabBar.Tab isActive={isCurrent('configuration')} onClick={() => switchTo('configuration')}>
-                        {translate('onboarder.supplier.supplier_edit.tabs.configuration')}
+                        {translate('supplier_portal.supplier.supplier_edit.tabs.configuration')}
                     </TabBar.Tab>
                     <TabBar.Tab isActive={isCurrent('contributors')} onClick={() => switchTo('contributors')}>
-                        {translate('onboarder.supplier.supplier_edit.tabs.contributors')}
+                        {translate('supplier_portal.supplier.supplier_edit.tabs.contributors')}
                     </TabBar.Tab>
                     <TabBar.Tab isActive={isCurrent('product_files')} onClick={() => switchTo('product_files')}>
-                        {translate('onboarder.supplier.supplier_edit.tabs.product_files')}
+                        {translate('supplier_portal.supplier.supplier_edit.tabs.product_files')}
                     </TabBar.Tab>
                 </TabBar>
                 {isCurrent('configuration') && (
@@ -147,7 +147,7 @@ const SecondaryActions = ({supplierIdentifier}: SecondaryActionsProps) => {
                                     closeDropdown();
                                 }}
                             >
-                                {translate('onboarder.supplier.supplier_edit.delete_label')}
+                                {translate('supplier_portal.supplier.supplier_edit.delete_label')}
                             </Dropdown.Item>
                         </Dropdown.ItemCollection>
                     </Dropdown.Overlay>

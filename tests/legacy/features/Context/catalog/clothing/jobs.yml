@@ -407,7 +407,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/published_products_export_%locale%_%scope%.csv
+            storage:
+                type: none
+                file_path: /tmp/published_products_export_%locale%_%scope%.csv
     edit_common_attributes:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes

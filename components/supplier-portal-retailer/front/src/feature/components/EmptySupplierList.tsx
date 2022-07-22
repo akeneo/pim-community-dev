@@ -23,10 +23,10 @@ const EmptySupplierList = ({onSupplierCreated}: EmptySupplierProps) => {
     return (
         <Container>
             <CityIllustration size={256} />
-            <NoSupplierText>{translate('onboarder.supplier.supplier_list.no_supplier')}</NoSupplierText>
+            <NoSupplierText>{translate('supplier_portal.supplier.supplier_list.no_supplier')}</NoSupplierText>
             <CreateSupplier
                 onSupplierCreated={onSupplierCreated}
-                createButtonlabel={translate('onboarder.supplier.supplier_create.create_button.label')}
+                createButtonlabel={translate('supplier_portal.supplier.supplier_create.create_button.label')}
             />
         </Container>
     );
