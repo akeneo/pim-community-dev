@@ -137,10 +137,6 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
         );
         Assert::assertEquals(
             $expectedProductList,
-            $query->fromProductIdentifiers(['variant_product'], $this->maryUserId, null, null, null)
-        );
-        Assert::assertEquals(
-            $expectedProductList,
             $query->fromProductUuids([Uuid::fromString($productData['uuid'])], $this->maryUserId, null, null, null)
         );
         Assert::assertEquals(
@@ -306,10 +302,6 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
 
         Assert::assertEquals(
             $expectedProductList,
-            $this->getQuery()->fromProductIdentifiers(['variant_product'], $this->maryUserId, null, null, null)
-        );
-        Assert::assertEquals(
-            $expectedProductList,
             $this->getQuery()->fromProductUuids([Uuid::fromString($productData['uuid'])],
                 $this->maryUserId,
                 null,
@@ -345,7 +337,7 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
 
     private function getQuery(): GetConnectorProducts
     {
-        return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers');
+        return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_uuids');
     }
 
     private function getProductData(string $identifier): array
