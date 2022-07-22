@@ -537,6 +537,8 @@ jobs:
 
               GOOGLE_CLOUD_PROJECT=${GOOGLE_PROJECT_ID}
               GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
+              LOCATION=EU
+              REGION=europe-west1
               PIM_MASTER_DOMAIN="${INSTANCE_NAME}.bh.akeneo.ch"
               WORKLOAD_IDENTITY_KSA="${CIRCLE_BRANCH_LOWER}-ksa-workload-identity"
               WORKLOAD_IDENTITY_KSA_NAMESPACE=workload
@@ -546,16 +548,24 @@ jobs:
               TOPIC_JOB_QUEUE_UI="srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}"
               TOPIC_JOB_QUEUE_IMPORT_EXPORT="srnt-job-queue-import-export-${CIRCLE_BRANCH_LOWER}"
               TOPIC_JOB_QUEUE_DATA_MAINTENANCE="srnt-job-queue-data-maintenance-${CIRCLE_BRANCH_LOWER}"
+              TOPIC_JOB_SCHEDULER="srnt-job-schudeler-${CIRCLE_BRANCH_LOWER}"
               SUBSCRIPTION_WEBHOOK="srnt-webhook-${CIRCLE_BRANCH_LOWER}"
               SUBSCRIPTION_JOB_QUEUE_UI="srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}"
               SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT="srnt-job-queue-import-export-${CIRCLE_BRANCH_LOWER}"
               SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE="srnt-job-queue-data-maintenance-${CIRCLE_BRANCH_LOWER}"
+              SUBSCRIPTION_JOB_SCHEDULER="srnt-job-schudeler-${CIRCLE_BRANCH_LOWER}"
+
+              CLOUD_FUNCTION_NAME="srnt-job-schudeler-${CIRCLE_BRANCH_LOWER}"
+              CLOUD_FUNCTION_BUCKET="srnt-job-schudeler-${CIRCLE_BRANCH_LOWER}"
+              CLOUD_FUNCTION_SOURCE_CODE_ZIP="ucs-function-cron-transformer.zip"
 
               echo export CIRCLE_BRANCH_LOWER=${CIRCLE_BRANCH_LOWER} >> $BASH_ENV
               echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
               echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
               echo export GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT} >> $BASH_ENV
               echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
+              echo export LOCATION=${LOCATION} >> $BASH_ENV
+              echo export REGION=${REGION} >> $BASH_ENV
               echo export PIM_MASTER_DOMAIN=${PIM_MASTER_DOMAIN} >> $BASH_ENV
               echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
               echo export WORKLOAD_IDENTITY_KSA_NAMESPACE=${WORKLOAD_IDENTITY_KSA_NAMESPACE} >> $BASH_ENV
@@ -564,10 +574,15 @@ jobs:
               echo export TOPIC_JOB_QUEUE_UI=${TOPIC_JOB_QUEUE_UI} >> $BASH_ENV
               echo export TOPIC_JOB_QUEUE_IMPORT_EXPORT=${TOPIC_JOB_QUEUE_IMPORT_EXPORT} >> $BASH_ENV
               echo export TOPIC_JOB_QUEUE_DATA_MAINTENANCE=${TOPIC_JOB_QUEUE_DATA_MAINTENANCE} >> $BASH_ENV
+              echo export TOPIC_JOB_SCHEDULER=${TOPIC_JOB_SCHEDULER} >> $BASH_ENV
               echo export SUBSCRIPTION_WEBHOOK=${SUBSCRIPTION_WEBHOOK} >> $BASH_ENV
               echo export SUBSCRIPTION_JOB_QUEUE_UI=${SUBSCRIPTION_JOB_QUEUE_UI} >> $BASH_ENV
               echo export SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT=${SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT} >> $BASH_ENV
               echo export SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE=${SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE} >> $BASH_ENV
+              echo export SUBSCRIPTION_JOB_SCHEDULER=${SUBSCRIPTION_JOB_SCHEDULER} >> $BASH_ENV
+              echo export CLOUD_FUNCTION_NAME=${CLOUD_FUNCTION_NAME} >> $BASH_ENV
+              echo export CLOUD_FUNCTION_BUCKET=${CLOUD_FUNCTION_BUCKET} >> $BASH_ENV
+              echo export CLOUD_FUNCTION_SOURCE_CODE_ZIP=${CLOUD_FUNCTION_SOURCE_CODE_ZIP} >> $BASH_ENV
         - run:
             name: Create branch deployement # Better use other repository
             command: |
@@ -588,7 +603,9 @@ jobs:
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml global.extraLabels.instanceName "${INSTANCE_NAME}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.gcpProjectID "${GOOGLE_CLOUD_PROJECT}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.googleZone "${GOOGLE_ZONE}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.location "${LOCATION}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.pimMasterDomain "${PIM_MASTER_DOMAIN}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.region "${REGION}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.workloadIdentityKSANamespace "${WORKLOAD_IDENTITY_KSA_NAMESPACE}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.workloadIdentityGSA "${WORKLOAD_IDENTITY_GSA}"
@@ -597,10 +614,15 @@ jobs:
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_job_queue_ui "${TOPIC_JOB_QUEUE_UI}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_job_queue_import_export "${TOPIC_JOB_QUEUE_IMPORT_EXPORT}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_job_queue_data_maintenance "${TOPIC_JOB_QUEUE_DATA_MAINTENANCE}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.topic_job_scheduler "${TOPIC_JOB_SCHEDULER}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_webhook "${SUBSCRIPTION_WEBHOOK}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_ui "${SUBSCRIPTION_JOB_QUEUE_UI}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_import_export "${SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_queue_data_maintenance "${SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.pubsub.subscription_job_scheduler "${SUBSCRIPTION_JOB_SCHEDULER}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.cloudFunction.name "${CLOUD_FUNCTION_NAME}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.cloudFunction.bucket "${CLOUD_FUNCTION_BUCKET}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.cloudFunction.sourceCodeZip "${CLOUD_FUNCTION_SOURCE_CODE_ZIP}"
 
               ## Charts
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/Chart.yaml version 0.0.0-${IMAGE_TAG}
@@ -627,6 +649,11 @@ jobs:
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-daemon-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-daemon
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-daemon-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-daemon
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-daemon-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-daemon
+
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-job-application.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-job-application.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-job
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-job-application.yaml metadata.name ${CIRCLE_BRANCH_LOWER}-pim-job
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd-applications/pim-job-application.yaml metadata.labels.name ${CIRCLE_BRANCH_LOWER}-pim-job
 
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd/pim-applications.yaml spec.source.targetRevision ${CIRCLE_BRANCH}-deployment
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/argocd/pim-applications.yaml spec.destination.namespace ${CIRCLE_BRANCH_LOWER}-pim-argocd

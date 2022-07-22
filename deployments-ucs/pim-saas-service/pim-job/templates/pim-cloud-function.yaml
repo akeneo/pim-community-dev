@@ -1,7 +1,7 @@
 apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
 kind: Function
 metadata:
-  name: {{ .Values.pim.cloudFunction.name }} 
+  name: {{ .Values.pim.cloudFunction.name }}
 spec:
   forProvider:
     availableMemoryMb: {{ .Values.pim.cloudFunction.memory }}
@@ -10,9 +10,9 @@ spec:
     name: {{ .Values.pim.cloudFunction.name }}
     runtime: "nodejs16"
     sourceArchiveBucket: "{{ .Values.pim.cloudFunction.bucket}}"
-    sourceArchiveObject: "{{ .Values.pim.cloudFunction.sourceSode }}"
+    sourceArchiveObject: "{{ .Values.pim.cloudFunction.sourceCodeZip }}"
     triggerHttp: true
-    region: "{{ .Values.pim.cloudFunction.region }}"
+    region: "{{ .Values.common.region }}"
     environmentVariables:
       projectId: "{{ .Values.common.gcpProjectID }}"
       tenantContext: "tenant_contexts"

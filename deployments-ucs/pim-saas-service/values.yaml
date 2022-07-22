@@ -1,5 +1,3 @@
-region: europe-west1
-env: sandbox
 nameOverride: ""
 global:
   extraLabels:
@@ -29,6 +27,7 @@ common:
   googleZone: null # Generated
   location: null # Generated example EU, US
   pimMasterDomain: null # Generated
+  region: null # Generated
   workloadIdentityKSA: null # Generated
   workloadIdentityKSANamespace: null # Generated
   workloadIdentityGSA: null # Generated
@@ -122,12 +121,12 @@ pim:
     topic_job_queue_ui: null # Generated
     topic_job_queue_import_export: null # Generated
     topic_job_queue_data_maintenance: null # Generated
+    topic_job_scheduler: null # Generated
     subscription_webhook: null # Generated
     subscription_job_queue_ui: null # Generated
     subscription_job_queue_import_export: null # Generated
     subscription_job_queue_data_maintenance: null # Generated
-    topic_job_schudeler: null # Generated
-    subscription_job_schudeler: null # Generated
+    subscription_job_scheduler: null # Generated
   hook:
     addAdmin:
       enabled: true
@@ -302,7 +301,5 @@ pim:
     name: null # Generated
     memory: 512
     bucket: null # Generated
-    sourceSode: null # Generated
-    region: null # Generated
-    serviceAccountEmail: null # Generated
+    sourceCodeZip: null # Generated
     timeZone: "Europe/Paris"
