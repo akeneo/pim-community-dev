@@ -10,7 +10,7 @@ use Webmozart\Assert\Assert;
  *
  * @immutable
  */
-class FamilyQueryPagination
+final class FamilyQueryPagination
 {
     /**
      * @param int|null $page

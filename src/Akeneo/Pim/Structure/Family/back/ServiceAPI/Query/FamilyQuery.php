@@ -10,7 +10,7 @@ use Webmozart\Assert\Assert;
  *
  * @immutable
  */
-class FamilyQuery
+final class FamilyQuery
 {
     /**
      * @param array|null $includeCodes families will be searched only inside families corresponding to $includeCodes
