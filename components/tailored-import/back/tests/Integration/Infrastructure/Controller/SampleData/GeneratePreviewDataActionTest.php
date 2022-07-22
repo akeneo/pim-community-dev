@@ -27,7 +27,7 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
     }
 

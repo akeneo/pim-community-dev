@@ -46,7 +46,7 @@ final class GetSelectOptionsControllerEndToEnd extends ControllerEndToEndTestCas
     /** @test */
     public function it_returns_the_options_of_a_select_column(): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_options',
@@ -59,7 +59,7 @@ final class GetSelectOptionsControllerEndToEnd extends ControllerEndToEndTestCas
     /** @test */
     public function it_returns_the_options_of_a_select_column_case_insensitive(): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_options',
@@ -72,7 +72,7 @@ final class GetSelectOptionsControllerEndToEnd extends ControllerEndToEndTestCas
     /** @test */
     public function it_returns_404_when_attribute_is_unknown(): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_options',
@@ -85,7 +85,7 @@ final class GetSelectOptionsControllerEndToEnd extends ControllerEndToEndTestCas
     /** @test */
     public function it_returns_bad_request_when_attribute_is_not_a_table(): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_options',
@@ -98,7 +98,7 @@ final class GetSelectOptionsControllerEndToEnd extends ControllerEndToEndTestCas
     /** @test */
     public function it_returns_404_when_column_is_unknown(): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_options',
@@ -111,7 +111,7 @@ final class GetSelectOptionsControllerEndToEnd extends ControllerEndToEndTestCas
     /** @test */
     public function it_returns_422_when_column_is_not_a_select(): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_options',
