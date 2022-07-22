@@ -74,6 +74,9 @@ services:
     Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\UploadProductFile:
         public: true
 
+    Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\GetProductFiles:
+        public: true
+
     Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\CheckAuthentication:
         public: true
 

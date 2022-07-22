@@ -24,7 +24,6 @@ $rules = [
         [
             // Supplier Portal retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
 
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
@@ -60,7 +59,6 @@ $rules = [
         [
             // Supplier Portal retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
@@ -84,7 +82,6 @@ $rules = [
         [
             // Supplier Portal retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',

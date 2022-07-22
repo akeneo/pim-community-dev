@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFiles;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Read\Model\SupplierFile;
 use Akeneo\SupplierPortal\Supplier\Test\Integration\SqlIntegrationTestCase;
@@ -16,9 +16,12 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itGetsNothingIfThereIsNoProductFilesForAGivenContributorAndTheContributorsBelongingToTheSameSupplier(): void
     {
+        $this->createSuppliers();
+        $this->createContributors();
+
         static::assertEmpty(
             ($this->get(GetProductFiles::class))(
-                Identifier::fromString('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
+                Email::fromString('contributor1@example.com')
             ),
         );
     }
@@ -27,13 +30,14 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
     public function itGetsTheLatestTwentyFiveProductFilesForAGivenContributorAndTheContributorsBelongingToTheSameSupplier(): void
     {
         $this->createSuppliers();
+        $this->createContributors();
         $this->createProductFiles();
 
         $sut = $this->get(GetProductFiles::class);
 
-        $supplierIdentifier = Identifier::fromString('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7');
+        $contributorEmail = Email::fromString('contributor1@example.com');
 
-        $supplierProductFiles = ($sut)($supplierIdentifier);
+        $supplierProductFiles = ($sut)($contributorEmail);
 
         $expectedProductFilenames = [];
         for ($i = 0; 25 > $i; $i++) {
@@ -128,5 +132,17 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
                 ],
             );
         }
+    }
+
+    private function createContributors(): void
+    {
+        $this->get(Connection::class)->executeStatement(
+            <<<SQL
+            INSERT INTO akeneo_supplier_portal_supplier_contributor (id, email, supplier_identifier)
+                VALUES (1, 'contributor1@example.com', 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7'),
+                       (2, 'contributor2@example.com', 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7')
+           ;
+        SQL
+        );
     }
 }

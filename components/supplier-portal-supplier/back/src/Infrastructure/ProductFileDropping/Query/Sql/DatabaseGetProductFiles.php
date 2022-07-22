@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFiles;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Read\Model\SupplierFile;
 use Doctrine\DBAL\Connection;
@@ -18,32 +18,32 @@ final class DatabaseGetProductFiles implements GetProductFiles
     /**
      * @return SupplierFile[]
      */
-    public function __invoke(Identifier $supplierIdentifier): array
+    public function __invoke(Email $contributorEmail): array
     {
         $sql = <<<SQL
-            WITH contributorEmail AS (
-                SELECT email
-                FROM akeneo_supplier_portal_supplier_contributor sc
-                INNER JOIN akeneo_supplier_portal_supplier s on sc.supplier_identifier = s.identifier
-                WHERE s.identifier = :supplierIdentifier
+            WITH supplier_identifier AS (
+                SELECT s.identifier
+                FROM akeneo_supplier_portal_supplier s
+                INNER JOIN akeneo_supplier_portal_supplier_contributor sc
+                    ON s.identifier = sc.supplier_identifier
+                WHERE sc.email = :contributorEmail
             )
-            SELECT identifier,
-                   original_filename,
-                   path,
-                   uploaded_by_contributor,
-                   uploaded_by_supplier,
-                   uploaded_at,
-                   downloaded
-            FROM akeneo_supplier_portal_supplier_file
-            LEFT JOIN contributorEmail ON uploaded_by_contributor = email
-            WHERE uploaded_by_supplier = :supplierIdentifier
+            SELECT sf.identifier,
+                   sf.original_filename,
+                   sf.path,
+                   sf.uploaded_by_contributor,
+                   sf.uploaded_by_supplier,
+                   sf.uploaded_at,
+                   sf.downloaded
+            FROM akeneo_supplier_portal_supplier_file sf
+            INNER JOIN supplier_identifier ON supplier_identifier.identifier = uploaded_by_supplier
             ORDER BY uploaded_at DESC
             LIMIT 25;
         SQL;
 
         $supplierFileRows = $this->connection->executeQuery(
             $sql,
-            ['supplierIdentifier' => $supplierIdentifier],
+            ['contributorEmail' => (string) $contributorEmail],
         )->fetchAllAssociative();
 
         $supplierFiles = [];
