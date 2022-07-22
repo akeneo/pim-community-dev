@@ -63,7 +63,7 @@ class CreateConnectionCommandEndToEnd extends CommandTestCase
         ]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('The user group was not found. Please try again.', $output);
+        $this->assertStringContainsString('The user group was not found. Make sure the specified user group exists.', $output);
     }
 
     protected function getConfiguration(): Configuration
