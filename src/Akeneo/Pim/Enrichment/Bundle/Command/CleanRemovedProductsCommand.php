@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
@@ -64,16 +65,17 @@ class CleanRemovedProductsCommand extends Command
         $progressBar = new ProgressBar($output, 0);
         $progressBar->start();
 
-        $chunkedProductIdentifiersAncestorsCodes = $this->filterNonExistingProductInMySQL($batchSize);
+        $chunkedNonExistentProductIds = $this->filterNonExistentProductInMySQL($batchSize);
 
-        while($chunkedProductIdentifiersAncestorsCodes->valid()){
-            $arrayProductIdentifierAncestorsCodes = $chunkedProductIdentifiersAncestorsCodes->current();
+        foreach ($chunkedNonExistentProductIds as $nonExistentProductIds) {
+            $uuids = array_map(fn ($id) => Uuid::fromString(($id)), $nonExistentProductIds);
+            $ancestorCodes = $this->getAncestorsFromProductsIds($nonExistentProductIds);
             $this->productAndAncestorsIndexer->removeFromProductUuidsAndReindexAncestors(
-                [Uuid::fromString($arrayProductIdentifierAncestorsCodes['_id'])],
-                $arrayProductIdentifierAncestorsCodes['ancestor_codes'] ?? []
+                $uuids,
+                $ancestorCodes
             );
-            $indexedProductCount += count($arrayProductIdentifierAncestorsCodes);
-            $progressBar->advance(count($arrayProductIdentifierAncestorsCodes));
+            $indexedProductCount += count($nonExistentProductIds);
+            $progressBar->advance(count($nonExistentProductIds));
         }
 
         $progressBar->finish();
@@ -81,55 +83,40 @@ class CleanRemovedProductsCommand extends Command
         return $indexedProductCount;
     }
 
-    private function filterNonExistingProductInMySQL(int $batchSize): \Generator
+    private function filterNonExistentProductInMySQL(int $batchSize): iterable
     {
-        $esDocuments = $this->fetchAllIdentifiersFromEs($batchSize);
+        $esProductsIdsChunk = $this->fetchAllProductsIdsFromEsByChunk($batchSize);
 
         $sql = <<< SQL
-SELECT BIN_TO_UUID(uuid) AS uuid, identifier
+SELECT BIN_TO_UUID(uuid) AS uuid
 FROM pim_catalog_product
 WHERE BIN_TO_UUID(uuid) IN (:esIdentifiers) 
 SQL;
 
-        foreach($esDocuments as $chunkProducts) {
-            while (count($chunkProducts) > 0) {
-                $chunkProductIdentifiers = array_map(fn($doc): string => substr($doc['_id'], 8), $chunkProducts);
+        foreach ($esProductsIdsChunk as $productIdsFromEs) {
+            if (empty($productIdsFromEs)) {
+                break;
+            }
 
-                $rows = $this->connection->executeQuery(
-                    $sql,
-                    [
-                        'esIdentifiers' => $chunkProductIdentifiers
-                    ],
-                    [
-                        'esIdentifiers' => Connection::PARAM_STR_ARRAY,
-                    ]
-                )->fetchAllAssociative();
+            $productIdsFromMysql = $this->connection->executeQuery(
+                $sql,
+                [
+                    'esIdentifiers' => $productIdsFromEs
+                ],
+                [
+                    'esIdentifiers' => Connection::PARAM_STR_ARRAY,
+                ]
+            )->fetchFirstColumn();
 
-                $mysqlIds = array_map(function ($item) {
-                    return $item['uuid'];
-                }, $rows);
 
-                $chunkRemovedProductIdentifiers = array_reduce(
-                    $chunkProducts,
-                    function ($carry, $item) use ($mysqlIds): array {
-                        if (!in_array($item['_id'], $mysqlIds)) {
-                            $carry[] = [
-                                '_id' => substr(strstr($item['_id'], '_'), 1),
-                                'ancestor_codes' => $item['_source']['ancestors']['codes'] ?? [],
-                            ];
-                        }
-
-                        return $carry;
-                    },
-                    []
-                );
-
-                yield $chunkRemovedProductIdentifiers;
+            $nonExistentProductIdsInMysql = array_diff($productIdsFromEs, $productIdsFromMysql);
+            if (!empty($nonExistentProductIdsInMysql)) {
+                yield $nonExistentProductIdsInMysql;
             }
         }
     }
 
-    private function fetchAllIdentifiersFromEs(int $batchSize): iterable
+    private function fetchAllProductsIdsFromEsByChunk(int $batchSize): iterable
     {
         $searchAfter = null;
         do {
@@ -137,7 +124,7 @@ SQL;
                 [
                     'sort' => ['id' => 'asc'],
                     'size' => $batchSize,
-                    '_source' => ['id', 'identifier','ancestors'],
+                    '_source' => ['id'],
                     'query' => [
                         'constant_score' => [
                             'filter' => [
@@ -157,9 +144,11 @@ SQL;
                 ] : []
             );
             $results = $this->productAndProductModelClient->search($params);
-            $esDocuments = $results['hits']['hits'];
+            $productsIds = array_map(function ($doc) {
+                return substr($doc['id'], ElasticsearchProductProjection::INDEX_PREFIX_ID);
+            }, $results['hits']['hits']);
 
-            yield $esDocuments;
+            yield $productsIds;
 
             $resultsPage = $results['hits']['hits'];
             $lastResult = end($resultsPage);
@@ -177,5 +166,32 @@ SQL;
                 )
             );
         }
+    }
+
+    private function getAncestorsFromProductsIds(array $productIds): array
+    {
+        $prefixProductIds = array_map(fn ($productId) => ElasticsearchProductProjection::INDEX_PREFIX_ID . $productId, $productIds);
+        $params =
+            [
+                '_source' => ['ancestors'],
+                'query' => [
+                    'constant_score' => [
+                        'filter' => [
+                            'bool' => [
+                                'must' => [
+                                    'ids' => [
+                                        'values' => $prefixProductIds
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
+        $results = $this->productAndProductModelClient->search($params);
+        $ancestorsCodesByProducts = array_map(fn ($doc) => $doc['ancestors']['codes'], $results['hits']['hits']);
+
+        return [...$ancestorsCodesByProducts];
     }
 }
