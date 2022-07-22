@@ -10,7 +10,7 @@ spec:
     name: "provider-config-jet-gcp"
   forProvider:
     description: "job for {{ $jobName }}"
-    name: "ucs-pim-job-{{ $jobName }}"
+    name: "{{ $tplCtx.Values.pim.cloudFunction.branch }}-ucs-pim-job-{{ $jobName }}"
     region: {{ $tplCtx.Values.common.region }}
     timeZone: {{ $tplCtx.Values.pim.cloudFunction.timeZone }}
     schedule: '{{ $jobOptions.schedule }}'

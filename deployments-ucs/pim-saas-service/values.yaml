@@ -303,3 +303,4 @@ pim:
     bucket: null # Generated
     sourceCodeZip: null # Generated
     timeZone: "Europe/Paris"
+    branch: null # Generated
