@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
+use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetSupplierFromContributorEmail implements GetSupplierFromContributorEmail
@@ -14,7 +15,7 @@ final class DatabaseGetSupplierFromContributorEmail implements GetSupplierFromCo
     {
     }
 
-    public function __invoke(string $contributorEmail): ?Supplier
+    public function __invoke(ContributorEmail $contributorEmail): ?Supplier
     {
         $supplier = $this->connection->executeQuery(
             <<<SQL
@@ -26,7 +27,7 @@ final class DatabaseGetSupplierFromContributorEmail implements GetSupplierFromCo
             SQL
             ,
             [
-                'contributorEmail' => $contributorEmail,
+                'contributorEmail' => (string) $contributorEmail,
             ],
         )->fetchAssociative();
 

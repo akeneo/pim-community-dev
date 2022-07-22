@@ -6,6 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplie
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
+use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetSupplierFromContributorEmailIntegration extends SqlIntegrationTestCase
@@ -16,7 +17,7 @@ final class DatabaseGetSupplierFromContributorEmailIntegration extends SqlIntegr
         $this->createSupplier();
 
         static::assertNull(($this->get(GetSupplierFromContributorEmail::class))(
-            'contributor1@example.com'
+            ContributorEmail::fromString('contributor1@example.com')
         ));
     }
 
@@ -27,7 +28,7 @@ final class DatabaseGetSupplierFromContributorEmailIntegration extends SqlIntegr
         $this->createContributor('contributor1@example.com');
 
         static::assertNull(($this->get(GetSupplierFromContributorEmail::class))(
-            'contributor2@example.com'
+            ContributorEmail::fromString('contributor2@example.com')
         ));
     }
 
@@ -38,7 +39,7 @@ final class DatabaseGetSupplierFromContributorEmailIntegration extends SqlIntegr
         $this->createContributor('contributor1@example.com');
 
         $supplier = ($this->get(GetSupplierFromContributorEmail::class))(
-            'contributor1@example.com'
+            ContributorEmail::fromString('contributor1@example.com')
         );
 
         static::assertSame('44ce8069-8da1-4986-872f-311737f46f02', $supplier->identifier);

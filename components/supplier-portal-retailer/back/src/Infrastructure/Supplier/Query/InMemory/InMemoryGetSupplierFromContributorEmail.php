@@ -8,6 +8,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContribut
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier as SupplierReadModel;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
+use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 
 final class InMemoryGetSupplierFromContributorEmail implements GetSupplierFromContributorEmail
 {
@@ -15,12 +16,12 @@ final class InMemoryGetSupplierFromContributorEmail implements GetSupplierFromCo
     {
     }
 
-    public function __invoke(string $contributorEmail): ?SupplierReadModel
+    public function __invoke(ContributorEmail $contributorEmail): ?SupplierReadModel
     {
         /** @var Supplier $supplier */
         foreach ($this->supplierRepository->findAll() as $supplier) {
             foreach ($supplier->contributors() as $contributor) {
-                if ($contributorEmail === $contributor['email']) {
+                if ((string) $contributorEmail === $contributor['email']) {
                     return new SupplierReadModel(
                         $supplier->identifier(),
                         $supplier->code(),
