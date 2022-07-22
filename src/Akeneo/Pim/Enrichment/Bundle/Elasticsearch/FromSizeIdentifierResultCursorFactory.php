@@ -32,7 +32,7 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
         $sort = ['_id' => 'asc'];
 
         $esQuery['track_total_hits'] = true;
-        $esQuery['_source'] = array_merge($esQuery['_source'], ['document_type']);
+        $esQuery['_source'] = array_merge($esQuery['_source'], ['document_type', 'id']);
         $esQuery['sort'] = isset($esQuery['sort']) ? array_merge($esQuery['sort'], $sort) : $sort;
         $esQuery['size'] = $options['limit'];
         $esQuery['from'] = $options['from'];
@@ -44,7 +44,7 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
         foreach ($response['hits']['hits'] as $hit) {
             // TODO: remove default type when TIP-1151 and TIP 1150 are done, as the document type will always exist
             $documentType = $hit['_source']['document_type'] ?? ProductInterface::class;
-            $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType);
+            $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType, $hit['_source']['id']);
         }
 
         return new IdentifierResultCursor($identifiers, $totalCount, new ElasticsearchResult($response));

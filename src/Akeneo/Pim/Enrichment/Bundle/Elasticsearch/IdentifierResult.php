@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Simple data holder for the results of an Elasticsearch search about products and product models.
@@ -22,6 +23,8 @@ class IdentifierResult
     /** @var string */
     private $identifier;
 
+    private string $id;
+
     /** @var string */
     private $type;
 
@@ -29,7 +32,7 @@ class IdentifierResult
      * @param string $identifier
      * @param string $type
      */
-    public function __construct(string $identifier, string $type)
+    public function __construct(string $identifier, string $type, string $id)
     {
         if ($type !== ProductInterface::class && $type !== ProductModelInterface::class) {
             throw new \InvalidArgumentException(
@@ -42,8 +45,13 @@ class IdentifierResult
             );
         }
 
+        if($type === ProductInterface::class && !Uuid::isValid($id)) {
+            throw new \InvalidArgumentException(\sprintf("Product has an invalid uuid : %s", $id));
+        }
+
         $this->identifier = (string) $identifier;
         $this->type = $type;
+        $this->id = $id;
     }
 
     /**
@@ -60,6 +68,11 @@ class IdentifierResult
     public function getType(): string
     {
         return $this->type;
+    }
+
+    public function getId(): string
+    {
+        return $this->getId();
     }
 
     /**

@@ -30,7 +30,7 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
         $options = $this->resolveOptions($options);
         $sort = ['_id' => 'asc'];
 
-        $esQuery['_source'] = array_merge($esQuery['_source'], ['document_type']);
+        $esQuery['_source'] = array_merge($esQuery['_source'], ['document_type', 'id']);
         $esQuery['sort'] = isset($esQuery['sort']) ? array_merge($esQuery['sort'], $sort) : $sort;
         $esQuery['size'] = $options['limit'];
 
@@ -46,7 +46,7 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {
-            $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $hit['_source']['document_type']);
+            $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $hit['_source']['document_type'], $hit['_source']['id']);
         }
 
         return new IdentifierResultCursor($identifiers, $totalCount, new ElasticsearchResult($response));

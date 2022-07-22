@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
 {
@@ -25,6 +26,8 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
 
     function it_creates_a_product_identifier_cursor($esClient)
     {
+        $uuid = Uuid::uuid4();
+
         $esQuery = [
             'sort'  => [],
             'query' => [],
@@ -39,8 +42,8 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
         $result = ['hits' => [
             'total' => ['value' => 42, 'relation' => 'eq'],
             'hits'  => [
-                ['_source' => ['identifier' => 'product_1', 'document_type' => ProductInterface::class]],
-                ['_source' => ['identifier' => 'product_model_2', 'document_type' => ProductModelInterface::class]],
+                ['_source' => ['identifier' => 'product_1', 'document_type' => ProductInterface::class, 'id' => 'product_' . $uuid->toString()]],
+                ['_source' => ['identifier' => 'product_model_2', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_2']],
             ]
         ]];
 
@@ -48,7 +51,7 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
             [
                 'sort' => ['_id' => 'asc'],
                 'query' => [],
-                '_source' => ['identifier', 'document_type'],
+                '_source' => ['identifier', 'document_type', 'id'],
                 "track_total_hits" => true,
                 'size' => 25,
                 'from' => 0
@@ -57,8 +60,8 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
 
         $this->createCursor($esQuery, $options)->shouldBeLike(new IdentifierResultCursor(
             [
-                new IdentifierResult('product_1', ProductInterface::class),
-                new IdentifierResult('product_model_2', ProductModelInterface::class),
+                new IdentifierResult('product_1', ProductInterface::class, 'product_' . $uuid->toString()),
+                new IdentifierResult('product_model_2', ProductModelInterface::class, 'product_model_2'),
             ],
             42,
             new ElasticsearchResult($result)
