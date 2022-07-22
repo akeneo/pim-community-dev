@@ -436,7 +436,6 @@ class SqlGetConnectorProductsIntegration extends TestCase
             null
         );
 
-        $this->assertEquals($expectedProduct, $this->getQuery()->fromProductIdentifier('apollon_B_false', $this->adminUserId));
         $this->assertEquals($expectedProduct, $this->getQuery()->fromProductUuid(Uuid::fromString($productData['uuid']), $this->adminUserId));
     }
 
@@ -584,9 +583,6 @@ class SqlGetConnectorProductsIntegration extends TestCase
 
     public function test_it_throws_an_exception_when_product_is_not_found()
     {
-        $this->expectException(ObjectNotFoundException::class);
-        $this->getQuery()->fromProductIdentifier('foo', $this->adminUserId);
-
         $uuid = Uuid::uuid4();
         $this->expectException(ObjectNotFoundException::class);
         $this->getQuery()->fromProductUuid($uuid, $this->adminUserId);
@@ -597,7 +593,6 @@ class SqlGetConnectorProductsIntegration extends TestCase
         $this->get('database_connection')->executeStatement('DELETE FROM pim_catalog_association_type_translation');
         $this->get('database_connection')->executeStatement('DELETE FROM pim_catalog_association_type');
 
-        Assert::assertSame([], $this->getQuery()->fromProductIdentifier('apollon_B_false', $this->adminUserId)->associations());
         $apollonBUuid = $this->getProductData('apollon_B_false')['uuid'];
         Assert::assertSame([], $this->getQuery()->fromProductUuid(Uuid::fromString($apollonBUuid), $this->adminUserId)->associations());
     }

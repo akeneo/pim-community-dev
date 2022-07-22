@@ -45,16 +45,6 @@ class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
     /**
      * {@inheritdoc}
      */
-    public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct
-    {
-        $connectorProduct = $this->getConnectorProducts->fromProductIdentifier($productIdentifier, $userId);
-
-        return $this->getConnectorProductsWithLabels([$connectorProduct])[0];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fromProductIdentifiers(
         array $productIdentifiers,
         int $userId,

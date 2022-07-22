@@ -66,19 +66,6 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
     /**
      * {@inheritdoc}
      */
-    public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct
-    {
-        $products = $this->fromProductIdentifiers([$productIdentifier], $userId, null, null, null);
-        if ($products->totalNumberOfProducts() === 0) {
-            throw new ObjectNotFoundException(sprintf('Product "%s" was not found.', $productIdentifier));
-        }
-
-        return $products->connectorProducts()[0];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fromProductIdentifiers(
         array $productIdentifiers,
         int $userId,
@@ -144,7 +131,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
 
         $products = [];
         foreach ($productUuids as $productUuid) {
-            if (!isset($rows[$productUuid->toString()])) {
+            if (!isset($rows[$productUuid->toString()]) || !isset($rows[$productUuid->toString()]['uuid'])) {
                 continue;
             }
             $row = $rows[$productUuid->toString()];

@@ -35,16 +35,6 @@ interface GetConnectorProducts
     ): ConnectorProductList;
 
     /**
-     * @deprecated use GetConnectorProducts::fromProductUuid() instead
-     *
-     * @param string $productIdentifier
-     * @param int $userId
-     * @return ConnectorProduct
-     * @throws ObjectNotFoundException when the product does not exist
-     */
-    public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct;
-
-    /**
      * @deprecated use GetConnectorProducts::fromProductUuids() instead
      *
      * @param string[] $productIdentifiers
