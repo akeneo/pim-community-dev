@@ -279,30 +279,6 @@ SQL;
         );
     }
 
-    /**
-     * @param array<string, array> $resultByUuid
-     * @return array<string, array>
-     * @throws \Doctrine\DBAL\Exception
-     */
-    private function replaceUuidKeysByIdentifiers(array $resultByUuid): array
-    {
-        $sql = <<<SQL
-SELECT BIN_TO_UUID(uuid) AS uuid, identifier
-FROM pim_catalog_product
-WHERE uuid IN (:uuids)
-SQL;
-
-        $uuidsAsBytes = array_map(fn (string $uuid): string => Uuid::fromString($uuid)->getBytes(), array_keys($resultByUuid));
-        $uuidsToIdentifiers = $this->connection->fetchAllKeyValue($sql, ['uuids' => $uuidsAsBytes], ['uuids' => Connection::PARAM_STR_ARRAY]);
-
-        $result = [];
-        foreach ($resultByUuid as $uuid => $object) {
-            $result[$uuidsToIdentifiers[$uuid]] = $object;
-        }
-
-        return $result;
-    }
-
     private function getUuidFromIdentifierResult(string $esId): UuidInterface
     {
         $matches = [];

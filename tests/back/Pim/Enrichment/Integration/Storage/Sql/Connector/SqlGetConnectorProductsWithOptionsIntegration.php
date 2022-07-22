@@ -536,14 +536,6 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             ),
         ]);
 
-        Assert::assertEquals(
-            $expectedProducts,
-            $this->getQuery()->fromProductIdentifiers(['apollon_A_false', 'apollon_B_false'],
-                $this->adminUserId,
-                null,
-                null,
-                null)
-        );
         Assert::assertEquals($expectedProducts, $this->getQuery()->fromProductUuids(
             [Uuid::fromString($productDataApollonA['uuid']), Uuid::fromString($productDataApollonB['uuid'])],
             $this->adminUserId, null, null, null)
@@ -628,7 +620,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
 
     private function getQuery(): GetConnectorProducts
     {
-        return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options');
+        return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_uuids_with_options');
     }
 
     private function getProductData(string $identifier): array

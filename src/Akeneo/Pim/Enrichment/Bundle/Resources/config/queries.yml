@@ -232,7 +232,7 @@ services:
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_ids_query'
             - '@akeneo.pim.enrichment.product.query.find_quantified_association_codes'
 
-    akeneo.pim.enrichment.product.connector.get_product_from_identifiers:
+    akeneo.pim.enrichment.product.connector.get_product_from_uuids:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProducts'
         arguments:
             $getValuesAndPropertiesFromProductUuids: '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductUuids'
@@ -245,10 +245,10 @@ services:
             $readValueCollectionFactory: '@akeneo.pim.enrichment.factory.read_value_collection'
             $connection: '@database_connection'
 
-    akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options:
+    akeneo.pim.enrichment.product.connector.get_product_from_uuids_with_options:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductsWithOptions'
         arguments:
-            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
             - '@database_connection'
 
     akeneo.pim.enrichment.product.connector.get_product_models_from_codes:

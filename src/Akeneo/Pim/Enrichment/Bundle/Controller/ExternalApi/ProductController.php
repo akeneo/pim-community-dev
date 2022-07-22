@@ -202,8 +202,6 @@ class ProductController
             }
 
             $productUuid = Uuid::fromString($uuidsFromIdentifiers[$code]);
-
-
             $product = $connectorProductsQuery->fromProductUuid($productUuid, $user->getId());
             $this->eventDispatcher->dispatch(new ReadProductsEvent(1));
 

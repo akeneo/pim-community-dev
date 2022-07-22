@@ -35,24 +35,6 @@ interface GetConnectorProducts
     ): ConnectorProductList;
 
     /**
-     * @deprecated use GetConnectorProducts::fromProductUuids() instead
-     *
-     * @param string[] $productIdentifiers
-     * @param int $userId
-     * @param array|null $attributesToFilterOn
-     * @param string|null $channelToFilterOn
-     * @param array|null $localesToFilterOn
-     * @return ConnectorProductList
-    */
-    public function fromProductIdentifiers(
-        array $productIdentifiers,
-        int $userId,
-        ?array $attributesToFilterOn,
-        ?string $channelToFilterOn,
-        ?array $localesToFilterOn
-    ): ConnectorProductList;
-
-    /**
      * @param UuidInterface $productUuid
      * @param int $userId
      *
