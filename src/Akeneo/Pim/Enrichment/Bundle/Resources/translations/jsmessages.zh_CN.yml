@@ -49,6 +49,7 @@ pim_enrich.entity.product:
     download_pdf:
       label: PDF
     copy:
+      button_label: 对比
       label: 比较/翻译
       select: 选择
       all_visible: 所有可见
