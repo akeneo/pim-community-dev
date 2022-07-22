@@ -34,6 +34,9 @@ $rules = [
         [
             // Supplier Portal retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
+            'Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
@@ -95,6 +98,12 @@ $rules = [
             // Supplier Portal retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierFromContributorEmail',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository',
+
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
+            'Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
