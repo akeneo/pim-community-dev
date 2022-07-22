@@ -28,7 +28,7 @@ final class DatabaseGetProductFiles implements GetProductFiles
                 WHERE s.identifier = :supplierIdentifier
             )
             SELECT identifier,
-                   filename,
+                   original_filename,
                    path,
                    uploaded_by_contributor,
                    uploaded_by_supplier,
@@ -50,7 +50,7 @@ final class DatabaseGetProductFiles implements GetProductFiles
         foreach ($supplierFileRows as $supplierFileRow) {
             $supplierFiles[] = new SupplierFile(
                 $supplierFileRow['identifier'],
-                $supplierFileRow['filename'],
+                $supplierFileRow['original_filename'],
                 $supplierFileRow['path'],
                 $supplierFileRow['uploaded_by_contributor'],
                 $supplierFileRow['uploaded_at'],

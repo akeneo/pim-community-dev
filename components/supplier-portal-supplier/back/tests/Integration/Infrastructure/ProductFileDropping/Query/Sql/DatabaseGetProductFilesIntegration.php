@@ -66,14 +66,14 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
             <<<SQL
             INSERT INTO akeneo_supplier_portal_supplier_file (
                 identifier, 
-                filename, 
+                original_filename, 
                 path, 
                 uploaded_by_contributor, 
                 uploaded_by_supplier, 
                 uploaded_at
             ) VALUES (
                 :identifier,
-                :filename,
+                :original_filename,
                 :path,
                 :contributorEmail,
                 :supplierIdentifier,
@@ -82,7 +82,7 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
         SQL,
             [
                 'identifier' => Uuid::uuid4()->toString(),
-                'filename' => sprintf('products_file_from_another_supplier.xlsx'),
+                'original_filename' => sprintf('products_file_from_another_supplier.xlsx'),
                 'path' => sprintf(
                     'supplier2/%s-products_file_from_another_supplier.xlsx',
                     Uuid::uuid4()->toString(),
@@ -99,14 +99,14 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
             $sql = <<<SQL
                 INSERT INTO akeneo_supplier_portal_supplier_file (
                     identifier, 
-                    filename, 
+                    original_filename, 
                     path, 
                     uploaded_by_contributor, 
                     uploaded_by_supplier, 
                     uploaded_at
                 ) VALUES (
                     :identifier,
-                    :filename,
+                    :original_filename,
                     :path,
                     :contributorEmail,
                     :supplierIdentifier,
@@ -118,7 +118,7 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
                 $sql,
                 [
                     'identifier' => Uuid::uuid4()->toString(),
-                    'filename' => sprintf('products_%d.xlsx', $i+1),
+                    'original_filename' => sprintf('products_%d.xlsx', $i+1),
                     'path' => sprintf('supplier1/%s-products_1.xlsx', Uuid::uuid4()->toString()),
                     'contributorEmail' => $i % 2 ? 'contributor1@example.com' : 'contributor2@example.com',
                     'supplierIdentifier' => 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
