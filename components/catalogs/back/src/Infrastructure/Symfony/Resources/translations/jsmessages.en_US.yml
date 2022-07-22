@@ -28,8 +28,12 @@ akeneo_catalogs:
         action:
             open: Open
             remove: Remove
-        locale: Locale
-        channel: Channel
+        locale:
+            label: Locale
+            empty: No locale found
+        channel:
+            label: Channel
+            empty: No channel found
         criteria:
             status:
                 label: Status

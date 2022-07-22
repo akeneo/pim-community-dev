@@ -4,7 +4,6 @@ import {Channel} from '../models/Channel';
 
 type PageParam = {
     number: number;
-    search: string;
 };
 type Page = {
     data: Channel[];
@@ -12,8 +11,7 @@ type Page = {
 };
 
 type QueryParams = {
-    search?: string;
-    codes?: string[];
+    code?: string;
     limit?: number;
 };
 type Error = string | null;
@@ -26,15 +24,12 @@ type Result = {
     fetchNextPage: () => Promise<void>;
 };
 
-export const useInfiniteChannels = ({search = '', codes = [], limit = 20}: QueryParams = {}): Result => {
+export const useInfiniteChannels = ({code = '', limit = 20}: QueryParams = {}): Result => {
     const fetchChannels = useCallback(
         async ({pageParam}: {pageParam?: PageParam}): Promise<Page> => {
             const _page = pageParam?.number || 1;
-            const _search = search || pageParam?.search || '';
-            const _codes = codes.join(',');
-
             const response = await fetch(
-                `/rest/catalogs/families?page=${_page}&limit=${limit}&codes=${_codes}&search=${_search}`,
+                `/rest/catalogs/channels?page=${_page}&limit=${limit}&code=${code}`,
                 {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
@@ -44,26 +39,20 @@ export const useInfiniteChannels = ({search = '', codes = [], limit = 20}: Query
 
             return {
                 data: await response.json(),
-                page: {
-                    number: _page,
-                    search: _search,
-                },
+                page: { number: _page },
             };
         },
-        [search, codes, limit]
+        [code, limit]
     );
 
     const query = useInfiniteQuery<Page, Error, Page>(
-        ['channels', {search: search, codes: codes, limit: limit}],
+        ['channels', {code: code, limit: limit}],
         fetchChannels,
         {
             keepPreviousData: true,
             getNextPageParam: last =>
                 last.data.length >= limit
-                    ? {
-                          number: last.page.number + 1,
-                          search: search,
-                      }
+                    ? {number: last.page.number + 1}
                     : undefined,
         }
     );

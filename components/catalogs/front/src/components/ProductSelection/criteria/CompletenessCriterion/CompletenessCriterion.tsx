@@ -30,7 +30,7 @@ const CompletenessCriterion: FC<CriterionModule<CompletenessCriterionState>> = (
     return (
         <List.Row>
             <List.TitleCell width={150}>
-                {translate('akeneo_catalogs.product_selection.criteria.family.label')}
+                {translate('akeneo_catalogs.product_selection.criteria.completeness.label')}
             </List.TitleCell>
             <List.Cell width='auto'>
                 <Fields>

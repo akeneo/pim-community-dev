@@ -1,7 +1,18 @@
 import React, {FC} from 'react';
-import {Helper, TextInput} from 'akeneo-design-system';
+import {Helper, TextInput, getColor} from 'akeneo-design-system';
 import {CompletenessCriterionState} from './types';
+import styled from 'styled-components';
 
+const PercentageWrapper = styled.div`
+    position: relative;
+    &:after {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        content: '%';
+        color: ${getColor('grey', 100)}
+    }
+`;
 type Props = {
     state: CompletenessCriterionState;
     onChange: (state: CompletenessCriterionState) => void;
@@ -11,11 +22,13 @@ type Props = {
 const CompletenessValueInput: FC<Props> = ({state, onChange, error}) => {
     return (
         <>
-            <TextInput
-                onChange={v => onChange({...state, value: parseInt(v) || 0})}
-                value={state.value.toString()}
-                data-testid='value'
-            />
+            <PercentageWrapper>
+                <TextInput
+                    onChange={v => onChange({...state, value: parseInt(v) || 0})}
+                    value={state.value.toString()}
+                    data-testid='value'
+                />
+            </PercentageWrapper>
             {error !== undefined && (
                 <Helper inline level='error'>
                     {error}
