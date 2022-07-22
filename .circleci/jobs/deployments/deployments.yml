@@ -540,7 +540,8 @@ jobs:
               PIM_MASTER_DOMAIN="${INSTANCE_NAME}.${GOOGLE_DOMAIN}"
               WORKLOAD_IDENTITY_KSA="${CIRCLE_BRANCH_LOWER}-ksa-workload-identity"
               WORKLOAD_IDENTITY_KSA_NAMESPACE=workload
-              WORKLOAD_IDENTITY_GSA=gsa-account-workload-id
+              # Waiting the new SA
+              WORKLOAD_IDENTITY_GSA=main-service-account
 
               TOPIC_BUSINESS_EVENT="srnt-business-event-${CIRCLE_BRANCH_LOWER}"
               TOPIC_JOB_QUEUE_UI="srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}"
@@ -699,7 +700,8 @@ jobs:
 
                       WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
                       WORKLOAD_IDENTITY_KSA_NAMESPACE=workload
-                      WORKLOAD_IDENTITY_GSA=gsa-account-workload-id
+                      # Waiting the new SA
+                      WORKLOAD_IDENTITY_GSA=main-service-account
                       GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
 
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
@@ -721,7 +723,6 @@ jobs:
                       yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
                       yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityKSANamespace "${WORKLOAD_IDENTITY_KSA_NAMESPACE}"
                       yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityGSA "${WORKLOAD_IDENTITY_GSA}"
-                      yq w -i deployments-ucs/tenant/values.yaml common.googleZone "${GOOGLE_ZONE}"
 
             - run:
                   name: Deploy PIM on kubernetes

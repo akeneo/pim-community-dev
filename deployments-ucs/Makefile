@@ -36,6 +36,7 @@ IMAGE_TAG ?= latest
 GOOGLE_PROJECT_ID ?= akecld-prd-pim-saas-$(ENV_NAME)
 GOOGLE_CLUSTER_REGION ?= europe-west1
 GOOGLE_COMPUTE_ZONE ?= europe-west1-b
+GOOGLE_CLUSTER_ZONE ?= $(GOOGLE_COMPUTE_ZONE)
 GOOGLE_CLUSTER_NAME ?= akecld-prd-pim-saas-dev-europe-west1
 GOOGLE_MANAGED_ZONE_DNS ?= dev.akeneo.ch
 GOOGLE_MANAGED_ZONE_NAME ?= dev-akeneo-ch
