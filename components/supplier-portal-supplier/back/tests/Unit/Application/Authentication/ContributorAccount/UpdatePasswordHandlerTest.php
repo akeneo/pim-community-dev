@@ -54,12 +54,8 @@ final class UpdatePasswordHandlerTest extends TestCase
 
         $sut = new UpdatePasswordHandler($contributorAccountRepository, $validatorSpy, $passwordHasher, new NullLogger());
 
-        try {
-            $passwordHasher->expects($this->once())->method('__invoke');
-            ($sut)($updatePassword);
-        } catch (ContributorAccountDoesNotExist) {
-            static::fail('ContributorAccountDoesNotExist exception should not have been thrown.');
-        }
+        $passwordHasher->expects($this->once())->method('__invoke');
+        ($sut)($updatePassword);
     }
 
     /** @test */
@@ -76,12 +72,8 @@ final class UpdatePasswordHandlerTest extends TestCase
 
         $sut = new UpdatePasswordHandler($contributorAccountRepository, $validator, $passwordHasher, new NullLogger());
 
-        try {
-            ($sut)($updatePassword);
-            static::fail('ContributorAccountDoesNotExist exception should have been thrown.');
-        } catch (ContributorAccountDoesNotExist) {
-            static::assertTrue(true);
-        }
+        static::expectException(ContributorAccountDoesNotExist::class);
+        ($sut)($updatePassword);
     }
 
     /** @test */

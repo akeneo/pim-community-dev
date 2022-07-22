@@ -92,17 +92,13 @@ final class CreateSupplierFileHandlerTest extends TestCase
             new NullLogger(),
         );
 
-        try {
-            ($sut)(
-                new CreateSupplierFile(
-                    'products.xlsx',
-                    '/tmp/products.xlsx',
-                    'contributor@example.com',
-                )
-            );
-            static::fail('ContributorDoesNotExist exception should have been thrown.');
-        } catch (ContributorDoesNotExist) {
-            static::assertTrue(true);
-        }
+        static::expectException(ContributorDoesNotExist::class);
+        ($sut)(
+            new CreateSupplierFile(
+                'products.xlsx',
+                '/tmp/products.xlsx',
+                'contributor@example.com',
+            )
+        );
     }
 }
