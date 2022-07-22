@@ -22,7 +22,7 @@ class CreateContributorAccountOnContributorAddedTest extends TestCase
     }
 
     /** @test */
-    public function itCreatesAContributorAccount(): void
+    public function itCreatesAContributorAccountWhenSupplierPortalIsActivated(): void
     {
         $contributorAddedEvent = new ContributorAdded(
             Identifier::fromString('4ccdd6c6-a631-48fe-967c-269bcf04e8e0'),
@@ -35,13 +35,42 @@ class CreateContributorAccountOnContributorAddedTest extends TestCase
             ->method('__invoke')
             ->with(new CreateContributorAccount('contrib1@example.com'));
 
-
         $featureFlags = $this->createMock(InMemoryFeatureFlags::class);
         $featureFlags
             ->expects($this->once())
             ->method('isEnabled')
             ->with('supplier_portal_contributor_authentication')
             ->willReturn(true)
+        ;
+
+        $sut = new CreateContributorAccountOnContributorAdded(
+            $createContributorAccountHandlerSpy,
+            $featureFlags,
+        );
+
+        $sut->contributorAdded($contributorAddedEvent);
+    }
+
+    /** @test */
+    public function itDoesNotCreateAContributorAccountWhenSupplierPortalIsDeactivated(): void
+    {
+        $contributorAddedEvent = new ContributorAdded(
+            Identifier::fromString('4ccdd6c6-a631-48fe-967c-269bcf04e8e0'),
+            'contrib1@example.com',
+        );
+
+        $createContributorAccountHandlerSpy = $this->createMock(CreateContributorAccountHandler::class);
+        $createContributorAccountHandlerSpy
+            ->expects($this->never())
+            ->method('__invoke')
+            ->with(new CreateContributorAccount('contrib1@example.com'));
+
+        $featureFlags = $this->createMock(InMemoryFeatureFlags::class);
+        $featureFlags
+            ->expects($this->once())
+            ->method('isEnabled')
+            ->with('supplier_portal_contributor_authentication')
+            ->willReturn(false)
         ;
 
         $sut = new CreateContributorAccountOnContributorAdded(
