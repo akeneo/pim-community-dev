@@ -31,7 +31,6 @@ services:
 
     # Queries
     Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFiles:
-        public: true
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFiles
         arguments:
             - '@database_connection'
