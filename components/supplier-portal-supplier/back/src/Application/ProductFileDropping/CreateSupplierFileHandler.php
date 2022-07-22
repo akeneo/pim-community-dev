@@ -52,7 +52,7 @@ final class CreateSupplierFileHandler
 
         $this->eventDispatcher->dispatch(new SupplierFileAdded($supplierFile));
 
-        $this->logger->debug(
+        $this->logger->info(
             sprintf('Supplier file "%s" created.', $createSupplierFile->originalFilename),
             [
                 'data' => [
