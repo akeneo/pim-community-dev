@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Acceptance\Context\Authentication;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\InvalidPassword;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePassword;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler;
@@ -21,7 +22,7 @@ final class ContributorAccountContext implements Context
 
     public function __construct(
         private InMemoryRepository $contributorAccountRepository,
-        private FakeFeatureFlag $contributorAuthenticationFeatureFlag,
+        private Registry $featureFlagRegistry,
         private UpdatePasswordHandler $updatePasswordHandler,
     ) {
         $this->errors = [];
@@ -32,7 +33,12 @@ final class ContributorAccountContext implements Context
      */
     public function enableSupplierPortalContributorAuthentication(): void
     {
-        $this->contributorAuthenticationFeatureFlag->enable();
+        $this->featureFlagRegistry->add('supplier_portal_contributor_authentication', new class implements FeatureFlag {
+            public function isEnabled(): bool
+            {
+                return true;
+            }
+        });
     }
 
     /**

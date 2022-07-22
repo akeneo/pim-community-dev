@@ -39,7 +39,7 @@ $rules = [
             'Akeneo\SupplierPortal\Supplier\Domain',
 
             // PIM coupling
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry',
 
             // External dependencies coupling
             'Psr\Log\LoggerInterface',
@@ -103,6 +103,7 @@ $rules = [
 
             // PIM coupling
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry',
 
             // External dependencies coupling
             'PHPUnit\Framework',
@@ -128,7 +129,8 @@ $rules = [
             'Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication',
 
             // PIM coupling
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
 
             // External dependencies coupling
             'Behat',
