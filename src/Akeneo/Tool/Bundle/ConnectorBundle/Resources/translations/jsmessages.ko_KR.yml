@@ -1,6 +1,8 @@
 #Job labels
 batch_jobs:
   default_steps:
+    download_files: 파일 다운로드
+    upload_files: 파일 업로드
     export: 내보내기
     import: 가져오기
     validation: 파일 유효성 검사
