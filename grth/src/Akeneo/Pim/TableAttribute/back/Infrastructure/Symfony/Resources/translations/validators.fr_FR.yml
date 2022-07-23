@@ -36,6 +36,7 @@ pim_table_configuration:
       reference_entity_identifier_cannot_be_set: L'identifiant de l'entité référentielle ne peut pas être défini pour un type de colonne "{{ data_type }}"
       reference_entity_identifier_must_be_filled: L'identifiant de l'entité référentielle doit être renseigné
       reference_entity_identifier_should_exist: Assurez-vous que l'entité référentielle "{{ reference_entity_identifier }}" existe avant de l'ajouter au tableau
+      reference_entity_identifier_is_immutable: Le reference_entity_identifier ne peut pas être mis à jour
       no_validations_allowed: 'Vous ne pouvez pas utiliser de validations sur une colonne "{{ columnType }}", le type de colonne actuelle est : "{{ given }}"'
       invalid_validation_key: 'La validation "{{ given }}" ne fonctionne pas sur une colonne "{{ columnType }}", sont autorisés : "{{ expected }}"'
       too_many_table_attributes: Vous avez atteint le nombre maximum d'attributs de type tableau dans votre PIM ({{ limit }})
