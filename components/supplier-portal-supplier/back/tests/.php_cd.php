@@ -82,13 +82,14 @@ $rules = [
         [
             // Supplier Portal retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
-            
+
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
             'Akeneo\SupplierPortal\Supplier\Infrastructure',
 
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
+            'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Test\Integration'),

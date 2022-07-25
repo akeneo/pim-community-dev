@@ -4,3 +4,10 @@ supplier_portal_upload_product_file:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\UploadProductFile
         _feature: supplier_portal_supplier_file_dropping
     methods: POST
+
+supplier_portal_get_product_files:
+    path: /product-files
+    defaults:
+        _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\GetProductFiles
+        _feature: supplier_portal_supplier_file_dropping
+    methods: GET

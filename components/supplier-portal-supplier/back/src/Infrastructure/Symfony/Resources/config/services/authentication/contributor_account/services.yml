@@ -14,7 +14,6 @@ services:
 
     # Queries
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken:
-        public: true
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByAccessToken
         arguments:
             - '@database_connection'
@@ -74,6 +73,11 @@ services:
 
     Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\UploadProductFile:
         public: true
+
+    Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\GetProductFiles:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFiles'
 
     Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\CheckAuthentication:
         public: true
