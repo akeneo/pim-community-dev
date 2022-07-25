@@ -39,7 +39,7 @@ class FindProductToImportSpec extends ObjectBehavior
     function it_finds_product_from_uuid_given_by_the_reader(ProductRepository $productRepository)
     {
         $product = new Product();
-        $productRepository->find($product->getUuid()->toString())->willReturn($product);
+        $productRepository->findOneByUuid($product->getUuid())->willReturn($product);
 
         $this->fromFlatData('product_identifier', 'family', $product->getUuid()->toString())->shouldReturn($product);
     }
