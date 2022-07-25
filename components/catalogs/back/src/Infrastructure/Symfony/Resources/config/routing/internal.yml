@@ -21,3 +21,8 @@ akeneo_catalogs_internal_get_families:
     path: '/rest/catalogs/families'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetFamiliesAction
     methods: [ GET ]
+
+akeneo_catalogs_internal_get_channels:
+    path: '/rest/catalogs/channels'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelsAction
+    methods: [ GET ]

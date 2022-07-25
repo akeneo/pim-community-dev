@@ -75,3 +75,7 @@ services:
     Akeneo\Catalogs\Infrastructure\Persistence\GetFamiliesByCodeQuery:
         arguments:
             - '@pim_enrich.repository.family.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelsQuery:
+        arguments:
+            - '@pim_catalog.repository.channel'
