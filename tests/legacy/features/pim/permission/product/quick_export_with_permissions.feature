@@ -65,7 +65,7 @@ Feature: Quick export products with user permissions applied
     And I wait for the "csv_published_product_quick_export" quick export to finish
     And exported file of "csv_published_product_quick_export" should contain:
     """
-    uuid;sku;categories;description-en_US-mobile;description-fr_FR-mobile;enabled;family;groups;manufacturer;name-en_US;name-fr_FR;price-EUR;price-USD;side_view;size;top_view
-    %uuid%;blackhoodie;;;;1;hoodies;;;"Black hoodie";;;;;;
-    %uuid%;greenhoodie;;;;1;hoodies;;;"Green hoodie";;;;;;
+    sku;categories;description-en_US-mobile;description-fr_FR-mobile;enabled;family;groups;manufacturer;name-en_US;name-fr_FR;price-EUR;price-USD;side_view;size;top_view
+    blackhoodie;;;;1;hoodies;;;"Black hoodie";;;;;;
+    greenhoodie;;;;1;hoodies;;;"Green hoodie";;;;;;
     """
