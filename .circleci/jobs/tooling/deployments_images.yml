@@ -14,7 +14,7 @@ jobs:
     steps:
       - attach_workspace:
             at: ~/
-      - set_gcloud_config_ucs
+      - set_gcloud_config_pim_saas_dev
       - run:
           name: Check if image already exists
           command: |
