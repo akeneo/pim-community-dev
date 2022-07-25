@@ -27,19 +27,19 @@ spec:
             - name: SOURCE_CODE_ZIP
               value: {{ .Values.pim.cloudFunction.sourceCodeZip }}
           volumeMounts:
-            - name: pim-cloud-function-scripts-configmap
+            - name: cloud-function-scripts-configmap
               mountPath: /scripts-dir
-            - name: pim-cloud-function-source-configmap
+            - name: cloud-function-sources-configmap
               mountPath: /ucs-function-cron-transformer/package.json
               subPath: package.json
-            - name: pim-cloud-function-source-configmap
+            - name: cloud-function-sources-configmap
               mountPath: /ucs-function-cron-transformer/index.js
               subPath: index.js
       volumes:
-        - name: pim-cloud-function-scripts-configmap
+        - name: cloud-function-scripts-configmap
           configMap:
             name: cloud-function-scripts-configmap
-        - name: pim-cloud-function-source-configmap
+        - name: cloud-function-sources-configmap
           configMap:
             name: cloud-function-sources-configmap
             items:
