@@ -36,7 +36,7 @@ class UserApiProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         $user = $this->userRepository->findOneByIdentifier($username);
-        if (!$user) {
+        if (!$user || $user->isInternalUser()) {
             throw new UsernameNotFoundException(sprintf('User with username "%s" does not exist.', $username));
         }
 

@@ -72,6 +72,11 @@ class QueueJobLauncher implements JobLauncherInterface
             unset($configuration['send_email']);
         }
 
+        if (isset($configuration['email'])) {
+            $options['email'] = $configuration['email'];
+            unset($configuration['email']);
+        }
+
         $jobExecution = $this->createJobExecution($jobInstance, $user, $configuration);
         $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromJobInstance(
             $jobInstance,

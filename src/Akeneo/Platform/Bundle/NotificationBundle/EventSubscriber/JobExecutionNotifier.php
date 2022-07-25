@@ -58,12 +58,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
         $jobExecution = $event->getJobExecution();
         $jobParameters = $jobExecution->getJobParameters();
 
-        if (null === $jobParameters || !$jobParameters->has('user_to_notify')) {
-            return;
-        }
-
-        $user = $jobParameters->get('user_to_notify');
-        if (null === $user) {
+        if (null === $jobParameters || (!$jobParameters->has('user_to_notify') && !$jobParameters->has('users_to_notify'))) {
             return;
         }
 
@@ -71,8 +66,12 @@ class JobExecutionNotifier implements EventSubscriberInterface
             return;
         }
 
+        $users = $jobParameters->has('users_to_notify')
+            ? $jobParameters->get('users_to_notify')
+            : [$jobParameters->get('user_to_notify')];
+
         $notification = $this->createNotification($jobExecution);
-        $this->notifier->notify($notification, [$user]);
+        $this->notifier->notify($notification, $users);
     }
 
     /**

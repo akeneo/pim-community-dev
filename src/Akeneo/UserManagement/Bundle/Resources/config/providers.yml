@@ -12,3 +12,9 @@ services:
     class: '%pim_user.provider.user_api.class%'
     arguments:
       - '@pim_user.repository.user'
+
+  pim_user.provider.job_user:
+    class: 'Akeneo\UserManagement\Bundle\Security\JobUserProvider'
+    arguments:
+      - '@pim_user.repository.user'
+

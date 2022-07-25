@@ -28,6 +28,7 @@ class User implements UserInterface, EquatableInterface
     const DEFAULT_TIMEZONE = 'UTC';
     const TYPE_USER = 'user';
     const TYPE_API = 'api';
+    const TYPE_INTERNAL = 'internal';
 
     /** @var int|string */
     protected $id;
@@ -1111,6 +1112,16 @@ class User implements UserInterface, EquatableInterface
     public function defineAsApiUser(): void
     {
         $this->type = self::TYPE_API;
+    }
+
+    public function isInternalUser(): bool
+    {
+        return self::TYPE_INTERNAL === $this->type;
+    }
+
+    public function defineAsInternalUser(): void
+    {
+        $this->type = self::TYPE_INTERNAL;
     }
 
     /**

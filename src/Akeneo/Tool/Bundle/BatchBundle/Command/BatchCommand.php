@@ -89,7 +89,7 @@ class BatchCommand extends Command
             ->addOption(
                 'email',
                 null,
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'The email to notify at the end of the job execution'
             )
             ->addOption(
@@ -113,13 +113,13 @@ class BatchCommand extends Command
 
         // Override mail notifier recipient email
         if ($email = $input->getOption('email')) {
-            $errors = $this->validator->validate($email, new Assert\Email());
+            $errors = $this->validator->validate($email, new Assert\All(new Assert\Email()));
             if (count($errors) > 0) {
                 throw new \RuntimeException(
                     sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
                 );
             }
-            $this->notifier->setRecipientEmail($email);
+            $this->notifier->setRecipientEmails($email);
         }
 
         $executionId = $input->hasArgument('execution') ? $input->getArgument('execution') : null;

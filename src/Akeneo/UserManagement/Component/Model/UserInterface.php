@@ -554,6 +554,9 @@ interface UserInterface extends BaseUserInterface, \Serializable, EntityUploaded
     public function isApiUser(): bool;
 
     public function defineAsApiUser(): void;
+    public function isInternalUser(): bool;
+
+    public function defineAsInternalUser(): void;
 
     public function duplicate(): UserInterface;
 

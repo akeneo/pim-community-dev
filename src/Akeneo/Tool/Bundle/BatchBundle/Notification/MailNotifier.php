@@ -18,7 +18,7 @@ use Twig\Environment;
  */
 class MailNotifier implements Notifier
 {
-    protected ?string $recipientEmail = null;
+    protected array $recipientEmails = [];
 
     public function __construct(
         protected LoggerInterface       $logger,
@@ -28,28 +28,32 @@ class MailNotifier implements Notifier
     ) {
     }
 
-    public function setRecipientEmail(string $recipientEmail): self
+    public function setRecipientEmails(array $recipientEmails): self
     {
-        $this->recipientEmail = $recipientEmail;
+        $this->recipientEmails = $recipientEmails;
 
         return $this;
     }
 
     public function notify(JobExecution $jobExecution)
     {
-        if (null === $email = $this->getEmail()) {
+        $emails = $this->getEmail();
+        if (empty($emails)) {
             return;
         }
 
-        $parameters = [
-            'jobExecution' => $jobExecution,
-            'email' => $email
-        ];
 
         try {
-            $txtBody = $this->twig->render('@AkeneoBatch/Email/notification.txt.twig', $parameters);
-            $htmlBody = $this->twig->render('@AkeneoBatch/Email/notification.html.twig', $parameters);
-            $this->mailer->notifyByEmail($email, 'Job has been executed', $txtBody, $htmlBody);
+            foreach ($emails as $email) {
+                $parameters = [
+                    'jobExecution' => $jobExecution,
+                    'email' => $email
+                ];
+
+                $txtBody = $this->twig->render('@AkeneoBatch/Email/notification.txt.twig', $parameters);
+                $htmlBody = $this->twig->render('@AkeneoBatch/Email/notification.html.twig', $parameters);
+                $this->mailer->notifyByEmail($email, 'Job has been executed', $txtBody, $htmlBody);
+            }
         } catch (Throwable $exception) {
             $this->logger->error(
                 MailNotifier::class . ' - Unable to send email : ' . $exception->getMessage(),
@@ -61,23 +65,21 @@ class MailNotifier implements Notifier
 
     /**
      * Get the current authenticated user
-     *
-     * @return null|string
      */
-    private function getEmail(): ?string
+    private function getEmail(): array
     {
-        if ($this->recipientEmail) {
-            return $this->recipientEmail;
+        if ($this->recipientEmails) {
+            return $this->recipientEmails;
         }
 
         if (null === $token = $this->tokenStorage->getToken()) {
-            return null;
+            return [];
         }
 
         if (!is_object($user = $token->getUser())) {
-            return null;
+            return [];
         }
 
-        return $user->getEmail();
+        return [$user->getEmail()];
     }
 }
