@@ -4,13 +4,13 @@
 apiVersion: cloudscheduler.gcp.jet.crossplane.io/v1alpha1
 kind: Job
 metadata:
-  name: "ucs-pim-job-{{ $jobName }}"
+  name: "{{ $tplCtx.Values.pim.jobs-prefix }}-{{ $jobName }}"
 spec:
   providerConfigRef:
     name: "provider-config-jet-gcp"
   forProvider:
     description: "job for {{ $jobName }}"
-    name: "pim-job-{{ $jobName }}"
+    name: "{{ $tplCtx.Values.pim.jobs-prefix }}-{{ $jobName }}"
     region: {{ $tplCtx.Values.common.region }}
     timeZone: {{ $tplCtx.Values.pim.cloudFunction.timeZone }}
     schedule: '{{ $jobOptions.schedule }}'
