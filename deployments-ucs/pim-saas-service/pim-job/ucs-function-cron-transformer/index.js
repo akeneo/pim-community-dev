@@ -1,6 +1,3 @@
-
-
-
 const {PubSub} = require('@google-cloud/pubsub');
 const {Firestore} = require('@google-cloud/firestore');
 
@@ -16,7 +13,7 @@ if (typeof req.body === 'string')  bodyjson=JSON.parse(req.body);
    command  = JSON.parse(bodyjson).options;
    code =  JSON.parse(bodyjson).code;
    topicId = JSON.parse(bodyjson).topicId;
-//load tenants from file store 
+//load tenants from file store
 firestore.collection(process.env.tenantContext).get()
     .then((querySnapshot) => {
       const tenantIds = [];
@@ -32,7 +29,7 @@ firestore.collection(process.env.tenantContext).get()
       //read command and options jobs from the http request
       let commandJson=JSON.parse(JSON.stringify(command));
         let dataBuffer = Buffer.from(JSON.stringify(command));
-        const pubSubClient = new PubSub({ projectId: projectId });     
+        const pubSubClient = new PubSub({ projectId: projectId });
         for(var i = 0; i < tenantIds.length; i++){
           let customAttributes = {
               tenant_id: tenantIds[i],
@@ -50,7 +47,7 @@ firestore.collection(process.env.tenantContext).get()
                   console.log("Published a message with custom attributes: messageId="+ JSON.stringify(results)+"published.***** tenant_id="+tenantIds[i]+"***** codeJob:"+JSON.stringify(code));
           }).catch(err => {
             console.error(err);
-            
+
           });
           }
   res.status(200).send("Excution of batch"+code+ "finish with success");

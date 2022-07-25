@@ -1,4 +1,5 @@
 #!/bin/sh
+set -uo pipefail
 
 cd /tmp
 tar -cvf  ${SOURCE_CODE_ZIP} /ucs-function-cron-transformer

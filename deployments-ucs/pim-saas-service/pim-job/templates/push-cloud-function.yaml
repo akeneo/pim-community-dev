@@ -3,19 +3,16 @@ kind: Job
 metadata:
   name: push-cloud-function
   labels:
-    component: "hook-cloud-function"
-    app.kubernetes.io/component: "hook-cloud-function"
-  annotations:
-    "helm.sh/hook": "post-install,post-upgrade"
-    "helm.sh/hook-weight": "100"
+    component: "push-cloud-function"
+    app.kubernetes.io/component: "push-cloud-function"
 spec:
   template:
     metadata:
       labels:
-        component: "hook-cloud-function"
-        app.kubernetes.io/component: "hook-cloud-function"
+        component: "push-cloud-function"
+        app.kubernetes.io/component: "push-cloud-function"
     spec:
-      restartPolicy: Never
+      restartPolicy: OnFailure
       serviceAccountName: {{ .Values.common.workloadIdentityKSA | quote }}
       nodeSelector:
         iam.gke.io/gke-metadata-server-enabled: "true"
@@ -23,7 +20,7 @@ spec:
         - name:  push-cloud-function
           image: {{ .Values.image.curl.repository }}:{{ .Values.image.curl.tag }}
           imagePullPolicy: {{ .Values.image.curl.pullPolicy | quote }}
-          command: ["sh", "/scripts-dir/hook-cloud-function-scripts.sh"]
+          command: ["sh", "/scripts-dir/cloud-function-scripts.sh"]
           env:
             - name: BUCKET_NAME
               value: {{ .Values.pim.cloudFunction.bucket }}
