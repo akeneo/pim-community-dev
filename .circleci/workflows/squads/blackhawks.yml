@@ -32,14 +32,14 @@ workflows:
             - security-hunter/scan-dir:
                   severity: "CRITICAL"
                   only_secrets: false
-                  exit_code_when_failure: 1
+                  exit_code_when_failure: 0
                   requires:
                       - checkout
             # Scans the built docker image. Requires build step.
             - security-hunter/scan-image:
                   severity: "CRITICAL"
                   only_secrets: false
-                  exit_code_when_failure: 1
+                  exit_code_when_failure: 0
                   requires:
                       - build_srnt_dev
             - test_back_integration_bounded_contexts:
