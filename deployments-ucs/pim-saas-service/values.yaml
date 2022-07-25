@@ -294,6 +294,10 @@ pim:
       enabled: true
       pimJobOptions: "--no-interaction"
       schedule: "1 0 * * *"
+    zdd-migration-migrate:
+      enabled: true
+      pimCommand: "--no-interaction"
+      schedule: "45 * * * *"
   supplier_portal:
     settings:
       enabled: false

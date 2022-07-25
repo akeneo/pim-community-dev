@@ -4,57 +4,47 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplier;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
+use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
+final class DatabaseGetSupplierFromContributorEmailIntegration extends SqlIntegrationTestCase
 {
     /** @test */
-    public function itReturnsNullIfThereIsNoSupplier(): void
+    public function itReturnsNullIfSupplierDoesNotHaveContributor(): void
     {
-        static::assertNull(($this->get(GetSupplier::class))(
-            Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')
+        $this->createSupplier();
+
+        static::assertNull(($this->get(GetSupplierFromContributorEmail::class))(
+            ContributorEmail::fromString('contributor1@example.com')
         ));
     }
 
     /** @test */
-    public function itGetsASupplierWithContributors(): void
+    public function itReturnsNullIfContributorDoesNotExist(): void
     {
         $this->createSupplier();
         $this->createContributor('contributor1@example.com');
-        $this->createContributor('contributor2@example.com');
 
-        $supplier = ($this->get(GetSupplier::class))(
-            Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')
-        );
-
-        static::assertSame('44ce8069-8da1-4986-872f-311737f46f02', $supplier->identifier);
-        static::assertSame('supplier_code', $supplier->code);
-        static::assertSame('Supplier code', $supplier->label);
-        static::assertEquals(
-            [
-                'contributor1@example.com',
-                'contributor2@example.com',
-            ],
-            array_values($supplier->contributors),
-        );
+        static::assertNull(($this->get(GetSupplierFromContributorEmail::class))(
+            ContributorEmail::fromString('contributor2@example.com')
+        ));
     }
 
     /** @test */
-    public function itGetsASupplierWithNoContributors(): void
+    public function itGetsASupplierFromContributorEmail(): void
     {
         $this->createSupplier();
+        $this->createContributor('contributor1@example.com');
 
-        $supplier = ($this->get(GetSupplier::class))(
-            Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')
+        $supplier = ($this->get(GetSupplierFromContributorEmail::class))(
+            ContributorEmail::fromString('contributor1@example.com')
         );
 
         static::assertSame('44ce8069-8da1-4986-872f-311737f46f02', $supplier->identifier);
         static::assertSame('supplier_code', $supplier->code);
         static::assertSame('Supplier code', $supplier->label);
-        static::assertSame([], $supplier->contributors);
     }
 
     private function createSupplier(): void

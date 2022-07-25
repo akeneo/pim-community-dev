@@ -7,23 +7,34 @@ namespace Akeneo\SupplierPortal\Supplier\Test\Integration\Infrastructure\Product
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Filename;
+use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\StoreProductsFileInGCSBucket;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase
 {
     /** @test */
-    public function itStoresAProductsFileInAGCSBucket(): void
+    public function itStoresAProductsFileInAGCSBucketAndReturnsThePath(): void
     {
+        file_put_contents('/tmp/products.xlsx', 'content');
         $filesystemProvider = static::getContainer()->get('akeneo_file_storage.file_storage.filesystem_provider');
         $sut = new StoreProductsFileInGCSBucket($filesystemProvider);
 
         $filesystem = $filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
+        $fileIdentifier = Identifier::generate();
         $expectedContents = [
-            ['type' => 'file', 'path' => 'supplier_a/products.xlsx'],
+            [
+                'type' => 'file',
+                'path' => sprintf('%s/%s-%s', 'supplier_a', $fileIdentifier, 'products.xlsx'),
+            ],
         ];
 
-        ($sut)(Code::fromString('supplier_a'), Filename::fromString('products.xlsx'), 'content');
+        $path = ($sut)(
+            Code::fromString('supplier_a'),
+            Filename::fromString('products.xlsx'),
+            $fileIdentifier,
+            '/tmp/products.xlsx'
+        );
 
         $customerFiles = $filesystem->listContents('supplier_a');
 
@@ -35,7 +46,25 @@ final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase
             ];
         }
 
+        static::assertSame(sprintf('%s/%s-%s', 'supplier_a', $fileIdentifier, 'products.xlsx'), (string) $path);
         static::assertSame($expectedContents, $actualContents);
+    }
+
+    /** @test */
+    public function itThrowsAnExceptionIfFileIsNotReadable(): void
+    {
+        $filesystemProvider = static::getContainer()->get('akeneo_file_storage.file_storage.filesystem_provider');
+        $sut = new StoreProductsFileInGCSBucket($filesystemProvider);
+
+        $fileIdentifier = Identifier::generate();
+
+        static::expectException(\RuntimeException::class);
+        ($sut)(
+            Code::fromString('supplier_a'),
+            Filename::fromString('products.xlsx'),
+            $fileIdentifier,
+            '/tmp/products.xlsx'
+        );
     }
 
     protected function tearDown(): void
@@ -46,5 +75,8 @@ final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase
         $filesystem = $filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
 
         $filesystem->deleteDirectory('supplier_a');
+        if (file_exists('/tmp/products.xlsx')) {
+            unlink('/tmp/products.xlsx');
+        }
     }
 }
