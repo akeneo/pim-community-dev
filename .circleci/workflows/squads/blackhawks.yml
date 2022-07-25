@@ -2,7 +2,7 @@ client-to-clone-srnt: &client-to-clone-srnt
 client-to-clone-grth: &client-to-clone-grth
 
 orbs:
-  security-hunter: akeneo-orbs/security-hunter@1.0.6
+  security-hunter: akeneo-orbs/security-hunter@1.0.7
 
 workflows:
     dev_pull_request:
@@ -24,20 +24,22 @@ workflows:
             - build_srnt_dev:
                   requires:
                       - checkout
+            # Security tests
+            # scans commits of the current PR
             - security-hunter/scan-latest-commits:
                   exit_code_when_failure: 1
-                  requires:
-                      - build_srnt_dev
+            # Scans directory files of project
             - security-hunter/scan-dir:
                   severity: "CRITICAL"
                   only_secrets: false
-                  exit_code_when_failure: 1
+                  exit_code_when_failure: 0
                   requires:
-                      - build_srnt_dev
+                      - checkout
+            # Scans the built docker image. Requires build step.
             - security-hunter/scan-image:
                   severity: "CRITICAL"
                   only_secrets: false
-                  exit_code_when_failure: 1
+                  exit_code_when_failure: 0
                   requires:
                       - build_srnt_dev
             - test_back_integration_bounded_contexts:
