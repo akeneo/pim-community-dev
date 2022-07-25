@@ -157,7 +157,7 @@ image:
   cloudsdk:
     repository: gcr.io/google.com/cloudsdktool/cloud-sdk
     pullPolicy: IfNotPresent
-    tag: 326.0.0-alpine
+    tag: 392.0.0-alpine
   curl:
     repository: curlimages/curl
     pullPolicy: IfNotPresent

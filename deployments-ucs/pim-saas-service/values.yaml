@@ -79,6 +79,10 @@ image:
     repository: httpd
     tag: 2.4.51
     pullPolicy: IfNotPresent
+  cloudsdk:
+    repository: gcr.io/google.com/cloudsdktool/cloud-sdk
+    pullPolicy: IfNotPresent
+    tag: 392.0.0-alpine
   curl:
     repository: curlimages/curl
     pullPolicy: IfNotPresent
