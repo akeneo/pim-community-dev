@@ -2,7 +2,7 @@
 
 namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccount;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler;
@@ -12,7 +12,7 @@ class CreateContributorAccountOnContributorAdded implements EventSubscriberInter
 {
     public function __construct(
         private CreateContributorAccountHandler $createContributorAccountHandler,
-        private FeatureFlag $contributorAuthenticationFeatureFlag,
+        private FeatureFlags $featureFlags,
     ) {
     }
 
@@ -25,7 +25,7 @@ class CreateContributorAccountOnContributorAdded implements EventSubscriberInter
 
     public function contributorAdded(ContributorAdded $contributorAdded): void
     {
-        if (!$this->contributorAuthenticationFeatureFlag->isEnabled()) {
+        if (!$this->featureFlags->isEnabled('supplier_portal_contributor_authentication')) {
             return;
         }
 
