@@ -108,7 +108,6 @@ SQL;
                 ]
             )->fetchFirstColumn();
 
-
             $nonExistentProductIdsInMysql = array_diff($productIdsFromEs, $productIdsFromMysql);
             if (!empty($nonExistentProductIdsInMysql)) {
                 yield $nonExistentProductIdsInMysql;
@@ -145,7 +144,7 @@ SQL;
             );
             $results = $this->productAndProductModelClient->search($params);
             $productsIds = array_map(function ($doc) {
-                return substr($doc['id'], ElasticsearchProductProjection::INDEX_PREFIX_ID);
+                return substr($doc['_source']['id'], strlen(ElasticsearchProductProjection::INDEX_PREFIX_ID));
             }, $results['hits']['hits']);
 
             yield $productsIds;
@@ -154,6 +153,37 @@ SQL;
             $lastResult = end($resultsPage);
             $searchAfter = $lastResult['sort'] ?? [];
         } while (count($resultsPage)>0);
+    }
+
+    private function getAncestorsFromProductsIds(array $productIds): array
+    {
+        $sql = <<<SQL
+            SELECT parent_product_model.code
+            FROM pim_catalog_product product
+                JOIN pim_catalog_product_model product_model
+                    ON product_model.id = product.product_model_id
+                JOIN pim_catalog_product_model parent_product_model
+                    ON parent_product_model.id = product_model.product_model_id
+            WHERE product.id IN (:product_ids)
+            UNION DISTINCT
+            SELECT product_model.code
+            FROM pim_catalog_product product
+                JOIN pim_catalog_product_model product_model
+                    ON product_model.id = product.product_model_id
+            WHERE product.id IN (:product_ids)
+        SQL;
+
+        $results = $this->connection->executeQuery(
+            $sql,
+            [
+                'product_ids' => $productIds
+            ],
+            [
+                'product_ids' => Connection::PARAM_STR_ARRAY,
+            ]
+        )->fetchFirstColumn();
+
+        return $results;
     }
 
     private function checkIndexExists(): void
@@ -166,32 +196,5 @@ SQL;
                 )
             );
         }
-    }
-
-    private function getAncestorsFromProductsIds(array $productIds): array
-    {
-        $prefixProductIds = array_map(fn ($productId) => ElasticsearchProductProjection::INDEX_PREFIX_ID . $productId, $productIds);
-        $params =
-            [
-                '_source' => ['ancestors'],
-                'query' => [
-                    'constant_score' => [
-                        'filter' => [
-                            'bool' => [
-                                'must' => [
-                                    'ids' => [
-                                        'values' => $prefixProductIds
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ];
-
-        $results = $this->productAndProductModelClient->search($params);
-        $ancestorsCodesByProducts = array_map(fn ($doc) => $doc['ancestors']['codes'], $results['hits']['hits']);
-
-        return [...$ancestorsCodesByProducts];
     }
 }
