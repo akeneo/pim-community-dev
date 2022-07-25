@@ -6,6 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases;
+use Akeneo\Platform\Bundle\PimVersionBundle\Version\GrowthVersion;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -18,7 +19,7 @@ class WebMarketplaceAliasesSpec extends ObjectBehavior
     public function let(
         VersionProviderInterface $versionProvider
     ) {
-        $this->beConstructedWith($versionProvider);
+        $this->beConstructedWith($versionProvider, new GrowthVersion());
     }
 
     public function it_is_initializable(): void
