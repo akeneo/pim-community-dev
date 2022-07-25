@@ -15,9 +15,9 @@ use PhpSpec\ObjectBehavior;
 class ListRootCategoriesWithCountHandlerSpec extends ObjectBehavior
 {
     function let(
-        CategoryRepositoryInterface                                                                               $categoryRepository,
-        UserContext                                                                                               $userContext,
-        ListRootCategoriesWithCountIncludingSubCategories    $listIncludingSubCategories,
+        CategoryRepositoryInterface $categoryRepository,
+        UserContext $userContext,
+        ListRootCategoriesWithCountIncludingSubCategories $listIncludingSubCategories,
         ListRootCategoriesWithCountNotIncludingSubCategories $listNotIncludingSubCategories
     ) {
         $this->beConstructedWith(

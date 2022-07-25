@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Category\Infrastructure\Query;
+namespace Akeneo\Pim\Enrichment\Category\Domain\Query;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 

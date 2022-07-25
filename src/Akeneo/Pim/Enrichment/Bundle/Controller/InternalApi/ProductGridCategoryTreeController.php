@@ -52,7 +52,7 @@ class ProductGridCategoryTreeController
     public function __construct(
         ListRootCategoriesWithCountHandler $listRootCategoriesWithCount,
         ListChildrenCategoriesWithCountHandler $listChildrenCategoriesWithCount,
-        RootCategory  $rootCategoryNormalizer,
+        RootCategory $rootCategoryNormalizer,
         ChildCategory $childCategoryNormalizer,
         UserContext $userContext,
         SecurityFacade $securityFacade
