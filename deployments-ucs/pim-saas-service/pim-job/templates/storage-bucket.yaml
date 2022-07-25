@@ -4,7 +4,7 @@ metadata:
   name: "{{ .Values.pim.cloudFunction.bucket }}"
   labels:
     ucsCronBucket: {{ .Values.pim.cloudFunction.bucket }}
-    crossplane.io/external-name: {{ .Values.pim.cloudFunction.bucket }} 
+    crossplane.io/external-name: {{ .Values.pim.cloudFunction.bucket }}
 spec:
   location: {{ .Values.common.location }}
   storageClass: STANDARD
