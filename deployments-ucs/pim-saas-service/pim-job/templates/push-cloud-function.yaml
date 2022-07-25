@@ -38,10 +38,10 @@ spec:
       volumes:
         - name: pim-cloud-function-scripts-configmap
           configMap:
-            name: hook-cloud-function-scripts
+            name: cloud-function-scripts-configmap
         - name: pim-cloud-function-source-configmap
           configMap:
-            name: hook-cloud-function-sources
+            name: cloud-function-sources-configmap
             items:
             - key: package.json
               path: package.json
