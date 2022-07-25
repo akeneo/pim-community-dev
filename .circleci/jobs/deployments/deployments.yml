@@ -584,7 +584,7 @@ jobs:
               mv /tmp/ee-branch/deployments-ucs/pim-saas-service /tmp/ee-deployment/deployments-ucs/pim-saas-service
 
               ## values.yaml
-              yq m -x -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml /tmp/ee-deployment/deployments-ucs/config/ci-values.yaml
+              yq m -x -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml /tmp/ee-branch/deployments-ucs/config/ci-values.yaml
 
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml global.extraLabels.instanceName "${INSTANCE_NAME}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.gcpProjectID "${GOOGLE_CLOUD_PROJECT}"
