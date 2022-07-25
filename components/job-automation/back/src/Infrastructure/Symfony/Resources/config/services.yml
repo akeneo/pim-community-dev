@@ -13,3 +13,6 @@ services:
         class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
         arguments:
             - '%env(bool:FLAG_JOB_AUTOMATION_ENABLED)%'
+
+    akeneo.job_automation.query.get_user_groups:
+        class: Akeneo\Platform\JobAutomation\Infrastructure\Query\GetUserGroupsQuery
