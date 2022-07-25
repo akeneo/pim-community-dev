@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory;
 
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\SupplierWithContributors;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 
-final class InMemoryGetSupplier implements GetSupplier
+final class InMemoryGetSupplierWithContributors implements GetSupplierWithContributors
 {
     public function __construct(private InMemoryRepository $supplierRepository)
     {

@@ -6,20 +6,20 @@ namespace Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueO
 
 final class Filename
 {
-    private function __construct(private string $filename)
+    private function __construct(private string $originalFilename)
     {
-        if ('' === trim($filename)) {
+        if ('' === trim($originalFilename)) {
             throw new \InvalidArgumentException('The filename cannot be empty.');
         }
     }
 
-    public static function fromString(string $filename): self
+    public static function fromString(string $originalFilename): self
     {
-        return new self($filename);
+        return new self($originalFilename);
     }
 
     public function __toString(): string
     {
-        return $this->filename;
+        return $this->originalFilename;
     }
 }

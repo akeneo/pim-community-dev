@@ -61,11 +61,7 @@ final class RequestNewInvitationHandlerTest extends TestCase
         $mockSendWelcomeEmail = $this->createMock(SendWelcomeEmail::class);
         $sut = new RequestNewInvitationHandler($contributorAccountRepository, $mockSendWelcomeEmail);
 
-        try {
-            ($sut)(new RequestNewInvitation('unknown@example.com'));
-            static::fail('ContributorAccountDoesNotExist exception should have been thrown.');
-        } catch (ContributorAccountDoesNotExist) {
-            static::assertTrue(true);
-        }
+        static::expectException(ContributorAccountDoesNotExist::class);
+        ($sut)(new RequestNewInvitation('unknown@example.com'));
     }
 }
