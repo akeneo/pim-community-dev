@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Category\Application\Component\Manager;
+namespace Akeneo\Category\Infrastructure\Component\Manager;
 
-use Akeneo\Category\Domain\Component\Manager\PositionResolverInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\GetDirectChildrenCategoryCodesInterface;
 

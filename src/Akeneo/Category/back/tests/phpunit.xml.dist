@@ -20,7 +20,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="Channel_Integration_Test">
+        <testsuite name="Category_Integration_Test">
             <directory suffix="Integration.php">Integration</directory>
         </testsuite>
         <testsuite name="Category_EndToEnd_Test">

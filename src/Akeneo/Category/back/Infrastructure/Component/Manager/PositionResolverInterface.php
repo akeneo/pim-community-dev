@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Category\Domain\Component\Manager;
+namespace Akeneo\Category\Infrastructure\Component\Manager;
 
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 
