@@ -16,7 +16,7 @@ final class SupplierFilesList
     {
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         $page = $request->query->getInt('page', 1);
         $supplierFiles = ($this->getSupplierFiles)($page);

@@ -23,8 +23,12 @@ const useSupplierFiles = (page: number): [SupplierFileRow[], number] => {
         if (!response.ok) {
             notify(
                 NotificationLevel.ERROR,
-                translate('supplier_portal.product_file_dropping.supplier_files.notification.error_loading_supplier_files.title'),
-                translate('supplier_portal.product_file_dropping.supplier_files.notification.error_loading_supplier_files.content')
+                translate(
+                    'supplier_portal.product_file_dropping.supplier_files.notification.error_loading_supplier_files.title'
+                ),
+                translate(
+                    'supplier_portal.product_file_dropping.supplier_files.notification.error_loading_supplier_files.content'
+                )
             );
             return;
         }
