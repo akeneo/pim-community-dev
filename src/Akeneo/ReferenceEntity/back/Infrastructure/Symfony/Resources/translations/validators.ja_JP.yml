@@ -100,3 +100,4 @@ pim_reference_entity:
     validation:
       record_should_exist: 'プロパティ「%attribute_code%」は有効な記録コードが必要です。記録「%invalid_record%」が存在しません'
       records_should_exist: 'プロパティ「%attribute_code%」は有効な記録コードが必要です。次の記録が存在しません:「%invalid_records%」'
+      records_should_not_contains_duplicates: '{1} 次の記録が繰り返し使用されています: "{{ duplicate_codes }}"。記録リストをもう一度確認してください。|]1, +Inf] 次の記録が繰り返し使用されています: "{{ duplicate_codes }}"。記録リストをもう一度確認してください。'

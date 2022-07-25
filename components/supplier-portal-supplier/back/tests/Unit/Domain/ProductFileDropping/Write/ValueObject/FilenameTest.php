@@ -20,9 +20,9 @@ final class FilenameTest extends TestCase
     /** @test */
     public function itCreatesAndGetsAFilenameIfItsValid(): void
     {
-        $filename = Filename::fromString('supplier-file.xlsx');
+        $originalFilename = Filename::fromString('supplier-file.xlsx');
 
-        static::assertInstanceOf(Filename::class, $filename);
-        static::assertSame('supplier-file.xlsx', (string) $filename);
+        static::assertInstanceOf(Filename::class, $originalFilename);
+        static::assertSame('supplier-file.xlsx', (string) $originalFilename);
     }
 }
