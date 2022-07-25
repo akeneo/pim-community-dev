@@ -100,3 +100,4 @@ pim_reference_entity:
     validation:
       record_should_exist: '''%attribute_code%'' 속성에 올바른 레코드 코드가 필요합니다. ''%invalid_record%'' 레코드가 존재하지 않습니다.'
       records_should_exist: '''%attribute_code%'' 속성에 올바른 레코드 코드가 필요합니다. 다음 레코드가 존재하지 않습니다.: ''%invalid_records%'''
+      records_should_not_contains_duplicates: '{1} 다음 레코드가 여러 번 사용되었습니다. ''{{ duplicate_options }}''. 레코드 목록을 다시 확인해주십시오.|]1, +Inf] 다음 레코드가 여러 번 사용되었습니다. ''{{ duplicate_options }}''. 레코드 목록을 다시 확인해주십시오.'

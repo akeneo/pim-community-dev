@@ -1,0 +1,206 @@
+batch_jobs.xlsx_tailored_product_import.label: カスタム商品をXLSX形式でインポート
+akeneo.tailored_import:
+  global_settings:
+    error_action:
+      label: エラー管理
+      skip_product: 商品をスキップ
+      skip_value: 値をスキップ
+      helper_message: エラーが発生した場合の動作を定義します。
+  file_structure:
+    placeholder:
+      title: インポートファイルが空です。
+      helper: '「インポート構造を初期化」をクリックして、構築を開始します。'
+      link: 詳細についてはヘルプセンターをご確認ください。
+      button: インポート構造を初期化
+    modal:
+      title: インポート構造を定義
+      subtitle: プロファイルをインポート
+      helper: インポートを構成するには、ファイルの構造を定義することから始めます。
+      link: 詳細についてはヘルプセンターをご確認ください。
+      upload:
+        placeholder: ここにファイルをドロップするか、ディスクを参照します。
+        uploading: アップロード中...
+        error: ファイルのアップロード中にエラーが発生しました。ファイルを確認して、もう一度やり直してください。
+      sheet: シート
+      header_row: ヘッダ行
+      first_product_row: 最初の商品行
+      first_column: 最初の商品列
+      unique_identifier_column: 一意識別子列
+  data_mapping_list:
+    title: マッピング構造
+    no_sources: ソースなし
+    add: 属性を追加
+    remove: このマッピングを削除してもよろしいですか？
+  data_mapping:
+    title: 設定
+    no_data_mapping_selected: マッピングが選択されていません。
+    attribute_not_found: この属性は削除されました。マッピングで使用できません。
+    property_not_valid: このプロパティは無効です。
+    preview:
+      button: プレビュー
+      input_title: 入力プレビュー
+      output_title: 出力プレビュー
+      placeholder: N/A
+      refresh: 更新
+      unable_to_generate_preview_data: プレビューを生成できません
+    operations:
+      title: 操作
+      identifier: 識別子属性で利用できる操作はありません
+      add: 操作を追加
+      common:
+        collapse: 折りたたむ
+      clean_html_tags:
+        title: HTMLタグを消去
+      split:
+        title: 分割
+        separator: 区切り文字を選択
+        comma: コンマ (,)
+        semicolon: セミコロン (;)
+        pipe: パイプ (|)
+      simple_select_replacement:
+        title: シンプルな選択の置換
+      multi_select_replacement:
+        title: 複数の選択の置換
+      categories_replacement:
+        title: カテゴリの置換
+        modal:
+          title: カテゴリを管理
+          table:
+            header:
+              replacement: PIM カテゴリ
+              source_values: ソースカテゴリ
+      no_result: 利用できる操作はありません
+      no_source: 最初に、ソースを選択します。そうすると、操作にアクセスできます
+      no_available:
+        text: 他に利用できる操作はありません。
+        link: ここをクリックして、ヘルプセンターを確認してください。
+      remove: この操作を削除してもよろしいですか？
+      replacement:
+        to_placeholder: ファイル内のソースの値を定義します。
+        modal:
+          options: オプションを管理
+          subtitle: 置換
+          no_result:
+            title: この属性には値がありません。
+          empty_result:
+            title: 検索結果がありません。
+            text: 新しい検索条件で再試行してください。
+          filters:
+            mapped:
+              label: 表示
+              unmapped: 置換なしのすべての値
+              mapped: 置換されたすべての値
+              all: すべての値
+          table:
+            header:
+              replacement: オプションのラベル
+              source_values: ソースの値
+          validation_error: 置換値で無効のものがあります。各フィールドの下にあるエラーメッセージを参照してください。
+      boolean_replacement:
+        title: ブール値の置換
+        field:
+          yes_value: はいの値
+          no_value: いいえの値
+      enabled_replacement:
+        title: 有効な置換
+        field:
+          enabled_value: 有効な値
+          disabled_value: 無効な値
+    sources:
+      title: ソース
+      add:
+        title: ソースドロップダウンを開く
+        label: ソースを追加
+        helper: "]-Inf, 1]この種の属性には、ソースを1つだけ追加することができます。|]1, この種の属性には、最大{{ limit }}個のソースまで追加できます。"
+    target:
+      title: ターゲット
+      identifier: ターゲットとして使用される識別子属性に使用できる設定がありません。
+      enabled: ターゲットとして使用される有効なプロパティに使用できる設定がありません。
+      locale_specific: この属性はロケール固有です
+      action_if_not_empty:
+        title: 割り当て
+        add: 既存の値に追加
+        set: 既存の値を置き換え
+      clear_if_empty: ファイルが空の場合は消去
+      parameters:
+        decimal_separator:
+          title: 小数の区切り
+          comma: コンマ (,)
+          dot: ドット (.)
+          arabic_comma: アラビア文字の小数点記号 (٫)
+        measurement_unit:
+          title: 単位
+        date_format: 日付フォーマット
+      invalid:
+        attribute: この属性は削除され、別のタイプで再作成されました。このデータマッピングを削除して、もう一度追加してください。
+        property: このプロパティは無効です。このデータマッピング削除して、もう一度追加してください。
+  form:
+    job_instance:
+      tab:
+        import-structure:
+          title: 構造をインポート
+      edit:
+        title: 編集するには、PIM 管理者とアクセス許可を確認してください。
+      launch:
+        title: インポートするには、PIM 管理者とアクセス許可を確認してください。
+  validation:
+    required: この値は必須です。
+    max_length_reached: 値が長すぎます。{{ limit }}以下の文字数で設定してください。
+    missing_query_params: "次のパラメーターがクエリに見つかりません: {{ missing_params }}"
+    source_values_should_be_unique: これらのソースの値で別の置換に既に使用されているものがあります。それらを削除してください。
+    columns:
+      max_count_reached: シートに{{ limit }}列以上を含めることはできません。
+      at_least_one_required: ヘッダには少なくとも{{ limit }}列である必要があります。
+      uuid:
+        should_be_unique: この列のUUIDはすでに存在します。新しいUUIDを入力してください。
+      index:
+        should_be_unique: この列のインデックスはすでに存在します。新しいインデックスを入力してください。
+      label:
+        should_not_be_blank: 列ラベルを定義してください。
+        max_length_reached: 列ラベルが長すぎます。{{ limit }}文字未満である必要があります。
+    data_mappings:
+      target_should_unique: ターゲット "{ code }}" は複数回選択できません。
+      max_count_reached: '{{ limit }}マッピングの上限に達しました。これ以上インポートにマッピングを追加できません。'
+      no_identifier_target_found: 識別子をターゲットにしているマッピングがありません。追加してください。
+      too_many_identifier_target_found: 識別子をターゲットにしているマッピングが複数あります。削除してください。
+      uuid:
+        should_be_unique: このマッピングのUUIDはすでに存在します。新しいUUIDを入力してください。
+      sources:
+        count_mismatched: このマッピングには、1つのソースだけを設定する必要があります。
+        at_least_one_required: 少なくとも1つのソースをマッピングに追加する必要があります。
+        max_count_reached: '{{ limit }}ソースの上限に達しました。これ以上マッピングにソースを追加できません。'
+        should_be_unique: このソースはすでに存在します。新しいソースを入力してください。
+        should_exist: ソースのいずれかが存在しません。このマッピングのすべてのソースを削除して再試行してください
+    target:
+      attribute_should_exist: 属性 {{ attribute_code }} は存在しません。作成するか、別のターゲットを選択してください。
+      property_should_exist: プロパティ {{ property_code }} は存在しません。作成するか、別のターゲットを選択してください。
+      source_configuration:
+        unit_should_exist: ユニット {{ unit_code }} は、測定ファミリー {{ measurement_family_code }} に存在しません。有効なユニットを選択してください。
+    locale:
+      should_be_active: ロケール {{ locale_code }} は無効化されています。再度有効にするか、別のロケールを選択してください。
+      should_be_bound_to_channel: チャンネル {{ channel_code }} のロケール {{ locale_code }} は無効化されています。再度有効にするか、別のロケールを選択してください。
+    channel:
+      should_exist: チャンネル {{ channel_code }} は削除されています。別のチャンネルを選択してください。
+    attribute:
+      locale_should_not_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持つようになりました。作成するか、別のターゲットを選択してください。
+      channel_should_not_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持つようになりました。作成するか、別のターゲットを選択してください。
+      locale_should_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持たなくなりました。削除するか、別のターゲットを選択してください。
+      channel_should_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持たなくなりました。削除するか、別のターゲットを選択してください。
+      invalid_specific_locale: 属性 {{ attribute_code }} はロケール固有です。別のロケールを選択してください。
+    file_key:
+      does_not_exist: ファイル {{ file_key }} が見つかりませんでした。
+    uploaded_file:
+      max_size: ファイルが大きすぎます。最大サイズは{{ limit }} {{ suffix }}です。
+      not_allowed_mime_type: XLSXファイルのみがサポートされています。
+      not_allowed_extension: XLSXファイルのみがサポートされています。
+    file_structure:
+      first_product_row_should_be_after_header_row: 最初の商品行はヘッダ行の後になければなりません。
+      unique_identifier_column_should_be_after_first_column_message: 一意識別子列は少なくとも最初の列である必要があります。
+      header_row_should_not_contain_empty_cell: ヘッダ行は空のセルを含めることはできません。
+    file_preview:
+      empty_sheet:
+        title: このシートは空です。
+        description: 少なくとも1つの行がある別のシートを選択してください。
+    operations:
+      incompatible_operation_type: 操作タイプ {{ operation_type }} にターゲットタイプとの互換性がありません。
+      missing_required_operations: "必須操作がありません: {{ missing_required_operations }}"

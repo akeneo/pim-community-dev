@@ -14,8 +14,8 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
 
-    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplier:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplier
+    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierWithContributors
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
 

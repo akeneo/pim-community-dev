@@ -24,7 +24,7 @@ final class SupplierFile
 
     private function __construct(
         Identifier $identifier,
-        string $filename,
+        string $originalFilename,
         string $path,
         ?string $uploadedByContributor,
         string $uploadedBySupplier,
@@ -32,7 +32,7 @@ final class SupplierFile
         bool $downloaded = false,
     ) {
         $this->identifier = $identifier;
-        $this->originalFilename = Filename::fromString($filename);
+        $this->originalFilename = Filename::fromString($originalFilename);
         $this->path = Path::fromString($path);
         $this->uploadedByContributor = ContributorEmail::fromString($uploadedByContributor);
         $this->uploadedBySupplier = SupplierIdentifier::fromString($uploadedBySupplier);
@@ -41,14 +41,14 @@ final class SupplierFile
     }
 
     public static function create(
-        string $filename,
+        string $originalFilename,
         string $path,
         string $uploadedByContributor,
         string $uploadedBySupplier,
     ): self {
         $supplierFile = new self(
             Identifier::generate(),
-            $filename,
+            $originalFilename,
             $path,
             $uploadedByContributor,
             $uploadedBySupplier,
