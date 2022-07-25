@@ -2,7 +2,7 @@ client-to-clone-srnt: &client-to-clone-srnt
 client-to-clone-grth: &client-to-clone-grth
 
 orbs:
-  security-hunter: akeneo-orbs/security-hunter@dev:aaa65ab7d9685fe2c55481f7c3e7caee3f273f03
+  security-hunter: akeneo-orbs/security-hunter@dev:c27cd1e41fdc4b56ce72800979caea3b4a48bcab
 
 workflows:
     dev_pull_request:
@@ -28,8 +28,6 @@ workflows:
             # scans commits of the current PR
             - security-hunter/scan-latest-commits:
                   exit_code_when_failure: 1
-                  requires:
-                      - checkout
             # Scans directory files of project
             - security-hunter/scan-dir:
                   severity: "CRITICAL"
