@@ -83,10 +83,10 @@ image:
     repository: gcr.io/google.com/cloudsdktool/cloud-sdk
     pullPolicy: IfNotPresent
     tag: 392.0.0-alpine
-  curl:
-    repository: curlimages/curl
+  curljq:
+    repository: vgelot/curl-jq
     pullPolicy: IfNotPresent
-    tag: 7.83.1
+    tag: jq-1.5-1
 
 # Onboarder
 onboarder:
