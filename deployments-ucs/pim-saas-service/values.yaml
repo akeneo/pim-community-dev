@@ -205,7 +205,7 @@ pim:
   dqi:
     settings:
       enabled: true
-  jobs-prefix: pim-job
+  jobsPrefix: pim-job
   jobs:
     versioning-purge:
       enabled: true
