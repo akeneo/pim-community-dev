@@ -57,12 +57,15 @@ const DataMappingDetails = ({
   const refreshedSampleDataFetcher = useRefreshedSampleDataFetcher();
 
   const handleSourcesChange = async (sources: ColumnIdentifier[]) => {
+    const updatedDataMapping = {...dataMapping, sources, sample_data: [undefined, undefined, undefined]};
+    onDataMappingChange(updatedDataMapping);
+
     const columnIndices = filterColumnsByUuids(columns, sources).map(({index}) => index);
     const sampleData =
       0 < columnIndices.length
         ? await sampleDataFetcher(fileKey, columnIndices, fileStructure.sheet_name, fileStructure.first_product_row)
         : [];
-    onDataMappingChange({...dataMapping, sources, sample_data: sampleData});
+    onDataMappingChange({...updatedDataMapping, sample_data: sampleData});
   };
 
   const handleTargetChange = (target: Target) => {

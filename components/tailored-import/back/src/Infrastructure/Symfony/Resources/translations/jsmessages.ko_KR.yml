@@ -1,0 +1,206 @@
+batch_jobs.xlsx_tailored_product_import.label: XSLX로 맞춤화된 제품 가져오기
+akeneo.tailored_import:
+  global_settings:
+    error_action:
+      label: 오류 관리
+      skip_product: 제품 건너뛰기
+      skip_value: 값 건너뛰기
+      helper_message: 오류 발생 시 동작을 정의하십시오.
+  file_structure:
+    placeholder:
+      title: 가져오기 프로필이 비어 있습니다.
+      helper: '''가져오기 구조 초기화''를 클릭하여 빌드를 시작합니다.'
+      link: 자세한 내용은 도움말 센터를 확인하십시오.
+      button: 가져오기 구조 초기화
+    modal:
+      title: 가져오기 구조 정의
+      subtitle: 가져오기 프로필
+      helper: 파일의 구조를 정의하여 가져오기를 구성합니다.
+      link: 자세한 내용은 도움말 센터를 확인하십시오.
+      upload:
+        placeholder: 파일을 이곳에 가져다 놓거나 디스크를 찾아보십시오.
+        uploading: 업로드 중...
+        error: 파일을 업로드하는 동안 오류가 발생하였습니다. 파일을 확인한 후 다시 시도하십시오.
+      sheet: 시트
+      header_row: 헤더 행
+      first_product_row: 첫 번째 제품 행
+      first_column: 첫 번째 제품 열
+      unique_identifier_column: 고유 식별자 열
+  data_mapping_list:
+    title: 매핑 구조
+    no_sources: 소스 없음
+    add: 특성 추가
+    remove: 이 매핑을 제거하시겠습니까?
+  data_mapping:
+    title: 설정
+    no_data_mapping_selected: 매핑을 선택하지 않았습니다.
+    attribute_not_found: 이 특성은 삭제되었으므로 더 이상 매핑에 사용할 수 없습니다.
+    property_not_valid: 이 속성은 유효하지 않습니다.
+    preview:
+      button: 미리 보기
+      input_title: 입력 미리 보기
+      output_title: 출력 미리 보기
+      placeholder: 해당 사항 없음
+      refresh: 새로 고침
+      unable_to_generate_preview_data: 미리 보기를 생성할 수 없습니다
+    operations:
+      title: 작업
+      identifier: 식별자 특성에 사용할 수 있는 작업이 없습니다
+      add: 작업 추가
+      common:
+        collapse: 축소
+      clean_html_tags:
+        title: HTML 태그 지우기
+      split:
+        title: 나누기
+        separator: 구분 기호 선택
+        comma: 쉼표(,)
+        semicolon: 세미콜론(;)
+        pipe: 수직선(|)
+      simple_select_replacement:
+        title: 간단한 선택 대체
+      multi_select_replacement:
+        title: 다중 선택 대체
+      categories_replacement:
+        title: 카테고리 대체
+        modal:
+          title: 카테고리 관리
+          table:
+            header:
+              replacement: PIM 카테고리
+              source_values: 소스 카테고리
+      no_result: 사용 가능한 작업이 없습니다
+      no_source: 먼저 소스를 선택해야 작업에 액세스할 수 있습니다
+      no_available:
+        text: 사용 가능한 작업이 더 이상 없습니다.
+        link: 여기를 클릭하여 도움말을 확인하십시오.
+      remove: 이 작업을 제거하시겠습니까?
+      replacement:
+        to_placeholder: 파일 내 소스 값을 정의하십시오.
+        modal:
+          options: 옵션 관리
+          subtitle: 대체
+          no_result:
+            title: 죄송합니다. 이 특성에 값이 없습니다.
+          empty_result:
+            title: 죄송합니다. 검색 결과가 없습니다.
+            text: 새 검색 조건으로 다시 시도하십시오.
+          filters:
+            mapped:
+              label: 표시
+              unmapped: 대체 값이 없는 모든 값
+              mapped: 대체 값이 있는 모든 값
+              all: 모든 값
+          table:
+            header:
+              replacement: 옵션 레이블
+              source_values: 소스 값
+          validation_error: 일부 대체 값이 유효하지 않습니다. 각 필드 아래에 표시된 오류 메시지를 참조하십시오.
+      boolean_replacement:
+        title: 부울 대체
+        field:
+          yes_value: 예 값
+          no_value: 아니요 값
+      enabled_replacement:
+        title: 활성화된 대체 값
+        field:
+          enabled_value: 활성화된 값
+          disabled_value: 비활성화된 값
+    sources:
+      title: 소스
+      add:
+        title: 소스 드롭다운 열기
+        label: 소스 추가
+        helper: "]-Inf, 1]이러한 종류의 특성에는 하나의 소스만 추가할 수 있습니다.|]1, Inf[이러한 종류의 특성에는 최대 {{ limit }}개의 소스만 추가할 수 있습니다."
+    target:
+      title: 대상
+      identifier: 대상으로 사용된 식별자 특성에 사용할 수 있는 설정이 없습니다.
+      enabled: 대상으로 사용된 식별자 특성에 사용 가능한 설정이 없습니다.
+      locale_specific: 이 특성은 특정 로케일에 한정됩니다.
+      action_if_not_empty:
+        title: 할당
+        add: 기존 값에 추가
+        set: 기존 값 대체
+      clear_if_empty: 빈 파일인 경우 지우기
+      parameters:
+        decimal_separator:
+          title: 소수점 구분 기호
+          comma: 쉼표(,)
+          dot: 마침표(.)
+          arabic_comma: 아라비아 소수점 구분 기호(٫)
+        measurement_unit:
+          title: 단위
+        date_format: 날짜 형식
+      invalid:
+        attribute: 이 특성은 삭제되었으며 다른 유형으로 재생성되었습니다. 이 데이터 매핑을 제거하고 다시 추가하십시오.
+        property: 이 속성은 유효하지 않습니다. 이 데이터 매핑을 제거하고 다시 추가하십시오.
+  form:
+    job_instance:
+      tab:
+        import-structure:
+          title: 가져오기 구조
+      edit:
+        title: 편집하려면 PIM 관리자에게 본인의 권한을 확인하십시오.
+      launch:
+        title: 가져오려면 PIM 관리자에게 본인의 권한을 확인하십시오.
+  validation:
+    required: 이 값은 필수 항목입니다.
+    max_length_reached: 이 값은 너무 깁니다. {{ limit }}자 이하여야 합니다.
+    missing_query_params: "쿼리에 다음 매개변수가 누락되었습니다. {{ missing_params }}"
+    source_values_should_be_unique: 이 소스 값 중 일부가 이미 다른 대체 값에서 사용 중입니다. 해당 소스 값을 제거하십시오.
+    columns:
+      max_count_reached: 시트의 열은 {{ limit }}개 이하여야 합니다.
+      at_least_one_required: 헤더의 열은 {{ limit }}개 이상이어야 합니다.
+      uuid:
+        should_be_unique: 이 열 UUID는 이미 있습니다. 새 UUID를 입력하십시오.
+      index:
+        should_be_unique: 이 열 인덱스는 이미 있습니다. 새 인덱스를 입력해 주십시오.
+      label:
+        should_not_be_blank: 열 레이블을 정의하십시오.
+        max_length_reached: 열 레이블이 너무 깁니다. {{ limit }}자 이하여야 합니다.
+    data_mappings:
+      target_should_unique: 대상 '{{ code }}'은(는) 여러 번 선택할 수 없습니다.
+      max_count_reached: '{{ limit }}개의 매핑 제한에 도달했습니다. 더 이상 가져오기에 매핑을 추가할 수 없습니다.'
+      no_identifier_target_found: 식별자를 대상으로 하는 매핑이 없습니다. 추가하십시오.
+      too_many_identifier_target_found: 하나의 식별자를 대상으로 하는 매핑이 2개 이상 있습니다. 하나를 제거하십시오.
+      uuid:
+        should_be_unique: 이 매핑 UUID는 이미 있습니다. 새 UUID를 입력하십시오.
+      sources:
+        count_mismatched: 이 매핑에는 1개의 소스만 설정해야 합니다.
+        at_least_one_required: 매핑에 1개 이상의 소스를 추가해야 합니다.
+        max_count_reached: '{{ limit }}개의 소스 제한에 도달했습니다. 더 이상 매핑에 소스를 추가할 수 없습니다.'
+        should_be_unique: 이 소스는 이미 있습니다. 새 소스를 입력하십시오.
+        should_exist: 소스 중 1개가 더 이상 존재하지 않습니다. 이 매핑의 모든 소스를 삭제하고 다시 시도하십시오
+    target:
+      attribute_should_exist: 특성 {{ attribute_code }}이(가) 없습니다. 생성하거나 다른 대상을 선택하십시오.
+      property_should_exist: 속성 {{ attribute_code }}이(가) 없습니다. 생성하거나 다른 대상을 선택하십시오.
+      source_configuration:
+        unit_should_exist: 단위 {{ unit_code }}이(가) 측정 패밀리 {{ measurement_family_code }}에 없습니다. 유효한 단위를 선택하십시오.
+    locale:
+      should_be_active: 로케일 {{ locale_code }}이(가) 비활성화되었습니다. 다시 활성화하거나 다른 로케일을 선택하십시오.
+      should_be_bound_to_channel: 로케일 {{ locale_code }}이(가) 채널 {{ channel_code }}에 대해 비활성화되었습니다. 다시 활성화하거나 다른 로케일을 선택하십시오.
+    channel:
+      should_exist: 채널 {{ channel_code }}이(가) 삭제되었습니다. 다른 채널을 선택하십시오.
+    attribute:
+      locale_should_not_be_blank: 특성 {{ attribute_code }}에 로케일별 값이 없습니다. 생성하거나 다른 대상을 선택하십시오.
+      channel_should_not_be_blank: 특성 {{ attribute_code }}에 채널별 값이 없습니다. 생성하거나 다른 대상을 선택하십시오.
+      locale_should_be_blank: 특성 {{ attribute_code }}에 로케일별 값이 더 이상 없습니다. 삭제한 후 재생성하거나 다른 대상을 선택하십시오.
+      channel_should_be_blank: 특성 {{ attribute_code }}에 채널별 값이 더 이상 없습니다. 삭제한 후 재생성하거나 다른 대상을 선택하십시오.
+      invalid_specific_locale: 특성 {{ attribute_code }}은(는) 특정 로케일에 한정됩니다. 다른 로케일을 선택하십시오.
+    file_key:
+      does_not_exist: '{{ file_key }} 파일을 찾을 수 없습니다.'
+    uploaded_file:
+      max_size: 파일이 너무 큽니다. 최대 크기는 {{ limit }} {{ suffix }}입니다.
+      not_allowed_mime_type: XLSX 파일만 지원됩니다.
+      not_allowed_extension: XLSX 파일만 지원됩니다.
+    file_structure:
+      first_product_row_should_be_after_header_row: 첫 번째 제품 행은 헤더 행 다음에 와야 합니다.
+      unique_identifier_column_should_be_after_first_column_message: 고유한 식별자 열은 첫 번째 열이어야 합니다.
+      header_row_should_not_contain_empty_cell: 헤더 행에 빈 셀이 있으면 안 됩니다.
+    file_preview:
+      empty_sheet:
+        title: 이 시트는 비어 있습니다.
+        description: 행이 1개 이상 있는 다른 시트를 선택하십시오.
+    operations:
+      incompatible_operation_type: 작업 유형 {{ operation_type }}이(가) 대상 유형과 호환되지 않습니다.
+      missing_required_operations: "필수 작업이 누락되었습니다. {{ missing_required_operations }}"
