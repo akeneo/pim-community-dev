@@ -623,7 +623,7 @@ jobs:
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.cloudFunction.name "${CLOUD_FUNCTION_NAME}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.cloudFunction.bucket "${CLOUD_FUNCTION_BUCKET}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.cloudFunction.sourceCodeZip "${CLOUD_FUNCTION_SOURCE_CODE_ZIP}"
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.jobs-prefix "${CIRCLE_BRANCH_LOWER}-pim-job-{{ \$jobName }}"
+              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.jobs-prefix "${CIRCLE_BRANCH_LOWER}-pim-job"
 
               ## Charts
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/Chart.yaml version 0.0.0-${IMAGE_TAG}
