@@ -68,7 +68,7 @@ class FieldConverter implements FieldConverterInterface
         } elseif (in_array($fieldName, ['family', 'parent'])) {
             return new ConvertedField($fieldName, $value);
         } elseif ('uuid' === $fieldName) {
-            return new ConvertedField($fieldName, Uuid::fromString($value));
+            return new ConvertedField($fieldName, $value ? Uuid::fromString($value) : $value);
         }
 
         throw new \LogicException(sprintf('No converters found for attribute type "%s"', $fieldName));

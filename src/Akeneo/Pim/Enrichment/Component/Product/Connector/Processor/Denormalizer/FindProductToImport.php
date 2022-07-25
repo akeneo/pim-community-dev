@@ -7,6 +7,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormaliz
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Ramsey\Uuid\Uuid;
+use Webmozart\Assert\Assert;
 
 /**
  * Find the product to import depending the data given by the reader
@@ -17,10 +19,6 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  */
 class FindProductToImport
 {
-    /**
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param ProductBuilderInterface               $productBuilder
-     */
     public function __construct(
         private IdentifiableObjectRepositoryInterface $productRepository,
         private ProductBuilderInterface $productBuilder
@@ -37,7 +35,8 @@ class FindProductToImport
     ): ProductInterface {
         $product = null;
         if (null !== $uuid) {
-            $product = $this->productRepository->find($uuid);
+            Assert::methodExists($this->productRepository, 'findOneByUuid');
+            $product = $this->productRepository->findOneByUuid(Uuid::fromString($uuid));
         }
 
         if (null === $product) {
