@@ -30,7 +30,7 @@ class WebMarketplaceAliasesSpec extends ObjectBehavior
     public function it_returns_the_utm_campaign_when_ge(
         VersionProviderInterface $versionProvider
     ) {
-        $versionProvider->getEdition()->willReturn('GE');
+        $versionProvider->getEdition()->willReturn('Growth Edition');
 
         $this->getUtmCampaign()->shouldReturn('connect_ge');
     }
@@ -46,7 +46,7 @@ class WebMarketplaceAliasesSpec extends ObjectBehavior
     public function it_returns_the_edition_when_ge(
         VersionProviderInterface $versionProvider
     ) {
-        $versionProvider->getEdition()->willReturn('GE');
+        $versionProvider->getEdition()->willReturn('Growth Edition');
 
         $this->getEdition()->shouldReturn('growth-edition');
     }

@@ -24,7 +24,7 @@ class WebMarketplaceAliases implements WebMarketplaceAliasesInterface
     public function getUtmCampaign(): ?string
     {
         switch ($this->versionProvider->getEdition()) {
-            case 'GE':
+            case 'Growth Edition':
                 return 'connect_ge';
             default:
                 return null;
@@ -34,7 +34,7 @@ class WebMarketplaceAliases implements WebMarketplaceAliasesInterface
     public function getEdition(): string
     {
         switch ($this->versionProvider->getEdition()) {
-            case 'GE':
+            case 'Growth Edition':
                 return 'growth-edition';
             case 'CE':
             default:
