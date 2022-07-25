@@ -1,4 +1,4 @@
-envVarsDeployUCS: &envVarsDeployUCS
+envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
 executor-machine: &executor-machine
 
 jobs:
@@ -6,7 +6,7 @@ jobs:
   #    Build image for pim-deployer
   build_and_push_pim_deployer:
     environment:
-        <<: *envVarsDeployUCS
+        <<: *envVarsDeployPIMSaaSDev
     machine:
         image: *executor-machine
     resource_class: medium
