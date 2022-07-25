@@ -152,7 +152,25 @@ pim_import_export:
             help: ラベル表示のロケールを定義します
       file_path: ファイルのパス
       storage_form:
+        title: ストレージ
+        connection:
+          label: タイプ
+          local: ローカル
+          sftp: SFTP
+          none: ストレージが構成されていません
         file_path.label: ファイルパス
+        host.label: ホスト
+        port.label: ポート
+        username.label: ログイン
+        password.label: パスワード
+      validation:
+        storage:
+          unavailable_type: このストレージは使用できません。{{ available_types }}のみを使用できます。
+        file_path:
+          unsupported_extension: サポートされていないファイル拡張子
+      connection_checker:
+        label: テスト接続の設定
+        exception: 接続を確立できません。設定を確認してください。
   widget:
     last_operations:
       empty: 現在表示する操作はありません。

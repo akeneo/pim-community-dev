@@ -152,7 +152,25 @@ pim_import_export:
             help: 레이블을 표시할 로케일을 정의합니다.
       file_path: 파일 경로
       storage_form:
+        title: 스토리지
+        connection:
+          label: 유형
+          local: 로컬
+          sftp: SFTP
+          none: 구성된 스토리지가 없습니다
         file_path.label: 파일 경로
+        host.label: 호스트
+        port.label: 포트
+        username.label: 로그인
+        password.label: 암호
+      validation:
+        storage:
+          unavailable_type: 이 스토리지는 사용할 수 없습니다. {{ available_types }}만 사용 가능합니다.
+        file_path:
+          unsupported_extension: 지원되지 않는 파일 확장자
+      connection_checker:
+        label: 테스트 연결 설정
+        exception: 연결할 수 없습니다. 설정을 확인하십시오.
   widget:
     last_operations:
       empty: 현재 표시할 작업이 없습니다.
