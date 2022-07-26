@@ -80,7 +80,7 @@ final class UpdateIndexesOnCategoryDeletion implements EventSubscriberInterface
             ],
             'script' => [
                 // WARNING: "inline" will need to be changed to "source" when we'll switch to Elasticsearch 5.6
-                'inline' => 'ctx._source.categories.removeAll(params.categories); if (0 == ctx._source.categories.size()) { ctx._source.remove("categories"); }',
+                'source' => 'ctx._source.categories.removeAll(params.categories); if (0 == ctx._source.categories.size()) { ctx._source.remove("categories"); }',
                 'lang'   => 'painless',
                 'params' => ['categories' => $this->categoryCodesToRemove],
             ],
