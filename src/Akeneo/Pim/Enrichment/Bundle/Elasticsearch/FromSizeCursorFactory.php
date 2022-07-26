@@ -14,34 +14,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class FromSizeCursorFactory implements CursorFactoryInterface
 {
-    /** @var Client */
-    private $searchEngine;
-
-    /** @var int */
-    private $pageSize;
-
-    /** @var CursorableRepositoryInterface */
-    private $productRepository;
-
-    /** @var CursorableRepositoryInterface */
-    private $productModelRepository;
-
-    /**
-     * @param Client                        $searchEngine
-     * @param CursorableRepositoryInterface $productRepository
-     * @param CursorableRepositoryInterface $productModelRepository
-     * @param int                           $pageSize
-     */
     public function __construct(
-        Client $searchEngine,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
-        $pageSize
+        private Client $searchEngine,
+        private CursorableRepositoryInterface $productRepository,
+        private CursorableRepositoryInterface $productModelRepository,
+        private int $pageSize
     ) {
-        $this->searchEngine = $searchEngine;
-        $this->productRepository = $productRepository;
-        $this->productModelRepository = $productModelRepository;
-        $this->pageSize = $pageSize;
     }
 
     /**
@@ -51,7 +29,7 @@ class FromSizeCursorFactory implements CursorFactoryInterface
     {
         $options = $this->resolveOptions($options);
 
-        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['document_type']);
+        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['document_type', 'id']);
 
         return new FromSizeCursor(
             $this->searchEngine,

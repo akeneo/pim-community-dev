@@ -45,7 +45,7 @@ class IdentifierResult
             );
         }
 
-        if($type === ProductInterface::class && !Uuid::isValid($id)) {
+        if ($type === ProductInterface::class && !Uuid::isValid(\str_replace('product_', '', $id))) {
             throw new \InvalidArgumentException(\sprintf("Product has an invalid uuid : %s", $id));
         }
 
