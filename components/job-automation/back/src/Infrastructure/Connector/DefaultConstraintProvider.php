@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Connector;
 
+use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation\Automation;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class DefaultConstraintProvider implements ConstraintCollectionProviderInterface
 {
@@ -29,7 +29,7 @@ final class DefaultConstraintProvider implements ConstraintCollectionProviderInt
         $baseConstraint = $this->constraintProvider->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
 
-        $constraintFields['automation'] = new NotBlank();
+        $constraintFields['automation'] = new Automation();
 
         return new Collection(['fields' => $constraintFields]);
     }
