@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\StreamHandler;
-use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Monolog\Logger;
 
 /**
  * Refresh versioning data
@@ -23,7 +23,7 @@ class RefreshVersioning implements TaskletInterface
     private StepExecution $stepExecution;
 
     public function __construct(
-        private LoggerInterface $logger,
+        private Logger $logger,
         private VersionManager $versionManager,
         private BulkObjectDetacherInterface $bulkObjectDetacher,
         private EntityManagerInterface $entityManager
@@ -61,7 +61,7 @@ class RefreshVersioning implements TaskletInterface
                     $pending->getResourceId() ?? $pending->getResourceUuid()->toString()
                 );
 
-                $previousVersion = isset($previousVersions[$key]) ? $previousVersions[$key] : null;
+                $previousVersion = $previousVersions[$key] ?? null;
                 $version = $this->createVersion($pending, $previousVersion);
 
                 if ($version) {

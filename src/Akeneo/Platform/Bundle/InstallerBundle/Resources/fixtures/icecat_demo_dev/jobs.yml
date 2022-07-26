@@ -911,3 +911,8 @@ jobs:
         alias:     clean_removed_attribute_job
         label:     Cleaning removed attribute values job
         type:      clean_removed_attribute_job
+    versioning_refresh:
+        connector: internal
+        alias:     versioning_refresh
+        label:     Refresh versioning for any updated entities
+        type:      scheduled_job
