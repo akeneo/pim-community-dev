@@ -2,9 +2,9 @@
 
 namespace Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;

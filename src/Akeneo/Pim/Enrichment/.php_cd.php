@@ -123,6 +123,18 @@ $rules = [
         'ArPHP\I18N\Arabic',
 
         'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode',
+
+        // Category Bounded Context
+        'Akeneo\Category\Api', // legit
+        'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Model\Category',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory',//todo
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
+        'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory',//todo
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -252,6 +264,17 @@ $rules = [
 
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
         'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids',
+
+        // Category Bounded Context
+        'Akeneo\Category\Api', // legit
+        'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory',//todo
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryFilterableRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
+
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

@@ -52,7 +52,6 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('entity_with_family_variant.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
-        $loader->load('forms.yml');
         $loader->load('product_value_factories.yml');
         $loader->load('family_variant.yml');
         $loader->load('filters.yml');

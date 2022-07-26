@@ -24,7 +24,7 @@ class GetNonViewableCategoryCodesSpec extends ObjectBehavior
         $this->shouldImplement(GetNonViewableCategoryCodesInterface::class);
     }
 
-    function it_returns_non_viewable_category_codes_for_a_lit_of_product_identifiers(
+    function it_returns_non_viewable_category_codes_for_a_list_of_product_identifiers(
         GetCategoryCodes $getCategoryCodes,
         GetViewableCategories $getViewableCategories
     ) {
