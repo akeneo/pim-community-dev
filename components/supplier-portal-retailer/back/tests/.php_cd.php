@@ -56,6 +56,7 @@ $rules = [
 
             // Supplier Portal Supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Event\EventInterface',
@@ -72,6 +73,8 @@ $rules = [
             'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+            'Akeneo\Tool\Component\FileStorage\StreamedFileResponse',
+            'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
             // External dependencies coupling
             'Box\Spout\Common\Exception\IOException',
             'Box\Spout\Common\Type',
@@ -92,6 +95,7 @@ $rules = [
             // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // Supplier Portal Supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
