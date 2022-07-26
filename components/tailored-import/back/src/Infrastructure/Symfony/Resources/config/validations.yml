@@ -62,6 +62,10 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SearchFamilyQueryValidator:
+    tags:
+      - { name: validator.constraint_validator }
+
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\SampleDataQueryValidator:
     tags:
       - { name: validator.constraint_validator }

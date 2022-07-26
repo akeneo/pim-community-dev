@@ -69,6 +69,14 @@ services:
       - '@validator'
       - '@serializer'
 
+  akeneo.tailored_import.controller.get_families_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetFamiliesAction
+    public: true
+    arguments:
+      - '@akeneo.tailored_import.query.family.find_families'
+      - '@validator'
+      - '@serializer'
+
   akeneo.tailored_import.controller.validate_replacement_operation_action:
     class: 'Akeneo\Platform\TailoredImport\Infrastructure\Controller\ValidateReplacementOperationAction'
     public: true

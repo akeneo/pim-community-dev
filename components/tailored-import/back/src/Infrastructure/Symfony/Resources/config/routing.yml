@@ -43,6 +43,11 @@ pimee_tailored_import_get_attribute_options_action:
     defaults: { _controller: akeneo.tailored_import.controller.get_attribute_options_action }
     methods: [POST]
 
+pimee_tailored_import_get_families_action:
+    path: /rest/tailored-import/families
+    defaults: { _controller: akeneo.tailored_import.controller.get_families_action }
+    methods: [POST]
+
 pimee_tailored_import_validate_replacement_operation_action:
     path: /rest/tailored-import/validate-replacement-operation
     defaults: { _controller: akeneo.tailored_import.controller.validate_replacement_operation_action }
