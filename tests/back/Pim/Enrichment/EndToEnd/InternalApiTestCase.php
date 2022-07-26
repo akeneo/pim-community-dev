@@ -85,12 +85,12 @@ abstract class InternalApiTestCase extends TestCase
 
     private function getClient(): HttpKernelBrowser
     {
-        return self::$container->get('test.client');
+        return self::getContainer()->get('test.client');
     }
 
     private function getSession(): SessionInterface
     {
-        return self::$container->get('session');
+        return self::getContainer()->get('session');
     }
 
     protected function clearDoctrineUoW(): void
