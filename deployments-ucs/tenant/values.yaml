@@ -197,6 +197,7 @@ mysql:
   common:
     class: ssd-retain-csi
   mysql:
+    antiAffinity: hard
     dataDiskPath: "/var/lib/mysql/"
     serviceName: pim-mysql
     defaultUser: akeneo_pim
