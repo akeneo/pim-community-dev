@@ -65,7 +65,7 @@ class FamilyAttributeAsLabelChangedSubscriber implements EventSubscriberInterfac
             if ($attributeCodeAsLabel) {
                 $this->esClient->updateByQuery([
                     'script' => [
-                        'inline' => "ctx._source.label = ctx._source.values[params.attributeAsLabel]",
+                        'source' => "ctx._source.label = ctx._source.values[params.attributeAsLabel]",
                         'params' => ['attributeAsLabel' => sprintf('%s-text', $attributeCodeAsLabel)],
                     ],
                     'query' => [

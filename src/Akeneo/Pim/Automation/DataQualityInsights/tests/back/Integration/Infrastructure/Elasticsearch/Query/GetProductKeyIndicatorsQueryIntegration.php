@@ -231,7 +231,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         $this->esClient->updateByQuery(
             [
                 'script' => [
-                    'inline' => "ctx._source.rates = params.rates; ctx._source.data_quality_insights = params.data_quality_insights;",
+                    'source' => "ctx._source.rates = params.rates; ctx._source.data_quality_insights = params.data_quality_insights;",
                     'params' => [
                         'rates' => [],
                         'data_quality_insights' => ['key_indicators' => $keyIndicators],
