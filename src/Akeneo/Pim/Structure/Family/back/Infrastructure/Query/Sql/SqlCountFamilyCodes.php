@@ -49,6 +49,6 @@ class SqlCountFamilyCodes implements CountFamilyCodes
             'exclude_codes' => Connection::PARAM_STR_ARRAY,
         ];
 
-        return $this->connection->executeQuery($sql, $params, $types)->fetchOne();
+        return (int) $this->connection->executeQuery($sql, $params, $types)->fetchOne();
     }
 }
