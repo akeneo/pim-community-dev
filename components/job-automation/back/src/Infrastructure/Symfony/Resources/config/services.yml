@@ -16,3 +16,9 @@ services:
 
     akeneo.job_automation.query.get_user_groups:
         class: Akeneo\Platform\JobAutomation\Infrastructure\Query\GetUserGroupsQuery
+
+    akeneo.job_automation.constraint_collection_provider.product_xlsx_export:
+        class: Akeneo\Platform\JobAutomation\Infrastructure\Connector\DefaultConstraintProvider
+        decorates: pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_export
+        arguments: 
+            - "@akeneo.job_automation.constraint_collection_provider.product_xlsx_export.inner"
