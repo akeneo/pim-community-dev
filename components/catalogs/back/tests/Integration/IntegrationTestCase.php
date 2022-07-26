@@ -112,7 +112,8 @@ abstract class IntegrationTestCase extends WebTestCase
 
     protected function assertViolationsListContains(
         ConstraintViolationListInterface $violations,
-        string $expectedMessage
+        string $expectedMessage,
+        ?string $expectedPropertyPath = null,
     ): void {
         if (0 === $violations->count()) {
             $this->fail('There is no violations but expected at least one.');
@@ -120,7 +121,9 @@ abstract class IntegrationTestCase extends WebTestCase
 
         /** @var ConstraintViolationInterface $violation */
         foreach ($violations as $violation) {
-            if ($expectedMessage === $violation->getMessage()) {
+            if ($expectedMessage === $violation->getMessage()
+                && ($expectedPropertyPath === null || $violation->getPropertyPath() === $expectedPropertyPath)
+            ) {
                 return;
             }
         }
