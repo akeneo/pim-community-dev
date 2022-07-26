@@ -15,7 +15,7 @@ namespace Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context;
 
 use AcmeEnterprise\Bundle\AppBundle\Entity\Color;
 use AcmeEnterprise\Bundle\AppBundle\Entity\Fabric;
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;

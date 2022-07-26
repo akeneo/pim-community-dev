@@ -11,9 +11,9 @@
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller;
 
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees;
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\GetCategoryChildrenCodesPerTreeInterface;
+use Akeneo\Category\Api\CategoryTree;
+use Akeneo\Category\Api\FindCategoryTrees;
+use Akeneo\Category\Api\GetCategoryChildrenCodesPerTreeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

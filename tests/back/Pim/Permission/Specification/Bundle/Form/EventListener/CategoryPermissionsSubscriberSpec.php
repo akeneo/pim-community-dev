@@ -6,7 +6,7 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\UserManagement\Component\Model\Group;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Form\Type\CategoryPermissionsType;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Prophecy\Argument;

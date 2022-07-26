@@ -97,7 +97,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator', // ideally it should be either public api or we should duplicate this algorithm in this context
 
         // TIP-971 ProjectRemoverInterface should not be linked to PIM/Enrichment or PIM/Structure
-        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
         'Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface',
 

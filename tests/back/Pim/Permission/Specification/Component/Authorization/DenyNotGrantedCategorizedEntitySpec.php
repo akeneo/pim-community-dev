@@ -2,13 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Authorization;
 
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Authorization\DenyNotGrantedCategorizedEntity;
 use Akeneo\Pim\Permission\Component\Exception\ResourceViewAccessDeniedException;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
