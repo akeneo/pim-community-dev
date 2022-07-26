@@ -28,6 +28,8 @@ workflows:
             # scans commits of the current PR
             - security-hunter/scan-latest-commits:
                   exit_code_when_failure: 1
+                  requires:
+                      - ready_to_build?
             # Scans directory files of project
             - security-hunter/scan-dir:
                   severity: "CRITICAL"
