@@ -4,6 +4,7 @@ import {isFamilyTarget} from './model';
 import {PropertyDataMappingConfiguratorProps, PropertyTarget} from '../../../../models';
 import {InvalidPropertyTargetError} from '../error/InvalidPropertyTargetError';
 import {ClearIfEmpty, Operations, PropertyTargetParameters, Sources} from '../../../../components';
+import {FAMILY_REPLACEMENT_OPERATION_TYPE} from "../../Operation";
 
 const FamilyConfigurator = ({
   dataMapping,
@@ -34,7 +35,7 @@ const FamilyConfigurator = ({
       />
       <Operations
         dataMapping={dataMapping}
-        compatibleOperations={[]}
+        compatibleOperations={[FAMILY_REPLACEMENT_OPERATION_TYPE]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
         validationErrors={filterErrors(validationErrors, '[operations]')}

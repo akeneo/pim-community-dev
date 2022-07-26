@@ -13,22 +13,25 @@ import {
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {DataMapping, getDefaultOperation, Operation, OperationType} from '../../models';
 import {
+  BOOLEAN_REPLACEMENT_OPERATION_TYPE,
+  CATEGORIES_REPLACEMENT_OPERATION_TYPE,
+  CLEAN_HTML_TAGS_OPERATION_TYPE,
+  ENABLED_REPLACEMENT_OPERATION_TYPE,
+  FAMILY_REPLACEMENT_OPERATION_TYPE,
+  MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
+  SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
+  SPLIT_OPERATION_TYPE,
+
+  BooleanReplacementOperationBlock,
+  CategoriesReplacementOperationBlock,
   CleanHTMLTagsOperationBlock,
-  SplitOperationBlock,
+  EnabledReplacementOperationBlock,
+  FamilyReplacementOperationBlock,
+  MultiSelectReplacementOperationBlock,
   OperationBlockProps,
   OperationSampleData,
-  CLEAN_HTML_TAGS_OPERATION_TYPE,
-  MultiSelectReplacementOperationBlock,
-  MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
-  SPLIT_OPERATION_TYPE,
-  SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   SimpleSelectReplacementOperationBlock,
-  BOOLEAN_REPLACEMENT_OPERATION_TYPE,
-  BooleanReplacementOperationBlock,
-  CATEGORIES_REPLACEMENT_OPERATION_TYPE,
-  CategoriesReplacementOperationBlock,
-  EnabledReplacementOperationBlock,
-  ENABLED_REPLACEMENT_OPERATION_TYPE,
+  SplitOperationBlock,
 } from './Operation';
 import {usePreviewData} from '../../hooks';
 
@@ -54,6 +57,7 @@ const operationBlocks: {
   [MULTI_SELECT_REPLACEMENT_OPERATION_TYPE]: MultiSelectReplacementOperationBlock,
   [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,
   [SPLIT_OPERATION_TYPE]: SplitOperationBlock,
+  [FAMILY_REPLACEMENT_OPERATION_TYPE]: FamilyReplacementOperationBlock,
 };
 
 type OperationsProps = {

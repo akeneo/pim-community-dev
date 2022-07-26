@@ -70,6 +70,14 @@ akeneo.tailored_import:
               header:
                 replacement: PIM Categories
                 source_values: Sources categories
+      families_replacement:
+        title: Families replacement
+        modal:
+          title: Manage families
+          table:
+            header:
+              replacement: PIM Families
+              source_values: Sources families
       no_result: No operation available
       no_source: First, select a source, then you will have access to operations
       no_available:
