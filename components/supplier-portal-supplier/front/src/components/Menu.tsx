@@ -5,7 +5,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from 'akeneo-design-system';
 import {useUserContext} from '../contexts';
-import {routes} from "../pages/routes";
+import {routes} from '../pages/routes';
 import {useHistory} from 'react-router-dom';
 
 type Props = {
