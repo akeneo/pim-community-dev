@@ -37,7 +37,7 @@ Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess:
                 default: false
     manyToOne:
         category:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
             joinColumns:
                 category_id:
                     referencedColumnName: id

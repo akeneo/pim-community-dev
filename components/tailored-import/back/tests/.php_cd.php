@@ -55,7 +55,12 @@ $rules = [
             'Akeneo\Tool',
             'Akeneo\UserManagement\Component\Model\UserInterface',
             'Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException',
-            'Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException'
+            'Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException',
+
+            // category bounded context
+            'Akeneo\Category\Api\CategoryTree',
+            'Akeneo\Category\Api\FindCategoryTrees',
+            'Akeneo\Category\Api\GetCategoryChildrenCodesPerTreeInterface'
         ],
     )->in('Akeneo\Platform\TailoredImport\Infrastructure'),
 ];

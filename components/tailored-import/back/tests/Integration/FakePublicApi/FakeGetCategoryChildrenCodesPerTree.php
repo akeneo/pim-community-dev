@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Integration\FakePublicApi;
 
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\GetCategoryChildrenCodesPerTreeInterface;
+use Akeneo\Category\Api\GetCategoryChildrenCodesPerTreeInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 
 class FakeGetCategoryChildrenCodesPerTree implements GetCategoryChildrenCodesPerTreeInterface
