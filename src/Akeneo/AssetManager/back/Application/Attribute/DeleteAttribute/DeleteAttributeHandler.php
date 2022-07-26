@@ -57,7 +57,7 @@ class DeleteAttributeHandler
 
         $mainMediaReference = $this->findAttributeAsMainMedia($attribute->getAssetFamilyIdentifier());
         if (!$mainMediaReference->isEmpty() && $mainMediaReference->getIdentifier()->equals($attributeIdentifier)) {
-            throw CantDeleteMainMediaException::withIdentifier($attribute, $attributeIdentifier);
+            throw CantDeleteMainMediaException::withAttribute($attribute, $attributeIdentifier);
         }
 
         $this->attributeRepository->deleteByIdentifier($attributeIdentifier);
