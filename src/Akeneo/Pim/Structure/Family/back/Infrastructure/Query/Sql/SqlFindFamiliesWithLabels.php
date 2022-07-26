@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Structure\Family\Infrastructure\Query\Sql;
 
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FamilyQuery;
