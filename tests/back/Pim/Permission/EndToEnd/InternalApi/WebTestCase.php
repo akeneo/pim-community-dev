@@ -24,7 +24,7 @@ abstract class WebTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->client = self::$container->get('test.client');
+        $this->client = self::getContainer()->get('test.client');
     }
 
     protected function authenticateAsAdmin(): UserInterface

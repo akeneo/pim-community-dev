@@ -77,7 +77,7 @@ final class Version_6_0_20210804115038_reindex_records_Integration extends TestC
 
     private function isSassVersion(): bool
     {
-        $versionProvider = self::$container->get('pim_catalog.version_provider');
+        $versionProvider = self::getContainer()->get('pim_catalog.version_provider');
 
         return $versionProvider->isSaaSVersion();
     }

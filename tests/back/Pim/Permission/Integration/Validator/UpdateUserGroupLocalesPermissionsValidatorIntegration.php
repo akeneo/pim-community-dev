@@ -16,7 +16,7 @@ class UpdateUserGroupLocalesPermissionsValidatorIntegration extends KernelTestCa
     {
         parent::setUp();
         static::bootKernel(['debug' => false]);
-        $this->validator = self::$container->get('validator');
+        $this->validator = self::getContainer()->get('validator');
     }
 
     public function testItReturnsNoViolationsIfTheValueIsValid(): void

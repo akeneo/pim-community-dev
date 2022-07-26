@@ -155,7 +155,7 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
 
     private function loadQualityScores(): void
     {
-        $inMemoryFindQualityScores = static::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface');
+        $inMemoryFindQualityScores = static::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface');
         $inMemoryFindQualityScores->addQualityScore($this->product->getUuid(), [
             'ecommerce' => [
                 'fr_FR' => 'A',
