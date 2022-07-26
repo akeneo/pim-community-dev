@@ -1,0 +1,15 @@
+services:
+    pim_api.normalizer.category:
+        class: 'Akeneo\Category\Infrastructure\Component\Normalizer\ExternalApi\CategoryNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.category'
+            - '@Akeneo\Category\Infrastructure\Component\Manager\PositionResolver'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
+    pim_enrich.normalizer.category:
+        class: 'Akeneo\Category\Infrastructure\Component\Normalizer\InternalApi\CategoryNormalizer'
+        arguments:
+            - '@pim_standard_format_serializer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }

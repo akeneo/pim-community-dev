@@ -49,6 +49,7 @@ pim_enrich.entity.product:
     download_pdf:
       label: PDF
     copy:
+      button_label: 비교
       label: 비교/번역
       select: 선택
       all_visible: 모두 표시

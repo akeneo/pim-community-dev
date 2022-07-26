@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees;
+use Akeneo\Category\Api\CategoryTree;
+use Akeneo\Category\Api\FindCategoryTrees;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

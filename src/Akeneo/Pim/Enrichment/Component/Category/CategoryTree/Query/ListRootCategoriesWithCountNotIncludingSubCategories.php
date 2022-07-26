@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
 
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -17,7 +17,7 @@ interface ListRootCategoriesWithCountNotIncludingSubCategories
      * @param int    $userId
      * @param int    $rootCategoryIdToExpand
      *
-     * @return ReadModel\RootCategory[]
+     * @return RootCategory[]
      */
     public function list(string $translationLocaleCode, int $userId, int $rootCategoryIdToExpand): array;
 }

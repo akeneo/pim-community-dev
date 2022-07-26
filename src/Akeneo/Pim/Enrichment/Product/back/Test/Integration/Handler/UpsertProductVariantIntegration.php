@@ -14,7 +14,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 {
@@ -28,6 +27,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 
         $this->commandMessageBus = $this->get('pim_enrich.product.message_bus');
         $this->productRepository = $this->get('pim_catalog.repository.product');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
     }
 
     /** @test */

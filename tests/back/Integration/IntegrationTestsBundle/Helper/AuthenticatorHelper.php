@@ -49,7 +49,7 @@ final class AuthenticatorHelper
         $this->session = $session;
     }
 
-    public function logIn(KernelBrowser $client, string $username): void
+    public function logIn(string $username, ?KernelBrowser $client = null): void
     {
         $user = $this->userRepository->findOneByIdentifier($username);
         if (null === $user) {
@@ -62,8 +62,10 @@ final class AuthenticatorHelper
         $this->session->set('_security_main', serialize($token));
         $this->session->save();
 
-        $cookie = new Cookie($this->session->getName(), $this->session->getId());
-        $client->getCookieJar()->set($cookie);
+        if (null !== $client) {
+            $cookie = new Cookie($this->session->getName(), $this->session->getId());
+            $client->getCookieJar()->set($cookie);
+        }
     }
 
     /**

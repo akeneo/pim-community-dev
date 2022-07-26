@@ -1,0 +1,7 @@
+external_api_category:
+    resource: '@AkeneoCategoryBundle/Resources/config/routing/external_api/category.yml'
+    prefix: /api/rest/v1
+
+internal_api_category:
+    resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/category.yml'
+    prefix: /enrich/category

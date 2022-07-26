@@ -36,6 +36,7 @@ lint-back:
 	$(MAKE) job-lint-back
 	$(MAKE) enrichment-product-lint-back
 	$(MAKE) channel-lint-back
+	$(MAKE) category-lint-back
 	# Cache was created with debug enabled, removing it allows a faster one to be created for upcoming tests
 	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
 

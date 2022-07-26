@@ -1,6 +1,8 @@
 #Job labels
 batch_jobs:
   default_steps:
+    download_files: 下载文件
+    upload_files: 上传文件
     export: 导出
     import: 导入
     validation: 文件验证

@@ -74,6 +74,7 @@ final class UpsertProductIntegration extends TestCase
 
         $this->messageBus = $this->get('pim_enrich.product.message_bus');
         $this->productRepository = $this->get('pim_catalog.repository.product');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
     }
 
     private function clearDoctrineUoW(): void

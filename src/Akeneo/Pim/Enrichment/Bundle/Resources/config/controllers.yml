@@ -127,31 +127,6 @@ services:
             - '@validator'
             - '@akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores'
 
-    pim_api.controller.category:
-        public: true
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\CategoryController'
-        arguments:
-            - '@pim_api.repository.category'
-            - '@pim_external_api_serializer'
-            - '@pim_catalog.factory.category'
-            - '@pim_catalog.updater.category'
-            - '@validator'
-            - '@pim_catalog.saver.category'
-            - '@router'
-            - '@pim_api.pagination.offset_hal_paginator'
-            - '@pim_api.pagination.parameter_validator'
-            - '@pim_api.stream.category_partial_update_stream'
-            - '%pim_api.configuration%'
-
-    pim_enrich.controller.rest.category:
-        public: true
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CategoryController'
-        arguments:
-            - '@pim_catalog.repository.category'
-            - '@pim_enrich.twig.category_extension'
-            - '@pim_internal_api_serializer'
-            - '@pim_catalog.filter.chained'
-
     pim_enrich.controller.rest.product_category:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductCategoryController'
@@ -337,8 +312,8 @@ services:
             - '@pim_enrich.normalizer.violation'
             - '@pim_enrich.doctrine.counter.category_product'
             - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren'
-            - '@Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer'
-            - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
+            - '@Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
+            - { related_entity: product, form_type: 'Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
         calls:
             - [ setContainer, [ '@service_container' ] ]
 

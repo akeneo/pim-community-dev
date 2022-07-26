@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Enrichment\Product\Test\Integration\Handler;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
@@ -40,6 +39,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $this->loadEnrichmentProductFunctionalFixtures();
 
         $this->productRepository = $this->get('pim_catalog.repository.product');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
 
         $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'identifier');
         $this->commandMessageBus->dispatch($command);

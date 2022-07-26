@@ -175,6 +175,9 @@ akeneo_connectivity.connection:
               1: Pour suivre les erreurs sur cette app,
               2: activer la surveillance
               3: dans les paramètres.
+        catalogs:
+          edit:
+            not_found: Catalogue introuvable
         flash:
           load_permissions_error.title: 'Les permissions enregistrées sur {{ entity }} n''ont pas pu être affichées.'
           load_permissions_error.description: Veuillez réessayer plus tard.

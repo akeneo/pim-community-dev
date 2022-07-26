@@ -55,7 +55,6 @@ class ProductAndProductModelQuickExport implements ConstraintCollectionProviderI
                 'message' => sprintf('The extension file must be ".%s"', $this->filePathExtension)
             ])
         ];
-        unset($constraintFields['filePath']);
         $constraintFields['filePathProduct'] = $constraintFilePath;
         $constraintFields['filePathProductModel'] = $constraintFilePath;
         $constraintFields['with_label'] = new Type(

@@ -10,7 +10,7 @@ namespace Akeneo\Pim\Enrichment\Component\Category\Query;
 interface GetDirectChildrenCategoryCodesInterface
 {
     /**
-     * @return array<string, int>
+     * @return array<string, array{code: string, row_num: int}>
      */
     public function execute(int $categoryId): array;
 }
