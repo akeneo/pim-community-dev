@@ -64,5 +64,5 @@ services:
     akeneo.tailored_import.query.family.find_families:
         class: Akeneo\Platform\TailoredImport\Infrastructure\Query\Family\FindFamilies
         arguments:
-            - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamiliesWithLabels'
-            - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\CountFamilyCodes'
+            - '@akeneo.tailored_import.infrastructure.public_api.find_families_with_labels'
+            - '@akeneo.tailored_import.infrastructure.public_api.count_family_codes'
