@@ -6,8 +6,8 @@ version: 0.0.0
 appVersion: 0.0.0
 dependencies:
   - name: mysql
-    version: "2.0.17"
-    repository: gs://akeneo-charts/
+    version: "2.0.18-12349f7b141672dce668c1fff19e4a8a51de672d"
+    repository: gs://akeneo-charts-dev/
   - name: elasticsearch
     version: "1.32.44"
     repository: gs://akeneo-charts/
