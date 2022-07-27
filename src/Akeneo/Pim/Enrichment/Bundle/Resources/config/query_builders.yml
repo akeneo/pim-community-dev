@@ -626,7 +626,7 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
-    Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\UuidSorter:
+    Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\IdSorter:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
