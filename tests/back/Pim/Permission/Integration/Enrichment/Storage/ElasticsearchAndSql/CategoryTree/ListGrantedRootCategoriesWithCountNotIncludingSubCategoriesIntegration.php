@@ -120,4 +120,3 @@ class ListGrantedRootCategoriesWithCountNotIncludingSubCategoriesIntegration ext
         return $this->catalog->useMinimalCatalog();
     }
 }
-

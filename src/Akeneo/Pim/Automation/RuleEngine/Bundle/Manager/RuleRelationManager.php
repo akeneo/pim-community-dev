@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Manager;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\FieldImpactActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddActionInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -18,7 +19,6 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelationInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleRelationRepositoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * Class RuleRelationManager

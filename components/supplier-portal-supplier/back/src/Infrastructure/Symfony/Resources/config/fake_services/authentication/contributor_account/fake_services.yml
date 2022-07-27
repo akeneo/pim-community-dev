@@ -1,8 +1,4 @@
 services:
-  #feature flag
-  akeneo.supplier_portal_contributor_authentication.feature:
-    class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag
-
   # Repositories
   Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:
     class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository
