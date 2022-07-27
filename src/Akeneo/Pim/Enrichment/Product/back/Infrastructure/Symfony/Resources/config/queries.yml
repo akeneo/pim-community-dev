@@ -15,7 +15,3 @@ services:
 
     Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels:
         class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetViewableProductModels
-
-    Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetProductUuidsFromProductIdentifiers:
-        arguments:
-            - '@database_connection'

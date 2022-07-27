@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Event\ProductValidationErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ApiAggregatorForProductPostSaveEventSubscriber;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
@@ -30,7 +31,6 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterI
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
-use Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetProductUuidsFromProductIdentifiers;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Cache\WarmupQueryCache;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
@@ -112,7 +112,7 @@ class ProductController
         private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
         private SecurityFacade $security,
         private ValidatorInterface $validator,
-        private GetProductUuidsFromProductIdentifiers $getProductUuidsFromProductIdentifiers
+        private SqlFindProductUuids $findProductUuids
     ) {
     }
 
@@ -196,7 +196,7 @@ class ProductController
             $user = $this->tokenStorage->getToken()->getUser();
             Assert::isInstanceOf($user, UserInterface::class);
 
-            $uuidsFromIdentifiers = $this->getProductUuidsFromProductIdentifiers->execute([$code]);
+            $uuidsFromIdentifiers = $this->findProductUuids->fromIdentifiers([$code]);
             if (!array_key_exists($code, $uuidsFromIdentifiers)) {
                 throw new ObjectNotFoundException();
             }
@@ -211,7 +211,7 @@ class ProductController
             if ($request->query->getAlpha('with_completenesses', 'false') === 'true') {
                 $product = $this->getProductsWithCompletenesses->fromConnectorProduct($product);
             }
-        } catch (ObjectNotFoundException | \InvalidArgumentException $e) {
+        } catch (ObjectNotFoundException) {
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist or you do not have permission to access it.', $code));
         }
 
