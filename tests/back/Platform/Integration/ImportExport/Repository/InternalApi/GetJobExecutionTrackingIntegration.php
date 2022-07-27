@@ -28,7 +28,7 @@ class GetJobExecutionTrackingIntegration extends TestCase
     {
         parent::setUp();
 
-        self::$container->set('pim_import_export.clock', new FrozenClock());
+        self::getContainer()->set('pim_import_export.clock', new FrozenClock());
 
         $this->sqlConnection = $this->get('database_connection');
         $this->getJobExecutionTracking = $this->get('pim_import_export.query.get_job_execution_tracking');
