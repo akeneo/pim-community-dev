@@ -20,15 +20,13 @@ final class DownloadProductFile
     {
         try {
             $stream = ($this->downloadProductFileHandler)(new \Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFile($identifier));
-        } catch (SupplierFileDoesNotExist) {
+        } catch (SupplierFileDoesNotExist | SupplierFileDownloadError) {
             return new Response(null, Response::HTTP_NOT_FOUND);
-        } catch (SupplierFileDownloadError) {
-            return new Response(null, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         $headers['Content-Disposition'] = sprintf(
             'attachment; filename="%s.xlsx"',
-            $identifier
+            $identifier,
         );
 
         return new StreamedFileResponse($stream, Response::HTTP_OK, $headers);
