@@ -5,7 +5,6 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: Replace=true
-    checksum/config: {{ include (print $.Template.BasePath "../ucs-function-cron-transformer/*") . | sha256sum }}
 spec:
   forProvider:
     availableMemoryMb: {{ .Values.pim.cloudFunction.memory }}

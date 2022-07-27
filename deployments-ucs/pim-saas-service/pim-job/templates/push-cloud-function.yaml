@@ -13,7 +13,6 @@ spec:
         app.kubernetes.io/component: "push-cloud-function"
       annotations:
         argocd.argoproj.io/sync-wave: "-1"
-        checksum/config: {{ include (print $.Template.BasePath "../ucs-function-cron-transformer/*") . | sha256sum }}
     spec:
       restartPolicy: OnFailure
       serviceAccountName: {{ .Values.common.workloadIdentityKSA | quote }}
