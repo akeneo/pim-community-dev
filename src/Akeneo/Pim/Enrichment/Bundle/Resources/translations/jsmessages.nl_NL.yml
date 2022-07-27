@@ -49,6 +49,7 @@ pim_enrich.entity.product:
     download_pdf:
       label: PDF
     copy:
+      button_label: Vergelijken
       label: Vergelijk / Vertaal
       select: Selecteer
       all_visible: Alle zichtbare
