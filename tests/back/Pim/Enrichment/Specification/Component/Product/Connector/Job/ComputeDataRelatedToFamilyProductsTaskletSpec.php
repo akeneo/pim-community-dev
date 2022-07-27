@@ -102,9 +102,9 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $cursor->rewind()->shouldBeCalled();
         $cursor->valid()->willReturn(true, true, true, false);
         $cursor->current()->willReturn(
-            new IdentifierResult('id1', ProductInterface::class, $product1Uuid->toString()),
-            new IdentifierResult('id2', ProductInterface::class, $product2Uuid->toString()),
-            new IdentifierResult('id3', ProductInterface::class, $product3Uuid->toString())
+            new IdentifierResult('id1', ProductInterface::class, 'product_' . $product1Uuid->toString()),
+            new IdentifierResult('id2', ProductInterface::class, 'product_' . $product2Uuid->toString()),
+            new IdentifierResult('id3', ProductInterface::class, 'product_' . $product3Uuid->toString())
         );
         $cursor->next()->shouldBeCalled();
         $cursor->count()->shouldBeCalled()->willReturn(3);

@@ -43,7 +43,7 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
             'total' => ['value' => 42, 'relation' => 'eq'],
             'hits'  => [
                 ['_source' => ['identifier' => 'product_1', 'document_type' => ProductInterface::class, 'id' => 'product_' . $uuid->toString()]],
-                ['_source' => ['identifier' => 'product_model_2', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_2']],
+                ['_source' => ['identifier' => 'product_model_2', 'document_type' => ProductModelInterface::class, 'id' => 'product_model_product_model_2']],
             ]
         ]];
 
@@ -61,7 +61,7 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
         $this->createCursor($esQuery, $options)->shouldBeLike(new IdentifierResultCursor(
             [
                 new IdentifierResult('product_1', ProductInterface::class, 'product_' . $uuid->toString()),
-                new IdentifierResult('product_model_2', ProductModelInterface::class, 'product_model_2'),
+                new IdentifierResult('product_model_2', ProductModelInterface::class, 'product_model_product_model_2'),
             ],
             42,
             new ElasticsearchResult($result)

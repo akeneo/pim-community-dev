@@ -72,7 +72,7 @@ class IdentifierResult
 
     public function getId(): string
     {
-        return $this->getId();
+        return $this->id;
     }
 
     /**
