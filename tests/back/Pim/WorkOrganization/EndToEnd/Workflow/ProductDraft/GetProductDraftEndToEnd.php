@@ -24,7 +24,6 @@ class GetProductDraftEndToEnd extends ApiTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->get('feature_flags')->enable('proposal');
     }
 
     public function testGetProductDraftSuccessful()
@@ -188,7 +187,7 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(['permission', 'proposal']);
     }
 
     /**
