@@ -1,6 +1,7 @@
 import BaseView = require('pimui/js/view/base');
 import {ValidationError, formatParameters, filterErrors} from '@akeneo-pim-community/shared';
 import {JobAutomationForm, JobAutomationFormProps, Automation} from '@akeneo-pim-enterprise/job-automation';
+const userContext = require('pim/user-context');
 
 type JobAutomationFormControllerConfig = {tabCode?: string};
 
@@ -58,7 +59,7 @@ class JobAutomationFormController extends BaseView {
 
   getDefaultAutomation(): Automation {
     return {
-      running_user_groups: [],
+      running_user_groups: userContext.get('groups'),
     };
   }
 
