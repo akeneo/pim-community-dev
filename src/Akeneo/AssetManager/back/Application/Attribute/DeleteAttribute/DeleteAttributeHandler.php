@@ -20,8 +20,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsMainMediaInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\AssetManager\Domain\Repository\CantDeleteAttributeUsedAsLabelException;
-use Akeneo\AssetManager\Domain\Repository\CantDeleteMainMediaException;
+use Akeneo\AssetManager\Domain\Exception\CantDeleteAttributeUsedAsLabelException;
+use Akeneo\AssetManager\Domain\Exception\CantDeleteMainMediaException;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
@@ -52,12 +52,12 @@ class DeleteAttributeHandler
 
         $labelReference = $this->findAttributeAsLabel($attribute->getAssetFamilyIdentifier());
         if (!$labelReference->isEmpty() && $labelReference->getIdentifier()->equals($attributeIdentifier)) {
-            throw CantDeleteAttributeUsedAsLabelException::withAttribute($attribute, $attributeIdentifier);
+            throw CantDeleteAttributeUsedAsLabelException::withAttribute($attribute);
         }
 
         $mainMediaReference = $this->findAttributeAsMainMedia($attribute->getAssetFamilyIdentifier());
         if (!$mainMediaReference->isEmpty() && $mainMediaReference->getIdentifier()->equals($attributeIdentifier)) {
-            throw CantDeleteMainMediaException::withAttribute($attribute, $attributeIdentifier);
+            throw CantDeleteMainMediaException::withAttribute($attribute);
         }
 
         $this->attributeRepository->deleteByIdentifier($attributeIdentifier);

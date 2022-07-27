@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Domain\Repository;
+namespace Akeneo\AssetManager\Domain\Exception;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 
 final class CantDeleteMainMediaException extends \LogicException
 {
-    public static function withAttribute(AbstractAttribute $attribute, AttributeIdentifier $attributeIdentifier): self
+    public static function withAttribute(AbstractAttribute $attribute): self
     {
         $message = sprintf(
             'Attribute "%s" cannot be deleted for the asset family "%s"  as it is used as attribute as main media.',
-            $attributeIdentifier,
+            $attribute->getIdentifier(),
             $attribute->getAssetFamilyIdentifier()
         );
 
