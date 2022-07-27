@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -47,6 +48,14 @@ abstract class IntegrationTestCase extends WebTestCase
     {
         $catalog = self::getContainer()->get('akeneo_integration_tests.catalogs');
         $configuration = $catalog->useMinimalCatalog();
+        $fixturesLoader = self::getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
+        $fixturesLoader->load($configuration);
+    }
+
+    protected function purgeDataAndLoadTechnicalCatalog(): void
+    {
+        $catalog = self::getContainer()->get('akeneo_integration_tests.catalogs');
+        $configuration = $catalog->useTechnicalCatalog();
         $fixturesLoader = self::getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load($configuration);
     }
@@ -213,6 +222,21 @@ abstract class IntegrationTestCase extends WebTestCase
             'UPDATE akeneo_catalog SET is_enabled = 1 WHERE id = :id',
             [
                 'id' => Uuid::fromString($id)->getBytes(),
+            ]
+        );
+    }
+
+    protected function setCatalogProductSelection(string $id, array $criteria)
+    {
+        $connection = self::getContainer()->get(Connection::class);
+        $connection->executeQuery(
+            'UPDATE akeneo_catalog SET product_selection_criteria = :criteria WHERE id = :id',
+            [
+                'id' => Uuid::fromString($id)->getBytes(),
+                'criteria' => \array_values($criteria),
+            ],
+            [
+                'criteria' => Types::JSON,
             ]
         );
     }

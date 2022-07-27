@@ -7,6 +7,9 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetProductIdentifiersQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -62,6 +65,41 @@ class GetProductIdentifiersQueryTest extends IntegrationTestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'invalid_search_after');
+    }
+
+    public function testItGetsPaginatedProductIdentifiersFromCatalogCriteriaHavingAScopeAndAChannel(): void
+    {
+        $this->purgeDataAndLoadTechnicalCatalog();
+
+        $owner = $this->createUser('owner');
+        $this->logAs($owner->getUserIdentifier());
+
+        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', $owner->getUserIdentifier());
+        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
+            [
+                'field' => 'completeness',
+                'operator' => '>',
+                'value' => 25,
+                'scope' => 'ecommerce',
+                'locale' => 'en_US',
+            ],
+        ]);
+
+        $ownerId = $owner->getId();
+        $this->createProduct('red', [
+            new SetEnabled(true),
+            new SetFamily('familyA3'),
+        ], $ownerId);
+        $this->createProduct('blue', [
+            new SetEnabled(true),
+            new SetFamily('familyA3'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', 'optionA'),
+        ], $ownerId);
+
+        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 2);
+
+        $this->assertEquals(['blue'], $result);
     }
 
     private function findProductUuid(string $identifier): string
