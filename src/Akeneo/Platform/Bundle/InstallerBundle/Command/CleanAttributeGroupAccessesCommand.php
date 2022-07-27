@@ -48,10 +48,10 @@ class CleanAttributeGroupAccessesCommand extends Command
             $groupAll = $this->groupRepository->getDefaultUserGroup();
             $this->attributeGroupAccessRepository->revokeAccessToGroups([$groupAll]);
             $output->writeln('<info>done !</info>');
-
-            return Command::SUCCESS;
         } else {
             $output->writeln('Permission feature is not enabled. Not removing the group "ALL" from attribute groups\' permissions.');
         }
+
+        return Command::SUCCESS;
     }
 }
