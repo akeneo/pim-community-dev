@@ -192,7 +192,7 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'scope' => 'print',
                     'locale' => 'kz_KZ',
                 ],
-                'expectedMessage' => 'Invalid channel value.',
+                'expectedMessage' => 'This channel has been deactivated. Please check your channel settings or remove this criterion.',
                 'expectedPath' => '[product_selection_criteria][0][scope]',
             ],
             'completeness field with invalid locale for a channel' => [
@@ -203,7 +203,7 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'scope' => 'ecommerce',
                     'locale' => 'kz_KZ',
                 ],
-                'expectedMessage' => 'Locale does not exist or not activated for the channel.',
+                'expectedMessage' => 'This locale is disabled for this channel. Please check your channel settings or remove this criterion.',
                 'expectedPath' => '[product_selection_criteria][0][locale]',
             ],
         ];

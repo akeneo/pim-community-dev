@@ -165,7 +165,7 @@ class UpdateCatalogPayloadIsValidValidator extends ConstraintValidator
                             new Assert\Range([
                                 'min' => 0,
                                 'max' => 100,
-                                'notInRangeMessage' => 'Completeness value must be between 0 and 100 percent.',
+                                'notInRangeMessage' => 'akeneo_catalogs.validation.product_selection.criteria.completeness.value',
                             ]),
                         ],
                         'scope' => [
@@ -189,7 +189,7 @@ class UpdateCatalogPayloadIsValidValidator extends ConstraintValidator
 
                     $activeChannels = $this->getChannelsQuery->execute(1, 20, $completenessChannel);
                     if (\count($activeChannels) === 0) {
-                        $context->buildViolation('Invalid channel value.')
+                        $context->buildViolation('akeneo_catalogs.validation.product_selection.criteria.completeness.channel')
                             ->atPath('[scope]')
                             ->addViolation();
 
@@ -203,7 +203,7 @@ class UpdateCatalogPayloadIsValidValidator extends ConstraintValidator
                     ));
 
                     if (!$completenessLocaleIsValid) {
-                        $context->buildViolation('Locale does not exist or not activated for the channel.')
+                        $context->buildViolation('akeneo_catalogs.validation.product_selection.criteria.completeness.locale')
                             ->atPath('[locale]')
                             ->addViolation();
                     }
