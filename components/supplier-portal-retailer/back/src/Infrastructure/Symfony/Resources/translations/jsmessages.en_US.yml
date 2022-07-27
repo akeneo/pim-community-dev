@@ -75,8 +75,30 @@ supplier_portal:
             update_error: An error occured while updating the supplier.
             delete_label: Delete this supplier
 
+    product_file_dropping:
+        breadcrumb:
+            root: Supplier Portal
+            product_files: Product files
+        supplier_files:
+            menu_item: Product files
+            title: "]-Inf, 1]{{ count }} product file|]1, Inf[{{ count }} product files"
+            no_files: There are no product files yet.
+            columns:
+                upload_date: Upload date
+                contributor: Contributor
+                supplier: Supplier
+                status: Status
+            status:
+                downloaded: Downloaded
+                to_download: To download
+            notification:
+                error_loading_supplier_files:
+                    title: We are not able to display the product files.
+                    content: Sorry about this inconvenience, please try again in a few moments.
+
 pim_title:
     supplier_portal_retailer_supplier_list: Suppliers
     supplier_portal_retailer_supplier_edit: Edit a supplier
+    supplier_portal_supplier_files_list: Product files
 
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Supplier Portal Supplier import in XLSX
