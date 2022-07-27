@@ -1,0 +1,43 @@
+common:
+  gcpProjectID: "akecld-prd-pim-saas-dev"
+  workloadIdentityKSA: "timmy-portal-function" # Generated
+  workloadIdentityGSA: "timmy-portal-function" # Generated
+  region: "europe-west1"
+  timeZone: "Europe/Paris"
+
+cloudFunction:
+  name: timmy-get-portal-information
+  description: ""
+  bucket: "test" # Generated
+  sourceArchiveObject: "test" # Generated
+  memory: 128
+  serviceAccountEmail: "timmy-portal-function@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"
+  sourceCodeZip: "test" # Generated
+  entrypoint: "getPortalInformation"
+  environmentVariables:
+    PORTAL_HOSTNAME: ""
+    PORTAL_LOGIN_HOSTNAME: ""
+    TENANT_EDITION_FLAGS: ""
+    TENANT_CONTINENT: ""
+    TENANT_ENVIRONMENT: ""
+
+cloudScheduler:
+  name: "timmy"
+  description: "timmy-https-job"
+  schedule: "*/2 * * * *"
+  cloudFunctionName: "timmy-get-portal-information"
+
+bucket:
+  name: "timmy"
+  storageClass: "STANDARD"
+  uniformBucketLevelAccess: "false"
+
+image:
+  cloudsdk:
+    repository: gcr.io/google.com/cloudsdktool/cloud-sdk
+    pullPolicy: IfNotPresent
+    tag: 392.0.0-alpine
+  curljqzip:
+    repository: vgelot/alpine-curl-jq-zip
+    pullPolicy: IfNotPresent
+    tag: curl-7.83.1

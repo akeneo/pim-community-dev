@@ -1,0 +1,24 @@
+apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
+kind: Function
+metadata:
+  name: {{ .Values.cloudFunction.name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: Replace=true
+spec:
+  forProvider:
+    availableMemoryMb: {{ .Values.cloudFunction.availableMemoryMb }}
+    description: "Request the portal to get tenant information"
+    entryPoint: {{ .Values.cloudFunction.entryPoint }}
+    name: {{ .Values.cloudFunction.name }}
+    runtime: "nodejs16"
+    serviceAccountEmail: {{ .Values.cloudFunction.serviceAccountEmail }}
+    sourceArchiveBucket: {{ .Values.cloudFunction.bucket }}
+    sourceArchiveObject: {{ .Values.cloudFunction.sourceCodeZip }}
+    triggerHttp: true
+    project: {{ .Values.common.gcpProjectID }}
+    region: {{ .Values.common.region }}
+    environmentVariables:
+      {{- toYaml .Values.cloudFunction.environmentVariables | nindent 6 }}
+  providerConfigRef:
+    name: "provider-config-jet-gcp"
