@@ -1,8 +1,5 @@
-import {useInfiniteFamilies} from './useInfiniteFamilies';
-
 jest.unmock('./useInfiniteChannels');
 
-import {Channel} from '../models/Channel';
 import {act, renderHook} from '@testing-library/react-hooks';
 import {useInfiniteChannels} from './useInfiniteChannels';
 import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
@@ -61,7 +58,9 @@ test('it fetches & paginates channels', async () => {
 test('it filters channel with a code', async () => {
     fetchMock.mockResponseOnce(JSON.stringify([channelPrint]));
 
-    const {result, waitForNextUpdate} = renderHook(() => useInfiniteChannels({code: 'print'}), {wrapper: ReactQueryWrapper});
+    const {result, waitForNextUpdate} = renderHook(() => useInfiniteChannels({code: 'print'}), {
+        wrapper: ReactQueryWrapper,
+    });
 
     expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/channels?page=1&limit=20&code=print', expect.any(Object));
     await waitForNextUpdate();

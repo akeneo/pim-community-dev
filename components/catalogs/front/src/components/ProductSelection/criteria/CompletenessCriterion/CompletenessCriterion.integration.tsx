@@ -22,7 +22,13 @@ test('it renders the completeness criteria', () => {
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
                 <CompletenessCriterion
-                    state={{field: 'completeness', operator: Operator.LOWER_THAN, value: 25, locale: 'en_US', scope: 'print'}}
+                    state={{
+                        field: 'completeness',
+                        operator: Operator.LOWER_THAN,
+                        value: 25,
+                        locale: 'en_US',
+                        scope: 'print',
+                    }}
                     onChange={jest.fn()}
                     onRemove={jest.fn()}
                     errors={{}}
@@ -43,7 +49,13 @@ test('it renders criteria with validation errors', () => {
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
                 <CompletenessCriterion
-                    state={{field: 'completeness', operator: Operator.LOWER_THAN, value: 25, locale: 'en_US', scope: 'print'}}
+                    state={{
+                        field: 'completeness',
+                        operator: Operator.LOWER_THAN,
+                        value: 25,
+                        locale: 'en_US',
+                        scope: 'print',
+                    }}
                     onChange={jest.fn()}
                     onRemove={jest.fn()}
                     errors={{
@@ -71,7 +83,13 @@ test('it calls onChange when the operator changes', () => {
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
                 <CompletenessCriterion
-                    state={{field: 'completeness', operator: Operator.LOWER_THAN, value: 25, locale: 'en_US', scope: 'print'}}
+                    state={{
+                        field: 'completeness',
+                        operator: Operator.LOWER_THAN,
+                        value: 25,
+                        locale: 'en_US',
+                        scope: 'print',
+                    }}
                     onChange={onChange}
                     onRemove={jest.fn()}
                     errors={{}}
@@ -90,7 +108,7 @@ test('it calls onChange when the operator changes', () => {
         operator: Operator.EQUALS,
         value: 25,
         locale: 'en_US',
-        scope: 'print'
+        scope: 'print',
     });
 });
 
@@ -101,7 +119,13 @@ test('it calls onChange when the value changes', () => {
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
                 <CompletenessCriterion
-                    state={{field: 'completeness', operator: Operator.LOWER_THAN, value: 25, locale: 'en_US', scope: 'print'}}
+                    state={{
+                        field: 'completeness',
+                        operator: Operator.LOWER_THAN,
+                        value: 25,
+                        locale: 'en_US',
+                        scope: 'print',
+                    }}
                     onChange={onChange}
                     onRemove={jest.fn()}
                     errors={{}}
@@ -118,6 +142,6 @@ test('it calls onChange when the value changes', () => {
         operator: Operator.LOWER_THAN,
         value: 75,
         locale: 'en_US',
-        scope: 'print'
+        scope: 'print',
     });
 });

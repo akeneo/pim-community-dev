@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {CloseIcon, IconButton, List} from 'akeneo-design-system';
+import {CloseIcon, Helper, IconButton, List} from 'akeneo-design-system';
 import {CriterionModule} from '../../models/Criterion';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -27,6 +27,14 @@ const CompletenessCriterion: FC<CriterionModule<CompletenessCriterionState>> = (
 }) => {
     const translate = useTranslate();
 
+    const errorHelpers = Object.keys(errors).map(key =>
+        errors[key] === undefined ? null : (
+            <Helper key={key} level='error'>
+                {errors[key]}
+            </Helper>
+        )
+    );
+
     return (
         <List.Row>
             <List.TitleCell width={150}>
@@ -35,22 +43,23 @@ const CompletenessCriterion: FC<CriterionModule<CompletenessCriterionState>> = (
             <List.Cell width='auto'>
                 <Fields>
                     <Field>
-                        <CompletenessOperatorInput state={state} onChange={onChange} error={errors.operator} />
+                        <CompletenessOperatorInput state={state} onChange={onChange} isInvalid={!!errors.operator} />
                     </Field>
                     <Field>
-                        <CompletenessValueInput state={state} onChange={onChange} error={errors.value} />
+                        <CompletenessValueInput state={state} onChange={onChange} isInvalid={!!errors.value} />
                     </Field>
                     <Field>
-                        <CompletenessScopeInput state={state} onChange={onChange} error={errors.scope} />
+                        <CompletenessScopeInput state={state} onChange={onChange} isInvalid={!!errors.scope} />
                     </Field>
                     <Field>
-                        <CompletenessLocaleInput state={state} onChange={onChange} error={errors.locale} />
+                        <CompletenessLocaleInput state={state} onChange={onChange} isInvalid={!!errors.locale} />
                     </Field>
                 </Fields>
             </List.Cell>
             <List.RemoveCell>
                 <IconButton ghost='borderless' level='tertiary' icon={<CloseIcon />} title='' onClick={onRemove} />
             </List.RemoveCell>
+            {errorHelpers.length > 0 && <List.RowHelpers>{errorHelpers}</List.RowHelpers>}
         </List.Row>
     );
 };

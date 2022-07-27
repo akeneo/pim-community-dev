@@ -28,34 +28,24 @@ export const useInfiniteChannels = ({code = '', limit = 20}: QueryParams = {}): 
     const fetchChannels = useCallback(
         async ({pageParam}: {pageParam?: PageParam}): Promise<Page> => {
             const _page = pageParam?.number || 1;
-            const response = await fetch(
-                `/rest/catalogs/channels?page=${_page}&limit=${limit}&code=${code}`,
-                {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                }
-            );
+            const response = await fetch(`/rest/catalogs/channels?page=${_page}&limit=${limit}&code=${code}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
 
             return {
                 data: await response.json(),
-                page: { number: _page },
+                page: {number: _page},
             };
         },
         [code, limit]
     );
 
-    const query = useInfiniteQuery<Page, Error, Page>(
-        ['channels', {code: code, limit: limit}],
-        fetchChannels,
-        {
-            keepPreviousData: true,
-            getNextPageParam: last =>
-                last.data.length >= limit
-                    ? {number: last.page.number + 1}
-                    : undefined,
-        }
-    );
+    const query = useInfiniteQuery<Page, Error, Page>(['channels', {code: code, limit: limit}], fetchChannels, {
+        keepPreviousData: true,
+        getNextPageParam: last => (last.data.length >= limit ? {number: last.page.number + 1} : undefined),
+    });
 
     const hasNextPage = (!query.isFetching && !query.isLoading && query.hasNextPage) || false;
 
