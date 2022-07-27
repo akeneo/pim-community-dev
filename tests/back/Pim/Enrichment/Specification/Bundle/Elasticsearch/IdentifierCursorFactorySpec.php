@@ -31,12 +31,12 @@ final class IdentifierCursorFactorySpec extends ObjectBehavior
     {
         $this->createCursor([], [])->shouldBeLike(new IdentifierCursor(
             $searchEngine->getWrappedObject(),
-            ['_source' => ['identifier', 'document_type']],
+            ['_source' => ['identifier', 'document_type', 'id']],
             100
         ));
         $this->createCursor(['_source' => 'values', 'foo' => 'bar'], ['page_size' => 62])->shouldBeLike(new IdentifierCursor(
             $searchEngine->getWrappedObject(),
-            ['_source' => ['identifier', 'document_type'], 'foo' => 'bar'],
+            ['_source' => ['identifier', 'document_type', 'id'], 'foo' => 'bar'],
             62
         ));
     }

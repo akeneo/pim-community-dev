@@ -24,6 +24,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -81,6 +82,10 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         ProductAndProductModelQueryBuilder $pqb,
         CursorInterface $cursor
     ) {
+        $product1Uuid = Uuid::uuid4();
+        $product2Uuid = Uuid::uuid4();
+        $product3Uuid = Uuid::uuid4();
+
         $product1->isVariant()->willReturn(false);
         $product2->isVariant()->willReturn(false);
         $product3->isVariant()->willReturn(false);
@@ -97,9 +102,9 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $cursor->rewind()->shouldBeCalled();
         $cursor->valid()->willReturn(true, true, true, false);
         $cursor->current()->willReturn(
-            new IdentifierResult('id1', ProductInterface::class),
-            new IdentifierResult('id2', ProductInterface::class),
-            new IdentifierResult('id3', ProductInterface::class)
+            new IdentifierResult('id1', ProductInterface::class, 'product_' . $product1Uuid->toString()),
+            new IdentifierResult('id2', ProductInterface::class, 'product_' . $product2Uuid->toString()),
+            new IdentifierResult('id3', ProductInterface::class, 'product_' . $product3Uuid->toString())
         );
         $cursor->next()->shouldBeCalled();
         $cursor->count()->shouldBeCalled()->willReturn(3);
@@ -145,6 +150,10 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         ConstraintViolationListInterface $violationList2,
         ConstraintViolationListInterface $violationList3
     ) {
+        $product1Uuid = Uuid::uuid4();
+        $product2Uuid = Uuid::uuid4();
+        $product3Uuid = Uuid::uuid4();
+
         $variantProduct1->isVariant()->willReturn(true);
         $variantProduct2->isVariant()->willReturn(true);
         $variantProduct3->isVariant()->willReturn(true);
@@ -161,9 +170,9 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $cursor->rewind()->shouldBeCalled();
         $cursor->valid()->willReturn(true, true, true, false);
         $cursor->current()->willReturn(
-            new IdentifierResult('id1', ProductInterface::class),
-            new IdentifierResult('id2', ProductInterface::class),
-            new IdentifierResult('id3', ProductInterface::class)
+            new IdentifierResult('id1', ProductInterface::class, $product1Uuid->toString()),
+            new IdentifierResult('id2', ProductInterface::class, $product2Uuid->toString()),
+            new IdentifierResult('id3', ProductInterface::class, $product3Uuid->toString())
         );
         $cursor->next()->shouldBeCalled();
         $cursor->count()->shouldBeCalled()->willReturn(3);
@@ -221,6 +230,10 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         ConstraintViolationListInterface $violationList2,
         ConstraintViolationListInterface $violationList3
     ) {
+        $product1Uuid = Uuid::uuid4();
+        $product2Uuid = Uuid::uuid4();
+        $product3Uuid = Uuid::uuid4();
+
         $variantProduct1->isVariant()->willReturn(true);
         $variantProduct2->isVariant()->willReturn(true);
         $variantProduct3->isVariant()->willReturn(true);
@@ -237,9 +250,9 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $cursor->rewind()->shouldBeCalled();
         $cursor->valid()->willReturn(true, true, true, false);
         $cursor->current()->willReturn(
-            new IdentifierResult('id1', ProductInterface::class),
-            new IdentifierResult('id2', ProductInterface::class),
-            new IdentifierResult('id3', ProductInterface::class)
+            new IdentifierResult('id1', ProductInterface::class, 'product_' . $product1Uuid->toString()),
+            new IdentifierResult('id2', ProductInterface::class, 'product_' . $product2Uuid->toString()),
+            new IdentifierResult('id3', ProductInterface::class, 'product_' . $product3Uuid->toString())
         );
         $cursor->next()->shouldBeCalled();
         $cursor->count()->shouldBeCalled()->willReturn(3);

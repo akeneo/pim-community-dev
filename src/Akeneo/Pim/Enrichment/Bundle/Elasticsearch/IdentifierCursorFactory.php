@@ -24,7 +24,7 @@ class IdentifierCursorFactory implements CursorFactoryInterface
     public function createCursor($queryBuilder, array $options = []): CursorInterface
     {
         $pageSize = $options['page_size'] ?? $this->pageSize;
-        $queryBuilder['_source'] = ['identifier', 'document_type'];
+        $queryBuilder['_source'] = ['identifier', 'document_type', 'id'];
 
         return new IdentifierCursor($this->searchEngine, $queryBuilder, $pageSize);
     }

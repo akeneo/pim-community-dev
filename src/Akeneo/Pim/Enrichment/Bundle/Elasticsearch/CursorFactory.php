@@ -13,21 +13,6 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  */
 class CursorFactory implements CursorFactoryInterface
 {
-    /** @var Client */
-    protected $searchEngine;
-
-    /** @var CursorableRepositoryInterface */
-    private $productRepository;
-
-    /** @var CursorableRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var string */
-    protected $cursorClassName;
-
-    /** @var int */
-    protected $pageSize;
-
     /**
      * @param Client                        $searchEngine
      * @param CursorableRepositoryInterface $productRepository
@@ -35,15 +20,11 @@ class CursorFactory implements CursorFactoryInterface
      * @param int                           $pageSize
      */
     public function __construct(
-        Client $searchEngine,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
-        int $pageSize
+        protected Client $searchEngine,
+        private CursorableRepositoryInterface $productRepository,
+        private CursorableRepositoryInterface $productModelRepository,
+        protected int $pageSize
     ) {
-        $this->searchEngine = $searchEngine;
-        $this->productRepository = $productRepository;
-        $this->productModelRepository = $productModelRepository;
-        $this->pageSize = $pageSize;
     }
 
     /**
@@ -53,7 +34,7 @@ class CursorFactory implements CursorFactoryInterface
     {
         $pageSize = !isset($options['page_size']) ? $this->pageSize : $options['page_size'];
 
-        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['document_type']);
+        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['document_type', 'id']);
 
         return new Cursor(
             $this->searchEngine,
