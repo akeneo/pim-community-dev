@@ -28,9 +28,9 @@ final class GetUserGroupsAction
 
     public function __invoke(Request $request): Response
     {
-        // if (!$request->isXmlHttpRequest()) {
-        //     return new RedirectResponse('/');
-        // }
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
 
         return new JsonResponse($this->getUserGroupsHandler->handle(), Response::HTTP_OK);
     }

@@ -19,6 +19,17 @@ final class GetUserGroupsQuery implements GetUserGroupsQueryInterface
 {
     public function execute(): array
     {
-        return ['IT Support'];
+        return [
+            'IT Support',
+            'Manager',
+            'Furniture manager',
+            'Clothes manager',
+            'Redactor',
+            'English translator',
+            'SAP Connection',
+            'Alkemics Connection',
+            'Translations.com Connection',
+            'Magento Connection'
+        ];
     }
 }
