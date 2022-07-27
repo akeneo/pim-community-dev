@@ -197,7 +197,8 @@ mysql:
   common:
     class: ssd-retain-csi
   mysql:
-    nodeSelector: true
+    nodeSelector:
+      - role: mysql-server
     dataDiskPath: "/var/lib/mysql/"
     serviceName: pim-mysql
     defaultUser: akeneo_pim
