@@ -6,8 +6,7 @@ metadata:
     ucsCronBucket: {{ .Values.pim.cloudFunction.bucket }}
     crossplane.io/external-name: {{ .Values.pim.cloudFunction.bucket }}
   annotations:
-    argocd.argoproj.io/hook: PreSync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "-5"
 spec:
   location: {{ .Values.common.location }}
   storageClass: STANDARD

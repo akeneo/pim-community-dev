@@ -2,6 +2,8 @@ apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
 kind: Function
 metadata:
   name: {{ .Values.pim.cloudFunction.name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   forProvider:
     availableMemoryMb: {{ .Values.pim.cloudFunction.memory }}
