@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.37 (2022-07-27)
+
 ## Bug fixes
 
 - OCT-76: Fixed redundant authentication prompt during App activation
