@@ -41,7 +41,7 @@ const JobAutomationForm = ({automation, validationErrors, onAutomationChange}: J
             removeLabel={translate('pim_common.remove')}
             readOnly={!isGranted('pim_user_group_index')}
           >
-            {userGroups.map(group => (
+            {userGroups.filter((group: string) => group !== 'All').map(group => (
               <SelectInput.Option value={group} key={group}>
                 {group}
               </SelectInput.Option>

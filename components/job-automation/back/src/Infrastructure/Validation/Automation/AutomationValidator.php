@@ -21,7 +21,10 @@ class AutomationValidator extends ConstraintValidator
 
         $this->context->getValidator()->inContext($this->context)->validate($value, new Collection([
             'fields' => [
-                'running_user_groups' => [new All([new NotEqualTo('All'), new Type('string')]), new Type('array')],
+                'running_user_groups' => [
+                    new All(new Type('string')),
+                    new Type('array')
+                ],
             ],
         ]));
     }
