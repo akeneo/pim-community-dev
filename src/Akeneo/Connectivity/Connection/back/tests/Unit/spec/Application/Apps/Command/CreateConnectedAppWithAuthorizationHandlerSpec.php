@@ -241,7 +241,7 @@ class CreateConnectedAppWithAuthorizationHandlerSpec extends ObjectBehavior
         $userGroup->getName()->willReturn('a_group');
         $appRoleWithScopesFactory->createRole('an_app_id', ['a_scope'])->willReturn($role);
         $role->getRole()->willReturn('ROLE_APP');
-        $createUser->execute(Argument::any(), Argument::any(), ['a_group'], ['ROLE_APP'])->willReturn(43);
+        $createUser->execute(Argument::any(), Argument::any(), ['a_group'], ['ROLE_APP'], 'an_app_id')->willReturn(43);
 
         $client->getId()->willReturn(42);
         $app->getName()->willReturn('My App');
