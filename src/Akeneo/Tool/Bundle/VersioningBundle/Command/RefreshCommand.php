@@ -2,16 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Command;
 
-use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
-use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
-use Akeneo\Tool\Component\Versioning\Model\Version;
-use Doctrine\ORM\EntityManagerInterface;
-use Monolog\Handler\StreamHandler;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,37 +20,12 @@ class RefreshCommand extends Command
     protected static $defaultName = 'pim:versioning:refresh';
     protected static $defaultDescription = 'Version any updated entities';
 
-    private LoggerInterface $logger;
-    private VersionManager $versionManager;
-    private BulkObjectDetacherInterface $bulkObjectDetacher;
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(
-        LoggerInterface $logger,
-        VersionManager $versionManager,
-        BulkObjectDetacherInterface $bulkObjectDetacher,
-        EntityManagerInterface $entityManager
-    ) {
-        parent::__construct();
-
-        $this->logger = $logger;
-        $this->versionManager = $versionManager;
-        $this->bulkObjectDetacher = $bulkObjectDetacher;
-        $this->entityManager = $entityManager;
-    }
-
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->addOption(
-                'show-log',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'display the log on the output'
-            )
             ->addOption(
                 'batch-size',
                 null,
@@ -73,75 +40,17 @@ class RefreshCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $noDebug = $input->getOption('no-debug');
-        if (!$noDebug) {
-            $this->logger->pushHandler(new StreamHandler('php://stdout'));
-        }
-        $totalPendings = (int)$this->versionManager
-            ->getVersionRepository()
-            ->getPendingVersionsCount();
+        $batchConfig = [
+            'batch_size' => (int)$input->getOption('batch-size'),
+        ];
 
-        if ($totalPendings === 0) {
-            $output->writeln('<info>Versioning is already up to date.</info>');
+        $command = $this->getApplication()->find('akeneo:batch:job');
 
-            return Command::SUCCESS;
-        }
+        $arguments = new ArrayInput([
+            'code' => 'versioning_refresh',
+            '--config' => \json_encode($batchConfig),
+        ]);
 
-        $progress = new ProgressBar($output, $totalPendings);
-        $progress->start();
-
-        $batchSize = $input->getOption('batch-size');
-
-        $pendingVersions = $this->versionManager
-            ->getVersionRepository()
-            ->getPendingVersions($batchSize);
-
-        $nbPendings = count($pendingVersions);
-
-        while ($nbPendings > 0) {
-            $previousVersions = [];
-            foreach ($pendingVersions as $pending) {
-                $key = sprintf(
-                    '%s_%s',
-                    $pending->getResourceName(),
-                    $pending->getResourceId() ?? $pending->getResourceUuid()->toString()
-                );
-
-                $previousVersion = isset($previousVersions[$key]) ? $previousVersions[$key] : null;
-                $version = $this->createVersion($pending, $previousVersion);
-
-                if ($version) {
-                    $previousVersions[$key] = $version;
-                }
-
-                $progress->advance();
-            }
-            $this->entityManager->flush();
-            $this->bulkObjectDetacher->detachAll($pendingVersions);
-
-            $pendingVersions = $this->versionManager
-                ->getVersionRepository()
-                ->getPendingVersions($batchSize);
-            $nbPendings = count($pendingVersions);
-        }
-        $progress->finish();
-        $output->writeln(sprintf('<info>%d created versions.</info>', $totalPendings));
-
-        return Command::SUCCESS;
-    }
-
-    protected function createVersion(Version $version, Version $previousVersion = null): ?Version
-    {
-        $version = $this->versionManager->buildPendingVersion($version, $previousVersion);
-
-        if ($version->getChangeset()) {
-            $this->entityManager->persist($version);
-            $this->entityManager->flush($version);
-
-            return $version;
-        } else {
-            $this->entityManager->remove($version);
-            $this->entityManager->flush($version);
-        }
+        return $command->run($arguments, $output);
     }
 }
