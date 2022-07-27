@@ -1,8 +1,7 @@
 <?php
 
-namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp;
+namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation;
 
-use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation\Automation;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
