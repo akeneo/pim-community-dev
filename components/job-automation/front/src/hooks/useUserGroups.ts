@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useRoute} from '@akeneo-pim-community/shared';
 
-const useUserGroupsFetcher = () => {
+const useUserGroups = () => {
   const route = useRoute('pimee_job_automation_get_user_groups');
   const [userGroups, setUserGroups] = useState<string[]>([]);
 
@@ -23,7 +23,7 @@ const useUserGroupsFetcher = () => {
     void fetchUserGroups();
   }, [route]);
 
-  return [userGroups] as const;
+  return userGroups;
 };
 
-export {useUserGroupsFetcher};
+export {useUserGroups};

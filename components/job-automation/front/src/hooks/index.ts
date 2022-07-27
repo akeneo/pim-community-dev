@@ -1,1 +1,1 @@
-export * from './useUserGroupsFetcher';
+export * from './useUserGroups';

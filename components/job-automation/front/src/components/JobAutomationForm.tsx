@@ -9,7 +9,7 @@ import {
   useSecurity,
 } from '@akeneo-pim-community/shared';
 import {Automation} from '../model';
-import {useUserGroupsFetcher} from '../hooks';
+import {useUserGroups} from '../hooks';
 
 type JobAutomationFormProps = {
   automation: Automation;
@@ -19,7 +19,7 @@ type JobAutomationFormProps = {
 
 const JobAutomationForm = ({automation, validationErrors, onAutomationChange}: JobAutomationFormProps) => {
   const translate = useTranslate();
-  const [userGroups] = useUserGroupsFetcher();
+  const userGroups = useUserGroups();
   const featureFlags = useFeatureFlags();
   const {isGranted} = useSecurity();
 

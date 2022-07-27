@@ -2,265 +2,114 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import {screen} from '@testing-library/react';
 import {renderWithProviders, ValidationError, useFeatureFlags} from '@akeneo-pim-community/shared';
-import {StorageForm} from './JobAutomationForm';
-import {LocalStorage, NoneStorage, SftpStorage} from './model';
+import {JobAutomationForm} from './JobAutomationForm';
+import {Automation} from 'model';
 
-const mockedUseFeatureFlags = useFeatureFlags as jest.Mock;
+const automation: Automation = {
+  running_user_groups: ['IT Support'],
+};
+
+jest.mock('../hooks/useUserGroups', () => ({
+  useUserGroups: () => {
+    return [
+      'IT Support',
+      'Manager',
+      'Furniture manager',
+      'Clothes manager',
+      'Redactor',
+      'English translator',
+      'SAP Connection',
+      'Alkemics Connection',
+      'Translations.com Connection',
+      'Magento Connection',
+    ];
+  },
+}));
+
+let mockedFeatureFlags = ['permission'];
+let mockedGrantedACL = ['pim_user_group_index'];
 
 jest.mock('@akeneo-pim-community/shared/lib/hooks/useFeatureFlags', () => ({
-  useFeatureFlags: jest.fn(),
+  useFeatureFlags: () => ({
+    isEnabled: (featureFlag: string) => {
+      return mockedFeatureFlags.includes(featureFlag);
+    },
+  }),
+}));
+
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useSecurity', () => ({
+  useSecurity: () => ({
+    isGranted: (acl: string) => {
+      return mockedGrantedACL.includes(acl);
+    },
+  }),
 }));
 
 beforeEach(() => {
-  mockedUseFeatureFlags.mockImplementation(() => ({
-    isEnabled: (featureFlag: string): boolean => true,
-  }));
+  mockedFeatureFlags = ['permission'];
+  mockedGrantedACL = ['pim_user_group_index'];
 });
 
-test('it renders the storage form', () => {
-  const storage: NoneStorage = {
-    type: 'none',
-    file_path: '/tmp/file.xlsx',
-  };
-
+test('it renders the job automation form', () => {
   renderWithProviders(
-    <StorageForm
-      jobName="xlsx_product_export"
-      jobType="export"
-      storage={storage}
-      fileExtension="xlsx"
-      validationErrors={[]}
-      onStorageChange={jest.fn()}
-    />
+    <JobAutomationForm automation={automation} validationErrors={[]} onAutomationChange={jest.fn()} />
   );
 
-  expect(screen.getByText('pim_import_export.form.job_instance.storage_form.connection.none')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.job_automation.title')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.job_automation.scheduling.title')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.job_automation.scheduling.running_user_groups.label')).toBeInTheDocument();
+  expect(screen.getByText('IT Support')).toBeInTheDocument();
 });
 
-test('it hides the storage form when local and remote storage are disabled', () => {
-  mockedUseFeatureFlags.mockImplementation(() => ({
-    isEnabled: (featureFlag: string): boolean => false,
-  }));
-
-  const storage: NoneStorage = {
-    type: 'none',
-    file_path: '/tmp/file.xlsx',
-  };
+test('it hides the running user group input if the permission is not enabled', () => {
+  mockedFeatureFlags = [];
 
   renderWithProviders(
-    <StorageForm
-      jobName="xlsx_attribute_export"
-      jobType="export"
-      storage={storage}
-      fileExtension="xlsx"
-      validationErrors={[]}
-      onStorageChange={jest.fn()}
-    />
+    <JobAutomationForm automation={automation} validationErrors={[]} onAutomationChange={jest.fn()} />
   );
 
-  expect(
-    screen.queryByText('pim_import_export.form.job_instance.storage_form.connection.none')
-  ).not.toBeInTheDocument();
+  expect(screen.queryByText('akeneo.job_automation.scheduling.running_user_groups.label')).not.toBeInTheDocument();
 });
 
-test('it triggers onStorageChange callback when storage configurator onStorageChange is triggered', () => {
-  const storage: LocalStorage = {
-    type: 'local',
-    file_path: '/tmp/file.xls',
-  };
-
-  const onStorageChange = jest.fn();
+test('it disables the running user group input if the user cannot list the user groups', () => {
+  mockedGrantedACL = [];
 
   renderWithProviders(
-    <StorageForm
-      jobName="xlsx_product_export"
-      jobType="export"
-      storage={storage}
-      fileExtension="xlsx"
-      validationErrors={[]}
-      onStorageChange={onStorageChange}
-    />
+    <JobAutomationForm automation={automation} validationErrors={[]} onAutomationChange={jest.fn()} />
   );
 
-  const file_pathInput = screen.getByLabelText(
-    'pim_import_export.form.job_instance.storage_form.file_path.label pim_common.required_label'
-  );
-  userEvent.type(file_pathInput, 'x');
-
-  expect(onStorageChange).toHaveBeenLastCalledWith({
-    type: 'local',
-    file_path: '/tmp/file.xlsx',
-  });
+  expect(screen.getByLabelText('akeneo.job_automation.scheduling.running_user_groups.label')).toBeDisabled();
+  expect(screen.getByText('akeneo.job_automation.scheduling.running_user_groups.disabled_helper')).toBeInTheDocument();
 });
 
-test('it does not render the storage form configurator if storage is none', () => {
-  const storage: NoneStorage = {
-    type: 'none',
-    file_path: '/tmp/file.xlsx',
-  };
+test('it can change the running user group', () => {
+  const onAutomationChange = jest.fn();
 
   renderWithProviders(
-    <StorageForm
-      jobName="xlsx_product_export"
-      jobType="export"
-      storage={storage}
-      fileExtension="xlsx"
-      validationErrors={[]}
-      onStorageChange={jest.fn()}
-    />
+    <JobAutomationForm automation={automation} validationErrors={[]} onAutomationChange={onAutomationChange} />
   );
 
-  expect(
-    screen.queryByText('pim_import_export.form.job_instance.storage_form.file_path.label')
-  ).not.toBeInTheDocument();
-});
-
-test('it renders the storage form configurator if storage is local', () => {
-  const storage: LocalStorage = {
-    type: 'local',
-    file_path: '',
-  };
-
-  renderWithProviders(
-    <StorageForm
-      jobName="xlsx_product_export"
-      jobType="export"
-      storage={storage}
-      fileExtension="xlsx"
-      validationErrors={[]}
-      onStorageChange={jest.fn()}
-    />
-  );
-
-  expect(
-    screen.getByText('pim_import_export.form.job_instance.storage_form.file_path.label pim_common.required_label')
-  ).toBeInTheDocument();
-  expect(screen.queryByText('pim_import_export.form.job_instance.storage_form.host.label')).not.toBeInTheDocument();
-});
-
-test('it renders the storage form configurator if storage is sftp', () => {
-  const storage: SftpStorage = {
-    type: 'sftp',
-    file_path: '',
-    host: '',
-    port: 22,
-    username: '',
-    password: '',
-  };
-
-  renderWithProviders(
-    <StorageForm
-      jobName="xlsx_product_export"
-      jobType="export"
-      storage={storage}
-      fileExtension="xlsx"
-      validationErrors={[]}
-      onStorageChange={jest.fn()}
-    />
-  );
-
-  expect(
-    screen.getByText('pim_import_export.form.job_instance.storage_form.file_path.label pim_common.required_label')
-  ).toBeInTheDocument();
-  expect(
-    screen.getByText('pim_import_export.form.job_instance.storage_form.host.label pim_common.required_label')
-  ).toBeInTheDocument();
-});
-
-test('it can select a local storage', () => {
-  const storage: NoneStorage = {
-    type: 'none',
-    file_path: '/tmp/file.xlsx',
-  };
-
-  const onStorageChange = jest.fn();
-
-  renderWithProviders(
-    <StorageForm
-      jobName="xlsx_product_export"
-      jobType="export"
-      storage={storage}
-      fileExtension="xlsx"
-      validationErrors={[]}
-      onStorageChange={onStorageChange}
-    />
-  );
-
-  userEvent.click(screen.getByTitle('pim_common.open'));
-  userEvent.click(screen.getByText('pim_import_export.form.job_instance.storage_form.connection.local'));
-
-  expect(onStorageChange).toBeCalledWith({
-    type: 'local',
-    file_path: 'export_%job_label%_%datetime%.xlsx',
-  });
-});
-
-test('it can select a sftp storage', () => {
-  const storage: NoneStorage = {
-    type: 'none',
-    file_path: '/tmp/file.xlsx',
-  };
-
-  const onStorageChange = jest.fn();
-
-  renderWithProviders(
-    <StorageForm
-      jobName="xlsx_product_export"
-      jobType="export"
-      storage={storage}
-      fileExtension="csv"
-      validationErrors={[]}
-      onStorageChange={onStorageChange}
-    />
-  );
-
-  userEvent.click(screen.getByTitle('pim_common.open'));
-  userEvent.click(screen.getByText('pim_import_export.form.job_instance.storage_form.connection.sftp'));
-
-  expect(onStorageChange).toBeCalledWith({
-    type: 'sftp',
-    file_path: 'export_%job_label%_%datetime%.csv',
-    host: '',
-    port: 22,
-    username: '',
-    password: '',
+  userEvent.click(screen.getByLabelText('akeneo.job_automation.scheduling.running_user_groups.label'));
+  userEvent.click(screen.getByText('Clothes manager'));
+  expect(onAutomationChange).toBeCalledWith({
+    running_user_groups: ['IT Support', 'Clothes manager'],
   });
 });
 
 test('it displays validation errors', () => {
-  const storage: LocalStorage = {
-    type: 'local',
-    file_path: '',
-  };
-
   const validationErrors: ValidationError[] = [
     {
       messageTemplate: 'error.key.a_type_error',
       invalidValue: '',
       message: 'this is a type error',
       parameters: {},
-      propertyPath: '[type]',
-    },
-    {
-      messageTemplate: 'error.key.a_file_path_error',
-      invalidValue: '',
-      message: 'this is a file_path error passed to the configurator',
-      parameters: {},
-      propertyPath: '[file_path]',
+      propertyPath: '[running_user_groups]',
     },
   ];
 
   renderWithProviders(
-    <StorageForm
-      jobName="xlsx_product_export"
-      jobType="export"
-      storage={storage}
-      fileExtension="xlsx"
-      validationErrors={validationErrors}
-      onStorageChange={jest.fn()}
-    />
+    <JobAutomationForm automation={automation} validationErrors={validationErrors} onAutomationChange={jest.fn()} />
   );
 
   expect(screen.getByText('error.key.a_type_error')).toBeInTheDocument();
-  expect(screen.getByText('error.key.a_file_path_error')).toBeInTheDocument();
 });
