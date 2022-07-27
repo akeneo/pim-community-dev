@@ -21,11 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetProductDraftEndToEnd extends ApiTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testGetProductDraftSuccessful()
     {
         $this->createDefaultProductDraft('mary', 'product_with_draft');
