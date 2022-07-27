@@ -93,7 +93,7 @@ services:
             - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
             - '@oro_security.security_facade'
             - '@validator'
-            - '@Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetProductUuidsFromProductIdentifiers'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids'
 
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
