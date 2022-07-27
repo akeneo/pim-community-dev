@@ -33,7 +33,7 @@ const useSupplierFiles = (page: number): [SupplierFileRow[], number] => {
             return;
         }
         const responseBody = await response.json();
-        const supplierFiles: SupplierFileRow[] = responseBody.suppliers_files.map((item: any) => {
+        const supplierFiles: SupplierFileRow[] = responseBody.supplier_files.map((item: any) => {
             return {
                 identifier: item.identifier,
                 uploadedAt: item.uploadedAt,

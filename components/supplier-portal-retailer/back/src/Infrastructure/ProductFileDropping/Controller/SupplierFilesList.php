@@ -22,7 +22,7 @@ final class SupplierFilesList
         $supplierFiles = ($this->getSupplierFiles)($page);
 
         return new JsonResponse([
-            'suppliers_files' => array_map(
+            'supplier_files' => array_map(
                 fn (SupplierFile $supplierFile) => $supplierFile->toArray(),
                 $supplierFiles,
             ),

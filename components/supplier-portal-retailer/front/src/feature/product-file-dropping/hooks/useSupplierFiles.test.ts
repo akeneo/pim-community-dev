@@ -2,7 +2,7 @@ import {mockedDependencies, NotificationLevel, renderHookWithProviders} from '@a
 import {useSupplierFiles} from './useSupplierFiles';
 
 const backendResponse = {
-    suppliers_files: [
+    supplier_files: [
         {
             downloaded: false,
             identifier: 'cd2c0741-0b27-4484-a927-b5e53c8f715c',
