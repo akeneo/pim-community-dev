@@ -17,9 +17,9 @@ use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\Can
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
+use Akeneo\AssetManager\Domain\Exception\CantDeleteAttributeUsedAsLabelException;
+use Akeneo\AssetManager\Domain\Exception\CantDeleteMainMediaException;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
-use Akeneo\AssetManager\Domain\Repository\CantDeleteAttributeUsedAsLabelException;
-use Akeneo\AssetManager\Domain\Repository\CantDeleteMainMediaException;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

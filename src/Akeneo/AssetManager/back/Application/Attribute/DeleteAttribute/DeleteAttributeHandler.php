@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Attribute\DeleteAttribute;
 
+use Akeneo\AssetManager\Domain\Exception\CantDeleteAttributeUsedAsLabelException;
+use Akeneo\AssetManager\Domain\Exception\CantDeleteMainMediaException;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
@@ -20,8 +22,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsMainMediaInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\AssetManager\Domain\Exception\CantDeleteAttributeUsedAsLabelException;
-use Akeneo\AssetManager\Domain\Exception\CantDeleteMainMediaException;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
