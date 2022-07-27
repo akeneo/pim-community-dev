@@ -56,7 +56,7 @@ const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onCh
                                     year: 'numeric',
                                 });
                                 return (
-                                    <Table.Row key={supplierFile.identifier}>
+                                    <Table.Row key={supplierFile.identifier} onClick={() => {}}>
                                         <Table.Cell>{uploadedDate}</Table.Cell>
                                         <Table.Cell>{supplierFile.contributor}</Table.Cell>
                                         <Table.Cell>{supplierFile.supplier}</Table.Cell>
@@ -76,9 +76,9 @@ const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onCh
                                                 </Badge>
                                             )}
                                         </Table.Cell>
-                                        <Table.ActionCell>
+                                        <DownloadCell>
                                             <StyledDownloadIcon color={pimTheme.color.grey100} />
-                                        </Table.ActionCell>
+                                        </DownloadCell>
                                     </Table.Row>
                                 );
                             })}
@@ -89,6 +89,10 @@ const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onCh
         </>
     );
 };
+
+const DownloadCell = styled(Table.ActionCell)`
+    width: 50px;
+`;
 
 const StyledDownloadIcon = styled(DownloadIcon)`
     cursor: pointer;
