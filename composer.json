@@ -21,6 +21,7 @@
             "Akeneo\\FreeTrial\\": "src/Akeneo/FreeTrial/back",
             "Akeneo\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back",
             "Akeneo\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back",
+            "Akeneo\\Pim\\Structure\\Family\\": "src/Akeneo/Pim/Structure/Family/back",
             "Akeneo\\Channel\\": "src/Akeneo/Channel/back",
             "Akeneo\\Catalogs\\": "components/catalogs/back/src",
             "Akeneo\\Category\\": "src/Akeneo/Category/back"
@@ -44,6 +45,7 @@
             "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back",
             "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back/Test",
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test",
+            "Akeneo\\Test\\Pim\\Structure\\Family\\": "src/Akeneo/Pim/Structure/Family/back/Test",
             "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
             "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests",
             "Akeneo\\Test\\Category\\": "src/Akeneo/Category/back/tests"
@@ -66,7 +68,7 @@
         "ext-zip": "*",
         "akeneo/oauth-server-bundle": "^2.0.0",
         "ass/xmlsecurity": "1.1.1",
-        "aws/aws-sdk-php": "3.172",
+        "aws/aws-sdk-php": "3.231.14",
         "box/spout": "^3.3.0",
         "doctrine/annotations": "^1.13.2",
         "doctrine/cache": "^1.12.1",
