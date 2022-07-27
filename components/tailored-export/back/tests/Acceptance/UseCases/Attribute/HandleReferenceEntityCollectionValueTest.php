@@ -105,7 +105,7 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
     private function loadRecords(): void
     {
         /** @var InMemoryFindRecordLabels $recordLabelsRepository */
-        $recordLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface');
+        $recordLabelsRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface');
         $recordLabelsRepository->addRecordLabel('color', 'blue', 'en_US', 'Blue');
     }
 }

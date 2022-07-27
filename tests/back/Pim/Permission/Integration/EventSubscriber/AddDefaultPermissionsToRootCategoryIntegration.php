@@ -22,8 +22,8 @@ class AddDefaultPermissionsToRootCategoryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->connection = self::$container->get('database_connection');
-        $this->groupRepository = self::$container->get('pim_user.repository.group');
+        $this->connection = self::getContainer()->get('database_connection');
+        $this->groupRepository = self::getContainer()->get('pim_user.repository.group');
     }
 
     public function testDefaultUserGroupHasPermissionsOnNewRootCategoriesByDefault()

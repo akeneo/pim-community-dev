@@ -91,7 +91,7 @@ final class HandleFamilyValueTest extends PropertyTestCase
     private function loadFamilyLabels(): void
     {
         /** @var InMemoryFindFamilyLabel $familyLabelsRepository */
-        $familyLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface');
+        $familyLabelsRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface');
         $familyLabelsRepository->addFamilyLabel('pants', 'fr_FR', 'Pantalons');
     }
 }

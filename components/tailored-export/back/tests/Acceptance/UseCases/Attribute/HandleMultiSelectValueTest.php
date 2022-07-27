@@ -124,7 +124,7 @@ final class HandleMultiSelectValueTest extends AttributeTestCase
     private function loadOptions(): void
     {
         /** @var InMemoryFindAttributeOptionLabels $attributeOptionLabels */
-        $attributeOptionLabels = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface');
+        $attributeOptionLabels = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface');
         $attributeOptionLabels->addAttributeLabel('material', 'cotton', 'en_US', 'Cotton');
         $attributeOptionLabels->addAttributeLabel('material', 'wool', 'fr_FR', 'Laine');
     }
