@@ -81,8 +81,10 @@ const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onCh
                                             <IconButton
                                                 icon={<DownloadIcon />}
                                                 title=""
-                                                ghost={"borderless"}
-                                                href={router.generate('supplier_portal_supplier_download_file', {identifier: supplierFile.identifier})}
+                                                ghost={'borderless'}
+                                                href={router.generate('supplier_portal_supplier_download_file', {
+                                                    identifier: supplierFile.identifier,
+                                                })}
                                             />
                                         </DownloadCell>
                                     </Table.Row>
