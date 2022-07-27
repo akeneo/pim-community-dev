@@ -466,7 +466,7 @@ Its standard format would be the following:
 | identifier    | string         | `"bar"`                                                                   | it's the identifier of the product                                                               |
 | family        | string         | `"familyA"`                                                               | it represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyInterface*                    |
 | groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the objects *Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface*             |
-| categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the objects *Akeneo\Tool\Component\Classification\Model\CategoryInterface* |
+| categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the objects *Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface* |
 | enabled       | boolean        | `true`                                                                    |                                                                                                  |
 | values        | array          |                                                                           | see below                                                                                        |
 | created       | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
@@ -885,7 +885,7 @@ Its standard format would be the following:
 | family_variant| string         | `"familyVariantA1"`                                                       | it represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface*             |
 | parent        | string         | `"fooProductModel"`                                                       | it represents the *code* of the *Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface*              |
 | groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the *Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface*                     |
-| categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the object *Akeneo\Tool\Component\Classification\Model\CategoryInterface* |
+| categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the object *Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface* |
 | values        | array          |                                                                           | see below                                                                                        |
 | created       | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
 | updated  	    | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
@@ -1308,7 +1308,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | type    | data structure | data example                                | notes                                                                                            |
 | ------- | -------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | code    | string         | `"other"`                                   | it's the identifier of the category                                                              |
-| parent  | string         | `null`                                      | it represents the *code* of the object *Akeneo\Tool\Component\Classification\Model\CategoryInterface* |
+| parent  | string         | `null`                                      | it represents the *code* of the object *Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface* |
 | labels  | array          | `["en_US" => "Winter", "fr_FR" => "Hiver"]` | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface* |
 
 
@@ -1340,7 +1340,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | labels           | string[]       | `["en_US" => "Tablet", "fr_FR" => "Tablette"]` | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface*                                                                                                                                                       |
 | currencies       | string[]       | `[0 => "USD", "1 => "EUR"]`                    | each element of the array represents the *code* of the *Akeneo\Channel\Component\Model\CurrencyInterface*                                                                                                                                                 |
 | locales          | string[]       | `[0 => "en_US", 1 => "fr_FR"]`                 | each element of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface*                                                                                                                                                   |
-| category_tree    | string         | `"master"`                                     | only root category. It represents the *code* of the object *Akeneo\Tool\Component\Classification\Model\CategoryInterface*                                                                                                                                   |
+| category_tree    | string         | `"master"`                                     | only root category. It represents the *code* of the object *Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface*                                                                                                                                   |
 | conversion_units | string[]       |                                                | keys of each element of the array represent the *code* of the *Akeneo\Pim\Structure\Component\Model\AttributeInterface*. Values of each element of the array represent one of the constant in classes of *Akeneo/Bundle/MeasureBundle/Family/*, except *FAMILY* |
 
 
@@ -1514,7 +1514,7 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
 | description | string         | `"desc"`                     |                                                                                                                  |
 | end_of_use  | string         | `"2016-09-01T00:00:00+0200"` | formatted to ISO-8601 (see above)                                                                                |
 | tags        | string[]       | `[]`                         | each element of the array represents the *code* of the *Akeneo\Asset\Component\Model\TagInterface* |
-| categories  | string[]       | `[]`                         | each element of the array represents the *code* of the *Akeneo\Tool\Component\Classification\Model\CategoryInterface* |
+| categories  | string[]       | `[]`                         | each element of the array represents the *code* of the *Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface* |
 
 
 ### Asset Variation (Enterprise Edition)

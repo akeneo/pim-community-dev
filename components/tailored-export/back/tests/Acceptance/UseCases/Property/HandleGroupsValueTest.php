@@ -91,7 +91,7 @@ final class HandleGroupsValueTest extends PropertyTestCase
     private function loadGroupLabels(): void
     {
         /** @var InMemoryFindGroupLabels $groupLabelsRepository */
-        $groupLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface');
+        $groupLabelsRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface');
         $groupLabelsRepository->addGroupLabel('tshirt', 'en_US', 'Tshirt');
         $groupLabelsRepository->addGroupLabel('summerSale2021', 'en_US', 'Summer sale 2021');
     }

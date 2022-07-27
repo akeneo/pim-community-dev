@@ -38,7 +38,7 @@ abstract class IntegrationTestCase extends WebTestCase
 
     protected function get(string $service): ?object
     {
-        return self::$container->get($service);
+        return self::getContainer()->get($service);
     }
 
     /**

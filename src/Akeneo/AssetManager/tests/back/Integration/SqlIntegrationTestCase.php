@@ -38,7 +38,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
 
     protected function get(string $service)
     {
-        return self::$container->get($service);
+        return self::getContainer()->get($service);
     }
 
     /**

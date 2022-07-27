@@ -11,9 +11,10 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Manager;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Oro\Bundle\PimFilterBundle\Filter\CategoryFilter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -130,7 +131,7 @@ class DatagridViewAccessManager
             return true;
         }
 
-        /** @var \Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface|null $category */
+        /** @var CategoryInterface|null $category */
         $category = $this->categoryRepository->find($categoryId);
         if (null === $category) {
             return false;

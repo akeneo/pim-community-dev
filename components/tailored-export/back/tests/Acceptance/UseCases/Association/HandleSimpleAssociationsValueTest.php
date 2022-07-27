@@ -106,16 +106,16 @@ final class HandleSimpleAssociationsValueTest extends AssociationTestCase
     private function loadAssociatedEntityLabels(): void
     {
         /** @var InMemoryFindProductLabels $productLabelRepository */
-        $productLabelRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface');
+        $productLabelRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface');
         $productLabelRepository->addProductLabel('1111111171', 'ecommerce', 'en_US', 'Bag');
         $productLabelRepository->addProductLabel('122334620748', 'ecommerce', 'en_US', 'Sunglasses');
 
         /** @var InMemoryFindProductModelLabels $productLabelRepository */
-        $productLabelRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface');
+        $productLabelRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface');
         $productLabelRepository->addProductModelLabel('diana', 'ecommerce', 'en_US', 'Diana');
 
         /** @var InMemoryFindGroupLabels $groupLabelRepository */
-        $groupLabelRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface');
+        $groupLabelRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface');
         $groupLabelRepository->addGroupLabel('summerSale2021', 'en_US', 'Summer sale 2021');
     }
 }

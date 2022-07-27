@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\Hydrator\Value\Property;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -155,7 +155,7 @@ class PropertyValueHydratorTest extends AbstractPropertyValueHydratorTest
 
     private function loadQualityScores(): void
     {
-        $inMemoryFindQualityScores = static::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface');
+        $inMemoryFindQualityScores = static::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface');
         $inMemoryFindQualityScores->addQualityScore($this->product->getUuid(), [
             'ecommerce' => [
                 'fr_FR' => 'A',

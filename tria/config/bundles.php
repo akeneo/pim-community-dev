@@ -34,6 +34,7 @@ return [
     Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Product\Infrastructure\Symfony\AkeneoPimEnrichmentProductBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Category\Infrastructure\Symfony\AkeneoPimEnrichmentCategoryBundle::class => ['all' => true],
+    Akeneo\Pim\Structure\Family\Infrastructure\Symfony\AkeneoPimStructureFamilyBundle::class => ['all' => true],
     Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle::class => ['all' => true],
@@ -66,4 +67,5 @@ return [
     Akeneo\Platform\JobAutomation\Infrastructure\Symfony\AkeneoJobAutomationBundle::class => ['all' => true],
     Akeneo\Catalogs\Infrastructure\Symfony\AkeneoCatalogsBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\PimVersionBundle\PimVersionBundle::class => ['all' => true],
+    Akeneo\Category\Infrastructure\Symfony\AkeneoCategoryBundle::class => ['all' => true],
 ];

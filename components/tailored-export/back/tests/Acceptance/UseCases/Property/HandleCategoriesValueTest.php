@@ -73,7 +73,7 @@ final class HandleCategoriesValueTest extends PropertyTestCase
     private function loadCategoryLabels(): void
     {
         /** @var InMemoryFindCategoryLabels $categoryLabelsRepository */
-        $categoryLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface');
+        $categoryLabelsRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface');
         $categoryLabelsRepository->addCategoryLabel('master', 'fr_FR', 'Catalogue principal');
     }
 }

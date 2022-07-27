@@ -31,7 +31,7 @@ final class FileStorageCheckerIntegration extends TestCase
 
     public function test_filestorage_is_ko_when_when_you_cant_create_a_directory_in_at_least_one_of_the_filestorage(): void
     {
-        self::$container->set('oneup_flysystem.catalog_storage_filesystem', $this->nullFilesystem());
+        self::getContainer()->set('oneup_flysystem.catalog_storage_filesystem', $this->nullFilesystem());
 
         Assert::assertEquals(
             ServiceStatus::notOk('Failing file storages: catalogStorage'),

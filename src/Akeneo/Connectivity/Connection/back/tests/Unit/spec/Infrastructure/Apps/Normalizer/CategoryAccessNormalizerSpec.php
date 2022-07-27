@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Permission\Bundle\Normalizer\Flat\CategoryNormalizer;
 use AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllAppsUserGroupLabelQuery;
 use PhpSpec\ObjectBehavior;

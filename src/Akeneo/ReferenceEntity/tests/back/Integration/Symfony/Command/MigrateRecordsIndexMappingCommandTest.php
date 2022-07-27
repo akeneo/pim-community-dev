@@ -120,7 +120,7 @@ class MigrateRecordsIndexMappingCommandTest extends SqlIntegrationTestCase
 
     private function getIndexName(): string
     {
-        return self::$container->getParameter('record_index_name');
+        return self::getContainer()->getParameter('record_index_name');
     }
 
     private function getCurrentRecordIndexName(): string
@@ -141,7 +141,7 @@ class MigrateRecordsIndexMappingCommandTest extends SqlIntegrationTestCase
     private function getClient(): Client
     {
         $clientBuilder = $this->get('akeneo_elasticsearch.client_builder');
-        $hosts = self::$container->getParameter('index_hosts');
+        $hosts = self::getContainer()->getParameter('index_hosts');
         $hosts = is_string($hosts) ? [$hosts] : $hosts;
 
         return $clientBuilder->setHosts($hosts)->build();

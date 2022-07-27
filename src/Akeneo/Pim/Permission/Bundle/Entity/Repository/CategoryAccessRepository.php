@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
+use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\Group;

@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Component\Model;
 
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 
 /**
  * Category access interface

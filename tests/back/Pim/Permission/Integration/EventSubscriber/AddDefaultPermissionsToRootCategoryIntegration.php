@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\EventSubscriber;
 
 use Akeneo\Channel\Infrastructure\Component\Model\Locale;
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
@@ -22,8 +22,8 @@ class AddDefaultPermissionsToRootCategoryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->connection = self::$container->get('database_connection');
-        $this->groupRepository = self::$container->get('pim_user.repository.group');
+        $this->connection = self::getContainer()->get('database_connection');
+        $this->groupRepository = self::getContainer()->get('pim_user.repository.group');
     }
 
     public function testDefaultUserGroupHasPermissionsOnNewRootCategoriesByDefault()
