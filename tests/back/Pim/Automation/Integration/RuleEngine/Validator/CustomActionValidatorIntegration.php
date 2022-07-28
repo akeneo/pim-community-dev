@@ -32,9 +32,8 @@ final class CustomActionValidatorIntegration extends KernelTestCase
     protected function setUp(): void
     {
         $this->testKernel = static::bootKernel(['debug' => false]);
-        $container = self::$container;
-        $this->validator = $container->get('validator');
-        $this->chainedDenormalizer = $container->get('pimee_catalog_rule.denormalizer.product_rule.chained');
+        $this->validator = self::getContainer()->get('validator');
+        $this->chainedDenormalizer = self::getContainer()->get('pimee_catalog_rule.denormalizer.product_rule.chained');
     }
 
     public function testItValidatesACustomAction()

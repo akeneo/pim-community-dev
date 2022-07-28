@@ -20,7 +20,7 @@ class GetAttributeGroupReferenceFromCodeIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->query = self::$container->get(GetAttributeGroupReferenceFromCode::class);
+        $this->query = self::getContainer()->get(GetAttributeGroupReferenceFromCode::class);
     }
 
     /**

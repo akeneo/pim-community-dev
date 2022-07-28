@@ -25,8 +25,7 @@ final class AddTableAttributeCase implements AttributeCase
                             (
                                 SELECT GROUP_CONCAT(table_column.id ORDER BY table_column.id SEPARATOR '-')
                                 FROM pim_catalog_table_column table_column
-                                WHERE (table_column.is_required_for_completeness IS NULL OR table_column.is_required_for_completeness IS FALSE)
-                                AND table_column.attribute_id = attribute.id
+                                WHERE table_column.attribute_id = attribute.id
                             )
                         )
                 ";

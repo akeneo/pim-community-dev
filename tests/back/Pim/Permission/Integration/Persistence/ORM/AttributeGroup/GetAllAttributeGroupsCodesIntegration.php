@@ -19,7 +19,7 @@ class GetAllAttributeGroupsCodesIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->query = self::$container->get(GetAllAttributeGroupCodes::class);
+        $this->query = self::getContainer()->get(GetAllAttributeGroupCodes::class);
     }
 
     /**

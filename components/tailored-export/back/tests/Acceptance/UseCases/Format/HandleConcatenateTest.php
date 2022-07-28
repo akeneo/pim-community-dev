@@ -46,7 +46,7 @@ final class HandleConcatenateTest extends KernelTestCase
     public function setUp(): void
     {
         self::bootKernel(['debug' => false]);
-        $this->mapValuesQueryHandler = self::$container->get('Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler');
+        $this->mapValuesQueryHandler = self::getContainer()->get('Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler');
     }
 
     public function test_it_can_concatenate_multiple_sources(): void

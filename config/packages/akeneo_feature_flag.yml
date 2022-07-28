@@ -25,3 +25,4 @@ akeneo_feature_flag:
         - { feature: 'job_automation_local_storage', service: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature' }
         - { feature: 'supplier_portal_supplier_file_dropping', service: 'akeneo.supplier_portal_supplier_file_dropping.feature' }
         - { feature: 'job_automation', service: 'akeneo.job_automation.feature' }
+        - { feature: 'enriched_category', service: 'akeneo.category.enriched.feature'}

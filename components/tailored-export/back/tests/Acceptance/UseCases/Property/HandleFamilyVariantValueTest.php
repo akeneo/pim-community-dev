@@ -91,7 +91,7 @@ final class HandleFamilyVariantValueTest extends PropertyTestCase
     private function loadFamilyVariantLabels(): void
     {
         /** @var InMemoryFindFamilyVariantLabel $familyVariantLabelsRepository */
-        $familyVariantLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyVariantLabelInterface');
+        $familyVariantLabelsRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyVariantLabelInterface');
         $familyVariantLabelsRepository->addFamilyVariantLabel('pants_size', 'fr_FR', 'Pantalons');
     }
 }

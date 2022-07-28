@@ -125,14 +125,14 @@ final class HandleAssetCollectionValueTest extends AttributeTestCase
     private function loadAssetLabels(): void
     {
         /** @var InMemoryFindAssetLabels $assetLabelsRepository */
-        $assetLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface');
+        $assetLabelsRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface');
         $assetLabelsRepository->addAssetLabel('packshot', 'packshot_0', 'en_US', 'Packshot 0');
     }
 
     private function loadAssetMainMediaData(): void
     {
         /** @var InMemoryFindAssetMainMediaData $assetMainMediaDataRepository */
-        $assetMainMediaDataRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface');
+        $assetMainMediaDataRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface');
         $assetMainMediaDataRepository->addAssetMainMediaData(
             'packshot',
             'packshot_0',
@@ -161,7 +161,7 @@ final class HandleAssetCollectionValueTest extends AttributeTestCase
         );
 
         /** @var InMemoryFindAssetMainMediaAttribute $assetMainMediaAttribute */
-        $assetMainMediaAttribute = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\AssetCollection\FindAssetMainMediaAttributeInterface');
+        $assetMainMediaAttribute = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\AssetCollection\FindAssetMainMediaAttributeInterface');
         $assetMainMediaAttribute->addAttributeAsMainMedia(
             'asset_collection_with_prefix_and_suffix',
             new MediaLinkAsMainMedia(

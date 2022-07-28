@@ -1,0 +1,206 @@
+batch_jobs.xlsx_tailored_product_import.label: Importazione personalizzata prodotti in XLSX
+akeneo.tailored_import:
+  global_settings:
+    error_action:
+      label: Gestione errori
+      skip_product: Salta prodotto
+      skip_value: Salta valore
+      helper_message: Definisci il coportamento in caso di errore.
+  file_structure:
+    placeholder:
+      title: Il tuo profilo di importazione è vuoto.
+      helper: Fai clic su 'Inizializza la struttura di importazione' per iniziare a costruirla.
+      link: Consulta il nostro Help Center per ulteriori informazioni.
+      button: Inizializza la struttura di importazione
+    modal:
+      title: Definisci la struttura di importazione
+      subtitle: Profili di importazione
+      helper: Per configurare l'importazione, inizia definendo la struttura del tuo file.
+      link: Consulta il nostro Help Center per ulteriori informazioni.
+      upload:
+        placeholder: Trascina il file qui oppure sfoglia il contenuto del disco.
+        uploading: Caricamento...
+        error: Si è verificato un errore durante il caricamento del file. Controlla il file e riprova.
+      sheet: Foglio
+      header_row: Riga di intestazione
+      first_product_row: Prima riga prodotto
+      first_column: Prima colonna prodotto
+      unique_identifier_column: Colonna identificatore univoco
+  data_mapping_list:
+    title: Struttura mappatura
+    no_sources: Nessuna origine
+    add: Aggiungi attributi
+    remove: Sei sicuro di voler rimuovere questa mappatura?
+  data_mapping:
+    title: Impostazioni
+    no_data_mapping_selected: Nessuna mappatura selezionata.
+    attribute_not_found: Questo attributo è stato eliminato, non è più possibile utilizzarlo in una mappatura.
+    property_not_valid: Questa proprietà non è valida
+    preview:
+      button: Anteprima
+      input_title: Anteprima input
+      output_title: Anteprima output
+      placeholder: N/D
+      refresh: Aggiorna
+      unable_to_generate_preview_data: Impossibile generare l'anteprima
+    operations:
+      title: Operazione/i
+      identifier: Nessuna operazione disponibile per l'attributo identificatore
+      add: Aggiungi un'operazione
+      common:
+        collapse: Comprimi
+      clean_html_tags:
+        title: Pulisci tag HTML
+      split:
+        title: Dividi
+        separator: Seleziona il separatore
+        comma: Virgola (,)
+        semicolon: Punto e virgola (;)
+        pipe: Barra verticale (|)
+      simple_select_replacement:
+        title: Sostituzione selezione semplice
+      multi_select_replacement:
+        title: Sostituzione selezione multipla
+      categories_replacement:
+        title: Sostituzione categorie
+        modal:
+          title: Gestisci Categorie
+          table:
+            header:
+              replacement: Categorie PIM
+              source_values: Categorie origine
+      no_result: Nessuna operazione disponibile
+      no_source: Una volta selezionata un'origine, avrai accesso alle operazioni
+      no_available:
+        text: Non sono disponibili altre operazioni.
+        link: Fai clic qui per consultare l'Help Center.
+      remove: Sei sicuro di voler rimuovere questa operazione?
+      replacement:
+        to_placeholder: Definisci i valori di origine nel tuo file.
+        modal:
+          options: Gestisci opzioni
+          subtitle: Sostituzione
+          no_result:
+            title: Spiacenti, questo attributo non contiene alcun valore.
+          empty_result:
+            title: Non ci sono risultati per la tua ricerca.
+            text: Riprova con nuovi criteri di ricerca.
+          filters:
+            mapped:
+              label: Mostra
+              unmapped: Tutti i valori senza sostituzione
+              mapped: Tutti i valori con sostituzione
+              all: Tutti i valori
+          table:
+            header:
+              replacement: Etichette opzioni
+              source_values: Valori di origine
+          validation_error: Alcuni valori di sostituzione non sono validi, fai riferimento ai messaggi di errore sotto ciascun campo.
+      boolean_replacement:
+        title: Sostituzione booleana
+        field:
+          yes_value: Valore Sì
+          no_value: Valore No
+      enabled_replacement:
+        title: Sostituzione abilitata
+        field:
+          enabled_value: Valore abilitato
+          disabled_value: Valore disabilitato
+    sources:
+      title: Origine/i
+      add:
+        title: Apri menu origini
+        label: Aggiungi un'origine
+        helper: "]-Inf, 1]Per questo tipo di attributo, puoi aggiungere solo un'origine.|]1, Inf[Per questo tipo di attributo, puoi aggiungere un massimo di {{ limit }} origini."
+    target:
+      title: Destinazione
+      identifier: Non sono disponibili impostazioni per l'attributo identificatore usato come destinazione.
+      enabled: Non sono disponibili impostazioni per la proprietà abilitata usata come destinazione.
+      locale_specific: Questo attributo è specifico dell'impostazione locale
+      action_if_not_empty:
+        title: Assegna
+        add: Aggiungi a valori esistenti
+        set: Sostituisci valori esistenti
+      clear_if_empty: Cancella se vuoto nel file
+      parameters:
+        decimal_separator:
+          title: Separatore decimali
+          comma: Virgola (,)
+          dot: Punto (.)
+          arabic_comma: Separatore decimali arabo (٫)
+        measurement_unit:
+          title: Unità
+        date_format: Formato data
+      invalid:
+        attribute: Questo attributo è stato eliminato e ricreato con un altro tipo; elimina questa mappatura e aggiungila nuovamente.
+        property: Questa proprietà non è valida; elimina questa mappatura e aggiungila nuovamente.
+  form:
+    job_instance:
+      tab:
+        import-structure:
+          title: Importa struttura
+      edit:
+        title: Per modificare, verifica i tuoi permessi con l'amministratore PIM.
+      launch:
+        title: Per importare, verifica i tuoi permessi con l'amministratore PIM.
+  validation:
+    required: Questo valore è obbligatorio.
+    max_length_reached: Questo valore è troppo lungo. Deve contenere al massimo {{ limit }} caratteri.
+    missing_query_params: "Nella query mancano i seguenti parametri: {{ missing_params }}"
+    source_values_should_be_unique: Alcuni di questi valori di origine sono già utilizzati in un'altra sostituzione, per favore rimuovili.
+    columns:
+      max_count_reached: Il foglio non deve contenere più di {{ limit }} colonne.
+      at_least_one_required: L'intestazione deve contenere almeno {{ limit }} colonne.
+      uuid:
+        should_be_unique: Questo UUID di colonna esiste già, inseriscine uno nuovo.
+      index:
+        should_be_unique: Questo indice di colonna esiste già, inseriscine uno nuovo.
+      label:
+        should_not_be_blank: Definisci un'etichetta per la colonna.
+        max_length_reached: L'etichetta della colonna è troppo lunga. Deve contenere al massimo {{ limit }} caratteri.
+    data_mappings:
+      target_should_unique: La destinazione "{{ code }}" non può essere selezionata più volte.
+      max_count_reached: Hai raggiunto il limite di {{ limit }} mappature, non puoi aggiungerne altre all'importazione.
+      no_identifier_target_found: C'è un identificatore che non è destinazione di una mappatura. Aggiungine una.
+      too_many_identifier_target_found: C'è più di una mappatura che ha come destinazione un identificatore, rimuovine una.
+      uuid:
+        should_be_unique: Questo UUID di mappatura esiste già, inseriscine uno nuovo.
+      sources:
+        count_mismatched: È necessario impostare solo un'origine per questa mappatura.
+        at_least_one_required: È necessario aggiungere almeno un'origine alla mappatura.
+        max_count_reached: Hai raggiunto il limite di {{ limit }} origini, non puoi aggiungere altre origini alla mappatura.
+        should_be_unique: Questa origine esiste già, inseriscine una nuova.
+        should_exist: Una delle origini non esiste più, elimina tutte le origini di questa mappatura e riprova
+    target:
+      attribute_should_exist: L'attributo {{ attribute_code }} non esiste. Crealo oppure scegli un'altra destinazione.
+      property_should_exist: La proprietà {{ property_code }} non esiste. Creala oppure scegli un'altra destinazione.
+      source_configuration:
+        unit_should_exist: L'unità {{ unit_code }} non esiste nella famiglia di unità di misura {{ measurement_family_code }}. Seleziona un'unità valida.
+    locale:
+      should_be_active: L'impostazione locale {{ locale_code }} è stata disattivata. Riattivala o seleziona un'altra impostazione locale.
+      should_be_bound_to_channel: L'impostazione locale {{ locale_code }} è stata disattivata per il canale {{ channel_code }}. Riattivala o seleziona un'altra impostazione locale.
+    channel:
+      should_exist: Il canale {{ channel_code }} è stato eliminato. Seleziona un altro canale.
+    attribute:
+      locale_should_not_be_blank: L'attributo {{ attribute_code }} ora ha un valore per l'impostazione locale. Crealo o scegli un'altra destinazione.
+      channel_should_not_be_blank: L'attributo {{ attribute_code }} ora ha un valore per il canale. Crealo o scegli un'altra destinazione.
+      locale_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per l'impostazione locale. Eliminalo e ricrealo, oppure scegli un'altra destinazione.
+      channel_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per il canale. Eliminalo e ricrealo, oppure scegli un'altra destinazione.
+      invalid_specific_locale: L'attributo {{ attribute_code }} è specifico dell'impostazione locale. Seleziona un'altra impostazione locale.
+    file_key:
+      does_not_exist: Il file {{ file_key }} non è stato trovato.
+    uploaded_file:
+      max_size: Il file è troppo grande. La dimensione massima è {{ limit }}{{ suffix }}.
+      not_allowed_mime_type: Sono supportati solo i file XLSX.
+      not_allowed_extension: Sono supportati solo i file XLSX.
+    file_structure:
+      first_product_row_should_be_after_header_row: La prima riga di prodotto deve essere dopo la riga di intestazione.
+      unique_identifier_column_should_be_after_first_column_message: La colonna dell'identificatore univoco deve essere almeno la prima colonna.
+      header_row_should_not_contain_empty_cell: La riga di intestazione non deve conenere celle vuote.
+    file_preview:
+      empty_sheet:
+        title: Questo foglio è vuoto.
+        description: Seleziona un altro foglio con almeno una riga.
+    operations:
+      incompatible_operation_type: Il tipo di operazione {{ operation_type }} è incompatibile con il tipo di destinazione.
+      missing_required_operations: "Mancano una o più operazioni obbligatorie: {{ missing_required_operations }}"

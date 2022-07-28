@@ -24,7 +24,7 @@ final class SupplierFile
             'downloaded' => $this->downloaded,
             'uploadedByContributor' => $this->uploadedByContributor,
             'uploadedBySupplier' => $this->uploadedBySupplier,
-            'uploadedAt' => $this->uploadedAt,
+            'uploadedAt' => (new \DateTimeImmutable($this->uploadedAt))->format('c'),
         ];
     }
 }

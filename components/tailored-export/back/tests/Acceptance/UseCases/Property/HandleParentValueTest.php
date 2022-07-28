@@ -73,7 +73,7 @@ final class HandleParentValueTest extends PropertyTestCase
     private function loadParent(): void
     {
         /** @var InMemoryFindProductModelLabels $findProductModelLabelsRepository */
-        $findProductModelLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface');
+        $findProductModelLabelsRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface');
         $findProductModelLabelsRepository->addProductModelLabel('a_product_model_code', 'ecommerce', 'en_US', 'A product model');
     }
 }

@@ -55,27 +55,32 @@ gsutil rm gs://akecld-terraform"${ENV_SUFFIX}"/saas/"${GOOGLE_PROJECT_ID}"/${GOO
 
 terraform init
 
+TF_STATE_LIST=$(terraform state list)
+echo "--- Print TF_STATE left ---"
+echo "$TF_STATE_LIST"
+echo "---------------------------"
+
+
+echo "2 - update terraform ressources to remove prevent destroy "
 # for mysql disk deletion, we must desactivate prevent_destroy in tf file
 find -L ${PWD} -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
-yq w -j -P -i ${PWD}/main.tf.json module.pim.force_destroy_storage true
-
-TF_STATE_LIST=$(terraform state list)
+yq w -j -P -i ${PWD}/main.tf.json 'module.pim.force_destroy_storage' true
 
 export TF_VAR_force_destroy_storage=true
 
-echo "Check if srnt_bucket exists and need update to remove prevent destroy"
 TARGET=module.pim.google_storage_bucket.srnt_bucket
 if [[ -n $(echo ${TF_STATE_LIST} | grep "${TARGET}") ]]; then
+  echo "INFO: srnt_bucket exists and need update to remove prevent destroy"
   terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=${TARGET}
 fi
 
-echo "Check if srnt_es_bucket exists and need update to remove prevent destroy"
 TARGET=module.pim.google_storage_bucket.srnt_es_bucket
 if [[ -n $(echo ${TF_STATE_LIST} | grep "${TARGET}") ]]; then
+  echo "INFO: srnt_es_bucket exists and need update to remove prevent destroy"
   terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=${TARGET}
 fi
 
-echo "Running terraform destroy"
+echo "INFO: Running terraform destroy"
 terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
 
 echo "3 - Removing shared state files"

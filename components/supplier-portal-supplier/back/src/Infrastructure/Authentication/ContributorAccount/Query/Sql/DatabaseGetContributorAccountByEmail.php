@@ -18,7 +18,7 @@ class DatabaseGetContributorAccountByEmail
         $sql = <<<SQL
             SELECT email, password
             FROM akeneo_supplier_portal_contributor_account
-            WHERE email = :email
+            WHERE email = :email and password IS NOT NULL
         SQL;
 
         $result = $this
