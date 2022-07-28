@@ -7,7 +7,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "-5"
   labels:
     ucsCronBucket: {{ .Values.pim.cloudFunction.bucket }}
-  name: {{ .Values.global.extraLabels.pfid }}
+  name: {{ .Values.pim.cloudFunction.bucket }}
 spec:
   location: {{ .Values.common.location }}
   storageClass: STANDARD
