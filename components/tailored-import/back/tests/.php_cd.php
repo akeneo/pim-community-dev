@@ -24,7 +24,7 @@ $rules = [
             'Webmozart\Assert\Assert',
             // TODO: Write more specific rules later
             'Akeneo\Pim\Enrichment\Product\API',
-            'Akeneo\Pim\Structure\Family\ServiceAPI'
+            'Akeneo\Pim\Structure\Family\ServiceAPI',
         ],
     )->in('Akeneo\Platform\TailoredImport\Domain'),
 
@@ -64,7 +64,7 @@ $rules = [
             'Akeneo\Category\Api\GetCategoryChildrenCodesPerTreeInterface',
 
             // family bounded context
-            'Akeneo\Pim\Structure\Family\ServiceAPI'
+            'Akeneo\Pim\Structure\Family\ServiceAPI',
         ],
     )->in('Akeneo\Platform\TailoredImport\Infrastructure'),
 ];
