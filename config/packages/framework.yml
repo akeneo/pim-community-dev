@@ -14,7 +14,7 @@ framework:
         name: BAPID
         handler_id: session.handler.pdo
         gc_maxlifetime: 3600
-        cookie_samesite: 'strict'
+        cookie_samesite: 'lax' # needed to not be strict for SSO and Apps oAuth2 workflows
     serializer:
         enabled: true
     http_method_override: true
