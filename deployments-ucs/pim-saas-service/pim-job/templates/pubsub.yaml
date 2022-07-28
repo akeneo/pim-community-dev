@@ -1,23 +1,22 @@
-apiVersion: pubsub.gcp.jet.crossplane.io/v1alpha1
-kind: Topic
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
 metadata:
- name: "{{ .Values.pim.pubsub.topic_job_scheduler }}"
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
+  name: {{ .Values.pim.pubsub.topic_job_scheduler }}
 spec:
- forProvider:
-   name: "{{ .Values.pim.pubsub.topic_job_scheduler }}"
- providerConfigRef:
-   name: provider-config-jet-gcp
+  resourceID: {{ .Values.pim.pubsub.topic_job_scheduler }}
 ---
-apiVersion: pubsub.gcp.jet.crossplane.io/v1alpha1
-kind: Subscription
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSubscription
 metadata:
- name: {{ .Values.pim.pubsub.subscription_job_scheduler }}
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
+  labels:
+    subscription_type: "ucs-jobs-scheduler"
+  name: {{ .Values.pim.pubsub.subscription_job_scheduler }}
 spec:
- forProvider:
-   ackDeadlineSeconds: 600
-   labels:
-     subscription_type: "ucs-jobs-scheduler"
-   name: {{ .Values.pim.pubsub.subscription_job_scheduler }}
-   topic: {{ .Values.pim.pubsub.topic_job_scheduler }}
- providerConfigRef:
-   name: provider-config-jet-gcp
+  ackDeadlineSeconds: 600
+  topicRef:
+    name: {{ .Values.pim.pubsub.topic_job_scheduler }}
+  resourceID: {{ .Values.pim.pubsub.subscription_job_scheduler }}
