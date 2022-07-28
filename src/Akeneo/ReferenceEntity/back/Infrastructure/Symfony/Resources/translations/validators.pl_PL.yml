@@ -100,4 +100,3 @@ pim_reference_entity:
     validation:
       record_should_exist: 'Właściwość "%attribute_code%" oczekuje prawidłowego kodu rekordu. Rekord "%invalid_record%" nie istnieje'
       records_should_exist: 'Właściwość "%attribute_code%" oczekuje prawidłowych kodów rekordów. Następujące rekordy nie istnieją: "%invalid_records%"'
-      records_should_not_contains_duplicates: '{1} Następujący rekord został użyty wielokrotnie: „{{ duplicate_codes }}”. Sprawdź ponownie listę rekordów. ]1, +Inf] Następujące rekordy były używane wielokrotnie: „{{ duplicate_codes }}”. Sprawdź ponownie listę rekordów.'
