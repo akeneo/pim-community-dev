@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFiles;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
-final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
+final class DatabaseGetAllSupplierFilesIntegration extends SqlIntegrationTestCase
 {
     /** @test */
     public function itReturnsAnEmptyArrayIfThereIsNoFile(): void
     {
-        static::assertCount(0, ($this->get(GetSupplierFiles::class))());
+        static::assertCount(0, ($this->get(GetAllSupplierFiles::class))());
     }
 
     /** @test */
@@ -26,7 +26,7 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
             $this->createSupplierFile('path/to/file/file.xlsx', new \DateTimeImmutable());
         }
 
-        static::assertCount(25, $this->get(GetSupplierFiles::class)());
+        static::assertCount(25, $this->get(GetAllSupplierFiles::class)());
     }
 
     /** @test */
@@ -38,7 +38,7 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
             $this->createSupplierFile('path/to/file/file.xlsx', new \DateTimeImmutable());
         }
 
-        $supplierFiles = $this->get(GetSupplierFiles::class)(2);
+        $supplierFiles = $this->get(GetAllSupplierFiles::class)(2);
 
         static::assertCount(5, $supplierFiles);
     }
@@ -52,7 +52,7 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
         $this->createSupplierFile('path/to/file/file2.xlsx', new \DateTimeImmutable());
         $this->createSupplierFile('path/to/file/file3.xlsx', (new \DateTimeImmutable())->modify('-2 DAY'));
 
-        $supplierFiles = $this->get(GetSupplierFiles::class)();
+        $supplierFiles = $this->get(GetAllSupplierFiles::class)();
 
         static::assertSame('path/to/file/file2.xlsx', $supplierFiles[0]->path);
         static::assertSame('path/to/file/file3.xlsx', $supplierFiles[1]->path);
@@ -69,7 +69,7 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
         $this->createSupplierFile('path/to/file/file1.xlsx', $file1Date);
         $this->createSupplierFile('path/to/file/file2.xlsx', $file2Date, true);
 
-        $supplierFiles = $this->get(GetSupplierFiles::class)();
+        $supplierFiles = $this->get(GetAllSupplierFiles::class)();
 
         static::assertSame('path/to/file/file1.xlsx', $supplierFiles[0]->path);
         static::assertSame(false, $supplierFiles[0]->downloaded);

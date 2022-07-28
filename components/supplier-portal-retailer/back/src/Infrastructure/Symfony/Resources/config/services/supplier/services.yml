@@ -61,8 +61,8 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFiles:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetSupplierFiles
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFiles:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetAllSupplierFiles
         arguments:
             - '@database_connection'
 
@@ -124,7 +124,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\SupplierFilesList:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFiles'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilesCount'
 
     # Encoders
