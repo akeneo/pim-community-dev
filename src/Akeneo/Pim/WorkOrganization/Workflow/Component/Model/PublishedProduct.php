@@ -126,6 +126,11 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
         throw new \LogicException("This method should not be used with a published product");
     }
 
+    public function setUuid(UuidInterface $uuid): void
+    {
+        throw new \LogicException("This method should not be used with a published product");
+    }
+
     /**
      * {@inheritdoc}
      */
