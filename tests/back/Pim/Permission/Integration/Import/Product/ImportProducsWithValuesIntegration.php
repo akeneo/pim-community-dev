@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Import\Product;
 
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * +---------+-----------------------+
@@ -150,5 +152,56 @@ CSV;
             ]
         ];
         $this->assertEquals($expected, $changes);
+    }
+
+    public function testImportProductsWithUuid()
+    {
+        $productA = $this->createProduct('productA', ['categories' => ['categoryA'], 'values' => []]);
+        $productB = $this->createProduct('productB', ['categories' => ['categoryA'], 'values' => [
+            'a_text' => [['data' => 'the text', 'locale' => null, 'scope' => null]],
+        ]]);
+
+        $nonExistingUuid = Uuid::uuid4()->toString();
+        $productAUuid = $productA->getUuid()->toString();
+        $this->get('doctrine')->getManager()->refresh($productA);
+        $this->get('doctrine')->getManager()->refresh($productB);
+
+        $importCSV = <<<CSV
+uuid;sku;a_text
+{$productAUuid};newProductA;a_text
+;productB;text_updated
+{$nonExistingUuid};new_product;a_text
+CSV;
+        $this->jobLauncher->launchAuthenticatedSubProcessImport('csv_product_import', $importCSV, 'admin');
+        $this->get('doctrine')->getManager()->clear();
+
+        $updatedProductA = $this->getProduct('newProductA');
+        $updatedProductB = $this->getProduct('productB');
+        $productC = $this->getProduct('new_product');
+
+        // product A should have new sku with same uuid
+        Assert::assertNotNull($updatedProductA);
+        Assert::assertEquals($updatedProductA->getUuid()->toString(), $productAUuid);
+
+        // product B should be updated
+        Assert::assertEquals($updatedProductB->getValue('a_text')->getData(), 'text_updated');
+
+        // product C should have been created with given uuid
+        Assert::assertNotNull($productC);
+        Assert::assertEquals($productC->getUuid()->toString(), $nonExistingUuid);
+    }
+
+    public function testToImportProductWithoutIdentifier()
+    {
+        $nonExistingUuidToFail = Uuid::uuid4()->toString();
+        $importCSV = <<<CSV
+uuid;sku;a_text
+{$nonExistingUuidToFail};;FR text
+CSV;
+
+        $expectedWarning = [
+            'The identifier must be filled'
+        ];
+        $this->assertAuthenticatedImport($importCSV, 'admin', [], 0, 0, 1, $expectedWarning);
     }
 }
