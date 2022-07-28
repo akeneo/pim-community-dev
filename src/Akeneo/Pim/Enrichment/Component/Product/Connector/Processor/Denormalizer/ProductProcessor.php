@@ -88,7 +88,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $item = $this->productAttributeFilter->filter($item);
             $filteredItem = $this->filterItemData($item);
 
-            $uuid = \key_exists('uuid', $item) ? $item['uuid'] : null;
+            $uuid = \key_exists('uuid', $item) ? $item['uuid'] !== '' ? $item['uuid'] : null : null;
             $product = $this->findProductToImport->fromFlatData($identifier, $familyCode, $uuid);
         } catch (AccessDeniedException $e) {
             throw $this->skipItemAndReturnException($item, $e->getMessage(), $e);
