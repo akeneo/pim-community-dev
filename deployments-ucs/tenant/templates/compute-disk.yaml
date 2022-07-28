@@ -11,3 +11,5 @@ spec:
   size: 10
   type: pd-ssd
   location: {{ .Values.common.googleZone }}
+  projectRef:
+    external: {{ .Values.common.gcpProjectID }}
