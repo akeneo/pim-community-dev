@@ -70,7 +70,7 @@ akeneo.tailored_import:
               header:
                 replacement: PIM Categories
                 source_values: Sources categories
-      families_replacement:
+      family_replacement:
         title: Families replacement
         modal:
           title: Manage families

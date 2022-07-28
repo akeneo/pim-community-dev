@@ -63,7 +63,7 @@ const FamilyReplacementOperationBlock = ({targetCode, operation, onChange, onRem
 
   return (
     <Block
-      title={translate(`akeneo.tailored_import.data_mapping.operations.families_replacement.title`)}
+      title={translate(`akeneo.tailored_import.data_mapping.operations.family_replacement.title`)}
       actions={
         <>
           <Button level="tertiary" ghost={true} size="small" onClick={openReplacementModal}>
@@ -71,7 +71,7 @@ const FamilyReplacementOperationBlock = ({targetCode, operation, onChange, onRem
           </Button>
           {isReplacementModalOpen && (
             <ReplacementModal
-              title={translate('akeneo.tailored_import.data_mapping.operations.families_replacement.modal.title')}
+              title={translate('akeneo.tailored_import.data_mapping.operations.family_replacement.modal.title')}
               replacementValueFilter={replacementValueFilter}
               onReplacementValueFilterChange={setReplacementValueFilter}
               values={families}
