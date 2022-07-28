@@ -94,7 +94,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Summer Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Summer Tshirt')->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -309,7 +309,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -417,7 +417,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -559,7 +559,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $addParent->to($product, '')->willReturn($product);
@@ -670,7 +670,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
 
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
         $addParent->to($product, '')->willReturn($product);
@@ -785,7 +785,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
         $product->getCreated()->willReturn(new \DateTime('2017-01-01T01:03:34+01:00'));
         $addParent->to($product, '')->willReturn($product);
 
@@ -889,7 +889,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Summer Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Summer Tshirt')->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -997,7 +997,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -1073,7 +1073,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productInDB->getFamily()->willReturn($family);
         $family->getCode()->willReturn('Tshirt');
 
-        $productToImport->fromFlatData('tshirt', 'Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -1166,7 +1166,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $productAttributeFilter->filter($item)->willReturn($filteredItem);
         $product->isVariant()->willReturn(true);
-        $productToImport->fromFlatData('my_sku', 'clothing', null)->willReturn($product);
+        $productToImport->fromFlatData('my_sku', 'clothing')->willReturn($product);
         $cleanLineBreaksInTextAttributes->cleanStandardFormat(['parent' => ''])
             ->willReturn(['parent' => '']);
 
@@ -1207,7 +1207,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'family' => 'clothing',
             'enabled' => true,
         ])->shouldBeCalled()->willReturn($filteredItem);
-        $productToImport->fromFlatData('my_sku', 'clothing', null)->willReturn($product);
+        $productToImport->fromFlatData('my_sku', 'clothing')->willReturn($product);
         $cleanLineBreaksInTextAttributes->cleanStandardFormat(['enabled' => true])->willReturn(['enabled' => true]);
 
         $removeParent->from($product)->shouldNotBeCalled();
@@ -1240,7 +1240,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productToImport->fromFlatData('tshirt', 'Summer Tshirt', null)->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Summer Tshirt')->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 
