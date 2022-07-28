@@ -100,4 +100,3 @@ pim_reference_entity:
     validation:
       record_should_exist: '属性"%attribute_code%"需要有效的记录代码。记录"%invalid_record%"不存在'
       records_should_exist: '属性"%attribute_code%"需要有效的记录代码。以下记录不存在："%invalid_records%"'
-      records_should_not_contains_duplicates: '{1} 以下记录被多次使用：“{{ duplicate_codes }}”。请再次检查您的记录列表。|]1, +Inf] 以下记录被多次使用：“{{ duplicate_codes }}”。请再次检查您的记录列表。'
