@@ -311,4 +311,4 @@ pim:
     memory: 512
     bucket: null # Generated
     sourceCodeZip: null # Generated
-    timeZone: "Europe/Paris"
+    timeZone: "EST"

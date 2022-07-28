@@ -1,27 +1,27 @@
 {{ $tplCtx := . -}}
 {{ range $jobName, $jobOptions := .Values.pim.jobs -}}
 {{- if $jobOptions.enabled }}
-apiVersion: cloudscheduler.gcp.jet.crossplane.io/v1alpha1
-kind: Job
+apiVersion: cloudscheduler.cnrm.cloud.google.com/v1beta1
+kind: CloudSchedulerJob
 metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
   name: "{{ $tplCtx.Values.pim.jobsPrefix }}-{{ $jobName }}"
 spec:
-  providerConfigRef:
-    name: "provider-config-jet-gcp"
-  forProvider:
-    description: "job for {{ $jobName }}"
-    name: "{{ $tplCtx.Values.pim.jobsPrefix }}-{{ $jobName }}"
-    region: {{ $tplCtx.Values.common.region }}
-    timeZone: {{ $tplCtx.Values.pim.cloudFunction.timeZone }}
-    schedule: '{{ $jobOptions.schedule }}'
-    httpTarget:
-      - httpMethod: "POST"
-        uri: "https://{{ $tplCtx.Values.common.region }}-{{ $tplCtx.Values.common.gcpProjectID }}.cloudfunctions.net/{{ $tplCtx.Values.pim.cloudFunction.name }}"
-        oidcToken:
-          - audience: "https://{{ $tplCtx.Values.common.region }}-{{ $tplCtx.Values.common.gcpProjectID }}.cloudfunctions.net/{{ $tplCtx.Values.pim.cloudFunction.name }}"
-            serviceAccountEmail: "{{ $tplCtx.Values.common.workloadIdentityGSA }}@{{ $tplCtx.Values.common.gcpProjectID }}.iam.gserviceaccount.com"
-        headers: {"Content-Type": "application/json"}
-        body: {{ printf "{\"topicId\": \"%s\",\"code\":  \"%s\",\"env\": \"prod\",\"options\": \"%s\" }" $tplCtx.Values.pim.pubsub.topic_job_schudeler $jobName $jobOptions.pimJobOptions | squote |  replace "'" ""| b64enc }}
+  description: "Schedule job for {{ $jobName }}"
+  location: {{ $tplCtx.Values.common.region }}
+  timeZone: {{ $tplCtx.Values.pim.cloudFunction.timeZone }}
+  schedule: '{{ $jobOptions.schedule }}'
+  httpTarget:
+    headers:
+      Content-Type: application/json
+    httpMethod: "POST"
+    uri: "https://{{ $tplCtx.Values.common.region }}-{{ $tplCtx.Values.common.gcpProjectID }}.cloudfunctions.net/{{ $tplCtx.Values.pim.cloudFunction.name }}"
+    oidcToken:
+      audience: "https://{{ $tplCtx.Values.common.region }}-{{ $tplCtx.Values.common.gcpProjectID }}.cloudfunctions.net/{{ $tplCtx.Values.pim.cloudFunction.name }}"
+      serviceAccountRef:
+        external: "{{ $tplCtx.Values.common.workloadIdentityGSA }}@{{ $tplCtx.Values.common.gcpProjectID }}.iam.gserviceaccount.com"
+    body: {{ printf "{\"topicId\": \"%s\",\"code\":  \"%s\",\"env\": \"prod\",\"options\": \"%s\" }" $tplCtx.Values.pim.pubsub.topic_job_schudeler $jobName $jobOptions.pimJobOptions | squote |  replace "'" ""| b64enc }}
 ---
 {{ end }}
 {{ end }}
