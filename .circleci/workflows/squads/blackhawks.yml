@@ -2,7 +2,7 @@ client-to-clone-srnt: &client-to-clone-srnt
 client-to-clone-grth: &client-to-clone-grth
 
 orbs:
-  security-hunter: akeneo-orbs/security-hunter@dev:a3fe3da74f3a8f54a5ca877422f0b3f5810fcc36
+  security-hunter: akeneo-orbs/security-hunter@dev:e47cad777d54ecf5c0e8429769ebb09e1591ea7f
 
 workflows:
     dev_pull_request:
@@ -42,6 +42,7 @@ workflows:
                       - checkout
             - security-hunter/scan-iac-files:
                   soft_fail: true
+                  exclude_rules: "google-storage-enable-ubla"
                   requires:
                       - checkout
             - security-hunter/scan-docker-image:
