@@ -45,6 +45,9 @@ spec:
             - name: cloud-function-sources-configmap
               mountPath: /ucs-function-cron-transformer/index.js
               subPath: index.js
+            - name: cloud-function-sources-configmap
+              mountPath: /ucs-function-cron-transformer/index.php
+              subPath: index.php
       volumes:
         - name: cloud-function-scripts-configmap
           configMap:
@@ -57,3 +60,5 @@ spec:
               path: package.json
             - key: index.js
               path: index.js
+            - key: index.php
+              path: index.php
