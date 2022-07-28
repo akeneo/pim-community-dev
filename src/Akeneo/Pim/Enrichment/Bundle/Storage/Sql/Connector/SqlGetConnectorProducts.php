@@ -53,12 +53,11 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         ?array $localesToFilterOn
     ): ConnectorProductList {
         $result = $pqb->execute();
-        // TODO: the pqb should now return uuids
-        $identifiers = array_map(function (IdentifierResult $identifier) {
-            return $identifier->getIdentifier();
+        $uuids = array_map(function (IdentifierResult $identifier) {
+            return $this->getUuidFromIdentifierResult($identifier->getId());
         }, iterator_to_array($result));
 
-        $products = $this->fromProductIdentifiers($identifiers, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
+        $products = $this->fromProductUuids($uuids, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
 
         // We use the pqb result count in order to keep paginated research working
         return new ConnectorProductList($result->count(), $products->connectorProducts());
@@ -315,5 +314,15 @@ SQL;
         }
 
         return $result;
+    }
+
+    private function getUuidFromIdentifierResult(string $esId): UuidInterface
+    {
+        $matches = [];
+        if (!\preg_match('/^product_(?P<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/', $esId, $matches)) {
+            throw new \InvalidArgumentException(sprintf('Invalid Elasticsearch identifier %s', $esId));
+        }
+
+        return Uuid::fromString($matches['uuid']);
     }
 }
