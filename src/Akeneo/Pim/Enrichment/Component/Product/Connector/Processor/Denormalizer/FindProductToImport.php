@@ -31,7 +31,7 @@ class FindProductToImport
     public function fromFlatData(
         string $productIdentifierCode,
         string $familyCode,
-        ?string $uuid,
+        ?string $uuid = null,
     ): ProductInterface {
         $product = null;
         if (null !== $uuid) {
