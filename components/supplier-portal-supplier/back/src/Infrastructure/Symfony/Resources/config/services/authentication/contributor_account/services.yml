@@ -75,8 +75,6 @@ services:
         public: true
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\CreateSupplierFileHandler'
-            - '@security.token_storage'
-            - '@slugger'
 
     Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\GetProductFiles:
         public: true
