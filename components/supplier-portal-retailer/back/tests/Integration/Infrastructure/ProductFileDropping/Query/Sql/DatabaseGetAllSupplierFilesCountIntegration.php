@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilesCount;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFilesCount;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
-final class DatabaseGetSupplierFilesCountIntegration extends SqlIntegrationTestCase
+final class DatabaseGetAllSupplierFilesCountIntegration extends SqlIntegrationTestCase
 {
     /** @test */
     public function itReturns0IfThereIsNoFile(): void
     {
-        static::assertSame(0, $this->get(GetSupplierFilesCount::class)());
+        static::assertSame(0, $this->get(GetAllSupplierFilesCount::class)());
     }
 
     /** @test */
@@ -26,7 +26,7 @@ final class DatabaseGetSupplierFilesCountIntegration extends SqlIntegrationTestC
             $this->createSupplierFile('path/to/file/file.xlsx', new \DateTimeImmutable());
         }
 
-        static::assertSame(15, $this->get(GetSupplierFilesCount::class)());
+        static::assertSame(15, $this->get(GetAllSupplierFilesCount::class)());
     }
 
     private function createSupplier(string $identifier, string $code, string $label): void

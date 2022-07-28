@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFiles;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilesCount;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFilesCount;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\SupplierFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 final class SupplierFilesList
 {
-    public function __construct(private GetAllSupplierFiles $getSupplierFiles, private GetSupplierFilesCount $getSupplierFilesCount)
+    public function __construct(private GetAllSupplierFiles $getSupplierFiles, private GetAllSupplierFilesCount $getSupplierFilesCount)
     {
     }
 
