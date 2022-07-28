@@ -8,10 +8,15 @@ type Props = {
     productFiles: ProductFiles;
 };
 
+const FilenameCell = styled.span`
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
 const StyledTable = styled(Table)`
   margin: 60px 40px 0 40px;
   width: auto;
-`
+`;
 
 const ProductFileList = ({productFiles}: Props) => {
     return (
@@ -35,7 +40,7 @@ const ProductFileList = ({productFiles}: Props) => {
                                 <Table.Row key={productFile.identifier}>
                                     <Table.Cell>{productFile.uploadedAt}</Table.Cell>
                                     <Table.Cell>{productFile.uploadedByContributor}</Table.Cell>
-                                    <Table.Cell>{productFile.originalFilename}</Table.Cell>
+                                    <Table.Cell><FilenameCell>{productFile.originalFilename}</FilenameCell></Table.Cell>
                                 </Table.Row>
                             );
                         })}
