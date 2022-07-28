@@ -20,5 +20,23 @@ services:
     akeneo.job_automation.constraint_collection_provider.product_xlsx_export:
         class: Akeneo\Platform\JobAutomation\Infrastructure\Connector\DefaultConstraintProvider
         decorates: pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_export
-        arguments: 
+        arguments:
             - "@akeneo.job_automation.constraint_collection_provider.product_xlsx_export.inner"
+
+    akeneo.job_automation.constraint_collection_provider.product_xlsx_import:
+        class: Akeneo\Platform\JobAutomation\Infrastructure\Connector\DefaultConstraintProvider
+        decorates: pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_import
+        arguments:
+            - "@akeneo.job_automation.constraint_collection_provider.product_xlsx_import.inner"
+
+    akeneo.job_automation.constraint_collection_provider.tailored_product_xlsx_export:
+        class: Akeneo\Platform\JobAutomation\Infrastructure\Connector\DefaultConstraintProvider
+        decorates: akeneo.tailored_export.job.job_parameters.xlsx_constraint_collection_provider
+        arguments:
+            - "@akeneo.job_automation.constraint_collection_provider.tailored_product_xlsx_export.inner"
+
+    akeneo.job_automation.constraint_collection_provider.tailored_product_xlsx_import:
+        class: Akeneo\Platform\JobAutomation\Infrastructure\Connector\DefaultConstraintProvider
+        decorates: akeneo.tailored_import.job.job_parameters.xlsx_constraint_collection_provider
+        arguments:
+            - "@akeneo.job_automation.constraint_collection_provider.tailored_product_xlsx_import.inner"

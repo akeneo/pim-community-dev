@@ -17,6 +17,7 @@ use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation\Automatio
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Optional;
 
 final class DefaultConstraintProvider implements ConstraintCollectionProviderInterface
 {
@@ -29,7 +30,7 @@ final class DefaultConstraintProvider implements ConstraintCollectionProviderInt
         $baseConstraint = $this->constraintProvider->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
 
-        $constraintFields['automation'] = new Automation();
+        $constraintFields['automation'] = new Optional(new Automation());
 
         return new Collection(['fields' => $constraintFields]);
     }
