@@ -52,7 +52,7 @@ docker-compose exec -T mysql mysql -u root -proot < $SCRIPT_PATH/create_table_mi
 docker-compose exec -T mysql mysqldump $tables_to_exclude -u root -proot akeneo_pim_ee --skip-add-drop-table ee_job_instance | tail -n +2 > /tmp/dump_data_job_instance_ee.sql
 
 echo '
-  insert into akeneo_batch_job_instance (code, label, job_name, status, connector, raw_parameters, type) select code, label, job_name, status, connector, raw_parameters, type from ee_job_instance on duplicate key update code = code;
+  insert into akeneo_batch_job_instance (code, label, job_name, status, connector, raw_parameters, type) select code, label, job_name, status, connector, raw_parameters, type from ee_job_instance on duplicate key update akeneo_batch_job_instance.code = akeneo_batch_job_instance.code;
   drop table ee_job_instance;
 ' >> /tmp/dump_data_job_instance_ee.sql
 
