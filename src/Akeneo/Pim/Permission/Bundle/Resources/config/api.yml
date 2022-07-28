@@ -81,8 +81,8 @@ services:
             - '@pim_enrich.connector.use_cases.handler.list_products'
             - '@pim_api.normalizer.connector_products'
             - '@security.token_storage'
-            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
-            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids_with_options'
             - '@pim_catalog.event_subscriber.product.on_save.api_aggregator_event_subscriber'
             - '@pimee_security.api.warmup_query_cache.get_viewable_attribute_codes_for_user'
             - '@event_dispatcher'
@@ -93,6 +93,7 @@ services:
             - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
             - '@oro_security.security_facade'
             - '@validator'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids'
 
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
@@ -156,12 +157,12 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@pimee_security.cached_authorization_checker'
 
-    akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_permissions:
+    akeneo.pim.enrichment.product.connector.get_product_from_uuids_with_permissions:
         class: Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\SqlGetConnectorProductsWithPermissions
-        decorates: akeneo.pim.enrichment.product.connector.get_product_from_identifiers
-        decoration_inner_name: akeneo.pim.enrichment.product.connector.get_product_from_identifiers_without_permissions
+        decorates: akeneo.pim.enrichment.product.connector.get_product_from_uuids
+        decoration_inner_name: akeneo.pim.enrichment.product.connector.get_product_from_uuids_without_permissions
         arguments:
-            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers_without_permissions'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids_without_permissions'
             - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
             - '@pimee_security.query.sql.get_viewable_attribute_codes_for_user'
             - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindAllViewableLocalesForUser'

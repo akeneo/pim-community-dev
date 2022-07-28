@@ -137,13 +137,8 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
         );
         Assert::assertEquals(
             $expectedProductList,
-            $query->fromProductIdentifiers(['variant_product'], $this->maryUserId, null, null, null)
-        );
-        Assert::assertEquals(
-            $expectedProductList,
             $query->fromProductUuids([Uuid::fromString($productData['uuid'])], $this->maryUserId, null, null, null)
         );
-        Assert::assertEquals($expectedProduct, $query->fromProductIdentifier('variant_product', $this->maryUserId));
         Assert::assertEquals(
             $expectedProduct,
             $query->fromProductUuid(Uuid::fromString($productData['uuid']), $this->maryUserId)
@@ -183,10 +178,6 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
             ],
         ];
 
-        Assert::assertEquals(
-            $expectedAssociations,
-            $this->getQuery()->fromProductIdentifier('variant_product', $this->maryUserId)->associations()
-        );
         $variantProductUuid = $this->getProductData('variant_product')['uuid'];
         Assert::assertEquals(
             $expectedAssociations,
@@ -223,11 +214,6 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
             ],
         ];
 
-        Assert::assertEquals(
-            $expectedQuantifiedAssociations,
-            $this->getQuery()->fromProductIdentifier('product_associated_with_product_and_product_model', $this->maryUserId)->quantifiedAssociations()
-        );
-
         $variantProductUuid = $this->getProductData('product_associated_with_product_and_product_model')['uuid'];
         Assert::assertEquals(
             $expectedQuantifiedAssociations,
@@ -242,10 +228,6 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        Assert::assertEquals(
-            ['own_category'],
-            $this->getQuery()->fromProductIdentifier('colored_sized_sweat_own', $this->maryUserId)->categoryCodes()
-        );
         $uuid = $this->getProductData('colored_sized_sweat_own')['uuid'];
         Assert::assertEquals(
             ['own_category'],
@@ -320,19 +302,11 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
 
         Assert::assertEquals(
             $expectedProductList,
-            $this->getQuery()->fromProductIdentifiers(['variant_product'], $this->maryUserId, null, null, null)
-        );
-        Assert::assertEquals(
-            $expectedProductList,
             $this->getQuery()->fromProductUuids([Uuid::fromString($productData['uuid'])],
                 $this->maryUserId,
                 null,
                 null,
                 null)
-        );
-        Assert::assertEquals(
-            $expectedProduct,
-            $this->getQuery()->fromProductIdentifier('variant_product', $this->maryUserId)
         );
         Assert::assertEquals(
             $expectedProduct,
@@ -347,13 +321,9 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $this->expectException(ObjectNotFoundException::class);
-        $this->expectExceptionMessage(\sprintf('Product "%s" is not viewable by user id "%s".', 'colored_sized_sweat_no_view', $this->maryUserId));
-        $this->getQuery()->fromProductIdentifier('colored_sized_sweat_no_view', $this->maryUserId);
-
         $uuid = $this->getProductData('colored_sized_sweat_no_view')['uuid'];
         $this->expectException(ObjectNotFoundException::class);
-        $this->expectExceptionMessage(\sprintf('Product "%s" is not viewable by user id "%s".', $uuid->toString(), $this->maryUserId));
+        $this->expectExceptionMessage(\sprintf('Product "%s" is not viewable by user id "%s".', $uuid, $this->maryUserId));
         $this->getQuery()->fromProductUuid(Uuid::fromString($uuid), $this->maryUserId);
     }
 
@@ -367,7 +337,7 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
 
     private function getQuery(): GetConnectorProducts
     {
-        return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers');
+        return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_uuids');
     }
 
     private function getProductData(string $identifier): array
