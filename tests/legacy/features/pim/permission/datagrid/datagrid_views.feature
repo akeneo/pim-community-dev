@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Datagrid views
   In order to easily manage different views in the datagrid
   As a regular user

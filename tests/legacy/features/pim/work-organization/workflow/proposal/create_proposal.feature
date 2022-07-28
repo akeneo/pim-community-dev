@@ -1,4 +1,4 @@
-@javascript @proposal-feature-enabled
+@javascript @proposal-feature-enabled @permission-feature-enabled
 Feature: Create a proposal
   In order create proposals
   As a redactor
