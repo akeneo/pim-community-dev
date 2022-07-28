@@ -8,5 +8,8 @@ services:
             - { name: console.command }
 
     Akeneo\Tool\Bundle\VersioningBundle\Command\RefreshCommand:
+        arguments:
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
         tags:
             - { name: console.command }

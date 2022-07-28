@@ -2,16 +2,20 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Command;
 
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Refresh versioning data
+ * Refresh versioning data by launching the corresponding batch job
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -19,6 +23,15 @@ class RefreshCommand extends Command
 {
     protected static $defaultName = 'pim:versioning:refresh';
     protected static $defaultDescription = 'Version any updated entities';
+
+    private const JOB_CODE = 'versioning_refresh';
+
+    public function __construct(
+        private ExecuteJobExecutionHandler $jobExecutionRunner,
+        private CreateJobExecutionHandler $jobExecutionFactory,
+    ) {
+        parent::__construct();
+    }
 
     /**
      * {@inheritdoc}
@@ -40,17 +53,51 @@ class RefreshCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $batchConfig = [
+        $config = [
             'batch_size' => (int)$input->getOption('batch-size'),
         ];
 
-        $command = $this->getApplication()->find('akeneo:batch:job');
+        $jobExecution = $this->jobExecutionFactory->createFromBatchCode(self::JOB_CODE, $config, null);
+        $jobExecution = $this->jobExecutionRunner->executeFromJobExecutionId($jobExecution->getId());
 
-        $arguments = new ArrayInput([
-            'code' => 'versioning_refresh',
-            '--config' => \json_encode($batchConfig),
-        ]);
+        if (
+            ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode() ||
+            (
+                ExitStatus::STOPPED === $jobExecution->getExitStatus()->getExitCode() &&
+                BatchStatus::STOPPED === $jobExecution->getStatus()->getValue()
+            )
+        ) {
+            $output->writeln(sprintf('<info>Command %s was succesfully executed.</info>', self::$defaultName));
 
-        return $command->run($arguments, $output);
+            return Command::SUCCESS;
+        }
+
+        $output->writeln(
+            sprintf(
+                '<error>An error occurred during the %s execution.</error>',
+                $jobExecution->getJobInstance()->getType()
+            )
+        );
+        $this->writeExceptions($output, $jobExecution->getFailureExceptions());
+        foreach ($jobExecution->getStepExecutions() as $stepExecution) {
+            $this->writeExceptions($output, $stepExecution->getFailureExceptions());
+        }
+
+        return Command::FAILURE;
+    }
+
+    private function writeExceptions(OutputInterface $output, array $exceptions)
+    {
+        foreach ($exceptions as $exception) {
+            $output->write(
+                sprintf(
+                    '<error>Error #%s in class %s: %s</error>',
+                    $exception['code'],
+                    $exception['class'],
+                    strtr($exception['message'], $exception['messageParameters'])
+                ),
+                true
+            );
+        }
     }
 }
