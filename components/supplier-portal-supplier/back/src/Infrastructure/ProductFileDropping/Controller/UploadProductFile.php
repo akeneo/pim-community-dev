@@ -10,11 +10,13 @@ use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\Exception\Inv
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class UploadProductFile
 {
     public function __construct(
         private CreateSupplierFileHandler $createSupplierFileHandler,
+        private TokenStorageInterface $tokenStorage,
     ) {
     }
 
@@ -25,9 +27,15 @@ final class UploadProductFile
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
 
+        $user = $this->tokenStorage->getToken()?->getUser();
+        if (null === $user) {
+            return new JsonResponse(null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         $createSupplierFile = new CreateSupplierFile(
             $uploadedFile,
             $uploadedFile->getClientOriginalName(),
+            $user->getUserIdentifier(),
         );
 
         try {

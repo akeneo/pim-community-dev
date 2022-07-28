@@ -11,6 +11,7 @@ final class CreateSupplierFile
     public function __construct(
         public UploadedFile $uploadedFile,
         public string $originalFilename,
+        public string $uploadedByContributor,
     ) {
     }
 }

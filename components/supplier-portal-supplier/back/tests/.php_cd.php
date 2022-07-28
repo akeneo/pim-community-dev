@@ -52,7 +52,6 @@ $rules = [
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
             'Symfony\Contracts\EventDispatcher\EventDispatcherInterface',
-            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
             'Symfony\Component\HttpFoundation\File\UploadedFile',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Application'),
@@ -127,8 +126,6 @@ $rules = [
             'Symfony\Component\Security\Http\Event\LogoutEvent',
             'Symfony\Component\Security\Core\Authentication\Token\TokenInterface',
             'Symfony\Component\HttpFoundation\File\UploadedFile',
-            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
-            'Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Test\Unit'),
 

@@ -9,7 +9,6 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierFromContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as SupplierInMemoryRepository;
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\ContributorAccountDoesNotExist;
 use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\CreateSupplierFile;
 use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\CreateSupplierFileHandler;
 use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\Exception\InvalidSupplierFile;
@@ -19,15 +18,11 @@ use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\Suppli
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Identifier;
-use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as SupplierFileInMemoryRepository;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\StubEventDispatcher;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -44,23 +39,6 @@ final class CreateSupplierFileHandlerTest extends TestCase
             ->expects($this->once())
             ->method('validate')
             ->willReturn($violationsSpy);
-
-        $tokenStorageSpy = $this->createMock(TokenStorageInterface::class);
-        $tokenSpy = $this->createMock(TokenInterface::class);
-        $tokenStorageSpy
-            ->expects($this->once())
-            ->method('getToken')
-            ->willReturn($tokenSpy);
-
-        $contributorAccount = new ContributorAccount('contributor@example.com', 'password');
-        $token = new UsernamePasswordToken(
-            $contributorAccount,
-            'main',
-        );
-        $tokenSpy
-            ->expects($this->once())
-            ->method('getUser')
-            ->willReturn($token);
 
         $supplier = Supplier::create(
             '01319d4c-81c4-4f60-a992-41ea3546824c',
@@ -80,6 +58,7 @@ final class CreateSupplierFileHandlerTest extends TestCase
         $createSupplierFile = new CreateSupplierFile(
             $uploadedSupplierFile,
             'products.xlsx',
+            'contributor@example.com',
         );
         $uploadedSupplierFile->expects($this->once())->method('getPathname')->willReturn('/tmp/products.xlsx');
 
@@ -98,7 +77,6 @@ final class CreateSupplierFileHandlerTest extends TestCase
             $supplierFileRepository,
             $storeProductFileSpy,
             $validatorSpy,
-            $tokenStorageSpy,
             $eventDispatcherStub,
             new NullLogger(),
         );
@@ -125,7 +103,6 @@ final class CreateSupplierFileHandlerTest extends TestCase
             ->method('validate')
             ->willReturn($violationsSpy);
 
-        $tokenStorageSpy = $this->createMock(TokenStorageInterface::class);
         $uploadedSupplierFile = $this->createMock(UploadedFile::class);
 
         $supplierRepository = new SupplierInMemoryRepository();
@@ -139,7 +116,6 @@ final class CreateSupplierFileHandlerTest extends TestCase
             $supplierFileRepository,
             $storeProductFileSpy,
             $validatorSpy,
-            $tokenStorageSpy,
             $eventDispatcherStub,
             new NullLogger(),
         );
@@ -149,51 +125,7 @@ final class CreateSupplierFileHandlerTest extends TestCase
             new CreateSupplierFile(
                 $uploadedSupplierFile,
                 'products.xlsx',
-            )
-        );
-    }
-
-    /** @test */
-    public function itThrowsAnExceptionIfTheContributorAccountDoesNotExist(): void
-    {
-        $violationsSpy = $this->createMock(ConstraintViolationList::class);
-        $violationsSpy->expects($this->once())->method('count')->willReturn(0);
-
-        $validatorSpy = $this->createMock(ValidatorInterface::class);
-        $validatorSpy
-            ->expects($this->once())
-            ->method('validate')
-            ->willReturn($violationsSpy);
-
-        $tokenStorageSpy = $this->createMock(TokenStorageInterface::class);
-        $tokenStorageSpy
-            ->expects($this->once())
-            ->method('getToken')
-            ->willReturn(null);
-
-        $uploadedSupplierFile = $this->createMock(UploadedFile::class);
-
-        $supplierRepository = new SupplierInMemoryRepository();
-        $getSupplierFromContributorEmail = new InMemoryGetSupplierFromContributorEmail($supplierRepository);
-        $supplierFileRepository = new SupplierFileInMemoryRepository();
-        $storeProductFileSpy = $this->createMock(StoreProductsFile::class);
-        $eventDispatcherStub = new StubEventDispatcher();
-
-        $sut = new CreateSupplierFileHandler(
-            $getSupplierFromContributorEmail,
-            $supplierFileRepository,
-            $storeProductFileSpy,
-            $validatorSpy,
-            $tokenStorageSpy,
-            $eventDispatcherStub,
-            new NullLogger(),
-        );
-
-        static::expectException(ContributorAccountDoesNotExist::class);
-        ($sut)(
-            new CreateSupplierFile(
-                $uploadedSupplierFile,
-                'products.xlsx',
+                'contributor@example.com',
             )
         );
     }
@@ -210,23 +142,6 @@ final class CreateSupplierFileHandlerTest extends TestCase
             ->method('validate')
             ->willReturn($violationsSpy);
 
-        $tokenStorageSpy = $this->createMock(TokenStorageInterface::class);
-        $tokenSpy = $this->createMock(TokenInterface::class);
-        $tokenStorageSpy
-            ->expects($this->once())
-            ->method('getToken')
-            ->willReturn($tokenSpy);
-
-        $contributorAccount = new ContributorAccount('contributor@example.com', 'password');
-        $token = new UsernamePasswordToken(
-            $contributorAccount,
-            'main',
-        );
-        $tokenSpy
-            ->expects($this->once())
-            ->method('getUser')
-            ->willReturn($token);
-
         $uploadedSupplierFile = $this->createMock(UploadedFile::class);
 
         $supplierRepository = new SupplierInMemoryRepository();
@@ -240,7 +155,6 @@ final class CreateSupplierFileHandlerTest extends TestCase
             $supplierFileRepository,
             $storeProductFileSpy,
             $validatorSpy,
-            $tokenStorageSpy,
             $eventDispatcherStub,
             new NullLogger(),
         );
@@ -250,6 +164,7 @@ final class CreateSupplierFileHandlerTest extends TestCase
             new CreateSupplierFile(
                 $uploadedSupplierFile,
                 'products.xlsx',
+                'contributor@example.com',
             )
         );
     }
