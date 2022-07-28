@@ -12,9 +12,11 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
+ * Execute a JobExecution with the provided ID
+ *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
+ * @license   https://opensource.org/licenses/MIT MIT
  */
 class ExecuteJobExecutionHandler
 {

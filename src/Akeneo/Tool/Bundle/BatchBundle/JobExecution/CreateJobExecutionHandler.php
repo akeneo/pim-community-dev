@@ -18,11 +18,11 @@ use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
- * Batch command
+ * Create and persist a new JobExecution for the provided job code
  *
- * @author    JM Leroux
+ * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
+ * @license   https://opensource.org/licenses/MIT MIT
  */
 class CreateJobExecutionHandler
 {
