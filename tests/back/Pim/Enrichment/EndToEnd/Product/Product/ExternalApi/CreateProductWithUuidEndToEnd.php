@@ -8,9 +8,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateProductEndToEnd extends AbstractProductTestCase
+class CreateProductWithUuidEndToEnd extends AbstractProductTestCase
 {
     use AssertEventCountTrait;
 
@@ -35,14 +37,17 @@ class CreateProductEndToEnd extends AbstractProductTestCase
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame(
-            'http://localhost/api/rest/v1/products/product_create_headers',
+            sprintf(
+                'http://localhost/api/rest/v1/products-uuid/%s',
+                $this->getProductUuidFromIdentifier('product_create_headers')
+            ),
             $response->headers->get('location')
         );
         $this->assertSame('', $response->getContent());
@@ -60,7 +65,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_creation_family',
@@ -101,7 +106,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_creation_groups',
@@ -140,7 +145,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_creation_categories',
@@ -192,7 +197,7 @@ JSON;
 }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_creation_associations',
@@ -436,7 +441,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_creation_product_values',
@@ -650,7 +655,7 @@ JSON;
             'quantified_associations' => [],
         ];
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -684,14 +689,17 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame(
-            'http://localhost/api/rest/v1/products/same_identifier',
+            sprintf(
+                'http://localhost/api/rest/v1/products-uuid/%s',
+                $this->getProductUuidFromIdentifier('same_identifier')
+            ),
             $response->headers->get('location')
         );
         $this->assertSame('', $response->getContent());
@@ -715,14 +723,17 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame(
-            'http://localhost/api/rest/v1/products/different',
+            sprintf(
+                'http://localhost/api/rest/v1/products-uuid/%s',
+                $this->getProductUuidFromIdentifier('different')
+            ),
             $response->headers->get('location')
         );
         $this->assertSame('', $response->getContent());
@@ -745,7 +756,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedContent = [
             'code'    => 422,
@@ -770,7 +781,7 @@ JSON;
 
         $data = '{}';
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedContent = [
             'code'    => 422,
@@ -800,7 +811,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedContent = [
             'code'    => 422,
@@ -830,7 +841,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
@@ -869,7 +880,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
             'message' => 'The unknown_attribute attribute does not exist in your PIM. Check the expected format on the API documentation.',
@@ -902,7 +913,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
         $message = addslashes('Property "variant_group" does not exist anymore. Check the link below to understand why.');
         $link = addslashes('http://api.akeneo.com/documentation/products-with-variants.html');
 
@@ -942,14 +953,17 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', '/api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/products-uuid', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertEmpty($response->getContent());
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        $client->request('GET', '/api/rest/v1/products/foo');
+        $client->request('GET', sprintf(
+            '/api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('foo')
+        ));
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
@@ -986,7 +1000,7 @@ JSON;
 }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -1006,7 +1020,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
@@ -1033,5 +1047,12 @@ JSON;
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        ));
     }
 }
