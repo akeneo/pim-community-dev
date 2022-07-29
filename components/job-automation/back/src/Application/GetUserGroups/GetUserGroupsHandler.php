@@ -18,7 +18,7 @@ use Akeneo\Platform\JobAutomation\Domain\Query\GetUserGroupsQueryInterface;
 final class GetUserGroupsHandler
 {
     public function __construct(
-        private GetUserGroupsQueryInterface $getUserGroupsQuery
+        private GetUserGroupsQueryInterface $getUserGroupsQuery,
     ) {
     }
 

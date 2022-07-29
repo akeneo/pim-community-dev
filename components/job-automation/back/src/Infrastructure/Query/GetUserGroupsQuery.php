@@ -29,7 +29,7 @@ final class GetUserGroupsQuery implements GetUserGroupsQueryInterface
             'SAP Connection',
             'Alkemics Connection',
             'Translations.com Connection',
-            'Magento Connection'
+            'Magento Connection',
         ];
     }
 }

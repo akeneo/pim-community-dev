@@ -5,9 +5,7 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\NotEqualTo;
 use Symfony\Component\Validator\Constraints\Type;
-
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -23,7 +21,7 @@ class AutomationValidator extends ConstraintValidator
             'fields' => [
                 'running_user_groups' => [
                     new All(new Type('string')),
-                    new Type('array')
+                    new Type('array'),
                 ],
             ],
         ]));
