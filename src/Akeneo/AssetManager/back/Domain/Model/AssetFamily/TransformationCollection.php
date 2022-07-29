@@ -15,7 +15,6 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
-use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Webmozart\Assert\Assert;
 
 /**
