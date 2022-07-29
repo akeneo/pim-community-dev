@@ -25,6 +25,9 @@ class CleanRemovedProductsCommand extends Command
 {
     private const DEFAULT_BATCH_SIZE = 1000;
 
+    protected static $defaultName = 'pim:product:clean-removed-products';
+    protected static $description = 'Erase documents present in Elasticsearch but missing in MySQL';
+
     public function __construct(
         private ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         private Client $productAndProductModelClient,
@@ -65,7 +68,8 @@ class CleanRemovedProductsCommand extends Command
         $progressBar = new ProgressBar($output, 0);
         $progressBar->start();
 
-        $chunkedNonExistentProductIds = $this->filterNonExistentProductInMySQL($batchSize);
+        $esProductsIdsChunk = $this->fetchAllProductsIdsFromEsByChunk($batchSize);
+        $chunkedNonExistentProductIds = $this->filterNonExistentProductInMySQL($esProductsIdsChunk);
 
         foreach ($chunkedNonExistentProductIds as $nonExistentProductIds) {
             $uuids = array_map(fn ($id) => Uuid::fromString(($id)), $nonExistentProductIds);
@@ -74,6 +78,7 @@ class CleanRemovedProductsCommand extends Command
                 $uuids,
                 $ancestorCodes
             );
+
             $indexedProductCount += count($nonExistentProductIds);
             $progressBar->advance(count($nonExistentProductIds));
         }
@@ -83,10 +88,8 @@ class CleanRemovedProductsCommand extends Command
         return $indexedProductCount;
     }
 
-    private function filterNonExistentProductInMySQL(int $batchSize): iterable
+    private function filterNonExistentProductInMySQL(iterable $esProductsIdsChunk): iterable
     {
-        $esProductsIdsChunk = $this->fetchAllProductsIdsFromEsByChunk($batchSize);
-
         $sql = <<< SQL
 SELECT BIN_TO_UUID(uuid) AS uuid
 FROM pim_catalog_product
@@ -97,7 +100,6 @@ SQL;
             if (empty($productIdsFromEs)) {
                 break;
             }
-
             $productIdsFromMysql = $this->connection->executeQuery(
                 $sql,
                 [
@@ -143,6 +145,7 @@ SQL;
                 ] : []
             );
             $results = $this->productAndProductModelClient->search($params);
+
             $productsIds = array_map(function ($doc) {
                 return substr($doc['_source']['id'], strlen(ElasticsearchProductProjection::INDEX_PREFIX_ID));
             }, $results['hits']['hits']);
@@ -163,7 +166,7 @@ SQL;
                 JOIN pim_catalog_product_model product_model
                     ON product_model.id = product.product_model_id
                 JOIN pim_catalog_product_model parent_product_model
-                    ON parent_product_model.id = product_model.product_model_id
+                    ON parent_product_model.id = product_model.id
             WHERE product.id IN (:product_ids)
             UNION DISTINCT
             SELECT product_model.code
