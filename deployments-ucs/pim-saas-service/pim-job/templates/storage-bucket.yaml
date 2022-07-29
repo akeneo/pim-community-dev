@@ -6,7 +6,7 @@ metadata:
     cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
     argocd.argoproj.io/sync-wave: "-5"
   labels:
-    ucsCronBucket: {{ .Values.pim.cloudFunction.bucket }}
+    ucs-cron-job: {{ .Values.pim.cloudFunction.bucket }}
   name: {{ .Values.pim.cloudFunction.bucket }}
 spec:
   location: {{ .Values.common.location }}
