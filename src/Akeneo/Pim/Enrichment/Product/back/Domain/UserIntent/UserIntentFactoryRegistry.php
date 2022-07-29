@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\back\API\Command\Exception\UnknownUserIntentException;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\UserIntentFactory;
 use Webmozart\Assert\Assert;
 
@@ -47,7 +48,7 @@ class UserIntentFactoryRegistry
             return [];
         }
         if (null === $factory) {
-            throw new \InvalidArgumentException(\sprintf('Cannot create userIntent from %s fieldName', $fieldName));
+            throw new UnknownUserIntentException($fieldName);
         }
 
         return $factory->create($fieldName, $data);

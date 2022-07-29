@@ -10,6 +10,8 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsExceptio
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
+use Akeneo\Pim\Enrichment\Product\back\API\Command\Exception\UnknownAttributeException;
+use Akeneo\Pim\Enrichment\Product\back\API\Command\Exception\UnknownUserIntentException;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
@@ -96,22 +98,16 @@ class CreateProductByUuidController
 
         try {
             $this->updateProduct($data);
+        } catch (UnknownUserIntentException $e) {
+            $this->throwDocumentedHttpException(sprintf('Property "%s" does not exist.', $e->getFieldName()), $e);
+        } catch (UnknownAttributeException $e) {
+            $this->throwDocumentedHttpException(sprintf('The %s attribute does not exist in your PIM.', $e->getAttributeCode()), $e);
         } catch (\InvalidArgumentException $e) {
-            $message = $e->getMessage();
-            $matches = [];
-            if (preg_match('/^Cannot create userIntent from (?P<fieldName>.*) fieldName$/', $message, $matches)) {
-                $this->throwDocumentedHttpException(sprintf('Property "%s" does not exist.', $matches['fieldName']), $e);
-            }
-            if (preg_match('/^Could not find the (?P<attributeCode>.*) attribute$/', $message, $matches)) {
-                $this->throwDocumentedHttpException(sprintf('The %s attribute does not exist in your PIM.', $matches['attributeCode']), $e);
-            }
-            $this->throwDocumentedHttpException($message, $e);
+            $this->throwDocumentedHttpException($e->getMessage(), $e);
         } catch (ViolationsException $e) {
-            $constraintViolation = $e->violations()->get(0);
-            $this->throwDocumentedHttpException($constraintViolation->getMessage(), $e);
+            $this->throwDocumentedHttpException($e->violations()->get(0)->getMessage(), $e);
         } catch (LegacyViolationsException $e) {
-            $constraintViolation = $e->violations()->get(0);
-            $this->throwDocumentedHttpException($constraintViolation->getMessage(), $e);
+            $this->throwDocumentedHttpException($e->violations()->get(0)->getMessage(), $e);
         } catch (InvalidPropertyTypeException $e) {
             $this->throwDocumentedHttpException($e->getMessage(), $e);
         }
