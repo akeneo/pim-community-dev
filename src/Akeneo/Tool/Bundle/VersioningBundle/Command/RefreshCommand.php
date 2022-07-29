@@ -2,56 +2,35 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Command;
 
-use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
-use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Tool\Component\Versioning\Model\Version;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectManager;
-use Monolog\Handler\StreamHandler;
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Refresh versioning data
+ * Refresh versioning data by launching the corresponding batch job
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class RefreshCommand extends Command
 {
     protected static $defaultName = 'pim:versioning:refresh';
+    protected static $defaultDescription = 'Version any updated entities';
 
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var VersionManager */
-    private $versionManager;
-
-    /** @var BulkObjectDetacherInterface */
-    private $bulkObjectDetacher;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private const JOB_CODE = 'versioning_refresh';
 
     public function __construct(
-        LoggerInterface $logger,
-        VersionManager $versionManager,
-        BulkObjectDetacherInterface $bulkObjectDetacher,
-        EntityManagerInterface $entityManager
+        private ExecuteJobExecutionHandler $jobExecutionRunner,
+        private CreateJobExecutionHandler $jobExecutionFactory,
     ) {
         parent::__construct();
-
-        $this->logger = $logger;
-        $this->versionManager = $versionManager;
-        $this->bulkObjectDetacher = $bulkObjectDetacher;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -60,13 +39,6 @@ class RefreshCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Version any updated entities')
-            ->addOption(
-                'show-log',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'display the log on the output'
-            )
             ->addOption(
                 'batch-size',
                 null,
@@ -81,77 +53,51 @@ class RefreshCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $noDebug = $input->getOption('no-debug');
-        if (!$noDebug) {
-            $this->logger->pushHandler(new StreamHandler('php://stdout'));
-        }
-        $totalPendings = (int) $this->versionManager
-            ->getVersionRepository()
-            ->getPendingVersionsCount();
+        $config = [
+            'batch_size' => (int)$input->getOption('batch-size'),
+        ];
 
-        if ($totalPendings === 0) {
-            $output->writeln('<info>Versioning is already up to date.</info>');
+        $jobExecution = $this->jobExecutionFactory->createFromBatchCode(self::JOB_CODE, $config, 'admin');
+        $jobExecution = $this->jobExecutionRunner->executeFromJobExecutionId($jobExecution->getId());
+
+        if (
+            ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode() ||
+            (
+                ExitStatus::STOPPED === $jobExecution->getExitStatus()->getExitCode() &&
+                BatchStatus::STOPPED === $jobExecution->getStatus()->getValue()
+            )
+        ) {
+            $output->writeln(sprintf('<info>Command %s was succesfully executed.</info>', self::$defaultName));
 
             return Command::SUCCESS;
         }
 
-        $progress = new ProgressBar($output, $totalPendings);
-        $progress->start();
-
-        $batchSize = $input->getOption('batch-size');
-
-        $pendingVersions = $this->versionManager
-            ->getVersionRepository()
-            ->getPendingVersions($batchSize);
-
-        $nbPendings = count($pendingVersions);
-
-        while ($nbPendings > 0) {
-            $previousVersions = [];
-            foreach ($pendingVersions as $pending) {
-                $key = sprintf('%s_%s', $pending->getResourceName(), $pending->getResourceId() ?? $pending->getResourceUuid()->toString());
-
-                $previousVersion = isset($previousVersions[$key]) ? $previousVersions[$key] : null;
-                $version = $this->createVersion($pending, $previousVersion);
-
-                if ($version) {
-                    $previousVersions[$key] = $version;
-                }
-
-                $progress->advance();
-            }
-            $this->entityManager->flush();
-            $this->bulkObjectDetacher->detachAll($pendingVersions);
-
-            $pendingVersions = $this->versionManager
-                ->getVersionRepository()
-                ->getPendingVersions($batchSize);
-            $nbPendings = count($pendingVersions);
+        $output->writeln(
+            sprintf(
+                '<error>An error occurred during the %s execution.</error>',
+                $jobExecution->getJobInstance()->getType()
+            )
+        );
+        $this->writeExceptions($output, $jobExecution->getFailureExceptions());
+        foreach ($jobExecution->getStepExecutions() as $stepExecution) {
+            $this->writeExceptions($output, $stepExecution->getFailureExceptions());
         }
-        $progress->finish();
-        $output->writeln(sprintf('<info>%d created versions.</info>', $totalPendings));
 
-        return Command::SUCCESS;
+        return Command::FAILURE;
     }
 
-    /**
-     * @param Version $version
-     * @param Version $previousVersion
-     *
-     * @return Version|null
-     */
-    protected function createVersion(Version $version, Version $previousVersion = null)
+    private function writeExceptions(OutputInterface $output, array $exceptions)
     {
-        $version = $this->versionManager->buildPendingVersion($version, $previousVersion);
-
-        if ($version->getChangeset()) {
-            $this->entityManager->persist($version);
-            $this->entityManager->flush($version);
-
-            return $version;
-        } else {
-            $this->entityManager->remove($version);
-            $this->entityManager->flush($version);
+        foreach ($exceptions as $exception) {
+            $output->write(
+                sprintf(
+                    '<error>Error #%s in class %s: %s</error>',
+                    $exception['code'],
+                    $exception['class'],
+                    strtr($exception['message'], $exception['messageParameters'])
+                ),
+                true
+            );
         }
     }
 }
