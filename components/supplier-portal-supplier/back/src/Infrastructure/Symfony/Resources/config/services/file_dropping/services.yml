@@ -26,6 +26,7 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
             - '@Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\SupplierFileRepository'
             - '@Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\StoreProductsFile'
+            - '@validator'
             - '@event_dispatcher'
             - '@monolog.logger.supplier_portal'
 

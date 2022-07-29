@@ -7,6 +7,7 @@ namespace Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\Exception\InvalidSupplierFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\StoreProductsFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\SupplierFile;
@@ -15,6 +16,7 @@ use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class CreateSupplierFileHandler
@@ -23,6 +25,7 @@ final class CreateSupplierFileHandler
         private GetSupplierFromContributorEmail $getSupplierFromContributorEmail,
         private SupplierFileRepository $supplierFileRepository,
         private StoreProductsFile $storeProductsFile,
+        private ValidatorInterface $validator,
         private EventDispatcherInterface $eventDispatcher,
         private LoggerInterface $logger,
     ) {
@@ -30,9 +33,12 @@ final class CreateSupplierFileHandler
 
     public function __invoke(CreateSupplierFile $createSupplierFile): void
     {
-        $supplier = ($this->getSupplierFromContributorEmail)(
-            ContributorEmail::fromString($createSupplierFile->uploadedByContributor)
-        );
+        $violations = $this->validator->validate($createSupplierFile);
+        if (0 < $violations->count()) {
+            throw new InvalidSupplierFile($violations);
+        }
+
+        $supplier = ($this->getSupplierFromContributorEmail)(ContributorEmail::fromString($createSupplierFile->uploadedByContributor));
         if (null === $supplier) {
             throw new ContributorDoesNotExist();
         }
@@ -41,7 +47,7 @@ final class CreateSupplierFileHandler
             Code::fromString($supplier->code),
             Filename::fromString($createSupplierFile->originalFilename),
             Identifier::generate(),
-            $createSupplierFile->temporaryPath,
+            $createSupplierFile->uploadedFile->getPathname(),
         );
 
         $supplierFile = SupplierFile::create(
