@@ -59,6 +59,8 @@ class JobAutomationFormController extends BaseView {
 
   getDefaultAutomation(): Automation {
     return {
+      is_enabled: false,
+      cron_expression: '0 0 * * *',
       running_user_groups: userContext.get('groups'),
     };
   }
