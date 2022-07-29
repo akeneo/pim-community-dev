@@ -104,18 +104,15 @@ services:
         public: true
         arguments:
             - '@pim_api.repository.attribute'
-            - '@pim_catalog.validator.product'
-            - '@pim_catalog.builder.product'
-            - '@pim_catalog.updater.product'
-            - '@pim_catalog.saver.product'
             - '@router'
-            - '@pim_catalog.builder.product'
-            - '@pim_api.filter.product_attribute_filter'
             - '@event_dispatcher'
             - '@pim_api.checker.duplicate_value'
-            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
             - '@oro_security.security_facade'
             - '@validator'
+            - '@pim_user.context.user'
+            - '@pim_enrich.product.message_bus'
+            - '@pim_enrich.product.query_message_bus'
+            - '@database_connection'
 
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
         public: true

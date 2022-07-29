@@ -10,7 +10,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValidateDataTrait;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValueUserIntentFactory;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -32,6 +31,6 @@ class NumberValueUserIntentFactory implements ValueUserIntentFactory
             return new ClearValue($attributeCode, $data['scope'], $data['locale']);
         }
 
-        return new SetNumberValue($attributeCode, $data['scope'], $data['locale'], $data['data']);
+        return new SetNumberValue($attributeCode, $data['scope'], $data['locale'], (string) $data['data']);
     }
 }
