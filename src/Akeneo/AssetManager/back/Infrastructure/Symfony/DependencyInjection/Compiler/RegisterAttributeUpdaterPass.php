@@ -47,7 +47,7 @@ class RegisterAttributeUpdaterPass implements CompilerPassInterface
         $sortedUpdatersByPriority = [];
         foreach ($attributeUpdaters as $serviceId => $tags) {
             foreach ($tags as $tag) {
-                $priority = $tag['priority'] ?? static::DEFAULT_PRIORITY;
+                $priority = $tag['priority'] ?? self::DEFAULT_PRIORITY;
                 $sortedUpdatersByPriority[$priority][] = new Reference($serviceId);
             }
         }

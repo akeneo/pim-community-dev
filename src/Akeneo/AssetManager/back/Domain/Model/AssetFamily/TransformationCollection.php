@@ -15,8 +15,12 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Webmozart\Assert\Assert;
 
+/**
+ * @implements \IteratorAggregate<int, Transformation>
+ */
 class TransformationCollection implements \IteratorAggregate
 {
     /** @var Transformation[] */
@@ -77,6 +81,9 @@ class TransformationCollection implements \IteratorAggregate
         $this->transformations[] = $transformation;
     }
 
+    /**
+     * @return Transformation[]|\ArrayIterator<int, Transformation>
+     */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->transformations);

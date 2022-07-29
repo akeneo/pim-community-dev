@@ -1,8 +1,18 @@
 parameters:
-    level: 1
+    level: 2
     paths:
         - %rootDir%/../../../src/Akeneo/AssetManager
     excludePaths:
         - %rootDir%/../../../src/Akeneo/AssetManager/tests/back/spec/*
-        - %rootDir%/../../../src/Akeneo/AssetManager/tests/check-fake-implementations.php
-        - %rootDir%/../../../src/Akeneo/AssetManager/tests/check-requests-contracts-with-json-schemas.php
+        - %rootDir%/../../../src/Akeneo/AssetManager/back/Infrastructure/Symfony/Command/MigrationPAM
+    ignoreErrors:
+        - '#Call to an undefined method Akeneo\\AssetManager\\Domain\\Model\\Asset\\Value\\ValueDataInterface::[a-zA-Z0-9\\_]+\(\)#'
+        - '#Call to an undefined method Akeneo\\AssetManager\\Domain\\Model\\Attribute\\AbstractAttribute::[a-zA-Z0-9\\_]+\(\)#'
+        - '#Access to an undefined property Akeneo\\AssetManager\\Application\\Attribute\\EditAttribute\\CommandFactory\\AbstractEditAttributeCommand::\$[a-zA-Z0-9\\_]+#'
+        - '#Access to an undefined property Akeneo\\AssetManager\\Application\\Asset\\EditAsset\\CommandFactory\\AbstractEditValueCommand::\$[a-zA-Z0-9\\_]+#'
+        - '#Access to an undefined property Akeneo\\AssetManager\\Application\\Attribute\\CreateAttribute\\AbstractCreateAttributeCommand::\$[a-zA-Z0-9\\_]+#'
+        - '#Call to an undefined method Akeneo\\AssetManager\\Infrastructure\\PublicApi\\Platform\\AttributeAsMainMedia::[a-zA-Z0-9\\_]+\(\)#'
+
+includes:
+    - %rootDir%/../../../vendor/phpstan/phpstan-webmozart-assert/extension.neon
+    - %rootDir%/../../../vendor/phpstan/phpstan-symfony/extension.neon

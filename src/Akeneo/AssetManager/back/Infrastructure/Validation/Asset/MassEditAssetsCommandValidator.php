@@ -32,7 +32,10 @@ class MassEditAssetsCommandValidator extends ConstraintValidator
 
     public function validate($massEditAssetsCommand, Constraint $constraint)
     {
-        $this->checkConstraintType($constraint);
+        if (!$constraint instanceof MassEditAssetsCommandConstraint) {
+            throw new UnexpectedTypeException($constraint, self::class);
+        }
+
         $this->checkCommandType($massEditAssetsCommand);
 
         if (empty($massEditAssetsCommand->editValueCommands)) {
@@ -58,16 +61,6 @@ class MassEditAssetsCommandValidator extends ConstraintValidator
     }
 
     /**
-     * @throws UnexpectedTypeException
-     */
-    private function checkConstraintType(Constraint $constraint): void
-    {
-        if (!$constraint instanceof MassEditAssetsCommandConstraint) {
-            throw new UnexpectedTypeException($constraint, self::class);
-        }
-    }
-
-    /**
      * @throws \InvalidArgumentException
      */
     private function checkCommandType($command)
@@ -86,7 +79,7 @@ class MassEditAssetsCommandValidator extends ConstraintValidator
     /**
      * @param AbstractEditValueCommand[] $editValueCommands
      */
-    private function editValueCommandsAreUnique(Constraint $constraint, array $editValueCommands): void
+    private function editValueCommandsAreUnique(MassEditAssetsCommandConstraint $constraint, array $editValueCommands): void
     {
         $uniqueEditValueContextCommands = [];
         foreach ($editValueCommands as $id => $editValueCommand) {
