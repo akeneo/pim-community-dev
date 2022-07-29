@@ -8,6 +8,7 @@ import {ApplyButton, PageContent, PageHeader} from '../../../../common';
 import {UserButtons} from '../../../../shared/user';
 import {DeveloperModeTag} from '../../DeveloperModeTag';
 import {CatalogEdit, useCatalogForm} from '@akeneo-pim-community/catalogs';
+import {NotificationLevel, useNotify} from '../../../../shared/notify';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -17,6 +18,7 @@ type Props = {
 export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog}) => {
     const translate = useTranslate();
     const generateUrl = useRouter();
+    const notify = useNotify();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const connectedAppsListHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps')}`;
     const connectedAppHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_edit', {
@@ -24,9 +26,25 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
     })}`;
     const [form, save, isDirty] = useCatalogForm(catalog.id);
 
+    const handleSave = async () => {
+        try {
+            const success = await save();
+
+            const message = success
+                ? 'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.success'
+                : 'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.warning';
+            notify(success ? NotificationLevel.SUCCESS : NotificationLevel.WARNING, translate(message));
+        } catch (error) {
+            notify(
+                NotificationLevel.ERROR,
+                translate('akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.error')
+            );
+        }
+    };
+
     const SaveButton = () => {
         return (
-            <ApplyButton onClick={save} disabled={!isDirty} classNames={['AknButtonList-item']}>
+            <ApplyButton onClick={handleSave} disabled={!isDirty} classNames={['AknButtonList-item']}>
                 <Translate id='pim_common.save' />
             </ApplyButton>
         );

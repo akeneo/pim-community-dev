@@ -182,6 +182,10 @@ akeneo_connectivity.connection:
                             3: in the settings.
                 catalogs:
                     edit:
+                        flash:
+                            success: Catalog settings successfully updated.
+                            warning: The catalog could not be saved. Please resolve displayed errors, then save again.
+                            error: An error occurred while saving the catalog.
                         not_found: Catalog not found
                 flash:
                     load_permissions_error.title: 'Saved permissions on {{ entity }} could not be loaded.'

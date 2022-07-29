@@ -1,11 +1,12 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {act, screen} from '@testing-library/react';
+import {act, screen, waitFor} from '@testing-library/react';
 import {renderWithProviders} from '../../../../../test-utils';
 import {ConnectedAppCatalogContainer} from '@src/connect/components/ConnectedApp/Catalog/ConnectedAppCatalogContainer';
 import userEvent from '@testing-library/user-event';
 import {useCatalogForm} from '@akeneo-pim-community/catalogs';
 import {mocked} from 'ts-jest/utils';
+import {NotificationLevel, NotifyContext} from '@src/shared/notify';
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -51,16 +52,62 @@ test('The catalog container renders', () => {
     expect(screen.queryByText('pim_common.entity_updated')).not.toBeInTheDocument();
 });
 
-test('The save button click triggers save', () => {
-    const save = jest.fn();
+test('The save button click triggers save', async () => {
+    const save = jest.fn().mockResolvedValue(true);
+    const notify = jest.fn();
 
+    renderCatalogContainerAndSave(save, notify);
+
+    expect(save).toHaveBeenCalled();
+
+    await waitFor(() => {
+        expect(notify).toBeCalledWith(
+            NotificationLevel.SUCCESS,
+            'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.success'
+        );
+    });
+});
+
+test('The save button click triggers save that results in a user error', async () => {
+    const save = jest.fn().mockResolvedValue(false);
+    const notify = jest.fn();
+
+    renderCatalogContainerAndSave(save, notify);
+
+    expect(save).toHaveBeenCalled();
+
+    await waitFor(() => {
+        expect(notify).toBeCalledWith(
+            NotificationLevel.WARNING,
+            'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.warning'
+        );
+    });
+});
+
+test('The save button click triggers save that results in a server error', async () => {
+    const save = jest.fn().mockRejectedValue('Some error');
+    const notify = jest.fn();
+
+    renderCatalogContainerAndSave(save, notify);
+
+    expect(save).toHaveBeenCalled();
+
+    await waitFor(() => {
+        expect(notify).toBeCalledWith(
+            NotificationLevel.ERROR,
+            'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.error'
+        );
+    });
+});
+
+function renderCatalogContainerAndSave(saveMock: jest.Mock, notifyMock: jest.Mock) {
     mocked(useCatalogForm).mockImplementation(() => [
         {
             values: {},
             dispatch: jest.fn(),
             errors: {},
         },
-        save,
+        saveMock,
         true,
     ]);
 
@@ -88,9 +135,11 @@ test('The save button click triggers save', () => {
         owner_username: 'willy',
     };
 
-    renderWithProviders(<ConnectedAppCatalogContainer connectedApp={connectedApp} catalog={catalog} />);
+    renderWithProviders(
+        <NotifyContext.Provider value={notifyMock}>
+            <ConnectedAppCatalogContainer connectedApp={connectedApp} catalog={catalog} />
+        </NotifyContext.Provider>
+    );
 
     act(() => userEvent.click(screen.getByText('pim_common.save')));
-
-    expect(save).toHaveBeenCalled();
-});
+}
