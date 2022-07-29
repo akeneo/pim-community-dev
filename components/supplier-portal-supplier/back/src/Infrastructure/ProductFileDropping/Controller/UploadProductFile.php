@@ -41,7 +41,12 @@ final class UploadProductFile
         try {
             ($this->createSupplierFileHandler)($createSupplierFile);
         } catch (InvalidSupplierFile $e) {
-            return new JsonResponse(['error' => $e->violations()[0]->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return new JsonResponse(
+                [
+                    'error' => 0 < count($e->violations()) ? $e->violations()[0]->getMessage() : null,
+                ],
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+            );
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
