@@ -1,7 +1,7 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import {screen} from '@testing-library/react';
-import {renderWithProviders, ValidationError, useFeatureFlags} from '@akeneo-pim-community/shared';
+import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
 import {JobAutomationForm} from './JobAutomationForm';
 import {Automation} from 'model';
 
