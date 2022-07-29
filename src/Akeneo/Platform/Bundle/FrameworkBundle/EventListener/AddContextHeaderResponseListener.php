@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\FrameworkBundle\EventListener;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Security\FindCurrentAppIdInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Logging\BoundedContextResolver;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
@@ -26,29 +27,34 @@ class AddContextHeaderResponseListener
     private const HEADER_AKENEO_CONTEXT = 'x-akeneo-context';
     private const HEADER_REQUEST_URI = 'x-request-path';
     private const HEADER_SYMFONY_ROUTE = 'x-symfony-route';
+    private const HEADER_APP_ID = 'x-app-id';
 
-    private BoundedContextResolver $boundedContextResolver;
-
-    public function __construct(BoundedContextResolver $boundedContextResolver)
-    {
-        $this->boundedContextResolver = $boundedContextResolver;
+    public function __construct(
+        private BoundedContextResolver $boundedContextResolver,
+        private FindCurrentAppIdInterface $findCurrentAppId,
+    ) {
     }
 
     public function injectAkeneoContextHeader(ResponseEvent $event): void
     {
         $event->getResponse()->headers->set(
             self::HEADER_AKENEO_CONTEXT,
-            $this->boundedContextResolver->fromRequest($event->getRequest())
+            $this->boundedContextResolver->fromRequest($event->getRequest()),
         );
 
         $event->getResponse()->headers->set(
             self::HEADER_REQUEST_URI,
-            $event->getRequest()->getPathInfo()
+            $event->getRequest()->getPathInfo(),
         );
 
         $event->getResponse()->headers->set(
             self::HEADER_SYMFONY_ROUTE,
-            $event->getRequest()->attributes->get('_route', 'undefined')
+            $event->getRequest()->attributes->get('_route', 'undefined'),
+        );
+
+        $event->getResponse()->headers->set(
+            self::HEADER_APP_ID,
+            $this->findCurrentAppId->execute(),
         );
     }
 }

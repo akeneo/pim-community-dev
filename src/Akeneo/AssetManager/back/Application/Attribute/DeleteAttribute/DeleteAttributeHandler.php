@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -12,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Attribute\DeleteAttribute;
 
+use Akeneo\AssetManager\Domain\Exception\CantDeleteAttributeUsedAsLabelException;
+use Akeneo\AssetManager\Domain\Exception\CantDeleteMainMediaException;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
@@ -49,24 +52,12 @@ class DeleteAttributeHandler
 
         $labelReference = $this->findAttributeAsLabel($attribute->getAssetFamilyIdentifier());
         if (!$labelReference->isEmpty() && $labelReference->getIdentifier()->equals($attributeIdentifier)) {
-            throw new \LogicException(
-                sprintf(
-                    'Attribute "%s" cannot be deleted for the asset family "%s"  as it is used as attribute as label.',
-                    $attributeIdentifier,
-                    $attribute->getAssetFamilyIdentifier()
-                )
-            );
+            throw CantDeleteAttributeUsedAsLabelException::withAttribute($attribute);
         }
 
         $mainMediaReference = $this->findAttributeAsMainMedia($attribute->getAssetFamilyIdentifier());
         if (!$mainMediaReference->isEmpty() && $mainMediaReference->getIdentifier()->equals($attributeIdentifier)) {
-            throw new \LogicException(
-                sprintf(
-                    'Attribute "%s" cannot be deleted for the asset family "%s"  as it is used as attribute as main media.',
-                    $attributeIdentifier,
-                    $attribute->getAssetFamilyIdentifier()
-                )
-            );
+            throw CantDeleteMainMediaException::withAttribute($attribute);
         }
 
         $this->attributeRepository->deleteByIdentifier($attributeIdentifier);

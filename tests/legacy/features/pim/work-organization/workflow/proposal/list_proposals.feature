@@ -81,7 +81,6 @@ Feature: List proposals
       | tshirt  | Mary   | weather_conditions |          | Blue |
 
   @jira https://akeneo.atlassian.net/browse/PIM-5825
-  @skip  @info To be fixed in GRF-206
   Scenario: Successfully display a proposal even when an attribute has been deleted
     Given I am logged in as "Julia"
     And I am on the attributes page
@@ -93,14 +92,6 @@ Feature: List proposals
     Then I should see the following proposals:
       | product | author | attribute   | original | new    |
       | tshirt  | Mary   | price       |          | $10.00 |
-    And I click on the "Reject all" action of the row which contains "tshirt"
-    And I press the "Send" button in the popin
-    And I refresh current page
-    And I should see the text "There is no proposal to review"
-    When I logout
-    And I am logged in as "Mary"
-    And I am on the "tshirt" product page
-    Then I should not see the Description field
 
   @jira https://akeneo.atlassian.net/browse/PIM-5825
   Scenario: Does not display a proposal when all of its attributes have been deleted

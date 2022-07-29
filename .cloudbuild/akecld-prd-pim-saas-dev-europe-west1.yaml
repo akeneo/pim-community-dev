@@ -1,0 +1,92 @@
+steps:
+  - id: Install prerequisite for the PIM
+    name: "europe-west1-docker.pkg.dev/akecld-prd-pim-saas-dev/pim-deployer/pim-deployer:1.0.0"
+    dir: "deployments-ucs"
+    entrypoint: 'sh'
+    args:
+    - '-c'
+    - |
+        # Set cluster authentication
+        gcloud config set project ${PROJECT_ID}
+        gcloud config set compute/zone ${_GOOGLE_COMPUTE_ZONE}
+        gcloud container clusters get-credentials ${_CLUSTER_NAME} --project=${PROJECT_ID} --region=${_GOOGLE_CLUSTER_REGION}
+
+        # Custom configuration
+        ## Argocd
+        yq -i '.configs.credentialTemplates.https-creds.username = "argocd"' k8s/argocd/values.yaml
+        ARGOCD_TOKEN="$${ARGOCD_TOKEN}" yq -i '.configs.credentialTemplates.https-creds.password = env(ARGOCD_TOKEN)' k8s/argocd/values.yaml
+        yq -i 'del(.server.ingress.tls)' k8s/argocd/values.yaml
+        HOST="*.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.tls[0].hosts |= . + [env(HOST)] ' k8s/argocd/values.yaml
+        yq -i 'del(.server.ingress.hosts)' k8s/argocd/values.yaml
+        GOOGLE_DOMAIN="argocd.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.hosts |= . + [env(GOOGLE_DOMAIN)] ' k8s/argocd/values.yaml
+
+        ## Crossplane
+        PROJECT_ID="${PROJECT_ID}" yq -i '.spec.projectID = env(PROJECT_ID)' k8s/crossplane/templates/provider-config-gcp.yaml
+        PROJECT_ID="${PROJECT_ID}" yq -i '.spec.projectID = env(PROJECT_ID)' k8s/crossplane/templates/provider-config-jet-gcp.yaml
+        CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64="$${CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64}" yq -i '.data.credentials = env(CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64)' k8s/crossplane/templates/gcp-authentication.yaml
+
+        ## Datadog
+        DATADOG_API_KEY="$${DATADOG_API_KEY}" yq -i '.datadog.apiKey = env(DATADOG_API_KEY)' k8s/datadog/values.yaml
+        CLUSTER_NAME="${_CLUSTER_NAME}" yq -i '.datadog.clusterName = env(CLUSTER_NAME)' k8s/datadog/values.yaml
+        TAGS="cloud_env:${_CLUSTER_NAME} cloud_service:ucs" yq -i '.datadog.tags = env(TAGS)' k8s/datadog/values.yaml
+
+        # Use helm repo
+        helm repo add traefik https://helm.traefik.io/traefik
+        helm repo add datadog https://helm.datadoghq.com
+        helm repo add argo https://argoproj.github.io/argo-helm
+        helm repo add crossplane-stable https://charts.crossplane.io/stable
+        helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
+        helm repo update 2>&1
+
+        # Install prerequisite
+        ## Secret manager_csi
+        helm upgrade --debug --atomic --cleanup-on-fail --history-max 5 -i --wait -n kube-system csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver --set-string enableSecretRotation=true --set-string secretObjects=true
+        kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/secrets-store-csi-driver-provider-gcp/release-1.1/deploy/provider-gcp-plugin.yaml
+
+        ## Traefik
+        rm -Rf "./traefik-chart"
+        helm pull traefik/traefik --version v10.13.0 --untar --untardir "old/traefik/traefik-chart"
+        kubectl apply -f "old/traefik/traefik-chart/traefik/crds"
+        rm -Rf "old/traefik/traefik-chart"
+        helm upgrade traefik-v2 traefik/traefik \
+         --debug \
+         --atomic \
+         --cleanup-on-fail \
+         --create-namespace \
+         --wait \
+         --timeout 10m \
+         -i \
+         --version=10.13.0 \
+         -n=traefik-v2 \
+         -f "old/traefik/static-configuration.yaml"
+
+        ## Datadog
+        helm upgrade --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n default datadog-agent datadog/datadog -f k8s/datadog/values.yaml
+
+        ## ArgoCD
+        helm upgrade --version 4.8.2 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
+        kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
+
+        ## Crossplane
+        helm upgrade --version 1.8.1 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n crossplane-system crossplane crossplane-stable/crossplane
+        kubectl apply -f k8s/crossplane/templates/gcp-authentication.yaml
+        kubectl apply -f k8s/crossplane/templates/provider-jet-gcp.yaml
+        kubectl apply -f k8s/crossplane/templates/provider-gcp.yaml
+        for i in 1 2 3 4 5; do kubectl apply -f k8s/crossplane/templates/provider-config-jet-gcp.yaml && break || sleep 30; done
+        for i in 1 2 3 4 5; do kubectl apply -f k8s/crossplane/templates/provider-config-gcp.yaml && break || sleep 30; done
+    secretEnv: ['ARGOCD_TOKEN', 'DATADOG_API_KEY', 'CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64']
+options:
+  logging: CLOUD_LOGGING_ONLY
+availableSecrets:
+  secretManager:
+  - versionName: projects/${PROJECT_ID}/secrets/ARGOCD_TOKEN/versions/1
+    env: 'ARGOCD_TOKEN'
+  - versionName: projects/${PROJECT_ID}/secrets/DATADOG_API_KEY/versions/1
+    env: 'DATADOG_API_KEY'
+  - versionName: projects/${PROJECT_ID}/secrets/CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64/versions/1
+    env: 'CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64'
+substitutions:
+  _CLUSTER_NAME: akecld-prd-pim-saas-dev-europe-west1
+  _GOOGLE_CLUSTER_REGION: europe-west1
+  _GOOGLE_COMPUTE_ZONE: europe-west1-b
+  _GOOGLE_DOMAIN: dev.akeneo.ch

@@ -78,7 +78,6 @@ jobs:
                         echo "OPERATIONS_TOOLS_DIR=${OPERATIONS_TOOLS_DIR}"
                         echo "OPERATIONS_TOOLS_BRANCH=${OPERATIONS_TOOLS_BRANCH}"
                         echo "GE2EE_SCRIPT_RELEASE=${GE2EE_SCRIPT_RELEASE}"
-
             - run:
                   name: Prepare the environment
                   command: |

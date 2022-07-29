@@ -69,6 +69,13 @@ terraform init
 find -L ${PWD} -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
 yq w -j -P -i ${PWD}/main.tf.json module.pim.force_destroy_storage true
 
+# Managing storage-backup module deletion
+if [[ $(jq -r '.module  | has("storage-backup") ' main.tf.json) == "true" ]]; then
+    yq w -j -P -i ${PWD}/main.tf.json 'module.storage-backup.google_storage_backup_force_destroy' true
+else
+    echo "INFO: This instance doesn't have storage-backup terraform module"
+fi
+
 TF_STATE_LIST=$(terraform state list)
 
 export TF_VAR_force_destroy_storage=true
@@ -85,6 +92,12 @@ fi
 echo "Check if srnt_es_bucket exists and need update to remove prevent destroy"
 TARGET=module.pim.google_storage_bucket.srnt_es_bucket
 if [[ ! -z $(echo ${TF_STATE_LIST} | grep "${TARGET}") ]]; then
+  terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=${TARGET}
+fi
+
+echo "Check if storage_backup exists and need update to remove prevent destroy"
+TARGET=module.storage-backup.google_storage_bucket.storage_backup
+if [[ -n $(echo ${TF_STATE_LIST} | grep "${TARGET}") ]]; then
   terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=${TARGET}
 fi
 
