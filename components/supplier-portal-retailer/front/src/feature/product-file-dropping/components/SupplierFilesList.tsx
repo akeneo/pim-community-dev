@@ -1,7 +1,7 @@
 import React from 'react';
 import {SupplierFileRow} from '../hooks';
-import {Badge, DownloadIcon, getColor, Pagination, pimTheme, Table} from 'akeneo-design-system';
-import {useTranslate, useDateFormatter} from '@akeneo-pim-community/shared';
+import {Badge, DownloadIcon, IconButton, Pagination, Table} from 'akeneo-design-system';
+import {useDateFormatter, useTranslate, useRouter} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {EmptySupplierFilesList} from './EmptySupplierFilesList';
 
@@ -17,6 +17,7 @@ type Props = {
 const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onChangePage}: Props) => {
     const translate = useTranslate();
     const dateFormatter = useDateFormatter();
+    const router = useRouter();
 
     return (
         <>
@@ -77,7 +78,14 @@ const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onCh
                                             )}
                                         </Table.Cell>
                                         <DownloadCell>
-                                            <StyledDownloadIcon color={pimTheme.color.grey100} />
+                                            <IconButton
+                                                icon={<DownloadIcon />}
+                                                title=""
+                                                ghost={'borderless'}
+                                                href={router.generate('supplier_portal_supplier_download_file', {
+                                                    identifier: supplierFile.identifier,
+                                                })}
+                                            />
                                         </DownloadCell>
                                     </Table.Row>
                                 );
@@ -92,11 +100,6 @@ const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onCh
 
 const DownloadCell = styled(Table.ActionCell)`
     width: 50px;
-`;
-
-const StyledDownloadIcon = styled(DownloadIcon)`
-    cursor: pointer;
-    color: ${getColor('grey100')};
 `;
 
 export {SupplierFilesList};
