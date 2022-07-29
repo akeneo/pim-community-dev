@@ -8,7 +8,7 @@ import {
   useFeatureFlags,
   useSecurity,
 } from '@akeneo-pim-community/shared';
-import {Automation} from '../model';
+import {Automation, filterDefaultUserGroup} from '../model';
 import {useUserGroups} from '../hooks';
 
 type JobAutomationFormProps = {
@@ -34,20 +34,18 @@ const JobAutomationForm = ({automation, validationErrors, onAutomationChange}: J
       {featureFlags.isEnabled('permission') && (
         <Field label={translate('akeneo.job_automation.scheduling.running_user_groups.label')}>
           <MultiSelectInput
-            value={automation.running_user_groups}
+            value={filterDefaultUserGroup(automation.running_user_groups)}
             onChange={runningUserGroups => onAutomationChange({...automation, running_user_groups: runningUserGroups})}
             emptyResultLabel={translate('pim_common.no_result')}
             openLabel={translate('pim_common.open')}
             removeLabel={translate('pim_common.remove')}
             readOnly={!isGranted('pim_user_group_index')}
           >
-            {userGroups
-              .filter((group: string) => group !== 'All')
-              .map(group => (
-                <SelectInput.Option value={group} key={group}>
-                  {group}
-                </SelectInput.Option>
-              ))}
+            {filterDefaultUserGroup(userGroups).map(group => (
+              <SelectInput.Option value={group} key={group}>
+                {group}
+              </SelectInput.Option>
+            ))}
           </MultiSelectInput>
           {filterErrors(validationErrors, '[running_user_groups]').map((error, index) => (
             <Helper key={index} inline={true} level="error">
