@@ -1,9 +1,7 @@
 export type ProductFile = {
     identifier: string;
-    originalFilename: string;
+    filename: string;
     path: string;
-    uploadedByContributor: string;
+    contributor: string;
     uploadedAt: string;
 };
-
-export type ProductFiles = ProductFile[] | null;

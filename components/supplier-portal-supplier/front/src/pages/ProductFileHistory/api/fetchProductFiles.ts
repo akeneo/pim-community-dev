@@ -1,8 +1,18 @@
 import {apiFetch} from '../../../api/apiFetch';
-import {ProductFiles} from '../model';
+import {ProductFile} from '../model/ProductFile';
 
-const fetchProductFiles = async (): Promise<ProductFiles> => {
-    return apiFetch<ProductFiles>(`/supplier-portal/product-files`);
+const fetchProductFiles = async (): Promise<ProductFile[]> => {
+    const response: any = await apiFetch(`/supplier-portal/product-files`);
+
+    return response.map((item: any) => {
+        return {
+            identifier: item.identifier,
+            filename: item.originalFilename,
+            path: item.path,
+            contributor: item.uploadedByContributor,
+            uploadedAt: item.uploadedAt,
+        };
+    });
 };
 
 export {fetchProductFiles};

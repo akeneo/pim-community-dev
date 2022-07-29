@@ -6,10 +6,10 @@ import {EmptyProductFileHistory} from './components';
 import {useQuery} from 'react-query';
 import {fetchProductFiles} from './api/fetchProductFiles';
 import {ProductFileList} from './components/ProductFileList';
-import {ProductFiles} from './model';
+import {ProductFile} from './model/ProductFile';
 
 const ProductFileHistory = () => {
-    const {data: productFiles} = useQuery<ProductFiles>('fetchProductFiles', () => fetchProductFiles());
+    const {data: productFiles} = useQuery<ProductFile[]>('fetchProductFiles', () => fetchProductFiles());
 
     const HeaderWelcomeMessage = (
         <>
@@ -19,15 +19,17 @@ const ProductFileHistory = () => {
         </>
     );
 
+    if (!productFiles) {
+        return null;
+    }
+
     return (
         <Container>
             <Menu activeItem="history" />
             <Content>
                 <ConversationalHelper content={HeaderWelcomeMessage} />
-                {undefined === productFiles ||
-                    null === productFiles ||
-                    (0 === productFiles.length && <EmptyProductFileHistory />)}
-                {undefined !== productFiles && null !== productFiles && <ProductFileList productFiles={productFiles} />}
+                {0 === productFiles.length && <EmptyProductFileHistory />}
+                {0 < productFiles.length && <ProductFileList productFiles={productFiles} />}
             </Content>
         </Container>
     );
