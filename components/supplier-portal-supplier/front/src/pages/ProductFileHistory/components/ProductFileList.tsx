@@ -3,6 +3,7 @@ import {ProductFile} from '../model/ProductFile';
 import {Table} from 'akeneo-design-system';
 import {FormattedMessage} from 'react-intl';
 import styled from 'styled-components';
+import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
 
 type Props = {
     productFiles: ProductFile[];
@@ -19,6 +20,8 @@ const StyledTable = styled(Table)`
 `;
 
 const ProductFileList = ({productFiles}: Props) => {
+    const dateFormatter = useDateFormatter();
+
     return (
         <>
             <StyledTable>
@@ -37,7 +40,15 @@ const ProductFileList = ({productFiles}: Props) => {
                     {productFiles.map((productFile: ProductFile) => {
                         return (
                             <Table.Row key={productFile.identifier}>
-                                <Table.Cell>{productFile.uploadedAt}</Table.Cell>
+                                <Table.Cell>
+                                    {dateFormatter(productFile.uploadedAt, {
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                    })}
+                                </Table.Cell>
                                 <Table.Cell>{productFile.contributor}</Table.Cell>
                                 <Table.Cell>
                                     <FilenameCell>{productFile.filename}</FilenameCell>
