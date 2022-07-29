@@ -6,6 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\Command;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedProductsCommand;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -37,95 +38,19 @@ class CleanRemovedProductsCommandEndToEnd extends TestCase
     {
         parent::setUp();
 
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
-        //Create a product
-        $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: 'existing_product_in_db',
-            userIntents: []
-        );
-        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+
         $this->esProductClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
-        /*$productUuid = $this->getProductUuidFromIdentifier('existing_product_in_db');
-        $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection')->fromProductUuids([$productUuid]);
-        $this->esProductClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');*/
-        // $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
-    public function test_getProduct_Existing_in_db(): void
+    public function test_it_removes_product_in_elasticesearch_index_when_product_not_existing_in_mysql(): void
     {
-        $product = 'existing_product_in_db';
-        $query = <<<SQL
-            SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :productIdentifier
-        SQL;
-
-        //retrieve data from db
-        $stmt = $this->get('database_connection')->executeQuery($query, ['productIdentifier' => $product]);
-        $id = $stmt->fetchOne();
-        Assert::assertNotNull($id);
-        $idDB = ElasticsearchProductProjection::INDEX_PREFIX_ID . $id;
-
-        //retrieve data from Elasticsearch
-        $params = [
-            'query' => [
-                'match' => [
-                        'identifier' => $product
-                ]
-            ]
-        ];
-        $this->esProductClient->refreshIndex();
-        $result = $this->esProductClient->search($params);
-        Assert::assertNotNull($result);
-        $doc = $result["hits"]["hits"];
-        foreach ($doc as $information) {
-            $docId = $information["_source"]["id"];
-        }
-
-        Assert::assertEquals($idDB, $docId);
-    }
-
-    public function test_getProduct_Not_Existing_In_DB(): void
-    {
-        //create a product only in Elasticsearch
-        $product = [
-            'identifier' => 'product_not_exiting_product_in_db',
-            'values'     => [
-                'name-text' => [
-                    '<all_channels>' => [
-                        '<all_locales>' => '2015/01/01',
-                    ],
-                ],
-            ]
-        ];
-        $this->esProductClient->index($product['identifier'], $product);
-
-        $this->esProductClient->refreshIndex();
-        $params = [
-            'query' => [
-                'match' => [
-                    'identifier' => $product['identifier']
-                ]
-            ]
-        ];
-        $result = $this->esProductClient->search($params);
-        $doc = $result["hits"]["hits"];
-        foreach ($doc as $information) {
-            $identifierDoc = $information["_source"]["identifier"];
-        }
-
-        //search in DB
-        $query = <<<SQL
-            SELECT identifier FROM pim_catalog_product WHERE identifier = :productIdentifier
-        SQL;
-
-        //retrieve data from db
-        $stmt = $this->get('database_connection')->executeQuery($query, ['productIdentifier' => $product['identifier']]);
-        $identifier = $stmt->fetchOne();
-        $identifierDB = ElasticsearchProductProjection::INDEX_PREFIX_ID . $identifier;
-
-        Assert::assertNotEquals($identifierDoc, $identifierDB);
+        $this->givenProductExistingInMySQLAndElasticsearch('product_A');
+        $this->givenProductOnlyExistingInElasticsearch('product_B');
+        $this->whenIExecuteTheCommandToCleanTheProducts();
+        $this->thenTheIndexedProductsInElasticsearchAre(['product_A']);
 
     }
+
     private function getUserId(string $username): int
     {
         $query = <<<SQL
@@ -138,10 +63,64 @@ class CleanRemovedProductsCommandEndToEnd extends TestCase
         return \intval($id);
     }
 
-    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    private function givenProductExistingInMySQLAndElasticsearch(string $identifier): void
     {
-        return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
-        ));
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: []
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+    }
+
+    private function givenProductOnlyExistingInElasticsearch(string $identifier): void
+    {
+        $product = [
+            'identifier' => $identifier,
+            'document_type' => ProductInterface::class,
+            'values'     => [
+                'name-text' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => '2015/01/01',
+                    ],
+                ],
+            ]
+        ];
+        $this->esProductClient->index($product['identifier'], $product);
+        $this->esProductClient->refreshIndex();
+
+    }
+
+    private function whenIExecuteTheCommandToCleanTheProducts(): void
+    {
+
+    }
+
+    private function thenTheIndexedProductsInElasticsearchAre(array $identifiers): void
+    {
+        $params = [
+            '_source' => ['identifier'],
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter' => [
+                                'term' => [
+                                    'document_type' => ProductInterface::class
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $results = $this->esProductClient->search($params);
+
+        $esIdentifiers = array_map(function ($doc) {
+            return $doc['_source']['identifier'];
+        }, $results['hits']['hits']);
+
+        Assert::assertEmpty(array_diff($esIdentifiers, $identifiers));
     }
 }
