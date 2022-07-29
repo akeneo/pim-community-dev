@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListProducts;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
@@ -17,8 +18,11 @@ use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProdu
 /**
  * @group ce
  */
-class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
+class ListProductWithUuidAndCompletenessEndToEnd extends AbstractProductTestCase
 {
+    /** @var ProductInterface[] */
+    private $products;
+
     /**
      * {@inheritdoc}
      */
@@ -27,7 +31,7 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
         parent::setUp();
 
         // product complete, whatever the scope
-        $this->createProduct('product_complete', [
+        $this->products['product_complete'] = $this->createProduct('product_complete', [
             new SetFamily('familyA2'),
             new SetCategories(['categoryA', 'categoryB', 'master']),
             new SetMeasurementValue('a_metric', null, null, 1, 'WATT'),
@@ -35,7 +39,7 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
         ]);
 
         // product complete only on en_US-tablet & en-US-ecommerce
-        $this->createProduct('product_complete_en_locale', [
+        $this->products['product_complete_en_locale'] = $this->createProduct('product_complete_en_locale', [
             new SetFamily('familyA1'),
             new SetCategories(['categoryA', 'master', 'master_china']),
             new SetImageValue(
@@ -54,7 +58,7 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
         ]);
 
         // product incomplete
-        $this->createProduct('product_incomplete', [
+        $this->products['product_incomplete'] = $this->createProduct('product_incomplete', [
             new SetFamily('familyA'),
             new SetCategories(['categoryA', 'master', 'master_china']),
             new SetFileValue(
@@ -73,14 +77,14 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $search = '{"completeness":[{"operator":"=","value":100,"scope":"ecommerce"}]}';
-        $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=en_US&limit=2&search=' . $search);
+        $client->request('GET', 'api/rest/v1/products-uuid?scope=ecommerce&locales=en_US&limit=2&search=' . $search);
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
         $expected = <<<JSON
 {
     "_links": {
-        "self": {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&search=${searchEncoded}&scope=ecommerce&locales=en_US"},
-        "first": {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&search=${searchEncoded}&scope=ecommerce&locales=en_US"},
-        "next": {"href": "http://localhost/api/rest/v1/products?page=2&with_count=false&pagination_type=page&limit=2&search=${searchEncoded}&scope=ecommerce&locales=en_US"}
+        "self": {"href": "http://localhost/api/rest/v1/products-uuid?page=1&with_count=false&pagination_type=page&limit=2&search=${searchEncoded}&scope=ecommerce&locales=en_US"},
+        "first": {"href": "http://localhost/api/rest/v1/products-uuid?page=1&with_count=false&pagination_type=page&limit=2&search=${searchEncoded}&scope=ecommerce&locales=en_US"},
+        "next": {"href": "http://localhost/api/rest/v1/products-uuid?page=2&with_count=false&pagination_type=page&limit=2&search=${searchEncoded}&scope=ecommerce&locales=en_US"}
     },
     "current_page" : 1,
     "_embedded"    : {
@@ -88,16 +92,19 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
 		    {
 		        "_links":{
 		            "self":{
-		                "href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_complete"
+		                "href": "http:\/\/localhost\/api\/rest\/v1\/products-uuid\/{productCompleteUuid}"
 		            }
 		        },
-		        "identifier": "product_complete",
+		        "uuid": "{productCompleteUuid}",
 		        "family": "familyA2",
 		        "parent": null,
 		        "groups": [],
 		        "categories": ["categoryA","categoryB","master"],
 		        "enabled": true,
 		        "values": {
+		            "sku": [
+		                {"locale": null, "scope": null, "data": "product_complete"}
+		            ],
 		            "a_metric": [
 		                {"locale": null, "scope": null, "data": {"amount": "1.0000", "unit":"WATT"}}
 		            ],
@@ -133,15 +140,18 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
 		    },
 		    {
 		        "_links": {
-		            "self": {"href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_complete_en_locale"}
+		            "self": {"href": "http:\/\/localhost\/api\/rest\/v1\/products-uuid\/{productCompleteEnLocaleUuid}"}
 		        },
-		        "identifier": "product_complete_en_locale",
+		        "uuid": "{productCompleteEnLocaleUuid}",
 		        "family": "familyA1",
                 "parent": null,
 		        "groups": [],
 		        "categories": ["categoryA","master","master_china"],
 		        "enabled": true,
 		        "values": {
+		            "sku": [
+		                {"locale": null, "scope": null, "data": "product_complete_en_locale"}
+		            ],
 		            "a_localizable_image":[
 		                {
 		                    "locale": "en_US",
@@ -201,7 +211,12 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
 }
 JSON;
 
-        $this->assertListResponse($client->getResponse(), $expected);
+        $expected = \strtr($expected, [
+            '{productCompleteUuid}' => $this->products['product_complete']->getUuid()->toString(),
+            '{productCompleteEnLocaleUuid}' => $this->products['product_complete_en_locale']->getUuid()->toString(),
+        ]);
+
+        $this->assertListResponse($client->getResponse(), $expected, true);
     }
 
     /**
