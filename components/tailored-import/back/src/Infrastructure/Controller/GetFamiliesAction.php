@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller;
 
 use Akeneo\Platform\TailoredImport\Infrastructure\Query\Family\FindFamilies;
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\SearchFamilyQuery;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\FindFamilies as FindFamiliesValidation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +39,7 @@ final class GetFamiliesAction
             return new RedirectResponse('/');
         }
 
-        $violations = $this->validator->validate($request, new SearchFamilyQuery());
+        $violations = $this->validator->validate($request, new FindFamiliesValidation());
         if (0 < $violations->count()) {
             return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }

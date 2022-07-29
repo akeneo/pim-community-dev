@@ -21,12 +21,12 @@ use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class SearchFamilyQueryValidator extends ConstraintValidator
+class FindFamiliesValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof SearchFamilyQuery) {
-            throw new UnexpectedTypeException($constraint, SearchFamilyQuery::class);
+        if (!$constraint instanceof FindFamilies) {
+            throw new UnexpectedTypeException($constraint, FindFamilies::class);
         }
 
         if (!$value instanceof Request) {
