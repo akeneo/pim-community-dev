@@ -99,7 +99,7 @@ class AssetScopeMapper implements ScopeMapperInterface
     public function getMessage(string $scopeName): array
     {
         if (!\array_key_exists($scopeName, self::SCOPE_MESSAGE_MAP)) {
-            return [];
+            throw new \InvalidArgumentException(sprintf('The scope "%s" does not exist.', $scopeName));
         }
 
         return self::SCOPE_MESSAGE_MAP[$scopeName];
