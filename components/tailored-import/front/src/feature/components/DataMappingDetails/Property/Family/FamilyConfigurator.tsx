@@ -4,7 +4,7 @@ import {isFamilyTarget} from './model';
 import {PropertyDataMappingConfiguratorProps, PropertyTarget} from '../../../../models';
 import {InvalidPropertyTargetError} from '../error/InvalidPropertyTargetError';
 import {ClearIfEmpty, Operations, PropertyTargetParameters, Sources} from '../../../../components';
-import {FAMILY_REPLACEMENT_OPERATION_TYPE} from "../../Operation";
+import {FAMILY_REPLACEMENT_OPERATION_TYPE} from '../../Operation';
 
 const FamilyConfigurator = ({
   dataMapping,

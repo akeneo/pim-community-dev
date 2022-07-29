@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useIsMounted, useRoute, useUserContext} from '@akeneo-pim-community/shared';
-import {Family} from "../models";
+import {Family} from '../models';
 
 const FAMILY_PAGE_SIZE = 25;
 

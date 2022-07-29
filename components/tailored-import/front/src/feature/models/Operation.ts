@@ -5,7 +5,6 @@ import {
   MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   SPLIT_OPERATION_TYPE,
-
   BooleanReplacementOperation,
   CategoriesReplacementOperation,
   CleanHTMLTagsOperation,
@@ -14,7 +13,6 @@ import {
   MultiSelectReplacementOperation,
   SimpleSelectReplacementOperation,
   SplitOperation,
-
   getDefaultBooleanReplacementOperation,
   getDefaultCategoriesReplacementOperation,
   getDefaultCleanHTMLTagsOperation,

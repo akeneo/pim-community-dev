@@ -107,9 +107,5 @@ const FamilyReplacementOperationBlock = ({targetCode, operation, onChange, onRem
   );
 };
 
-export {
-  FamilyReplacementOperationBlock,
-  getDefaultFamilyReplacementOperation,
-  FAMILY_REPLACEMENT_OPERATION_TYPE,
-};
+export {FamilyReplacementOperationBlock, getDefaultFamilyReplacementOperation, FAMILY_REPLACEMENT_OPERATION_TYPE};
 export type {FamilyReplacementOperation};
