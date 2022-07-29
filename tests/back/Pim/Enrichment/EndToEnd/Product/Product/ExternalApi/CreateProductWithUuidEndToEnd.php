@@ -7,6 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CreateProductWithUuidEndToEnd extends AbstractProductTestCase
 {
     use AssertEventCountTrait;
+    use QuantifiedAssociationsTestCaseTrait;
 
     /**
      * {@inheritdoc}
@@ -194,8 +196,66 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'product_creation_categories');
     }
 
+    public function testItCreatesAProductWithParent()
+    {
+        $this->createProductModel([
+            'code' => 'a_product_model',
+            'family_variant' => 'familyVariantA1',
+            'values'  => [],
+        ]);
+        $this->createProductModel([
+            'code' => 'a_sub_product_model',
+            'parent' => 'a_product_model',
+            'family_variant' => 'familyVariantA1',
+            'values' => [
+                'a_simple_select' => [['locale' => null, 'scope' => null, 'data' => 'optionB']],
+            ],
+        ]);
+
+        $client = $this->createAuthenticatedClient();
+        $data = <<<JSON
+{
+    "values": {
+        "sku": [
+            {"locale": null, "scope": null, "data": "foo"}
+        ],
+        "a_yes_no": [
+            { "locale": null, "scope": null, "data": true }
+        ]
+    },
+    "parent": "a_sub_product_model"
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
+        $response = $client->getResponse();
+
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+
+        $this->assertSameProducts([
+            'identifier' => 'foo',
+            'family' => 'familyA',
+            'parent' => 'a_sub_product_model',
+            'groups' => [],
+            'categories' => [],
+            'enabled' => true,
+            'values' => [
+                'a_simple_select' => [['data' => 'optionB', 'locale' => null, 'scope' => null]],
+                'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]],
+                'sku' => [['data' => 'foo', 'locale' => null, 'scope' => null]],
+            ],
+            'created' => 'this is a date formatted to ISO-8601',
+            'updated' => 'this is a date formatted to ISO-8601',
+            'associations' => [],
+            'quantified_associations' => [],
+        ], 'foo');
+    }
+
     public function testProductCreationWithAssociations()
     {
+        $this->createQuantifiedAssociationType('QUANTIFIEDASSOCIATION');
+
         $this->createProductModel([
             'code' => 'a_product_model',
             'family_variant' => 'familyVariantA1',
@@ -221,6 +281,11 @@ JSON;
         "X_SELL": {
             "groups": ["groupA"],
             "products": ["$simpleUuid"]
+        }
+    },
+    "quantified_associations": {
+        "QUANTIFIEDASSOCIATION": {
+            "products": [{"quantity": 12, "uuid": "$simpleUuid"}]
         }
     }
 }
@@ -264,7 +329,12 @@ JSON;
                     "product_models" => [],
                 ],
             ],
-            'quantified_associations' => [],
+            'quantified_associations' => [
+                'QUANTIFIEDASSOCIATION' => [
+                    'products' => [['identifier' => 'simple', 'quantity' => 12]],
+                    'product_models' => [],
+                ]
+            ],
         ];
 
         $response = $client->getResponse();
