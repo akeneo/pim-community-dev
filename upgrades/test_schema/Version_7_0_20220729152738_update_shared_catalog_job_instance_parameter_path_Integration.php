@@ -2,7 +2,6 @@
 
 namespace Pim\Upgrade\Schema\Tests;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Akeneo\Test\Integration\Configuration;
@@ -129,7 +128,7 @@ SQL;
 
         $expectedStorage = [
             'file_path' => $storageFilePath,
-            'type' => $this->isSaaSVersion() ? NoneStorage::TYPE : LocalStorage::TYPE
+            'type' => NoneStorage::TYPE
         ];
 
         return $rawParameters['storage'] == $expectedStorage;
@@ -144,10 +143,5 @@ SQL;
         $rawParameters = $jobInstance->getRawParameters();
 
         return isset($rawParameters['filePath']);
-    }
-
-    private function isSaaSVersion(): bool
-    {
-        return $this->versionProvider->isSaaSVersion();
     }
 }
