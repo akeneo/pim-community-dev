@@ -33,7 +33,11 @@ class CreateProductWithUuidEndToEnd extends AbstractProductTestCase
         $data =
             <<<JSON
     {
-        "identifier": "product_create_headers"
+        "values": {
+            "sku": [
+                {"locale": null, "scope": null, "data": "product_create_headers"}
+            ]
+        }
     }
 JSON;
 
@@ -60,7 +64,13 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_creation_family",
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "product_creation_family"
+            }]
+        },
         "family": "familyA"
     }
 JSON;
@@ -101,7 +111,13 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_creation_groups",
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "product_creation_groups"
+            }]
+        },
         "groups": ["groupA", "groupB"]
     }
 JSON;
@@ -140,7 +156,13 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_creation_categories",
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "product_creation_categories"
+            }]
+        },
         "categories": ["master", "categoryA"]
     }
 JSON;
@@ -181,17 +203,24 @@ JSON;
         ]);
 
         $client = $this->createAuthenticatedClient();
+        $simpleUuid = $this->getProductUuidFromIdentifier('simple')->toString();
 
         $data = <<<JSON
 {
-    "identifier": "product_creation_associations",
+    "values": {
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "product_creation_associations"
+        }]
+    },
     "associations": {
         "UPSELL": {
             "product_models": ["a_product_model"]
         },
         "X_SELL": {
             "groups": ["groupA"],
-            "products": ["simple"]
+            "products": ["$simpleUuid"]
         }
     }
 }
@@ -258,11 +287,15 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_creation_product_values",
         "groups": ["groupA", "groupB"],
         "family": "familyA",
         "categories": ["master", "categoryA"],
         "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "product_creation_product_values"
+            }],
             "a_file": [{
                 "locale": null,
                 "scope": null,
@@ -631,7 +664,13 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "foo",
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "foo"
+            }]
+        },
         "created": "2014-06-14T13:12:50+02:00",
         "updated": "2014-06-14T13:12:50+02:00"
     }
@@ -678,7 +717,6 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "same_identifier",
         "values": {
             "sku": [{
                 "locale": null,
@@ -705,38 +743,39 @@ JSON;
         $this->assertSame('', $response->getContent());
     }
 
-    public function testResponseWhenIdentifierPropertyNotEqualsToIdentifierInValues()
+    /**
+     * This test can not work until we have a SetUuid user intent in the Product Service API
+     * @TODO CPM-698
+     */
+    public function testItCreatesWithUuid()
     {
+        return;
         $client = $this->createAuthenticatedClient();
 
         $data =
             <<<JSON
     {
-        "identifier": "different",
+        "uuid": "a48ca2b8-656d-4b2c-b9cc-b2243e876ebf",
         "values": {
-            "sku": [{
-                "locale": null,
-                "scope": null,
-                "data": "foo"
-            }]
-         }
+            "sku": [
+                {"locale": null, "scope": null, "data": "foo"}
+            ]
+        }
     }
 JSON;
 
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
-
         $response = $client->getResponse();
 
+        $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame(
-            sprintf(
-                'http://localhost/api/rest/v1/products-uuid/%s',
-                $this->getProductUuidFromIdentifier('different')
-            ),
+            'http://localhost/api/rest/v1/products-uuid/a48ca2b8-656d-4b2c-b9cc-b2243e876ebf',
             $response->headers->get('location')
         );
-        $this->assertSame('', $response->getContent());
+
+        $this->assertSame($this->getProductUuidFromIdentifier('foo')->toString(), 'a48ca2b8-656d-4b2c-b9cc-b2243e876ebf');
     }
 
     public function testResponseWhenMissingIdentifierPropertyAndProvidedIdentifierInValues()
@@ -747,11 +786,9 @@ JSON;
             <<<JSON
     {
         "values": {
-            "sku": [{
-                "locale": null,
-                "scope": null,
-                "data": "foo"
-            }]
+            "a_simple_select": [
+                {"locale": null, "scope": null, "data": "optionB"}
+            ]
          }
     }
 JSON;
@@ -807,7 +844,13 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "simple"
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "simple"
+            }]
+        }
     }
 JSON;
 
@@ -837,6 +880,13 @@ JSON;
         $data =
             <<<JSON
     {
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "foo"
+            }]
+        },
         "extra_property": "foo"
     }
 JSON;
@@ -864,11 +914,15 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "foo",
         "family": null,
         "groups": ["groupA"],
         "categories": ["master"],
         "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "foo"
+            }],
             "unknown_attribute":[{
                 "locale": null,
                 "scope": null,
@@ -903,7 +957,13 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "foo",
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "foo"
+            }]
+        },
         "family": null,
         "variant_group": "group_variant",
         "groups": ["groupA"],
@@ -944,8 +1004,12 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "foo",
         "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "foo"
+            }],
             "a_text":[
                 {"locale": null, "scope": null, "data": "15\u001fm"}
             ]
@@ -979,7 +1043,13 @@ JSON;
 
         $data = <<<JSON
 {
-    "identifier": "a_product",
+    "values": {
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "foo"
+        }]
+    },
     "associations": {
         "X_SELL": {
             "product_models": ["a_non_exiting_product_model"]
@@ -1016,7 +1086,13 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "foo"
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "foo"
+            }]
+        }
     }
 JSON;
 
