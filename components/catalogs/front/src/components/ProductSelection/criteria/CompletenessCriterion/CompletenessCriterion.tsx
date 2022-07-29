@@ -57,7 +57,13 @@ const CompletenessCriterion: FC<CriterionModule<CompletenessCriterionState>> = (
                 </Fields>
             </List.Cell>
             <List.RemoveCell>
-                <IconButton ghost='borderless' level='tertiary' icon={<CloseIcon />} title='' onClick={onRemove} />
+                <IconButton
+                    ghost='borderless'
+                    level='tertiary'
+                    icon={<CloseIcon />}
+                    title={translate('akeneo_catalogs.product_selection.action.remove')}
+                    onClick={onRemove}
+                />
             </List.RemoveCell>
             {errorHelpers.length > 0 && <List.RowHelpers>{errorHelpers}</List.RowHelpers>}
         </List.Row>

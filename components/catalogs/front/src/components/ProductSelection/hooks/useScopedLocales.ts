@@ -2,12 +2,15 @@ import {Locale} from '../models/Locale';
 import {useInfiniteChannels} from './useInfiniteChannels';
 
 export const useScopedLocales = (channelCode: string | null): Locale[] => {
-    const channelFilter = channelCode !== null ? {code: channelCode} : undefined;
-    const {data: channels} = useInfiniteChannels(channelFilter);
+    const {data: channels, isLoading, isError, error} = useInfiniteChannels({code: channelCode});
 
-    if (channelCode === null || channels === undefined || channels.length === 0) {
+    if (isError) {
+        throw new Error(error as string);
+    }
+
+    if (isLoading || channelCode === null) {
         return [];
     }
 
-    return channels[0].locales;
+    return channels?.[0]?.locales ?? [];
 };

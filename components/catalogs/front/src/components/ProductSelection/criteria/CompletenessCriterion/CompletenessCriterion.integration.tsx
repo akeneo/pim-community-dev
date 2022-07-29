@@ -1,3 +1,5 @@
+jest.mock('../../hooks/useOperatorTranslator');
+
 import React from 'react';
 import {fireEvent, render, screen, within} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
@@ -7,8 +9,6 @@ import fetchMock from 'jest-fetch-mock';
 import {Operator} from '../../models/Operator';
 import {CompletenessCriterion} from './CompletenessCriterion';
 
-jest.mock('../../hooks/useOperatorTranslator');
-
 const localeUS = {code: 'en_US', label: 'English'};
 const localeFR = {code: 'fr_FR', label: 'French'};
 const localeDE = {code: 'de_DE', label: 'German'};
@@ -17,7 +17,6 @@ const channelPrint = {code: 'print', label: 'Print', locales: [localeUS, localeF
 const channelEcommerce = {code: 'ecommerce', label: 'E-commerce', locales: [localeUS, localeFR, localeES]};
 
 test('it renders the completeness criteria', () => {
-    fetchMock.mockResponses(JSON.stringify([channelPrint, channelEcommerce]));
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
@@ -76,6 +75,33 @@ test('it renders criteria with validation errors', () => {
     expect(screen.getByText('Invalid locale.')).toBeInTheDocument();
 });
 
+test('it calls onRemove', () => {
+    const onRemove = jest.fn();
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <ReactQueryWrapper>
+                <CompletenessCriterion
+                    state={{
+                        field: 'completeness',
+                        operator: Operator.LOWER_THAN,
+                        value: 25,
+                        locale: 'en_US',
+                        scope: 'print',
+                    }}
+                    onChange={jest.fn()}
+                    onRemove={onRemove}
+                    errors={{}}
+                />
+            </ReactQueryWrapper>
+        </ThemeProvider>
+    );
+
+    fireEvent.click(screen.getByTitle('akeneo_catalogs.product_selection.action.remove'));
+
+    expect(onRemove).toHaveBeenCalled();
+});
+
 test('it calls onChange when the operator changes', () => {
     const onChange = jest.fn();
 
@@ -98,10 +124,7 @@ test('it calls onChange when the operator changes', () => {
         </ThemeProvider>
     );
 
-    const container = screen.getByTestId('operator');
-
-    fireEvent.click(within(container).getByRole('textbox'));
-    fireEvent.click(screen.getByText(Operator.EQUALS));
+    changeOperatorValueTo(Operator.EQUALS);
 
     expect(onChange).toHaveBeenCalledWith({
         field: 'completeness',
@@ -145,3 +168,174 @@ test('it calls onChange when the value changes', () => {
         scope: 'print',
     });
 });
+
+test('it resets completeness to 0 when any textual value is entered', () => {
+    const onChange = jest.fn();
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <ReactQueryWrapper>
+                <CompletenessCriterion
+                    state={{
+                        field: 'completeness',
+                        operator: Operator.LOWER_THAN,
+                        value: 25,
+                        locale: 'en_US',
+                        scope: 'print',
+                    }}
+                    onChange={onChange}
+                    onRemove={jest.fn()}
+                    errors={{}}
+                />
+            </ReactQueryWrapper>
+        </ThemeProvider>
+    );
+
+    const input = screen.getByTestId('value');
+    fireEvent.change(input, {target: {value: 'completeness_value'}});
+
+    expect(onChange).toHaveBeenCalledWith({
+        field: 'completeness',
+        operator: Operator.LOWER_THAN,
+        value: 0,
+        locale: 'en_US',
+        scope: 'print',
+    });
+});
+
+test('it calls onChange when the channel changes', async () => {
+    const onChange = jest.fn();
+
+    fetchMock.mockResponses(JSON.stringify([channelPrint, channelEcommerce]));
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <ReactQueryWrapper>
+                <CompletenessCriterion
+                    state={{
+                        field: 'completeness',
+                        operator: Operator.LOWER_THAN,
+                        value: 25,
+                        locale: 'en_US',
+                        scope: 'print',
+                    }}
+                    onChange={onChange}
+                    onRemove={jest.fn()}
+                    errors={{}}
+                />
+            </ReactQueryWrapper>
+        </ThemeProvider>
+    );
+    expect(await screen.findByText('Print')).toBeInTheDocument();
+
+    changeChannelValueTo('E-commerce');
+
+    expect(onChange).toHaveBeenCalledWith({
+        field: 'completeness',
+        operator: Operator.LOWER_THAN,
+        value: 25,
+        locale: 'en_US',
+        scope: 'ecommerce',
+    });
+});
+
+test('it calls onChange when the locale changes', async () => {
+    const onChange = jest.fn();
+
+    fetchMock.mockResponses(
+        //useInfiniteChannels
+        JSON.stringify([channelPrint, channelEcommerce]),
+        //useScopedLocales
+        JSON.stringify([channelPrint])
+    );
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <ReactQueryWrapper>
+                <CompletenessCriterion
+                    state={{
+                        field: 'completeness',
+                        operator: Operator.LOWER_THAN,
+                        value: 25,
+                        locale: 'en_US',
+                        scope: 'print',
+                    }}
+                    onChange={onChange}
+                    onRemove={jest.fn()}
+                    errors={{}}
+                />
+            </ReactQueryWrapper>
+        </ThemeProvider>
+    );
+    expect(await screen.findByText('Print')).toBeInTheDocument();
+
+    changeLocaleValueTo('French');
+
+    expect(onChange).toHaveBeenCalledWith({
+        field: 'completeness',
+        operator: Operator.LOWER_THAN,
+        value: 25,
+        locale: 'fr_FR',
+        scope: 'print',
+    });
+});
+
+test('it resets locale when switching to a channel without selected locale', async () => {
+    const onChange = jest.fn();
+
+    fetchMock.mockResponses(
+        //useInfiniteChannels
+        JSON.stringify([channelPrint, channelEcommerce]),
+        //useScopedLocales
+        JSON.stringify([channelPrint]),
+        JSON.stringify([channelEcommerce])
+    );
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <ReactQueryWrapper>
+                <CompletenessCriterion
+                    state={{
+                        field: 'completeness',
+                        operator: Operator.LOWER_THAN,
+                        value: 25,
+                        locale: 'de_DE',
+                        scope: 'print',
+                    }}
+                    onChange={onChange}
+                    onRemove={jest.fn()}
+                    errors={{}}
+                />
+            </ReactQueryWrapper>
+        </ThemeProvider>
+    );
+    expect(await screen.findByText('Print')).toBeInTheDocument();
+
+    changeChannelValueTo('E-commerce');
+
+    expect(onChange).toHaveBeenCalledWith({
+        field: 'completeness',
+        operator: Operator.LOWER_THAN,
+        value: 25,
+        locale: null,
+        scope: 'ecommerce',
+    });
+});
+
+function changeOperatorValueTo(operator: string) {
+    changeSelectValueTo('operator', operator);
+}
+
+function changeChannelValueTo(operator: string) {
+    changeSelectValueTo('scope', operator);
+}
+
+function changeLocaleValueTo(operator: string) {
+    changeSelectValueTo('locale', operator);
+}
+
+function changeSelectValueTo(selector: string, value: string) {
+    const select = screen.getByTestId(selector);
+    fireEvent.click(within(select).getByRole('textbox'));
+    fireEvent.click(screen.getByText(value));
+}

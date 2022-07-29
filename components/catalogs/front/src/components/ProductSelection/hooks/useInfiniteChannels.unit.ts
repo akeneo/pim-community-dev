@@ -96,3 +96,30 @@ test('it filters channel with a code', async () => {
         fetchNextPage: expect.any(Function),
     });
 });
+
+test('it fetches with default parameters', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify([channelPrint, channelEcommerce]));
+
+    const {result, waitForNextUpdate} = renderHook(() => useInfiniteChannels(), {wrapper: ReactQueryWrapper});
+
+    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/channels?page=1&limit=20&code=', expect.any(Object));
+    expect(result.current).toMatchObject({
+        isLoading: true,
+        isError: false,
+        data: undefined,
+        error: null,
+        hasNextPage: false,
+        fetchNextPage: expect.any(Function),
+    });
+
+    await waitForNextUpdate();
+
+    expect(result.current).toMatchObject({
+        isLoading: false,
+        isError: false,
+        data: [channelPrint, channelEcommerce],
+        error: null,
+        hasNextPage: false,
+        fetchNextPage: expect.any(Function),
+    });
+});

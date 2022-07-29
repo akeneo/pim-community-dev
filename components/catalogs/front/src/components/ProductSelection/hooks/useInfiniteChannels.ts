@@ -11,7 +11,7 @@ type Page = {
 };
 
 type QueryParams = {
-    code?: string;
+    code?: string | null;
     limit?: number;
 };
 type Error = string | null;
@@ -24,11 +24,12 @@ type Result = {
     fetchNextPage: () => Promise<void>;
 };
 
-export const useInfiniteChannels = ({code = '', limit = 20}: QueryParams = {}): Result => {
+export const useInfiniteChannels = ({code = null, limit = 20}: QueryParams = {}): Result => {
     const fetchChannels = useCallback(
         async ({pageParam}: {pageParam?: PageParam}): Promise<Page> => {
             const _page = pageParam?.number || 1;
-            const response = await fetch(`/rest/catalogs/channels?page=${_page}&limit=${limit}&code=${code}`, {
+            const _code = code || '';
+            const response = await fetch(`/rest/catalogs/channels?page=${_page}&limit=${limit}&code=${_code}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                 },
