@@ -2,7 +2,7 @@ client-to-clone-srnt: &client-to-clone-srnt
 client-to-clone-grth: &client-to-clone-grth
 
 orbs:
-  security-hunter: akeneo-orbs/security-hunter@dev:d855721fe6f999076921e3616350fe59c53bd518
+  security-hunter: akeneo-orbs/security-hunter@1.0.9
 
 workflows:
     dev_pull_request:

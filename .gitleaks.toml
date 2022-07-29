@@ -1,4 +1,4 @@
-title = "Gitleaks exclusion rules for pim-enterprise-dev repository"
+title = 'Gitleaks exclusion rules for pim-enterprise-dev repository'
 
 [extend]
 # useDefault will extend the base configuration with the default gitleaks config:
@@ -6,10 +6,58 @@ title = "Gitleaks exclusion rules for pim-enterprise-dev repository"
 useDefault = true
 
 [allowlist]
-description = "Global allow list"
+description = 'Global allow list'
+
 commits = [
+    # These ones contain a pagerduty service key commited on README.md, UPGRADE_CLOUD.md and INSTALL.md files
+    # The sensitive information does not exist anymore on these files
+    # The token is actually a dev channel one and not used anymore
+    "0e62d3cd71bbc58284d2d4007f09e362a50bea89",
+    "cf80d8ce8aaa818cf1314cc03ff2e69e1277688a",
+    "aac279b9e187ddfe6df462b81e7c0382b966cd6c",
+    "dab56df4df76f0cb6b839fba7b31499d2ecf77db",
+    # tria/.env file contains a leaked secret in git history ; *API_SECRET* needs to be revoked
+    "c2b6e0812f6911ca5cfa1d2178ba035094b95b02",
+    # Dockefile has been commited with sensitive info on these 2 commits ; secret should be revoked / rotated
+    "6ca10601f17a473b0dccb31279b4bfb1dc57b600",
+    "30f717aa27dc36d234ad59864c1fde013b72a1c1"
 ]
+
 paths = [
+    # These files generate alerts but they are test files, so should be ok but need confirmation
+    '''components/onboarder-v1/tests/.*\.php''',
+    '''tria/src/Akeneo/FreeTrial/back/Infrastructure/AkeneoConnect/MockGuzzleHttpClient.php''',
+    '''config/fake_credentials_gcp\.json''',
+    '''deployments/legacy/ucs_legacy_customer1_values\.yaml''',
+    '''(grth/deployments|deployments-ucs|deployments|tria/deployments)/config/ci\-values(_32)?\.yaml''',
+    '''(grth/|tria/|)docker/server\.key''',
+    '''(grth/|tria/)?deployments/config/fake\-tf\-helm\-pim\-values\.yaml''',
+    '''(deployments\-ucs|infra)(/old)?/(argocd|datadog|ucs_whoami|pim\-saas\-service|pim|tenant)/values\.yaml''',
+    '''deployments/(argocd|datadog|legacy|ucs_api|ucs_daemon|ucs_http|ucs_job|ucs_whoami)/(ucs_legacy_customer2_|ucs_)?values(_customer1)?\.yaml''',
+    '''src/Akeneo/SharedCatalog/Command/SharedCatalogFixturesCommand.php''', # should be checked with sharedcatalogs squad
+
+    # Need to be documented and checked for rotated values
+    '''deployments/bin/clone_saas_instance.sh''', # this has been fixed with a randomly generated password
+    '''deployments/config/growth_instance_monitoring.tpl.tf.json''', # does not exist anymore
+    '''deployments/config/serenity_instance.tpl.tf''', # does not contain pagerduty service key anymore
+    '''deployments/config/serenity_instance_monitoring.tpl.tf''', # does not exist anymore
+    '''deployments/config/serenity_instance_monitoring.tpl.tf.json''', # does not exist anymore    
+    '''deployments/releases/srnt-tip-1315/main.tf''', # does not exist anymore
+    '''deployments/releases/srnt-tip-1315/pim.yaml''', # does not exist anymore
+    '''deployments/terraform/pim/values-tria.yaml''', # does not contain secrets anymore
+    '''deployments/ucs_api/pim-api-config/httpd.conf''', # does not exist anymore
+    '''deployments/ucs_http/pim-web-config/httpd.conf''', # does not exist anymore
+    '''tria/deployments/config/pim_trial_instance_monitoring.tpl.tf.json''', # pagerduty service key ; file does not exist anymore
+    '''components/onboarder-v1/.circleci/config.yml''', # a private key is leaked in the git log (commit db7bdc0d4a041519a210e2d131f51abfcb59cdd7) ; the file does not exist anymore ; needs to be revoked
+    '''deployments/config/serenity_32_instance.tpl.tf''', # pagerduty service key ; token is actually for dev channel and not used anymore
+    '''make-file/deployment.mk''', # file does not exist anymore ; slack webhook should be checked for rotation
 ]
+
 regexes = [
+    # False positive detections
+    '''default\-europe\-west1''',
+    '''cities_abcdef123456789_de_DE''',
+    '''cities_abcdef123456789_en_US''',
+    '''cities_abcdef123456789_fr_FR''',
+    '''main_city_abcdef123456789''',
 ]
