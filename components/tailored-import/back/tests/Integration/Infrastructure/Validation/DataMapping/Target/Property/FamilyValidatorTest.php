@@ -78,6 +78,29 @@ final class FamilyValidatorTest extends AbstractValidationTest
                     'sample_data' => [],
                 ]
             ],
+            'a valid family data mapping with replacement operation' => [
+                [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
+                        'code' => 'family',
+                        'type' => 'property',
+                        'action_if_not_empty' => 'set',
+                        'action_if_empty' => 'skip',
+                    ],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [
+                        [
+                            'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                            'type' => 'family_replacement',
+                            'mapping' => [
+                                'family_1' => ['My super family'],
+                                'family_aze' => ['My family'],
+                            ],
+                        ],
+                    ],
+                    'sample_data' => [],
+                ]
+            ],
         ];
     }
 
@@ -217,6 +240,31 @@ final class FamilyValidatorTest extends AbstractValidationTest
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     'operations' => [],
+                    'sample_data' => [],
+                ]
+            ],
+            'a family data mapping with an incompatible operation' => [
+                'akeneo.tailored_import.validation.operations.incompatible_operation_type',
+                '[operations][ad4e2d5c-2830-4ba8-bf83-07f9935063d6][type]',
+                [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
+                        'code' => 'family',
+                        'type' => 'property',
+                        'action_if_not_empty' => 'set',
+                        'action_if_empty' => 'skip',
+                    ],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [
+                        [
+                            'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                            'type' => 'simple_select_replacement',
+                            'mapping' => [
+                                'family_1' => ['My super family'],
+                                'family_aze' => ['My family'],
+                            ],
+                        ],
+                    ],
                     'sample_data' => [],
                 ]
             ],
