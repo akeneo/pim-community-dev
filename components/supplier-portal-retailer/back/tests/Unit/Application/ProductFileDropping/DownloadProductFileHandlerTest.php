@@ -8,7 +8,7 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProdu
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileDownloadError;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileIsNotDownloadable;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilePath;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\StubEventDispatcher;
@@ -57,7 +57,7 @@ final class DownloadProductFileHandlerTest extends TestCase
         $getSupplierFilePathMock->expects($this->once())->method('__invoke')->willReturn('path/to/file.xlsx');
         $downloadStoredProductFileMock->method('__invoke')->with('path/to/file.xlsx')->willThrowException(new \RuntimeException());
 
-        $this->expectException(SupplierFileDownloadError::class);
+        $this->expectException(SupplierFileIsNotDownloadable::class);
         ($sut)(new DownloadProductFile('file-identifier'));
 
         $this->assertEmpty($eventDispatcher->getDispatchedEvents());

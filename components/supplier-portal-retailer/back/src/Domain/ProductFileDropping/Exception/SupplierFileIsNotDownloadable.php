@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception;
 
-final class SupplierFileDownloadError extends \Exception
+final class SupplierFileIsNotDownloadable extends \Exception
 {
 }

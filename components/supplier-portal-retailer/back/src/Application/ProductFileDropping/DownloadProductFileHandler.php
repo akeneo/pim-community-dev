@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileDownloadError;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileIsNotDownloadable;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilePath;
 use Psr\Log\LoggerInterface;
@@ -35,11 +35,13 @@ final class DownloadProductFileHandler
             $supplierFileStream = ($this->downloadStoredProductsFile)($supplierFilePath);
         } catch (\Throwable $e) {
             $this->logger->error('Supplier file could not be downloaded', [
-                'fileIdentifier' => $query->supplierFileIdentifier,
-                'path' => $supplierFilePath,
-                'error' => $e->getMessage(),
+                'data' => [
+                    'fileIdentifier' => $query->supplierFileIdentifier,
+                    'path' => $supplierFilePath,
+                    'error' => $e->getMessage(),
+                ],
             ]);
-            throw new SupplierFileDownloadError();
+            throw new SupplierFileIsNotDownloadable();
         }
 
         $this->eventDispatcher->dispatch(new ProductFileDownloaded($query->supplierFileIdentifier));

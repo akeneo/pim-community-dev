@@ -16,7 +16,9 @@ final class DatabaseGetSupplierFilePath implements GetSupplierFilePath
     public function __invoke(string $supplierFileIdentifier): ?string
     {
         $sql = <<<SQL
-            SELECT path FROM akeneo_supplier_portal_supplier_file supplier_file WHERE identifier = :identifier
+            SELECT path 
+            FROM akeneo_supplier_portal_supplier_file supplier_file 
+            WHERE identifier = :identifier
         SQL;
 
         $path = $this->connection->executeQuery(
