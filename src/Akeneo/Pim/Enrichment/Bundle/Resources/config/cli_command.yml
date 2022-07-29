@@ -85,3 +85,10 @@ services:
             - '@database_connection'
         tags:
             - { name: 'akeneo.pim.zdd_migration' }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220729171405CleanVersioningResourceUuidColumnForNonProductVersions:
+        arguments:
+            - '@database_connection'
+            - '@monolog.logger'
+        tags:
+            - { name: 'akeneo.pim.zdd_migration' }
