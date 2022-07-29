@@ -81,6 +81,11 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilesCount:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetSupplierFilesCount
+        arguments:
+            - '@database_connection'
+
     # Controllers
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\SupplierList:
         public: true
