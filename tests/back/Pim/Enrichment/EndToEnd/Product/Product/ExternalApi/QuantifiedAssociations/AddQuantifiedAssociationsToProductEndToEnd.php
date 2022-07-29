@@ -47,7 +47,7 @@ class AddQuantifiedAssociationsToProductEndToEnd extends AbstractProductTestCase
 {
     "identifier": "$identifier",
     "quantified_associations": {
-        "PRODUCTSET": {
+        "PRODUCTquantified_associationsSET": {
             "products": [
                 {"identifier": "chair", "quantity": 4},
                 {"identifier": "table", "quantity": 1}

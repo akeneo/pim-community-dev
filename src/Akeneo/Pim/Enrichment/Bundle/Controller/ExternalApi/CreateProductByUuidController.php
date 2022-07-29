@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
@@ -108,6 +109,11 @@ class CreateProductByUuidController
         } catch (ViolationsException $e) {
             $constraintViolation = $e->violations()->get(0);
             $this->throwDocumentedHttpException($constraintViolation->getMessage(), $e);
+        } catch (LegacyViolationsException $e) {
+            $constraintViolation = $e->violations()->get(0);
+            $this->throwDocumentedHttpException($constraintViolation->getMessage(), $e);
+        } catch (InvalidPropertyTypeException $e) {
+            $this->throwDocumentedHttpException($e->getMessage(), $e);
         }
 
         return $this->getResponse($this->getUuidFromIdentifier($this->getProductIdentifier($data)), Response::HTTP_CREATED);
@@ -177,14 +183,14 @@ class CreateProductByUuidController
 
     /**
      * @param string[] $uuidAsStrings
-     * @return string[]
+     * @return array<string, string>
      */
     private function getProductIdentifierFromUuids(array $uuidAsStrings): array
     {
         $uuidsAsBytes = array_map(fn (string $uuid): string => Uuid::fromString($uuid)->getBytes(), $uuidAsStrings);
 
-        return $this->connection->fetchFirstColumn(
-            'SELECT identifier FROM pim_catalog_product WHERE uuid IN(:uuids)',
+        return $this->connection->fetchAllKeyValue(
+            'SELECT BIN_TO_UUID(uuid) AS uuid, identifier FROM pim_catalog_product WHERE uuid IN(:uuids)',
             ['uuids' => $uuidsAsBytes],
             ['uuids' => Connection::PARAM_STR_ARRAY]
         );
@@ -214,13 +220,22 @@ class CreateProductByUuidController
      */
     private function replaceUuidsByIdentifiers(array $data)
     {
-        if (!isset($data['associations'])) {
-            return $data;
+        if (isset($data['associations'])) {
+            foreach ($data['associations'] as $associationCode => $associations) {
+                if (isset($associations['products'])) {
+                    $data['associations'][$associationCode]['products'] = \array_values($this->getProductIdentifierFromUuids($associations['products']));
+                }
+            }
         }
 
-        foreach ($data['associations'] as $associationCode => $associations) {
-            if (isset($associations['products'])) {
-                $data['associations'][$associationCode]['products'] = $this->getProductIdentifierFromUuids($data['associations'][$associationCode]['products']);
+        if (isset($data['quantified_associations'])) {
+            foreach ($data['quantified_associations'] as $associationCode => $associations) {
+                if (isset($associations['products'])) {
+                    $map = $this->getProductIdentifierFromUuids(\array_map(fn (array $association): string => $association['uuid'], $associations['products']));
+                    $data['quantified_associations'][$associationCode]['products'] = \array_map(function ($association) use ($map) {
+                        return ['quantity' => $association['quantity'], 'identifier' => $map[$association['uuid']]];
+                    }, $associations['products']);
+                }
             }
         }
 
