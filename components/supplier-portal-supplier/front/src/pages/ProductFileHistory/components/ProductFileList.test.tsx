@@ -1,5 +1,5 @@
 import React from 'react';
-import {screen, waitFor} from '@testing-library/react';
+import {screen} from '@testing-library/react';
 import {renderWithProviders} from '../../../tests';
 import {ProductFileList} from './ProductFileList';
 
@@ -20,15 +20,13 @@ const productFiles = [
     },
 ];
 
-test('it renders the product files', async () => {
+test('it renders the product files', () => {
     renderWithProviders(<ProductFileList productFiles={productFiles} />);
 
-    await waitFor(() => {
-        expect(screen.getByText('suppliers_export-1.xlsx')).toBeInTheDocument();
-        expect(screen.getByText('contributor1@example.com')).toBeInTheDocument();
-        expect(screen.getByText('07/28/2022, 02:57 PM')).toBeInTheDocument();
-        expect(screen.getByText('suppliers_export-2.xlsx')).toBeInTheDocument();
-        expect(screen.getByText('contributor2@example.com')).toBeInTheDocument();
-        expect(screen.getByText('07/28/2022, 02:57 PM')).toBeInTheDocument();
-    });
+    expect(screen.getByText('suppliers_export-1.xlsx')).toBeInTheDocument();
+    expect(screen.getByText('contributor1@example.com')).toBeInTheDocument();
+    expect(screen.getByText('07/28/2022, 02:57 PM')).toBeInTheDocument();
+    expect(screen.getByText('suppliers_export-2.xlsx')).toBeInTheDocument();
+    expect(screen.getByText('contributor2@example.com')).toBeInTheDocument();
+    expect(screen.getByText('07/28/2022, 02:57 PM')).toBeInTheDocument();
 });
