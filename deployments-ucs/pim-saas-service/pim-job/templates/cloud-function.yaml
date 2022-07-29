@@ -7,23 +7,11 @@ metadata:
     argocd.argoproj.io/sync-options: Replace=true
 spec:
   forProvider:
-    # availableMemoryMb: {{ .Values.pim.cloudFunction.memory }}
-    # description: "transform command into pub/sub message"
-    # entryPoint: "publishCommand"
-    # name: {{ .Values.pim.cloudFunction.name }}
-    # runtime: "nodejs16"
-    # sourceArchiveBucket: "{{ .Values.pim.cloudFunction.bucket}}"
-    # sourceArchiveObject: "{{ .Values.pim.cloudFunction.sourceCodeZip }}"
-    # triggerHttp: true
-    # region: "{{ .Values.common.region }}"
-    # environmentVariables:
-    #   projectId: "{{ .Values.common.gcpProjectID }}"
-    #   tenantContext: "tenant_contexts"
     availableMemoryMb: {{ .Values.pim.cloudFunction.memory }}
     description: "transform command into pub/sub message"
-    entryPoint: "testPHP"
+    entryPoint: "publishCommand"
     name: {{ .Values.pim.cloudFunction.name }}
-    runtime: "php81"
+    runtime: "nodejs16"
     sourceArchiveBucket: "{{ .Values.pim.cloudFunction.bucket}}"
     sourceArchiveObject: "{{ .Values.pim.cloudFunction.sourceCodeZip }}"
     triggerHttp: true
