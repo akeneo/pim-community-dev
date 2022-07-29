@@ -24,12 +24,12 @@ workflows:
             - build_srnt_dev:
                   requires:
                       - checkout
+
             # Security tests
             - security-hunter/detect-secrets-in-latest-commits:
                   requires:
                       - ready_to_build?
             - security-hunter/detect-secrets-in-directory:
-                  exit_code_when_failure: 0
                   requires:
                       - checkout
             - security-hunter/scan-dependencies:
@@ -41,7 +41,6 @@ workflows:
                   requires:
                       - checkout
             - security-hunter/scan-iac-files:
-                  soft_fail: true
                   exclude_rules: "google-storage-enable-ubla"
                   requires:
                       - checkout
@@ -51,6 +50,7 @@ workflows:
                   exit_code_when_failure: 0
                   requires:
                       - build_srnt_dev
+            # End of security tests
 
             - test_back_integration_bounded_contexts:
                   requires:
@@ -104,12 +104,14 @@ workflows:
                       - test_back_data_migrations
                       - test_grth
                       - test_tria
+                      # Required security tests
                       - security-hunter/detect-secrets-in-latest-commits
                       - security-hunter/detect-secrets-in-directory
                       - security-hunter/scan-iac-files
                       - security-hunter/scan-dependencies
                       - security-hunter/scan-dockerfile
                       - security-hunter/scan-docker-image
+                      # End of security tests
 
     deployments_pull_request:
         when:
