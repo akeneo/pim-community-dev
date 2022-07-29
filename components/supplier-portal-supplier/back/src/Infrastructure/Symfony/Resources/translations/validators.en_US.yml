@@ -11,4 +11,4 @@ supplier_portal:
             validation:
                 max_uploaded_filename_length: The filename should not exceed 255 characters.
                 max_uploaded_file_size: The file size should not exceed 50 MB.
-                must_be_an_xlsx_file: Please upload a valid XLSX file.
+                must_be_an_xlsx_file: Please upload a valid xlsx file.
