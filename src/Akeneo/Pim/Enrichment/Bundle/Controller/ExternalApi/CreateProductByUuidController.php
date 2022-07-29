@@ -175,7 +175,8 @@ class CreateProductByUuidController
     private function getUuidFromIdentifier(string $productIdentifier): ?UuidInterface
     {
         $uuid = $this->connection->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?',
+            [$productIdentifier]
         );
 
         return false === $uuid ? null : Uuid::fromString($uuid);
