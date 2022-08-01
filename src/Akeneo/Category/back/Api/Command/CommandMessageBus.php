@@ -43,6 +43,3 @@ class CommandMessageBus implements MessageBusInterface
         return Envelope::wrap($message, $stamps);
     }
 }
-{
-
-}
