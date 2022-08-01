@@ -44,6 +44,9 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface',
+
+        // category bounded context
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface'
     ])->in('Akeneo\Pim\Automation\RuleEngine\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -105,6 +108,8 @@ $rules = [
         // Channel coupling
         'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
 
+        // category bounded context
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface'
     ])->in('Akeneo\Pim\Automation\RuleEngine\Component'),
 ];
 

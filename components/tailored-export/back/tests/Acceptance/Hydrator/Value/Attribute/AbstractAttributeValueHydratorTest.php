@@ -39,6 +39,6 @@ abstract class AbstractAttributeValueHydratorTest extends KernelTestCase
 
     private function getHydrator(): AttributeValueHydrator
     {
-        return static::$container->get('Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AttributeValueHydrator');
+        return static::getContainer()->get('Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AttributeValueHydrator');
     }
 }

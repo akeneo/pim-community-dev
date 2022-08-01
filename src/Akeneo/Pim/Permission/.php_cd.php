@@ -71,9 +71,10 @@ $rules = [
         // TIP-1002: Permissions should not be linked to Channel
         'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
         'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
+        'Akeneo\Channel\API\Query\FindAllViewableLocalesForUser',
+        'Akeneo\Channel\API\Query\Locale',
 
         //TODO: Link by id instead of reference
-        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
@@ -171,6 +172,16 @@ $rules = [
         'Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts',
         'Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels',
 
+        // category bounded context
+        'Akeneo\Category\Infrastructure\Component\Model\Category',
+        'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory',
+        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -251,6 +262,10 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface',
+
+        // category bounded context
+        'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
     ])->in('Akeneo\Pim\Permission\Component'),
 ];
 

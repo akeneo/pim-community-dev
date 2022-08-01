@@ -57,7 +57,7 @@ Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct:
                         referencedColumnName: id
                         onDelete: CASCADE
         categories:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
             joinTable:
                 name: pimee_workflow_category_published_product
                 joinColumns:

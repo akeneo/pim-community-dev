@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Form;
 
-use Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer;
-use Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface;
+use Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer;
+use Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface;
 use Symfony\Component\Form\FormView;
 
 final class CategoryFormViewNormalizerWithPermissions implements CategoryFormViewNormalizerInterface

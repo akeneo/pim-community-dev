@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\FamilyReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
 use PHPUnit\Framework\Assert;
@@ -91,6 +92,68 @@ final class HandleFamilyTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         familyUserIntent: new RemoveFamily(),
+                    ),
+                    [],
+                ),
+            ],
+            'it handles family targets with a replacement operation without replaced value' => [
+                'row' => [
+                    '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
+                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => 'a_family',
+                ],
+                'data_mappings' => [
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
+                        PropertyTarget::create(
+                            'family',
+                            'set',
+                            'clear',
+                        ),
+                        ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
+                        OperationCollection::create([
+                            new FamilyReplacementOperation('00000000-0000-0000-0000-000000000000', [
+                                'my_family' => ['my awesome family']
+                            ]),
+                        ]),
+                        [],
+                    ),
+                ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        familyUserIntent: new SetFamily('a_family'),
+                    ),
+                    [],
+                ),
+            ],
+            'it handles family targets with a replacement operation with replaced value' => [
+                'row' => [
+                    '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
+                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => 'my awesome family',
+                ],
+                'data_mappings' => [
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
+                        PropertyTarget::create(
+                            'family',
+                            'set',
+                            'clear',
+                        ),
+                        ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
+                        OperationCollection::create([
+                            new FamilyReplacementOperation('00000000-0000-0000-0000-000000000000', [
+                                'my_family' => ['my awesome family']
+                            ]),
+                        ]),
+                        [],
+                    ),
+                ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        familyUserIntent: new SetFamily('my_family'),
                     ),
                     [],
                 ),

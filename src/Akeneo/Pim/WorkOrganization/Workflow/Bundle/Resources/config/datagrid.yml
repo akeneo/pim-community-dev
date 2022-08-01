@@ -310,13 +310,13 @@ services:
         public: true
         arguments:
             - '@request_stack'
-            - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pimee_workflow.datagrid.oro_to_pim_grid_filter'
             - '@akeneo_batch.job.job_instance_repository'
             - '@security.token_storage'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.mass_action.parameters_parser'
+            - '@pim_catalog.version_provider'
 
     pimee_workflow.datagrid.product.filter.draft_status:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\DraftStatusFilter

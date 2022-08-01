@@ -27,7 +27,7 @@ final class GetStorageConnectionCheckActionTest extends ControllerIntegrationTes
     {
         parent::setUp();
 
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'peter');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter', $this->client);
         $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
     }
 

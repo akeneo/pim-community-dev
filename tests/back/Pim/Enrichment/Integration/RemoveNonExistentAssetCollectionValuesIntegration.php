@@ -148,6 +148,7 @@ final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
         $this->get('pim_catalog.saver.family')->save($family);
 
         // create products with asset values
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $this->createProduct(
             'test1',
             [

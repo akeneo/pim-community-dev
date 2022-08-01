@@ -75,7 +75,12 @@ terraform init
 TARGET=module.pim.local_file.kubeconfig
 terraform apply "${TF_INPUT_FALSE}" "${TF_AUTO_APPROVE}" -compact-warnings -target=${TARGET}
 
-echo "2 - removing deployment and terraform resources"
+echo "--- Print TF_STATE before deletion process ---"
+TF_STATE_LIST=$(terraform state list)
+echo "$TF_STATE_LIST"
+echo "----------------------------------------------"
+
+echo "2 - removing K8S ressources"
 export KUBECONFIG=.kubeconfig
 
 # WARNING ! DON'T DELETE release helm before get list of PD
@@ -163,7 +168,7 @@ if [[ -n "${LIST_PD_NAME}" ]]; then
   done
 fi
 
-echo "5 - Delete policies and logging metrics"
+echo "4 - Delete policies and logging metrics"
 LOGGING_METRIC=$(gcloud logging metrics list --project "${GOOGLE_PROJECT_ID}" --filter="name ~ ${PFID}" --format="value(name)")
 RELATED_ALERT=$(gcloud alpha monitoring policies list --project "${GOOGLE_PROJECT_ID}" --filter="displayName ~ ${PFID}" --format="value(name)")
 if [[ ${RELATED_ALERT} != "" ]]; then
@@ -173,13 +178,28 @@ if [[ ${LOGGING_METRIC} != "" ]]; then
     gcloud logging metrics delete "${LOGGING_METRIC}" --quiet --project "${GOOGLE_PROJECT_ID}"
 fi
 
-echo "6 - Delete namespace"
+echo "5 - Delete namespace"
 kubectl delete ns "${PFID}" --ignore-not-found=true || true
 
-echo "7 - Running terraform destroy (except for bucket and mysql disk)"
+echo "6 - Check if storage_backup exists and need to be remove from terraform state"
+# We remove this bucket from terraform state to keep it in case of. We will remove these bucket after that all migration are validated.
+TARGET=module.storage-backup.google_storage_bucket.storage_backup
+if [[ -n $(echo "${TF_STATE_LIST}" | grep "${TARGET}") ]]; then
+  terraform state rm ${TARGET}
+fi
 
+echo "7 - Running terraform destroy (except for bucket and mysql disk)"
 TF_STATE_LIST_WITHOUT_BUCKET_AND_DISK=$(terraform state list | grep -v module.pim.google_compute_disk.mysql-disk | grep -v module.pim.google_storage_bucket )
+echo "--- Print TF_STATE_LIST_WITHOUT_BUCKET_AND_DISK ---"
+echo "$TF_STATE_LIST_WITHOUT_BUCKET_AND_DISK"
+echo "---------------------------------------------------"
+
 for FILTERED_TARGET in $TF_STATE_LIST_WITHOUT_BUCKET_AND_DISK
   do
+    echo "INFO: Run Terraform Destroy on ${FILTERED_TARGET} target. "
     terraform destroy "${TF_INPUT_FALSE}" "${TF_AUTO_APPROVE}" -compact-warnings -target="${FILTERED_TARGET}"
   done
+
+echo "--- Print TF_STATE after filtered destroy ---"
+terraform state list
+echo "---------------------------------------------"

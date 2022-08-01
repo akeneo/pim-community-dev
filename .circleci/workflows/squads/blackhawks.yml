@@ -1,33 +1,15 @@
 client-to-clone-srnt: &client-to-clone-srnt
 client-to-clone-grth: &client-to-clone-grth
 
-orbs: 
-  security-hunter: akeneo-orbs/security-hunter@1.0.3
+orbs:
+  security-hunter: akeneo-orbs/security-hunter@1.0.9
 
 workflows:
-    blackhawks_dev_pull_request:
+    dev_pull_request:
         when:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
         jobs:
-            - security-hunter/scan-latest-commits:
-                  since_when: "2022-07-07"
-                  exit_code_when_failure: 1
-
-            - security-hunter/scan-dir:
-                  severity: "HIGH,CRITICAL"
-                  only_secrets: false
-                  exit_code_when_failure: 1
-                  requires:
-                    - checkout
-
-            - security-hunter/scan-image:
-                  severity: "HIGH,CRITICAL"
-                  only_secrets: false
-                  exit_code_when_failure: 1
-                  requires:
-                    - build_srnt_dev
-
             - ready_to_build?:
                   type: approval
                   filters:
@@ -42,6 +24,34 @@ workflows:
             - build_srnt_dev:
                   requires:
                       - checkout
+
+            # Security tests
+            - security-hunter/detect-secrets-in-latest-commits:
+                  requires:
+                      - ready_to_build?
+            - security-hunter/detect-secrets-in-directory:
+                  requires:
+                      - checkout
+            - security-hunter/scan-dependencies:
+                  exit_code_when_failure: 0
+                  requires:
+                      - checkout
+            - security-hunter/scan-dockerfile:
+                  exit_code_when_failure: 0
+                  requires:
+                      - checkout
+            - security-hunter/scan-iac-files:
+                  exclude_rules: "google-storage-enable-ubla"
+                  requires:
+                      - checkout
+            - security-hunter/scan-docker-image:
+                  archive_name: "php-pim-image.tar"
+                  image_name: "akeneo/pim-dev/php:8.0"
+                  exit_code_when_failure: 0
+                  requires:
+                      - build_srnt_dev
+            # End of security tests
+
             - test_back_integration_bounded_contexts:
                   requires:
                       - build_srnt_dev
@@ -94,11 +104,16 @@ workflows:
                       - test_back_data_migrations
                       - test_grth
                       - test_tria
-                      - security-hunter/scan-latest-commits
-                      - security-hunter/scan-dir
-                      - security-hunter/scan-image
+                      # Required security tests
+                      - security-hunter/detect-secrets-in-latest-commits
+                      - security-hunter/detect-secrets-in-directory
+                      - security-hunter/scan-iac-files
+                      - security-hunter/scan-dependencies
+                      - security-hunter/scan-dockerfile
+                      - security-hunter/scan-docker-image
+                      # End of security tests
 
-    blackhawks_deployments_pull_request:
+    deployments_pull_request:
         when:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]

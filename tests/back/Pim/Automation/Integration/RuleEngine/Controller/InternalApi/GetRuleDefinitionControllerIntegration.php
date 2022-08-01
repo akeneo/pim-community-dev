@@ -23,7 +23,7 @@ class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCa
     {
         parent::setUp();
 
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
         $this->ruleDefinitionSaver = $this->get('akeneo_rule_engine.saver.rule_definition');
 

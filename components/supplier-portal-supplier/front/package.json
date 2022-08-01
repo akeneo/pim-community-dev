@@ -50,7 +50,6 @@
     ],
     "rules": {
       "yoda": [1, "always"],
-      "@typescript-eslint/no-explicit-any": "warn",
       "formatjs/enforce-id": [
         "error",
         {

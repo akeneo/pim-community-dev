@@ -206,8 +206,8 @@ final class ImportAssetContext implements Context
 
         throw new \Exception(
             0 === count($errorReasons)
-            ? 'No warning has been thrown'
-            : sprintf('The message is not found. Got %s', implode(', ', $errorReasons))
+                ? 'No warning has been thrown'
+                : sprintf('The message is not found. Got %s', implode(', ', $errorReasons))
         );
     }
 
@@ -236,7 +236,10 @@ final class ImportAssetContext implements Context
         $this->getJobExecutionStatus->setJobExecutionIdStatus(1, new BatchStatus(BatchStatus::STARTED));
 
         $params = $this->csvDefaultValuesProvider->getDefaultValues();
-        $params['filePath'] = $filePath;
+        $params['storage'] = [
+            'type' => 'local',
+            'file_path' => $filePath,
+        ];
         $jobParameters = new JobParameters($params);
         $jobExecution->setJobParameters($jobParameters);
         $stepExecution = new StepExecution('import_csv_asset', $jobExecution);
@@ -258,7 +261,10 @@ final class ImportAssetContext implements Context
         $this->getJobExecutionStatus->setJobExecutionIdStatus(1, new BatchStatus(BatchStatus::STARTED));
 
         $params = $this->xlsxDefaultValuesProvider->getDefaultValues();
-        $params['filePath'] = $filePath;
+        $params['storage'] = [
+            'type' => 'local',
+            'file_path' => $filePath,
+        ];
         $jobParameters = new JobParameters($params);
         $jobExecution->setJobParameters($jobParameters);
         $stepExecution = new StepExecution('import_xlsx_asset', $jobExecution);

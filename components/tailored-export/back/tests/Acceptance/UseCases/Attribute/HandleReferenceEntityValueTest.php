@@ -110,7 +110,7 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
     private function loadRecords(): void
     {
         /** @var InMemoryFindRecordLabels $recordLabelsRepository */
-        $recordLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface');
+        $recordLabelsRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface');
         $recordLabelsRepository->addRecordLabel('designer', 'starck', 'en_US', 'Starck');
     }
 }

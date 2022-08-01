@@ -70,7 +70,7 @@ CSV;
 
     public function testProductViewableByRedactorWithQueueJobLauncher()
     {
-        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. JobLauncher::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export.csv';
+        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . JobLauncher::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export.csv';
         if (file_exists($filePath)) {
             unlink($filePath);
         }
@@ -99,7 +99,7 @@ CSV;
                     'locales' => ['en_US', 'fr_FR', 'de_DE'],
                 ],
             ],
-            'filePath' => $filePath,
+            'storage' => ['type' => 'local', 'file_path' => $filePath],
         ];
 
         $jobExecution = $this->get('akeneo_batch_queue.launcher.queue_job_launcher')->launch($jobInstance, $user, $config);

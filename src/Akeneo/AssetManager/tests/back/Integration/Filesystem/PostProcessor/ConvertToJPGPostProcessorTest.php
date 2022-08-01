@@ -55,6 +55,6 @@ class ConvertToJPGPostProcessorTest extends KernelTestCase
 
     private function getConvertToJPGPostProcessor(): ConvertToJPGPostProcessor
     {
-        return self::$container->get(ConvertToJPGPostProcessor::class);
+        return self::getContainer()->get(ConvertToJPGPostProcessor::class);
     }
 }

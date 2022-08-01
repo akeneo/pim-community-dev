@@ -54,7 +54,7 @@ class AttributeGroupCompletenessCalculator implements ProjectItemCalculatorInter
             $locale
         );
 
-        $completenesses = $this->completenessCalculator->fromProductIdentifier($product->getIdentifier());
+        $completenesses = $this->completenessCalculator->fromProductUuid($product->getUuid());
         $completeness = $completenesses->getCompletenessForChannelAndLocale($channel->getCode(), $locale->getCode());
         if (null === $completeness) {
             return [];

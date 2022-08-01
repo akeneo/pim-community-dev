@@ -63,5 +63,29 @@ const isDateTarget = (target: Target): target is DateTarget =>
   null !== target.source_configuration &&
   isDateSourceConfiguration(target.source_configuration);
 
+const formatDateFormat = (dateFormat: DateFormat): string => {
+  let formattedDate = dateFormat;
+
+  if (formattedDate.includes('yyyy')) {
+    formattedDate = formattedDate.replace('yyyy', '1998');
+  }
+
+  if (formattedDate.includes('yy')) {
+    formattedDate = formattedDate.replace('yy', '98');
+  }
+
+  if (formattedDate.includes('mm')) {
+    formattedDate = formattedDate.replace('mm', '07');
+  }
+
+  if (formattedDate.includes('m')) {
+    formattedDate = formattedDate.replace('m', '7');
+  }
+
+  formattedDate = formattedDate.replace('dd', '13');
+
+  return `${dateFormat} (${formattedDate})`;
+};
+
 export type {DateTarget, DateSourceConfiguration, DateFormat};
-export {getDefaultDateTarget, isDateTarget, isDateFormat, availableDateFormats};
+export {getDefaultDateTarget, isDateTarget, isDateFormat, availableDateFormats, formatDateFormat};

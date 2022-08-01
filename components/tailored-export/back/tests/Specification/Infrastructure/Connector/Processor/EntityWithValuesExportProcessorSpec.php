@@ -44,7 +44,7 @@ class EntityWithValuesExportProcessorSpec extends ObjectBehavior
         ColumnCollectionHydrator $columnCollectionHydrator,
         MapValuesQueryHandler $mapValuesQueryHandler,
         ExtractMediaQueryHandler $extractMediaQueryHandler
-    ) {
+    ): void {
         $this->beConstructedWith(
             $getAttributes,
             $getAssociationTypes,
@@ -63,11 +63,12 @@ class EntityWithValuesExportProcessorSpec extends ObjectBehavior
         JobParameters $jobParameters,
         GetAttributes $getAttributes,
         GetAssociationTypesInterface $getAssociationTypes,
+        ColumnCollection $columnCollection,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
         MapValuesQueryHandler $mapValuesQueryHandler,
         ExtractMediaQueryHandler $extractMediaQueryHandler
-    ) {
+    ): void {
         $columns = [
             [
                 'target' => 'categories-export',
@@ -127,13 +128,12 @@ class EntityWithValuesExportProcessorSpec extends ObjectBehavior
         $jobParameters->get('columns')->willReturn($columns);
         $getAttributes->forCodes(['name'])->willReturn(['name' => $name]);
         $getAssociationTypes->forCodes(['X_SELL'])->willReturn(['X_SELL' => $crossSellAssociation]);
-        $columnCollection = ColumnCollection::create([]);
         $columnCollectionHydrator->hydrate($columns, ['name' => $name], ['X_SELL' => $crossSellAssociation])
             ->willReturn($columnCollection);
         $valueCollectionHydrator->hydrate($product, $columnCollection)->willReturn($valueCollection);
 
-        $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection))->willReturn($mappedProducts);
-        $extractMediaQueryHandler->handle(new ExtractMediaQuery($columnCollection, $valueCollection))->willReturn([]);
+        $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection->getWrappedObject(), $valueCollection))->willReturn($mappedProducts);
+        $extractMediaQueryHandler->handle(new ExtractMediaQuery($columnCollection->getWrappedObject(), $valueCollection))->willReturn([]);
 
         $processedTailoredExport = new ProcessedTailoredExport($mappedProducts, []);
 

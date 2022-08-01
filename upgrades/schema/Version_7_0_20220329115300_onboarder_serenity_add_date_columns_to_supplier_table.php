@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * This migration adds created_at and updated_at columns to the Onboarder Serenity supplier table
+ * This migration adds created_at and updated_at columns to the Supplier Portal supplier table
  */
 final class Version_7_0_20220329115300_onboarder_serenity_add_date_columns_to_supplier_table extends AbstractMigration
 {

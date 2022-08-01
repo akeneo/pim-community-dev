@@ -55,7 +55,7 @@ root_product_model_visible_for_redactor;familyVariantA1;;categoryA2;;;;;;;;;;;;;
 CSV;
 
         $config = [
-            'filePath' => $filePath,
+            'storage' => ['type' => 'local', 'file_path' => $filePath],
         ];
 
         $jobExecution = $this->get('akeneo_batch_queue.launcher.queue_job_launcher')->launch($jobInstance, $user, $config);

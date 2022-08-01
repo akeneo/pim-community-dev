@@ -26,7 +26,7 @@ class OperationFactoryTest extends KernelTestCase
     {
         parent::setUp();
         static::bootKernel(['debug' => false]);
-        $this->operationFactory = self::$container->get(OperationFactory::class);
+        $this->operationFactory = self::getContainer()->get(OperationFactory::class);
     }
 
     public function test_it_returns_a_colorspace_operation()

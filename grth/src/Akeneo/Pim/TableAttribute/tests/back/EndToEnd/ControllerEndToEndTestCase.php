@@ -57,7 +57,7 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
 
     protected function get(string $service)
     {
-        return self::$container->get($service);
+        return self::getContainer()->get($service);
     }
 
     /**

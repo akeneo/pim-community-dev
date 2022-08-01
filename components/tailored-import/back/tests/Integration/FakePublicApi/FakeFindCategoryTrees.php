@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Integration\FakePublicApi;
 
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees;
+use Akeneo\Category\Api\CategoryTree;
+use Akeneo\Category\Api\FindCategoryTrees;
 
 class FakeFindCategoryTrees implements FindCategoryTrees
 {

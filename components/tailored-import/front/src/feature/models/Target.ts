@@ -4,17 +4,21 @@ import {
   getDefaultBooleanTarget,
   getDefaultDateTarget,
   getDefaultMeasurementTarget,
+  getDefaultMultiReferenceEntityTarget,
   getDefaultMultiSelectTarget,
   getDefaultNumberTarget,
   getDefaultSimpleReferenceEntityTarget,
   getDefaultSimpleSelectTarget,
   getDefaultTextTarget,
+  getDefaultAssetCollectionTarget,
   MeasurementTarget,
+  MultiReferenceEntityTarget,
   MultiSelectTarget,
   NumberTarget,
   SimpleReferenceEntityTarget,
   SimpleSelectTarget,
   TextTarget,
+  AssetCollectionTarget,
 } from '../components';
 import {Attribute} from './Attribute';
 import {AttributeDataMapping, PropertyDataMapping, DataMapping} from './DataMapping';
@@ -23,8 +27,10 @@ type TargetNotEmptyAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
 
 type AttributeTarget =
+  | AssetCollectionTarget
   | DateTarget
   | MeasurementTarget
+  | MultiReferenceEntityTarget
   | MultiSelectTarget
   | NumberTarget
   | SimpleReferenceEntityTarget
@@ -48,6 +54,8 @@ const createAttributeTarget = (
   switch (attribute.type) {
     case 'akeneo_reference_entity':
       return getDefaultSimpleReferenceEntityTarget(attribute, channel, locale);
+    case 'akeneo_reference_entity_collection':
+      return getDefaultMultiReferenceEntityTarget(attribute, channel, locale);
     case 'pim_catalog_metric':
       return getDefaultMeasurementTarget(attribute, channel, locale);
     case 'pim_catalog_number':
@@ -64,6 +72,8 @@ const createAttributeTarget = (
       return getDefaultMultiSelectTarget(attribute, channel, locale);
     case 'pim_catalog_boolean':
       return getDefaultBooleanTarget(attribute, channel, locale);
+    case 'pim_catalog_asset_collection':
+      return getDefaultAssetCollectionTarget(attribute, channel, locale);
     default:
       throw new Error(`Invalid attribute target "${attribute.type}"`);
   }

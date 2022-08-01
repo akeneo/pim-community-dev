@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Family;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\FamilyReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\DataMappingUuid;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operations;
@@ -35,7 +36,7 @@ class FamilyValidator extends ConstraintValidator
                     ]),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
-                'operations' => new Operations([]),
+                'operations' => new Operations([FamilyReplacementOperation::TYPE]),
                 'sample_data' => new SampleData(),
             ],
         ]));

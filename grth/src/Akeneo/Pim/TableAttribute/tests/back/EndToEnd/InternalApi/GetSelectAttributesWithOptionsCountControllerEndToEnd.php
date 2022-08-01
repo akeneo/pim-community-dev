@@ -38,7 +38,7 @@ final class GetSelectAttributesWithOptionsCountControllerEndToEnd extends Contro
     /** @test */
     public function it_returns_the_options_of_a_select_column(): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_attributes_with_options_count',
@@ -58,7 +58,7 @@ final class GetSelectAttributesWithOptionsCountControllerEndToEnd extends Contro
     /** @test */
     public function it_returns_the_options_of_a_select_column_with_limit_and_page_number(): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_attributes_with_options_count',
@@ -91,7 +91,7 @@ final class GetSelectAttributesWithOptionsCountControllerEndToEnd extends Contro
     /** @test */
     public function it_returns_the_options_of_a_select_column_with_search(): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('julia', $this->client);
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_attributes_with_options_count',

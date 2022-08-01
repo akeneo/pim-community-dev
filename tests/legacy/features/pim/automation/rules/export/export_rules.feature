@@ -66,7 +66,7 @@ Feature: Export rules
           include_children: true
     """
     And the following job "clothing_rule_export" configuration:
-      | filePath | %tmp%/rule_export/rule_export.yml |
+      | storage | {"type": "local", "file_path": "%tmp%/rule_export/rule_export.yml"} |
     And I am logged in as "Peter"
     And I am on the "clothing_rule_export" export job page
     When I launch the export job
