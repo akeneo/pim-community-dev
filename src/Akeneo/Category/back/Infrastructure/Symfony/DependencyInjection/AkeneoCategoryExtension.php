@@ -35,5 +35,10 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('serializers_standard.yml');
         $loader->load('serializers_versioning.yml');
+        $loader->load('message_buses.yml');
+        $loader->load('queries.yml');
+        $loader->load('converters.yml');
+        $loader->load('filters.yml');
+        $loader->load('handlers.yml');
     }
 }

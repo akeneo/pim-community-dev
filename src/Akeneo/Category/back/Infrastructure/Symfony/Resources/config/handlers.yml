@@ -1,0 +1,4 @@
+services:
+  Akeneo\Category\Api\Command\DummyHandler:
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Api\Command\UpsertCategoryCommand'}

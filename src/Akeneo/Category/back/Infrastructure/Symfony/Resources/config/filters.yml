@@ -1,0 +1,6 @@
+services:
+  Akeneo\Category\Infrastructure\Component\Filter\CollectionFilterInterface:
+    class: Akeneo\Category\Infrastructure\Component\Filter\CategoryEditDataFilter
+
+  Akeneo\Category\Infrastructure\Component\Filter\CategoryUserIntentFilterInterface:
+    class: Akeneo\Category\Infrastructure\Component\Filter\CategoryEditUserIntentFilter

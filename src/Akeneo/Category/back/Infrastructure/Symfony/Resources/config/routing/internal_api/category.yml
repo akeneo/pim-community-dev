@@ -12,3 +12,10 @@ pim_enrich_category_rest_get:
     path: /rest/{identifier}
     defaults: { _controller: pim_enrich.controller.rest.category:getAction }
     methods: [GET]
+
+pim_category_rest_update:
+    path: /rest/{id}
+    defaults:
+        _controller: Akeneo\Category\back\Infrastructure\Controller\InternalAPI\UpdateCategoryController
+        _feature: enriched_category
+    methods: [POST]

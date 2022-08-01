@@ -1,0 +1,10 @@
+services:
+#  To use when removing stub below
+#  Akeneo\Category\Application\Query\FindCategoryByIdentifier:
+#    class: Akeneo\Category\Infrastructure\Storage\SQL\SqlFindOneByIdentifier
+#    arguments:
+#      - '@database_connection'
+
+
+  Akeneo\Category\Application\Query\FindCategoryByIdentifier:
+    class: Akeneo\Category\Infrastructure\Storage\SQL\SqlFindOneByIdentifierStub

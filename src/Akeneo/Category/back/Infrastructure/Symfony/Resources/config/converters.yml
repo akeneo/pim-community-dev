@@ -1,0 +1,6 @@
+services:
+  Akeneo\Category\Infrastructure\Component\Converter\ConverterInterface:
+    class: Akeneo\Category\Infrastructure\Component\Converter\InternalApiToStdConverterStub
+
+  Akeneo\Category\Infrastructure\Component\Converter\StdFormatToUserIntentConverterInterface:
+    class: Akeneo\Category\Infrastructure\Component\Converter\GetUserIntentsFromStandardFormatStub
