@@ -9,14 +9,14 @@ const productFiles = [
         filename: 'suppliers_export-1.xlsx',
         path: 'test/73d1078b-840c-4135-9564-682f8cbfb982-suppliers_export.xlsx',
         contributor: 'contributor1@example.com',
-        uploadedAt: '2022-07-28 14:57:37',
+        uploadedAt: '2022-07-28 14:57:37-00:00',
     },
     {
         identifier: '8be6446b-befb-4d9f-aa94-0dfd390df690',
         filename: 'suppliers_export-2.xlsx',
         path: 'test/73d1078b-840c-4135-9564-682f8cbfb982-suppliers_export.xlsx',
         contributor: 'contributor2@example.com',
-        uploadedAt: '2022-07-28 14:58:38',
+        uploadedAt: '2022-07-28 14:58:38-00:00',
     },
 ];
 
@@ -28,5 +28,5 @@ test('it renders the product files', () => {
     expect(screen.getByText('07/28/2022, 02:57 PM')).toBeInTheDocument();
     expect(screen.getByText('suppliers_export-2.xlsx')).toBeInTheDocument();
     expect(screen.getByText('contributor2@example.com')).toBeInTheDocument();
-    expect(screen.getByText('07/28/2022, 02:57 PM')).toBeInTheDocument();
+    expect(screen.getByText('07/28/2022, 02:58 PM')).toBeInTheDocument();
 });
