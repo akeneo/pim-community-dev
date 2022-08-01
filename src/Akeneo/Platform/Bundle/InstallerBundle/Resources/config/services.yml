@@ -6,6 +6,7 @@ services:
         arguments:
             - '@pimee_security.repository.attribute_group_access'
             - '@pim_user.repository.group'
+            - '@feature_flags'
         tags:
             - { name: 'console.command' }
 
@@ -14,5 +15,6 @@ services:
             - '@pimee_security.repository.category_access'
             - '@pim_user.repository.group'
             - '@doctrine.orm.default_entity_manager'
+            - '@feature_flags'
         tags:
             - { name: 'console.command' }

@@ -1,4 +1,4 @@
-@javascript @published-product-feature-enabled
+@javascript @published-product-feature-enabled @permission-feature-enabled
 Feature: Publish many products at once
   In order to freeze the product data I would use to export
   As a product manager
