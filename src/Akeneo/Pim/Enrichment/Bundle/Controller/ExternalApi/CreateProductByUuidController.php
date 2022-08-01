@@ -7,11 +7,11 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\UnknownAttributeException;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\UnknownUserIntentException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
-use Akeneo\Pim\Enrichment\Product\back\API\Command\Exception\UnknownAttributeException;
-use Akeneo\Pim\Enrichment\Product\back\API\Command\Exception\UnknownUserIntentException;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
@@ -68,6 +68,10 @@ class CreateProductByUuidController
             $this->throwDocumentedHttpException($firstViolation->getMessage(), new \LogicException($firstViolation->getMessage()));
         }
 
+        if (!isset($data['values'][$this->attributeRepository->getIdentifierCode()][0]['data'])) {
+            $this->throwViolationException('The identifier attribute cannot be empty.', 'identifier');
+        }
+
         try {
             $this->duplicateValueChecker->check($data);
         } catch (InvalidPropertyTypeException $e) {
@@ -75,24 +79,12 @@ class CreateProductByUuidController
             $this->throwDocumentedHttpException($e->getMessage(), $e);
         }
 
-        $data = $this->orderData($data);
         $data = $this->replaceUuidsByIdentifiers($data);
-
-        if (!isset($data['values'][$this->attributeRepository->getIdentifierCode()][0]['data'])) {
-            $this->throwViolationException('The identifier attribute cannot be empty.', 'identifier');
-        }
 
         if ($this->productAlreadyExists($data)) {
             $this->throwViolationException(
                 sprintf('The %s identifier is already used for another product.', $this->getProductIdentifier($data)),
                 'identifier'
-            );
-        }
-
-        if (array_key_exists('variant_group', $data)) {
-            throw new DocumentedHttpException(
-                Documentation::URL_DOCUMENTATION . 'products-with-variants.html',
-                'Property "variant_group" does not exist anymore. Check the link below to understand why.'
             );
         }
 
@@ -154,18 +146,9 @@ class CreateProductByUuidController
         return $response;
     }
 
-    private function orderData(array $data): array
+    private function getProductIdentifier(array $data): ?string
     {
-        if (!isset($data['parent'])) {
-            return $data;
-        }
-
-        return ['parent' => $data['parent']] + $data;
-    }
-
-    private function getProductIdentifier(array $data): string
-    {
-        return $data['values'][$this->attributeRepository->getIdentifierCode()][0]['data'];
+        return $data['values'][$this->attributeRepository->getIdentifierCode()][0]['data'] ?? null;
     }
 
     private function getUuidFromIdentifier(string $productIdentifier): ?UuidInterface
