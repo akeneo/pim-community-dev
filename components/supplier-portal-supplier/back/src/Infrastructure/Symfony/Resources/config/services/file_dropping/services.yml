@@ -25,7 +25,7 @@ services:
         arguments:
             - '@database_connection'
 
-    #Command handlers
+    # Command handlers
     Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\CreateSupplierFileHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
@@ -44,11 +44,5 @@ services:
     Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilenameFromIdentifier:
         public: true
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilenameFromIdentifier
-        arguments:
-            - '@database_connection'
-
-    Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePath:
-        public: true
-        class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePath
         arguments:
             - '@database_connection'
