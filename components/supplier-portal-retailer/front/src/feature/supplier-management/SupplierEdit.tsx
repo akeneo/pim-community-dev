@@ -3,6 +3,8 @@ import {
     Breadcrumb,
     Button,
     Dropdown,
+    ExportXlsxIllustration,
+    getColor,
     IconButton,
     MoreIcon,
     TabBar,
@@ -55,6 +57,9 @@ const SupplierEdit = () => {
     return (
         <Container>
             <PageHeader>
+                <PageHeader.Illustration>
+                    <StyledExportXlsxIllustration size={140} />
+                </PageHeader.Illustration>
                 <PageHeader.Breadcrumb>
                     <Breadcrumb>
                         <Breadcrumb.Step>{translate('supplier_portal.supplier.breadcrumb.root')}</Breadcrumb.Step>
@@ -169,6 +174,11 @@ const Container = styled.div``;
 const StyledPageContent = styled(PageContent)`
     display: flex;
     flex-direction: column;
+`;
+
+const StyledExportXlsxIllustration = styled(ExportXlsxIllustration)`
+    border: 1px ${getColor('grey60')} solid;
+    margin-right: 20px;
 `;
 
 export {SupplierEdit};
