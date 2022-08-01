@@ -9,7 +9,8 @@ use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\DownloadProdu
 use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\DownloadStoredProductFile;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePath;
+use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePathAndFileName;
+use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Read\Model\ProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Path;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -19,14 +20,18 @@ final class DownloadProductFileHandlerTest extends TestCase
     /** @test */
     public function itDownloadsAProductFile(): void
     {
-        $getProductFilePathMock = $this->createMock(GetProductFilePath::class);
+        $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileName::class);
         $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
-        $sut = new DownloadProductFileHandler($getProductFilePathMock, $downloadStoredProductFileMock, new NullLogger());
+        $sut = new DownloadProductFileHandler(
+            $downloadStoredProductFileMock,
+            $getProductFilePathAndFileNameMock,
+            new NullLogger(),
+        );
 
-        $getProductFilePathMock
+        $getProductFilePathAndFileNameMock
             ->expects($this->once())
             ->method('__invoke')
-            ->willReturn(Path::fromString('path/to/file.xlsx'))
+            ->willReturn(new ProductFilePathAndFileName('file.xlsx', 'path/to/file.xlsx'))
         ;
         $fakeResource = new \stdClass();
         $downloadStoredProductFileMock
@@ -36,20 +41,32 @@ final class DownloadProductFileHandlerTest extends TestCase
             ->willReturn($fakeResource)
         ;
 
+        $supplierFileNameAndResourceFile = ($sut)(
+            new DownloadProductFile('63c5e1d5-b804-4d24-b0b2-47c4aad3f536')
+        );
+
+        $this->assertSame(
+            'file.xlsx',
+            $supplierFileNameAndResourceFile->originalFilename,
+        );
         $this->assertSame(
             $fakeResource,
-            ($sut)(new DownloadProductFile('63c5e1d5-b804-4d24-b0b2-47c4aad3f536')),
+            $supplierFileNameAndResourceFile->file,
         );
     }
 
     /** @test */
     public function itThrowsAnExceptionIfTheFileDoesNotExistInTheDatabase(): void
     {
-        $getProductFilePathMock = $this->createMock(GetProductFilePath::class);
+        $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileName::class);
         $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
-        $sut = new DownloadProductFileHandler($getProductFilePathMock, $downloadStoredProductFileMock, new NullLogger());
+        $sut = new DownloadProductFileHandler(
+            $downloadStoredProductFileMock,
+            $getProductFilePathAndFileNameMock,
+            new NullLogger(),
+        );
 
-        $getProductFilePathMock->expects($this->once())->method('__invoke')->willReturn(null);
+        $getProductFilePathAndFileNameMock->expects($this->once())->method('__invoke')->willReturn(null);
 
         $this->expectException(ProductFileDoesNotExist::class);
         ($sut)(new DownloadProductFile('63c5e1d5-b804-4d24-b0b2-47c4aad3f536'));
@@ -58,14 +75,18 @@ final class DownloadProductFileHandlerTest extends TestCase
     /** @test */
     public function itThrowsAnExceptionIfTheFileCouldNotBeRetrieved(): void
     {
-        $getProductFilePathMock = $this->createMock(GetProductFilePath::class);
+        $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileName::class);
         $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
-        $sut = new DownloadProductFileHandler($getProductFilePathMock, $downloadStoredProductFileMock, new NullLogger());
+        $sut = new DownloadProductFileHandler(
+            $downloadStoredProductFileMock,
+            $getProductFilePathAndFileNameMock,
+            new NullLogger(),
+        );
 
-        $getProductFilePathMock
+        $getProductFilePathAndFileNameMock
             ->expects($this->once())
             ->method('__invoke')
-            ->willReturn(Path::fromString('path/to/file.xlsx'))
+            ->willReturn(new ProductFilePathAndFileName('file.xlsx', 'path/to/file.xlsx'))
         ;
         $downloadStoredProductFileMock
             ->method('__invoke')

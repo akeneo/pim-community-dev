@@ -35,14 +35,21 @@ services:
             - '@event_dispatcher'
             - '@monolog.logger.supplier_portal'
 
+    # Query handlers
+    Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\DownloadProductFileHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\DownloadStoredProductFile'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePathAndFileName'
+            - '@monolog.logger.supplier_portal'
+
     # Queries
     Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFiles:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFiles
         arguments:
             - '@database_connection'
 
-    Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilenameFromIdentifier:
+    Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePathAndFileName:
         public: true
-        class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilenameFromIdentifier
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePathAndFileName
         arguments:
             - '@database_connection'

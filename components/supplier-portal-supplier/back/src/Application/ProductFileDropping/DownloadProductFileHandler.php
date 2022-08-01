@@ -7,40 +7,46 @@ namespace Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping;
 use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\DownloadStoredProductFile;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePath;
+use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePathAndFileName;
+use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Read\Model\SupplierFileNameAndResourceFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Path;
 use Psr\Log\LoggerInterface;
 
 final class DownloadProductFileHandler
 {
     public function __construct(
-        private GetProductFilePath $getProductFilePath,
         private DownloadStoredProductFile $downloadStoredProductsFile,
+        private GetProductFilePathAndFileName $getProductFilePathAndFileName,
         private LoggerInterface $logger,
     ) {
     }
 
-    //@phpstan-ignore-next-line
-    public function __invoke(DownloadProductFile $query)
+    public function __invoke(DownloadProductFile $query): SupplierFileNameAndResourceFile
     {
-        $productFilePath = ($this->getProductFilePath)(Identifier::fromString($query->productFileIdentifier));
-        if (null === $productFilePath) {
+        $productFilePathAndFileName = ($this->getProductFilePathAndFileName)(
+            Identifier::fromString($query->productFileIdentifier)
+        );
+
+        if (empty($productFilePathAndFileName->path)) {
             throw new ProductFileDoesNotExist();
         }
 
         try {
-            $productFileStream = ($this->downloadStoredProductsFile)($productFilePath);
+            $productFileStream = ($this->downloadStoredProductsFile)(
+                Path::fromString($productFilePathAndFileName->path)
+            );
         } catch (\Throwable $e) {
             $this->logger->error('Product file could not be downloaded.', [
                 'data' => [
                     'fileIdentifier' => $query->productFileIdentifier,
-                    'path' => $productFilePath,
+                    'path' => $productFilePathAndFileName->path,
                     'error' => $e->getMessage(),
                 ],
             ]);
             throw new ProductFileIsNotDownloadable();
         }
 
-        return $productFileStream;
+        return new SupplierFileNameAndResourceFile($productFilePathAndFileName->originalFilename, $productFileStream);
     }
 }
