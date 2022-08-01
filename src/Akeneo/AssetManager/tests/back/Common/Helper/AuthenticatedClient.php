@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Common\Helper;
 
+use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
@@ -31,12 +32,12 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 class AuthenticatedClient
 {
-    private UserRepositoryInterface $userRepository;
+    private InMemoryUserRepository $userRepository;
 
     private SessionInterface $session;
 
     public function __construct(
-        UserRepositoryInterface $userRepository,
+        InMemoryUserRepository $userRepository,
         SessionInterface $session
     ) {
         $this->userRepository = $userRepository;

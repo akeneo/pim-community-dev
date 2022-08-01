@@ -79,7 +79,7 @@ class LinkAssetsContext implements Context
 
     private ExceptionContext $exceptionContext;
 
-    private CompiledRuleRunnerInterface $compiledRuleRunnerSpy;
+    private CompiledRuleRunnerSpy $compiledRuleRunnerSpy;
 
     private AttributeRepositoryInterface $attributeRepository;
 
@@ -96,7 +96,7 @@ class LinkAssetsContext implements Context
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
         CreateAssetHandler $createAssetHandler,
-        CompiledRuleRunnerInterface $compiledRuleRunnerSpy,
+        CompiledRuleRunnerSpy $compiledRuleRunnerSpy,
         ValidatorInterface $validator,
         ExceptionContext $exceptionContext,
         ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy,
