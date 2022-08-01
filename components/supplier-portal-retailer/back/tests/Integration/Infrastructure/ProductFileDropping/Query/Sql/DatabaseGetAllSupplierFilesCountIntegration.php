@@ -4,33 +4,29 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilesCount;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFilesCount;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
-final class DatabaseGetSupplierFilesCountIntegration extends SqlIntegrationTestCase
+final class DatabaseGetAllSupplierFilesCountIntegration extends SqlIntegrationTestCase
 {
     /** @test */
     public function itReturns0IfThereIsNoFile(): void
     {
-        static::assertSame(0, $this->get(GetSupplierFilesCount::class)('44ce8069-8da1-4986-872f-311737f46f00'));
+        static::assertSame(0, $this->get(GetAllSupplierFilesCount::class)());
     }
 
     /** @test */
     public function itReturnsTheTotalNumberOfSupplierFiles(): void
     {
         $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
-        $this->createSupplier('a20576cd-840f-4124-9900-14d581491387', 'supplier_2', 'Supplier 2');
 
         for ($i = 1; 15 >= $i; $i++) {
-            $this->createSupplierFile('44ce8069-8da1-4986-872f-311737f46f00');
-        }
-        for ($i = 1; 10 >= $i; $i++) {
-            $this->createSupplierFile('a20576cd-840f-4124-9900-14d581491387');
+            $this->createSupplierFile('path/to/file/file.xlsx', new \DateTimeImmutable());
         }
 
-        static::assertSame(15, $this->get(GetSupplierFilesCount::class)('44ce8069-8da1-4986-872f-311737f46f00'));
+        static::assertSame(15, $this->get(GetAllSupplierFilesCount::class)());
     }
 
     private function createSupplier(string $identifier, string $code, string $label): void
@@ -50,7 +46,7 @@ final class DatabaseGetSupplierFilesCountIntegration extends SqlIntegrationTestC
         );
     }
 
-    private function createSupplierFile(string $supplierIdentifier): void
+    private function createSupplierFile(string $path, \DateTimeImmutable $uploadedAt, bool $downloaded = false): void
     {
         $sql = <<<SQL
             INSERT INTO `akeneo_supplier_portal_supplier_file` (identifier, original_filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at, downloaded)
@@ -62,11 +58,11 @@ final class DatabaseGetSupplierFilesCountIntegration extends SqlIntegrationTestC
             [
                 'identifier' => Uuid::uuid4()->toString(),
                 'originalFilename' => 'file.xlsx',
-                'path' => 'path/to/file/file.xlsx',
+                'path' => $path,
                 'contributorEmail' => 'contributor@megasupplier.com',
-                'supplierIdentifier' => $supplierIdentifier,
-                'uploadedAt' => (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
-                'downloaded' => 0,
+                'supplierIdentifier' => '44ce8069-8da1-4986-872f-311737f46f00',
+                'uploadedAt' => $uploadedAt->format('Y-m-d H:i:s'),
+                'downloaded' => (int) $downloaded,
             ],
         );
     }

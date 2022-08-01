@@ -13,13 +13,20 @@ final class DatabaseGetSupplierFilesCount implements GetSupplierFilesCount
     {
     }
 
-    public function __invoke(): int
+    public function __invoke(string $supplierIdentifier): int
     {
         return (int) $this->connection->executeQuery(
             <<<SQL
             SELECT COUNT(*)
             FROM `akeneo_supplier_portal_supplier_file`
+            WHERE uploaded_by_supplier = :supplierIdentifier
         SQL,
+            [
+                'supplierIdentifier' => $supplierIdentifier,
+            ],
+            [
+                'supplierIdentifier' => \PDO::PARAM_STR,
+            ],
         )->fetchOne();
     }
 }
