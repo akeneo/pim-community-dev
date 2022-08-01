@@ -67,7 +67,7 @@ module "gke" {
 
   node_locations = {
     mysql = {
-      "europe-west1" = ["europe-west1b"]
+      "europe-west1" = ["europe-west1-b"]
     }
   }
 
