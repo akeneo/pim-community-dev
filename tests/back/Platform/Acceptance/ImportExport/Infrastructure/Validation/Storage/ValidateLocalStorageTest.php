@@ -39,6 +39,12 @@ class ValidateLocalStorageTest extends AbstractValidationTest
                     'file_path' => '/tmp/products.xlsx',
                 ],
             ],
+            'a storage with null file_path' => [
+                [
+                    'type' => 'local',
+                    'file_path' => null,
+                ],
+            ]
         ];
     }
 
