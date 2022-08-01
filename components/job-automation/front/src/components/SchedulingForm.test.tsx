@@ -11,7 +11,7 @@ jest.mock('./FrequencyConfigurator/DailyFrequencyConfigurator', () => ({
 
 const automation: Automation = {
   is_enabled: true,
-  cron_expression: '5 11/4 * * *',
+  cron_expression: '5 11,23 * * *',
   running_user_groups: [],
 };
 
@@ -20,7 +20,7 @@ test('it can select a frequency option', () => {
 
   renderWithProviders(<SchedulingForm automation={automation} validationErrors={[]} onAutomationChange={onChange} />);
 
-  expect(screen.getByText('akeneo.job_automation.scheduling.frequency.every_4_hours')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.job_automation.scheduling.frequency.every_12_hours')).toBeInTheDocument();
 
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(screen.getByText('akeneo.job_automation.scheduling.frequency.weekly'));
@@ -43,7 +43,7 @@ test('it can update the scheduling time', () => {
 
   expect(onChange).toHaveBeenCalledWith({
     ...automation,
-    cron_expression: '45 7/4 * * *',
+    cron_expression: '45 7,19 * * *',
   });
 });
 

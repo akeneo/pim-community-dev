@@ -24,9 +24,9 @@ class ValidateCronExpressionTest extends AbstractValidationTest
         return [
             'Valid daily cron expression' => ['0 0 * * *'],
             'Valid weekly cron expression' => ['0 0 * * 0'],
-            'Valid every 4 hours cron expression' => ['0 0/4 * * *'],
-            'Valid every 8 hours cron expression' => ['0 0/8 * * *'],
-            'Valid every 12 hours cron expression' => ['0 0/12 * * *'],
+            'Valid every 4 hours cron expression' => ['0 0,4,8,12,16,20 * * *'],
+            'Valid every 8 hours cron expression' => ['0 1,9,17 * * *'],
+            'Valid every 12 hours cron expression' => ['0 2,14 * * *'],
         ];
     }
 
@@ -39,12 +39,12 @@ class ValidateCronExpressionTest extends AbstractValidationTest
                 '',
             ],
             'Cron expression cannot be weekly and hourly' => [
-                '0 0/8 * * 1',
+                '0 0,12 * * 1',
                 CronExpression::INVALID_FREQUENCY_OPTION,
                 '',
             ],
             'Cron expression with invalid hourly frequency' => [
-                '0 0/1 * * *',
+                '0 0,1,2,3,4,5,6 * * *',
                 CronExpression::INVALID_HOURLY_FREQUENCY,
                 '',
             ],
@@ -70,6 +70,11 @@ class ValidateCronExpressionTest extends AbstractValidationTest
             ],
             'Cron expression with invalid hours value' => [
                 '36 42 * * *',
+                CronExpression::INVALID_TIME,
+                '[time]',
+            ],
+            'Cron expression with multiple invalid hours value' => [
+                '36 2,65 * * *',
                 CronExpression::INVALID_TIME,
                 '[time]',
             ],

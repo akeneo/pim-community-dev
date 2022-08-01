@@ -5,12 +5,13 @@ import {FrequencyConfiguratorProps} from './FrequencyConfiguratorProps';
 import {getHourlyCronExpressionFromTime, getTimeFromCronExpression} from '../../models';
 
 const HourlyFrequencyConfigurator = ({
+  frequencyOption,
   cronExpression,
   validationErrors,
   onCronExpressionChange,
 }: FrequencyConfiguratorProps) => {
   const handleTimeChange = (time: string) =>
-    onCronExpressionChange(getHourlyCronExpressionFromTime(time, cronExpression));
+    onCronExpressionChange(getHourlyCronExpressionFromTime(time, frequencyOption));
 
   return (
     <TextInput

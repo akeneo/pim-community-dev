@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class CronExpressionValidator extends ConstraintValidator
 {
-    private const VALID_HOURLY_FREQUENCIES = [4, 8, 12];
+    private const MAX_HOURLY_FREQUENCY = 24 / 4;
 
     public function validate($value, Constraint $constraint): void
     {
@@ -38,7 +38,7 @@ class CronExpressionValidator extends ConstraintValidator
         }
 
         $isWeekly = '*' !== $weekDayNumber;
-        $isHourly = false !== strpos($hours, '/');
+        $isHourly = false !== strpos($hours, ',');
 
         if ($isWeekly && $isHourly) {
             $this->context->buildViolation(CronExpression::INVALID_FREQUENCY_OPTION)
@@ -46,12 +46,7 @@ class CronExpressionValidator extends ConstraintValidator
         }
 
         if ($isHourly) {
-            [$hours, $hoursStep] = explode('/', $hours);
-
-            if (!in_array((int) $hoursStep, self::VALID_HOURLY_FREQUENCIES)) {
-                $this->context->buildViolation(CronExpression::INVALID_HOURLY_FREQUENCY)
-                    ->addViolation();
-            }
+            $this->validateHourlyFrequency($hours);
         }
 
         if ($isWeekly) {
@@ -59,6 +54,16 @@ class CronExpressionValidator extends ConstraintValidator
         }
 
         $this->validateTime($hours, $minutes);
+    }
+
+    private function validateHourlyFrequency(string $hours): void
+    {
+        $hourlySteps = explode(',', $hours);
+
+        if (count($hourlySteps) > self::MAX_HOURLY_FREQUENCY) {
+            $this->context->buildViolation(CronExpression::INVALID_HOURLY_FREQUENCY)
+                ->addViolation();
+        }
     }
 
     private function validateWeekDayNumber(string $weekDayNumber): void
@@ -74,10 +79,17 @@ class CronExpressionValidator extends ConstraintValidator
 
     private function validateTime(string $hours, string $minutes): void
     {
-        $isHoursValid = is_numeric($hours) && (0 <= (int) $hours && 23 >= (int) $hours);
         $isMinutesValid = is_numeric($minutes) && (0 <= (int) $minutes && 59 >= (int) $minutes);
+        $areHourlyStepsValid = array_reduce(
+            explode(',', $hours),
+            static fn (bool $isValid, string $hourlyStep) => $isValid
+                && is_numeric($hourlyStep)
+                && 0 <= (int) $hourlyStep
+                && 23 >= (int) $hourlyStep,
+            true,
+        );
 
-        if (!$isHoursValid || !$isMinutesValid) {
+        if (!$areHourlyStepsValid || !$isMinutesValid) {
             $this->context->buildViolation(CronExpression::INVALID_TIME)
                 ->atPath('[time]')
                 ->addViolation();

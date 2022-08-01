@@ -8,7 +8,12 @@ test('it displays a time input that can update a daily cron expression', () => {
   const onChange = jest.fn();
 
   renderWithProviders(
-    <DailyFrequencyConfigurator cronExpression="5 11 * * *" validationErrors={[]} onCronExpressionChange={onChange} />
+    <DailyFrequencyConfigurator
+      frequencyOption="daily"
+      cronExpression="5 11 * * *"
+      validationErrors={[]}
+      onCronExpressionChange={onChange}
+    />
   );
 
   const input = screen.getByDisplayValue('11:05');
