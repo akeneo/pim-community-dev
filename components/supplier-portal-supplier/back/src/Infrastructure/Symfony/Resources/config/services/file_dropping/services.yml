@@ -6,12 +6,17 @@ services:
             - '%env(bool:FLAG_SUPPLIER_PORTAL_SUPPLIER_FILE_DROPPING_ENABLED)%'
         public: true
 
-    # GCS Bucket service
+    # GCS Bucket services
     Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\StoreProductsFile:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\StoreProductsFileInGCSBucket
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
         public: true
+
+    Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\DownloadStoredProductFile:
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\DownloadStoredProductFileInGCSBucket
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
 
     # Repositories
     Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\SupplierFileRepository:
