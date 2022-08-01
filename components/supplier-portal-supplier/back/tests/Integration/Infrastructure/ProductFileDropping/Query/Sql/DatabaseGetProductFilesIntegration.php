@@ -86,7 +86,7 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
         SQL,
             [
                 'identifier' => Uuid::uuid4()->toString(),
-                'original_filename' => sprintf('products_file_from_another_supplier.xlsx'),
+                'original_filename' => 'products_file_from_another_supplier.xlsx',
                 'path' => sprintf(
                     'supplier2/%s-products_file_from_another_supplier.xlsx',
                     Uuid::uuid4()->toString(),
