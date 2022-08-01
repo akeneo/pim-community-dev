@@ -16,6 +16,10 @@ class FilePathValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, FilePath::class);
         }
 
+        if (null === $value) {
+            return;
+        }
+
         $this->validateFileExtension($value, $constraint->getSupportedFileExtensions());
     }
 

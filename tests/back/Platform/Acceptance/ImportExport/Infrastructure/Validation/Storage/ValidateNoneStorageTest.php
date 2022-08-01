@@ -38,6 +38,12 @@ class ValidateNoneStorageTest extends AbstractValidationTest
                     'type' => 'none',
                 ],
             ],
+            'a storage with null file_path' => [
+                [
+                    'type' => 'none',
+                    'file_path' => null,
+                ],
+            ]
         ];
     }
 
