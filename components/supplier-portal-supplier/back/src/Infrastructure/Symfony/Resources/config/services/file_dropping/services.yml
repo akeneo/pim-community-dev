@@ -41,3 +41,9 @@ services:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilenameFromIdentifier
         arguments:
             - '@database_connection'
+
+    Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePath:
+        public: true
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePath
+        arguments:
+            - '@database_connection'
