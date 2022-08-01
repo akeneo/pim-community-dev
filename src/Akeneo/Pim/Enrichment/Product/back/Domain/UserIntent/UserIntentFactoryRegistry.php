@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\UnknownUserIntentException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
-use Akeneo\Pim\Enrichment\Product\back\API\Command\Exception\UnknownUserIntentException;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\UserIntentFactory;
 use Webmozart\Assert\Assert;
 

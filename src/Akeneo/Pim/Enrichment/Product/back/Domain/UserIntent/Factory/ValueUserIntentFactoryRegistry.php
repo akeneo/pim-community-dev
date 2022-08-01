@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory;
 
-use Akeneo\Pim\Enrichment\Product\back\API\Command\Exception\UnknownAttributeException;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\UnknownAttributeException;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes;
 use Webmozart\Assert\Assert;
 

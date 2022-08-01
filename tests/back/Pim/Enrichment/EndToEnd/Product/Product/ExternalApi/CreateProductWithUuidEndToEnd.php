@@ -1020,50 +1020,6 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    public function testProductCreationWithVariantGroupAttribute()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-    {
-        "values": {
-            "sku": [{
-                "locale": null,
-                "scope": null,
-                "data": "foo"
-            }]
-        },
-        "family": null,
-        "variant_group": "group_variant",
-        "groups": ["groupA"],
-        "categories": ["master"],
-        "associations": {
-        }
-    }
-JSON;
-
-        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
-        $message = addslashes('Property "variant_group" does not exist anymore. Check the link below to understand why.');
-        $link = addslashes('http://api.akeneo.com/documentation/products-with-variants.html');
-
-        $expected = <<<JSON
-{
-    "code":422,
-    "message":"${message}",
-    "_links":{
-        "documentation":{
-            "href": "${link}"
-        }
-    }
-}
-JSON;
-
-        $response = $client->getResponse();
-        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-
     /**
      * @jira https://akeneo.atlassian.net/browse/PIM-6876
      */
