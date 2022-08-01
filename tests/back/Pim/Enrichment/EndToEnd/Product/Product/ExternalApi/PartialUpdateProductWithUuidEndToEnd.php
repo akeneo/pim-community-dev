@@ -16,9 +16,11 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateProductEndToEnd extends AbstractProductTestCase
+class PartialUpdateProductWithUuidEndToEnd extends AbstractProductTestCase
 {
     use AssertEventCountTrait;
 
@@ -63,118 +65,170 @@ class PartialUpdateProductEndToEnd extends AbstractProductTestCase
         ]);
     }
 
-    public function testProductCreationWithIdenticalIdentifiers()
+    public function testCreateProduct()
     {
         $client = $this->createAuthenticatedClient();
+        $uuid = Uuid::uuid4();
 
         $data =
             <<<JSON
     {
-        "identifier": "product_create_with_identifier"
+        "values": {
+            "sku": [{ "locale": null, "scope": null, "data": "new_identifier" }]
+        }
     }
 JSON;
-        $expectedProduct = [
-            'identifier'    => 'product_create_with_identifier',
-            'family'        => null,
-            'parent'        => null,
-            'groups'        => [],
-            'categories'    => [],
-            'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_create_with_identifier'],
-                ],
-            ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
-        ];
 
-        $client->request('PATCH', 'api/rest/v1/products/product_create_with_identifier', [], [], [], $data);
+        $client->request('PATCH', sprintf('api/rest/v1/products-uuid/%s', $uuid->toString()), [], [], [], $data);
 
         $response = $client->getResponse();
-
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
-        $this->assertSameProducts($expectedProduct, 'product_create_with_identifier');
-        $this->assertArrayHasKey('location', $response->headers->all());
-        $this->assertSame(
-            'http://localhost/api/rest/v1/products/product_create_with_identifier',
-            $response->headers->get('location')
-        );
     }
 
-    public function testProductCreationWithoutIdentifier()
+    /*
+     * TODO To uncomment CPM-698
+     */
+    public function skipTestCreateProductWithSameUuid()
     {
         $client = $this->createAuthenticatedClient();
-
-        $data = '{}';
-
-        $expectedProduct = [
-            'identifier'    => 'product_create_without_identifier',
-            'family'        => null,
-            'parent'        => null,
-            'groups'        => [],
-            'categories'    => [],
-            'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_create_without_identifier'],
-                ],
-            ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
-        ];
-
-        $client->request('PATCH', 'api/rest/v1/products/product_create_without_identifier', [], [], [], $data);
-
-        $response = $client->getResponse();
-
-        $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
-        $this->assertSameProducts($expectedProduct, 'product_create_without_identifier');
-        $this->assertArrayHasKey('location', $response->headers->all());
-        $this->assertSame(
-            'http://localhost/api/rest/v1/products/product_create_without_identifier',
-            $response->headers->get('location')
-        );
-    }
-
-    public function testProductCreationWithDifferentIdentifiers()
-    {
-        $client = $this->createAuthenticatedClient();
+        $uuid = Uuid::uuid4();
+        $uuidString = $uuid->toString();
 
         $data =
             <<<JSON
     {
-        "identifier": "bar"
+        "uuid": "$uuidString",
+        "values": {
+            "sku": [{ "locale": null, "scope": null, "data": "new_identifier" }]
+        }
     }
 JSON;
+
+        $client->request('PATCH', sprintf('api/rest/v1/products-uuid/%s', $uuid->toString()), [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+    }
+
+    public function testCreateProductWithDifferentUuid()
+    {
+        $client = $this->createAuthenticatedClient();
+        $uuid = Uuid::uuid4();
+        $newUuid = Uuid::uuid4();
+        $uuidString = $newUuid->toString();
+
+        $data =
+            <<<JSON
+    {
+        "uuid": "$uuidString",
+        "values": {
+            "sku": [{ "locale": null, "scope": null, "data": "new_identifier" }]
+        }
+    }
+JSON;
+
+        $client->request('PATCH', sprintf('api/rest/v1/products-uuid/%s', $uuid->toString()), [], [], [], $data);
 
         $expectedContent = [
-            'code'    => 422,
-            'message' => 'The identifier "bar" provided in the request body must match the identifier "foo" provided in the url.',
+            'code' => 422,
+            'message' => sprintf(
+                'The uuid "%s" provided in the request body must match the uuid "%s" provided in the url.',
+                $newUuid->toString(),
+                $uuid->toString()
+            ),
         ];
 
-        $client->request('PATCH', 'api/rest/v1/products/foo', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame($expectedContent, \json_decode($response->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testUpdateProduct()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {}
+JSON;
+
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_family')->toString()
+        ), [], [], [], $data);
 
         $response = $client->getResponse();
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+    }
+
+    /*
+     * TODO To uncomment CPM-698
+     */
+    public function skipTestUpdateProductWithSameUuid()
+    {
+        $client = $this->createAuthenticatedClient();
+        $uuid = $this->getProductUuidFromIdentifier('product_family');
+        $uuidString = $uuid->toString();
+
+        $data =
+            <<<JSON
+    {
+        "uuid": "$uuidString"
+    }
+JSON;
+
+        $client->request('PATCH', sprintf('api/rest/v1/products-uuid/%s', $uuid->toString()), [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+    }
+
+    public function testUpdateProductWithDifferentUuid()
+    {
+        $client = $this->createAuthenticatedClient();
+        $newUuid = Uuid::uuid4();
+        $uuidString = $newUuid->toString();
+
+        $data =
+            <<<JSON
+    {
+        "uuid": "$uuidString"
+    }
+JSON;
+
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_family')->toString()
+        ), [], [], [], $data);
+
+        $expectedContent = [
+            'code' => 422,
+            'message' => sprintf(
+                'The uuid "%s" provided in the request body must match the uuid "%s" provided in the url.',
+                $newUuid->toString(),
+                $this->getProductUuidFromIdentifier('product_family')->toString()
+            ),
+        ];
+
+        $response = $client->getResponse();
+        $this->assertSame($expectedContent, \json_decode($response->getContent(), true));
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
     public function testProductCreationWithInvalidValues()
     {
         $client = $this->createAuthenticatedClient();
+        $uuid = Uuid::uuid4();
 
         $data =
             <<<JSON
     {
-        "identifier": "new_identifier",
         "values": {
+            "sku": [{ "locale": null, "scope": null, "data": "new_identifier" }],
             "a_metric": {
                 "locale": null,
                 "scope": null,
@@ -192,7 +246,7 @@ JSON;
             ],
         ];
 
-        $client->request('PATCH', 'api/rest/v1/products/new_identifier', [], [], [], $data);
+        $client->request('PATCH', sprintf('api/rest/v1/products-uuid/%s', $uuid->toString()), [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
@@ -206,7 +260,6 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_family",
         "values": {
             "a_metric": {
                 "locale": null,
@@ -225,7 +278,10 @@ JSON;
             ],
         ];
 
-        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_family')->toString()
+        ), [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
@@ -239,7 +295,6 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "complete",
         "values": {
             "a_simple_select": [
                 {"locale": null, "scope": null, "data": "optionB"},
@@ -257,168 +312,14 @@ JSON;
             ],
         ];
 
-        $client->request('PATCH', 'api/rest/v1/products/complete', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('complete')->toString()
+        ), [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
-    }
-
-    public function testProductPartialUpdateWithIdenticalIdentifiers()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-    {
-        "identifier": "product_categories"
-    }
-JSON;
-
-        $expectedProduct = [
-            'identifier'    => 'product_categories',
-            'family'        => null,
-            'parent'        => null,
-            'groups'        => [],
-            'categories'    => ['master'],
-            'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_categories'],
-                ],
-            ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
-        ];
-
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
-
-        $response = $client->getResponse();
-
-        $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertSameProducts($expectedProduct, 'product_categories');
-        $this->assertArrayHasKey('location', $response->headers->all());
-        $this->assertSame(
-            'http://localhost/api/rest/v1/products/product_categories',
-            $response->headers->get('location')
-        );
-    }
-
-    public function testProductPartialUpdateWithoutIdentifier()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data = '{}';
-
-        $expectedProduct = [
-            'identifier'    => 'product_categories',
-            'family'        => null,
-            'parent'        => null,
-            'groups'        => [],
-            'categories'    => ['master'],
-            'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_categories'],
-                ],
-            ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
-        ];
-
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
-
-        $response = $client->getResponse();
-
-        $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertSameProducts($expectedProduct, 'product_categories');
-        $this->assertArrayHasKey('location', $response->headers->all());
-        $this->assertSame(
-            'http://localhost/api/rest/v1/products/product_categories',
-            $response->headers->get('location')
-        );
-    }
-
-    public function testProductPartialUpdateWithTheIdentifierUpdated()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-    {
-        "identifier": "new_product_categories"
-    }
-JSON;
-
-        $expectedProduct = [
-            'identifier'    => 'new_product_categories',
-            'family'        => null,
-            'parent'        => null,
-            'groups'        => [],
-            'categories'    => ['master'],
-            'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'new_product_categories'],
-                ],
-            ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
-        ];
-
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
-
-        $response = $client->getResponse();
-
-        $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertSameProducts($expectedProduct, 'new_product_categories');
-        $this->assertArrayHasKey('location', $response->headers->all());
-        $this->assertSame(
-            'http://localhost/api/rest/v1/products/new_product_categories',
-            $response->headers->get('location')
-        );
-
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_categories');
-        $this->assertSame(null, $product);
-    }
-
-    public function testProductPartialUpdateWithTheIdentifierUpdatedWithNull()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-    {
-        "identifier": null
-    }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
-
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'identifier',
-                    'message'  => 'The identifier attribute cannot be empty.',
-                ],
-            ],
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
     public function testProductPartialUpdateWithTheFamilyUpdated()
@@ -428,12 +329,14 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_family",
         "family": "familyA"
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_family')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_family',
@@ -468,12 +371,14 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_family",
         "family": null
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_family')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_family',
@@ -507,12 +412,14 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_groups",
         "groups": ["groupB", "groupA"]
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_groups', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_groups')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_groups',
@@ -552,7 +459,10 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_groups', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_groups')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_groups',
@@ -593,7 +503,10 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_categories')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_categories',
@@ -634,7 +547,10 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_categories')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_categories',
@@ -691,7 +607,10 @@ JSON;
 }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_associations', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_associations')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_associations',
@@ -759,7 +678,10 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_associations', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_associations')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_associations',
@@ -813,7 +735,10 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_associations', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_associations')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_associations',
@@ -859,7 +784,10 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_categories')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_categories',
@@ -908,7 +836,10 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/localizable', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('localizable')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'localizable',
@@ -962,7 +893,10 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/localizable', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('localizable')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'localizable',
@@ -1012,7 +946,10 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/localizable', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('localizable')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'localizable',
@@ -1131,7 +1068,10 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/complete', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('complete')->toString()
+        ), [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'complete',
@@ -1256,7 +1196,10 @@ JSON;
             'quantified_associations' => [],
         ];
 
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_categories')->toString()
+        ), [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -1272,38 +1215,7 @@ JSON;
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['updated']);
     }
 
-    public function testPartialUpdateResponseWhenIdentifierPropertyNotEqualsToIdentifierInValues()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-    {
-        "identifier": "product_categories",
-        "values": {
-            "sku": [{
-                "locale": null,
-                "scope": null,
-                "data": "foo"
-            }]
-         }
-    }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
-
-        $response = $client->getResponse();
-
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertArrayHasKey('location', $response->headers->all());
-        $this->assertSame(
-            'http://localhost/api/rest/v1/products/product_categories',
-            $response->headers->get('location')
-        );
-        $this->assertSame('', $response->getContent());
-    }
-
-    public function testPartialUpdateResponseWhenMissingIdentifierPropertyAndProvidedIdentifierInValues()
+    public function testItUpdatesIdentifier()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -1320,46 +1232,23 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_categories')->toString()
+        ), [], [], [], $data);
 
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame(
-            'http://localhost/api/rest/v1/products/product_categories',
+            sprintf(
+                'http://localhost/api/rest/v1/products-uuid/%s',
+                $this->getProductUuidFromIdentifier('foo')->toString()
+            ),
             $response->headers->get('location')
         );
         $this->assertSame('', $response->getContent());
-    }
-
-    public function testResponseWhenProductAlreadyExists()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-    {
-        "identifier": "product_family"
-    }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
-
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'identifier',
-                    'message'  => 'The product_family identifier is already used for another product.',
-                ],
-            ],
-        ];
-
-        $response = $client->getResponse();
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
     public function testResponseWhenAPropertyIsNotExpected()
@@ -1373,7 +1262,11 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_categories')->toString()
+        ), [], [], [], $data);
+
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
@@ -1395,7 +1288,10 @@ JSON;
 
         $data = '';
 
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_categories')->toString()
+        ), [], [], [], $data);
 
         $expectedContent = [
             'code'    => 400,
@@ -1413,7 +1309,10 @@ JSON;
 
         $data = '{';
 
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_categories')->toString()
+        ), [], [], [], $data);
 
         $expectedContent = [
             'code'    => 400,
@@ -1437,7 +1336,11 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_categories')->toString()
+        ), [], [], [], $data);
+
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "enabled" expects a boolean as data, "NULL" given. Check the expected format on the API documentation.',
@@ -1475,7 +1378,11 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_family')->toString()
+        ), [], [], [], $data);
+
         $expectedContent = [
             'code'    => 422,
             'message' => 'The unknown_attribute attribute does not exist in your PIM. Check the expected format on the API documentation.',
@@ -1502,11 +1409,14 @@ JSON;
         "family": ["familyA"]
     }
 JSON;
-        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_family')->toString()
+        ), [], [], [], $data);
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "family" expects a scalar as data, "array" given. Check the expected format on the API documentation.',
+            'message' => 'Property "family" expects a string as data, "array" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
@@ -1519,9 +1429,10 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    public function testProductPartialUpdateWithInvalidAttributeData()
+    public function testCreateProductWithInvalidAttributeData()
     {
         $client = $this->createAuthenticatedClient();
+        $uuid = Uuid::uuid4();
 
         $data =
             <<<JSON
@@ -1529,6 +1440,7 @@ JSON;
         "identifier": "big_boot",
         "family": "familyA",
         "values": {
+            "sku": [{"locale": null, "scope": null, "data": "big_boot"}],
             "a_text":[{
                 "locale": null,
                 "scope": null,
@@ -1537,11 +1449,14 @@ JSON;
         }
     }
 JSON;
-        $client->request('PATCH', 'api/rest/v1/products/big_boot', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $uuid->toString()
+        ), [], [], [], $data);
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'The a_text attribute requires a string, a array was detected. Check the expected format on the API documentation.',
+            'message' => 'Property "a_text" expects a string as data, "array" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
@@ -1557,10 +1472,13 @@ JSON;
     public function testResponseWhenAssociatingToNonExistingProductModel()
     {
         $client = $this->createAuthenticatedClient();
+        $uuid = Uuid::uuid4();
 
         $data = <<<JSON
 {
-    "identifier": "big_boot",
+    "values": {
+        "sku": [{"locale": null, "scope": null, "data": "big_boot"}]
+    },
     "associations": {
         "X_SELL": {
             "product_models": ["a_non_exiting_product_model"]
@@ -1575,13 +1493,16 @@ JSON;
     "message": "Property \"associations\" expects a valid product model identifier. The product model does not exist, \"a_non_exiting_product_model\" given. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
-            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_products"
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"
         }
     }
 }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $uuid->toString()
+        ), [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -1593,13 +1514,21 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
         $this->removeAclFromRole('action:pim_api_product_edit');
+        $uuid = Uuid::uuid4();
 
         $data =
             <<<JSON
-{"identifier": "foo"}
+{
+    "values": {
+        "sku": [{"scope": null, "locale": null, "data": "foo"}]
+    }
+}
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/foo', [], [], [], $data);
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $uuid->toString()
+        ), [], [], [], $data);
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
@@ -1611,5 +1540,12 @@ JSON;
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        ));
     }
 }
