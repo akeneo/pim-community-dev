@@ -11,11 +11,13 @@ const Section = styled.section`
 `;
 const Content = styled.div``;
 
+const InlineButton = styled(Button);
+
 const InlineContainer = styled.div`
   display: flex;
-  margin: 10pw;
+  margin: 10px;
   gap: 10px;
-  ${Button} {
+  ${InlineButton} {
     margin: 10px;
   }
 `;
@@ -111,13 +113,10 @@ const Page: FC = () => {
             <SectionTitle.Title>ACLs</SectionTitle.Title>
           </SectionTitle>
           <Content>
-            {/*
-          <Field>
-            <Checkbox checked={configuration.acls.pim_enrich_product_categories_view}>
-              View a category
-            </Checkbox>
-          </Field>
-*/}
+            <Field>
+              <Checkbox checked={configuration.acls.pim_enrich_product_categories_view}>View a category</Checkbox>
+            </Field>
+
             <Field>
               <Checkbox
                 checked={configuration.acls.pim_enrich_product_category_create}

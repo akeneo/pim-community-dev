@@ -2,12 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {Routes, Translations} from '@akeneo-pim-community/shared';
+import {MicroFrontendDependenciesProvider, Routes, Translations} from '@akeneo-pim-community/shared';
 import {routes} from './routes.json';
 import translations from './translations.json';
 import {CategoriesApp} from './feature';
 import {ConfigurationProvider, Page} from './configuration';
-import {MicroFrontendDependenciesProvider} from './microfrontend';
 import {FakePIM} from './FakePIM';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 
