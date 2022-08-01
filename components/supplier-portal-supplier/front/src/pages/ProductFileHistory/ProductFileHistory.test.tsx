@@ -26,14 +26,14 @@ beforeEach(() => {
     fetcher.fetchProductFiles = jest.fn().mockReturnValue(productFilesResponseContent);
 });
 
-test('it displays an empty placeholder when there is no product files', async () => {
+test('it displays an empty placeholder when the history is empty', async () => {
     // @ts-ignore
     fetcher.fetchProductFiles = jest.fn().mockReturnValue([]);
 
     renderWithProviders(<ProductFileHistory />);
 
     await waitFor(() => {
-        expect(screen.getByText('There is no product files yet.')).toBeInTheDocument();
+        expect(screen.getByText('Your file history is empty.')).toBeInTheDocument();
     });
 });
 

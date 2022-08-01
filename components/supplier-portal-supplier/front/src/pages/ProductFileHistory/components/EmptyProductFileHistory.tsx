@@ -1,6 +1,9 @@
-import React from 'react';
+import React, {SyntheticEvent} from 'react';
 import {FormattedMessage} from 'react-intl';
 import styled from 'styled-components';
+import {Link} from 'akeneo-design-system';
+import {routes} from '../../routes';
+import {useHistory} from 'react-router-dom';
 
 const Container = styled.div`
     display: flex;
@@ -12,10 +15,21 @@ const Container = styled.div`
 `;
 
 const EmptyProductFileHistory = () => {
-    // @todo To complete once the mockup provided
+    const history = useHistory();
+
+    const goToFilesDroppingPage = (event: SyntheticEvent) => {
+        event.preventDefault();
+
+        history.push(routes.filesDropping);
+    };
+
     return (
         <Container>
-            <FormattedMessage defaultMessage="There is no product files yet." id="Gs2nav" />
+            <FormattedMessage defaultMessage="Your file history is empty." id="nZPPr0" />
+
+            <Link onClick={goToFilesDroppingPage}>
+                <FormattedMessage defaultMessage="Please share an XLSX file first." id="KdWtos" />
+            </Link>
         </Container>
     );
 };
