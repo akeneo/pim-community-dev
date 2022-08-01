@@ -31,7 +31,7 @@ const WeeklyFrequencyConfigurator = ({
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
         clearable={false}
-        invalid={0 < getErrorsForPath(validationErrors, '[week_day_number]').length}
+        invalid={0 < getErrorsForPath(validationErrors, '[week_day]').length}
       >
         {weekDays.map(weekDay => (
           <SelectInput.Option value={weekDay} key={weekDay}>

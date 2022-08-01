@@ -5,6 +5,10 @@ import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared
 import {SchedulingForm} from './SchedulingForm';
 import {Automation} from '../models';
 
+jest.mock('./FrequencyConfigurator/DailyFrequencyConfigurator', () => ({
+  DailyFrequencyConfigurator: null,
+}));
+
 const automation: Automation = {
   is_enabled: true,
   cron_expression: '5 11/4 * * *',
@@ -59,4 +63,20 @@ test('it displays validation errors', () => {
   );
 
   expect(screen.getByText('error.key.a_type_error')).toBeInTheDocument();
+});
+
+test('it throws when the configurator is not found', () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+
+  expect(() =>
+    renderWithProviders(
+      <SchedulingForm
+        automation={{...automation, cron_expression: '0 0 * * *'}}
+        validationErrors={[]}
+        onAutomationChange={jest.fn()}
+      />
+    )
+  ).toThrowError('No frequency configurator found for frequency option "daily"');
+
+  mockedConsole.mockRestore();
 });

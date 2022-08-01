@@ -12,7 +12,7 @@ akeneo.job_automation:
       weekly: Every week on...
       every_4_hours: Every 4 hours
       every_8_hours: Every 8 hours
-      every_12_hours: "Every 12 hours"
+      every_12_hours: Every 12 hours
       monday: Monday
       tuesday: Tuesday
       wednesday: Wednesday
@@ -24,6 +24,6 @@ akeneo.job_automation:
     title: 'notification'
   validation:
     invalid_frequency_option: Invalid frequency option
-    invalid_week_day_number: Invalid week day number
+    invalid_week_day: Invalid week day
     invalid_hourly_frequency: Invalid hourly frequency
     invalid_time: Invalid time

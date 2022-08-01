@@ -7,19 +7,19 @@ type CronExpression = string;
 const getFrequencyOptionFromCronExpression = (cronExpression: CronExpression): FrequencyOption => {
   const [, hours, , , weekDayNumber] = cronExpression.split(' ');
 
-  if (!weekDayNumber.endsWith('*')) {
+  if ('*' !== weekDayNumber) {
     return 'weekly';
   }
 
-  if (hours.includes('/4')) {
+  if (hours.endsWith('/4')) {
     return 'every_4_hours';
   }
 
-  if (hours.includes('/8')) {
+  if (hours.endsWith('/8')) {
     return 'every_8_hours';
   }
 
-  if (hours.includes('/12')) {
+  if (hours.endsWith('/12')) {
     return 'every_12_hours';
   }
 

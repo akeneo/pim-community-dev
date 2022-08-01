@@ -47,6 +47,11 @@ const JobAutomationForm = ({automation, validationErrors, onAutomationChange}: J
       </Field>
       {automation.is_enabled && (
         <>
+          <SectionTitle>
+            <SectionTitle.Title level="secondary">
+              {translate('akeneo.job_automation.scheduling.title')}
+            </SectionTitle.Title>
+          </SectionTitle>
           <SchedulingForm
             automation={automation}
             onAutomationChange={onAutomationChange}

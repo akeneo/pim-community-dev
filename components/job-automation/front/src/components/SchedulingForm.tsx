@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import styled from 'styled-components';
-import {SectionTitle, Field, SelectInput, Helper} from 'akeneo-design-system';
+import {Field, SelectInput, Helper} from 'akeneo-design-system';
 import {getErrorsForPath, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {
   Automation,
@@ -52,42 +52,39 @@ const SchedulingForm = ({automation, validationErrors, onAutomationChange}: Sche
   const frequencyOption = getFrequencyOptionFromCronExpression(automation.cron_expression);
   const FrequencyComponent = frequencyConfigurators[frequencyOption] ?? null;
 
+  if (null === FrequencyComponent) {
+    throw new Error(`No frequency configurator found for frequency option "${frequencyOption}"`);
+  }
+
   return (
-    <>
-      <SectionTitle>
-        <SectionTitle.Title level="secondary">{translate('akeneo.job_automation.scheduling.title')}</SectionTitle.Title>
-      </SectionTitle>
-      <Field label={translate('akeneo.job_automation.scheduling.frequency.title')}>
-        <Content>
-          <SelectInput
-            value={frequencyOption}
-            onChange={handleFrequencyOptionChange}
-            emptyResultLabel={translate('pim_common.no_result')}
-            openLabel={translate('pim_common.open')}
-            clearable={false}
-            invalid={0 < getErrorsForPath(validationErrors, '').length}
-          >
-            {availableFrequencyOptions.map(frequencyOption => (
-              <SelectInput.Option value={frequencyOption} key={frequencyOption}>
-                {translate(`akeneo.job_automation.scheduling.frequency.${frequencyOption}`)}
-              </SelectInput.Option>
-            ))}
-          </SelectInput>
-          {null !== FrequencyComponent && (
-            <FrequencyComponent
-              cronExpression={automation.cron_expression}
-              validationErrors={validationErrors}
-              onCronExpressionChange={handleCronExpressionChange}
-            />
-          )}
-        </Content>
-        {validationErrors.map((error, index) => (
-          <Helper key={index} inline={true} level="error">
-            {translate(error.messageTemplate, error.parameters)}
-          </Helper>
-        ))}
-      </Field>
-    </>
+    <Field label={translate('akeneo.job_automation.scheduling.frequency.title')}>
+      <Content>
+        <SelectInput
+          value={frequencyOption}
+          onChange={handleFrequencyOptionChange}
+          emptyResultLabel={translate('pim_common.no_result')}
+          openLabel={translate('pim_common.open')}
+          clearable={false}
+          invalid={0 < getErrorsForPath(validationErrors, '').length}
+        >
+          {availableFrequencyOptions.map(frequencyOption => (
+            <SelectInput.Option value={frequencyOption} key={frequencyOption}>
+              {translate(`akeneo.job_automation.scheduling.frequency.${frequencyOption}`)}
+            </SelectInput.Option>
+          ))}
+        </SelectInput>
+        <FrequencyComponent
+          cronExpression={automation.cron_expression}
+          validationErrors={validationErrors}
+          onCronExpressionChange={handleCronExpressionChange}
+        />
+      </Content>
+      {validationErrors.map((error, index) => (
+        <Helper key={index} inline={true} level="error">
+          {translate(error.messageTemplate, error.parameters)}
+        </Helper>
+      ))}
+    </Field>
   );
 };
 
