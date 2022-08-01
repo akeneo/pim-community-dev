@@ -12,6 +12,7 @@ type Props = {
     totalSupplierFiles: number;
     currentPage: number;
     onChangePage: (pageNumber: number) => void;
+    displaySupplierColumn?: boolean;
 };
 
 const StyledDownloadIcon = styled(DownloadIcon)`
@@ -27,7 +28,7 @@ const StyledIconButton = styled(IconButton)`
     }
 `;
 
-const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onChangePage}: Props) => {
+const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onChangePage, displaySupplierColumn = true }: Props) => {
     const translate = useTranslate();
     const dateFormatter = useDateFormatter();
     const router = useRouter();
@@ -52,9 +53,11 @@ const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onCh
                             <Table.HeaderCell>
                                 {translate('supplier_portal.product_file_dropping.supplier_files.columns.contributor')}
                             </Table.HeaderCell>
+                            { displaySupplierColumn && (
                             <Table.HeaderCell>
                                 {translate('supplier_portal.product_file_dropping.supplier_files.columns.supplier')}
                             </Table.HeaderCell>
+                            )}
                             <Table.HeaderCell>
                                 {translate('supplier_portal.product_file_dropping.supplier_files.columns.status')}
                             </Table.HeaderCell>
@@ -73,7 +76,9 @@ const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onCh
                                     <Table.Row key={supplierFile.identifier} onClick={() => {}}>
                                         <Table.Cell>{uploadedDate}</Table.Cell>
                                         <Table.Cell>{supplierFile.contributor}</Table.Cell>
+                                        { displaySupplierColumn && (
                                         <Table.Cell>{supplierFile.supplier}</Table.Cell>
+                                        )}
                                         <Table.Cell>
                                             {'Downloaded' === supplierFile.status && (
                                                 <Badge level="primary">
