@@ -10,7 +10,7 @@ namespace Akeneo\Category\Api\Command;
  */
 class DummyHandler
 {
-    public function __invoke($command)
+    public function __invoke(UpsertCategoryCommand $command): void
     {
     }
 }

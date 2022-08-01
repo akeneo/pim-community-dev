@@ -7,11 +7,11 @@ namespace Akeneo\Category\back\Infrastructure\Controller\InternalAPI;
 use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Api\Command\UpsertCategoryCommand;
+use Akeneo\Category\Application\Converter\ConverterInterface;
+use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsStub;
+use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
 use Akeneo\Category\Application\Query\FindCategoryByIdentifier;
-use Akeneo\Category\Infrastructure\Component\Converter\ConverterInterface;
-use Akeneo\Category\Infrastructure\Component\Converter\GetUserIntentsFromStandardFormatStub;
-use Akeneo\Category\Infrastructure\Component\Filter\CategoryUserIntentFilterInterface;
-use Akeneo\Category\Infrastructure\Component\Filter\CollectionFilterInterface;
+use Akeneo\Category\Application\Filter\CategoryEditACLFilter;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,9 +29,9 @@ class UpdateCategoryController
         private CommandMessageBus $categoryCommandBus,
         private SecurityFacade $securityFacade,
         private ConverterInterface $internalApiToStandardConverter,
-        private CollectionFilterInterface $filterCollection,
-        private GetUserIntentsFromStandardFormatStub $getUserIntentsFromStandardFormat,
-        private CategoryUserIntentFilterInterface $categoryUserIntentFilter,
+        private CategoryEditACLFilter $ACLFilter,
+        private StandardFormatToUserIntentsStub $standardFormatToUserIntents,
+        private CategoryEditUserIntentFilter $categoryUserIntentFilter,
         private EnvVarFeatureFlag $enrichedCategoryFeature,
         private FindCategoryByIdentifier $findCategoryByIdentifier,
         private array $rawConfiguration,
@@ -52,8 +52,8 @@ class UpdateCategoryController
         }
         $data = [];
         $formattedData = $this->internalApiToStandardConverter->convert($data);
-        $filteredData = $this->filterCollection->filterCollection($formattedData, 'category', []);
-        $userIntents = $this->getUserIntentsFromStandardFormat->convert($filteredData);
+        $filteredData = $this->ACLFilter->filterCollection($formattedData, 'category', []);
+        $userIntents = $this->standardFormatToUserIntents->convert($filteredData);
         $filteredUserIntents = $this->categoryUserIntentFilter->filterCollection($userIntents);
 
         try {

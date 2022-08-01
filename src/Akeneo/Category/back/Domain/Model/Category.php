@@ -42,6 +42,9 @@ class Category
         return $this->parentId;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function normalize(): array
     {
         return [

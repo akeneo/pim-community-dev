@@ -23,6 +23,9 @@ class UpsertCategoryCommand
         Assert::allImplementsInterface($this->userIntents, UserIntent::class);
     }
 
+    /**
+     * @param userIntent[] $userIntents
+     */
     public static function create(int $categoryIdentifier, array $userIntents): self
     {
         $valueUserIntents = [];
@@ -41,6 +44,9 @@ class UpsertCategoryCommand
         return $this->categoryIdentifier;
     }
 
+    /**
+     * @return UserIntent[]
+     */
     public function userIntents(): array
     {
         return $this->userIntents;
