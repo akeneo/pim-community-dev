@@ -65,6 +65,16 @@ class ReplacementOperationValidatorTest extends AbstractValidationTest
                     ],
                 ],
             ],
+            'a family replacement' => [
+                [
+                    'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
+                    'type' => 'family_replacement',
+                    'mapping' => [
+                        'family_1' => ['My super family'],
+                        'family_aze' => ['My family'],
+                    ],
+                ],
+            ],
         ];
     }
 

@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Merger;
 
+use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

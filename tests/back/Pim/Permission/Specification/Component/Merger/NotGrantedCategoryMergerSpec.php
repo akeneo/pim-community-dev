@@ -2,7 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Merger;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -10,7 +11,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Merger\NotGrantedCategoryMerger;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;

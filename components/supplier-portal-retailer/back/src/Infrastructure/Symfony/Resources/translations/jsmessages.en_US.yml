@@ -1,8 +1,8 @@
-onboarder:
-    menu_block_title: Onboarder
+supplier_portal:
+    menu_block_title: Supplier Portal
     supplier:
         breadcrumb:
-            root: Onboarder
+            root: Supplier Portal
             suppliers: Suppliers
         supplier_create:
             modal:
@@ -53,7 +53,7 @@ onboarder:
                 code: Code
                 label: Supplier label (required)
             contributors_form:
-                info: 'Add contributors to give them access to Akeneo Onboarder. You can fill in an adress list with separators: space, comma, semicolon & line break.'
+                info: 'Add contributors to give them access to Akeneo Supplier Portal. You can fill in an adress list with separators: space, comma, semicolon & line break.'
                 invalid_emails_warning: Some emails are invalid and won’t be added.
                 emails_belonging_to_other_suppliers_warning: A contributor can only belong to one supplier. When you save this supplier, all emails shown as warnings will be deleted.
                 add_contributors: Add contributors
@@ -75,8 +75,30 @@ onboarder:
             update_error: An error occured while updating the supplier.
             delete_label: Delete this supplier
 
-pim_title:
-    onboarder_serenity_retailer_supplier_list: Suppliers
-    onboarder_serenity_retailer_supplier_edit: Edit a supplier
+    product_file_dropping:
+        breadcrumb:
+            root: Supplier Portal
+            product_files: Product files
+        supplier_files:
+            menu_item: Product files
+            title: "]-Inf, 1]{{ count }} product file|]1, Inf[{{ count }} product files"
+            no_files: There are no product files yet.
+            columns:
+                upload_date: Upload date
+                contributor: Contributor
+                supplier: Supplier
+                status: Status
+            status:
+                downloaded: Downloaded
+                to_download: To download
+            notification:
+                error_loading_supplier_files:
+                    title: We are not able to display the product files.
+                    content: Sorry about this inconvenience, please try again in a few moments.
 
-batch_jobs.onboarder_serenity_xlsx_supplier_import.label: Onboarder Serenity Supplier import in XLSX
+pim_title:
+    supplier_portal_retailer_supplier_list: Suppliers
+    supplier_portal_retailer_supplier_edit: Edit a supplier
+    supplier_portal_supplier_files_list: Product files
+
+batch_jobs.supplier_portal_xlsx_supplier_import.label: Supplier Portal Supplier import in XLSX

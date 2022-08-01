@@ -19,20 +19,20 @@ final class DatabaseRepository implements SupplierFileRepository
         $sql = <<<SQL
             REPLACE INTO `akeneo_supplier_portal_supplier_file` (
                 identifier,
-                filename,
+                original_filename,
                 path,
                 uploaded_by_contributor,
                 uploaded_by_supplier,
                 uploaded_at
             )
-            VALUES (:identifier, :filename, :path, :uploaded_by_contributor, :uploaded_by_supplier, :uploaded_at)
+            VALUES (:identifier, :original_filename, :path, :uploaded_by_contributor, :uploaded_by_supplier, :uploaded_at)
         SQL;
 
         $this->connection->executeStatement(
             $sql,
             [
                 'identifier' => $supplierFile->identifier(),
-                'filename' => $supplierFile->filename(),
+                'original_filename' => $supplierFile->originalFilename(),
                 'path' => $supplierFile->path(),
                 'uploaded_by_contributor' => $supplierFile->uploadedByContributor(),
                 'uploaded_by_supplier' => $supplierFile->uploadedBySupplier(),

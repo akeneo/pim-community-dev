@@ -28,7 +28,7 @@ abstract class AbstractOperationApplierTest extends KernelTestCase
     {
         static::bootKernel(['debug' => false]);
         $this->filesystem = new Filesystem();
-        $this->applier = self::$container->get($this->getOperationName());
+        $this->applier = self::getContainer()->get($this->getOperationName());
 
         $this->testDir =
             self::VAR_CACHE_TESTS . DIRECTORY_SEPARATOR

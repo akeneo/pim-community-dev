@@ -110,7 +110,7 @@ final class HandleSimpleSelectValueTest extends AttributeTestCase
     private function loadOptions(): void
     {
         /** @var InMemoryFindAttributeOptionLabels $attributeOptionLabelsRepository */
-        $attributeOptionLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface');
+        $attributeOptionLabelsRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface');
         $attributeOptionLabelsRepository->addAttributeLabel('material', 'cotton', 'en_US', 'Cotton');
     }
 }

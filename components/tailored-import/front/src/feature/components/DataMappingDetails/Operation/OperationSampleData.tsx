@@ -18,7 +18,7 @@ const OperationSampleData = ({loadingSampleData, sampleData, onRefreshSampleData
       {sampleData.map((sampleData, key) => (
         <PreviewRowData
           key={key}
-          isLoading={loadingSampleData.includes(key)}
+          isLoading={loadingSampleData.includes(key) || undefined === sampleData}
           isEmpty={sampleData === null}
           hasError={false}
           action={

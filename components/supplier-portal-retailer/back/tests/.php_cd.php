@@ -22,7 +22,10 @@ $rules = [
     // src
     $builder->only(
         [
-            // Onboarder coupling
+            // Supplier Portal Retailer coupling
+
+            // Supplier Portal Supplier coupling
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
 
             // PIM coupling
 
@@ -33,7 +36,7 @@ $rules = [
 
     $builder->only(
         [
-            // Onboarder coupling
+            // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
 
             // External dependencies coupling
@@ -47,9 +50,14 @@ $rules = [
 
     $builder->only(
         [
-            // Onboarder coupling
+            // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Application',
+
+            // Supplier Portal Supplier coupling
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
+
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Event\EventInterface',
             'Akeneo\Tool\Component\Batch\Event\InvalidItemEvent',
@@ -65,6 +73,8 @@ $rules = [
             'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+            'Akeneo\Tool\Component\FileStorage\StreamedFileResponse',
+            'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
             // External dependencies coupling
             'Box\Spout\Common\Exception\IOException',
             'Box\Spout\Common\Type',
@@ -82,9 +92,14 @@ $rules = [
     // tests
     $builder->only(
         [
-            // Onboarder coupling
+            // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
+
+            // Supplier Portal Supplier coupling
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
+
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Job\JobParameters',
             'Akeneo\Tool\Component\Batch\Model\JobExecution',
@@ -99,7 +114,7 @@ $rules = [
 
     $builder->only(
         [
-            // Onboarder coupling
+            // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Application',
             'Akeneo\SupplierPortal\Retailer\Infrastructure',
@@ -117,7 +132,7 @@ $rules = [
 
     $builder->only(
         [
-            // Onboarder coupling
+            // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Application\Supplier',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier',

@@ -109,11 +109,11 @@ final class HandleQuantifiedAssociationsValueTest extends AssociationTestCase
     private function loadAssociatedEntityLabels(): void
     {
         /** @var InMemoryFindProductLabels $productLabelRepository */
-        $productLabelRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface');
+        $productLabelRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface');
         $productLabelRepository->addProductLabel('1111111171', 'ecommerce', 'en_US', 'Bag');
 
         /** @var InMemoryFindProductModelLabels $productLabelRepository */
-        $productLabelRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface');
+        $productLabelRepository = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface');
         $productLabelRepository->addProductModelLabel('diana', 'ecommerce', 'en_US', 'Diana');
     }
 }

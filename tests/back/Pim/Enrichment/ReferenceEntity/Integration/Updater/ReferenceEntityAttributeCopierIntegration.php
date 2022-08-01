@@ -168,6 +168,7 @@ class ReferenceEntityAttributeCopierIntegration extends TestCase
      */
     private function createProduct(string $identifier, array $userIntents): ProductInterface
     {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,

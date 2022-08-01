@@ -37,12 +37,12 @@ final class ControllerIntegration extends KernelTestCase
         $smtpCheckerKo = new SmtpChecker($this->createMock(\Swift_Transport::class), $this->createMock(LoggerInterface::class));
 
         $this->controller = new Controller(
-            self::$container->get(MysqlChecker::class),
-            self::$container->get(ElasticsearchChecker::class),
-            self::$container->get(FileStorageChecker::class),
+            self::getContainer()->get(MysqlChecker::class),
+            self::getContainer()->get(ElasticsearchChecker::class),
+            self::getContainer()->get(FileStorageChecker::class),
             $smtpCheckerKo,
-            self::$container->get('akeneo_monitoring.status_checker.pub_sub'),
-            self::$container->get('logger'),
+            self::getContainer()->get('akeneo_monitoring.status_checker.pub_sub'),
+            self::getContainer()->get('logger'),
             'my_auth_token'
         );
     }
@@ -139,11 +139,11 @@ final class ControllerIntegration extends KernelTestCase
 
         $this->controller = new Controller(
             $mysqlCheckerKo,
-            self::$container->get(ElasticsearchChecker::class),
-            self::$container->get(FileStorageChecker::class),
-            self::$container->get(SmtpChecker::class),
-            self::$container->get('akeneo_monitoring.status_checker.pub_sub'),
-            self::$container->get('logger'),
+            self::getContainer()->get(ElasticsearchChecker::class),
+            self::getContainer()->get(FileStorageChecker::class),
+            self::getContainer()->get(SmtpChecker::class),
+            self::getContainer()->get('akeneo_monitoring.status_checker.pub_sub'),
+            self::getContainer()->get('logger'),
             'my_auth_token'
         );
 

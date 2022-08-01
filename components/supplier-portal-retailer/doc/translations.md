@@ -23,7 +23,8 @@ Github PRs are automatically created and merged by a Github Akeneo Nelson user.
 
 We are using our own configuration file for Supplier Portal. It is not under VCS, it is configured directly on the
 Githook server.
-The filepath is `/home/akeneo/nelson/config/onboarder-serenity.yml`.
+
+The file paths are `/home/akeneo/nelson/config/supplier-portal-retailer.yml` and `/home/akeneo/nelson/config/supplier-portal-supplier.yml`.
 
 ## Troubeshooting
 
@@ -36,4 +37,8 @@ If you have some troubles to connect to the Githook server that hosts Nelson too
 
 If you need to debug the synchronization between Nelson and Crowdin on the Githook server, you can check
   * the crontab using `crontab -l`
-  * the following log files `/tmp/nelson_pull_onboarder_serenity.log` and `/tmp/nelson_push_onboarder_serenity.log`
+  * the following log files:
+    * `/tmp/nelson_pull_supplier_portal_retailer.log`
+    * `/tmp/nelson_push_supplier_portal_retailer.log`
+    * `/tmp/nelson_pull_supplier_portal_supplier.log`
+    * `/tmp/nelson_push_supplier_portal_supplier.log`

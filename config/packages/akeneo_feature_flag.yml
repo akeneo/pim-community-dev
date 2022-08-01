@@ -9,8 +9,8 @@ akeneo_feature_flag:
         - { feature: 'reference_entity', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'new_shared_catalog_branding', service: 'akeneo.shared_catalog.feature.new_shared_catalog_branding' }
         - { feature: 'app_developer_mode', service: 'akeneo_connectivity.connection.app_developer_mode.feature' }
-        - { feature: 'onboarder_serenity', service: 'akeneo.onboarder_serenity.feature' }
-        - { feature: 'onboarder_serenity_contributor_authentication', service: 'akeneo.onboarder_serenity_contributor_authentication.feature' }
+        - { feature: 'supplier_portal', service: 'akeneo.supplier_portal.feature' }
+        - { feature: 'supplier_portal_contributor_authentication', service: 'akeneo.supplier_portal_contributor_authentication.feature' }
         - { feature: 'permission', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'product_rules', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'asset_manager', service: 'akeneo.feature_flag.service.only_serenity_feature' }
@@ -24,3 +24,5 @@ akeneo_feature_flag:
         - { feature: 'sso_configuration', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'job_automation_local_storage', service: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature' }
         - { feature: 'supplier_portal_supplier_file_dropping', service: 'akeneo.supplier_portal_supplier_file_dropping.feature' }
+        - { feature: 'job_automation', service: 'akeneo.job_automation.feature' }
+        - { feature: 'enriched_category', service: 'akeneo.category.enriched.feature'}

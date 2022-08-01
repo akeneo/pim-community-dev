@@ -21,6 +21,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToDateOperation
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\FamilyReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
@@ -66,6 +67,7 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
                 SimpleSelectReplacementOperation::TYPE => new SimpleSelectReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 MultiSelectReplacementOperation::TYPE => new MultiSelectReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 CategoriesReplacementOperation::TYPE => new CategoriesReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
+                FamilyReplacementOperation::TYPE => new FamilyReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" Operation type', $normalizedOperation['type'])),
             },
             $normalizedOperations,

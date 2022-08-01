@@ -77,6 +77,8 @@ USE_ONBOARDER_CATALOG ?= false
 UPGRADE_STEP_2 ?= false
 BUCKET_PIM_SRC_DIR ?= gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)
 MAIN_TF_TEMPLATE ?= $(PRODUCT_REFERENCE_TYPE)
+# If not set retrieve latest release of cloud-saas for storage-backup terraform module ( Default=Latest)
+STORAGE_BACKUP_VERSION ?= $$(curl -s -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/akeneo/cloud-saas/releases/latest | jq -r '.name')
 
 ifeq ($(CI),true)
 	TF_INPUT_FALSE ?= -input=false
@@ -339,9 +341,9 @@ create-pim-main-tf: $(INSTANCE_DIR)
 	AKENEO_CONNECT_SAML_SP_CLIENT_ID=${AKENEO_CONNECT_SAML_SP_CLIENT_ID} \
 	AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64=${AKENEO_CONNECT_SAML_SP_CERTIFICATE_BASE64} \
 	AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64=${AKENEO_CONNECT_SAML_SP_PRIVATE_KEY_BASE64} \
+	STORAGE_BACKUP_VERSION=${STORAGE_BACKUP_VERSION} \
 	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
-
 ifeq ($(USE_EDITION_FLAG),true)
 	yq w -j -P -i  ${INSTANCE_DIR}/main.tf.json  'module.pim.use_edition_flag' true
 endif

@@ -57,5 +57,5 @@ jobs:
                     command:  |
                         PIM_CONTEXT=supplier-portal make install-front-dependencies-supplier
             -   run:
-                    name: Run tests front for Onboarder Serenity
+                    name: Run tests front for Supplier Portal
                     command: PIM_CONTEXT=supplier-portal make tests-front-supplier-portal

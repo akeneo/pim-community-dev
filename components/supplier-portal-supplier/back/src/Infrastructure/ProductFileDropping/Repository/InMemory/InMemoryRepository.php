@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Repo
 
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\SupplierFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\SupplierFileRepository;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Identifier;
+use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 
 final class InMemoryRepository implements SupplierFileRepository
 {
@@ -14,13 +14,13 @@ final class InMemoryRepository implements SupplierFileRepository
 
     public function save(SupplierFile $supplierFile): void
     {
-        $this->supplierFiles[$supplierFile->identifier()] = $supplierFile;
+        $this->supplierFiles[$supplierFile->uploadedByContributor()] = $supplierFile;
     }
 
-    public function find(Identifier $identifier): ?SupplierFile
+    public function findByContributor(ContributorEmail $uploadedByContributor): ?SupplierFile
     {
         foreach ($this->supplierFiles as $supplierFile) {
-            if ((string) $identifier === $supplierFile->identifier()) {
+            if ((string) $uploadedByContributor === $supplierFile->uploadedByContributor()) {
                 return $supplierFile;
             }
         }

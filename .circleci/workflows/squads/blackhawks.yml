@@ -2,7 +2,7 @@ client-to-clone-srnt: &client-to-clone-srnt
 client-to-clone-grth: &client-to-clone-grth
 
 orbs:
-  security-hunter: akeneo-orbs/security-hunter@1.0.5
+  security-hunter: akeneo-orbs/security-hunter@1.0.9
 
 workflows:
     dev_pull_request:
@@ -24,22 +24,34 @@ workflows:
             - build_srnt_dev:
                   requires:
                       - checkout
-            - security-hunter/scan-latest-commits:
-                  exit_code_when_failure: 1
+
+            # Security tests
+            - security-hunter/detect-secrets-in-latest-commits:
+                  requires:
+                      - ready_to_build?
+            - security-hunter/detect-secrets-in-directory:
+                  requires:
+                      - checkout
+            - security-hunter/scan-dependencies:
+                  exit_code_when_failure: 0
+                  requires:
+                      - checkout
+            - security-hunter/scan-dockerfile:
+                  exit_code_when_failure: 0
+                  requires:
+                      - checkout
+            - security-hunter/scan-iac-files:
+                  exclude_rules: "google-storage-enable-ubla"
+                  requires:
+                      - checkout
+            - security-hunter/scan-docker-image:
+                  archive_name: "php-pim-image.tar"
+                  image_name: "akeneo/pim-dev/php:8.0"
+                  exit_code_when_failure: 0
                   requires:
                       - build_srnt_dev
-            - security-hunter/scan-dir:
-                  severity: "CRITICAL"
-                  only_secrets: false
-                  exit_code_when_failure: 1
-                  requires:
-                      - build_srnt_dev
-            - security-hunter/scan-image:
-                  severity: "CRITICAL"
-                  only_secrets: false
-                  exit_code_when_failure: 1
-                  requires:
-                      - build_srnt_dev
+            # End of security tests
+
             - test_back_integration_bounded_contexts:
                   requires:
                       - build_srnt_dev
@@ -92,9 +104,14 @@ workflows:
                       - test_back_data_migrations
                       - test_grth
                       - test_tria
-                      - security-hunter/scan-latest-commits
-                      - security-hunter/scan-dir
-                      - security-hunter/scan-image
+                      # Required security tests
+                      - security-hunter/detect-secrets-in-latest-commits
+                      - security-hunter/detect-secrets-in-directory
+                      - security-hunter/scan-iac-files
+                      - security-hunter/scan-dependencies
+                      - security-hunter/scan-dockerfile
+                      - security-hunter/scan-docker-image
+                      # End of security tests
 
     deployments_pull_request:
         when:

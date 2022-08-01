@@ -30,7 +30,16 @@ final class DatabaseGetContributorAccountByEmailIntegration extends SqlIntegrati
         static::assertNull($contributorAccount);
     }
 
-    public function insertContributorAccount(string $id, string $email): void
+    /** @test */
+    public function itGetsNullIfAUserExitsWithNoPassword(): void
+    {
+        $this->insertContributorAccount('9f4c017c-7682-4f83-9099-dd9afcada1a2', 'test@example.com', null);
+        $contributorAccount = $this->get(DatabaseGetContributorAccountByEmail::class)('test@example.com');
+
+        static::assertNull($contributorAccount);
+    }
+
+    private function insertContributorAccount(string $id, string $email, ?string $password = 'foo'): void
     {
         $sql = <<<SQL
             INSERT INTO akeneo_supplier_portal_contributor_account (
@@ -38,7 +47,7 @@ final class DatabaseGetContributorAccountByEmailIntegration extends SqlIntegrati
             ) VALUES (
                 :id,
                 :email,
-                'foo',
+                :password,
                 'access-token',
                 NOW(),
                 NOW()
@@ -48,6 +57,7 @@ final class DatabaseGetContributorAccountByEmailIntegration extends SqlIntegrati
         $this->connection->executeQuery($sql, [
             'id' => $id,
             'email' => $email,
+            'password' => $password,
         ]);
     }
 }
