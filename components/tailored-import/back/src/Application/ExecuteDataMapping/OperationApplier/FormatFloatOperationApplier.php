@@ -35,11 +35,11 @@ final class FormatFloatOperationApplier implements OperationApplierInterface
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
-        $floatValue = floatval(str_replace(
+        $floatValue = str_replace(
             $operation->getDecimalSeparator(),
             self::DEFAULT_DECIMAL_SEPARATOR,
             $value->getValue(),
-        ));
+        );
 
         if (!is_numeric($floatValue)) {
             return new InvalidValue(sprintf(
@@ -49,7 +49,11 @@ final class FormatFloatOperationApplier implements OperationApplierInterface
             ));
         }
 
-        return new StringValue(number_format($floatValue, MeasureConverter::SCALE));
+        return new StringValue(number_format(
+            (float) $floatValue,
+            decimals: MeasureConverter::SCALE,
+            thousands_separator: '')
+        );
     }
 
     public function supports(OperationInterface $operation): bool

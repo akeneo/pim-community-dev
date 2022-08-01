@@ -29,6 +29,10 @@ class ConvertToDateOperationApplier implements OperationApplierInterface
             throw new UnexpectedValueException($operation, ConvertToDateOperation::class, self::class);
         }
 
+        if ($value instanceof InvalidValue) {
+            return $value;
+        }
+
         if (!$value instanceof StringValue) {
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }

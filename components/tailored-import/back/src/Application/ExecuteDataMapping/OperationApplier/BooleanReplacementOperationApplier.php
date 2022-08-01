@@ -29,6 +29,10 @@ final class BooleanReplacementOperationApplier implements OperationApplierInterf
             throw new UnexpectedValueException($operation, BooleanReplacementOperation::class, self::class);
         }
 
+        if ($value instanceof InvalidValue) {
+            return $value;
+        }
+
         if (!$value instanceof StringValue) {
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
