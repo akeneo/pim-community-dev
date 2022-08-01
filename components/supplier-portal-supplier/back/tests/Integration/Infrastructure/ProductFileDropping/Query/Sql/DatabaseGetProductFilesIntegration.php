@@ -110,7 +110,7 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
                     uploaded_at
                 ) VALUES (
                     :identifier,
-                    :original_filename,
+                    :originalFilename,
                     :path,
                     :contributorEmail,
                     :supplierIdentifier,
@@ -122,7 +122,7 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
                 $sql,
                 [
                     'identifier' => Uuid::uuid4()->toString(),
-                    'original_filename' => sprintf('products_%d.xlsx', $i+1),
+                    'originalFilename' => sprintf('products_%d.xlsx', $i+1),
                     'path' => sprintf('supplier1/%s-products_1.xlsx', Uuid::uuid4()->toString()),
                     'contributorEmail' => $i % 2 ? 'contributor1@example.com' : 'contributor2@example.com',
                     'supplierIdentifier' => 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',

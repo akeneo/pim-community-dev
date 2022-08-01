@@ -59,7 +59,7 @@ final class DatabaseGetProductFilenameFromIdentifierIntegration extends SqlInteg
                 uploaded_at
             ) VALUES (
                 :identifier,
-                :original_filename,
+                :originalFilename,
                 :path,
                 :contributorEmail,
                 :supplierIdentifier,
@@ -68,7 +68,7 @@ final class DatabaseGetProductFilenameFromIdentifierIntegration extends SqlInteg
         SQL,
             [
                 'identifier' => 'e6949a68-177e-4451-ad62-4debf90df079',
-                'original_filename' => 'products_file_1.xlsx',
+                'originalFilename' => 'products_file_1.xlsx',
                 'path' => sprintf(
                     'supplier1/%s-products_file_1.xlsx',
                     Uuid::uuid4()->toString(),
@@ -90,7 +90,7 @@ final class DatabaseGetProductFilenameFromIdentifierIntegration extends SqlInteg
                 uploaded_at
             ) VALUES (
                 :identifier,
-                :original_filename,
+                :originalFilename,
                 :path,
                 :contributorEmail,
                 :supplierIdentifier,
@@ -99,7 +99,7 @@ final class DatabaseGetProductFilenameFromIdentifierIntegration extends SqlInteg
         SQL,
             [
                 'identifier' => 'ef8a6fd2-18b4-4fc2-af07-839d7d039e6a',
-                'original_filename' => 'products_file_2.xlsx',
+                'originalFilename' => 'products_file_2.xlsx',
                 'path' => sprintf(
                     'supplier1/%s-products_file_2.xlsx',
                     Uuid::uuid4()->toString(),
