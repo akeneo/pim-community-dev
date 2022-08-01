@@ -14,3 +14,9 @@ variable "crossplane_k8s_sa" {
   type        = string
   default     = "crossplane"
 }
+
+variable "secrets_admins" {
+  description = "Secrets version managers"
+  type        = list(string)
+  default     = []
+}
