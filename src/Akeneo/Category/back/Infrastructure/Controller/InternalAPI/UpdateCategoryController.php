@@ -9,9 +9,9 @@ use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Api\Command\UpsertCategoryCommand;
 use Akeneo\Category\Application\Converter\ConverterInterface;
 use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsStub;
+use Akeneo\Category\Application\Filter\CategoryEditACLFilter;
 use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
 use Akeneo\Category\Application\Query\FindCategoryByIdentifier;
-use Akeneo\Category\Application\Filter\CategoryEditACLFilter;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +62,7 @@ class UpdateCategoryController
             return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
         $category = ($this->findCategoryByIdentifier)($id);
-        if($category === null) {
+        if ($category === null) {
             throw new NotFoundHttpException('Category not found');
         }
         $normalizedCategory = $category->normalize();
