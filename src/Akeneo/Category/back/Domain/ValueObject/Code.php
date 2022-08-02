@@ -12,7 +12,6 @@ use Webmozart\Assert\Assert;
  */
 class Code
 {
-    //Todo : Add validation on creation
     public function __construct(private string $code)
     {
         Assert::notEmpty($code);
