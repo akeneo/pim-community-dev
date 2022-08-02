@@ -16,7 +16,7 @@ final class DownloadProductFileHandler
 {
     public function __construct(
         private GetSupplierFilePath $getSupplierFilePath,
-        private DownloadStoredProductFile $downloadStoredProductsFile,
+        private DownloadStoredProductFile $downloadStoredProductFile,
         private EventDispatcherInterface $eventDispatcher,
         private LoggerInterface $logger,
     ) {
@@ -32,7 +32,7 @@ final class DownloadProductFileHandler
 
         try {
             //FlySystem can throw exceptions that do not extend \Exception but \Throwable, wich is one level higher
-            $supplierFileStream = ($this->downloadStoredProductsFile)($supplierFilePath);
+            $supplierFileStream = ($this->downloadStoredProductFile)($supplierFilePath);
         } catch (\Throwable $e) {
             $this->logger->error('Supplier file could not be downloaded', [
                 'data' => [

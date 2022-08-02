@@ -16,7 +16,7 @@ use Psr\Log\LoggerInterface;
 final class DownloadProductFileHandler
 {
     public function __construct(
-        private DownloadStoredProductFile $downloadStoredProductsFile,
+        private DownloadStoredProductFile $downloadStoredProductFile,
         private GetProductFilePathAndFileName $getProductFilePathAndFileName,
         private LoggerInterface $logger,
     ) {
@@ -33,7 +33,7 @@ final class DownloadProductFileHandler
         }
 
         try {
-            $productFileStream = ($this->downloadStoredProductsFile)(
+            $productFileStream = ($this->downloadStoredProductFile)(
                 Path::fromString($productFilePathAndFileName->path)
             );
         } catch (\Throwable $e) {
