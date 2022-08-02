@@ -99,7 +99,7 @@ abstract class EnrichmentProductTestCase extends TestCase
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('peter'),
-            productIdentifier: $identifier,
+            identifierOrUuid: $identifier,
             userIntents: $userIntents
         );
         $this->commandMessageBus->dispatch($command);

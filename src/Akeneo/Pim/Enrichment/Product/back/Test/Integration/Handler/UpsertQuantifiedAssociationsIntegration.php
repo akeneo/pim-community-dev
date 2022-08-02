@@ -38,16 +38,16 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
         $this->productRepository = $this->get('pim_catalog.repository.product');
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
 
-        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'identifier'));
+        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), identifierOrUuid: 'identifier'));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('identifier'));
 
-        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product1'));
+        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), identifierOrUuid: 'associated_product1'));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product1'));
 
-        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product2'));
+        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), identifierOrUuid: 'associated_product2'));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product1'));
 
-        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product3'));
+        $this->commandMessageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), identifierOrUuid: 'associated_product3'));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product3'));
 
         $this->createProductModel('product_model1', 'color_variant_accessories', []);

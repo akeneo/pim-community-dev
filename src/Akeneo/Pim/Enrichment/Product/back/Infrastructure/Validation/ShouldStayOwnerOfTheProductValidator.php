@@ -10,6 +10,8 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier as ProductIdentifierValueObject;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
@@ -46,14 +48,38 @@ final class ShouldStayOwnerOfTheProductValidator extends ConstraintValidator
         Assert::isInstanceOf($command, UpsertProductCommand::class);
 
         if ($categoryUserIntent instanceof SetCategories) {
-            $nonViewableCategoryCodes = $this->getNonViewableCategoryCodes->fromProductIdentifiers([
-                ProductIdentifier::fromString($command->productIdentifier()),
-            ], $command->userId())[$command->productIdentifier()] ?? [];
+            $nonViewableCategoryCodes = [];
+            if ($command->identifierOrUuid() instanceof ProductIdentifierValueObject) {
+                $nonViewableCategoryCodes = $this->getNonViewableCategoryCodes->fromProductIdentifiers([
+                        ProductIdentifier::fromString($command->identifierOrUuid()->identifier()),
+                    ], $command->userId())[$command->identifierOrUuid()->identifier()] ?? [];
+            } elseif ($command->identifierOrUuid() instanceof ProductUuid) {
+                $nonViewableCategoryCodes = $this->getNonViewableCategoryCodes->fromProductUuids([
+                        $command->identifierOrUuid()->uuid(),
+                    ], $command->userId())[$command->identifierOrUuid()->uuid()->toString()] ?? [];
+            } elseif (\is_string($command->identifierOrUuid())) {
+                $nonViewableCategoryCodes = $this->getNonViewableCategoryCodes->fromProductIdentifiers([
+                        ProductIdentifier::fromString($command->identifierOrUuid()),
+                    ], $command->userId())[$command->identifierOrUuid()] ?? [];
+            }
+
             $newCategoryCodes = \array_merge($categoryUserIntent->categoryCodes(), $nonViewableCategoryCodes);
         } elseif ($categoryUserIntent instanceof RemoveCategories) {
-            $productCategoryCodes = $this->getCategoryCodes->fromProductIdentifiers([
-                ProductIdentifier::fromString($command->productIdentifier()),
-            ])[$command->productIdentifier()] ?? [];
+            $productCategoryCodes = [];
+            if ($command->identifierOrUuid() instanceof ProductIdentifierValueObject) {
+                $productCategoryCodes = $this->getCategoryCodes->fromProductIdentifiers([
+                        ProductIdentifier::fromString($command->identifierOrUuid()->identifier()),
+                    ])[$command->identifierOrUuid()->identifier()] ?? [];
+            } elseif ($command->identifierOrUuid() instanceof ProductUuid) {
+                $productCategoryCodes = $this->getCategoryCodes->fromProductUuids([
+                        $command->identifierOrUuid()->uuid()
+                    ])[$command->identifierOrUuid()->uuid()->toString()] ?? [];
+            } elseif (\is_string($command->identifierOrUuid())) {
+                $productCategoryCodes = $this->getCategoryCodes->fromProductIdentifiers([
+                        ProductIdentifier::fromString($command->identifierOrUuid()),
+                    ])[$command->identifierOrUuid()] ?? [];
+            }
+
             $newCategoryCodes = \array_values(\array_diff($productCategoryCodes, $categoryUserIntent->categoryCodes()));
         } else {
             throw new \LogicException('Not implemented');

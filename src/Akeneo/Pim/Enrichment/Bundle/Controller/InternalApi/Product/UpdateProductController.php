@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsExceptio
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -177,7 +178,7 @@ final class UpdateProductController
         $userId = $this->userContext->getUser()?->getId();
         $command = UpsertProductCommand::createFromCollection(
             $userId,
-            $product->getIdentifier() ?? '',
+            ProductIdentifier::fromSku($product->getIdentifier()) ?? '',
             $userIntents
         );
         $this->commandMessageBus->dispatch($command);

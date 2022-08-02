@@ -297,7 +297,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
                 return null;
             }
         };
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: [
+        $command = new UpsertProductCommand(userId: 1, identifierOrUuid: 'identifier', valueUserIntents: [
             $unknownUserIntent
         ]);
 
@@ -326,7 +326,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
     ) {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: []);
+        $command = new UpsertProductCommand(userId: 1, identifierOrUuid: 'identifier', valueUserIntents: []);
 
         $product = new Product();
         $product->setIdentifier('identifier1');

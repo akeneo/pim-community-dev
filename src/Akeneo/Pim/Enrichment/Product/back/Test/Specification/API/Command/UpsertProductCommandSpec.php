@@ -23,7 +23,10 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -78,8 +81,44 @@ class UpsertProductCommandSpec extends ObjectBehavior
             $valueUserIntents
         );
         $this->userId()->shouldReturn(1);
-        $this->productIdentifier()->shouldReturn('identifier1');
+        $this->identifierOrUuid()->shouldReturn('identifier1');
         $this->valueUserIntents()->shouldReturn($valueUserIntents);
+    }
+
+    function it_can_be_constructed_with_product_identifier()
+    {
+        $this->beConstructedWith(
+            1,
+            ProductIdentifier::fromAttributeCodeAndIdentifier('sku', 'identifier'),
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            []
+        );
+        $this->identifierOrUuid()->identifier()->shouldReturn('identifier');
+        $this->identifierOrUuid()->attributeCode()->shouldReturn('sku');
+    }
+
+    function it_can_be_constructed_with_product_uuid()
+    {
+        $uuid = Uuid::uuid4();
+        $this->beConstructedWith(
+            1,
+            ProductUuid::fromUuid($uuid),
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            []
+        );
+        $this->identifierOrUuid()->uuid()->toString()->shouldReturn($uuid->toString());
     }
 
     function it_cannot_be_constructed_with_bad_value_user_intent()
@@ -116,7 +155,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
             []
         );
         $this->userId()->shouldReturn(1);
-        $this->productIdentifier()->shouldReturn('identifier1');
+        $this->identifierOrUuid()->shouldReturn('identifier1');
         $this->familyUserIntent()->shouldReturn($familyUserIntent);
         $this->categoryUserIntent()->shouldReturn($categoryUserIntent);
         $this->valueUserIntents()->shouldReturn([]);
@@ -151,7 +190,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
         ]);
 
         $this->userId()->shouldReturn(10);
-        $this->productIdentifier()->shouldReturn('identifier1');
+        $this->identifierOrUuid()->shouldReturn('identifier1');
         $this->familyUserIntent()->shouldReturn($familyUserIntent);
         $this->categoryUserIntent()->shouldReturn($categoryUserIntent);
         $this->groupUserIntent()->shouldReturn($setGroupsIntent);

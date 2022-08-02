@@ -33,7 +33,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_with_a_wrong_constraint()
     {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'foo');
+        $command = new UpsertProductCommand(userId: 1, identifierOrUuid: 'foo');
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [$command, new Type([])]);
     }
@@ -52,7 +52,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
 
         $context->getRoot()->willReturn(new UpsertProductCommand(
             userId: 1,
-            productIdentifier: 'foo',
+            identifierOrUuid: 'foo',
             valueUserIntents: [$valueUserIntent]
         ));
         $isLocaleEditable->forUserId('en_US', 1)->willReturn(true);
@@ -71,7 +71,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
 
         $context->getRoot()->willReturn(new UpsertProductCommand(
             userId: 1,
-            productIdentifier: 'foo',
+            identifierOrUuid: 'foo',
             valueUserIntents: [$valueUserIntent]
         ));
         $isLocaleEditable->forUserId('de_DE', 1)->willReturn(false);
@@ -92,7 +92,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
 
         $context->getRoot()->willReturn(new UpsertProductCommand(
             userId: 1,
-            productIdentifier: 'foo',
+            identifierOrUuid: 'foo',
             valueUserIntents: [$valueUserIntent]
         ));
         $isLocaleEditable->forUserId(Argument::any())->shouldNotBeCalled();

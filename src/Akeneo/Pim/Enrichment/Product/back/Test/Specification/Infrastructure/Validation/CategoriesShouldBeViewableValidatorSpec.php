@@ -32,7 +32,7 @@ class CategoriesShouldBeViewableValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_with_a_wrong_constraint()
     {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'foo');
+        $command = new UpsertProductCommand(userId: 1, identifierOrUuid: 'foo');
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [$command, new Type([])]);
     }
@@ -51,7 +51,7 @@ class CategoriesShouldBeViewableValidatorSpec extends ObjectBehavior
 
         $context->getRoot()->willReturn(new UpsertProductCommand(
             userId: 1,
-            productIdentifier: 'foo',
+            identifierOrUuid: 'foo',
             categoryUserIntent: $categoryUserIntent
         ));
         $getViewableCategories->forUserId(['master', 'print', 'ecommerce'], 1)->willReturn(['master', 'print', 'ecommerce']);
@@ -69,7 +69,7 @@ class CategoriesShouldBeViewableValidatorSpec extends ObjectBehavior
 
         $context->getRoot()->willReturn(new UpsertProductCommand(
             userId: 1,
-            productIdentifier: 'foo',
+            identifierOrUuid: 'foo',
             categoryUserIntent: $categoryUserIntent
         ));
         $getViewableCategories->forUserId(['master', 'print', 'ecommerce'], 1)->willReturn(['master', 'ecommerce']);
@@ -92,7 +92,7 @@ class CategoriesShouldBeViewableValidatorSpec extends ObjectBehavior
 
         $context->getRoot()->willReturn(new UpsertProductCommand(
             userId: 1,
-            productIdentifier: 'foo',
+            identifierOrUuid: 'foo',
             categoryUserIntent: $categoryUserIntent
         ));
         $getViewableCategories->forUserId(['master', 'print', 'ecommerce'], 1)->willReturn(['master']);
