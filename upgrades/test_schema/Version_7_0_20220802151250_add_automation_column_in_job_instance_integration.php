@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema\Tests;
 
-use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Doctrine\DBAL\Connection;
 
 final class Version_7_0_20220802151250_add_automation_column_in_job_instance_integration extends TestCase
@@ -26,15 +24,11 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance_int
     private const MIGRATION_LABEL = '_7_0_20220802151250_add_automation_column_in_job_instance_integration';
 
     private Connection $connection;
-    private JobInstanceRepository $jobInstanceRepository;
-    private VersionProviderInterface $versionProvider;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->connection = $this->get('database_connection');
-        $this->jobInstanceRepository = $this->get('akeneo_batch.job.job_instance_repository');
-        $this->versionProvider = $this->get('pim_catalog.version_provider');
     }
 
     public function testItAddAutomationColumnOfTypeJson()
