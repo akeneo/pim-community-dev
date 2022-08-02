@@ -31,6 +31,10 @@ final class FormatFloatOperationApplier implements OperationApplierInterface
             throw new UnexpectedValueException($operation, FormatFloatOperation::class, self::class);
         }
 
+        if ($value instanceof InvalidValue) {
+            return $value;
+        }
+
         if (!$value instanceof StringValue) {
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
@@ -52,8 +56,8 @@ final class FormatFloatOperationApplier implements OperationApplierInterface
         return new StringValue(number_format(
             (float) $floatValue,
             decimals: MeasureConverter::SCALE,
-            thousands_separator: '')
-        );
+            thousands_separator: '',
+        ));
     }
 
     public function supports(OperationInterface $operation): bool
