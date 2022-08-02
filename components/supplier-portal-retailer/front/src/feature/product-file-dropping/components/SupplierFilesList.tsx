@@ -4,6 +4,7 @@ import {Badge, DownloadIcon, IconButton, Pagination, Table, getColor} from 'aken
 import {useDateFormatter, useTranslate, useRouter} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {EmptySupplierFilesList} from './EmptySupplierFilesList';
+import {SupplierFileRow} from "../models/SupplierFileRow";
 
 export const SUPPLIER_FILES_PER_PAGE = 25;
 
@@ -77,7 +78,7 @@ const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onCh
                                         <Table.Cell>{uploadedDate}</Table.Cell>
                                         <Table.Cell>{supplierFile.contributor}</Table.Cell>
                                         { displaySupplierColumn && (
-                                        <Table.Cell>{supplierFile.supplier}</Table.Cell>
+                                        <Table.Cell>{supplierFile.hasOwnProperty('supplier') ? supplierFile.supplier : null}</Table.Cell>
                                         )}
                                         <Table.Cell>
                                             {'Downloaded' === supplierFile.status && (
