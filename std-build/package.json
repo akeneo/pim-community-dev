@@ -47,7 +47,8 @@
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Automation/RuleEngine/front",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
-    "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity"
+    "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
+    "vendor/akeneo/pim-enterprise-dev/tria/front-packages/free-trial"
   ],
   "resolutions": {
     "akeneo-design-system": "link:vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system"
