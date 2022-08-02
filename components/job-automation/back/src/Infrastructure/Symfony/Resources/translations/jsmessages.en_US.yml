@@ -4,7 +4,7 @@ akeneo.job_automation:
     title: 'Scheduling'
     running_user_groups:
       label: 'Permission user groups'
-      disabled_helper: 'You don’t have permission to list user groups for your role.'
+      disabled_helper: You do not have permission to list user groups for your role.
     enable: Enable scheduling
     frequency:
       title: Frequency

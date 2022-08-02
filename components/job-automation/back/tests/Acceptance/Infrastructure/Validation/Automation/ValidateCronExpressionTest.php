@@ -33,6 +33,21 @@ class ValidateCronExpressionTest extends AbstractValidationTest
     public function invalidCronExpression(): array
     {
         return [
+            'Cron expression with invalid type' => [
+                4,
+                'This value should be of type string.',
+                '',
+            ],
+            'Cron expression with too much sub expressions' => [
+                '0 0 0 * * *',
+                CronExpression::INVALID_FREQUENCY_OPTION,
+                '',
+            ],
+            'Cron expression with too few sub expressions' => [
+                '0 0 0 *',
+                CronExpression::INVALID_FREQUENCY_OPTION,
+                '',
+            ],
             'Cron expression with invalid frequency option' => [
                 '0 0 0 * *',
                 CronExpression::INVALID_FREQUENCY_OPTION,
@@ -90,7 +105,7 @@ class ValidateCronExpressionTest extends AbstractValidationTest
      * @dataProvider invalidCronExpression
      */
     public function test_it_builds_violations_when_cron_expression_is_invalid(
-        string $value,
+        mixed $value,
         string $expectedErrorMessage,
         string $expectedErrorPath,
     ): void {

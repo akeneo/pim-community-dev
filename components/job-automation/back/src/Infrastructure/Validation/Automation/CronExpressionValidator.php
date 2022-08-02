@@ -30,7 +30,20 @@ class CronExpressionValidator extends ConstraintValidator
 
         $this->context->getValidator()->inContext($this->context)->validate($value, new Type('string'));
 
-        [$minutes, $hours, $day, $month, $weekDayNumber] = explode(' ', $value);
+        if (0 < $this->context->getViolations()->count()) {
+            return;
+        }
+
+        $subExpressions = explode(' ', $value);
+
+        if (5 !== count($subExpressions)) {
+            $this->context->buildViolation(CronExpression::INVALID_FREQUENCY_OPTION)
+                ->addViolation();
+
+            return;
+        }
+
+        [$minutes, $hours, $day, $month, $weekDayNumber] = $subExpressions;
 
         if ('*' !== $day || '*' !== $month) {
             $this->context->buildViolation(CronExpression::INVALID_FREQUENCY_OPTION)
