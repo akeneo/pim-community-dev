@@ -82,7 +82,7 @@ const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onCh
                                                 icon={<DownloadIcon />}
                                                 title=""
                                                 ghost={'borderless'}
-                                                href={router.generate('supplier_portal_supplier_download_file', {
+                                                href={router.generate('supplier_portal_retailer_download_file', {
                                                     identifier: supplierFile.identifier,
                                                 })}
                                             />
