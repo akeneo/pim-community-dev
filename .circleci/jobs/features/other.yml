@@ -137,10 +137,13 @@ jobs:
             - run:
                   name: Gather Junit test result files in the same directory to improve the render of failing tests
                   command: |
-                      set -e
-                      cd var/tests/behat
-                      sudo chmod -R 777 .
-                      for subdir in */*; do mv "${subdir}" "${subdir/\//_}"; done
+                      DIR=var/tests/behat
+                      if [ -d "$DIR" ]; then
+                        set -e
+                        cd var/tests/behat
+                        sudo chmod -R 777 .
+                        for subdir in */*; do mv "${subdir}" "${subdir/\//_}"; done
+                      fi
                   when: always
             - store_test_results:
                   path: var/tests/behat
