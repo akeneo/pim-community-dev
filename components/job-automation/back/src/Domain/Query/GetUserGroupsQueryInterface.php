@@ -11,10 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Infrastructure\Symfony;
+namespace Akeneo\Platform\JobAutomation\Domain\Query;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-class AkeneoJobAutomationBundle extends Bundle
+interface GetUserGroupsQueryInterface
 {
+    public function execute(): array;
 }

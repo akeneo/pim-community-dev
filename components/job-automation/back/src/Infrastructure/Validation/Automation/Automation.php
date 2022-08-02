@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Infrastructure\Symfony;
+namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\Validator\Constraint;
 
-class AkeneoJobAutomationBundle extends Bundle
+class Automation extends Constraint
 {
 }
