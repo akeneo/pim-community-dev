@@ -184,9 +184,6 @@ class DatabaseCommand extends Command
             );
         }
 
-        // TODO: Should be in an event subscriber
-        $this->launchCommands();
-
         return Command::SUCCESS;
     }
 
@@ -296,9 +293,5 @@ class DatabaseCommand extends Command
         }
 
         return $latestMigrationProcess->getOutput();
-    }
-
-    protected function launchCommands(): void
-    {
     }
 }
