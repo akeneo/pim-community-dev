@@ -678,8 +678,8 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'foo');
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
-        // TODO: getUserId
-        $product = $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers')->fromProductIdentifier('foo', 1);
+        $userId = $this->getUserId('admin');
+        $product = $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers')->fromProductIdentifier('foo', $userId);
         $standardizedProduct = $this->get('pim_api.normalizer.connector_products')->normalizeConnectorProduct($product);
 
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['created']);
