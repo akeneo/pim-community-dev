@@ -3,9 +3,11 @@ import userEvent from '@testing-library/user-event';
 import {screen} from '@testing-library/react';
 import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
 import {JobAutomationForm} from './JobAutomationForm';
-import {Automation} from 'model';
+import {Automation} from '../models';
 
 const automation: Automation = {
+  is_enabled: true,
+  cron_expression: '0 0 * * *',
   running_user_groups: ['IT Support'],
 };
 
@@ -92,7 +94,23 @@ test('it can change the running user group', () => {
   userEvent.click(screen.getByLabelText('akeneo.job_automation.scheduling.running_user_groups.label'));
   userEvent.click(screen.getByText('Clothes manager'));
   expect(onAutomationChange).toBeCalledWith({
+    ...automation,
     running_user_groups: ['IT Support', 'Clothes manager'],
+  });
+});
+
+test('it can disable the scheduling', () => {
+  const onAutomationChange = jest.fn();
+
+  renderWithProviders(
+    <JobAutomationForm automation={automation} validationErrors={[]} onAutomationChange={onAutomationChange} />
+  );
+
+  userEvent.click(screen.getByText('pim_common.no'));
+
+  expect(onAutomationChange).toBeCalledWith({
+    ...automation,
+    is_enabled: false,
   });
 });
 

@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation;
 
 use Symfony\Component\Validator\Constraint;
@@ -19,6 +30,8 @@ class AutomationValidator extends ConstraintValidator
 
         $this->context->getValidator()->inContext($this->context)->validate($value, new Collection([
             'fields' => [
+                'is_enabled' => new Type('boolean'),
+                'cron_expression' => new CronExpression(),
                 'running_user_groups' => [
                     new All(new Type('string')),
                     new Type('array'),

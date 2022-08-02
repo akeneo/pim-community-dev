@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\JobAutomation\Test\Acceptance\Infrastructure\Validation\Automation;
 
 use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation\Automation;
@@ -20,14 +22,25 @@ class ValidateAutomationTest extends AbstractValidationTest
     public function validAutomation(): array
     {
         return [
-            'Valid automation configuration' => [
+            'Valid enabled automation configuration' => [
                 [
-                    'running_user_groups' => ['IT Support']
+                    'is_enabled' => true,
+                    'cron_expression' => '0 0 * * *',
+                    'running_user_groups' => ['IT Support'],
+                ],
+            ],
+            'Valid disabled automation configuration' => [
+                [
+                    'is_enabled' => false,
+                    'cron_expression' => '0 0 * * *',
+                    'running_user_groups' => ['IT Support'],
                 ],
             ],
             'Valid empty running user groups' => [
                 [
-                    'running_user_groups' => []
+                    'is_enabled' => true,
+                    'cron_expression' => '0 0 * * 0',
+                    'running_user_groups' => [],
                 ],
             ],
         ];
@@ -38,17 +51,21 @@ class ValidateAutomationTest extends AbstractValidationTest
         return [
             'Automation configuration with unknown key' => [
                 [
-                    'unknown_key' => ['IT Support']
+                    'is_enabled' => true,
+                    'cron_expression' => '0 0 * * *',
+                    'unknown_key' => ['IT Support'],
                 ],
                 'This field was not expected.',
-                '[unknown_key]'
+                '[unknown_key]',
             ],
             'Automation configuration with invalid running user groups' => [
                 [
-                    'running_user_groups' => 'IT Support'
+                    'is_enabled' => true,
+                    'cron_expression' => '0 0 * * *',
+                    'running_user_groups' => 'IT Support',
                 ],
                 'This value should be of type array.',
-                '[running_user_groups]'
+                '[running_user_groups]',
             ],
         ];
     }
@@ -56,20 +73,17 @@ class ValidateAutomationTest extends AbstractValidationTest
     /**
      * @dataProvider invalidAutomation
      */
-    public function test_it_build_violations_when_automation_is_invalid(
+    public function test_it_builds_violations_when_automation_is_invalid(
         array $value,
         string $expectedErrorMessage,
         string $expectedErrorPath,
     ): void {
-        $violations = $this->getValidator()->validate(
-            $value,
-            new Automation()
-        );
+        $violations = $this->getValidator()->validate($value, new Automation());
 
         $this->assertHasValidationError(
             $expectedErrorMessage,
             $expectedErrorPath,
-            $violations
+            $violations,
         );
     }
 }
