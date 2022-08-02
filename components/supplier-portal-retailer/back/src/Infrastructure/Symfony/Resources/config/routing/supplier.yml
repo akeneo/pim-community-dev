@@ -61,3 +61,12 @@ supplier_portal_retailer_get_supplier_contributors_belonging_to_another_supplier
     requirements:
         supplierIdentifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [GET]
+
+supplier_portal_retailer_supplier_product_files_list:
+    path: /product-files/{supplierIdentifier}
+    defaults:
+        _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\SupplierFilesList
+        _feature: supplier_portal_supplier_file_dropping
+    requirements:
+        supplierIdentifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+    methods: [GET]

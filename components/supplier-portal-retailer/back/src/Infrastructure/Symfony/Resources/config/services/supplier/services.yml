@@ -137,6 +137,12 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFiles'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFilesCount'
 
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\SupplierFilesList:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilesCount'
+
     # Encoders
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\XlsxSuppliersEncoder
