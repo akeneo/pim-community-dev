@@ -21,7 +21,7 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance_int
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '_7_0_20220802151250_add_automation_column_in_job_instance_integration';
+    private const MIGRATION_LABEL = '_7_0_20220802151250_add_automation_column_in_job_instance';
 
     private Connection $connection;
 
@@ -33,11 +33,11 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance_int
 
     public function testItAddAutomationColumnOfTypeJson()
     {
-        $this->removeAutomationColumn('akeneo_batch_job_execution');
+        $this->removeAutomationColumn('akeneo_batch_job_instance');
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-        $this->assertTrue($this->automationColumnExist('akeneo_batch_job_execution'));
+        $this->assertTrue($this->automationColumnExist('akeneo_batch_job_instance'));
     }
 
     private function removeAutomationColumn(string $tableName): void
