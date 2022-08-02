@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import styled from "styled-components";
-import {SupplierFilesList} from "../../../product-file-dropping/components/SupplierFilesList";
+import styled from 'styled-components';
+import {SupplierFilesList} from '../../../product-file-dropping/components/SupplierFilesList';
 import {useSupplierFiles} from '../../hooks';
 
 type Props = {
     supplierIdentifier: string;
-}
+};
 
 const ProductFiles = ({supplierIdentifier}: Props) => {
     const [page, setPage] = useState<number>(1);
@@ -18,15 +18,15 @@ const ProductFiles = ({supplierIdentifier}: Props) => {
     return (
         <Container>
             <SupplierFilesList
-              supplierFiles={supplierFiles}
-              totalSupplierFiles={totalSupplierFiles}
-              currentPage={page}
-              onChangePage={setPage}
-              displaySupplierColumn={false}
+                supplierFiles={supplierFiles}
+                totalSupplierFiles={totalSupplierFiles}
+                currentPage={page}
+                onChangePage={setPage}
+                displaySupplierColumn={false}
             />
         </Container>
     );
-}
+};
 
 const Container = styled.div`
     margin-top: 10px;

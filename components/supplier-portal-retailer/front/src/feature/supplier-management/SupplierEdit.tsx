@@ -109,9 +109,7 @@ const SupplierEdit = () => {
                         setContributors={handleSupplierContributorsChange}
                     />
                 )}
-                {isCurrent('product_files') && (
-                    <ProductFiles supplierIdentifier={supplier.identifier} />
-                )}
+                {isCurrent('product_files') && <ProductFiles supplierIdentifier={supplier.identifier} />}
             </StyledPageContent>
         </Container>
     );
