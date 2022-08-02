@@ -1,6 +1,6 @@
 import React from 'react';
 import {SupplierFileRow} from '../hooks';
-import {Badge, DownloadIcon, IconButton, Pagination, Table} from 'akeneo-design-system';
+import {Badge, DownloadIcon, IconButton, Pagination, Table, getColor} from 'akeneo-design-system';
 import {useDateFormatter, useTranslate, useRouter} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {EmptySupplierFilesList} from './EmptySupplierFilesList';
@@ -13,6 +13,19 @@ type Props = {
     currentPage: number;
     onChangePage: (pageNumber: number) => void;
 };
+
+const StyledDownloadIcon = styled(DownloadIcon)`
+    color: ${getColor('grey100')};
+`;
+
+const StyledIconButton = styled(IconButton)`
+    color: ${getColor('grey100')};
+
+    &:hover:not([disabled]) {
+        background-color: transparent;
+        color: ${getColor('grey100')};
+    }
+`;
 
 const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onChangePage}: Props) => {
     const translate = useTranslate();
@@ -78,9 +91,12 @@ const SupplierFilesList = ({supplierFiles, totalSupplierFiles, currentPage, onCh
                                             )}
                                         </Table.Cell>
                                         <DownloadCell>
-                                            <IconButton
-                                                icon={<DownloadIcon />}
-                                                title=""
+                                            <StyledIconButton
+                                                data-testid="Download icon"
+                                                icon={<StyledDownloadIcon animateOnHover={true} />}
+                                                title={translate(
+                                                    'supplier_portal.product_file_dropping.supplier_files.columns.download'
+                                                )}
                                                 ghost={'borderless'}
                                                 href={router.generate('supplier_portal_retailer_download_file', {
                                                     identifier: supplierFile.identifier,

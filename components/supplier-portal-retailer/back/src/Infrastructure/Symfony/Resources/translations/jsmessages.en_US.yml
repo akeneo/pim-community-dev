@@ -88,6 +88,7 @@ supplier_portal:
                 contributor: Contributor
                 supplier: Supplier
                 status: Status
+                download: Download icon
             status:
                 downloaded: Downloaded
                 to_download: To download
