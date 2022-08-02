@@ -1,10 +1,10 @@
 akeneo.job_automation:
   title: 'automation'
-  scheduling: 
+  scheduling:
     title: 'Scheduling'
     running_user_groups:
       label: 'Permission user groups'
-      disabled_helper: 'Disabled helper message'
+      disabled_helper: 'You don’t have permission to list user groups for your role.'
     enable: Enable scheduling
     frequency:
       title: Frequency
@@ -20,7 +20,7 @@ akeneo.job_automation:
       friday: Friday
       saturday: Saturday
       sunday: Sunday
-  notification: 
+  notification:
     title: 'notification'
   validation:
     invalid_frequency_option: Invalid frequency option
