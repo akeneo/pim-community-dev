@@ -13,7 +13,7 @@ class Version_5_0_20220801160000_modify_metric_family_and_default_metric_unit_In
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '_5_0_20220801160000_modify_metric_family_and_default_metric_unit_Integration';
+    private const MIGRATION_LABEL = '_5_0_20220801160000_modify_metric_family_and_default_metric_unit';
 
     public function test_it_modify_columns_and_keep_the_data(): void
     {
