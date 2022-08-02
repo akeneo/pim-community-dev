@@ -27,17 +27,30 @@ class SqlGetAllButLastVersionIdsByIdsQuery
         }
 
         $query = <<<SQL
-SELECT current.id 
-FROM pim_versioning_version AS current
-WHERE current.id IN (:version_ids)
-AND EXISTS(
-    SELECT 1 FROM pim_versioning_version AS latest 
-    WHERE latest.resource_name = current.resource_name
-        AND (latest.resource_id = current.resource_id OR current.resource_id IS NULL)
-        AND (latest.resource_uuid = current.resource_uuid OR current.resource_uuid IS NULL)
-        AND latest.version > current.version
-)
-SQL;
+            SELECT current.id
+            FROM pim_versioning_version AS current
+            WHERE 
+                current.id IN (:version_ids)
+                AND resource_uuid is not null
+            AND EXISTS(
+                SELECT 1 FROM pim_versioning_version AS latest 
+                WHERE latest.resource_name = current.resource_name
+                    AND latest.resource_uuid = current.resource_uuid
+                    AND latest.version > current.version
+            )
+            UNION
+            SELECT current.id
+            FROM pim_versioning_version AS current
+            WHERE
+                current.id IN (:version_ids)
+                AND resource_uuid is null
+            AND EXISTS(
+                SELECT 1 FROM pim_versioning_version AS latest 
+                WHERE latest.resource_name = current.resource_name
+                    AND latest.resource_id = current.resource_id
+                    AND latest.version > current.version
+            );
+        SQL;
 
         $results = $this->dbConnection->executeQuery(
             $query,

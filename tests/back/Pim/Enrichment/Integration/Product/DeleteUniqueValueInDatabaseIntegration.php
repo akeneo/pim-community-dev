@@ -47,7 +47,7 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useMinimalCatalog('minimal');
+        return $this->catalog->useMinimalCatalog();
     }
 
     private function createAttributeWithUniqueConstraint(string $string): int
