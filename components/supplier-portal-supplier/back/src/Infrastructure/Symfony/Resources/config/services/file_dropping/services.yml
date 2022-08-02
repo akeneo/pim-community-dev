@@ -53,3 +53,9 @@ services:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePathAndFileName
         arguments:
             - '@database_connection'
+
+    # Controllers
+    Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\DownloadProductFile:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\DownloadProductFileHandler'
