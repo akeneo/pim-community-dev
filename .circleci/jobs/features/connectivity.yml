@@ -93,7 +93,7 @@ jobs:
                         docker/wait_docker_up.sh
             -   run:
                     name: Install database
-                    command: APP_ENV=test make database
+                    command: APP_ENV=test O="--withoutFixtures" make database
             -   run:
                     name: Integration back
                     command: CI=false make connectivity-connection-integration-back
@@ -123,7 +123,7 @@ jobs:
                         docker/wait_docker_up.sh
             -   run:
                     name: Install database
-                    command: APP_ENV=test make database
+                    command: APP_ENV=test O="--withoutFixtures" make database
             -   run:
                     name: End to end back
                     command: CI=false make connectivity-connection-e2e-back

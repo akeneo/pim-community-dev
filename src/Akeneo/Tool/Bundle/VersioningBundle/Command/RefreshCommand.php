@@ -57,7 +57,7 @@ class RefreshCommand extends Command
             'batch_size' => (int)$input->getOption('batch-size'),
         ];
 
-        $jobExecution = $this->jobExecutionFactory->createFromBatchCode(self::JOB_CODE, $config, 'admin');
+        $jobExecution = $this->jobExecutionFactory->createFromBatchCode(self::JOB_CODE, $config, null);
         $jobExecution = $this->jobExecutionRunner->executeFromJobExecutionId($jobExecution->getId());
 
         if (

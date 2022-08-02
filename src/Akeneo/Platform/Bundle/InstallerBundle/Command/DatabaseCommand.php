@@ -300,6 +300,5 @@ class DatabaseCommand extends Command
 
     protected function launchCommands(): void
     {
-        $this->commandExecutor->runCommand('pim:versioning:refresh');
     }
 }

@@ -11,3 +11,11 @@ services:
       - !tagged_iterator { tag: 'akeneo.pim.zdd_migration' }
     tags:
       - { name: kernel.event_subscriber }
+
+  Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\RefreshVersioningSubscriber:
+    arguments:
+      - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler'
+      - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
+    tags:
+      - { name: 'kernel.event_subscriber' }
+
