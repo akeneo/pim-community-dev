@@ -63,6 +63,7 @@
 - PIM-10541: Fix SetTableValue userIntent to allow null data in enrichment Service Api
 - PIM-10543: Fix selected categories sent to listCategories
 - PIM-10561: Fix associationUserIntentFactory to cast int to string
+- PIM-10557: Fix notifications not displayed for obsolete route parameters
 
 ## Improvements
 
