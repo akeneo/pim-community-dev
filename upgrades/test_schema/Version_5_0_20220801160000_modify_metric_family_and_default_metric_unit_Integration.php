@@ -81,7 +81,7 @@ class Version_5_0_20220801160000_modify_metric_family_and_default_metric_unit_In
             WHERE id = :attribute_id
         SQL;
 
-        $result = $this->getConnection()->executeQuery($sql, ['attribute_id' => $attributeId])->fetchAssociative();
+        $result = $this->getConnection()->executeQuery($sql, ['attribute_id' => $attributeId])->fetch(\PDO::FETCH_ASSOC);
 
         return $result['metric_family'] === $metricFamily && $result['default_metric_unit'] === $defaultMetricUnit;
     }

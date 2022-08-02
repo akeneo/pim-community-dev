@@ -34,7 +34,7 @@ final class Version_5_0_20220801160000_modify_metric_family_and_default_metric_u
 
         $result = $this->connection->executeQuery($sql, [
             'table_schema' => $schema->getName()
-        ])->fetchAllAssociative();
+        ])->fetchAll(\PDO::FETCH_ASSOC);
 
         return 100 === (int) $result[0]['CHARACTER_MAXIMUM_LENGTH'] && 100 === (int) $result[1]['CHARACTER_MAXIMUM_LENGTH'];
     }
