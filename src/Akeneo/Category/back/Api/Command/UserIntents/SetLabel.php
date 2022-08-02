@@ -16,13 +16,13 @@ class SetLabel implements UserIntent
     ) {
     }
 
-    public function value(): string
-    {
-        return $this->value;
-    }
-
     public function localeCode(): ?string
     {
         return $this->localeCode;
+    }
+
+    public function value(): string
+    {
+        return $this->value;
     }
 }
