@@ -21,7 +21,9 @@ Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
             - Valid:
                   traverse: true
             - All:
+                - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeReadable: ~
                 - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditable: ~
+                - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeReadableByUser: ~
                 - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser: ~
     constraints:
         - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProduct:

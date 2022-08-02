@@ -38,6 +38,11 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Channel\API\Query\IsLocaleReadable:
+        class: Akeneo\Channel\Infrastructure\Query\DummyIsLocaleReadable
+        arguments:
+            - '@database_connection'
+
     Akeneo\Channel\Infrastructure\Query\Sql\SqlFindChannels:
         class: Akeneo\Channel\Infrastructure\Query\Sql\SqlFindChannels
         arguments:

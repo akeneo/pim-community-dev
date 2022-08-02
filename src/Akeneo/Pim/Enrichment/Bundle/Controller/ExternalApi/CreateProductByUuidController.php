@@ -11,7 +11,12 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\UnknownAttributeExceptio
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\UnknownUserIntentException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
+use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditable;
+use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeReadable;
+use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser;
+use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeReadableByUser;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
@@ -28,12 +33,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -97,6 +104,41 @@ class CreateProductByUuidController
         } catch (\InvalidArgumentException $e) {
             $this->throwDocumentedHttpException($e->getMessage(), $e);
         } catch (ViolationsException $e) {
+            $firstConstraint = $e->violations()->get(0)->getConstraint();
+            if ($firstConstraint instanceof AttributeGroupShouldBeEditable) {
+                $invalidValue = $e->violations()->get(0)->getInvalidValue();
+                Assert::isInstanceOf($invalidValue, ValueUserIntent::class);
+                $attributeGroupCode = 'attributeGroupB'; // I have no idea how to get this
+
+                throw new AccessDeniedHttpException(
+                    sprintf('Attribute "%s" belongs to the attribute group "%s" on which you only have view permission.', $invalidValue->attributeCode(), $attributeGroupCode),
+                    $e
+                );
+            } else if ($firstConstraint instanceof AttributeGroupShouldBeReadable) {
+                $invalidValue = $e->violations()->get(0)->getInvalidValue();
+                Assert::isInstanceOf($invalidValue, ValueUserIntent::class);
+                $this->throwDocumentedHttpException(
+                    sprintf('The %s attribute does not exist in your PIM.', $invalidValue->attributeCode()),
+                    $e
+                );
+            } else if ($firstConstraint instanceof LocaleShouldBeEditableByUser) {
+                $invalidValue = $e->violations()->get(0)->getInvalidValue();
+                Assert::isInstanceOf($invalidValue, ValueUserIntent::class);
+
+                throw new AccessDeniedHttpException(
+                    sprintf('You only have a view permission on the locale "%s".', $invalidValue->localeCode()),
+                    $e
+                );
+            } else if ($firstConstraint instanceof LocaleShouldBeReadableByUser) {
+                $invalidValue = $e->violations()->get(0)->getInvalidValue();
+                Assert::isInstanceOf($invalidValue, ValueUserIntent::class);
+
+                $this->throwDocumentedHttpException(
+                    sprintf('Attribute "%s" expects an existing and activated locale, "%s" given.', $invalidValue->attributeCode(), $invalidValue->localeCode()),
+                    $e
+                );
+            }
+
             $this->throwDocumentedHttpException($e->violations()->get(0)->getMessage(), $e);
         } catch (LegacyViolationsException $e) {
             $this->throwDocumentedHttpException($e->violations()->get(0)->getMessage(), $e);

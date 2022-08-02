@@ -193,6 +193,9 @@ services:
     Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable:
         class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Permission\DummyIsAttributeEditable
 
+    Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeReadable:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Permission\DummyIsAttributeReadable
+
     Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetFamilyIdsUsedByProductsQuery:
         arguments:
             - '@database_connection'
