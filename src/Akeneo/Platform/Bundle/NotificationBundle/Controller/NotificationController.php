@@ -3,8 +3,10 @@
 namespace Akeneo\Platform\Bundle\NotificationBundle\Controller;
 
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\UserNotificationInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,21 +22,13 @@ use Twig\Environment;
  */
 class NotificationController
 {
-    protected Environment $templating;
-    protected UserContext $userContext;
-    protected UserNotificationRepositoryInterface $userNotifRepository;
-    protected RemoverInterface $userNotifRemover;
-
     public function __construct(
-        Environment $templating,
-        UserContext $userContext,
-        UserNotificationRepositoryInterface $userNotifRepository,
-        RemoverInterface $userNotifRemover
+        protected Environment $templating,
+        protected UserContext $userContext,
+        protected UserNotificationRepositoryInterface $userNotifRepository,
+        protected RemoverInterface $userNotifRemover,
+        private Connection $connection
     ) {
-        $this->templating = $templating;
-        $this->userContext = $userContext;
-        $this->userNotifRepository = $userNotifRepository;
-        $this->userNotifRemover = $userNotifRemover;
     }
 
     /**
@@ -45,6 +39,25 @@ class NotificationController
         $user = $this->userContext->getUser();
         $notifications = $this->userNotifRepository
             ->findBy(['user' => $user], ['id' => 'DESC'], 10, $request->get('skip', 0));
+
+        /** @var UserNotificationInterface $userNotification */
+        foreach ($notifications as $userNotification) {
+            $notification = $userNotification->getNotification();
+            if ('pim_enrich_product_edit' === $notification->getRoute() && !\array_key_exists('uuid', $notification->getRouteParams())) {
+                $uuid = null;
+                if (\array_key_exists('id', $notification->getRouteParams())) {
+                    $uuid = $this->connection->fetchOne(
+                        'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE id = :id',
+                        ['id' => $notification->getRouteParams()['id']]
+                    );
+                }
+                if ($uuid) {
+                    $notification->setRouteParams(['uuid' => $uuid]);
+                } else {
+                    $notification->setRoute(null);
+                }
+            }
+        }
 
         return (new JsonResponse())->setContent(
             $this->templating->render(
@@ -107,7 +120,7 @@ class NotificationController
             $notification = $this->userNotifRepository->findOneBy(
                 [
                     'id'   => $id,
-                    'user' => $user
+                    'user' => $user,
                 ]
             );
 
