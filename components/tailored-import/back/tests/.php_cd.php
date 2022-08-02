@@ -33,6 +33,7 @@ $rules = [
             'Akeneo\Platform\TailoredImport\Domain',
             // TODO: Write more specific rules later
             'Akeneo\Pim\Enrichment\Product\API',
+            'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter'
         ],
     )->in('Akeneo\Platform\TailoredImport\Application'),
 
