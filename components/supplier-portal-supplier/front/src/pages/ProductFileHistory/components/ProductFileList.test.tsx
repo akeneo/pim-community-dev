@@ -29,4 +29,5 @@ test('it renders the product files', () => {
     expect(screen.getByText('suppliers_export-2.xlsx')).toBeInTheDocument();
     expect(screen.getByText('contributor2@example.com')).toBeInTheDocument();
     expect(screen.getByText('07/28/2022, 02:58 PM')).toBeInTheDocument();
+    expect(screen.getAllByTestId('Download icon')).toHaveLength(2);
 });

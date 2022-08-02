@@ -44,6 +44,7 @@ final class DownloadProductFileHandler
                     'error' => $e->getMessage(),
                 ],
             ]);
+
             throw new ProductFileIsNotDownloadable();
         }
 

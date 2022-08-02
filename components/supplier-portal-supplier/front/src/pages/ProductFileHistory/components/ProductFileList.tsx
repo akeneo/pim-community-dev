@@ -1,7 +1,7 @@
 import React from 'react';
 import {ProductFile} from '../model/ProductFile';
-import {Table} from 'akeneo-design-system';
-import {FormattedMessage} from 'react-intl';
+import {DownloadIcon, IconButton, Table} from 'akeneo-design-system';
+import {FormattedMessage, useIntl} from 'react-intl';
 import styled from 'styled-components';
 import {useDateFormatter} from '../../../utils/date-formatter/use-date-formatter';
 
@@ -19,8 +19,13 @@ const StyledTable = styled(Table)`
     width: auto;
 `;
 
+const DownloadCell = styled(Table.ActionCell)`
+    width: 50px;
+`;
+
 const ProductFileList = ({productFiles}: Props) => {
     const dateFormatter = useDateFormatter();
+    const intl = useIntl();
 
     return (
         <>
@@ -35,6 +40,7 @@ const ProductFileList = ({productFiles}: Props) => {
                     <Table.HeaderCell>
                         <FormattedMessage defaultMessage="Product file name" id="2stUwi" />
                     </Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
                 </Table.Header>
                 <Table.Body>
                     {productFiles.map((productFile: ProductFile) => {
@@ -53,6 +59,20 @@ const ProductFileList = ({productFiles}: Props) => {
                                 <Table.Cell>
                                     <FilenameCell>{productFile.filename}</FilenameCell>
                                 </Table.Cell>
+                                <DownloadCell>
+                                    <IconButton
+                                        data-testid="Download icon"
+                                        icon={<DownloadIcon />}
+                                        title={intl.formatMessage({
+                                            defaultMessage: 'Download',
+                                            id: '5q3qC0',
+                                        })}
+                                        ghost={'borderless'}
+                                        // For dev purpose:
+                                        // href={'http://localhost:8080/supplier-portal/download-file/' + productFile.identifier}
+                                        href={'/supplier-portal/download-file/' + productFile.identifier}
+                                    />
+                                </DownloadCell>
                             </Table.Row>
                         );
                     })}
