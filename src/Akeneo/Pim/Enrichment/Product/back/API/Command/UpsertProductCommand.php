@@ -15,6 +15,8 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\Q
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Webmozart\Assert\Assert;
 
 /**
@@ -30,7 +32,7 @@ final class UpsertProductCommand
      */
     public function __construct(
         private int $userId,
-        private string $productIdentifier,
+        private ProductIdentifier | ProductUuid | string | null $identifierOrUuid = null,
         private ?FamilyUserIntent $familyUserIntent = null,
         private ?CategoryUserIntent $categoryUserIntent = null,
         private ?ParentUserIntent $parentUserIntent = null,
@@ -46,7 +48,7 @@ final class UpsertProductCommand
     /**
      * @param UserIntent[] $userIntents
      */
-    public static function createFromCollection(int $userId, string $productIdentifier, array $userIntents): self
+    public static function createFromCollection(int $userId, ProductIdentifier | ProductUuid | string | null $identifierOrUuid = null, array $userIntents = []): self
     {
         $valueUserIntents = [];
         $categoryUserIntent = null;
@@ -83,7 +85,7 @@ final class UpsertProductCommand
 
         return new self(
             userId: $userId,
-            productIdentifier: $productIdentifier,
+            identifierOrUuid: $identifierOrUuid,
             familyUserIntent: $familyUserIntent,
             categoryUserIntent: $categoryUserIntent,
             parentUserIntent: $parentUserIntent,
@@ -104,9 +106,9 @@ final class UpsertProductCommand
         return $this->userId;
     }
 
-    public function productIdentifier(): string
+    public function identifierOrUuid(): ProductIdentifier | ProductUuid | string | null
     {
-        return $this->productIdentifier;
+        return $this->identifierOrUuid;
     }
 
     public function familyUserIntent(): ?FamilyUserIntent

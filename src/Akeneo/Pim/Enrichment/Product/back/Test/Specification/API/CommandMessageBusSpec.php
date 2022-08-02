@@ -30,7 +30,7 @@ class CommandMessageBusSpec extends ObjectBehavior
 
     function it_executes_the_correct_handler(DummyHandler $handler1, DummyHandler $handler2)
     {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'foo');
+        $command = new UpsertProductCommand(userId: 1, identifierOrUuid: 'foo');
         $handler1->__invoke(Argument::any())->shouldNotBeCalled();
         $handler2->__invoke($command)->shouldBeCalledOnce();
 

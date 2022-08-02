@@ -55,7 +55,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('You don\'t have access to products in any tree, please contact your administrator');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), identifierOrUuid: 'identifier', valueUserIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         $this->commandMessageBus->dispatch($command);
@@ -67,7 +67,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('You don\'t have access to product data in any activated locale, please contact your administrator');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), identifierOrUuid: 'identifier', valueUserIntents: [
             new SetTextValue('name', null, 'en_GB', 'foo'),
         ]);
         $this->commandMessageBus->dispatch($command);
@@ -77,7 +77,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     public function it_creates_a_new_uncategorized_product(): void
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('mary');
-        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'new_product', valueUserIntents: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), identifierOrUuid: 'new_product', valueUserIntents: [
             new SetTextValue('name', null, null, 'foo'),
         ]);
         $this->commandMessageBus->dispatch($command);
@@ -95,7 +95,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
-            productIdentifier: 'identifier',
+            identifierOrUuid: 'identifier',
             categoryUserIntent: new SetCategories(['print'])
         );
         $this->commandMessageBus->dispatch($command);
@@ -117,7 +117,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
-            productIdentifier: 'identifier',
+            identifierOrUuid: 'identifier',
             categoryUserIntent: new SetCategories(['suppliers'])
         );
         $this->commandMessageBus->dispatch($command);
@@ -134,7 +134,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
-            productIdentifier: 'identifier',
+            identifierOrUuid: 'identifier',
             categoryUserIntent: new SetCategories(['suppliers'])
         );
         $this->commandMessageBus->dispatch($command);
@@ -149,7 +149,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
-            productIdentifier: 'identifier',
+            identifierOrUuid: 'identifier',
             categoryUserIntent: new SetCategories(['sales'])
         );
         $this->commandMessageBus->dispatch($command);
@@ -166,7 +166,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
-            productIdentifier: 'identifier',
+            identifierOrUuid: 'identifier',
             categoryUserIntent: new SetCategories(['sales']) // betty can view 'sales' category, but is not owner.
         );
         $this->commandMessageBus->dispatch($command);
@@ -183,7 +183,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
-            productIdentifier: 'identifier',
+            identifierOrUuid: 'identifier',
             categoryUserIntent: new RemoveCategories(['print'])
         );
         $this->commandMessageBus->dispatch($command);
@@ -200,7 +200,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
-            productIdentifier: 'my_product',
+            identifierOrUuid: 'my_product',
             categoryUserIntent: new SetCategories(['print'])
         );
         $this->commandMessageBus->dispatch($command);
@@ -214,7 +214,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('betty');
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
-            productIdentifier: 'my_product',
+            identifierOrUuid: 'my_product',
             categoryUserIntent: new SetCategories(['print', 'sales'])
         );
         $this->commandMessageBus->dispatch($command);

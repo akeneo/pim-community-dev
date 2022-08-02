@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Builder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Product builder interface
@@ -20,8 +21,9 @@ interface ProductBuilderInterface extends EntityWithValuesBuilderInterface
      *
      * @param string $identifier
      * @param string $familyCode
+     * @param UuidInterface $uuid
      *
      * @return ProductInterface
      */
-    public function createProduct($identifier = null, $familyCode = null);
+    public function createProduct(string $identifier = null, string $familyCode = null, $uuid = null);
 }

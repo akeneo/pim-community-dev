@@ -46,7 +46,7 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
     ) {
         $context->getRoot()->willReturn(new UpsertProductCommand(
             userId: 10,
-            productIdentifier: 'foo'
+            identifierOrUuid: 'foo'
         ));
         $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
             ->willReturn(['foo' => ['categoryA']])
@@ -63,7 +63,7 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
     ) {
         $context->getRoot()->willReturn(new UpsertProductCommand(
             userId: 10,
-            productIdentifier: 'foo'
+            identifierOrUuid: 'foo'
         ));
         $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
             ->willReturn(['foo' => []])
@@ -82,7 +82,7 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         $constraint = new ShouldStayOwnerOfTheProduct();
         $context->getRoot()->willReturn(new UpsertProductCommand(
             userId: 10,
-            productIdentifier: 'foo'
+            identifierOrUuid: 'foo'
         ));
         $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
             ->willReturn(['foo' => ['categoryA']])
@@ -104,7 +104,7 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         $constraint = new ShouldStayOwnerOfTheProduct();
         $context->getRoot()->willReturn(new UpsertProductCommand(
             userId: 10,
-            productIdentifier: 'foo'
+            identifierOrUuid: 'foo'
         ));
         $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')])
             ->willReturn(['foo' => ['categoryA', 'categoryB', 'categoryC']])

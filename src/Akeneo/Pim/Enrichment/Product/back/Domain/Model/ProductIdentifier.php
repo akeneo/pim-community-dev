@@ -12,6 +12,7 @@ use Webmozart\Assert\Assert;
  */
 final class ProductIdentifier
 {
+    // TODO: use this one instead?
     private function __construct(private string $identifier)
     {
         Assert::NotEmpty($this->identifier);

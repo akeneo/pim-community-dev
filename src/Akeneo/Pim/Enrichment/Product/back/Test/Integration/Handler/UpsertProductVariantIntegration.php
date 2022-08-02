@@ -54,7 +54,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            identifierOrUuid: 'variant_product',
             parentUserIntent: new ChangeParent('root')
         );
         $this->commandMessageBus->dispatch($command);
@@ -66,7 +66,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            identifierOrUuid: 'variant_product',
             parentUserIntent: new ChangeParent('root2')
         );
         $this->commandMessageBus->dispatch($command);
@@ -78,7 +78,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            identifierOrUuid: 'variant_product',
             parentUserIntent: new ConvertToSimpleProduct()
         );
         $this->commandMessageBus->dispatch($command);
@@ -128,7 +128,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            identifierOrUuid: 'variant_product',
             parentUserIntent: new ChangeParent('root2')
         );
 
@@ -138,7 +138,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            identifierOrUuid: 'variant_product',
             parentUserIntent: new ConvertToSimpleProduct()
         );
         $this->commandMessageBus->dispatch($command);
@@ -150,7 +150,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            identifierOrUuid: 'variant_product',
             parentUserIntent: new ChangeParent('root2')
         );
         $this->commandMessageBus->dispatch($command);
@@ -166,7 +166,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
     {
         $command = new UpsertProductCommand(
             userId: $this->getUserId('peter'),
-            productIdentifier: 'variant_product',
+            identifierOrUuid: 'variant_product',
             parentUserIntent: new ChangeParent('unknown')
         );
 
