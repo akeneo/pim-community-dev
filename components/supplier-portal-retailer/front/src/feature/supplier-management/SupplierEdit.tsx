@@ -13,10 +13,9 @@ import {
 } from 'akeneo-design-system';
 import {PageContent, PageHeader, PimView, UnsavedChanges, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {Configuration} from './components/SupplierEdit/Configuration';
+import {Configuration, ContributorList, ProductFiles} from './components/SupplierEdit';
 import {useSupplier} from './hooks';
 import {useHistory, useParams} from 'react-router';
-import {ContributorList} from './components/SupplierEdit/ContributorList';
 import {ContributorEmail} from './models';
 import {DeleteSupplier} from './components/DeleteSupplier';
 
@@ -109,6 +108,9 @@ const SupplierEdit = () => {
                         contributors={supplier.contributors}
                         setContributors={handleSupplierContributorsChange}
                     />
+                )}
+                {isCurrent('product_files') && (
+                    <ProductFiles supplierIdentifier={supplier.identifier} />
                 )}
             </StyledPageContent>
         </Container>
