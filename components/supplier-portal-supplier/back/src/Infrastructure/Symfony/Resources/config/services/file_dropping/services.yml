@@ -49,7 +49,6 @@ services:
             - '@database_connection'
 
     Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePathAndFileName:
-        public: true
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePathAndFileName
         arguments:
             - '@database_connection'
