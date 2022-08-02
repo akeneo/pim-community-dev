@@ -26,6 +26,9 @@ services:
     Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable:
         class: Akeneo\Test\Acceptance\Attribute\InMemoryIsAttributeEditable
 
+    Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeReadable:
+        class: Akeneo\Test\Acceptance\Attribute\InMemoryIsAttributeReadable
+
     ### Catalog
     akeneo.pim.enrichment.product.query.find_non_existing_product_identifiers_query:
         class: 'Akeneo\Test\Acceptance\Product\InMemoryFindNonExistingProductIdentifiersQuery'

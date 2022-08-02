@@ -3,3 +3,8 @@ services:
         class: Akeneo\Test\Channel\Acceptance\InMemory\InMemoryIsLocaleEditable
         arguments:
             - '@pim_user.repository.user'
+
+    Akeneo\Channel\API\Query\IsLocaleReadable:
+        class: Akeneo\Test\Channel\Acceptance\InMemory\InMemoryIsLocaleReadable
+        arguments:
+            - '@pim_user.repository.user'

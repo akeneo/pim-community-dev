@@ -33,9 +33,21 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeReadableByUserValidator:
+        arguments:
+            - '@Akeneo\Channel\API\Query\IsLocaleReadable'
+        tags:
+            - { name: validator.constraint_validator }
+
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditableValidator:
         arguments:
             - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeReadableValidator:
+        arguments:
+            - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeReadable'
         tags:
             - { name: validator.constraint_validator }
 
