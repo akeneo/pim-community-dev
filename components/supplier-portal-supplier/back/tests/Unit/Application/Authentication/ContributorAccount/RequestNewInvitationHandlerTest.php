@@ -9,7 +9,6 @@ use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +22,7 @@ final class RequestNewInvitationHandlerTest extends TestCase
             'b8b13d0b-496b-4a7c-a574-0d522ba90752',
             $contributorEmail,
             '2022-06-28 10:16:44',
-            'P@ssw0rd*',
+            null,
             '1vn466x20fr44wk40w0s88c40c0owwso0sgoksko0kgcggk848',
             '2022-06-28 10:16:44',
             '2022-06-28 10:16:44',
@@ -31,9 +30,7 @@ final class RequestNewInvitationHandlerTest extends TestCase
 
         $contributorAccountRepository = new InMemoryRepository();
         $contributorAccountRepository->save($contributorAccount);
-        $oldContributorAccount = $contributorAccountRepository->findByEmail(Email::fromString($contributorEmail));
-        $oldContributorAccountAccessToken = $oldContributorAccount->accessToken();
-        $oldContributorAccountPassword = $oldContributorAccount->getPassword();
+        $oldContributorAccountAccessToken = $contributorAccount->accessToken();
 
         $mockSendWelcomeEmail = $this->createMock(SendWelcomeEmail::class);
         $mockSendWelcomeEmail
@@ -44,13 +41,12 @@ final class RequestNewInvitationHandlerTest extends TestCase
 
         $sut = new RequestNewInvitationHandler($contributorAccountRepository, $mockSendWelcomeEmail);
         ($sut)(new RequestNewInvitation($contributorEmail));
-        $newContributorAccount = $contributorAccountRepository->findByEmail(Email::fromString($contributorEmail));
+        $contributorAccount->renewAccessToken();
 
-        static::assertNotSame($oldContributorAccountPassword, $newContributorAccount->getPassword());
-        static::assertNotSame($oldContributorAccountAccessToken, $newContributorAccount->accessToken());
+        static::assertNotSame($oldContributorAccountAccessToken, $contributorAccount->accessToken());
         static::assertSame(
             (new \DateTimeImmutable())->format('d'),
-            (new \DateTimeImmutable($newContributorAccount->accessTokenCreatedAt()))->format('d'),
+            (new \DateTimeImmutable($contributorAccount->accessTokenCreatedAt()))->format('d'),
         );
     }
 
