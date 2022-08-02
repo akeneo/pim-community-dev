@@ -1,10 +1,10 @@
 akeneo.job_automation:
   title: 'automation'
-  scheduling: 
+  scheduling:
     title: 'Scheduling'
-    running_user_groups: 
+    running_user_groups:
       label: 'Permission user groups'
-      disabled_helper: 'Disabled helper message'
-  notification: 
+      disabled_helper: 'You don’t have permission to list user groups for your role.'
+  notification:
     title: 'notification'
 
