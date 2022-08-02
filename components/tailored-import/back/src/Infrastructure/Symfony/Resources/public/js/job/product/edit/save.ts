@@ -1,5 +1,5 @@
 const BaseSave = require('pimui/js/job/common/edit/save');
-const jobInstanceSaver = require('pim/saver/job-instance-export');
+const jobInstanceSaver = require('pim/saver/job-instance-import');
 
 class Save extends BaseSave {
   save() {
