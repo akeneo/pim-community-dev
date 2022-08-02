@@ -20,7 +20,10 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance ext
 {
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE akeneo_batch_job_execution ADD COLUMN automation JSON DEFAULT NULL');
+        $this->addSql(<<<SQL
+        ALTER TABLE akeneo_batch_job_instance 
+        ADD COLUMN automation JSON DEFAULT NULL AFTER raw_parameters;
+        SQL);
     }
 
     public function down(Schema $schema): void
