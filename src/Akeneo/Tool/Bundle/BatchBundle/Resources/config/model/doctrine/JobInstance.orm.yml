@@ -38,6 +38,9 @@ Akeneo\Tool\Component\Batch\Model\JobInstance:
         rawParameters:
             type: array
             column: raw_parameters
+        automation:
+            type: json
+            column: automation
         type:
             type: string
             length: 255
