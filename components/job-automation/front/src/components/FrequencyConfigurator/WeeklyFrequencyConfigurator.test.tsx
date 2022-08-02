@@ -8,7 +8,12 @@ test('it can select a weekday', () => {
   const onChange = jest.fn();
 
   renderWithProviders(
-    <WeeklyFrequencyConfigurator cronExpression="5 11 * * 1" validationErrors={[]} onCronExpressionChange={onChange} />
+    <WeeklyFrequencyConfigurator
+      frequencyOption="weekly"
+      cronExpression="5 11 * * 1"
+      validationErrors={[]}
+      onCronExpressionChange={onChange}
+    />
   );
 
   expect(screen.getByText('akeneo.job_automation.scheduling.frequency.monday')).toBeInTheDocument();
@@ -28,7 +33,12 @@ test('it displays a time input that can update a weekly cron expression', () => 
   const onChange = jest.fn();
 
   renderWithProviders(
-    <WeeklyFrequencyConfigurator cronExpression="5 11 * * 0" validationErrors={[]} onCronExpressionChange={onChange} />
+    <WeeklyFrequencyConfigurator
+      frequencyOption="weekly"
+      cronExpression="5 11 * * 0"
+      validationErrors={[]}
+      onCronExpressionChange={onChange}
+    />
   );
 
   const input = screen.getByDisplayValue('11:05');

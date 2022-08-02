@@ -74,6 +74,7 @@ const SchedulingForm = ({automation, validationErrors, onAutomationChange}: Sche
           ))}
         </SelectInput>
         <FrequencyComponent
+          frequencyOption={frequencyOption}
           cronExpression={automation.cron_expression}
           validationErrors={validationErrors}
           onCronExpressionChange={handleCronExpressionChange}

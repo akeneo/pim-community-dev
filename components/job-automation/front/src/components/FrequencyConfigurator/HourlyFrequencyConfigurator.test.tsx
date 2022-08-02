@@ -9,7 +9,8 @@ test('it displays a time input that can update a hourly cron expression', () => 
 
   renderWithProviders(
     <HourlyFrequencyConfigurator
-      cronExpression="5 11/8 * * *"
+      frequencyOption="every_12_hours"
+      cronExpression="5 11,23 * * *"
       validationErrors={[]}
       onCronExpressionChange={onChange}
     />
@@ -20,5 +21,5 @@ test('it displays a time input that can update a hourly cron expression', () => 
   userEvent.clear(input);
   userEvent.type(input, '7:45');
 
-  expect(onChange).toHaveBeenCalledWith('45 7/8 * * *');
+  expect(onChange).toHaveBeenLastCalledWith('45 7,19 * * *');
 });
