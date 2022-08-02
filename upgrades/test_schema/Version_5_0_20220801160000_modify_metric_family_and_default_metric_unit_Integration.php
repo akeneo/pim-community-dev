@@ -33,20 +33,6 @@ class Version_5_0_20220801160000_modify_metric_family_and_default_metric_unit_In
         $this->assertTrue($this->attributeHasMetricFamilyAndDefaultMetricUnitSet($attributeIdWithLongValues, $longMetricFamily, $longDefaultMetricUnit));
     }
 
-    public function test_migration_is_idempotent(): void
-    {
-        $this->resetModify();
-
-        $metricFamily = 'family';
-        $defaultMetricUnit = 'unit';
-        $attributeId = $this->addAttribute($metricFamily, $defaultMetricUnit);
-
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
-
-        Assert::assertTrue($this->attributeHasMetricFamilyAndDefaultMetricUnitSet($attributeId, $metricFamily, $defaultMetricUnit));
-    }
-
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
