@@ -6,7 +6,7 @@ import {MicroFrontendDependenciesProvider, Routes, Translations} from '@akeneo-p
 import {routes} from './routes.json';
 import translations from './translations.json';
 import {CategoriesApp} from './feature';
-import {ConfigurationProvider, Page} from './configuration';
+import {ConfigurationProvider, Page as ConfigurationPage} from './configuration';
 import {FakePIM} from './FakePIM';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 
@@ -18,7 +18,7 @@ ReactDOM.render(
           <Router basename="/">
             <Switch>
               <Route path="/configuration">
-                <Page />
+                <ConfigurationPage />
               </Route>
               <Route path="/">
                 <CategoriesApp setCanLeavePage={() => true} />
