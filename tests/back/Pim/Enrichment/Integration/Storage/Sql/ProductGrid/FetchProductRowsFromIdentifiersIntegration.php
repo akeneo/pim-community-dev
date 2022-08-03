@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
@@ -36,7 +36,7 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
         $imagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
         [$product1, $product2] = $fixturesLoader->createProductAndProductModels($imagePath)['products'];
 
-        $query = $this->getFetchProductRowsFromIdentifiers();
+        $query = $this->getFetchProductRowsFromUuids();
         $rows = $query(['baz', 'foo'], ['sku', 'a_localizable_image', 'a_scopable_image'], 'ecommerce', 'en_US', $userId);
 
         $akeneoImage = current($this
@@ -91,7 +91,7 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
         $this->createProductModel('productModel', 'familyVariant');
         $this->createVariantProduct('productVariant', 'productModel');
 
-        $query = $this->getFetchProductRowsFromIdentifiers();
+        $query = $this->getFetchProductRowsFromUuids();
         $result = $query(['productVariant'], ['a_simple_select'], 'ecommerce', 'en_US');
 
         Assert::count($result, 1);
@@ -121,9 +121,9 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function getFetchProductRowsFromIdentifiers(): FetchProductRowsFromIdentifiers
+    private function getFetchProductRowsFromUuids(): FetchProductRowsFromUuids
     {
-        return $this->get('akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers');
+        return $this->get('akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_uuids');
     }
 
     private function createFamily(string $familyCode, array $attributeCodes): void

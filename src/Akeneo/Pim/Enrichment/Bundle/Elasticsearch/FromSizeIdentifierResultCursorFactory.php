@@ -44,7 +44,7 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
         foreach ($response['hits']['hits'] as $hit) {
             // TODO: remove default type when TIP-1151 and TIP 1150 are done, as the document type will always exist
             $documentType = $hit['_source']['document_type'] ?? ProductInterface::class;
-            $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType, $hit['_source']['id']);
+            $identifiers[] = new IdentifierResult($hit['_source']['identifier'] ?? $hit['_source']['id'], $documentType, $hit['_source']['id']);
         }
 
         return new IdentifierResultCursor($identifiers, $totalCount, new ElasticsearchResult($response));

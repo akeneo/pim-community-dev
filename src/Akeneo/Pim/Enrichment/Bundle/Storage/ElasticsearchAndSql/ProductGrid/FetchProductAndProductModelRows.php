@@ -18,33 +18,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface;
  */
 final class FetchProductAndProductModelRows implements Query\FetchProductAndProductModelRows
 {
-    /** @var Sql\ProductGrid\FetchProductRowsFromIdentifiers */
-    private $fetchProductRowsFromIdentifiers;
-
-    /** @var Sql\ProductGrid\FetchProductModelRowsFromCodes */
-    private $fetchProductModelRowsFromCodes;
-
-    /** @var Query\AddAdditionalProductPropertiesRegistry */
-    private $addAdditionalProductPropertiesRegistry;
-
-    /** @var Query\AddAdditionalProductModelPropertiesRegistry */
-    private $addAdditionalProductModelPropertiesRegistry;
-
-    /** @var ProductAndProductsModelDocumentTypeFacetFactory */
-    private $productAndProductsModelDocumentTypeFacetFactory;
-
     public function __construct(
-        Sql\ProductGrid\FetchProductRowsFromIdentifiers $fetchProductRowsFromIdentifiers,
-        Sql\ProductGrid\FetchProductModelRowsFromCodes $fetchProductModelRowsFromCodes,
-        Query\AddAdditionalProductPropertiesRegistry $addAdditionalProductProperties,
-        Query\AddAdditionalProductModelPropertiesRegistry $addAdditionalProductModelProperties,
-        ProductAndProductsModelDocumentTypeFacetFactory $productAndProductsModelDocumentTypeFacetFactory
+        private Sql\ProductGrid\FetchProductRowsFromUuids $fetchProductRowsFromUuids,
+        private Sql\ProductGrid\FetchProductModelRowsFromCodes $fetchProductModelRowsFromCodes,
+        private Query\AddAdditionalProductPropertiesRegistry $addAdditionalProductPropertiesRegistry,
+        private Query\AddAdditionalProductModelPropertiesRegistry $addAdditionalProductModelPropertiesRegistry,
+        private ProductAndProductsModelDocumentTypeFacetFactory $productAndProductsModelDocumentTypeFacetFactory
     ) {
-        $this->fetchProductRowsFromIdentifiers = $fetchProductRowsFromIdentifiers;
-        $this->fetchProductModelRowsFromCodes = $fetchProductModelRowsFromCodes;
-        $this->addAdditionalProductPropertiesRegistry = $addAdditionalProductProperties;
-        $this->addAdditionalProductModelPropertiesRegistry = $addAdditionalProductModelProperties;
-        $this->productAndProductsModelDocumentTypeFacetFactory = $productAndProductsModelDocumentTypeFacetFactory;
     }
 
     /**
@@ -60,13 +40,13 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
 
         foreach ($identifiers as $identifier) {
             if ($identifier->getType() === ProductInterface::class) {
-                $productIdentifiers[] = $identifier->getIdentifier();
+                $productIdentifiers[] = $identifier->getId();
             } elseif ($identifier->getType() === ProductModelInterface::class) {
                 $productModelCodes[] = $identifier->getIdentifier();
             }
         }
 
-        $productRows = ($this->fetchProductRowsFromIdentifiers)(
+        $productRows = ($this->fetchProductRowsFromUuids)(
             $productIdentifiers,
             $queryParameters->attributeCodes(),
             $queryParameters->channelCode(),
@@ -84,13 +64,19 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
 
         $rows = array_merge($productRows, $productModelRows);
         $sortedRows = [];
-        foreach ($identifiers as $identifier) {
-            foreach ($rows as $row) {
-                if ($identifier->getIdentifier() === $row->identifier()) {
+        foreach ($identifiers as $identifierKey => $identifier) {
+            foreach ($rows as $rowKey => $row) {
+                if (
+                    'product_'.$row->identifier() === $identifier->getIdentifier ||
+                    $identifier->getIdentifier() === $row->identifier()
+                ) {
                     $sortedRows[] = $row;
+                    unset($rows[$rowKey]);
                 }
             }
         }
+
+        $sortedRows = array_merge($sortedRows, $rows);
 
         $documentTypeFacet = null;
         if ($productAndProductModelIdentifiersCursor instanceof ResultAwareInterface) {

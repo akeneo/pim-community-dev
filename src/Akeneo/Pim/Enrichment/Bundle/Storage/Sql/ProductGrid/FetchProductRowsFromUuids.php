@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -17,7 +18,7 @@ use Ramsey\Uuid\UuidInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class FetchProductRowsFromIdentifiers
+final class FetchProductRowsFromUuids
 {
     /** @var Connection */
     private $connection;
@@ -36,28 +37,34 @@ final class FetchProductRowsFromIdentifiers
     }
 
     /**
-     * @param array  $identifiers
-     * @param array  $attributeCodes
+     * @param array<string> $uuids
+     * @param array<string> $attributeCodes
      * @param string $channelCode
      * @param string $localeCode
      *
      * @return ReadModel\Row[]
      */
-    public function __invoke(array $identifiers, array $attributeCodes, string $channelCode, string $localeCode): array
+    public function __invoke(array $uuids, array $attributeCodes, string $channelCode, string $localeCode): array
     {
-        if (empty($identifiers)) {
+        if (empty($uuids)) {
             return [];
         }
 
-        $valueCollections = $this->getValueCollection($identifiers, $attributeCodes, $channelCode, $localeCode);
+        $uuids = array_map(
+            fn(string $uuid): UuidInterface =>
+                Uuid::fromString(preg_replace('/^product_/', '', $uuid)),
+            $uuids
+        );
+
+        $valueCollections = $this->getValueCollection($uuids, $attributeCodes, $channelCode, $localeCode);
 
         $rows = array_replace_recursive(
-            $this->getProperties($identifiers),
-            $this->getLabels($identifiers, $valueCollections, $channelCode, $localeCode),
-            $this->getImages($identifiers, $valueCollections),
-            $this->getCompletenesses($identifiers, $channelCode, $localeCode),
-            $this->getFamilyLabels($identifiers, $localeCode),
-            $this->getGroups($identifiers, $localeCode),
+            $this->getProperties($uuids),
+            $this->getLabels($uuids, $valueCollections, $channelCode, $localeCode),
+            $this->getImages($uuids, $valueCollections),
+            $this->getCompletenesses($uuids, $channelCode, $localeCode),
+            $this->getFamilyLabels($uuids, $localeCode),
+            $this->getGroups($uuids, $localeCode),
             $valueCollections
         );
 
@@ -87,7 +94,8 @@ final class FetchProductRowsFromIdentifiers
         return $products;
     }
 
-    private function getProperties(array $identifiers): array
+    /** @var array<UuidInterface> $uuids */
+    private function getProperties(array $uuids): array
     {
         $sql = <<<SQL
             SELECT 
@@ -102,28 +110,28 @@ final class FetchProductRowsFromIdentifiers
                 pim_catalog_product p
                 LEFT JOIN pim_catalog_product_model pm ON p.product_model_id = pm.id 
             WHERE 
-                identifier IN (:identifiers)
+                uuid IN (:uuids)
 SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['identifiers' => $identifiers],
-            ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+            ['uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
         $result = [];
         foreach ($rows as $row) {
-            $result[$row['identifier']] = $row;
+            $result[$row['uuid']] = $row;
         }
 
         return $result;
     }
 
-    private function getValueCollection(array $identifiers, array $attributeCodes, string $channelCode, string $localeCode): array
+    private function getValueCollection(array $uuids, array $attributeCodes, string $channelCode, string $localeCode): array
     {
         $sql = <<<SQL
             SELECT 
-                p.identifier,
+                BIN_TO_UUID(p.uuid) AS uuid,
                 a_label.code attribute_as_label_code,
                 a_image.code attribute_as_image_code,
                 JSON_MERGE(COALESCE(pm1.raw_values, '{}'), COALESCE(pm2.raw_values, '{}'), p.raw_values) as raw_values
@@ -135,13 +143,13 @@ SQL;
                 LEFT JOIN pim_catalog_attribute a_label ON a_label.id = f.label_attribute_id
                 LEFT JOIN pim_catalog_attribute a_image ON a_image.id = f.image_attribute_id
             WHERE 
-                identifier IN (:identifiers)
+                uuid IN (:uuids)
 SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['identifiers' => $identifiers],
-            ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+            ['uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
         $result = [];
@@ -158,13 +166,13 @@ SQL;
 
             $filteredValues = array_intersect_key($values, array_flip($attributeCodesToKeep));
 
-            $products[$row['identifier']] = $filteredValues;
+            $products[$row['uuid']] = $filteredValues;
         }
 
         $valueCollections = $this->valueCollectionFactory->createMultipleFromStorageFormat($products);
 
-        foreach ($valueCollections as $productIdentifier => $valueCollection) {
-            $result[$productIdentifier]['value_collection'] = $valueCollection->filter(
+        foreach ($valueCollections as $productUuid => $valueCollection) {
+            $result[$productUuid]['value_collection'] = $valueCollection->filter(
                 function (ValueInterface $value) use ($channelCode, $localeCode) {
                     return ($value->getScopeCode() === $channelCode || $value->getScopeCode() === null)
                         && ($value->getLocaleCode() === $localeCode || $value->getLocaleCode() === null);
@@ -175,16 +183,17 @@ SQL;
         return $result;
     }
 
-    private function getLabels(array $identifiers, array $valueCollections, string $channelCode, string $localeCode): array
+    /** @param array<UuidInterface> $uuids */
+    private function getLabels(array $uuids, array $valueCollections, string $channelCode, string $localeCode): array
     {
         $result = [];
-        foreach ($identifiers as $identifier) {
-            $result[$identifier]['label'] = sprintf('[%s]', $identifier);
+        foreach ($uuids as $uuid) {
+            $result[$uuid->toString()]['label'] = sprintf('[%s]', $uuid->toString());
         }
 
         $sql = <<<SQL
             SELECT 
-                p.identifier,
+                BIN_TO_UUID(p.uuid) as uuid,
                 a_label.code as label_code,
                 a_label.is_localizable,
                 a_label.is_scopable
@@ -193,73 +202,75 @@ SQL;
                 JOIN pim_catalog_family f ON f.id = p.family_id
                 JOIN pim_catalog_attribute a_label ON a_label.id = f.label_attribute_id
             WHERE 
-                identifier IN (:identifiers)
+                uuid IN (:uuids)
 SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['identifiers' => $identifiers],
-            ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+            ['uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
         foreach ($rows as $row) {
-            $label = $valueCollections[$row['identifier']]['value_collection']->getByCodes(
+            $label = $valueCollections[$row['uuid']]['value_collection']->getByCodes(
                 $row['label_code'],
                 $row['is_scopable'] ? $channelCode : null,
                 $row['is_localizable'] ? $localeCode : null
             );
 
             if (null !== $label && null !== $label->getData()) {
-                $result[$row['identifier']]['label'] = $label->getData();
+                $result[$row['uuid']]['label'] = $label->getData();
             }
         }
 
         return $result;
     }
 
-    private function getImages(array $identifiers, array $valueCollections): array
+    /** @param array<UuidInterface> $uuids */
+    private function getImages(array $uuids, array $valueCollections): array
     {
         $result = [];
-        foreach ($identifiers as $identifier) {
-            $result[$identifier]['image'] = null;
+        foreach ($uuids as $uuid) {
+            $result[$uuid->toString()]['image'] = null;
         }
 
         $sql = <<<SQL
             SELECT 
-                p.identifier,
+                BIN_TO_UUID(p.uuid) as uuid,
                 a_image.code as image_code
             FROM
                 pim_catalog_product p
                 JOIN pim_catalog_family f ON f.id = p.family_id
                 JOIN pim_catalog_attribute a_image ON a_image.id = f.image_attribute_id
             WHERE 
-                identifier IN (:identifiers)
+                uuid IN (:uuids)
 SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['identifiers' => $identifiers],
-            ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+            ['uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
         foreach ($rows as $row) {
-            $image = $valueCollections[$row['identifier']]['value_collection']->getByCodes($row['image_code']);
-            $result[$row['identifier']]['image'] = $image ?? null;
+            $image = $valueCollections[$row['uuid']]['value_collection']->getByCodes($row['image_code']);
+            $result[$row['uuid']]['image'] = $image ?? null;
         }
 
         return $result;
     }
 
-    private function getCompletenesses(array $identifiers, string $channelCode, string $localeCode): array
+    /** @var array<UuidInterface> $uuids */
+    private function getCompletenesses(array $uuids, string $channelCode, string $localeCode): array
     {
         $result = [];
-        foreach ($identifiers as $identifier) {
-            $result[$identifier]['completeness'] = null;
+        foreach ($uuids as $uuid) {
+            $result[$uuid->toString()]['completeness'] = null;
         }
 
         $sql = <<<SQL
             SELECT 
-                p.identifier,
+                BIN_TO_UUID(p.uuid) as uuid,
                 FLOOR(100 * (c.required_count - c.missing_count) / c.required_count) AS ratio
             FROM
                 pim_catalog_product p
@@ -267,66 +278,75 @@ SQL;
                 JOIN pim_catalog_locale l ON l.id = c.locale_id
                 JOIN pim_catalog_channel ch ON ch.id = c.channel_id
             WHERE 
-                identifier IN (:identifiers)
+                uuid IN (:uuids)
                 AND l.code = :locale_code
                 AND ch.code = :channel_code
 SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['identifiers' => $identifiers, 'locale_code' => $localeCode, 'channel_code' => $channelCode],
-            ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+            [
+                'uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
+                'locale_code' => $localeCode,
+                'channel_code' => $channelCode
+            ],
+            ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
         foreach ($rows as $row) {
-            $result[$row['identifier']]['completeness'] = (int) $row['ratio'];
+            $result[$row['uuid']]['completeness'] = (int) $row['ratio'];
         }
 
         return $result;
     }
 
-    private function getFamilyLabels(array $identifiers, string $localeCode): array
+    /** @var array<UuidInterface> $uuids */
+    private function getFamilyLabels(array $uuids, string $localeCode): array
     {
         $result = [];
-        foreach ($identifiers as $identifier) {
-            $result[$identifier]['family_label'] = null;
+        foreach ($uuids as $uuid) {
+            $result[$uuid->toString()]['family_label'] = null;
         }
 
         $sql = <<<SQL
             SELECT 
-                p.identifier,
+                BIN_TO_UUID(p.uuid) as uuid,
                 COALESCE(ft.label, CONCAT("[", f.code, "]")) as family_label
             FROM
                 pim_catalog_product p
                 JOIN pim_catalog_family f ON f.id = p.family_id
                 LEFT JOIN pim_catalog_family_translation ft ON ft.foreign_key = f.id AND ft.locale = :locale_code
             WHERE 
-                identifier IN (:identifiers)
+                uuid IN (:uuids)
 SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['identifiers' => $identifiers, 'locale_code' => $localeCode],
-            ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+            [
+                'uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
+                'locale_code' => $localeCode
+            ],
+            ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
         foreach ($rows as $row) {
-            $result[$row['identifier']]['family_label'] = $row['family_label'];
+            $result[$row['uuid']]['family_label'] = $row['family_label'];
         }
 
         return $result;
     }
 
-    private function getGroups(array $identifiers, string $localeCode): array
+    /** @var array<UuidInterface> $uuids */
+    private function getGroups(array $uuids, string $localeCode): array
     {
         $result = [];
-        foreach ($identifiers as $identifier) {
-            $result[$identifier]['groups'] = [];
+        foreach ($uuids as $uuid) {
+            $result[$uuid->toString()]['groups'] = [];
         }
 
         $sql = <<<SQL
             SELECT 
-                p.identifier,
+                BIN_TO_UUID(p.uuid) as uuid,
                 JSON_ARRAYAGG(COALESCE(ft.label, CONCAT("[", g.code, "]"))) AS product_groups 
             FROM
                 pim_catalog_product p
@@ -334,19 +354,22 @@ SQL;
                 JOIN pim_catalog_group g ON g.id = gp.group_id
                 LEFT JOIN pim_catalog_group_translation ft ON ft.foreign_key = g.id AND ft.locale = :locale_code
             WHERE 
-                identifier IN (:identifiers)
+                uuid IN (:uuids)
             GROUP BY
-                p.identifier
+                uuid
 SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['identifiers' => $identifiers, 'locale_code' => $localeCode],
-            ['identifiers' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+            [
+                'uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
+                'locale_code' => $localeCode
+            ],
+            ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
         foreach ($rows as $row) {
-            $result[$row['identifier']]['groups'] = json_decode($row['product_groups']);
+            $result[$row['uuid']]['groups'] = json_decode($row['product_groups']);
         }
 
         return $result;
@@ -365,6 +388,6 @@ SQL;
      */
     private function isExistingProduct(array $row): bool
     {
-        return isset($row['identifier']);
+        return isset($row['uuid']);
     }
 }

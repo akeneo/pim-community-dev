@@ -16,7 +16,7 @@ final class Row
     private const PRODUCT_MODEL_TYPE = 'product_model';
 
     private function __construct(
-        private string $identifier,
+        private ?string $identifier,
         private ?string $familyCode,
         private array $groupCodes,
         private ?bool $enabled,
@@ -37,7 +37,7 @@ final class Row
     }
 
     public static function fromProduct(
-        string $identifier,
+        ?string $identifier,
         ?string $familyCode,
         array $groupCodes,
         ?bool $enabled,
@@ -130,9 +130,9 @@ final class Row
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function identifier(): string
+    public function identifier(): ?string
     {
         return $this->identifier;
     }
