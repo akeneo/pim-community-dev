@@ -410,3 +410,4 @@ services:
             - '@pim_enrich.filter.product_attribute_filter'
             - '@pim_enrich.product.message_bus'
             - '@pim_enrich.product.query_message_bus'
+            - '@pim_catalog.repository.attribute'
