@@ -30,18 +30,17 @@ import {CategoryToDelete, useDeleteCategory, useEditCategoryForm, useCountProduc
 import {Category} from '../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
-import {EditPermissionsForm, EditPropertiesForm, EditAttributesForm} from '../components';
+import {EditPermissionsForm, EditPropertiesForm} from '../components';
 
 type Params = {
   categoryId: string;
 };
 
 const propertyTabName = '#pim_enrich-category-tab-property';
-const attributeTabName = '#pim_enrich-category-tab-attribute';
 const historyTabName = '#pim_enrich-category-tab-history';
 const permissionTabName = '#pim_enrich-category-tab-permission';
 
-const CategoryEditPage: FC = () => {
+const LegacyCategoryEditPage: FC = () => {
   const {categoryId} = useParams<Params>();
   const translate = useTranslate();
   const router = useRouter();
@@ -208,15 +207,6 @@ const CategoryEditPage: FC = () => {
           >
             {translate('pim_common.properties')}
           </TabBar.Tab>
-          <TabBar.Tab
-            isActive={isCurrent(attributeTabName)}
-            onClick={() => {
-              setActiveTab(attributeTabName);
-              switchTo(attributeTabName);
-            }}
-          >
-            {translate('Attributes')}
-          </TabBar.Tab>
           {formData &&
             formData.permissions &&
             permissionsAreEnabled &&
@@ -247,7 +237,6 @@ const CategoryEditPage: FC = () => {
         {isCurrent(propertyTabName) && category && (
           <EditPropertiesForm category={category} formData={formData} onChangeLabel={onChangeCategoryLabel} />
         )}
-        {isCurrent(attributeTabName) && <EditAttributesForm />}
         {isCurrent(historyTabName) && (
           <HistoryPimView
             viewName="pim-category-edit-form-history"
@@ -280,4 +269,4 @@ const CategoryEditPage: FC = () => {
     </>
   );
 };
-export {CategoryEditPage};
+export {LegacyCategoryEditPage};
