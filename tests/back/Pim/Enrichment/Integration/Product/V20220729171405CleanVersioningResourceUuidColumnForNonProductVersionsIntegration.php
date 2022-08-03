@@ -52,7 +52,7 @@ class V20220729171405CleanVersioningResourceUuidColumnForNonProductVersionsInteg
 
     public function test_it_throws_if_the_migration_that_removes_triggers_has_not_run()
     {
-        $this->createBlockingTrigger();
+        $this->givenTheMigrationThatRemovesTriggerHasNotRun();
 
         $this->expectException(\LogicException::class);
         $this->migrationToTest->migrate();
@@ -105,7 +105,7 @@ SQL;
         return $stmt->fetchOne();
     }
 
-    private function createBlockingTrigger(): void
+    private function givenTheMigrationThatRemovesTriggerHasNotRun(): void
     {
         $createDummyTriggerQuery = <<<SQL
 CREATE TRIGGER {trigger_name}

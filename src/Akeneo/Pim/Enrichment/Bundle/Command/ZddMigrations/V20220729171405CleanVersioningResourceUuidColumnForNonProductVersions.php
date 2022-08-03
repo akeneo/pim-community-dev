@@ -47,9 +47,18 @@ SQL;
     private function cleanVersioningResourceUuid(): void
     {
         $resourceNameToProcess = $this->findNextResourceNameToProcess();
+        $totalVersionsCleaned = 0;
         while (null !== $resourceNameToProcess) {
             $versionIds = $this->getVersionIdsToCleanForResourceName($resourceNameToProcess);
             $this->cleanVersions($versionIds);
+            $totalVersionsCleaned += \count($versionIds);
+            $this->logger->debug(
+                sprintf(
+                    'Cleaned %d versions from their resource_uuid for resource name %s',
+                    $totalVersionsCleaned,
+                    $resourceNameToProcess
+                )
+            );
             $resourceNameToProcess = $this->findNextResourceNameToProcess();
         }
     }
