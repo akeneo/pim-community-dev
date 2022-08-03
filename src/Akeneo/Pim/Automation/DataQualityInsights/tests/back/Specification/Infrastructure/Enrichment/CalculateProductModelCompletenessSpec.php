@@ -66,7 +66,7 @@ class CalculateProductModelCompletenessSpec extends ObjectBehavior
         $productModel->getValues()->willReturn($values);
         $family->getCode()->willReturn('a_family');
 
-        $getCompletenessProductMasks->fromValueCollection(42, 'a_product_model', 'a_family', $values)->willReturn($productMask);
+        $getCompletenessProductMasks->fromValueCollection(42, 'a_family', $values)->willReturn($productMask);
 
         $getProductModelAttributesMaskQuery->execute($productModelId)->willReturn(null);
 

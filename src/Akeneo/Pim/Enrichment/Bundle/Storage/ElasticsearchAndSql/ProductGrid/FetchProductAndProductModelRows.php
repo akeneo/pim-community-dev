@@ -64,10 +64,10 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
 
         $rows = array_merge($productRows, $productModelRows);
         $sortedRows = [];
-        foreach ($identifiers as $identifierKey => $identifier) {
+        foreach ($identifiers as $identifier) {
             foreach ($rows as $rowKey => $row) {
                 if (
-                    'product_'.$row->identifier() === $identifier->getIdentifier ||
+                    'product_'.$row->identifier() === $identifier->getIdentifier() ||
                     $identifier->getIdentifier() === $row->identifier()
                 ) {
                     $sortedRows[] = $row;
@@ -76,6 +76,7 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
             }
         }
 
+        // @TODO: Find how to match all to avoid dumping all products without Identifiers at the end
         $sortedRows = array_merge($sortedRows, $rows);
 
         $documentTypeFacet = null;
