@@ -14,7 +14,7 @@ akeneo.tailored_import:
       button: インポート構造を初期化
     modal:
       title: インポート構造を定義
-      subtitle: プロファイルをインポート
+      subtitle: インポートプロファイル
       helper: インポートを構成するには、ファイルの構造を定義することから始めます。
       link: 詳細についてはヘルプセンターをご確認ください。
       upload:
@@ -182,10 +182,10 @@ akeneo.tailored_import:
     channel:
       should_exist: チャンネル {{ channel_code }} は削除されています。別のチャンネルを選択してください。
     attribute:
-      locale_should_not_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持つようになりました。作成するか、別のターゲットを選択してください。
-      channel_should_not_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持つようになりました。作成するか、別のターゲットを選択してください。
-      locale_should_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持たなくなりました。削除するか、別のターゲットを選択してください。
-      channel_should_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持たなくなりました。削除するか、別のターゲットを選択してください。
+      locale_should_not_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持つようになりました。ロケールを作成するか、別のターゲットを選択してください。
+      channel_should_not_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持つようになりました。チャンネルを作成するか、別のターゲットを選択してください。
+      locale_should_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持たなくなりました。属性を削除するか、別のターゲットを選択してください。
+      channel_should_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持たなくなりました。属性を削除するか、別のターゲットを選択してください。
       invalid_specific_locale: 属性 {{ attribute_code }} はロケール固有です。別のロケールを選択してください。
     file_key:
       does_not_exist: ファイル {{ file_key }} が見つかりませんでした。

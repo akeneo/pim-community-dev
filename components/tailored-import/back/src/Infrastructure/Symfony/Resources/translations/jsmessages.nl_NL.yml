@@ -182,8 +182,8 @@ akeneo.tailored_import:
     channel:
       should_exist: Het kanaal {{ channel_code }} is verwijderd. Selecteer een ander kanaal.
     attribute:
-      locale_should_not_be_blank: Het attribuut {{ attribute_code }} bevat nu een waarde per taal. Maak deze waarde aan of kies een ander doel.
-      channel_should_not_be_blank: Het attribuut {{ attribute_code }} heeft nu een waarde per kanaal. Maak deze waarde aan of kies een ander doel.
+      locale_should_not_be_blank: Het attribuut {{ attribute_code }} bevat nu een waarde per taal. Maak de taal aan of kies een ander doel.
+      channel_should_not_be_blank: Het attribuut {{ attribute_code }} heeft nu een waarde per kanaal. Maak het kanaal aan of kies een ander doel.
       locale_should_be_blank: Het attribuut {{ attribute_code }} heeft geen waarde per taal meer. Verwijder het en maak het opnieuw aan of kies een ander doel.
       channel_should_be_blank: Het attribuut {{ attribute_code }} heeft geen waarde per kanaal meer. Verwijder het en maak het opnieuw aan of kies een ander doel.
       invalid_specific_locale: Het attribuut {{ attribute_code }} is taalspecifiek. Selecteer een andere taal.
