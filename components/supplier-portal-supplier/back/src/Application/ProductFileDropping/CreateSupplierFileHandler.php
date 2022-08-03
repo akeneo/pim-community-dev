@@ -50,7 +50,9 @@ final class CreateSupplierFileHandler
             $createSupplierFile->uploadedFile->getPathname(),
         );
 
+        $supplierFileIdentifier = Identifier::generate();
         $supplierFile = SupplierFile::create(
+            (string) $supplierFileIdentifier,
             $createSupplierFile->originalFilename,
             $storedProductFilePath,
             $createSupplierFile->uploadedByContributor,
@@ -65,6 +67,7 @@ final class CreateSupplierFileHandler
             sprintf('Supplier file "%s" created.', $createSupplierFile->originalFilename),
             [
                 'data' => [
+                    'identifier' => (string) $supplierFileIdentifier,
                     'filename' => $createSupplierFile->originalFilename,
                     'path' => $storedProductFilePath,
                     'uploaded_by_contributor' => $createSupplierFile->uploadedByContributor,
