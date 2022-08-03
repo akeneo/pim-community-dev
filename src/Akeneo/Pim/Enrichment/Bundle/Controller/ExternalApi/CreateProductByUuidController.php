@@ -11,7 +11,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\UnknownAttributeExceptio
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\UnknownUserIntentException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditable;
@@ -24,7 +23,6 @@ use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\DBAL\Connection;
@@ -117,14 +115,14 @@ class CreateProductByUuidController
                     sprintf('Attribute "%s" belongs to the attribute group "%s" on which you only have view permission.', $invalidValue->attributeCode(), $attributeGroupCode),
                     $e
                 );
-            } else if ($firstConstraint instanceof AttributeGroupShouldBeReadable) {
+            } elseif ($firstConstraint instanceof AttributeGroupShouldBeReadable) {
                 $invalidValue = $e->violations()->get(0)->getInvalidValue();
                 Assert::isInstanceOf($invalidValue, ValueUserIntent::class);
                 $this->throwDocumentedHttpException(
                     sprintf('The %s attribute does not exist in your PIM.', $invalidValue->attributeCode()),
                     $e
                 );
-            } else if ($firstConstraint instanceof LocaleShouldBeEditableByUser) {
+            } elseif ($firstConstraint instanceof LocaleShouldBeEditableByUser) {
                 $invalidValue = $e->violations()->get(0)->getInvalidValue();
                 Assert::isInstanceOf($invalidValue, ValueUserIntent::class);
 
@@ -132,7 +130,7 @@ class CreateProductByUuidController
                     sprintf('You only have a view permission on the locale "%s".', $invalidValue->localeCode()),
                     $e
                 );
-            } else if ($firstConstraint instanceof LocaleShouldBeReadableByUser) {
+            } elseif ($firstConstraint instanceof LocaleShouldBeReadableByUser) {
                 $invalidValue = $e->violations()->get(0)->getInvalidValue();
                 Assert::isInstanceOf($invalidValue, ValueUserIntent::class);
 
@@ -140,12 +138,24 @@ class CreateProductByUuidController
                     sprintf('Attribute "%s" expects an existing and activated locale, "%s" given.', $invalidValue->attributeCode(), $invalidValue->localeCode()),
                     $e
                 );
-            } else if ($firstConstraint instanceof CategoriesShouldBeViewable) {
+            } elseif ($firstConstraint instanceof CategoriesShouldBeViewable) {
                 $violation = $e->violations()->get(0);
                 $categoryCodes = $violation->getParameters()['{{ categoryCodes }}'];
 
                 $this->throwDocumentedHttpException(
                     sprintf('Property "categories" expects a valid category code. The category does not exist, "%s" given.', $categoryCodes),
+                    $e
+                );
+            }
+
+            $message = $e->violations()->get(0)->getMessage();
+            $matches = [];
+            if (preg_match('/^Property "associations" expects a valid product identifier. The product does not exist, "(?P<identifier>.*)" given.$/', $message, $matches)) {
+                $this->throwDocumentedHttpException(
+                    sprintf(
+                        'Property "associations" expects a valid product uuid. The product does not exist, "%s" given.',
+                        $this->getUuidFromIdentifier($matches['identifier'])
+                    ),
                     $e
                 );
             }
@@ -318,8 +328,7 @@ class CreateProductByUuidController
                         $violation->getCause()
                     )
                 );
-            }
-            else {
+            } else {
                 $newViolations->add($violation);
             }
         }
