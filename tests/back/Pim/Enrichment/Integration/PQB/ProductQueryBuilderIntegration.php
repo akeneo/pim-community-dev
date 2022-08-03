@@ -115,7 +115,6 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
                             'data'   => $this->getFileInfoKey($this->getFixturePath('akeneo.txt')),
                         ],
                     ],
-
                     'a_localizable_image'                => [
                         [
                             'locale' => 'en_US',
