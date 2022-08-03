@@ -110,8 +110,8 @@ pim_import_export:
             title: Export media
             help: Whether or not to export media
           lines_per_file:
-            title: Number of lines per file
-            help: Define the limit number of lines per file
+            title: Number of rows per file
+            help: Define the limit number of rows per file
           upload_allowed:
             title: Allow file upload
             help: Whether or not to allow uploading the file directly
