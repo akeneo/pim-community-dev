@@ -15,7 +15,7 @@ use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
  */
 interface UserIntentApplier
 {
-    public function apply(UserIntent $userIntent, CategoryInterface $category, int $userId): void;
+    public function apply(UserIntent $userIntent, CategoryInterface $category): void;
 
     /**
      * @return array<class-string>

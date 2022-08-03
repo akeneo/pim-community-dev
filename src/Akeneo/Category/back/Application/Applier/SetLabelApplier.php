@@ -21,7 +21,7 @@ final class SetLabelApplier implements UserIntentApplier
     ) {
     }
 
-    public function apply(UserIntent $userIntent, CategoryInterface $category, int $userId): void
+    public function apply(UserIntent $userIntent, CategoryInterface $category): void
     {
         Assert::isInstanceOf($userIntent, SetLabel::class);
         $this->categoryUpdater->update($category, [
