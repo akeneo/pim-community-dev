@@ -35,17 +35,15 @@ Common labels
 */}}
 {{- define "timmy.labels" -}}
 helm.sh/chart: {{ include "timmy.chart" . }}
-{{ include "timmy.selectorLabels" . }}
+release: "{{ .Release.Name }}"
+heritage: "{{ .Release.Service }}"
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
-{{/*
-Selector labels
-*/}}
-{{- define "timmy.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "timmy.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+
+{{- define "timmy.bucketName" -}}
+{{ .Values.common.gcpProjectID }}-{{ include "timmy.fullname" . }}
 {{- end }}

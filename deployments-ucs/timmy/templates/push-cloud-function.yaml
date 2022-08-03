@@ -3,12 +3,16 @@ kind: Job
 metadata:
   name: push-cloud-function
   labels:
+    {{- include "timmy.labels" . | nindent 4 }}
     component: "push-cloud-function"
     app.kubernetes.io/component: "push-cloud-function"
+  annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/cloudfunction-sources-configmap.yaml") . | sha256sum }}
 spec:
   template:
     metadata:
       labels:
+        {{- include "timmy.labels" . | nindent 8 }}
         component: "push-cloud-function"
         app.kubernetes.io/component: "push-cloud-function"
       annotations:
@@ -33,7 +37,7 @@ spec:
           command: ["sh", "/scripts-dir/cloud-function-scripts.sh"]
           env:
             - name: BUCKET_NAME
-              value: {{ .Values.bucket.name }}
+              value: {{ include "timmy.bucketName" . }}
             - name: SOURCE_CODE_ZIP
               value: {{ .Values.cloudFunction.sourceCodeZip }}
           volumeMounts:

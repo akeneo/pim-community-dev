@@ -2,20 +2,23 @@ apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
 kind: Function
 metadata:
   name: {{ .Values.cloudFunction.name }}
+  labels:
+    {{- include "timmy.labels" . | nindent 4 }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: Replace=true
 spec:
   forProvider:
     availableMemoryMb: {{ .Values.cloudFunction.availableMemoryMb }}
-    description: "Request the portal to get tenant information"
+    description: {{ .Values.cloudFunction.description }}
     entryPoint: {{ .Values.cloudFunction.entryPoint }}
     name: {{ .Values.cloudFunction.name }}
     runtime: "nodejs16"
     serviceAccountEmail: {{ .Values.cloudFunction.serviceAccountEmail }}
-    sourceArchiveBucket: {{ .Values.cloudFunction.bucket }}
+    sourceArchiveBucket: {{ include "timmy.bucketName" . }}
     sourceArchiveObject: {{ .Values.cloudFunction.sourceCodeZip }}
     triggerHttp: true
+    ingressSettings: "ALLOW_INTERNAL_ONLY"
     project: {{ .Values.common.gcpProjectID }}
     region: {{ .Values.common.region }}
     environmentVariables:

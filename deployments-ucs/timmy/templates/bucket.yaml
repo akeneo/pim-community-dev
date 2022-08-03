@@ -1,13 +1,42 @@
 apiVersion: storage.gcp.crossplane.io/v1alpha3
 kind: Bucket
 metadata:
-  name: {{ .Values.common.gcpProjectID }}-{{ .Values.bucket.name }}
+  name: {{ include "timmy.bucketName" . }}
+  labels:
+    {{- include "timmy.labels" . | nindent 4 }}
   annotations:
-    crossplane.io/external-name: "{{ .Values.common.gcpProjectID }}-{{ .Values.bucket.name }}"
+    crossplane.io/external-name: {{ include "timmy.bucketName" . }}
     argocd.argoproj.io/sync-wave: "-5"
 spec:
+  versioningEnabled: True
   deletionPolicy: Delete
   storageClass: {{ .Values.bucket.storageClass }}
   location: "EU"
   providerConfigRef:
     name: provider-config-gcp
+---
+apiVersion: storage.gcp.crossplane.io/v1alpha1
+kind: BucketPolicy
+metadata:
+  name: {{ include "timmy.bucketName" . }}
+  labels:
+    {{- include "timmy.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+spec:
+  forProvider:
+    bucketRef:
+      name: {{ include "timmy.bucketName" . }}
+    policy:
+      bindings:
+        - role: roles/storage.legacyBucketOwner
+          members:
+            - "projectEditor:{{ .Values.common.gcpProjectID }}"
+            - "projectOwner:{{ .Values.common.gcpProjectID }}"
+            - "serviceAccount:{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com"
+        - role: roles/storage.objectAdmin
+          members:
+            - "serviceAccount:{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com"
+  providerConfigRef:
+    name: provider-config-gcp
+
