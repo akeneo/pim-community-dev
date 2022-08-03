@@ -9,6 +9,7 @@ use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\RequestNewInvitationHandler;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -41,12 +42,12 @@ final class RequestNewInvitationHandlerTest extends TestCase
 
         $sut = new RequestNewInvitationHandler($contributorAccountRepository, $mockSendWelcomeEmail);
         ($sut)(new RequestNewInvitation($contributorEmail));
-        $contributorAccount->renewAccessToken();
+        $updatedContributorAccount = $contributorAccountRepository->findByEmail(Email::fromString($contributorEmail));
 
-        static::assertNotSame($oldContributorAccountAccessToken, $contributorAccount->accessToken());
+        static::assertNotSame($oldContributorAccountAccessToken, $updatedContributorAccount->accessToken());
         static::assertSame(
             (new \DateTimeImmutable())->format('d'),
-            (new \DateTimeImmutable($contributorAccount->accessTokenCreatedAt()))->format('d'),
+            (new \DateTimeImmutable($updatedContributorAccount->accessTokenCreatedAt()))->format('d'),
         );
     }
 
