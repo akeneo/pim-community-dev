@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.105 (2022-08-03)
+
 ## Bug fixes
 - PIM-10551: Add filtering on locale specific attributes when fetching values
 
