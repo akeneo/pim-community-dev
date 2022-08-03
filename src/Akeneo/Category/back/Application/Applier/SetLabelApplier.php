@@ -26,7 +26,7 @@ final class SetLabelApplier implements UserIntentApplier
         Assert::isInstanceOf($userIntent, SetLabel::class);
         $this->categoryUpdater->update($category, [
             'labels' => [
-                $userIntent->localeCode() => $userIntent->value()
+                $userIntent->localeCode() => $userIntent->label()
             ]
         ]);
     }

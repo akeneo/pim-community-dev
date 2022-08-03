@@ -12,7 +12,7 @@ class SetLabel implements UserIntent
 {
     public function __construct(
         private ?string $localeCode,
-        private string $value
+        private string $label
     ) {
     }
 
@@ -21,8 +21,8 @@ class SetLabel implements UserIntent
         return $this->localeCode;
     }
 
-    public function value(): string
+    public function label(): string
     {
-        return $this->value;
+        return $this->label;
     }
 }

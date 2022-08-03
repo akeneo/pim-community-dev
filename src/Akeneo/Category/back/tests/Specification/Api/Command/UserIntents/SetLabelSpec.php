@@ -32,6 +32,6 @@ class SetLabelSpec extends ObjectBehavior
 
     function it_returns_the_label_value()
     {
-        $this->value()->shouldReturn('The label');
+        $this->label()->shouldReturn('The label');
     }
 }
