@@ -23,7 +23,7 @@ const Content = styled.div`
   gap: 10px;
 `;
 
-const frequencyConfigurators: {[frequencyOption: FrequencyOption]: FunctionComponent<FrequencyConfiguratorProps>} = {
+const frequencyConfigurators: {[frequencyOption: string]: FunctionComponent<FrequencyConfiguratorProps>} = {
   daily: DailyFrequencyConfigurator,
   weekly: WeeklyFrequencyConfigurator,
   every_4_hours: HourlyFrequencyConfigurator,
