@@ -44,7 +44,7 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
             $expectedProductFilenames[] = sprintf('products_%d.xlsx', $i+1);
         }
 
-        static::assertSame(
+        static::assertEqualsCanonicalizing(
             $expectedProductFilenames,
             array_map(
                 fn (SupplierFile $supplierProductFile) => $supplierProductFile->originalFilename,

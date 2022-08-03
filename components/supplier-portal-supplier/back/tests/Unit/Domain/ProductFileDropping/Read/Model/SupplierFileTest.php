@@ -23,7 +23,7 @@ final class SupplierFileTest extends TestCase
         static::assertSame(
             [
                 'identifier' => 'b8b13d0b-496b-4a7c-a574-0d522ba90752',
-                'original_filename' => 'supplier-file.xlsx',
+                'originalFilename' => 'supplier-file.xlsx',
                 'path' => '2/f/a/4/2fa4afe5465afe5655supplier-file.xlsx',
                 'uploadedByContributor' => 'contributor@example.com',
                 'uploadedAt' => '2022-07-12 14:55:46',
