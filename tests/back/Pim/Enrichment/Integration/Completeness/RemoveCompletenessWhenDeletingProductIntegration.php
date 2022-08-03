@@ -113,9 +113,9 @@ class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompleten
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
-            userId: $userId,
-            productIdentifier: $identifier,
-            userIntents: $userIntents
+            $userId,
+            $identifier,
+            $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }

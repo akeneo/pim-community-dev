@@ -37,9 +37,9 @@ final class RemoveNonExistingProductValuesIntegration extends TestCase
 
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: 'hiking_shoes',
-            userIntents: [
+            $this->getUserId('admin'),
+            'hiking_shoes',
+            [
                 new SetFamily('shoes'),
                 new SetSimpleSelectValue('brand', null, null, 'akeneo')
             ]

@@ -25,9 +25,9 @@ abstract class AbstractProductTestCase extends ApiTestCase
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: $identifier,
-            userIntents: $userIntents
+            $this->getUserId('admin'),
+            $identifier,
+            $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
 
@@ -41,9 +41,9 @@ abstract class AbstractProductTestCase extends ApiTestCase
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: $identifier,
-            userIntents: $userIntents
+            $this->getUserId('admin'),
+            $identifier,
+            $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();

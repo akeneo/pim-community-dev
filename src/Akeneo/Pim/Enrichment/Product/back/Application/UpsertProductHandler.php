@@ -10,8 +10,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasCreated;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
@@ -54,43 +52,25 @@ final class UpsertProductHandler
 
         $this->checkConsistencyWithConnectedUser($command->userId());
 
-        // Temporary: we retrieve identifier value from the valueUserIntents to build the product
-        $identifier = \array_filter(
-            $command->valueUserIntents(),
-            fn (ValueUserIntent $valueUserIntent) => $valueUserIntent instanceof SetIdentifierValue
-        )[0] ?? null;
-
+        $product = null;
         if ($command->identifierOrUuid() instanceof ProductUuid) {
-            // TODO: should we retrieve product by identifier if product is null here?
             $product = $this->productRepository->find($command->identifierOrUuid()->uuid());
         } elseif ($command->identifierOrUuid() instanceof ProductIdentifier) {
             $product = $this->productRepository->findOneByIdentifier($command->identifierOrUuid()->identifier());
         } elseif (\is_string($command->identifierOrUuid())) {
             $product = $this->productRepository->findOneByIdentifier($command->identifierOrUuid());
-        } else {
-            if (null === $identifier?->value()) {
-                // TODO: throw an error if no identifier userIntent was sent?
-                throw new \LogicException('identifier user intent must be passed to the command');
-            }
-            $product = $this->productRepository->findOneByIdentifier($identifier->value());
         }
 
         $isCreation = false;
         if (null === $product) {
             $isCreation = true;
 
-            if ($command->identifierOrUuid() instanceof ProductIdentifier) {
+            if ($command->identifierOrUuid() instanceof ProductUuid) {
+                $product = $this->productBuilder->createProduct(null, null, $command->identifierOrUuid()->uuid());
+            } elseif ($command->identifierOrUuid() instanceof ProductIdentifier) {
                 $product = $this->productBuilder->createProduct($command->identifierOrUuid()->identifier());
-            } elseif ($command->identifierOrUuid() instanceof ProductUuid) {
-                $product = $this->productBuilder->createProduct($identifier->value(), null, $command->identifierOrUuid()->uuid());
             } elseif (\is_string($command->identifierOrUuid())) {
                 $product = $this->productBuilder->createProduct($command->identifierOrUuid());
-            } else {
-                if (null === $identifier?->value()) {
-                    // TODO: throw an error if no identifier userIntent was sent?
-                    throw new \LogicException('identifier user intent must be passed to the command');
-                }
-                $product = $this->productBuilder->createProduct($identifier->value());
             }
         }
         Assert::notNull($product);
