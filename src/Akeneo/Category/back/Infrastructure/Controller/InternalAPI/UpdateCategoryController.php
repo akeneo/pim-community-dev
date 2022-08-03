@@ -8,7 +8,7 @@ use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Api\Command\UpsertCategoryCommand;
 use Akeneo\Category\Application\Converter\ConverterInterface;
-use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsStub;
+use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface;
 use Akeneo\Category\Application\Filter\CategoryEditACLFilter;
 use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
 use Akeneo\Category\Application\Query\FindCategoryByIdentifier;
@@ -30,7 +30,7 @@ class UpdateCategoryController
         private SecurityFacade $securityFacade,
         private ConverterInterface $internalApiToStandardConverter,
         private CategoryEditACLFilter $ACLFilter,
-        private StandardFormatToUserIntentsStub $standardFormatToUserIntents,
+        private StandardFormatToUserIntentsInterface $standardFormatToUserIntents,
         private CategoryEditUserIntentFilter $categoryUserIntentFilter,
         private FindCategoryByIdentifier $findCategoryByIdentifier,
     ) {
