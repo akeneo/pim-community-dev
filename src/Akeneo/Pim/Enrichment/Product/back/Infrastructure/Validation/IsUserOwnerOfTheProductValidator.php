@@ -37,7 +37,7 @@ final class IsUserOwnerOfTheProductValidator extends ConstraintValidator
         $productCategoryCodes = null;
         if ($command->identifierOrUuid() instanceof ProductIdentifierValueObject) {
             $productCategoryCodes = $this->getProductCategoryCodesFromIdentifier($command->identifierOrUuid()->identifier());
-        }elseif ($command->identifierOrUuid() instanceof ProductUuid) {
+        } elseif ($command->identifierOrUuid() instanceof ProductUuid) {
             $productCategoryCodes = $this->getCategoryCodes->fromProductUuids([
                     $command->identifierOrUuid()->uuid()
                 ])[$command->identifierOrUuid()->uuid()->toString()] ?? null;

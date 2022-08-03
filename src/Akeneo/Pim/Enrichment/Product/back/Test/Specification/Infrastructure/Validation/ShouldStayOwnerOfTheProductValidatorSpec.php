@@ -9,7 +9,9 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier as ProductIdentifierValueObject;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes;
@@ -17,6 +19,7 @@ use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ShouldStayOwnerOfThe
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ShouldStayOwnerOfTheProductValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContext;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
@@ -44,16 +47,23 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         GetNonViewableCategoryCodes $getNonViewableCategoryCodes,
         ExecutionContext $context
     ) {
-        $context->getRoot()->willReturn(new UpsertProductCommand(
-            userId: 10,
-            identifierOrUuid: 'foo'
-        ));
-        $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
-            ->willReturn(['foo' => ['categoryA']])
-        ;
         $getOwnedCategories->forUserId(['categoryB', 'categoryA'], 10)->willReturn(['categoryB']);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
+        $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
+            ->willReturn(['foo' => ['categoryA']]);
+        $uuid = Uuid::uuid4();
+        $getNonViewableCategoryCodes->fromProductUuids([$uuid], 10)->willReturn([$uuid->toString() => ['categoryA']]);
 
+        // with identifier as string
+        $context->getRoot()->willReturn(new UpsertProductCommand(10, 'foo'));
+        $this->validate(new SetCategories(['categoryB']), new ShouldStayOwnerOfTheProduct());
+
+        // with product identifier
+        $context->getRoot()->willReturn(new UpsertProductCommand(10, ProductIdentifierValueObject::fromAttributeCodeAndIdentifier('sku', 'foo')));
+        $this->validate(new SetCategories(['categoryB']), new ShouldStayOwnerOfTheProduct());
+
+        //with product uuid
+        $context->getRoot()->willReturn(new UpsertProductCommand(10, ProductUuid::fromUuid($uuid)));
         $this->validate(new SetCategories(['categoryB']), new ShouldStayOwnerOfTheProduct());
     }
 
@@ -61,15 +71,22 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         GetNonViewableCategoryCodes $getNonViewableCategoryCodes,
         ExecutionContext $context
     ) {
-        $context->getRoot()->willReturn(new UpsertProductCommand(
-            userId: 10,
-            identifierOrUuid: 'foo'
-        ));
         $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
-            ->willReturn(['foo' => []])
-        ;
+            ->willReturn(['foo' => []]);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
+        $uuid = Uuid::uuid4();
+        $getNonViewableCategoryCodes->fromProductUuids([$uuid], 10)->willReturn([$uuid->toString() => []]);
 
+        // with identifier as string
+        $context->getRoot()->willReturn(new UpsertProductCommand(10, 'foo'));
+        $this->validate(new SetCategories([]), new ShouldStayOwnerOfTheProduct());
+
+        // with identifier as string
+        $context->getRoot()->willReturn(new UpsertProductCommand(10, ProductIdentifierValueObject::fromAttributeCodeAndIdentifier('sku', 'foo')));
+        $this->validate(new SetCategories([]), new ShouldStayOwnerOfTheProduct());
+
+        // with product uuid
+        $context->getRoot()->willReturn(new UpsertProductCommand(10, ProductUuid::fromUuid($uuid)));
         $this->validate(new SetCategories([]), new ShouldStayOwnerOfTheProduct());
     }
 
@@ -80,18 +97,25 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $constraint = new ShouldStayOwnerOfTheProduct();
-        $context->getRoot()->willReturn(new UpsertProductCommand(
-            userId: 10,
-            identifierOrUuid: 'foo'
-        ));
         $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
-            ->willReturn(['foo' => ['categoryA']])
-        ;
+            ->willReturn(['foo' => ['categoryA']]);
+        $uuid = Uuid::uuid4();
+        $getNonViewableCategoryCodes->fromProductUuids([$uuid], 10)->willReturn([$uuid->toString() => ['categoryA']]);
         $getOwnedCategories->forUserId(['categoryB', 'categoryA'], 10)->willReturn([]);
-        $context->buildViolation($constraint->message)->shouldBeCalledOnce()->willReturn($violationBuilder);
+        $context->buildViolation($constraint->message)->shouldBeCalledTimes(3)->willReturn($violationBuilder);
         $violationBuilder->setCode((string) ViolationCode::PERMISSION)->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalledOnce();
+        $violationBuilder->addViolation()->shouldBeCalledTimes(3);
 
+        // with identifier as string
+        $context->getRoot()->willReturn(new UpsertProductCommand(10, 'foo'));
+        $this->validate(new SetCategories(['categoryB']), $constraint);
+
+        // with product identifier
+        $context->getRoot()->willReturn(new UpsertProductCommand(10, ProductIdentifierValueObject::fromAttributeCodeAndIdentifier('sku', 'foo')));
+        $this->validate(new SetCategories(['categoryB']), $constraint);
+
+        // with product uuid
+        $context->getRoot()->willReturn(new UpsertProductCommand(10, ProductUuid::fromUuid($uuid)));
         $this->validate(new SetCategories(['categoryB']), $constraint);
     }
 
@@ -102,18 +126,25 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $constraint = new ShouldStayOwnerOfTheProduct();
-        $context->getRoot()->willReturn(new UpsertProductCommand(
-            userId: 10,
-            identifierOrUuid: 'foo'
-        ));
         $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')])
-            ->willReturn(['foo' => ['categoryA', 'categoryB', 'categoryC']])
-        ;
+            ->willReturn(['foo' => ['categoryA', 'categoryB', 'categoryC']]);
+        $uuid = Uuid::uuid4();
+        $getCategoryCodes->fromProductUuids([$uuid])->willReturn([$uuid->toString() => ['categoryA', 'categoryB', 'categoryC']]);
         $getOwnedCategories->forUserId(['categoryA', 'categoryC'], 10)->willReturn([]);
-        $context->buildViolation($constraint->message)->shouldBeCalledOnce()->willReturn($violationBuilder);
+        $context->buildViolation($constraint->message)->shouldBeCalledTimes(3)->willReturn($violationBuilder);
         $violationBuilder->setCode((string) ViolationCode::PERMISSION)->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalledOnce();
+        $violationBuilder->addViolation()->shouldBeCalledTimes(3);
 
+        // with identifier as string
+        $context->getRoot()->willReturn(new UpsertProductCommand(10, 'foo'));
+        $this->validate(new RemoveCategories(['categoryB']), $constraint);
+
+        // with product identifier
+        $context->getRoot()->willReturn(new UpsertProductCommand(10, ProductIdentifierValueObject::fromAttributeCodeAndIdentifier('sku', 'foo')));
+        $this->validate(new RemoveCategories(['categoryB']), $constraint);
+
+        // with product uuid
+        $context->getRoot()->willReturn(new UpsertProductCommand(10, ProductUuid::fromUuid($uuid)));
         $this->validate(new RemoveCategories(['categoryB']), $constraint);
     }
 

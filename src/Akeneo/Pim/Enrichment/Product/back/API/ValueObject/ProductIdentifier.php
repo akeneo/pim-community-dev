@@ -23,11 +23,6 @@ class ProductIdentifier
         return new ProductIdentifier($attributeCode, $identifier);
     }
 
-    public static function fromSku(string $sku): ProductIdentifier
-    {
-        return new ProductIdentifier('sku', $sku);
-    }
-
     public function attributeCode(): string
     {
         return $this->attributeCode;

@@ -6,12 +6,16 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier as ProductIdentifierValueObject;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProduct;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProductValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContext;
@@ -19,6 +23,10 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
 {
+    private UuidInterface $uuidUnknown;
+    private UuidInterface $uuidWithoutCategory;
+    private UuidInterface $uuidWithCategory;
+
     function let(
         GetCategoryCodes $getCategoryCodes,
         GetOwnedCategories $getOwnedCategories,
@@ -30,6 +38,13 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
             ->willReturn(['product_without_category' => []]);
         $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('product_with_category')])
             ->willReturn(['product_with_category' => ['master', 'print']]);
+
+        $this->uuidUnknown = Uuid::uuid4();
+        $this->uuidWithoutCategory = Uuid::uuid4();
+        $this->uuidWithCategory = Uuid::uuid4();
+        $getCategoryCodes->fromProductUuids([$this->uuidUnknown])->willReturn([]);
+        $getCategoryCodes->fromProductUuids([$this->uuidWithoutCategory])->willReturn([$this->uuidWithoutCategory->toString() => []]);
+        $getCategoryCodes->fromProductUuids([$this->uuidWithCategory])->willReturn([$this->uuidWithCategory->toString() => ['master', 'print']]);
 
         $this->beConstructedWith($getCategoryCodes, $getOwnedCategories);
         $this->initialize($context);
@@ -43,8 +58,7 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_with_a_wrong_constraint()
     {
-        $command = new UpsertProductCommand(userId: 1, identifierOrUuid: 'foo');
-
+        $command = new UpsertProductCommand(1, 'foo');
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [$command, new Type([])]);
     }
 
@@ -56,17 +70,35 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
 
     function it_does_nothing_when_product_does_not_exist(ExecutionContext $context)
     {
-        $command = new UpsertProductCommand(userId: 1, identifierOrUuid: 'unknown');
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
+        // with identifier as string
+        $command = new UpsertProductCommand(1, 'unknown');
+        $this->validate($command, new IsUserOwnerOfTheProduct());
+
+        // with product identifier
+        $command = new UpsertProductCommand(1, ProductIdentifierValueObject::fromAttributeCodeAndIdentifier('sku', 'unknown'));
+        $this->validate($command, new IsUserOwnerOfTheProduct());
+
+        // with uuid
+        $command = new UpsertProductCommand(1,  ProductUuid::fromUuid($this->uuidUnknown));
         $this->validate($command, new IsUserOwnerOfTheProduct());
     }
 
     function it_validates_when_the_product_does_not_have_any_category(ExecutionContext $context)
     {
-        $command = new UpsertProductCommand(userId: 1, identifierOrUuid: 'product_without_category');
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
+        // with identifier as string
+        $command = new UpsertProductCommand(1, 'product_without_category');
+        $this->validate($command, new IsUserOwnerOfTheProduct());
+
+        // with product identifier
+        $command = new UpsertProductCommand(1, ProductIdentifierValueObject::fromAttributeCodeAndIdentifier('sku','product_without_category'));
+        $this->validate($command, new IsUserOwnerOfTheProduct());
+
+        // with uuid
+        $command = new UpsertProductCommand(1, ProductUuid::fromUuid($this->uuidWithoutCategory));
         $this->validate($command, new IsUserOwnerOfTheProduct());
     }
 
@@ -74,10 +106,19 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
         GetOwnedCategories $getOwnedCategories,
         ExecutionContext $context
     ) {
-        $command = new UpsertProductCommand(userId: 1, identifierOrUuid: 'product_with_category');
         $getOwnedCategories->forUserId(['master', 'print'], 1)->willReturn(['master']);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
+        // with identifier as string
+        $command = new UpsertProductCommand(1, 'product_with_category');
+        $this->validate($command, new IsUserOwnerOfTheProduct());
+
+        // with product identifier
+        $command = new UpsertProductCommand(1, ProductIdentifierValueObject::fromAttributeCodeAndIdentifier('sku', 'product_with_category'));
+        $this->validate($command, new IsUserOwnerOfTheProduct());
+
+        // with uuid
+        $command = new UpsertProductCommand(1, ProductUuid::fromUuid($this->uuidWithCategory));
         $this->validate($command, new IsUserOwnerOfTheProduct());
     }
 
@@ -88,13 +129,22 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
     ) {
         $constraint = new IsUserOwnerOfTheProduct();
 
-        $command = new UpsertProductCommand(userId: 1, identifierOrUuid: 'product_with_category');
         $getOwnedCategories->forUserId(['master', 'print'], 1)->willReturn([]);
-        $context->buildViolation($constraint->message)->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->atPath('userId')->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);
+        $context->buildViolation($constraint->message)->shouldBeCalledTimes(3)->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->atPath('userId')->shouldBeCalledTimes(3)->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->setCode('3')->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
+        $constraintViolationBuilder->addViolation()->shouldBeCalledTimes(3);
 
+        // with identifier as string
+        $command = new UpsertProductCommand(1, 'product_with_category');
+        $this->validate($command, $constraint);
+
+        // with product identifier
+        $command = new UpsertProductCommand(1, ProductIdentifierValueObject::fromAttributeCodeAndIdentifier('sku', 'product_with_category'));
+        $this->validate($command, $constraint);
+
+        // with uuid
+        $command = new UpsertProductCommand(1, ProductUuid::fromUuid($this->uuidWithCategory));
         $this->validate($command, $constraint);
     }
 }

@@ -210,22 +210,6 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertSame('new_identifier', $updatedProduct->getValue('sku')?->getData());
     }
 
-//    public function it_throws_an_exception_when_there_is_no_identifier_user_intent()
-//    {
-//        $this->expectException(LegacyViolationsException::class);
-//        $this->expectExceptionMessage('There should be an identifier user intent.');
-//
-//        $command = UpsertProductCommand::createFromCollection(
-//            userId: $this->getUserId('admin'),
-//            identifierOrUuid: ProductUuid::fromUuid(),
-//            userIntents: [
-//                new SetFamily($familyCode),
-//                ...$userIntents
-//            ]
-//        );
-//        $this->get('pim_enrich.product.message_bus')->dispatch($command);
-//    }
-
     /** @test */
     public function it_throws_an_exception_when_deleting_the_identifier_value()
     {

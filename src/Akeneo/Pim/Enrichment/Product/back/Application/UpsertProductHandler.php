@@ -39,7 +39,7 @@ final class UpsertProductHandler
         private ValidatorInterface $productValidator,
         private EventDispatcherInterface $eventDispatcher,
         private UserIntentApplierRegistry $applierRegistry,
-        private TokenStorageInterface $tokenStorage,
+        private TokenStorageInterface $tokenStorage
     ) {
     }
 
@@ -55,6 +55,9 @@ final class UpsertProductHandler
         $product = null;
         if ($command->identifierOrUuid() instanceof ProductUuid) {
             $product = $this->productRepository->find($command->identifierOrUuid()->uuid());
+            if (null !== $product) {
+                Assert::isInstanceOf($product, ProductInterface::class);
+            }
         } elseif ($command->identifierOrUuid() instanceof ProductIdentifier) {
             $product = $this->productRepository->findOneByIdentifier($command->identifierOrUuid()->identifier());
         } elseif (\is_string($command->identifierOrUuid())) {
@@ -71,10 +74,10 @@ final class UpsertProductHandler
                 $product = $this->productBuilder->createProduct($command->identifierOrUuid()->identifier());
             } elseif (\is_string($command->identifierOrUuid())) {
                 $product = $this->productBuilder->createProduct($command->identifierOrUuid());
+            } else {
+                $product = $this->productBuilder->createProduct();
             }
         }
-        Assert::notNull($product);
-        Assert::isInstanceOf($product, ProductInterface::class);
 
         $this->updateProduct($product, $command);
 

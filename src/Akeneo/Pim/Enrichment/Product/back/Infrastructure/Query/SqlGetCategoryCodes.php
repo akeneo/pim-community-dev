@@ -91,54 +91,54 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
         }
 
         Assert::allIsInstanceOf($productUuids, UuidInterface::class);
-        $productUuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
-        $sql = <<<SQL
-        WITH
-        existing_product AS (
-            SELECT uuid, product_model_id, identifier FROM pim_catalog_product WHERE uuid IN (:product_uuids)
-        )
-        SELECT BIN_TO_UUID(p.uuid) as uuid, IF(COUNT(mc.category_code) = 0, JSON_ARRAY(), JSON_ARRAYAGG(mc.category_code)) as category_codes
-        FROM 
-            existing_product p
-            LEFT JOIN (
-                SELECT
-                    p.identifier, c.code AS category_code
-                FROM existing_product p
-                    INNER JOIN pim_catalog_category_product cp ON cp.product_uuid = p.uuid
-                    INNER JOIN pim_catalog_category c ON c.id = cp.category_id
-                UNION ALL
-                SELECT
-                    p.identifier, c.code AS category_code
-                FROM existing_product p
-                    INNER JOIN pim_catalog_product_model sub ON sub.id = p.product_model_id
-                    INNER JOIN pim_catalog_category_product_model cpm ON cpm.product_model_id = sub.id
-                    INNER JOIN pim_catalog_category c ON c.id = cpm.category_id
-                UNION ALL
-                SELECT
-                    p.identifier, c.code AS category_code
-                FROM existing_product p
-                    INNER JOIN pim_catalog_product_model sub ON sub.id = p.product_model_id
-                    INNER JOIN pim_catalog_product_model root ON root.id = sub.parent_id
-                    INNER JOIN pim_catalog_category_product_model cpm ON cpm.product_model_id = root.id
-                    INNER JOIN pim_catalog_category c ON c.id = cpm.category_id
-            ) AS mc ON mc.identifier = p.identifier
-        GROUP BY p.uuid
-        SQL;
+        $uuidsAsBytes = array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
-        $results = $this->connection->executeQuery(
-            $sql,
-            ['product_uuids' => $productUuidsAsBytes],
-            ['product_uuids' => Connection::PARAM_STR_ARRAY]
-        )->fetchAllAssociative();
-
-        $indexedResults = [];
-        foreach ($results as $result) {
-            /** @var string[] $decoded */
-            $decoded = \json_decode($result['category_codes'], true);
-            $indexedResults[(string) $result['uuid']] = $decoded;
+        $results = [];
+        foreach ($productUuids as $uuid) {
+            $results[$uuid->toString()] = [];
         }
 
-        return $indexedResults;
+        $forProductQuery = <<<SQL
+SELECT product_uuid, JSON_ARRAYAGG(category_codes) as category_codes
+FROM (
+         SELECT BIN_TO_UUID(product.uuid) as product_uuid, category.code as category_codes
+         FROM pim_catalog_product product
+                INNER JOIN pim_catalog_category_product category_product ON product.uuid = category_product.product_uuid
+                INNER JOIN pim_catalog_category category ON category.id = category_product.category_id
+         WHERE product.uuid IN (?)
+       UNION ALL
+         SELECT BIN_TO_UUID(product.uuid) as product_uuid, category.code as category_codes
+         FROM pim_catalog_product product
+                INNER JOIN pim_catalog_product_model model ON product.product_model_id = model.id
+                INNER JOIN pim_catalog_category_product_model category_model ON model.id = category_model.product_model_id
+                INNER JOIN pim_catalog_category category ON category_model.category_id = category.id
+         WHERE product.uuid IN (?)
+       UNION ALL
+         SELECT BIN_TO_UUID(product.uuid) as product_uuid, category.code as category_codes
+         FROM pim_catalog_product product
+           INNER JOIN pim_catalog_product_model model ON product.product_model_id = model.id
+           INNER JOIN pim_catalog_product_model parent ON parent.id = model.parent_id
+           INNER JOIN pim_catalog_category_product_model category_model ON parent.id = category_model.product_model_id
+           INNER JOIN pim_catalog_category category ON category_model.category_id = category.id
+         WHERE product.uuid IN (?)
+) all_results
+GROUP BY product_uuid
+SQL;
+
+        $queryResults = $this->connection->fetchAllAssociative(
+            $forProductQuery,
+            [$uuidsAsBytes, $uuidsAsBytes, $uuidsAsBytes],
+            [Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]
+        );
+
+        foreach ($queryResults as $queryResult) {
+            $categoryCodes = json_decode($queryResult['category_codes']);
+            sort($categoryCodes);
+            $categoryCodes = array_values(array_unique($categoryCodes));
+            $results[(string) $queryResult['product_uuid']] = $categoryCodes;
+        }
+
+        return $results;
     }
 }
