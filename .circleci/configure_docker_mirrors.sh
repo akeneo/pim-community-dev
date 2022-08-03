@@ -1,6 +1,6 @@
 #!/bin/bash
 
 # see https://cloud.google.com/container-registry/docs/pulling-cached-images#configure
-echo 'DOCKER_OPTS="${DOCKER_OPTS} --registry-mirror=https://mirror.gcr.io"' >> /etc/default/docker
+echo '{"registry-mirrors": ["https://mirror.gcr.io"]}' >> /etc/docker/daemon.json
 
 service docker restart
