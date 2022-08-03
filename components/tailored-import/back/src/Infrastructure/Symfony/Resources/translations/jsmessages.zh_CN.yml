@@ -195,7 +195,7 @@ akeneo.tailored_import:
       not_allowed_extension: 只支持 XLSX 文件。
     file_structure:
       first_product_row_should_be_after_header_row: 第一产品行应位于标题行之后。
-      unique_identifier_column_should_be_after_first_column_message: 唯一标识符列应至少是第一列。
+      unique_identifier_column_should_be_after_first_column_message: 唯一标识符列应始终是第一信息列。
       header_row_should_not_contain_empty_cell: 标题行不应包含空单元格。
     file_preview:
       empty_sheet:
