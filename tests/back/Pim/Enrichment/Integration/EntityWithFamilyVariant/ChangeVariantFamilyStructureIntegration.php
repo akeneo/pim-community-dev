@@ -127,9 +127,9 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: 'running-shoes-m-antique-white',
-            userIntents: [
+            $this->getUserId('admin'),
+            'running-shoes-m-antique-white',
+            [
                 new SetTextareaValue('composition', null, null, 'ham')
             ]
         );

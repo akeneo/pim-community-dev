@@ -98,9 +98,9 @@ abstract class EnrichmentProductTestCase extends TestCase
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('peter');
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('peter'),
-            identifierOrUuid: $identifier,
-            userIntents: $userIntents
+            $this->getUserId('peter'),
+            $identifier,
+            $userIntents
         );
         $this->commandMessageBus->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();

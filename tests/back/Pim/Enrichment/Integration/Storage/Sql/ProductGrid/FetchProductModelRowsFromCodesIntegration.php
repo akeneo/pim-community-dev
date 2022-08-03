@@ -229,9 +229,9 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: $identifier,
-            userIntents: [
+            $this->getUserId('admin'),
+            $identifier,
+            [
                 new ChangeParent($parentCode),
                 new SetBooleanValue('a_yes_no', null, null, true)
             ]

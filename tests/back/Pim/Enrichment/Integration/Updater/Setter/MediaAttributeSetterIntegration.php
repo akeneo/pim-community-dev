@@ -124,9 +124,9 @@ class MediaAttributeSetterIntegration extends TestCase
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: 'product_media',
-            userIntents: $userIntents
+            $this->getUserId('admin'),
+            'product_media',
+            $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_media');

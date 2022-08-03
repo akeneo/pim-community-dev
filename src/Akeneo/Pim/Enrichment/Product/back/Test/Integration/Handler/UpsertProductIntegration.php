@@ -91,7 +91,7 @@ final class UpsertProductIntegration extends TestCase
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNull($product);
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), identifierOrUuid: 'identifier');
+        $command = new UpsertProductCommand($this->getUserId('admin'), 'identifier');
         $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
@@ -1472,9 +1472,9 @@ final class UpsertProductIntegration extends TestCase
 
         // Update product with userIntent value
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            identifierOrUuid: 'identifier',
-            userIntents: [$userIntent]
+            $this->getUserId('admin'),
+            'identifier',
+            [$userIntent]
         );
         $this->messageBus->dispatch($command);
 
@@ -1487,9 +1487,9 @@ final class UpsertProductIntegration extends TestCase
     private function createProduct(string $identifier, ?string $familyCode, array $userIntents): void
     {
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            identifierOrUuid: $identifier,
-            userIntents: [
+            $this->getUserId('admin'),
+            $identifier,
+            [
                 new SetFamily($familyCode),
                 ...$userIntents
             ]

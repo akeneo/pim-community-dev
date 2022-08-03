@@ -91,9 +91,9 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: 'test_completeness',
-            userIntents: [
+            $this->getUserId('admin'),
+            'test_completeness',
+            [
                 new SetFamily('familyA'),
                 new SetDateValue('a_date', null, null, new \DateTime('2020-03-18T00:00:00+00:00')),
                 new SetTextValue('a_text', null, null, 'lorem ipsum'),

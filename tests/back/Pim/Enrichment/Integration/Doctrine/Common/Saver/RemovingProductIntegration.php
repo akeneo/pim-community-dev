@@ -99,9 +99,9 @@ class RemovingProductIntegration extends TestCase
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: $identifier, //'bat',
-            userIntents: []
+            $this->getUserId('admin'),
+            $identifier, //'bat',
+            []
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
 

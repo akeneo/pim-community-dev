@@ -148,9 +148,9 @@ class LoadProductAndProductModelIntegration extends TestCase
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: $identifier,
-            userIntents: $userIntents
+            $this->getUserId('admin'),
+            $identifier,
+            $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();

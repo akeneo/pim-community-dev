@@ -68,9 +68,9 @@ class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createFromCollection(
-            userId: $this->getUserId('admin'),
-            productIdentifier: $productIdentifier,
-            userIntents: []
+            $this->getUserId('admin'),
+            $productIdentifier,
+            []
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }
