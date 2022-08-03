@@ -18,8 +18,8 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -59,7 +59,6 @@ final class UpdateProductController
         protected AttributeFilterInterface $productAttributeFilter,
         private MessageBusInterface $commandMessageBus,
         private MessageBusInterface $queryMessageBus,
-        private AttributeRepositoryInterface $attributeRepository,
     ) {
     }
 
@@ -178,10 +177,9 @@ final class UpdateProductController
         $userIntents = $handledStamp->getResult();
 
         $userId = $this->userContext->getUser()?->getId();
-        $identifierCode = $this->attributeRepository->getIdentifierCode();
         $command = UpsertProductCommand::createFromCollection(
             $userId,
-            ProductIdentifier::fromAttributeCodeAndIdentifier($identifierCode, $product->getIdentifier()) ?? '',
+            ProductUuid::fromUuid($product->getUuid()),
             $userIntents
         );
         $this->commandMessageBus->dispatch($command);

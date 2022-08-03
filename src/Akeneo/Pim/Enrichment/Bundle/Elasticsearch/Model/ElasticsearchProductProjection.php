@@ -20,7 +20,7 @@ final class ElasticsearchProductProjection implements ElasticsearchProjection
 
     public function __construct(
         private UuidInterface $uuid,
-        private string $identifier,
+        private ?string $identifier,
         private \DateTimeImmutable $createdDate,
         private \DateTimeImmutable $updatedDate,
         private \DateTimeImmutable $entityUpdatedDate,
