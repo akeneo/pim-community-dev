@@ -780,39 +780,6 @@ JSON;
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['updated']);
     }
 
-    public function testProductCreationWithIdenticalIdentifiers()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-    {
-        "values": {
-            "sku": [{
-                "locale": null,
-                "scope": null,
-                "data": "same_identifier"
-            }]
-         }
-    }
-JSON;
-
-        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
-
-        $response = $client->getResponse();
-
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
-        $this->assertArrayHasKey('location', $response->headers->all());
-        $this->assertSame(
-            sprintf(
-                'http://localhost/api/rest/v1/products-uuid/%s',
-                $this->getProductUuidFromIdentifier('same_identifier')
-            ),
-            $response->headers->get('location')
-        );
-        $this->assertSame('', $response->getContent());
-    }
-
     /**
      * This test can not work until we have a SetUuid user intent in the Product Service API
      * @TODO CPM-698
