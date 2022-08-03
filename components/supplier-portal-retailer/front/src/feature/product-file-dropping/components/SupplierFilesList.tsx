@@ -84,7 +84,7 @@ const SupplierFilesList = ({
                                         <Table.Cell>{supplierFile.contributor}</Table.Cell>
                                         {displaySupplierColumn && (
                                             <Table.Cell>
-                                                {supplierFile.hasOwnProperty('supplier') ? supplierFile.supplier : null}
+                                                {supplierFile.hasOwnProperty('supplier') && supplierFile.supplier}
                                             </Table.Cell>
                                         )}
                                         <Table.Cell>
