@@ -21,7 +21,7 @@ final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase
         $sut = new StoreProductsFileInGCSBucket($filesystemProvider);
 
         $filesystem = $filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
-        $fileIdentifier = Identifier::generate();
+        $fileIdentifier = Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2');
         $expectedContents = [
             [
                 'type' => 'file',
@@ -56,7 +56,7 @@ final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase
         $filesystemProvider = static::getContainer()->get('akeneo_file_storage.file_storage.filesystem_provider');
         $sut = new StoreProductsFileInGCSBucket($filesystemProvider);
 
-        $fileIdentifier = Identifier::generate();
+        $fileIdentifier = Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2');
 
         static::expectException(\RuntimeException::class);
         ($sut)(

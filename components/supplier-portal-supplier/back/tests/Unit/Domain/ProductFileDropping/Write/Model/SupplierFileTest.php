@@ -14,7 +14,7 @@ final class SupplierFileTest extends TestCase
     /** @test */
     public function itCreatesASupplierFileAndStoresASupplierFileAddedEvent(): void
     {
-        $supplierFileIdentifier = Identifier::generate();
+        $supplierFileIdentifier = Identifier::fromString('d06c58da-4cd7-469d-a3fc-37209a05e9e2');
         $supplierFile = SupplierFile::create(
             (string) $supplierFileIdentifier,
             'supplier-file.xlsx',
