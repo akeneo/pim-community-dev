@@ -51,7 +51,7 @@ final class FetchProductRowsFromUuids
         }
 
         $uuids = array_map(
-            fn(string $uuid): UuidInterface =>
+            fn (string $uuid): UuidInterface =>
                 Uuid::fromString(preg_replace('/^product_/', '', $uuid)),
             $uuids
         );
@@ -94,7 +94,7 @@ final class FetchProductRowsFromUuids
         return $products;
     }
 
-    /** @var array<UuidInterface> $uuids */
+    /** @param array<UuidInterface> $uuids */
     private function getProperties(array $uuids): array
     {
         $sql = <<<SQL
@@ -115,7 +115,7 @@ SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
             ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
@@ -127,6 +127,10 @@ SQL;
         return $result;
     }
 
+    /**
+     * @param array<UuidInterface> $uuids
+     * @param array<string> $attributeCodes
+     */
     private function getValueCollection(array $uuids, array $attributeCodes, string $channelCode, string $localeCode): array
     {
         $sql = <<<SQL
@@ -148,7 +152,7 @@ SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
             ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
@@ -207,7 +211,7 @@ SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
             ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
@@ -248,7 +252,7 @@ SQL;
 
         $rows = $this->connection->executeQuery(
             $sql,
-            ['uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
+            ['uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
             ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAllAssociative();
 
@@ -260,7 +264,7 @@ SQL;
         return $result;
     }
 
-    /** @var array<UuidInterface> $uuids */
+    /** @param array<UuidInterface> $uuids */
     private function getCompletenesses(array $uuids, string $channelCode, string $localeCode): array
     {
         $result = [];
@@ -286,7 +290,7 @@ SQL;
         $rows = $this->connection->executeQuery(
             $sql,
             [
-                'uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
+                'uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
                 'locale_code' => $localeCode,
                 'channel_code' => $channelCode
             ],
@@ -300,7 +304,7 @@ SQL;
         return $result;
     }
 
-    /** @var array<UuidInterface> $uuids */
+    /** @param array<UuidInterface> $uuids */
     private function getFamilyLabels(array $uuids, string $localeCode): array
     {
         $result = [];
@@ -323,7 +327,7 @@ SQL;
         $rows = $this->connection->executeQuery(
             $sql,
             [
-                'uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
+                'uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
                 'locale_code' => $localeCode
             ],
             ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
@@ -336,7 +340,7 @@ SQL;
         return $result;
     }
 
-    /** @var array<UuidInterface> $uuids */
+    /** @param array<UuidInterface> $uuids */
     private function getGroups(array $uuids, string $localeCode): array
     {
         $result = [];
@@ -362,7 +366,7 @@ SQL;
         $rows = $this->connection->executeQuery(
             $sql,
             [
-                'uuids' => array_map(fn(UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
+                'uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
                 'locale_code' => $localeCode
             ],
             ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
