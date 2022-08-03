@@ -7,7 +7,6 @@ Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
         userId:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserShouldExist:
                   groups: [User]
-#        identifierOrUuid:
         familyUserIntent:
             - Valid: ~
         categoryUserIntent:

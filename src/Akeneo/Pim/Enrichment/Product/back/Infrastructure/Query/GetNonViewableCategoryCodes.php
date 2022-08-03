@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Query;
 use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes as GetNonViewableCategoryCodesInterface;
-use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -17,7 +16,7 @@ class GetNonViewableCategoryCodes implements GetNonViewableCategoryCodesInterfac
 {
     public function __construct(
         private GetCategoryCodes $getCategoryCodes,
-        private GetViewableCategories $getViewableCategories
+        private GetViewableCategories $getViewableCategories,
     ) {
     }
 
