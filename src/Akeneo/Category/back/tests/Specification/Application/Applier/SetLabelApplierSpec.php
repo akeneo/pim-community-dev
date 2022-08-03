@@ -25,7 +25,7 @@ class SetLabelApplierSpec extends ObjectBehavior
     function it_applies_set_label_user_intent(ObjectUpdaterInterface $updater): void
     {
         $category = new Category();
-        $setLabel = new SetLabel('en_US', 'The Label');
+        $setLabel = new SetLabel('en_US', 'The label');
 
         $updater->update($category, [
             'labels' => [
