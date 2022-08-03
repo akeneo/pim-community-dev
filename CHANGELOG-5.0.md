@@ -4,6 +4,12 @@
 
 - PIM-10556: [Backport PIM-10214] Fix can't create a measurement attribute if measurement family or unit code is too long
 
+# 5.0.105 (2022-08-03)
+
+## Bug fixes
+
+- PIM-10551: Add filtering on locale specific attributes when fetching values
+
 # 5.0.104 (2022-07-11)
 
 # 5.0.103 (2022-07-11)
