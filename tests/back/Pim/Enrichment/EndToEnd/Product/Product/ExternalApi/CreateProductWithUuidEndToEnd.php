@@ -1063,6 +1063,48 @@ JSON;
         $this->assertSame('15' . chr(31) . 'm', $product->getRawValues()['a_text']['<all_channels>']['<all_locales>']);
     }
 
+    public function testResponseWhenAssociatingToNonExistingProduct()
+    {
+        $client = $this->createAuthenticatedClient();
+        $nonExistingUuid = Uuid::uuid4();
+
+        $data = <<<JSON
+{
+    "values": {
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "foo"
+        }]
+    },
+    "associations": {
+        "X_SELL": {
+            "products": ["$nonExistingUuid"]
+        }
+    }
+}
+JSON;
+
+        $expected = <<<JSON
+{
+    "code": 422,
+    "message": "Property \"associations\" expects a valid product uuid. The product does not exist, \"$nonExistingUuid\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_products"
+        }
+    }
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
     public function testResponseWhenAssociatingToNonExistingProductModel()
     {
         $client = $this->createAuthenticatedClient();

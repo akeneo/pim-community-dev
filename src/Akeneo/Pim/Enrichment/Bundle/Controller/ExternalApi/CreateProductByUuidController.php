@@ -11,10 +11,12 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\UnknownAttributeExceptio
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\UnknownUserIntentException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditable;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeReadable;
+use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeViewable;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeReadableByUser;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
@@ -22,6 +24,7 @@ use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\DBAL\Connection;
@@ -33,12 +36,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
@@ -86,7 +89,6 @@ class CreateProductByUuidController
             $this->throwDocumentedHttpException($e->getMessage(), $e);
         }
 
-        $data = $this->replaceUuidsByIdentifiers($data);
 
         if ($this->productAlreadyExists($data)) {
             $this->throwViolationException(
@@ -96,6 +98,7 @@ class CreateProductByUuidController
         }
 
         try {
+            $data = $this->replaceUuidsByIdentifiers($data);
             $this->updateProduct($data);
         } catch (UnknownUserIntentException $e) {
             $this->throwDocumentedHttpException(sprintf('Property "%s" does not exist.', $e->getFieldName()), $e);
@@ -137,18 +140,25 @@ class CreateProductByUuidController
                     sprintf('Attribute "%s" expects an existing and activated locale, "%s" given.', $invalidValue->attributeCode(), $invalidValue->localeCode()),
                     $e
                 );
+            } else if ($firstConstraint instanceof CategoriesShouldBeViewable) {
+                $violation = $e->violations()->get(0);
+                $categoryCodes = $violation->getParameters()['{{ categoryCodes }}'];
+
+                $this->throwDocumentedHttpException(
+                    sprintf('Property "categories" expects a valid category code. The category does not exist, "%s" given.', $categoryCodes),
+                    $e
+                );
             }
 
             $this->throwDocumentedHttpException($e->violations()->get(0)->getMessage(), $e);
         } catch (LegacyViolationsException $e) {
-            $this->throwDocumentedHttpException($e->violations()->get(0)->getMessage(), $e);
+            $this->throwViolationExceptionAndReplaceIdentifiersByUuids($e->violations());
         } catch (InvalidPropertyTypeException $e) {
             $this->throwDocumentedHttpException($e->getMessage(), $e);
         }
 
         return $this->getResponse($this->getUuidFromIdentifier($this->getProductIdentifier($data)), Response::HTTP_CREATED);
     }
-
     private function getDecodedContent($content): array
     {
         $decodedContent = json_decode($content, true);
@@ -205,25 +215,39 @@ class CreateProductByUuidController
 
     /**
      * @param string[] $uuidAsStrings
+     * @param string $association 'associations'|'quantified_associations'
      * @return array<string, string>
      */
-    private function getProductIdentifierFromUuids(array $uuidAsStrings): array
+    private function getProductIdentifierFromUuids(array $uuidAsStrings, string $association): array
     {
         $uuidsAsBytes = array_map(fn (string $uuid): string => Uuid::fromString($uuid)->getBytes(), $uuidAsStrings);
 
-        return $this->connection->fetchAllKeyValue(
+        $result = $this->connection->fetchAllKeyValue(
             'SELECT BIN_TO_UUID(uuid) AS uuid, identifier FROM pim_catalog_product WHERE uuid IN(:uuids)',
             ['uuids' => $uuidsAsBytes],
             ['uuids' => Connection::PARAM_STR_ARRAY]
         );
+
+        $diff = \array_diff($uuidAsStrings, \array_keys($result));
+        if (count($diff) > 0) {
+            $this->throwDocumentedHttpException(
+                sprintf(
+                    'Property "%s" expects a valid product uuid. The product does not exist, "%s" given.',
+                    $association,
+                    $diff[0]
+                )
+            );
+        }
+
+        return $result;
     }
 
-    private function throwDocumentedHttpException(string $message, \Exception $e)
+    private function throwDocumentedHttpException(string $message, \Exception $previousException = null)
     {
         throw new DocumentedHttpException(
             Documentation::URL . 'post_products',
             sprintf('%s Check the expected format on the API documentation.', $message),
-            $e
+            $previousException
         );
     }
 
@@ -245,7 +269,7 @@ class CreateProductByUuidController
         if (isset($data['associations'])) {
             foreach ($data['associations'] as $associationCode => $associations) {
                 if (isset($associations['products'])) {
-                    $data['associations'][$associationCode]['products'] = \array_values($this->getProductIdentifierFromUuids($associations['products']));
+                    $data['associations'][$associationCode]['products'] = \array_values($this->getProductIdentifierFromUuids($associations['products'], 'associations'));
                 }
             }
         }
@@ -253,7 +277,7 @@ class CreateProductByUuidController
         if (isset($data['quantified_associations'])) {
             foreach ($data['quantified_associations'] as $associationCode => $associations) {
                 if (isset($associations['products'])) {
-                    $map = $this->getProductIdentifierFromUuids(\array_map(fn (array $association): string => $association['uuid'], $associations['products']));
+                    $map = $this->getProductIdentifierFromUuids(\array_map(fn (array $association): string => $association['uuid'], $associations['products']), 'quantified_associations');
                     $data['quantified_associations'][$associationCode]['products'] = \array_map(function ($association) use ($map) {
                         return ['quantity' => $association['quantity'], 'identifier' => $map[$association['uuid']]];
                     }, $associations['products']);
@@ -267,5 +291,39 @@ class CreateProductByUuidController
     private function productAlreadyExists(array $data): bool
     {
         return null !== $this->getUuidFromIdentifier($this->getProductIdentifier($data));
+    }
+
+    private function throwViolationExceptionAndReplaceIdentifiersByUuids(ConstraintViolationListInterface $violations): void
+    {
+        $newViolations = new ConstraintViolationList();
+        foreach ($violations as $violation) {
+            $messageTemplate = $violation->getMessageTemplate();
+            if ($messageTemplate === 'pim_catalog.constraint.quantified_associations.products_do_not_exist') {
+                $parameters = $violation->getParameters();
+                $uuid = $this->getUuidFromIdentifier($parameters['{{ values }}']);
+                $parameters = ['{{values }}' => $uuid->toString()];
+                $message = sprintf('The following products don\'t exist: %s. Please make sure the products haven\'t been deleted in the meantime.', $uuid->toString());
+
+                $newViolations->add(
+                    new ConstraintViolation(
+                        $message,
+                        $messageTemplate,
+                        $parameters,
+                        $violation->getRoot(),
+                        $violation->getPropertyPath(),
+                        $violation->getInvalidValue(),
+                        $violation->getPlural(),
+                        $violation->getCode(),
+                        $violation->getConstraint(),
+                        $violation->getCause()
+                    )
+                );
+            }
+            else {
+                $newViolations->add($violation);
+            }
+        }
+
+        throw new ViolationHttpException($newViolations);
     }
 }
