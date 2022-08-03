@@ -41,6 +41,7 @@ Akeneo\Tool\Component\Batch\Model\JobInstance:
         automation:
             type: json
             column: automation
+            nullable: true
         type:
             type: string
             length: 255
