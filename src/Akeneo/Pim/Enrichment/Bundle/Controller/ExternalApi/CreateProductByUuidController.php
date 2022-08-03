@@ -6,25 +6,12 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
-use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
-use Akeneo\Pim\Enrichment\Product\API\Command\Exception\UnknownAttributeException;
-use Akeneo\Pim\Enrichment\Product\API\Command\Exception\UnknownUserIntentException;
-use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
-use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
-use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditable;
-use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeReadable;
-use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeViewable;
-use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser;
-use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeReadableByUser;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\DBAL\Connection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Ramsey\Uuid\Uuid;
@@ -34,14 +21,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -56,10 +39,8 @@ class CreateProductByUuidController
         private DuplicateValueChecker $duplicateValueChecker,
         private SecurityFacade $security,
         private ValidatorInterface $validator,
-        private UserContext $userContext,
-        private MessageBusInterface $commandMessageBus,
-        private MessageBusInterface $queryMessageBus,
-        private Connection $connection
+        private Connection $connection,
+        private ProductUpdater $productUpdater
     ) {
     }
 
@@ -87,7 +68,6 @@ class CreateProductByUuidController
             $this->throwDocumentedHttpException($e->getMessage(), $e);
         }
 
-
         if ($this->productAlreadyExists($data)) {
             $this->throwViolationException(
                 sprintf('The %s identifier is already used for another product.', $this->getProductIdentifier($data)),
@@ -95,77 +75,8 @@ class CreateProductByUuidController
             );
         }
 
-        try {
-            $data = $this->replaceUuidsByIdentifiers($data);
-            $this->updateProduct($data);
-        } catch (UnknownUserIntentException $e) {
-            $this->throwDocumentedHttpException(sprintf('Property "%s" does not exist.', $e->getFieldName()), $e);
-        } catch (UnknownAttributeException $e) {
-            $this->throwDocumentedHttpException(sprintf('The %s attribute does not exist in your PIM.', $e->getAttributeCode()), $e);
-        } catch (\InvalidArgumentException $e) {
-            $this->throwDocumentedHttpException($e->getMessage(), $e);
-        } catch (ViolationsException $e) {
-            $firstConstraint = $e->violations()->get(0)->getConstraint();
-            if ($firstConstraint instanceof AttributeGroupShouldBeEditable) {
-                $invalidValue = $e->violations()->get(0)->getInvalidValue();
-                Assert::isInstanceOf($invalidValue, ValueUserIntent::class);
-                $attributeGroupCode = 'attributeGroupB'; // I have no idea how to get this
-
-                throw new AccessDeniedHttpException(
-                    sprintf('Attribute "%s" belongs to the attribute group "%s" on which you only have view permission.', $invalidValue->attributeCode(), $attributeGroupCode),
-                    $e
-                );
-            } elseif ($firstConstraint instanceof AttributeGroupShouldBeReadable) {
-                $invalidValue = $e->violations()->get(0)->getInvalidValue();
-                Assert::isInstanceOf($invalidValue, ValueUserIntent::class);
-                $this->throwDocumentedHttpException(
-                    sprintf('The %s attribute does not exist in your PIM.', $invalidValue->attributeCode()),
-                    $e
-                );
-            } elseif ($firstConstraint instanceof LocaleShouldBeEditableByUser) {
-                $invalidValue = $e->violations()->get(0)->getInvalidValue();
-                Assert::isInstanceOf($invalidValue, ValueUserIntent::class);
-
-                throw new AccessDeniedHttpException(
-                    sprintf('You only have a view permission on the locale "%s".', $invalidValue->localeCode()),
-                    $e
-                );
-            } elseif ($firstConstraint instanceof LocaleShouldBeReadableByUser) {
-                $invalidValue = $e->violations()->get(0)->getInvalidValue();
-                Assert::isInstanceOf($invalidValue, ValueUserIntent::class);
-
-                $this->throwDocumentedHttpException(
-                    sprintf('Attribute "%s" expects an existing and activated locale, "%s" given.', $invalidValue->attributeCode(), $invalidValue->localeCode()),
-                    $e
-                );
-            } elseif ($firstConstraint instanceof CategoriesShouldBeViewable) {
-                $violation = $e->violations()->get(0);
-                $categoryCodes = $violation->getParameters()['{{ categoryCodes }}'];
-
-                $this->throwDocumentedHttpException(
-                    sprintf('Property "categories" expects a valid category code. The category does not exist, "%s" given.', $categoryCodes),
-                    $e
-                );
-            }
-
-            $message = $e->violations()->get(0)->getMessage();
-            $matches = [];
-            if (preg_match('/^Property "associations" expects a valid product identifier. The product does not exist, "(?P<identifier>.*)" given.$/', $message, $matches)) {
-                $this->throwDocumentedHttpException(
-                    sprintf(
-                        'Property "associations" expects a valid product uuid. The product does not exist, "%s" given.',
-                        $this->getUuidFromIdentifier($matches['identifier'])
-                    ),
-                    $e
-                );
-            }
-
-            $this->throwDocumentedHttpException($e->violations()->get(0)->getMessage(), $e);
-        } catch (LegacyViolationsException $e) {
-            $this->throwViolationExceptionAndReplaceIdentifiersByUuids($e->violations());
-        } catch (InvalidPropertyTypeException $e) {
-            $this->throwDocumentedHttpException($e->getMessage(), $e);
-        }
+        $data = $this->replaceUuidsByIdentifiers($data);
+        $this->productUpdater->update($data);
 
         return $this->getResponse($this->getUuidFromIdentifier($this->getProductIdentifier($data)), Response::HTTP_CREATED);
     }
@@ -178,21 +89,6 @@ class CreateProductByUuidController
         }
 
         return $decodedContent;
-    }
-
-    private function updateProduct(array $data): void
-    {
-        $envelope = $this->queryMessageBus->dispatch(new GetUserIntentsFromStandardFormat($data));
-        $handledStamp = $envelope->last(HandledStamp::class);
-        $userIntents = $handledStamp->getResult();
-
-        $userId = $this->userContext->getUser()?->getId();
-        $command = UpsertProductCommand::createFromCollection(
-            $userId,
-            $this->getProductIdentifier($data),
-            $userIntents
-        );
-        $this->commandMessageBus->dispatch($command);
     }
 
     private function getResponse(UuidInterface $uuid, int $status): Response
@@ -301,38 +197,5 @@ class CreateProductByUuidController
     private function productAlreadyExists(array $data): bool
     {
         return null !== $this->getUuidFromIdentifier($this->getProductIdentifier($data));
-    }
-
-    private function throwViolationExceptionAndReplaceIdentifiersByUuids(ConstraintViolationListInterface $violations): void
-    {
-        $newViolations = new ConstraintViolationList();
-        foreach ($violations as $violation) {
-            $messageTemplate = $violation->getMessageTemplate();
-            if ($messageTemplate === 'pim_catalog.constraint.quantified_associations.products_do_not_exist') {
-                $parameters = $violation->getParameters();
-                $uuid = $this->getUuidFromIdentifier($parameters['{{ values }}']);
-                $parameters = ['{{values }}' => $uuid->toString()];
-                $message = sprintf('The following products don\'t exist: %s. Please make sure the products haven\'t been deleted in the meantime.', $uuid->toString());
-
-                $newViolations->add(
-                    new ConstraintViolation(
-                        $message,
-                        $messageTemplate,
-                        $parameters,
-                        $violation->getRoot(),
-                        $violation->getPropertyPath(),
-                        $violation->getInvalidValue(),
-                        $violation->getPlural(),
-                        $violation->getCode(),
-                        $violation->getConstraint(),
-                        $violation->getCause()
-                    )
-                );
-            } else {
-                $newViolations->add($violation);
-            }
-        }
-
-        throw new ViolationHttpException($newViolations);
     }
 }
