@@ -98,7 +98,7 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
         existing_product AS (
             SELECT uuid, product_model_id, identifier FROM pim_catalog_product WHERE uuid IN (:product_uuids)
         )
-        SELECT BIN_TO_UUID(p.uuid), IF(COUNT(mc.category_code) = 0, JSON_ARRAY(), JSON_ARRAYAGG(mc.category_code)) as category_codes
+        SELECT BIN_TO_UUID(p.uuid) as uuid, IF(COUNT(mc.category_code) = 0, JSON_ARRAY(), JSON_ARRAYAGG(mc.category_code)) as category_codes
         FROM 
             existing_product p
             LEFT JOIN (

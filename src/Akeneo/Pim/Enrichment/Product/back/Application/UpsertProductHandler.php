@@ -83,7 +83,6 @@ final class UpsertProductHandler
                 $product = $this->productBuilder->createProduct($command->identifierOrUuid()->identifier());
             } elseif ($command->identifierOrUuid() instanceof ProductUuid) {
                 $product = $this->productBuilder->createProduct($identifier->value(), null, $command->identifierOrUuid()->uuid());
-                $product->setUuid($command->identifierOrUuid()->uuid());
             } elseif (\is_string($command->identifierOrUuid())) {
                 $product = $this->productBuilder->createProduct($command->identifierOrUuid());
             } else {

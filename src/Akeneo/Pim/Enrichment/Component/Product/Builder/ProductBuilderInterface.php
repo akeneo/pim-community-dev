@@ -25,5 +25,5 @@ interface ProductBuilderInterface extends EntityWithValuesBuilderInterface
      *
      * @return ProductInterface
      */
-    public function createProduct(string $identifier = null, string $familyCode = null, $uuid = null);
+    public function createProduct($identifier = null, $familyCode = null, $uuid = null);
 }
