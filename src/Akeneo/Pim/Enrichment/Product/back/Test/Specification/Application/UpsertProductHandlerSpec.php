@@ -84,7 +84,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $productBuilder->createProduct('identifier1')->shouldBeCalledOnce()->willReturn($product);
         $productValidator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productSaver->save($product)->shouldBeCalledOnce();
-        $event = new ProductWasCreated('identifier1');
+        $event = new ProductWasCreated($product->getUuid());
         $eventDispatcher->dispatch($event)->shouldBeCalledOnce()->willReturn($event);
 
         $this->__invoke($command);
@@ -113,7 +113,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $productBuilder->createProduct('identifier1')->shouldNotBeCalled();
         $productValidator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productSaver->save($product)->shouldBeCalledOnce();
-        $event = new ProductWasUpdated('identifier1');
+        $event = new ProductWasUpdated($product->getUuid());
         $eventDispatcher->dispatch($event)->shouldBeCalledOnce()->willReturn($event);
 
         $this->__invoke($command);
@@ -263,7 +263,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
 
         $productValidator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productSaver->save($product)->shouldBeCalledOnce();
-        $event = new ProductWasUpdated('identifier1');
+        $event = new ProductWasUpdated($product->getUuid());
         $eventDispatcher->dispatch($event)->shouldBeCalledOnce()->willReturn($event);
 
         $this->__invoke($command);
