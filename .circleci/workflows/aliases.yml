@@ -6,20 +6,12 @@ parameters:
   skip_build:
     default: false
     type: boolean
-  trigger_ondemand:
-    default: false
-    type: boolean
-  # parameters for instance deletion
-  trigger_delete_instance:
-    default: false
-    type: boolean
+  trigger:
+    default: ""
+    type: string
   instance:
     default: ""
     type: string
-  # parameters for jenkins ge2ee mig
-  trigger_jenkins_ge2ee_mig:
-    default: false
-    type: boolean
   ge2ee_script_release:
     default: ""
     type: string
