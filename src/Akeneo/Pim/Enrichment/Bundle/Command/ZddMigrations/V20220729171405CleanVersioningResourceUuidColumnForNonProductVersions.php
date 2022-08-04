@@ -52,7 +52,7 @@ SQL;
             $versionIds = $this->getVersionIdsToCleanForResourceName($resourceNameToProcess);
             $this->cleanVersions($versionIds);
             $totalVersionsCleaned += \count($versionIds);
-            $this->logger->debug(
+            $this->logger->notice(
                 sprintf(
                     'Cleaned %d versions from their resource_uuid for resource name %s',
                     $totalVersionsCleaned,
@@ -61,6 +61,7 @@ SQL;
             );
             $resourceNameToProcess = $this->findNextResourceNameToProcess();
         }
+        $this->logger->notice(sprintf('Successfully cleaned a total of %d versions', $totalVersionsCleaned));
     }
 
     private function findNextResourceNameToProcess(): ?string
@@ -69,9 +70,8 @@ SQL;
         $sql = <<<SQL
 SELECT DISTINCT resource_name
 FROM pim_versioning_version
-WHERE 
-	resource_uuid IS NOT NULL
-LIMIT 1000;
+WHERE resource_uuid IS NOT NULL
+;
 SQL;
 
         $allResourceNames = $this->connection->fetchFirstColumn($sql);

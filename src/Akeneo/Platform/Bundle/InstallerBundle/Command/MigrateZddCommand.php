@@ -46,14 +46,15 @@ final class MigrateZddCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->tableExists('pim_one_time_task')) {
-            $this->logger->warning('%s - skip - Table pim_one_time_task does not exist', [
-                'action' => 'skip',
-            ]);
+            $this->logger->warning(
+                sprintf('%s - skip - Table pim_one_time_task does not exist', self::$defaultName),
+                ['action' => 'skip']
+            );
 
             return Command::SUCCESS;
         }
 
-        $this->logger->info(sprintf('%s - start_command', self::$defaultName), [
+        $this->logger->notice(sprintf('%s - start_command', self::$defaultName), [
             'action' => 'start_command'
         ]);
 
@@ -62,7 +63,7 @@ final class MigrateZddCommand extends Command
         foreach ($this->zddMigrations as $zddMigration) {
             if (!$this->isMigrated($zddMigration)) {
                 try {
-                    $this->logger->info(
+                    $this->logger->notice(
                         sprintf('%s - start_migration - %s', self::$defaultName, $zddMigration->getName()),
                         [
                             'action' => 'start_migration',
@@ -72,7 +73,7 @@ final class MigrateZddCommand extends Command
                     $startMigrationTime = \time();
                     $zddMigration->migrate();
                     $duration = time() - $startMigrationTime;
-                    $this->logger->info(
+                    $this->logger->notice(
                         sprintf('%s - end_migration - %s in %ss', self::$defaultName, $zddMigration->getName(), $duration),
                         [
                             'action' => 'end_migration',
@@ -99,7 +100,7 @@ final class MigrateZddCommand extends Command
             }
         }
 
-        $this->logger->info(sprintf('%s - end_command - %d migration(s) done', self::$defaultName, $migrationCount), [
+        $this->logger->notice(sprintf('%s - end_command - %d migration(s) done', self::$defaultName, $migrationCount), [
             'action' => 'end_command',
             'migrations_done' => $migrationCount,
         ]);
