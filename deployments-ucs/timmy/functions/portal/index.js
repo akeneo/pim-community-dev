@@ -21,62 +21,60 @@ const tenantFilter = {
   environment: process.env.TENANT_ENVIRONMENT,
 };
 
-async function accessSecretVersion() {
-  const [version] = await client.accessSecretVersion({
-    name: `projects/${gcpProjectId}/secrets/${secretName}/versions/latest`
-  });
+async function getToken(res) {
+  try {
+    // Crossplane or config connector does not give the possibility to mount a GoogleSecret as environment variable
+    // As a workaround we retrieve it here.
+    const [version] = await client.accessSecretVersion({
+      name: `projects/${gcpProjectId}/secrets/${secretName}/versions/latest`
+    });
 
-  return version.payload.data.toString('utf-8');
-}
-
-async function getToken(credentials) {
-  const url = `https://${portalLoginHostname}/auth/realms/connect/protocol/openid-connect/token`;
-  const payload = querystring.stringify(JSON.parse(credentials));
-  const resp = await axios.post(url, payload, {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': payload.length,
+    const credentials = version.payload.data.toString('utf-8');
+    const url = `https://${portalLoginHostname}/auth/realms/connect/protocol/openid-connect/token`;
+    const payload = querystring.stringify(JSON.parse(credentials));
+    const resp = await axios.post(url, payload, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': payload.length,
+      }
+    });
+    const token = await resp.data.access_token;
+    if (token === undefined) {
+      res.status(500).send('The access token is undefined');
+    } else {
+      return token;
     }
-  });
-  const token = resp.data.access_token;
-  if (token === undefined) {
-    throw new Error('Error: access token is undefined');
-  } else {
-    return token;
+  } catch(err) {
+    console.error(err);
+    res.status(500).send('Failed to get access token from the portal');
   }
 }
 
 exports.getPortalInformation = (req, res) => {
-  accessSecretVersion()
-    .then((credentials) => {
-      getToken(credentials)
-        .then((token) => {
-          const url = `https://${portalHostname}/api/v2/console/requests/pending_activation?subject_type=${tenantFilter.editionFlags}&continent=${tenantFilter.continent}&environment=${tenantFilter.environment}`;
-          axios.get(url, {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            }
-          })
-            .then((resp) => {
-              if (resp.status !== 200) {
-                throw new Error(`Failed listing tenants from the portal: got HTTP status code ${resp.status} instead of HTTP 200`);
-              } else if (typeof resp.data === undefined) {
-                throw new Error('Failed listing tenants from the portal: returned HTTP data is undefined.');
-              } else {
-                console.log(resp.data);
-              }
-            })
-            .catch((err) => {
-              console.error(err);
-              throw new Error('Failed to get the tenants from the portal');
-            })
-        }).catch((err) => {
-        console.error(err);
-        throw new Error('Failed to get a token from the portal');
-      })
-    }).catch((err) => {
+  const getTenants = async () => {
+    const token = await getToken(res);
+    const url = `https://${portalHostname}/api/v2/console/requests/pending_activation?subject_type=${tenantFilter.editionFlags}&continent=${tenantFilter.continent}&environment=${tenantFilter.environment}`;
+    return await axios.get(url, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    })
+  }
+
+  getTenants()
+    .then((resp) => {
+      console.log(resp);
+      if (resp.status !== 200) {
+        throw new Error(`Failed listing tenants from the portal: got HTTP status code ${resp.status} instead of HTTP 200`);
+      } else if (typeof resp.data === undefined) {
+        throw new Error('Failed listing tenants from the portal: returned HTTP data is undefined.');
+      } else {
+        res.status(200).json(resp.data)
+      }
+    })
+    .catch((err) => {
       console.error(err);
-      throw new Error('Failed to get credentials from SecretManager: ' + err);
-  });
+      res.status(500).send('Failed to get the tenants from the portal');
+    })
 }
