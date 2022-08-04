@@ -70,7 +70,7 @@ final class ExtractStructure
         file_put_contents($this->getAttributeFixturesPath(), '');
         file_put_contents($this->getAttributeOptionFixturesPath(), '');
 
-        foreach ($attributeApi->all() as $attribute) {
+        foreach ($attributeApi->all(pageSize: 100) as $attribute) {
             unset($attribute['_links']);
             unset($attribute['group_labels']);
             file_put_contents($this->getAttributeFixturesPath(), json_encode($attribute) . PHP_EOL, FILE_APPEND);
@@ -78,7 +78,7 @@ final class ExtractStructure
 
             if (in_array($attribute['type'], ['pim_catalog_simpleselect', 'pim_catalog_multiselect'])) {
                 $countAttributeOptions += $this->extractEntities(
-                    $this->apiClient->getAttributeOptionApi()->all($attribute['code']),
+                    $this->apiClient->getAttributeOptionApi()->all(attributeCode: $attribute['code'], pageSize: 100),
                     $this->getAttributeOptionFixturesPath()
                 );
             }
@@ -96,7 +96,7 @@ final class ExtractStructure
         file_put_contents($this->getAttributeGroupFixturesPath(), '');
 
         $count = $this->extractEntities(
-            $this->apiClient->getAttributeGroupApi()->all(),
+            $this->apiClient->getAttributeGroupApi()->all(pageSize: 100),
             $this->getAttributeGroupFixturesPath(),
             function (array $attributeGroup) {
                 unset($attributeGroup['attributes']);
@@ -114,7 +114,7 @@ final class ExtractStructure
         file_put_contents($this->getAssociationTypeFixturesPath(), '');
 
         $count = $this->extractEntities(
-            $this->apiClient->getAssociationTypeApi()->all(),
+            $this->apiClient->getAssociationTypeApi()->all(pageSize: 100),
             $this->getAssociationTypeFixturesPath()
         );
 
@@ -128,7 +128,7 @@ final class ExtractStructure
         file_put_contents($this->getCategoryFixturesPath(), '');
 
         $count = $this->extractEntities(
-            $this->apiClient->getCategoryApi()->all(),
+            $this->apiClient->getCategoryApi()->all(pageSize: 100),
             $this->getCategoryFixturesPath(),
             function (array $category) {
                 unset($category['updated']);
@@ -146,7 +146,7 @@ final class ExtractStructure
         file_put_contents($this->getChannelFixturesPath(), '');
 
         $count = $this->extractEntities(
-            $this->apiClient->getChannelApi()->all(),
+            $this->apiClient->getChannelApi()->all(pageSize: 100),
             $this->getChannelFixturesPath()
         );
 
@@ -160,7 +160,7 @@ final class ExtractStructure
         file_put_contents($this->getLocaleFixturesPath(), '');
 
         $count = $this->extractEntities(
-            $this->apiClient->getLocaleApi()->all(),
+            $this->apiClient->getLocaleApi()->all(pageSize: 100),
             $this->getLocaleFixturesPath(),
             function (array $locale) {
                 unset($locale['enabled']);
@@ -178,7 +178,7 @@ final class ExtractStructure
         file_put_contents($this->getCurrencyFixturesPath(), '');
 
         $count = $this->extractEntities(
-            $this->apiClient->getCurrencyApi()->all(),
+            $this->apiClient->getCurrencyApi()->all(pageSize: 100),
             $this->getCurrencyFixturesPath()
         );
 
@@ -196,7 +196,7 @@ final class ExtractStructure
         file_put_contents($this->getFamilyFixturesPath(), '');
         file_put_contents($this->getFamilyVariantFixturesPath(), '');
 
-        foreach ($familyApi->all() as $family) {
+        foreach ($familyApi->all(pageSize: 100) as $family) {
             unset($family['_links']);
             file_put_contents($this->getFamilyFixturesPath(), json_encode($family) . PHP_EOL, FILE_APPEND);
             $countFamilies++;
@@ -212,7 +212,7 @@ final class ExtractStructure
     private function extractFamilyVariants(string $family): int
     {
         $count = 0;
-        $familyVariants = $this->apiClient->getFamilyVariantApi()->all($family);
+        $familyVariants = $this->apiClient->getFamilyVariantApi()->all(familyCode: $family, pageSize: 100);
 
         foreach ($familyVariants as $familyVariant) {
             unset($familyVariant['_links']);

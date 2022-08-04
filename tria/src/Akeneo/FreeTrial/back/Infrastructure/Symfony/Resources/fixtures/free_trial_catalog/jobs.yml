@@ -145,6 +145,13 @@ jobs:
         alias: remove_completeness_for_channel_and_locale
         label: 'Remove completeness for channel and locale'
         type: remove_completeness_for_channel_and_locale
+
+    clean_table_values_following_deleted_options:
+        connector: internal
+        alias: clean_table_values_following_deleted_options
+        label: Remove the non existing table option values from product and product models
+        type: clean_table_values_following_deleted_options
+
     attributes_import:
         connector: 'Akeneo XLSX Connector'
         alias: xlsx_attribute_import

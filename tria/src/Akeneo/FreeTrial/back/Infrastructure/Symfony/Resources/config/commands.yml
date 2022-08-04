@@ -7,6 +7,17 @@ services:
 
     Akeneo\FreeTrial\Infrastructure\Install\Command\ExtractCatalogCommand:
         arguments:
+            - '%env(FT_CATALOG_API_BASE_URI)%'
+            - '%env(FT_CATALOG_API_CLIENT_ID)%'
+            - '%env(FT_CATALOG_API_SECRET)%'
+            - '%env(FT_CATALOG_API_USERNAME)%'
+            - '%env(FT_CATALOG_API_PASSWORD)%'
+            - '%kernel.project_dir%'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Command\ExtractMediaCommand:
+        arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '%env(FT_CATALOG_API_BASE_URI)%'
             - '%env(FT_CATALOG_API_CLIENT_ID)%'
