@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Applier;
 
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Domain\Model\Category;
 
 /**
  * Interface meant for applying user intents on categories
@@ -15,7 +15,7 @@ use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
  */
 interface UserIntentApplier
 {
-    public function apply(UserIntent $userIntent, CategoryInterface $category): void;
+    public function apply(UserIntent $userIntent, Category $category): void;
 
     /**
      * @return array<class-string>

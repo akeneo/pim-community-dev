@@ -4,7 +4,5 @@ services:
             - !tagged_iterator 'pim.category.user_intent_applier'
 
     Akeneo\Category\Application\Applier\SetLabelApplier:
-        arguments:
-            - '@pim_catalog.updater.category'
         tags:
             - { name: 'pim.category.user_intent_applier' }

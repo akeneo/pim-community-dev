@@ -6,8 +6,7 @@ namespace Akeneo\Category\Application\Applier;
 
 use Akeneo\Category\Api\Command\UserIntents\SetLabel;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Category\Domain\Model\Category;
 use Webmozart\Assert\Assert;
 
 /**
@@ -16,19 +15,10 @@ use Webmozart\Assert\Assert;
  */
 final class SetLabelApplier implements UserIntentApplier
 {
-    public function __construct(
-        private ObjectUpdaterInterface $categoryUpdater,
-    ) {
-    }
-
-    public function apply(UserIntent $userIntent, CategoryInterface $category): void
+    public function apply(UserIntent $userIntent, Category $category): void
     {
         Assert::isInstanceOf($userIntent, SetLabel::class);
-        $this->categoryUpdater->update($category, [
-            'labels' => [
-                $userIntent->localeCode() => $userIntent->label()
-            ]
-        ]);
+        $category->setLabel($userIntent->localeCode(), $userIntent->label());
     }
 
     public function getSupportedUserIntents(): array
