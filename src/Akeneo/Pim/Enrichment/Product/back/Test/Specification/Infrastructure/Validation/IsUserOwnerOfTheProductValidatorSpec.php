@@ -6,12 +6,13 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier as ProductIdentifierValueObject;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProduct;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProductValidator;
+use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
@@ -30,23 +31,22 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
     function let(
         GetCategoryCodes $getCategoryCodes,
         GetOwnedCategories $getOwnedCategories,
+        GetProductUuids $getProductUuids,
         ExecutionContext $context
     ) {
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('unknown')])
-            ->willReturn([]);
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('product_without_category')])
-            ->willReturn(['product_without_category' => []]);
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('product_with_category')])
-            ->willReturn(['product_with_category' => ['master', 'print']]);
-
         $this->uuidUnknown = Uuid::uuid4();
         $this->uuidWithoutCategory = Uuid::uuid4();
         $this->uuidWithCategory = Uuid::uuid4();
+
+        $getProductUuids->fromIdentifier('unknown')->willReturn($this->uuidUnknown);
+        $getProductUuids->fromIdentifier('product_without_category')->willReturn($this->uuidWithoutCategory);
+        $getProductUuids->fromIdentifier('product_with_category')->willReturn($this->uuidWithCategory);
+
         $getCategoryCodes->fromProductUuids([$this->uuidUnknown])->willReturn([]);
         $getCategoryCodes->fromProductUuids([$this->uuidWithoutCategory])->willReturn([$this->uuidWithoutCategory->toString() => []]);
         $getCategoryCodes->fromProductUuids([$this->uuidWithCategory])->willReturn([$this->uuidWithCategory->toString() => ['master', 'print']]);
 
-        $this->beConstructedWith($getCategoryCodes, $getOwnedCategories);
+        $this->beConstructedWith($getCategoryCodes, $getOwnedCategories, $getProductUuids);
         $this->initialize($context);
     }
 

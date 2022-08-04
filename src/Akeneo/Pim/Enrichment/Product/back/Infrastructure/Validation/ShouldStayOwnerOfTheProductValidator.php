@@ -12,10 +12,10 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier as ProductIdentifierValueObject;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -32,7 +32,8 @@ final class ShouldStayOwnerOfTheProductValidator extends ConstraintValidator
     public function __construct(
         private GetOwnedCategories $getOwnedCategories,
         private GetNonViewableCategoryCodes $getNonViewableCategoryCodes,
-        private GetCategoryCodes $getCategoryCodes
+        private GetCategoryCodes $getCategoryCodes,
+        private GetProductUuids $getProductUuids,
     ) {
     }
 
@@ -47,38 +48,23 @@ final class ShouldStayOwnerOfTheProductValidator extends ConstraintValidator
         $command = $this->context->getRoot();
         Assert::isInstanceOf($command, UpsertProductCommand::class);
 
+        $uuid = null;
+        if ($command->identifierOrUuid() instanceof ProductIdentifierValueObject) {
+            $uuid = $this->getProductUuids->fromIdentifier($command->identifierOrUuid()->identifier());
+        } elseif ($command->identifierOrUuid() instanceof ProductUuid) {
+            $uuid = $command->identifierOrUuid()->uuid();
+        } elseif (\is_string($command->identifierOrUuid())) {
+            $uuid = $this->getProductUuids->fromIdentifier($command->identifierOrUuid());
+        }
+
         if ($categoryUserIntent instanceof SetCategories) {
-            $nonViewableCategoryCodes = [];
-            if ($command->identifierOrUuid() instanceof ProductIdentifierValueObject) {
-                $nonViewableCategoryCodes = $this->getNonViewableCategoryCodes->fromProductIdentifiers([
-                        ProductIdentifier::fromString($command->identifierOrUuid()->identifier()),
-                    ], $command->userId())[$command->identifierOrUuid()->identifier()] ?? [];
-            } elseif ($command->identifierOrUuid() instanceof ProductUuid) {
-                $nonViewableCategoryCodes = $this->getNonViewableCategoryCodes->fromProductUuids([
-                        $command->identifierOrUuid()->uuid(),
-                    ], $command->userId())[$command->identifierOrUuid()->uuid()->toString()] ?? [];
-            } elseif (\is_string($command->identifierOrUuid())) {
-                $nonViewableCategoryCodes = $this->getNonViewableCategoryCodes->fromProductIdentifiers([
-                        ProductIdentifier::fromString($command->identifierOrUuid()),
-                    ], $command->userId())[$command->identifierOrUuid()] ?? [];
-            }
+            $nonViewableCategoryCodes = $this->getNonViewableCategoryCodes->fromProductUuids([
+                $uuid
+            ], $command->userId())[$uuid->toString()] ?? [];
 
             $newCategoryCodes = \array_merge($categoryUserIntent->categoryCodes(), $nonViewableCategoryCodes);
         } elseif ($categoryUserIntent instanceof RemoveCategories) {
-            $productCategoryCodes = [];
-            if ($command->identifierOrUuid() instanceof ProductIdentifierValueObject) {
-                $productCategoryCodes = $this->getCategoryCodes->fromProductIdentifiers([
-                        ProductIdentifier::fromString($command->identifierOrUuid()->identifier()),
-                    ])[$command->identifierOrUuid()->identifier()] ?? [];
-            } elseif ($command->identifierOrUuid() instanceof ProductUuid) {
-                $productCategoryCodes = $this->getCategoryCodes->fromProductUuids([
-                        $command->identifierOrUuid()->uuid()
-                    ])[$command->identifierOrUuid()->uuid()->toString()] ?? [];
-            } elseif (\is_string($command->identifierOrUuid())) {
-                $productCategoryCodes = $this->getCategoryCodes->fromProductIdentifiers([
-                        ProductIdentifier::fromString($command->identifierOrUuid()),
-                    ])[$command->identifierOrUuid()] ?? [];
-            }
+            $productCategoryCodes = $this->getCategoryCodes->fromProductUuids([$uuid])[$uuid->toString()] ?? [];
 
             $newCategoryCodes = \array_values(\array_diff($productCategoryCodes, $categoryUserIntent->categoryCodes()));
         } else {

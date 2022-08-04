@@ -8,9 +8,9 @@ use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier as ProductIdentifierValueObject;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -26,6 +26,7 @@ final class IsUserOwnerOfTheProductValidator extends ConstraintValidator
     public function __construct(
         private GetCategoryCodes $getCategoryCodes,
         private GetOwnedCategories $getOwnedCategories,
+        private GetProductUuids $getProductUuids,
     ) {
     }
 
@@ -34,16 +35,15 @@ final class IsUserOwnerOfTheProductValidator extends ConstraintValidator
         Assert::isInstanceOf($command, UpsertProductCommand::class);
         Assert::isInstanceOf($constraint, IsUserOwnerOfTheProduct::class);
 
-        $productCategoryCodes = null;
+        $uuid = null;
         if ($command->identifierOrUuid() instanceof ProductIdentifierValueObject) {
-            $productCategoryCodes = $this->getProductCategoryCodesFromIdentifier($command->identifierOrUuid()->identifier());
+            $uuid = $this->getProductUuids->fromIdentifier($command->identifierOrUuid()->identifier());
         } elseif ($command->identifierOrUuid() instanceof ProductUuid) {
-            $productCategoryCodes = $this->getCategoryCodes->fromProductUuids([
-                    $command->identifierOrUuid()->uuid()
-                ])[$command->identifierOrUuid()->uuid()->toString()] ?? null;
+            $uuid = $command->identifierOrUuid()->uuid();
         } elseif (\is_string($command->identifierOrUuid())) {
-            $productCategoryCodes = $this->getProductCategoryCodesFromIdentifier($command->identifierOrUuid());
+            $uuid = $this->getProductUuids->fromIdentifier($command->identifierOrUuid());
         }
+        $productCategoryCodes = $this->getCategoryCodes->fromProductUuids([$uuid])[$uuid->toString()] ?? null;
 
         if (null === $productCategoryCodes || [] === $productCategoryCodes) {
             return;
@@ -55,18 +55,5 @@ final class IsUserOwnerOfTheProductValidator extends ConstraintValidator
                 ->atPath('userId')
                 ->addViolation();
         }
-    }
-
-    /**
-     * @return mixed|string[]|void|null
-     */
-    private function getProductCategoryCodesFromIdentifier(string $identifier)
-    {
-        try {
-            $productIdentifier = ProductIdentifier::fromString($identifier);
-        } catch (\InvalidArgumentException) {
-            return;
-        }
-        return $this->getCategoryCodes->fromProductIdentifiers([$productIdentifier])[$productIdentifier->asString()] ?? null;
     }
 }

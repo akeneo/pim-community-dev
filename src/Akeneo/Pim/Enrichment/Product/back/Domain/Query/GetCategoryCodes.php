@@ -21,6 +21,7 @@ interface GetCategoryCodes
      *      "product2": ["categoryA"],
      *      ...
      *  }
+     * @deprecated
      */
     public function fromProductIdentifiers(array $productIdentifiers): array;
 

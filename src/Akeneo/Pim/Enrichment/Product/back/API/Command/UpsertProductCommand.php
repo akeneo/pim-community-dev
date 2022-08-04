@@ -28,6 +28,12 @@ use Webmozart\Assert\Assert;
 final class UpsertProductCommand
 {
     /**
+     * @param ProductIdentifier|ProductUuid|string|null $identifierOrUuid
+     * The product can now be created or updated by :
+     * - a string: will be deprecated, related to the only attribute identifier
+     * - a ProductIdentifier: a pair attribute of the identifier code + the attribute code
+     * - a ProductUuid: the uuid of the existing product or the one you want to assign to the future product
+     * - null: the product will have a random uuid and no identifier
      * @param ValueUserIntent[] $valueUserIntents
      */
     public function __construct(

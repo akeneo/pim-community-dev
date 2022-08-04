@@ -25,29 +25,6 @@ class GetNonViewableCategoryCodesSpec extends ObjectBehavior
         $this->shouldImplement(GetNonViewableCategoryCodesInterface::class);
     }
 
-    function it_returns_non_viewable_category_codes_for_a_list_of_product_identifiers(
-        GetCategoryCodes $getCategoryCodes,
-        GetViewableCategories $getViewableCategories
-    ) {
-        $productIdentifier1 = ProductIdentifier::fromString('id1');
-        $productIdentifier2 = ProductIdentifier::fromString('id2');
-        $productIdentifier3 = ProductIdentifier::fromString('id3');
-
-        $getCategoryCodes->fromProductIdentifiers([$productIdentifier1, $productIdentifier2, $productIdentifier3])
-            ->willReturn([
-                'id1' => ['categoryA', 'categoryB', 'categoryC'],
-                'id2' => ['categoryA', 'categoryD', 'categoryE'],
-            ]);
-        $getViewableCategories->forUserId(['categoryA', 'categoryB', 'categoryC', 'categoryD', 'categoryE'], 10)
-            ->willReturn(['categoryA', 'categoryB', 'categoryC', 'categoryD']);
-
-        $this->fromProductIdentifiers([$productIdentifier1, $productIdentifier2, $productIdentifier3], 10)
-            ->shouldreturn([
-                'id1' => [],
-                'id2' => ['categoryE'],
-            ]);
-    }
-
     function it_returns_non_viewable_category_codes_for_a_list_of_product_uuids(
         GetCategoryCodes $getCategoryCodes,
         GetViewableCategories $getViewableCategories,

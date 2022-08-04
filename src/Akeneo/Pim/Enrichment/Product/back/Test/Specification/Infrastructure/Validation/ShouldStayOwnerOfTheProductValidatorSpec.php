@@ -9,12 +9,12 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
-use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier as ProductIdentifierValueObject;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ShouldStayOwnerOfTheProduct;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ShouldStayOwnerOfTheProductValidator;
 use PhpSpec\ObjectBehavior;
@@ -30,9 +30,10 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         GetOwnedCategories $getOwnedCategories,
         GetNonViewableCategoryCodes $getNonViewableCategoryCodes,
         GetCategoryCodes $getCategoryCodes,
+        GetProductUuids $getProductUuids,
         ExecutionContext $context
     ) {
-        $this->beConstructedWith($getOwnedCategories, $getNonViewableCategoryCodes, $getCategoryCodes);
+        $this->beConstructedWith($getOwnedCategories, $getNonViewableCategoryCodes, $getCategoryCodes, $getProductUuids);
         $this->initialize($context);
     }
 
@@ -45,13 +46,13 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
     function it_validates_when_the_user_stays_owner_on_categories(
         GetOwnedCategories $getOwnedCategories,
         GetNonViewableCategoryCodes $getNonViewableCategoryCodes,
-        ExecutionContext $context
+        ExecutionContext $context,
+        GetProductUuids $getProductUuids,
     ) {
         $getOwnedCategories->forUserId(['categoryB', 'categoryA'], 10)->willReturn(['categoryB']);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
-        $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
-            ->willReturn(['foo' => ['categoryA']]);
         $uuid = Uuid::uuid4();
+        $getProductUuids->fromIdentifier('foo')->shouldBeCalledTimes(2)->willReturn($uuid);
         $getNonViewableCategoryCodes->fromProductUuids([$uuid], 10)->willReturn([$uuid->toString() => ['categoryA']]);
 
         // with identifier as string
@@ -69,12 +70,12 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
 
     function it_validates_when_the_product_becomes_uncategorized(
         GetNonViewableCategoryCodes $getNonViewableCategoryCodes,
+        GetProductUuids $getProductUuids,
         ExecutionContext $context
     ) {
-        $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
-            ->willReturn(['foo' => []]);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
         $uuid = Uuid::uuid4();
+        $getProductUuids->fromIdentifier('foo')->shouldBeCalledTimes(2)->willReturn($uuid);
         $getNonViewableCategoryCodes->fromProductUuids([$uuid], 10)->willReturn([$uuid->toString() => []]);
 
         // with identifier as string
@@ -93,13 +94,13 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
     function it_adds_a_violation_when_the_user_does_not_stay_owner_on_categories_with_set_categories(
         GetOwnedCategories $getOwnedCategories,
         GetNonViewableCategoryCodes $getNonViewableCategoryCodes,
+        GetProductUuids $getProductUuids,
         ExecutionContext $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $constraint = new ShouldStayOwnerOfTheProduct();
-        $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
-            ->willReturn(['foo' => ['categoryA']]);
         $uuid = Uuid::uuid4();
+        $getProductUuids->fromIdentifier('foo')->shouldBeCalledTimes(2)->willReturn($uuid);
         $getNonViewableCategoryCodes->fromProductUuids([$uuid], 10)->willReturn([$uuid->toString() => ['categoryA']]);
         $getOwnedCategories->forUserId(['categoryB', 'categoryA'], 10)->willReturn([]);
         $context->buildViolation($constraint->message)->shouldBeCalledTimes(3)->willReturn($violationBuilder);
@@ -122,13 +123,13 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
     function it_adds_a_violation_when_the_user_does_not_stay_owner_on_categories_by_removing_categories(
         GetOwnedCategories $getOwnedCategories,
         GetCategoryCodes $getCategoryCodes,
+        GetProductUuids $getProductUuids,
         ExecutionContext $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $constraint = new ShouldStayOwnerOfTheProduct();
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')])
-            ->willReturn(['foo' => ['categoryA', 'categoryB', 'categoryC']]);
         $uuid = Uuid::uuid4();
+        $getProductUuids->fromIdentifier('foo')->shouldBeCalledTimes(2)->willReturn($uuid);
         $getCategoryCodes->fromProductUuids([$uuid])->willReturn([$uuid->toString() => ['categoryA', 'categoryB', 'categoryC']]);
         $getOwnedCategories->forUserId(['categoryA', 'categoryC'], 10)->willReturn([]);
         $context->buildViolation($constraint->message)->shouldBeCalledTimes(3)->willReturn($violationBuilder);
@@ -148,12 +149,7 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         $this->validate(new RemoveCategories(['categoryB']), $constraint);
     }
 
-    function it_does_nothing_when_the_user_intent_is_to_add_categories(
-        GetOwnedCategories $getOwnedCategories,
-        GetNonViewableCategoryCodes $getNonViewableCategoryCodes,
-        ExecutionContext $context,
-        ConstraintViolationBuilderInterface $violationBuilder
-    ) {
+    function it_does_nothing_when_the_user_intent_is_to_add_categories(ExecutionContext $context) {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate(new AddCategories(['categoryB']), new ShouldStayOwnerOfTheProduct());
