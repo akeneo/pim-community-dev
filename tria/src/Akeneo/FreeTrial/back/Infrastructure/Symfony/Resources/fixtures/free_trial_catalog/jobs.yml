@@ -815,3 +815,9 @@ jobs:
                         - color_scanning
                         - connector_type_2
                         - printer_connectivity
+
+    versioning_refresh:
+        connector: internal
+        alias:     versioning_refresh
+        label:     Refresh versioning for any updated entities
+        type:      scheduled_job
