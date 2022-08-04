@@ -8,24 +8,22 @@ Helm chart for Timmy (Tenant Information Manager)
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| bucket.deletionPolicy | string | `"Delete"` |  |
+| bucket.location | string | `"EU"` |  |
 | bucket.storageClass | string | `"STANDARD"` |  |
 | bucket.uniformBucketLevelAccess | string | `"false"` |  |
+| bucket.versioningEnabled | string | `"True"` |  |
 | cloudFunction.availableMemoryMb | int | `128` |  |
 | cloudFunction.description | string | `"Request the portal to get tenant information"` |  |
-| cloudFunction.entryPoint | string | `"getPortalInformation"` |  |
+| cloudFunction.entryPoint | string | `"requestPortal"` |  |
 | cloudFunction.environmentVariables.PORTAL_HOSTNAME | string | `"partners-preprod.ip.akeneo.com"` |  |
 | cloudFunction.environmentVariables.PORTAL_LOGIN_HOSTNAME | string | `"connect-preprod.ip.akeneo.com"` |  |
-| cloudFunction.environmentVariables.PROJECT_ID | string | `"akecld-prd-pim-saas-dev"` |  |
 | cloudFunction.environmentVariables.SECRET_NAME | string | `"PORTAL_TIMMY"` |  |
 | cloudFunction.environmentVariables.TENANT_CONTINENT | string | `"europe"` |  |
 | cloudFunction.environmentVariables.TENANT_EDITION_FLAGS | string | `"serenity_instance"` |  |
 | cloudFunction.environmentVariables.TENANT_ENVIRONMENT | string | `"sandbox"` |  |
-| cloudFunction.name | string | `"timmy-get-portal-information"` |  |
+| cloudFunction.runtime | string | `"nodejs16"` |  |
 | cloudFunction.serviceAccountEmail | string | `"timmy-portal-function@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"` |  |
-| cloudFunction.sourceCodeZip | string | `"timmy-request-portal.zip"` |  |
-| cloudScheduler.cloudFunctionName | string | `"timmy-get-portal-information"` |  |
-| cloudScheduler.description | string | `"timmy-https-job"` |  |
-| cloudScheduler.name | string | `"timmy"` |  |
 | cloudScheduler.schedule | string | `"*/2 * * * *"` |  |
 | common.gcpProjectID | string | `"akecld-prd-pim-saas-dev"` |  |
 | common.region | string | `"europe-west1"` |  |

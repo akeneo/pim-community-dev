@@ -9,12 +9,11 @@ common:
   timeZone: "Europe/Paris"
 
 cloudFunction:
-  name: "timmy-get-portal-information"
   description: "Request the portal to get tenant information"
+  runtime: "nodejs16"
   availableMemoryMb: 128
   serviceAccountEmail: "timmy-portal-function@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"
-  sourceCodeZip: "timmy-request-portal.zip"
-  entryPoint: "getPortalInformation"
+  entryPoint: "requestPortal"
   environmentVariables:
     PORTAL_HOSTNAME: "partners-preprod.ip.akeneo.com"
     PORTAL_LOGIN_HOSTNAME: "connect-preprod.ip.akeneo.com"
@@ -22,13 +21,9 @@ cloudFunction:
     TENANT_CONTINENT: "europe"
     TENANT_ENVIRONMENT: "sandbox"
     SECRET_NAME: 'PORTAL_TIMMY'
-    PROJECT_ID: 'akecld-prd-pim-saas-dev'
 
 cloudScheduler:
-  name: "timmy"
-  description: "timmy-https-job"
   schedule: "*/2 * * * *"
-  cloudFunctionName: "timmy-get-portal-information"
 
 # The bucket used for the CloudFunction
 bucket:

@@ -43,7 +43,30 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
-
+{{/*
+The bucket name for Timmy
+*/}}
 {{- define "timmy.bucketName" -}}
 {{ .Values.common.gcpProjectID }}-{{ include "timmy.fullname" . }}
+{{- end }}
+
+{{/*
+The cloudfunction name for Timmy
+*/}}
+{{- define "timmy.cloudFunctionName" -}}
+{{ include "timmy.fullname" . }}-request-portal
+{{- end }}
+
+{{/*
+The configmap name for the cloudfunction scripts
+*/}}
+{{- define "timmy.configMapScriptsName" -}}
+{{ include "timmy.fullname" . }}-cloud-function-scripts
+{{- end }}
+
+{{/*
+The configmap name for the cloudfunction sources
+*/}}
+{{- define "timmy.configMapSourcesName" -}}
+{{ include "timmy.fullname" . }}-cloud-function-sources
 {{- end }}

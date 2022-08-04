@@ -8,7 +8,7 @@ spec:
   deletionPolicy: "Delete"
   forProvider:
     name: {{ include "timmy.fullname" . }}
-    description: {{ .Values.cloudScheduler.description}}
+    description: "The scheduler for Timmy to request the Portal"
     schedule: {{ .Values.cloudScheduler.schedule | quote }}
     region: {{ .Values.common.region }}
     project: {{ .Values.common.gcpProjectID }}
@@ -19,7 +19,7 @@ spec:
         httpMethod: "POST"
         uri: "https://{{ .Values.common.region }}-{{ .Values.common.gcpProjectID }}.cloudfunctions.net/{{ .Values.cloudScheduler.cloudFunctionName }}"
         oidcToken:
-          - audience: "https://{{ .Values.common.region }}-{{ .Values.common.gcpProjectID }}.cloudfunctions.net/{{ .Values.cloudFunction.name }}"
+          - audience: "https://{{ .Values.common.region }}-{{ .Values.common.gcpProjectID }}.cloudfunctions.net/{{ include "timmy.cloudFunctionName" . }}"
             serviceAccountEmail: {{ .Values.cloudFunction.serviceAccountEmail }}
         body: {{ "{}" | b64enc }}
   providerConfigRef:

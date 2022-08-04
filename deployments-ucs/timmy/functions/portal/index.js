@@ -50,7 +50,7 @@ async function getToken(res) {
   }
 }
 
-exports.getPortalInformation = (req, res) => {
+exports.requestPortal = (req, res) => {
   const getTenants = async () => {
     const token = await getToken(res);
     const url = `https://${portalHostname}/api/v2/console/requests/pending_activation?subject_type=${tenantFilter.editionFlags}&continent=${tenantFilter.continent}&environment=${tenantFilter.environment}`;

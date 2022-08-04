@@ -1,0 +1,28 @@
+apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
+kind: Function
+metadata:
+  name: {{ include "timmy.cloudFunctionName" . }}
+  labels:
+    {{- include "timmy.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: Replace=true
+spec:
+  forProvider:
+    availableMemoryMb: {{ .Values.cloudFunction.availableMemoryMb }}
+    description: {{ .Values.cloudFunction.description }}
+    entryPoint: {{ .Values.cloudFunction.entryPoint }}
+    name: {{ include "timmy.cloudFunctionName" . }}
+    runtime: {{ .Values.cloudFunction.runtime }}
+    serviceAccountEmail: {{ .Values.cloudFunction.serviceAccountEmail }}
+    sourceArchiveBucket: {{ include "timmy.bucketName" . }}
+    sourceArchiveObject: {{ include "timmy.cloudFunctionName" . }}.zip
+    triggerHttp: true
+    ingressSettings: ALLOW_ALL
+    project: {{ .Values.common.gcpProjectID }}
+    region: {{ .Values.common.region }}
+    environmentVariables:
+      {{- toYaml .Values.cloudFunction.environmentVariables | nindent 6 }}
+      PROJECT_ID: {{ .Values.common.gcpProjectID }}
+  providerConfigRef:
+    name: "provider-config-jet-gcp"

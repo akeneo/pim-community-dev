@@ -39,7 +39,7 @@ spec:
             - name: BUCKET_NAME
               value: {{ include "timmy.bucketName" . }}
             - name: SOURCE_CODE_ZIP
-              value: {{ .Values.cloudFunction.sourceCodeZip }}
+              value: {{ include "timmy.cloudFunctionName" . }}.zip
           volumeMounts:
             - name: cloud-function-scripts
               mountPath: /scripts-dir
@@ -52,10 +52,10 @@ spec:
       volumes:
         - name: cloud-function-scripts
           configMap:
-            name: cloud-function-scripts
+            name: {{ include "timmy.configMapScriptsName" . }}
         - name: cloud-function-sources
           configMap:
-            name: cloud-function-sources
+            name: {{ include "timmy.configMapSourcesName" . }}
             items:
               - key: package.json
                 path: package.json
