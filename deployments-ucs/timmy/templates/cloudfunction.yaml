@@ -18,10 +18,30 @@ spec:
     sourceArchiveBucket: {{ include "timmy.bucketName" . }}
     sourceArchiveObject: {{ .Values.cloudFunction.sourceCodeZip }}
     triggerHttp: true
-    ingressSettings: "ALLOW_INTERNAL_ONLY"
+    ingressSettings: "ALLOW_ALL"
     project: {{ .Values.common.gcpProjectID }}
     region: {{ .Values.common.region }}
     environmentVariables:
       {{- toYaml .Values.cloudFunction.environmentVariables | nindent 6 }}
+  providerConfigRef:
+    name: "provider-config-jet-gcp"
+---
+apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
+kind: FunctionIAMBinding
+metadata:
+  name: "cloudscheduler-{{ .Values.cloudFunction.name }}"
+  labels:
+    {{- include "timmy.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: Replace=true
+spec:
+  forProvider:
+    cloudFunction: {{ .Values.cloudFunction.name }}
+    members:
+      - "serviceAccount:{{ .Values.cloudFunction.serviceAccountEmail }}"
+    project: {{ .Values.common.gcpProjectID }}
+    region: {{ .Values.common.region }}
+    role: "roles/cloudfunctions.invoker"
   providerConfigRef:
     name: "provider-config-jet-gcp"

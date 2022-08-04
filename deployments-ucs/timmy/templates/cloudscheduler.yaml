@@ -1,23 +1,28 @@
-apiVersion: cloudscheduler.cnrm.cloud.google.com/v1beta1
-kind: CloudSchedulerJob
+apiVersion: cloudscheduler.gcp.jet.crossplane.io/v1alpha1
+kind: Job
 metadata:
   labels:
     {{- include "timmy.labels" . | nindent 4 }}
-  annotations:
-    cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
   name: {{ include "timmy.fullname" . }}
 spec:
-  description: {{ .Values.cloudScheduler.description }}
-  schedule: {{ .Values.cloudScheduler.schedule | quote }}
-  location: {{ .Values.common.region }}
-  timeZone: {{ .Values.common.timeZone }}
-  httpTarget:
-    headers:
-      Content-Type: "application/json"
-    httpMethod: "POST"
-    uri: "https://{{ .Values.common.region }}-{{ .Values.common.gcpProjectID }}.cloudfunctions.net/{{ .Values.cloudScheduler.cloudFunctionName }}"
-    oidcToken:
-      audience: "https://{{ .Values.common.region }}-{{ .Values.common.gcpProjectID }}.cloudfunctions.net/{{ .Values.cloudFunction.name }}"
-      serviceAccountRef:
-        external: "{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com"
-    body: "{}"
+  deletionPolicy: "Delete"
+  forProvider:
+    name: {{ include "timmy.fullname" . }}
+    description: {{ .Values.cloudScheduler.description}}
+    schedule: {{ .Values.cloudScheduler.schedule | quote }}
+    region: {{ .Values.common.region }}
+    project: {{ .Values.common.gcpProjectID }}
+    timeZone: {{ .Values.common.timeZone }}
+    httpTarget:
+      - headers:
+          Content-Type: "application/json"
+        httpMethod: "POST"
+        uri: "https://{{ .Values.common.region }}-{{ .Values.common.gcpProjectID }}.cloudfunctions.net/{{ .Values.cloudScheduler.cloudFunctionName }}"
+        oidcToken:
+          - audience: "https://{{ .Values.common.region }}-{{ .Values.common.gcpProjectID }}.cloudfunctions.net/{{ .Values.cloudFunction.name }}"
+            serviceAccountEmail: {{ .Values.cloudFunction.serviceAccountEmail }}
+        body: {{ "{}" | b64enc }}
+  providerConfigRef:
+    name: provider-config-jet-gcp
+
+
