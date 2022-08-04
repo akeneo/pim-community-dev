@@ -97,6 +97,12 @@ Feature: Connection to e-commerce platforms and marketplaces
     Then the PIM notifies the connector about missing permissions for distributing a record
 
   @integration-back
+  Scenario: Get the records of a reference entity that match a provided code
+    Given the Kartell and Ikea records for the Brand reference entity
+    When the connector requests all records of the Brand reference entity that match code Kartell
+    Then the PIM returns the records of the Brand reference entity that match code Kartell
+
+  @integration-back
   Scenario: Get all the records of a given reference entity
     Given 7 records for the Brand reference entity
     When the connector requests all records of the Brand reference entity without permission
