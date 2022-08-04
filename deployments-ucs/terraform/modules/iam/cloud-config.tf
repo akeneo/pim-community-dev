@@ -1,8 +1,8 @@
-resource "google_project_iam_custom_role" "crossplane_role" {
+resource "google_project_iam_custom_role" "cloudconfig_role" {
   project     = var.project_id
-  role_id     = "crossplane.role"
-  title       = "Crossplane GKE Role"
-  description = "Role for executing crossplane in GKE"
+  role_id     = "cloudconfig.role"
+  title       = "Cloud Config GKE Role"
+  description = "Role for executing Cloud Config in GKE"
   permissions = [
     "cloudscheduler.jobs.create",
     "cloudscheduler.jobs.delete",
@@ -52,24 +52,24 @@ resource "google_project_iam_custom_role" "crossplane_role" {
   ]
 }
 
-resource "google_service_account" "crossplane" {
+resource "google_service_account" "cloudconfig" {
   project      = var.project_id
-  account_id   = "ucs-crossplane-account"
-  display_name = "Crossplane service account"
+  account_id   = "ucs-cloudconfig-account"
+  display_name = "Cloud Config service account"
 }
 
-resource "google_project_iam_binding" "crossplane_binding" {
+resource "google_project_iam_binding" "cloudconfig_binding" {
   project = var.project_id
-  role    = google_project_iam_custom_role.crossplane_role.name
+  role    = google_project_iam_custom_role.cloudconfig_role.name
 
   members = [
-    "serviceAccount:${google_service_account.crossplane.email}",
+    "serviceAccount:${google_service_account.cloudconfig.email}",
   ]
 }
 
-resource "google_project_iam_member" "crossplane_workload_identity" {
+resource "google_project_iam_member" "cloudconfig_workload_identity" {
   project = var.project_id
   role    = "roles/iam.workloadIdentityUser"
-  member  = "serviceAccount:${var.project_id}.svc.id.goog[${var.crossplane_k8s_ns}/${var.crossplane_k8s_sa}]"
+  member  = "serviceAccount:${var.project_id}.svc.id.goog[cnrm-system/cnrm-controller-manager]"
 }
 

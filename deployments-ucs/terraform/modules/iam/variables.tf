@@ -20,3 +20,9 @@ variable "secrets_admins" {
   type        = list(string)
   default     = []
 }
+
+variable "cloudbuild_admins" {
+  description = "Cloudbuild admins"
+  type        = list(string)
+  default     = []
+}

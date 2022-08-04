@@ -32,3 +32,13 @@ resource "google_secret_manager_secret_iam_binding" "portal_auth_admin_binding" 
   role      = "roles/secretmanager.secretVersionManager"
   members   = var.secrets_admins
 }
+
+resource "google_service_account_iam_binding" "timmy_portal_sa_usage" {
+  service_account_id = google_service_account.portal_function_sa.name
+  role               = "roles/iam.serviceAccountUser"
+
+  members = [
+    "serviceAccount:${google_service_account.crossplane.email}",
+    "serviceAccount:ucs-crossplane-test-account@${var.project_id}.iam.gserviceaccount.com" ## To be removed
+  ]
+}

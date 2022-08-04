@@ -9,9 +9,10 @@ locals {
 }
 
 module "iam" {
-  source         = "../modules/iam"
-  project_id     = local.project_id
-  secrets_admins = local.admins
+  source            = "../modules/iam"
+  project_id        = local.project_id
+  secrets_admins    = local.admins
+  cloudbuild_admins = local.admins
 }
 
 module "registry" {
