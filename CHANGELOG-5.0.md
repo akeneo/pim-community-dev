@@ -1,8 +1,13 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10553: Fix initialization of the associations grid in product edit form
+
 # 5.0.105 (2022-08-03)
 
 ## Bug fixes
+
 - PIM-10551: Add filtering on locale specific attributes when fetching values
 
 # 5.0.104 (2022-07-11)
