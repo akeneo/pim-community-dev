@@ -16,7 +16,7 @@ class SqlFindOneByIdentifierIntegration extends TestCase
 {
     public function testFindOneByIdentifier(): void
     {
-        $category = $this->get(FindCategoryByIdentifier::class)(2);
+        $category = $this->get(FindCategoryByIdentifier::class)(1);
         $this->assertInstanceOf(Category::class, $category);
         $this->assertSame('master', (string)$category->getCode());
         $this->assertSame('Master catalog', $category->getLabelCollection()->getLabel('en_US'));
