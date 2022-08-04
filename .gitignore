@@ -45,3 +45,4 @@ deployments-ucs/tenant/Chart.lock
 connectors/*
 .terraform*
 .DS_Store
+/make-file/local.mk
