@@ -11,17 +11,18 @@ common:
 cloudFunction:
   name: "timmy-get-portal-information"
   description: "Request the portal to get tenant information"
-  sourceArchiveObject: "test"
   availableMemoryMb: 128
   serviceAccountEmail: "timmy-portal-function@akecld-prd-pim-saas-dev.iam.gserviceaccount.com"
   sourceCodeZip: "timmy-request-portal.zip"
   entryPoint: "getPortalInformation"
   environmentVariables:
-    PORTAL_HOSTNAME: "connect-preprod.ip.akeneo.com"
-    PORTAL_LOGIN_HOSTNAME: "partners-preprod.ip.akeneo.com"
+    PORTAL_HOSTNAME: "partners-preprod.ip.akeneo.com"
+    PORTAL_LOGIN_HOSTNAME: "connect-preprod.ip.akeneo.com"
     TENANT_EDITION_FLAGS: "serenity_instance"
     TENANT_CONTINENT: "europe"
     TENANT_ENVIRONMENT: "sandbox"
+    SECRET_NAME: 'PORTAL_TIMMY'
+    PROJECT_ID: 'akecld-prd-pim-saas-dev'
 
 cloudScheduler:
   name: "timmy"
