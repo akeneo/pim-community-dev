@@ -2,6 +2,7 @@ apiVersion: storage.gcp.crossplane.io/v1alpha1
 kind: BucketPolicy
 metadata:
   name: {{ include "timmy.bucketName" . }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "timmy.labels" . | nindent 4 }}
   annotations:

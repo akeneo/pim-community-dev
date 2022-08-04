@@ -4,6 +4,7 @@ metadata:
   labels:
     {{- include "timmy.labels" . | nindent 4 }}
   name: {{ include "timmy.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
 spec:
   deletionPolicy: "Delete"
   forProvider:

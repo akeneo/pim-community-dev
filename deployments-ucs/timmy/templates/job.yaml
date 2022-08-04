@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: push-cloud-function
+  namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "timmy.labels" . | nindent 4 }}
     component: "push-cloud-function"

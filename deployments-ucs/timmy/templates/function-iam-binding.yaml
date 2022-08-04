@@ -2,6 +2,7 @@ apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
 kind: FunctionIAMBinding
 metadata:
   name: {{ include "timmy.cloudFunctionName" . }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "timmy.labels" . | nindent 4 }}
   annotations:

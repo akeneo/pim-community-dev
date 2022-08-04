@@ -44,6 +44,14 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
+Selector labels
+*/}}
+{{- define "timmy.selectorLabels" -}}
+  app.kubernetes.io/name: {{ include "timmy.name" . }}
+  app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 The bucket name for Timmy
 */}}
 {{- define "timmy.bucketName" -}}
