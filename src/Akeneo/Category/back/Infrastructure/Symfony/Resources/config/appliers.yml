@@ -1,0 +1,8 @@
+services:
+    Akeneo\Category\Application\Applier\UserIntentApplierRegistry:
+        arguments:
+            - !tagged_iterator 'pim.category.user_intent_applier'
+
+    Akeneo\Category\Application\Applier\SetLabelApplier:
+        tags:
+            - { name: 'pim.category.user_intent_applier' }

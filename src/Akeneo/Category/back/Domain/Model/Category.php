@@ -42,6 +42,11 @@ class Category
         return $this->parentId;
     }
 
+    public function setLabel(string $localeCode, string $label): void
+    {
+        $this->labelCollection->setLabel($localeCode, $label);
+    }
+
     /**
      * @return array<string, mixed>
      */
