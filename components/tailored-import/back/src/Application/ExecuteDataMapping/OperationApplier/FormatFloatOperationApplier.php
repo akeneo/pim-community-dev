@@ -14,19 +14,21 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\FormatFloatOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 
-final class EnabledReplacementOperationApplier implements OperationApplierInterface
+final class FormatFloatOperationApplier implements OperationApplierInterface
 {
+    private const DEFAULT_DECIMAL_SEPARATOR = '.';
+
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof EnabledReplacementOperation) {
-            throw new UnexpectedValueException($operation, EnabledReplacementOperation::class, self::class);
+        if (!$operation instanceof FormatFloatOperation) {
+            throw new UnexpectedValueException($operation, FormatFloatOperation::class, self::class);
         }
 
         if ($value instanceof InvalidValue) {
@@ -37,17 +39,29 @@ final class EnabledReplacementOperationApplier implements OperationApplierInterf
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
-        if (!$operation->hasMappedValue($value->getValue())) {
-            return new InvalidValue(sprintf('There is no mapped value for this source value: "%s"', $value->getValue()));
+        $floatValue = str_replace(
+            $operation->getDecimalSeparator(),
+            self::DEFAULT_DECIMAL_SEPARATOR,
+            $value->getValue(),
+        );
+
+        if (!is_numeric($floatValue)) {
+            return new InvalidValue(sprintf(
+                'Cannot convert "%s" to a number with separator "%s"',
+                $value->getValue(),
+                $operation->getDecimalSeparator(),
+            ));
         }
 
-        $mappedValue = $operation->getMappedValue($value->getValue());
-
-        return new BooleanValue($mappedValue);
+        return new StringValue(number_format(
+            (float) $floatValue,
+            decimals: MeasureConverter::SCALE,
+            thousands_separator: '',
+        ));
     }
 
     public function supports(OperationInterface $operation): bool
     {
-        return $operation instanceof EnabledReplacementOperation;
+        return $operation instanceof FormatFloatOperation;
     }
 }
