@@ -32,6 +32,11 @@ final class LabelCollection
         return $this->translatedLabels[$localeCode] ?? null;
     }
 
+    public function setLabel(string $localeCode, string $label): void
+    {
+        $this->translatedLabels[$localeCode] = $label;
+    }
+
     public function hasLabel(string $localeCode): bool
     {
         return array_key_exists($localeCode, $this->translatedLabels);
