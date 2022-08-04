@@ -114,6 +114,24 @@ test('it can disable the scheduling', () => {
   });
 });
 
+test('it can update the scheduling', () => {
+  const onAutomationChange = jest.fn();
+
+  renderWithProviders(
+    <JobAutomationForm automation={automation} validationErrors={[]} onAutomationChange={onAutomationChange} />
+  );
+
+  const [openFrequencyOptionButton] = screen.getAllByTitle('pim_common.open');
+
+  userEvent.click(openFrequencyOptionButton);
+  userEvent.click(screen.getByText('akeneo.job_automation.scheduling.frequency.weekly'));
+
+  expect(onAutomationChange).toBeCalledWith({
+    ...automation,
+    cron_expression: '0 0 * * 0',
+  });
+});
+
 test('it displays validation errors', () => {
   const validationErrors: ValidationError[] = [
     {

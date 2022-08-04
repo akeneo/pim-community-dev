@@ -22,11 +22,13 @@ class ValidateCronExpressionTest extends AbstractValidationTest
     public function validCronExpression(): array
     {
         return [
-            'Valid daily cron expression' => ['0 0 * * *'],
-            'Valid weekly cron expression' => ['0 0 * * 0'],
-            'Valid every 4 hours cron expression' => ['0 0,4,8,12,16,20 * * *'],
-            'Valid every 8 hours cron expression' => ['0 1,9,17 * * *'],
-            'Valid every 12 hours cron expression' => ['0 2,14 * * *'],
+            'Valid daily cron expression at midnight' => ['0 0 * * *'],
+            'Valid daily cron expression at 02:40' => ['40 2 * * *'],
+            'Valid weekly cron expression at midnight' => ['0 0 * * 0'],
+            'Valid weekly cron expression at 10:30' => ['30 10 * * 0'],
+            'Valid every 4 hours cron expression' => ['0 0/4 * * *'],
+            'Valid every 8 hours cron expression' => ['0 0/8 * * *'],
+            'Valid every 12 hours cron expression' => ['0 0/12 * * *'],
         ];
     }
 
@@ -54,12 +56,17 @@ class ValidateCronExpressionTest extends AbstractValidationTest
                 '',
             ],
             'Cron expression cannot be weekly and hourly' => [
-                '0 0,12 * * 1',
+                '0 0/12 * * 1',
                 CronExpression::INVALID_FREQUENCY_OPTION,
                 '',
             ],
-            'Cron expression with invalid hourly frequency' => [
-                '0 0,1,2,3,4,5,6 * * *',
+            'Cron expression with too frequent hourly frequency' => [
+                '0 0/1 * * *',
+                CronExpression::INVALID_HOURLY_FREQUENCY,
+                '',
+            ],
+            'Cron expression with hourly frequency with invalid time' => [
+                '10 2/4 * * *',
                 CronExpression::INVALID_HOURLY_FREQUENCY,
                 '',
             ],
@@ -73,30 +80,30 @@ class ValidateCronExpressionTest extends AbstractValidationTest
                 CronExpression::INVALID_WEEK_DAY,
                 '[week_day]',
             ],
+            'Cron expression with unallowed minutes value' => [
+                '16 0 * * *',
+                CronExpression::INVALID_MINUTES,
+                '[minutes]',
+            ],
             'Cron expression with invalid minutes value' => [
-                '76 0 * * *',
-                CronExpression::INVALID_TIME,
-                '[time]',
+                '80 0 * * *',
+                CronExpression::INVALID_MINUTES,
+                '[minutes]',
             ],
             'Cron expression with invalid minutes type' => [
                 'h 0 * * *',
-                CronExpression::INVALID_TIME,
-                '[time]',
+                CronExpression::INVALID_MINUTES,
+                '[minutes]',
             ],
             'Cron expression with invalid hours value' => [
-                '36 42 * * *',
-                CronExpression::INVALID_TIME,
-                '[time]',
-            ],
-            'Cron expression with multiple invalid hours value' => [
-                '36 2,65 * * *',
-                CronExpression::INVALID_TIME,
-                '[time]',
+                '20 42 * * *',
+                CronExpression::INVALID_HOURS,
+                '[hours]',
             ],
             'Cron expression with invalid hours type' => [
-                '36 w * * *',
-                CronExpression::INVALID_TIME,
-                '[time]',
+                '20 w * * *',
+                CronExpression::INVALID_HOURS,
+                '[hours]',
             ],
         ];
     }

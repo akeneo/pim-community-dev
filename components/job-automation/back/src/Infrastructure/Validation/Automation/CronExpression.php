@@ -20,5 +20,6 @@ class CronExpression extends Constraint
     public const INVALID_FREQUENCY_OPTION = 'akeneo.job_automation.validation.invalid_frequency_option';
     public const INVALID_WEEK_DAY = 'akeneo.job_automation.validation.invalid_week_day';
     public const INVALID_HOURLY_FREQUENCY = 'akeneo.job_automation.validation.invalid_hourly_frequency';
-    public const INVALID_TIME = 'akeneo.job_automation.validation.invalid_time';
+    public const INVALID_HOURS = 'akeneo.job_automation.validation.invalid_hours';
+    public const INVALID_MINUTES = 'akeneo.job_automation.validation.invalid_minutes';
 }

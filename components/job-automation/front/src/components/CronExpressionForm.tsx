@@ -3,17 +3,16 @@ import styled from 'styled-components';
 import {Field, SelectInput, Helper} from 'akeneo-design-system';
 import {getErrorsForPath, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {
-  Automation,
   availableFrequencyOptions,
   CronExpression,
   FrequencyOption,
   getCronExpressionFromFrequencyOption,
   getFrequencyOptionFromCronExpression,
+  isHourlyFrequency,
 } from '../models';
 import {
-  DailyFrequencyConfigurator,
   FrequencyConfiguratorProps,
-  HourlyFrequencyConfigurator,
+  TimeFrequencyConfigurator,
   WeeklyFrequencyConfigurator,
 } from './FrequencyConfigurator';
 
@@ -24,32 +23,26 @@ const Content = styled.div`
 `;
 
 const frequencyConfigurators: {[frequencyOption: string]: FunctionComponent<FrequencyConfiguratorProps>} = {
-  daily: DailyFrequencyConfigurator,
+  daily: TimeFrequencyConfigurator,
   weekly: WeeklyFrequencyConfigurator,
-  every_4_hours: HourlyFrequencyConfigurator,
-  every_8_hours: HourlyFrequencyConfigurator,
-  every_12_hours: HourlyFrequencyConfigurator,
+  every_4_hours: () => null,
+  every_8_hours: () => null,
+  every_12_hours: () => null,
 };
 
-type SchedulingFormProps = {
-  automation: Automation;
+type CronExpressionFormProps = {
+  cronExpression: CronExpression;
   validationErrors: ValidationError[];
-  onAutomationChange: (automation: Automation) => void;
+  onCronExpressionChange: (cronExpression: CronExpression) => void;
 };
 
-const SchedulingForm = ({automation, validationErrors, onAutomationChange}: SchedulingFormProps) => {
+const CronExpressionForm = ({cronExpression, validationErrors, onCronExpressionChange}: CronExpressionFormProps) => {
   const translate = useTranslate();
 
-  const handleCronExpressionChange = (cronExpression: CronExpression) =>
-    onAutomationChange({...automation, cron_expression: cronExpression});
-
   const handleFrequencyOptionChange = (frequencyOption: FrequencyOption) =>
-    onAutomationChange({
-      ...automation,
-      cron_expression: getCronExpressionFromFrequencyOption(frequencyOption, automation.cron_expression),
-    });
+    onCronExpressionChange(getCronExpressionFromFrequencyOption(frequencyOption, cronExpression));
 
-  const frequencyOption = getFrequencyOptionFromCronExpression(automation.cron_expression);
+  const frequencyOption = getFrequencyOptionFromCronExpression(cronExpression);
   const FrequencyComponent = frequencyConfigurators[frequencyOption] ?? null;
 
   if (null === FrequencyComponent) {
@@ -74,12 +67,20 @@ const SchedulingForm = ({automation, validationErrors, onAutomationChange}: Sche
           ))}
         </SelectInput>
         <FrequencyComponent
-          frequencyOption={frequencyOption}
-          cronExpression={automation.cron_expression}
+          cronExpression={cronExpression}
           validationErrors={validationErrors}
-          onCronExpressionChange={handleCronExpressionChange}
+          onCronExpressionChange={onCronExpressionChange}
         />
       </Content>
+      {isHourlyFrequency(frequencyOption) ? (
+        <Helper inline={true} level="info">
+          {translate('akeneo.job_automation.scheduling.frequency.hourly_helper')}
+        </Helper>
+      ) : (
+        <Helper inline={true} level="info">
+          {translate('akeneo.job_automation.scheduling.frequency.helper')}
+        </Helper>
+      )}
       {validationErrors.map((error, index) => (
         <Helper key={index} inline={true} level="error">
           {translate(error.messageTemplate, error.parameters)}
@@ -89,4 +90,4 @@ const SchedulingForm = ({automation, validationErrors, onAutomationChange}: Sche
   );
 };
 
-export {SchedulingForm};
+export {CronExpressionForm};

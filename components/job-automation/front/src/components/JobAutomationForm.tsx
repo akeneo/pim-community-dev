@@ -9,9 +9,9 @@ import {
   useFeatureFlags,
   useSecurity,
 } from '@akeneo-pim-community/shared';
-import {Automation, filterDefaultUserGroup} from '../models';
+import {Automation, CronExpression, filterDefaultUserGroup} from '../models';
 import {useUserGroups} from '../hooks';
-import {SchedulingForm} from './SchedulingForm';
+import {CronExpressionForm} from './CronExpressionForm';
 
 const SpacedSection = styled(Section)`
   margin-top: 20px;
@@ -30,6 +30,9 @@ const JobAutomationForm = ({automation, validationErrors, onAutomationChange}: J
   const {isGranted} = useSecurity();
 
   const handleEnableChange = (isEnabled: boolean) => onAutomationChange({...automation, is_enabled: isEnabled});
+
+  const handleCronExpressionChange = (cronExpression: CronExpression) =>
+    onAutomationChange({...automation, cron_expression: cronExpression});
 
   return (
     <SpacedSection>
@@ -52,9 +55,9 @@ const JobAutomationForm = ({automation, validationErrors, onAutomationChange}: J
               {translate('akeneo.job_automation.scheduling.title')}
             </SectionTitle.Title>
           </SectionTitle>
-          <SchedulingForm
-            automation={automation}
-            onAutomationChange={onAutomationChange}
+          <CronExpressionForm
+            cronExpression={automation.cron_expression}
+            onCronExpressionChange={handleCronExpressionChange}
             validationErrors={filterErrors(validationErrors, '[cron_expression]')}
           />
           {isEnabled('permission') && (

@@ -1,14 +1,9 @@
 import React from 'react';
-import {SelectInput, TextInput} from 'akeneo-design-system';
+import {SelectInput} from 'akeneo-design-system';
 import {getErrorsForPath, useTranslate} from '@akeneo-pim-community/shared';
-import {
-  getTimeFromCronExpression,
-  getWeekDayFromCronExpression,
-  getWeeklyCronExpressionFromTime,
-  getWeeklyCronExpressionFromWeekDay,
-  weekDays,
-} from '../../models';
+import {getWeekDayFromCronExpression, getWeeklyCronExpressionFromWeekDay, weekDays} from '../../models';
 import {FrequencyConfiguratorProps} from './FrequencyConfiguratorProps';
+import {TimeFrequencyConfigurator} from './TimeFrequencyConfigurator';
 
 const WeeklyFrequencyConfigurator = ({
   cronExpression,
@@ -19,9 +14,6 @@ const WeeklyFrequencyConfigurator = ({
 
   const handleWeekDayChange = (weekDay: string) =>
     onCronExpressionChange(getWeeklyCronExpressionFromWeekDay(weekDay, cronExpression));
-
-  const handleTimeChange = (time: string) =>
-    onCronExpressionChange(getWeeklyCronExpressionFromTime(time, cronExpression));
 
   return (
     <>
@@ -39,11 +31,10 @@ const WeeklyFrequencyConfigurator = ({
           </SelectInput.Option>
         ))}
       </SelectInput>
-      <TextInput
-        type="time"
-        invalid={0 < getErrorsForPath(validationErrors, '[time]').length}
-        value={getTimeFromCronExpression(cronExpression)}
-        onChange={handleTimeChange}
+      <TimeFrequencyConfigurator
+        cronExpression={cronExpression}
+        validationErrors={validationErrors}
+        onCronExpressionChange={onCronExpressionChange}
       />
     </>
   );

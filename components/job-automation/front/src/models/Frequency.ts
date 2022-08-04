@@ -4,6 +4,9 @@ const weekDays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'frida
 type FrequencyOption = typeof availableFrequencyOptions[number];
 type CronExpression = string;
 
+const isHourlyFrequency = (frequencyOption: FrequencyOption): boolean =>
+  ['every_4_hours', 'every_8_hours', 'every_12_hours'].includes(frequencyOption);
+
 const getFrequencyOptionFromCronExpression = (cronExpression: CronExpression): FrequencyOption => {
   const [, hours, , , weekDayNumber] = cronExpression.split(' ');
 
@@ -11,18 +14,19 @@ const getFrequencyOptionFromCronExpression = (cronExpression: CronExpression): F
     return 'weekly';
   }
 
-  switch (hours.split(',').length) {
-    case 1:
-      return 'daily';
-    case 2:
-      return 'every_12_hours';
-    case 3:
-      return 'every_8_hours';
-    case 6:
-      return 'every_4_hours';
-    default:
-      throw new Error(`Unsupported cron expression: "${cronExpression}"`);
+  if (hours.endsWith('/4')) {
+    return 'every_4_hours';
   }
+
+  if (hours.endsWith('/8')) {
+    return 'every_8_hours';
+  }
+
+  if (hours.endsWith('/12')) {
+    return 'every_12_hours';
+  }
+
+  return 'daily';
 };
 
 const getWeekDayFromCronExpression = (cronExpression: CronExpression): string => {
@@ -33,17 +37,16 @@ const getWeekDayFromCronExpression = (cronExpression: CronExpression): string =>
   return weekDays[weekDayNumber];
 };
 
+const getMinutesFromCronExpression = (cronExpression: CronExpression): string => {
+  const [minutes] = cronExpression.split(' ');
+
+  return minutes.padStart(2, '0');
+};
+
 const getHoursFromCronExpression = (cronExpression: CronExpression): string => {
   const [, hours] = cronExpression.split(' ');
 
-  return hours.split(',')[0];
-};
-
-const getTimeFromCronExpression = (cronExpression: CronExpression): string => {
-  const [minutes] = cronExpression.split(' ');
-  const hours = getHoursFromCronExpression(cronExpression);
-
-  return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+  return hours.split('/')[0].padStart(2, '0');
 };
 
 const getCronExpressionFromFrequencyOption = (
@@ -55,13 +58,15 @@ const getCronExpressionFromFrequencyOption = (
 
   switch (frequencyOption) {
     case 'daily':
-      return `${minutes} ${hours} * * *`;
+      return `${Number(minutes)} ${Number(hours)} * * *`;
     case 'weekly':
-      return `${minutes} ${hours} * * 0`;
+      return `${Number(minutes)} ${Number(hours)} * * 0`;
     case 'every_4_hours':
+      return '0 0/4 * * *';
     case 'every_8_hours':
+      return '0 0/8 * * *';
     case 'every_12_hours':
-      return `${minutes} ${getHourlyStepsFromFrequencyOption(frequencyOption, Number(hours))} * * *`;
+      return '0 0/12 * * *';
     default:
       throw new Error(`Unsupported frequency option: "${frequencyOption}"`);
   }
@@ -73,49 +78,29 @@ const getWeeklyCronExpressionFromWeekDay = (weekDay: string, cronExpression: Cro
   return `${minutes} ${hours} * * ${weekDays.indexOf(weekDay)}`;
 };
 
-const getWeeklyCronExpressionFromTime = (time: string, cronExpression: CronExpression): CronExpression => {
-  const [hours, minutes] = time.split(':');
-  const [, , , , weekDay] = cronExpression.split(' ');
+const getCronExpressionFromHours = (hours: string, cronExpression: CronExpression): CronExpression => {
+  const [minutes, , , , weekDay] = cronExpression.split(' ');
 
   return `${Number(minutes)} ${Number(hours)} * * ${weekDay}`;
 };
 
-const getDailyCronExpressionFromTime = (time: string): CronExpression => {
-  const [hours, minutes] = time.split(':');
+const getCronExpressionFromMinutes = (minutes: string, cronExpression: CronExpression): CronExpression => {
+  const [, hours, , , weekDay] = cronExpression.split(' ');
 
-  return `${Number(minutes)} ${Number(hours)} * * *`;
-};
-
-const getHourlyStepsFromFrequencyOption = (frequencyOption: FrequencyOption, hour: number): number[] => {
-  switch (frequencyOption) {
-    case 'every_4_hours':
-      return [0, 4, 8, 12, 16, 20].map(step => (hour + step) % 24);
-    case 'every_8_hours':
-      return [0, 8, 16].map(step => (hour + step) % 24);
-    case 'every_12_hours':
-      return [0, 12].map(step => (hour + step) % 24);
-    default:
-      throw new Error(`Unsupported hourly frequency option: "${frequencyOption}"`);
-  }
-};
-
-const getHourlyCronExpressionFromTime = (time: string, frequencyOption: FrequencyOption): CronExpression => {
-  const [hours, minutes] = time.split(':');
-  const hourlySteps = getHourlyStepsFromFrequencyOption(frequencyOption, Number(hours));
-
-  return `${Number(minutes)} ${hourlySteps.join(',')} * * *`;
+  return `${Number(minutes)} ${Number(hours)} * * ${weekDay}`;
 };
 
 export type {FrequencyOption, CronExpression};
 export {
   availableFrequencyOptions,
   getCronExpressionFromFrequencyOption,
-  getDailyCronExpressionFromTime,
+  getCronExpressionFromHours,
+  getCronExpressionFromMinutes,
   getFrequencyOptionFromCronExpression,
-  getHourlyCronExpressionFromTime,
-  getTimeFromCronExpression,
+  getHoursFromCronExpression,
+  getMinutesFromCronExpression,
   getWeekDayFromCronExpression,
-  getWeeklyCronExpressionFromTime,
   getWeeklyCronExpressionFromWeekDay,
+  isHourlyFrequency,
   weekDays,
 };

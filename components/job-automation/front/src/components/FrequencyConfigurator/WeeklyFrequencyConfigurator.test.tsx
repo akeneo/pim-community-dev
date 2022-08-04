@@ -8,43 +8,35 @@ test('it can select a weekday', () => {
   const onChange = jest.fn();
 
   renderWithProviders(
-    <WeeklyFrequencyConfigurator
-      frequencyOption="weekly"
-      cronExpression="5 11 * * 1"
-      validationErrors={[]}
-      onCronExpressionChange={onChange}
-    />
+    <WeeklyFrequencyConfigurator cronExpression="50 11 * * 1" validationErrors={[]} onCronExpressionChange={onChange} />
   );
 
   expect(screen.getByText('akeneo.job_automation.scheduling.frequency.monday')).toBeInTheDocument();
 
-  userEvent.click(screen.getByTitle('pim_common.open'));
+  const [openWeekDayButton] = screen.getAllByTitle('pim_common.open');
+
+  userEvent.click(openWeekDayButton);
   userEvent.click(screen.getByText('akeneo.job_automation.scheduling.frequency.thursday'));
 
-  expect(onChange).toHaveBeenCalledWith('5 11 * * 4');
+  expect(onChange).toHaveBeenCalledWith('50 11 * * 4');
 
-  userEvent.click(screen.getByTitle('pim_common.open'));
+  userEvent.click(openWeekDayButton);
   userEvent.click(screen.getByText('akeneo.job_automation.scheduling.frequency.saturday'));
 
-  expect(onChange).toHaveBeenCalledWith('5 11 * * 6');
+  expect(onChange).toHaveBeenCalledWith('50 11 * * 6');
 });
 
 test('it displays a time input that can update a weekly cron expression', () => {
   const onChange = jest.fn();
 
   renderWithProviders(
-    <WeeklyFrequencyConfigurator
-      frequencyOption="weekly"
-      cronExpression="5 11 * * 0"
-      validationErrors={[]}
-      onCronExpressionChange={onChange}
-    />
+    <WeeklyFrequencyConfigurator cronExpression="50 11 * * 0" validationErrors={[]} onCronExpressionChange={onChange} />
   );
 
-  const input = screen.getByDisplayValue('11:05');
+  const [, , openMinutesButton] = screen.getAllByTitle('pim_common.open');
 
-  userEvent.clear(input);
-  userEvent.type(input, '7:45');
+  userEvent.click(openMinutesButton);
+  userEvent.click(screen.getByText('00'));
 
-  expect(onChange).toHaveBeenCalledWith('45 7 * * 0');
+  expect(onChange).toHaveBeenCalledWith('0 11 * * 0');
 });
