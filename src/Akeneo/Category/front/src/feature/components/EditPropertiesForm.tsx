@@ -1,19 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import {useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {Category} from '../models';
-import {Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
+import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
 import {EditCategoryForm} from '../hooks';
-
-const FormContainer = styled.div`
-  & > * {
-    margin: 0 10px 20px 0;
-  }
-`;
-
-const ErrorMessage = styled(Helper)`
-  margin: 20px 0 0 0;
-`;
+import {ErrorMessage, FormContainer} from './Style';
 
 type Props = {
   category: Category;

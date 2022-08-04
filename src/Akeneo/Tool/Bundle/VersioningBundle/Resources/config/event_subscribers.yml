@@ -55,3 +55,11 @@ services:
             - '@doctrine.orm.default_entity_manager'
         tags:
             - { name: doctrine.event_subscriber }
+
+    Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\RefreshVersioningSubscriber:
+        arguments:
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+

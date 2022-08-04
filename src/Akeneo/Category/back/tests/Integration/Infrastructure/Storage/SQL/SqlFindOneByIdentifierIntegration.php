@@ -6,6 +6,7 @@ namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\SQL;
 
 use Akeneo\Category\Application\Query\FindCategoryByIdentifier;
 use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 /**
@@ -16,13 +17,19 @@ class SqlFindOneByIdentifierIntegration extends TestCase
 {
     public function testFindOneByIdentifier(): void
     {
-        $category = $this->get(FindCategoryByIdentifier::class)(1);
+        $categoryCreated = $this->createCategory([
+            'code' => 'socks',
+            'labels' => ['fr_FR' => 'chaussettes']
+            ]
+        );
+
+        $category = $this->get(FindCategoryByIdentifier::class)($categoryCreated->getId());
         $this->assertInstanceOf(Category::class, $category);
-        $this->assertSame('master', (string)$category->getCode());
-        $this->assertSame('Master catalog', $category->getLabelCollection()->getLabel('en_US'));
+        $this->assertSame('socks', (string)$category->getCode());
+        $this->assertSame('chaussettes', $category->getLabelCollection()->getLabel('fr_FR'));
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }
