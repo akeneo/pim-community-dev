@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber;
+namespace Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler;
