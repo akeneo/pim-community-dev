@@ -6,7 +6,7 @@ config:
           module: supplier-portal-retailer/controller/supplier-management
         supplier_portal_retailer_supplier_edit:
           module: supplier-portal-retailer/controller/supplier-management
-        supplier_portal_supplier_files_list:
+        supplier_portal_retailer_supplier_files_list:
           module: supplier-portal-retailer/controller/product-file-dropping
   paths:
     supplier-portal-retailer/controller/supplier-management: akeneosupplierportalretailer/js/controller/supplier-management.tsx

@@ -1,11 +1,11 @@
-supplier_portal_supplier_files_list:
+supplier_portal_retailer_supplier_files_list:
     path: /
     defaults:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\SupplierFilesList
         _feature: supplier_portal_supplier_file_dropping
     methods: [GET]
 
-supplier_portal_supplier_download_file:
+supplier_portal_retailer_download_file:
     path: /download-file/{identifier}
     defaults:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\DownloadProductFile

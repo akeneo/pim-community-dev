@@ -45,5 +45,5 @@ extensions:
         position: 20
         config:
             title: supplier_portal.product_file_dropping.supplier_files.menu_item
-            to: supplier_portal_supplier_files_list
+            to: supplier_portal_retailer_supplier_files_list
         feature: supplier_portal_supplier_file_dropping

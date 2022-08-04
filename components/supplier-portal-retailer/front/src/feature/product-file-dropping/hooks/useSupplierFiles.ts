@@ -12,7 +12,7 @@ export type SupplierFileRow = {
 const useSupplierFiles = (page: number): [SupplierFileRow[], number] => {
     const [totalNumberOfSupplierFiles, setTotalNumberOfSupplierFiles] = useState<number>(page);
     const [supplierFiles, setSupplierFiles] = useState<SupplierFileRow[]>([]);
-    const getSupplierFilesRoute = useRoute('supplier_portal_supplier_files_list');
+    const getSupplierFilesRoute = useRoute('supplier_portal_retailer_supplier_files_list');
     const notify = useNotify();
     const translate = useTranslate();
 

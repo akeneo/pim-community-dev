@@ -67,6 +67,7 @@ $rules = [
 
             // PIM coupling
             'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
+            'Akeneo\Tool\Component\FileStorage\StreamedFileResponse',
 
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
