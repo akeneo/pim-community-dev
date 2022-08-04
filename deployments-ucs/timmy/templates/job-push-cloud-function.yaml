@@ -7,7 +7,7 @@ metadata:
     component: "push-cloud-function"
     app.kubernetes.io/component: "push-cloud-function"
   annotations:
-    checksum/config: {{ include (print $.Template.BasePath "/cloudfunction-sources-configmap.yaml") . | sha256sum }}
+    checksum/config: {{ include (print $.Template.BasePath "/configmap-sources.yaml") . | sha256sum }}
 spec:
   template:
     metadata:
@@ -41,21 +41,21 @@ spec:
             - name: SOURCE_CODE_ZIP
               value: {{ .Values.cloudFunction.sourceCodeZip }}
           volumeMounts:
-            - name: cloud-function-scripts-configmap
+            - name: cloud-function-scripts
               mountPath: /scripts-dir
-            - name: cloud-function-sources-configmap
+            - name: cloud-function-sources
               mountPath: /functions/portal/package.json
               subPath: package.json
-            - name: cloud-function-sources-configmap
+            - name: cloud-function-sources
               mountPath: /functions/portal/index.js
               subPath: index.js
       volumes:
-        - name: cloud-function-scripts-configmap
+        - name: cloud-function-scripts
           configMap:
-            name: cloud-function-scripts-configmap
-        - name: cloud-function-sources-configmap
+            name: cloud-function-scripts
+        - name: cloud-function-sources
           configMap:
-            name: cloud-function-sources-configmap
+            name: cloud-function-sources
             items:
               - key: package.json
                 path: package.json

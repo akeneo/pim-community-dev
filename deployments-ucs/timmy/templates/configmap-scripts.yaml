@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cloud-function-scripts-configmap
+  name: cloud-function-scripts
   labels:
     {{- include "timmy.labels" . | nindent 4 }}
   annotations:
