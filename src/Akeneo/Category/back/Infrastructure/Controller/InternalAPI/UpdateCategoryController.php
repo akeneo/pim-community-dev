@@ -45,7 +45,7 @@ class UpdateCategoryController
         if (($this->findCategoryByIdentifier)($id) === null) {
             throw new NotFoundHttpException('Category not found');
         }
-        $data = [];
+        $data = $request->toArray();
         $formattedData = $this->internalApiToStandardConverter->convert($data);
         $filteredData = $this->ACLFilter->filterCollection($formattedData, 'category', []);
         $userIntents = $this->standardFormatToUserIntents->convert($filteredData);
