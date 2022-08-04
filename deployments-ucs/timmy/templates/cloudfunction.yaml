@@ -6,7 +6,7 @@ metadata:
     {{- include "timmy.labels" . | nindent 4 }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-    argocd.argoproj.io/sync-options: Replace=true
+    argocd.argoproj.io/sync-options: "Replace=true"
 spec:
   forProvider:
     availableMemoryMb: {{ .Values.cloudFunction.availableMemoryMb }}
@@ -34,7 +34,7 @@ metadata:
     {{- include "timmy.labels" . | nindent 4 }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-    argocd.argoproj.io/sync-options: Replace=true
+    argocd.argoproj.io/sync-options: "Replace=true"
 spec:
   forProvider:
     cloudFunction: {{ .Values.cloudFunction.name }}
