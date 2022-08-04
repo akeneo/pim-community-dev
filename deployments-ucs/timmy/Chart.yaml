@@ -1,6 +1,6 @@
 apiVersion: v2
 name: timmy
-description: A Helm chart for Kubernetes
+description: Helm chart for Timmy (Tenant Information Manager)
 
 # A chart can be either an 'application' or a 'library' chart.
 #
