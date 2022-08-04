@@ -3,4 +3,4 @@ pim_category_rest_update:
   defaults:
     _controller: Akeneo\Category\back\Infrastructure\Controller\InternalAPI\UpdateCategoryController
     _feature: enriched_category
-  methods: [GET]
+  methods: [POST]

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Domain\UserIntent\Factory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

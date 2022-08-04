@@ -20,7 +20,7 @@ class LabelUserIntentFactory implements UserIntentFactory
 
     public function create(string $fieldName, mixed $data): array
     {
-        if (null === $data) {
+        if (false === \is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($fieldName, static::class, $data);
         }
 
