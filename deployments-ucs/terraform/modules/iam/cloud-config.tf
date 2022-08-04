@@ -72,4 +72,3 @@ resource "google_project_iam_member" "cloudconfig_workload_identity" {
   role    = "roles/iam.workloadIdentityUser"
   member  = "serviceAccount:${var.project_id}.svc.id.goog[cnrm-system/cnrm-controller-manager]"
 }
-

@@ -42,3 +42,18 @@ resource "google_service_account_iam_binding" "timmy_portal_sa_usage" {
     "serviceAccount:ucs-crossplane-test-account@${var.project_id}.iam.gserviceaccount.com" ## To be removed
   ]
 }
+
+
+##### Timmy Deployment
+resource "google_service_account" "timmy_depl_sa" {
+  project      = var.project_id
+  account_id   = "timmy-deployment"
+  display_name = "Timmy deployment SA"
+}
+
+
+resource "google_project_iam_member" "timmy_depl_workload_identity" {
+  project = var.project_id
+  role    = "roles/iam.workloadIdentityUser"
+  member  = "serviceAccount:${var.project_id}.svc.id.goog[${var.timmy_k8s_ns}/${var.timmy_k8s_sa}]"
+}
