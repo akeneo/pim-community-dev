@@ -78,7 +78,7 @@ final class SupplierContext implements Context
     public function iCreateASupplierWithACodeAndALabel(string $code, ?string $label = null): void
     {
         try {
-            ($this->createSupplierHandler)(new CreateSupplier(Uuid::uuid4()->toString(), $code, $label ?: $code, []));
+            ($this->createSupplierHandler)(new CreateSupplier($code, $label ?: $code, []));
         } catch (SupplierAlreadyExistsException $e) {
             $this->lastException = $e;
         }

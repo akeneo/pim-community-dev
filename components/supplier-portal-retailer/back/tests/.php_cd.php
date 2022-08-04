@@ -45,6 +45,7 @@ $rules = [
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
+            'Ramsey\Uuid\Uuid',
         ],
     )->in('Akeneo\SupplierPortal\Retailer\Application'),
 
@@ -83,7 +84,6 @@ $rules = [
             'Box\Spout\Writer\Exception\WriterNotOpenedException',
             'Doctrine\DBAL\Connection',
             'Psr\Log\LoggerInterface',
-            'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
     )->in('Akeneo\SupplierPortal\Retailer\Infrastructure'),

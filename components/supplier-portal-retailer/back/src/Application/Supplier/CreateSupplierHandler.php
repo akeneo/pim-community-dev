@@ -12,6 +12,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class CreateSupplierHandler
@@ -32,7 +33,6 @@ final class CreateSupplierHandler
                 [
                     'data' => [
                         'new_values' => [
-                            'identifier' => $createSupplier->identifier,
                             'label' => $createSupplier->label,
                             'contributor_emails' => $createSupplier->contributorEmails,
                         ],
@@ -42,9 +42,10 @@ final class CreateSupplierHandler
             throw new SupplierAlreadyExistsException($createSupplier->code);
         }
 
+        $supplierIdentifier = Uuid::uuid4()->toString();
         $this->supplierRepository->save(
             Supplier::create(
-                $createSupplier->identifier,
+                $supplierIdentifier,
                 $createSupplier->code,
                 $createSupplier->label,
                 $createSupplier->contributorEmails,
@@ -53,7 +54,7 @@ final class CreateSupplierHandler
 
         foreach ($createSupplier->contributorEmails as $contributorEmail) {
             $this->eventDispatcher->dispatch(new ContributorAdded(
-                Identifier::fromString($createSupplier->identifier),
+                Identifier::fromString($supplierIdentifier),
                 $contributorEmail,
             ));
         }
@@ -62,7 +63,7 @@ final class CreateSupplierHandler
             sprintf('Supplier "%s" created.', $createSupplier->code),
             [
                 'data' => [
-                    'identifier' => $createSupplier->identifier,
+                    'identifier' => $supplierIdentifier,
                     'code' => $createSupplier->code,
                     'label' => $createSupplier->label,
                     'contributor_emails' => $createSupplier->contributorEmails,

@@ -53,6 +53,7 @@ $rules = [
             'Symfony\Component\Validator\Constraint',
             'Symfony\Contracts\EventDispatcher\EventDispatcherInterface',
             'Symfony\Component\HttpFoundation\File\UploadedFile',
+            'Ramsey\Uuid\Uuid',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Application'),
 

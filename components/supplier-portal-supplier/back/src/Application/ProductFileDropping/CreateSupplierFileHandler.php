@@ -16,6 +16,7 @@ use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -46,11 +47,13 @@ final class CreateSupplierFileHandler
         $storedProductFilePath = ($this->storeProductsFile)(
             Code::fromString($supplier->code),
             Filename::fromString($createSupplierFile->originalFilename),
-            Identifier::generate(),
+            Identifier::fromString(Uuid::uuid4()->toString()),
             $createSupplierFile->uploadedFile->getPathname(),
         );
 
+        $supplierFileIdentifier = Identifier::fromString(Uuid::uuid4()->toString());
         $supplierFile = SupplierFile::create(
+            (string) $supplierFileIdentifier,
             $createSupplierFile->originalFilename,
             $storedProductFilePath,
             $createSupplierFile->uploadedByContributor,
@@ -65,6 +68,7 @@ final class CreateSupplierFileHandler
             sprintf('Supplier file "%s" created.', $createSupplierFile->originalFilename),
             [
                 'data' => [
+                    'identifier' => (string) $supplierFileIdentifier,
                     'filename' => $createSupplierFile->originalFilename,
                     'path' => $storedProductFilePath,
                     'uploaded_by_contributor' => $createSupplierFile->uploadedByContributor,
