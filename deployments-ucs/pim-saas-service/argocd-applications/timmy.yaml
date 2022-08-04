@@ -5,7 +5,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:akeneo/pim-enterprise-dev.git
+    repoURL: https://github.com/akeneo/pim-enterprise-dev
     targetRevision: master
     path: deployments-ucs/timmy
   destination:
