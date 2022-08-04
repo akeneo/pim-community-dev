@@ -1,0 +1,5 @@
+services:
+  Akeneo\Category\Application\Converter\ConverterInterface:
+    class: Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStdStub
+
+  Akeneo\Category\Application\Converter\StandardFormatToUserIntentsStub: ~

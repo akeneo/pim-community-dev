@@ -302,7 +302,6 @@ class CategoryTreeController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
-
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
             } else {
@@ -319,7 +318,6 @@ class CategoryTreeController extends AbstractController
         $normalizedCategory = array_merge($normalizedCategory, [
             'root' => $rootCategory === null ? null : $this->normalizer->normalize($rootCategory, 'internal_api')
         ]);
-
         $formData = $this->categoryFormViewNormalizer->normalizeFormView($form->createView());
 
         return new JsonResponse(['category' => $normalizedCategory, 'form' => $formData], $responseStatus);
