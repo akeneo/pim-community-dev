@@ -32,7 +32,6 @@ const Page: FC = () => {
     configuration,
     setDefaultCommunitySettings,
     setDefaultEnterpriseSettings,
-    setDefaultGrowthSettings,
     updateConfiguration,
   } = useConfiguration();
 
@@ -78,7 +77,6 @@ const Page: FC = () => {
           <Content>
             <InlineContainer>
               <Button onClick={setDefaultCommunitySettings}>Community</Button>
-              <Button onClick={setDefaultGrowthSettings}>Growth</Button>
               <Button onClick={setDefaultEnterpriseSettings}>Enterprise</Button>
             </InlineContainer>
           </Content>
