@@ -59,7 +59,7 @@ const FakePIM = ({children}: Props) => {
       // @ts-ignore
       isEnabled: (feature: string) => configuration.features[feature] ?? false,
     } as typeof deps.featureFlags;
-  }, [deps.router, deps.security, deps.featureFlags]);
+  }, [deps, configuration]);
 
   return (
     <Container>
