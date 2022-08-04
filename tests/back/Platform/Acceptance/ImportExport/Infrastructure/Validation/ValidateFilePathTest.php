@@ -11,7 +11,7 @@ class ValidateFilePathTest extends AbstractValidationTest
     /**
      * @dataProvider validFilePath
      */
-    public function test_it_does_not_build_violations_when_file_path_are_valid(string $value): void
+    public function test_it_does_not_build_violations_when_file_path_are_valid(mixed $value): void
     {
         $violations = $this->getValidator()->validate($value, new FilePath(['xlsx', 'xls']));
 
@@ -37,6 +37,7 @@ class ValidateFilePathTest extends AbstractValidationTest
             'valid file path' => [
                 '/tmp/file.xlsx',
             ],
+            'a null file path' => [null],
         ];
     }
 
