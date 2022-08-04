@@ -2,6 +2,7 @@
   "name": "sample-http",
   "version": "0.0.1",
   "dependencies": {
+    "@google-cloud/secret-manager": "^4.0.0",
     "axios": "^0.27.2",
     "query-string": "^7.1.1"
   }
