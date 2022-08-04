@@ -7,7 +7,6 @@ namespace Akeneo\Category\Application\Applier;
 use Akeneo\Category\Api\Command\UserIntents\SetLabel;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Model\Category;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -17,7 +16,10 @@ final class SetLabelApplier implements UserIntentApplier
 {
     public function apply(UserIntent $userIntent, Category $category): void
     {
-        Assert::isInstanceOf($userIntent, SetLabel::class);
+        if (!$userIntent instanceof SetLabel) {
+            throw new \InvalidArgumentException('Not expected class');
+        }
+
         $category->setLabel($userIntent->localeCode(), $userIntent->label());
     }
 
