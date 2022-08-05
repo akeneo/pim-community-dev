@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetComm
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory as NamingConventionEditAssetCommandFactory;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exception\NamingConventionException;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistError;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
@@ -33,6 +34,7 @@ use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,6 +68,7 @@ class CreateOrUpdateAssetsAction
         private int $maximumAssetsPerRequest,
         private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
         private SecurityFacadeInterface $securityFacade,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -118,11 +121,6 @@ class CreateOrUpdateAssetsAction
                         'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY
                     ];
                     $responseData += $this->violationNormalizer->normalize($exception);
-                } catch (UniqueConstraintViolationException $exception) {
-                    $responseData = [
-                        'code' => $normalizedAsset['code'],
-                        'status_code' => Response::HTTP_CONFLICT,
-                    ];
                 }
 
                 $responsesData[] = $responseData;
@@ -165,10 +163,10 @@ class CreateOrUpdateAssetsAction
         }
 
         $assetCode = AssetCode::fromString($normalizedAsset['code']);
-        $shouldBeCreated = !$this->assetExists->withAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
         $createAssetCommand = null;
+        $responseStatusCode = Response::HTTP_NO_CONTENT;
 
-        if ($shouldBeCreated) {
+        if (!$this->assetExists->withAssetFamilyAndCode($assetFamilyIdentifier, $assetCode)) {
             $createAssetCommand = new CreateAssetCommand(
                 $assetFamilyIdentifier->normalize(),
                 $normalizedAsset['code'],
@@ -188,27 +186,34 @@ class CreateOrUpdateAssetsAction
             throw new ViolationHttpException($violations, 'The asset has data that does not comply with the business rules.');
         }
 
-        if ($shouldBeCreated) {
+        if ($createAssetCommand !== null) {
             $namingConventionEditCommand = $this->createValidatedNamingConventionCommandIfNeeded(
                 $assetFamilyIdentifier,
                 $normalizedAsset
             );
 
-            ($this->createAssetHandler)($createAssetCommand);
+            try {
+                ($this->createAssetHandler)($createAssetCommand);
+                $responseStatusCode = Response::HTTP_CREATED;
+            } catch (AssetAlreadyExistError) {
+                $this->logger->notice('Concurrent call have been detected', [
+                    'asset_family_identifier' => $assetFamilyIdentifier,
+                    'asset_code' => $assetCode
+                ]);
+            }
+
             if (null !== $namingConventionEditCommand) {
                 $editAssetCommand->editAssetValueCommands = array_merge($editAssetCommand->editAssetValueCommands, $namingConventionEditCommand->editAssetValueCommands);
             }
 
-            ($this->editAssetHandler)($editAssetCommand);
-
             $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
-        } else {
-            ($this->editAssetHandler)($editAssetCommand);
         }
+
+        ($this->editAssetHandler)($editAssetCommand);
 
         return [
             'code' => (string) $assetCode,
-            'status_code' => $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT,
+            'status_code' => $responseStatusCode,
         ];
     }
 
