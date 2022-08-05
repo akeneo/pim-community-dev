@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\FileKey;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\ImportStructure;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidFileStructure;
@@ -42,6 +43,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
         $constraintFields['file_key'] = new FileKey();
         $constraintFields['file_structure'] = new IsValidFileStructure();
         $constraintFields['error_action'] = new Choice(['skip_value', 'skip_product']);
+        $constraintFields['storage'] = new Storage(['xlsx']);
 
         return new Collection(['fields' => $constraintFields]);
     }

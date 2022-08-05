@@ -54,6 +54,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand',
             'Akeneo\Pim\Enrichment\Product\API\Event',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
+            'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage',
             'Akeneo\Tool',
             'Akeneo\UserManagement\Component\Model\UserInterface',
             'Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException',
