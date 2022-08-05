@@ -65,6 +65,7 @@
 - PIM-10561: Fix associationUserIntentFactory to cast int to string
 - PIM-10557: Fix notifications not displayed for obsolete route parameters
 - PIM-10530: Fix case issue when querying products with attribute options
+- PIM-10572: Fix product publishing when associated to a published product with a 2-way association
 
 ## Improvements
 
