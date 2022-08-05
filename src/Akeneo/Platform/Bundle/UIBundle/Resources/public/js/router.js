@@ -141,6 +141,9 @@ define([
         case 401:
           window.location = this.generate('pim_user_security_login');
           break;
+        case 403:
+          return this.displayErrorPage(__('error.forbidden'), xhr.status);
+          break;
         case 200:
           break;
         default:
