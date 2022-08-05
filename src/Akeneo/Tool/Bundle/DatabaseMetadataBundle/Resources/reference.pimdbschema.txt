@@ -440,8 +440,8 @@ pim_catalog_attribute | decimals_allowed | YES | tinyint(1) |
 pim_catalog_attribute | negative_allowed | YES | tinyint(1) |
 pim_catalog_attribute | date_min | YES | datetime |
 pim_catalog_attribute | date_max | YES | datetime |
-pim_catalog_attribute | metric_family | YES | varchar(30) |
-pim_catalog_attribute | default_metric_unit | YES | varchar(30) |
+pim_catalog_attribute | metric_family | YES | varchar(100) |
+pim_catalog_attribute | default_metric_unit | YES | varchar(100) |
 pim_catalog_attribute | max_file_size | YES | decimal(6,2) |
 pim_catalog_attribute | allowed_extensions | YES | varchar(255) |
 pim_catalog_attribute | minimumInputLength | YES | smallint |
