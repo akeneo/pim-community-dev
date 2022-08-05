@@ -74,6 +74,10 @@ steps:
         kubectl apply -f k8s/crossplane/templates/provider-gcp.yaml
         for i in 1 2 3 4 5; do kubectl apply -f k8s/crossplane/templates/provider-config-jet-gcp.yaml && break || sleep 30; done
         for i in 1 2 3 4 5; do kubectl apply -f k8s/crossplane/templates/provider-config-gcp.yaml && break || sleep 30; done
+
+        ## Cloudconfig
+        kubectl delete ConfigConnector/configconnector.core.cnrm.cloud.google.com
+        helm upgrade --debug --atomic --cleanup-on-fail --history-max 5 -i --wait configconnector k8s/cloudconfig --set gcpProjectId=${PROJECT_ID}
     secretEnv: ['ARGOCD_TOKEN', 'DATADOG_API_KEY', 'CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64']
 options:
   logging: CLOUD_LOGGING_ONLY
