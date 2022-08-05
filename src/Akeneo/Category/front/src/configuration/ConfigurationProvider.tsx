@@ -36,7 +36,6 @@ type WriteConfiguration = {
 type ConfigurationState = {
   configuration: Configuration;
   setDefaultCommunitySettings: () => void;
-  setDefaultGrowthSettings: () => void;
   setDefaultEnterpriseSettings: () => void;
   updateConfiguration: (config: WriteConfiguration) => void;
 };
@@ -65,24 +64,6 @@ const ConfigurationProvider: FC = ({children}) => {
   const [configuration, setConfiguration] = useStorageState(DEFAULT_CONFIGURATION, CONFIGURATION_STORAGE_KEY);
 
   const setDefaultCommunitySettings = useCallback(() => {
-    setConfiguration({
-      features: {
-        permission: false,
-        enriched_category: false,
-      },
-      acls: {
-        pim_enrich_product_categories_view: true,
-        pim_enrich_product_category_create: true,
-        pim_enrich_product_category_edit: true,
-        pim_enrich_product_category_history: true,
-        pim_enrich_product_category_list: true,
-        pim_enrich_product_category_remove: true,
-        pimee_enrich_category_edit_permissions: false,
-      },
-    });
-  }, [setConfiguration]);
-
-  const setDefaultGrowthSettings = useCallback(() => {
     setConfiguration({
       features: {
         permission: false,
@@ -141,7 +122,6 @@ const ConfigurationProvider: FC = ({children}) => {
     configuration,
     updateConfiguration,
     setDefaultCommunitySettings,
-    setDefaultGrowthSettings,
     setDefaultEnterpriseSettings,
   };
 
