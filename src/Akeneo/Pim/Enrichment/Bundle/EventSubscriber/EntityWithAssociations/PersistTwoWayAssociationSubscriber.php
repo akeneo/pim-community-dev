@@ -41,6 +41,11 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
             return;
         }
 
+        // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
+        if ('Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct' === \get_class($entity)) {
+            return;
+        }
+
         $em = $this->registry->getManager();
 
         /** @var AssociationInterface $association */
