@@ -110,8 +110,10 @@ services:
             - '@oro_security.security_facade'
             - '@validator'
             - '@database_connection'
-            #- '@Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\LegacyProductUpdater'
-            - '@Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ServiceAPIProductUpdater'
+            - '@pim_user.context.user'
+            - '@pim_enrich.product.message_bus'
+            - '@pim_enrich.product.query_message_bus'
+            - '@Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ExceptionFormatter'
 
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
         public: true
@@ -424,22 +426,7 @@ services:
             - '@pim_enrich.product.message_bus'
             - '@pim_enrich.product.query_message_bus'
 
-    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\LegacyProductUpdater:
-        arguments:
-            - '@pim_catalog.validator.product'
-            - '@pim_catalog.builder.product'
-            - '@pim_catalog.updater.product'
-            - '@pim_catalog.saver.product'
-            - '@pim_catalog.builder.product'
-            - '@pim_api.filter.product_attribute_filter'
-            - '@event_dispatcher'
-            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
-            - '@database_connection'
-
-    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ServiceAPIProductUpdater:
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ExceptionFormatter:
         arguments:
             - '@pim_api.repository.attribute'
-            - '@pim_user.context.user'
-            - '@pim_enrich.product.message_bus'
-            - '@pim_enrich.product.query_message_bus'
             - '@database_connection'
