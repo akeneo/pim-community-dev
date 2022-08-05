@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistError;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
@@ -35,7 +36,6 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherMock;
-use Doctrine\DBAL\Exception as DBALException;
 use PHPUnit\Framework\Assert;
 
 class SqlAssetRepositoryTest extends SqlIntegrationTestCase
@@ -143,7 +143,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
             ])
         );
 
-        $this->expectException(DBALException::class);
+        $this->expectException(AssetAlreadyExistError::class);
         $this->repository->create($asset);
         $this->eventDispatcherMock->assertNoEventDispatched();
     }
@@ -283,7 +283,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         );
         $this->repository->create($asset);
 
-        $this->expectException(DBALException::class);
+        $this->expectException(AssetAlreadyExistError::class);
         $this->repository->create($asset);
     }
 

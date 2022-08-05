@@ -33,7 +33,6 @@ use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregato
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +41,6 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -57,7 +55,6 @@ class CreateOrUpdateAssetsAction
         private EditAssetCommandFactory $editAssetCommandFactory,
         private EditAssetHandler $editAssetHandler,
         private CreateAssetHandler $createAssetHandler,
-        private Router $router,
         private ValidatorInterface $assetDataValidator,
         private ViolationNormalizer $violationNormalizer,
         private AssetValidator $assetStructureValidator,
@@ -194,6 +191,11 @@ class CreateOrUpdateAssetsAction
 
             try {
                 ($this->createAssetHandler)($createAssetCommand);
+                if (null !== $namingConventionEditCommand) {
+                    $editAssetCommand->editAssetValueCommands = array_merge($editAssetCommand->editAssetValueCommands, $namingConventionEditCommand->editAssetValueCommands);
+                }
+
+                $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
                 $responseStatusCode = Response::HTTP_CREATED;
             } catch (AssetAlreadyExistError) {
                 $this->logger->notice('Concurrent call have been detected', [
@@ -201,12 +203,6 @@ class CreateOrUpdateAssetsAction
                     'asset_code' => $assetCode
                 ]);
             }
-
-            if (null !== $namingConventionEditCommand) {
-                $editAssetCommand->editAssetValueCommands = array_merge($editAssetCommand->editAssetValueCommands, $namingConventionEditCommand->editAssetValueCommands);
-            }
-
-            $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
         }
 
         ($this->editAssetHandler)($editAssetCommand);
