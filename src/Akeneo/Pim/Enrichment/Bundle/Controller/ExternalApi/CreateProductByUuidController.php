@@ -6,12 +6,15 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\DBAL\Connection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Ramsey\Uuid\Uuid;
@@ -21,6 +24,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -40,7 +45,10 @@ class CreateProductByUuidController
         private SecurityFacade $security,
         private ValidatorInterface $validator,
         private Connection $connection,
-        private ProductUpdater $productUpdater
+        private UserContext $userContext,
+        private MessageBusInterface $commandMessageBus,
+        private MessageBusInterface $queryMessageBus,
+        private ExceptionFormatter $exceptionFormatter,
     ) {
     }
 
@@ -76,10 +84,35 @@ class CreateProductByUuidController
         }
 
         $data = $this->replaceUuidsByIdentifiers($data);
-        $this->productUpdater->update($data);
+        try {
+            $this->updateProduct($data);
+        } catch (\Throwable $e) {
+            $this->exceptionFormatter->format($e);
+        }
 
         return $this->getResponse($this->getUuidFromIdentifier($this->getProductIdentifier($data)), Response::HTTP_CREATED);
     }
+
+    private function updateProduct(array $data): void
+    {
+        $envelope = $this->queryMessageBus->dispatch(new GetUserIntentsFromStandardFormat($data));
+        $handledStamp = $envelope->last(HandledStamp::class);
+        $userIntents = $handledStamp->getResult();
+
+        $userId = $this->userContext->getUser()?->getId();
+        $command = UpsertProductCommand::createFromCollection(
+            $userId,
+            $this->getProductIdentifier($data),
+            $userIntents
+        );
+        $this->commandMessageBus->dispatch($command);
+    }
+
+    private function getProductIdentifier(array $data): ?string
+    {
+        return $data['values'][$this->attributeRepository->getIdentifierCode()][0]['data'] ?? null;
+    }
+
     private function getDecodedContent($content): array
     {
         $decodedContent = json_decode($content, true);
@@ -102,11 +135,6 @@ class CreateProductByUuidController
         $response->headers->set('Location', $route);
 
         return $response;
-    }
-
-    private function getProductIdentifier(array $data): ?string
-    {
-        return $data['values'][$this->attributeRepository->getIdentifierCode()][0]['data'] ?? null;
     }
 
     private function getUuidFromIdentifier(string $productIdentifier): ?UuidInterface
@@ -183,7 +211,10 @@ class CreateProductByUuidController
         if (isset($data['quantified_associations'])) {
             foreach ($data['quantified_associations'] as $associationCode => $associations) {
                 if (isset($associations['products'])) {
-                    $map = $this->getProductIdentifierFromUuids(\array_map(fn (array $association): string => $association['uuid'], $associations['products']), 'quantified_associations');
+                    $map = $this->getProductIdentifierFromUuids(
+                        \array_map(fn (array $association): string => $association['uuid'], $associations['products']),
+                        'quantified_associations'
+                    );
                     $data['quantified_associations'][$associationCode]['products'] = \array_map(function ($association) use ($map) {
                         return ['quantity' => $association['quantity'], 'identifier' => $map[$association['uuid']]];
                     }, $associations['products']);
