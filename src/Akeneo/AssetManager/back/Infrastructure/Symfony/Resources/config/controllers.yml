@@ -135,7 +135,6 @@ services:
         arguments:
             - '@akeneo_assetmanager.application.asset.create_asset_handler'
             - '@akeneo_assetmanager.application.asset.edit_asset_handler'
-            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@security.token_storage'
             - '@asset_manager_serializer'
@@ -146,6 +145,7 @@ services:
             - '@akeneo_assetmanager.application.asset.link_assets.link_asset_handler'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
             - '@akeneo_assetmanager.application.asset.subscribers.compute_asset_transformation_event_aggregator'
+            - '@Akeneo\AssetManager\Infrastructure\Normalizer\ErrorFacingNormalizer'
 
     akeneo_assetmanager.infrastructure.action.asset.index:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\IndexAction
@@ -327,6 +327,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
             - '@akeneo_assetmanager.application.asset.subscribers.compute_asset_transformation_event_aggregator'
             - '@oro_security.security_facade'
+            - '@logger'
 
     akeneo_assetmanager.infrastructure.connector.action.asset.delete:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\DeleteAssetAction

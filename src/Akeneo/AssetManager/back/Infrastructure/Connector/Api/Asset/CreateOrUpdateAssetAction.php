@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetComm
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory as NamingConventionEditAssetCommandFactory;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exception\NamingConventionException;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistError;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
@@ -30,6 +31,7 @@ use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,6 +63,7 @@ class CreateOrUpdateAssetAction
         private EventAggregatorInterface $indexAssetEventAggregator,
         private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
         private SecurityFacadeInterface $securityFacade,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -100,18 +103,23 @@ class CreateOrUpdateAssetAction
         $responseStatusCode = Response::HTTP_NO_CONTENT;
 
         if (null !== $createAssetCommand) {
-            $responseStatusCode = Response::HTTP_CREATED;
-            ($this->createAssetHandler)($createAssetCommand);
-            if (null !== $namingConventionEditCommand) {
-                $editAssetCommand->editAssetValueCommands = array_merge($editAssetCommand->editAssetValueCommands, $namingConventionEditCommand->editAssetValueCommands);
+            try {
+                ($this->createAssetHandler)($createAssetCommand);
+                if (null !== $namingConventionEditCommand) {
+                    $editAssetCommand->editAssetValueCommands = array_merge($editAssetCommand->editAssetValueCommands, $namingConventionEditCommand->editAssetValueCommands);
+                }
+
+                $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
+                $responseStatusCode = Response::HTTP_CREATED;
+            } catch (AssetAlreadyExistError) {
+                $this->logger->notice('Concurrent call have been detected', [
+                    'asset_family_identifier' => $assetFamilyIdentifier,
+                    'asset_code' => $assetCode
+                ]);
             }
-
-            ($this->editAssetHandler)($editAssetCommand);
-
-            $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
-        } else {
-            ($this->editAssetHandler)($editAssetCommand);
         }
+
+        ($this->editAssetHandler)($editAssetCommand);
 
         $this->indexAssetEventAggregator->flushEvents();
         $this->computeTransformationEventAggregator->flushEvents();
