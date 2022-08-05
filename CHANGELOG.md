@@ -69,6 +69,7 @@
 - PIM-10569: Fix associate bulk action screen for quantified associations
 - PIM-10574: Fix link to product page in quantified association row
 - PIM-10548: Fix yaml reader does not display an error message when imported file does not contain the root level
+- PIM-10571: Fix infinite scroll of attribute group selector in family edit form
 
 ## Improvements
 

@@ -7,13 +7,7 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['jquery', 'underscore', 'oro/translator', 'pim/common/add-select', 'pim/fetcher-registry'], function (
-  $,
-  _,
-  __,
-  BaseAddSelect,
-  FetcherRegistry
-) {
+define(['jquery', 'underscore', 'oro/translator', 'pim/common/add-select'], function ($, _, __, BaseAddSelect) {
   return BaseAddSelect.extend({
     className: 'AknButtonList-item add-attribute-group',
 
@@ -22,7 +16,7 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/common/add-select', 'pim/
      *
      * @param {Object} loadedGroups
      */
-    filterAllowedAttributeGroups(loadedGroups) {
+    filterItems(loadedGroups) {
       const allowedGroups = {};
 
       Object.entries(loadedGroups).forEach(([group, data]) => {
@@ -41,17 +35,6 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/common/add-select', 'pim/
       });
 
       return allowedGroups;
-    },
-
-    /**
-     * Fetches filtered attribute groups for the select
-     *
-     * @param {Promise} searchParameters
-     */
-    fetchItems(searchParameters) {
-      return FetcherRegistry.getFetcher(this.mainFetcher)
-        .search(searchParameters)
-        .then(loadedGroups => this.filterAllowedAttributeGroups(loadedGroups));
     },
   });
 });
