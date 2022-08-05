@@ -2,7 +2,7 @@ import React from 'react';
 import {useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {Category, EditCategoryForm} from '../models';
 import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
-import {ErrorMessage, FormContainer} from './Style';
+import {ErrorMessageLegacy, FormContainerLegacy} from './StyleLegacy';
 
 type Props = {
   category: Category;
@@ -19,12 +19,12 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
   }
 
   return (
-    <FormContainer>
+    <FormContainerLegacy>
       {formData.errors.map((errorMessage, key) => {
         return (
-          <ErrorMessage level="error" key={`error-${key}`}>
+          <ErrorMessageLegacy level="error" key={`error-${key}`}>
             {errorMessage}
-          </ErrorMessage>
+          </ErrorMessageLegacy>
         );
       })}
       <SectionTitle>
@@ -46,7 +46,7 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
           />
         </Field>
       ))}
-    </FormContainer>
+    </FormContainerLegacy>
   );
 };
 export {EditPropertiesForm};
