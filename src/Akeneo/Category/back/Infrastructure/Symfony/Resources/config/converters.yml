@@ -2,4 +2,7 @@ services:
   Akeneo\Category\Application\Converter\ConverterInterface:
     class: Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStdStub
 
-  Akeneo\Category\Application\Converter\StandardFormatToUserIntentsStub: ~
+  Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface:
+    class: Akeneo\Category\Application\Converter\StandardFormatToUserIntents
+    arguments:
+      - '@Akeneo\Category\Domain\UserIntent\UserIntentFactoryRegistry'

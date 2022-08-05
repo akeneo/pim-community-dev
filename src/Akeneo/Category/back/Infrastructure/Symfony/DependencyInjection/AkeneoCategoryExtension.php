@@ -41,5 +41,6 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('filters.yml');
         $loader->load('handlers.yml');
         $loader->load('appliers.yml');
+        $loader->load('factories.yml');
     }
 }

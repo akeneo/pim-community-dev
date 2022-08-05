@@ -34,6 +34,6 @@ services:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Application\Converter\ConverterInterface'
             - '@Akeneo\Category\Application\Filter\CategoryEditACLFilter'
-            - '@Akeneo\Category\Application\Converter\StandardFormatToUserIntentsStub'
+            - '@Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface'
             - '@Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter'
             - '@Akeneo\Category\Application\Query\FindCategoryByIdentifier'
