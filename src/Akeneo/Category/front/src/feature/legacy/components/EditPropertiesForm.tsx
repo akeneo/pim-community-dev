@@ -19,12 +19,12 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
   }
 
   return (
-    <FormContainer>
+    <FormContainerLegacy>
       {formData.errors.map((errorMessage, key) => {
         return (
-          <ErrorMessage level="error" key={`error-${key}`}>
+          <ErrorMessageLegacy level="error" key={`error-${key}`}>
             {errorMessage}
-          </ErrorMessage>
+          </ErrorMessageLegacy>
         );
       })}
       <SectionTitle>
@@ -46,7 +46,7 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
           />
         </Field>
       ))}
-    </FormContainer>
+    </FormContainerLegacy>
   );
 };
 export {EditPropertiesForm};

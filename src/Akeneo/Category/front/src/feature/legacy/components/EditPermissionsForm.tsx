@@ -18,8 +18,8 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
   }
 
   return (
-    <FormContainer>
-      <PermissionField label={translate('category.permissions.view.label')}>
+    <FormContainerLegacy>
+      <PermissionFieldLegacy label={translate('category.permissions.view.label')}>
         <MultiSelectInput
           readOnly={false}
           value={formData.permissions.view.value}
@@ -35,8 +35,8 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
             </MultiSelectInput.Option>
           ))}
         </MultiSelectInput>
-      </PermissionField>
-      <PermissionField label={translate('category.permissions.edit.label')}>
+      </PermissionFieldLegacy>
+      <PermissionFieldLegacy label={translate('category.permissions.edit.label')}>
         <MultiSelectInput
           value={formData.permissions.edit.value}
           name={formData.permissions.edit.fullName}
@@ -51,8 +51,8 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
             </MultiSelectInput.Option>
           ))}
         </MultiSelectInput>
-      </PermissionField>
-      <PermissionField label={translate('category.permissions.own.label')}>
+      </PermissionFieldLegacy>
+      <PermissionFieldLegacy label={translate('category.permissions.own.label')}>
         <MultiSelectInput
           value={formData.permissions.own.value}
           name={formData.permissions.own.fullName}
@@ -68,7 +68,7 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
           ))}
         </MultiSelectInput>
         <Helper level="info">{translate('category.permissions.own.help')}</Helper>
-      </PermissionField>
+      </PermissionFieldLegacy>
       <Field label={translate('category.permissions.apply_on_children.label')}>
         <BooleanInput
           clearable={false}
@@ -80,7 +80,7 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
         />
         <Helper level="info">{translate('category.permissions.apply_on_children.help')}</Helper>
       </Field>
-    </FormContainer>
+    </FormContainerLegacy>
   );
 };
 
