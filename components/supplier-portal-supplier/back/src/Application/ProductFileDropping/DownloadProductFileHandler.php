@@ -10,7 +10,6 @@ use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\DownloadStoredProd
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Read\Model\SupplierFileNameAndResourceFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Identifier;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Path;
 use Psr\Log\LoggerInterface;
 
 final class DownloadProductFileHandler
@@ -33,9 +32,7 @@ final class DownloadProductFileHandler
         }
 
         try {
-            $productFileStream = ($this->downloadStoredProductFile)(
-                Path::fromString($productFilePathAndFileName->path)
-            );
+            $productFileStream = ($this->downloadStoredProductFile)($productFilePathAndFileName->path);
         } catch (\Throwable $e) {
             $this->logger->error('Product file could not be downloaded.', [
                 'data' => [

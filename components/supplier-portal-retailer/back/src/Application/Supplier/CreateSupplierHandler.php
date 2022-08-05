@@ -9,7 +9,6 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
@@ -27,7 +26,7 @@ final class CreateSupplierHandler
 
     public function __invoke(CreateSupplier $createSupplier): void
     {
-        if ($this->supplierExists->fromCode(Code::fromString($createSupplier->code))) {
+        if ($this->supplierExists->fromCode($createSupplier->code)) {
             $this->logger->info(
                 sprintf('Attempt to create a supplier "%s" that does already exist.', $createSupplier->code),
                 [

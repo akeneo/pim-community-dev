@@ -6,7 +6,6 @@ namespace Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping;
 
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\DownloadStoredProductFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Path;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 
 final class DownloadStoredProductFileInGCSBucket implements DownloadStoredProductFile
@@ -16,7 +15,7 @@ final class DownloadStoredProductFileInGCSBucket implements DownloadStoredProduc
     }
 
     //@phpstan-ignore-next-line
-    public function __invoke(Path $path)
+    public function __invoke(string $path)
     {
         $fileSystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
 

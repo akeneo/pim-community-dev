@@ -9,7 +9,6 @@ use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +39,7 @@ final class CreateSupplierHandlerTest extends TestCase
             ['contributor1@example.com', 'contributor2@example.com'],
         ));
 
-        $supplier = $supplierRepository->findByCode(Code::fromString('supplier_code'));
+        $supplier = $supplierRepository->findByCode('supplier_code');
 
         static::assertSame('supplier_code', $supplier->code());
         static::assertSame('Supplier label', $supplier->label());
