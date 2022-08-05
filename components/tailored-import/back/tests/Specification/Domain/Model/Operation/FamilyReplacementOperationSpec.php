@@ -26,6 +26,7 @@ class FamilyReplacementOperationSpec extends ObjectBehavior
             [
                 'video_game' => ['videogames', 'video-games'],
                 33 => ['33export', 'beer'],
+                'board_game' => ['13'],
             ],
         );
     }
@@ -50,6 +51,7 @@ class FamilyReplacementOperationSpec extends ObjectBehavior
         $this->getMapping()->shouldReturn([
             'video_game' => ['videogames', 'video-games'],
             33 => ['33export', 'beer'],
+            'board_game' => ['13'],
         ]);
     }
 
@@ -61,6 +63,7 @@ class FamilyReplacementOperationSpec extends ObjectBehavior
             'mapping' => [
                 'video_game' => ['videogames', 'video-games'],
                 33 => ['33export', 'beer'],
+                'board_game' => ['13'],
             ],
         ]);
     }
@@ -71,6 +74,7 @@ class FamilyReplacementOperationSpec extends ObjectBehavior
         $this->getMappedValue('video-games')->shouldReturn('video_game');
         $this->getMappedValue('33export')->shouldReturn('33');
         $this->getMappedValue('beer')->shouldReturn('33');
+        $this->getMappedValue('13')->shouldReturn('board_game');
     }
 
     public function it_returns_null_when_not_mapped(): void

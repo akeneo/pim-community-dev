@@ -39,9 +39,11 @@ class MultiSelectReplacementOperationApplierSpec extends ObjectBehavior
         $operation = new MultiSelectReplacementOperation($this->uuid, [
             'adidas' => ['nike', 'reebok'],
             'foo' => ['bar', 'baz'],
+            'int' => ['8'],
         ]);
 
         $this->applyOperation($operation, new StringValue('nike'))->shouldBeLike(new StringValue('adidas'));
+        $this->applyOperation($operation, new StringValue('8'))->shouldBeLike(new StringValue('int'));
         $this->applyOperation($operation, new ArrayValue(['nike', 'baz']))->shouldBeLike(new ArrayValue(['adidas', 'foo']));
     }
 

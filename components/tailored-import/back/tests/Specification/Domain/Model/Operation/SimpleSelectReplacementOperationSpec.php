@@ -26,6 +26,7 @@ class SimpleSelectReplacementOperationSpec extends ObjectBehavior
             [
                 'adidas' => ['nike', 'reebok'],
                 6 => ['foo', 'bar'],
+                'int' => ['8'],
             ],
         );
     }
@@ -50,6 +51,7 @@ class SimpleSelectReplacementOperationSpec extends ObjectBehavior
         $this->getMapping()->shouldReturn([
             'adidas' => ['nike', 'reebok'],
             6 => ['foo', 'bar'],
+            'int' => ['8'],
         ]);
     }
 
@@ -61,6 +63,7 @@ class SimpleSelectReplacementOperationSpec extends ObjectBehavior
             'mapping' => [
                 'adidas' => ['nike', 'reebok'],
                 6 => ['foo', 'bar'],
+                'int' => ['8'],
             ],
         ]);
     }
@@ -71,6 +74,7 @@ class SimpleSelectReplacementOperationSpec extends ObjectBehavior
         $this->getMappedValue('reebok')->shouldReturn('adidas');
         $this->getMappedValue('foo')->shouldReturn('6');
         $this->getMappedValue('bar')->shouldReturn('6');
+        $this->getMappedValue('8')->shouldReturn('int');
     }
 
     public function it_returns_null_when_not_mapped(): void
