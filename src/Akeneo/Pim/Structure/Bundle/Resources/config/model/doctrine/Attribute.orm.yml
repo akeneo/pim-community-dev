@@ -74,12 +74,12 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             column: date_max
         metricFamily:
             type: string
-            length: 30
+            length: 100
             nullable: true
             column: metric_family
         defaultMetricUnit:
             type: string
-            length: 30
+            length: 100
             nullable: true
             column: default_metric_unit
         maxFileSize:
