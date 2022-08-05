@@ -1,0 +1,12 @@
+extensions:
+    pim-import-profile-index-grid-title-information:
+        module: akeneotailoredimport/js/information
+        parent: pim-import-profile-index
+        targetZone: content
+        position: 1
+        config:
+            title: pim_information.import.title
+            text: pim_information.import.text
+            link:
+                href: https://help.akeneo.com/pim/serenity/articles/tailored-import.html
+                text: pim_information.import.link.text
