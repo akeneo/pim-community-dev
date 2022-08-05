@@ -2,7 +2,7 @@ import React from 'react';
 import {useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {Category, EditCategoryForm} from '../models';
 import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
-import {ErrorMessage, FormContainer} from './Style';
+import {ErrorMessageLegacy, FormContainerLegacy} from './StyleLegacy';
 
 type Props = {
   category: Category;

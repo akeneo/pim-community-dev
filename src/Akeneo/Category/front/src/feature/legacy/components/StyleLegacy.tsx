@@ -1,7 +1,7 @@
 import {Field, Helper} from 'akeneo-design-system';
 import styled from 'styled-components';
 
-export const FormContainer = styled.div`
+export const FormContainerLegacy = styled.div`
   margin-top: 20px;
 
   & > * {
@@ -9,10 +9,10 @@ export const FormContainer = styled.div`
   }
 `;
 
-export const ErrorMessage = styled(Helper)`
+export const ErrorMessageLegacy = styled(Helper)`
   margin: 20px 0 0 0;
 `;
 
-export const PermissionField = styled(Field)`
+export const PermissionFieldLegacy = styled(Field)`
   max-width: 400px;
 `;

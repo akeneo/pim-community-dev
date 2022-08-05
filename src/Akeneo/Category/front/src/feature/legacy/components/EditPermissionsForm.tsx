@@ -1,7 +1,7 @@
 import React from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
-import {FormContainer, PermissionField} from './Style';
+import {FormContainerLegacy, PermissionFieldLegacy} from './StyleLegacy';
 import {EditCategoryForm} from '../models';
 
 type Props = {
