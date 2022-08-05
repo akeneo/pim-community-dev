@@ -69,6 +69,14 @@ akeneo.tailored_import:
             header:
               replacement: Categorías PIM
               source_values: Categorías de fuentes
+      family_replacement:
+        title: Reemplazo de familias
+        modal:
+          title: Gestionar familias
+          table:
+            header:
+              replacement: Familias PIM
+              source_values: Familias de fuentes
       no_result: No hay operación disponible
       no_source: Primero, seleccione una fuente, luego tendrá acceso a las operaciones
       no_available:
