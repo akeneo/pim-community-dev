@@ -3,7 +3,7 @@ fullnameOverride: "timmy"
 
 common:
   gcpProjectID: "akecld-prd-pim-saas-dev"
-  workloadIdentityKSA: "timmy-deployment"
+  workloadIdentityKSA: "timmy-deployment-sa"
   workloadIdentityGSA: "timmy-deployment"
   region: "europe-west1"
   timeZone: "Europe/Paris"
