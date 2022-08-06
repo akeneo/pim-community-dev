@@ -65,10 +65,6 @@ akeneo.tailored_import:
         title: Vervanging van categorieën
         modal:
           title: Categorieën beheren
-          table:
-            header:
-              replacement: PIM-categorieën
-              source_values: Categorieën bronnen
       no_result: Geen bewerking beschikbaar
       no_source: Selecteer eerst een bron, daarna hebt u toegang tot de bewerkingen
       no_available:
@@ -93,7 +89,6 @@ akeneo.tailored_import:
               all: Alle waarden
           table:
             header:
-              replacement: Optielabels
               source_values: Bronwaarden
           validation_error: Sommige vervangende waarden zijn ongeldig. Raadpleeg de foutmeldingen onder elk veld.
       boolean_replacement:
@@ -166,7 +161,6 @@ akeneo.tailored_import:
       uuid:
         should_be_unique: Deze toewijzings-UUID bestaat al. Voer een nieuwe UUID in.
       sources:
-        count_mismatched: U mag slechts één bron instellen voor deze toewijzing.
         at_least_one_required: U moet minimaal één bron toevoegen aan uw toewijzing.
         max_count_reached: U hebt de limiet van {{ limit }} bronnen bereikt. U kunt geen bronnen meer toevoegen aan uw toewijzing.
         should_be_unique: Deze bron bestaat al, voer een nieuwe bron in.

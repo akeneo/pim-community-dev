@@ -65,10 +65,6 @@ akeneo.tailored_import:
         title: Sostituzione categorie
         modal:
           title: Gestisci Categorie
-          table:
-            header:
-              replacement: Categorie PIM
-              source_values: Categorie origine
       no_result: Nessuna operazione disponibile
       no_source: Una volta selezionata un'origine, avrai accesso alle operazioni
       no_available:
@@ -93,7 +89,6 @@ akeneo.tailored_import:
               all: Tutti i valori
           table:
             header:
-              replacement: Etichette opzioni
               source_values: Valori di origine
           validation_error: Alcuni valori di sostituzione non sono validi, fai riferimento ai messaggi di errore sotto ciascun campo.
       boolean_replacement:
@@ -166,7 +161,6 @@ akeneo.tailored_import:
       uuid:
         should_be_unique: Questo UUID di mappatura esiste già, inseriscine uno nuovo.
       sources:
-        count_mismatched: È necessario impostare solo un'origine per questa mappatura.
         at_least_one_required: È necessario aggiungere almeno un'origine alla mappatura.
         max_count_reached: Hai raggiunto il limite di {{ limit }} origini, non puoi aggiungere altre origini alla mappatura.
         should_be_unique: Questa origine esiste già, inseriscine una nuova.

@@ -65,18 +65,10 @@ akeneo.tailored_import:
         title: Reemplazo de categorías
         modal:
           title: Administrar categorías
-          table:
-            header:
-              replacement: Categorías PIM
-              source_values: Categorías de fuentes
       family_replacement:
         title: Reemplazo de familias
         modal:
           title: Gestionar familias
-          table:
-            header:
-              replacement: Familias PIM
-              source_values: Familias de fuentes
       no_result: No hay operación disponible
       no_source: Primero, seleccione una fuente, luego tendrá acceso a las operaciones
       no_available:
@@ -101,7 +93,6 @@ akeneo.tailored_import:
               all: Todos los valores
           table:
             header:
-              replacement: Etiquetas de opciones
               source_values: Valores de origen
           validation_error: Algunos valores de reemplazo no son válidos, consulte los mensajes de error a continuación de cada campo.
       boolean_replacement:
@@ -174,7 +165,6 @@ akeneo.tailored_import:
       uuid:
         should_be_unique: Esta UUID de asignación ya existe, introduzca una nueva.
       sources:
-        count_mismatched: Solo tiene que establecer una fuente para esta asignación.
         at_least_one_required: Tiene que añadir al menos una fuente a su asignación.
         max_count_reached: Ha alcanzado el límite de fuentes {{ limit }}, ya no puede añadir fuentes a su asignación.
         should_be_unique: Esta fuente ya existe, introduzca una nueva.

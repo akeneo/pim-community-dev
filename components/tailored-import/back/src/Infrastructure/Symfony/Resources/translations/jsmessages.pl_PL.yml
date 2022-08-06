@@ -65,10 +65,6 @@ akeneo.tailored_import:
         title: Zastąpienie katagorii
         modal:
           title: Zarządzaj kategoriami
-          table:
-            header:
-              replacement: Kategorie PIM
-              source_values: Kategorie źródeł
       no_result: Brak dostępnej operacji
       no_source: Najpierw wybierz źródło, a następnie zyskasz dostęp do operacji.
       no_available:
@@ -93,7 +89,6 @@ akeneo.tailored_import:
               all: Wszystkie wartości
           table:
             header:
-              replacement: Etykiety opcji
               source_values: Wartości źródłowe
           validation_error: Niektóre wartości zastępcze nie są prawidłowe. Zapoznaj się z komunikatami o błędach pod każdym polem.
       boolean_replacement:
@@ -166,7 +161,6 @@ akeneo.tailored_import:
       uuid:
         should_be_unique: Identyfikator UUID mapowania już istnieje, podaj nowy.
       sources:
-        count_mismatched: Do tego mapowania musisz skonfigurować tylko jedno źródło.
         at_least_one_required: Musisz dodać co najmniej jedno źródło do swojego mapowania.
         max_count_reached: Osiągnięto limit {{ limit }} źródeł. Nie możesz już dodawać źródeł do mapowania.
         should_be_unique: To źródło już istnieje, dodaj nowe.
