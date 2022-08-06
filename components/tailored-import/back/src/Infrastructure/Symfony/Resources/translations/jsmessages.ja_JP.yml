@@ -65,10 +65,6 @@ akeneo.tailored_import:
         title: カテゴリの置換
         modal:
           title: カテゴリを管理
-          table:
-            header:
-              replacement: PIM カテゴリ
-              source_values: ソースカテゴリ
       no_result: 利用できる操作はありません
       no_source: 最初に、ソースを選択します。そうすると、操作にアクセスできます
       no_available:
@@ -93,7 +89,6 @@ akeneo.tailored_import:
               all: すべての値
           table:
             header:
-              replacement: オプションのラベル
               source_values: ソースの値
           validation_error: 置換値で無効のものがあります。各フィールドの下にあるエラーメッセージを参照してください。
       boolean_replacement:
@@ -166,7 +161,6 @@ akeneo.tailored_import:
       uuid:
         should_be_unique: このマッピングのUUIDはすでに存在します。新しいUUIDを入力してください。
       sources:
-        count_mismatched: このマッピングには、1つのソースだけを設定する必要があります。
         at_least_one_required: 少なくとも1つのソースをマッピングに追加する必要があります。
         max_count_reached: '{{ limit }}ソースの上限に達しました。これ以上マッピングにソースを追加できません。'
         should_be_unique: このソースはすでに存在します。新しいソースを入力してください。

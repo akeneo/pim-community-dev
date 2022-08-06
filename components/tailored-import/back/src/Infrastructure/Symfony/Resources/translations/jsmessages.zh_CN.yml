@@ -65,10 +65,6 @@ akeneo.tailored_import:
         title: 类别替换
         modal:
           title: 管理类别
-          table:
-            header:
-              replacement: PIM 类别
-              source_values: 源类别
       no_result: 无可用操作
       no_source: 首先，选择一个源，然后您将能够访问操作
       no_available:
@@ -93,7 +89,6 @@ akeneo.tailored_import:
               all: 所有值
           table:
             header:
-              replacement: 选项标签
               source_values: 源值
           validation_error: 有些替换值无效，请参阅每个字段下面的错误消息。
       boolean_replacement:
@@ -166,7 +161,6 @@ akeneo.tailored_import:
       uuid:
         should_be_unique: 此映射 UUID 已存在，请新输入一个。
       sources:
-        count_mismatched: 只需为此映射设置一个源。
         at_least_one_required: 需要为您的映射添加至少一个源。
         max_count_reached: 已达到源的上限数目 {{ limit }} ，无法再将源添加到映射中。
         should_be_unique: 此源已存在，请新输入一个。
