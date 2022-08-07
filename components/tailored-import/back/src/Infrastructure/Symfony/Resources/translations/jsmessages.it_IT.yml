@@ -65,6 +65,10 @@ akeneo.tailored_import:
         title: Sostituzione categorie
         modal:
           title: Gestisci Categorie
+      family_replacement:
+        title: Sostituzione famiglie
+        modal:
+          title: Gestisci famiglie
       no_result: Nessuna operazione disponibile
       no_source: Una volta selezionata un'origine, avrai accesso alle operazioni
       no_available:
