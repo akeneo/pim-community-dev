@@ -65,6 +65,10 @@ akeneo.tailored_import:
         title: 类别替换
         modal:
           title: 管理类别
+      family_replacement:
+        title: 品类替换
+        modal:
+          title: 管理品类
       no_result: 无可用操作
       no_source: 首先，选择一个源，然后您将能够访问操作
       no_available:
