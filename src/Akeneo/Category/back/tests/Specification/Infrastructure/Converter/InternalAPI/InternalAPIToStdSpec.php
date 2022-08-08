@@ -31,7 +31,6 @@ class InternalAPIToStdSpec extends ObjectBehavior
         ];
         $expected = [
             'code' => 'mycode',
-            'parent' => null,
             'labels' => [
                 'fr_FR' => 'Chaussettes',
                 'en_US' => 'Socks'

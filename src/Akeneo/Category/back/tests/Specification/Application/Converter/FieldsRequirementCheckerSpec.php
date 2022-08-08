@@ -14,21 +14,21 @@ class FieldsRequirementCheckerSpec extends ObjectBehavior
     {
         $this
             ->shouldNotThrow(StructureArrayConversionException::class)
-            ->during('checkFieldsPresence', [['code' => 'socks'], []]);
+            ->during('checkFieldsExist', [['code' => 'socks'], []]);
     }
 
     public function it_does_not_raise_exception_when_all_required_fields_are_present(): void
     {
         $this
             ->shouldNotThrow(StructureArrayConversionException::class)
-            ->during('checkFieldsPresence', [['code' => 'socks'], ['code']]);
+            ->during('checkFieldsExist', [['code' => 'socks'], ['code']]);
     }
 
     public function it_should_raise_exception_when_a_required_field_is_not_present(): void
     {
         $this
             ->shouldThrow(StructureArrayConversionException::class)
-            ->during('checkFieldsPresence', [['parent' => null], ['code']]);
+            ->during('checkFieldsExist', [['parent' => null], ['code']]);
     }
 
     public function it_does_not_raise_exception_when_an_empty_field_can_be_empty(): void
