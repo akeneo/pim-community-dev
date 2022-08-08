@@ -148,14 +148,10 @@ tests-supplier-portal-retailer: lint-front-retailer unit-front-retailer lint-bac
 
 tests-supplier-portal-supplier: lint-front-supplier unit-front-supplier lint-back-supplier coupling-supplier coupling-list-unused-requirements-supplier unit-back-supplier acceptance-back-supplier integration-back-supplier
 
-.PHONY: extract-front-translations
-extract-front-translations: #Doc: Extract translations for Crowdin
-	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front i18n-extract 'src/**/*.{ts,tsx}' --ignore '**/*.{test,d}.{ts,tsx}' --format simple --out-file src/translations/messages.en.json
-
 .PHONY: build-supplier-portal-supplier-front-app
 build-supplier-portal-supplier-front-app: #Doc: Build Supplier Portal supplier frontend application
 	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front app:build
 
 .PHONY: trans-front-extract-supplier
 trans-front-extract-supplier: #Doc: Extract Supplier App translations for Crowdin
-	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front i18n-extract 'src/**/*.{ts,tsx}' --ignore '**/*.d.ts' --format simple --out-file translations/en_US.json
+	$(YARN_RUN) run --cwd=components/supplier-portal-supplier/front i18n-extract 'src/**/*.{ts,tsx}' --ignore '**/*.d.ts' --format simple --out-file translations/messages.en_US.json
