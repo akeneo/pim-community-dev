@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.106 (2022-08-08)
+
 ## Bug fixes
 
 - PIM-10556: [Backport PIM-10214] Fix can't create a measurement attribute if measurement family or unit code is too long
