@@ -110,4 +110,22 @@ class InMemoryUserRepositorySpec extends ObjectBehavior
 
         $this->findBy(['username' => 'julia'])->shouldReturn([]);
     }
+
+    function it_returns_an_empty_array_if_there_is_no_user()
+    {
+        $this->findAll()->shouldReturn([]);
+    }
+
+    function it_finds_all_the_users()
+    {
+        $julia = (new User())->setUsername('julia');
+        $mary = (new User())->setUsername('mary');
+        $this->save($julia);
+        $this->save($mary);
+
+        $this->findAll()->shouldReturn([
+            'julia' => $julia,
+            'mary' => $mary
+        ]);
+    }
 }
