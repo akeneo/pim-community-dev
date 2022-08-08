@@ -5,6 +5,7 @@ CATALOGS_YARN = $(YARN_RUN)
 ifeq ($(CI),true)
 	BEHAT_ARGS += --no-snippets --no-interaction
 	PHPINSIGHTS_ARGS += --summary
+	RECTOR_ARGS += --no-progress-bar
 endif
 ifneq ($(CI),true)
 	PSALM_ARGS += --show-info=true
@@ -43,6 +44,8 @@ ifneq ($(CI),true)
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
 endif
+	$(PHP_RUN) vendor/bin/rector process $(RECTOR_ARGS) --dry-run \
+		--config=$(CATALOGS_PATH)/back/rector.php
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run \
 		--config=$(CATALOGS_PATH)/back/.php_cs.php
 	$(PHP_RUN) vendor/bin/phpstan analyse \
@@ -139,6 +142,7 @@ catalogs-lint-front_fix: yarn-policies
 
 .PHONY: catalogs-lint-back_fix
 catalogs-lint-back_fix:
+	$(PHP_RUN) vendor/bin/rector process --config=$(CATALOGS_PATH)/back/rector.php
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=$(CATALOGS_PATH)/back/.php_cs.php
 
 # BINARIES
