@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Field, MediaFileInput, SectionTitle, TextAreaInput, TextInput} from 'akeneo-design-system';
 import {LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
-import {FormContainer} from './Style';
 import styled from 'styled-components';
 
 const locales = [
@@ -26,6 +25,14 @@ const dumbUploader = async (file: File, onProgress: (ratio: number) => void) => 
   filePath: 'foo',
   originalFilename: 'bar',
 });
+
+const FormContainer = styled.div`
+  margin-top: 20px;
+
+  & > * {
+    margin: 0 10px 20px 0;
+  }
+`;
 
 const Field960 = styled(Field)`
   max-width: 960px;

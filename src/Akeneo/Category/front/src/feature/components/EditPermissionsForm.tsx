@@ -2,13 +2,25 @@ import React from 'react';
 import {EditCategoryForm} from '../hooks';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
-import {FormContainer, PermissionField} from './Style';
+import styled from 'styled-components';
 
 type Props = {
   formData: EditCategoryForm | null;
   onChangePermissions: (type: string, values: string[]) => void;
   onChangeApplyPermissionsOnChildren: (value: boolean) => void;
 };
+
+const FormContainer = styled.div`
+  margin-top: 20px;
+
+  & > * {
+    margin: 0 10px 20px 0;
+  }
+`;
+
+const PermissionField = styled(Field)`
+  max-width: 400px;
+`;
 
 const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermissionsOnChildren}: Props) => {
   const translate = useTranslate();
