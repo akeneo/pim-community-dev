@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.106 (2022-08-08)
+
 ## Bug fixes
 
 - PIM-10553: Fix initialization of the associations grid in product edit form
