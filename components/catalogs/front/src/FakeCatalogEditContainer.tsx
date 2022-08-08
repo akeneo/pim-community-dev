@@ -1,8 +1,9 @@
-import React, {FC, PropsWithChildren, useState} from 'react';
+import React, {FC, PropsWithChildren} from 'react';
 import {useParams} from 'react-router';
 import {CatalogEdit, useCatalogForm} from './components/CatalogEdit';
 import {Button} from 'akeneo-design-system';
 import styled from 'styled-components';
+import {NotificationLevel, useDependenciesContext} from '@akeneo-pim-community/shared';
 
 const TopRightContainer = styled.div`
     position: absolute;
@@ -20,30 +21,23 @@ const DirtyWarning = styled.div`
     margin: 8px 0 0;
 `;
 
-const SuccessMessage = styled.div`
-    font-style: italic;
-    color: #67b373;
-    border-bottom: 1px solid #3d6b45;
-    margin: 8px 0 0;
-`;
-
-const ErrorsMessage = styled.div`
-    font-style: italic;
-    color: #d4604f;
-    border-bottom: 1px solid #7f392f;
-    margin: 8px 0 0;
-`;
-
 type Props = {};
 
 const FakeCatalogEditContainer: FC<PropsWithChildren<Props>> = () => {
     const {id} = useParams<{id: string}>();
     const [form, save, isDirty] = useCatalogForm(id);
-    const [isSuccess, setSuccess] = useState<boolean | null>(null);
+    const deps = useDependenciesContext();
 
     const saveHandler = async () => {
         const isSaveSuccessful = await save();
-        setSuccess(isSaveSuccessful);
+
+        if (deps.notify) {
+            if (isSaveSuccessful) {
+                deps.notify(NotificationLevel.SUCCESS, 'Catalog is saved');
+            } else {
+                deps.notify(NotificationLevel.ERROR, 'Catalog have errors');
+            }
+        }
     };
 
     if (undefined === form) {
@@ -57,8 +51,6 @@ const FakeCatalogEditContainer: FC<PropsWithChildren<Props>> = () => {
                     Save
                 </Button>
                 {isDirty && <DirtyWarning>⚠️ There are unsaved changes.</DirtyWarning>}
-                {isSuccess && <SuccessMessage>Catalog is saved</SuccessMessage>}
-                {isSuccess === false && <ErrorsMessage>Catalog have errors</ErrorsMessage>}
             </TopRightContainer>
             <CatalogEdit form={form} />
         </>
