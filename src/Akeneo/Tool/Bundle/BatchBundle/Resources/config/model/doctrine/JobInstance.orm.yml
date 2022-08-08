@@ -38,6 +38,9 @@ Akeneo\Tool\Component\Batch\Model\JobInstance:
         rawParameters:
             type: array
             column: raw_parameters
+        scheduled:
+            type: boolean
+            column: scheduled
         automation:
             type: json
             column: automation
