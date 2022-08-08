@@ -64,7 +64,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
     );
 
     const extensionsList = extensions.extensions
-        .filter(extension => '' === search || extension.name.toLowerCase().includes(search))
+        .filter(extension => '' === search || extension.name.toLowerCase().includes(search.toLowerCase()))
         .map((extension: Extension) => extensionsComponents[extension.id]);
 
     const appsComponents: {[key: string]: JSX.Element} = useMemo(
@@ -93,7 +93,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
     );
 
     const appsList = apps.apps
-        .filter(app => '' === search || app.name.toLowerCase().includes(search))
+        .filter(app => '' === search || app.name.toLowerCase().includes(search.toLowerCase()))
         .map((app: App) => appsComponents[app.id]);
 
     const searchCount = extensionsList.length + appsList.length;
