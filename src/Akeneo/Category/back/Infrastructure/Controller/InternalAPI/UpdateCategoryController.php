@@ -42,7 +42,8 @@ class UpdateCategoryController
             throw new AccessDeniedException();
         }
 
-        if (($this->findCategoryByIdentifier)($id) === null) {
+        $category = ($this->findCategoryByIdentifier)($id);
+        if ($category === null) {
             throw new NotFoundHttpException('Category not found');
         }
         $data = $request->toArray();
@@ -53,7 +54,7 @@ class UpdateCategoryController
 
         try {
             $command = UpsertCategoryCommand::create(
-                $id,
+                (string)$category->getCode(),
                 $filteredUserIntents
             );
             $this->categoryCommandBus->dispatch($command);
