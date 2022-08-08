@@ -78,8 +78,8 @@ test('The save button click triggers save that results in a user error', async (
 
     await waitFor(() => {
         expect(notify).toBeCalledWith(
-            NotificationLevel.WARNING,
-            'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.warning'
+            NotificationLevel.ERROR,
+            'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.error'
         );
     });
 });
@@ -95,7 +95,7 @@ test('The save button click triggers save that results in a server error', async
     await waitFor(() => {
         expect(notify).toBeCalledWith(
             NotificationLevel.ERROR,
-            'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.error'
+            'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.unknown_error'
         );
     });
 });

@@ -32,12 +32,14 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
 
             const message = success
                 ? 'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.success'
-                : 'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.warning';
-            notify(success ? NotificationLevel.SUCCESS : NotificationLevel.WARNING, translate(message));
+                : 'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.error';
+            notify(success ? NotificationLevel.SUCCESS : NotificationLevel.ERROR, translate(message));
         } catch (error) {
             notify(
                 NotificationLevel.ERROR,
-                translate('akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.error')
+                translate(
+                    'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.flash.unknown_error'
+                )
             );
         }
     };

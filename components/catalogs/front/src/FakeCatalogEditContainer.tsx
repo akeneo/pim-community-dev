@@ -26,16 +26,16 @@ type Props = {};
 const FakeCatalogEditContainer: FC<PropsWithChildren<Props>> = () => {
     const {id} = useParams<{id: string}>();
     const [form, save, isDirty] = useCatalogForm(id);
-    const deps = useDependenciesContext();
+    const {notify} = useDependenciesContext();
 
     const saveHandler = async () => {
         const isSaveSuccessful = await save();
 
-        if (deps.notify) {
+        if (notify) {
             if (isSaveSuccessful) {
-                deps.notify(NotificationLevel.SUCCESS, 'Catalog is saved');
+                notify(NotificationLevel.SUCCESS, 'Catalog is saved');
             } else {
-                deps.notify(NotificationLevel.ERROR, 'Catalog have errors');
+                notify(NotificationLevel.ERROR, 'Catalog have errors');
             }
         }
     };
