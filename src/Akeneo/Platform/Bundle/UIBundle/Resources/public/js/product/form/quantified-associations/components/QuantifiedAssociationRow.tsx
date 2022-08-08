@@ -112,7 +112,10 @@ const QuantifiedAssociationRow = ({
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const isProductModel = ProductType.ProductModel === row.productType;
-  const productEditUrl = useRoute(`pim_enrich_${row.productType}_edit`, {id: row.product?.id.toString() || ''});
+  const routeParams = isProductModel
+    ? {id: row.product?.id.toString() || ''}
+    : {uuid: row.product?.id.toString() || ''};
+  const productEditUrl = useRoute(`pim_enrich_${row.productType}_edit`, routeParams);
   const thumbnailUrl = useProductThumbnail(row.product);
   const blueColor = useTheme().color.blue100;
   const canRemoveAssociation =
