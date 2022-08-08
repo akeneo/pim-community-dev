@@ -34,10 +34,12 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance_int
     public function testItAddAutomationColumnOfTypeJson()
     {
         $this->removeAutomationColumn('akeneo_batch_job_instance');
+        $this->removeScheduledColumn('akeneo_batch_job_instance');
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
         $this->assertTrue($this->automationColumnExist('akeneo_batch_job_instance'));
+        $this->assertTrue($this->scheduledColumnExist('akeneo_batch_job_instance'));
     }
 
     private function removeAutomationColumn(string $tableName): void
@@ -53,11 +55,35 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance_int
         );
     }
 
+    private function removeScheduledColumn(string $tableName): void
+    {
+        if (!$this->automationColumnExist($tableName)) {
+            return;
+        }
+
+        $this->get('database_connection')->executeQuery(
+            <<<SQL
+                ALTER TABLE $tableName DROP COLUMN scheduled;
+            SQL
+        );
+    }
+
     private function automationColumnExist(string $tableName): bool
     {
         $rows = $this->get('database_connection')->fetchAllAssociative(
             <<<SQL
                 SHOW COLUMNS FROM $tableName LIKE 'automation'
+            SQL,
+        );
+
+        return count($rows) >= 1;
+    }
+
+    private function scheduledColumnExist(string $tableName): bool
+    {
+        $rows = $this->get('database_connection')->fetchAllAssociative(
+            <<<SQL
+                SHOW COLUMNS FROM $tableName LIKE 'scheduled'
             SQL,
         );
 
