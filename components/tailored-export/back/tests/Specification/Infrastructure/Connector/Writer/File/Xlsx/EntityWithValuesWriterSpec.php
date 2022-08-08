@@ -266,6 +266,62 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         ]);
     }
 
+    public function it_writes_files_even_if_lines_per_file_is_multiple_of_batch_size(
+        StepExecution $stepExecution,
+        FileWriterFactory $fileWriterFactory,
+        WriterInterface $firstWriter,
+        WriterInterface $secondWriter,
+    ) {
+        $stepExecution->getTotalItems()->willReturn(6);
+        $jobParameters = new JobParameters([
+            'linesPerFile' => 3,
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/%job_label%_product.xlsx',
+            ],
+            'withHeader' => false,
+        ]);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $stepExecution->incrementSummaryInfo('write', 3)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('write', 3)->shouldBeCalled();
+        $fileWriterFactory->build([])->willReturn($firstWriter, $secondWriter);
+        $firstWriter->openToFile('/tmp/XLSX_Product_export_product_1.xlsx')->shouldBeCalled();
+        $firstWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
+        $firstWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
+        $firstWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 62, 'name' => 'cap']))->shouldBeCalled();
+        $firstWriter->close()->shouldBeCalled();
+        $secondWriter->openToFile('/tmp/XLSX_Product_export_product_2.xlsx')->shouldBeCalled();
+        $secondWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 72, 'name' => 'bob']))->shouldBeCalled();
+        $secondWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 82, 'name' => 'hat']))->shouldBeCalled();
+        $secondWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 84, 'name' => 'gapette']))->shouldBeCalled();
+        $secondWriter->close()->shouldBeCalled();
+
+        $this->initialize();
+        $this->write([
+            new ProcessedTailoredExport(['sku' => 42, 'name' => 'bag'], []),
+            new ProcessedTailoredExport(['sku' => 52, 'name' => 'sunglasses'], []),
+            new ProcessedTailoredExport(['sku' => 62, 'name' => 'cap'], []),
+        ]);
+        $this->write([
+            new ProcessedTailoredExport(['sku' => 72, 'name' => 'bob'], []),
+            new ProcessedTailoredExport(['sku' => 82, 'name' => 'hat'], []),
+            new ProcessedTailoredExport(['sku' => 84, 'name' => 'gapette'], []),
+        ]);
+        $this->flush();
+
+        $this->getWrittenFiles()->shouldBeLike([
+            WrittenFileInfo::fromLocalFile(
+                '/tmp/XLSX_Product_export_product_1.xlsx',
+                'XLSX_Product_export_product_1.xlsx'
+            ),
+            WrittenFileInfo::fromLocalFile(
+                '/tmp/XLSX_Product_export_product_2.xlsx',
+                'XLSX_Product_export_product_2.xlsx'
+            ),
+        ]);
+    }
+
     public function it_writes_several_files_with_headers(
         StepExecution $stepExecution,
         FileWriterFactory $fileWriterFactory,
@@ -313,6 +369,57 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
             WrittenFileInfo::fromLocalFile(
                 '/tmp/XLSX_Product_export_product_2.xlsx',
                 'XLSX_Product_export_product_2.xlsx'
+            ),
+        ]);
+    }
+
+    public function it_writes_several_files_even_if_file_path_does_not_contain_wildcard(
+        StepExecution $stepExecution,
+        FileWriterFactory $fileWriterFactory,
+        WriterInterface $firstWriter,
+        WriterInterface $secondWriter
+    ) {
+        $stepExecution->getTotalItems()->willReturn(4);
+        $jobParameters = new JobParameters([
+            'linesPerFile' => 2,
+            'storage' => [
+                'type' => 'local',
+                'file_path' => '/tmp/product.xlsx',
+            ],
+            'withHeader' => false,
+        ]);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $stepExecution->incrementSummaryInfo('write', 4)->shouldBeCalled();
+        $fileWriterFactory->build([])->willReturn($firstWriter, $secondWriter);
+
+        $firstWriter->openToFile('/tmp/product_1.xlsx')->shouldBeCalled();
+        $firstWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
+        $firstWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
+        $firstWriter->close()->shouldBeCalled();
+
+        $secondWriter->openToFile('/tmp/product_2.xlsx')->shouldBeCalled();
+        $secondWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 62, 'name' => 'bob']))->shouldBeCalled();
+        $secondWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 72, 'name' => 'hat']))->shouldBeCalled();
+        $secondWriter->close()->shouldBeCalled();
+
+        $this->initialize();
+        $this->write([
+            new ProcessedTailoredExport(['sku' => 42, 'name' => 'bag'], []),
+            new ProcessedTailoredExport(['sku' => 52, 'name' => 'sunglasses'], []),
+            new ProcessedTailoredExport(['sku' => 62, 'name' => 'bob'], []),
+            new ProcessedTailoredExport(['sku' => 72, 'name' => 'hat'], [])
+        ]);
+        $this->flush();
+
+        $this->getWrittenFiles()->shouldBeLike([
+            WrittenFileInfo::fromLocalFile(
+                '/tmp/product_1.xlsx',
+                'product_1.xlsx'
+            ),
+            WrittenFileInfo::fromLocalFile(
+                '/tmp/product_2.xlsx',
+                'product_2.xlsx'
             ),
         ]);
     }
