@@ -12,7 +12,6 @@ use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\StoreProductsFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\SupplierFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\SupplierFileRepository;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Identifier;
 use Psr\Log\LoggerInterface;
@@ -39,7 +38,7 @@ final class CreateSupplierFileHandler
             throw new InvalidSupplierFile($violations);
         }
 
-        $supplier = ($this->getSupplierFromContributorEmail)(ContributorEmail::fromString($createSupplierFile->uploadedByContributor));
+        $supplier = ($this->getSupplierFromContributorEmail)($createSupplierFile->uploadedByContributor);
         if (null === $supplier) {
             throw new ContributorDoesNotExist();
         }

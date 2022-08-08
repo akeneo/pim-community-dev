@@ -6,7 +6,6 @@ namespace Akeneo\SupplierPortal\Supplier\Test\Integration\Infrastructure\Product
 
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\DownloadStoredProductFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Path;
 use Akeneo\SupplierPortal\Supplier\Test\Integration\SqlIntegrationTestCase;
 
 final class DownloadStoredProductFileInGCSBucketIntegration extends SqlIntegrationTestCase
@@ -20,7 +19,7 @@ final class DownloadStoredProductFileInGCSBucketIntegration extends SqlIntegrati
         $filesystem = $filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
         $filesystem->write('path/to/file.xlsx', $fileContent);
 
-        $streamedResource = ($this->get(DownloadStoredProductFile::class))(Path::fromString('path/to/file.xlsx'));
+        $streamedResource = ($this->get(DownloadStoredProductFile::class))('path/to/file.xlsx');
 
         $this->assertSame($fileContent, stream_get_contents($streamedResource));
     }
@@ -29,6 +28,6 @@ final class DownloadStoredProductFileInGCSBucketIntegration extends SqlIntegrati
     public function itThrowsAnExceptionIfTheRequestedFileDoesNotExist(): void
     {
         $this->expectException(\RuntimeException::class);
-        ($this->get(DownloadStoredProductFile::class))(Path::fromString('path/to/unknown-file.xlsx'));
+        ($this->get(DownloadStoredProductFile::class))('path/to/unknown-file.xlsx');
     }
 }

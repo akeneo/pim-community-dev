@@ -25,7 +25,6 @@ $rules = [
             // Supplier Portal Retailer coupling
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
 
             // PIM coupling
 
@@ -56,7 +55,6 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application',
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
             'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // PIM coupling
@@ -98,7 +96,6 @@ $rules = [
             'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
 
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Job\JobParameters',

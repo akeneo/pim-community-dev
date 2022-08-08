@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFiles;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Read\Model\SupplierFile;
 use Akeneo\SupplierPortal\Supplier\Test\Integration\SqlIntegrationTestCase;
@@ -19,11 +18,7 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
         $this->createSuppliers();
         $this->createContributors();
 
-        static::assertEmpty(
-            ($this->get(GetProductFiles::class))(
-                Email::fromString('contributor1@example.com')
-            ),
-        );
+        static::assertEmpty(($this->get(GetProductFiles::class))('contributor1@example.com'));
     }
 
     /** @test */
@@ -35,9 +30,7 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
 
         $sut = $this->get(GetProductFiles::class);
 
-        $contributorEmail = Email::fromString('contributor1@example.com');
-
-        $supplierProductFiles = ($sut)($contributorEmail);
+        $supplierProductFiles = ($sut)('contributor1@example.com');
 
         $expectedProductFilenames = [];
         for ($i = 0; 25 > $i; $i++) {
