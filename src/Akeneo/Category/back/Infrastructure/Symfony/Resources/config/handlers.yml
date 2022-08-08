@@ -1,4 +1,8 @@
 services:
-  Akeneo\Category\Api\Command\DummyHandler:
+  Akeneo\Category\Application\UpsertCategoryCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Application\Query\FindCategoryByCode'
+      - '@Akeneo\Category\Application\Applier\UserIntentApplierRegistry'
+      - '@event_dispatcher'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Api\Command\UpsertCategoryCommand'}
