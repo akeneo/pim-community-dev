@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -12,8 +13,10 @@ use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLoc
  */
 class NonExistentChannelLocaleValuesFilter implements NonExistentValuesFilter
 {
-    public function __construct(private ChannelExistsWithLocaleInterface $channelsLocales)
-    {
+    public function __construct(
+        private ChannelExistsWithLocaleInterface $channelsLocales,
+        private GetAttributes $getAttributes
+    ) {
     }
 
     public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues
@@ -24,6 +27,7 @@ class NonExistentChannelLocaleValuesFilter implements NonExistentValuesFilter
             foreach ($rawValuesIndexedByAttribute as $attributeCode => $rawValuesIndexedByProduct) {
                 foreach ($rawValuesIndexedByProduct as $productIndex => $productValues) {
                     $productValues['values'] = $this->filterProductValues($productValues['values']);
+                    $productValues['values'] = $this->filterLocaleSpecificProductValues($productValues['values'], (string) $attributeCode);
                     $filteredRawValues[$type][$attributeCode][$productIndex] = $productValues;
                 }
             }
@@ -41,6 +45,22 @@ class NonExistentChannelLocaleValuesFilter implements NonExistentValuesFilter
                     if ($this->isLocaleActivatedForChannel($locale, $channel)) {
                         $filteredProductValues[$channel][$locale] = $value;
                     }
+                }
+            }
+        }
+
+        return $filteredProductValues;
+    }
+
+    private function filterLocaleSpecificProductValues(array $productValues, string $attributeCode): array
+    {
+        $filteredProductValues = [];
+        $attribute = $this->getAttributes->forCode($attributeCode);
+
+        foreach ($productValues as $channel => $localeValues) {
+            foreach ($localeValues as $localeCode => $value) {
+                if (!$attribute->isLocaleSpecific() || $localeCode === '<all_locales>' || in_array($localeCode, $attribute->availableLocaleCodes())) {
+                    $filteredProductValues[$channel][$localeCode] = $value;
                 }
             }
         }
