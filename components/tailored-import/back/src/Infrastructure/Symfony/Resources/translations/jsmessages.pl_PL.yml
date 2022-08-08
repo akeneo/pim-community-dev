@@ -189,7 +189,7 @@ akeneo.tailored_import:
       not_allowed_extension: Obsługiwane są tylko pliki XLSX.
     file_structure:
       first_product_row_should_be_after_header_row: Wiersz pierwszego produktu powinien znajdować się po wierszu nagłówka.
-      unique_identifier_column_should_be_after_first_column_message: Przynajmniej pierwsza kolumna powinna być kolumną niepowtarzalnego identyfikatora.
+      unique_identifier_column_should_be_after_first_column_message: Kolumna niepowtarzalnego identyfikatora nie może znajdować się w kolumnie poprzedzającej początek danych.
       header_row_should_not_contain_empty_cell: Wiersz nagłówka nie powinien zawierać pustych komórek.
     file_preview:
       empty_sheet:
