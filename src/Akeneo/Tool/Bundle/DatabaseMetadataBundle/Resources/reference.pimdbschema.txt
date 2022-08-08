@@ -233,6 +233,7 @@ akeneo_batch_job_instance | job_name | NO | varchar(50) |
 akeneo_batch_job_instance | status | NO | int |
 akeneo_batch_job_instance | connector | NO | varchar(255) |
 akeneo_batch_job_instance | raw_parameters | NO | longtext |
+akeneo_batch_job_instance | scheduled | NO | tinyint(1) |
 akeneo_batch_job_instance | automation | YES | json |
 akeneo_batch_job_instance | type | NO | varchar(255) |
 akeneo_batch_step_execution | id | NO | int | PRI
