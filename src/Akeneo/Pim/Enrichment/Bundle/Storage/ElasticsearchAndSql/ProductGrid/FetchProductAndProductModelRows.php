@@ -35,19 +35,19 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
         $productAndProductModelIdentifiersCursor = $queryParameters->productQueryBuilder()->execute();
 
         $identifiers = iterator_to_array($productAndProductModelIdentifiersCursor);
-        $productIdentifiers = [];
+        $productSearchUuids = [];
         $productModelCodes = [];
 
         foreach ($identifiers as $identifier) {
             if ($identifier->getType() === ProductInterface::class) {
-                $productIdentifiers[] = $identifier->getId();
+                $productSearchUuids[] = $identifier->getId();
             } elseif ($identifier->getType() === ProductModelInterface::class) {
                 $productModelCodes[] = $identifier->getIdentifier();
             }
         }
 
         $productRows = ($this->fetchProductRowsFromUuids)(
-            $productIdentifiers,
+            $productSearchUuids,
             $queryParameters->attributeCodes(),
             $queryParameters->channelCode(),
             $queryParameters->localeCode()
@@ -65,19 +65,12 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
         $rows = array_merge($productRows, $productModelRows);
         $sortedRows = [];
         foreach ($identifiers as $identifier) {
-            foreach ($rows as $rowKey => $row) {
-                if (
-                    'product_'.$row->identifier() === $identifier->getIdentifier() ||
-                    $identifier->getIdentifier() === $row->identifier()
-                ) {
+            foreach ($rows as $row) {
+                if ($row->searchId() === $identifier->getId()) {
                     $sortedRows[] = $row;
-                    unset($rows[$rowKey]);
                 }
             }
         }
-
-        // @TODO: Find how to match all to avoid dumping all products without Identifiers at the end
-        $sortedRows = array_merge($sortedRows, $rows);
 
         $documentTypeFacet = null;
         if ($productAndProductModelIdentifiersCursor instanceof ResultAwareInterface) {
