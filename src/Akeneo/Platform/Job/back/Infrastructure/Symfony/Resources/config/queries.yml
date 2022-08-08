@@ -1,16 +1,21 @@
 services:
-    Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface:
-        class: Akeneo\Platform\Job\Infrastructure\Query\FindJobType
-        arguments:
-            - '@database_connection'
+  Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface:
+    class: Akeneo\Platform\Job\Infrastructure\Query\FindJobType
+    arguments:
+      - '@database_connection'
 
-    Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserInterface:
-        class: Akeneo\Platform\Job\Infrastructure\Query\SearchJobUser
-        arguments:
-            - '@database_connection'
+  Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserInterface:
+    class: Akeneo\Platform\Job\Infrastructure\Query\SearchJobUser
+    arguments:
+      - '@database_connection'
 
-    Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface:
-        class: Akeneo\Platform\Job\Infrastructure\Query\SearchJobExecution
-        arguments:
-            - '@database_connection'
-            - '@Akeneo\Platform\Job\Infrastructure\Hydrator\JobExecutionRowHydrator'
+  Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface:
+    class: Akeneo\Platform\Job\Infrastructure\Query\SearchJobExecution
+    arguments:
+      - '@database_connection'
+      - '@Akeneo\Platform\Job\Infrastructure\Hydrator\JobExecutionRowHydrator'
+
+  Akeneo\Platform\Job\ServiceAPI\FindJobInstanceCodes:
+    class: Akeneo\Platform\Job\Infrastructure\Query\SqlFindJobInstanceCodes
+    arguments:
+      - '@database_connection'

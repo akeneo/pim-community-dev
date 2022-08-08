@@ -27,6 +27,7 @@ final class FixturesJobHelper
             'connector' => 'Akeneo CSV Connector',
             'raw_parameters' => [],
             'type' => 'export',
+            'scheduled' => false,
         ];
 
         $dataToInsert = array_merge($defaultData, $data);
@@ -34,7 +35,10 @@ final class FixturesJobHelper
 
         $this->dbalConnection->insert(
             'akeneo_batch_job_instance',
-            $dataToInsert
+            $dataToInsert,
+            [
+                'scheduled' => Types::BOOLEAN,
+            ]
         );
 
         return (int)$this->dbalConnection->lastInsertId();
