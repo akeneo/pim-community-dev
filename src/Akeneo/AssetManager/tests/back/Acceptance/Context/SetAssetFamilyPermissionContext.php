@@ -31,7 +31,7 @@ final class SetAssetFamilyPermissionContext implements Context
 
     private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    private AssetFamilyPermissionRepositoryInterface $assetFamilyPermissionRepository;
+    private InMemoryAssetFamilyPermissionRepository $assetFamilyPermissionRepository;
 
     private SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler;
 
@@ -43,7 +43,7 @@ final class SetAssetFamilyPermissionContext implements Context
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
-        AssetFamilyPermissionRepositoryInterface $assetFamilyPermissionRepository,
+        InMemoryAssetFamilyPermissionRepository $assetFamilyPermissionRepository,
         SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler,
         ExceptionContext $exceptionContext,
         ValidatorInterface $validator,

@@ -38,8 +38,9 @@ $rules = [
 
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
             'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure',
-            'Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage',
+            'Akeneo\Platform\JobAutomation\Domain',
             'Akeneo\Platform\JobAutomation\Application',
+            'Akeneo\Tool\Component\Batch\Job',
 
             'League\Flysystem\Filesystem',
             'League\Flysystem\PhpseclibV2',

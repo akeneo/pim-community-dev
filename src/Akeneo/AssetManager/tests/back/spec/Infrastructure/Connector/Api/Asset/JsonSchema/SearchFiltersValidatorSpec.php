@@ -127,6 +127,34 @@ class SearchFiltersValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
+    function it_returns_an_error_when_the_operator_of_the_code_filter_is_not_supported()
+    {
+        $invalidSearchFilters = [
+            'code' => [
+                'operator' => '=',
+                'value'    => ['code']
+            ]
+        ];
+
+        $errors = $this->validate($invalidSearchFilters);
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
+    }
+
+    function it_returns_an_error_when_the_value_of_the_code_filter_is_not_an_array()
+    {
+        $invalidSearchFilters = [
+            'code' => [
+                'operator' => 'IN',
+                'value'    => 'code'
+            ]
+        ];
+
+        $errors = $this->validate($invalidSearchFilters);
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
+    }
+
     function it_returns_all_the_errors_of_invalid_search_filters()
     {
         $invalidSearchFilters = [

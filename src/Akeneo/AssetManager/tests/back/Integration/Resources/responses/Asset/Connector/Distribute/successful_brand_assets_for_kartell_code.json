@@ -1,0 +1,38 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
+        "query": {
+            "assetFamilyIdentifier": "brand",
+            "search": "{\"code\":[{\"operator\":\"IN\",\"value\":[\"Kartell\"]}]}"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "_links": {
+                "self": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search=%7B%22code%22:%5B%7B%22operator%22:%22IN%22,%22value%22:%5B%22Kartell%22%5D%7D%5D%7D"
+                },
+                "first": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search=%7B%22code%22:%5B%7B%22operator%22:%22IN%22,%22value%22:%5B%22Kartell%22%5D%7D%5D%7D"
+                }
+            },
+            "_embedded": {
+                "items": [
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/Kartell"
+                            }
+                        },
+                        "code": "Kartell",
+                        "values": {},
+                        "created": "1970-01-01T00:00:00+00:00",
+                        "updated": "1970-01-01T01:00:00+00:00"
+                    }
+                ]
+            }
+        }
+    }
+}

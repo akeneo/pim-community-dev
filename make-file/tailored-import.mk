@@ -13,7 +13,7 @@ coupling-back: #Doc: launch coupling detector for tailored import
 
 .PHONY: unit-back
 unit-back: #Doc: launch PHPSpec for tailored import
-	$(PHP_RUN) vendor/bin/phpspec run components/tailored-import/back/tests/Specification
+	$(PHP_RUN) vendor/bin/phpspec run -vvv components/tailored-import/back/tests/Specification
 
 .PHONY: integration-back
 integration-back: # Disabled dependency becaused failed on custom workflow var/tests/phpunit #Doc: launch PHPUnit integration tests for tailored import

@@ -1,18 +1,11 @@
 import {useCallback, useEffect, useState} from 'react';
 import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-community/shared';
-
-export type SupplierFileRow = {
-    identifier: string;
-    uploadedAt: string;
-    contributor: string;
-    supplier: string;
-    status: 'To download' | 'Downloaded';
-};
+import {SupplierFileRow} from '../models/SupplierFileRow';
 
 const useSupplierFiles = (page: number): [SupplierFileRow[], number] => {
     const [totalNumberOfSupplierFiles, setTotalNumberOfSupplierFiles] = useState<number>(page);
     const [supplierFiles, setSupplierFiles] = useState<SupplierFileRow[]>([]);
-    const getSupplierFilesRoute = useRoute('supplier_portal_supplier_files_list');
+    const getSupplierFilesRoute = useRoute('supplier_portal_retailer_product_files_list');
     const notify = useNotify();
     const translate = useTranslate();
 

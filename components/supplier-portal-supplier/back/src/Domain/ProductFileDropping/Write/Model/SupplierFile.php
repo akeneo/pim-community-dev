@@ -23,7 +23,7 @@ final class SupplierFile
     private array $events = [];
 
     private function __construct(
-        Identifier $identifier,
+        string $identifier,
         string $originalFilename,
         string $path,
         ?string $uploadedByContributor,
@@ -31,7 +31,7 @@ final class SupplierFile
         ?\DateTimeInterface $uploadedAt,
         bool $downloaded = false,
     ) {
-        $this->identifier = $identifier;
+        $this->identifier = Identifier::fromString($identifier);
         $this->originalFilename = Filename::fromString($originalFilename);
         $this->path = Path::fromString($path);
         $this->uploadedByContributor = ContributorEmail::fromString($uploadedByContributor);
@@ -41,13 +41,14 @@ final class SupplierFile
     }
 
     public static function create(
+        string $identifier,
         string $originalFilename,
         string $path,
         string $uploadedByContributor,
         string $uploadedBySupplier,
     ): self {
         $supplierFile = new self(
-            Identifier::generate(),
+            $identifier,
             $originalFilename,
             $path,
             $uploadedByContributor,

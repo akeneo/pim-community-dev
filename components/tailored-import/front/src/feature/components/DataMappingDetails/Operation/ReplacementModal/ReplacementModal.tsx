@@ -92,6 +92,7 @@ type Value = {
 
 type ReplacementModalProps = {
   title: string;
+  replacedValuesHeader: string;
   operationType: OperationType;
   operationUuid: string;
   initialMapping: ReplacementValues;
@@ -108,6 +109,7 @@ type ReplacementModalProps = {
 
 const ReplacementModal = ({
   title,
+  replacedValuesHeader,
   operationType,
   operationUuid,
   initialMapping,
@@ -243,11 +245,7 @@ const ReplacementModal = ({
             {0 < values.length && (
               <Table>
                 <Table.Header sticky={44}>
-                  <Table.HeaderCell>
-                    {translate(
-                      'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.header.replacement'
-                    )}
-                  </Table.HeaderCell>
+                  <Table.HeaderCell>{replacedValuesHeader}</Table.HeaderCell>
                   <Table.HeaderCell>
                     {translate(
                       'akeneo.tailored_import.data_mapping.operations.replacement.modal.table.header.source_values'

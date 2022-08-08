@@ -17,12 +17,12 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsMainMediaInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindAssetFamilyAttributeAsMainMediaTest extends SqlIntegrationTestCase
 {
-    /** @var FindAssetFamilyAttributeAsMainMediaInterface */
-    private $findAttributeAsMainMedia;
+    private FindAssetFamilyAttributeAsMainMediaInterface $findAttributeAsMainMedia;
 
     public function setUp(): void
     {

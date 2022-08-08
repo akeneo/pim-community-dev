@@ -190,6 +190,16 @@ class GetConnectorRecordsAction
             }
         }
 
+        if (isset($rawFilters['code'])) {
+            foreach ($rawFilters['code'] as $rawFilter) {
+                $formattedFilters[] = [
+                    'field' => 'code',
+                    'operator' => $rawFilter['operator'],
+                    'value' => $rawFilter['value']
+                ];
+            }
+        }
+
         return $formattedFilters;
     }
 

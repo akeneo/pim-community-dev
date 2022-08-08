@@ -109,6 +109,29 @@ class SearchFiltersValidator
                         ]
                     ],
                 ],
+                'code' => [
+                    'type' => 'array',
+                    'minItems' => 1,
+                    'items' => [
+                        [
+                            'type' => 'object',
+                            'required' => ['operator', 'value'],
+                            'properties' => [
+                                'operator' => [
+                                    'type' => 'string',
+                                    'enum' => ['IN'],
+                                ],
+                                'value' => [
+                                    'type' => 'array',
+                                    "minItems" => 1,
+                                    'items' => [
+                                        'type' => 'string',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'additionalProperties' => false
         ];

@@ -103,4 +103,10 @@ class ContributorAccount
         $this->accessToken = AccessToken::generate();
         $this->accessTokenCreatedAt = new \DateTimeImmutable();
     }
+
+    public function renewAccessToken(): void
+    {
+        $this->accessToken = AccessToken::generate();
+        $this->accessTokenCreatedAt = new \DateTimeImmutable();
+    }
 }

@@ -49,6 +49,7 @@ class InMemoryFindAssetIdentifiersForQuery implements FindIdentifiersForQueryInt
     /** @var string[] */
     private array $requestContractsApi = [
         'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_brand_assets_for_ecommerce_channel.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_brand_assets_for_kartell_code.json',
         'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_complete_brand_assets.json',
         'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_brand_assets_page_1.json',
         'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_brand_assets_page_2.json',

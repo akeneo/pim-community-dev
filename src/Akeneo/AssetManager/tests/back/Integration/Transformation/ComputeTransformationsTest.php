@@ -291,7 +291,6 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
             ->withAttributes(['main_image', 'target_image'])
             ->load();
 
-        /** @var MediaFileAttribute $mainImageAttribute */
         $this->mainImageAttribute = $fixtures['attributes']['main_image'];
         $this->mainImageAttribute->setAllowedExtensions(AttributeAllowedExtensions::fromList([]));
         $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')->update($this->mainImageAttribute);

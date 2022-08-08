@@ -43,10 +43,12 @@ class SimpleSelectReplacementOperationApplierSpec extends ObjectBehavior
             [
                 'adidas' => ['nike', 'reebok'],
                 'foo' => ['bar', 'baz'],
+                'int' => ['8'],
             ],
         );
 
         $this->applyOperation($operation, new StringValue('nike'))->shouldBeLike(new StringValue('adidas'));
+        $this->applyOperation($operation, new StringValue('8'))->shouldBeLike(new StringValue('int'));
     }
 
     public function it_returns_the_original_value_when_the_value_is_not_mapped(): void

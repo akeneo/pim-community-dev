@@ -1,13 +1,22 @@
-supplier_portal_supplier_files_list:
+supplier_portal_retailer_product_files_list:
     path: /
     defaults:
-        _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\SupplierFilesList
+        _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\AllSupplierFilesList
         _feature: supplier_portal_supplier_file_dropping
     methods: [GET]
 
-supplier_portal_supplier_download_file:
+supplier_portal_retailer_download_file:
     path: /download-file/{identifier}
     defaults:
         _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\DownloadProductFile
         _feature: supplier_portal_supplier_file_dropping
+    methods: [GET]
+
+supplier_portal_retailer_supplier_product_files_list:
+    path: /product-files/{supplierIdentifier}
+    defaults:
+        _controller: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\SupplierFilesList
+        _feature: supplier_portal_supplier_file_dropping
+    requirements:
+        supplierIdentifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [GET]

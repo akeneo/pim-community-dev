@@ -159,7 +159,7 @@ final class DateValidatorTest extends AbstractValidationTest
                 ],
             ],
             'a date data mapping should have a source' => [
-                'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched',
+                'akeneo.tailored_import.validation.data_mappings.sources.at_least_one_required',
                 '[sources]',
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
@@ -179,7 +179,7 @@ final class DateValidatorTest extends AbstractValidationTest
                 ],
             ],
             'a date data mapping cannot have multiple sources' => [
-                'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched',
+                'akeneo.tailored_import.validation.data_mappings.sources.at_least_one_required',
                 '[sources]',
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
