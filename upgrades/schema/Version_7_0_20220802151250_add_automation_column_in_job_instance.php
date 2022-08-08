@@ -36,10 +36,10 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance ext
             SQL);
         }
 
-        if (!$this->isColumnAlreadyCreated('is_automated')) {
+        if (!$this->isColumnAlreadyCreated('scheduled')) {
             $this->addSql(<<<SQL
                 ALTER TABLE akeneo_batch_job_instance 
-                ADD COLUMN is_automated BOOL DEFAULT FALSE AFTER raw_parameters;
+                ADD COLUMN scheduled BOOL DEFAULT FALSE AFTER raw_parameters;
             SQL);
         }
     }
