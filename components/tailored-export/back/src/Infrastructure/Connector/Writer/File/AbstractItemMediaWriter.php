@@ -67,8 +67,8 @@ abstract class AbstractItemMediaWriter implements ItemWriterInterface, Initializ
      */
     public function write(array $items): void
     {
-        $this->openedPath = $this->getPath();
         if (!empty($items) && 0 === $this->numberOfWrittenLines) {
+            $this->openedPath = $this->getPath();
             $this->writer = $this->fileWriterFactory->build($this->getWriterOptions());
             $this->writer->openToFile($this->openedPath);
             $this->addHeadersIfNeeded(current($items)->getItems());
@@ -125,17 +125,16 @@ abstract class AbstractItemMediaWriter implements ItemWriterInterface, Initializ
             $filePath = $jobParameters->get('filePath');
         }
 
-        if (!str_contains($filePath, '%')) {
-            return $filePath;
+        if (str_contains($filePath, '%')) {
+            $jobLabel = '';
+            $datetime = $this->getStepExecution()->getStartTime()->format(self::DATETIME_FORMAT);
+            if (null !== $jobExecution->getJobInstance()) {
+                $jobLabel = preg_replace('#[^A-Za-z0-9.]#', '_', $jobExecution->getJobInstance()->getLabel());
+            }
+
+            $filePath = strtr($filePath, ['%datetime%' => $datetime, '%job_label%' => $jobLabel]);
         }
 
-        $jobLabel = '';
-        $datetime = $this->getStepExecution()->getStartTime()->format(self::DATETIME_FORMAT);
-        if (null !== $jobExecution->getJobInstance()) {
-            $jobLabel = preg_replace('#[^A-Za-z0-9.]#', '_', $jobExecution->getJobInstance()->getLabel());
-        }
-
-        $filePath = strtr($filePath, ['%datetime%' => $datetime, '%job_label%' => $jobLabel]);
         if ($this->areSeveralFilesNeeded()) {
             $fileNumber = floor($this->numberOfWrittenLines / $this->getMaxLinesPerFile()) + 1;
             $fileInfo = new \SplFileInfo($filePath);
