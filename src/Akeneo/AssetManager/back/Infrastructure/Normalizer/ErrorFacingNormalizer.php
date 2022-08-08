@@ -28,7 +28,7 @@ class ErrorFacingNormalizer
             [
                 'messageTemplate' => $error->translationId(),
                 'parameters' => $error->translationParameters(),
-                'message' => $this->translator->trans($error->translationId(), $error->translationParameters()),
+                'message' => $this->translator->trans($error->translationId(), $error->translationParameters(), 'validators'),
                 'propertyPath' => $propertyPath,
             ]
         ];

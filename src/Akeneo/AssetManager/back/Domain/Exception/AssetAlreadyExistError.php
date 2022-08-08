@@ -22,8 +22,7 @@ class AssetAlreadyExistError extends UserFacingError
         return new self(
             'pim_asset_manager.asset.validation.code.should_be_unique',
             [
-                'code' => $asset->getCode()->normalize(),
-                'asset_family_identifier' => $asset->getAssetFamilyIdentifier()->normalize(),
+                '%code%' => $asset->getCode()->normalize(),
             ]
         );
     }

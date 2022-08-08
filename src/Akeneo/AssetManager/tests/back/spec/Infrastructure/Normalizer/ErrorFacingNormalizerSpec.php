@@ -21,7 +21,7 @@ class ErrorFacingNormalizerSpec extends ObjectBehavior
         TranslatorInterface $translator,
         UserFacingError $error
     ) {
-        $translator->trans('a_translation_id', ['parameter' => 'value'])->willReturn('A translation');
+        $translator->trans('a_translation_id', ['parameter' => 'value'], 'validators')->willReturn('A translation');
         $error->translationId()->willReturn('a_translation_id');
         $error->translationParameters()->willReturn([
             'parameter' => 'value'
