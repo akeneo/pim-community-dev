@@ -41,6 +41,8 @@ Akeneo\Tool\Component\Batch\Model\JobInstance:
         scheduled:
             type: boolean
             column: scheduled
+            options:
+                default: false
         automation:
             type: json
             column: automation

@@ -62,7 +62,7 @@ class JobInstance
     protected $rawParameters = [];
 
     /** @var bool */
-    protected $scheduled;
+    protected $scheduled = false;
 
     /** @var string */
     protected $automation;
