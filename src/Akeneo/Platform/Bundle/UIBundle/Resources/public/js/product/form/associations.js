@@ -221,7 +221,7 @@ define([
           );
           this.renderPanes();
 
-          if (0 !== associationTypes.length) {
+          if (0 !== associationTypes.length && !isQuantifiedAssociation) {
             const currentGrid = this.datagrids[this.getCurrentAssociationTarget()];
             this.renderGrid(currentGrid.name, currentGrid.getInitialParams(this.getCurrentAssociationType()));
             this.setListenerSelectors();
@@ -458,6 +458,12 @@ define([
       this.updateListenerSelectors();
 
       const currentGrid = this.datagrids[this.getCurrentAssociationTarget()];
+
+      if (!this.isGridRendered(currentGrid) && !isQuantifiedAssociation) {
+        this.renderGrid(currentGrid.name, currentGrid.getInitialParams(this.getCurrentAssociationType()));
+        this.setListenerSelectors();
+      }
+
       mediator
         .trigger(
           'datagrid:setParam:' + currentGrid.name,
@@ -502,7 +508,7 @@ define([
       this.updateListenerSelectors();
 
       const currentGrid = this.datagrids[this.getCurrentAssociationTarget()];
-      if (!this.isGridRendered(currentGrid)) {
+      if (!this.isGridRendered(currentGrid) && !isQuantifiedAssociation) {
         this.renderGrid(currentGrid.name, currentGrid.getInitialParams(this.getCurrentAssociationType()));
         this.setListenerSelectors();
       }
