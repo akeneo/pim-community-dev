@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application;
 
-use Akeneo\Category\Api\Command\Event\CategoryCreatedEvent;
-use Akeneo\Category\Api\Command\Event\CategoryUpdatedEvent;
 use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Api\Command\UpsertCategoryCommand;
+use Akeneo\Category\Api\Event\CategoryCreatedEvent;
+use Akeneo\Category\Api\Event\CategoryUpdatedEvent;
 use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Category\Application\Query\FindCategoryByCode;
 use Akeneo\Category\Domain\Model\Category;
@@ -15,6 +15,7 @@ use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -23,6 +24,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 class UpsertCategoryCommandHandler
 {
     public function __construct(
+        private ValidatorInterface $validator,
         private FindCategoryByCode $findCategoryByCode,
         private UserIntentApplierRegistry $applierRegistry,
         private EventDispatcherInterface $eventDispatcher
@@ -34,13 +36,11 @@ class UpsertCategoryCommandHandler
      */
     public function __invoke(UpsertCategoryCommand $command): void
     {
-        //  TODO : validate command (symfony validation)
+        $this->validateCommand($command);
 
-        //  Get the category
         $category = $this->findCategoryByCode->__invoke($command->categoryCode());
 
         $isCreation = null === $category;
-        // TODO : Manage to create category
         if ($isCreation) {
             throw new Exception("Command to create a category is in progress.");
         }
@@ -49,7 +49,6 @@ class UpsertCategoryCommandHandler
 
         // TODO : Save Model in db
 
-        // TODO : Ensure use event correctly
         if ($isCreation) {
             $this->eventDispatcher->dispatch(new CategoryCreatedEvent((string)$category->getCode()));
         } else {
@@ -83,6 +82,14 @@ class UpsertCategoryCommandHandler
 
                 throw new ViolationsException($violations);
             }
+        }
+    }
+
+    private function validateCommand(UpsertCategoryCommand $command): void
+    {
+        $violations = $this->validator->validate($command);
+        if (0 < $violations->count()) {
+            throw new ViolationsException($violations);
         }
     }
 }

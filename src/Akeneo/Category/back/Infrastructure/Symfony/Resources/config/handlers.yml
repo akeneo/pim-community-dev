@@ -1,6 +1,7 @@
 services:
   Akeneo\Category\Application\UpsertCategoryCommandHandler:
     arguments:
+      - '@validator'
       - '@Akeneo\Category\Application\Query\FindCategoryByCode'
       - '@Akeneo\Category\Application\Applier\UserIntentApplierRegistry'
       - '@event_dispatcher'
