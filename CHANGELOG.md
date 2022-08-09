@@ -67,6 +67,7 @@
 - PIM-10530: Fix case issue when querying products with attribute options
 - PIM-10572: Fix product publishing when associated to a published product with a 2-way association
 - PIM-10569: Fix associate bulk action screen for quantified associations
+- PIM-10574: Fix link to product page in quantified association row
 
 ## Improvements
 
