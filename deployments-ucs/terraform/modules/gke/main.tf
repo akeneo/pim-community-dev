@@ -78,7 +78,7 @@ resource "google_container_node_pool" "gke" {
   node_config {
     preemptible     = lookup(each.value, "preemptible", false)
     machine_type    = lookup(each.value, "machine_type", "n1-standard-16")
-    labels          = lookup(var.node_pool_labels, each.key, {})
+    labels          = lookup(var.node_pool_labels, each.value.name, {})
     tags            = concat([data.google_project.current.project_id], lookup(var.node_pool_tags, each.key, []))
     service_account = var.gke_sa_email
 
