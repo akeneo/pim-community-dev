@@ -78,6 +78,12 @@ variable "node_pools_taints" {
   }
 }
 
+variable "node_locations" {
+  description = "Map of zone location to place nodes of node pools by region"
+  type        = map(map(list(string)))
+  default     = null
+}
+
 
 variable "cluster_developers" {
   type        = list(string)
