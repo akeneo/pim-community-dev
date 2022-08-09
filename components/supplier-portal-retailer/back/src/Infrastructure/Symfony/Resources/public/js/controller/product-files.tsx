@@ -7,7 +7,7 @@ import {ProductFileDroppingApp} from '@akeneo-pim-enterprise/supplier-portal-ret
 
 const mediator = require('oro/mediator');
 
-class ProductFileDropping extends ReactController {
+class ProductFiles extends ReactController {
     private static container = document.createElement('div');
 
     reactElementToMount() {
@@ -19,7 +19,7 @@ class ProductFileDropping extends ReactController {
     }
 
     routeGuardToUnmount() {
-        return /^supplier_portal_supplier_files_/;
+        return /^supplier_portal_retailer_product_files/;
     }
 
     renderRoute() {
@@ -33,8 +33,8 @@ class ProductFileDropping extends ReactController {
     }
 
     getContainerRef(): Element {
-        return ProductFileDropping.container;
+        return ProductFiles.container;
     }
 }
 
-export = ProductFileDropping;
+export = ProductFiles;

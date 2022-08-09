@@ -43,10 +43,12 @@ class FamilyReplacementOperationApplierSpec extends ObjectBehavior
             [
                 'video_game' => ['videogames', 'video-game'],
                 'board_game' => ['boardgames', 'board-games'],
+                'card_game' => ['12'],
             ],
         );
 
         $this->applyOperation($operation, new StringValue('videogames'))->shouldBeLike(new StringValue('video_game'));
+        $this->applyOperation($operation, new StringValue('12'))->shouldBeLike(new StringValue('card_game'));
     }
 
     public function it_returns_the_original_value_when_the_value_is_not_mapped(): void

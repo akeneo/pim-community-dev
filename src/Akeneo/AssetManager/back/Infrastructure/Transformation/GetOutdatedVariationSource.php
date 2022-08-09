@@ -61,12 +61,20 @@ class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
             throw new NonApplicableTransformationException($message);
         }
 
+        $sourceData = $sourceValue->getData();
+        if (!$sourceData instanceof FileData) {
+            throw new NonApplicableTransformationException(sprintf(
+                'The source attribute "%s" is not a file',
+                $transformation->getSource()->getAttributeCode()
+            ));
+        }
+
         $targetValue = $this->getValueForReference($transformation->getTarget(), $asset);
         if (!$targetValue instanceof Value
             || $targetValue->getData()->getUpdatedAt() < $sourceValue->getData()->getUpdatedAt()
             || $targetValue->getData()->getUpdatedAt() < $transformation->getUpdatedAt()
         ) {
-            return $sourceValue->getData();
+            return $sourceData;
         }
 
         return null;

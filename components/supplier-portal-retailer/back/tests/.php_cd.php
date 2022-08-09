@@ -25,7 +25,6 @@ $rules = [
             // Supplier Portal Retailer coupling
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
 
             // PIM coupling
 
@@ -45,6 +44,7 @@ $rules = [
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
+            'Ramsey\Uuid\Uuid',
         ],
     )->in('Akeneo\SupplierPortal\Retailer\Application'),
 
@@ -55,7 +55,6 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application',
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
             'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // PIM coupling
@@ -83,7 +82,6 @@ $rules = [
             'Box\Spout\Writer\Exception\WriterNotOpenedException',
             'Doctrine\DBAL\Connection',
             'Psr\Log\LoggerInterface',
-            'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
     )->in('Akeneo\SupplierPortal\Retailer\Infrastructure'),
@@ -98,7 +96,6 @@ $rules = [
             'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
 
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Job\JobParameters',

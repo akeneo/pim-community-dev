@@ -1,0 +1,100 @@
+supplier_portal:
+  menu_block_title: Portale fornitori
+  supplier:
+    breadcrumb:
+      root: Portale fornitori
+      suppliers: Fornitori
+    supplier_create:
+      modal:
+        title: Fornitore
+        code:
+          label: Codice
+        label:
+          label: Etichetta
+      create_button:
+        label: Crea il tuo primo fornitore
+      notification:
+        title: Il fornitore è stato creato.
+        content: Ora puoi modificarlo nella sezione di gestione fornitori.
+      error:
+        unknown_error: Si è verificato un errore durante la creazione del fornitore.
+        supplier_already_exists: 'Esiste già un fornitore con codice "{{ supplierCode }}".'
+    supplier_list:
+      menu_item: Fornitori
+      title: "]-Inf, 1]{{ count }} fornitore|]1, Inf[{{ count }} fornitori"
+      no_supplier: Non ci sono ancora fornitori.
+      search_by_supplier: Cerca per fornitore
+      no_search_result: Non ci sono fornitori che corrispondono a questa ricerca.
+      notification:
+        error:
+          title: Impossibile visualizzare l'elenco dei fornitori.
+          content: Ci scusiamo per l'inconveniente, ti invitiamo a riprovare tra qualche istante.
+      dropdown:
+        export_suppliers: Esporta fornitori
+        download_template: Scarica modello
+        import_suppliers: Importa fornitori
+      columns:
+        supplier: Fornitore
+        number_of_contributors: Numero di contributori
+        actions: Azioni
+    supplier_delete:
+      sucess_message: Il fornitore è stato eliminato correttamente
+      modal:
+        title: Fornitore
+        confirmation_question: Sei sicuro di voler eliminare questo fornitore?
+        warning: Se si elimina questo fornitore, ogni arricchimento non salvato andrà perso.
+        unknown_error: Si è verificato un errore durante l'eliminazione del fornitore.
+    supplier_edit:
+      tabs:
+        configuration: Configurazione
+        contributors: Contributori
+        product_files: File di prodotto
+      configuration_form:
+        code: Codice
+        label: Etichetta fornitore (obbligatoria)
+      contributors_form:
+        info: 'Aggiungi contributori per dare loro accesso al Portale fornitori Akeneo. Puoi compilare un elenco di indirizzi con separatori: spazio, virgola, punto e virgola e ritorno a capo.'
+        invalid_emails_warning: Alcune e-mail non sono valide e non verranno aggiunte.
+        emails_belonging_to_other_suppliers_warning: Ogni contributore può appartenere a un solo fornitore. Quando salvi questo fornitore, tutte le e-mail mostrate come avvisi verranno eliminate.
+        add_contributors: Aggiungi contributori
+        add_button: Aggiungi
+        search_by_email_address: Cerca per indirizzo e-mail
+        columns:
+          email: Indirizzo e-mail
+        no_contributor: Non ci sono ancora contributori.
+        result_counter: '{0} Nessun risultato|{1} {{ count }} risultato|]1,Inf] {{ count }} risultati'
+        notification:
+          email_error:
+            title: Non è stato possibile aggiungere questo contributore.
+            content: "L'e-mail {{ emailAddress }} non è valida: {{ message }}"
+          contributor_email_already_exists:
+            title: Non è stato possibile aggiungere questo contributore.
+            content: L'e-mail {{ emailAddress }} è già utilizzata per un altro fornitore e non supportiamo ancora la possibilità che più fornitori abbiano lo stesso contributore. Ci scusiamo per l'inconveniente.
+      loading_error: Si è verificato un errore durante il caricamento del fornitore.
+      success_message: Il fornitore è stato aggiornato correttamente.
+      update_error: Si è verificato un errore durante l'aggiornamento del fornitore.
+      delete_label: Elimina questo fornitore
+  product_file_dropping:
+    breadcrumb:
+      root: Portale fornitori
+      product_files: File di prodotto
+    supplier_files:
+      menu_item: File di prodotto
+      title: "]-Inf, 1]{{ count }} file di prodotto|]1, Inf[{{ count }} file di prodotto"
+      no_files: Non ci sono ancora file di prodotto.
+      columns:
+        upload_date: Data caricamento
+        contributor: Contributore
+        supplier: Fornitore
+        status: Stato
+      status:
+        downloaded: Scaricato
+        to_download: Da scaricare
+      notification:
+        error_loading_supplier_files:
+          title: Impossibile visualizzare i file di prodotto.
+          content: Ci scusiamo per l'inconveniente, ti invitiamo a riprovare tra qualche istante.
+pim_title:
+  supplier_portal_retailer_supplier_list: Fornitori
+  supplier_portal_retailer_supplier_edit: Modifica un fornitore
+batch_jobs.supplier_portal_xlsx_supplier_import.label: Importazione fornitore in Portale fornitori in XLSX

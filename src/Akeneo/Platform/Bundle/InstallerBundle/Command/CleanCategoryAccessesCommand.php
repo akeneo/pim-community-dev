@@ -12,6 +12,7 @@
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
@@ -28,32 +29,29 @@ class CleanCategoryAccessesCommand extends Command
     protected static $defaultName = 'pimee:installer:clean-category-accesses';
     protected static $defaultDescription = 'Removing the group "ALL" from categories\' permissions after a clean installation.';
 
-    private CategoryAccessRepository $accessRepository;
-    private GroupRepositoryInterface $groupRepository;
-    private ObjectManager $objectManager;
-
     public function __construct(
-        CategoryAccessRepository $accessRepository,
-        GroupRepositoryInterface $groupRepository,
-        ObjectManager $objectManager
+        private CategoryAccessRepository $accessRepository,
+        private GroupRepositoryInterface $groupRepository,
+        private ObjectManager $objectManager,
+        private FeatureFlags $featureFlags
     ) {
         parent::__construct();
-
-        $this->accessRepository = $accessRepository;
-        $this->groupRepository = $groupRepository;
-        $this->objectManager = $objectManager;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritdoc}s
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('Removing the group "ALL" from categories\' permissions...');
-        $groupAll = $this->groupRepository->getDefaultUserGroup();
-        $this->accessRepository->revokeAccessToGroups([$groupAll]);
-        $this->objectManager->flush();
-        $output->writeln('<info>done !</info>');
+        if ($this->featureFlags->isEnabled('permission')) {
+            $output->writeln('Removing the group "ALL" from categories\' permissions...');
+            $groupAll = $this->groupRepository->getDefaultUserGroup();
+            $this->accessRepository->revokeAccessToGroups([$groupAll]);
+            $this->objectManager->flush();
+            $output->writeln('<info>done !</info>');
+        } else {
+            $output->writeln('Permission feature is not enabled. Not removing the group "ALL" from categories\' permissions.');
+        }
 
         return Command::SUCCESS;
     }

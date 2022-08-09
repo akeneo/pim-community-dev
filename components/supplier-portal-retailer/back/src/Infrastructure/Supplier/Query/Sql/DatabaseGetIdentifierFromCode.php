@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetIdentifierFromCode;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetIdentifierFromCode implements GetIdentifierFromCode
@@ -14,7 +13,7 @@ final class DatabaseGetIdentifierFromCode implements GetIdentifierFromCode
     {
     }
 
-    public function __invoke(Code $code): ?string
+    public function __invoke(string $code): ?string
     {
         $identifier = $this->connection->executeQuery(
             <<<SQL

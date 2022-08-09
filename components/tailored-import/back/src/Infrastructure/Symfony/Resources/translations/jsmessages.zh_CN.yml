@@ -65,10 +65,10 @@ akeneo.tailored_import:
         title: 类别替换
         modal:
           title: 管理类别
-          table:
-            header:
-              replacement: PIM 类别
-              source_values: 源类别
+      family_replacement:
+        title: 品类替换
+        modal:
+          title: 管理品类
       no_result: 无可用操作
       no_source: 首先，选择一个源，然后您将能够访问操作
       no_available:
@@ -93,7 +93,6 @@ akeneo.tailored_import:
               all: 所有值
           table:
             header:
-              replacement: 选项标签
               source_values: 源值
           validation_error: 有些替换值无效，请参阅每个字段下面的错误消息。
       boolean_replacement:
@@ -166,7 +165,6 @@ akeneo.tailored_import:
       uuid:
         should_be_unique: 此映射 UUID 已存在，请新输入一个。
       sources:
-        count_mismatched: 只需为此映射设置一个源。
         at_least_one_required: 需要为您的映射添加至少一个源。
         max_count_reached: 已达到源的上限数目 {{ limit }} ，无法再将源添加到映射中。
         should_be_unique: 此源已存在，请新输入一个。
@@ -195,7 +193,7 @@ akeneo.tailored_import:
       not_allowed_extension: 只支持 XLSX 文件。
     file_structure:
       first_product_row_should_be_after_header_row: 第一产品行应位于标题行之后。
-      unique_identifier_column_should_be_after_first_column_message: 唯一标识符列应至少是第一列。
+      unique_identifier_column_should_be_after_first_column_message: 唯一标识符列应始终是第一信息列。
       header_row_should_not_contain_empty_cell: 标题行不应包含空单元格。
     file_preview:
       empty_sheet:

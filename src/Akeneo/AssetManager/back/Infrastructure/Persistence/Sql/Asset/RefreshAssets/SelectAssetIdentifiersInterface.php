@@ -8,7 +8,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 interface SelectAssetIdentifiersInterface
 {
     /**
-     * @return AssetIdentifier[]
+     * @return AssetIdentifier[]|\Iterator<AssetIdentifier>
      */
     public function fetch(): \Iterator;
 }

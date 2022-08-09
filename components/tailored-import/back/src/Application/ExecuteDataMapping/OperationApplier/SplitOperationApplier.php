@@ -17,6 +17,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\Unex
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SplitOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
@@ -26,6 +27,10 @@ final class SplitOperationApplier implements OperationApplierInterface
     {
         if (!$operation instanceof SplitOperation) {
             throw new UnexpectedValueException($operation, SplitOperation::class, self::class);
+        }
+
+        if ($value instanceof InvalidValue) {
+            return $value;
         }
 
         if (!$value instanceof StringValue) {

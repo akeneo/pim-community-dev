@@ -59,9 +59,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
     }
 
     /**
-     * Return a Binary instance that embed the image corresponding to the specified file type
-     *
-     * @throws \InvalidArgumentException
+     * {@inheritdoc}
      */
     public function getImageBinary(string $fileType): Binary
     {

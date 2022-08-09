@@ -5,6 +5,18 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler'
 
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\AllSupplierFilesList:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFilesCount'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\SupplierFilesList:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilesCount'
+
     # GCS Bucket service
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\DownloadStoredProductFileFromGCSBucket

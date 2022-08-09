@@ -64,7 +64,7 @@ workflows:
     clone_and_upgrade_flex_customers:
         when:
             or:
-              - equal: [ true, << pipeline.parameters.trigger_ondemand >> ]
+              - equal: [ "clone_and_upgrade_flex_customers", << pipeline.parameters.trigger >> ]
               - and:
                   - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
                   - equal: [ "clone_and_upgrade_flex_customers", << pipeline.schedule.name >> ]

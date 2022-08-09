@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Operatio
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\FamilyReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
@@ -25,6 +26,10 @@ final class FamilyReplacementOperationApplier implements OperationApplierInterfa
     {
         if (!$operation instanceof FamilyReplacementOperation) {
             throw new UnexpectedValueException($operation, FamilyReplacementOperation::class, self::class);
+        }
+
+        if ($value instanceof InvalidValue) {
+            return $value;
         }
 
         if (!$value instanceof StringValue) {

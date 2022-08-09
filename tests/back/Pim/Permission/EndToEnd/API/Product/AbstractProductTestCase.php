@@ -63,7 +63,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(featureFlags: ['permission']);
     }
 
     /**

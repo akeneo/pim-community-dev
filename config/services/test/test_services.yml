@@ -317,6 +317,7 @@ services:
         arguments:
             - '@akeneo_integration_tests.loader.fixtures_loader.base'
             - '@akeneo_ee_integration_tests.loader.permission_cleaner'
+            - '@feature_flags'
 
     akeneo_ee_integration_tests.loader.permission_cleaner:
         class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\PermissionCleaner'

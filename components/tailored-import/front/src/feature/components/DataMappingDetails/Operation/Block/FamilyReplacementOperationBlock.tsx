@@ -72,6 +72,9 @@ const FamilyReplacementOperationBlock = ({targetCode, operation, onChange, onRem
           {isReplacementModalOpen && (
             <ReplacementModal
               title={translate('akeneo.tailored_import.data_mapping.operations.family_replacement.modal.title')}
+              replacedValuesHeader={translate(
+                'akeneo.tailored_import.data_mapping.operations.family_replacement.option_labels'
+              )}
               replacementValueFilter={replacementValueFilter}
               onReplacementValueFilterChange={setReplacementValueFilter}
               values={families}

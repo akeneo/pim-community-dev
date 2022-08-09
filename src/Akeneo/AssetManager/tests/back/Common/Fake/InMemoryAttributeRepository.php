@@ -155,11 +155,6 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
      * Find a asset by its code and entity.
      * It's a tooling method not present in the main interface, because we need a way to retrieve attributes by their
      * code only in acceptance test. The real application will always use identifiers.
-     *
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
-     * @param AttributeCode            $code
-     *
-     * @return AbstractAttribute
      */
     public function getByAssetFamilyAndCode(string $entityCode, string $attributeCode): AbstractAttribute
     {

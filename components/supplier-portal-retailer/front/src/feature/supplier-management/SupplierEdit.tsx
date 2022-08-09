@@ -3,6 +3,8 @@ import {
     Breadcrumb,
     Button,
     Dropdown,
+    ExportXlsxIllustration,
+    getColor,
     IconButton,
     MoreIcon,
     TabBar,
@@ -11,10 +13,9 @@ import {
 } from 'akeneo-design-system';
 import {PageContent, PageHeader, PimView, UnsavedChanges, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {Configuration} from './components/SupplierEdit/Configuration';
+import {Configuration, ContributorList, ProductFiles} from './components/SupplierEdit';
 import {useSupplier} from './hooks';
 import {useHistory, useParams} from 'react-router';
-import {ContributorList} from './components/SupplierEdit/ContributorList';
 import {ContributorEmail} from './models';
 import {DeleteSupplier} from './components/DeleteSupplier';
 
@@ -55,6 +56,9 @@ const SupplierEdit = () => {
     return (
         <Container>
             <PageHeader>
+                <PageHeader.Illustration>
+                    <StyledExportXlsxIllustration size={140} />
+                </PageHeader.Illustration>
                 <PageHeader.Breadcrumb>
                     <Breadcrumb>
                         <Breadcrumb.Step>{translate('supplier_portal.supplier.breadcrumb.root')}</Breadcrumb.Step>
@@ -105,6 +109,7 @@ const SupplierEdit = () => {
                         setContributors={handleSupplierContributorsChange}
                     />
                 )}
+                {isCurrent('product_files') && <ProductFiles supplierIdentifier={supplier.identifier} />}
             </StyledPageContent>
         </Container>
     );
@@ -169,6 +174,11 @@ const Container = styled.div``;
 const StyledPageContent = styled(PageContent)`
     display: flex;
     flex-direction: column;
+`;
+
+const StyledExportXlsxIllustration = styled(ExportXlsxIllustration)`
+    border: 1px ${getColor('grey60')} solid;
+    margin-right: 20px;
 `;
 
 export {SupplierEdit};

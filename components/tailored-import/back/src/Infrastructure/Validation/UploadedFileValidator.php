@@ -45,6 +45,10 @@ class UploadedFileValidator extends ConstraintValidator
             ]),
         ]);
 
+        if (0 < $this->context->getViolations()->count()) {
+            return;
+        }
+
         $validator->inContext($this->context)->atPath('[file]')->validate($uploadedFile->getClientOriginalExtension(), [
             new Choice([
                 'choices' => self::ALLOWED_EXTENSIONS,

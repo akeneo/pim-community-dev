@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseSupplierExists implements SupplierExists
@@ -14,7 +13,7 @@ final class DatabaseSupplierExists implements SupplierExists
     {
     }
 
-    public function fromCode(Code $supplierCode): bool
+    public function fromCode(string $supplierCode): bool
     {
         $sql = <<<SQL
             SELECT 1
@@ -25,7 +24,7 @@ final class DatabaseSupplierExists implements SupplierExists
         return 1 === $this->connection->executeQuery(
             $sql,
             [
-                'code' => (string) $supplierCode,
+                'code' => $supplierCode,
             ],
         )->rowCount();
     }

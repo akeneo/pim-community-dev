@@ -37,7 +37,7 @@ class AssetFamilyPermission
     }
 
     /**
-     * @param UserGroupPermission $permissions
+     * @param UserGroupPermission[] $permissions
      */
     private function assertUniquePermissions(array $permissions): void
     {
@@ -85,7 +85,7 @@ class AssetFamilyPermission
     }
 
     /**
-     * @param UserGroupIdentifier $userGroupIdentifiers
+     * @param UserGroupIdentifier[] $userGroupIdentifiers
      */
     public function isAllowedToEdit(array $userGroupIdentifiers): bool
     {
@@ -108,7 +108,7 @@ class AssetFamilyPermission
     }
 
     /**
-     * @param UserGroupIdentifier $userGroupIdentifiers
+     * @param UserGroupIdentifier[] $userGroupIdentifiers
      *
      * @return UserGroupPermission[]
      */

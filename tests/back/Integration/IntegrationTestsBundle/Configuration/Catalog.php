@@ -53,7 +53,7 @@ class Catalog implements CatalogInterface
     /**
      * {@inheritdoc}
      */
-    public function useTechnicalCatalog(): Configuration
+    public function useTechnicalCatalog(array $featureFlags = []): Configuration
     {
         $communityConfig = $this->communityCatalog->useTechnicalCatalog();
         $catalogDirectories = [realpath(
@@ -71,14 +71,15 @@ class Catalog implements CatalogInterface
 
         return new Configuration(
             array_merge($communityConfig->getCatalogDirectories(), $catalogDirectories),
-            $communityConfig->getFixtureDirectories()
+            $communityConfig->getFixtureDirectories(),
+            $featureFlags
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function useMinimalCatalog(): Configuration
+    public function useMinimalCatalog(array $featureFlags = []): Configuration
     {
         $communityConfig = $this->communityCatalog->useMinimalCatalog();
         $catalogDirectories = [realpath(
@@ -102,7 +103,8 @@ class Catalog implements CatalogInterface
 
         return new Configuration(
             $catalogDirectories,
-            $communityConfig->getFixtureDirectories()
+            $communityConfig->getFixtureDirectories(),
+            $featureFlags
         );
 
     }
@@ -110,7 +112,7 @@ class Catalog implements CatalogInterface
     /**
      * {@inheritdoc}
      */
-    public function useFunctionalCatalog(string $catalog): Configuration
+    public function useFunctionalCatalog(string $catalog, array $featureFlags = []): Configuration
     {
         $communityConfig = $this->communityCatalog->useFunctionalCatalog($catalog);
         $catalogDirectories = [realpath(
@@ -146,7 +148,8 @@ class Catalog implements CatalogInterface
 
         return new Configuration(
             array_merge($communityConfig->getCatalogDirectories(), $catalogDirectories),
-            array_merge($communityConfig->getFixtureDirectories(), $fixtureDirectories)
+            array_merge($communityConfig->getFixtureDirectories(), $fixtureDirectories),
+            $featureFlags
         );
     }
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFiles;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Read\Model\SupplierFile;
 use Akeneo\SupplierPortal\Supplier\Test\Integration\SqlIntegrationTestCase;
@@ -19,11 +18,7 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
         $this->createSuppliers();
         $this->createContributors();
 
-        static::assertEmpty(
-            ($this->get(GetProductFiles::class))(
-                Email::fromString('contributor1@example.com')
-            ),
-        );
+        static::assertEmpty(($this->get(GetProductFiles::class))('contributor1@example.com'));
     }
 
     /** @test */
@@ -35,16 +30,14 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
 
         $sut = $this->get(GetProductFiles::class);
 
-        $contributorEmail = Email::fromString('contributor1@example.com');
-
-        $supplierProductFiles = ($sut)($contributorEmail);
+        $supplierProductFiles = ($sut)('contributor1@example.com');
 
         $expectedProductFilenames = [];
         for ($i = 0; 25 > $i; $i++) {
             $expectedProductFilenames[] = sprintf('products_%d.xlsx', $i+1);
         }
 
-        static::assertSame(
+        static::assertEqualsCanonicalizing(
             $expectedProductFilenames,
             array_map(
                 fn (SupplierFile $supplierProductFile) => $supplierProductFile->originalFilename,
@@ -86,7 +79,7 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
         SQL,
             [
                 'identifier' => Uuid::uuid4()->toString(),
-                'original_filename' => sprintf('products_file_from_another_supplier.xlsx'),
+                'original_filename' => 'products_file_from_another_supplier.xlsx',
                 'path' => sprintf(
                     'supplier2/%s-products_file_from_another_supplier.xlsx',
                     Uuid::uuid4()->toString(),
@@ -110,7 +103,7 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
                     uploaded_at
                 ) VALUES (
                     :identifier,
-                    :original_filename,
+                    :originalFilename,
                     :path,
                     :contributorEmail,
                     :supplierIdentifier,
@@ -122,7 +115,7 @@ final class DatabaseGetProductFilesIntegration extends SqlIntegrationTestCase
                 $sql,
                 [
                     'identifier' => Uuid::uuid4()->toString(),
-                    'original_filename' => sprintf('products_%d.xlsx', $i+1),
+                    'originalFilename' => sprintf('products_%d.xlsx', $i+1),
                     'path' => sprintf('supplier1/%s-products_1.xlsx', Uuid::uuid4()->toString()),
                     'contributorEmail' => $i % 2 ? 'contributor1@example.com' : 'contributor2@example.com',
                     'supplierIdentifier' => 'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
