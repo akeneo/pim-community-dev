@@ -7,6 +7,7 @@ parameters:
     akeneo_batch.logger.batch_log_handler.class:              Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler
     akeneo_batch.mail_notifier.class:                         Akeneo\Tool\Bundle\BatchBundle\Notification\MailNotifier
     akeneo_batch.set_job_execution_log_file_subscriber.class: Akeneo\Tool\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber
+    akeneo_batch.update_job_instance_automation_subscriber.class: Akeneo\Tool\Bundle\BatchBundle\EventListener\UpdateJobInstanceAutomationSubscriber
     akeneo_batch.manager.job_execution.class:                 Akeneo\Tool\Bundle\BatchBundle\Manager\JobExecutionManager
     akeneo_batch.launcher.simple_job_launcher.class:          Akeneo\Tool\Bundle\BatchBundle\Launcher\SimpleJobLauncher
     akeneo_batch.entity_manager.persisted_connection_entity_manager.class: Akeneo\Tool\Bundle\BatchBundle\EntityManager\PersistedConnectionEntityManager
@@ -61,6 +62,11 @@ services:
         class: '%akeneo_batch.set_job_execution_log_file_subscriber.class%'
         arguments:
             - '@akeneo_batch.logger.batch_log_handler'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_batch.update_job_instance_automation_subscriber:
+        class: '%akeneo_batch.update_job_instance_automation_subscriber.class%'
         tags:
             - { name: kernel.event_subscriber }
 
