@@ -508,7 +508,7 @@ paths:
                 code: 404,
                 message: "Catalog \"{id}\" does not exist or you can't access it."
               }
-  /api/rest/v1/catalogs/{id}/products/{identifier}:
+  /api/rest/v1/catalogs/{id}/products/{uuid}:
     get:
       summary: "Product belonging to the catalog"
       tags: [ products ]
@@ -519,10 +519,12 @@ paths:
           name: id
           type: string
           required: true
+          description: Catalog ID
         - in: path
-          name: identifier
+          name: uuid
           type: string
           required: true
+          description: Product UUID
       responses:
         "200":
           description: "OK"
@@ -561,7 +563,7 @@ paths:
             application/json:
               {
                 code: 404,
-                message: "Either catalog \"{id}\" does not exist or you can't access it, or product \"{identifier}\" does not exist or you do not have permission to access it."
+                message: "Either catalog \"{id}\" does not exist or you can't access it, or product \"{uuid}\" does not exist or you do not have permission to access it."
               }
   /api/rest/v1/catalogs/{id}/mapped-products:
     get:
