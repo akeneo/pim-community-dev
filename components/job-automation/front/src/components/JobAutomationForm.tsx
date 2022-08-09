@@ -9,7 +9,7 @@ import {
   useFeatureFlags,
   useSecurity,
 } from '@akeneo-pim-community/shared';
-import {AutomationConfiguration, CronExpression, filterDefaultUserGroup} from '../models';
+import {Automation, CronExpression, filterDefaultUserGroup} from '../models';
 import {useUserGroups} from '../hooks';
 import {CronExpressionForm} from './CronExpressionForm';
 
@@ -18,26 +18,25 @@ const SpacedSection = styled(Section)`
 `;
 
 type JobAutomationFormProps = {
-  automationConfiguration: AutomationConfiguration;
+  scheduled: boolean;
+  automation: Automation;
   validationErrors: ValidationError[];
-  onAutomationChange: (automation: AutomationConfiguration) => void;
+  onScheduledChange: (scheduled: boolean) => void;
+  onAutomationChange: (automation: Automation) => void;
 };
 
-const JobAutomationForm = ({automationConfiguration, validationErrors, onAutomationChange}: JobAutomationFormProps) => {
+const JobAutomationForm = ({scheduled, automation, validationErrors, onScheduledChange, onAutomationChange}: JobAutomationFormProps) => {
   const translate = useTranslate();
   const userGroups = useUserGroups();
   const {isEnabled} = useFeatureFlags();
   const {isGranted} = useSecurity();
 
-  const handleEnableChange = (isEnabled: boolean) => onAutomationChange({...automationConfiguration, scheduled: isEnabled});
+  const handleScheduledChange = (isEnabled: boolean) => onScheduledChange(isEnabled);
 
   const handleCronExpressionChange = (cronExpression: CronExpression) =>
     onAutomationChange({
-      ...automationConfiguration,
-      automation: {
-        ...automationConfiguration.automation,
-        cron_expression: cronExpression
-      }
+      ...automation,
+      cron_expression: cronExpression
     });
 
   return (
@@ -48,13 +47,13 @@ const JobAutomationForm = ({automationConfiguration, validationErrors, onAutomat
       <Field label={translate('akeneo.job_automation.scheduling.enable')}>
         <BooleanInput
           noLabel={translate('pim_common.no')}
-          value={automationConfiguration.scheduled}
+          value={scheduled}
           yesLabel={translate('pim_common.yes')}
           readOnly={false}
-          onChange={handleEnableChange}
+          onChange={handleScheduledChange}
         />
       </Field>
-      {automationConfiguration.scheduled && (
+      {scheduled && (
         <>
           <SectionTitle>
             <SectionTitle.Title level="secondary">
@@ -62,21 +61,18 @@ const JobAutomationForm = ({automationConfiguration, validationErrors, onAutomat
             </SectionTitle.Title>
           </SectionTitle>
           <CronExpressionForm
-            cronExpression={automationConfiguration.automation.cron_expression}
+            cronExpression={automation.cron_expression}
             onCronExpressionChange={handleCronExpressionChange}
             validationErrors={filterErrors(validationErrors, '[cron_expression]')}
           />
           {isEnabled('permission') && (
             <Field label={translate('akeneo.job_automation.scheduling.running_user_groups.label')}>
               <MultiSelectInput
-                value={filterDefaultUserGroup(automationConfiguration.automation.running_user_groups)}
+                value={filterDefaultUserGroup(automation.running_user_groups)}
                 onChange={runningUserGroups =>
                   onAutomationChange({
-                    ...automationConfiguration,
-                    automation: {
-                      ...automationConfiguration.automation,
-                      running_user_groups: runningUserGroups
-                    }
+                    ...automation,
+                    running_user_groups: runningUserGroups
                   })
                 }
                 emptyResultLabel={translate('pim_common.no_result')}

@@ -3,7 +3,7 @@ import {ValidationError, formatParameters, filterErrors} from '@akeneo-pim-commu
 import {
   JobAutomationForm,
   JobAutomationFormProps,
-  AutomationConfiguration,
+  Automation,
 } from '@akeneo-pim-enterprise/job-automation';
 const userContext = require('pim/user-context');
 
@@ -49,22 +49,28 @@ class JobAutomationFormController extends BaseView {
     return this.config.tabCode ? this.config.tabCode : this.code;
   }
 
-  setAutomationConfiguration(automationConfiguration: AutomationConfiguration): void {
+  setScheduled(scheduled: boolean): void {
     const formData = this.getFormData();
     this.setData({
-      ...formData.automationConfiguration,
-      automationConfiguration
+      ...formData,
+      scheduled
+    })
+    this.render();
+  }
+
+  setAutomationConfiguration(automation: Automation): void {
+    const formData = this.getFormData();
+    this.setData({
+      ...formData,
+      automation
     });
     this.render();
   }
 
-  getDefaultAutomationConfiguration(): AutomationConfiguration {
+  getDefaultAutomation(): Automation {
     return {
-      scheduled: false,
-      automation: {
-        cron_expression: '0 0 * * *',
-        running_user_groups: userContext.get('groups'),
-      }
+      cron_expression: '0 0 * * *',
+      running_user_groups: userContext.get('groups'),
     };
   }
 
@@ -75,8 +81,10 @@ class JobAutomationFormController extends BaseView {
     const formData = this.getFormData();
 
     const props: JobAutomationFormProps = {
-      automationConfiguration: formData.automationConfiguration ? formData.automationConfiguration : this.getDefaultAutomationConfiguration(),
+      scheduled: formData.scheduled ?? false,
+      automation: formData.automation ?? this.getDefaultAutomation(),
       validationErrors: this.validationErrors,
+      onScheduledChange: this.setScheduled.bind(this),
       onAutomationChange: this.setAutomationConfiguration.bind(this),
     };
 
