@@ -316,6 +316,8 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $this->get('pim_catalog.saver.group')->save($group);
     }
 
+    //
+
     /**
      * @return array<string>
      */

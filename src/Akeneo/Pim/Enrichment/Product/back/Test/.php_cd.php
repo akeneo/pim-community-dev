@@ -45,6 +45,7 @@ $rules = [
         'Webmozart\Assert\Assert',
         'Symfony\Component\Validator',
         'Symfony\Component\EventDispatcher',
+        'Ramsey\Uuid\UuidInterface',
 
         // Legacy
         'Akeneo\Pim\Enrichment\Component',
@@ -59,6 +60,9 @@ $rules = [
         // TODO: remove when Upsert product does not use token interface
         'Akeneo\UserManagement\Component\Model\UserInterface',
         'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
+
+        // Symfony, Doctrine DBAL and other libs
+        'Doctrine\DBAL\Connection',
     ])->in('Akeneo\Pim\Enrichment\Product\Application'),
 
     $builder->only([
