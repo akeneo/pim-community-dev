@@ -16,7 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\DomainEvent;
-use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistError;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistsError;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -84,7 +84,7 @@ SQL;
                 ]
             );
         } catch (UniqueConstraintViolationException) {
-            throw AssetAlreadyExistError::fromAsset($asset);
+            throw AssetAlreadyExistsError::fromAsset($asset);
         }
 
         if ($affectedRows > 1) {

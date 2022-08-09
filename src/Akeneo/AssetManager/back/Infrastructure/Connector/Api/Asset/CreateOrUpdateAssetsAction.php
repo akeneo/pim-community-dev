@@ -21,7 +21,7 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetComm
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory as NamingConventionEditAssetCommandFactory;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exception\NamingConventionException;
-use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistError;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistsError;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
@@ -197,7 +197,7 @@ class CreateOrUpdateAssetsAction
 
                 $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
                 $responseStatusCode = Response::HTTP_CREATED;
-            } catch (AssetAlreadyExistError) {
+            } catch (AssetAlreadyExistsError) {
                 $this->logger->notice('Concurrent call have been detected', [
                     'asset_family_identifier' => $assetFamilyIdentifier,
                     'asset_code' => $assetCode

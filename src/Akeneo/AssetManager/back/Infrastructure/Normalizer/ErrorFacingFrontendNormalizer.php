@@ -16,7 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Normalizer;
 use Akeneo\AssetManager\Domain\Exception\UserFacingError;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ErrorFacingNormalizer
+class ErrorFacingFrontendNormalizer
 {
     public function __construct(private TranslatorInterface $translator)
     {
@@ -26,9 +26,9 @@ class ErrorFacingNormalizer
     {
         return [
             [
-                'messageTemplate' => $error->translationId(),
+                'messageTemplate' => $error->translationKey(),
                 'parameters' => $error->translationParameters(),
-                'message' => $this->translator->trans($error->translationId(), $error->translationParameters(), 'validators'),
+                'message' => $this->translator->trans($error->translationKey(), $error->translationParameters(), 'validators'),
                 'propertyPath' => $propertyPath,
             ]
         ];

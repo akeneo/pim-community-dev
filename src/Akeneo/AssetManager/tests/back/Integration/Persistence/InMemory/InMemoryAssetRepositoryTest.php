@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
-use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistError;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistsError;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -94,7 +94,7 @@ class InMemoryAssetRepositoryTest extends TestCase
         );
         $this->assetRepository->create($asset);
 
-        $this->expectException(AssetAlreadyExistError::class);
+        $this->expectException(AssetAlreadyExistsError::class);
         $this->assetRepository->create($asset);
     }
 
@@ -122,7 +122,7 @@ class InMemoryAssetRepositoryTest extends TestCase
             ValueCollection::fromValues([])
         );
 
-        $this->expectException(AssetAlreadyExistError::class);
+        $this->expectException(AssetAlreadyExistsError::class);
         $this->assetRepository->create($asset);
     }
 

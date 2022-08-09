@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Domain\Exception;
 
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 
-class AssetAlreadyExistError extends UserFacingError
+class AssetAlreadyExistsError extends UserFacingError
 {
     public static function fromAsset(Asset $asset): self
     {

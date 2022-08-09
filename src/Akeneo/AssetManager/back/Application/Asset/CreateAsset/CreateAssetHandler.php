@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\CreateAsset;
 
-use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistError;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistsError;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
@@ -46,7 +46,7 @@ class CreateAssetHandler
     }
 
     /**
-     * @throws AssetAlreadyExistError
+     * @throws AssetAlreadyExistsError
      */
     public function __invoke(CreateAssetCommand $createAssetCommand): void
     {

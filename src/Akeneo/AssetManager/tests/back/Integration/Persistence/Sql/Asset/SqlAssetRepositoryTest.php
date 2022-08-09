@@ -17,7 +17,7 @@ use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
-use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistError;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistsError;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
@@ -143,7 +143,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
             ])
         );
 
-        $this->expectException(AssetAlreadyExistError::class);
+        $this->expectException(AssetAlreadyExistsError::class);
         $this->repository->create($asset);
         $this->eventDispatcherMock->assertNoEventDispatched();
     }
@@ -283,7 +283,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         );
         $this->repository->create($asset);
 
-        $this->expectException(AssetAlreadyExistError::class);
+        $this->expectException(AssetAlreadyExistsError::class);
         $this->repository->create($asset);
     }
 

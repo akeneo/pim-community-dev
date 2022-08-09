@@ -16,7 +16,7 @@ services:
         tags:
             - { name: asset_manager_serializer.normalizer }
 
-    Akeneo\AssetManager\Infrastructure\Normalizer\ErrorFacingNormalizer:
+    Akeneo\AssetManager\Infrastructure\Normalizer\ErrorFacingFrontendNormalizer:
         arguments:
             - '@translator'
         public: false

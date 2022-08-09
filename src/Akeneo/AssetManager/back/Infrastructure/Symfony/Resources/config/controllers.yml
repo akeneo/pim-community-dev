@@ -145,7 +145,7 @@ services:
             - '@akeneo_assetmanager.application.asset.link_assets.link_asset_handler'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
             - '@akeneo_assetmanager.application.asset.subscribers.compute_asset_transformation_event_aggregator'
-            - '@Akeneo\AssetManager\Infrastructure\Normalizer\ErrorFacingNormalizer'
+            - '@Akeneo\AssetManager\Infrastructure\Normalizer\ErrorFacingFrontendNormalizer'
 
     akeneo_assetmanager.infrastructure.action.asset.index:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\IndexAction

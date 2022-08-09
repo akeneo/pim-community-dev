@@ -25,8 +25,8 @@ use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetCommand;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
-use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistError;
-use Akeneo\AssetManager\Infrastructure\Normalizer\ErrorFacingNormalizer;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistsError;
+use Akeneo\AssetManager\Infrastructure\Normalizer\ErrorFacingFrontendNormalizer;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -61,7 +61,7 @@ class CreateAction
         private LinkAssetHandler $linkAssetHandler,
         private EventAggregatorInterface $indexAssetEventAggregator,
         private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
-        private ErrorFacingNormalizer $errorFacingNormalizer,
+        private ErrorFacingFrontendNormalizer $errorFacingFrontendNormalizer,
     ) {
     }
 
@@ -135,9 +135,9 @@ class CreateAction
 
         try {
             ($this->createAssetHandler)($createCommand);
-        } catch (AssetAlreadyExistError $exception) {
+        } catch (AssetAlreadyExistsError $exception) {
             return new JsonResponse(
-                $this->errorFacingNormalizer->normalize($exception, 'code'),
+                $this->errorFacingFrontendNormalizer->normalize($exception, 'code'),
                 Response::HTTP_BAD_REQUEST
             );
         }

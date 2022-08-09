@@ -19,15 +19,15 @@ abstract class UserFacingError extends \Exception
      * @param array<string,mixed> $translationParameters
      */
     public function __construct(
-        private string $translationId,
+        private string $translationKey,
         private array $translationParameters
     ) {
         parent::__construct();
     }
 
-    public function translationId(): string
+    public function translationKey(): string
     {
-        return $this->translationId;
+        return $this->translationKey;
     }
 
     /**
