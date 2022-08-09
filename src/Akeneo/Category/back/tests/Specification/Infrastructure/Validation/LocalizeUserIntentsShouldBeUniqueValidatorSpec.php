@@ -37,7 +37,7 @@ class LocalizeUserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringValidate(1, new Type([]));
     }
 
-    function it_does_nothing_when_the_label_intents_are_distinct(ExecutionContext $context)
+    function it_does_nothing_when_the_localize_intents_are_distinct(ExecutionContext $context)
     {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -48,7 +48,7 @@ class LocalizeUserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
         ], new LocalizeUserIntentsShouldBeUnique());
     }
 
-    function it_throw_an_exception_when_the_label_intents_are_not_distinct(ExecutionContext $context, ConstraintViolationBuilderInterface $violationBuilder)
+    function it_throw_an_exception_when_the_localize_intents_are_not_distinct(ExecutionContext $context, ConstraintViolationBuilderInterface $violationBuilder)
     {
         $constraint = new LocalizeUserIntentsShouldBeUnique();
         $context
