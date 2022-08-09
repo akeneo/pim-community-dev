@@ -10,7 +10,7 @@ type Props = {
 
 const HistoryPimView = ({viewName, className, onBuild, version = 0}: Props) => {
   const el = useRef<HTMLDivElement>(null);
-  const [view, setView] = useState<View | null>(null);
+  const viewRef = useRef<View | null>(null);
 
   const viewBuilder = useViewBuilder();
   const isMounted = useIsMounted();
@@ -28,8 +28,8 @@ const HistoryPimView = ({viewName, className, onBuild, version = 0}: Props) => {
         return view;
       })
       .then((view: View|null) => {
-        if (isMounted() && view !== null) {
-          setView(view);
+        if (view !== null) {
+          viewRef.current = view;
           view.setElement(el.current).render();
         }
       });
@@ -37,9 +37,8 @@ const HistoryPimView = ({viewName, className, onBuild, version = 0}: Props) => {
 
   useEffect(
     () => () => {
-      view && view.remove();
-    },
-    [view]
+      viewRef.current?.remove();
+    },[]
   );
 
   return (
