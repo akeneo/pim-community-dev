@@ -65,6 +65,10 @@ akeneo.tailored_import:
         title: Vervanging van categorieën
         modal:
           title: Categorieën beheren
+      family_replacement:
+        title: Vervanging van families
+        modal:
+          title: Families beheren
       no_result: Geen bewerking beschikbaar
       no_source: Selecteer eerst een bron, daarna hebt u toegang tot de bewerkingen
       no_available:
