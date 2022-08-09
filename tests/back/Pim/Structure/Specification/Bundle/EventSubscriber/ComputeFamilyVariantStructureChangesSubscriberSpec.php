@@ -74,7 +74,7 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
         $familyVariant->releaseEvents()->willReturn([FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL]);
 
         $connection->executeQuery(Argument::cetera())->willReturn($result);
-        $result->fetchOne()->willReturn(false);
+        $result->fetchColumn()->willReturn(false);
 
         $jobLauncher->launch($jobInstance, $user, [
             'family_variant_codes' => ['family_variant_one']
@@ -169,7 +169,7 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
         $familyVariant->getCode()->willReturn('family_variant_one');
 
         $connection->executeQuery(Argument::cetera())->willReturn($result);
-        $result->fetchOne()->willReturn(4000);
+        $result->fetchColumn()->willReturn(4000);
 
         $jobLauncher->launch(Argument::any())->shouldNotBeCalled();
 
@@ -187,9 +187,9 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
         UserInterface $user,
         JobInstance $jobInstance,
         Connection $connection,
-        Result $result,
-        Result $result2,
-        Result $result3
+        ResultStatement $result,
+        ResultStatement $result2,
+        ResultStatement $result3
     ) {
         $event = new GenericEvent([
             $familyVariant1->getWrappedObject(),
@@ -215,13 +215,13 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
 
         $connection->executeQuery(Argument::any(), ['instanceId' => 124, 'familyVariantCode' => 'family_variant_one'])
             ->willReturn($result);
-        $result->fetchOne()->willReturn(4000);
+        $result->fetchColumn()->willReturn(4000);
         $connection->executeQuery(Argument::any(), ['instanceId' => 124, 'familyVariantCode' => 'family_variant_two'])
             ->willReturn($result2);
-        $result2->fetchOne()->willReturn(false);
+        $result2->fetchColumn()->willReturn(false);
         $connection->executeQuery(Argument::any(), ['instanceId' => 124, 'familyVariantCode' => 'new_family_variant'])
             ->willReturn($result3);
-        $result3->fetchOne()->willReturn(false);
+        $result3->fetchColumn()->willReturn(false);
 
         $jobLauncher->launch($jobInstance, $user, [
             'family_variant_codes' => ['family_variant_two']
