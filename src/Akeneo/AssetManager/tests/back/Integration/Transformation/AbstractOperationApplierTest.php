@@ -33,7 +33,7 @@ abstract class AbstractOperationApplierTest extends KernelTestCase
         $this->testDir =
             self::VAR_CACHE_TESTS . DIRECTORY_SEPARATOR
             . random_int(0, 1000000000) . DIRECTORY_SEPARATOR;
-        $this->filesystem->mkdir($this->testDir, 0777, true);
+        $this->filesystem->mkdir($this->testDir, 0777);
     }
 
     protected function tearDown(): void

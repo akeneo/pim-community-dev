@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Repository;
 
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistsError;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -20,6 +21,9 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 interface AssetRepositoryInterface
 {
+    /**
+     * @throws AssetAlreadyExistsError
+     */
     public function create(Asset $asset): void;
 
     public function update(Asset $asset): void;

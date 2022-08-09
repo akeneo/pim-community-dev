@@ -23,7 +23,6 @@ class GetAssociatedProductCodesByPublishedProductIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->get('feature_flags')->enable('published_product');
     }
 
     public function testQueryToGetAssociatedProductCodes(): void
@@ -58,7 +57,7 @@ class GetAssociatedProductCodesByPublishedProductIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(featureFlags: ['published_product', 'permission']);
     }
 
     /**

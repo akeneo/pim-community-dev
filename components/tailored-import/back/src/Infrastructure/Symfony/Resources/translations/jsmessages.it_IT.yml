@@ -65,10 +65,10 @@ akeneo.tailored_import:
         title: Sostituzione categorie
         modal:
           title: Gestisci Categorie
-          table:
-            header:
-              replacement: Categorie PIM
-              source_values: Categorie origine
+      family_replacement:
+        title: Sostituzione famiglie
+        modal:
+          title: Gestisci famiglie
       no_result: Nessuna operazione disponibile
       no_source: Una volta selezionata un'origine, avrai accesso alle operazioni
       no_available:
@@ -93,7 +93,6 @@ akeneo.tailored_import:
               all: Tutti i valori
           table:
             header:
-              replacement: Etichette opzioni
               source_values: Valori di origine
           validation_error: Alcuni valori di sostituzione non sono validi, fai riferimento ai messaggi di errore sotto ciascun campo.
       boolean_replacement:
@@ -166,7 +165,6 @@ akeneo.tailored_import:
       uuid:
         should_be_unique: Questo UUID di mappatura esiste già, inseriscine uno nuovo.
       sources:
-        count_mismatched: È necessario impostare solo un'origine per questa mappatura.
         at_least_one_required: È necessario aggiungere almeno un'origine alla mappatura.
         max_count_reached: Hai raggiunto il limite di {{ limit }} origini, non puoi aggiungere altre origini alla mappatura.
         should_be_unique: Questa origine esiste già, inseriscine una nuova.
@@ -182,7 +180,7 @@ akeneo.tailored_import:
     channel:
       should_exist: Il canale {{ channel_code }} è stato eliminato. Seleziona un altro canale.
     attribute:
-      locale_should_not_be_blank: L'attributo {{ attribute_code }} ora ha un valore per l'impostazione locale. Crealo o scegli un'altra destinazione.
+      locale_should_not_be_blank: L'attributo {{ attribute_code }} ora ha un valore per l'impostazione locale. Creala o scegli un'altra destinazione.
       channel_should_not_be_blank: L'attributo {{ attribute_code }} ora ha un valore per il canale. Crealo o scegli un'altra destinazione.
       locale_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per l'impostazione locale. Eliminalo e ricrealo, oppure scegli un'altra destinazione.
       channel_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per il canale. Eliminalo e ricrealo, oppure scegli un'altra destinazione.

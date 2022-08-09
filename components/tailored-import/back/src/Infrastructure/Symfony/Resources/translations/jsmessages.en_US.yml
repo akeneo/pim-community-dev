@@ -60,16 +60,23 @@ akeneo.tailored_import:
         pipe: Pipe (|)
       simple_select_replacement:
         title: Simple select replacement
+        option_labels: Option labels
       multi_select_replacement:
         title: Multi select replacement
+        option_labels: Option labels
       categories_replacement:
         title: Categories replacement
         modal:
             title: Manage categories
             table:
               header:
-                replacement: PIM Categories
-                source_values: Sources categories
+                replacement: Category labels
+                source_values: Source categories
+      family_replacement:
+        title: Families replacement
+        option_labels: Family labels
+        modal:
+          title: Manage families
       no_result: No operation available
       no_source: First, select a source, then you will have access to operations
       no_available:
@@ -94,7 +101,6 @@ akeneo.tailored_import:
                 all: All values
             table:
               header:
-                replacement: Options labels
                 source_values: Source values
             validation_error: Some replacement values are invalid, please refer to the error messages below each field.
       boolean_replacement:
@@ -167,7 +173,6 @@ akeneo.tailored_import:
       uuid:
         should_be_unique: This mapping UUID already exists, please enter a new one.
       sources:
-        count_mismatched: You need to set only one source for this mapping.
         at_least_one_required: You need to add at least one source to your mapping.
         max_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your mapping.
         should_be_unique: This source already exists, please enter a new one.
@@ -205,3 +210,9 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: The operation type {{ operation_type }} is incompatible with your target type.
       missing_required_operations: "Required operation(s) are missing: {{ missing_required_operations }}"
+
+pim_information:
+  import:
+    title: Discover mapping with Tailored Import
+    text: "This new import profile allows you to customize your product import structure through data mapping. It enables you to easily select sources from your file, to map them to the attributes in your PIM, and to perform operations in order to transform your data."
+    link.text: Click here to read more.

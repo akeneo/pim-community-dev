@@ -113,3 +113,4 @@ services:
         arguments:
             - '@akeneo_legacy_behat_tests.loader.fixtures_loader.base'
             - '@akeneo_legacy_behat_tests.loader.permission_cleaner'
+            - '@feature_flags'

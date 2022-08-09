@@ -65,10 +65,6 @@ akeneo.tailored_import:
         title: 카테고리 대체
         modal:
           title: 카테고리 관리
-          table:
-            header:
-              replacement: PIM 카테고리
-              source_values: 소스 카테고리
       no_result: 사용 가능한 작업이 없습니다
       no_source: 먼저 소스를 선택해야 작업에 액세스할 수 있습니다
       no_available:
@@ -93,7 +89,6 @@ akeneo.tailored_import:
               all: 모든 값
           table:
             header:
-              replacement: 옵션 레이블
               source_values: 소스 값
           validation_error: 일부 대체 값이 유효하지 않습니다. 각 필드 아래에 표시된 오류 메시지를 참조하십시오.
       boolean_replacement:
@@ -166,7 +161,6 @@ akeneo.tailored_import:
       uuid:
         should_be_unique: 이 매핑 UUID는 이미 있습니다. 새 UUID를 입력하십시오.
       sources:
-        count_mismatched: 이 매핑에는 1개의 소스만 설정해야 합니다.
         at_least_one_required: 매핑에 1개 이상의 소스를 추가해야 합니다.
         max_count_reached: '{{ limit }}개의 소스 제한에 도달했습니다. 더 이상 매핑에 소스를 추가할 수 없습니다.'
         should_be_unique: 이 소스는 이미 있습니다. 새 소스를 입력하십시오.
@@ -182,8 +176,8 @@ akeneo.tailored_import:
     channel:
       should_exist: 채널 {{ channel_code }}이(가) 삭제되었습니다. 다른 채널을 선택하십시오.
     attribute:
-      locale_should_not_be_blank: 특성 {{ attribute_code }}에 로케일별 값이 없습니다. 생성하거나 다른 대상을 선택하십시오.
-      channel_should_not_be_blank: 특성 {{ attribute_code }}에 채널별 값이 없습니다. 생성하거나 다른 대상을 선택하십시오.
+      locale_should_not_be_blank: 특성 {{ attribute_code }}에 로케일별 값이 있습니다. 생성하거나 다른 소스를 선택하십시오.
+      channel_should_not_be_blank: 특성 {{ attribute_code }}에 채널별 값이 있습니다. 생성하거나 다른 대상을 선택하십시오.
       locale_should_be_blank: 특성 {{ attribute_code }}에 로케일별 값이 더 이상 없습니다. 삭제한 후 재생성하거나 다른 대상을 선택하십시오.
       channel_should_be_blank: 특성 {{ attribute_code }}에 채널별 값이 더 이상 없습니다. 삭제한 후 재생성하거나 다른 대상을 선택하십시오.
       invalid_specific_locale: 특성 {{ attribute_code }}은(는) 특정 로케일에 한정됩니다. 다른 로케일을 선택하십시오.

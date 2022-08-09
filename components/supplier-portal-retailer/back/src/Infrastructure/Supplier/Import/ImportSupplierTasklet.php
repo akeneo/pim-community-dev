@@ -10,7 +10,6 @@ use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier;
 use Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetIdentifierFromCode;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\InvalidItemEvent;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
@@ -23,7 +22,6 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -62,7 +60,7 @@ final class ImportSupplierTasklet implements TaskletInterface
                     break;
                 }
 
-                if (!$this->supplierExists->fromCode(Code::fromString($supplierData['supplier_code']))) {
+                if (!$this->supplierExists->fromCode($supplierData['supplier_code'])) {
                     $this->createSupplier($supplierData);
                     $this->stepExecution->incrementSummaryInfo('create');
                 } else {
@@ -101,7 +99,6 @@ final class ImportSupplierTasklet implements TaskletInterface
     private function createSupplier(array $supplierData): void
     {
         $command = new CreateSupplier(
-            Uuid::uuid4()->toString(),
             $supplierData['supplier_code'],
             $supplierData['supplier_label'],
             $supplierData['contributor_emails'],
@@ -119,9 +116,7 @@ final class ImportSupplierTasklet implements TaskletInterface
     private function updateSupplier(array $supplierData): void
     {
         $command = new UpdateSupplier(
-            ($this->getSupplierIdentifierFromSupplierCode)(
-                Code::fromString($supplierData['supplier_code'])
-            ),
+            ($this->getSupplierIdentifierFromSupplierCode)($supplierData['supplier_code']),
             $supplierData['supplier_label'],
             $supplierData['contributor_emails'],
         );

@@ -84,7 +84,7 @@ class SourcesValidatorTest extends AbstractValidationTest
     {
         return [
             'empty source on a mono source target' => [
-                'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched',
+                'akeneo.tailored_import.validation.data_mappings.sources.at_least_one_required',
                 '',
                 false,
                 [],
@@ -115,7 +115,7 @@ class SourcesValidatorTest extends AbstractValidationTest
                 ],
             ],
             'too much source on a mono source target' => [
-                'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched',
+                'akeneo.tailored_import.validation.data_mappings.sources.at_least_one_required',
                 '',
                 false,
                 [

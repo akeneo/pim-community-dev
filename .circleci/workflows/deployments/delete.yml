@@ -4,7 +4,7 @@ workflows:
   on_demand_delete_instance:
     when:
       and:
-        - equal: [ true, << pipeline.parameters.trigger_delete_instance >> ]
+        - equal: [ "delete_instance", << pipeline.parameters.trigger >> ]
         - not:
             equal: [ "", << pipeline.parameters.instance >> ]
     jobs:

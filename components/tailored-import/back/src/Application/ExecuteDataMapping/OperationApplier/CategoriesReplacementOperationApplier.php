@@ -17,6 +17,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\Unex
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CategoriesReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
@@ -26,6 +27,10 @@ final class CategoriesReplacementOperationApplier implements OperationApplierInt
     {
         if (!$operation instanceof CategoriesReplacementOperation) {
             throw new UnexpectedValueException($operation, CategoriesReplacementOperation::class, self::class);
+        }
+
+        if ($value instanceof InvalidValue) {
+            return $value;
         }
 
         if (!$value instanceof StringValue && !$value instanceof ArrayValue) {

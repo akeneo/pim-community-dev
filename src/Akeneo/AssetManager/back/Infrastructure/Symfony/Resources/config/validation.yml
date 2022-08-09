@@ -68,7 +68,6 @@ Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand:
         labels:
             - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
     constraints:
-        - Akeneo\AssetManager\Infrastructure\Validation\Asset\AssetCodeShouldBeUnique: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\ThereShouldBeLessAssetsThanLimit: { groups: [other_constraints] }
 
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand:

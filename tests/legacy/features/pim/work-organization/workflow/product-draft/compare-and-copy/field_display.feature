@@ -1,4 +1,4 @@
-@javascript @proposal-feature-enabled
+@javascript @proposal-feature-enabled @permission-feature-enabled
 Feature: Compare fields and only see what I want
   In order to only see what I really need to work on my product
   As a user

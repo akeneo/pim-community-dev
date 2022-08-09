@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Operatio
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
@@ -25,6 +26,10 @@ final class SimpleSelectReplacementOperationApplier implements OperationApplierI
     {
         if (!$operation instanceof SimpleSelectReplacementOperation) {
             throw new UnexpectedValueException($operation, SimpleSelectReplacementOperation::class, self::class);
+        }
+
+        if ($value instanceof InvalidValue) {
+            return $value;
         }
 
         if (!$value instanceof StringValue) {

@@ -1,0 +1,8 @@
+{
+  "name": "sample-http",
+  "version": "0.0.1",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "query-string": "^7.1.1"
+  }
+}

@@ -35,7 +35,7 @@ workflows:
     on_demand_ge2ee_jenkins_mig:
         when:
             and:
-                - equal: [ true, << pipeline.parameters.trigger_jenkins_ge2ee_mig >> ]
+                - equal: [ "jenkins_ge2ee_mig", << pipeline.parameters.trigger >> ]
                 - not:
                     equal: [ "", << pipeline.parameters.instance >> ]
         jobs:

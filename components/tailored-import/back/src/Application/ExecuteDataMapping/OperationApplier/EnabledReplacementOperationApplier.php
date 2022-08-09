@@ -29,6 +29,10 @@ final class EnabledReplacementOperationApplier implements OperationApplierInterf
             throw new UnexpectedValueException($operation, EnabledReplacementOperation::class, self::class);
         }
 
+        if ($value instanceof InvalidValue) {
+            return $value;
+        }
+
         if (!$value instanceof StringValue) {
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }

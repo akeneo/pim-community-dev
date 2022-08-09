@@ -12,6 +12,7 @@
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
@@ -29,20 +30,12 @@ class CleanAttributeGroupAccessesCommand extends Command
     protected static $defaultName = 'pimee:installer:clean-attribute-group-accesses';
     protected static $defaultDescription = 'Removing the group "ALL" from attribute groups\' permissions after a clean installation.';
 
-    /** @var AttributeGroupAccessRepository */
-    private $attributeGroupAccessRepository;
-
-    /** @var GroupRepositoryInterface */
-    private $groupRepository;
-
     public function __construct(
-        AttributeGroupAccessRepository $attributeGroupAccessRepository,
-        GroupRepositoryInterface $groupRepository
+        private AttributeGroupAccessRepository $attributeGroupAccessRepository,
+        private GroupRepositoryInterface $groupRepository,
+        private FeatureFlags $featureFlags
     ) {
         parent::__construct();
-
-        $this->attributeGroupAccessRepository = $attributeGroupAccessRepository;
-        $this->groupRepository = $groupRepository;
     }
 
     /**
@@ -50,10 +43,14 @@ class CleanAttributeGroupAccessesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('Removing the group "ALL" from attribute groups\' permissions...');
-        $groupAll = $this->groupRepository->getDefaultUserGroup();
-        $this->attributeGroupAccessRepository->revokeAccessToGroups([$groupAll]);
-        $output->writeln('<info>done !</info>');
+        if ($this->featureFlags->isEnabled('permission')) {
+            $output->writeln('Removing the group "ALL" from attribute groups\' permissions...');
+            $groupAll = $this->groupRepository->getDefaultUserGroup();
+            $this->attributeGroupAccessRepository->revokeAccessToGroups([$groupAll]);
+            $output->writeln('<info>done !</info>');
+        } else {
+            $output->writeln('Permission feature is not enabled. Not removing the group "ALL" from attribute groups\' permissions.');
+        }
 
         return Command::SUCCESS;
     }

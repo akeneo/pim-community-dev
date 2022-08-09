@@ -36,3 +36,4 @@ asset_manager_mass_edit_assets;All
 reference_entity_mass_delete_records;All
 asset_manager_link_assets_to_products;All
 asset_manager_execute_naming_convention;All
+versioning_refresh;All

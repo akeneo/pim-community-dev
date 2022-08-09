@@ -97,6 +97,12 @@ Feature: Connection to e-commerce platforms and marketplaces
     Then the PIM notifies the connector about an error indicating that the date format is not the expected one
 
   @integration-back
+  Scenario: Get the assets of an asset family that match a provided code
+    Given the Kartell and Ikea assets for the Brand asset family
+    When the connector requests all assets of the Brand asset family that match code Kartell
+    Then the PIM returns the assets of the Brand asset family that match code Kartell
+
+  @integration-back
   Scenario: Notify an error when getting an asset of an asset family without permission
     Given the Kartell asset for the Brand asset family
     When the connector requests the Kartell asset for the Brand asset family without permission

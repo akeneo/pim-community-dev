@@ -17,6 +17,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\Unex
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\InvalidValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
@@ -26,6 +27,10 @@ final class MultiSelectReplacementOperationApplier implements OperationApplierIn
     {
         if (!$operation instanceof MultiSelectReplacementOperation) {
             throw new UnexpectedValueException($operation, MultiSelectReplacementOperation::class, self::class);
+        }
+
+        if ($value instanceof InvalidValue) {
+            return $value;
         }
 
         if (!$value instanceof StringValue && !$value instanceof ArrayValue) {

@@ -50,6 +50,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     private $requestContractsApi = [
         'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_for_ecommerce_channel.json',
         'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_complete_brand_records.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_for_kartell_code.json',
         'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_page_1.json',
         'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_page_2.json',
         'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_page_3.json',
