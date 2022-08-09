@@ -1,0 +1,8 @@
+services:
+    Akeneo\Category\Application\Storage\ProcessCategoryUpdate:
+        arguments:
+            - '@Akeneo\Category\Application\Storage\Update\CategoryUpdaterRegistry'
+
+    Akeneo\Category\Application\Storage\Update\CategoryUpdaterRegistry:
+        arguments:
+            - !tagged_iterator 'pim.category.update.category_updater'

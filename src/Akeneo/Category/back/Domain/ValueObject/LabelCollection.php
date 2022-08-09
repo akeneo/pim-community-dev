@@ -8,7 +8,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class LabelCollection
+final class LabelCollection implements \IteratorAggregate
 {
     /**
      * @param array<string, string> $translatedLabels
@@ -40,5 +40,10 @@ final class LabelCollection
     public function hasLabel(string $localeCode): bool
     {
         return array_key_exists($localeCode, $this->translatedLabels);
+    }
+
+    public function getIterator()
+    {
+        $this->iterator = new \ArrayIterator($this->translatedLabels);
     }
 }
