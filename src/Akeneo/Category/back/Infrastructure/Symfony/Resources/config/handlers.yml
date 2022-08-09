@@ -1,4 +1,14 @@
 services:
+  #
+  # commands
+  #
   Akeneo\Category\Api\Command\DummyHandler:
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Api\Command\UpsertCategoryCommand'}
+
+  #
+  # queries
+  #
+  Akeneo\Category\Application\GetCategoryHandler:
+    tags:
+      - { name: 'akeneo.category.query.handler', query: 'Akeneo\Category\Api\Query\GetCategoryQuery'}

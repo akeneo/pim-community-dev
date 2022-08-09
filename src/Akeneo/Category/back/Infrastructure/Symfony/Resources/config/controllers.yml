@@ -37,3 +37,9 @@ services:
             - '@Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface'
             - '@Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter'
             - '@Akeneo\Category\Application\Query\FindCategoryByIdentifier'
+
+    Akeneo\Category\back\Infrastructure\Controller\InternalAPI\GetCategoryController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Application\GetCategoryHandler'
