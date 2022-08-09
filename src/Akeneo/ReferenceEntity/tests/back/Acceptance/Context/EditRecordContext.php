@@ -2162,6 +2162,31 @@ final class EditRecordContext implements Context
     }
 
     /**
+     * @When /^the user updates the record attribute of the record to an invalid record type value$/
+     */
+    public function theUserUpdatesTheRecordAttributeOfTheRecordToAnInvalidRecordTypeValue()
+    {
+        try {
+            $editCommand = $this->editRecordCommandFactory->create([
+                'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+                'code'                       => self::RECORD_CODE,
+                'labels'                     => [],
+                'values'                     => [
+                    [
+                        'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
+                        'channel'   => null,
+                        'locale'    => null,
+                        'data'      => 1,
+                    ],
+                ],
+            ]);
+            $this->executeCommand($editCommand);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
+
+    /**
      * @When /^the user updates the record attribute of the record to an invalid record value$/
      */
     public function theUserUpdatesTheRecordAttributeOfTheRecordToAnInvalidRecordValue()
@@ -2176,7 +2201,7 @@ final class EditRecordContext implements Context
                         'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
                         'channel'   => null,
                         'locale'    => null,
-                        'data'      => 1,
+                        'data'      => 'An invalid record code',
                     ],
                 ],
             ]);
