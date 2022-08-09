@@ -1,6 +1,10 @@
 import BaseView = require('pimui/js/view/base');
 import {ValidationError, formatParameters, filterErrors} from '@akeneo-pim-community/shared';
-import {JobAutomationForm, JobAutomationFormProps, Automation} from '@akeneo-pim-enterprise/job-automation';
+import {
+  JobAutomationForm,
+  JobAutomationFormProps,
+  AutomationConfiguration,
+} from '@akeneo-pim-enterprise/job-automation';
 const userContext = require('pim/user-context');
 
 type JobAutomationFormControllerConfig = {tabCode?: string};
@@ -45,23 +49,22 @@ class JobAutomationFormController extends BaseView {
     return this.config.tabCode ? this.config.tabCode : this.code;
   }
 
-  setAutomation(automation: Automation): void {
+  setAutomationConfiguration(automationConfiguration: AutomationConfiguration): void {
     const formData = this.getFormData();
     this.setData({
-      ...formData,
-      configuration: {
-        ...formData.configuration,
-        automation,
-      },
+      ...formData.automationConfiguration,
+      automationConfiguration
     });
     this.render();
   }
 
-  getDefaultAutomation(): Automation {
+  getDefaultAutomationConfiguration(): AutomationConfiguration {
     return {
-      is_enabled: false,
-      cron_expression: '0 0 * * *',
-      running_user_groups: userContext.get('groups'),
+      scheduled: false,
+      automation: {
+        cron_expression: '0 0 * * *',
+        running_user_groups: userContext.get('groups'),
+      }
     };
   }
 
@@ -72,9 +75,9 @@ class JobAutomationFormController extends BaseView {
     const formData = this.getFormData();
 
     const props: JobAutomationFormProps = {
-      automation: formData.configuration.automation ?? this.getDefaultAutomation(),
+      automationConfiguration: formData.automationConfiguration ? formData.automationConfiguration : this.getDefaultAutomationConfiguration(),
       validationErrors: this.validationErrors,
-      onAutomationChange: this.setAutomation.bind(this),
+      onAutomationChange: this.setAutomationConfiguration.bind(this),
     };
 
     this.renderReact<JobAutomationFormProps>(JobAutomationForm, props, this.el);
