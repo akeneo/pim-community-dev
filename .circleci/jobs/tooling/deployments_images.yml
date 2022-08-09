@@ -1,4 +1,4 @@
-envVarsDeployUCS: &envVarsDeployUCS
+envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
 executor-machine: &executor-machine
 
 jobs:
@@ -6,7 +6,7 @@ jobs:
   #    Build image for pim-deployer
   build_and_push_pim_deployer:
     environment:
-        <<: *envVarsDeployUCS
+        <<: *envVarsDeployPIMSaaSDev
     machine:
         image: *executor-machine
     resource_class: medium
@@ -14,7 +14,7 @@ jobs:
     steps:
       - attach_workspace:
             at: ~/
-      - set_gcloud_config_ucs
+      - set_gcloud_config_pim_saas_dev
       - run:
           name: Check if image already exists
           command: |

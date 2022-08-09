@@ -1,5 +1,5 @@
 envVarsDeployDev: &envVarsDeployDev
-envVarsDeployUCS: &envVarsDeployUCS
+envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
 executor-machine: &executor-machine
 
 orbs:
@@ -643,7 +643,7 @@ jobs:
 
     build_ucs:
         environment:
-            <<: *envVarsDeployUCS
+            <<: *envVarsDeployPIMSaaSDev
         machine:
             image: *executor-machine
         resource_class: medium
@@ -657,7 +657,7 @@ jobs:
                   fingerprints:
                       - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             - change_pim_onboarder_branch_steps
-            - set_gcloud_config_ucs
+            - set_gcloud_config_pim_saas_dev
             - run:
                   name: Define value for next steps
                   command: |
@@ -709,7 +709,7 @@ jobs:
                 type: string
                 default: "srnt"
         environment:
-            <<: *envVarsDeployUCS
+            <<: *envVarsDeployPIMSaaSDev
         machine:
             image: *executor-machine
         resource_class: medium
@@ -717,7 +717,7 @@ jobs:
         steps:
             - attach_workspace:
                   at: ~/
-            - set_gcloud_config_ucs
+            - set_gcloud_config_pim_saas_dev
             - run:
                   name: Define value for next steps
                   command: |
@@ -725,7 +725,7 @@ jobs:
                       TYPE_LONG=serenity
                       PRODUCT_REFERENCE_TYPE="${TYPE_LONG}_instance"
                       PRODUCT_REFERENCE_CODE="${TYPE_LONG}_${ENV_NAME}"
-                      IMAGE_TAG=$(gcloud container images list-tags eu.gcr.io/${GOOGLE_PROJECT_ID_PROD}/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                      IMAGE_TAG=$(gcloud container images list-tags ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/pim-enterprise-dev/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
                       IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
                       IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
                       RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
@@ -744,12 +744,6 @@ jobs:
                       echo "Image tag: ${IMAGE_TAG}"
                       echo "Product reference type: ${PRODUCT_REFERENCE_TYPE}"
                       echo "Product reference code: ${PRODUCT_REFERENCE_CODE}"
-            - run:
-                  name: Docker pull and push image on registry
-                  command: |
-                      docker pull eu.gcr.io/${GOOGLE_PROJECT_ID_PROD}/pim-enterprise-dev:${IMAGE_TAG}
-                      docker tag eu.gcr.io/${GOOGLE_PROJECT_ID_PROD}/pim-enterprise-dev:${IMAGE_TAG} eu.gcr.io/${GOOGLE_PROJECT_ID}/pim-enterprise-dev:${IMAGE_TAG}
-                      docker push eu.gcr.io/${GOOGLE_PROJECT_ID}/pim-enterprise-dev:${IMAGE_TAG}
             - run:
                   name: Persist env vars for next jobs
                   command: |

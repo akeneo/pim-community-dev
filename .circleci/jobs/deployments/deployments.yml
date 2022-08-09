@@ -1,5 +1,5 @@
 envVarsDeployDev: &envVarsDeployDev
-envVarsDeployUCS: &envVarsDeployUCS
+envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
 dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent
 dockerCloudDeployerNext: &dockerCloudDeployerNext
 dockerCloudDeployerUCS: &dockerCloudDeployerUCS
@@ -515,7 +515,7 @@ jobs:
           type: string
           default: "srnt"
       environment:
-          <<: *envVarsDeployUCS
+          <<: *envVarsDeployPIMSaaSDev
       <<: *dockerCloudDeployerUCS
       resource_class: small
       steps:
@@ -524,7 +524,7 @@ jobs:
         - add_ssh_keys:
             fingerprints:
               - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-        - set_gcloud_config_ucs
+        - set_gcloud_config_pim_saas_dev
         - restore_persisted_env_vars
         - install_yq
         - run:
@@ -537,10 +537,11 @@ jobs:
 
               GOOGLE_CLOUD_PROJECT=${GOOGLE_PROJECT_ID}
               GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
-              PIM_MASTER_DOMAIN="${INSTANCE_NAME}.bh.akeneo.ch"
+              PIM_MASTER_DOMAIN="${INSTANCE_NAME}.${GOOGLE_DOMAIN}"
               WORKLOAD_IDENTITY_KSA="${CIRCLE_BRANCH_LOWER}-ksa-workload-identity"
               WORKLOAD_IDENTITY_KSA_NAMESPACE=workload
-              WORKLOAD_IDENTITY_GSA=gsa-account-workload-id
+              # Waiting the new SA
+              WORKLOAD_IDENTITY_GSA=main-service-account
 
               TOPIC_BUSINESS_EVENT="srnt-business-event-${CIRCLE_BRANCH_LOWER}"
               TOPIC_JOB_QUEUE_UI="srnt-job-queue-ui-${CIRCLE_BRANCH_LOWER}"
@@ -583,7 +584,7 @@ jobs:
               mv /tmp/ee-branch/deployments-ucs/pim-saas-service /tmp/ee-deployment/deployments-ucs/pim-saas-service
 
               ## values.yaml
-              yq m -x -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml /tmp/ee-deployment/deployments-ucs/config/ci-values.yaml
+              yq m -x -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml /tmp/ee-branch/deployments-ucs/config/ci-values.yaml
 
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml global.extraLabels.instanceName "${INSTANCE_NAME}"
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml common.gcpProjectID "${GOOGLE_CLOUD_PROJECT}"
@@ -645,7 +646,7 @@ jobs:
               ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
               # Login to argocd
-              argocd login --insecure argocd.bh.akeneo.ch --username admin --password ${ARGOCD_PASSWORD}
+              argocd login --insecure argocd.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
 
               # Force synchro
               argocd app get ${CIRCLE_BRANCH_LOWER}-pim-argocd --hard-refresh
@@ -660,7 +661,7 @@ jobs:
               # argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-daemon --async
 
               echo "============================"
-              echo "url : https://argocd.bh.akeneo.ch"
+              echo "url : https://argocd.${GOOGLE_DOMAIN}"
               echo "user : admin"
               echo "password : ${ARGOCD_PASSWORD}"
               echo "============================"
@@ -674,7 +675,7 @@ jobs:
                 type: boolean
                 default: false
         environment:
-            <<: *envVarsDeployUCS
+            <<: *envVarsDeployPIMSaaSDev
         <<: *dockerCloudDeployerUCS
         resource_class: small
         steps:
@@ -688,7 +689,7 @@ jobs:
                       equal: [true, << parameters.CLUSTER_NEXT >> ]
                   steps:
                       - modify_cluster
-            - set_gcloud_config_ucs
+            - set_gcloud_config_pim_saas_dev
             - restore_persisted_env_vars
             - install_yq
             - run:
@@ -699,13 +700,16 @@ jobs:
 
                       WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
                       WORKLOAD_IDENTITY_KSA_NAMESPACE=workload
-                      WORKLOAD_IDENTITY_GSA=gsa-account-workload-id
+                      # Waiting the new SA
+                      WORKLOAD_IDENTITY_GSA=main-service-account
+                      GOOGLE_ZONE=${GOOGLE_COMPUTE_ZONE}
 
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_KSA_NAMESPACE=${WORKLOAD_IDENTITY_KSA_NAMESPACE} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_GSA=${WORKLOAD_IDENTITY_GSA} >> $BASH_ENV
+                      echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
 
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
@@ -719,6 +723,7 @@ jobs:
                       yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
                       yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityKSANamespace "${WORKLOAD_IDENTITY_KSA_NAMESPACE}"
                       yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityGSA "${WORKLOAD_IDENTITY_GSA}"
+
             - run:
                   name: Deploy PIM on kubernetes
                   command: |
@@ -753,7 +758,7 @@ jobs:
           type: string
           default: "srnt"
       environment:
-          <<: *envVarsDeployUCS
+          <<: *envVarsDeployPIMSaaSDev
       <<: *dockerCloudDeployerUCS
       resource_class: small
       steps:
@@ -762,7 +767,7 @@ jobs:
         - add_ssh_keys:
             fingerprints:
               - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-        - set_gcloud_config_ucs
+        - set_gcloud_config_pim_saas_dev
         - restore_persisted_env_vars
         - run:
             name: Add ingresses (pim-web and pim-api)
@@ -780,10 +785,10 @@ jobs:
               cp /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/pim-api-ingress.yaml /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
 
               ## {INSTANCE_NAME}-pim-web-ingress.yaml
-              sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.bh\.akeneo\.ch#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
+              sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.${GOOGLE_DOMAIN}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
               sed -i "s#pim-external-{{ \.Values\.global\.extraLabels\.instanceName }}#pim-external-${INSTANCE_NAME}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/templates/${INSTANCE_NAME}-pim-web-ingress.yaml
               ## {INSTANCE_NAME}-pim-api-ingress.yaml
-              sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.bh\.akeneo\.ch#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
+              sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.${GOOGLE_DOMAIN}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
               sed -i "s#pim-api-external-{{ \.Values\.global\.extraLabels\.instanceName }}#pim-api-external-${INSTANCE_NAME}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
 
               git add deployments-ucs/pim-saas-service
@@ -798,7 +803,7 @@ jobs:
               ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
               # Login to argocd
-              argocd login --insecure argocd.bh.akeneo.ch --username admin --password ${ARGOCD_PASSWORD}
+              argocd login --insecure argocd.${GOOGLE_DOMAIN} --username admin --password ${ARGOCD_PASSWORD}
 
               # Force synchro
               argocd app get ${CIRCLE_BRANCH_LOWER}-pim-argocd --hard-refresh

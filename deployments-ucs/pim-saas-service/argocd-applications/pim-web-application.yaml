@@ -11,7 +11,7 @@ spec:
   project: default
   # Source of the application manifests
   source:
-    repoURL: git@github.com:akeneo/pim-enterprise-dev.git
+    repoURL: https://github.com/akeneo/pim-enterprise-dev.git
     targetRevision: master
     path: deployments-ucs/pim-saas-service/pim-web
   # Destination cluster and namespace to deploy the application
