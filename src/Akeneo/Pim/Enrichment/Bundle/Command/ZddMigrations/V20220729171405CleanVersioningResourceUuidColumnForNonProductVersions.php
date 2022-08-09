@@ -52,7 +52,28 @@ SQL;
             $versionIds = $this->getVersionIdsToCleanForResourceName($resourceNameToProcess);
             $this->cleanVersions($versionIds);
             $totalVersionsCleaned += \count($versionIds);
+            $this->logger->info(
+                sprintf(
+                    'Cleaned %d versions from their resource_uuid for resource name %s',
+                    $totalVersionsCleaned,
+                    $resourceNameToProcess
+                )
+            );
             $this->logger->notice(
+                sprintf(
+                    'Cleaned %d versions from their resource_uuid for resource name %s',
+                    $totalVersionsCleaned,
+                    $resourceNameToProcess
+                )
+            );
+            $this->logger->debug(
+                sprintf(
+                    'Cleaned %d versions from their resource_uuid for resource name %s',
+                    $totalVersionsCleaned,
+                    $resourceNameToProcess
+                )
+            );
+            $this->logger->warning(
                 sprintf(
                     'Cleaned %d versions from their resource_uuid for resource name %s',
                     $totalVersionsCleaned,
