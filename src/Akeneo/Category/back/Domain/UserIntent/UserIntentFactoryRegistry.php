@@ -21,7 +21,7 @@ class UserIntentFactoryRegistry
 
     /**
      * @param iterable<UserIntentFactory> $userIntentFactories
-     * @param string[] $ignoredFieldNames
+     * @param string[]                    $ignoredFieldNames
      */
     public function __construct(iterable $userIntentFactories, private array $ignoredFieldNames)
     {
@@ -37,8 +37,6 @@ class UserIntentFactoryRegistry
     }
 
     /**
-     * @param string $fieldName
-     * @param mixed $data
      * @return UserIntent[]
      */
     public function fromStandardFormatField(string $fieldName, mixed $data): array

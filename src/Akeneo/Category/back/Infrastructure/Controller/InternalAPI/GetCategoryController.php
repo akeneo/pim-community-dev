@@ -22,8 +22,7 @@ class GetCategoryController
     public function __construct(
         private SecurityFacade     $securityFacade,
         private GetCategoryHandler $handler
-    )
-    {
+    ) {
     }
 
     public function __invoke(Request $request, int $id): Response

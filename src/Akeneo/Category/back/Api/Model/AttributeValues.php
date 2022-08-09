@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Category\Api\Model;
@@ -24,19 +25,18 @@ namespace Akeneo\Category\Api\Model;
  */
 class AttributeValues
 {
-
     /**
      * @param AttributeValuesMap $values
      */
-    public function __construct(private array $values) {
-
+    public function __construct(private array $values)
+    {
     }
 
     /**
      * @return array<string, mixed>
      */
-    public function normalize(): array {
+    public function normalize(): array
+    {
         return $this->values;
     }
-
 }

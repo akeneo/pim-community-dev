@@ -1,7 +1,7 @@
 .PHONY: category-lint-back
 category-lint-back: #Doc: launch PHPStan for category bounded context
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Category/back/tests/phpstan.neon.dist
-#	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Category/back/tests/.php_cs.php
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Category/back/tests/.php_cs.php
 
 .PHONY: category-lint-fix-back
 category-lint-fix-back: #Doc: launch PHPStan for category bounded context

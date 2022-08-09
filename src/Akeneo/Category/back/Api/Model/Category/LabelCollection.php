@@ -5,10 +5,9 @@ namespace Akeneo\Category\Api\Model\Category;
 use Akeneo\Category\Domain\ValueObject\LabelCollection as LabelCollectionFromDomain;
 use Webmozart\Assert\Assert;
 
-
 /**
  * This model represents labels of a category code as exposed to the outside of the category bounded context
- * It resembles the eponymous internal domain model but can drift in the future
+ * It resembles the eponymous internal domain model but can drift in the future.
  *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -17,8 +16,8 @@ use Webmozart\Assert\Assert;
  */
 final class LabelCollection
 {
-
-    public static function fromDomainModel(LabelCollectionFromDomain $lc): LabelCollection {
+    public static function fromDomainModel(LabelCollectionFromDomain $lc): LabelCollection
+    {
         return new LabelCollection(
             $lc->getLabels(),
         );
@@ -44,7 +43,8 @@ final class LabelCollection
     /**
      * @return LocalizedLabels
      */
-    public function getLabels(): array {
+    public function getLabels(): array
+    {
         return $this->translatedLabels;
     }
 

@@ -1,13 +1,13 @@
 <?php
-declare(strict_types=1);
 
+declare(strict_types=1);
 
 namespace Akeneo\Category\Api\Model;
 
 /**
  * A Permissions object represents the permissions granted for a category.
  * Permissions can be one of {'view', 'edit', 'own'}
- * Granted entities are represented by group IDs
+ * Granted entities are represented by group IDs.
  *
  * @phpstan-type Group int
  * @phpstan-type Groups Group[]
@@ -22,14 +22,15 @@ class Permissions
     /**
      * @param PermissionsMap $permissions
      */
-    public function __construct(private array $permissions) {
-
+    public function __construct(private array $permissions)
+    {
     }
 
     /**
      * @return array<string, mixed>
      */
-    public function normalize(): array {
+    public function normalize(): array
+    {
         return $this->permissions;
     }
 }

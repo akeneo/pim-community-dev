@@ -7,7 +7,8 @@ namespace Akeneo\Category\Api\Query;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 
 /**
- * Getting information about a category
+ * Getting information about a category.
+ *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -25,5 +26,4 @@ class GetCategoryQuery
     {
         return $this->id;
     }
-
 }

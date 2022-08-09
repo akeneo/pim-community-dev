@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -12,15 +13,13 @@ namespace Akeneo\Category\Api\Model;
 
 use Akeneo\Category\Api\Model\Category\Category;
 
-
 class CategoryReadModel
 {
     public function __construct(
-        private Category        $category,
-        private Permissions     $permissions,
-        private AttributeValues $attributeValues)
-    {
-
+        private Category $category,
+        private Permissions $permissions,
+        private AttributeValues $attributeValues
+    ) {
     }
 
     public function category(): Category
@@ -49,5 +48,4 @@ class CategoryReadModel
             'permissions' => $this->permissions->normalize(),
         ];
     }
-
 }

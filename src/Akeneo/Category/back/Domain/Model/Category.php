@@ -53,10 +53,10 @@ class Category
     public function normalize(): array
     {
         return [
-            'id' => (string)$this->getId(),
-            'code' => (string)$this->getCode(),
+            'id' => (string) $this->getId(),
+            'code' => (string) $this->getCode(),
             'labels' => $this->getLabelCollection()->normalize(),
-            'parent' => (string)$this->getParentId(),
+            'parent' => (string) $this->getParentId(),
         ];
     }
 }
