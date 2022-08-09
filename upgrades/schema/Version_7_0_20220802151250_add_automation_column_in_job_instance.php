@@ -39,9 +39,28 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance ext
         if (!$this->isColumnAlreadyCreated('scheduled')) {
             $this->addSql(<<<SQL
                 ALTER TABLE akeneo_batch_job_instance 
-                ADD COLUMN scheduled BOOL DEFAULT FALSE AFTER raw_parameters;
+                ADD COLUMN scheduled BOOL NOT NULL DEFAULT FALSE AFTER raw_parameters;
             SQL);
+            if (!$this->isIndexAlreadyExist('scheduled_idx')) {
+                $this->addSql(<<<SQL
+                    CREATE INDEX scheduled_idx ON akeneo_batch_job_instance (scheduled);
+                SQL);
+            }
         }
+    }
+
+    private function isIndexAlreadyExist(string $indexName): bool
+    {
+        $sql = <<<SQL
+            SHOW INDEX FROM akeneo_batch_job_instance WHERE Key_name=:indexName;
+        SQL;
+        $connection = $this->container->get('database_connection');
+        $result = $connection->executeQuery($sql, ['indexName' => $indexName])->fetch();
+        if (!empty($result)) {
+            return true;
+        }
+
+        return false;
     }
 
     private function isColumnAlreadyCreated(string $columnName): bool
@@ -54,6 +73,7 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance ext
         if (!empty($result)) {
             return true;
         }
+
         return false;
     }
 

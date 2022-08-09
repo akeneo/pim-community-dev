@@ -22,6 +22,7 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance_int
     use ExecuteMigrationTrait;
 
     private const MIGRATION_LABEL = '_7_0_20220802151250_add_automation_column_in_job_instance';
+    private const TABLE_NAME = 'akeneo_batch_job_instance';
 
     private Connection $connection;
 
@@ -33,13 +34,15 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance_int
 
     public function testItAddAutomationColumnOfTypeJson()
     {
-        $this->removeAutomationColumn('akeneo_batch_job_instance');
-        $this->removeScheduledColumn('akeneo_batch_job_instance');
+        $this->removeAutomationColumn(self::TABLE_NAME);
+        $this->removeIndex(self::TABLE_NAME);
+        $this->removeScheduledColumn(self::TABLE_NAME);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-        $this->assertTrue($this->automationColumnExist('akeneo_batch_job_instance'));
-        $this->assertTrue($this->scheduledColumnExist('akeneo_batch_job_instance'));
+        $this->assertTrue($this->automationColumnExist(self::TABLE_NAME));
+        $this->assertTrue($this->scheduledColumnExist(self::TABLE_NAME));
+        $this->assertTrue($this->scheduledIndexExist(self::TABLE_NAME));
     }
 
     private function removeAutomationColumn(string $tableName): void
@@ -57,7 +60,7 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance_int
 
     private function removeScheduledColumn(string $tableName): void
     {
-        if (!$this->automationColumnExist($tableName)) {
+        if (!$this->scheduledColumnExist($tableName)) {
             return;
         }
 
@@ -68,11 +71,35 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance_int
         );
     }
 
+    private function removeIndex(string $tableName)
+    {
+        if (!$this->scheduledIndexExist(self::TABLE_NAME)) {
+            return;
+        }
+
+        $this->get('database_connection')->executeQuery(
+            <<<SQL
+                DROP INDEX scheduled_idx ON $tableName;
+            SQL
+        );
+    }
+
+    private function scheduledIndexExist(string $tableName): bool
+    {
+        $rows = $this->get('database_connection')->fetchAllAssociative(
+            <<<SQL
+                SHOW INDEX FROM $tableName WHERE Key_name='scheduled_idx';
+            SQL,
+        );
+
+        return count($rows) >= 1;
+    }
+
     private function automationColumnExist(string $tableName): bool
     {
         $rows = $this->get('database_connection')->fetchAllAssociative(
             <<<SQL
-                SHOW COLUMNS FROM $tableName LIKE 'automation'
+                SHOW COLUMNS FROM $tableName LIKE 'automation';
             SQL,
         );
 
@@ -83,7 +110,7 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance_int
     {
         $rows = $this->get('database_connection')->fetchAllAssociative(
             <<<SQL
-                SHOW COLUMNS FROM $tableName LIKE 'scheduled'
+                SHOW COLUMNS FROM $tableName LIKE 'scheduled';
             SQL,
         );
 
