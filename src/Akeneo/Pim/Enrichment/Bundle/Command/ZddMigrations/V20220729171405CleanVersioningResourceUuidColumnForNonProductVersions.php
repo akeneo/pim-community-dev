@@ -98,7 +98,7 @@ SQL;
         $allResourceNames = $this->connection->fetchFirstColumn($sql);
         $nextResourceNameToProcess = current(array_filter(
             $allResourceNames,
-            static fn(string $resourceName) => $resourceName !== Product::class
+            static fn (string $resourceName) => $resourceName !== Product::class
         ));
 
         return false !== $nextResourceNameToProcess ? $nextResourceNameToProcess : null;
