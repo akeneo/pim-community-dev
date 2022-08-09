@@ -89,8 +89,10 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
     {
         $currentParameters = $jobInstance->getRawParameters();
 
-        $cronExpressionChanged = !isset($currentParameters['automation']['cron_expression'])
-            || $currentParameters['automation']['cron_expression'] !== $data['automation']['cron_expression'];
+        $currentCronExpression = $currentParameters['automation']['cron_expression'] ?? null;
+        $newCronExpression = $data['automation']['cron_expression'] ?? null;
+
+        $cronExpressionChanged = $newCronExpression !== null && $newCronExpression !== $currentCronExpression;
 
         if ($cronExpressionChanged) {
             $now = new \DateTime();

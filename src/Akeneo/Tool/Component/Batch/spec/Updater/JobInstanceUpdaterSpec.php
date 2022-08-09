@@ -11,6 +11,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\Batch\Updater\JobInstanceUpdater;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class JobInstanceUpdaterSpec extends ObjectBehavior
 {
@@ -37,6 +38,7 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $jobInstance->getJobName()->willReturn('fixtures_currency_csv');
+        $jobInstance->getRawParameters()->willReturn(['filePath' => 'currencies.csv']);
         $jobRegistry->get('fixtures_currency_csv')->willReturn($job);
         $jobParametersFactory->create($job, ['filePath' => 'currencies.csv'])->willReturn($jobParameters);
         $jobParameters->all()->willReturn(['filePath' => 'currencies.csv']);
