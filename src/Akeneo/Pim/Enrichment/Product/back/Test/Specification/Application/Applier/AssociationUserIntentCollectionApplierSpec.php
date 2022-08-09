@@ -12,11 +12,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductUuids;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductUuids;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductUuids;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\AssociationUserIntentCollectionApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels;
@@ -25,6 +28,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -271,6 +275,75 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         ]);
 
         $productUpdater->update(Argument::cetera())->shouldNotBeCalled();
+        $this->apply($collection, $product, 42);
+    }
+
+    function it_applies_associate_products_with_uuids(
+        ObjectUpdaterInterface $productUpdater,
+        ProductInterface $product
+    ) {
+        $uuid = Uuid::uuid4();
+        $collection = new AssociationUserIntentCollection([
+            new AssociateProductUuids('X_SELL', [$uuid])
+        ]);
+
+        $productUpdater->update($product, [
+            'associations' => [
+                'X_SELL' => [
+                    'product_uuids' => [$uuid->toString()]
+                ]
+            ]
+        ])->shouldBeCalledOnce();
+        $this->apply($collection, $product, 42);
+    }
+
+    function it_applies_dissociate_products_with_uuids(
+        ObjectUpdaterInterface $productUpdater,
+        ProductInterface $product
+    ) {
+        $associatedProduct1 = new Product();
+        $associatedProduct2 = new Product();
+        $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(
+            new ArrayCollection([$associatedProduct1, $associatedProduct2])
+        );
+        $collection = new AssociationUserIntentCollection([
+            new DissociateProductUuids('X_SELL', [$associatedProduct1->getUuid()])
+        ]);
+
+        $productUpdater->update($product, [
+            'associations' => [
+                'X_SELL' => [
+                    'product_uuids' => [$associatedProduct2->getUuid()]
+                ]
+            ]
+        ]);
+        $this->apply($collection, $product, 42);
+    }
+
+    function it_applies_replace_products_with_uuids(
+        ObjectUpdaterInterface $productUpdater,
+        GetViewableProducts $getViewableProducts,
+        ProductInterface $product
+    ) {
+        $uuid = Uuid::uuid4();
+        $associatedProduct = new Product();
+        $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(
+            new ArrayCollection([$associatedProduct])
+        );
+        $collection = new AssociationUserIntentCollection([
+            new ReplaceAssociatedProductUuids('X_SELL', [$uuid])
+        ]);
+        $getViewableProducts->fromProductUuids([$associatedProduct->getUuid()->toString()], 42)
+            ->shouldBeCalledOnce()
+            ->willReturn([$uuid->toString()]);
+
+        $productUpdater->update($product, [
+            'associations' => [
+                'X_SELL' => [
+                    'product_uuids' => [$uuid]
+                ]
+            ]
+        ]);
         $this->apply($collection, $product, 42);
     }
 

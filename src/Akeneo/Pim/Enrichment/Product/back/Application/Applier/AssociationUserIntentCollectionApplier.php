@@ -10,14 +10,17 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductUuids;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductUuids;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductUuids;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts;
@@ -31,6 +34,7 @@ use Webmozart\Assert\Assert;
 final class AssociationUserIntentCollectionApplier implements UserIntentApplier
 {
     private const PRODUCTS = 'products';
+    private const PRODUCT_UUIDS = 'product_uuids';
     private const PRODUCT_MODELS = 'product_models';
     private const GROUPS = 'groups';
 
@@ -52,11 +56,11 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
             $entityAssociations = $this->userIntentEntityAssociations($associationUserIntent, $entityType);
 
             $values = match ($associationUserIntent::class) {
-                AssociateProducts::class, AssociateProductModels::class, AssociateGroups::class =>
+                AssociateProducts::class, AssociateProductModels::class, AssociateGroups::class, AssociateProductUuids::class =>
                     $this->associateEntities($formerAssociations, $entityAssociations),
-                DissociateProducts::class, DissociateProductModels::class, DissociateGroups::class =>
+                DissociateProducts::class, DissociateProductModels::class, DissociateGroups::class, DissociateProductUuids::class =>
                     $this->dissociateEntities($formerAssociations, $entityAssociations),
-                ReplaceAssociatedProducts::class, ReplaceAssociatedProductModels::class, ReplaceAssociatedGroups::class =>
+                ReplaceAssociatedProducts::class, ReplaceAssociatedProductModels::class, ReplaceAssociatedGroups::class, ReplaceAssociatedProductUuids::class =>
                     $this->replaceAssociatedEntities($formerAssociations, $entityAssociations, $entityType, $userId),
                 default => throw new \InvalidArgumentException('Unsupported association userIntent')
             };
@@ -93,6 +97,9 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
             self::PRODUCTS => $product
                     ->getAssociatedProducts($associationUserIntent->associationType())
                     ?->map(fn (ProductInterface $product): string => $product->getIdentifier())?->toArray() ?? [],
+            self::PRODUCT_UUIDS => $product
+                    ->getAssociatedProducts($associationUserIntent->associationType())
+                    ?->map(fn (ProductInterface $product): string => $product->getUuid()->toString())?->toArray() ?? [],
             self::PRODUCT_MODELS => $product
                     ->getAssociatedProductModels($associationUserIntent->associationType())
                     ?->map(fn (ProductModelInterface $productModel): string => $productModel->getIdentifier())?->toArray() ?? [],
@@ -109,6 +116,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
     {
         return match ($userIntent::class) {
             AssociateProducts::class, DissociateProducts::class, ReplaceAssociatedProducts::class => self::PRODUCTS,
+            AssociateProductUuids::class, DissociateProductUuids::class, ReplaceAssociatedProductUuids::class => self::PRODUCT_UUIDS,
             AssociateProductModels::class, DissociateProductModels::class, ReplaceAssociatedProductModels::class => self::PRODUCT_MODELS,
             AssociateGroups::class, DissociateGroups::class, ReplaceAssociatedGroups::class => self::GROUPS,
             default => throw new \LogicException('User intent cannot be handled')
@@ -126,6 +134,8 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
             return $associationUserIntent->productModelCodes();
         } elseif ($entityType === self::GROUPS && \method_exists($associationUserIntent, 'groupCodes')) {
             return $associationUserIntent->groupCodes();
+        } elseif ($entityType === self::PRODUCT_UUIDS && \method_exists($associationUserIntent, 'productUuids')) {
+            return $associationUserIntent->productUuids();
         }
         throw new \LogicException('Not Implemented');
     }
@@ -181,6 +191,9 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
         } elseif (self::PRODUCT_MODELS === $entityType) {
             $viewableProductModels = $this->getViewableProductModels->fromProductModelCodes($formerAssociations, $userId);
             $nonViewableEntities = \array_values(\array_diff($formerAssociations, $viewableProductModels));
+        } elseif (self::PRODUCT_UUIDS === $entityType) {
+            $viewableProductUuids = $this->getViewableProducts->fromProductUuids($formerAssociations, $userId);
+            $nonViewableEntities = \array_values(\array_diff($formerAssociations, $viewableProductUuids));
         }
 
         return \array_values(\array_unique(\array_merge($nonViewableEntities, $entityAssociations)));

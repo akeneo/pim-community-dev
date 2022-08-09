@@ -16,4 +16,11 @@ interface GetViewableProducts
      * @return array<string>
      */
     public function fromProductIdentifiers(array $productIdentifiers, int $userId): array;
+
+    /**
+     * @param array<string> $productUuids
+     * @param int $userId
+     * @return array<string>
+     */
+    public function fromProductUuids(array $productUuids, int $userId): array;
 }
