@@ -1,0 +1,52 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/force-destroy: "true"
+    cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
+  labels:
+    pfid: {{ .Values.global.extraLabels.pfid }}
+  name: {{ .Values.global.extraLabels.pfid }}
+spec:
+  location: {{ .Values.pim.storage.location }}
+  storageClass: STANDARD
+  uniformBucketLevelAccess: false
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  labels:
+    pfid: {{ .Values.global.extraLabels.pfid }}
+  name: {{ .Values.global.extraLabels.pfid }}
+spec:
+  bucketRef:
+    name: {{ .Values.global.extraLabels.pfid }}
+  entity: serviceAccount-{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
+  role: roles/storage.objectAdmin
+---
+# Backup ES
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/force-destroy: "true"
+    cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
+  labels:
+    pfid: {{ .Values.global.extraLabels.pfid }}
+  name: {{ .Values.global.extraLabels.pfid }}-es
+spec:
+  location: {{ .Values.pim.storage.location }}
+  storageClass: STANDARD
+  uniformBucketLevelAccess: false
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  labels:
+    pfid: {{ .Values.global.extraLabels.pfid }}
+  name: {{ .Values.global.extraLabels.pfid }}-es
+spec:
+  bucketRef:
+    name: {{ .Values.global.extraLabels.pfid }}-es
+  entity: serviceAccount-{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
+  role: roles/storage.objectAdmin
