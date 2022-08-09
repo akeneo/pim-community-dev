@@ -1,416 +1,621 @@
 swagger: "2.0"
 info:
-    description: ""
-    version: "1.0.0"
-    title: "PIM Catalogs"
+  description: ""
+  version: "1.0.0"
+  title: "PIM Catalogs"
 host: "example.com"
 basePath: "/"
 schemes:
-    - "https"
+  - "https"
 paths:
-    /api/rest/v1/catalogs:
-        get:
-            summary: "Get list of catalogs"
-            produces:
-                - "application/json"
-            parameters:
-                -   in: query
-                    name: page
-                    type: integer
-                    required: false
-                -   in: query
-                    name: limit
-                    type: integer
-                    required: false
-            responses:
-                "200":
-                    description: "OK"
-                    examples:
-                        application/json:
-                          {
-                            current_page: 1,
-                            _embedded: {
-                              items: [
-                                {
-                                  id: "e8da3927-e116-492b-a3fa-2497495b0560",
-                                  name: "Demo App default catalog",
-                                  enabled: true
-                                }
-                              ]
-                            }
-                          }
-                "401":
-                    description: "Unauthorized"
-                    examples:
-                        application/json:
-                          {
-                            code: 401,
-                            message: "Authentication is required"
-                          }
-                "403":
-                    description: "Access forbidden"
-                    examples:
-                        application/json:
-                          {
-                            code: 403,
-                            message: "Access forbidden. You are not allowed to access app catalogs."
-                          }
-        post:
-            summary: "Create a new catalog"
-            produces:
-                - "application/json"
-            parameters:
-                -   in: body
-                    name: user
-                    schema:
-                        type: object
-                        required:
-                            - name
-                        properties:
-                            name:
-                                type: string
-            responses:
-                "201":
-                    description: "OK"
-                    examples:
-                        application/json:
-                            {
-                              id: "e8da3927-e116-492b-a3fa-2497495b0560",
-                              name: "Demo App default catalog",
-                              enabled: true
-                            }
-                "401":
-                    description: "Unauthorized"
-                    examples:
-                        application/json:
-                          {
-                            code: 401,
-                            message: "Authentication is required"
-                          }
-                "403":
-                    description: "Access forbidden"
-                    examples:
-                        application/json:
-                          {
-                            code: 403,
-                            message: "Access forbidden. You are not allowed to create app catalogs."
-                          }
-                "422":
-                    description: "Unprocessable entity"
-                    examples:
-                        application/json:
-                          {
-                            code: 422,
-                            message: "Validation failed.",
-                            errors: [
-                              {
-                                property: "name",
-                                message: "This value should not be blank."
-                              }
-                            ]
-                          }
-    /api/rest/v1/catalogs/{id}:
-        get:
-            summary: "Get a catalog"
-            produces:
-                - "application/json"
-            parameters:
-                -   in: path
-                    name: id
-                    type: string
-                    required: true
-            responses:
-                "200":
-                    description: "OK"
-                    examples:
-                        application/json:
-                            {
-                              id: "e8da3927-e116-492b-a3fa-2497495b0560",
-                              name: "Demo App default catalog",
-                              enabled: true
-                            }
-                "401":
-                    description: "Unauthorized"
-                    examples:
-                        application/json:
-                          {
-                            code: 401,
-                            message: "Authentication is required"
-                          }
-                "403":
-                    description: "Access forbidden"
-                    examples:
-                        application/json:
-                          {
-                            code: 403,
-                            message: "Access forbidden. You are not allowed to access app catalogs."
-                          }
-                "404":
-                    description: "Not found"
-                    examples:
-                        application/json:
-                          {
-                            code: 404,
-                            message: "Catalog \"{id}\" does not exist or you can't access it."
-                          }
-        patch:
-            summary: "Update a catalog"
-            produces:
-                - "application/json"
-            parameters:
-                -   in: path
-                    name: id
-                    type: string
-                    required: true
-                -   in: body
-                    name: user
-                    schema:
-                        type: object
-                        required:
-                            - name
-                        properties:
-                            name:
-                                type: string
-            responses:
-                "201":
-                    description: "OK"
-                    examples:
-                        application/json:
-                            {
-                              id: "e8da3927-e116-492b-a3fa-2497495b0560",
-                              name: "Demo App default catalog",
-                              enabled: true
-                            }
-                "401":
-                    description: "Unauthorized"
-                    examples:
-                        application/json:
-                          {
-                            code: 401,
-                            message: "Authentication is required"
-                          }
-                "403":
-                    description: "Access forbidden"
-                    examples:
-                        application/json:
-                          {
-                            code: 403,
-                            message: "Access forbidden. You are not allowed to edit app catalogs."
-                          }
-                "404":
-                    description: "Not found"
-                    examples:
-                        application/json:
-                          {
-                            code: 404,
-                            message: "Catalog \"{id}\" does not exist or you can't access it."
-                          }
-        delete:
-            summary: "Delete a catalog"
-            parameters:
-                -   in: path
-                    name: id
-                    type: string
-                    required: true
-            responses:
-                "204":
-                    description: "Successfully deleted"
-                "401":
-                    description: "Unauthorized"
-                    examples:
-                        application/json:
-                          {
-                            code: 401,
-                            message: "Authentication is required"
-                          }
-                "403":
-                    description: "Access forbidden"
-                    examples:
-                        application/json:
-                          {
-                            code: 403,
-                            message: "Access forbidden. You are not allowed to delete app catalogs."
-                          }
-                "404":
-                    description: "Not found"
-                    examples:
-                        application/json:
-                          {
-                            code: 404,
-                            message: "Catalog \"{id}\" does not exist or you can't access it."
-                          }
-    /api/rest/v1/catalogs/{id}/product-uuids:
-        get:
-            summary: "List of product uuids belonging to the catalog"
-            produces:
-                - "application/json"
-            parameters:
-                -   in: path
-                    name: id
-                    type: string
-                    required: true
-                -   in: query
-                    name: search_after
-                    type: string
-                    required: false
-                -   in: query
-                    name: limit
-                    type: number
-                    required: false
-            responses:
-                "200":
-                    description: "OK"
-                    examples:
-                        application/json:
-                            search_after: "YTVlZWQ2MDYtNGY5OC00ZDhjLWI5MjYtNWI1OWY4ZmIwZWU3"
-                            _embedded:
-                                items:
-                                    - "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
-                                    - "6731c01b-921f-426f-bae6-441c46b57b93"
-                                    - "ac7f972c-8cba-4f68-8be0-92fdd3b7947e"
-                                    - "2ffa993f-fac0-483d-b65d-6ba04bae5499"
-                                    - "cb7a0739-1014-43c0-91fc-92b40c12dd5c"
-                                    - "457533a8-78e4-41df-872a-ba70b38be404"
-                                    - "42b7808f-c621-45db-abe4-d974132bd294"
-                                    - "a1a2b7de-128b-4d78-a048-85f39c67a60d"
-                                    - "aafb8869-d5b3-436d-a17b-99ca42e09c20"
-                                    - "81627547-a389-4e0f-9788-1c815a8cfe08"
-                "401":
-                    description: "Unauthorized"
-                    examples:
-                        application/json:
-                          {
-                            code: 401,
-                            message: "Authentication is required"
-                          }
-                "403":
-                    description: "Access forbidden"
-                    examples:
-                        application/json:
-                          {
-                            code: 403,
-                            message: "Access forbidden. You are not allowed to access app catalogs."
-                          }
-                "404":
-                    description: "Not found"
-                    examples:
-                        application/json:
-                          {
-                            code: 404,
-                            message: "Catalog \"{id}\" does not exist or you can't access it."
-                          }
-    /api/rest/v1/catalogs/{id}/products:
-        get:
-            summary: "List of products belonging to the catalog"
-            produces:
-                - "application/json"
-            parameters:
-                -   in: path
-                    name: id
-                    type: string
-                    required: true
-                -   in: query
-                    name: search_after
-                    type: string
-                    required: false
-                -   in: query
-                    name: limit
-                    type: number
-                    required: false
-            responses:
-                "200":
-                    description: "OK"
-                    examples:
-                        application/json:
-                            search_after: "YTVlZWQ2MDYtNGY5OC00ZDhjLWI5MjYtNWI1OWY4ZmIwZWU3"
-                            _embedded:
-                                items:
-                                    -   uuid: "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
-                                        family: "tshirt"
-                                        groups: [ ]
-                                        parent: null
-                                        categories: [ ]
-                                        enabled: true
-                                        values:
-                                            name:
-                                                -   data: Top
-                                                    locale: en_US
-                                                    scope: null
-                "401":
-                    description: "Unauthorized"
-                    examples:
-                        application/json:
-                          {
-                            code: 401,
-                            message: "Authentication is required"
-                          }
-                "403":
-                    description: "Access forbidden"
-                    examples:
-                        application/json:
-                          {
-                            code: 403,
-                            message: "Access forbidden. You are not allowed to access app catalogs."
-                          }
-                "404":
-                    description: "Not found"
-                    examples:
-                        application/json:
-                          {
-                            code: 404,
-                            message: "Catalog \"{id}\" does not exist or you can't access it."
-                          }
-    /api/rest/v1/catalogs/{id}/products/{identifier}:
-        get:
-            summary: "Product belonging to the catalog"
-            produces:
-                - "application/json"
-            parameters:
-                -   in: path
-                    name: id
-                    type: string
-                    required: true
-                -   in: path
-                    name: identifier
-                    type: string
-                    required: true
-            responses:
-                "200":
-                    description: "OK"
-                    examples:
-                        application/json:
-                            uuid: "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
-                            family: "tshirt"
-                            groups: [ ]
-                            parent: null
-                            categories: [ ]
-                            enabled: true
-                            values:
-                                name:
-                                    -   data: Top
-                                        locale: en_US
-                                        scope: null
-                "401":
-                    description: "Unauthorized"
-                    examples:
-                        application/json:
-                          {
-                            code: 401,
-                            message: "Authentication is required"
-                          }
-                "403":
-                    description: "Access forbidden"
-                    examples:
-                        application/json:
-                          {
-                            code: 403,
-                            message: "Access forbidden. You are not allowed to access app catalogs or products."
-                          }
-                "404":
-                    description: "Not found"
-                    examples:
-                        application/json:
-                          {
-                            code: 404,
-                            message: "Either catalog \"{id}\" does not exist or you can't access it, or product \"{identifier}\" does not exist or you do not have permission to access it."
-                          }
+  /api/rest/v1/catalogs:
+    get:
+      summary: "Get list of catalogs"
+      tags: [ catalogs ]
+      produces:
+        - "application/json"
+      parameters:
+        - in: query
+          name: page
+          type: integer
+          required: false
+        - in: query
+          name: limit
+          type: integer
+          required: false
+      responses:
+        "200":
+          description: "OK"
+          examples:
+            application/json:
+              {
+                current_page: 1,
+                _embedded: {
+                  items: [
+                    {
+                      id: "e8da3927-e116-492b-a3fa-2497495b0560",
+                      name: "Demo App default catalog",
+                      enabled: true
+                    }
+                  ]
+                }
+              }
+        "401":
+          description: "Unauthorized"
+          examples:
+            application/json:
+              {
+                code: 401,
+                message: "Authentication is required"
+              }
+        "403":
+          description: "Access forbidden"
+          examples:
+            application/json:
+              {
+                code: 403,
+                message: "Access forbidden. You are not allowed to access app catalogs."
+              }
+    post:
+      summary: "Create a new catalog"
+      tags: [ catalogs ]
+      produces:
+        - "application/json"
+      parameters:
+        - in: body
+          name: user
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+      responses:
+        "201":
+          description: "OK"
+          examples:
+            application/json:
+              {
+                id: "e8da3927-e116-492b-a3fa-2497495b0560",
+                name: "Demo App default catalog",
+                enabled: true
+              }
+        "401":
+          description: "Unauthorized"
+          examples:
+            application/json:
+              {
+                code: 401,
+                message: "Authentication is required"
+              }
+        "403":
+          description: "Access forbidden"
+          examples:
+            application/json:
+              {
+                code: 403,
+                message: "Access forbidden. You are not allowed to create app catalogs."
+              }
+        "422":
+          description: "Unprocessable entity"
+          examples:
+            application/json:
+              {
+                code: 422,
+                message: "Validation failed.",
+                errors: [
+                  {
+                    property: "name",
+                    message: "This value should not be blank."
+                  }
+                ]
+              }
+  /api/rest/v1/catalogs/{id}:
+    get:
+      summary: "Get a catalog"
+      tags: [ catalogs ]
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      responses:
+        "200":
+          description: "OK"
+          examples:
+            application/json:
+              {
+                id: "e8da3927-e116-492b-a3fa-2497495b0560",
+                name: "Demo App default catalog",
+                enabled: true
+              }
+        "401":
+          description: "Unauthorized"
+          examples:
+            application/json:
+              {
+                code: 401,
+                message: "Authentication is required"
+              }
+        "403":
+          description: "Access forbidden"
+          examples:
+            application/json:
+              {
+                code: 403,
+                message: "Access forbidden. You are not allowed to access app catalogs."
+              }
+        "404":
+          description: "Not found"
+          examples:
+            application/json:
+              {
+                code: 404,
+                message: "Catalog \"{id}\" does not exist or you can't access it."
+              }
+    patch:
+      summary: "Update a catalog"
+      tags: [ catalogs ]
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - in: body
+          name: user
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+      responses:
+        "201":
+          description: "OK"
+          examples:
+            application/json:
+              {
+                id: "e8da3927-e116-492b-a3fa-2497495b0560",
+                name: "Demo App default catalog",
+                enabled: true
+              }
+        "401":
+          description: "Unauthorized"
+          examples:
+            application/json:
+              {
+                code: 401,
+                message: "Authentication is required"
+              }
+        "403":
+          description: "Access forbidden"
+          examples:
+            application/json:
+              {
+                code: 403,
+                message: "Access forbidden. You are not allowed to edit app catalogs."
+              }
+        "404":
+          description: "Not found"
+          examples:
+            application/json:
+              {
+                code: 404,
+                message: "Catalog \"{id}\" does not exist or you can't access it."
+              }
+    delete:
+      summary: "Delete a catalog"
+      tags: [ catalogs ]
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      responses:
+        "204":
+          description: "Successfully deleted"
+        "401":
+          description: "Unauthorized"
+          examples:
+            application/json:
+              {
+                code: 401,
+                message: "Authentication is required"
+              }
+        "403":
+          description: "Access forbidden"
+          examples:
+            application/json:
+              {
+                code: 403,
+                message: "Access forbidden. You are not allowed to delete app catalogs."
+              }
+        "404":
+          description: "Not found"
+          examples:
+            application/json:
+              {
+                code: 404,
+                message: "Catalog \"{id}\" does not exist or you can't access it."
+              }
+  /api/rest/v1/catalogs/{id}/product-mapping:
+    get:
+      summary: "Get the schema of the product mapping"
+      tags: [ product mapping ]
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      responses:
+        "200":
+          description: "OK"
+          examples:
+            application/json:
+              {
+                "$schema": "https://api.akeneo.com/schema/2022-08/product",
+                "properties": {
+                  "title": {
+                    "title": "Title",
+                    "type": "string",
+                    "maxLength": 255
+                  },
+                  "body_html": {
+                    "title": "Description",
+                    "type": "string",
+                    "maxLength": 65536
+                  },
+                  "price": {
+                    "title": "Price",
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1e+18
+                  }
+                },
+                "required": [
+                    "title"
+                ]
+              }
+        "401":
+          description: "Unauthorized"
+          examples:
+            application/json:
+              {
+                code: 401,
+                message: "Authentication is required"
+              }
+        "403":
+          description: "Access forbidden"
+          examples:
+            application/json:
+              {
+                code: 403,
+                message: "Access forbidden. You are not allowed to access app catalogs."
+              }
+        "404":
+          description: "Not found"
+          examples:
+            application/json:
+              {
+                code: 404,
+                message: "Catalog \"{id}\" does not exist or you can't access it."
+              }
+    put:
+      summary: "Update the schema of the product mapping"
+      tags: [ product mapping ]
+      produces:
+        - "application/json"
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - in: formData
+          name: schema
+          type: file
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+          examples:
+            application/json:
+              {
+                code: 401,
+                message: "Authentication is required"
+              }
+        "403":
+          description: "Access forbidden"
+          examples:
+            application/json:
+              {
+                code: 403,
+                message: "Access forbidden. You are not allowed to access app catalogs."
+              }
+        "404":
+          description: "Not found"
+          examples:
+            application/json:
+              {
+                code: 404,
+                message: "Catalog \"{id}\" does not exist or you can't access it."
+              }
+    delete:
+      summary: "Delete the schema of the product mapping"
+      tags: [ product mapping ]
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      responses:
+        "204":
+          description: "Successfully deleted"
+        "401":
+          description: "Unauthorized"
+          examples:
+            application/json:
+              {
+                code: 401,
+                message: "Authentication is required"
+              }
+        "403":
+          description: "Access forbidden"
+          examples:
+            application/json:
+              {
+                code: 403,
+                message: "Access forbidden. You are not allowed to delete app catalogs."
+              }
+        "404":
+          description: "Not found"
+          examples:
+            application/json:
+              {
+                code: 404,
+                message: "Catalog \"{id}\" does not exist or you can't access it."
+              }
+  /api/rest/v1/catalogs/{id}/product-uuids:
+    get:
+      summary: "List of product uuids belonging to the catalog"
+      tags: [ products ]
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - in: query
+          name: search_after
+          type: string
+          required: false
+        - in: query
+          name: limit
+          type: number
+          required: false
+      responses:
+        "200":
+          description: "OK"
+          examples:
+            application/json:
+              search_after: "YTVlZWQ2MDYtNGY5OC00ZDhjLWI5MjYtNWI1OWY4ZmIwZWU3"
+              _embedded:
+                items:
+                  - "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
+                  - "6731c01b-921f-426f-bae6-441c46b57b93"
+                  - "ac7f972c-8cba-4f68-8be0-92fdd3b7947e"
+                  - "2ffa993f-fac0-483d-b65d-6ba04bae5499"
+                  - "cb7a0739-1014-43c0-91fc-92b40c12dd5c"
+                  - "457533a8-78e4-41df-872a-ba70b38be404"
+                  - "42b7808f-c621-45db-abe4-d974132bd294"
+                  - "a1a2b7de-128b-4d78-a048-85f39c67a60d"
+                  - "aafb8869-d5b3-436d-a17b-99ca42e09c20"
+                  - "81627547-a389-4e0f-9788-1c815a8cfe08"
+        "401":
+          description: "Unauthorized"
+          examples:
+            application/json:
+              {
+                code: 401,
+                message: "Authentication is required"
+              }
+        "403":
+          description: "Access forbidden"
+          examples:
+            application/json:
+              {
+                code: 403,
+                message: "Access forbidden. You are not allowed to access app catalogs."
+              }
+        "404":
+          description: "Not found"
+          examples:
+            application/json:
+              {
+                code: 404,
+                message: "Catalog \"{id}\" does not exist or you can't access it."
+              }
+  /api/rest/v1/catalogs/{id}/products:
+    get:
+      summary: "List of products belonging to the catalog"
+      tags: [ products ]
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - in: query
+          name: search_after
+          type: string
+          required: false
+        - in: query
+          name: limit
+          type: number
+          required: false
+      responses:
+        "200":
+          description: "OK"
+          examples:
+            application/json:
+              search_after: "YTVlZWQ2MDYtNGY5OC00ZDhjLWI5MjYtNWI1OWY4ZmIwZWU3"
+              _embedded:
+                items:
+                  - uuid: "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
+                    family: "tshirt"
+                    groups: [ ]
+                    parent: null
+                    categories: [ ]
+                    enabled: true
+                    values:
+                      name:
+                        - data: Top
+                          locale: en_US
+                          scope: null
+        "401":
+          description: "Unauthorized"
+          examples:
+            application/json:
+              {
+                code: 401,
+                message: "Authentication is required"
+              }
+        "403":
+          description: "Access forbidden"
+          examples:
+            application/json:
+              {
+                code: 403,
+                message: "Access forbidden. You are not allowed to access app catalogs."
+              }
+        "404":
+          description: "Not found"
+          examples:
+            application/json:
+              {
+                code: 404,
+                message: "Catalog \"{id}\" does not exist or you can't access it."
+              }
+  /api/rest/v1/catalogs/{id}/products/{identifier}:
+    get:
+      summary: "Product belonging to the catalog"
+      tags: [ products ]
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - in: path
+          name: identifier
+          type: string
+          required: true
+      responses:
+        "200":
+          description: "OK"
+          examples:
+            application/json:
+              uuid: "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
+              family: "tshirt"
+              groups: [ ]
+              parent: null
+              categories: [ ]
+              enabled: true
+              values:
+                name:
+                  - data: Top
+                    locale: en_US
+                    scope: null
+        "401":
+          description: "Unauthorized"
+          examples:
+            application/json:
+              {
+                code: 401,
+                message: "Authentication is required"
+              }
+        "403":
+          description: "Access forbidden"
+          examples:
+            application/json:
+              {
+                code: 403,
+                message: "Access forbidden. You are not allowed to access app catalogs or products."
+              }
+        "404":
+          description: "Not found"
+          examples:
+            application/json:
+              {
+                code: 404,
+                message: "Either catalog \"{id}\" does not exist or you can't access it, or product \"{identifier}\" does not exist or you do not have permission to access it."
+              }
+  /api/rest/v1/catalogs/{id}/mapped-products:
+    get:
+      summary: "List of mapped products belonging to the catalog"
+      tags: [ products ]
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - in: query
+          name: search_after
+          type: string
+          required: false
+        - in: query
+          name: limit
+          type: number
+          required: false
+      responses:
+        "200":
+          description: "OK"
+          examples:
+            application/json:
+              search_after: "YTVlZWQ2MDYtNGY5OC00ZDhjLWI5MjYtNWI1OWY4ZmIwZWU3"
+              _embedded:
+                items:
+                  - uuid: "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
+                    title: "Apple iPhone 13 (128 Go)"
+                    body_html: "<ul><li>Écran Super Retina XDR 6,1 pouces[...]"
+                    price: 849.00
+        "401":
+          description: "Unauthorized"
+          examples:
+            application/json:
+              {
+                code: 401,
+                message: "Authentication is required"
+              }
+        "403":
+          description: "Access forbidden"
+          examples:
+            application/json:
+              {
+                code: 403,
+                message: "Access forbidden. You are not allowed to access app catalogs."
+              }
+        "404":
+          description: "Not found"
+          examples:
+            application/json:
+              {
+                code: 404,
+                message: "Catalog \"{id}\" does not exist or you can't access it."
+              }
+
