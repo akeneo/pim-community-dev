@@ -12,3 +12,7 @@ services:
   Akeneo\Category\Application\GetCategoryHandler:
     tags:
       - { name: 'akeneo.category.query.handler', query: 'Akeneo\Category\Api\Query\GetCategoryQuery'}
+
+  Akeneo\Category\Application\GetTemplateHandler:
+    tags:
+      - { name: 'akeneo.category_template.query.handler', query: 'Akeneo\Category\Api\Query\GetTemplateQuery'}
