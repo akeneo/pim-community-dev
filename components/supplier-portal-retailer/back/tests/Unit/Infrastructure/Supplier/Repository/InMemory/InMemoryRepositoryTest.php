@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\Supplier\Repository\InMemory;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
@@ -50,7 +49,7 @@ final class InMemoryRepositoryTest extends TestCase
             ),
         );
 
-        $supplier = $supplierRepository->findByCode(Code::fromString('supplier_code'));
+        $supplier = $supplierRepository->findByCode('supplier_code');
 
         static::assertSame('supplier_code', $supplier->code());
         static::assertSame('Supplier code', $supplier->label());

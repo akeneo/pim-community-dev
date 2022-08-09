@@ -96,3 +96,32 @@ test('it displays an empty placeholder when there is no files', () => {
     );
     expect(screen.getByText('supplier_portal.product_file_dropping.supplier_files.no_files')).toBeInTheDocument();
 });
+
+test('it renders a list of supplier files with supplier column', () => {
+    renderWithProviders(
+        <SupplierFilesList
+            supplierFiles={supplierfilesList}
+            totalSupplierFiles={1}
+            currentPage={1}
+            onChangePage={() => {}}
+        />
+    );
+    expect(
+        screen.getByText('supplier_portal.product_file_dropping.supplier_files.columns.supplier')
+    ).toBeInTheDocument();
+});
+
+test('it renders a list of supplier files without supplier column', () => {
+    renderWithProviders(
+        <SupplierFilesList
+            supplierFiles={supplierfilesList}
+            totalSupplierFiles={1}
+            currentPage={1}
+            onChangePage={() => {}}
+            displaySupplierColumn={false}
+        />
+    );
+    expect(
+        screen.queryByText('supplier_portal.product_file_dropping.supplier_files.columns.supplier')
+    ).not.toBeInTheDocument();
+});

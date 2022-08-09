@@ -17,6 +17,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $this->createSupplier();
         $repository = $this->get(SupplierFileRepository::class);
         $supplierFile = SupplierFile::create(
+            'b8b13d0b-496b-4a7c-a574-0d522ba90752',
             'product-file.xlsx',
             '1/2/3/4/product-file.xlsx',
             'contributor@example.com',

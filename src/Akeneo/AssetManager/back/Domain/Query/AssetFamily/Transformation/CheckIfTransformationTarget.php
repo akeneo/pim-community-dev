@@ -44,7 +44,6 @@ class CheckIfTransformationTarget
             ->getTransformationCollection();
 
         foreach ($transformations as $transformation) {
-            /** @var $transformation Transformation */
             $target = $transformation->getTarget();
 
             if ($target->getAttributeCode()->equals($attribute->getCode()) &&

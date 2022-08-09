@@ -1,0 +1,38 @@
+services:
+    #controllers
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\DownloadProductFile:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\AllSupplierFilesList:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetAllSupplierFilesCount'
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\SupplierFilesList:
+        public: true
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilesCount'
+
+    # GCS Bucket service
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\DownloadStoredProductFileFromGCSBucket
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+
+    # Query/Handlers
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilePath'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile'
+            - '@event_dispatcher'
+            - '@monolog.logger.supplier_portal'
+
+    #Queries
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilePath:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetSupplierFilePath
+        arguments:
+            - '@database_connection'

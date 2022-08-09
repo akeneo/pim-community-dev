@@ -7,6 +7,7 @@ export * from './Category';
 export * from './Configuration';
 export * from './Configurator';
 export * from './DataMapping';
+export * from './Family';
 export * from './FileTemplateInformation';
 export * from './MeasurementFamily';
 export * from './Operation';

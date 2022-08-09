@@ -25,7 +25,6 @@ $rules = [
             // Supplier Portal Retailer coupling
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
 
             // PIM coupling
 
@@ -45,6 +44,7 @@ $rules = [
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
+            'Ramsey\Uuid\Uuid',
         ],
     )->in('Akeneo\SupplierPortal\Retailer\Application'),
 
@@ -55,7 +55,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application',
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Event\EventInterface',
@@ -72,6 +72,8 @@ $rules = [
             'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+            'Akeneo\Tool\Component\FileStorage\StreamedFileResponse',
+            'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
             // External dependencies coupling
             'Box\Spout\Common\Exception\IOException',
             'Box\Spout\Common\Type',
@@ -80,7 +82,6 @@ $rules = [
             'Box\Spout\Writer\Exception\WriterNotOpenedException',
             'Doctrine\DBAL\Connection',
             'Psr\Log\LoggerInterface',
-            'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
     )->in('Akeneo\SupplierPortal\Retailer\Infrastructure'),
@@ -92,9 +93,9 @@ $rules = [
             // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
 
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Job\JobParameters',

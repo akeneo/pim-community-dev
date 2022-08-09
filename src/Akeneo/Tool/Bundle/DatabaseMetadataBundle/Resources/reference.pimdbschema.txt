@@ -618,6 +618,7 @@ pim_catalog_category | root | NO | int |
 pim_catalog_category | lvl | NO | int |
 pim_catalog_category | lft | NO | int | MUL
 pim_catalog_category | rgt | NO | int |
+pim_catalog_category | value_collection | YES | json |
 pim_catalog_category_product | product_uuid | NO | binary(16) | PRI
 pim_catalog_category_product | category_id | NO | int | PRI
 pim_catalog_category_product_model | product_model_id | NO | int | PRI

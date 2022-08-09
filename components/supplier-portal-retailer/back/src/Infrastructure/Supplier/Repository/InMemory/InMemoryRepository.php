@@ -6,7 +6,6 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMe
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 
 class InMemoryRepository implements Repository
@@ -33,10 +32,10 @@ class InMemoryRepository implements Repository
         }
     }
 
-    public function findByCode(Code $code): ?Supplier
+    public function findByCode(string $code): ?Supplier
     {
         foreach ($this->suppliers as $supplier) {
-            if ((string) $code === $supplier->code()) {
+            if ($code === $supplier->code()) {
                 return $supplier;
             }
         }

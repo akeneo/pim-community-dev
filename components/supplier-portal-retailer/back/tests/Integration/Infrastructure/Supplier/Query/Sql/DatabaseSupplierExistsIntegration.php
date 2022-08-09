@@ -7,7 +7,6 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplie
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 
 final class DatabaseSupplierExistsIntegration extends SqlIntegrationTestCase
@@ -24,13 +23,7 @@ final class DatabaseSupplierExistsIntegration extends SqlIntegrationTestCase
             [],
         ));
 
-        static::assertTrue(
-            $this->get(SupplierExists::class)
-                ->fromCode(Code::fromString('supplier_code')),
-        );
-        static::assertFalse(
-            $this->get(SupplierExists::class)
-                ->fromCode(Code::fromString('unknown_supplier_code')),
-        );
+        static::assertTrue($this->get(SupplierExists::class)->fromCode('supplier_code'));
+        static::assertFalse($this->get(SupplierExists::class)->fromCode('unknown_supplier_code'));
     }
 }

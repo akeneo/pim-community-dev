@@ -25,11 +25,6 @@ final class Identifier
         return new self($identifier);
     }
 
-    public static function generate(): self
-    {
-        return self::fromString(Uuid::uuid4()->toString());
-    }
-
     public function __toString(): string
     {
         return $this->identifier;

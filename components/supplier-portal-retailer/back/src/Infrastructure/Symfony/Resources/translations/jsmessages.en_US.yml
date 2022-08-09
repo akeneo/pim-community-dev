@@ -88,6 +88,7 @@ supplier_portal:
                 contributor: Contributor
                 supplier: Supplier
                 status: Status
+                download: Download icon
             status:
                 downloaded: Downloaded
                 to_download: To download
@@ -99,6 +100,6 @@ supplier_portal:
 pim_title:
     supplier_portal_retailer_supplier_list: Suppliers
     supplier_portal_retailer_supplier_edit: Edit a supplier
-    supplier_portal_supplier_files_list: Product files
+    supplier_portal_retailer_product_files_list: Product files
 
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Supplier Portal Supplier import in XLSX

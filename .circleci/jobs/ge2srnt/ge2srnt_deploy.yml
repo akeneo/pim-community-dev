@@ -156,5 +156,3 @@ jobs:
                   name: Push Terraform modules to GCS
                   command: |
                       BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG}/
-
-

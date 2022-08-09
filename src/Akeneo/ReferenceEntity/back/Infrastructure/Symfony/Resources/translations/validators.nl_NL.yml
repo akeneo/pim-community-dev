@@ -100,4 +100,3 @@ pim_reference_entity:
     validation:
       record_should_exist: 'Voor eigenschap "%attribute_code%" moet een geldige recordcode worden opgegeven. Het record "%invalid_record%" bestaat niet'
       records_should_exist: 'Voor eigenschap "%attribute_code%" moeten geldige recordcodes worden opgegeven. De volgende records "%invalid_record%" bestaan niet'
-      records_should_not_contains_duplicates: '{1} Het volgende record is meerdere keren gebruikt: "{{ duplicate_codes }}". Controleer nogmaals uw lijst met records. ]1, +Inf] De volgende records zijn meerdere keren gebruikt: "{{ duplicate_codes }}". Controleer nogmaals uw lijst met records.'
