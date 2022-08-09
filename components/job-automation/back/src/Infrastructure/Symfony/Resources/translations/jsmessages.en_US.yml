@@ -1,0 +1,32 @@
+akeneo.job_automation:
+  title: 'automation'
+  scheduling:
+    title: 'Scheduling'
+    running_user_groups:
+      label: 'Permission user groups'
+      disabled_helper: You do not have permission to list user groups for your role.
+    enable: Enable scheduling
+    frequency:
+      helper: Frequency is displayed in UTC 24-hour format.
+      hourly_helper: Frequencies executed multiple times a day start at midnight (UTC).
+      title: Frequency
+      daily: Every day at
+      weekly: Every week on
+      every_4_hours: Every 4 hours
+      every_8_hours: Every 8 hours
+      every_12_hours: Every 12 hours
+      monday: Monday
+      tuesday: Tuesday
+      wednesday: Wednesday
+      thursday: Thursday
+      friday: Friday
+      saturday: Saturday
+      sunday: Sunday
+  notification:
+    title: 'notification'
+  validation:
+    invalid_frequency_option: Invalid frequency option
+    invalid_week_day: Invalid week day
+    invalid_hourly_frequency: Invalid hourly frequency
+    invalid_hours: Invalid hours
+    invalid_minutes: Invalid minutes

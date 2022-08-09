@@ -11,7 +11,7 @@ final class ServiceStatusControllerEndToEnd extends TestCase
 {
     public function test_it_gets_status_services(): void
     {
-        $client = self::$container->get('test.client');
+        $client = self::getContainer()->get('test.client');
         $token = $this->getParameter('monitoring_authentication_token');
 
         $client->request('GET', '/monitoring/services_status', [], [], ['HTTP_X-AUTH-TOKEN' => $token]);
@@ -53,7 +53,7 @@ final class ServiceStatusControllerEndToEnd extends TestCase
 
     public function test_it_fails_to_get_statuses_with_bad_authentication(): void
     {
-        $client = self::$container->get('test.client');
+        $client = self::getContainer()->get('test.client');
         $client->request('GET', '/monitoring/services_status');
         $response = $client->getResponse();
 

@@ -1,10 +1,15 @@
 import React from 'react';
-import {HashRouter as Router} from 'react-router-dom';
+import {HashRouter as Router, Route, Switch} from 'react-router-dom';
+import {ListSupplierFiles} from './ListSupplierFiles';
 
 const ProductFileDroppingApp = () => {
     return (
         <Router basename="/retailer-portal/product-file-dropping">
-            <div>Product File Dropping</div>
+            <Switch>
+                <Route path="/">
+                    <ListSupplierFiles />
+                </Route>
+            </Switch>
         </Router>
     );
 };

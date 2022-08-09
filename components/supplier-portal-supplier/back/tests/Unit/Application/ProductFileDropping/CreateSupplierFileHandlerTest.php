@@ -11,6 +11,7 @@ use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemo
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as SupplierInMemoryRepository;
 use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\CreateSupplierFile;
 use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\CreateSupplierFileHandler;
+use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\Exception\InvalidSupplierFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\StoreProductsFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\SupplierFile;
@@ -21,12 +22,24 @@ use Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Repository
 use Akeneo\SupplierPortal\Supplier\Infrastructure\StubEventDispatcher;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class CreateSupplierFileHandlerTest extends TestCase
 {
     /** @test */
     public function itCreatesASupplierFile(): void
     {
+        $violationsSpy = $this->createMock(ConstraintViolationList::class);
+        $violationsSpy->expects($this->once())->method('count')->willReturn(0);
+
+        $validatorSpy = $this->createMock(ValidatorInterface::class);
+        $validatorSpy
+            ->expects($this->once())
+            ->method('validate')
+            ->willReturn($violationsSpy);
+
         $supplier = Supplier::create(
             '01319d4c-81c4-4f60-a992-41ea3546824c',
             'mysupplier',
@@ -41,11 +54,13 @@ final class CreateSupplierFileHandlerTest extends TestCase
         $storeProductFileSpy = $this->createMock(StoreProductsFile::class);
         $eventDispatcherStub = new StubEventDispatcher();
 
+        $uploadedSupplierFile = $this->createMock(UploadedFile::class);
         $createSupplierFile = new CreateSupplierFile(
+            $uploadedSupplierFile,
             'products.xlsx',
-            '/tmp/products.xlsx',
             'contributor@example.com',
         );
+        $uploadedSupplierFile->expects($this->once())->method('getPathname')->willReturn('/tmp/products.xlsx');
 
         $storeProductFileSpy
             ->expects($this->once())
@@ -54,13 +69,14 @@ final class CreateSupplierFileHandlerTest extends TestCase
                 Code::fromString($supplier->code()),
                 Filename::fromString($createSupplierFile->originalFilename),
                 $this->isInstanceOf(Identifier::class),
-                $createSupplierFile->temporaryPath,
+                '/tmp/products.xlsx',
             )->willReturn('a_path');
 
         $sut = new CreateSupplierFileHandler(
             $getSupplierFromContributorEmail,
             $supplierFileRepository,
             $storeProductFileSpy,
+            $validatorSpy,
             $eventDispatcherStub,
             new NullLogger(),
         );
@@ -76,8 +92,19 @@ final class CreateSupplierFileHandlerTest extends TestCase
     }
 
     /** @test */
-    public function itThrowsAnExceptionIfTheContributorDoesNotExist(): void
+    public function itThrowsAnExceptionIfTheSupplierFileIsNotValid(): void
     {
+        $violationsSpy = $this->createMock(ConstraintViolationList::class);
+        $violationsSpy->expects($this->once())->method('count')->willReturn(1);
+
+        $validatorSpy = $this->createMock(ValidatorInterface::class);
+        $validatorSpy
+            ->expects($this->once())
+            ->method('validate')
+            ->willReturn($violationsSpy);
+
+        $uploadedSupplierFile = $this->createMock(UploadedFile::class);
+
         $supplierRepository = new SupplierInMemoryRepository();
         $getSupplierFromContributorEmail = new InMemoryGetSupplierFromContributorEmail($supplierRepository);
         $supplierFileRepository = new SupplierFileInMemoryRepository();
@@ -88,6 +115,46 @@ final class CreateSupplierFileHandlerTest extends TestCase
             $getSupplierFromContributorEmail,
             $supplierFileRepository,
             $storeProductFileSpy,
+            $validatorSpy,
+            $eventDispatcherStub,
+            new NullLogger(),
+        );
+
+        static::expectException(InvalidSupplierFile::class);
+        ($sut)(
+            new CreateSupplierFile(
+                $uploadedSupplierFile,
+                'products.xlsx',
+                'contributor@example.com',
+            )
+        );
+    }
+
+    /** @test */
+    public function itThrowsAnExceptionIfTheContributorDoesNotExist(): void
+    {
+        $violationsSpy = $this->createMock(ConstraintViolationList::class);
+        $violationsSpy->expects($this->once())->method('count')->willReturn(0);
+
+        $validatorSpy = $this->createMock(ValidatorInterface::class);
+        $validatorSpy
+            ->expects($this->once())
+            ->method('validate')
+            ->willReturn($violationsSpy);
+
+        $uploadedSupplierFile = $this->createMock(UploadedFile::class);
+
+        $supplierRepository = new SupplierInMemoryRepository();
+        $getSupplierFromContributorEmail = new InMemoryGetSupplierFromContributorEmail($supplierRepository);
+        $supplierFileRepository = new SupplierFileInMemoryRepository();
+        $storeProductFileSpy = $this->createMock(StoreProductsFile::class);
+        $eventDispatcherStub = new StubEventDispatcher();
+
+        $sut = new CreateSupplierFileHandler(
+            $getSupplierFromContributorEmail,
+            $supplierFileRepository,
+            $storeProductFileSpy,
+            $validatorSpy,
             $eventDispatcherStub,
             new NullLogger(),
         );
@@ -95,8 +162,8 @@ final class CreateSupplierFileHandlerTest extends TestCase
         static::expectException(ContributorDoesNotExist::class);
         ($sut)(
             new CreateSupplierFile(
+                $uploadedSupplierFile,
                 'products.xlsx',
-                '/tmp/products.xlsx',
                 'contributor@example.com',
             )
         );

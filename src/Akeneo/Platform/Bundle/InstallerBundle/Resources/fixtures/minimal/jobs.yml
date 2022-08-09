@@ -272,3 +272,9 @@ jobs:
         alias:     clean_table_values_following_deleted_options
         label:     Remove the non existing table option values from product and product models
         type:      clean_table_values_following_deleted_options
+
+    versioning_refresh:
+        connector: internal
+        alias:     versioning_refresh
+        label:     Refresh versioning for any updated entities
+        type:      scheduled_job

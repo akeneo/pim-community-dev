@@ -34,6 +34,7 @@ const SubMenu = styled.ul`
 const SubMenuItem = styled.li<AkeneoThemedProps & {active: boolean}>`
     margin-bottom: 20px;
     color: ${({active}) => getColor(active ? 'brand100' : 'grey140')};
+    cursor: pointer;
 `;
 
 const SubMenuHeader = styled.div`

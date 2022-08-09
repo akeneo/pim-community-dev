@@ -60,6 +60,9 @@
 - PIM-10534: Fix identifier comparison is case-sensitive in RE front
 - PIM-10511: Fix distant server taking to long to respond when reaching media link resources 
 - PIM-10535: Fix 500 error in published product API when reaching the limit of offset pagination type
+- PIM-10547: Fix issue with duplicated linked records in a product
+- PIM-10573: Fix tailored export does not handle write into multiple file when batch size is a multiple of linesPerFile
+- PIM-10546: Fix DQI is not calculated on product models with table attribute all rows required for completeness
 
 ## Improvements
 

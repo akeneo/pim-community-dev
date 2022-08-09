@@ -25,6 +25,6 @@ abstract class AbstractPropertyValueHydratorTest extends KernelTestCase
 
     protected function getHydrator(): PropertyValueHydrator
     {
-        return static::$container->get('Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\PropertyValueHydrator');
+        return static::getContainer()->get('Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\PropertyValueHydrator');
     }
 }

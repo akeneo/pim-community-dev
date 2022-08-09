@@ -69,40 +69,6 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $productsWithPermissionApplied);
     }
 
-    public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct
-    {
-        $userRights = $this->fetchUserRightsOnProduct->fetchByIdentifier($productIdentifier, $userId);
-        if (!$userRights->isProductViewable()) {
-            throw new ObjectNotFoundException(sprintf('Product "%s" is not viewable by user id "%s".', $productIdentifier, $userId));
-        }
-
-        $productWithoutPermissionApplied = $this->getConnectorProducts->fromProductIdentifier($productIdentifier, $userId);
-
-        return $this->fromConnectorProductsWithoutPermission([$productWithoutPermissionApplied], $userId)[0];
-    }
-
-    public function fromProductIdentifiers(
-        array $productIdentifiers,
-        int $userId,
-        ?array $attributesToFilterOn,
-        ?string $channelToFilterOn,
-        ?array $localesToFilterOn
-    ): ConnectorProductList {
-        $viewableProductIdentifiers = $this->filterViewableProductIdentifiers($productIdentifiers, $userId);
-
-        $connectorProductList = $this->getConnectorProducts->fromProductIdentifiers(
-            $viewableProductIdentifiers,
-            $userId,
-            $attributesToFilterOn,
-            $channelToFilterOn,
-            $localesToFilterOn
-        );
-
-        $productsWithPermissionApplied = $this->fromConnectorProductsWithoutPermission($connectorProductList->connectorProducts(), $userId);
-
-        return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $productsWithPermissionApplied);
-    }
-
     public function fromProductUuid(UuidInterface $productUuid, int $userId): ConnectorProduct
     {
         $userRights = $this->fetchUserRightsOnProduct->fetchByUuid($productUuid, $userId);

@@ -4,6 +4,7 @@ export * from './useAvailableTargetsFetcher';
 export * from './useCategoryChildrenFetcher';
 export * from './useCategoryTrees';
 export * from './useChannels';
+export * from './useFamilies';
 export * from './useFileTemplateInformationFetcher';
 export * from './useMeasurementFamily';
 export * from './useOffsetAvailableTargets';

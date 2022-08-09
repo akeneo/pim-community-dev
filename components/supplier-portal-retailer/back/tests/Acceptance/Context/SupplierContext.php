@@ -78,7 +78,7 @@ final class SupplierContext implements Context
     public function iCreateASupplierWithACodeAndALabel(string $code, ?string $label = null): void
     {
         try {
-            ($this->createSupplierHandler)(new CreateSupplier(Uuid::uuid4()->toString(), $code, $label ?: $code, []));
+            ($this->createSupplierHandler)(new CreateSupplier($code, $label ?: $code, []));
         } catch (SupplierAlreadyExistsException $e) {
             $this->lastException = $e;
         }
@@ -105,7 +105,7 @@ final class SupplierContext implements Context
      */
     public function iDeleteTheSupplier(string $code): void
     {
-        $supplier = $this->supplierRepository->findByCode(Code::fromString($code));
+        $supplier = $this->supplierRepository->findByCode($code);
         ($this->deleteSuppliersHandler)(new DeleteSupplier($supplier->identifier()));
     }
 
@@ -114,7 +114,7 @@ final class SupplierContext implements Context
      */
     public function iUpdateTheSupplierLabelWith(string $code, string $label): void
     {
-        $supplier = $this->supplierRepository->findByCode(Code::fromString($code));
+        $supplier = $this->supplierRepository->findByCode($code);
         ($this->updateSupplierHandler)(new UpdateSupplier($supplier->identifier(), $label, $supplier->contributors()));
     }
 
@@ -123,7 +123,7 @@ final class SupplierContext implements Context
      */
     public function iUpdateTheSupplierWithALabelLongerThan200Characters(string $code): void
     {
-        $supplier = $this->supplierRepository->findByCode(Code::fromString($code));
+        $supplier = $this->supplierRepository->findByCode($code);
 
         try {
             ($this->updateSupplierHandler)(
@@ -143,7 +143,7 @@ final class SupplierContext implements Context
      */
     public function iUpdateTheSupplierWithABlankLabel(string $code): void
     {
-        $supplier = $this->supplierRepository->findByCode(Code::fromString($code));
+        $supplier = $this->supplierRepository->findByCode($code);
 
         try {
             ($this->updateSupplierHandler)(
@@ -163,7 +163,7 @@ final class SupplierContext implements Context
      */
     public function iUpdateTheSupplierWithAnEmailAddressLongerThan255ForContributor(string $code): void
     {
-        $supplier = $this->supplierRepository->findByCode(Code::fromString($code));
+        $supplier = $this->supplierRepository->findByCode($code);
         $longEmail = str_repeat('a', 250) . '@' . 'aa.co';
 
         try {
@@ -184,7 +184,7 @@ final class SupplierContext implements Context
      */
     public function iUpdateTheSupplierContributorsWith(string $code, string $contributors): void
     {
-        $supplier = $this->supplierRepository->findByCode(Code::fromString($code));
+        $supplier = $this->supplierRepository->findByCode($code);
         try {
             ($this->updateSupplierHandler)(
                 new UpdateSupplier(
@@ -203,9 +203,7 @@ final class SupplierContext implements Context
      */
     public function iShouldHaveASupplierWithCodeAndLabel(string $code, string $label): void
     {
-        $supplier = $this->supplierRepository->findByCode(
-            Code::fromString($code),
-        );
+        $supplier = $this->supplierRepository->findByCode($code);
 
         Assert::assertSame($code, $supplier->code());
         Assert::assertSame($label, $supplier->label());
@@ -243,9 +241,7 @@ final class SupplierContext implements Context
      */
     public function iShouldHaveASupplierWithCodeAndContributors(string $code, ?string $contributors): void
     {
-        $supplier = $this->supplierRepository->findByCode(
-            Code::fromString($code),
-        );
+        $supplier = $this->supplierRepository->findByCode($code);
 
         $contributors = '' !== $contributors ? explode(';', $contributors) : [];
         $contributors = array_map(fn ($contributor) => ['email' => $contributor], $contributors);

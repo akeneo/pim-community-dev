@@ -19,7 +19,7 @@ final class SupplierFile
     {
         return [
             'identifier' => $this->identifier,
-            'original_filename' => $this->originalFilename,
+            'originalFilename' => $this->originalFilename,
             'path' => $this->path,
             'uploadedByContributor' => $this->uploadedByContributor,
             'uploadedAt' => $this->uploadedAt,

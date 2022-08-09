@@ -39,7 +39,7 @@ abstract class AssociationTestCase extends KernelTestCase
 
     protected function getMapValuesQueryHandler(): MapValuesQueryHandler
     {
-        return static::$container->get('Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler');
+        return static::getContainer()->get('Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler');
     }
 
     protected function createSingleSourceColumnCollection(

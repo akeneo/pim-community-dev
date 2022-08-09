@@ -23,8 +23,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 final class SourcesValidator extends ConstraintValidator
 {
     private const SOURCES_MIN_COUNT = 1;
-    private const MONO_SOURCES_MAX_COUNT = 1;
-    private const MULTI_SOURCES_MAX_COUNT = 4;
+    private const SOURCES_MAX_COUNT = 4;
 
     public function validate($value, Constraint $constraint): void
     {
@@ -45,17 +44,22 @@ final class SourcesValidator extends ConstraintValidator
 
     private function validateSourcesCount(array $sources, Sources $constraint): void
     {
-        $maxSourcesCount = $constraint->supportsMultiSource() ? self::MULTI_SOURCES_MAX_COUNT : self::MONO_SOURCES_MAX_COUNT;
+        $constraint = $constraint->supportsMultiSource() ?
+            new Count([
+                'min' => self::SOURCES_MIN_COUNT,
+                'minMessage' => Sources::AT_LEAST_ONE_REQUIRED,
+                'max' => self::SOURCES_MAX_COUNT,
+                'maxMessage' => Sources::MAX_SOURCES_COUNT_REACHED,
+            ])
+            : new Count([
+                'min' => self::SOURCES_MIN_COUNT,
+                'max' => self::SOURCES_MIN_COUNT,
+                'exactMessage' => Sources::AT_LEAST_ONE_REQUIRED,
+            ]);
 
         $this->context->getValidator()
             ->inContext($this->context)
-            ->validate($sources, new Count([
-                'min' => self::SOURCES_MIN_COUNT,
-                'minMessage' => Sources::AT_LEAST_ONE_REQUIRED,
-                'max' => $maxSourcesCount,
-                'maxMessage' => Sources::MAX_SOURCES_COUNT_REACHED,
-                'exactMessage' => Sources::SOURCES_COUNT_MISMATCHED,
-            ]));
+            ->validate($sources, $constraint);
     }
 
     private function validateSourcesExist(array $sources, Sources $constraint): void

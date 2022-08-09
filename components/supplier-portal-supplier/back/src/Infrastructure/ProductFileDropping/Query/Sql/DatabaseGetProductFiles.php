@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFiles;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Read\Model\SupplierFile;
 use Doctrine\DBAL\Connection;
@@ -18,7 +17,7 @@ final class DatabaseGetProductFiles implements GetProductFiles
     /**
      * @return SupplierFile[]
      */
-    public function __invoke(Email $contributorEmail): array
+    public function __invoke(string $contributorEmail): array
     {
         $sql = <<<SQL
             WITH supplier_identifier AS (

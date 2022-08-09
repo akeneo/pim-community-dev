@@ -177,7 +177,7 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
         $asset = $this->getAsset('starck');
 
         // empty the source value
-        $sourceAttribute = self::$container
+        $sourceAttribute = self::getContainer()
             ->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
             ->getByCodeAndAssetFamilyIdentifier(
                 AttributeCode::fromString('main_image'),
@@ -291,7 +291,6 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
             ->withAttributes(['main_image', 'target_image'])
             ->load();
 
-        /** @var MediaFileAttribute $mainImageAttribute */
         $this->mainImageAttribute = $fixtures['attributes']['main_image'];
         $this->mainImageAttribute->setAllowedExtensions(AttributeAllowedExtensions::fromList([]));
         $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')->update($this->mainImageAttribute);

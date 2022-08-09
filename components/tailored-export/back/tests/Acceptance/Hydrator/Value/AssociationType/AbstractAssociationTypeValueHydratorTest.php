@@ -37,6 +37,6 @@ abstract class AbstractAssociationTypeValueHydratorTest extends KernelTestCase
 
     private function getHydrator(): AssociationTypeValueHydrator
     {
-        return static::$container->get('Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AssociationTypeValueHydrator');
+        return static::getContainer()->get('Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AssociationTypeValueHydrator');
     }
 }

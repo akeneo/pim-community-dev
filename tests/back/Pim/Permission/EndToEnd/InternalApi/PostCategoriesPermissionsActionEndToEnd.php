@@ -17,7 +17,7 @@ class PostCategoriesPermissionsActionEndToEnd extends WebTestCase
     {
         parent::setUp();
 
-        $this->connection = self::$container->get('database_connection');
+        $this->connection = self::getContainer()->get('database_connection');
     }
 
     public function testItSavesCategoriesPermissions(): void

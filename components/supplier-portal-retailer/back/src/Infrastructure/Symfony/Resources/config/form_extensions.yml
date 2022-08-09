@@ -38,3 +38,12 @@ extensions:
             title: supplier_portal.supplier.supplier_list.menu_item
             to: supplier_portal_retailer_supplier_list
         feature: supplier_portal
+
+    pim-menu-connect-supplier-portal-supplier-files-list:
+        module: pim/menu/item
+        parent: pim-menu-connect-supplier-portal-block
+        position: 20
+        config:
+            title: supplier_portal.product_file_dropping.supplier_files.menu_item
+            to: supplier_portal_retailer_product_files_list
+        feature: supplier_portal_supplier_file_dropping

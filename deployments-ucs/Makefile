@@ -250,26 +250,58 @@ deploy_terraform:
 	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) init -reconfigure
 	terraform -chdir=$(DEPLOYMENT_DIR)/terraform/$(ENV_NAME) apply -auto-approve -input=false
 
+
+.PHONY: deploy_infra
+deploy_infra: deploy_storage_class deploy_traefik deploy_datadog deploy_argocd deploy_crossplane deploy_secretmngr_csi
+
+## Deploy storage class
+.PHONY: deploy_storage_class
+deploy_storage_class:
+	kubectl apply -f k8s/kubernetes/StorageClass/premium-rwo.yaml
+	kubectl apply -f k8s/kubernetes/StorageClass/ssd-csi.yaml
+	kubectl apply -f k8s/kubernetes/StorageClass/ssd-retain-csi.yaml
+	kubectl apply -f k8s/kubernetes/StorageClass/ssd-retain.yaml
+	kubectl apply -f k8s/kubernetes/StorageClass/ssd.yaml
+	kubectl apply -f k8s/kubernetes/StorageClass/standard-csi.yaml
+	kubectl apply -f k8s/kubernetes/StorageClass/standard-retain-csi.yaml
+	kubectl apply -f k8s/kubernetes/StorageClass/standard-retain.yaml
+	kubectl apply -f k8s/kubernetes/StorageClass/standard-rwo.yaml
+	kubectl apply -f k8s/kubernetes/StorageClass/standard.yaml
+
+## Cleanup storage class
+.PHONY: delete_storage_class
+delete_storage_class:
+	kubectl delete -f k8s/kubernetes/StorageClass/premium-rwo.yaml
+	kubectl delete -f k8s/kubernetes/StorageClass/ssd-csi.yaml
+	kubectl delete -f k8s/kubernetes/StorageClass/ssd-retain-csi.yaml
+	kubectl delete -f k8s/kubernetes/StorageClass/ssd-retain.yaml
+	kubectl delete -f k8s/kubernetes/StorageClass/ssd.yaml
+	kubectl delete -f k8s/kubernetes/StorageClass/standard-csi.yaml
+	kubectl delete -f k8s/kubernetes/StorageClass/standard-retain-csi.yaml
+	kubectl delete -f k8s/kubernetes/StorageClass/standard-retain.yaml
+	kubectl delete -f k8s/kubernetes/StorageClass/standard-rwo.yaml
+	kubectl delete -f k8s/kubernetes/StorageClass/standard.yaml
+
 ## Deploy argocd
 .PHONY: deploy_argocd
 deploy_argocd:
 	helm3 repo add argo https://argoproj.github.io/argo-helm
 	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 upgrade --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 20m --create-namespace --namespace argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
+	helm3 upgrade --version 4.8.2 --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 20m --create-namespace --namespace argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
 	kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
 
 ## Cleanup argocd
 .PHONY: delete_argocd
 delete_argocd:
-	kubectl delete -f k8s/argocd/template/argocd-cm.yaml
+	kubectl delete -f k8s/argocd/templates/argocd-cm.yaml
 	helm3 delete argocd --namespace argocd
 	kubectl delete ns argocd
 
 ## Deploy crossplane
 .PHONY: deploy_crossplane
 deploy_crossplane:
-	helm repo add crossplane-stable https://charts.crossplane.io/stable
-	helm repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
+	helm3 repo add crossplane-stable https://charts.crossplane.io/stable
+	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
 	helm3 upgrade --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 20m --create-namespace --namespace crossplane-system crossplane crossplane-stable/crossplane
 	kubectl apply -f k8s/crossplane/templates/gcp-authentication.yaml
 	kubectl apply -f k8s/crossplane/templates/provider-jet-gcp.yaml
@@ -278,8 +310,8 @@ deploy_crossplane:
 	kubectl apply -f k8s/crossplane/templates/provider-config-jet-gcp.yaml
 	kubectl apply -f k8s/crossplane/templates/provider-config-gcp.yaml
 
-.PHONY: datadog
-datadog:
+.PHONY: deploy_datadog
+deploy_datadog:
 	helm3 repo add datadog https://helm.datadoghq.com
 	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
 	helm3 upgrade --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 20m --create-namespace --namespace default datadog-agent datadog/datadog -f k8s/datadog/values.yaml
@@ -288,8 +320,8 @@ datadog:
 deploy_secretmngr_csi:
 	helm3 repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
 	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 upgrade csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver --namespace kube-system --set-string enableSecretRotation=true --set-string secretObjects=true
-  kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/secrets-store-csi-driver-provider-gcp/release-1.1/deploy/provider-gcp-plugin.yaml
+	helm3 upgrade --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 20m --namespace kube-system csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver --set-string enableSecretRotation=true --set-string secretObjects=true
+	kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/secrets-store-csi-driver-provider-gcp/release-1.1/deploy/provider-gcp-plugin.yaml
 
 ###################
 ### TEST				###
@@ -314,9 +346,9 @@ deploy_traefik:
 	rm -Rf "./traefik-chart"
 	helm3 repo add traefik https://helm.traefik.io/traefik
 	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 pull traefik/traefik --version v10.13.0 --untar --untardir "./traefik-chart"
-	kubectl apply -f "./traefik-chart/traefik/crds"
-	rm -Rf "./traefik-chart"
+	helm3 pull traefik/traefik --version v10.13.0 --untar --untardir "old/traefik/traefik-chart"
+	kubectl apply -f "old/traefik/traefik-chart/traefik/crds"
+	rm -Rf "old/traefik/traefik-chart"
 	helm3 upgrade traefik-v2 traefik/traefik \
 		--debug \
 		--atomic \
@@ -327,16 +359,16 @@ deploy_traefik:
 		--install \
 		--version=10.13.0 \
 		--namespace=traefik-v2 \
-		--values "./traefik/static-configuration.yaml"
+		--values "old/traefik/static-configuration.yaml"
 
 .PHONY: delete_traefik
 delete_traefik:
-	rm -Rf "./traefik-chart"
+	rm -Rf "old/traefik/traefik-chart"
 	helm3 repo add traefik https://helm.traefik.io/traefik
 	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
-	helm3 pull traefik/traefik --version v10.13.0 --untar --untardir "./traefik-chart"
+	helm3 pull traefik/traefik --version v10.13.0 --untar --untardir "old/traefik/traefik-chart"
 	helm3 uninstall traefik-v2 traefik/traefik \
 		--timeout 10m \
 		--namespace=traefik-v2
-	kubectl delete -f "./traefik-chart/traefik/crds" || true
-	rm -Rf "./traefik-chart"
+	kubectl delete -f "old/traefik/traefik-chart/traefik/crds" || true
+	rm -Rf "old/traefik/traefik-chart"

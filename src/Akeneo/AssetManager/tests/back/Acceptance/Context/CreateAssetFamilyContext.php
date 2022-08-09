@@ -56,7 +56,7 @@ final class CreateAssetFamilyContext implements Context
 
     private int $ruleTemplateByAssetFamilyLimit;
 
-    private RuleEngineValidatorACLInterface $ruleEngineValidatorACLStub;
+    private RuleEngineValidatorACLStub $ruleEngineValidatorACLStub;
 
     private InMemoryChannelExists $inMemoryChannelExists;
 
@@ -69,7 +69,7 @@ final class CreateAssetFamilyContext implements Context
         ExceptionContext $exceptionContext,
         ConstraintViolationsContext $violationsContext,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
-        RuleEngineValidatorACLInterface $ruleEngineValidatorACLStub,
+        RuleEngineValidatorACLStub $ruleEngineValidatorACLStub,
         InMemoryChannelExists $inMemoryChannelExists,
         InMemoryGetAssetCollectionTypeAdapter $inMemoryFindAssetCollectionTypeACL,
         int $ruleTemplateByAssetFamilyLimit
