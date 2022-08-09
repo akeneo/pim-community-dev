@@ -24,7 +24,7 @@ class AddQuantifiedAssociationOnProductModelWithPermissionsEndToEnd extends ApiT
 
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(featureFlags: ['permission']);
     }
 
     public function testAssociateProductModelWithGrantedProduct()

@@ -17,7 +17,7 @@ podAnnotations:
         "timeout": "1",
         "tls_verify": "true",
         "check_hostname": "true",
-        "ssl_server_name": "*.bh.akeneo.ch",
+        "ssl_server_name": "*.dev.akeneo.ch",
         "check_certificate_expiration": "true",
         "include_content": "true",
         "days_warning": 30,
@@ -26,7 +26,7 @@ podAnnotations:
       }],
       [{
         "name": "traefik_http_redirect",
-        "url": "http://*.bh.akeneo.ch",
+        "url": "http://*.dev.akeneo.ch",
         "timeout": "1",
         "tls_verify": "false",
         "check_hostname": "false",
@@ -61,7 +61,6 @@ ports:
 service:
   spec:
     externalTrafficPolicy: Local
-    loadBalancerIP: "34.79.72.146"
 
 resources:
   requests:

@@ -25,7 +25,7 @@ class AbstractProposal extends ApiTestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(['proposal', 'permission']);
     }
 
     /**

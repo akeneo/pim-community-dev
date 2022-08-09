@@ -1,4 +1,4 @@
-@javascript @proposal-feature-enabled
+@javascript @proposal-feature-enabled @permission-feature-enabled
 Feature: Save only filled fields after a save
   In order to avoid to store empty product values
   As a product manager

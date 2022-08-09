@@ -21,9 +21,10 @@ configs:
   # -- Repository credentials to be used as Templates for other repos
   ## Creates a secret for each key/value specified below to create repository credentials
   credentialTemplates:
-    ssh-creds:
-     url: git@github.com:akeneo/pim-enterprise-dev.git
-     sshPrivateKey: null
+    https-creds:
+      url: https://github.com/akeneo/pim-enterprise-dev.git
+      password: null
+      username: null
 
   # -- Repositories list to be used by applications
   ## Creates a secret for each key/value specified below to create repositories
@@ -31,7 +32,7 @@ configs:
   repositories:
     private-repo:
       name: pim-enterprise-dev
-      url: git@github.com:akeneo/pim-enterprise-dev.git
+      url: https://github.com/akeneo/pim-enterprise-dev
 
 server:
   extraArgs:

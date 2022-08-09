@@ -21,6 +21,8 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToDateOperation
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\FamilyReplacementOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\FormatFloatOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
@@ -66,6 +68,7 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
                 SimpleSelectReplacementOperation::TYPE => new SimpleSelectReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 MultiSelectReplacementOperation::TYPE => new MultiSelectReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 CategoriesReplacementOperation::TYPE => new CategoriesReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
+                FamilyReplacementOperation::TYPE => new FamilyReplacementOperation($normalizedOperation['uuid'], $normalizedOperation['mapping']),
                 default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" Operation type', $normalizedOperation['type'])),
             },
             $normalizedOperations,
@@ -84,9 +87,15 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
 
     private function getMeasurementRequiredOperations(array $sourceConfiguration): array
     {
+        $uuid = Uuid::uuid4()->toString();
+
         return [
+            new FormatFloatOperation(
+                $uuid,
+                $sourceConfiguration['decimal_separator'],
+            ),
             new ConvertToMeasurementOperation(
-                Uuid::uuid4()->toString(),
+                $uuid,
                 $sourceConfiguration['decimal_separator'],
                 $sourceConfiguration['unit'],
             ),
@@ -95,9 +104,15 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
 
     private function getNumberRequiredOperations(array $sourceConfiguration): array
     {
+        $uuid = Uuid::uuid4()->toString();
+
         return [
+            new FormatFloatOperation(
+                $uuid,
+                $sourceConfiguration['decimal_separator'],
+            ),
             new ConvertToNumberOperation(
-                Uuid::uuid4()->toString(),
+                $uuid,
                 $sourceConfiguration['decimal_separator'],
             ),
         ];

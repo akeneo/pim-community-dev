@@ -23,6 +23,10 @@ services:
     tags:
       - { name: akeneo.tailored_import.operation_applier, priority: 101 }
 
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\FormatFloatOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier, priority: 101 }
+
   Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\SplitOperationApplier:
     tags:
       - { name: akeneo.tailored_import.operation_applier, priority: 101 }
@@ -40,5 +44,9 @@ services:
       - { name: akeneo.tailored_import.operation_applier, priority: 101 }
 
   Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\CategoriesReplacementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier, priority: 101 }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\FamilyReplacementOperationApplier:
     tags:
       - { name: akeneo.tailored_import.operation_applier, priority: 101 }

@@ -36,7 +36,9 @@ test('it can update a replacement mapping', async () => {
 
   await renderWithProviders(
     <ReplacementModal
+      operationUuid="fake-operation-uuid"
       title="Manage values"
+      replacedValuesHeader="Replaced values"
       operationType="simple_select_replacement"
       initialMapping={{}}
       totalItems={3}
@@ -74,7 +76,9 @@ test('it validates replacement mapping before confirming', async () => {
 
   await renderWithProviders(
     <ReplacementModal
+      operationUuid="fake-operation-uuid"
       title="Manage values"
+      replacedValuesHeader="Replaced values"
       operationType="simple_select_replacement"
       initialMapping={{}}
       totalItems={3}
@@ -107,7 +111,9 @@ test('it can filter search results', async () => {
   const replacementValueFilter = {searchValue: '', page: 2, codesToInclude: null, codesToExclude: null};
   await renderWithProviders(
     <ReplacementModal
+      operationUuid="fake-operation-uuid"
       title="Manage values"
+      replacedValuesHeader="Replaced values"
       operationType="simple_select_replacement"
       initialMapping={{}}
       totalItems={3}
@@ -140,7 +146,9 @@ test('it can show all results', async () => {
 
   await renderWithProviders(
     <ReplacementModal
+      operationUuid="fake-operation-uuid"
       title="Manage values"
+      replacedValuesHeader="Replaced values"
       operationType="simple_select_replacement"
       initialMapping={{
         black: ['Noir'],
@@ -178,7 +186,9 @@ test('it can change page', async () => {
 
   await renderWithProviders(
     <ReplacementModal
+      operationUuid="fake-operation-uuid"
       title="Manage values"
+      replacedValuesHeader="Replaced values"
       operationType="simple_select_replacement"
       initialMapping={{
         black: ['Noir'],
@@ -210,7 +220,9 @@ test('it can show only mapped results', async () => {
 
   await renderWithProviders(
     <ReplacementModal
+      operationUuid="fake-operation-uuid"
       title="Manage values"
+      replacedValuesHeader="Replaced values"
       operationType="simple_select_replacement"
       initialMapping={{
         black: ['Noir'],
@@ -248,7 +260,9 @@ test('it can show only unmapped results', async () => {
 
   await renderWithProviders(
     <ReplacementModal
+      operationUuid="fake-operation-uuid"
       title="Manage values"
+      replacedValuesHeader="Replaced values"
       operationType="simple_select_replacement"
       initialMapping={{
         black: ['Noir'],

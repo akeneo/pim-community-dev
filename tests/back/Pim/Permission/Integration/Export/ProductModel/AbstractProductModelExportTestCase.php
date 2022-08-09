@@ -44,7 +44,7 @@ abstract class AbstractProductModelExportTestCase extends TestCase
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(featureFlags: ['permission']);
     }
 
     /**

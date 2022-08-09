@@ -9,7 +9,6 @@ use Akeneo\SupplierPortal\Retailer\Application\Supplier\CreateSupplierHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
@@ -25,29 +24,22 @@ final class CreateSupplierHandlerTest extends TestCase
         $supplierExists = new InMemorySupplierExists($supplierRepository);
         $eventDispatcherSpy = $this->createMock(EventDispatcher::class);
 
-        $identifier = Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
-
         $eventDispatcherSpy
             ->expects($this->exactly(2))
             ->method('dispatch')
             ->withConsecutive(
-                [new ContributorAdded($identifier, 'contributor1@example.com')],
-                [new ContributorAdded($identifier, 'contributor2@example.com')],
+                [$this->isInstanceOf(ContributorAdded::class)],
+                [$this->isInstanceOf(ContributorAdded::class)],
             );
 
         $sut = new CreateSupplierHandler($supplierRepository, $supplierExists, $eventDispatcherSpy, new NullLogger());
         ($sut)(new CreateSupplier(
-            (string) $identifier,
             'supplier_code',
             'Supplier label',
             ['contributor1@example.com', 'contributor2@example.com'],
         ));
 
-        $supplier = $supplierRepository->find(
-            Identifier::fromString(
-                '01319d4c-81c4-4f60-a992-41ea3546824c',
-            ),
-        );
+        $supplier = $supplierRepository->findByCode('supplier_code');
 
         static::assertSame('supplier_code', $supplier->code());
         static::assertSame('Supplier label', $supplier->label());
@@ -68,7 +60,6 @@ final class CreateSupplierHandlerTest extends TestCase
 
         $sut = new CreateSupplierHandler($repository, $supplierExists, $eventDispatcher, new NullLogger());
         ($sut)(new CreateSupplier(
-            '01319d4c-81c4-4f60-a992-41ea3546824c',
             'code',
             'label',
             [],

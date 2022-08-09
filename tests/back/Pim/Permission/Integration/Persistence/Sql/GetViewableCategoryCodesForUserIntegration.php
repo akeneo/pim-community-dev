@@ -30,7 +30,7 @@ class GetViewableCategoryCodesForUserIntegration extends TestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(featureFlags: ['permission']);
     }
 
     private function getQuery(): GetViewableCategoryCodesForUserInterface

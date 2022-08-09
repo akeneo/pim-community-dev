@@ -78,5 +78,4 @@ foreach ($missings as $serviceName => $fileNames) {
     echo PHP_EOL;
 }
 
-$exitCode = empty($missings) ? 0 : 1;
-exit($exitCode);
+exit(1);

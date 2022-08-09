@@ -65,10 +65,6 @@ akeneo.tailored_import:
         title: Zastąpienie katagorii
         modal:
           title: Zarządzaj kategoriami
-          table:
-            header:
-              replacement: Kategorie PIM
-              source_values: Kategorie źródeł
       no_result: Brak dostępnej operacji
       no_source: Najpierw wybierz źródło, a następnie zyskasz dostęp do operacji.
       no_available:
@@ -93,7 +89,6 @@ akeneo.tailored_import:
               all: Wszystkie wartości
           table:
             header:
-              replacement: Etykiety opcji
               source_values: Wartości źródłowe
           validation_error: Niektóre wartości zastępcze nie są prawidłowe. Zapoznaj się z komunikatami o błędach pod każdym polem.
       boolean_replacement:
@@ -161,12 +156,11 @@ akeneo.tailored_import:
     data_mappings:
       target_should_unique: Docelowego kodu „{{ code }}” nie można wybrać wielokrotnie.
       max_count_reached: Osiągnięto limit {{ limit }} mapowań. Nie możesz już dodawać mapowania do importu.
-      no_identifier_target_found: Nie ma mapowania z identyfikatorem, dodaj identyfikator.
+      no_identifier_target_found: Do identyfikatora nie przypisano mapowania, dodaj mapowanie.
       too_many_identifier_target_found: Do identyfikatora przypisano więcej niż jedno mapowanie, usuń jedno z nich.
       uuid:
         should_be_unique: Identyfikator UUID mapowania już istnieje, podaj nowy.
       sources:
-        count_mismatched: Do tego mapowania musisz skonfigurować tylko jedno źródło.
         at_least_one_required: Musisz dodać co najmniej jedno źródło do swojego mapowania.
         max_count_reached: Osiągnięto limit {{ limit }} źródeł. Nie możesz już dodawać źródeł do mapowania.
         should_be_unique: To źródło już istnieje, dodaj nowe.
@@ -182,7 +176,7 @@ akeneo.tailored_import:
     channel:
       should_exist: Kanał {{ channel_code }} został usunięty. Wybierz inny kanał.
     attribute:
-      locale_should_not_be_blank: Atrybut {{ attribute_code }} ma obecnie wartość zależną od wersji językowej. Utwórz go lub wybierz inny cel.
+      locale_should_not_be_blank: Atrybut {{ attribute_code }} ma obecnie wartość zależną od wersji językowej. Utwórz ją lub wybierz inny cel.
       channel_should_not_be_blank: Atrybut {{ attribute_code }} ma obecnie wartość zależną od kanału. Utwórz go lub wybierz inny cel.
       locale_should_be_blank: Atrybut {{ attribute_code }} nie ma już wartości zależnej od wersji językowej. Usuń go, a następnie odtwórz lub wybierz inny cel.
       channel_should_be_blank: Atrybut {{ attribute_code }} nie ma już wartości zależnej od kanału. Usuń go, a następnie odtwórz lub wybierz inny cel.
@@ -195,7 +189,7 @@ akeneo.tailored_import:
       not_allowed_extension: Obsługiwane są tylko pliki XLSX.
     file_structure:
       first_product_row_should_be_after_header_row: Wiersz pierwszego produktu powinien znajdować się po wierszu nagłówka.
-      unique_identifier_column_should_be_after_first_column_message: Przynajmniej pierwsza kolumna powinna być kolumną niepowtarzalnego identyfikatora.
+      unique_identifier_column_should_be_after_first_column_message: Kolumna niepowtarzalnego identyfikatora nie może znajdować się w kolumnie poprzedzającej początek danych.
       header_row_should_not_contain_empty_cell: Wiersz nagłówka nie powinien zawierać pustych komórek.
     file_preview:
       empty_sheet:

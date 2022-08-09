@@ -1,23 +1,26 @@
 import {
+  CATEGORIES_REPLACEMENT_OPERATION_TYPE,
   CLEAN_HTML_TAGS_OPERATION_TYPE,
+  FAMILY_REPLACEMENT_OPERATION_TYPE,
+  MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
+  SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
+  SPLIT_OPERATION_TYPE,
+  BooleanReplacementOperation,
+  CategoriesReplacementOperation,
   CleanHTMLTagsOperation,
+  EnabledReplacementOperation,
+  FamilyReplacementOperation,
+  MultiSelectReplacementOperation,
+  SimpleSelectReplacementOperation,
+  SplitOperation,
+  getDefaultBooleanReplacementOperation,
+  getDefaultCategoriesReplacementOperation,
   getDefaultCleanHTMLTagsOperation,
+  getDefaultEnabledReplacementOperation,
+  getDefaultFamilyReplacementOperation,
   getDefaultMultiSelectReplacementOperation,
   getDefaultSimpleSelectReplacementOperation,
   getDefaultSplitOperation,
-  getDefaultCategoriesReplacementOperation,
-  MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
-  MultiSelectReplacementOperation,
-  SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
-  SimpleSelectReplacementOperation,
-  SPLIT_OPERATION_TYPE,
-  SplitOperation,
-  BooleanReplacementOperation,
-  getDefaultBooleanReplacementOperation,
-  CATEGORIES_REPLACEMENT_OPERATION_TYPE,
-  CategoriesReplacementOperation,
-  EnabledReplacementOperation,
-  getDefaultEnabledReplacementOperation,
 } from '../components/DataMappingDetails/Operation';
 import {Attribute} from './Attribute';
 
@@ -28,6 +31,7 @@ type Operation =
   | EnabledReplacementOperation
   | MultiSelectReplacementOperation
   | SimpleSelectReplacementOperation
+  | FamilyReplacementOperation
   | SplitOperation;
 
 type OperationType = Operation['type'];
@@ -62,6 +66,8 @@ const getDefaultOperation = (operationType: OperationType): Operation => {
       return getDefaultMultiSelectReplacementOperation();
     case CATEGORIES_REPLACEMENT_OPERATION_TYPE:
       return getDefaultCategoriesReplacementOperation();
+    case FAMILY_REPLACEMENT_OPERATION_TYPE:
+      return getDefaultFamilyReplacementOperation();
     default:
       throw new Error(`Invalid operation type: "${operationType}"`);
   }

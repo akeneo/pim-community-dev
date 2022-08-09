@@ -13,7 +13,6 @@ class CreateProductModelProposalEndToEnd extends ApiTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->get('feature_flags')->enable('proposal');
     }
 
     public function testCreateProductModelProposal()
@@ -135,7 +134,8 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useFunctionalCatalog('catalog_modeling');
+        return $this->catalog->useFunctionalCatalog('catalog_modeling', featureFlags: ['permission', 'proposal']);
+
     }
 
     private function createProductModelDraft(string $userName, string $identifier): EntityWithValuesDraftInterface

@@ -135,7 +135,7 @@ final class EditAssetContext implements Context
 
     private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    private AttributeRepositoryInterface $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
     private AssetRepositoryInterface $assetRepository;
 
@@ -163,7 +163,7 @@ final class EditAssetContext implements Context
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
-        AttributeRepositoryInterface $attributeRepository,
+        InMemoryAttributeRepository $attributeRepository,
         AssetRepositoryInterface $assetRepository,
         EditAssetCommandFactory $editAssetCommandFactory,
         EditAssetHandler $editAssetHandler,

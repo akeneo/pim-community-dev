@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Infrastructure\Supplier\Query\InMemory;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
@@ -27,7 +26,7 @@ final class InMemorySupplierExistsTest extends TestCase
             ),
         );
 
-        static::assertTrue(($sut)->fromCode(Code::fromString('supplier_code')));
-        static::assertFalse(($sut)->fromCode(Code::fromString('unknown_supplier_code')));
+        static::assertTrue(($sut)->fromCode('supplier_code'));
+        static::assertFalse(($sut)->fromCode('unknown_supplier_code'));
     }
 }
