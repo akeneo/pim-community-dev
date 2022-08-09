@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Bundle\BatchBundle\EventListener;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -17,20 +18,24 @@ class UpdateJobInstanceAutomationSubscriber implements EventSubscriberInterface
 
     public function updateJobInstanceAutomationSetupDate(GenericEvent $event)
     {
-        $jobInstance = $event->getSubject();
-        $updatedData = $event->getArgument('data');
+        $data = $event->getArgument('data');
+        $newParameters = $data['raw_parameters'];
 
-        if (!$jobInstance->isScheduled()) {
+        if (!isset($newParameters['automation']['cron_expression'])) {
             return;
         }
 
-        $currentAutomation = json_decode($jobInstance->getAutomation(), true);
-        $updatedAutomation = $updatedData['automation'];
+        /** @var JobInstance $jobInstance */
+        $jobInstance = $event->getSubject();
+        $currentParameters = $jobInstance->getRawParameters();
 
-        if ($currentAutomation['cron_expression'] !== $updatedAutomation['cron_expression']) {
+        $cronExpressionChanged = !isset($currentParameters['automation']['cron_expression'])
+            || $currentParameters['automation']['cron_expression'] !== $newParameters['automation']['cron_expression'];
+
+        if ($cronExpressionChanged) {
             $now = new \DateTime();
-            $currentAutomation['setup_date'] = $now->format('Y-m-d H:i:s');
-            $jobInstance->setAutomation(json_encode($updatedAutomation));
+            $currentParameters['automation']['setup_date'] = $now->format('Y-m-d H:i:s');
+            $jobInstance->setRawParameters($currentParameters);
         }
     }
 }
