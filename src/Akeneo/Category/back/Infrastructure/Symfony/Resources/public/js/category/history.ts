@@ -8,6 +8,7 @@ class CategoryHistory extends BaseView {
 
   render(): any {
     this.$el.html('<div id="grid-category-history" data-type="datagrid"></div>');
+    console.log('test');
 
     const urlParams = {
       alias: 'history-grid',
