@@ -38,9 +38,13 @@ $rules = [
             // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
 
+            // Supplier Portal Supplier coupling
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded',
+
             // External dependencies coupling
             'Psr\Log\LoggerInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
@@ -71,9 +75,13 @@ $rules = [
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
-            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             'Akeneo\Tool\Component\FileStorage\StreamedFileResponse',
             'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
+            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+            'Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification',
+            'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
+            'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
+
             // External dependencies coupling
             'Box\Spout\Common\Exception\IOException',
             'Box\Spout\Common\Type',
@@ -115,8 +123,18 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Application',
             'Akeneo\SupplierPortal\Retailer\Infrastructure',
+
+            // Supplier Portal Supplier coupling
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\SupplierFile',
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded',
+
             // PIM coupling
+            'Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification',
+            'Akeneo\Platform\Bundle\NotificationBundle\Notifier',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
+            'Akeneo\Test\Acceptance\User\InMemoryUserRepository',
+            'Akeneo\UserManagement\Component\Model\User',
+
             // External dependencies coupling
             'PHPUnit\Framework',
             'Psr\Log\NullLogger',
