@@ -74,6 +74,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
                 break;
             case 'configuration':
                 $job = $this->jobRegistry->get($jobInstance->getJobName());
+                $data = $this->updateAutomationSetupDate($jobInstance, $data);
                 /** @var JobParameters $jobParameters */
                 $jobParameters = $this->jobParametersFactory->create($job, $data);
                 $jobInstance->setRawParameters($jobParameters->all());
@@ -82,5 +83,20 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
                 $jobInstance->setCode($data);
                 break;
         }
+    }
+
+    private function updateAutomationSetupDate(JobInstance $jobInstance, array $data): array
+    {
+        $currentParameters = $jobInstance->getRawParameters();
+
+        $cronExpressionChanged = !isset($currentParameters['automation']['cron_expression'])
+            || $currentParameters['automation']['cron_expression'] !== $data['automation']['cron_expression'];
+
+        if ($cronExpressionChanged) {
+            $now = new \DateTime();
+            $data['automation']['setup_date'] = $now->format('Y-m-d H:i:s');
+        }
+
+        return $data;
     }
 }
