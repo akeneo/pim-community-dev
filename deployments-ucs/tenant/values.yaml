@@ -196,18 +196,17 @@ mysql:
       tag: "8.0.26"
   common:
     class: ssd-retain-csi
-    persistentDisks:
-      - ucs-test-mysql
   mysql:
     nodeSelector:
       role: mysql-server
+      component: mysql
     dataDiskPath: "/var/lib/mysql/"
     serviceName: pim-mysql
     defaultUser: akeneo_pim
     userPassword: null # Generate me with `pwgen -sB 22`
     rootPassword: null # Generate me with `pwgen -sB 22`
     defaultDatabase: akeneo_pim
-    dataDiskSize: 20Gi
+    dataDiskSize: 20
     innodbBufferPoolSize: 2048M
     innodbPoolInstances: 8
     stateful:
