@@ -6,15 +6,12 @@ class Group
 {
     public const DEFAULT_TYPE = 'default';
 
-    // @todo define aggregates and value objects
     private function __construct(
         private int $id,
         private string $name,
         private string $type,
-        private array $roles,
         private array $defaultPermissions,
     ) {
-
     }
 
     public function getId(): int
@@ -34,12 +31,7 @@ class Group
 
     public function isDefault(): bool
     {
-        return $this->type === self::DEFAULT_TYPE;
-    }
-
-    public function getRoles(): array
-    {
-        return $this->roles;
+        return self::DEFAULT_TYPE === $this->type;
     }
 
     public function getDefaultPermissions(): array
@@ -54,7 +46,6 @@ class Group
             id: $data['id'],
             name: $data['name'],
             type: $data['type'] ?? self::DEFAULT_TYPE,
-            roles: json_decode($data['roles'], true) ?? [],
             defaultPermissions: json_decode($data['default_permissions'], true) ?? [],
         );
     }

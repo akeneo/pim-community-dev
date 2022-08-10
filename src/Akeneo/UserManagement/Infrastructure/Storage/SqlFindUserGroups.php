@@ -26,51 +26,22 @@ class SqlFindUserGroups implements FindUserGroups
         ?int $limit = self::DEFAULT_LIMIT,
     ): array
     {
-        $groupIds = $this->filter($search, $searchAfterId, $limit);
-
-        $query = <<<SQL
-WITH group_roles as (
-    SELECT ouagr.group_id, JSON_ARRAYAGG(
-        JSON_OBJECT(
-            "id", oar.id,
-            "role", oar.role,
-            "label", oar.label,
-            "type", oar.type
-        )
-    ) AS roles
-    FROM oro_access_role oar
-    JOIN oro_user_access_group_role ouagr ON oar.id = ouagr.role_id
-    WHERE ouagr.group_id IN (:group_ids)
-    GROUP BY ouagr.group_id
-)
-SELECT 
-    oag.id,
-    oag.name, 
-    oag.type, 
-    oag.default_permissions,
-    COALESCE(gr.roles, '[]') as roles
-FROM oro_access_group oag
-LEFT JOIN group_roles gr ON  gr.group_id = oag.id
-WHERE oag.type = 'default'
-AND oag.id IN (:group_ids)
-SQL;
+        $query = $this->buildQuery($search, $searchAfterId, $limit);
 
         $results = $this->connection->executeQuery(
-            $query,
-            ['group_ids' => $groupIds],
-            ['group_ids' => Connection::PARAM_INT_ARRAY]
+            $query
         )->fetchAllAssociative();
-        
+
         return array_map(function ($data) {
             return Group::createFromDatabase($data);
         }, $results);
     }
 
-    private function filter(
+    private function buildQuery(
         ?string $search,
         ?int $searchAfterId,
         ?int $limit,
-    ): array
+    ): string
     {
         $searchSql = '';
         if ($search !== null) {
@@ -93,7 +64,11 @@ SQL;
         }
 
         $query = <<<SQL
-SELECT id
+SELECT 
+    oag.id,
+    oag.name, 
+    oag.type, 
+    oag.default_permissions
 FROM oro_access_group oag
 WHERE oag.type = 'default'
 ${searchSql}
@@ -102,8 +77,6 @@ ORDER BY oag.id
 ${limitSql} 
 SQL;
 
-        return $this->connection->executeQuery(
-            $query
-        )->fetchFirstColumn();
+        return $query;
     }
 }
