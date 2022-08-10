@@ -1,5 +1,5 @@
 services:
   Akeneo\Category\Application\Query\FindCategoryByIdentifier:
-    class: Akeneo\Category\Infrastructure\Storage\SQL\SqlFindOneByIdentifier
+    class: Akeneo\Category\Infrastructure\Storage\Sql\SqlFindOneByIdentifier
     arguments:
       - '@database_connection'
