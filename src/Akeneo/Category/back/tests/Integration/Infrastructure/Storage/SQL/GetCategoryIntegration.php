@@ -21,13 +21,17 @@ class GetCategoryIntegration extends TestCase
     {
         $category = $this->createCategory([
             'code' => 'socks',
-            'labels' => ['fr_FR' => 'chaussettes']
+            'labels' => [
+                'fr_FR' => 'Chaussettes',
+                'en_US' => 'Socks'
+            ]
         ]);
 
         $category = $this->get(GetCategoryInterface::class)->fromCode($category->getCode());
         $this->assertInstanceOf(Category::class, $category);
         $this->assertSame('socks', (string)$category->getCode());
-        $this->assertSame('chaussettes', $category->getLabelCollection()->getLabel('fr_FR'));
+        $this->assertSame('Chaussettes', $category->getLabelCollection()->getLabel('fr_FR'));
+        $this->assertSame('Socks', $category->getLabelCollection()->getLabel('en_US'));
     }
 
     protected function getConfiguration(): Configuration
