@@ -4,14 +4,12 @@ namespace Akeneo\UserManagement\Application\Handler;
 
 use Akeneo\UserManagement\API\UserGroup\ListUserGroupQuery;
 use Akeneo\UserManagement\API\UserGroup\UserGroup;
-use Akeneo\UserManagement\Component\Model\Group;
-use Akeneo\UserManagement\Component\Model\GroupInterface;
-use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
+use Akeneo\UserManagement\Application\Storage\FindUserGroups;
 
 class ListUserGroupHandler
 {
     public function __construct(
-        private GroupRepositoryInterface $groupRepository
+        private FindUserGroups $findUserGroups
     ) {
     }
 
@@ -23,12 +21,18 @@ class ListUserGroupHandler
     {
         // @todo replace with SQL native query
         // @todo implement optional arguments in $query to allow research and pagination
-        return array_map(static function (GroupInterface $group) {
+        // @todo exclude the default user group
+
+        return array_map(static function (array $group) {
             return new UserGroup(
-                $group->getId(),
-                $group->getName(),
+                $group['id'],
+                $group['name'],
             );
-        }, $this->groupRepository->findBy(['type' => Group::TYPE_DEFAULT]));
+        }, ($this->findUserGroups)(
+            $query->getSearchName(),
+            $query->getSearchAfterId(),
+            $query->getLimit(),
+        ));
     }
 
 }
