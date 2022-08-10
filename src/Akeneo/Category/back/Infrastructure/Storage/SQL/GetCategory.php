@@ -24,22 +24,15 @@ class GetCategory implements GetCategoryInterface
     public function fromCode(string $categoryCode): ?Category
     {
         $sqlQuery = <<<SQL
-            WITH translation as (
-                SELECT category.code, JSON_OBJECTAGG(translation.locale, translation.label) as translations
-                FROM pim_catalog_category category
-                    JOIN pim_catalog_category_translation translation 
-                        ON translation.foreign_key = category.id
-                WHERE category.code = category_code
-            ),
             SELECT
                 category.id,
                 category.code, 
                 category.parent_id,
-                COALESCE(translation.translations, '{}') as json_translations,
+                JSON_OBJECTAGG(translation.locale, translation.label) as translations,
                 category.value_collection
             FROM 
                 pim_catalog_category category
-                LEFT JOIN translation on translation.code = category.code
+                JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
             WHERE category.code = category_code
         SQL;
 
@@ -56,7 +49,7 @@ class GetCategory implements GetCategoryInterface
         return new Category(
             new CategoryId((int)$result['id']),
             new Code($result['code']),
-            LabelCollection::fromArray(json_decode($result['json_translations'], true)),
+            LabelCollection::fromArray(json_decode($result['translations'], true)),
             $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null
         );
     }
