@@ -1,0 +1,76 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pim-tenant
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: pim-tenant
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/akeneo/pim-enterprise-dev.git'
+    path: deployments-ucs/tenant
+    targetRevision: PH-59
+    helm:
+      parameters:
+        - name: global.extraLabels.type
+          value: ucs
+        - name: global.extraLabels.instanceName
+          value: test
+        - name: global.extraLabels.pfid
+          value: ucs-test
+        - name: global.extraLabels.instance_dns_record
+          value: ucs-test.dev.ph.akeneo.ch
+        - name: global.extraLabels.instance_dns_zone
+          value: 'dev.ph.akeneo.ch'
+        - name: global.extraLabels.papo_project_code
+          value: 'ucs-test'
+        - name: global.extraLabels.papo_project_code_truncated
+          value: 'ucs-test'
+        - name: global.extraLabels.papo_project_code_hashed
+          value: 'ucs-test'
+        - name: pim.storage.bucketName
+          value: 'ucs-test'
+        - name: pim.secret
+          value: '<PIM_SECRET>'
+        - name: mailer.login
+          value: guillaume.vincent@getakeneo.com
+        - name: mailer.password
+          value: '<MAILER_PASSWORD>'
+        - name: backup.enabled
+          value: 'false'
+        - name: common.gcpProjectID
+          value: akecld-prd-pim-saas-dev
+        - name: common.googleZone
+          value: europe-west1-b
+        - name: common.pimMasterDomain
+          value: dev.ph.akeneo.ch
+        - name: common.workloadIdentityKSA
+          value: ucs-test-ksa-workload-identity
+        - name: common.workloadIdentityKSANamespace
+          value: workload
+        - name: common.workloadIdentityGSA
+          value: main-service-account
+        - name: pim.monitoring.authenticationToken
+          value: '<AUTHENTICATION_TOKEN>'
+        - name: mysql.common.persistentDisks.0
+          value: projects/akecld-prd-pim-saas-dev/zones/europe-west1-b/disks/ucs-test-mysql
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: pim-tenant
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
