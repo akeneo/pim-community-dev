@@ -55,3 +55,8 @@
 .PHONY: user-management-coupling-back
 user-management-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
+
+
+.PHONY: user-management-integration-back
+user-management-integration-back: #Doc: launch PHPUnit integration tests for category bounded context
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit --testsuite PIM_Integration_Test --filter UserManagement $(F)
