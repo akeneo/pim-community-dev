@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListProducts;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
@@ -18,6 +19,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -25,6 +27,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SuccessListProductEndToEnd extends AbstractProductTestCase
 {
+    /** @var ProductInterface[] $products */
+    private array $products = [];
+
     /**
      * {@inheritdoc}
      */
@@ -937,6 +942,29 @@ JSON;
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
+    public function testDoesntShowProductsWithoutIdentifier()
+    {
+        // @TODO CPM-632: Unskip test once identifiers are nullable in products
+        $this->markTestSkipped("Run this test once product identifiers are no longer required");
+
+        $this->createProductWithoutIdentifier([
+            new SetTextValue('a_text', null, null, 'My product without identifier')
+        ]);
+
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/products?with_count=true&limit=10&pagination_type=search_after');
+        $result = json_decode($client->getResponse()->getContent(), true);
+
+        Assert::assertArrayHasKey('_embedded', $result);
+        Assert::assertArrayNotHasKey('next', $result['_links']);
+
+        foreach ($result['_embedded']['items'] as $index => $product) {
+            if (isset($product['values']['a_text'])) {
+                Assert::assertNotEquals('My product without identifier', $product['values']['a_text'][0]['data']);
+            }
+        }
     }
 
     /**

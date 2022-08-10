@@ -6,9 +6,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -32,6 +34,23 @@ abstract class AbstractProductTestCase extends ApiTestCase
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
 
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+    }
+
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    protected function createProductWithoutIdentifier(array $userIntents = []): ProductInterface
+    {
+        $productUuid = Uuid::uuid4();
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $command = UpsertProductCommand::createWithUuid(
+            $this->getUserId('admin'),
+            ProductUuid::fromUuid($productUuid),
+            $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+
+        return $this->get('pim_catalog.repository.product')->find($productUuid);
     }
 
     /**
