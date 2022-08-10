@@ -25,7 +25,13 @@ type JobAutomationFormProps = {
   onAutomationChange: (automation: Automation) => void;
 };
 
-const JobAutomationForm = ({scheduled, automation, validationErrors, onScheduledChange, onAutomationChange}: JobAutomationFormProps) => {
+const JobAutomationForm = ({
+  scheduled,
+  automation,
+  validationErrors,
+  onScheduledChange,
+  onAutomationChange,
+}: JobAutomationFormProps) => {
   const translate = useTranslate();
   const userGroups = useUserGroups();
   const {isEnabled} = useFeatureFlags();
@@ -36,7 +42,7 @@ const JobAutomationForm = ({scheduled, automation, validationErrors, onScheduled
   const handleCronExpressionChange = (cronExpression: CronExpression) =>
     onAutomationChange({
       ...automation,
-      cron_expression: cronExpression
+      cron_expression: cronExpression,
     });
 
   return (
@@ -72,7 +78,7 @@ const JobAutomationForm = ({scheduled, automation, validationErrors, onScheduled
                 onChange={runningUserGroups =>
                   onAutomationChange({
                     ...automation,
-                    running_user_groups: runningUserGroups
+                    running_user_groups: runningUserGroups,
                   })
                 }
                 emptyResultLabel={translate('pim_common.no_result')}

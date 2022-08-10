@@ -53,7 +53,13 @@ beforeEach(() => {
 
 test('it renders the job automation form', () => {
   renderWithProviders(
-    <JobAutomationForm scheduled={true} automation={automation} validationErrors={[]} onScheduledChange={jest.fn()} onAutomationChange={jest.fn()} />
+    <JobAutomationForm
+      scheduled={true}
+      automation={automation}
+      validationErrors={[]}
+      onScheduledChange={jest.fn()}
+      onAutomationChange={jest.fn()}
+    />
   );
 
   expect(screen.getByText('akeneo.job_automation.title')).toBeInTheDocument();
@@ -66,7 +72,13 @@ test('it hides the running user group input if the permission is not enabled', (
   mockedFeatureFlags = [];
 
   renderWithProviders(
-    <JobAutomationForm scheduled={true} automation={automation} validationErrors={[]} onScheduledChange={jest.fn()} onAutomationChange={jest.fn()} />
+    <JobAutomationForm
+      scheduled={true}
+      automation={automation}
+      validationErrors={[]}
+      onScheduledChange={jest.fn()}
+      onAutomationChange={jest.fn()}
+    />
   );
 
   expect(screen.queryByText('akeneo.job_automation.scheduling.running_user_groups.label')).not.toBeInTheDocument();
@@ -76,7 +88,13 @@ test('it disables the running user group input if the user cannot list the user 
   mockedGrantedACL = [];
 
   renderWithProviders(
-    <JobAutomationForm scheduled={true} automation={automation} validationErrors={[]} onScheduledChange={jest.fn()} onAutomationChange={jest.fn()} />
+    <JobAutomationForm
+      scheduled={true}
+      automation={automation}
+      validationErrors={[]}
+      onScheduledChange={jest.fn()}
+      onAutomationChange={jest.fn()}
+    />
   );
 
   expect(screen.getByLabelText('akeneo.job_automation.scheduling.running_user_groups.label')).toBeDisabled();
@@ -87,7 +105,13 @@ test('it can change the running user group', () => {
   const onAutomationChange = jest.fn();
 
   renderWithProviders(
-    <JobAutomationForm scheduled={true} automation={automation} validationErrors={[]} onScheduledChange={jest.fn()} onAutomationChange={onAutomationChange} />
+    <JobAutomationForm
+      scheduled={true}
+      automation={automation}
+      validationErrors={[]}
+      onScheduledChange={jest.fn()}
+      onAutomationChange={onAutomationChange}
+    />
   );
 
   userEvent.click(screen.getByLabelText('akeneo.job_automation.scheduling.running_user_groups.label'));
@@ -102,7 +126,13 @@ test('it can disable the scheduling', () => {
   const onScheduledChange = jest.fn();
 
   renderWithProviders(
-    <JobAutomationForm scheduled={true} automation={automation} validationErrors={[]} onScheduledChange={onScheduledChange} onAutomationChange={jest.fn()} />
+    <JobAutomationForm
+      scheduled={true}
+      automation={automation}
+      validationErrors={[]}
+      onScheduledChange={onScheduledChange}
+      onAutomationChange={jest.fn()}
+    />
   );
 
   userEvent.click(screen.getByText('pim_common.no'));
@@ -114,7 +144,13 @@ test('it can update the scheduling', () => {
   const onAutomationChange = jest.fn();
 
   renderWithProviders(
-    <JobAutomationForm scheduled={true} automation={automation} validationErrors={[]} onScheduledChange={jest.fn()} onAutomationChange={onAutomationChange} />
+    <JobAutomationForm
+      scheduled={true}
+      automation={automation}
+      validationErrors={[]}
+      onScheduledChange={jest.fn()}
+      onAutomationChange={onAutomationChange}
+    />
   );
 
   const [openFrequencyOptionButton] = screen.getAllByTitle('pim_common.open');
@@ -140,7 +176,13 @@ test('it displays validation errors', () => {
   ];
 
   renderWithProviders(
-    <JobAutomationForm scheduled={true} automation={automation} validationErrors={validationErrors} onScheduledChange={jest.fn()} onAutomationChange={jest.fn()} />
+    <JobAutomationForm
+      scheduled={true}
+      automation={automation}
+      validationErrors={validationErrors}
+      onScheduledChange={jest.fn()}
+      onAutomationChange={jest.fn()}
+    />
   );
 
   expect(screen.getByText('error.key.a_type_error')).toBeInTheDocument();
