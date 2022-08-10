@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: 'https://github.com/akeneo/pim-enterprise-dev.git'
     path: deployments-ucs/tenant
-    targetRevision: PH-59
+    targetRevision: master
     helm:
       parameters:
         - name: global.extraLabels.type
@@ -38,7 +38,18 @@ spec:
         - name: mailer.login
           value: guillaume.vincent@getakeneo.com
         - name: mailer.password
-          value: '<MAILER_PASSWORD>'
+          value: 'test'
+        - name: mailer.base_mailer_url
+          value: 'smtp://smtp.mailgun.org:2525'
+        - name: mailer.domain
+          value: 'mg.cloud.akeneo.com' # mg.dev.akeneo.ch
+        # TODO: PH-152 store mailer.api_key in Google SecretManager (below a temporary solution to avoid git leak)
+        # Connect to the argocd-server pod and execute following commands:
+        # kubectl exec -it -n argocd pod/<argocd-server-pod> -- sh
+        # argocd login localhost:8080
+        # argocd app set pim-tenant --helm-set mailer.api_key='<REPLACE_WITH_DASHLANE_VALUE>'
+        - name: mailer.api_key
+          value: ''
         - name: backup.enabled
           value: 'false'
         - name: common.gcpProjectID
