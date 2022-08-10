@@ -65,6 +65,10 @@ akeneo.tailored_import:
         title: 카테고리 대체
         modal:
           title: 카테고리 관리
+      family_replacement:
+        title: 패밀리 대체
+        modal:
+          title: 패밀리 관리
       no_result: 사용 가능한 작업이 없습니다
       no_source: 먼저 소스를 선택해야 작업에 액세스할 수 있습니다
       no_available:
