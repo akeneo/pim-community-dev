@@ -24,5 +24,8 @@ export type Criterion<State extends CriterionState> = {
     factory: (state?: Partial<State>) => State;
 };
 
-export type AnyCriterionState = StatusCriterionState | FamilyCriterionState;
-export type AnyCriterion = Criterion<StatusCriterionState> | Criterion<FamilyCriterionState>;
+export type AnyCriterionState = StatusCriterionState | FamilyCriterionState | AttributeTextCriterionState;
+export type AnyCriterion =
+    | Criterion<StatusCriterionState>
+    | Criterion<FamilyCriterionState>
+    | Criterion<AttributeTextCriterionState>;

@@ -42,6 +42,12 @@ class UpdateCatalogPayloadIsValid extends Compound
                                     'value' => [
                                         new Assert\Optional(),
                                     ],
+                                    'scope' => [
+                                        new Assert\Optional(),
+                                    ],
+                                    'locale' => [
+                                        new Assert\Optional(),
+                                    ],
                                 ],
                                 'allowMissingFields' => false,
                                 'allowExtraFields' => false,

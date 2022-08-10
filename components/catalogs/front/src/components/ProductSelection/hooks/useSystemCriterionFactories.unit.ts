@@ -8,10 +8,12 @@ test('it returns system factories', () => {
 
     expect(result.current).toEqual([
         {
+            id: 'enabled',
             label: 'akeneo_catalogs.product_selection.criteria.status.label',
             factory: expect.any(Function),
         },
         {
+            id: 'family',
             label: 'akeneo_catalogs.product_selection.criteria.family.label',
             factory: expect.any(Function),
         },

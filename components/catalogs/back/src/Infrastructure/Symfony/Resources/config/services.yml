@@ -75,3 +75,10 @@ services:
     Akeneo\Catalogs\Infrastructure\Persistence\GetFamiliesByCodeQuery:
         arguments:
             - '@pim_enrich.repository.family.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\SearchAttributesQuery:
+        arguments:
+            - '@pim_enrich.repository.attribute.search'
+
+    Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface:
+        alias: 'pim_catalog.repository.attribute'

@@ -21,3 +21,13 @@ akeneo_catalogs_internal_get_families:
     path: '/rest/catalogs/families'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetFamiliesAction
     methods: [ GET ]
+
+akeneo_catalogs_internal_get_attributes:
+    path: '/rest/catalogs/attributes'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributesAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_attribute:
+    path: '/rest/catalogs/attributes/{code}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributeAction
+    methods: [ GET ]
