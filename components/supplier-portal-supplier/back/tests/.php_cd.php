@@ -119,15 +119,19 @@ $rules = [
 
             // External dependencies coupling
             'PHPUnit\Framework',
+            'Psr\Log\LoggerInterface',
             'Psr\Log\NullLogger',
-            'Symfony\Component\Validator\ConstraintViolationList',
-            'Symfony\Component\Validator\Validator\ValidatorInterface',
+            'Ramsey\Uuid\Uuid',
+            'Ramsey\Uuid\UuidFactoryInterface',
+            'Ramsey\Uuid\UuidInterface',
             'Twig\Environment',
+            'Symfony\Component\HttpFoundation\File\UploadedFile',
             'Symfony\Component\HttpFoundation\Request',
             'Symfony\Component\HttpFoundation\Response',
             'Symfony\Component\Security\Http\Event\LogoutEvent',
             'Symfony\Component\Security\Core\Authentication\Token\TokenInterface',
-            'Symfony\Component\HttpFoundation\File\UploadedFile',
+            'Symfony\Component\Validator\ConstraintViolationList',
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Test\Unit'),
 

@@ -21,13 +21,26 @@ use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\
 use Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as SupplierFileInMemoryRepository;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\StubEventDispatcher;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactoryInterface;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class CreateSupplierFileHandlerTest extends TestCase
 {
+    private ?UuidFactoryInterface $factory = null;
+
+    protected function tearDown(): void
+    {
+        if (null !== $this->factory) {
+            Uuid::setFactory($this->factory);
+        }
+    }
+
     /** @test */
     public function itCreatesASupplierFile(): void
     {
@@ -89,6 +102,85 @@ final class CreateSupplierFileHandlerTest extends TestCase
         $dispatchedEvents = $eventDispatcherStub->getDispatchedEvents();
         $this->assertCount(1, $dispatchedEvents);
         $this->assertInstanceOf(SupplierFileAdded::class, $dispatchedEvents[0]);
+    }
+
+    /** @test */
+    public function itLogsWhenASupplierFileHasBeenDropped(): void
+    {
+        $logger = $this->createMock(LoggerInterface::class);
+        $constraintViolationListMock = $this->createMock(ConstraintViolationList::class);
+        $validatorMock = $this->createMock(ValidatorInterface::class);
+        $uploadedSupplierFile = $this->createMock(UploadedFile::class);
+        $storeProductFileMock = $this->createMock(StoreProductsFile::class);
+        $uuidInterface = $this->createMock(UuidInterface::class);
+        $uuidInterface->method('toString')->willReturn('e36f227c-2946-11e8-b467-0ed5f89f718b');
+        $factory = $this->createMock(UuidFactoryInterface::class);
+        $factory
+            ->method('uuid4')
+            ->willReturn($uuidInterface)
+        ;
+        $this->factory = Uuid::getFactory();
+        Uuid::setFactory($factory);
+        $eventDispatcherStub = new StubEventDispatcher();
+        $supplierRepository = new SupplierInMemoryRepository();
+        $supplier = Supplier::create(
+            '01319d4c-81c4-4f60-a992-41ea3546824c',
+            'mysupplier',
+            'My Supplier',
+            ['contributor@example.com'],
+        );
+        $supplierRepository->save($supplier);
+        $supplierFileRepository = new SupplierFileInMemoryRepository();
+        $getSupplierFromContributorEmail = new InMemoryGetSupplierFromContributorEmail($supplierRepository);
+
+        $validatorMock
+            ->method('validate')
+            ->willReturn($constraintViolationListMock)
+        ;
+
+        $uploadedSupplierFile->expects($this->once())->method('getPathname')->willReturn('/tmp/products.xlsx');
+
+        $createSupplierFile = new CreateSupplierFile(
+            $uploadedSupplierFile,
+            'products.xlsx',
+            'contributor@example.com',
+        );
+
+        $storeProductFileMock
+            ->method('__invoke')
+            ->with(
+                Code::fromString($supplier->code()),
+                Filename::fromString($createSupplierFile->originalFilename),
+                $this->isInstanceOf(Identifier::class),
+                '/tmp/products.xlsx',
+            )->willReturn('path/to/products.xlsx');
+
+        $logger
+            ->expects($this->once())
+            ->method('info')
+            ->with(
+                'Supplier file "products.xlsx" created.',
+                [
+                    'data' => [
+                        'identifier' => 'e36f227c-2946-11e8-b467-0ed5f89f718b',
+                        'filename' => 'products.xlsx',
+                        'path' => 'path/to/products.xlsx',
+                        'uploaded_by_contributor' => 'contributor@example.com',
+                        'metric_key' => 'supplier_file_dropped',
+                    ],
+                ],
+            )
+        ;
+
+        $sut = new CreateSupplierFileHandler(
+            $getSupplierFromContributorEmail,
+            $supplierFileRepository,
+            $storeProductFileMock,
+            $validatorMock,
+            $eventDispatcherStub,
+            $logger,
+        );
+        ($sut)($createSupplierFile);
     }
 
     /** @test */
