@@ -21,8 +21,28 @@ class GetCategory implements GetCategoryInterface
     {
     }
 
-    public function fromCode(string $categoryCode): ?Category
+    public function byId(int $categoryId): ?Category
     {
+        $condition['sqlWhere'] = 'category.id = :category_id';
+        $condition['params'] = ['category_id' => $categoryId];
+        $condition['types'] = ['category_id' => \PDO::PARAM_INT];
+
+        return $this->execute($condition);
+    }
+
+    public function byCode(string $categoryCode): ?Category
+    {
+        $condition['sqlWhere'] = 'category.code = :category_code';
+        $condition['params'] = ['category_code' => $categoryCode];
+        $condition['types'] = ['category_code' => \PDO::PARAM_STR];
+
+        return $this->execute($condition);
+    }
+
+    private function execute(array $condition): ?Category
+    {
+        $sqlWhere = $condition['sqlWhere'];
+
         $sqlQuery = <<<SQL
             SELECT
                 category.id,
@@ -33,17 +53,13 @@ class GetCategory implements GetCategoryInterface
             FROM 
                 pim_catalog_category category
                 JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
-            WHERE category.code = :category_code
+            WHERE $sqlWhere
         SQL;
 
         $result = $this->connection->executeQuery(
             $sqlQuery,
-            [
-                'category_code' => $categoryCode,
-            ],
-            [
-                'category_code' => \PDO::PARAM_STR,
-            ]
+            $condition['params'],
+            $condition['types']
         )->fetchAssociative();
 
         return new Category(

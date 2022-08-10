@@ -17,7 +17,7 @@ use Akeneo\Test\Integration\TestCase;
  */
 class GetCategoryIntegration extends TestCase
 {
-    public function testGetCategoryFromCode(): void
+    public function testGetCategoryByCode(): void
     {
         $category = $this->createCategory([
             'code' => 'socks',
@@ -27,11 +27,27 @@ class GetCategoryIntegration extends TestCase
             ]
         ]);
 
-        $category = $this->get(GetCategoryInterface::class)->fromCode($category->getCode());
+        $category = $this->get(GetCategoryInterface::class)->byCode($category->getCode());
         $this->assertInstanceOf(Category::class, $category);
-        $this->assertSame('socks', (string)$category->getCode());
         $this->assertSame('Chaussettes', $category->getLabelCollection()->getLabel('fr_FR'));
         $this->assertSame('Socks', $category->getLabelCollection()->getLabel('en_US'));
+    }
+
+    public function testGetCategoryById(): void
+    {
+        $category = $this->createCategory([
+            'code' => 'pants',
+            'labels' => [
+                'fr_FR' => 'Pantalons',
+                'en_US' => 'Pants'
+            ]
+        ]);
+
+        $category = $this->get(GetCategoryInterface::class)->byId($category->getId());
+        $this->assertInstanceOf(Category::class, $category);
+        $this->assertSame('pants', (string)$category->getCode());
+        $this->assertSame('Pantalons', $category->getLabelCollection()->getLabel('fr_FR'));
+        $this->assertSame('Pants', $category->getLabelCollection()->getLabel('en_US'));
     }
 
     protected function getConfiguration(): Configuration

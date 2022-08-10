@@ -12,5 +12,7 @@ use Akeneo\Category\Domain\Model\Category;
  */
 interface GetCategoryInterface
 {
-    public function fromCode(string $categoryCode): ?Category;
+    public function byId(int $categoryId): ?Category;
+
+    public function byCode(string $categoryCode): ?Category;
 }
