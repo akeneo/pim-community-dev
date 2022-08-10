@@ -3,3 +3,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\SQL\SqlFindOneByIdentifier
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Domain\Query\GetCategory:
+    class: Akeneo\Category\Infrastructure\Storage\SQL\GetCategory
+    arguments:
+      - '@database_connection'
