@@ -8,6 +8,7 @@ resource "google_project_iam_custom_role" "argocd_role" {
     "storage.buckets.get",
     "storage.buckets.getIamPolicy",
     "storage.buckets.setIamPolicy",
+    "storage.objects.get",
     "storage.objects.list",
   ]
 }
