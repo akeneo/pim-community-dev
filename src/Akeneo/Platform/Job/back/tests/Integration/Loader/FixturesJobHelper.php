@@ -31,10 +31,14 @@ final class FixturesJobHelper
 
         $dataToInsert = array_merge($defaultData, $data);
         $dataToInsert['raw_parameters'] = serialize($dataToInsert['raw_parameters']);
+        $dataToInsert['automation'] = json_encode($dataToInsert['automation']);
 
         $this->dbalConnection->insert(
             'akeneo_batch_job_instance',
-            $dataToInsert
+            $dataToInsert,
+            [
+                'scheduled' => Types::BOOLEAN,
+            ]
         );
 
         return (int)$this->dbalConnection->lastInsertId();
