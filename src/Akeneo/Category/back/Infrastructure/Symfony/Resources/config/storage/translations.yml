@@ -1,17 +1,17 @@
 parameters:
-    pim.category.update.user_intent.set_label.class: Akeneo\Category\Api\Command\UserIntents\SetLabel
+    pim.category.api.user_intent.set_label.class: Akeneo\Category\Api\Command\UserIntents\SetLabel
 
 services:
-    Akeneo\Category\Application\Storage\Update\CategoryTranslationsUpdater:
+    Akeneo\Category\Application\Storage\Save\CategoryTranslationsSaver:
         arguments:
-            - '@Akeneo\Category\Application\Storage\Update\UpsertCategoryTranslations'
+            - '@Akeneo\Category\Application\Storage\Save\UpsertCategoryTranslations'
             - [
-                pim.category.update.user_intent.set_label.class,
+                pim.category.api.user_intent.set_label.class,
             ]
         tags:
-            - { name: 'pim.category.update.category_updater' }
+            - { name: 'pim.category.save.category_saver' }
 
-    Akeneo\Category\Application\Storage\Update\UpsertCategoryTranslations:
-        class: 'Akeneo\Category\Infrastructure\Storage\Update\SqlUpsertCategoryTranslations'
+    Akeneo\Category\Application\Storage\Save\UpsertCategoryTranslations:
+        class: 'Akeneo\Category\Infrastructure\Storage\Save\SqlUpsertCategoryTranslations'
         arguments:
             - '@database_connection'
