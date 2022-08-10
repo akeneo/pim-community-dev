@@ -56,11 +56,7 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance ext
         SQL;
         $connection = $this->container->get('database_connection');
         $result = $connection->executeQuery($sql, ['indexName' => $indexName])->fetch();
-        if (!empty($result)) {
-            return true;
-        }
-
-        return false;
+        return !empty($result);
     }
 
     private function isColumnAlreadyCreated(string $columnName): bool
@@ -70,11 +66,7 @@ final class Version_7_0_20220802151250_add_automation_column_in_job_instance ext
         SQL;
         $connection = $this->container->get('database_connection');
         $result = $connection->executeQuery($sql, ['columnName' => $columnName])->fetch();
-        if (!empty($result)) {
-            return true;
-        }
-
-        return false;
+        return !empty($result);
     }
 
     public function down(Schema $schema): void
