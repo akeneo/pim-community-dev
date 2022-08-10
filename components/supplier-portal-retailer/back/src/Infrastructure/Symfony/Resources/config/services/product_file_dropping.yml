@@ -42,10 +42,10 @@ services:
         arguments:
             - '@monolog.logger.supplier_portal'
         tags:
-            - 'kernel.event_subscriber'
+            - { name: kernel.event_subscriber }
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Subscriber\LogOnProductFileDownloaded:
         arguments:
             - '@monolog.logger.supplier_portal'
         tags:
-            - 'kernel.event_subscriber'
+            - { name: kernel.event_subscriber }
