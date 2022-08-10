@@ -80,7 +80,7 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
      */
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->users->toArray();
     }
 
     /**
