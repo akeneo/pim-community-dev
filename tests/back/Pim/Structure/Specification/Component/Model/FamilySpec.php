@@ -62,7 +62,7 @@ class FamilySpec extends ObjectBehavior
     function it_updates_a_family_by_adding_an_attribute(
         AttributeInterface $skuAttribute,
         AttributeInterface $nameAttribute,
-        AttributeInterface $descAttribute,
+        AttributeInterface $descAttribute
     ) {
         $skuAttribute->getCode()->willReturn('sku');
         $nameAttribute->getCode()->willReturn('name');
@@ -81,7 +81,7 @@ class FamilySpec extends ObjectBehavior
     function it_updates_a_family_by_removing_an_attribute(
         AttributeInterface $skuAttribute,
         AttributeInterface $nameAttribute,
-        AttributeInterface $descAttribute,
+        AttributeInterface $descAttribute
     ) {
         $skuAttribute->getCode()->willReturn('sku');
         $nameAttribute->getCode()->willReturn('name');

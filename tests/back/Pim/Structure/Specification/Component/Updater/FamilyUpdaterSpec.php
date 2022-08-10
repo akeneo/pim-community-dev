@@ -33,7 +33,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
         AttributeRequirementFactory $attrRequiFactory,
         AttributeRequirementRepositoryInterface $attributeRequirementRepo,
         TranslatableUpdater $translatableUpdater,
-        IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository
 
     ) {
         $this->beConstructedWith(

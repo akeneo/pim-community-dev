@@ -86,7 +86,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
     function it_throws_an_exception_when_family_variants_are_invalid_and_saves_the_valid_ones_on_unitary_save(
         $validator,
         BulkSaverInterface $bulkFamilyVariantSaver,
-        GenericEvent $event,
+        GenericEvent $event
     ) {
         $familyVariants1 = new FamilyVariant();
         $familyVariants1->setCode('family_variant_1');
@@ -235,7 +235,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         ValidatorInterface $validator,
         BulkSaverInterface $bulkFamilyVariantSaver,
         GenericEvent $event,
-        ConstraintViolationList $constraintViolationList,
+        ConstraintViolationList $constraintViolationList
     ) {
         $familyVariants1 = new FamilyVariant();
         $familyVariants2 = new FamilyVariant();
