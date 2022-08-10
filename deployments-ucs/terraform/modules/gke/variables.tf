@@ -110,3 +110,9 @@ variable "gke_sa_email" {
   type        = string
   description = "Email of the gke service account"
 }
+
+variable "min_master_version" {
+  type        = string
+  description = "Minimum control plane version"
+  default     = "latest"
+}

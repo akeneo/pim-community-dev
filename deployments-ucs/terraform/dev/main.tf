@@ -32,6 +32,7 @@ module "gke" {
   cluster_developers = concat(["serviceAccount:${local.ci_sa}"], local.admins)
   viewer_members     = local.viewers
   admin_members      = local.admins
+  min_master_version = "1.23.7"
 
   node_pool_configs = [
     {
