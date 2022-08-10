@@ -302,8 +302,15 @@ Feature: Edit an record
   Scenario: Updating the record value of a record with an invalid record value
     Given a reference entity with a record attribute
     And a record belonging to this reference entity with a value of "ikea" for the record attribute
-    When the user updates the record attribute of the record to an invalid record value
+    When the user updates the record attribute of the record to an invalid record type value
     Then an exception is thrown with message "There was no factory found to create the edit record value command of the attribute "brand_linked_designer_fingerprint""
+
+  @acceptance-back
+  Scenario: Updating the record value of a record with an invalid record value
+    Given a reference entity with a record attribute
+    And a record belonging to this reference entity with a value of "ikea" for the record attribute
+    When the user updates the record attribute of the record to an invalid record value
+    Then there should be a validation error on the property record attribute with message "This field may only contain letters, numbers and underscores."
 
   @acceptance-back
   Scenario: Updating the record value of a record with a non-existent record
