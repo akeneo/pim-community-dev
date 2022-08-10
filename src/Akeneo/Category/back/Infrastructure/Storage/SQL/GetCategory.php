@@ -17,19 +17,18 @@ use Doctrine\DBAL\Connection;
  */
 class GetCategory implements GetCategoryInterface
 {
-    public function __construct(
-        private Connection $connection,
-    ) {
+    public function __construct(private Connection $connection)
+    {
     }
 
-    public function fromCode(string $categoryCode): array
+    public function fromCode(string $categoryCode): ?Category
     {
         $sqlQuery = <<<SQL
-            WITH parent_code as (
-                SELECT category.code, parent.code as parent_code
+            WITH parent_id as (
+                SELECT category.code, parent.id as parent_id
                 FROM pim_catalog_category category
                     JOIN pim_catalog_category parent ON category.parent_id = parent.id 
-                WHERE category.code IN (:category_codes)
+                WHERE category.code = category_code
                 GROUP BY code
             ),
             translation as (
@@ -37,13 +36,13 @@ class GetCategory implements GetCategoryInterface
                 FROM pim_catalog_category category
                     JOIN pim_catalog_category_translation translation 
                         ON translation.foreign_key = category.id
-                WHERE code IN (:category_codes)
+                WHERE code = category_code
                 GROUP BY category.code
             ),
             SELECT
                 category.id,
                 category.code, 
-                parent_code.parent_code,
+                parent_id.parent_id,
                 COALESCE(translation.translations, '{}') as json_translations,
                 category.value_collection
             FROM 
@@ -62,16 +61,11 @@ class GetCategory implements GetCategoryInterface
             ]
         )->fetchAssociative();
 
-        return array_map(
-            function($row) {
-                return new Category(
-                    new CategoryId((int)$row['id']),
-                    new Code($row['code']),
-                    LabelCollection::fromArray(json_decode($row['json_translations'], true)),
-                    $row['parent_id'] ? new CategoryId((int)$row['parent_id']) : null
-                );
-            },
-            $result
+        return new Category(
+            new CategoryId((int)$result['id']),
+            new Code($result['code']),
+            LabelCollection::fromArray(json_decode($result['json_translations'], true)),
+            $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null
         );
     }
 }
