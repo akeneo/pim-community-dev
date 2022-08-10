@@ -33,7 +33,7 @@ class GetCategory implements GetCategoryInterface
             FROM 
                 pim_catalog_category category
                 JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
-            WHERE category.code = category_code
+            WHERE category.code = :category_code
         SQL;
 
         $result = $this->connection->executeQuery(
