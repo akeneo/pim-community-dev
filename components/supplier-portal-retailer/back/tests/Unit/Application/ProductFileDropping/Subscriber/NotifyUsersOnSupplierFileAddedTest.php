@@ -22,7 +22,7 @@ final class NotifyUsersOnSupplierFileAddedTest extends TestCase
     }
 
     /** @test */
-    public function itNotifiesAllTheUsersWhenASupplierDroppedAFile(): void
+    public function itNotifiesAllTheUsersWhenASupplierDropsAFile(): void
     {
         $notifier = $this->createMock(Notifier::class);
         $sut = new NotifyUsersOnSupplierFileAdded($notifier);
