@@ -7,8 +7,6 @@ class CategoryHistory extends BaseView {
   identifier: number;
 
   render(): any {
-    this.$el.html('<div id="grid-category-history" data-type="datagrid"></div>');
-    console.log('test');
 
     const urlParams = {
       alias: 'history-grid',
@@ -24,8 +22,9 @@ class CategoryHistory extends BaseView {
         },
       },
     };
-
-    $.get(Routing.generate('pim_datagrid_load', urlParams)).done(function (response: any) {
+    var that = this;
+    $.get(Routing.generate('pim_datagrid_load', urlParams)).done( function (response: any) {
+      that.$el.html('<div id="grid-category-history" data-type="datagrid"></div>');
       $('#grid-category-history').data({metadata: response.metadata, data: JSON.parse(response.data)});
 
       const resolvedModules: any = response.metadata.requireJSModules.map((module: any) => {
