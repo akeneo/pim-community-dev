@@ -65,6 +65,10 @@ akeneo.tailored_import:
         title: カテゴリの置換
         modal:
           title: カテゴリを管理
+      family_replacement:
+        title: ファミリーの置換
+        modal:
+          title: ファミリーの管理
       no_result: 利用できる操作はありません
       no_source: 最初に、ソースを選択します。そうすると、操作にアクセスできます
       no_available:

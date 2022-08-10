@@ -65,6 +65,10 @@ akeneo.tailored_import:
         title: Zastąpienie katagorii
         modal:
           title: Zarządzaj kategoriami
+      family_replacement:
+        title: Zastąpienie rodzin
+        modal:
+          title: Zarządzaj rodzinami
       no_result: Brak dostępnej operacji
       no_source: Najpierw wybierz źródło, a następnie zyskasz dostęp do operacji.
       no_available:
