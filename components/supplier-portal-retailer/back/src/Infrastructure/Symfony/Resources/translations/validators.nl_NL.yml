@@ -1,0 +1,4 @@
+supplier_portal:
+  supplier:
+    contributor:
+      email_already_exists: Dit e-mailadres wordt al gebruikt voor een andere leverancier en we ondersteunen nog niet dat meerdere leveranciers dezelfde bijdrager hebben. Excuses voor het ongemak.
