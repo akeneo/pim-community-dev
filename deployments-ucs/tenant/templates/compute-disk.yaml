@@ -8,7 +8,7 @@ metadata:
     type: {{ .Values.global.extraLabels.type }}
 spec:
   description: "Disk MySQL used for {{ .Values.global.extraLabels.pfid }}"
-  size: 10
+  size: {{ .Values.mysql.mysql.dataDiskSize}}
   type: pd-ssd
   location: {{ .Values.common.googleZone }}
   projectRef:

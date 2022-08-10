@@ -196,6 +196,8 @@ mysql:
       tag: "8.0.26"
   common:
     class: ssd-retain-csi
+    persistentDisks:
+      - ucs-test-mysql
   mysql:
     nodeSelector:
       role: mysql-server
