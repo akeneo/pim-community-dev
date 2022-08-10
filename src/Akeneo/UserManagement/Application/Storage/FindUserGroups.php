@@ -2,11 +2,13 @@
 
 namespace Akeneo\UserManagement\Application\Storage;
 
+use Akeneo\UserManagement\Domain\Model\Group;
+
 interface FindUserGroups
 {
     public const DEFAULT_LIMIT = 25;
 
-    /** @return array<int, {id: int, name: string}> */
+    /** @return Group[] */
     public function __invoke(
         ?string $search = null,
         ?int $searchAfterId = null,

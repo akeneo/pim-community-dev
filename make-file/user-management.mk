@@ -52,11 +52,14 @@
 # Make sure the tests run by the targets defined here does not run by the main targets too
 #
 
+.PHONY: user-management-unit-back
+user-management-unit-back: #Doc: launch PHPSpec for user-management bounded context
+	$(PHP_RUN) vendor/bin/phpspec run tests/back/UserManagement/Specification
+
 .PHONY: user-management-coupling-back
 user-management-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
 
-
 .PHONY: user-management-integration-back
-user-management-integration-back: #Doc: launch PHPUnit integration tests for category bounded context
+user-management-integration-back: #Doc: launch PHPUnit integration tests for user-management bounded context
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit --testsuite PIM_Integration_Test --filter UserManagement $(F)
