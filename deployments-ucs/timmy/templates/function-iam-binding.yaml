@@ -1,0 +1,22 @@
+# Current configconnector version (1.71.0) installed with GKE add-on doesn't support this resource.
+# Need at least 1.79.0 configconnector version to switch to configconnector.
+apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
+kind: FunctionIAMBinding
+metadata:
+  name: {{ include "timmy.cloudFunctionName" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "timmy.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: "Replace=true"
+spec:
+  forProvider:
+    cloudFunction: {{ include "timmy.cloudFunctionName" . }}
+    members:
+      - "serviceAccount:{{ .Values.cloudFunction.serviceAccountEmail }}"
+    project: {{ .Values.common.gcpProjectID }}
+    region: {{ .Values.common.region }}
+    role: "roles/cloudfunctions.invoker"
+  providerConfigRef:
+    name: "provider-config-jet-gcp"
