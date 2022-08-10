@@ -1,14 +1,26 @@
 import React from 'react';
 import {useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {Category, EditCategoryForm} from '../models';
-import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
-import {ErrorMessageLegacy, FormContainerLegacy} from './StyleLegacy';
+import {Field, SectionTitle, TextInput, Helper} from 'akeneo-design-system';
+import styled from 'styled-components';
 
 type Props = {
   category: Category;
   formData: EditCategoryForm | null;
   onChangeLabel: (locale: string, label: string) => void;
 };
+
+const FormContainer = styled.div`
+  margin-top: 20px;
+
+  & > * {
+    margin: 0 10px 20px 0;
+  }
+`;
+
+const ErrorMessage = styled(Helper)`
+  margin: 20px 0 0 0;
+`;
 
 const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
   const translate = useTranslate();
@@ -19,12 +31,12 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
   }
 
   return (
-    <FormContainerLegacy>
+    <FormContainer>
       {formData.errors.map((errorMessage, key) => {
         return (
-          <ErrorMessageLegacy level="error" key={`error-${key}`}>
+          <ErrorMessage level="error" key={`error-${key}`}>
             {errorMessage}
-          </ErrorMessageLegacy>
+          </ErrorMessage>
         );
       })}
       <SectionTitle>
@@ -46,7 +58,7 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
           />
         </Field>
       ))}
-    </FormContainerLegacy>
+    </FormContainer>
   );
 };
 export {EditPropertiesForm};

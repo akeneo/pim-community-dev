@@ -17,7 +17,7 @@ class UpsertCategoryCommand
      * @param UserIntent[] $userIntents
      */
     public function __construct(
-        private int $categoryIdentifier,
+        private string $categoryCode,
         private array $userIntents = [],
     ) {
         Assert::allImplementsInterface($this->userIntents, UserIntent::class);
@@ -26,7 +26,7 @@ class UpsertCategoryCommand
     /**
      * @param userIntent[] $userIntents
      */
-    public static function create(int $categoryIdentifier, array $userIntents): self
+    public static function create(string $categoryCode, array $userIntents): self
     {
         $valueUserIntents = [];
 
@@ -36,12 +36,12 @@ class UpsertCategoryCommand
             }
         }
 
-        return new self($categoryIdentifier, $valueUserIntents);
+        return new self($categoryCode, $valueUserIntents);
     }
 
-    public function productIdentifier(): int
+    public function categoryCode(): string
     {
-        return $this->categoryIdentifier;
+        return $this->categoryCode;
     }
 
     /**

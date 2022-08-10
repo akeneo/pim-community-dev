@@ -1,14 +1,26 @@
 import React from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
-import {FormContainerLegacy, PermissionFieldLegacy} from './StyleLegacy';
 import {EditCategoryForm} from '../models';
+import styled from 'styled-components';
 
 type Props = {
   formData: EditCategoryForm | null;
   onChangePermissions: (type: string, values: string[]) => void;
   onChangeApplyPermissionsOnChildren: (value: boolean) => void;
 };
+
+const FormContainer = styled.div`
+  margin-top: 20px;
+
+  & > * {
+    margin: 0 10px 20px 0;
+  }
+`;
+
+const PermissionField = styled(Field)`
+  max-width: 400px;
+`;
 
 const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermissionsOnChildren}: Props) => {
   const translate = useTranslate();
@@ -18,8 +30,8 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
   }
 
   return (
-    <FormContainerLegacy>
-      <PermissionFieldLegacy label={translate('category.permissions.view.label')}>
+    <FormContainer>
+      <PermissionField label={translate('category.permissions.view.label')}>
         <MultiSelectInput
           readOnly={false}
           value={formData.permissions.view.value}
@@ -35,8 +47,8 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
             </MultiSelectInput.Option>
           ))}
         </MultiSelectInput>
-      </PermissionFieldLegacy>
-      <PermissionFieldLegacy label={translate('category.permissions.edit.label')}>
+      </PermissionField>
+      <PermissionField label={translate('category.permissions.edit.label')}>
         <MultiSelectInput
           value={formData.permissions.edit.value}
           name={formData.permissions.edit.fullName}
@@ -51,8 +63,8 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
             </MultiSelectInput.Option>
           ))}
         </MultiSelectInput>
-      </PermissionFieldLegacy>
-      <PermissionFieldLegacy label={translate('category.permissions.own.label')}>
+      </PermissionField>
+      <PermissionField label={translate('category.permissions.own.label')}>
         <MultiSelectInput
           value={formData.permissions.own.value}
           name={formData.permissions.own.fullName}
@@ -68,7 +80,7 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
           ))}
         </MultiSelectInput>
         <Helper level="info">{translate('category.permissions.own.help')}</Helper>
-      </PermissionFieldLegacy>
+      </PermissionField>
       <Field label={translate('category.permissions.apply_on_children.label')}>
         <BooleanInput
           clearable={false}
@@ -80,7 +92,7 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
         />
         <Helper level="info">{translate('category.permissions.apply_on_children.help')}</Helper>
       </Field>
-    </FormContainerLegacy>
+    </FormContainer>
   );
 };
 
