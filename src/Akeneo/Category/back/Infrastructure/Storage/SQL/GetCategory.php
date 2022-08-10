@@ -24,25 +24,17 @@ class GetCategory implements GetCategoryInterface
     public function fromCode(string $categoryCode): ?Category
     {
         $sqlQuery = <<<SQL
-            WITH parent_id as (
-                SELECT category.code, parent.id as parent_id
-                FROM pim_catalog_category category
-                    JOIN pim_catalog_category parent ON category.parent_id = parent.id 
-                WHERE category.code = category_code
-                GROUP BY code
-            ),
-            translation as (
-                SELECT code, JSON_OBJECTAGG(translation.locale, translation.label) as translations
+            WITH translation as (
+                SELECT category.code, JSON_OBJECTAGG(translation.locale, translation.label) as translations
                 FROM pim_catalog_category category
                     JOIN pim_catalog_category_translation translation 
                         ON translation.foreign_key = category.id
-                WHERE code = category_code
-                GROUP BY category.code
+                WHERE category.code = category_code
             ),
             SELECT
                 category.id,
                 category.code, 
-                parent_id.parent_id,
+                category.parent_id,
                 COALESCE(translation.translations, '{}') as json_translations,
                 category.value_collection
             FROM 
