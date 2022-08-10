@@ -29,7 +29,7 @@ class UpsertCategoryCommandHandler
         private FindCategoryByCode $findCategoryByCode,
         private UserIntentApplierRegistry $applierRegistry,
         private EventDispatcherInterface $eventDispatcher,
-        private ProcessCategoryUpdateMock $updater
+        private ProcessCategoryUpdateMock $saver
     ) {
     }
 
@@ -49,7 +49,7 @@ class UpsertCategoryCommandHandler
 
         $this->updateCategory($category, $command);
 
-        $this->updater->update($category, $command->userIntents());
+        $this->saver->update($category, $command->userIntents());
 
         if ($isCreation) {
             $this->eventDispatcher->dispatch(new CategoryCreatedEvent((string)$category->getCode()));

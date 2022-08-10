@@ -19,18 +19,17 @@ final class LocalizeUserIntentsShouldBeUniqueValidator extends ConstraintValidat
 {
 
     /**
-     * @param UserIntent[] $value
+     * @param array<UserIntent> $value
      * @param Constraint $constraint
      * @return void
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, LocalizeUserIntentsShouldBeUnique::class);
         Assert::isArray($value);
         Assert::allImplementsInterface($value, UserIntent::class);
 
         $this->validUniqueConstraint($value, $constraint);
-
     }
 
     /**
