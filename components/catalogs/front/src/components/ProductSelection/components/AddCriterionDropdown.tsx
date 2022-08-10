@@ -4,7 +4,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {AnyCriterionState} from '../models/Criterion';
 import {useProductSelectionContext} from '../contexts/ProductSelectionContext';
 import {ProductSelectionActions} from '../reducers/ProductSelectionReducer';
-import {useCriteriaRegistry} from '../hooks/useCriteriaRegistry';
+import {useSystemCriterionFactories} from '../hooks/useSystemCriterionFactories';
 import {generateRandomId} from '../utils/generateRandomId';
 
 type Factory = {
@@ -52,13 +52,13 @@ const AddCriterionDropdown: FC<{}> = () => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
-    const {system} = useCriteriaRegistry();
+    const systemCriterionFactories = useSystemCriterionFactories();
 
-    const systemCriterionFactories: Factory[] = useMemo(() => {
+    const filteredSystemCriterionFactories: Factory[] = useMemo(() => {
         const regex = new RegExp(search, 'i');
 
-        return system.filter(factory => factory.label.match(regex));
-    }, [system, search]);
+        return systemCriterionFactories.filter(factory => factory.label.match(regex));
+    }, [systemCriterionFactories, search]);
 
     return (
         <Dropdown>
@@ -81,7 +81,7 @@ const AddCriterionDropdown: FC<{}> = () => {
                     >
                         <Section
                             label={translate('akeneo_catalogs.product_selection.add_criteria.section_system')}
-                            factories={systemCriterionFactories}
+                            factories={filteredSystemCriterionFactories}
                         />
                     </Dropdown.ItemCollection>
                 </Dropdown.Overlay>
