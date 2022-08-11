@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\SQL;
+namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Query\FindCategoryByIdentifier;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Infrastructure\Storage\SQL\GetCategory;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
