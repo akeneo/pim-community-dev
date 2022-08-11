@@ -18,21 +18,32 @@ const SpacedSection = styled(Section)`
 `;
 
 type JobAutomationFormProps = {
+  scheduled: boolean;
   automation: Automation;
   validationErrors: ValidationError[];
+  onScheduledChange: (scheduled: boolean) => void;
   onAutomationChange: (automation: Automation) => void;
 };
 
-const JobAutomationForm = ({automation, validationErrors, onAutomationChange}: JobAutomationFormProps) => {
+const JobAutomationForm = ({
+  scheduled,
+  automation,
+  validationErrors,
+  onScheduledChange,
+  onAutomationChange,
+}: JobAutomationFormProps) => {
   const translate = useTranslate();
   const userGroups = useUserGroups();
   const {isEnabled} = useFeatureFlags();
   const {isGranted} = useSecurity();
 
-  const handleEnableChange = (isEnabled: boolean) => onAutomationChange({...automation, is_enabled: isEnabled});
+  const handleScheduledChange = (isEnabled: boolean) => onScheduledChange(isEnabled);
 
   const handleCronExpressionChange = (cronExpression: CronExpression) =>
-    onAutomationChange({...automation, cron_expression: cronExpression});
+    onAutomationChange({
+      ...automation,
+      cron_expression: cronExpression,
+    });
 
   return (
     <SpacedSection>
@@ -42,13 +53,13 @@ const JobAutomationForm = ({automation, validationErrors, onAutomationChange}: J
       <Field label={translate('akeneo.job_automation.scheduling.enable')}>
         <BooleanInput
           noLabel={translate('pim_common.no')}
-          value={automation.is_enabled}
+          value={scheduled}
           yesLabel={translate('pim_common.yes')}
           readOnly={false}
-          onChange={handleEnableChange}
+          onChange={handleScheduledChange}
         />
       </Field>
-      {automation.is_enabled && (
+      {scheduled && (
         <>
           <SectionTitle>
             <SectionTitle.Title level="secondary">
@@ -65,7 +76,10 @@ const JobAutomationForm = ({automation, validationErrors, onAutomationChange}: J
               <MultiSelectInput
                 value={filterDefaultUserGroup(automation.running_user_groups)}
                 onChange={runningUserGroups =>
-                  onAutomationChange({...automation, running_user_groups: runningUserGroups})
+                  onAutomationChange({
+                    ...automation,
+                    running_user_groups: runningUserGroups,
+                  })
                 }
                 emptyResultLabel={translate('pim_common.no_result')}
                 openLabel={translate('pim_common.open')}
