@@ -77,22 +77,24 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
     }
 
     /**
-     * @dataProvider invalidCriterionDataProvider
+     * @dataProvider invalidFieldDataProvider
+     * @dataProvider invalidEnabledCriterionDataProvider
+     * @dataProvider invalidFamilyCriterionDataProvider
+     * @dataProvider invalidCompletenessCriterionDataProvider
      */
     public function testItReturnsViolationsWhenProductSelectionCriterionIsInvalid(
         array $criterion,
-        string $expectedMessage,
-        string $expectedPath
+        string $expectedMessage
     ): void {
         $violations = $this->validator->validate([
             'enabled' => false,
             'product_selection_criteria' => [$criterion],
         ], new UpdateCatalogPayloadIsValid());
 
-        $this->assertViolationsListContains($violations, $expectedMessage, $expectedPath);
+        $this->assertViolationsListContains($violations, $expectedMessage);
     }
 
-    public function invalidCriterionDataProvider(): array
+    public function invalidFieldDataProvider(): array
     {
         return [
             'invalid field value' => [
@@ -102,8 +104,13 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'value' => false,
                 ],
                 'expectedMessage' => 'Invalid field value',
-                'expectedPath' => '[product_selection_criteria][0][field]',
             ],
+        ];
+    }
+
+    public function invalidEnabledCriterionDataProvider(): array
+    {
+        return [
             'enabled field with invalid operator' => [
                 'criterion' => [
                     'field' => 'enabled',
@@ -111,7 +118,6 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'value' => false,
                 ],
                 'expectedMessage' => 'The value you selected is not a valid choice.',
-                'expectedPath' => '[product_selection_criteria][0][operator]',
             ],
             'enabled field with invalid value' => [
                 'criterion' => [
@@ -120,8 +126,13 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'value' => 56,
                 ],
                 'expectedMessage' => 'This value should be of type boolean.',
-                'expectedPath' => '[product_selection_criteria][0][value]',
             ],
+        ];
+    }
+
+    public function invalidFamilyCriterionDataProvider(): array
+    {
+        return [
             'family field with invalid operator' => [
                 'criterion' => [
                     'field' => 'family',
@@ -129,7 +140,6 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'value' => ['familyA', 'familyB'],
                 ],
                 'expectedMessage' => 'The value you selected is not a valid choice.',
-                'expectedPath' => '[product_selection_criteria][0][operator]',
             ],
             'family field with invalid value' => [
                 'criterion' => [
@@ -138,8 +148,13 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'value' => ['familyA', 2, 'familyB'],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
-                'expectedPath' => '[product_selection_criteria][0][value][1]',
             ],
+        ];
+    }
+
+    public function invalidCompletenessCriterionDataProvider(): array
+    {
+        return [
             'completeness field with invalid operator' => [
                 'criterion' => [
                     'field' => 'completeness',
@@ -149,7 +164,6 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'locale' => 'en_US',
                 ],
                 'expectedMessage' => 'The value you selected is not a valid choice.',
-                'expectedPath' => '[product_selection_criteria][0][operator]',
             ],
             'completeness field with invalid value' => [
                 'criterion' => [
@@ -160,7 +174,6 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'locale' => 'en_US',
                 ],
                 'expectedMessage' => 'Completeness value must be between 0 and 100 percent.',
-                'expectedPath' => '[product_selection_criteria][0][value]',
             ],
             'completeness field with invalid channel' => [
                 'criterion' => [
@@ -171,7 +184,6 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'locale' => 'en_US',
                 ],
                 'expectedMessage' => 'This value should be of type string.',
-                'expectedPath' => '[product_selection_criteria][0][scope]',
             ],
             'completeness field with invalid locale' => [
                 'criterion' => [
@@ -182,7 +194,6 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'locale' => false,
                 ],
                 'expectedMessage' => 'This value should be of type string.',
-                'expectedPath' => '[product_selection_criteria][0][locale]',
             ],
             'completeness field with non existent channel' => [
                 'criterion' => [
@@ -193,7 +204,6 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'locale' => 'kz_KZ',
                 ],
                 'expectedMessage' => 'This channel has been deactivated. Please check your channel settings or remove this criterion.',
-                'expectedPath' => '[product_selection_criteria][0][scope]',
             ],
             'completeness field with invalid locale for a channel' => [
                 'criterion' => [
@@ -204,7 +214,6 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'locale' => 'kz_KZ',
                 ],
                 'expectedMessage' => 'This locale is disabled for this channel. Please check your channel settings or remove this criterion.',
-                'expectedPath' => '[product_selection_criteria][0][locale]',
             ],
         ];
     }
