@@ -64,15 +64,16 @@ class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInterface
             WHERE uuid = :uuid
         SQL;
 
-        $identifier = (string) $this->connection->fetchOne($sql, [
+        /** @var mixed|false $identifier */
+        $identifier = $this->connection->fetchOne($sql, [
             'uuid' => Uuid::fromString($uuid)->getBytes(),
         ]);
 
-        if (!$identifier) {
+        if (false === $identifier) {
             throw new \InvalidArgumentException('Unknown uuid');
         }
 
-        return $identifier;
+        return (string) $identifier;
     }
 
     /**
