@@ -11,7 +11,7 @@ use PHPUnit\Framework\Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetChannelsActionTest extends IntegrationTestCase
+class GetChannelActionTest extends IntegrationTestCase
 {
     public function setUp(): void
     {
@@ -20,13 +20,13 @@ class GetChannelsActionTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItGetsChannels(): void
+    public function testItGetsChannel(): void
     {
         $client = $this->getAuthenticatedInternalApiClient();
 
         $client->request(
             'GET',
-            '/rest/catalogs/channels',
+            '/rest/catalogs/channels/ecommerce',
             [],
             [],
             [
@@ -36,14 +36,12 @@ class GetChannelsActionTest extends IntegrationTestCase
 
         $response = $client->getResponse();
         Assert::assertEquals(200, $response->getStatusCode());
-        $channels = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $channel = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        $expectedChannels = [
-            [
-                'code' => 'ecommerce',
-                'label'=> '[ecommerce]',
-            ],
+        $expectedChannel = [
+            'code' => 'ecommerce',
+            'label'=> '[ecommerce]',
         ];
-        Assert::assertEquals($expectedChannels, $channels);
+        Assert::assertEquals($expectedChannel, $channel);
     }
 }

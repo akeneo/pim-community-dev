@@ -76,6 +76,14 @@ services:
         arguments:
             - '@pim_enrich.repository.family.search'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelLocalesQuery:
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetChannelQuery:
+        arguments:
+            - '@pim_catalog.repository.channel'
+
     Akeneo\Catalogs\Infrastructure\Persistence\GetChannelsQuery:
         arguments:
             - '@pim_catalog.repository.channel'

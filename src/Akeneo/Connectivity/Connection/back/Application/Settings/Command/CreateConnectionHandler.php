@@ -52,7 +52,7 @@ final class CreateConnectionHandler
             throw new ConstraintViolationListException($violations);
         }
 
-        $user = $this->createUser->execute($command->code(), $command->label(), ' ', [$command->getName()]);
+        $user = $this->createUser->execute($command->code(), $command->label(), ' ');
         $client = $this->createClient->execute($command->label());
 
         $connection = new Connection(

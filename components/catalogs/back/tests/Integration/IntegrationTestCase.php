@@ -6,11 +6,19 @@ namespace Akeneo\Catalogs\Test\Integration;
 
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Saver\ChannelSaverInterface;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -22,6 +30,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -239,5 +248,73 @@ abstract class IntegrationTestCase extends WebTestCase
                 'criteria' => Types::JSON,
             ]
         );
+    }
+
+    protected function createChannel(string $code, array $locales = []): void
+    {
+        /** @var SimpleFactoryInterface $channelFactory */
+        $channelFactory = self::getContainer()->get('pim_catalog.factory.channel');
+        /** @var ChannelInterface $channel */
+        $channel = $channelFactory->create();
+
+        /** @var ObjectUpdaterInterface $channelUpdater */
+        $channelUpdater = self::getContainer()->get('pim_catalog.updater.channel');
+        $channelUpdater->update($channel, [
+            'code' => $code,
+            'locales' => $locales,
+            'currencies' => ['USD'],
+            'category_tree' => 'master',
+        ]);
+
+        /** @var ValidatorInterface $validator */
+        $validator = self::getContainer()->get('validator');
+        $violations = $validator->validate($channel);
+        self::assertSame(0, $violations->count(), (string) $violations);
+
+        /** @var ChannelSaverInterface $channelSaver */
+        $channelSaver = self::getContainer()->get('pim_catalog.saver.channel');
+        $channelSaver->save($channel);
+    }
+
+    protected function createAttribute(array $attributeData): void
+    {
+        /** @var SimpleFactoryInterface $attributeFactory */
+        $attributeFactory = self::getContainer()->get('pim_catalog.factory.attribute');
+        /** @var AttributeInterface $attribute */
+        $attribute = $attributeFactory->create();
+
+        /** @var ObjectUpdaterInterface $attributeUpdater */
+        $attributeUpdater = self::getContainer()->get('pim_catalog.updater.attribute');
+        $attributeUpdater->update($attribute, $attributeData);
+
+        /** @var ValidatorInterface $validator */
+        $validator = self::getContainer()->get('validator');
+        $violations = $validator->validate($attribute);
+        self::assertSame(0, $violations->count(), (string) $violations);
+
+        /** @var AttributeSaver $attributeSaver */
+        $attributeSaver = self::getContainer()->get('pim_catalog.saver.attribute');
+        $attributeSaver->save($attribute);
+    }
+
+    protected function createFamily(array $familyData): void
+    {
+        /** @var SimpleFactoryInterface $familyFactory */
+        $familyFactory = self::getContainer()->get('pim_catalog.factory.family');
+        /** @var FamilyInterface $family */
+        $family = $familyFactory->create();
+
+        /** @var ObjectUpdaterInterface $familyUpdater */
+        $familyUpdater = self::getContainer()->get('pim_catalog.updater.family');
+        $familyUpdater->update($family, $familyData);
+
+        /** @var ValidatorInterface $validator */
+        $validator = self::getContainer()->get('validator');
+        $violations = $validator->validate($family);
+        self::assertSame(0, $violations->count(), (string) $violations);
+
+        /** @var FamilySaver $familySaver */
+        $familySaver = self::getContainer()->get('pim_catalog.saver.family');
+        $familySaver->save($family);
     }
 }

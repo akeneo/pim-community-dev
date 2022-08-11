@@ -66,8 +66,8 @@ catalogs-unit-back:
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
-		--log-junit var/tests/phpunit/phpunit_catalogs_unit.xml \
-		--testsuite Catalogs_Unit ${O}
+		--testsuite Catalogs_Unit \
+		--log-junit var/tests/phpunit/phpunit_catalogs_unit.xml
 
 .PHONY: catalogs-integration-back
 catalogs-integration-back:

@@ -22,26 +22,20 @@ final class GetChannelsQuery implements GetChannelsQueryInterface
     /**
      * @inheritDoc
      */
-    public function execute(int $page = 1, int $limit = 20, ?string $code = null): array
+    public function execute(int $page = 1, int $limit = 20): array
     {
         /** @var ChannelInterface[] $channels */
         $channels  = $this->channelRepository->findBy(
-            $code === null || \trim($code) === '' ? [] : ['code' => $code],
+            [],
             [],
             $limit,
             ($page - 1) * $limit
         );
 
-        $localeNormalizer = static fn (LocaleInterface $locale): array => [
-            'code' => $locale->getCode(),
-            'label' => $locale->getName() ?? \sprintf('[%s]', $locale->getCode()),
-        ];
-
         return \array_map(
             static fn (ChannelInterface $channel) => [
                 'code' => $channel->getCode(),
                 'label' => $channel->getLabel(),
-                'locales' => \array_map($localeNormalizer, $channel->getLocales()->toArray()),
             ],
             $channels
         );

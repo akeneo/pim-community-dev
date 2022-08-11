@@ -6,10 +6,10 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Infrastructure\Persistence\GetProductIdentifiersQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -69,32 +69,51 @@ class GetProductIdentifiersQueryTest extends IntegrationTestCase
 
     public function testItGetsPaginatedProductIdentifiersFromCatalogCriteriaHavingAScopeAndAChannel(): void
     {
-        $this->purgeDataAndLoadTechnicalCatalog();
-
         $owner = $this->createUser('owner');
         $this->logAs($owner->getUserIdentifier());
 
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', $owner->getUserIdentifier());
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        // use a text attribute filter when developped instead of completeness
+        // to be clearer of what the point of this test
         $this->setCatalogProductSelection('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
             [
                 'field' => 'completeness',
                 'operator' => '>',
-                'value' => 25,
+                'value' => 99,
                 'scope' => 'ecommerce',
                 'locale' => 'en_US',
+            ],
+        ]);
+
+        $this->createAttribute([
+            'code' => 'a_localized_and_scopable_text',
+            'type' => 'pim_catalog_text',
+            'available_locales' => ['en_US'],
+            'group' => 'other',
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['a_localized_and_scopable_text'],
+            'attribute_requirements' => [
+                'ecommerce' => ['a_localized_and_scopable_text'],
             ],
         ]);
 
         $ownerId = $owner->getId();
         $this->createProduct('red', [
             new SetEnabled(true),
-            new SetFamily('familyA3'),
+            new SetFamily('a_family'),
+            new SetCategories(['master']),
         ], $ownerId);
         $this->createProduct('blue', [
             new SetEnabled(true),
-            new SetFamily('familyA3'),
-            new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', 'optionA'),
+            new SetFamily('a_family'),
+            new SetCategories(['master']),
+            new SetTextValue('a_localized_and_scopable_text', 'ecommerce', 'en_US', 'optionA'),
         ], $ownerId);
 
         $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, 2);

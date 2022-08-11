@@ -72,94 +72,14 @@ class GetChannelsActionTest extends TestCase
                     'limit' => 0,
                 ],
             ],
-            'code must be a string or null' => [
-                [
-                    'code' => 42,
-                ],
-            ],
         ];
-    }
-
-    /**
-     * @dataProvider queryWillNotThrowDataProvider
-     */
-    public function testItAnswersIfTheQueryIsValid(array $queryPayload): void
-    {
-        $this->expectNotToPerformAssertions();
-
-        ($this->getChannelsAction)(
-            new Request(
-                query: $queryPayload,
-                server: [
-                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                ],
-            )
-        );
-    }
-
-    public function queryWillNotThrowDataProvider(): array
-    {
-        return [
-            'limit and page are positive' => [
-                [
-                    'page' => 1,
-                    'limit' => 1,
-                ],
-            ],
-            'code is string' => [
-                [
-                    'code' => 'foo',
-                ],
-            ],
-            'code is null' => [
-                [
-                    'code' => null,
-                ],
-            ],
-        ];
-    }
-
-    public function testItCallsTheGetChannelsQueryWithDefaultValues(): void
-    {
-        $this->getChannelsQuery->expects($this->once())
-            ->method('execute')
-            ->with(1, 20, null);
-
-        ($this->getChannelsAction)(
-            new Request(
-                query: [],
-                server: [
-                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                ],
-            )
-        );
-    }
-
-    public function testItCallsTheGetChannelsQueryWithSpecificCode(): void
-    {
-        $this->getChannelsQuery->expects($this->once())
-            ->method('execute')
-            ->with(4, 3, 'channel_code');
-
-        ($this->getChannelsAction)(
-            new Request(
-                query: [
-                    'code' => 'channel_code',
-                    'page' => 4,
-                    'limit' => 3,
-                ],
-                server: [
-                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                ],
-            )
-        );
     }
 
     public function testItReturnsChannelsFromTheQuery(): void
     {
         $this->getChannelsQuery
             ->method('execute')
-            ->with(1, 20, null)
+            ->with(1, 20)
             ->willReturn(['channelA', 'channelB', 'channelC']);
 
         $response = ($this->getChannelsAction)(

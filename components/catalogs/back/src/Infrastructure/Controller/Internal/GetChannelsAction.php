@@ -29,17 +29,12 @@ class GetChannelsAction
 
         $page = (int) $request->query->get('page', 1);
         $limit = (int) $request->query->get('limit', 20);
-        $code = $request->query->get('code');
 
         if ($page < 1 || $limit < 1) {
             throw new BadRequestHttpException('Page and limit must be positive.');
         }
 
-        if (null !== $code && !\is_string($code)) {
-            throw new BadRequestHttpException('Code must be a string or null.');
-        }
-
-        $channels = $this->getChannelsQuery->execute($page, $limit, $code);
+        $channels = $this->getChannelsQuery->execute($page, $limit);
 
         return new JsonResponse($channels);
     }
