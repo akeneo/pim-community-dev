@@ -56,7 +56,7 @@ final class CreateSupplierFileHandler
             $createSupplierFile->originalFilename,
             $storedProductFilePath,
             $createSupplierFile->uploadedByContributor,
-            $supplier->identifier,
+            $supplier,
         );
 
         $this->supplierFileRepository->save($supplierFile);

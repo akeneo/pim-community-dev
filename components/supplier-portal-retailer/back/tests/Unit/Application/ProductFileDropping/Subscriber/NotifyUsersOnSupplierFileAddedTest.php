@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDroppi
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\NotifyUsersOnSupplierFileAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierLabelFromIdentifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\SupplierFile;
 use PHPUnit\Framework\TestCase;
@@ -26,20 +26,12 @@ final class NotifyUsersOnSupplierFileAddedTest extends TestCase
     public function itNotifiesAllTheUsersWhenASupplierDropsAFile(): void
     {
         $notifier = $this->createMock(Notifier::class);
-        $getSupplierLabelFromIdentifier = $this->createMock(GetSupplierLabelFromIdentifier::class);
-        $sut = new NotifyUsersOnSupplierFileAdded($notifier, $getSupplierLabelFromIdentifier);
-
-        $getSupplierLabelFromIdentifier
-            ->expects($this->once())
-            ->method('__invoke')
-            ->with('7f25bf84-9853-4b40-9930-1c34ec7594e6')
-            ->willReturn('Los Pollos Hermanos')
-        ;
+        $sut = new NotifyUsersOnSupplierFileAdded($notifier);
 
         $notifier
             ->expects($this->once())
             ->method('notifyUsersForSupplierFileAdding')
-            ->with('contributor@example.com')
+            ->with('contributor@example.com', 'Supplier label')
         ;
 
         $sut->notifyUsers(new SupplierFileAdded(SupplierFile::create(
@@ -47,7 +39,7 @@ final class NotifyUsersOnSupplierFileAddedTest extends TestCase
             'file.xlsx',
             'path/to/file.xlsx',
             'contributor@example.com',
-            '7f25bf84-9853-4b40-9930-1c34ec7594e6',
+            new Supplier('7f25bf84-9853-4b40-9930-1c34ec7594e6', 'supplier_code', 'Supplier label'),
         )));
     }
 }

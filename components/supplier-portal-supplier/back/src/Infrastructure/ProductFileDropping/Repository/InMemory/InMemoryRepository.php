@@ -14,13 +14,13 @@ final class InMemoryRepository implements SupplierFileRepository
 
     public function save(SupplierFile $supplierFile): void
     {
-        $this->supplierFiles[$supplierFile->uploadedByContributor()] = $supplierFile;
+        $this->supplierFiles[$supplierFile->identifier()] = $supplierFile;
     }
 
     public function findByContributor(ContributorEmail $uploadedByContributor): ?SupplierFile
     {
         foreach ($this->supplierFiles as $supplierFile) {
-            if ((string) $uploadedByContributor === $supplierFile->uploadedByContributor()) {
+            if ((string) $uploadedByContributor === $supplierFile->contributorEmail()) {
                 return $supplierFile;
             }
         }

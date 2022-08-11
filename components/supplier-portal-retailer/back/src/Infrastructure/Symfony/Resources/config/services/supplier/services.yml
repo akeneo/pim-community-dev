@@ -86,11 +86,6 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierLabelFromIdentifier:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierLabelFromIdentifier
-        arguments:
-            - '@database_connection'
-
     # Controllers
     Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Controller\SupplierList:
         public: true

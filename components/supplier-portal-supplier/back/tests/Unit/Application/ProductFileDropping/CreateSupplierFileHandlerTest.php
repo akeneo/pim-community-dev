@@ -21,7 +21,6 @@ use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\
 use Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Repository\InMemory\InMemoryRepository as SupplierFileInMemoryRepository;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\StubEventDispatcher;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Psr\Log\Test\TestLogger;
 use Ramsey\Uuid\Uuid;
@@ -108,7 +107,6 @@ final class CreateSupplierFileHandlerTest extends TestCase
     /** @test */
     public function itLogsWhenASupplierFileHasBeenDropped(): void
     {
-        $logger = $this->createMock(LoggerInterface::class);
         $constraintViolationListMock = $this->createMock(ConstraintViolationList::class);
         $validatorMock = $this->createMock(ValidatorInterface::class);
         $uploadedSupplierFile = $this->createMock(UploadedFile::class);
@@ -174,6 +172,7 @@ final class CreateSupplierFileHandlerTest extends TestCase
                 'data' => [
                     'identifier' => 'e36f227c-2946-11e8-b467-0ed5f89f718b',
                     'supplier_identifier' => '01319d4c-81c4-4f60-a992-41ea3546824c',
+                    'supplier_label' => 'My Supplier',
                     'filename' => 'products.xlsx',
                     'path' => 'path/to/products.xlsx',
                     'uploaded_by_contributor' => 'contributor@example.com',

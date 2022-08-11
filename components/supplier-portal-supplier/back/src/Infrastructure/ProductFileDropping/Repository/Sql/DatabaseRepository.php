@@ -34,8 +34,8 @@ final class DatabaseRepository implements SupplierFileRepository
                 'identifier' => $supplierFile->identifier(),
                 'original_filename' => $supplierFile->originalFilename(),
                 'path' => $supplierFile->path(),
-                'uploaded_by_contributor' => $supplierFile->uploadedByContributor(),
-                'uploaded_by_supplier' => $supplierFile->uploadedBySupplier(),
+                'uploaded_by_contributor' => $supplierFile->contributorEmail(),
+                'uploaded_by_supplier' => $supplierFile->supplierIdentifier(),
                 'uploaded_at' => $supplierFile->uploadedAt(),
             ],
         );

@@ -1,5 +1,5 @@
 services:
-    #controllers
+    # Controllers
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\DownloadProductFile:
         public: true
         arguments:
@@ -38,7 +38,7 @@ services:
             - '@event_dispatcher'
             - '@monolog.logger.supplier_portal'
 
-    #Queries
+    # Queries
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilePath:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetSupplierFilePath
         arguments:
@@ -48,7 +48,6 @@ services:
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\NotifyUsersOnSupplierFileAdded:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierLabelFromIdentifier'
         tags:
             - 'kernel.event_subscriber'
 
