@@ -50,7 +50,7 @@ class GetCategorySql implements GetCategoryInterface
                 category.code, 
                 category.parent_id,
                 JSON_OBJECTAGG(translation.locale, translation.label) as translations,
-                category.value_collection as value_collection
+                category.value_collection
             FROM 
                 pim_catalog_category category
                 JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
