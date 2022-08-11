@@ -18,3 +18,5 @@ Akeneo\Tool\Component\Batch\Model\JobInstance:
             - Length:
                 max: 255
                 maxMessage: pim_import_export.validation.max_length_reached
+        automation:
+            - Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\Automation: ~
