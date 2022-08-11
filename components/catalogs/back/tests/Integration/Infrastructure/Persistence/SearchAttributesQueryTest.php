@@ -43,6 +43,30 @@ class SearchAttributesQueryTest extends IntegrationTestCase
         ], $result);
     }
 
+    public function testItSearchesAttributesByName(): void
+    {
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+        ]);
+        $this->createAttribute([
+            'code' => 'description',
+            'type' => 'pim_catalog_text',
+        ]);
+
+        $result = $this->query->execute('desc');
+
+        $this->assertEquals([
+            [
+                'code' => 'description',
+                'label' => '[description]',
+                'type' => 'pim_catalog_text',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+        ], $result);
+    }
+
     private function loadAttributes(): void
     {
         // there is already an attribute "pim_catalog_identifier" in the minimal catalog

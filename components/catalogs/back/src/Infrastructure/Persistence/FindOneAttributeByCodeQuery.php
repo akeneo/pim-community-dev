@@ -25,7 +25,7 @@ final class FindOneAttributeByCodeQuery
         /** @var AttributeInterface|null $attribute */
         $attribute = $this->repository->findOneByIdentifier($code);
 
-        if (!$attribute) {
+        if (null === $attribute) {
             return null;
         }
 

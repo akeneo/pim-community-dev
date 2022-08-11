@@ -8,7 +8,7 @@ import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 import {useInfiniteAttributeCriterionFactories} from './useInfiniteAttributeCriterionFactories';
 import {useFindAttributeCriterionByType} from './useFindAttributeCriterionByType';
 
-test('it fetch attributes & paginate criterion factories', async () => {
+test('it fetches attributes & paginates criterion factories', async () => {
     const attributes: Attribute[] = [
         {
             code: 'name',
@@ -98,7 +98,7 @@ test('it fetch attributes & paginate criterion factories', async () => {
     });
 });
 
-test('it return a custom factory with the attribute code as field', async () => {
+test('it returns a custom factory with the attribute code as field', async () => {
     const factory = jest.fn(state => state);
     const findCriterionByType = jest.fn(() => ({
         factory: factory,

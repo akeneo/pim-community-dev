@@ -80,5 +80,6 @@ services:
         arguments:
             - '@pim_enrich.repository.attribute.search'
 
-    Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface:
-        alias: 'pim_catalog.repository.attribute'
+    Akeneo\Catalogs\Infrastructure\Persistence\FindOneAttributeByCodeQuery:
+        arguments:
+            $repository: '@pim_catalog.repository.attribute'
