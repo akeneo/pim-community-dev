@@ -89,7 +89,7 @@ final class CreateSupplierHandlerTest extends TestCase
                 'data' => [
                     'identifier' => 'e36f227c-2946-11e8-b467-0ed5f89f718b',
                     'code' => 'supplier_code',
-                    'label' => 'Supplier label',
+                    'supplier_label' => 'Supplier label',
                     'contributor_emails' => ['contributor1@example.com', 'contributor2@example.com'],
                     'metric_key' => 'supplier_created',
                 ],
