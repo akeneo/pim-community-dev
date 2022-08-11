@@ -153,6 +153,8 @@ SQL;
                         'realTimeVersioning' => true,
                         'convertVariantToSimple' => false,
                     ],
+                'automation' => null,
+                'scheduled' => false,
             ],
             'tracking' => [
                 'error'   => false,
