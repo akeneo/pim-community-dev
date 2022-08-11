@@ -1,0 +1,4 @@
+services:
+  Akeneo\Category\Infrastructure\Validation\LocalizeUserIntentsShouldBeUniqueValidator:
+      tags:
+        - { name: validator.constraint_validator }
