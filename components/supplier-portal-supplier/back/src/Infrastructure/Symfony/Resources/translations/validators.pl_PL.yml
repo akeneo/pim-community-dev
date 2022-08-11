@@ -1,0 +1,14 @@
+supplier_portal:
+  supplier:
+    contributor_account:
+      validation:
+        min_password_length: Hasło powinno składać się z co najmniej 8 znaków.
+        max_password_length: Hasło może składać się z maksymalnie 255 znaków.
+        must_contain_an_uppercase_letter: Hasło musi zawierać co najmniej jedną wielką literę.
+        must_contain_a_lowercase_letter: Hasło musi zawierać co najmniej jedną małą literę.
+        must_contain_a_digit: Hasło musi zawierać co najmniej jedną cyfrę.
+    product_file_dropping:
+      validation:
+        max_uploaded_filename_length: Nazwa pliku może składać się z maksymalnie 255 znaków.
+        max_uploaded_file_size: Rozmiar pliku nie może przekraczać 50 MB.
+        must_be_an_xlsx_file: Proszę przesłać prawidłowy plik XLSX.
