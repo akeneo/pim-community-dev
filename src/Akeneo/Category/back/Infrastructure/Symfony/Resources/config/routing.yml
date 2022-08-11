@@ -9,3 +9,6 @@ internal_api_category_legacy:
 internal_api_category:
     resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/category.yml'
     prefix: /category
+
+internal_api_template:
+    resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/category_template.yml'
