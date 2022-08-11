@@ -95,7 +95,7 @@ class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInterface
             throw new \InvalidArgumentException('Unknown catalog');
         }
 
-        if (!\is_array($criteria = \json_decode($raw, true))) {
+        if (!\is_array($criteria = \json_decode($raw, true, 512, JSON_THROW_ON_ERROR))) {
             throw new \LogicException('Invalid JSON in product_selection_criteria column');
         }
 
