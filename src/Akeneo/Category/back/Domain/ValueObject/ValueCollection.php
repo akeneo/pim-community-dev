@@ -12,12 +12,20 @@ final class ValueCollection
 {
     private function __construct(private ?array $values)
     {
-        Assert::allString($values);
-        Assert::allStringNotEmpty(\array_keys($values));
     }
 
     public static function fromArray(array $values): self
     {
         return new self($values);
+    }
+
+    public function getAttributeTextData(string $attributeCode, string $attributeIdentifier, string $localeCode): ?array
+    {
+        return $this->values[sprintf('%s_%s_%s', $attributeCode, $attributeIdentifier, $localeCode)];
+    }
+
+    public function getAttributeData(string $attributeCode, string $attributeIdentifier): ?array
+    {
+        return $this->values[sprintf('%s_%s', $attributeCode, $attributeIdentifier)];
     }
 }
