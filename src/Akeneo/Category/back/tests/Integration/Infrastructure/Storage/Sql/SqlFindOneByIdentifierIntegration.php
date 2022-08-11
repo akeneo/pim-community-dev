@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\SQL;
+namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\FindCategoryByIdentifier;
 use Akeneo\Category\Domain\Model\Category;
