@@ -71,6 +71,7 @@
 - PIM-10548: Fix yaml reader does not display an error message when imported file does not contain the root level
 - PIM-10571: Fix infinite scroll of attribute group selector in family edit form
 - PIM-10581: Fix attribute option code in linked data returned as an integer instead of a string
+- PIM-10529: Fix links on product grid
 
 ## Improvements
 
