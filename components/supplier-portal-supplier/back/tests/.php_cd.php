@@ -121,6 +121,7 @@ $rules = [
             'PHPUnit\Framework',
             'Psr\Log\LoggerInterface',
             'Psr\Log\NullLogger',
+            'Psr\Log\Test\TestLogger',
             'Ramsey\Uuid\Uuid',
             'Ramsey\Uuid\UuidFactoryInterface',
             'Ramsey\Uuid\UuidInterface',

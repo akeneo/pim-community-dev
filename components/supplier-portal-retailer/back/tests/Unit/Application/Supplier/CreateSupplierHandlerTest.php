@@ -12,8 +12,8 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Psr\Log\Test\TestLogger;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactoryInterface;
 use Ramsey\Uuid\UuidInterface;
@@ -64,7 +64,6 @@ final class CreateSupplierHandlerTest extends TestCase
         $supplierRepository = new InMemoryRepository();
         $supplierExists = new InMemorySupplierExists($supplierRepository);
         $eventDispatcherSpy = $this->createMock(EventDispatcher::class);
-        $logger = $this->createMock(LoggerInterface::class);
         $factory = $this->createMock(UuidFactoryInterface::class);
         $uuidInterface = $this->createMock(UuidInterface::class);
         $uuidInterface->method('toString')->willReturn('e36f227c-2946-11e8-b467-0ed5f89f718b');
@@ -75,23 +74,7 @@ final class CreateSupplierHandlerTest extends TestCase
 
         $this->factory = Uuid::getFactory();
         Uuid::setFactory($factory);
-
-        $logger
-            ->expects($this->once())
-            ->method('info')
-            ->with(
-                'Supplier "supplier_code" created.',
-                [
-                    'data' => [
-                        'identifier' => 'e36f227c-2946-11e8-b467-0ed5f89f718b',
-                        'code' => 'supplier_code',
-                        'label' => 'Supplier label',
-                        'contributor_emails' => ['contributor1@example.com', 'contributor2@example.com'],
-                        'metric_key' => 'supplier_created',
-                    ],
-                ],
-            )
-        ;
+        $logger = new TestLogger();
 
         $sut = new CreateSupplierHandler($supplierRepository, $supplierExists, $eventDispatcherSpy, $logger);
         ($sut)(new CreateSupplier(
@@ -99,6 +82,19 @@ final class CreateSupplierHandlerTest extends TestCase
             'Supplier label',
             ['contributor1@example.com', 'contributor2@example.com'],
         ));
+
+        static::assertTrue($logger->hasInfo([
+            'message' => 'Supplier "supplier_code" created.',
+            'context' => [
+                'data' => [
+                    'identifier' => 'e36f227c-2946-11e8-b467-0ed5f89f718b',
+                    'code' => 'supplier_code',
+                    'label' => 'Supplier label',
+                    'contributor_emails' => ['contributor1@example.com', 'contributor2@example.com'],
+                    'metric_key' => 'supplier_created',
+                ],
+            ],
+        ]));
     }
 
     /** @test */

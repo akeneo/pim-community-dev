@@ -23,6 +23,7 @@ use Akeneo\SupplierPortal\Supplier\Infrastructure\StubEventDispatcher;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Psr\Log\Test\TestLogger;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactoryInterface;
 use Ramsey\Uuid\UuidInterface;
@@ -155,23 +156,7 @@ final class CreateSupplierFileHandlerTest extends TestCase
                 '/tmp/products.xlsx',
             )->willReturn('path/to/products.xlsx');
 
-        $logger
-            ->expects($this->once())
-            ->method('info')
-            ->with(
-                'Supplier file "products.xlsx" created.',
-                [
-                    'data' => [
-                        'identifier' => 'e36f227c-2946-11e8-b467-0ed5f89f718b',
-                        'supplier_identifier' => '01319d4c-81c4-4f60-a992-41ea3546824c',
-                        'filename' => 'products.xlsx',
-                        'path' => 'path/to/products.xlsx',
-                        'uploaded_by_contributor' => 'contributor@example.com',
-                        'metric_key' => 'supplier_file_dropped',
-                    ],
-                ],
-            )
-        ;
+        $logger = new TestLogger();
 
         $sut = new CreateSupplierFileHandler(
             $getSupplierFromContributorEmail,
@@ -182,6 +167,20 @@ final class CreateSupplierFileHandlerTest extends TestCase
             $logger,
         );
         ($sut)($createSupplierFile);
+
+        static::assertTrue($logger->hasInfo([
+            'message' => 'Supplier file "products.xlsx" created.',
+            'context' => [
+                'data' => [
+                    'identifier' => 'e36f227c-2946-11e8-b467-0ed5f89f718b',
+                    'supplier_identifier' => '01319d4c-81c4-4f60-a992-41ea3546824c',
+                    'filename' => 'products.xlsx',
+                    'path' => 'path/to/products.xlsx',
+                    'uploaded_by_contributor' => 'contributor@example.com',
+                    'metric_key' => 'supplier_file_dropped',
+                ],
+            ],
+        ]));
     }
 
     /** @test */

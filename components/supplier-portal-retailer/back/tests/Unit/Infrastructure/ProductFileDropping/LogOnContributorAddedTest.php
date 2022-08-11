@@ -8,35 +8,32 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Subscriber\LogOnContributorAdded;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
+use Psr\Log\Test\TestLogger;
 
 final class LogOnContributorAddedTest extends TestCase
 {
     /** @test */
     public function itLogsWhenAContributorHasBeenAddedToASupplier(): void
     {
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = new TestLogger();
         $sut = new LogOnContributorAdded($logger);
-
-        $logger
-            ->expects($this->once())
-            ->method('info')
-            ->with(
-                'Contributor "contributor@example.com" created.',
-                [
-                    'data' => [
-                        'identifier' => 'a3d25314-04ca-4bf9-9423-e40362d84523',
-                        'metric_key' => 'contributor_added',
-                    ],
-                ],
-            )
-        ;
+        $supplierIdentifier = Identifier::fromString('a3d25314-04ca-4bf9-9423-e40362d84523');
 
         $sut->logOnContributorAdded(
             new ContributorAdded(
-                Identifier::fromString('a3d25314-04ca-4bf9-9423-e40362d84523'),
+                $supplierIdentifier,
                 'contributor@example.com',
             ),
         );
+
+        static::assertTrue($logger->hasInfo([
+            'message' => 'Contributor "contributor@example.com" created.',
+            'context' => [
+                'data' => [
+                    'identifier' => $supplierIdentifier,
+                    'metric_key' => 'contributor_added',
+                ],
+            ],
+        ]));
     }
 }
