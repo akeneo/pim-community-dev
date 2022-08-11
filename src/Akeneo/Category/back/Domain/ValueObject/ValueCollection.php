@@ -10,18 +10,12 @@ use Webmozart\Assert\Assert;
  */
 final class ValueCollection
 {
-    /**
-     * @param array<string, string> $values
-     */
     private function __construct(private ?array $values)
     {
         Assert::allString($values);
         Assert::allStringNotEmpty(\array_keys($values));
     }
 
-    /**
-     * @param array<string, string> $values
-     */
     public static function fromArray(array $values): self
     {
         return new self($values);

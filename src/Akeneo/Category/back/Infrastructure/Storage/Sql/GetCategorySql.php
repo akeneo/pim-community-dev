@@ -68,9 +68,8 @@ class GetCategorySql implements GetCategoryInterface
             new Code($result['code']),
             LabelCollection::fromArray(json_decode($result['translations'], true)),
             $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null,
-            null
-            /*$result['value_collection'] ?
-                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null*/
+            $result['value_collection'] ?
+                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null
         );
     }
 }
