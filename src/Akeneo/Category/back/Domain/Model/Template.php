@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Domain\Model;
 
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\TemplateCode;
@@ -19,7 +20,8 @@ class Template
         private TemplateId $id,
         private TemplateCode $code,
         private LabelCollection $labelCollection,
-        private ?CategoryId $parentId
+        private ?CategoryId $categoryTreeId,
+        private AttributeCollection $attributeCollection
     ) {
     }
 
@@ -38,8 +40,13 @@ class Template
         return $this->labelCollection;
     }
 
-    public function getParentId(): ?CategoryId
+    public function getCategoryTreeId(): ?CategoryId
     {
-        return $this->parentId;
+        return $this->categoryTreeId;
+    }
+
+    public function getAttributeCollection(): AttributeCollection
+    {
+        return $this->attributeCollection;
     }
 }

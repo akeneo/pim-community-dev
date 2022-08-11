@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Domain\ValueObject;
+namespace Akeneo\Category\Domain\ValueObject\Attribute;
 
 use Webmozart\Assert\Assert;
 
@@ -10,9 +10,9 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class TemplateId
+class AttributeUuid
 {
-    // TODO : Template UUID instead
+    // TODO : Attribute UUID instead
     public function __construct(private string $id)
     {
         Assert::greaterThan($id, -1);

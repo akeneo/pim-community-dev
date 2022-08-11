@@ -3,3 +3,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\SQL\SqlFindOneByIdentifier
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\SQL\GetTemplateSql
+    arguments:
+      - '@database_connection'

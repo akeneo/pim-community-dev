@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
+use Akeneo\Category\Application\Query\GetTemplate;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -16,11 +18,12 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class GetTemplateController
 {
     public function __construct(
-        private SecurityFacade $securityFacade
+        private SecurityFacade $securityFacade,
+        private GetTemplate $getTemplate
     ) {
     }
 
-    public function __invoke(Request $request, int $id): JsonResponse
+    public function __invoke(Request $request, string $templateUuid): JsonResponse
     {
         if ($this->securityFacade->isGranted('pim_enrich_product_category_edit') === false) {
             // even if this is a read endpoint, the user must be granted edition rights
@@ -29,6 +32,10 @@ class GetTemplateController
         }
 
         // TODO : get template by identifier
+        $template  = $this->getTemplate->byUuid($templateUuid);
+        if (null === $template) {
+            throw new NotFoundHttpException();
+        }
 
         // TODO : normalize template
 
