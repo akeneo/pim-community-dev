@@ -22,7 +22,7 @@ class GetCategorySql implements GetCategoryInterface
     {
     }
 
-    public function byId(int $categoryId): ?Category
+    public function byId(int $categoryId, ?int $userId = null): ?Category
     {
         $condition['sqlWhere'] = 'category.id = :category_id';
         $condition['params'] = ['category_id' => $categoryId];
@@ -31,7 +31,7 @@ class GetCategorySql implements GetCategoryInterface
         return $this->execute($condition);
     }
 
-    public function byCode(string $categoryCode): ?Category
+    public function byCode(string $categoryCode, ?int $userId = null): ?Category
     {
         $condition['sqlWhere'] = 'category.code = :category_code';
         $condition['params'] = ['category_code' => $categoryCode];
@@ -69,7 +69,8 @@ class GetCategorySql implements GetCategoryInterface
             LabelCollection::fromArray(json_decode($result['translations'], true)),
             $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null,
             $result['value_collection'] ?
-                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null
+                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null,
+            null
         );
     }
 }

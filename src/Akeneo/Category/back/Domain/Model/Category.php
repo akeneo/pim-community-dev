@@ -7,6 +7,7 @@ namespace Akeneo\Category\Domain\Model;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\PermissionCollection;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
@@ -21,6 +22,7 @@ class Category
         private LabelCollection $labelCollection,
         private ?CategoryId $parentId,
         private ?ValueCollection $valueCollection,
+        private ?PermissionCollection $permissionCollection,
     ) {
     }
 
@@ -47,6 +49,11 @@ class Category
     public function getValueCollection(): ?ValueCollection
     {
         return $this->valueCollection;
+    }
+
+    public function getPermissionCollection(): ?PermissionCollection
+    {
+        return $this->permissionCollection;
     }
 
     public function setLabel(string $localeCode, string $label): void

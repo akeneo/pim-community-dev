@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Domain\Model\Category;
-use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -69,7 +69,7 @@ SQL;
             'code' => $category->getCode()
         ]);
 
-        $category = $this->get(GetCategoryInterface::class)->byCode($category->getCode());
+        $category = $this->get(GetCategorySql::class)->byCode($category->getCode());
         $this->assertInstanceOf(Category::class, $category);
         $this->assertSame('Chaussettes', $category->getLabelCollection()->getLabel('fr_FR'));
         $this->assertSame('Socks', $category->getLabelCollection()->getLabel('en_US'));
@@ -121,7 +121,7 @@ SQL;
             'code' => $category->getCode()
         ]);
 
-        $category = $this->get(GetCategoryInterface::class)->byId($category->getId());
+        $category = $this->get(GetCategorySql::class)->byId($category->getId());
         $this->assertInstanceOf(Category::class, $category);
         $this->assertSame('pants', (string)$category->getCode());
         $this->assertSame('Pantalons', $category->getLabelCollection()->getLabel('fr_FR'));
