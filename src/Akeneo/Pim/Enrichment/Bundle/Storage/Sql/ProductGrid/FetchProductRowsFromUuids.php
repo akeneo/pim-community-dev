@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -20,20 +21,11 @@ use Ramsey\Uuid\UuidInterface;
  */
 final class FetchProductRowsFromUuids
 {
-    /** @var Connection */
-    private $connection;
-
-    /** @var WriteValueCollectionFactory */
-    private $valueCollectionFactory;
-
-    /**
-     * @param Connection                      $connection
-     * @param WriteValueCollectionFactory $valueCollectionFactory
-     */
-    public function __construct(Connection $connection, WriteValueCollectionFactory $valueCollectionFactory)
-    {
-        $this->connection = $connection;
-        $this->valueCollectionFactory = $valueCollectionFactory;
+    public function __construct(
+        private Connection $connection,
+        private WriteValueCollectionFactory $valueCollectionFactory,
+        private AttributeRepositoryInterface $attributeRepository
+    ) {
     }
 
     /**
@@ -191,8 +183,12 @@ SQL;
     private function getLabels(array $uuids, array $valueCollections, string $channelCode, string $localeCode): array
     {
         $result = [];
+        $identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
+
         foreach ($uuids as $uuid) {
-            $result[$uuid->toString()]['label'] = sprintf('[%s]', $uuid->toString());
+            $values = $valueCollections[$uuid->toString()]['value_collection'];
+            $identifier = $values->getByCodes($identifierAttributeCode)?->getData();
+            $result[$uuid->toString()]['label'] = sprintf('[%s]', $identifier ?? $uuid->toString());
         }
 
         $sql = <<<SQL

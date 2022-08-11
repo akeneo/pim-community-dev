@@ -85,7 +85,8 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo.pim.enrichment.factory.write_value_collection'
-            -
+            - '@pim_catalog.repository.attribute'
+
     akeneo.pim.enrichment.product.grid.query.add_additional_product_properties:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductPropertiesRegistry'
         arguments:
