@@ -119,8 +119,8 @@ $rules = [
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             // External dependencies coupling
             'PHPUnit\Framework',
-            'Psr\Log\LoggerInterface',
             'Psr\Log\NullLogger',
+            'Psr\Log\Test\TestLogger',
             'Ramsey\Uuid\Uuid',
             'Symfony\Component\EventDispatcher\EventDispatcher',
             'Symfony\Component\Validator\ConstraintViolationList',
