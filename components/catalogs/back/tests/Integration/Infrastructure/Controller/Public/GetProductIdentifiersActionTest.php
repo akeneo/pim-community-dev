@@ -14,9 +14,9 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class GetProductIdentifiersActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client;
+    private ?KernelBrowser $client = null;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -44,7 +44,7 @@ class GetProductIdentifiersActionTest extends IntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $payload = \json_decode($response->getContent(), true);
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertEquals(['blue', 'green'], $payload['_embedded']['items']);
@@ -71,7 +71,7 @@ class GetProductIdentifiersActionTest extends IntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $payload = \json_decode($response->getContent(), true);
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertCount(0, $payload['_embedded']['items']);

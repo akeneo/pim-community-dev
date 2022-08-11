@@ -23,8 +23,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class ApiContext implements Context
 {
     private ContainerInterface $container;
-    private ?Response $response;
-    private ?KernelBrowser $client;
+    private ?Response $response = null;
+    private ?KernelBrowser $client = null;
 
     public function __construct(
         KernelInterface $kernel,
@@ -37,7 +37,7 @@ class ApiContext implements Context
     /**
      * @Given an existing catalog
      */
-    public function anExistingCatalog()
+    public function anExistingCatalog(): void
     {
         $this->client ??= $this->authentication->createAuthenticatedClient([
             'read_catalogs',
@@ -58,7 +58,7 @@ class ApiContext implements Context
     /**
      * @Given several existing catalogs
      */
-    public function severalExistingCatalogs()
+    public function severalExistingCatalogs(): void
     {
         $this->client ??= $this->authentication->createAuthenticatedClient([
             'read_catalogs',
@@ -89,7 +89,7 @@ class ApiContext implements Context
     /**
      * @When the external application retrieves the catalog using the API
      */
-    public function theExternalApplicationRetrievesTheCatalogUsingTheApi()
+    public function theExternalApplicationRetrievesTheCatalogUsingTheApi(): void
     {
         $this->client ??= $this->authentication->createAuthenticatedClient([
             'read_catalogs',
@@ -110,7 +110,7 @@ class ApiContext implements Context
     /**
      * @When the external application retrieves the catalogs using the API
      */
-    public function theExternalApplicationRetrievesTheCatalogsUsingTheApi()
+    public function theExternalApplicationRetrievesTheCatalogsUsingTheApi(): void
     {
         $this->client ??= $this->authentication->createAuthenticatedClient([
             'read_catalogs',
@@ -135,9 +135,9 @@ class ApiContext implements Context
     /**
      * @Then the response should contain the catalog details
      */
-    public function theResponseShouldContainTheCatalogDetails()
+    public function theResponseShouldContainTheCatalogDetails(): void
     {
-        $payload = \json_decode($this->response->getContent(), true);
+        $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertArrayHasKey('id', $payload);
         Assert::assertArrayHasKey('name', $payload);
@@ -147,9 +147,9 @@ class ApiContext implements Context
     /**
      * @Then the response should contain catalogs details
      */
-    public function theResponseShouldContainCatalogsDetails()
+    public function theResponseShouldContainCatalogsDetails(): void
     {
-        $payload = \json_decode($this->response->getContent(), true);
+        $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertCount(2, $payload['_embedded']['items']);
 
@@ -161,7 +161,7 @@ class ApiContext implements Context
     /**
      * @When the external application creates a catalog using the API
      */
-    public function theExternalApplicationCreatesACatalogUsingTheApi()
+    public function theExternalApplicationCreatesACatalogUsingTheApi(): void
     {
         $this->client ??= $this->authentication->createAuthenticatedClient([
             'read_catalogs',
@@ -188,9 +188,9 @@ class ApiContext implements Context
     /**
      * @Then the response should contain the catalog id
      */
-    public function theResponseShouldContainTheCatalogId()
+    public function theResponseShouldContainTheCatalogId(): void
     {
-        $payload = \json_decode($this->response->getContent(), true);
+        $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertArrayHasKey('id', $payload);
     }
@@ -198,9 +198,9 @@ class ApiContext implements Context
     /**
      * @Then the catalog should exist in the PIM
      */
-    public function theCatalogShouldExistInThePim()
+    public function theCatalogShouldExistInThePim(): void
     {
-        $payload = \json_decode($this->response->getContent(), true);
+        $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $catalog = $this->queryBus->execute(new GetCatalogQuery($payload['id']));
 
@@ -210,7 +210,7 @@ class ApiContext implements Context
     /**
      * @When the external application deletes a catalog using the API
      */
-    public function theExternalApplicationDeletesACatalogUsingTheApi()
+    public function theExternalApplicationDeletesACatalogUsingTheApi(): void
     {
         $this->client ??= $this->authentication->createAuthenticatedClient([
             'read_catalogs',
@@ -231,7 +231,7 @@ class ApiContext implements Context
     /**
      * @Then the response should be empty
      */
-    public function theResponseShouldBeEmpty()
+    public function theResponseShouldBeEmpty(): void
     {
         Assert::assertEmpty($this->response->getContent());
     }
@@ -239,7 +239,7 @@ class ApiContext implements Context
     /**
      * @Then the catalog should be removed from the PIM
      */
-    public function theCatalogShouldBeRemovedFromThePim()
+    public function theCatalogShouldBeRemovedFromThePim(): void
     {
         $catalog = $this->queryBus->execute(new GetCatalogQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
 
@@ -249,7 +249,7 @@ class ApiContext implements Context
     /**
      * @When the external application updates a catalog using the API
      */
-    public function theExternalApplicationUpdatesACatalogUsingTheApi()
+    public function theExternalApplicationUpdatesACatalogUsingTheApi(): void
     {
         $this->client ??= $this->authentication->createAuthenticatedClient([
             'read_catalogs',
@@ -276,7 +276,7 @@ class ApiContext implements Context
     /**
      * @Then the catalog should be updated in the PIM
      */
-    public function theCatalogShouldBeUpdatedInThePim()
+    public function theCatalogShouldBeUpdatedInThePim(): void
     {
         $catalog = $this->queryBus->execute(new GetCatalogQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
 

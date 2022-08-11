@@ -18,7 +18,7 @@ class GetCatalogsByOwnerUsernameQueryTest extends IntegrationTestCase
 {
     private ?GetCatalogsByOwnerUsernameQuery $query;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

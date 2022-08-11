@@ -26,14 +26,6 @@ class AuthenticationContext implements Context
         $this->container = $kernel->getContainer()->get('test.service_container');
     }
 
-    /**
-     * @BeforeScenario
-     */
-    public function clear()
-    {
-        $this->tokens = [];
-    }
-
     private function createConnectedApp(array $scopes = []): ConnectedAppWithValidToken
     {
         $connectedAppFactory = $this->container->get(ConnectedAppFactory::class);
