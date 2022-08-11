@@ -6,7 +6,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/akeneo/pim-enterprise-dev
-    targetRevision: PH-102
+    targetRevision: master
     path: deployments-ucs/timmy
   destination:
     server: https://kubernetes.default.svc

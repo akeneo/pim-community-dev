@@ -4,6 +4,22 @@ resource "google_project_iam_custom_role" "cloudconfig_role" {
   title       = "Cloud Config GKE Role"
   description = "Role for executing Cloud Config in GKE"
   permissions = [
+    "cloudfunctions.functions.call",
+    "cloudfunctions.functions.create",
+    "cloudfunctions.functions.delete",
+    "cloudfunctions.functions.get",
+    "cloudfunctions.functions.invoke",
+    "cloudfunctions.functions.list",
+    "cloudfunctions.functions.sourceCodeGet",
+    "cloudfunctions.functions.sourceCodeSet",
+    "cloudfunctions.functions.getIamPolicy",
+    "cloudfunctions.functions.setIamPolicy",
+    "cloudfunctions.functions.update",
+    "cloudfunctions.runtimes.list",
+    "cloudfunctions.locations.list",
+    "cloudfunctions.operations.get",
+    "cloudfunctions.operations.list",
+
     "cloudscheduler.jobs.create",
     "cloudscheduler.jobs.delete",
     "cloudscheduler.jobs.enable",
