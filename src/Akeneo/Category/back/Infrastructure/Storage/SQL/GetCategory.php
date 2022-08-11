@@ -9,6 +9,7 @@ use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -66,7 +67,10 @@ class GetCategory implements GetCategoryInterface
             new CategoryId((int)$result['id']),
             new Code($result['code']),
             LabelCollection::fromArray(json_decode($result['translations'], true)),
-            $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null
+            $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null,
+            null
+            /*$result['value_collection'] ?
+                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null*/
         );
     }
 }

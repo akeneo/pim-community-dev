@@ -7,6 +7,7 @@ namespace Akeneo\Category\Domain\Model;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -19,6 +20,7 @@ class Category
         private Code $code,
         private LabelCollection $labelCollection,
         private ?CategoryId $parentId,
+        private ?ValueCollection $valueCollection,
     ) {
     }
 
@@ -42,6 +44,11 @@ class Category
         return $this->parentId;
     }
 
+    public function getValueCollection(): ?ValueCollection
+    {
+        return $this->valueCollection;
+    }
+
     public function setLabel(string $localeCode, string $label): void
     {
         $this->labelCollection->setLabel($localeCode, $label);
@@ -57,6 +64,7 @@ class Category
             'code' => $this->getCode(),
             'labels' => $this->getLabelCollection(),
             'parent' => $this->getParentId(),
+            'valueCollection' => $this->getValueCollection(),
         ];
     }
 }
