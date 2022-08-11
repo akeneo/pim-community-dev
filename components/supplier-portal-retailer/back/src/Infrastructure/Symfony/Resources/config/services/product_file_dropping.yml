@@ -48,6 +48,7 @@ services:
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\NotifyUsersOnSupplierFileAdded:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierLabelFromIdentifier'
         tags:
             - 'kernel.event_subscriber'
 

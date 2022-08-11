@@ -15,13 +15,13 @@ final class PIMNotifier implements Notifier
     {
     }
 
-    public function notifyUsersForSupplierFileAdding(string $contributorEmail): void
+    public function notifyUsersForSupplierFileAdding(string $contributorEmail, string $supplierLabel): void
     {
         $notification = new Notification();
         $notification
             ->setType('add')
             ->setMessage('supplier_portal.product_file_dropping.pim_notification.content')
-            ->setMessageParams(['{{ contributorEmail }}' => $contributorEmail])
+            ->setMessageParams(['{{ contributorEmail }}' => $contributorEmail, '{{ supplierLabel }}' => $supplierLabel])
             ->setRoute('supplier_portal_retailer_product_files_list')
             ->setContext([
                 'actionType' => 'new_product_file',

@@ -33,6 +33,6 @@ final class PIMNotifierTest extends TestCase
             )
         ;
 
-        $sut->notifyUsersForSupplierFileAdding('contributor@example.com');
+        $sut->notifyUsersForSupplierFileAdding('contributor@example.com', 'Los Pollos Hermanos');
     }
 }
