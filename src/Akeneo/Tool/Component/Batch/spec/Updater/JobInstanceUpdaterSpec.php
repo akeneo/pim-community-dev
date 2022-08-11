@@ -37,6 +37,7 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $jobInstance->getJobName()->willReturn('fixtures_currency_csv');
+        $jobInstance->getRawParameters()->willReturn(['filePath' => 'currencies.csv']);
         $jobRegistry->get('fixtures_currency_csv')->willReturn($job);
         $jobParametersFactory->create($job, ['filePath' => 'currencies.csv'])->willReturn($jobParameters);
         $jobParameters->all()->willReturn(['filePath' => 'currencies.csv']);
