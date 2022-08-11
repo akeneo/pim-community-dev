@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Category\Infrastructure\Validation;
 
 use Akeneo\Category\Api\Command\UserIntents\SetCode;
 use Akeneo\Category\Api\Command\UserIntents\SetLabel;
+use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Infrastructure\Validation\LocalizeUserIntentsShouldBeUnique;
 use Akeneo\Category\Infrastructure\Validation\LocalizeUserIntentsShouldBeUniqueValidator;
 use PhpSpec\ObjectBehavior;
@@ -43,8 +44,7 @@ class LocalizeUserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
 
         $this->validate([
             new SetLabel('fr_FR', 'libelle'),
-            new SetLabel('en_US', 'label'),
-            new SetCode('code')
+            new SetLabel('en_US', 'label')
         ], new LocalizeUserIntentsShouldBeUnique());
     }
 
@@ -61,7 +61,6 @@ class LocalizeUserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
             new SetLabel('locale', 'libelle'),
             new SetLabel('same_local', 'label'),
             new SetLabel('same_local', 'title'),
-            new SetCode('code')
         ], new LocalizeUserIntentsShouldBeUnique());
     }
 }

@@ -73,12 +73,12 @@ class UpsertCategoryCommandHandler
             } catch (\LogicException $exception) {
                 $violations = new ConstraintViolationList([
                     new ConstraintViolation(
-                        $exception->getMessage(),
-                        $exception->getMessage(),
-                        [],
-                        $command,
-                        $applier::class,
-                        $userIntent
+                        message: $exception->getMessage(),
+                        messageTemplate: $exception->getMessage(),
+                        parameters: [],
+                        root: $command,
+                        propertyPath: $applier::class,
+                        invalidValue: $userIntent
                     ),
                 ]);
 
