@@ -9,7 +9,7 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: akeneo_job_instance_validator }
 
-  akeneo_batch.validator.job_instance.automation:
+    akeneo_batch.validator.job_instance.automation:
         class: 'Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\DummyAutomationValidator'
         tags:
             - { name: validator.constraint_validator }
