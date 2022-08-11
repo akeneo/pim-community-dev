@@ -1,5 +1,5 @@
 services:
-    #controllers
+    # Controllers
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\DownloadProductFile:
         public: true
         arguments:
@@ -23,6 +23,13 @@ services:
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
 
+    # PIM Notification service
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\PIMNotifier
+        arguments:
+            - '@pim_notification.notifier'
+            - '@pim_user.repository.user'
+
     # Query/Handlers
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler:
         arguments:
@@ -31,13 +38,19 @@ services:
             - '@event_dispatcher'
             - '@monolog.logger.supplier_portal'
 
-    #Queries
+    # Queries
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilePath:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetSupplierFilePath
         arguments:
             - '@database_connection'
 
     # Event subscribers
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Subscriber\NotifyUsersOnSupplierFileAdded:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier'
+        tags:
+            - 'kernel.event_subscriber'
+
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Subscriber\LogOnContributorAdded:
         arguments:
             - '@monolog.logger.supplier_portal'

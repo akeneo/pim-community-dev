@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model;
 
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Path;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\SupplierIdentifier;
 
 final class SupplierFile
 {
     private Identifier $identifier;
     private Filename $originalFilename;
     private Path $path;
-    private ?ContributorEmail $uploadedByContributor;
-    private SupplierIdentifier $uploadedBySupplier;
+    private ?ContributorEmail $contributorEmail;
+    private Supplier $uploadedBySupplier;
     private \DateTimeInterface $uploadedAt;
     private bool $downloaded;
     private array $events = [];
@@ -26,16 +26,16 @@ final class SupplierFile
         string $identifier,
         string $originalFilename,
         string $path,
-        ?string $uploadedByContributor,
-        string $uploadedBySupplier,
+        ?string $contributorEmail,
+        Supplier $uploadedBySupplier,
         ?\DateTimeInterface $uploadedAt,
         bool $downloaded = false,
     ) {
         $this->identifier = Identifier::fromString($identifier);
         $this->originalFilename = Filename::fromString($originalFilename);
         $this->path = Path::fromString($path);
-        $this->uploadedByContributor = ContributorEmail::fromString($uploadedByContributor);
-        $this->uploadedBySupplier = SupplierIdentifier::fromString($uploadedBySupplier);
+        $this->contributorEmail = ContributorEmail::fromString($contributorEmail);
+        $this->uploadedBySupplier = $uploadedBySupplier;
         $this->uploadedAt = $uploadedAt;
         $this->downloaded = $downloaded;
     }
@@ -44,14 +44,14 @@ final class SupplierFile
         string $identifier,
         string $originalFilename,
         string $path,
-        string $uploadedByContributor,
-        string $uploadedBySupplier,
+        string $contributorEmail,
+        Supplier $uploadedBySupplier,
     ): self {
         $supplierFile = new self(
             $identifier,
             $originalFilename,
             $path,
-            $uploadedByContributor,
+            $contributorEmail,
             $uploadedBySupplier,
             new \DateTimeImmutable(),
         );
@@ -76,14 +76,19 @@ final class SupplierFile
         return (string) $this->path;
     }
 
-    public function uploadedByContributor(): ?string
+    public function contributorEmail(): ?string
     {
-        return null === $this->uploadedByContributor ? null : (string) $this->uploadedByContributor;
+        return null === $this->contributorEmail ? null : (string) $this->contributorEmail;
     }
 
-    public function uploadedBySupplier(): string
+    public function supplierLabel(): string
     {
-        return (string) $this->uploadedBySupplier;
+        return $this->uploadedBySupplier->label;
+    }
+
+    public function supplierIdentifier(): string
+    {
+        return $this->uploadedBySupplier->identifier;
     }
 
     public function uploadedAt(): string

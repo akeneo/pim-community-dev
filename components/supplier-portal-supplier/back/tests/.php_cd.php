@@ -23,6 +23,7 @@ $rules = [
     $builder->only(
         [
             // Supplier Portal retailer coupling
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
 
             // External dependencies coupling
@@ -84,6 +85,7 @@ $rules = [
     $builder->only(
         [
             // Supplier Portal retailer coupling
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
 
             // Supplier Portal supplier coupling
@@ -100,14 +102,14 @@ $rules = [
     $builder->only(
         [
             // Supplier Portal retailer coupling
+            'Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
-            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierFromContributorEmail',
-            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository',
-
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
-            'Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierFromContributorEmail',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
@@ -119,7 +121,6 @@ $rules = [
 
             // External dependencies coupling
             'PHPUnit\Framework',
-            'Psr\Log\LoggerInterface',
             'Psr\Log\NullLogger',
             'Psr\Log\Test\TestLogger',
             'Ramsey\Uuid\Uuid',

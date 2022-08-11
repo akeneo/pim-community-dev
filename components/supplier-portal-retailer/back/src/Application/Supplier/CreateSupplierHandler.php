@@ -64,7 +64,7 @@ final class CreateSupplierHandler
                 'data' => [
                     'identifier' => $supplierIdentifier,
                     'code' => $createSupplier->code,
-                    'label' => $createSupplier->label,
+                    'supplier_label' => $createSupplier->label,
                     'contributor_emails' => $createSupplier->contributorEmails,
                     'metric_key' => 'supplier_created',
                 ],
