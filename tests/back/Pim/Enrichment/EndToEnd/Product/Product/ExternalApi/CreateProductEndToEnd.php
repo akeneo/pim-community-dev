@@ -7,6 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductEndToEnd extends AbstractProductTestCase
@@ -678,8 +679,13 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'foo');
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
+        $query = <<<SQL
+            SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE identifier = 'foo'
+        SQL;
+        $uuid = $this->get('database_connection')->executeQuery($query)->fetchOne();
+
         $userId = $this->getUserId('admin');
-        $product = $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers')->fromProductIdentifier('foo', $userId);
+        $product = $this->get('akeneo.pim.enrichment.product.connector.get_product_from_uuids')->fromProductUuid(Uuid::fromString($uuid), $userId);
         $standardizedProduct = $this->get('pim_api.normalizer.connector_products')->normalizeConnectorProduct($product);
 
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['created']);
