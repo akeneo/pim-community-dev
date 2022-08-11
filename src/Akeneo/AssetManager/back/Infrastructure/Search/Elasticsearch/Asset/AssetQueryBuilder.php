@@ -103,7 +103,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
         if (null !== $codeFilter && !empty($codeFilter['value']) && 'NOT IN' === $codeFilter['operator']) {
             $query['query']['constant_score']['filter']['bool']['must_not'][] = [
                 'terms' => [
-                    'code' => $codeFilter['value'],
+                    'code' => array_values($codeFilter['value']),
                 ],
             ];
         }
@@ -111,7 +111,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
         if (null !== $codeFilter && !empty($codeFilter['value']) && 'IN' === $codeFilter['operator']) {
             $query['query']['constant_score']['filter']['bool']['must'][] = [
                 'terms' => [
-                    'code' => $codeFilter['value'],
+                    'code' => array_values($codeFilter['value']),
                 ],
             ];
         }
