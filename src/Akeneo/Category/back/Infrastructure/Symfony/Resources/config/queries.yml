@@ -5,6 +5,6 @@ services:
       - '@database_connection'
 
   Akeneo\Category\Domain\Query\GetCategoryInterface:
-    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategory
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql
     arguments:
       - '@database_connection'
