@@ -8,3 +8,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Application\Query\FindCategoryByCode:
+    class: Akeneo\Category\Infrastructure\Storage\SQL\SqlFindOneByCode
+    arguments:
+      - '@database_connection'
