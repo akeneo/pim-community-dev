@@ -10,7 +10,6 @@ use PHPUnit\Framework\Assert;
 
 /**
  * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributeAction
- * @covers \Akeneo\Catalogs\Infrastructure\Persistence\FindOneAttributeByCodeQuery
  */
 class GetAttributeActionTest extends IntegrationTestCase
 {

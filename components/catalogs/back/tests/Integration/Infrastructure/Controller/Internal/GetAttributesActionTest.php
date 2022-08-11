@@ -10,7 +10,6 @@ use PHPUnit\Framework\Assert;
 
 /**
  * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributesAction
- * @covers \Akeneo\Catalogs\Infrastructure\Persistence\SearchAttributesQuery
  */
 class GetAttributesActionTest extends IntegrationTestCase
 {
@@ -72,7 +71,7 @@ class GetAttributesActionTest extends IntegrationTestCase
         $client->request(
             'GET',
             '/rest/catalogs/attributes',
-            ['search' => 'name', 'page' => 1, 'limit' => 2],
+            ['search' => 'name'],
             [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
