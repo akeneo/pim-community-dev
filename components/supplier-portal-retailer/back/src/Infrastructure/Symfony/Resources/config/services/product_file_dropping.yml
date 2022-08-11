@@ -36,3 +36,16 @@ services:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetSupplierFilePath
         arguments:
             - '@database_connection'
+
+    # Event subscribers
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Subscriber\LogOnContributorAdded:
+        arguments:
+            - '@monolog.logger.supplier_portal'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Subscriber\LogOnProductFileDownloaded:
+        arguments:
+            - '@monolog.logger.supplier_portal'
+        tags:
+            - { name: kernel.event_subscriber }

@@ -58,7 +58,7 @@ final class CreateSupplierHandler
             ));
         }
 
-        $this->logger->debug(
+        $this->logger->info(
             sprintf('Supplier "%s" created.', $createSupplier->code),
             [
                 'data' => [
@@ -66,6 +66,7 @@ final class CreateSupplierHandler
                     'code' => $createSupplier->code,
                     'label' => $createSupplier->label,
                     'contributor_emails' => $createSupplier->contributorEmails,
+                    'metric_key' => 'supplier_created',
                 ],
             ],
         );
