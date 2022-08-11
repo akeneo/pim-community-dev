@@ -30,7 +30,6 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->skip([
         FlipTypeControlToUseExclusiveTypeRector::class,
-        ExplicitBoolCompareRector::class,
         CountArrayToEmptyArrayComparisonRector::class,
     ]);
 };
