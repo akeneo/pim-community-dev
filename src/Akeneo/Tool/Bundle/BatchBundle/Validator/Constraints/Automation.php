@@ -8,6 +8,6 @@ class Automation extends Constraint
 {
     public function validatedBy()
     {
-        return 'akeneo_batch.validator.job_instance.automation';
+        return 'akeneo_job_instance_automation_validator';
     }
 }

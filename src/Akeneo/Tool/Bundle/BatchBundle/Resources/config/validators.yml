@@ -12,4 +12,4 @@ services:
     akeneo_batch.validator.job_instance.automation:
         class: 'Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\DummyAutomationValidator'
         tags:
-            - { name: validator.constraint_validator }
+            - { name: validator.constraint_validator, alias: akeneo_job_instance_automation_validator }
