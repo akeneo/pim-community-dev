@@ -58,17 +58,18 @@ $rules = [
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
             'Akeneo\Connectivity\Connection\ServiceApi',
 
-            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
-            'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
 
             // @todo remove
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
-            // @todo remove CXP-1186
             'Akeneo\Pim\Enrichment\Component\Product\Query',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch',
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
             'Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface',
             'Symfony\Component\OptionsResolver',
+            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
+            'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 

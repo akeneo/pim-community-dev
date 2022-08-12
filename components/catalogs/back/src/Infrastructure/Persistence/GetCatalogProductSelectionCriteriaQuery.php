@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence;
 
-use Akeneo\Catalogs\Application\Persistence\FindCatalogProductSelectionCriteriaQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\GetCatalogProductSelectionCriteriaQueryInterface;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
@@ -12,7 +12,7 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetCatalogProductSelectionCriteriaQuery implements FindCatalogProductSelectionCriteriaQueryInterface
+final class GetCatalogProductSelectionCriteriaQuery implements GetCatalogProductSelectionCriteriaQueryInterface
 {
     public function __construct(
         private Connection $connection,

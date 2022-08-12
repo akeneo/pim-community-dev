@@ -10,7 +10,6 @@ use PHPUnit\Framework\Assert;
 
 /**
  * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetFamiliesAction
- * @covers \Akeneo\Catalogs\Infrastructure\Persistence\SearchFamilyQuery
  */
 class GetFamiliesActionTest extends IntegrationTestCase
 {

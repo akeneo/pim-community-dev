@@ -25,6 +25,7 @@ akeneo_catalogs:
             search: search criterion
             no_results: no matches found
             section_system: system
+            section_attributes: attributes
         action:
             open: Open
             remove: Remove

@@ -8,7 +8,10 @@ namespace Akeneo\Catalogs\Application\Persistence;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface IsCatalogsNumberLimitReachedQueryInterface
+interface GetCatalogProductSelectionCriteriaQueryInterface
 {
-    public function execute(string $ownerUsername): bool;
+    /**
+     * @return array<array-key, array{field: string, operator: string, value?: mixed}>
+     */
+    public function execute(string $id): array;
 }

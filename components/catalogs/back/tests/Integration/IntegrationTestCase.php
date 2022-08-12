@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
@@ -212,5 +213,12 @@ abstract class IntegrationTestCase extends WebTestCase
                 'id' => Uuid::fromString($id)->getBytes(),
             ]
         );
+    }
+
+    protected function createAttribute(array $data): void
+    {
+        $attribute = self::getContainer()->get('pim_catalog.factory.attribute')->create();
+        self::getContainer()->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        self::getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
     }
 }

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\GetFamiliesByCodeQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\SearchFamilyQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\SearchAttributesQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,15 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
- * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetFamiliesAction
+class GetAttributesAction
 {
     public function __construct(
-        private SearchFamilyQueryInterface $searchFamilyQuery,
-        private GetFamiliesByCodeQueryInterface $getFamiliesByCodeQuery,
+        private SearchAttributesQueryInterface $searchAttributesQuery,
     ) {
     }
 
@@ -32,7 +29,6 @@ class GetFamiliesAction
         }
 
         $search = $request->query->get('search', null);
-        $codes = $request->query->get('codes', null);
         $page = (int) $request->query->get('page', 1);
         $limit = (int) $request->query->get('limit', 20);
 
@@ -42,24 +38,9 @@ class GetFamiliesAction
         if (!\is_string($search) && null !== $search) {
             throw new BadRequestHttpException('Search must be a string or null.');
         }
-        if (!\is_string($codes) && null !== $codes) {
-            throw new BadRequestHttpException('Codes must be a string or null.');
-        }
 
-        $families = $this->getFamilies($search, $codes, $page, $limit);
+        $attributes = $this->searchAttributesQuery->execute($search, $page, $limit);
 
-        return new JsonResponse($families);
-    }
-
-    /**
-     * @return array<array{code: string, label: string}>
-     */
-    private function getFamilies(?string $search, ?string $codes, int $page, int $limit): array
-    {
-        if (\is_string($codes) && \strlen(\trim($codes)) > 0) {
-            return $this->getFamiliesByCodeQuery->execute(\explode(',', $codes), $page, $limit);
-        }
-
-        return $this->searchFamilyQuery->execute($search, $page, $limit);
+        return new JsonResponse($attributes);
     }
 }

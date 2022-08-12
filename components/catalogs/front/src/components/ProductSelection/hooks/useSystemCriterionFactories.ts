@@ -10,10 +10,12 @@ export const useSystemCriterionFactories = (): CriterionFactory[] => {
     return useMemo(
         () => [
             {
+                id: 'enabled',
                 label: translate('akeneo_catalogs.product_selection.criteria.status.label'),
                 factory: StatusCriterion.factory,
             },
             {
+                id: 'family',
                 label: translate('akeneo_catalogs.product_selection.criteria.family.label'),
                 factory: FamilyCriterion.factory,
             },
