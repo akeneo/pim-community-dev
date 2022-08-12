@@ -46,6 +46,7 @@ SQL;
 
     private function cleanVersioningResourceUuid(): void
     {
+        $this->logger->notice(sprintf('Starting %s', $this->getName()));
         $resourceNameToProcess = $this->findNextResourceNameToProcess();
         $totalVersionsCleaned = 0;
         while (null !== $resourceNameToProcess) {
@@ -62,6 +63,7 @@ SQL;
             $resourceNameToProcess = $this->findNextResourceNameToProcess();
         }
         $this->logger->notice(sprintf('Successfully cleaned a total of %d versions', $totalVersionsCleaned));
+        $this->logger->notice(sprintf('%s ended', $this->getName()));
     }
 
     private function findNextResourceNameToProcess(): ?string
