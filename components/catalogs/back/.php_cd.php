@@ -75,6 +75,12 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+
+            'Akeneo\UserManagement\Bundle\Context\UserContext',
+            'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
+            'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
+            'Akeneo\Category\Api\FindCategoryTrees',
+            'Akeneo\Category\Api\CategoryTree',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 
