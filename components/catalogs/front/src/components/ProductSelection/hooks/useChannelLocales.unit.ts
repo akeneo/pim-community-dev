@@ -48,7 +48,7 @@ test('it fetches the API response', async () => {
     });
 });
 
-test('it returns null when no code provided', async () => {
+test('it returns an empty array when no code provided', async () => {
     const {result, waitForNextUpdate} = renderHook(() => useChannelLocales(null), {wrapper: ReactQueryWrapper});
 
     expect(result.current).toMatchObject({
