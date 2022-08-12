@@ -18,6 +18,8 @@ export type CriterionState = {
     operator: Operator;
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     value?: any;
+    locale?: string;
+    scope?: string;
 };
 
 export type Criterion<State extends CriterionState> = {

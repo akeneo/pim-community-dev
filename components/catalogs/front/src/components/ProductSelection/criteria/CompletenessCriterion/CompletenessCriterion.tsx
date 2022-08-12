@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {CloseIcon, Helper, IconButton, List} from 'akeneo-design-system';
+import {CloseIcon, IconButton, List} from 'akeneo-design-system';
 import {CriterionModule} from '../../models/Criterion';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -8,10 +8,13 @@ import {CompletenessOperatorInput} from './CompletenessOperatorInput';
 import {CompletenessValueInput} from './CompletenessValueInput';
 import {CompletenessLocaleInput} from './CompletenessLocaleInput';
 import {CompletenessScopeInput} from './CompletenessScopeInput';
+import {ErrorHelpers} from '../ErrorHelpers';
 
 const Fields = styled.div`
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
+    flex-grow: 1;
 `;
 
 const Field = styled.div`
@@ -26,17 +29,10 @@ const CompletenessCriterion: FC<CriterionModule<CompletenessCriterionState>> = (
     onRemove,
 }) => {
     const translate = useTranslate();
-
-    const errorHelpers = Object.keys(errors).map(key =>
-        errors[key] === undefined ? null : (
-            <Helper key={key} level='error'>
-                {errors[key]}
-            </Helper>
-        )
-    );
+    const hasError = Object.values(errors).filter(n => n).length > 0;
 
     return (
-        <List.Row>
+        <List.Row isMultiline>
             <List.TitleCell width={150}>
                 {translate('akeneo_catalogs.product_selection.criteria.completeness.label')}
             </List.TitleCell>
@@ -65,7 +61,11 @@ const CompletenessCriterion: FC<CriterionModule<CompletenessCriterionState>> = (
                     onClick={onRemove}
                 />
             </List.RemoveCell>
-            {errorHelpers.length > 0 && <List.RowHelpers>{errorHelpers}</List.RowHelpers>}
+            {hasError && (
+                <List.RowHelpers>
+                    <ErrorHelpers errors={errors} />
+                </List.RowHelpers>
+            )}
         </List.Row>
     );
 };

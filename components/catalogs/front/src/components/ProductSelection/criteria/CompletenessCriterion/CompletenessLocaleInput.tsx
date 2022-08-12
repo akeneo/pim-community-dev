@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {Locale, SelectInput} from 'akeneo-design-system';
 import {CompletenessCriterionState} from './types';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useScopedLocales} from '../../hooks/useScopedLocales';
+import {useChannelLocales} from '../../hooks/useChannelLocales';
 
 type Props = {
     state: CompletenessCriterionState;
@@ -12,7 +12,7 @@ type Props = {
 
 const CompletenessLocaleInput: FC<Props> = ({state, onChange, isInvalid}) => {
     const translate = useTranslate();
-    const locales = useScopedLocales(state.scope);
+    const {data: locales} = useChannelLocales(state.scope);
 
     return (
         <SelectInput

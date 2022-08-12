@@ -1,5 +1,5 @@
 import React, {FC, useCallback} from 'react';
-import {Helper, SelectInput} from 'akeneo-design-system';
+import {SelectInput} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
 import {useOperatorTranslator} from '../../hooks/useOperatorTranslator';
 import {FamilyCriterionOperator, FamilyCriterionState} from './types';
@@ -7,10 +7,10 @@ import {FamilyCriterionOperator, FamilyCriterionState} from './types';
 type Props = {
     state: FamilyCriterionState;
     onChange: (state: FamilyCriterionState) => void;
-    error: string | undefined;
+    isInvalid: boolean;
 };
 
-const FamilyOperatorInput: FC<Props> = ({state, onChange, error}) => {
+const FamilyOperatorInput: FC<Props> = ({state, onChange, isInvalid}) => {
     const translateOperator = useOperatorTranslator();
 
     const handleChange = useCallback(
@@ -36,7 +36,7 @@ const FamilyOperatorInput: FC<Props> = ({state, onChange, error}) => {
                 value={state.operator}
                 onChange={handleChange}
                 clearable={false}
-                invalid={error !== undefined}
+                invalid={isInvalid}
                 data-testid='operator'
             >
                 <SelectInput.Option value={Operator.IS_EMPTY} title={translateOperator(Operator.IS_EMPTY)}>
@@ -52,11 +52,6 @@ const FamilyOperatorInput: FC<Props> = ({state, onChange, error}) => {
                     {translateOperator(Operator.NOT_IN_LIST)}
                 </SelectInput.Option>
             </SelectInput>
-            {error !== undefined && (
-                <Helper inline level='error'>
-                    {error}
-                </Helper>
-            )}
         </>
     );
 };

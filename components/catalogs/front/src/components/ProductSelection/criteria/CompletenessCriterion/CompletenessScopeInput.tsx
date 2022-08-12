@@ -1,8 +1,10 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC} from 'react';
 import {SelectInput} from 'akeneo-design-system';
 import {CompletenessCriterionState} from './types';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useInfiniteChannels} from '../../hooks/useInfiniteChannels';
+import {useChannel} from '../../hooks/useChannel';
+import {useChannelsWithSelectedChannel} from '../../hooks/useChannelsWithSelectedChannel';
 
 type Props = {
     state: CompletenessCriterionState;
@@ -12,23 +14,16 @@ type Props = {
 
 const CompletenessScopeInput: FC<Props> = ({state, onChange, isInvalid}) => {
     const translate = useTranslate();
-    const {data: channels, fetchNextPage} = useInfiniteChannels();
-
-    const handleChange = useCallback(
-        (newChannel: string) => {
-            const locales = channels?.find(channel => channel.code === newChannel)?.locales ?? [];
-            const locale = locales.find(locale => locale.code === state.locale) ? state.locale : null;
-            onChange({...state, scope: newChannel, locale: locale});
-        },
-        [channels, onChange, state]
-    );
+    const {data: selectedChannel} = useChannel(state.scope);
+    const {data: results, fetchNextPage} = useInfiniteChannels();
+    const channels = useChannelsWithSelectedChannel(selectedChannel, results);
 
     return (
         <SelectInput
             emptyResultLabel={translate('akeneo_catalogs.product_selection.channel.empty')}
             openLabel=''
             value={state.scope}
-            onChange={handleChange}
+            onChange={newChannel => onChange({...state, scope: newChannel, locale: null})}
             onNextPage={fetchNextPage}
             clearable={false}
             invalid={isInvalid}

@@ -7,6 +7,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {FamilyCriterionState} from './types';
 import {FamilyOperatorInput} from './FamilyOperatorInput';
 import {FamilySelectInput} from './FamilySelectInput';
+import {ErrorHelpers} from '../ErrorHelpers';
 
 const Fields = styled.div`
     display: flex;
@@ -16,6 +17,8 @@ const Fields = styled.div`
 const Field = styled.div`
     flex-basis: 200px;
     flex-shrink: 0;
+    flex-wrap: wrap;
+    flex-grow: 1;
 `;
 
 const LargeField = styled.div`
@@ -25,24 +28,25 @@ const LargeField = styled.div`
 const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, errors, onChange, onRemove}) => {
     const translate = useTranslate();
     const [showFamilies, setShowFamilies] = useState<boolean>(false);
+    const hasError = Object.values(errors).filter(n => n).length > 0;
 
     useEffect(() => {
         setShowFamilies([Operator.IN_LIST, Operator.NOT_IN_LIST].includes(state.operator));
     }, [state.operator]);
 
     return (
-        <List.Row>
+        <List.Row isMultiline>
             <List.TitleCell width={150}>
                 {translate('akeneo_catalogs.product_selection.criteria.family.label')}
             </List.TitleCell>
             <List.Cell width='auto'>
                 <Fields>
                     <Field>
-                        <FamilyOperatorInput state={state} onChange={onChange} error={errors.operator} />
+                        <FamilyOperatorInput state={state} onChange={onChange} isInvalid={!!errors.operator} />
                     </Field>
                     {showFamilies && (
                         <LargeField>
-                            <FamilySelectInput state={state} onChange={onChange} error={errors.value} />
+                            <FamilySelectInput state={state} onChange={onChange} isInvalid={!!errors.value} />
                         </LargeField>
                     )}
                 </Fields>
@@ -50,6 +54,11 @@ const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, erro
             <List.RemoveCell>
                 <IconButton ghost='borderless' level='tertiary' icon={<CloseIcon />} title='' onClick={onRemove} />
             </List.RemoveCell>
+            {hasError && (
+                <List.RowHelpers>
+                    <ErrorHelpers errors={errors} />
+                </List.RowHelpers>
+            )}
         </List.Row>
     );
 };

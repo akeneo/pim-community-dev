@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import {Helper, MultiSelectInput} from 'akeneo-design-system';
+import {MultiSelectInput} from 'akeneo-design-system';
 import {FamilyCriterionState} from './types';
 import {useInfiniteFamilies} from '../../hooks/useInfiniteFamilies';
 import {useFamiliesByCodes} from '../../hooks/useFamiliesByCodes';
@@ -9,10 +9,10 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 type Props = {
     state: FamilyCriterionState;
     onChange: (state: FamilyCriterionState) => void;
-    error: string | undefined;
+    isInvalid: boolean;
 };
 
-const FamilySelectInput: FC<Props> = ({state, onChange, error}) => {
+const FamilySelectInput: FC<Props> = ({state, onChange, isInvalid}) => {
     const translate = useTranslate();
     const [search, setSearch] = useState<string>();
     const {data: selection} = useFamiliesByCodes(state.value);
@@ -30,7 +30,7 @@ const FamilySelectInput: FC<Props> = ({state, onChange, error}) => {
                 onChange={v => onChange({...state, value: v})}
                 onNextPage={fetchNextPage}
                 onSearchChange={setSearch}
-                invalid={error !== undefined}
+                invalid={isInvalid}
                 data-testid='value'
             >
                 {families.map(family => (
@@ -39,11 +39,6 @@ const FamilySelectInput: FC<Props> = ({state, onChange, error}) => {
                     </MultiSelectInput.Option>
                 ))}
             </MultiSelectInput>
-            {error !== undefined && (
-                <Helper inline level='error'>
-                    {error}
-                </Helper>
-            )}
         </>
     );
 };
