@@ -21,14 +21,9 @@ use PHPUnit\Framework\Assert;
  */
 class CountRecordsTest extends SearchIntegrationTestCase
 {
-    /** @var CountRecordsInterface */
-    private $countRecords;
-
-    /** @var ReferenceEntityIdentifier */
-    private $emptyReferenceEntityIdentifier;
-
-    /** @var ReferenceEntityIdentifier */
-    private $referenceEntityIdentifiersWithRecords;
+    private CountRecordsInterface $countRecords;
+    private ReferenceEntityIdentifier $emptyReferenceEntityIdentifier;
+    private ReferenceEntityIdentifier $referenceEntityIdentifiersWithRecords;
 
     public function setUp(): void
     {
@@ -57,6 +52,14 @@ class CountRecordsTest extends SearchIntegrationTestCase
             $this->countRecords->forReferenceEntity($this->referenceEntityIdentifiersWithRecords),
             Assert::equalTo(2)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_the_number_of_records()
+    {
+        Assert::assertThat($this->countRecords->all(), Assert::equalTo(3));
     }
 
     private function createReferenceEntityWithAttributes(): void
@@ -96,6 +99,25 @@ class CountRecordsTest extends SearchIntegrationTestCase
                 ValueCollection::fromValues([])
             )
         );
+
+        $referenceEntityIdentifiersWithOneRecord = ReferenceEntityIdentifier::fromString('city');
+        $referenceEntityRepository->create(
+            ReferenceEntity::create(
+                $referenceEntityIdentifiersWithOneRecord,
+                [],
+                Image::createEmpty()
+            )
+        );
+
+        $recordRepository->create(
+            Record::create(
+                RecordIdentifier::fromString('paris_city'),
+                $referenceEntityIdentifiersWithOneRecord,
+                RecordCode::fromString('paris'),
+                ValueCollection::fromValues([])
+            )
+        );
+
         $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer')->refresh();
     }
 }

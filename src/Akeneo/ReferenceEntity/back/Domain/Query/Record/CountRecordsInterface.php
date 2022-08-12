@@ -14,5 +14,6 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 interface CountRecordsInterface
 {
+    public function all(): int;
     public function forReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int;
 }
