@@ -268,14 +268,13 @@ class JobInstance
     }
 
     /**
-     * @param string|array $automation
+     * @param array $automation
      *
      * @return JobInstance
      */
     public function setAutomation($automation)
     {
-        //TODO: avoid that
-        $this->automation = is_array($automation) ? $automation : json_decode($automation, true);
+        $this->automation = $automation;
 
         return $this;
     }

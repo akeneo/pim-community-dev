@@ -64,7 +64,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
                 $jobInstance->setScheduled($data);
                 break;
             case 'automation':
-                $data = $this->updateAutomationSetupDate($jobInstance, $data);
+                $data = $this->updateAutomation($jobInstance, $data);
                 $jobInstance->setAutomation($data);
                 break;
             case 'configuration':
@@ -79,9 +79,9 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
         }
     }
 
-    private function updateAutomationSetupDate(JobInstance $jobInstance, array $newAutomation): array
+    private function updateAutomation(JobInstance $jobInstance, array $newAutomation): array
     {
-        $currentAutomation = $jobInstance->getAutomation();
+        $currentAutomation = $jobInstance->getAutomation() ?? [];
 
         $currentCronExpression = $currentAutomation['cron_expression'] ?? null;
         $newCronExpression = $newAutomation['cron_expression'] ?? null;
@@ -90,7 +90,11 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
 
         if ($cronExpressionChanged) {
             $now = $this->clock->now();
-            $newAutomation['setup_date'] = $now->format('Y-m-d H:i:s');
+            $newAutomation['setup_date'] = $now->format(DATE_ATOM);
+        }
+
+        if (!array_key_exists('last_execution_date', $currentAutomation)) {
+            $newAutomation['last_execution_date'] = null;
         }
 
         return array_merge($currentAutomation, $newAutomation);
