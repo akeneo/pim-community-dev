@@ -20,9 +20,9 @@ class Category
         private CategoryId $id,
         private Code $code,
         private LabelCollection $labelCollection,
-        private ?CategoryId $parentId,
-        private ?ValueCollection $valueCollection,
-        private ?PermissionCollection $permissionCollection,
+        private ?CategoryId $parentId = null,
+        private ?ValueCollection $valueCollection = null,
+        private ?PermissionCollection $permissionCollection = null,
     ) {
     }
 
