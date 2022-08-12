@@ -1,16 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import {SectionTitle, Field, SelectInput, Helper, MultiSelectInput, BooleanInput} from 'akeneo-design-system';
-import {
-  Section,
-  useTranslate,
-  ValidationError,
-  filterErrors,
-  useFeatureFlags,
-  useSecurity,
-} from '@akeneo-pim-community/shared';
-import {Automation, CronExpression, filterDefaultUserGroup} from '../models';
-import {useUserGroups} from '../hooks';
+import {SectionTitle, Field, BooleanInput} from 'akeneo-design-system';
+import {Section, useTranslate, ValidationError, filterErrors, useFeatureFlags} from '@akeneo-pim-community/shared';
+import {Automation, CronExpression} from '../models';
+import {UserGroupsForm} from './UserGroupsForm';
+import {UsersForm} from './UsersForm';
 import {CronExpressionForm} from './CronExpressionForm';
 
 const SpacedSection = styled(Section)`
@@ -33,10 +27,14 @@ const JobAutomationForm = ({
   onAutomationChange,
 }: JobAutomationFormProps) => {
   const translate = useTranslate();
-  const userGroups = useUserGroups();
   const {isEnabled} = useFeatureFlags();
-  const {isGranted} = useSecurity();
 
+  const handleRunningUserGroupsChange = (userGroups: string[]) =>
+    onAutomationChange({...automation, running_user_groups: userGroups});
+  const handleNotificationUserGroupsChange = (userGroups: string[]) =>
+    onAutomationChange({...automation, notification_user_groups: userGroups});
+  const handleNotificationUsersChange = (users: string[]) =>
+    onAutomationChange({...automation, notification_users: users});
   const handleScheduledChange = (isEnabled: boolean) => onScheduledChange(isEnabled);
 
   const handleCronExpressionChange = (cronExpression: CronExpression) =>
@@ -72,38 +70,31 @@ const JobAutomationForm = ({
             validationErrors={filterErrors(validationErrors, '[cron_expression]')}
           />
           {isEnabled('permission') && (
-            <Field label={translate('akeneo.job_automation.scheduling.running_user_groups.label')}>
-              <MultiSelectInput
-                value={filterDefaultUserGroup(automation.running_user_groups)}
-                onChange={runningUserGroups =>
-                  onAutomationChange({
-                    ...automation,
-                    running_user_groups: runningUserGroups,
-                  })
-                }
-                emptyResultLabel={translate('pim_common.no_result')}
-                openLabel={translate('pim_common.open')}
-                removeLabel={translate('pim_common.remove')}
-                readOnly={!isGranted('pim_user_group_index')}
-              >
-                {filterDefaultUserGroup(userGroups).map(group => (
-                  <SelectInput.Option value={group} key={group}>
-                    {group}
-                  </SelectInput.Option>
-                ))}
-              </MultiSelectInput>
-              {filterErrors(validationErrors, '[running_user_groups]').map((error, index) => (
-                <Helper key={index} inline={true} level="error">
-                  {translate(error.messageTemplate, error.parameters)}
-                </Helper>
-              ))}
-              {!isGranted('pim_user_group_index') && (
-                <Helper level="info">
-                  {translate('akeneo.job_automation.scheduling.running_user_groups.disabled_helper')}
-                </Helper>
-              )}
-            </Field>
+            <UserGroupsForm
+              userGroups={automation.running_user_groups}
+              onUserGroupsChange={handleRunningUserGroupsChange}
+              validationErrors={filterErrors(validationErrors, '[running_user_groups]')}
+              label={translate('akeneo.job_automation.scheduling.running_user_groups.label')}
+              disabledHelperMessage={translate('akeneo.job_automation.scheduling.running_user_groups.disabled_helper')}
+            />
           )}
+          <SectionTitle>
+            <SectionTitle.Title level="secondary">
+              {translate('akeneo.job_automation.notification.title')}
+            </SectionTitle.Title>
+          </SectionTitle>
+          <UserGroupsForm
+            userGroups={automation.notification_user_groups}
+            onUserGroupsChange={handleNotificationUserGroupsChange}
+            validationErrors={filterErrors(validationErrors, '[notification_user_groups]')}
+            label={translate('akeneo.job_automation.notification.user_groups.label')}
+            disabledHelperMessage={translate('akeneo.job_automation.notification.user_groups.disabled_helper')}
+          />
+          <UsersForm
+            users={automation.notification_users}
+            onUsersChange={handleNotificationUsersChange}
+            validationErrors={filterErrors(validationErrors, '[notification_users]')}
+          />
         </>
       )}
     </SpacedSection>

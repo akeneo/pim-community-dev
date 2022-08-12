@@ -36,6 +36,14 @@ class AutomationValidator extends ConstraintValidator
                     new All(new Type('string')),
                     new Type('array'),
                 ],
+                'notification_user_groups' => [
+                    new All(new Type('string')),
+                    new Type('array'),
+                ],
+                'notification_users' => [
+                    new All(new Type('string')),
+                    new Type('array'),
+                ],
             ],
         ]));
     }

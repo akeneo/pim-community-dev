@@ -27,6 +27,8 @@ class ValidateAutomationTest extends AbstractValidationTest
                     'is_enabled' => true,
                     'cron_expression' => '0 0 * * *',
                     'running_user_groups' => ['IT Support'],
+                    'notification_user_groups' => ['Manager'],
+                    'notification_users' => ['Julia'],
                 ],
             ],
             'Valid disabled automation configuration' => [
@@ -34,6 +36,8 @@ class ValidateAutomationTest extends AbstractValidationTest
                     'is_enabled' => false,
                     'cron_expression' => '0 0 * * *',
                     'running_user_groups' => ['IT Support'],
+                    'notification_user_groups' => ['Manager'],
+                    'notification_users' => ['Julia'],
                 ],
             ],
             'Valid empty running user groups' => [
@@ -41,6 +45,26 @@ class ValidateAutomationTest extends AbstractValidationTest
                     'is_enabled' => true,
                     'cron_expression' => '0 0 * * 0',
                     'running_user_groups' => [],
+                    'notification_user_groups' => ['Manager'],
+                    'notification_users' => ['Julia'],
+                ],
+            ],
+            'Valid empty notification user groups' => [
+                [
+                    'is_enabled' => true,
+                    'cron_expression' => '0 0 * * 0',
+                    'running_user_groups' => ['IT Support'],
+                    'notification_user_groups' => [],
+                    'notification_users' => ['Julia'],
+                ],
+            ],
+            'Valid empty notification users' => [
+                [
+                    'is_enabled' => true,
+                    'cron_expression' => '0 0 * * 0',
+                    'running_user_groups' => ['IT Support'],
+                    'notification_user_groups' => ['Manager'],
+                    'notification_users' => [],
                 ],
             ],
         ];
@@ -54,6 +78,8 @@ class ValidateAutomationTest extends AbstractValidationTest
                     'is_enabled' => true,
                     'cron_expression' => '0 0 * * *',
                     'unknown_key' => ['IT Support'],
+                    'notification_user_groups' => ['Manager'],
+                    'notification_users' => ['Julia'],
                 ],
                 'This field was not expected.',
                 '[unknown_key]',
@@ -63,9 +89,33 @@ class ValidateAutomationTest extends AbstractValidationTest
                     'is_enabled' => true,
                     'cron_expression' => '0 0 * * *',
                     'running_user_groups' => 'IT Support',
+                    'notification_user_groups' => ['Manager'],
+                    'notification_users' => ['Julia'],
                 ],
                 'This value should be of type array.',
                 '[running_user_groups]',
+            ],
+            'Automation configuration with invalid notification user groups' => [
+                [
+                    'is_enabled' => true,
+                    'cron_expression' => '0 0 * * *',
+                    'running_user_groups' => ['IT Support'],
+                    'notification_user_groups' => 'Manager',
+                    'notification_users' => ['Julia'],
+                ],
+                'This value should be of type array.',
+                '[notification_user_groups]',
+            ],
+            'Automation configuration with invalid notification users' => [
+                [
+                    'is_enabled' => true,
+                    'cron_expression' => '0 0 * * *',
+                    'running_user_groups' => ['IT Support'],
+                    'notification_user_groups' => ['Manager'],
+                    'notification_users' => 'Julia',
+                ],
+                'This value should be of type array.',
+                '[notification_users]',
             ],
         ];
     }

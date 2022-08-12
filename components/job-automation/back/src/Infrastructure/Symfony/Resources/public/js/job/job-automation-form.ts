@@ -1,10 +1,6 @@
 import BaseView = require('pimui/js/view/base');
 import {ValidationError, formatParameters, filterErrors} from '@akeneo-pim-community/shared';
-import {
-  JobAutomationForm,
-  JobAutomationFormProps,
-  Automation,
-} from '@akeneo-pim-enterprise/job-automation';
+import {JobAutomationForm, JobAutomationFormProps, Automation} from '@akeneo-pim-enterprise/job-automation';
 const userContext = require('pim/user-context');
 
 type JobAutomationFormControllerConfig = {tabCode?: string};
@@ -53,8 +49,8 @@ class JobAutomationFormController extends BaseView {
     const formData = this.getFormData();
     this.setData({
       ...formData,
-      scheduled
-    })
+      scheduled,
+    });
     this.render();
   }
 
@@ -62,15 +58,18 @@ class JobAutomationFormController extends BaseView {
     const formData = this.getFormData();
     this.setData({
       ...formData,
-      automation
+      automation,
     });
     this.render();
   }
 
   getDefaultAutomation(): Automation {
     return {
+      is_enabled: false,
       cron_expression: '0 0 * * *',
       running_user_groups: userContext.get('groups'),
+      notification_user_groups: [],
+      notification_users: [],
     };
   }
 
