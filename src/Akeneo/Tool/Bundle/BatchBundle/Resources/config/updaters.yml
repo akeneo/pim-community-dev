@@ -7,3 +7,4 @@ services:
         arguments:
             - '@akeneo_batch.job_parameters_factory'
             - '@akeneo_batch.job.job_registry'
+            - '@Akeneo\Tool\Component\Batch\Clock\ClockInterface'

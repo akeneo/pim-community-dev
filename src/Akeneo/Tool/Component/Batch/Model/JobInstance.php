@@ -64,7 +64,7 @@ class JobInstance
     /** @var bool */
     protected $scheduled = false;
 
-    /** @var string */
+    /** @var array */
     protected $automation;
 
     /** @var Collection|JobExecution[] */
@@ -268,19 +268,20 @@ class JobInstance
     }
 
     /**
-     * @param string $automation
+     * @param string|array $automation
      *
      * @return JobInstance
      */
     public function setAutomation($automation)
     {
-        $this->automation = $automation;
+        //TODO: avoid that
+        $this->automation = is_array($automation) ? $automation : json_decode($automation, true);
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getAutomation()
     {
