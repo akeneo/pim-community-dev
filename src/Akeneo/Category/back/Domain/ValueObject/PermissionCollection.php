@@ -8,10 +8,12 @@ namespace Akeneo\Category\Domain\ValueObject;
  */
 final class PermissionCollection
 {
+    // @phpstan-ignore-next-line
     private function __construct(private ?array $permissions)
     {
     }
 
+    // @phpstan-ignore-next-line
     public static function fromArray(array $permissions): self
     {
         return new self($permissions);

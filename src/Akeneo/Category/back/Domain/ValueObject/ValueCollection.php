@@ -8,20 +8,24 @@ namespace Akeneo\Category\Domain\ValueObject;
  */
 final class ValueCollection
 {
+    // @phpstan-ignore-next-line
     private function __construct(private ?array $values)
     {
     }
 
+    // @phpstan-ignore-next-line
     public static function fromArray(array $values): self
     {
         return new self($values);
     }
 
+    // @phpstan-ignore-next-line
     public function getAttributeTextData(string $attributeCode, string $attributeIdentifier, string $localeCode): ?array
     {
         return $this->values[sprintf('%s_%s_%s', $attributeCode, $attributeIdentifier, $localeCode)];
     }
 
+    // @phpstan-ignore-next-line
     public function getAttributeData(string $attributeCode, string $attributeIdentifier): ?array
     {
         return $this->values[sprintf('%s_%s', $attributeCode, $attributeIdentifier)];
