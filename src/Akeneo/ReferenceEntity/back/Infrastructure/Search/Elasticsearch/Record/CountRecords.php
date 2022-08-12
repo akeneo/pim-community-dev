@@ -21,8 +21,13 @@ class CountRecords implements CountRecordsInterface
 
     public function forReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int
     {
-        $elasticSearchQuery = $this->getElasticSearchQuery($referenceEntityIdentifier);
-        $matches = $this->recordClient->count($elasticSearchQuery);
+        $matches = $this->recordClient->count([
+            'query' => [
+                'term' => [
+                    'reference_entity_code' => (string) $referenceEntityIdentifier,
+                ],
+            ],
+        ]);
 
         return $matches['count'];
     }
@@ -32,16 +37,5 @@ class CountRecords implements CountRecordsInterface
         $matches = $this->recordClient->count([]);
 
         return $matches['count'];
-    }
-
-    private function getElasticSearchQuery(ReferenceEntityIdentifier $referenceEntityIdentifier): array
-    {
-        return [
-            'query' => [
-                'term' => [
-                    'reference_entity_code' => (string) $referenceEntityIdentifier,
-                ],
-            ],
-        ];
     }
 }
