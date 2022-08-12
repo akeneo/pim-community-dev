@@ -17,9 +17,9 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class CreateCatalogActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client;
+    private ?KernelBrowser $client = null;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -44,7 +44,7 @@ class CreateCatalogActionTest extends IntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $payload = \json_decode($response->getContent(), true);
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(201, $response->getStatusCode());
         Assert::assertArrayHasKey('id', $payload);
@@ -70,7 +70,7 @@ class CreateCatalogActionTest extends IntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $payload = \json_decode($response->getContent(), true);
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(422, $response->getStatusCode());
         Assert::assertArrayHasKey('message', $payload);

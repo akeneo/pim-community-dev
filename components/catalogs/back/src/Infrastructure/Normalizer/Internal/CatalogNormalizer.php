@@ -26,7 +26,7 @@ class CatalogNormalizer implements NormalizerInterface, CacheableSupportsMethodI
 
     /**
      * @param array<array-key, mixed> $context
-     * @return array<string, mixed>
+     * @return array{id: string, name: string, enabled: bool, owner_username: string}
      */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
