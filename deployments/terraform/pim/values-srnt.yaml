@@ -142,14 +142,6 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
-    job-migrate-job-execution-warning-count:
-      enabled: true
-      pimCommand: "akeneo:batch:migrate-job-execution-warning-count --no-interaction"
-      schedule: "*/30 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     clean-case-sensitive-attribute-option-spellcheck:
       enabled: true
       pimCommand: "pimee:data-quality-insights:clean-case-sensitive-attribute-option-spellcheck --no-interaction"
