@@ -22,12 +22,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SearchAfterSizeUuidResultCursorFactory implements CursorFactoryInterface
 {
-    /** @var Client */
-    private $esClient;
-
-    public function __construct(Client $esClient)
+    public function __construct(private Client $esClient)
     {
-        $this->esClient = $esClient;
     }
 
     /**
@@ -35,7 +31,7 @@ class SearchAfterSizeUuidResultCursorFactory implements CursorFactoryInterface
      * @param mixed $queryBuilder
      * @param array<array-key, mixed> $options
      */
-    public function createCursor($queryBuilder, array $options = [])
+    public function createCursor($queryBuilder, array $options = []): IdentifierResultCursor
     {
         /** @var array{_source: array<string>, sort?: array<string>, size: int} $queryBuilder */
 

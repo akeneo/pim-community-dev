@@ -19,7 +19,7 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
     private ?ValidatorInterface $validator;
     private ?IsCatalogsNumberLimitReachedQueryInterface $isCatalogsNumberLimitReachedQuery;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
