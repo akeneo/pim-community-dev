@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Domain\Model\Category;
-use Akeneo\Category\Infrastructure\Component\Model\Category as CategoryDoctrine;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
 use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
