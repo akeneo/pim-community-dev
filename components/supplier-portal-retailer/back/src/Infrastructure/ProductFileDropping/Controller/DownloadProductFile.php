@@ -9,19 +9,30 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProdu
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileIsNotDownloadable;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
+use Akeneo\UserManagement\Component\Model\User;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class DownloadProductFile
 {
-    public function __construct(private DownloadProductFileHandler $downloadProductFileHandler)
-    {
+    public function __construct(
+        private DownloadProductFileHandler $downloadProductFileHandler,
+        private TokenStorageInterface $tokenStorage,
+    ) {
     }
 
     public function __invoke(string $identifier): Response
     {
+        /** @var ?User $user */
+        $user = $this->tokenStorage->getToken()?->getUser();
+        if (null === $user) {
+            return new JsonResponse(null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         try {
             $productFileNameAndResourceFile = ($this->downloadProductFileHandler)(
-                new DownloadProductFileCommand($identifier)
+                new DownloadProductFileCommand($identifier, $user->getId())
             );
         } catch (SupplierFileDoesNotExist | SupplierFileIsNotDownloadable) {
             return new Response(null, Response::HTTP_NOT_FOUND);

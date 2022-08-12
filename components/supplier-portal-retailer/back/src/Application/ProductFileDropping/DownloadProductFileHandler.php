@@ -53,6 +53,7 @@ final class DownloadProductFileHandler
         $this->eventDispatcher->dispatch(new ProductFileDownloaded(
             $query->supplierFileIdentifier,
             $supplierCode,
+            $query->userId,
         ));
 
         return new ProductFileNameAndResourceFile($productFilePathAndFileName->originalFilename, $productFileStream);

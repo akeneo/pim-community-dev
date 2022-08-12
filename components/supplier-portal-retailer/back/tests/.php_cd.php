@@ -80,6 +80,7 @@ $rules = [
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             'Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification',
             'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
+            'Akeneo\UserManagement\Component\Model\User',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
             // External dependencies coupling

@@ -55,7 +55,7 @@ final class DownloadProductFileHandlerTest extends TestCase
         ;
 
         $productFileNameAndResourceFile = ($sut)(
-            new DownloadProductFile('63c5e1d5-b804-4d24-b0b2-47c4aad3f536')
+            new DownloadProductFile('63c5e1d5-b804-4d24-b0b2-47c4aad3f536', 1)
         );
         $this->assertSame(
             'file.xlsx',
@@ -67,7 +67,11 @@ final class DownloadProductFileHandlerTest extends TestCase
         );
         $this->assertEquals(
             [
-                new ProductFileDownloaded('1ed45c7b-6c61-4862-a11c-00c9580a8710', 'supplier_code'),
+                new ProductFileDownloaded(
+                    '1ed45c7b-6c61-4862-a11c-00c9580a8710',
+                    'supplier_code',
+                    1,
+                ),
             ],
             $eventDispatcher->getDispatchedEvents(),
         );
@@ -90,7 +94,7 @@ final class DownloadProductFileHandlerTest extends TestCase
         $getProductFilePathAndFileNameMock->expects($this->once())->method('__invoke')->willReturn(null);
 
         $this->expectException(SupplierFileDoesNotExist::class);
-        ($sut)(new DownloadProductFile('file-identifier'));
+        ($sut)(new DownloadProductFile('file-identifier', 1));
     }
 
     /** @test */
@@ -120,7 +124,7 @@ final class DownloadProductFileHandlerTest extends TestCase
         ;
 
         $this->expectException(SupplierFileIsNotDownloadable::class);
-        ($sut)(new DownloadProductFile('file-identifier'));
+        ($sut)(new DownloadProductFile('file-identifier', 1));
 
         $this->assertEmpty($eventDispatcher->getDispatchedEvents());
     }

@@ -4,6 +4,7 @@ services:
         public: true
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler'
+            - '@security.token_storage'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\AllSupplierFilesList:
         public: true
