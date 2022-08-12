@@ -65,10 +65,10 @@ class RefreshRecordsCommand extends Command
             } catch (RecordNotFoundException) {
                 continue;
             } finally {
+                $i++;
                 if ($i % self::BULK_SIZE === 0 && $verbose) {
                     $progressBar->advance(self::BULK_SIZE);
                 }
-                $i++;
             }
         }
         if ($verbose) {
