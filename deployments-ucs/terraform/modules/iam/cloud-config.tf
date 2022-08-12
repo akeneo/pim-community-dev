@@ -64,7 +64,10 @@ resource "google_project_iam_custom_role" "cloudconfig_role" {
     "storage.buckets.getIamPolicy",
     "storage.buckets.setIamPolicy",
     "storage.buckets.update",
+    "storage.buckets.get",
     "storage.objects.list",
+    "storage.objects.create",
+    "storage.objects.delete"
   ]
 }
 
