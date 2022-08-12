@@ -183,24 +183,17 @@ SQL;
     private function getLabels(array $uuids, array $valueCollections, string $channelCode, string $localeCode): array
     {
         $result = [];
-        $identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
-
-        foreach ($uuids as $uuid) {
-            $values = $valueCollections[$uuid->toString()]['value_collection'];
-            $identifier = $values->getByCodes($identifierAttributeCode)?->getData();
-            $result[$uuid->toString()]['label'] = sprintf('[%s]', $identifier ?? $uuid->toString());
-        }
-
         $sql = <<<SQL
             SELECT 
                 BIN_TO_UUID(p.uuid) as uuid,
+                p.identifier as identifier,
                 a_label.code as label_code,
                 a_label.is_localizable,
                 a_label.is_scopable
             FROM
                 pim_catalog_product p
-                JOIN pim_catalog_family f ON f.id = p.family_id
-                JOIN pim_catalog_attribute a_label ON a_label.id = f.label_attribute_id
+                LEFT JOIN pim_catalog_family f ON f.id = p.family_id
+                LEFT JOIN pim_catalog_attribute a_label ON a_label.id = f.label_attribute_id
             WHERE 
                 uuid IN (:uuids)
 SQL;
@@ -212,14 +205,19 @@ SQL;
         )->fetchAllAssociative();
 
         foreach ($rows as $row) {
-            $label = $valueCollections[$row['uuid']]['value_collection']->getByCodes(
-                $row['label_code'],
-                $row['is_scopable'] ? $channelCode : null,
-                $row['is_localizable'] ? $localeCode : null
-            );
+            $labelValue = null;
+            if (null !== $row['label_code']) {
+                $labelValue = $valueCollections[$row['uuid']]['value_collection']->getByCodes(
+                    $row['label_code'],
+                    $row['is_scopable'] ? $channelCode : null,
+                    $row['is_localizable'] ? $localeCode : null
+                );
+            }
 
-            if (null !== $label && null !== $label->getData()) {
-                $result[$row['uuid']]['label'] = $label->getData();
+            if (null !== $labelValue && null !== $labelValue->getData()) {
+                $result[$row['uuid']]['label'] = $labelValue->getData();
+            } else {
+                $result[$row['uuid']]['label'] = sprintf('[%s]', $row['identifier'] ?? $row['uuid']);
             }
         }
 

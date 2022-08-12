@@ -320,7 +320,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getLabel($locale = null, $scope = null)
     {
+        // TODO CPM: Return the uuid as a fallback when the identifier is null
         $identifier = (string) $this->getIdentifier();
+        $uuid = $this->uuid->toString();
 
         if (null === $this->family) {
             return $identifier;
