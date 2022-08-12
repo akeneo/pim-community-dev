@@ -22,7 +22,7 @@ class GetCategorySql implements GetCategoryInterface
     {
     }
 
-    public function byId(int $categoryId, ?int $userId = null): ?Category
+    public function byId(int $categoryId): ?Category
     {
         $condition['sqlWhere'] = 'category.id = :category_id';
         $condition['params'] = ['category_id' => $categoryId];
@@ -31,7 +31,7 @@ class GetCategorySql implements GetCategoryInterface
         return $this->execute($condition);
     }
 
-    public function byCode(string $categoryCode, ?int $userId = null): ?Category
+    public function byCode(string $categoryCode): ?Category
     {
         $condition['sqlWhere'] = 'category.code = :category_code';
         $condition['params'] = ['category_code' => $categoryCode];
@@ -45,15 +45,21 @@ class GetCategorySql implements GetCategoryInterface
         $sqlWhere = $condition['sqlWhere'];
 
         $sqlQuery = <<<SQL
+            WITH translation as (
+                SELECT category.code, JSON_OBJECTAGG(translation.locale, translation.label) as translations
+                FROM pim_catalog_category category
+                JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
+                WHERE $sqlWhere
+            )
             SELECT
                 category.id,
                 category.code, 
                 category.parent_id,
-                JSON_OBJECTAGG(translation.locale, translation.label) as translations,
+                translation.translations,
                 category.value_collection
             FROM 
                 pim_catalog_category category
-                JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
+                JOIN translation ON translation.code = category.code
             WHERE $sqlWhere
         SQL;
 
