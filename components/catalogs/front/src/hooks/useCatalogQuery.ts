@@ -1,13 +1,8 @@
 import {useQuery} from 'react-query';
-import {AnyCriterionState} from '../components/ProductSelection';
+import {getCatalog} from '../api/getCatalog';
+import {Catalog} from '../models/Catalog';
 
-type Data = {
-    id: string;
-    name: string;
-    enabled: boolean;
-    owner_username: string;
-    product_selection_criteria: AnyCriterionState[];
-};
+type Data = Catalog;
 type Error = string | null;
 type Result = {
     isLoading: boolean;
@@ -16,14 +11,6 @@ type Result = {
     error: Error;
 };
 
-export const useCatalogQuery = (catalogId: string): Result => {
-    return useQuery<Data, Error, Data>(['catalog', catalogId], async () => {
-        const response = await fetch('/rest/catalogs/' + catalogId, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        });
-
-        return await response.json();
-    });
+export const useCatalogQuery = (id: string): Result => {
+    return useQuery<Data, Error, Data>(['catalog', id], async () => await getCatalog(id));
 };

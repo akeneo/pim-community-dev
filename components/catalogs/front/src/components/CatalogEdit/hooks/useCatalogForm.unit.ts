@@ -43,6 +43,7 @@ test('it returns the form values when catalog is loaded', () => {
             id: 'a4ecb5c7-7e80-44a8-baa1-549db0707f79',
             name: 'Store US',
             enabled: true,
+            owner_username: 'shopifi',
             product_selection_criteria: [
                 {
                     field: 'enabled',
@@ -85,6 +86,7 @@ test('it calls the API when save is called', async () => {
             id: 'a4ecb5c7-7e80-44a8-baa1-549db0707f79',
             name: 'Store US',
             enabled: true,
+            owner_username: 'shopifi',
             product_selection_criteria: [
                 {
                     field: 'enabled',
@@ -137,6 +139,7 @@ test('it returns validation errors if the API call failed', async () => {
             id: 'a4ecb5c7-7e80-44a8-baa1-549db0707f79',
             name: 'Store US',
             enabled: true,
+            owner_username: 'shopifi',
             product_selection_criteria: [
                 {
                     field: 'enabled',
@@ -174,6 +177,7 @@ test('it returns dirty at true after dispatching a change', () => {
             id: 'a4ecb5c7-7e80-44a8-baa1-549db0707f79',
             name: 'Store US',
             enabled: true,
+            owner_username: 'shopifi',
             product_selection_criteria: [
                 {
                     field: 'enabled',
@@ -208,6 +212,7 @@ test("it forward the action to dispatch when it's a non-altering event", () => {
             id: 'a4ecb5c7-7e80-44a8-baa1-549db0707f79',
             name: 'Store US',
             enabled: true,
+            owner_username: 'shopifi',
             product_selection_criteria: [
                 {
                     field: 'enabled',

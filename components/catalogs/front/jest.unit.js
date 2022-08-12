@@ -19,6 +19,7 @@ module.exports = {
         '<rootDir>/src/**/hooks/*.ts',
         '<rootDir>/src/**/reducers/*.ts',
         '<rootDir>/src/**/utils/*.ts',
+        '<rootDir>/src/api/**',
     ],
     coverageThreshold: {
         global: {

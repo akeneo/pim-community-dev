@@ -1,6 +1,8 @@
 import {useInfiniteQuery} from 'react-query';
 import {useCallback} from 'react';
 import {Family} from '../models/Family';
+import {getFamilies} from '../../../api/getFamilies';
+import {getFamiliesByCode} from '../../../api/getFamiliesByCode';
 
 type PageParam = {
     number: number;
@@ -29,25 +31,19 @@ type Result = {
 export const useInfiniteFamilies = ({search = '', codes = [], limit = 20}: QueryParams = {}): Result => {
     const fetchFamilies = useCallback(
         async ({pageParam}: {pageParam?: PageParam}): Promise<Page> => {
-            const _page = pageParam?.number || 1;
-            const _search = search || pageParam?.search || '';
-            const _codes = codes.join(',');
+            const page = {
+                number: pageParam?.number || 1,
+                search: search || pageParam?.search || '',
+            };
 
-            const response = await fetch(
-                `/rest/catalogs/families?page=${_page}&limit=${limit}&codes=${_codes}&search=${_search}`,
-                {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                }
-            );
+            const families =
+                codes?.length > 0
+                    ? await getFamiliesByCode(page.number, limit, codes)
+                    : await getFamilies(page.number, limit, page.search);
 
             return {
-                data: await response.json(),
-                page: {
-                    number: _page,
-                    search: _search,
-                },
+                data: families,
+                page: page,
             };
         },
         [search, codes, limit]

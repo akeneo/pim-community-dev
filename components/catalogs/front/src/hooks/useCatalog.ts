@@ -1,11 +1,7 @@
 import {useCatalogQuery} from './useCatalogQuery';
+import {Catalog} from '../models/Catalog';
 
-type Data = {
-    id: string;
-    name: string;
-    enabled: boolean;
-    owner_username: string;
-};
+type Data = Omit<Catalog, 'product_selection_criteria'>;
 type Error = string | null;
 type Result = {
     isLoading: boolean;
@@ -14,6 +10,6 @@ type Result = {
     error: Error;
 };
 
-export const useCatalog = (catalogId: string): Result => {
-    return useCatalogQuery(catalogId);
+export const useCatalog = (id: string): Result => {
+    return useCatalogQuery(id);
 };
