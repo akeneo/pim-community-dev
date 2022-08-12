@@ -50,3 +50,20 @@ akeneo_catalogs_internal_get_locales:
     path: '/rest/catalogs/locales'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetLocalesAction
     methods: [ GET ]
+
+akeneo_catalogs_internal_get_category_tree_roots:
+    path: '/rest/catalogs/categories/tree-roots'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoryTreeRootsAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_category_children:
+    path: '/rest/catalogs/categories/{categoryId}/children'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoryChildrenAction
+    methods: [ GET ]
+    requirements:
+        categoryId: '\d+'
+
+akeneo_catalogs_internal_get_categories:
+    path: '/rest/catalogs/categories'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoriesAction
+    methods: [ GET ]
