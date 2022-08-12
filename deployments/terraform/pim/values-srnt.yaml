@@ -92,6 +92,14 @@ pim:
         requests:
           cpu: "200m"
           memory: "128Mi"
+    asset-manager-refresh-asset:
+      enabled: true
+      pimCommand: "akeneo:asset-manager:refresh-assets --all"
+      schedule: "0 23 * * *"
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "128Mi"
     sso-log-rotate:
       enabled: true
       pimCommand: "pimee:sso:rotate-log 30"
