@@ -94,9 +94,16 @@ final class GetAvailableFieldsController
         if (null === $search || '' === trim($search)) {
             return $fields;
         }
+        $uiLocaleCode = $this->userContext->getUiLocale()?->getCode();
 
-        return array_filter($fields, function (string $field) use ($search): bool {
-            return strpos(strtolower($field), strtolower($search)) !== false;
+        return array_filter($fields, function (string $field) use ($search, $uiLocaleCode): bool {
+            return str_contains(strtolower($field), strtolower($search)) ||
+                str_contains(strtolower($this->translator->trans(
+                    sprintf('%s%s', static::FIELD_TRANSLATION_BASE, $field),
+                    [],
+                    null,
+                    $uiLocaleCode
+                )), strtolower($search));
         });
     }
 
