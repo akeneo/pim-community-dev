@@ -14,10 +14,10 @@ use Doctrine\DBAL\Connection;
  */
 class FindAllAssetIdentifiers implements SelectAssetIdentifiersInterface
 {
-    private const BATCH_SIZE = 1000;
-
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private int $batchSize
+    ) {
     }
 
     public function fetch(): \Iterator
@@ -41,7 +41,7 @@ SQL;
                 $sql,
                 [
                     'search_after_identifier' => $searchAfterIdentifier,
-                    'search_after_limit' => self::BATCH_SIZE
+                    'search_after_limit' => $this->batchSize
                 ],
                 [
                     'search_after_limit' => \PDO::PARAM_INT

@@ -1,3 +1,6 @@
+parameters:
+    akeneo_assetmanager.infrastructure.persistence.cli.all_assets_identifiers.batch_size: 1000
+
 services:
     # Repositories
     akeneo_assetmanager.infrastructure.persistence.repository.asset_family:
@@ -575,6 +578,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\FindAllAssetIdentifiers
         arguments:
             - '@database_connection'
+            - '%akeneo_assetmanager.infrastructure.persistence.cli.all_assets_identifiers.batch_size%'
 
     akeneo_assetmanager.infrastructure.persistence.sql.asset.refresh_assets.refresh_asset:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\RefreshAsset

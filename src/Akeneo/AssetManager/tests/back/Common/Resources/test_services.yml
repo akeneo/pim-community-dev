@@ -1,3 +1,6 @@
+parameters:
+    akeneo_assetmanager.infrastructure.persistence.cli.all_assets_identifiers.batch_size: 2
+
 services:
     akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels:
         class: Akeneo\AssetManager\Common\Fake\Channel\InMemoryFindChannels

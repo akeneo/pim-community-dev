@@ -45,6 +45,15 @@ class FindAllAssetIdentifiersTest extends SqlIntegrationTestCase
         $this->assertAssetsIdentifiers(['red', 'blue'], iterator_to_array($this->allAssetIdentifiers->fetch()));
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_all_asset_identifiers_even_if_batch_size_is_lower_than_total_number_or_assets(): void
+    {
+        $this->createAssets(['red', 'blue', 'grey', 'mauve']);
+        $this->assertAssetsIdentifiers(['red', 'blue', 'grey', 'mauve'], iterator_to_array($this->allAssetIdentifiers->fetch()));
+    }
+
     private function resetDB(): void
     {
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
@@ -87,8 +96,7 @@ class FindAllAssetIdentifiersTest extends SqlIntegrationTestCase
     private function assertAssetsIdentifiers(array $expectedIdentifiers, array $actualIdentifiers): void
     {
         $normalizedIdentifiers = array_map(fn (AssetIdentifier $identifier) => $identifier->normalize(), $actualIdentifiers);
-        sort($normalizedIdentifiers);
-        sort($expectedIdentifiers);
-        $this->assertEquals($expectedIdentifiers, $normalizedIdentifiers);
+
+        $this->assertEqualsCanonicalizing($expectedIdentifiers, $normalizedIdentifiers);
     }
 }
