@@ -4,7 +4,6 @@ CATALOGS_YARN = $(YARN_RUN)
 
 ifeq ($(CI),true)
 	BEHAT_ARGS += --no-snippets --no-interaction
-	PHPINSIGHTS_ARGS += --summary
 endif
 ifneq ($(CI),true)
 	PSALM_ARGS += --show-info=true
@@ -50,9 +49,6 @@ endif
 		--level=8 \
 		$(CATALOGS_PATH)/back/src
 	$(PHP_RUN) vendor/bin/psalm $(PSALM_ARGS) -c $(CATALOGS_PATH)/back/psalm.xml
-	$(PHP_RUN) vendor/bin/phpinsights analyse $(PHPINSIGHTS_ARGS) --no-interaction \
-		--config-path=$(CATALOGS_PATH)/back/phpinsights.php \
-		$(CATALOGS_PATH)/back/src/
 	$(PHP_RUN) bin/console lint:container
 
 .PHONY: catalogs-coupling-back
