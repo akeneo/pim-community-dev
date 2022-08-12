@@ -69,6 +69,10 @@ class GetCategorySql implements GetCategoryInterface
             $condition['types']
         )->fetchAssociative();
 
+        if (!$result) {
+            return null;
+        }
+
         return new Category(
             new CategoryId((int)$result['id']),
             new Code($result['code']),
