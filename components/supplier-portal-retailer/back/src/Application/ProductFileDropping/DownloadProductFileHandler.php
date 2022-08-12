@@ -10,6 +10,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\Supplier
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFileNameAndResourceFile;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetCodeFromSupplierFileIdentifier;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -19,6 +20,7 @@ final class DownloadProductFileHandler
         private GetProductFilePathAndFileName $getProductFilePathAndFileName,
         private DownloadStoredProductFile $downloadStoredProductFile,
         private EventDispatcherInterface $eventDispatcher,
+        private GetCodeFromSupplierFileIdentifier $getCodeFromSupplierFileIdentifier,
         private LoggerInterface $logger,
     ) {
     }
@@ -46,7 +48,12 @@ final class DownloadProductFileHandler
             throw new SupplierFileIsNotDownloadable();
         }
 
-        $this->eventDispatcher->dispatch(new ProductFileDownloaded($query->supplierFileIdentifier));
+        $supplierCode = ($this->getCodeFromSupplierFileIdentifier)($query->supplierFileIdentifier);
+
+        $this->eventDispatcher->dispatch(new ProductFileDownloaded(
+            $query->supplierFileIdentifier,
+            $supplierCode,
+        ));
 
         return new ProductFileNameAndResourceFile($productFilePathAndFileName->originalFilename, $productFileStream);
     }

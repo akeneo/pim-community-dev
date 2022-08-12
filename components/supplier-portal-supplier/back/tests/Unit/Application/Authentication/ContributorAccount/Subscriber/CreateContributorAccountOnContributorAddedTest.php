@@ -26,6 +26,7 @@ class CreateContributorAccountOnContributorAddedTest extends TestCase
         $contributorAddedEvent = new ContributorAdded(
             Identifier::fromString('4ccdd6c6-a631-48fe-967c-269bcf04e8e0'),
             'contrib1@example.com',
+            'los_pollos_hermanos',
         );
 
         $createContributorAccountHandlerSpy = $this->createMock(CreateContributorAccountHandler::class);

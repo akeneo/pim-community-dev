@@ -19,10 +19,10 @@ final class DownloadStoredProductFileInGCSBucket implements DownloadStoredProduc
     {
         $fileSystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
 
-        if (!$fileSystem->fileExists((string) $path)) {
+        if (!$fileSystem->fileExists($path)) {
             throw new \RuntimeException('The requested file does not exist on the bucket.');
         }
 
-        return $fileSystem->readStream((string) $path);
+        return $fileSystem->readStream($path);
     }
 }

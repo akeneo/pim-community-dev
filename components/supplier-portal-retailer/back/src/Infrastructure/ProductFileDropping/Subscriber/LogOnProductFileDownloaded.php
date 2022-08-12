@@ -29,6 +29,7 @@ final class LogOnProductFileDownloaded implements EventSubscriberInterface
                 'data' => [
                     'supplier_file_identifier' => $productFileDownloaded->supplierFileIdentifier,
                     'metric_key' => 'product_file_downloaded',
+                    'supplier_code' => $productFileDownloaded->supplierCode,
                 ],
             ],
         );
