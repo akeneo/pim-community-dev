@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence;
 
+use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
@@ -11,7 +12,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class FindOneAttributeByCodeQuery
+final class FindOneAttributeByCodeQuery implements FindOneAttributeByCodeQueryInterface
 {
     public function __construct(private AttributeRepositoryInterface $repository)
     {

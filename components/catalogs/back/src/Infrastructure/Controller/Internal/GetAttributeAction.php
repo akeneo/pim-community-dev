@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Infrastructure\Persistence\FindOneAttributeByCodeQuery;
+use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class GetAttributeAction
 {
     public function __construct(
-        private FindOneAttributeByCodeQuery $findOneAttributeByCode,
+        private FindOneAttributeByCodeQueryInterface $findOneAttributeByCode,
     ) {
     }
 

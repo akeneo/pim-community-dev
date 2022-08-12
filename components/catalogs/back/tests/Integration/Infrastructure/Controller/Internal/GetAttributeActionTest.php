@@ -45,10 +45,12 @@ class GetAttributeActionTest extends IntegrationTestCase
 
         $attribute = \json_decode($response->getContent(), true);
         Assert::assertSame('name', $attribute['code']);
-        Assert::assertArrayHasKey('code', $attribute);
-        Assert::assertArrayHasKey('label', $attribute);
-        Assert::assertArrayHasKey('type', $attribute);
-        Assert::assertArrayHasKey('scopable', $attribute);
-        Assert::assertArrayHasKey('localizable', $attribute);
+        Assert::assertSame([
+            'code',
+            'label',
+            'type',
+            'scopable',
+            'localizable',
+        ], \array_keys($attribute));
     }
 }

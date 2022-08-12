@@ -9,7 +9,11 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
 
-class UpdateCatalogProductSelectionCriteriaQuery implements UpdateCatalogProductSelectionCriteriaQueryInterface
+/**
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+final class UpdateCatalogProductSelectionCriteriaQuery implements UpdateCatalogProductSelectionCriteriaQueryInterface
 {
     public function __construct(private Connection $connection)
     {
