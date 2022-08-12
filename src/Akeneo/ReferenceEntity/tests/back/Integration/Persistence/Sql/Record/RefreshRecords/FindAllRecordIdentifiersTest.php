@@ -17,8 +17,7 @@ use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 class FindAllRecordIdentifiersTest extends SqlIntegrationTestCase
 {
-    /** @var FindAllRecordIdentifiers */
-    private $allRecordIdentifiers;
+    private FindAllRecordIdentifiers $allRecordIdentifiers;
 
     protected function setUp(): void
     {
@@ -43,6 +42,15 @@ class FindAllRecordIdentifiersTest extends SqlIntegrationTestCase
     {
         $this->createRecords(['red', 'blue']);
         $this->assertRecordsIdentifiers(['red', 'blue'], iterator_to_array($this->allRecordIdentifiers->fetch()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_all_record_identifiers_even_if_batch_size_is_lower_than_total_number_or_records(): void
+    {
+        $this->createRecords(['red', 'blue', 'grey', 'pink']);
+        $this->assertRecordsIdentifiers(['red', 'blue', 'grey', 'pink'], iterator_to_array($this->allRecordIdentifiers->fetch()));
     }
 
     private function resetDB(): void
@@ -88,8 +96,7 @@ class FindAllRecordIdentifiersTest extends SqlIntegrationTestCase
         $normalizedIdentifiers = array_map(function (RecordIdentifier $identifier) {
             return $identifier->normalize();
         }, $actualIdentifiers);
-        sort($normalizedIdentifiers);
-        sort($expectedIdentifiers);
-        $this->assertEquals($expectedIdentifiers, $normalizedIdentifiers);
+
+        $this->assertEqualsCanonicalizing($expectedIdentifiers, $normalizedIdentifiers);
     }
 }

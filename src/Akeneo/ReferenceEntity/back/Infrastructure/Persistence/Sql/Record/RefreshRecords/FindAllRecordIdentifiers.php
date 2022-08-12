@@ -14,10 +14,9 @@ use Doctrine\DBAL\Connection;
  */
 class FindAllRecordIdentifiers implements SelectRecordIdentifiersInterface
 {
-    private const BATCH_SIZE = 1000;
-
     public function __construct(
-        private Connection $sqlConnection
+        private Connection $sqlConnection,
+        private int $batchSize
     ) {
     }
 
@@ -42,7 +41,7 @@ SQL;
                 $sql,
                 [
                     'search_after_identifier' => $searchAfterIdentifier,
-                    'search_after_limit' => self::BATCH_SIZE
+                    'search_after_limit' => $this->batchSize
                 ],
                 [
                     'search_after_limit' => \PDO::PARAM_INT
