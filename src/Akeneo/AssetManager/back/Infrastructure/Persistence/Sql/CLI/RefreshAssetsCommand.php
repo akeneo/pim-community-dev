@@ -53,7 +53,7 @@ class RefreshAssetsCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $verbose = $input->getOption('verbose');
+        $verbose = $input->getOption('verbose') ?? false;
         $isIndexAll = $input->getOption('all');
         if (!$isIndexAll) {
             $output->writeln('Please use the flag --all to refresh all assets');
@@ -73,10 +73,10 @@ class RefreshAssetsCommand extends Command
             } catch (AssetNotFoundException) {
                 continue;
             } finally {
-                if ($i % self::BULK_SIZE === 0) {
+                $i++;
+                if ($i % self::BULK_SIZE === 0 && $verbose) {
                     $progressBar->advance(self::BULK_SIZE);
                 }
-                $i++;
             }
         }
 
