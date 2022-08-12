@@ -6,7 +6,7 @@ version: '3.7'
 services:
   php:
     environment:
-      XDEBUG_CONFIG: 'client_host=docker.for.mac.localhost client_port=9003'
+      XDEBUG_CONFIG: 'client_host=docker.for.mac.localhost'
     volumes:
       - 'nfsmount:/srv/pim'
 
