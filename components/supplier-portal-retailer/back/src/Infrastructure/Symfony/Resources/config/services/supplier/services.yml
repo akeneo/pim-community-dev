@@ -57,7 +57,6 @@ services:
             - '@database_connection'
 
     Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetCodeFromSupplierFileIdentifier:
-        public: true
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql\DatabaseGetCodeFromSupplierFileIdentifier
         arguments:
             - '@database_connection'
