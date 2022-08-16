@@ -52,8 +52,8 @@ trait CategoryTrait
         $categoryBaseData = $this->getCategoryBaseDataByCode((string) $categoryModelToCreate->getCode());
 
         $parentId = (
-            null === $categoryBaseData['parent_id'] ?
-                null
+            null === $categoryBaseData['parent_id']
+                ? null
                 : new CategoryId((int) $categoryBaseData['parent_id']))
         ;
         $categoryModelWithId = new Category(

@@ -91,6 +91,10 @@ class SqlUpsertCategoryTranslations implements UpsertCategoryTranslations
         if (!empty($this->updateQueries)) {
             $this->updateCategoryTranslations($categoryModel->getCode());
         }
+
+        $this->insertionParams = [];
+        $this->insertionTypes = [];
+        $this->insertionQueries = [];
     }
 
     /**
@@ -226,7 +230,7 @@ class SqlUpsertCategoryTranslations implements UpsertCategoryTranslations
             ]
         )->fetchAssociative();
 
-        return new CategoryId((int) $categoryData['id'] ?? null);
+        return new CategoryId((int)$categoryData['id'] ?? null);
     }
 
     /**
@@ -235,7 +239,9 @@ class SqlUpsertCategoryTranslations implements UpsertCategoryTranslations
      */
     private function localeAlreadyExists(string $locale): bool
     {
-        return \array_key_exists($locale, $this->cachedLocales);
+        $result = \array_key_exists($locale, $this->cachedLocales);
+
+        return $result;
     }
 
     /**

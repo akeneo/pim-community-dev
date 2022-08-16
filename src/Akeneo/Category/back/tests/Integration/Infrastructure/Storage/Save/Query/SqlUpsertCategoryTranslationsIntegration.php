@@ -50,8 +50,7 @@ class SqlUpsertCategoryTranslationsIntegration extends TestCase
         );
     }
 
-    public function UpdateExistingCategoryTranslationsInDatabase()
-//    public function testUpdateExistingCategoryTranslationsInDatabase()
+    public function testUpdateExistingCategoryTranslationsInDatabase()
     {
         /** @var SqlUpsertCategoryTranslations $upsertCategoryTranslationsQuery */
         $upsertCategoryTranslationsQuery = $this->get(UpsertCategoryTranslations::class);

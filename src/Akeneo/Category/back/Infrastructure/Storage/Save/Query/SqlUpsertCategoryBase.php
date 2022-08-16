@@ -34,7 +34,7 @@ class SqlUpsertCategoryBase implements UpsertCategoryBase
     public function execute(Category $categoryModel): void
     {
         // TODO if the dev try to change code by passing an existing id, this updater won't change the code
-        // TODO BUT it also won't notice the user that the code has not been changed
+        // TODO BUT it also won't notify the user that the code has not been changed
         if ($this->categoryAlreadyExistsByCode($categoryModel->getCode())) {
             $this->updateCategory($categoryModel);
         } else {
