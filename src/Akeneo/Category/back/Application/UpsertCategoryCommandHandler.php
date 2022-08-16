@@ -29,7 +29,7 @@ class UpsertCategoryCommandHandler
         private FindCategoryByCode $findCategoryByCode,
         private UserIntentApplierRegistry $applierRegistry,
         private EventDispatcherInterface $eventDispatcher,
-        private ProcessCategoryUpdateMock $saver
+        private ProcessCategoryUpdateMock $saver,
     ) {
     }
 
@@ -76,7 +76,7 @@ class UpsertCategoryCommandHandler
                         parameters: [],
                         root: $command,
                         propertyPath: $applier::class,
-                        invalidValue: $userIntent
+                        invalidValue: $userIntent,
                     ),
                 ]);
 

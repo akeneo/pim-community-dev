@@ -21,7 +21,7 @@ class Category
             CategoryId::fromDomainModel($c->getId()),
             Code::fromDomainModel($c->getCode()),
             LabelCollection::fromDomainModel($c->getLabelCollection()),
-            CategoryId::fromDomainModel($c->getParentId())
+            CategoryId::fromDomainModel($c->getParentId()),
         );
     }
 

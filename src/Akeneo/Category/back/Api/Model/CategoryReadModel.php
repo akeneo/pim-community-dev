@@ -18,7 +18,7 @@ class CategoryReadModel
     public function __construct(
         private Category $category,
         private Permissions $permissions,
-        private AttributeValues $attributeValues
+        private AttributeValues $attributeValues,
     ) {
     }
 

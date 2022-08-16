@@ -104,7 +104,7 @@ class GetCategoryEndToEnd extends ApiTestCase
                 'code' => 400,
                 'message' => 'In order to search on category codes you must send an array of category codes as value, integer given. This value should be of type iterable.',
             ],
-            json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR)
+            json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR),
         );
     }
 

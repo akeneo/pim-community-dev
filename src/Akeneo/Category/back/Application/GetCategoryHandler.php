@@ -82,7 +82,7 @@ class GetCategoryHandler
         $readModel = new CategoryReadModel(
             Category::fromDomainModel($domainCategory),
             $permissions,
-            $attributeValues
+            $attributeValues,
         );
         // returning the category as seen by the outside (whoever created and dispatched the query)
         return $readModel;
