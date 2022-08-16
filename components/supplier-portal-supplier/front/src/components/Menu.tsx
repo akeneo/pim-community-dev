@@ -66,6 +66,10 @@ const Container = styled.div`
     border-right: 1px ${getColor('grey60')} solid;
     display: flex;
     flex-direction: column;
+    position: sticky;
+    top: 0;
+    align-self: self-start;
+    height: 100vh;
 `;
 
 const MenuContent = styled.div`
