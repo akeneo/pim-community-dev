@@ -38,7 +38,7 @@ server:
   extraArgs:
     - --insecure
   ingress:
-    enabled: true
+    enabled: false
     annotations:
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.tls.options: default
@@ -57,3 +57,46 @@ server:
       - null
     paths:
       - /
+
+# helm-gcs plugin: https://argo-cd.readthedocs.io/en/stable/user-guide/helm/#using-initcontainers
+# Permissions to gcs bucket are granted with workload identity
+repoServer:
+  volumes:
+    - name: helm
+      emptyDir: {}
+  volumeMounts:
+    - mountPath: /helm
+      name: helm
+  env:
+    - name: HELM_DATA_HOME
+      value: /helm
+    - name: HELM_CACHE_HOME
+      value: /helm/cache
+    - name: HELM_CONFIG_HOME
+      value: /helm/config
+    - name: HELM_PLUGINS
+      value: /helm/plugins/
+  serviceAccount:
+    create: true
+    annotations:
+      iam.gke.io/gcp-service-account: ucs-argocd-account@akecld-prd-pim-saas-dev.iam.gserviceaccount.com
+  initContainers:
+    - name: install-helm-plugins
+      image: alpine/helm:3.6.3
+      volumeMounts:
+        - mountPath: /helm
+          name: helm
+      env:
+        - name: HELM_DATA_HOME
+          value: /helm
+        - name: HELM_CACHE_HOME
+          value: /helm/cache
+        - name: HELM_CONFIG_HOME
+          value: /helm/config
+      command: ["/bin/sh", "-c"]
+      args:
+        - apk --no-cache add curl;
+          helm plugin install https://github.com/hayorov/helm-gcs.git;
+          helm repo add akeneo-charts gs://akeneo-charts;
+          helm repo update;
+          chmod -R 777 $HELM_DATA_HOME;
