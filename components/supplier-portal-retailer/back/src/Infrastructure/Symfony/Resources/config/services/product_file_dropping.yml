@@ -33,14 +33,14 @@ services:
     # Query/Handlers
     Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler:
         arguments:
-            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilePath'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetProductFilePathAndFileName'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile'
             - '@event_dispatcher'
             - '@monolog.logger.supplier_portal'
 
     # Queries
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilePath:
-        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetSupplierFilePath
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetProductFilePathAndFileName:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePathAndFileName
         arguments:
             - '@database_connection'
 
