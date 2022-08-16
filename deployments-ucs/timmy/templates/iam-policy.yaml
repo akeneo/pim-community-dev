@@ -1,0 +1,17 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: {{ include "timmy.cloudFunctionName" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: "Replace=true"
+spec:
+  resourceRef:
+    apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
+    kind: CloudFunctionsFunction
+    name: {{ include "timmy.cloudFunctionName" . }}
+  bindings:
+    - role: "roles/cloudfunctions.invoker"
+      members:
+        - "serviceAccount:{{ .Values.cloudFunction.serviceAccountEmail }}"

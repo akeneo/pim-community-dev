@@ -1,31 +1,25 @@
-# Current configconnector version (1.71.0) installed with GKE add-on doesn't support this resource.
-# Need at least 1.79.0 configconnector version to switch to configconnector.
-apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
-kind: Function
+apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
+kind: CloudFunctionsFunction
 metadata:
   name: {{ include "timmy.cloudFunctionName" . }}
   namespace: {{ .Release.Namespace | quote }}
-  labels:
-    {{- include "timmy.labels" . | nindent 4 }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: Replace=true
 spec:
-  forProvider:
-    availableMemoryMb: {{ .Values.cloudFunction.availableMemoryMb }}
-    description: {{ .Values.cloudFunction.description }}
-    entryPoint: {{ .Values.cloudFunction.entryPoint }}
-    name: {{ include "timmy.cloudFunctionName" . }}
-    runtime: {{ .Values.cloudFunction.runtime }}
-    serviceAccountEmail: {{ .Values.cloudFunction.serviceAccountEmail }}
-    sourceArchiveBucket: {{ include "timmy.bucketName" . }}
-    sourceArchiveObject: {{ include "timmy.cloudFunctionName" . }}.zip
-    triggerHttp: true
-    ingressSettings: ALLOW_ALL
-    project: {{ .Values.common.gcpProjectID }}
-    region: {{ .Values.common.region }}
-    environmentVariables:
-      {{- toYaml .Values.cloudFunction.environmentVariables | nindent 6 }}
-      PROJECT_ID: {{ .Values.common.gcpProjectID }}
-  providerConfigRef:
-    name: "provider-config-jet-gcp"
+  projectRef:
+    external: "projects/{{ .Values.common.gcpProjectID }}"
+  description: {{ .Values.cloudFunction.description }}
+  availableMemoryMb: {{ .Values.cloudFunction.availableMemoryMb }}
+  region: {{ .Values.common.region }}
+  runtime: {{ .Values.cloudFunction.runtime }}
+  sourceArchiveUrl: "gs://{{ include "timmy.bucketName" . }}/{{ include "timmy.cloudFunctionName" . }}.zip"
+  entryPoint: {{ .Values.cloudFunction.entryPoint }}
+  serviceAccountRef:
+    external: "{{ .Values.cloudFunction.serviceAccountEmail }}"
+  environmentVariables:
+    {{- toYaml .Values.cloudFunction.environmentVariables | nindent 4 }}
+    PROJECT_ID: {{ .Values.common.gcpProjectID }}
+  httpsTrigger:
+    securityLevel: SECURE_ALWAYS
+  ingressSettings: ALLOW_ALL
