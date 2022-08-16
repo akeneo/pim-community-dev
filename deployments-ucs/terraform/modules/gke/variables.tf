@@ -37,6 +37,12 @@ variable "enable_gke_backup" {
   type        = bool
 }
 
+variable "enable_config_connector" {
+  description = "True if the managed config connector is enabled"
+  default     = true
+  type        = bool
+}
+
 variable "node_pool_configs" {
   description = "List of the configs of node pools"
   type        = list(map(string))

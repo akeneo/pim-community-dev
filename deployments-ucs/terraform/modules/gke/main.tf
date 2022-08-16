@@ -45,19 +45,26 @@ resource "google_container_cluster" "gke" {
       enabled = var.enable_master_global_access
     }
   }
+
   master_authorized_networks_config {
     cidr_blocks {
       cidr_block = "0.0.0.0/0"
     }
   }
+
   workload_identity_config {
     workload_pool = "${data.google_project.current.project_id}.svc.id.goog"
   }
+
   addons_config {
     gke_backup_agent_config {
       enabled = var.enable_gke_backup
     }
+    config_connector_config {
+      enabled = var.enable_config_connector
+    }
   }
+  
   timeouts {
     create = "30m"
     update = "40m"
