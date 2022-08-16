@@ -106,9 +106,9 @@ final class HandleNumberTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         valueUserIntents: [
-                            new SetNumberValue('year', null, null, '2022.000000000000'),
-                            new SetNumberValue('age', 'ecommerce', 'fr_FR', '12.500000000000'),
-                            new SetNumberValue('quantity', 'ecommerce', null, '6.000000000000'),
+                            new SetNumberValue('year', null, null, '2022'),
+                            new SetNumberValue('age', 'ecommerce', 'fr_FR', '12.5'),
+                            new SetNumberValue('quantity', 'ecommerce', null, '6'),
                         ],
                     ),
                     [],
@@ -173,7 +173,7 @@ final class HandleNumberTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         valueUserIntents: [
-                            new SetNumberValue('year', null, null, '2022.000000000000'),
+                            new SetNumberValue('year', null, null, '2022'),
                         ],
                     ),
                     [

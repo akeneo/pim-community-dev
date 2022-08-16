@@ -22,7 +22,6 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOp
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\FamilyReplacementOperation;
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\FormatFloatOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
@@ -90,10 +89,6 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
         $uuid = Uuid::uuid4()->toString();
 
         return [
-            new FormatFloatOperation(
-                $uuid,
-                $sourceConfiguration['decimal_separator'],
-            ),
             new ConvertToMeasurementOperation(
                 $uuid,
                 $sourceConfiguration['decimal_separator'],
@@ -107,10 +102,6 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
         $uuid = Uuid::uuid4()->toString();
 
         return [
-            new FormatFloatOperation(
-                $uuid,
-                $sourceConfiguration['decimal_separator'],
-            ),
             new ConvertToNumberOperation(
                 $uuid,
                 $sourceConfiguration['decimal_separator'],
