@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Application\Storage\Save;
+namespace Akeneo\Category\Application\Storage\Save\Saver;
 
-use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Model\Category;
 
 /**
@@ -14,7 +13,7 @@ use Akeneo\Category\Domain\Model\Category;
 interface CategorySaver
 {
     /**
-     * @return UserIntent[]
+     * @return string[]
      */
     public function getSupportedUserIntents(): array;
 

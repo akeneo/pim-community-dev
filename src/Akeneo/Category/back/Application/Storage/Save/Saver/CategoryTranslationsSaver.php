@@ -2,21 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Application\Storage\Save;
+namespace Akeneo\Category\Application\Storage\Save\Saver;
 
+use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
 use Akeneo\Category\Domain\Model\Category;
 
 /**
- * This class is used to call the save query for base data of the category (data stored in category table).
- * This contains the list of supported user intents which relate to the base data of the category.
+ * This class is used to call the save query for label translations of the category (data stored in translation table).
+ * This contains the list of supported user intents which relate to the labels of the category.
  *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryBaseSaver implements CategorySaver
+class CategoryTranslationsSaver implements CategorySaver
 {
     public function __construct(
-        private UpsertCategoryBase $upsertCategoryBase,
+        private UpsertCategoryTranslations $upsertCategoryTranslations,
         private array $supportedUserIntents
     )
     {
@@ -25,7 +26,7 @@ class CategoryBaseSaver implements CategorySaver
     public function save(Category $categoryModel): void
     {
         //TODO: Should we use try/catch ?
-        $this->upsertCategoryBase->execute($categoryModel);
+        $this->upsertCategoryTranslations->execute($categoryModel);
 
         //TODO dispatch event of save ?
     }

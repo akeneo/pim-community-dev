@@ -44,6 +44,6 @@ final class LabelCollection implements \IteratorAggregate
 
     public function getIterator()
     {
-        $this->iterator = new \ArrayIterator($this->translatedLabels);
+        return new \ArrayIterator($this->translatedLabels);
     }
 }

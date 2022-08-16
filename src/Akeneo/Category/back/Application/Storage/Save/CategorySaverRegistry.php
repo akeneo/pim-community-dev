@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Storage\Save;
 
-use Akeneo\Category\Api\Command\UserIntents\UserIntent;
+use Akeneo\Category\Application\Storage\Save\Saver\CategorySaver;
 use Webmozart\Assert\Assert;
 
 /**
@@ -16,6 +16,7 @@ use Webmozart\Assert\Assert;
 class CategorySaverRegistry
 {
     private array $categorySaverByUserIntent;
+
     /**
      * @param CategorySaver[] $categorySavers
      */
@@ -26,21 +27,21 @@ class CategorySaverRegistry
         foreach ($this->categorySavers as $categorySaver) {
             Assert::isInstanceOf($categorySaver, CategorySaver::class);
             $supportedUserIntents = $categorySaver->getSupportedUserIntents();
-            foreach($supportedUserIntents as $userIntent) {
-                if (\array_key_exists($userIntent::class, $this->categorySaverByUserIntent ?? [])) {
+            foreach($supportedUserIntents as $userIntentName) {
+                if (\array_key_exists($userIntentName, $this->categorySaverByUserIntent ?? [])) {
                     //TODO: this is to discuss with the team
-                    throw new \LogicException(\sprintf('There cannot be more than one category saver supporting user intent: %s', $userIntent::class));
+                    throw new \LogicException(\sprintf('There cannot be more than one category saver supporting user intent: %s', $userIntentName));
                 }
-                $this->categorySaverByUserIntent[$userIntent::class] = $categorySaver;
+                $this->categorySaverByUserIntent[$userIntentName] = $categorySaver;
             }
         }
     }
 
-    public function fromUserIntent(UserIntent $userIntent): CategorySaver
+    public function fromUserIntent(string $userIntentClassName): CategorySaver
     {
-        $saver = $this->categorySaverByUserIntent[$userIntent::class] ?? null;
+        $saver = $this->categorySaverByUserIntent[$userIntentClassName] ?? null;
         if (null === $saver) {
-            throw new \InvalidArgumentException(\sprintf('No category saver linked to %s userIntent', $userIntent::class));
+            throw new \InvalidArgumentException(\sprintf('No category saver linked to %s userIntent', $userIntentClassName));
         }
 
         return $saver;

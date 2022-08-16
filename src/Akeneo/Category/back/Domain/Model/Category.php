@@ -15,14 +15,14 @@ use Akeneo\Category\Domain\ValueObject\LabelCollection;
 class Category
 {
     public function __construct(
-        private CategoryId $id,
+        private ?CategoryId $id,
         private Code $code,
         private LabelCollection $labelCollection,
         private ?CategoryId $parentId,
     ) {
     }
 
-    public function getId(): CategoryId
+    public function getId(): ?CategoryId
     {
         return $this->id;
     }

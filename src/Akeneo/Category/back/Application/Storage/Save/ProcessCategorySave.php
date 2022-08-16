@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Application\Storage;
+namespace Akeneo\Category\Application\Storage\Save;
 
-use Akeneo\Category\Application\Storage\Save\CategoryBaseSaver;
-use Akeneo\Category\Application\Storage\Save\CategorySaver;
-use Akeneo\Category\Application\Storage\Save\CategorySaverRegistry;
-use Akeneo\Category\Application\Storage\Save\CategoryTranslationsSaver;
+use Akeneo\Category\Api\Command\UserIntents\UserIntent;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryBaseSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategorySaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTranslationsSaver;
 use Akeneo\Category\Domain\Model\Category;
 
 /**
@@ -19,7 +19,7 @@ use Akeneo\Category\Domain\Model\Category;
  */
 class ProcessCategorySave
 {
-    // The order in which the savers will be executed
+    // List of expected savers: it also assures the order in which the savers will be executed
     private array $saversExecutionOrder = [
         'category' => null,
         'category_translation' => null,
@@ -31,17 +31,22 @@ class ProcessCategorySave
     {
     }
 
+    /**
+     * @param Category $categoryModel
+     * @param UserIntent[] $userIntents
+     * @return void
+     */
     public function save(Category $categoryModel, array $userIntents): void
     {
         foreach ($userIntents as $userIntent) {
-            $saver = $this->categorySaverRegistry->fromUserIntent($userIntent);
+            $saver = $this->categorySaverRegistry->fromUserIntent($userIntent::class);
 
-            if ($saver instanceOf CategoryBaseSaver::class) {
+            if ($saver instanceOf CategoryBaseSaver) {
                 $this->addSaverInOrderList('category', $saver);
                 continue;
             }
 
-            if ($saver instanceOf CategoryTranslationsSaver::class) {
+            if ($saver instanceOf CategoryTranslationsSaver) {
                 $this->addSaverInOrderList('category_translation', $saver);
                 continue;
             }
@@ -54,6 +59,8 @@ class ProcessCategorySave
             /** @var CategorySaver $saver */
             $saver->save($categoryModel);
         }
+
+        // TODO: hydrate a Category Object with all the new data and return it ?
     }
 
     private function addSaverInOrderList(string $key, CategorySaver $saver): void
