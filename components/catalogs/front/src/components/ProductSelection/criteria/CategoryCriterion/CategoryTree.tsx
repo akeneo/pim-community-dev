@@ -47,7 +47,7 @@ export const TreeNode: FC<NodeProps> = ({category, selectedCategories, onChange,
             label={category.label}
             value={category.code}
             isLeaf={category.isLeaf}
-            selected={selectedCategories.includes(category)}
+            selected={selectedCategories.some(selectedCategory => selectedCategory.code === category.code)}
             onChange={(value, checked) => {
                 const newCategorySelection = checked
                     ? [...selectedCategories, category]

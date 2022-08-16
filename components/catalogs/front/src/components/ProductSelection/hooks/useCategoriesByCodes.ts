@@ -46,7 +46,14 @@ export const useCategoriesByCodes = (codes: CategoryCode[]): Result => {
         }
     }, [cachedCodes, categories, setCache]);
 
-    const categoriesFromCodes = Object.values(cache).filter(v => codes.includes(v.code));
+    const categoriesFromCodes = codes.map(categoryCode => (
+        cache[categoryCode] ?? {
+            id: -1,
+            code: categoryCode,
+            label: `[${categoryCode}]`,
+            isLeaf: true,
+        }
+    ));
 
     return {
         isLoading: isLoading,
