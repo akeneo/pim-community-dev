@@ -8,6 +8,9 @@ return (new PhpCsFixer\Config())
         'method_argument_space' => [
             'on_multiline' => 'ensure_fully_multiline'
         ],
+        'phpdoc_align' => [
+            'align' => 'left'
+        ]
     ))
     ->setCacheFile('var/php_cs.cache')
     ->setFinder(

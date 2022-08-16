@@ -21,7 +21,7 @@ class UserIntentFactoryRegistry
 
     /**
      * @param iterable<UserIntentFactory> $userIntentFactories
-     * @param string[]                    $ignoredFieldNames
+     * @param string[] $ignoredFieldNames
      */
     public function __construct(iterable $userIntentFactories, private array $ignoredFieldNames)
     {

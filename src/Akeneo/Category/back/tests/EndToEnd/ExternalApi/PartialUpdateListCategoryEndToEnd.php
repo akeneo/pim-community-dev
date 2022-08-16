@@ -278,7 +278,7 @@ JSON;
 
     /**
      * @param array<string, mixed> $expectedCategory normalized data of the category that should be created
-     * @param string               $code             code of the category that should be created
+     * @param string $code code of the category that should be created
      */
     protected function assertSameCategories(array $expectedCategory, $code): void
     {

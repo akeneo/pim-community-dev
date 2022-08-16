@@ -16,7 +16,7 @@ class FieldsRequirementChecker
     /**
      * Check if all required fields are present.
      *
-     * @param array<string>        $item
+     * @param array<string> $item
      * @param array<string, mixed> $fields
      */
     public function checkFieldsExist(array $item, array $fields): void
@@ -31,7 +31,7 @@ class FieldsRequirementChecker
     /**
      * Checks that fields provided are not empty.
      *
-     * @param array<string>        $item
+     * @param array<string> $item
      * @param array<string, mixed> $fields
      */
     public function checkFieldsNotEmpty(array $item, array $fields): void
