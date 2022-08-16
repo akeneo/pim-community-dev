@@ -10,7 +10,7 @@ use Akeneo\Category\Api\Event\CategoryCreatedEvent;
 use Akeneo\Category\Api\Event\CategoryUpdatedEvent;
 use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Category\Application\Query\FindCategoryByCode;
-use Akeneo\Category\Application\Storage\ProcessCategoryUpdateMock;
+use Akeneo\Category\Application\Storage\Save\ProcessCategorySave;
 use Akeneo\Category\Domain\Model\Category;
 use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,7 +29,7 @@ class UpsertCategoryCommandHandler
         private FindCategoryByCode $findCategoryByCode,
         private UserIntentApplierRegistry $applierRegistry,
         private EventDispatcherInterface $eventDispatcher,
-        private ProcessCategoryUpdateMock $saver
+        private ProcessCategorySave $saver
     ) {
     }
 
@@ -49,7 +49,7 @@ class UpsertCategoryCommandHandler
 
         $this->updateCategory($category, $command);
 
-        $this->saver->update($category, $command->userIntents());
+        $this->saver->save($category, $command->userIntents());
 
         if ($isCreation) {
             $this->eventDispatcher->dispatch(new CategoryCreatedEvent((string)$category->getCode()));

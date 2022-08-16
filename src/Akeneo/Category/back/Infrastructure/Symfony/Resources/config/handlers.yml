@@ -5,6 +5,6 @@ services:
       - '@Akeneo\Category\Application\Query\FindCategoryByCode'
       - '@Akeneo\Category\Application\Applier\UserIntentApplierRegistry'
       - '@event_dispatcher'
-      - '@Akeneo\Category\Application\Storage\ProcessCategoryUpdateMock'
+      - '@Akeneo\Category\Application\Storage\Save\ProcessCategorySave'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Api\Command\UpsertCategoryCommand'}
