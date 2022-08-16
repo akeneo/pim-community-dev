@@ -6,7 +6,6 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Application\Persistence\GetChannelsQueryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
-use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 
 /**
@@ -24,8 +23,8 @@ final class GetChannelsQuery implements GetChannelsQueryInterface
      */
     public function execute(int $page = 1, int $limit = 20): array
     {
-        /** @var ChannelInterface[] $channels */
-        $channels  = $this->channelRepository->findBy(
+        /** @var array<ChannelInterface> $channels */
+        $channels = $this->channelRepository->findBy(
             [],
             [],
             $limit,

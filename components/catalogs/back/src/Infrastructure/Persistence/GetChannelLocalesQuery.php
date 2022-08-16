@@ -31,7 +31,7 @@ final class GetChannelLocalesQuery implements GetChannelLocalesQueryInterface
             throw new \LogicException(\sprintf('channel "%s" does not exist', $channelCode));
         }
 
-        return  \array_map(static fn (LocaleInterface $locale): array => [
+        return \array_map(static fn (LocaleInterface $locale): array => [
             'code' => $locale->getCode(),
             'label' => $locale->getName() ?? \sprintf('[%s]', $locale->getCode()),
         ], $channel->getLocales()->toArray());

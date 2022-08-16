@@ -67,12 +67,7 @@ class UpdateCatalogPayloadIsValidValidator extends ConstraintValidator
                                     return;
                                 }
 
-                                $constraints = match ($criterion['field'] ?? null) {
-                                    'completeness' => new CompletenessFieldIsValid($this->getChannelLocalesQuery),
-                                    'enabled' => new EnabledFieldIsValid(),
-                                    'family' => new FamilyFieldIsValid(),
-                                    default => null
-                                };
+                                $constraints = $this->getFieldConstraints($criterion['field'] ? (string) $criterion['field'] : null);
 
                                 if (null === $constraints) {
                                     $context->buildViolation('Invalid field value')
@@ -94,5 +89,15 @@ class UpdateCatalogPayloadIsValidValidator extends ConstraintValidator
                 'allowExtraFields' => false,
             ]),
         ];
+    }
+
+    private function getFieldConstraints(?string $field): EnabledFieldIsValid|FamilyFieldIsValid|CompletenessFieldIsValid|null
+    {
+        return match ($field) {
+            'completeness' => new CompletenessFieldIsValid($this->getChannelLocalesQuery),
+            'enabled' => new EnabledFieldIsValid(),
+            'family' => new FamilyFieldIsValid(),
+            default => null
+        };
     }
 }

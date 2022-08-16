@@ -54,14 +54,6 @@ abstract class IntegrationTestCase extends WebTestCase
         $fixturesLoader->load($configuration);
     }
 
-    protected function purgeDataAndLoadTechnicalCatalog(): void
-    {
-        $catalog = self::getContainer()->get('akeneo_integration_tests.catalogs');
-        $configuration = $catalog->useTechnicalCatalog();
-        $fixturesLoader = self::getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
-        $fixturesLoader->load($configuration);
-    }
-
     /**
      * {@inheritdoc}
      */

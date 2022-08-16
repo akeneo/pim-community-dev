@@ -6,7 +6,6 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Application\Persistence\GetChannelQueryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
-use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 
 /**
@@ -31,7 +30,7 @@ final class GetChannelQuery implements GetChannelQueryInterface
             return null;
         }
 
-        return  [
+        return [
             'code' => $channel->getCode(),
             'label' => $channel->getLabel(),
         ];
