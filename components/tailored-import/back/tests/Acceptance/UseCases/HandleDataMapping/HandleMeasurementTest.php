@@ -109,9 +109,9 @@ final class HandleMeasurementTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         valueUserIntents: [
-                            new SetMeasurementValue('size', null, null, '10.000000000000', 'METER'),
-                            new SetMeasurementValue('weight', 'ecommerce', 'fr_FR', '60.500000000000', 'GRAM'),
-                            new SetMeasurementValue('frequency', 'ecommerce', null, '6.000000000000', 'HERTZ'),
+                            new SetMeasurementValue('size', null, null, '10', 'METER'),
+                            new SetMeasurementValue('weight', 'ecommerce', 'fr_FR', '60.5', 'GRAM'),
+                            new SetMeasurementValue('frequency', 'ecommerce', null, '6', 'HERTZ'),
                         ],
                     ),
                     [],
@@ -185,7 +185,7 @@ final class HandleMeasurementTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         valueUserIntents: [
-                            new SetMeasurementValue('size', null, null, '2022.000000000000', 'METER'),
+                            new SetMeasurementValue('size', null, null, '2022', 'METER'),
                         ],
                     ),
                     [
