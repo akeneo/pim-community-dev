@@ -19,6 +19,7 @@ This value should not be a decimal.: Deze waarde kan geen decimaal zijn.
 "The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": Het {{ attribute_code }} attribuut kan niet meer dan één keer dezelfde waarde hebben. De {{ value }} waarde is al ingesteld op een ander product.
 The same identifier is already set on another product: Dit id-attribuut is al in gebruik bij een ander product
 regex.comma_or_semicolon_or_surrounding_space.message: Dit veld mag geen komma, puntkomma of spatie bevatten
+regex.line_break.message: Dit veld mag geen regeleinde bevatten
 file.extensions.message: 'De bestandsextensie is niet toegestaan (toegestane extensies: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Dit type waarde verwacht een {{ decimal_separator }} om decimalen te scheiden.
 "This type of value expects the use of dot (.) to separate decimals.": Dit type waarde verwacht een punt (.) om decimalen te scheiden.

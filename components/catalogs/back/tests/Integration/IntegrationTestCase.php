@@ -144,9 +144,9 @@ abstract class IntegrationTestCase extends WebTestCase
     {
         $userPayload = [
             'username' => $username,
-            'password' => \rand(),
-            'first_name' => 'firstname_' . \rand(),
-            'last_name' => 'lastname_' . \rand(),
+            'password' => \random_int(0, \mt_getrandmax()),
+            'first_name' => 'firstname_' . \random_int(0, \mt_getrandmax()),
+            'last_name' => 'lastname_' . \random_int(0, \mt_getrandmax()),
             'email' => \sprintf('%s@example.com', $username),
         ];
 

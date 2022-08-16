@@ -1,11 +1,19 @@
 import React from 'react';
-import styled from 'styled-components';
 import {useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {Category} from '../models';
-import {Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
+import {Field, SectionTitle, TextInput, Helper} from 'akeneo-design-system';
 import {EditCategoryForm} from '../hooks';
+import styled from 'styled-components';
+
+type Props = {
+  category: Category;
+  formData: EditCategoryForm | null;
+  onChangeLabel: (locale: string, label: string) => void;
+};
 
 const FormContainer = styled.div`
+  margin-top: 20px;
+
   & > * {
     margin: 0 10px 20px 0;
   }
@@ -14,12 +22,6 @@ const FormContainer = styled.div`
 const ErrorMessage = styled(Helper)`
   margin: 20px 0 0 0;
 `;
-
-type Props = {
-  category: Category;
-  formData: EditCategoryForm | null;
-  onChangeLabel: (locale: string, label: string) => void;
-};
 
 const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
   const translate = useTranslate();

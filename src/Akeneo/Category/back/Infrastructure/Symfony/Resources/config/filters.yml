@@ -1,0 +1,3 @@
+services:
+  Akeneo\Category\Application\Filter\CategoryEditACLFilter: ~
+  Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter: ~

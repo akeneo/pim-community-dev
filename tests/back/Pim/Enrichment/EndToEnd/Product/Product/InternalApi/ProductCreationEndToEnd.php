@@ -8,6 +8,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\InternalApiTestCase;
+use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -19,7 +22,7 @@ class ProductCreationEndToEnd extends InternalApiTestCase
     {
         parent::setUp();
 
-        $this->getConnectorProductsQuery = $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers');
+        $this->getConnectorProductsQuery = $this->get('akeneo.pim.enrichment.product.connector.get_product_from_uuids');
         $this->authenticate($this->getAdminUser());
     }
 
@@ -31,7 +34,7 @@ class ProductCreationEndToEnd extends InternalApiTestCase
         $admin = $this->getAdminUser();
 
         $createdProduct = $this->getConnectorProductsQuery
-            ->fromProductIdentifiers([$identifier], $admin->getId(), null, null, null)
+            ->fromProductUuids($this->getProductUuidsFromProductIdentifiers([$identifier]), $admin->getId(), null, null, null)
             ->connectorProducts();
 
         $this->assertCount(1, $createdProduct);
@@ -63,5 +66,27 @@ class ProductCreationEndToEnd extends InternalApiTestCase
     protected function getAdminUser(): UserInterface
     {
         return self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier('admin');
+    }
+
+    /**
+     * @param array<string> $productIdentifiers
+     * @return array<UuidInterface>
+     */
+    private function getProductUuidsFromProductIdentifiers(array $productIdentifiers): array
+    {
+        $sql = <<<SQL
+SELECT BIN_TO_UUID(uuid) AS uuid
+FROM pim_catalog_product
+WHERE identifier IN (:identifiers)
+SQL;
+
+        return array_map(
+            fn (string $uuidStr): UuidInterface => Uuid::fromString($uuidStr),
+            self::getContainer()->get('database_connection')->fetchFirstColumn(
+                $sql,
+                ['identifiers' => $productIdentifiers],
+                ['identifiers' => Connection::PARAM_STR_ARRAY]
+            )
+        );
     }
 }

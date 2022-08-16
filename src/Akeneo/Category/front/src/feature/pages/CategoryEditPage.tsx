@@ -30,13 +30,14 @@ import {CategoryToDelete, useDeleteCategory, useEditCategoryForm, useCountProduc
 import {Category} from '../models';
 import {HistoryPimView, View} from './HistoryPimView';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
-import {EditPermissionsForm, EditPropertiesForm} from '../components';
+import {EditPermissionsForm, EditPropertiesForm, EditAttributesForm} from '../components';
 
 type Params = {
   categoryId: string;
 };
 
 const propertyTabName = '#pim_enrich-category-tab-property';
+const attributeTabName = '#pim_enrich-category-tab-attribute';
 const historyTabName = '#pim_enrich-category-tab-history';
 const permissionTabName = '#pim_enrich-category-tab-permission';
 
@@ -45,17 +46,27 @@ const CategoryEditPage: FC = () => {
   const translate = useTranslate();
   const router = useRouter();
   const userContext = useUserContext();
+
+  // features
+  const featureFlags = useFeatureFlags();
+  const permissionsAreEnabled = featureFlags.isEnabled('permission');
+
+  const {isGranted} = useSecurity();
+  const {isCategoryDeletionPossible, handleDeleteCategory} = useDeleteCategory();
+
+  // data
   const [categoryLabel, setCategoryLabel] = useState('');
   const [treeLabel, setTreeLabel] = useState('');
-  const [tree, setTree] = useState<Category | null>(null);
-  const [activeTab, setActiveTab] = useSessionStorageState(propertyTabName, 'pim_category_activeTab');
-  const [isCurrent, switchTo] = useTabBar(activeTab);
-  const {isGranted} = useSecurity();
-  const [secondaryActionIsOpen, openSecondaryAction, closeSecondaryAction] = useBooleanState(false);
-  const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
   const countProductsBeforeDeleteCategory = useCountProductsBeforeDeleteCategory(parseInt(categoryId));
   const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
-  const {isCategoryDeletionPossible, handleDeleteCategory} = useDeleteCategory();
+  const [tree, setTree] = useState<Category | null>(null);
+
+  // ui state
+  const [activeTab, setActiveTab] = useSessionStorageState(propertyTabName, 'pim_category_activeTab');
+  const [isCurrent, switchTo] = useTabBar(activeTab);
+  const [secondaryActionIsOpen, openSecondaryAction, closeSecondaryAction] = useBooleanState(false);
+  const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
+
   const {
     category,
     categoryLoadingStatus,
@@ -66,7 +77,6 @@ const CategoryEditPage: FC = () => {
     thereAreUnsavedChanges,
     saveCategory,
   } = useEditCategoryForm(parseInt(categoryId));
-  const permissionFeatureFlagIsEnabled = useFeatureFlags().isEnabled('permission');
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
@@ -198,9 +208,18 @@ const CategoryEditPage: FC = () => {
           >
             {translate('pim_common.properties')}
           </TabBar.Tab>
+          <TabBar.Tab
+            isActive={isCurrent(attributeTabName)}
+            onClick={() => {
+              setActiveTab(attributeTabName);
+              switchTo(attributeTabName);
+            }}
+          >
+            {translate('Attributes')}
+          </TabBar.Tab>
           {formData &&
             formData.permissions &&
-            permissionFeatureFlagIsEnabled &&
+            permissionsAreEnabled &&
             isGranted('pimee_enrich_category_edit_permissions') && (
               <TabBar.Tab
                 isActive={isCurrent(permissionTabName)}
@@ -228,6 +247,7 @@ const CategoryEditPage: FC = () => {
         {isCurrent(propertyTabName) && category && (
           <EditPropertiesForm category={category} formData={formData} onChangeLabel={onChangeCategoryLabel} />
         )}
+        {isCurrent(attributeTabName) && <EditAttributesForm />}
         {isCurrent(historyTabName) && (
           <HistoryPimView
             viewName="pim-category-edit-form-history"
@@ -238,7 +258,7 @@ const CategoryEditPage: FC = () => {
             }}
           />
         )}
-        {isCurrent(permissionTabName) && permissionFeatureFlagIsEnabled && (
+        {isCurrent(permissionTabName) && permissionsAreEnabled && (
           <EditPermissionsForm
             formData={formData}
             onChangePermissions={onChangePermissions}

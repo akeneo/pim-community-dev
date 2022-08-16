@@ -415,10 +415,6 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
 
         $this->assertEquals(
             $expectedProduct,
-            $this->getQuery()->fromProductIdentifier('apollon_B_false', $this->adminUserId)
-        );
-        $this->assertEquals(
-            $expectedProduct,
             $this->getQuery()->fromProductUuid(Uuid::fromString($productData['uuid']), $this->adminUserId)
         );
     }
@@ -540,14 +536,6 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             ),
         ]);
 
-        Assert::assertEquals(
-            $expectedProducts,
-            $this->getQuery()->fromProductIdentifiers(['apollon_A_false', 'apollon_B_false'],
-                $this->adminUserId,
-                null,
-                null,
-                null)
-        );
         Assert::assertEquals($expectedProducts, $this->getQuery()->fromProductUuids(
             [Uuid::fromString($productDataApollonA['uuid']), Uuid::fromString($productDataApollonB['uuid'])],
             $this->adminUserId, null, null, null)
@@ -557,7 +545,6 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
     public function test_it_throws_an_exception_when_product_is_not_found()
     {
         $this->expectException(ObjectNotFoundException::class);
-        $this->getQuery()->fromProductIdentifier('foo', $this->adminUserId);
 
         $uuid = Uuid::uuid4();
         $this->expectException(ObjectNotFoundException::class);
@@ -570,7 +557,9 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
         $this->connection->executeStatement('DELETE FROM pim_catalog_association_type');
 
         $query = $this->getQuery();
-        $product = $query->fromProductIdentifier('apollon_B_false', $this->adminUserId);
+
+        $productDataApollonB = $this->getProductData('apollon_B_false');
+        $product = $query->fromProductUuid(Uuid::fromString($productDataApollonB['uuid']), $this->adminUserId);
 
         Assert::assertSame([], $product->associations());
     }
@@ -631,7 +620,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
 
     private function getQuery(): GetConnectorProducts
     {
-        return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options');
+        return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_uuids_with_options');
     }
 
     private function getProductData(string $identifier): array

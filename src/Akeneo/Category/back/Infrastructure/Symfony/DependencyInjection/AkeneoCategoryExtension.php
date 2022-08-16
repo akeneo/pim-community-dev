@@ -25,6 +25,7 @@ class AkeneoCategoryExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('cli.yml');
+        $loader->load('feature_flags.yml');
         $loader->load('controllers.yml');
         $loader->load('entities.yml');
         $loader->load('forms.yml');
@@ -34,5 +35,17 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('serializers_standard.yml');
         $loader->load('serializers_versioning.yml');
+        $loader->load('message_buses.yml');
+        $loader->load('queries.yml');
+        $loader->load('converters.yml');
+        $loader->load('filters.yml');
+        $loader->load('handlers.yml');
+        $loader->load('appliers.yml');
+        $loader->load('factories.yml');
+        $loader->load('subscribers.yml');
+        $loader->load('validators.yml');
+
+        //TODO: delete the mock one when updater will ready to merge (GRF-221)
+        $loader->load('storage/update_mock.yml');
     }
 }

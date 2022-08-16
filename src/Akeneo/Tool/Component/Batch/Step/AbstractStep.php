@@ -26,28 +26,11 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 abstract class AbstractStep implements StepInterface
 {
-    /** @var string */
-    protected $name;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var JobRepositoryInterface */
-    protected $jobRepository;
-
-    /**
-     * @param string                   $name
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobRepositoryInterface   $jobRepository
-     */
     public function __construct(
-        $name,
-        EventDispatcherInterface $eventDispatcher,
-        JobRepositoryInterface $jobRepository
+        protected string $name,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected JobRepositoryInterface $jobRepository
     ) {
-        $this->name = $name;
-        $this->jobRepository = $jobRepository;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -72,16 +55,12 @@ abstract class AbstractStep implements StepInterface
      *
      * Do not catch exception here. It will be correctly handled by the execute() method.
      *
-     * @param StepExecution $stepExecution the current step context
-     *
      * @throws \Exception
      */
     abstract protected function doExecute(StepExecution $stepExecution);
 
     /**
      * Template method for step execution logic
-     *
-     * @param StepExecution $stepExecution
      *
      * @throws JobInterruptedException
      */
@@ -133,13 +112,7 @@ abstract class AbstractStep implements StepInterface
         $this->jobRepository->updateStepExecution($stepExecution);
     }
 
-    /**
-     * Determine the step status based on the exception.
-     * @param \Exception $e
-     *
-     * @return int
-     */
-    private static function determineBatchStatus(\Exception $e)
+    private static function determineBatchStatus(\Exception $e): int
     {
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             return BatchStatus::STOPPED;
@@ -151,12 +124,8 @@ abstract class AbstractStep implements StepInterface
     /**
      * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
      * {@link StepExecutionListener}.
-     *
-     * @param \Exception $e the cause of the failure
-     *
-     * @return ExitStatus {@link ExitStatus}
      */
-    private function getDefaultExitStatusForFailure(\Exception $e)
+    private function getDefaultExitStatusForFailure(\Exception $e): ExitStatus
     {
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
@@ -195,7 +164,7 @@ abstract class AbstractStep implements StepInterface
         $this->dispatch($event, EventInterface::INVALID_ITEM);
     }
 
-    private function dispatch(Event $event, $eventName)
+    private function dispatch(Event $event, $eventName): void
     {
         $this->eventDispatcher->dispatch($event, $eventName);
     }

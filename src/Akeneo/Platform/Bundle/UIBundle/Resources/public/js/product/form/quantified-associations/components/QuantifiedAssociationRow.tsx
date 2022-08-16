@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from 'react';
 import styled, {css} from 'styled-components';
-import {filterErrors, formatParameters, useTranslate, useSecurity, useRoute} from '@akeneo-pim-community/shared';
+import {filterErrors, formatParameters, useTranslate, useSecurity, useRouter} from '@akeneo-pim-community/shared';
 import {BrokenLinkIcon, EditIcon, CloseIcon, useTheme, Helper, Badge} from 'akeneo-design-system';
 import {ProductType, Row, QuantifiedLink, MAX_QUANTITY} from '../models';
 import {useProductThumbnail} from '../hooks';
@@ -112,7 +112,10 @@ const QuantifiedAssociationRow = ({
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const isProductModel = ProductType.ProductModel === row.productType;
-  const productEditUrl = useRoute(`pim_enrich_${row.productType}_edit`, {id: row.product?.id.toString() || ''});
+  const router = useRouter();
+  const productEditUrl = isProductModel
+    ? router.generate('pim_enrich_product_model_edit', {id: row.product?.id.toString() || ''})
+    : router.generate('pim_enrich_product_edit', {uuid: row.product?.id.toString() || ''});
   const thumbnailUrl = useProductThumbnail(row.product);
   const blueColor = useTheme().color.blue100;
   const canRemoveAssociation =

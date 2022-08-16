@@ -38,6 +38,15 @@ Akeneo\Tool\Component\Batch\Model\JobInstance:
         rawParameters:
             type: array
             column: raw_parameters
+        scheduled:
+            type: boolean
+            column: scheduled
+            options:
+                default: false
+        automation:
+            type: json
+            column: automation
+            nullable: true
         type:
             type: string
             length: 255
@@ -46,6 +55,4 @@ Akeneo\Tool\Component\Batch\Model\JobInstance:
         jobExecutions:
             targetEntity: Akeneo\Tool\Component\Batch\Model\JobExecution
             mappedBy: jobInstance
-            cascade:
-                - remove
             orphanRemoval: true

@@ -53,28 +53,14 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         ?array $localesToFilterOn
     ): ConnectorProductList {
         $result = $pqb->execute();
-        // TODO: the pqb should now return uuids
-        $identifiers = array_map(function (IdentifierResult $identifier) {
-            return $identifier->getIdentifier();
+        $uuids = array_map(function (IdentifierResult $identifier) {
+            return $this->getUuidFromIdentifierResult($identifier->getId());
         }, iterator_to_array($result));
 
-        $products = $this->fromProductIdentifiers($identifiers, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
+        $products = $this->fromProductUuids($uuids, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
 
         // We use the pqb result count in order to keep paginated research working
         return new ConnectorProductList($result->count(), $products->connectorProducts());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct
-    {
-        $products = $this->fromProductIdentifiers([$productIdentifier], $userId, null, null, null);
-        if ($products->totalNumberOfProducts() === 0) {
-            throw new ObjectNotFoundException(sprintf('Product "%s" was not found.', $productIdentifier));
-        }
-
-        return $products->connectorProducts()[0];
     }
 
     /**
@@ -149,6 +135,11 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 continue;
             }
             $row = $rows[$productUuid->toString()];
+
+            // if an unknown uuid is given, it will not have the uuid key
+            if (!\key_exists('uuid', $row)) {
+                continue;
+            }
 
             $products[] = new ConnectorProduct(
                 $row['uuid'],
@@ -293,27 +284,13 @@ SQL;
         );
     }
 
-    /**
-     * @param array<string, array> $resultByUuid
-     * @return array<string, array>
-     * @throws \Doctrine\DBAL\Exception
-     */
-    private function replaceUuidKeysByIdentifiers(array $resultByUuid): array
+    private function getUuidFromIdentifierResult(string $esId): UuidInterface
     {
-        $sql = <<<SQL
-SELECT BIN_TO_UUID(uuid) AS uuid, identifier
-FROM pim_catalog_product
-WHERE uuid IN (:uuids)
-SQL;
-
-        $uuidsAsBytes = array_map(fn (string $uuid): string => Uuid::fromString($uuid)->getBytes(), array_keys($resultByUuid));
-        $uuidsToIdentifiers = $this->connection->fetchAllKeyValue($sql, ['uuids' => $uuidsAsBytes], ['uuids' => Connection::PARAM_STR_ARRAY]);
-
-        $result = [];
-        foreach ($resultByUuid as $uuid => $object) {
-            $result[$uuidsToIdentifiers[$uuid]] = $object;
+        $matches = [];
+        if (!\preg_match('/^product_(?P<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/', $esId, $matches)) {
+            throw new \InvalidArgumentException(sprintf('Invalid Elasticsearch identifier %s', $esId));
         }
 
-        return $result;
+        return Uuid::fromString($matches['uuid']);
     }
 }

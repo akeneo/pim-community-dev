@@ -7,7 +7,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
@@ -68,7 +67,7 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
         );
 
         // Since we can't rely on product id anymore, we add a sort on the identifier
-        if (!$this->getQueryBuilder()->hasSort('identifier')) {
+        if (!$this->getQueryBuilder()->hasSort('identifier') && !$this->getQueryBuilder()->hasSort('id')) {
             $this->addSorter('identifier', Directions::ASCENDING);
         }
 

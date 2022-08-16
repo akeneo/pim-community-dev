@@ -122,3 +122,17 @@ services:
           - '%kernel.environment%'
         tags:
           - { name: kernel.event_listener, event: console.command }
+
+    Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler:
+        arguments:
+            - '@akeneo_batch.logger.batch_log_handler'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job.job_registry'
+
+    Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler:
+        arguments:
+            - '@akeneo_batch.job_repository'
+            - '@doctrine'
+            - '@akeneo_batch.job.job_registry'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job.job_parameters_validator'

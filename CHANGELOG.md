@@ -62,6 +62,14 @@
 - PIM-10528: Fix escaped special characters in page titles
 - PIM-10541: Fix SetTableValue userIntent to allow null data in enrichment Service Api
 - PIM-10543: Fix selected categories sent to listCategories
+- PIM-10561: Fix associationUserIntentFactory to cast int to string
+- PIM-10557: Fix notifications not displayed for obsolete route parameters
+- PIM-10530: Fix case issue when querying products with attribute options
+- PIM-10572: Fix product publishing when associated to a published product with a 2-way association
+- PIM-10569: Fix associate bulk action screen for quantified associations
+- PIM-10574: Fix link to product page in quantified association row
+- PIM-10548: Fix yaml reader does not display an error message when imported file does not contain the root level
+- PIM-10571: Fix infinite scroll of attribute group selector in family edit form
 
 ## Improvements
 

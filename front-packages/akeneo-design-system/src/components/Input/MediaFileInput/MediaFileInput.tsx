@@ -62,7 +62,7 @@ const MediaFileLabel = styled.div`
 `;
 
 const MediaFilePlaceholder = styled(MediaFileLabel)`
-  color: ${getColor('grey', 100)};
+  color: ${getColor('grey', 120)};
 `;
 
 const ReadOnlyIcon = styled(LockIcon)`

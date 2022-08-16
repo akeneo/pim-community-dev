@@ -1,0 +1,12 @@
+services:
+  Akeneo\Category\Application\Converter\ConverterInterface:
+    class: Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStd
+    arguments:
+      - '@Akeneo\Category\Application\Converter\FieldsRequirementChecker'
+
+  Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface:
+    class: Akeneo\Category\Application\Converter\StandardFormatToUserIntents
+    arguments:
+      - '@Akeneo\Category\Domain\UserIntent\UserIntentFactoryRegistry'
+
+  Akeneo\Category\Application\Converter\FieldsRequirementChecker: ~
