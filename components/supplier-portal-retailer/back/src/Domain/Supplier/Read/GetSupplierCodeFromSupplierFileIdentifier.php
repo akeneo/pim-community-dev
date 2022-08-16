@@ -2,7 +2,7 @@
 
 namespace Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read;
 
-interface GetCodeFromSupplierFileIdentifier
+interface GetSupplierCodeFromSupplierFileIdentifier
 {
     public function __invoke(string $supplierFileIdentifier): ?string;
 }

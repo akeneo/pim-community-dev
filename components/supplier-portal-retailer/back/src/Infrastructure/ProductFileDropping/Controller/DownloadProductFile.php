@@ -35,7 +35,7 @@ final class DownloadProductFile
                 new DownloadProductFileCommand($identifier, $user->getId())
             );
 
-            if (null === $stream) {
+            if (null === $productFileNameAndResourceFile) {
                 return new Response(null, Response::HTTP_NOT_FOUND);
             }
         } catch (SupplierFileDoesNotExist | SupplierFileIsNotDownloadable) {

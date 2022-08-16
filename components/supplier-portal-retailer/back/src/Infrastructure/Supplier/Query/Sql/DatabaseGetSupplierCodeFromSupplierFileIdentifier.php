@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetCodeFromSupplierFileIdentifier;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetCodeFromSupplierFileIdentifier implements GetCodeFromSupplierFileIdentifier
+final class DatabaseGetSupplierCodeFromSupplierFileIdentifier implements GetSupplierCodeFromSupplierFileIdentifier
 {
     public function __construct(private Connection $connection)
     {

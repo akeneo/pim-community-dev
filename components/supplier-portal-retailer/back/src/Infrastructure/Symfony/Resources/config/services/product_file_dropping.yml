@@ -37,7 +37,7 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetProductFilePathAndFileName'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile'
             - '@event_dispatcher'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetCodeFromSupplierFileIdentifier'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier'
             - '@monolog.logger.supplier_portal'
 
     # Queries
