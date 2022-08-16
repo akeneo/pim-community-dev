@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Infrastructure\Storage\InMemory;
+namespace Akeneo\Category\Domain\Model\Attribute;
 
-use Akeneo\Category\Domain\ValueObject\Attribute\Attribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\TemplateId;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateId;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -26,7 +25,7 @@ class AttributeImage extends Attribute
         AttributeOrder $order,
         AttributeIsLocalizable $isLocalizable,
         LabelCollection $labelCollection,
-        TemplateId $templateId
+        TemplateId $templateId,
     ) {
         parent::__construct(
             $uuid,
@@ -55,6 +54,25 @@ class AttributeImage extends Attribute
             $isLocalizable,
             $labelCollection,
             $templateId
+        );
+    }
+
+    /**
+     * @return array{
+     *     identifier: string,
+     *     code: string,
+     *     type: string,
+     *     order: int,
+     *     is_localizable: bool,
+     *     labels: array<string, string>,
+     *     template_identifier: string
+     * }
+     */
+    public function normalize(): array
+    {
+        return array_merge(
+            parent::normalize(),
+            []
         );
     }
 }

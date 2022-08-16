@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Domain\ValueObject\Attribute;
 
+use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Webmozart\Assert\Assert;
 
 /**
@@ -28,6 +29,9 @@ class AttributeCollection
         return new self($attributes);
     }
 
+    /**
+     * @return array<Attribute>
+     */
     public function getAttributes(): array
     {
         return $this->attributes;
@@ -37,5 +41,16 @@ class AttributeCollection
     {
         $this->attributes[] = $attribute;
         return new self($this->attributes);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function normalize(): array
+    {
+        return array_map(
+            static fn (Attribute $attribute) => $attribute->normalize(),
+            $this->attributes
+        );
     }
 }

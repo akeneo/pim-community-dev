@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Infrastructure\Storage\InMemory;
+namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\InMemory;
 
 use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
@@ -19,18 +19,32 @@ use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateId;
+use Akeneo\Test\Integration\TestCase;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class GetTemplateInMemory implements GetTemplate
+class GetTemplateInMemoryIntegration extends TestCase
 {
-    public function byUuid(string $templateId): ?Template
+    public function testGetTemplateById(): void
     {
-        $templateUuid = new TemplateId('template_uuid');
+        $templateUuid = 'template_uuid';
+        $expectedTemplate = $this->givenTemplate($templateUuid);
+        $template = $this->get(GetTemplate::class)->byUuid($templateUuid);
+        $this->assertEquals($expectedTemplate, $template);
+    }
 
-        $template = new Template(
+    protected function getConfiguration()
+    {
+        return $this->catalog->useMinimalCatalog();
+    }
+
+    private function givenTemplate(string $templateUuid): Template
+    {
+        $templateUuid = new TemplateId($templateUuid);
+
+        return new Template(
             $templateUuid,
             new TemplateCode('template_code'),
             LabelCollection::fromArray(['fr_FR' => 'template_libelle']),
@@ -70,6 +84,5 @@ class GetTemplateInMemory implements GetTemplate
                 )
             ])
         );
-        return $template;
     }
 }

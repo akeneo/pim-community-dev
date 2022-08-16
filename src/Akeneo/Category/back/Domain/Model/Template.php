@@ -7,8 +7,8 @@ namespace Akeneo\Category\Domain\Model;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\TemplateCode;
-use Akeneo\Category\Domain\ValueObject\TemplateId;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateId;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -48,5 +48,26 @@ class Template
     public function getAttributeCollection(): AttributeCollection
     {
         return $this->attributeCollection;
+    }
+
+    /**
+     * @return array{
+     *     identifier: string,
+     *     code: string,
+     *     labels: array<string, string>,
+     *     category_tree_identifier: ?int,
+     *     attributes: array<array<string, mixed>>
+     * }
+     */
+    public function normalize(): array
+    {
+        return [
+            'identifier' => (string) $this->id,
+            'code' => (string) $this->code,
+            'labels' => $this->labelCollection->normalize(),
+            'category_tree_identifier' => $this->categoryTreeId?->getId(),
+            'attributes' => $this->attributeCollection->normalize()
+        ];
+
     }
 }

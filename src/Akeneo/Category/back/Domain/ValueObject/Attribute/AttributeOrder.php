@@ -23,7 +23,7 @@ class AttributeOrder
         return new self($order);
     }
 
-    public function getOrder(): int
+    public function intValue(): int
     {
         return $this->order;
     }

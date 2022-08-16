@@ -8,6 +8,7 @@ use Akeneo\Category\Application\Query\GetTemplate;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -31,15 +32,11 @@ class GetTemplateController
             throw new AccessDeniedException();
         }
 
-        // TODO : get template by identifier
-        $template  = $this->getTemplate->byUuid($templateUuid);
+        $template = $this->getTemplate->byUuid($templateUuid);
         if (null === $template) {
             throw new NotFoundHttpException();
         }
 
-        // TODO : normalize template
-
-        return new JsonResponse("getTemplateController");
+        return new JsonResponse($template->normalize(), Response::HTTP_OK);
     }
-
 }

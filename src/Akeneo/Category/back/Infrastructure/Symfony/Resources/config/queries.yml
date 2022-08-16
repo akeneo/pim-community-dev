@@ -5,6 +5,6 @@ services:
       - '@database_connection'
 
   Akeneo\Category\Application\Query\GetTemplate:
-    class: Akeneo\Category\Infrastructure\Storage\SQL\GetTemplateSql
+    class: Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory
     arguments:
       - '@database_connection'
