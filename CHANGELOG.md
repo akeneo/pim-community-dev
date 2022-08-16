@@ -63,7 +63,8 @@
 - PIM-10547: Fix issue with duplicated linked records in a product
 - PIM-10573: Fix tailored export does not handle write into multiple file when batch size is a multiple of linesPerFile
 - PIM-10546: Fix DQI is not calculated on product models with table attribute all rows required for completeness
-- PIM-10548: Fix rule engine does not display an error message when imported file does not contain the root level 
+- PIM-10548: Fix rule engine does not display an error message when imported file does not contain the root level
+- PIM-10579: Fix Reference entity and asset normalizers and factory to handle disordered indexed arrays
 
 ## Improvements
 

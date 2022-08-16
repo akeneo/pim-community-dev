@@ -31,6 +31,24 @@ class AssetCollectionValueFactorySpec extends ObjectBehavior
         $assetCollectionValue->getData()[1]->normalize()->shouldBe('code2');
     }
 
+    function it_creates_an_asset_collection_value_checking_the_data_with_disordered_codes()
+    {
+        $assetCollectionValue = $this->createByCheckingData(
+            $this->buildAttribute('attribute_code'),
+            null,
+            null,
+            ["0" => 'code1', "2" => "code2"]
+        );
+
+        $assetCollectionValue->shouldBeAnInstanceOf(AssetCollectionValue::class);
+        $assetCollectionValue->getAttributeCode()->shouldBe('attribute_code');
+        $assetCollectionValue->getData()->shouldHaveCount(2);
+        $assetCollectionValue->getData()[0]->shouldBeAnInstanceOf(AssetCode::class);
+        $assetCollectionValue->getData()[0]->normalize()->shouldBe('code1');
+        $assetCollectionValue->getData()[1]->shouldBeAnInstanceOf(AssetCode::class);
+        $assetCollectionValue->getData()[1]->normalize()->shouldBe('code2');
+    }
+
     function it_throws_an_error_when_one_of_values_is_not_a_atring()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [
