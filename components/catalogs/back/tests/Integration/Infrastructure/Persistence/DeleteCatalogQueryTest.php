@@ -23,7 +23,7 @@ class DeleteCatalogQueryTest extends IntegrationTestCase
     private ?Connection $connection;
     private ?CommandBus $commandBus;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
