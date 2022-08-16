@@ -20,16 +20,18 @@ final class DownloadProductFile
     public function __invoke(string $identifier): Response
     {
         try {
-            $stream = ($this->downloadProductFileHandler)(new DownloadProductFileCommand($identifier));
+            $productFileNameAndResourceFile = ($this->downloadProductFileHandler)(
+                new DownloadProductFileCommand($identifier)
+            );
         } catch (SupplierFileDoesNotExist | SupplierFileIsNotDownloadable) {
             return new Response(null, Response::HTTP_NOT_FOUND);
         }
 
         $headers['Content-Disposition'] = sprintf(
             'attachment; filename="%s.xlsx"',
-            $identifier,
+            $productFileNameAndResourceFile->originalFilename,
         );
 
-        return new StreamedFileResponse($stream, Response::HTTP_OK, $headers);
+        return new StreamedFileResponse($productFileNameAndResourceFile->file, Response::HTTP_OK, $headers);
     }
 }

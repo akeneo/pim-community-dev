@@ -8,14 +8,15 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProd
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileIsNotDownloadable;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilePath;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetProductFilePathAndFileName;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFileNameAndResourceFile;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class DownloadProductFileHandler
 {
     public function __construct(
-        private GetSupplierFilePath $getSupplierFilePath,
+        private GetProductFilePathAndFileName $getProductFilePathAndFileName,
         private DownloadStoredProductFile $downloadStoredProductFile,
         private EventDispatcherInterface $eventDispatcher,
         private LoggerInterface $logger,
@@ -25,19 +26,20 @@ final class DownloadProductFileHandler
     //@phpstan-ignore-next-line
     public function __invoke(DownloadProductFile $query)
     {
-        $supplierFilePath = ($this->getSupplierFilePath)($query->supplierFileIdentifier);
-        if (null === $supplierFilePath) {
+        $productFilePathAndFileName = ($this->getProductFilePathAndFileName)($query->supplierFileIdentifier);
+        if (null === $productFilePathAndFileName) {
             throw new SupplierFileDoesNotExist();
         }
 
         try {
-            //FlySystem can throw exceptions that do not extend \Exception but \Throwable, wich is one level higher
-            $supplierFileStream = ($this->downloadStoredProductFile)($supplierFilePath);
+            // FlySystem can throw exceptions that do not extend \Exception but \Throwable, which is one level higher
+            $productFileStream = ($this->downloadStoredProductFile)($productFilePathAndFileName->path);
         } catch (\Throwable $e) {
             $this->logger->error('Supplier file could not be downloaded', [
                 'data' => [
                     'fileIdentifier' => $query->supplierFileIdentifier,
-                    'path' => $supplierFilePath,
+                    'filename' => $productFilePathAndFileName->originalFilename,
+                    'path' => $productFilePathAndFileName->path,
                     'error' => $e->getMessage(),
                 ],
             ]);
@@ -46,6 +48,6 @@ final class DownloadProductFileHandler
 
         $this->eventDispatcher->dispatch(new ProductFileDownloaded($query->supplierFileIdentifier));
 
-        return $supplierFileStream;
+        return new ProductFileNameAndResourceFile($productFilePathAndFileName->originalFilename, $productFileStream);
     }
 }
