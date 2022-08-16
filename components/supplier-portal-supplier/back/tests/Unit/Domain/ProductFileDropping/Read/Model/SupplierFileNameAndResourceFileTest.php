@@ -12,17 +12,15 @@ final class SupplierFileNameAndResourceFileTest extends TestCase
     /** @test */
     public function itOnlyContainsTheFilenameAndTheResourceFile(): void
     {
-        $resetPasswordRequestedReflectionClass = new \ReflectionClass(SupplierFileNameAndResourceFile::class);
-        $properties = $resetPasswordRequestedReflectionClass->getProperties();
+        $productFileNameAndResourceFileReflectionClass = new \ReflectionClass(
+            SupplierFileNameAndResourceFile::class,
+        );
+        $properties = $productFileNameAndResourceFileReflectionClass->getProperties();
+        $fakeResource = new \stdClass();
+        $productFileNameAndResourceFile = new SupplierFileNameAndResourceFile('file.xlsx', $fakeResource);
 
         static::assertCount(2, $properties);
-        static::assertSame(
-            'originalFilename',
-            $properties[0]->getName(),
-        );
-        static::assertSame(
-            'file',
-            $properties[1]->getName(),
-        );
+        static::assertSame('file.xlsx', $productFileNameAndResourceFile->originalFilename);
+        static::assertSame($fakeResource, $productFileNameAndResourceFile->file);
     }
 }
