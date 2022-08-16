@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\UserManagement\Domain\Model;
+namespace Akeneo\UserManagement\back\Domain\Model;
 
 class Group
 {

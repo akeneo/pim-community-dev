@@ -1,50 +1,51 @@
 <?php
 
-namespace AkeneoTest\UserManagement\Integration\Infrastructure\Storage;
+namespace Akeneo\UserManagement\back\tests\Integration\API\UserGroup;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\UserManagement\Domain\Model\Group;
-use Akeneo\UserManagement\Infrastructure\Storage\SqlFindUserGroups;
+use Akeneo\UserManagement\back\API\UserGroup\ListUserGroupQuery;
+use Akeneo\UserManagement\back\API\UserGroup\UserGroup;
+use Akeneo\UserManagement\back\Application\Handler\ListUserGroupHandler;
 use PHPUnit\Framework\Assert;
 
-class SqlFindUserGroupsIntegration extends TestCase
+class ListUserGroupQueryIntegration extends TestCase
 {
     public function testItListsTheUserGroups(): void
     {
-        $userGroups = ($this->get(SqlFindUserGroups::class))();
+        $userGroups = ($this->get(ListUserGroupHandler::class))(new ListUserGroupQuery());
 
         Assert::assertCount(4, $userGroups);
-        Assert::containsOnlyInstancesOf(Group::class);
+        Assert::containsOnlyInstancesOf(UserGroup::class);
     }
 
     public function testItFiltersTheUserGroupsOnLabel(): void
     {
-        $userGroups = ($this->get(SqlFindUserGroups::class))('support');
+        $userGroups = ($this->get(ListUserGroupHandler::class))(new ListUserGroupQuery('support'));
 
         Assert::assertCount(1, $userGroups);
-        Assert::containsOnlyInstancesOf(Group::class);
+        Assert::containsOnlyInstancesOf(UserGroup::class);
 
-        Assert::assertMatchesRegularExpression('/it support/i', $userGroups[0]->getName());
+        Assert::assertMatchesRegularExpression('/it support/i', $userGroups[0]->getLabel());
     }
 
     public function testItListsTheUserGroupsWithPagination(): void
     {
-        $userGroups = ($this->get(SqlFindUserGroups::class))(
+        $userGroups = ($this->get(ListUserGroupHandler::class))(new ListUserGroupQuery(
             null,
             null,
             2
-        );
+        ));
 
         Assert::assertCount(2, $userGroups);
         Assert::assertLessThan(2, $userGroups[0]->getId());
         Assert::assertEquals(2, $userGroups[1]->getId());
 
-        $userGroups = ($this->get(SqlFindUserGroups::class))(
+        $userGroups = ($this->get(ListUserGroupHandler::class))(new ListUserGroupQuery(
             null,
             2,
             2
-        );
+        ));
 
         Assert::assertCount(2, $userGroups);
         Assert::assertGreaterThan(2, $userGroups[0]->getId());
@@ -55,5 +56,4 @@ class SqlFindUserGroupsIntegration extends TestCase
     {
         return $this->catalog->useMinimalCatalog();
     }
-
 }
