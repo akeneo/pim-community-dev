@@ -8,21 +8,17 @@ type Props = {
 
 const ErrorHelpers: FC<PropsWithChildren<Props>> = ({errors}) => {
     const errorHelpers = Object.keys(errors)
+        .filter(key => errors[key] !== undefined)
         .map(key => {
-            if (errors[key] === undefined) {
-                return null;
-            }
-
             return (
                 <Helper key={key} level='error'>
                     {errors[key]}
                 </Helper>
             );
-        })
-        .filter(element => null !== element);
+        });
 
     if (0 === errorHelpers.length) {
-        return <></>;
+        return null;
     }
 
     return <>{errorHelpers}</>;

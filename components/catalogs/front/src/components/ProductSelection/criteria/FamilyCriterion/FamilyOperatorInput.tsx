@@ -29,30 +29,28 @@ const FamilyOperatorInput: FC<Props> = ({state, onChange, isInvalid}) => {
     );
 
     return (
-        <>
-            <SelectInput
-                emptyResultLabel=''
-                openLabel=''
-                value={state.operator}
-                onChange={handleChange}
-                clearable={false}
-                invalid={isInvalid}
-                data-testid='operator'
-            >
-                <SelectInput.Option value={Operator.IS_EMPTY} title={translateOperator(Operator.IS_EMPTY)}>
-                    {translateOperator(Operator.IS_EMPTY)}
-                </SelectInput.Option>
-                <SelectInput.Option value={Operator.IS_NOT_EMPTY} title={translateOperator(Operator.IS_NOT_EMPTY)}>
-                    {translateOperator(Operator.IS_NOT_EMPTY)}
-                </SelectInput.Option>
-                <SelectInput.Option value={Operator.IN_LIST} title={translateOperator(Operator.IN_LIST)}>
-                    {translateOperator(Operator.IN_LIST)}
-                </SelectInput.Option>
-                <SelectInput.Option value={Operator.NOT_IN_LIST} title={translateOperator(Operator.NOT_IN_LIST)}>
-                    {translateOperator(Operator.NOT_IN_LIST)}
-                </SelectInput.Option>
-            </SelectInput>
-        </>
+        <SelectInput
+            emptyResultLabel=''
+            openLabel=''
+            value={state.operator}
+            onChange={handleChange}
+            clearable={false}
+            invalid={isInvalid}
+            data-testid='operator'
+        >
+            <SelectInput.Option value={Operator.IS_EMPTY} title={translateOperator(Operator.IS_EMPTY)}>
+                {translateOperator(Operator.IS_EMPTY)}
+            </SelectInput.Option>
+            <SelectInput.Option value={Operator.IS_NOT_EMPTY} title={translateOperator(Operator.IS_NOT_EMPTY)}>
+                {translateOperator(Operator.IS_NOT_EMPTY)}
+            </SelectInput.Option>
+            <SelectInput.Option value={Operator.IN_LIST} title={translateOperator(Operator.IN_LIST)}>
+                {translateOperator(Operator.IN_LIST)}
+            </SelectInput.Option>
+            <SelectInput.Option value={Operator.NOT_IN_LIST} title={translateOperator(Operator.NOT_IN_LIST)}>
+                {translateOperator(Operator.NOT_IN_LIST)}
+            </SelectInput.Option>
+        </SelectInput>
     );
 };
 
