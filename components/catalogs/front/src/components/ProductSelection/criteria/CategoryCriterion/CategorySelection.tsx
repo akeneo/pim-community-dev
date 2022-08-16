@@ -74,7 +74,7 @@ const CategorySelection: FC<Props> = ({selectedCategories, onRemove, isInvalid, 
     return (
         <TagContainer invalid={isInvalid} onClick={handleClick} data-testid='category-selection'>
             {selectedCategories.map(category => (
-                <CategoryTag key={category.id} data-testid={category.code}>
+                <CategoryTag key={category.code} data-testid={category.code}>
                     <RemoveTagIcon
                         onClick={() => removeTag(category.code)}
                         title={translate('akeneo_catalogs.product_selection.criteria.category.remove')}
