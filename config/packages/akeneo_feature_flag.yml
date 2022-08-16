@@ -10,7 +10,6 @@ akeneo_feature_flag:
         - { feature: 'new_shared_catalog_branding', service: 'akeneo.shared_catalog.feature.new_shared_catalog_branding' }
         - { feature: 'app_developer_mode', service: 'akeneo_connectivity.connection.app_developer_mode.feature' }
         - { feature: 'supplier_portal', service: 'akeneo.supplier_portal.feature' }
-        - { feature: 'supplier_portal_contributor_authentication', service: 'akeneo.supplier_portal_contributor_authentication.feature' }
         - { feature: 'permission', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'product_rules', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'asset_manager', service: 'akeneo.feature_flag.service.only_serenity_feature' }

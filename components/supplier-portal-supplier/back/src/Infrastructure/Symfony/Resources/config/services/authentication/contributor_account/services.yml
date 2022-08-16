@@ -1,11 +1,4 @@
 services:
-    #feature flag
-    akeneo.supplier_portal_contributor_authentication.feature:
-        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
-        arguments:
-            - '%env(bool:FLAG_SUPPLIER_PORTAL_CONTRIBUTOR_AUTHENTICATION_ENABLED)%'
-        public: true
-
     #Repositories
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Repository\Sql\DatabaseRepository
@@ -26,7 +19,6 @@ services:
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler'
-            - '@feature_flags'
         tags:
             - 'kernel.event_subscriber'
 
