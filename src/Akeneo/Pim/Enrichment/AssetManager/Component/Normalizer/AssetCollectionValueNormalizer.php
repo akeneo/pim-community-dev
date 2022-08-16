@@ -35,9 +35,9 @@ class AssetCollectionValueNormalizer extends AbstractProductValueNormalizer impl
     protected function getNormalizedData(ValueInterface $value): array
     {
         $assets = $value->getData();
-        $assetsCode = array_map(function (AssetCode $assetCode) {
+        $assetsCode = \array_values(\array_map(function (AssetCode $assetCode) {
             return $assetCode->__toString();
-        }, $assets);
+        }, $assets));
 
         return $assetsCode;
     }

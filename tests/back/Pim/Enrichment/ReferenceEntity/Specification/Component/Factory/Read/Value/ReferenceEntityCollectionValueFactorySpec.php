@@ -62,6 +62,13 @@ final class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior
         $value->shouldBeLike(ReferenceEntityCollectionValue::value('an_attribute', [RecordCode::fromString('blue'), RecordCode::fromString('green')]));
     }
 
+    public function it_creates_a_non_localizable_and_non_scopable_value_with_disordered_codes()
+    {
+        $attribute = $this->getAttribute(false, false);
+        $value = $this->createWithoutCheckingData($attribute, null, null, ['0' => 'blue', '2' => 'green']);
+        $value->shouldBeLike(ReferenceEntityCollectionValue::value('an_attribute', [RecordCode::fromString('blue'), RecordCode::fromString('green')]));
+    }
+
     public function it_throws_an_exception_when_a_record_code_is_invalid()
     {
         $this->shouldThrow(PropertyException::class)

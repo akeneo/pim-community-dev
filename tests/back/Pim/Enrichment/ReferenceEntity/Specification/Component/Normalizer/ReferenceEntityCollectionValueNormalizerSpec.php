@@ -113,4 +113,48 @@ class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior {
             ]
         );
     }
+
+    function it_normalize_a_reference_data_collection_product_value_with_disordered_codes(
+        ReferenceEntityCollectionValue $designerValue,
+        Record $dyson,
+        Record $starck,
+        RecordCode $dysonCode,
+        RecordCode $starckCode,
+        GetAttributes $getAttributes
+    ) {
+        $designerValue->getAttributeCode()->willReturn('designer');
+        $designerValue->getLocaleCode()->willReturn(null);
+        $designerValue->getScopeCode()->willReturn(null);
+
+        $getAttributes->forCode('designer')->willReturn(new Attribute(
+            'designer',
+            'pim_reference_data_multiselect',
+            [],
+            false,
+            false,
+            null,
+            null,
+            false,
+            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS,
+            []
+        ));
+
+        $dysonCode->__toString()->willReturn('dyson');
+        $dyson->getCode()->willReturn($dysonCode);
+        $starckCode->__toString()->willReturn('starck');
+        $starck->getCode()->willReturn($starckCode);
+
+        $designerValue->getData()->willReturn(['0' => $starckCode, '2' => $dysonCode]);
+
+        $this->normalize($designerValue,
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+            [
+                'designer-reference_data_options' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => ['starck', 'dyson'],
+                    ],
+                ],
+            ]
+        );
+    }
 }
