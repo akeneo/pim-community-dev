@@ -48,6 +48,8 @@ akeneo_catalogs:
                 label: Completeness
             category:
                 label: Category
+                remove: Remove category
+                category_tree: Category tree
         operators:
             "STARTS WITH": starts with
             "ENDS WITH": ends with
