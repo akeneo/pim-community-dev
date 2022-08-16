@@ -64,15 +64,16 @@ class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInterface
             WHERE uuid = :uuid
         SQL;
 
-        $identifier = (string) $this->connection->fetchOne($sql, [
+        /** @var mixed|false $identifier */
+        $identifier = $this->connection->fetchOne($sql, [
             'uuid' => Uuid::fromString($uuid)->getBytes(),
         ]);
 
-        if (!$identifier) {
+        if (false === $identifier) {
             throw new \InvalidArgumentException('Unknown uuid');
         }
 
-        return $identifier;
+        return (string) $identifier;
     }
 
     /**
@@ -95,7 +96,7 @@ class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInterface
             throw new \InvalidArgumentException('Unknown catalog');
         }
 
-        if (!\is_array($criteria = \json_decode($raw, true))) {
+        if (!\is_array($criteria = \json_decode($raw, true, 512, JSON_THROW_ON_ERROR))) {
             throw new \LogicException('Invalid JSON in product_selection_criteria column');
         }
 

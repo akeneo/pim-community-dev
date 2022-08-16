@@ -18,7 +18,7 @@ class GetProductIdentifiersQueryTest extends IntegrationTestCase
     private ?GetProductIdentifiersQuery $query;
     private ?Connection $connection;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

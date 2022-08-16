@@ -43,6 +43,7 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('appliers.yml');
         $loader->load('factories.yml');
         $loader->load('subscribers.yml');
+        $loader->load('validators.yml');
         $loader->load('storage/save.yml');
         $loader->load('storage/base.yml');
         $loader->load('storage/translations.yml');

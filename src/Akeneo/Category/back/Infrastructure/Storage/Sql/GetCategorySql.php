@@ -9,6 +9,7 @@ use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -44,15 +45,21 @@ class GetCategorySql implements GetCategoryInterface
         $sqlWhere = $condition['sqlWhere'];
 
         $sqlQuery = <<<SQL
+            WITH translation as (
+                SELECT category.code, JSON_OBJECTAGG(translation.locale, translation.label) as translations
+                FROM pim_catalog_category category
+                JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
+                WHERE $sqlWhere
+            )
             SELECT
                 category.id,
                 category.code, 
                 category.parent_id,
-                JSON_OBJECTAGG(translation.locale, translation.label) as translations,
+                translation.translations,
                 category.value_collection
             FROM 
                 pim_catalog_category category
-                JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
+                JOIN translation ON translation.code = category.code
             WHERE $sqlWhere
         SQL;
 
@@ -62,11 +69,18 @@ class GetCategorySql implements GetCategoryInterface
             $condition['types']
         )->fetchAssociative();
 
+        if (!$result) {
+            return null;
+        }
+
         return new Category(
             new CategoryId((int)$result['id']),
             new Code($result['code']),
             LabelCollection::fromArray(json_decode($result['translations'], true)),
-            $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null
+            $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null,
+            $result['value_collection'] ?
+                ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null,
+            null
         );
     }
 }
