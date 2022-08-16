@@ -175,21 +175,16 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                         );
                     }
 
-                    if (null === $attributeSet = $familyVariant->getVariantAttributeSet($attributeSetData['level'])) {
-                        $attributeSet = $this->attributeSetFactory->create();
-                        $attributeSet->setLevel($attributeSetData['level']);
-
-                        $familyVariant->addVariantAttributeSet($attributeSet);
-                    }
-
                     if (isset($attributeSetData['axes'])) {
-                        $attributeSet->setAxes(
+                        $familyVariant->updateAxesForLevel(
+                            $attributeSetData['level'],
                             $this->getAttributes($attributeSetData['axes'], $attributeSetData['level'])
                         );
                     }
 
                     if (isset($attributeSetData['attributes'])) {
-                        $attributeSet->setAttributes(
+                        $familyVariant->updateAttributesForLevel(
+                            $attributeSetData['level'],
                             $this->getAttributes($attributeSetData['attributes'], $attributeSetData['level'])
                         );
                     }

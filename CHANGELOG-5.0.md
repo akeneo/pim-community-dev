@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-10512: Fix empty group labels format for attribute endpoints
+- PIM-10555 [Backport PIM-10462]: Fix ComputeFamilyVariantStructureChanges job not launched after import
 
 # 5.0.106 (2022-08-08)
 
