@@ -21,16 +21,16 @@ final class PermissionCollection
 
     public function isViewable(): bool
     {
-        return $this->permissions['view_items'] === '1';
+        return '1' === $this->permissions['view_items'];
     }
 
     public function isEditable(): bool
     {
-        return $this->permissions['edit_items'] === '1';
+        return '1' === $this->permissions['edit_items'];
     }
 
     public function isOwned(): bool
     {
-        return $this->permissions['own_items'] === '1';
+        return '1' === $this->permissions['own_items'];
     }
 }

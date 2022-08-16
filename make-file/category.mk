@@ -5,7 +5,7 @@ category-lint-back: #Doc: launch PHPStan for category bounded context
 
 .PHONY: category-lint-fix-back
 category-lint-fix-back: #Doc: launch PHPStan for category bounded context
-	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --config=.php_cs.php
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=src/Akeneo/Category/back/tests/.php_cs.php
 
 .PHONY: category-coupling-back
 category-coupling-back: #Doc: launch coupling detector for category bounded context
