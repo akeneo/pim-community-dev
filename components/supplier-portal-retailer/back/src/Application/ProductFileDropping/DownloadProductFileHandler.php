@@ -50,6 +50,10 @@ final class DownloadProductFileHandler
 
         $supplierCode = ($this->getCodeFromSupplierFileIdentifier)($query->supplierFileIdentifier);
 
+        if (null === $supplierCode) {
+            return null;
+        }
+
         $this->eventDispatcher->dispatch(new ProductFileDownloaded(
             $query->supplierFileIdentifier,
             $supplierCode,
