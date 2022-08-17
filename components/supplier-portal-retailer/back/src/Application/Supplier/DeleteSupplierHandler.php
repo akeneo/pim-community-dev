@@ -34,7 +34,7 @@ final class DeleteSupplierHandler
         );
 
         foreach ($supplierWithContributors->contributors as $contributorEmail) {
-            $this->eventDispatcher->dispatch(new ContributorDeleted($supplierIdentifier, $contributorEmail['email']));
+            $this->eventDispatcher->dispatch(new ContributorDeleted($supplierIdentifier, $contributorEmail));
         }
     }
 }
