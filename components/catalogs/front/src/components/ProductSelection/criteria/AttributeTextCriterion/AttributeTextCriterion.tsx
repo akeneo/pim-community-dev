@@ -8,6 +8,7 @@ import {ErrorHelpers} from '../../components/ErrorHelpers';
 import {AttributeTextOperatorInput} from './AttributeTextOperatorInput';
 import {AttributeTextValueInput} from './AttributeTextValueInput';
 import {ScopeInput} from '../../components/ScopeInput';
+import {LocaleInput} from '../../components/LocaleInput';
 
 const Fields = styled.div`
     display: flex;
@@ -27,7 +28,7 @@ const AttributeTextCriterion: FC<CriterionModule<AttributeTextCriterionState>> =
     onChange,
     onRemove,
 }) => {
-const {data: attribute} = useAttribute(state.field);
+    const {data: attribute} = useAttribute(state.field);
     const hasError = Object.values(errors).filter(n => n).length > 0;
 
     return (
@@ -41,9 +42,19 @@ const {data: attribute} = useAttribute(state.field);
                     <Field>
                         <AttributeTextValueInput state={state} onChange={onChange} isInvalid={!!errors.value} />
                     </Field>
-                    {attribute.scopable && (
+                    {attribute?.scopable && (
                         <Field>
                             <ScopeInput state={state} onChange={onChange} isInvalid={!!errors.scope} />
+                        </Field>
+                    )}
+                    {attribute?.localizable && (
+                        <Field>
+                            <LocaleInput
+                                state={state}
+                                onChange={onChange}
+                                isInvalid={!!errors.locale}
+                                isScopable={attribute.scopable}
+                            />
                         </Field>
                     )}
                 </Fields>

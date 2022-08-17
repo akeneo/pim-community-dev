@@ -6,9 +6,9 @@ import {useChannel} from '../hooks/useChannel';
 import {useChannelsWithSelectedChannel} from '../hooks/useChannelsWithSelectedChannel';
 
 type ScopableCriterionState = {
-    scope: string|null;
-    locale: string|null;
-}
+    scope: string | null;
+    locale: string | null;
+};
 
 type Props = {
     state: ScopableCriterionState;
