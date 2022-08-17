@@ -23,6 +23,8 @@ services:
     Akeneo\SupplierPortal\Retailer\Application\Supplier\DeleteSupplierHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Repository'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierWithContributors'
+            - '@event_dispatcher'
             - '@monolog.logger.supplier_portal'
 
     # Queries
