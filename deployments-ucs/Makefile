@@ -217,7 +217,7 @@ $(INSTANCE_DIR):
 
 .PHONY: deploy_tenant_helm
 deploy_tenant_helm:
-	yq w -i $(DEPLOYMENT_DIR)/tenant/Chart.yaml version 0.0.0-$(IMAGE_TAG)
+	#yq w -i $(DEPLOYMENT_DIR)/tenant/Chart.yaml version 0.0.0-$(IMAGE_TAG)
 	yq w -i $(DEPLOYMENT_DIR)/tenant/Chart.yaml appVersion $(IMAGE_TAG)
 	helm3 repo add akeneo-charts gs://akeneo-charts/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
 	helm3 repo update 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0

@@ -627,13 +627,13 @@ jobs:
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/values.yaml pim.jobsPrefix "${CIRCLE_BRANCH_LOWER}-pim-job"
 
               ## Charts
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/Chart.yaml version 0.0.0-${IMAGE_TAG}
+              #yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/Chart.yaml version 0.0.0-${IMAGE_TAG}
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/Chart.yaml appVersion ${IMAGE_TAG}
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/Chart.yaml version 0.0.0-${IMAGE_TAG}
+              #yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/Chart.yaml version 0.0.0-${IMAGE_TAG}
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-daemon/Chart.yaml appVersion ${IMAGE_TAG}
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/Chart.yaml version 0.0.0-${IMAGE_TAG}
+              #yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/Chart.yaml version 0.0.0-${IMAGE_TAG}
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-web/Chart.yaml appVersion ${IMAGE_TAG}
-              yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-job/Chart.yaml version 0.0.0-${IMAGE_TAG}
+              #yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-job/Chart.yaml version 0.0.0-${IMAGE_TAG}
               yq w -i /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-job/Chart.yaml appVersion ${IMAGE_TAG}
 
               ## ArgoCD
@@ -818,7 +818,6 @@ jobs:
               ## {INSTANCE_NAME}-pim-api-ingress.yaml
               sed -i "s#{{ required \"\.Values\.common\.pimMasterDomain\" \.Values\.common\.pimMasterDomain | quote }}#${INSTANCE_NAME}\.${GOOGLE_DOMAIN}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
               sed -i "s#pim-api-external-{{ \.Values\.global\.extraLabels\.instanceName }}#pim-api-external-${INSTANCE_NAME}#" /tmp/ee-deployment/deployments-ucs/pim-saas-service/pim-api/templates/${INSTANCE_NAME}-pim-api-ingress.yaml
-
               git add deployments-ucs/pim-saas-service
               git commit -m "Add ingresses for ${INSTANCE_NAME}"
 
