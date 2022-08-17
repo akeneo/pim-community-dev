@@ -4,6 +4,7 @@ services:
         public: true
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler'
+            - '@security.token_storage'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\AllSupplierFilesList:
         public: true
@@ -36,6 +37,7 @@ services:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetProductFilePathAndFileName'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile'
             - '@event_dispatcher'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier'
             - '@monolog.logger.supplier_portal'
 
     # Queries

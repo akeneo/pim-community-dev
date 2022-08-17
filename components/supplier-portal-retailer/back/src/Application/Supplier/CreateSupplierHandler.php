@@ -55,6 +55,7 @@ final class CreateSupplierHandler
             $this->eventDispatcher->dispatch(new ContributorAdded(
                 Identifier::fromString($supplierIdentifier),
                 $contributorEmail,
+                $createSupplier->code,
             ));
         }
 
@@ -63,8 +64,7 @@ final class CreateSupplierHandler
             [
                 'data' => [
                     'identifier' => $supplierIdentifier,
-                    'code' => $createSupplier->code,
-                    'supplier_label' => $createSupplier->label,
+                    'supplier_code' => $createSupplier->code,
                     'contributor_emails' => $createSupplier->contributorEmails,
                     'metric_key' => 'supplier_created',
                 ],

@@ -18,15 +18,21 @@ final class LogOnProductFileDownloadedTest extends TestCase
         $sut = new LogOnProductFileDownloaded($logger);
 
         $sut->logOnProductFileDownloaded(
-            new ProductFileDownloaded('e77c4413-a6d5-49e6-a102-8042cf5bd439'),
+            new ProductFileDownloaded(
+                'e77c4413-a6d5-49e6-a102-8042cf5bd439',
+                'los_pollos_hermanos',
+                1,
+            ),
         );
 
         static::assertTrue($logger->hasInfo([
             'message' => 'Product file downloaded.',
             'context' => [
                 'data' => [
-                    'supplier_file_identifier' => 'e77c4413-a6d5-49e6-a102-8042cf5bd439',
                     'metric_key' => 'product_file_downloaded',
+                    'supplier_code' => 'los_pollos_hermanos',
+                    'supplier_file_identifier' => 'e77c4413-a6d5-49e6-a102-8042cf5bd439',
+                    'user_id' => 1,
                 ],
             ],
         ]));

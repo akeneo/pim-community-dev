@@ -69,7 +69,7 @@ final class CreateSupplierFileHandler
                 'data' => [
                     'identifier' => (string) $supplierFileIdentifier,
                     'supplier_identifier' => $supplier->identifier,
-                    'supplier_label' => $supplier->label,
+                    'supplier_code' => $supplier->code,
                     'filename' => $createSupplierFile->originalFilename,
                     'path' => $storedProductFilePath,
                     'uploaded_by_contributor' => $createSupplierFile->uploadedByContributor,

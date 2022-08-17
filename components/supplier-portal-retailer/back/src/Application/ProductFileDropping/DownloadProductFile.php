@@ -6,7 +6,9 @@ namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping;
 
 final class DownloadProductFile
 {
-    public function __construct(public string $supplierFileIdentifier)
-    {
+    public function __construct(
+        public string $supplierFileIdentifier,
+        public int $userId,
+    ) {
     }
 }

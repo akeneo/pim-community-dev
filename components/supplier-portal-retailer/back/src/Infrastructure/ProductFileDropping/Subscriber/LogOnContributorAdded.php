@@ -30,8 +30,9 @@ final class LogOnContributorAdded implements EventSubscriberInterface
             ),
             [
                 'data' => [
-                    'identifier' => $contributorAdded->supplierIdentifier(),
+                    'identifier' => (string) $contributorAdded->supplierIdentifier(),
                     'metric_key' => 'contributor_added',
+                    'supplier_code' => $contributorAdded->supplierCode(),
                 ],
             ],
         );
