@@ -10,7 +10,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateId;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -25,7 +25,7 @@ abstract class Attribute
         protected AttributeOrder $order,
         protected AttributeIsLocalizable $isLocalizable,
         protected LabelCollection $labelCollection,
-        protected TemplateId $templateId
+        protected TemplateUuid $templateId
     ) {
     }
 
@@ -83,7 +83,7 @@ abstract class Attribute
         return $this->labelCollection;
     }
 
-    public function getTemplateId(): TemplateId
+    public function getTemplateId(): TemplateUuid
     {
         return $this->templateId;
     }

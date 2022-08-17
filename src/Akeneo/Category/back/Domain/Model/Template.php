@@ -8,7 +8,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateId;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -17,7 +17,7 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateId;
 class Template
 {
     public function __construct(
-        private TemplateId $id,
+        private TemplateUuid $uuid,
         private TemplateCode $code,
         private LabelCollection $labelCollection,
         private ?CategoryId $categoryTreeId,
@@ -25,9 +25,9 @@ class Template
     ) {
     }
 
-    public function getId(): TemplateId
+    public function getUuid(): TemplateUuid
     {
-        return $this->id;
+        return $this->uuid;
     }
 
     public function getCode(): TemplateCode
@@ -62,7 +62,7 @@ class Template
     public function normalize(): array
     {
         return [
-            'identifier' => (string) $this->id,
+            'identifier' => (string) $this->uuid,
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),
             'category_tree_identifier' => $this->categoryTreeId?->getId(),

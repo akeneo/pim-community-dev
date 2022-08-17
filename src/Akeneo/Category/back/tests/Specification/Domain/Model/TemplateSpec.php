@@ -17,7 +17,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateId;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -28,7 +28,7 @@ class TemplateSpec extends ObjectBehavior
 {
     public function let()
     {
-        $templateUuid = new TemplateId('template_uuid');
+        $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
         $this->beConstructedWith(
             $templateUuid,
             new TemplateCode('template_code'),
@@ -36,7 +36,7 @@ class TemplateSpec extends ObjectBehavior
             new CategoryId(1),
             AttributeCollection::fromArray([
                 AttributeText::create(
-                    new AttributeUuid('attribute_text_uuid'),
+                    AttributeUuid::fromString('4873080d-32a3-42a7-ae5c-1be518e40f3d'),
                     new AttributeCode('attribute_text_code'),
                     AttributeOrder::fromInteger(1),
                     AttributeIsLocalizable::fromBoolean(true),
@@ -44,7 +44,7 @@ class TemplateSpec extends ObjectBehavior
                     $templateUuid
                 ),
                 AttributeTextArea::create(
-                    new AttributeUuid('attribute_textarea_uuid'),
+                    AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
                     new AttributeCode('attribute_textarea_code'),
                     AttributeOrder::fromInteger(2),
                     AttributeIsLocalizable::fromBoolean(true),
@@ -52,7 +52,7 @@ class TemplateSpec extends ObjectBehavior
                     $templateUuid
                 ),
                 AttributeRichText::create(
-                    new AttributeUuid('attribute_richtext_uuid'),
+                    AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
                     new AttributeCode('attribute_richtext_code'),
                     AttributeOrder::fromInteger(3),
                     AttributeIsLocalizable::fromBoolean(true),
@@ -60,7 +60,7 @@ class TemplateSpec extends ObjectBehavior
                     $templateUuid
                 ),
                 AttributeImage::create(
-                    new AttributeUuid('attribute_image_uuid'),
+                    AttributeUuid::fromString('8dda490c-0fd1-4485-bdc5-342929783d9a'),
                     new AttributeCode('attribute_image_code'),
                     AttributeOrder::fromInteger(4),
                     AttributeIsLocalizable::fromBoolean(false),
@@ -73,47 +73,48 @@ class TemplateSpec extends ObjectBehavior
 
     function it_normalizes_template(): void
     {
+        $expectedTemplateUuid = '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
         $expectedNormalizedTemplate = [
-            'identifier' => 'template_uuid',
+            'identifier' => $expectedTemplateUuid,
             'code' => 'template_code',
             'labels' => ['fr_FR' => 'template_libelle'],
             'category_tree_identifier' => 1,
             'attributes' => [
                 [
-                    'identifier' => 'attribute_text_uuid',
+                    'identifier' => '4873080d-32a3-42a7-ae5c-1be518e40f3d',
                     'code' => 'attribute_text_code',
                     'type' => 'text',
                     'order' => 1,
                     'is_localizable' => true,
                     'labels' => ['fr_FR' => 'attribute_text_libelle'],
-                    'template_identifier' => 'template_uuid'
+                    'template_identifier' => $expectedTemplateUuid
                 ],
                 [
-                    'identifier' => 'attribute_textarea_uuid',
+                    'identifier' => '69e251b3-b876-48b5-9c09-92f54bfb528d',
                     'code' => 'attribute_textarea_code',
                     'type' => 'textarea',
                     'order' => 2,
                     'is_localizable' => true,
                     'labels' => ['fr_FR' => 'attribute_textarea_libelle'],
-                    'template_identifier' => 'template_uuid'
+                    'template_identifier' => $expectedTemplateUuid
                 ],
                 [
-                    'identifier' => 'attribute_richtext_uuid',
+                    'identifier' => '840fcd1a-f66b-4f0c-9bbd-596629732950',
                     'code' => 'attribute_richtext_code',
                     'type' => 'richtext',
                     'order' => 3,
                     'is_localizable' => true,
                     'labels' => ['fr_FR' => 'attribute_richtext_libelle'],
-                    'template_identifier' => 'template_uuid'
+                    'template_identifier' => $expectedTemplateUuid
                 ],
                 [
-                    'identifier' => 'attribute_image_uuid',
+                    'identifier' => '8dda490c-0fd1-4485-bdc5-342929783d9a',
                     'code' => 'attribute_image_code',
                     'type' => 'image',
                     'order' => 4,
                     'is_localizable' => false,
                     'labels' => ['fr_FR' => 'attribute_image_libelle'],
-                    'template_identifier' => 'template_uuid'
+                    'template_identifier' => $expectedTemplateUuid
                 ]
             ]
         ];

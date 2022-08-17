@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Domain\ValueObject\Attribute;
+namespace Akeneo\Category\Domain\ValueObject\Template;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -11,7 +11,7 @@ use Ramsey\Uuid\UuidInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AttributeUuid
+class TemplateUuid
 {
     private function __construct(private UuidInterface $uuid)
     {
@@ -25,7 +25,7 @@ class AttributeUuid
     public static function fromString(string $uuid): self
     {
         if (!Uuid::isValid($uuid)) {
-            throw new \InvalidArgumentException(sprintf('Attribute uuid should be a valid uuid, %s given', $uuid));
+            throw new \InvalidArgumentException(sprintf('Template uuid should be a valid uuid, %s given', $uuid));
         }
 
         return new self(Uuid::fromString($uuid));

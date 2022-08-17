@@ -18,7 +18,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateId;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Test\Integration\TestCase;
 
 /**
@@ -29,7 +29,7 @@ class GetTemplateInMemoryIntegration extends TestCase
 {
     public function testGetTemplateById(): void
     {
-        $templateUuid = 'template_uuid';
+        $templateUuid = '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
         $expectedTemplate = $this->givenTemplate($templateUuid);
         $template = $this->get(GetTemplate::class)->byUuid($templateUuid);
         $this->assertEquals($expectedTemplate, $template);
@@ -42,7 +42,7 @@ class GetTemplateInMemoryIntegration extends TestCase
 
     private function givenTemplate(string $templateUuid): Template
     {
-        $templateUuid = new TemplateId($templateUuid);
+        $templateUuid = TemplateUuid::fromString($templateUuid);
 
         return new Template(
             $templateUuid,
@@ -51,7 +51,7 @@ class GetTemplateInMemoryIntegration extends TestCase
             new CategoryId(1),
             AttributeCollection::fromArray([
                 AttributeText::create(
-                    new AttributeUuid('attribute_text_uuid'),
+                    AttributeUuid::fromString('4873080d-32a3-42a7-ae5c-1be518e40f3d'),
                     new AttributeCode('attribute_text_code'),
                     AttributeOrder::fromInteger(1),
                     AttributeIsLocalizable::fromBoolean(true),
@@ -59,7 +59,7 @@ class GetTemplateInMemoryIntegration extends TestCase
                     $templateUuid
                 ),
                 AttributeTextArea::create(
-                    new AttributeUuid('attribute_textarea_uuid'),
+                    AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
                     new AttributeCode('attribute_textarea_code'),
                     AttributeOrder::fromInteger(2),
                     AttributeIsLocalizable::fromBoolean(true),
@@ -67,7 +67,7 @@ class GetTemplateInMemoryIntegration extends TestCase
                     $templateUuid
                 ),
                 AttributeRichText::create(
-                    new AttributeUuid('attribute_richtext_uuid'),
+                    AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
                     new AttributeCode('attribute_richtext_code'),
                     AttributeOrder::fromInteger(3),
                     AttributeIsLocalizable::fromBoolean(true),
@@ -75,7 +75,7 @@ class GetTemplateInMemoryIntegration extends TestCase
                     $templateUuid
                 ),
                 AttributeImage::create(
-                    new AttributeUuid('attribute_image_uuid'),
+                    AttributeUuid::fromString('8dda490c-0fd1-4485-bdc5-342929783d9a'),
                     new AttributeCode('attribute_image_code'),
                     AttributeOrder::fromInteger(4),
                     AttributeIsLocalizable::fromBoolean(false),
