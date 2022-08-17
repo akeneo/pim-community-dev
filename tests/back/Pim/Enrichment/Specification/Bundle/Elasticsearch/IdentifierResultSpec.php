@@ -51,4 +51,18 @@ class IdentifierResultSpec extends ObjectBehavior
         $this->beConstructedWith('foo', ProductInterface::class, 'product_' . Uuid::uuid4()->toString());
         $this->isProductModelIdentifierEquals('foo')->shouldReturn(false);
     }
+
+    function it_cannot_instanciate_for_a_product_model_without_identifier()
+    {
+        $this->beConstructedWith(null, ProductModelInterface::class, 'product_model_foo');
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_can_instanciate_for_a_product_without_identifier()
+    {
+        $uuidAsString = 'product_' . Uuid::uuid4()->toString();
+        $this->beConstructedWith(null, ProductInterface::class, $uuidAsString);
+        $this->getId()->shouldReturn($uuidAsString);
+        $this->getIdentifier()->shouldReturn(null);
+    }
 }
