@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\Infrastructure\Controller\InternalAPI;
+namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Api\Command\Exceptions\ViolationsException;

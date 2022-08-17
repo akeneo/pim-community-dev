@@ -72,6 +72,12 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
             case 'type':
                 $jobInstance->setType($data);
                 break;
+            case 'scheduled':
+                $jobInstance->setScheduled($data);
+                break;
+            case 'automation':
+                $jobInstance->setAutomation($data);
+                break;
             case 'configuration':
                 $job = $this->jobRegistry->get($jobInstance->getJobName());
                 /** @var JobParameters $jobParameters */

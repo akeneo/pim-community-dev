@@ -30,4 +30,18 @@ akeneo_catalogs_internal_get_attribute:
 akeneo_catalogs_internal_get_attributes:
     path: '/rest/catalogs/attributes'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributesAction
+
+akeneo_catalogs_internal_get_channel_locales:
+    path: '/rest/catalogs/channels/{code}/locales'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelLocalesAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_channel:
+    path: '/rest/catalogs/channels/{code}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_channels:
+    path: '/rest/catalogs/channels'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelsAction
     methods: [ GET ]

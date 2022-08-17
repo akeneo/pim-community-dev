@@ -20,7 +20,7 @@ class IsCatalogsNumberLimitReachedQueryTest extends IntegrationTestCase
     private ?UpsertCatalogQuery $upsertQuery;
     private int $catalogsNumberMaxLimit;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

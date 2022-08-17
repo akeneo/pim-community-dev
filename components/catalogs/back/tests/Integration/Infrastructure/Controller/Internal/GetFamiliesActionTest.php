@@ -15,7 +15,7 @@ class GetFamiliesActionTest extends IntegrationTestCase
 {
     private ?Connection $connection;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -42,7 +42,7 @@ class GetFamiliesActionTest extends IntegrationTestCase
         $response = $client->getResponse();
         Assert::assertEquals(200, $response->getStatusCode());
 
-        $families = \json_decode($response->getContent(), true);
+        $families = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         Assert::assertCount(3, $families);
         Assert::assertArrayHasKey('code', $families[0]);
         Assert::assertArrayHasKey('label', $families[0]);
@@ -66,7 +66,7 @@ class GetFamiliesActionTest extends IntegrationTestCase
         $response = $client->getResponse();
         Assert::assertEquals(200, $response->getStatusCode());
 
-        $families = \json_decode($response->getContent(), true);
+        $families = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         Assert::assertCount(2, $families);
         Assert::assertArrayHasKey('code', $families[0]);
         Assert::assertArrayHasKey('label', $families[0]);
@@ -90,7 +90,7 @@ class GetFamiliesActionTest extends IntegrationTestCase
         $firstPageResponse = $client->getResponse();
         Assert::assertEquals(200, $firstPageResponse->getStatusCode());
 
-        $firstPageFamilies = \json_decode($firstPageResponse->getContent(), true);
+        $firstPageFamilies = \json_decode($firstPageResponse->getContent(), true, 512, JSON_THROW_ON_ERROR);
         Assert::assertCount(2, $firstPageFamilies);
 
         $client->request(
@@ -106,7 +106,7 @@ class GetFamiliesActionTest extends IntegrationTestCase
         $secondPageResponse = $client->getResponse();
         Assert::assertEquals(200, $secondPageResponse->getStatusCode());
 
-        $secondPageFamilies = \json_decode($secondPageResponse->getContent(), true);
+        $secondPageFamilies = \json_decode($secondPageResponse->getContent(), true, 512, JSON_THROW_ON_ERROR);
         Assert::assertCount(1, $secondPageFamilies);
     }
 

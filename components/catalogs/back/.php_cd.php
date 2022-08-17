@@ -59,6 +59,11 @@ $rules = [
             'Akeneo\Connectivity\Connection\ServiceApi',
 
 
+            // @todo replace with the ones from service API when available
+            'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+            'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+            'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
+
             // @todo remove
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Query',

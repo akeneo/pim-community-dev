@@ -1,10 +1,11 @@
 import {useCallback} from 'react';
 import {AnyCriterion} from '../models/Criterion';
-import StatusCriterion from '../criteria/StatusCriterion';
-import FamilyCriterion from '../criteria/FamilyCriterion';
 import {useQueryClient} from 'react-query';
 import {Attribute} from '../models/Attribute';
 import {useFindAttributeCriterionByType} from './useFindAttributeCriterionByType';
+import StatusCriterion from '../criteria/StatusCriterion';
+import FamilyCriterion from '../criteria/FamilyCriterion';
+import CompletenessCriterion from '../criteria/CompletenessCriterion';
 
 type Return = (field: string) => Promise<AnyCriterion>;
 
@@ -19,6 +20,8 @@ export const useFindCriterionByField = (): Return => {
                     return Promise.resolve(StatusCriterion);
                 case 'family':
                     return Promise.resolve(FamilyCriterion);
+                case 'completeness':
+                    return Promise.resolve(CompletenessCriterion);
             }
 
             try {

@@ -26,14 +26,15 @@ final class GetProductUuidFromIdentifierQuery implements GetProductUuidFromIdent
             WHERE identifier = :identifier
         SQL;
 
-        $uuid = (string) $this->connection->fetchOne($sql, [
+        /** @var mixed|false $uuid */
+        $uuid = $this->connection->fetchOne($sql, [
             'identifier' => $identifier,
         ]);
 
-        if (!$uuid) {
+        if (false === $uuid) {
             throw new \InvalidArgumentException('Unknown identifier');
         }
 
-        return $uuid;
+        return (string) $uuid;
     }
 }

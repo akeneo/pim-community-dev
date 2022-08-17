@@ -17,11 +17,7 @@ test('it renders the selected families', () => {
                     state={{field: 'family', operator: Operator.IN_LIST, value: ['foo']}}
                     onChange={jest.fn()}
                     onRemove={jest.fn()}
-                    errors={{
-                        field: null,
-                        operator: null,
-                        value: null,
-                    }}
+                    errors={{}}
                 />
             </ReactQueryWrapper>
         </ThemeProvider>
@@ -41,7 +37,7 @@ test('it renders inputs with validation errors', () => {
                     onChange={jest.fn()}
                     onRemove={jest.fn()}
                     errors={{
-                        field: null,
+                        field: undefined,
                         operator: 'Invalid operator.',
                         value: 'Invalid value.',
                     }}
@@ -64,11 +60,7 @@ test('it calls onChange when the operator changes', () => {
                     state={{field: 'family', operator: Operator.IN_LIST, value: ['foo']}}
                     onChange={onChange}
                     onRemove={jest.fn()}
-                    errors={{
-                        field: null,
-                        operator: null,
-                        value: null,
-                    }}
+                    errors={{}}
                 />
             </ReactQueryWrapper>
         </ThemeProvider>
@@ -116,11 +108,7 @@ test('it calls onChange when the value changes', async () => {
                     state={{field: 'family', operator: Operator.IN_LIST, value: ['foo']}}
                     onChange={onChange}
                     onRemove={jest.fn()}
-                    errors={{
-                        field: null,
-                        operator: null,
-                        value: null,
-                    }}
+                    errors={{}}
                 />
             </ReactQueryWrapper>
         </ThemeProvider>

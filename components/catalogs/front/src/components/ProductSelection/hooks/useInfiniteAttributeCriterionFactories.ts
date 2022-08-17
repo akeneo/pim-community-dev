@@ -27,7 +27,7 @@ type Result = {
 };
 
 export const useInfiniteAttributeCriterionFactories = ({search = '', limit = 20}: QueryParams = {}): Result => {
-    const findCriterionByType = useFindAttributeCriterionByType();
+    const findAttributeCriterionByType = useFindAttributeCriterionByType();
 
     const fetchAttributes = useCallback(
         async ({pageParam}: {pageParam?: PageParam}): Promise<Page> => {
@@ -44,7 +44,7 @@ export const useInfiniteAttributeCriterionFactories = ({search = '', limit = 20}
             const factories: CriterionFactory[] = attributes.map(attribute => ({
                 id: attribute.code,
                 label: attribute.label,
-                factory: () => findCriterionByType(attribute.type).factory({field: attribute.code}),
+                factory: () => findAttributeCriterionByType(attribute.type).factory({field: attribute.code}),
             }));
 
             return {
@@ -55,7 +55,7 @@ export const useInfiniteAttributeCriterionFactories = ({search = '', limit = 20}
                 },
             };
         },
-        [search, limit, findCriterionByType]
+        [search, limit, findAttributeCriterionByType]
     );
 
     const query = useInfiniteQuery<Page, Error, Page>(['attributes', {search: search, limit: limit}], fetchAttributes, {

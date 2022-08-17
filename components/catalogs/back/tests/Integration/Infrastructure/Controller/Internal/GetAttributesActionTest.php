@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -13,11 +12,9 @@ use PHPUnit\Framework\Assert;
  */
 class GetAttributesActionTest extends IntegrationTestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->connection = self::getContainer()->get(Connection::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
@@ -47,7 +44,7 @@ class GetAttributesActionTest extends IntegrationTestCase
         $response = $client->getResponse();
         Assert::assertEquals(200, $response->getStatusCode());
 
-        $attributes = \json_decode($response->getContent(), true);
+        $attributes = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         Assert::assertCount(2, $attributes);
         Assert::assertArrayHasKey('code', $attributes[0]);
         Assert::assertArrayHasKey('label', $attributes[0]);
@@ -81,7 +78,7 @@ class GetAttributesActionTest extends IntegrationTestCase
         $response = $client->getResponse();
         Assert::assertEquals(200, $response->getStatusCode());
 
-        $attributes = \json_decode($response->getContent(), true);
+        $attributes = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         Assert::assertCount(1, $attributes);
         Assert::assertSame('name', $attributes[0]['code']);
     }

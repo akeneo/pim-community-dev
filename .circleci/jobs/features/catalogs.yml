@@ -98,7 +98,7 @@ jobs:
           command: make catalogs-lint-back
       - run:
           name: Unit back
-          command: make catalogs-unit-back
+          command: make catalogs-unit-back catalogs-mutation-unit-back
       - run:
           name: Pull docker images
           command: docker-compose pull php fpm mysql elasticsearch object-storage pubsub-emulator

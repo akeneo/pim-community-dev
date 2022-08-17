@@ -17,7 +17,7 @@ class FindOneAttributeByCodeQueryTest extends IntegrationTestCase
 {
     private ?FindOneAttributeByCodeQuery $query;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

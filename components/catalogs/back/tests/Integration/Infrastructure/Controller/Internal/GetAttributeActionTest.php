@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -13,11 +12,9 @@ use PHPUnit\Framework\Assert;
  */
 class GetAttributeActionTest extends IntegrationTestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->connection = self::getContainer()->get(Connection::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
@@ -43,7 +40,7 @@ class GetAttributeActionTest extends IntegrationTestCase
         $response = $client->getResponse();
         Assert::assertEquals(200, $response->getStatusCode());
 
-        $attribute = \json_decode($response->getContent(), true);
+        $attribute = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         Assert::assertSame('name', $attribute['code']);
         Assert::assertSame([
             'code',

@@ -1,0 +1,4 @@
+akeneo.category:
+  validation:
+    upsert:
+      duplicated_localize_user_intents: The value for the locale {{ locale }} is being updated multiple times.

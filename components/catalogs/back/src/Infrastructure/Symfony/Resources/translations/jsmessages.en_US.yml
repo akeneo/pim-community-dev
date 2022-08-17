@@ -29,6 +29,12 @@ akeneo_catalogs:
         action:
             open: Open
             remove: Remove
+        locale:
+            label: Locale
+            empty: No locale found
+        channel:
+            label: Channel
+            empty: No channel found
         criteria:
             status:
                 label: Status
@@ -38,6 +44,8 @@ akeneo_catalogs:
                 label: Family
                 no_matches: No matches found
                 placeholder: Select your families
+            completeness:
+                label: Completeness
         operators:
             "STARTS WITH": starts with
             "ENDS WITH": ends with

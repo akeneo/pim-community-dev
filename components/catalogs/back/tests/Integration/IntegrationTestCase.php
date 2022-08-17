@@ -6,14 +6,15 @@ namespace Akeneo\Catalogs\Test\Integration;
 
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -113,7 +114,7 @@ abstract class IntegrationTestCase extends WebTestCase
 
     protected function assertViolationsListContains(
         ConstraintViolationListInterface $violations,
-        string $expectedMessage
+        string $expectedMessage,
     ): void {
         if (0 === $violations->count()) {
             $this->fail('There is no violations but expected at least one.');
@@ -145,9 +146,9 @@ abstract class IntegrationTestCase extends WebTestCase
     {
         $userPayload = [
             'username' => $username,
-            'password' => \rand(),
-            'first_name' => 'firstname_' . \rand(),
-            'last_name' => 'lastname_' . \rand(),
+            'password' => \random_int(0, \mt_getrandmax()),
+            'first_name' => 'firstname_' . \random_int(0, \mt_getrandmax()),
+            'last_name' => 'lastname_' . \random_int(0, \mt_getrandmax()),
             'email' => \sprintf('%s@example.com', $username),
         ];
 
@@ -215,10 +216,46 @@ abstract class IntegrationTestCase extends WebTestCase
         );
     }
 
+    protected function setCatalogProductSelection(string $id, array $criteria)
+    {
+        $connection = self::getContainer()->get(Connection::class);
+        $connection->executeQuery(
+            'UPDATE akeneo_catalog SET product_selection_criteria = :criteria WHERE id = :id',
+            [
+                'id' => Uuid::fromString($id)->getBytes(),
+                'criteria' => \array_values($criteria),
+            ],
+            [
+                'criteria' => Types::JSON,
+            ]
+        );
+    }
+
     protected function createAttribute(array $data): void
     {
         $attribute = self::getContainer()->get('pim_catalog.factory.attribute')->create();
         self::getContainer()->get('pim_catalog.updater.attribute')->update($attribute, $data);
         self::getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
+    }
+
+    protected function createChannel(string $code, array $locales = []): void
+    {
+        /** @var ChannelInterface $channel */
+        $channel = self::getContainer()->get('pim_catalog.factory.channel')->create();
+        self::getContainer()->get('pim_catalog.updater.channel')->update($channel, [
+            'code' => $code,
+            'locales' => $locales,
+            'currencies' => ['USD'],
+            'category_tree' => 'master',
+        ]);
+        self::getContainer()->get('pim_catalog.saver.channel')->save($channel);
+    }
+
+    protected function createFamily(array $familyData): void
+    {
+        /** @var FamilyInterface $family */
+        $family = self::getContainer()->get('pim_catalog.factory.family')->create();
+        self::getContainer()->get('pim_catalog.updater.family')->update($family, $familyData);
+        self::getContainer()->get('pim_catalog.saver.family')->save($family);
     }
 }

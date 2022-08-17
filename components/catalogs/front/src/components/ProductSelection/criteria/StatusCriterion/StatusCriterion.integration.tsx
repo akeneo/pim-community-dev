@@ -14,11 +14,7 @@ test('it renders without error', () => {
                 state={{field: 'enabled', operator: Operator.EQUALS, value: true}}
                 onChange={jest.fn()}
                 onRemove={jest.fn()}
-                errors={{
-                    field: null,
-                    operator: null,
-                    value: null,
-                }}
+                errors={{}}
             />
         </ThemeProvider>
     );
@@ -36,7 +32,7 @@ test('it renders inputs with validation errors', () => {
                 onChange={jest.fn()}
                 onRemove={jest.fn()}
                 errors={{
-                    field: null,
+                    field: undefined,
                     operator: 'Invalid operator.',
                     value: 'Invalid value.',
                 }}
@@ -57,11 +53,7 @@ test('it calls onChange when the operator changes', () => {
                 state={{field: 'enabled', operator: Operator.EQUALS, value: true}}
                 onChange={onChange}
                 onRemove={jest.fn()}
-                errors={{
-                    field: null,
-                    operator: null,
-                    value: null,
-                }}
+                errors={{}}
             />
         </ThemeProvider>
     );
@@ -87,11 +79,7 @@ test('it calls onChange when the value changes', () => {
                 state={{field: 'enabled', operator: Operator.EQUALS, value: true}}
                 onChange={onChange}
                 onRemove={jest.fn()}
-                errors={{
-                    field: null,
-                    operator: null,
-                    value: null,
-                }}
+                errors={{}}
             />
         </ThemeProvider>
     );

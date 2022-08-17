@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Api\Command;
+namespace Akeneo\Category\Application\Query;
+
+use Akeneo\Category\Domain\Model\Category;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DummyHandler
+interface FindCategoryByCode
 {
-    public function __invoke(UpsertCategoryCommand $command): void
-    {
-    }
+    public function __invoke(string $code): ?Category;
 }

@@ -46,9 +46,9 @@ const state: StatusCriterionState = {
     value: true,
 };
 const errors = {
-    field: null,
-    operator: null,
-    value: null,
+    field: undefined,
+    operator: undefined,
+    value: undefined,
 };
 
 test('it renders without error', async () => {

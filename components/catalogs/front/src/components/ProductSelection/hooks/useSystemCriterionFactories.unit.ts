@@ -17,5 +17,10 @@ test('it returns system factories', () => {
             label: 'akeneo_catalogs.product_selection.criteria.family.label',
             factory: expect.any(Function),
         },
+        {
+            id: 'completeness',
+            label: 'akeneo_catalogs.product_selection.criteria.completeness.label',
+            factory: expect.any(Function),
+        },
     ]);
 });
