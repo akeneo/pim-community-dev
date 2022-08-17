@@ -30,6 +30,7 @@ class GetCategoryTreeRootsQueryTest extends IntegrationTestCase
     {
         // master category exists as part of the minimal catalog
         $this->createCategory(['code' => 'tshirt', 'labels' => ['en_US' => 'T-shirt']]);
+        $this->createCategory(['code' => 'skirt', 'labels' => ['fr_FR' => 'Jupe']]);
         $this->createCategory(['code' => 'tanktop', 'parent' => 'tshirt']);
 
         $expectedMasterCategory = [
@@ -44,8 +45,14 @@ class GetCategoryTreeRootsQueryTest extends IntegrationTestCase
             'isLeaf' => false,
         ];
 
-        $result = $this->query->execute();
+        $expectedSkirtCategory = [
+            'code' => 'skirt',
+            'label' => '[skirt]',
+            'isLeaf' => false,
+        ];
 
-        $this->assertEquals([$expectedMasterCategory, $expectedTshirtCategory], $result);
+        $result = $this->query->execute('en_US');
+
+        $this->assertEquals([$expectedMasterCategory, $expectedTshirtCategory, $expectedSkirtCategory], $result);
     }
 }

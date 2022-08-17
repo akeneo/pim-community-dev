@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence;
 use Akeneo\Catalogs\Application\Persistence\GetCategoriesByCodeQueryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -21,14 +22,14 @@ class GetCategoriesByCodeQuery implements GetCategoriesByCodeQueryInterface
     /**
      * @inheritDoc
      */
-    public function execute(array $categoryCodes): array
+    public function execute(array $categoryCodes, string $locale): array
     {
         $categories = $this->categoryRepository->getCategoriesByCodes($categoryCodes);
 
         $normalizedCategories = [];
         /** @var CategoryInterface $category */
         foreach ($categories as $category) {
-            $normalizedCategories[] = $this->normalizeCategory($category);
+            $normalizedCategories[] = $this->normalizeCategory($category, $locale);
         }
 
         return $normalizedCategories;
@@ -37,11 +38,15 @@ class GetCategoriesByCodeQuery implements GetCategoriesByCodeQueryInterface
     /**
      * @return array{code: string, label: string, isLeaf: bool}
      */
-    private function normalizeCategory(CategoryInterface $category): array
+    private function normalizeCategory(CategoryInterface $category, string $locale): array
     {
+        /** @var CategoryTranslationInterface|null $categoryTranslation */
+        $categoryTranslation = $category->getTranslation($locale);
+        $label = $categoryTranslation?->getLabel() ?? "[{$category->getCode()}]";
+
         return [
             'code' => $category->getCode(),
-            'label' => $category->getLabel(),
+            'label' => $label,
             'isLeaf' => $category->getRight() - $category->getLeft() === 1,
         ];
     }

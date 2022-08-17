@@ -32,6 +32,11 @@ class GetCategoriesAction
 
         $isRoot = $request->query->get('is_root', false);
         $codes = $request->query->get('codes', '');
+        $locale = $request->query->get('locale', 'en_US');
+
+        if (!\is_string($locale)) {
+            throw new BadRequestHttpException('Locale must be a string.');
+        }
 
         if (!\is_string($codes)) {
             throw new BadRequestHttpException('Codes must be a string.');
@@ -46,8 +51,8 @@ class GetCategoriesAction
         }
 
         $categories = $isRoot
-            ? $this->getCategoryTreeRootsQuery->execute()
-            : $this->getCategoriesByCodeQuery->execute(\explode(',', $codes));
+            ? $this->getCategoryTreeRootsQuery->execute($locale)
+            : $this->getCategoriesByCodeQuery->execute(\explode(',', $codes), $locale);
 
         return new JsonResponse($categories);
     }

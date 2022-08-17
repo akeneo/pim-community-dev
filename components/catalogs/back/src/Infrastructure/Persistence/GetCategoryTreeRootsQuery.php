@@ -7,7 +7,6 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence;
 use Akeneo\Catalogs\Application\Persistence\GetCategoryTreeRootsQueryInterface;
 use Akeneo\Category\Api\CategoryTree;
 use Akeneo\Category\Api\FindCategoryTrees;
-use Akeneo\UserManagement\Bundle\Context\UserContext;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -16,7 +15,6 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
 class GetCategoryTreeRootsQuery implements GetCategoryTreeRootsQueryInterface
 {
     public function __construct(
-        private UserContext $userContext,
         private FindCategoryTrees $findCategoryTrees,
     ) {
     }
@@ -24,9 +22,8 @@ class GetCategoryTreeRootsQuery implements GetCategoryTreeRootsQueryInterface
     /**
      * @inheritDoc
      */
-    public function execute(): array
+    public function execute(string $locale): array
     {
-        $locale = $this->userContext->getCurrentLocale()->getCode();
         $categoryTrees = $this->findCategoryTrees->execute();
 
         $normalizedCategoryTrees = [];

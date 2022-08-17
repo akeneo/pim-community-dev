@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -39,7 +40,7 @@ class GetCategoryChildrenActionTest extends TestCase
     {
         $this->getCategoryChildrenQuery
             ->method('execute')
-            ->with('master')
+            ->with('master', 'en_US')
             ->willReturn(['categoryA', 'categoryB', 'categoryC']);
 
         $response = ($this->getCategoryChildrenAction)(
@@ -48,13 +49,52 @@ class GetCategoryChildrenActionTest extends TestCase
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],
             ),
-            'master'
+            'master',
         );
 
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertJsonStringEqualsJsonString(
             \json_encode(['categoryA', 'categoryB', 'categoryC'], JSON_THROW_ON_ERROR),
             $response->getContent()
+        );
+    }
+
+    public function testItReturnsCategoryChildrenFromTheQueryUsingLocaleFromTheQueryPayload(): void
+    {
+        $this->getCategoryChildrenQuery
+            ->method('execute')
+            ->with('master', 'de_DE')
+            ->willReturn(['categoryA', 'categoryB', 'categoryC']);
+
+        $response = ($this->getCategoryChildrenAction)(
+            new Request(
+                query: ['locale' => 'de_DE'],
+                server: [
+                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                ],
+            ),
+            'master',
+        );
+
+        self::assertInstanceOf(JsonResponse::class, $response);
+        self::assertJsonStringEqualsJsonString(
+            \json_encode(['categoryA', 'categoryB', 'categoryC'], JSON_THROW_ON_ERROR),
+            $response->getContent()
+        );
+    }
+
+    public function testItAnswersABadRequestIfTheLocaleIsInvalid(): void
+    {
+        $this->expectException(BadRequestHttpException::class);
+
+        ($this->getCategoryChildrenAction)(
+            new Request(
+                query: ['locale' => 123],
+                server: [
+                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                ],
+            ),
+            'master',
         );
     }
 }
