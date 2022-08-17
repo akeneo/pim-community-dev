@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\Supplier\Query\Sql;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetIdentifierFromCode;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 
 final class DatabaseGetIdentifierFromCodeIntegration extends SqlIntegrationTestCase
@@ -15,9 +14,7 @@ final class DatabaseGetIdentifierFromCodeIntegration extends SqlIntegrationTestC
     {
         $this->createSupplier();
 
-        $supplierIdentifier = ($this->get(GetIdentifierFromCode::class))(
-            Code::fromString('supplier_code')
-        );
+        $supplierIdentifier = ($this->get(GetIdentifierFromCode::class))('supplier_code');
 
         static::assertSame('a3aac0e2-9eb9-4203-8af2-5425b2062ad4', $supplierIdentifier);
     }
@@ -27,9 +24,7 @@ final class DatabaseGetIdentifierFromCodeIntegration extends SqlIntegrationTestC
     {
         $this->createSupplier();
 
-        $supplierIdentifier = ($this->get(GetIdentifierFromCode::class))(
-            Code::fromString('unknown_supplier_code')
-        );
+        $supplierIdentifier = ($this->get(GetIdentifierFromCode::class))('unknown_supplier_code');
 
         static::assertNull($supplierIdentifier);
     }

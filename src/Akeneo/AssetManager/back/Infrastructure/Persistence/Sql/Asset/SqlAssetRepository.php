@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetsDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\DomainEvent;
+use Akeneo\AssetManager\Domain\Exception\AssetAlreadyExistsError;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -28,6 +29,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetHydratorInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
@@ -64,22 +66,27 @@ class SqlAssetRepository implements AssetRepositoryInterface
             (identifier, code, asset_family_identifier, value_collection, created_at, updated_at)
         VALUES (:identifier, :code, :asset_family_identifier, :value_collection, :created_at, :updated_at);
 SQL;
-        $affectedRows = $this->sqlConnection->executeStatement(
-            $insert,
-            [
-                'identifier' => (string) $asset->getIdentifier(),
-                'code' => (string) $asset->getCode(),
-                'asset_family_identifier' => (string) $asset->getAssetFamilyIdentifier(),
-                'value_collection' => $valueCollection,
-                'created_at' => $asset->getCreatedAt(),
-                'updated_at' => $asset->getUpdatedAt(),
-            ],
-            [
-                'value_collection' => Types::JSON,
-                'created_at' => Types::DATETIME_IMMUTABLE,
-                'updated_at' => Types::DATETIME_IMMUTABLE,
-            ]
-        );
+        try {
+            $affectedRows = $this->sqlConnection->executeStatement(
+                $insert,
+                [
+                    'identifier' => (string) $asset->getIdentifier(),
+                    'code' => (string) $asset->getCode(),
+                    'asset_family_identifier' => (string) $asset->getAssetFamilyIdentifier(),
+                    'value_collection' => $valueCollection,
+                    'created_at' => $asset->getCreatedAt(),
+                    'updated_at' => $asset->getUpdatedAt(),
+                ],
+                [
+                    'value_collection' => Types::JSON,
+                    'created_at' => Types::DATETIME_IMMUTABLE,
+                    'updated_at' => Types::DATETIME_IMMUTABLE,
+                ]
+            );
+        } catch (UniqueConstraintViolationException) {
+            throw AssetAlreadyExistsError::fromAsset($asset);
+        }
+
         if ($affectedRows > 1) {
             throw new \RuntimeException(
                 sprintf('Expected to create one asset, but %d rows were affected', $affectedRows)

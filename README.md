@@ -52,7 +52,7 @@ When working on a particular project, it is useful to get context only targets s
 
 The following line will include `make-files/my_project.mk`:
 
-    $> PIM_CONTEXT=my_project make something 
+    PIM_CONTEXT=my_project make something 
 
 It might be a good idea to set once for all that variable in the shell environment by adding this line in the `.bashrc` configuration file:
 

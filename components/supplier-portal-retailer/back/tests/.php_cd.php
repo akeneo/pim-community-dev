@@ -25,7 +25,6 @@ $rules = [
             // Supplier Portal Retailer coupling
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
 
             // PIM coupling
 
@@ -39,12 +38,17 @@ $rules = [
             // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
 
+            // Supplier Portal Supplier coupling
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded',
+
             // External dependencies coupling
             'Psr\Log\LoggerInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
+            'Ramsey\Uuid\Uuid',
         ],
     )->in('Akeneo\SupplierPortal\Retailer\Application'),
 
@@ -55,7 +59,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application',
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Event\EventInterface',
@@ -71,7 +75,13 @@ $rules = [
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
+            'Akeneo\Tool\Component\FileStorage\StreamedFileResponse',
+            'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+            'Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification',
+            'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
+            'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
+
             // External dependencies coupling
             'Box\Spout\Common\Exception\IOException',
             'Box\Spout\Common\Type',
@@ -80,7 +90,6 @@ $rules = [
             'Box\Spout\Writer\Exception\WriterNotOpenedException',
             'Doctrine\DBAL\Connection',
             'Psr\Log\LoggerInterface',
-            'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
     )->in('Akeneo\SupplierPortal\Retailer\Infrastructure'),
@@ -92,9 +101,9 @@ $rules = [
             // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // Supplier Portal Supplier coupling
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\ContributorEmail',
 
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Job\JobParameters',
@@ -114,11 +123,22 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Application',
             'Akeneo\SupplierPortal\Retailer\Infrastructure',
+
+            // Supplier Portal Supplier coupling
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\SupplierFile',
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded',
+
             // PIM coupling
+            'Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification',
+            'Akeneo\Platform\Bundle\NotificationBundle\Notifier',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
+            'Akeneo\Test\Acceptance\User\InMemoryUserRepository',
+            'Akeneo\UserManagement\Component\Model\User',
+
             // External dependencies coupling
             'PHPUnit\Framework',
             'Psr\Log\NullLogger',
+            'Psr\Log\Test\TestLogger',
             'Ramsey\Uuid\Uuid',
             'Symfony\Component\EventDispatcher\EventDispatcher',
             'Symfony\Component\Validator\ConstraintViolationList',

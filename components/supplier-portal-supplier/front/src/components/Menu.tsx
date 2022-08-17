@@ -5,6 +5,8 @@ import React from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from 'akeneo-design-system';
 import {useUserContext} from '../contexts';
+import {routes} from '../pages/routes';
+import {useHistory} from 'react-router-dom';
 
 type Props = {
     activeItem: 'fileEnrichment' | 'history';
@@ -12,10 +14,19 @@ type Props = {
 
 const Menu = ({activeItem}: Props) => {
     const {updateUser} = useUserContext();
+    const history = useHistory();
 
     const logout = async () => {
         await fetch('/supplier-portal/logout');
         updateUser(null);
+    };
+
+    const goToProductFileDroppingPage = () => {
+        history.push(routes.filesDropping);
+    };
+
+    const goToProductFileHistoryPage = () => {
+        history.push(routes.productFileHistory);
     };
 
     return (
@@ -26,10 +37,10 @@ const Menu = ({activeItem}: Props) => {
                     <FormattedMessage defaultMessage="File enrichment" id="gxGnf7" />
                 </MenuSectionHeader>
                 <MenuSection>
-                    <BadgeButton isActive={'fileEnrichment' === activeItem}>
+                    <BadgeButton isActive={'fileEnrichment' === activeItem} onClick={goToProductFileDroppingPage}>
                         <FormattedMessage defaultMessage="File transfer" id="l2OoTB" />
                     </BadgeButton>
-                    <BadgeButton isActive={'history' === activeItem}>
+                    <BadgeButton isActive={'history' === activeItem} onClick={goToProductFileHistoryPage}>
                         <FormattedMessage defaultMessage="File history" id="E+F5l+" />
                     </BadgeButton>
                 </MenuSection>
@@ -55,6 +66,10 @@ const Container = styled.div`
     border-right: 1px ${getColor('grey60')} solid;
     display: flex;
     flex-direction: column;
+    position: sticky;
+    top: 0;
+    align-self: self-start;
+    height: 100vh;
 `;
 
 const MenuContent = styled.div`

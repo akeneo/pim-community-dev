@@ -1,0 +1,4 @@
+supplier_portal:
+  supplier:
+    contributor:
+      email_already_exists: 该电子邮件已经用于另一个供应商，我们不支持多个具有相同贡献者的供应商。很抱歉给您带来不便。

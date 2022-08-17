@@ -1,4 +1,4 @@
-@javascript @proposal-feature-enabled
+@javascript @proposal-feature-enabled @permission-feature-enabled
 Feature: Display proposal widget
   In order to easily see which products have pending proposals
   As a product manager

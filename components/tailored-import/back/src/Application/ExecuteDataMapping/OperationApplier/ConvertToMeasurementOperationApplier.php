@@ -31,6 +31,10 @@ class ConvertToMeasurementOperationApplier implements OperationApplierInterface
             throw new UnexpectedValueException($operation, ConvertToMeasurementOperation::class, self::class);
         }
 
+        if ($value instanceof InvalidValue) {
+            return $value;
+        }
+
         if (!$value instanceof StringValue) {
             throw new UnexpectedValueException($value, StringValue::class, self::class);
         }

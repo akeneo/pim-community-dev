@@ -1,3 +1,6 @@
+parameters:
+    akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers.batch_size: 1000
+
 services:
     # Repositories
     akeneo_referenceentity.infrastructure.persistence.repository.reference_entity:
@@ -516,6 +519,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\FindAllRecordIdentifiers
         arguments:
             - '@database_connection'
+            - '%akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers.batch_size%'
 
     akeneo_referenceentity.infrastructure.persistence.sql.record.refresh_records.refresh_record:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecord

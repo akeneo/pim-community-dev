@@ -30,9 +30,9 @@ final class AssetCollectionValueFactory implements ValueFactory
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         $attributeCode = $attribute->code();
-        $assetCodes = array_map(function (string $assetCode): AssetCode {
+        $assetCodes = \array_values(\array_map(function (string $assetCode): AssetCode {
             return AssetCode::fromString($assetCode);
-        }, $data);
+        }, $data));
 
         if ($attribute->isLocalizableAndScopable()) {
             return AssetCollectionValue::scopableLocalizableValue($attributeCode, $assetCodes, $channelCode, $localeCode);

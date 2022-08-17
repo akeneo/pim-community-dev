@@ -14,5 +14,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
  */
 interface CountAssetsInterface
 {
+    public function all(): int;
+
     public function forAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int;
 }

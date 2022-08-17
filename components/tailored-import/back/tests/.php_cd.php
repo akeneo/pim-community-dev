@@ -24,6 +24,7 @@ $rules = [
             'Webmozart\Assert\Assert',
             // TODO: Write more specific rules later
             'Akeneo\Pim\Enrichment\Product\API',
+            'Akeneo\Pim\Structure\Family\ServiceAPI',
         ],
     )->in('Akeneo\Platform\TailoredImport\Domain'),
 
@@ -32,6 +33,7 @@ $rules = [
             'Akeneo\Platform\TailoredImport\Domain',
             // TODO: Write more specific rules later
             'Akeneo\Pim\Enrichment\Product\API',
+            'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter'
         ],
     )->in('Akeneo\Platform\TailoredImport\Application'),
 
@@ -52,6 +54,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand',
             'Akeneo\Pim\Enrichment\Product\API\Event',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
+            'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\Storage',
             'Akeneo\Tool',
             'Akeneo\UserManagement\Component\Model\UserInterface',
             'Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException',
@@ -60,7 +63,10 @@ $rules = [
             // category bounded context
             'Akeneo\Category\Api\CategoryTree',
             'Akeneo\Category\Api\FindCategoryTrees',
-            'Akeneo\Category\Api\GetCategoryChildrenCodesPerTreeInterface'
+            'Akeneo\Category\Api\GetCategoryChildrenCodesPerTreeInterface',
+
+            // family bounded context
+            'Akeneo\Pim\Structure\Family\ServiceAPI',
         ],
     )->in('Akeneo\Platform\TailoredImport\Infrastructure'),
 ];

@@ -7,8 +7,6 @@ namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorA
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Exception\ContributorAccountDoesNotExist;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\AccessToken;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 
 final class RequestNewInvitationHandler
@@ -29,23 +27,13 @@ final class RequestNewInvitationHandler
             throw new ContributorAccountDoesNotExist();
         }
 
-        $newAccessToken = (string) AccessToken::generate();
-
-        $contributorAccount = ContributorAccount::hydrate(
-            $contributorAccount->identifier(),
-            $contributorAccount->email(),
-            $contributorAccount->createdAt(),
-            null,
-            $newAccessToken,
-            (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
-            null,
-        );
+        $contributorAccount->renewAccessToken();
 
         $this->contributorAccountRepository->save($contributorAccount);
 
         ($this->sendWelcomeEmail)(
             $requestNewInvitation->email,
-            $newAccessToken,
+            $contributorAccount->accessToken(),
         );
     }
 }

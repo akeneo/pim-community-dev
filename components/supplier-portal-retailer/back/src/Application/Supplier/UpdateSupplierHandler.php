@@ -74,6 +74,7 @@ final class UpdateSupplierHandler
                         'label' => $supplier->label(),
                         'contributor_emails' => $supplier->contributors(),
                     ],
+                    'supplier_label' => $supplier->label(),
                 ],
             ],
         );

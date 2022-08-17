@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record;
 
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
@@ -328,6 +329,73 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'identifiers' => ['brand_alessi', 'brand_kartell'],
             'matches_count' => 2
         ], $matchingidentifiers->normalize());
+    }
+
+
+    /**
+     * @test
+     */
+    public function filter_by_non_sequential_not_in_code_filter()
+    {
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'code',
+                    'operator' => 'NOT IN',
+                    'value' => [0 => 'kartell', 2 => 'alessi'],
+                    'context' => []
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'brand',
+                    'context' => []
+                ]
+            ]
+        ]);
+
+        $matchingIdentifiers = $this->findIdentifiersForQuery->find($query);
+        Assert::assertsame([
+            'identifiers' => ['brand_bangolufsen'],
+            'matches_count' => 1
+        ], $matchingIdentifiers->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function filter_by_non_sequential_in_code_filter()
+    {
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'code',
+                    'operator' => 'IN',
+                    'value' => [0 => 'kartell', 2 => 'alessi'],
+                    'context' => []
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'brand',
+                    'context' => []
+                ]
+            ]
+        ]);
+
+        $matchingIdentifiers = $this->findIdentifiersForQuery->find($query);
+        Assert::assertSame([
+            'identifiers' => ['brand_alessi', 'brand_kartell'],
+            'matches_count' => 2
+        ], $matchingIdentifiers->normalize());
     }
 
     /**

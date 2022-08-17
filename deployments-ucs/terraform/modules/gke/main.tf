@@ -29,13 +29,15 @@ resource "google_container_cluster" "gke" {
   networking_mode          = "VPC_NATIVE"
   initial_node_count       = 1
   remove_default_node_pool = true
+  min_master_version       = var.min_master_version
+
   ip_allocation_policy {
     cluster_secondary_range_name  = "pods"
     services_secondary_range_name = "services"
   }
   private_cluster_config {
     enable_private_nodes    = true
-    enable_private_endpoint = true
+    enable_private_endpoint = false
     master_ipv4_cidr_block = jsondecode(
       data.google_secret_manager_secret_version.network_config.secret_data
     )[each.value].extra_ranges.gke
@@ -43,19 +45,26 @@ resource "google_container_cluster" "gke" {
       enabled = var.enable_master_global_access
     }
   }
+
   master_authorized_networks_config {
     cidr_blocks {
       cidr_block = "0.0.0.0/0"
     }
   }
+
   workload_identity_config {
     workload_pool = "${data.google_project.current.project_id}.svc.id.goog"
   }
+
   addons_config {
     gke_backup_agent_config {
       enabled = var.enable_gke_backup
     }
+    config_connector_config {
+      enabled = var.enable_config_connector
+    }
   }
+  
   timeouts {
     create = "30m"
     update = "40m"
@@ -73,11 +82,12 @@ resource "google_container_node_pool" "gke" {
   initial_node_count = lookup(each.value, "autoscaling", true) ? lookup(each.value, "min_node_count", 1) : null
   node_count         = lookup(each.value, "autoscaling", true) ? null : lookup(each.value, "node_count", 1)
   max_pods_per_node  = lookup(each.value, "max_pods_per_node", 110)
+  node_locations     = lookup(lookup(var.node_locations, each.value.name, tomap({})), each.value.region, null)
 
   node_config {
     preemptible     = lookup(each.value, "preemptible", false)
     machine_type    = lookup(each.value, "machine_type", "n1-standard-16")
-    labels          = lookup(var.node_pool_labels, each.key, {})
+    labels          = lookup(var.node_pool_labels, each.value.name, {})
     tags            = concat([data.google_project.current.project_id], lookup(var.node_pool_tags, each.key, []))
     service_account = var.gke_sa_email
 

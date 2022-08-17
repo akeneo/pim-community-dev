@@ -23,6 +23,7 @@ $rules = [
     $builder->only(
         [
             // Supplier Portal retailer coupling
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
 
             // External dependencies coupling
@@ -42,7 +43,6 @@ $rules = [
             'Akeneo\SupplierPortal\Supplier\Domain',
 
             // PIM coupling
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
 
             // External dependencies coupling
             'Psr\Log\LoggerInterface',
@@ -52,6 +52,8 @@ $rules = [
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
             'Symfony\Contracts\EventDispatcher\EventDispatcherInterface',
+            'Symfony\Component\HttpFoundation\File\UploadedFile',
+            'Ramsey\Uuid\Uuid',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Application'),
 
@@ -66,6 +68,7 @@ $rules = [
 
             // PIM coupling
             'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
+            'Akeneo\Tool\Component\FileStorage\StreamedFileResponse',
 
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
@@ -81,6 +84,7 @@ $rules = [
     $builder->only(
         [
             // Supplier Portal retailer coupling
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
 
             // Supplier Portal supplier coupling
@@ -97,14 +101,14 @@ $rules = [
     $builder->only(
         [
             // Supplier Portal retailer coupling
+            'Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
-            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierFromContributorEmail',
-            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository',
-
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
-            'Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierFromContributorEmail',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
@@ -112,19 +116,22 @@ $rules = [
             'Akeneo\SupplierPortal\Supplier\Infrastructure',
 
             // PIM coupling
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\InMemoryFeatureFlags',
 
             // External dependencies coupling
             'PHPUnit\Framework',
             'Psr\Log\NullLogger',
-            'Symfony\Component\Validator\ConstraintViolationList',
-            'Symfony\Component\Validator\Validator\ValidatorInterface',
+            'Psr\Log\Test\TestLogger',
+            'Ramsey\Uuid\Uuid',
+            'Ramsey\Uuid\UuidFactoryInterface',
+            'Ramsey\Uuid\UuidInterface',
             'Twig\Environment',
+            'Symfony\Component\HttpFoundation\File\UploadedFile',
             'Symfony\Component\HttpFoundation\Request',
             'Symfony\Component\HttpFoundation\Response',
             'Symfony\Component\Security\Http\Event\LogoutEvent',
             'Symfony\Component\Security\Core\Authentication\Token\TokenInterface',
-
+            'Symfony\Component\Validator\ConstraintViolationList',
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Test\Unit'),
 
@@ -138,7 +145,6 @@ $rules = [
             'Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication',
 
             // PIM coupling
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\InMemoryFeatureFlags',
 
             // External dependencies coupling
             'Behat',

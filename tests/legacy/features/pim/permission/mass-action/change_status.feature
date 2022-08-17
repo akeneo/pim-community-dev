@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Disabled mass edit status of product when user is not owner
   In order to apply product status edit permission
   As a redactor

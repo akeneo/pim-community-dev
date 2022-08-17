@@ -1,0 +1,4 @@
+supplier_portal:
+  supplier:
+    contributor:
+      email_already_exists: このメールアドレスはすでに別のサプライヤーに使用されており、同じコントリビューターを持つ複数のサプライヤーは今のところサポートされていません。ご不便をおかけして申し訳ありません。

@@ -37,6 +37,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Category/front",
     "vendor/akeneo/pim-community-dev/components/catalogs/front",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/ImportExportBundle/front",
     "vendor/akeneo/pim-enterprise-dev",
     "vendor/akeneo/pim-enterprise-dev/components/supplier-portal-retailer/front",
     "vendor/akeneo/pim-enterprise-dev/components/tailored-export/front",
@@ -46,7 +47,8 @@
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Automation/RuleEngine/front",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
-    "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity"
+    "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
+    "vendor/akeneo/pim-enterprise-dev/tria/front-packages/free-trial"
   ],
   "resolutions": {
     "akeneo-design-system": "link:vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system"

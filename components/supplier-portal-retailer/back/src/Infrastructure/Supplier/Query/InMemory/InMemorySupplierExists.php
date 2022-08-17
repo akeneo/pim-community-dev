@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\SupplierExists;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 
 final class InMemorySupplierExists implements SupplierExists
@@ -14,7 +13,7 @@ final class InMemorySupplierExists implements SupplierExists
     {
     }
 
-    public function fromCode(Code $supplierCode): bool
+    public function fromCode(string $supplierCode): bool
     {
         return null !== $this->supplierRepository->findByCode($supplierCode);
     }

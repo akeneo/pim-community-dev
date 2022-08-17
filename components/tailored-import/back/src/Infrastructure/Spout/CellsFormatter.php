@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
+
 class CellsFormatter
 {
     /**
@@ -31,8 +33,15 @@ class CellsFormatter
             case is_bool($cell):
                 return $cell ? 'TRUE' : 'FALSE';
             case is_string($cell):
-            case is_numeric($cell):
+                if (is_numeric($cell)) {
+                    return rtrim((string) number_format((float) $cell, decimals: MeasureConverter::SCALE, thousands_separator: ''), '0');
+                }
+
+                return $cell;
+            case is_integer($cell):
                 return (string) $cell;
+            case is_float($cell):
+                return rtrim((string) number_format($cell, decimals: MeasureConverter::SCALE, thousands_separator: ''), '0');
             case is_null($cell):
                 /* TODO validate the error message that we want expose to the user */
                 throw new \RuntimeException('');

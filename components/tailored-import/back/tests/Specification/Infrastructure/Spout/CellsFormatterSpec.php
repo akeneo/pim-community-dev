@@ -29,7 +29,7 @@ class CellsFormatterSpec extends ObjectBehavior
 
     public function it_formats_number_cells()
     {
-        $this->formatCells([12, 25.5])->shouldReturn(['12', '25.5']);
+        $this->formatCells([12, 25.5, 800000, 0.00000003333])->shouldReturn(['12', '25.5', '800000', '0.00000003333']);
     }
 
     public function it_formats_boolean_cells()
