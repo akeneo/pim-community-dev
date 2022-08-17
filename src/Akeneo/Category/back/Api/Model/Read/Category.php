@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Category\Api\Model\read;
+namespace Akeneo\Category\Api\Model\Read;
 
 use Akeneo\Category\Domain\Model\Category as CategoryDomain;
 

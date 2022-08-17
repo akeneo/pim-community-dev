@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application;
 
-use Akeneo\Category\Api\Model\read\Category as CategoryRead;
+use Akeneo\Category\Api\Model\Read\Category as CategoryRead;
 use Akeneo\Category\Api\Query\GetCategoryQuery;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
@@ -86,9 +86,7 @@ class GetCategoryQueryHandler
             permissionCollection: PermissionCollection::fromArray($permissions),
         );
 
-        $readModel = CategoryRead::fromDomain($category);
-
         // returning the category as seen by the outside (whoever created and dispatched the query)
-        return $readModel;
+        return CategoryRead::fromDomain($category);
     }
 }
