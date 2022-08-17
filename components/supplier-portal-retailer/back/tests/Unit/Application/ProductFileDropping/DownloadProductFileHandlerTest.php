@@ -12,6 +12,7 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\Supplier
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFilePathAndFileName;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\StubEventDispatcher;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -23,18 +24,24 @@ final class DownloadProductFileHandlerTest extends TestCase
     {
         $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileName::class);
         $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
+        $getSupplierCodeFromSupplierFileIdentifier = $this->createMock(
+            GetSupplierCodeFromSupplierFileIdentifier::class,
+        );
         $eventDispatcher = new StubEventDispatcher();
         $sut = new DownloadProductFileHandler(
             $getProductFilePathAndFileNameMock,
             $downloadStoredProductFileMock,
             $eventDispatcher,
+            $getSupplierCodeFromSupplierFileIdentifier,
             new NullLogger(),
         );
 
         $getProductFilePathAndFileNameMock
             ->expects($this->once())
             ->method('__invoke')
-            ->willReturn(new ProductFilePathAndFileName('file.xlsx', 'path/to/file.xlsx'))
+            ->willReturn(
+                new ProductFilePathAndFileName('file.xlsx', 'path/to/file.xlsx'),
+            )
         ;
         $fakeResource = new \stdClass();
         $downloadStoredProductFileMock
@@ -43,11 +50,16 @@ final class DownloadProductFileHandlerTest extends TestCase
             ->with('path/to/file.xlsx')
             ->willReturn($fakeResource)
         ;
+        $getSupplierCodeFromSupplierFileIdentifier
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with('1ed45c7b-6c61-4862-a11c-00c9580a8710')
+            ->willReturn('supplier_code')
+        ;
 
         $productFileNameAndResourceFile = ($sut)(
-            new DownloadProductFile('63c5e1d5-b804-4d24-b0b2-47c4aad3f536')
+            new DownloadProductFile('1ed45c7b-6c61-4862-a11c-00c9580a8710', 1)
         );
-
         $this->assertSame(
             'file.xlsx',
             $productFileNameAndResourceFile->originalFilename,
@@ -57,7 +69,13 @@ final class DownloadProductFileHandlerTest extends TestCase
             $productFileNameAndResourceFile->file,
         );
         $this->assertEquals(
-            [new ProductFileDownloaded('63c5e1d5-b804-4d24-b0b2-47c4aad3f536')],
+            [
+                new ProductFileDownloaded(
+                    '1ed45c7b-6c61-4862-a11c-00c9580a8710',
+                    'supplier_code',
+                    1,
+                ),
+            ],
             $eventDispatcher->getDispatchedEvents(),
         );
     }
@@ -67,17 +85,21 @@ final class DownloadProductFileHandlerTest extends TestCase
     {
         $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileName::class);
         $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
+        $getSupplierCodeFromSupplierFileIdentifier = $this->createMock(
+            GetSupplierCodeFromSupplierFileIdentifier::class,
+        );
         $sut = new DownloadProductFileHandler(
             $getProductFilePathAndFileNameMock,
             $downloadStoredProductFileMock,
             new StubEventDispatcher(),
+            $getSupplierCodeFromSupplierFileIdentifier,
             new NullLogger(),
         );
 
         $getProductFilePathAndFileNameMock->expects($this->once())->method('__invoke')->willReturn(null);
 
         $this->expectException(SupplierFileDoesNotExist::class);
-        ($sut)(new DownloadProductFile('file-identifier'));
+        ($sut)(new DownloadProductFile('file-identifier', 1));
     }
 
     /** @test */
@@ -85,18 +107,24 @@ final class DownloadProductFileHandlerTest extends TestCase
     {
         $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileName::class);
         $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
+        $getSupplierCodeFromSupplierFileIdentifier = $this->createMock(
+            GetSupplierCodeFromSupplierFileIdentifier::class,
+        );
         $eventDispatcher = new StubEventDispatcher();
         $sut = new DownloadProductFileHandler(
             $getProductFilePathAndFileNameMock,
             $downloadStoredProductFileMock,
             $eventDispatcher,
+            $getSupplierCodeFromSupplierFileIdentifier,
             new NullLogger(),
         );
 
         $getProductFilePathAndFileNameMock
             ->expects($this->once())
             ->method('__invoke')
-            ->willReturn(new ProductFilePathAndFileName('file.xlsx', 'path/to/file.xlsx'))
+            ->willReturn(
+                new ProductFilePathAndFileName('file.xlsx', 'path/to/file.xlsx'),
+            )
         ;
         $downloadStoredProductFileMock
             ->method('__invoke')
@@ -105,7 +133,7 @@ final class DownloadProductFileHandlerTest extends TestCase
         ;
 
         $this->expectException(SupplierFileIsNotDownloadable::class);
-        ($sut)(new DownloadProductFile('file-identifier'));
+        ($sut)(new DownloadProductFile('file-identifier', 1));
 
         $this->assertEmpty($eventDispatcher->getDispatchedEvents());
     }

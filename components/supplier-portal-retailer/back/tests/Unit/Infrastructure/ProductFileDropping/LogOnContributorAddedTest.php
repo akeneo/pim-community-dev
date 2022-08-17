@@ -23,6 +23,7 @@ final class LogOnContributorAddedTest extends TestCase
             new ContributorAdded(
                 $supplierIdentifier,
                 'contributor@example.com',
+                'los_pollos_hermanos',
             ),
         );
 
@@ -30,8 +31,9 @@ final class LogOnContributorAddedTest extends TestCase
             'message' => 'Contributor "contributor@example.com" created.',
             'context' => [
                 'data' => [
-                    'identifier' => $supplierIdentifier,
+                    'identifier' => 'a3d25314-04ca-4bf9-9423-e40362d84523',
                     'metric_key' => 'contributor_added',
+                    'supplier_code' => 'los_pollos_hermanos',
                 ],
             ],
         ]));

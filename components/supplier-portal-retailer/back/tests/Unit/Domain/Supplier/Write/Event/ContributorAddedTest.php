@@ -16,6 +16,7 @@ final class ContributorAddedTest extends TestCase
         $contributorAddedEvent = new ContributorAdded(
             Identifier::fromString('5781bb4b-a3c6-4224-b6b3-eccd73f669b1'),
             'foo@foo.foo',
+            'los_pollos_hermanos',
         );
 
         static::assertSame(
@@ -25,6 +26,10 @@ final class ContributorAddedTest extends TestCase
         static::assertSame(
             'foo@foo.foo',
             $contributorAddedEvent->contributorEmail(),
+        );
+        static::assertSame(
+            'los_pollos_hermanos',
+            $contributorAddedEvent->supplierCode(),
         );
     }
 }

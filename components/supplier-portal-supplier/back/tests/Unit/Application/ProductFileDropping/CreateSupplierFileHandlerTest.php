@@ -172,7 +172,7 @@ final class CreateSupplierFileHandlerTest extends TestCase
                 'data' => [
                     'identifier' => 'e36f227c-2946-11e8-b467-0ed5f89f718b',
                     'supplier_identifier' => '01319d4c-81c4-4f60-a992-41ea3546824c',
-                    'supplier_label' => 'My Supplier',
+                    'supplier_code' => 'mysupplier',
                     'filename' => 'products.xlsx',
                     'path' => 'path/to/products.xlsx',
                     'uploaded_by_contributor' => 'contributor@example.com',

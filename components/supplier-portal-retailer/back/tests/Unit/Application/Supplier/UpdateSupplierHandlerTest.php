@@ -25,7 +25,11 @@ final class UpdateSupplierHandlerTest extends TestCase
     {
         $identifier = Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
 
-        $command = new UpdateSupplier((string) $identifier, 'Updated label', ['contributor1@example.com', 'contributor2@example.com']);
+        $command = new UpdateSupplier(
+            (string) $identifier,
+            'Updated label',
+            ['contributor1@example.com', 'contributor2@example.com'],
+        );
 
         $validatorSpy = $this->getValidatorSpyWithNoError($command);
 
@@ -38,8 +42,8 @@ final class UpdateSupplierHandlerTest extends TestCase
             ->expects($this->exactly(2))
             ->method('dispatch')
             ->withConsecutive(
-                [new ContributorAdded($identifier, 'contributor1@example.com')],
-                [new ContributorAdded($identifier, 'contributor2@example.com')],
+                [new ContributorAdded($identifier, 'contributor1@example.com', 'code')],
+                [new ContributorAdded($identifier, 'contributor2@example.com', 'code')],
             );
 
         $handler = new UpdateSupplierHandler(

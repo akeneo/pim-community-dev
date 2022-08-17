@@ -66,6 +66,7 @@ final class Supplier
                 fn (string $createdContributorEmail) => new ContributorAdded(
                     Identifier::fromString($this->identifier()),
                     $createdContributorEmail,
+                    $this->code(),
                 ),
                 $newContributorEmails,
             ),
