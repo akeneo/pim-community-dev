@@ -10,6 +10,7 @@ import {ScopeInput} from '../../components/ScopeInput';
 import {LocaleInput} from '../../components/LocaleInput';
 import {CriterionFields, CriterionField} from '../../components/CriterionFields';
 import {Operator} from '../../models/Operator';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const AttributeTextCriterion: FC<CriterionModule<AttributeTextCriterionState>> = ({
     state,
@@ -17,6 +18,7 @@ const AttributeTextCriterion: FC<CriterionModule<AttributeTextCriterionState>> =
     onChange,
     onRemove,
 }) => {
+    const translate = useTranslate();
     const {data: attribute} = useAttribute(state.field);
     const hasError = Object.values(errors).filter(n => n).length > 0;
     const showValueInput = [
@@ -62,7 +64,7 @@ const AttributeTextCriterion: FC<CriterionModule<AttributeTextCriterionState>> =
                     ghost='borderless'
                     level='tertiary'
                     icon={<CloseIcon />}
-                    title='remove'
+                    title={translate('akeneo_catalogs.product_selection.action.remove')}
                     onClick={onRemove}
                 />
             </List.RemoveCell>
