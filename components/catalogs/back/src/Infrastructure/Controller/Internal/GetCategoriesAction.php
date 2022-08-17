@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Application\Persistence\GetCategoriesByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\GetCategoryTreeRootsQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,8 +18,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class GetCategoriesAction
 {
-    public function __construct(private GetCategoriesByCodeQueryInterface $getCategoriesByCodeQuery)
-    {
+    public function __construct(
+        private GetCategoryTreeRootsQueryInterface $getCategoryTreeRootsQuery,
+        private GetCategoriesByCodeQueryInterface $getCategoriesByCodeQuery
+    ) {
     }
 
     public function __invoke(Request $request): Response
@@ -27,11 +30,25 @@ class GetCategoriesAction
             return new RedirectResponse('/');
         }
 
+        $isRoot = $request->query->get('is_root', false);
         $codes = $request->query->get('codes', '');
+
         if (!\is_string($codes)) {
-            throw new BadRequestHttpException('Codes must be a string or null.');
+            throw new BadRequestHttpException('Codes must be a string.');
         }
 
-        return new JsonResponse($this->getCategoriesByCodeQuery->execute(\explode(',', $codes)));
+        if (!$isRoot && $codes === '') {
+            throw new BadRequestHttpException('Either Codes or is_root must be specified');
+        }
+
+        if ($isRoot && $codes !== '') {
+            throw new BadRequestHttpException('Is_root cannot be used with codes.');
+        }
+
+        $categories = $isRoot
+            ? $this->getCategoryTreeRootsQuery->execute()
+            : $this->getCategoriesByCodeQuery->execute(\explode(',', $codes));
+
+        return new JsonResponse($categories);
     }
 }
