@@ -1,22 +1,33 @@
-import {FetchStatus, useFetch, useRoute} from '@akeneo-pim-community/shared';
-import {Category} from '../models';
-import type {EditCategoryForm} from '../models/Category';
-
-type EditCategoryData = {
-  category: Category;
-  form: EditCategoryForm;
-};
+import {FetchStatus,} from '@akeneo-pim-community/shared';
+import {EnrichCategory} from '../models';
+import type {EditCategoryForm} from '../models';
+import {useCallback, useState} from 'react';
 
 const useCategory = (
   categoryId: number
-): [data: EditCategoryData | null, fetch: () => Promise<void>, status: FetchStatus, error: string | null] => {
-  const url = useRoute('pim_enrich_categorytree_edit', {
-    id: categoryId.toString(),
+): [data: EnrichCategory | null, fetch: () => Promise<void>, status: FetchStatus, error: string | null] => {
+  const [data] = useState<EnrichCategory | null>({
+    id: categoryId,
+    code: 'toto',
+    labels: {
+      'en_US': 'socks',
+      'fr_FR': 'chaussettes',
+    },
+    attributes: [],
+    permissions: null
   });
+  const load = useCallback(async () => {}, []);
+  const [status] = useState<FetchStatus>('fetched');
+  const [error] = useState<string | null>(null);
 
-  const [categoryData, load, status, error] = useFetch<EditCategoryData>(url);
+  // TODO: get token
+  // const url = useRoute('pim_enrich_categorytree_edit', {
+  //   id: categoryId.toString(),
+  // });
 
-  return [categoryData, load, status, error];
+  // const [categoryData, load, status, error] = useFetch<EditCategoryData>(url);
+
+  return [data, load, status, error];
 };
 
 export {useCategory};

@@ -74,6 +74,6 @@ class UpdateCategoryController
         }
         $normalizedCategory = $category->normalize();
 
-        return new JsonResponse($normalizedCategory, Response::HTTP_OK);
+        return new JsonResponse(['category' => $normalizedCategory], Response::HTTP_OK);
     }
 }

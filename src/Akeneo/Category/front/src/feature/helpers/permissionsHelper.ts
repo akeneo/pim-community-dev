@@ -1,6 +1,6 @@
-import {EditCategoryForm} from '../models';
+import {EnrichCategory} from '../models';
 
-const computeNewViewPermissions = (originalFormData: EditCategoryForm, values: string[]) => {
+const computeNewViewPermissions = (originalFormData: EnrichCategory, values: string[]) => {
   let newFormData = updateFormDataWithNewValues(originalFormData, values, 'view');
   const {removedPermission} = computeDifferencesBetweenPermissions(originalFormData, newFormData, 'view');
   if (removedPermission) {
@@ -11,7 +11,7 @@ const computeNewViewPermissions = (originalFormData: EditCategoryForm, values: s
   return newFormData;
 };
 
-const computeNewEditPermissions = (originalFormData: EditCategoryForm, values: string[]) => {
+const computeNewEditPermissions = (originalFormData: EnrichCategory, values: string[]) => {
   let newFormData = updateFormDataWithNewValues(originalFormData, values, 'edit');
   const {removedPermission, addedPermission} = computeDifferencesBetweenPermissions(
     originalFormData,
@@ -28,7 +28,7 @@ const computeNewEditPermissions = (originalFormData: EditCategoryForm, values: s
   return newFormData;
 };
 
-const computeNewOwnPermissions = (originalFormData: EditCategoryForm, values: string[]) => {
+const computeNewOwnPermissions = (originalFormData: EnrichCategory, values: string[]) => {
   let newFormData = updateFormDataWithNewValues(originalFormData, values, 'own');
   const {addedPermission} = computeDifferencesBetweenPermissions(originalFormData, newFormData, 'own');
   if (addedPermission) {
@@ -40,7 +40,7 @@ const computeNewOwnPermissions = (originalFormData: EditCategoryForm, values: st
 };
 
 const updateFormDataWithNewValues = (
-  originalFormData: EditCategoryForm,
+  originalFormData: EnrichCategory,
   values: string[],
   type: 'view' | 'edit' | 'own'
 ) => {
@@ -50,37 +50,46 @@ const updateFormDataWithNewValues = (
 
   return {
     ...originalFormData,
-    permissions: {...originalFormData.permissions, [type]: {...originalFormData.permissions[type], value: values}},
+    permissions: {
+      ...originalFormData.permissions,
+      [type]: values
+    },
   };
 };
 
 const removePermissionByType = (type: 'view' | 'edit' | 'own', permissionId: number, newPermissions: any) => {
-  const newValues = newPermissions.permissions[type].value.filter((permission: number) => permission !== permissionId);
+  const newValues = newPermissions.permissions[type].filter((permission: number) => permission !== permissionId);
 
   return {
     ...newPermissions,
-    permissions: {...newPermissions.permissions, [type]: {...newPermissions.permissions[type], value: newValues}},
+    permissions: {
+      ...newPermissions.permissions,
+      [type]: newValues
+    },
   };
 };
 
 const addPermissionByType = (type: 'view' | 'edit' | 'own', permissionId: number, newPermissions: any) => {
-  let newValues = [...newPermissions.permissions[type].value];
+  let newValues = [...newPermissions.permissions[type]];
   newValues.push(permissionId);
   newValues = Array.from(new Set(newValues)); //to remove duplicated values
 
   return {
     ...newPermissions,
-    permissions: {...newPermissions.permissions, [type]: {...newPermissions.permissions[type], value: newValues}},
+    permissions: {
+      ...newPermissions.permissions,
+      [type]: newValues
+    },
   };
 };
 
 const computeDifferencesBetweenPermissions = (permissionsA: any, permissionsB: any, type: string) => {
   return {
-    removedPermission: permissionsA.permissions[type].value.filter(
-      (permissionId: number) => !permissionsB.permissions[type].value.includes(permissionId)
+    removedPermission: permissionsA.permissions[type].filter(
+      (permissionId: number) => !permissionsB.permissions[type].includes(permissionId)
     )[0],
-    addedPermission: permissionsB.permissions[type].value.filter(
-      (permissionId: number) => !permissionsA.permissions[type].value.includes(permissionId)
+    addedPermission: permissionsB.permissions[type].filter(
+      (permissionId: number) => !permissionsA.permissions[type].includes(permissionId)
     )[0],
   };
 };

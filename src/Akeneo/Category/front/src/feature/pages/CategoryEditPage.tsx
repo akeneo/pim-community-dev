@@ -111,7 +111,16 @@ const CategoryEditPage: FC = () => {
     }
 
     const catalogLocale = userContext.get('catalogLocale');
-    const rootCategory = category.root ? category.root : category;
+    // TODO: https://akeneo.atlassian.net/browse/GRF-237
+    // const rootCategory = category.root ? category.root : category;
+    const rootCategory = {
+      id: 1,
+      code: 'master',
+      labels: {
+        'en_US': 'Master catalog'
+      },
+      root : null
+    };
 
     setCategoryLabel(getLabel(category.labels, catalogLocale, category.code));
     setTreeLabel(getLabel(rootCategory.labels, catalogLocale, rootCategory.code));

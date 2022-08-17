@@ -8,9 +8,13 @@ export type Category = {
   root: Category | null;
 };
 
-export type EditableCategoryProperties = {
-  labels: LabelCollection;
-};
+export type EnrichCategory = {
+  id: number,
+  code: string,
+  labels: LabelCollection,
+  attributes: any,
+  permissions: CategoryPermissions | null,
+}
 
 export type CategoryPermissions = {
   view: number[];

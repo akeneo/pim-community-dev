@@ -11,7 +11,7 @@ type Props = {
 
 const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
   const featureFlags = useFeatureFlags();
-  const categoryEnrichmentIsEnabled = featureFlags.isEnabled('enriched_category');
+  console.log(featureFlags.isEnabled('enriched_category'));
 
   return (
     <Router basename="/enrich/product-category-tree">
@@ -21,7 +21,7 @@ const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
         </Route>
         <Route path="/:categoryId/edit">
           <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
-            {categoryEnrichmentIsEnabled ? <CategoryEditPage /> : <LegacyCategoryEditPage />}
+            {featureFlags.isEnabled('enriched_category') ? <CategoryEditPage /> : <LegacyCategoryEditPage />}
           </EditCategoryProvider>
         </Route>
         <Route path="/">

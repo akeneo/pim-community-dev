@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Infrastructure\Converter\InternalAPI;
+namespace Akeneo\Category\Infrastructure\Converter\InternalApi;
 
 use Akeneo\Category\Application\Converter\AttributeRequirementChecker;
 use Akeneo\Category\Application\Converter\ConverterInterface;
@@ -28,7 +28,7 @@ use Webmozart\Assert\Assert;
  * @phpstan-type AttributeCodeApi array<string>
  * @phpstan-type AttributeValueApi array{data: string, locale: string|null, attribute_code: string}
  */
-class InternalAPIToStd implements ConverterInterface
+class InternalApiToStd implements ConverterInterface
 {
     public function __construct(
         private FieldsRequirementChecker $fieldsChecker,

@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {EditCategoryForm} from '../hooks';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
 import styled from 'styled-components';
+import {EnrichCategory} from '../models';
 
 type Props = {
-  formData: EditCategoryForm | null;
+  formData: EnrichCategory | null;
   onChangePermissions: (type: string, values: string[]) => void;
   onChangeApplyPermissionsOnChildren: (value: boolean) => void;
 };
@@ -24,6 +25,28 @@ const PermissionField = styled(Field)`
 
 const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermissionsOnChildren}: Props) => {
   const translate = useTranslate();
+  const [userGroupList] = useState([
+    {
+      id: 1,
+      label: 'IT support'
+    },
+    {
+      id: 2,
+      label: 'Manager'
+    },
+    {
+      id: 3,
+      label: 'Furniture manager'
+    },
+  ]);
+
+  const getUserGroupList = useCallback((permissionsId: number[]) => {
+    const filteredUserGroupList = userGroupList.filter((userGroup) => {
+        return permissionsId.includes(userGroup.id);
+    });
+
+    return filteredUserGroupList.map((userGroup) => userGroup.label);
+  }, [userGroupList]);
 
   if (formData === null || !formData.permissions) {
     return <></>;
@@ -34,48 +57,48 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
       <PermissionField label={translate('category.permissions.view.label')}>
         <MultiSelectInput
           readOnly={false}
-          value={formData.permissions.view.value}
-          name={formData.permissions.view.fullName}
+          value={getUserGroupList(formData.permissions.view)}
+          name='view-permission'
           emptyResultLabel={translate('pim_common.no_result')}
           openLabel={translate('pim_common.open')}
           removeLabel={translate('pim_common.remove')}
           onChange={changedValues => onChangePermissions('view', changedValues)}
         >
-          {Object.entries(formData.permissions.view.choices).map(([key, choice]) => (
-            <MultiSelectInput.Option value={choice.value} key={`view-${key}`}>
-              {choice.label}
+          {userGroupList.map(({id, label}) => (
+            <MultiSelectInput.Option value={label} key={`view-${id}`}>
+              {label}
             </MultiSelectInput.Option>
           ))}
         </MultiSelectInput>
       </PermissionField>
       <PermissionField label={translate('category.permissions.edit.label')}>
         <MultiSelectInput
-          value={formData.permissions.edit.value}
-          name={formData.permissions.edit.fullName}
+          value={getUserGroupList(formData.permissions.edit)}
+          name='edit-permission'
           emptyResultLabel={translate('pim_common.no_result')}
           openLabel={translate('pim_common.open')}
           removeLabel={translate('pim_common.remove')}
           onChange={changedValues => onChangePermissions('edit', changedValues)}
         >
-          {Object.entries(formData.permissions.edit.choices).map(([key, choice]) => (
-            <MultiSelectInput.Option value={choice.value} key={`edit-${key}`}>
-              {choice.label}
+          {userGroupList.map(({id, label}) => (
+            <MultiSelectInput.Option value={label} key={`edit-${id}`}>
+              {label}
             </MultiSelectInput.Option>
           ))}
         </MultiSelectInput>
       </PermissionField>
       <PermissionField label={translate('category.permissions.own.label')}>
         <MultiSelectInput
-          value={formData.permissions.own.value}
-          name={formData.permissions.own.fullName}
+          value={getUserGroupList(formData.permissions.own)}
+          name='own-permission'
           emptyResultLabel={translate('pim_common.no_result')}
           openLabel={translate('pim_common.open')}
           removeLabel={translate('pim_common.remove')}
           onChange={changedValues => onChangePermissions('own', changedValues)}
         >
-          {Object.entries(formData.permissions.own.choices).map(([key, choice]) => (
-            <MultiSelectInput.Option value={choice.value} key={`own-${key}`}>
-              {choice.label}
+          {userGroupList.map(({id, label}) => (
+            <MultiSelectInput.Option value={label} key={`own-${id}`}>
+              {label}
             </MultiSelectInput.Option>
           ))}
         </MultiSelectInput>
@@ -85,7 +108,7 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
         <BooleanInput
           clearable={false}
           readOnly={false}
-          value={formData.permissions.apply_on_children.value === '1'}
+          value={formData.permissions.apply_on_children === '1'}
           noLabel={translate('pim_common.no')}
           yesLabel={translate('pim_common.yes')}
           onChange={changedValue => onChangeApplyPermissionsOnChildren(changedValue)}

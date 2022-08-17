@@ -1,13 +1,12 @@
 import React from 'react';
 import {useSecurity, useTranslate} from '@akeneo-pim-community/shared';
-import {Category} from '../models';
+import {EnrichCategory} from '../models';
 import {Field, SectionTitle, TextInput, Helper} from 'akeneo-design-system';
-import {EditCategoryForm} from '../hooks';
 import styled from 'styled-components';
 
 type Props = {
-  category: Category;
-  formData: EditCategoryForm | null;
+  category: EnrichCategory;
+  formData: EnrichCategory | null;
   onChangeLabel: (locale: string, label: string) => void;
 };
 
@@ -33,13 +32,13 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
 
   return (
     <FormContainer>
-      {formData.errors.map((errorMessage, key) => {
-        return (
-          <ErrorMessage level="error" key={`error-${key}`}>
-            {errorMessage}
-          </ErrorMessage>
-        );
-      })}
+      {/*{formData.errors.map((errorMessage, key) => {*/}
+      {/*  return (*/}
+      {/*    <ErrorMessage level="error" key={`error-${key}`}>*/}
+      {/*      {errorMessage}*/}
+      {/*    </ErrorMessage>*/}
+      {/*  );*/}
+      {/*})}*/}
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_common.code')}</SectionTitle.Title>
       </SectionTitle>
@@ -49,13 +48,13 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_common.label')}</SectionTitle.Title>
       </SectionTitle>
-      {Object.entries(formData.label).map(([locale, labelField]) => (
-        <Field label={labelField.label} key={locale}>
+      {Object.entries(formData.labels).map(([locale, labelField]) => (
+        <Field label={labelField} key={locale}>
           <TextInput
-            name={labelField.fullName}
+            name={`${labelField}-${locale}`}
             readOnly={!isGranted('pim_enrich_product_category_edit')}
             onChange={changedLabel => onChangeLabel(locale, changedLabel)}
-            value={labelField.value}
+            value={labelField}
           />
         </Field>
       ))}

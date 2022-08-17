@@ -4,7 +4,7 @@ import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim
 import {EditCategoryForm, useCategory} from './useCategory';
 import {EditCategoryContext} from '../components';
 import {computeNewEditPermissions, computeNewOwnPermissions, computeNewViewPermissions} from '../helpers';
-import {Category} from '../models';
+import {Category, EnrichCategory} from '../models';
 
 // @todo Add unit tests
 const useEditCategoryForm = (categoryId: number) => {
@@ -12,9 +12,9 @@ const useEditCategoryForm = (categoryId: number) => {
   const notify = useNotify();
   const translate = useTranslate();
   const [categoryData, loadCategory, categoryLoadingStatus] = useCategory(categoryId);
-  const [category, setCategory] = useState<Category | null>(null);
-  const [originalFormData, setOriginalFormData] = useState<EditCategoryForm | null>(null);
-  const [editedFormData, setEditedFormData] = useState<EditCategoryForm | null>(null);
+  const [category, setCategory] = useState<EnrichCategory | null>(null);
+  const [originalFormData, setOriginalFormData] = useState<EnrichCategory | null>(null);
+  const [editedFormData, setEditedFormData] = useState<EnrichCategory | null>(null);
   const [thereAreUnsavedChanges, setThereAreUnsavedChanges] = useState<boolean>(false);
   const [historyVersion, setHistoryVersion] = useState<number>(0);
   const {setCanLeavePage} = useContext(EditCategoryContext);
@@ -24,13 +24,13 @@ const useEditCategoryForm = (categoryId: number) => {
       return false;
     }
 
-    for (const [locale, changedLabel] of Object.entries(editedFormData.label)) {
-      if (!originalFormData.label.hasOwnProperty(locale) && changedLabel.value === '') {
+    for (const [locale, changedLabel] of Object.entries(editedFormData.labels)) {
+      if (!originalFormData.labels.hasOwnProperty(locale) && changedLabel === '') {
         return false;
       }
       if (
-        !originalFormData.label.hasOwnProperty(locale) ||
-        originalFormData.label[locale].value !== changedLabel.value
+        !originalFormData.labels.hasOwnProperty(locale) ||
+        originalFormData.labels[locale] !== changedLabel
       ) {
         return true;
       }
@@ -50,21 +50,23 @@ const useEditCategoryForm = (categoryId: number) => {
     }
 
     return (
-      JSON.stringify(originalFormData.permissions.view.value) !==
-        JSON.stringify(editedFormData.permissions.view.value) ||
-      JSON.stringify(originalFormData.permissions.edit.value) !==
-        JSON.stringify(editedFormData.permissions.edit.value) ||
-      JSON.stringify(originalFormData.permissions.own.value) !== JSON.stringify(editedFormData.permissions.own.value)
+      JSON.stringify(originalFormData.permissions.view) !==
+        JSON.stringify(editedFormData.permissions.view) ||
+      JSON.stringify(originalFormData.permissions.edit) !==
+        JSON.stringify(editedFormData.permissions.edit) ||
+      JSON.stringify(originalFormData.permissions.own) !== JSON.stringify(editedFormData.permissions.own)
     );
   }, [originalFormData, editedFormData]);
 
   const onChangeCategoryLabel = (locale: string, label: string) => {
-    if (editedFormData === null || !editedFormData.label.hasOwnProperty(locale)) {
+    if (editedFormData === null || !editedFormData.labels.hasOwnProperty(locale)) {
       return;
     }
 
-    const editedLabel = {...editedFormData.label[locale], value: label};
-    setEditedFormData({...editedFormData, label: {...editedFormData.label, [locale]: editedLabel}});
+    setEditedFormData({
+      ...editedFormData,
+      labels: {...editedFormData.labels, [locale]: label}
+    });
   };
 
   const onChangePermissions = (type: string, values: any) => {
@@ -93,10 +95,12 @@ const useEditCategoryForm = (categoryId: number) => {
       return;
     }
 
-    const editedApplyOnChildren = {...editedFormData.permissions.apply_on_children, value: value === true ? '1' : '0'};
     setEditedFormData({
       ...editedFormData,
-      permissions: {...editedFormData.permissions, apply_on_children: editedApplyOnChildren},
+      permissions: {
+        ...editedFormData.permissions,
+        apply_on_children: value === true ? '1' : '0'
+      },
     });
   };
 
@@ -105,17 +109,17 @@ const useEditCategoryForm = (categoryId: number) => {
       return;
     }
 
-    const response = await saveEditCategoryForm(router, categoryData.category.id, editedFormData);
+    const response = await saveEditCategoryForm(router, categoryData);
 
     if (response.success) {
       setHistoryVersion((prevVersion: number) => prevVersion + 1)
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
-      setOriginalFormData(response.form);
+      setOriginalFormData(response.category);
       setCategory(response.category);
     } else {
       notify(NotificationLevel.ERROR, translate('pim_enrich.entity.category.content.edit.fail'));
-      const refreshedToken = {...editedFormData._token, value: response.form._token.value};
-      setEditedFormData({...editedFormData, _token: refreshedToken});
+      // const refreshedToken = {...editedFormData._token, value: response.form._token.value};
+      // setEditedFormData({...editedFormData, _token: refreshedToken});
     }
   }, [categoryData, editedFormData]);
 
@@ -128,8 +132,8 @@ const useEditCategoryForm = (categoryId: number) => {
       return;
     }
 
-    setOriginalFormData(categoryData.form);
-    setCategory(categoryData.category);
+    setOriginalFormData(categoryData);
+    setCategory(categoryData);
   }, [categoryData]);
 
   useEffect(() => {
