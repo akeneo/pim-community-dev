@@ -76,9 +76,11 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
 
-            'Akeneo\UserManagement\Bundle\Context\UserContext',
+            // @todo replace with the ones from category service API when available
             'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
             'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
+            'Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface',
+            'Doctrine\Common\Collections\Collection',
             'Akeneo\Category\Api\FindCategoryTrees',
             'Akeneo\Category\Api\CategoryTree',
         ]

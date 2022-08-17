@@ -29,8 +29,8 @@ class GetCategoriesByCodeQueryTest extends IntegrationTestCase
     public function testItGetsCategoriesFromCodeList(): void
     {
         $this->createCategory(['code' => 'tshirt', 'labels' => ['en_US' => 'T-shirt']]);
-        $this->createCategory(['code' => 'shoes', 'labels' => ['en_US' => 'Shoes']]);
-        $this->createCategory(['code' => 'pants', 'labels' => ['en_US' => 'Pants']]);
+        $this->createCategory(['code' => 'shoes', 'labels' => ['fr_FR' => 'Chaussures', 'en_US' => 'Shoes']]);
+        $this->createCategory(['code' => 'pants', 'labels' => []]);
         $this->createCategory(['code' => 'shorts', 'parent' => 'pants']);
 
         $expectedTshirtCategory = [
@@ -47,11 +47,11 @@ class GetCategoriesByCodeQueryTest extends IntegrationTestCase
 
         $expectedPantsCategory = [
             'code' => 'pants',
-            'label' => 'Pants',
+            'label' => '[pants]',
             'isLeaf' => false,
         ];
 
-        $result = $this->query->execute(['tshirt', 'shoes', 'pants', 'non_existing_category']);
+        $result = $this->query->execute(['tshirt', 'shoes', 'pants', 'non_existing_category'], 'en_US');
 
         $this->assertEquals([
             $expectedPantsCategory,
@@ -64,7 +64,7 @@ class GetCategoriesByCodeQueryTest extends IntegrationTestCase
     {
         $this->createCategory(['code' => 'tshirt']);
 
-        $result = $this->query->execute([]);
+        $result = $this->query->execute([], 'en_US');
 
         $this->assertEmpty($result, 'No category should be found');
     }
@@ -73,7 +73,7 @@ class GetCategoriesByCodeQueryTest extends IntegrationTestCase
     {
         $this->createCategory(['code' => 'tshirt']);
 
-        $result = $this->query->execute(['unknown', 'shoes', 'pants']);
+        $result = $this->query->execute(['unknown', 'shoes', 'pants'], 'en_US');
 
         $this->assertEmpty($result, 'No category should be found');
     }

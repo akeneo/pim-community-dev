@@ -38,7 +38,13 @@ class GetCategoryChildrenQueryTest extends IntegrationTestCase
         $this->createCategory([
             'code' => 'child2',
             'parent' => 'parent_category',
-            'labels' => ['en_US' => 'Child 2 category']
+            'labels' => ['en_US' => 'Child 2 category', 'fr_FR' => 'Categorie enfant 2']
+        ]);
+
+        $this->createCategory([
+            'code' => 'child3',
+            'parent' => 'parent_category',
+            'labels' => []
         ]);
 
         $this->createCategory(['code' => 'grand_child', 'parent' => 'child1']);
@@ -55,16 +61,22 @@ class GetCategoryChildrenQueryTest extends IntegrationTestCase
             'isLeaf' => true,
         ];
 
-        $result = $this->query->execute('parent_category');
+        $expectedChild3 = [
+            'code' => 'child3',
+            'label' => '[child3]',
+            'isLeaf' => true,
+        ];
 
-        $this->assertEquals([$expectedChild1, $expectedChild2], $result);
+        $result = $this->query->execute('parent_category', 'en_US');
+
+        $this->assertEquals([$expectedChild1, $expectedChild2, $expectedChild3], $result);
     }
 
     public function testItReturnsAnEmptyArrayWithUnknownCategoryCode(): void
     {
         $this->createCategory(['code' => 'parent_category']);
 
-        $result = $this->query->execute('some_category_code');
+        $result = $this->query->execute('some_category_code', 'en_US');
 
         $this->assertEmpty($result, 'Unknown category code should not have any children');
     }

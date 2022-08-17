@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -26,6 +27,11 @@ class GetCategoryChildrenAction
             return new RedirectResponse('/');
         }
 
-        return new JsonResponse($this->getCategoryChildrenQuery->execute($categoryCode));
+        $locale = $request->query->get('locale', 'en_US');
+        if (!\is_string($locale)) {
+            throw new BadRequestHttpException('Locale must be a string.');
+        }
+
+        return new JsonResponse($this->getCategoryChildrenQuery->execute($categoryCode, $locale));
     }
 }

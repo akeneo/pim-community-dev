@@ -13,5 +13,5 @@ interface GetCategoryChildrenQueryInterface
     /**
      * @return array<array-key, array{code: string, label: string, isLeaf: bool}>
      */
-    public function execute(string $categoryCode): array;
+    public function execute(string $categoryCode, string $locale): array;
 }

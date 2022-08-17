@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence;
 use Akeneo\Catalogs\Application\Persistence\GetCategoryChildrenQueryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -22,7 +23,7 @@ class GetCategoryChildrenQuery implements GetCategoryChildrenQueryInterface
     /**
      * @inheritDoc
      */
-    public function execute(string $categoryCode): array
+    public function execute(string $categoryCode, string $locale): array
     {
         $parentCategory = $this->getCategoryFromCode($categoryCode);
         if ($parentCategory === null) {
@@ -34,7 +35,7 @@ class GetCategoryChildrenQuery implements GetCategoryChildrenQueryInterface
         $children = [];
         /** @var CategoryInterface $category */
         foreach ($categories as $category) {
-            $children[] = $this->normalizeCategory($category);
+            $children[] = $this->normalizeCategory($category, $locale);
         }
 
         return $children;
@@ -51,11 +52,15 @@ class GetCategoryChildrenQuery implements GetCategoryChildrenQueryInterface
     /**
      * @return array{code: string, label: string, isLeaf: bool}
      */
-    private function normalizeCategory(CategoryInterface $category): array
+    private function normalizeCategory(CategoryInterface $category, string $locale): array
     {
+        /** @var CategoryTranslationInterface|null $categoryTranslation */
+        $categoryTranslation = $category->getTranslation($locale);
+        $label = $categoryTranslation?->getLabel() ?? "[{$category->getCode()}]";
+
         return [
             'code' => $category->getCode(),
-            'label' => $category->getLabel(),
+            'label' => $label,
             'isLeaf' => $category->getRight() - $category->getLeft() === 1,
         ];
     }

@@ -13,5 +13,5 @@ interface GetCategoryTreeRootsQueryInterface
     /**
      * @return array<array-key, array{code: string, label: string, isLeaf: bool}>
      */
-    public function execute(): array;
+    public function execute(string $locale): array;
 }

@@ -68,6 +68,12 @@ class GetCategoriesActionTest extends TestCase
                     'codes' => 456,
                 ],
             ],
+            'locale must be a string' => [
+                [
+                    'codes' => 'a,b,c',
+                    'locale' => 456,
+                ],
+            ],
             'codes and is_root are mutually exclusive' => [
                 [
                     'codes' => 'a,b,c',
@@ -81,12 +87,12 @@ class GetCategoriesActionTest extends TestCase
     {
         $this->getCategoriesByCodeQuery
             ->method('execute')
-            ->with(['codeA', 'codeB', 'codeC'])
+            ->with(['codeA', 'codeB', 'codeC'], 'fr_FR')
             ->willReturn(['categoryA', 'categoryB', 'categoryC']);
 
         $response = ($this->getCategoriesAction)(
             new Request(
-                query: ['codes' => 'codeA,codeB,codeC'],
+                query: ['codes' => 'codeA,codeB,codeC', 'locale' => 'fr_FR'],
                 server: [
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],
@@ -104,6 +110,7 @@ class GetCategoriesActionTest extends TestCase
     {
         $this->getCategoryTreeRootsQuery
             ->method('execute')
+            ->with('en_US')
             ->willReturn(['categoryA', 'categoryB', 'categoryC']);
 
         $response = ($this->getCategoriesAction)(

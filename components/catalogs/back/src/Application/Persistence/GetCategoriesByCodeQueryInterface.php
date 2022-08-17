@@ -14,5 +14,5 @@ interface GetCategoriesByCodeQueryInterface
      * @param array<string> $categoryCodes
      * @return array<array-key, array{code: string, label: string, isLeaf: bool}>
      */
-    public function execute(array $categoryCodes): array;
+    public function execute(array $categoryCodes, string $locale): array;
 }
