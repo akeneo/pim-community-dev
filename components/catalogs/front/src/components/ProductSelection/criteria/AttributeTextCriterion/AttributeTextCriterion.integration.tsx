@@ -252,6 +252,39 @@ test('it calls onChange when the operator changes', () => {
     });
 });
 
+test('it resets value when the operator changes to IS_EMPTY', () => {
+    const onChange = jest.fn();
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <ReactQueryWrapper>
+                <AttributeTextCriterion
+                    state={{
+                        field: 'name_localizable_scopable',
+                        operator: Operator.CONTAINS,
+                        value: 'blue',
+                        locale: 'en_US',
+                        scope: 'ecommerce',
+                    }}
+                    onChange={onChange}
+                    onRemove={jest.fn()}
+                    errors={{}}
+                />
+            </ReactQueryWrapper>
+        </ThemeProvider>
+    );
+
+    changeOperatorTo(Operator.IS_EMPTY);
+
+    expect(onChange).toHaveBeenCalledWith({
+        field: 'name_localizable_scopable',
+        operator: Operator.IS_EMPTY,
+        value: '',
+        locale: 'en_US',
+        scope: 'ecommerce',
+    });
+});
+
 test('it calls onChange when the value changes', () => {
     const onChange = jest.fn();
 

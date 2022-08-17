@@ -52,6 +52,20 @@ class AttributeTextCriterionValuesValidator extends ConstraintValidator
         if (true === $attribute['localizable'] && false === $attribute['scopable']) {
             $this->validateLocale($value);
         }
+
+        if (\in_array($value['operator'], ['EMPTY', 'NOT_EMPTY']) && '' !== $value['value']) {
+            $this->context
+                ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.attribute_text.value.not_empty')
+                ->atPath('[locale]')
+                ->addViolation();
+        }
+
+        if (!\in_array($value['operator'], ['EMPTY', 'NOT_EMPTY']) && '' === $value['value']) {
+            $this->context
+                ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.attribute_text.value.empty')
+                ->atPath('[locale]')
+                ->addViolation();
+        }
     }
 
     private function validateScopeAndLocale(array $value): void
@@ -98,7 +112,7 @@ class AttributeTextCriterionValuesValidator extends ConstraintValidator
     {
         $locales = $this->getLocalesQuery->execute();
 
-        $exists = count(array_filter($locales, static fn(string $locale) => $locale === $value['locale'])) > 0;
+        $exists = count(array_filter($locales, static fn(array $locale) => $locale['code'] === $value['locale'])) > 0;
 
         if(false === $exists){
             $this->context

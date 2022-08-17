@@ -10,3 +10,7 @@ akeneo_catalogs:
                     disabled: 'This locale is disabled for this channel. Please check your channel settings or remove this criterion.'
                 completeness:
                     value: 'Completeness value must be between 0 and 100 percent.'
+                attribute_text:
+                    value:
+                        not_empty: 'The value must be empty'
+                        empty: 'The value must not be empty'

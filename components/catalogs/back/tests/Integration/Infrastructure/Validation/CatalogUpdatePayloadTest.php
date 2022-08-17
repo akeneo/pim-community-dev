@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @covers \Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload
  */
-class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
+class CatalogUpdatePayloadTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
 
