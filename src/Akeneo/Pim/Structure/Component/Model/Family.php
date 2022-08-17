@@ -6,6 +6,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Webmozart\Assert\Assert;
 
 /**
  * Family entity
@@ -458,5 +459,44 @@ class Family implements FamilyInterface
     public function setFamilyVariants(Collection $familyVariants): void
     {
         $this->familyVariants = $familyVariants;
+    }
+
+    /**
+     * @param AttributeInterface[] $attributes
+     * @return void
+     */
+    public function updateAttributes(array $attributes = []): void
+    {
+        Assert::allIsInstanceOf($attributes, AttributeInterface::class);
+
+        $formerAttributeCodes = $this->getAttributeCodes();
+        $newAttributeCodes = \array_map(
+            fn (AttributeInterface $attribute): string => $attribute->getCode(),
+            $attributes
+        );
+
+        sort($formerAttributeCodes);
+        sort($newAttributeCodes);
+
+        if ($formerAttributeCodes !== $newAttributeCodes) {
+            $attributeCodesToRemove = array_diff($formerAttributeCodes, $newAttributeCodes);
+            $attributeCodesToAdd = array_diff($newAttributeCodes, $formerAttributeCodes);
+
+            // removes attributes only from former attributes list
+            foreach ($this->getAttributes() as $attribute) {
+                if (\in_array($attribute->getCode(), $attributeCodesToRemove)) {
+                    if (AttributeTypes::IDENTIFIER !== $attribute->getType()) {
+                        $this->removeAttribute($attribute);
+                    }
+                }
+            }
+
+            // adds attributes only from new attributes list
+            foreach ($attributes as $attribute) {
+                if (\in_array($attribute->getCode(), $attributeCodesToAdd)) {
+                    $this->addAttribute($attribute);
+                }
+            }
+        }
     }
 }
