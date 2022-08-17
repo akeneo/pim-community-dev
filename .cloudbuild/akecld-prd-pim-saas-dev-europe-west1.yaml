@@ -93,4 +93,4 @@ substitutions:
   _CLUSTER_NAME: akecld-prd-pim-saas-dev-europe-west1
   _GOOGLE_CLUSTER_REGION: europe-west1
   _GOOGLE_COMPUTE_ZONE: europe-west1-b
-  _GOOGLE_DOMAIN: dev.akeneo.ch
+  _GOOGLE_DOMAIN: pim-saas-dev.dev.cloud.akeneo.com
