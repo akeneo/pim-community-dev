@@ -19,10 +19,10 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class GetCatalogActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client;
+    private ?KernelBrowser $client = null;
     private ?CommandBus $commandBus;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -51,7 +51,7 @@ class GetCatalogActionTest extends IntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $payload = \json_decode($response->getContent(), true);
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertSame('db1079b6-f397-4a6a-bae4-8658e64ad47c', $payload['id']);

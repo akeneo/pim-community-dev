@@ -13,3 +13,5 @@ Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionComm
             - Callback: [Akeneo\Connectivity\Connection\Domain\Settings\Validation\Connection\ConnectionLabelMustBeValid, validate]
         flowType:
             - Callback: [Akeneo\Connectivity\Connection\Domain\Settings\Validation\Connection\FlowTypeMustBeValid, validate]
+        userGroup:
+            - Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\UserGroupMustExist: ~

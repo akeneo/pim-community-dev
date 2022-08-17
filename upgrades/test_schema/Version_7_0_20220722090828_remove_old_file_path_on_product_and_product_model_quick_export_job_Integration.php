@@ -2,8 +2,6 @@
 
 namespace Pim\Upgrade\Schema\Tests;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

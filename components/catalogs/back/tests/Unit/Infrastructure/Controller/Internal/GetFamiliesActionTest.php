@@ -112,12 +112,12 @@ class GetFamiliesActionTest extends TestCase
                     'limit' => 0,
                 ],
             ],
-            'search must a string' => [
+            'search must be a string' => [
                 [
                     'search' => 42,
                 ],
             ],
-            'codes must a string' => [
+            'codes must be a string' => [
                 [
                     'codes' => 42,
                 ],

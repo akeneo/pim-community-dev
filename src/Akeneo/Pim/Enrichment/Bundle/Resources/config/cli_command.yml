@@ -85,3 +85,19 @@ services:
             - '@database_connection'
         tags:
             - { name: 'akeneo.pim.zdd_migration' }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220729171405CleanVersioningResourceUuidColumnForNonProductVersions:
+        arguments:
+            - '@database_connection'
+            - '@monolog.logger'
+        tags:
+            - { name: 'akeneo.pim.zdd_migration' }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedProductsCommand:
+        arguments:
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
+

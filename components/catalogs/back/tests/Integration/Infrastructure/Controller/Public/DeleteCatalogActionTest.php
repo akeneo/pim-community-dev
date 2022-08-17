@@ -19,10 +19,10 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class DeleteCatalogActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client;
+    private ?KernelBrowser $client = null;
     private ?CommandBus $commandBus;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

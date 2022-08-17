@@ -52,7 +52,7 @@ class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQuery
             ]
         )->fetchAllAssociative();
 
-        return \array_map(static fn ($row) => new Catalog(
+        return \array_map(static fn ($row): Catalog => new Catalog(
             $row['id'],
             $row['name'],
             $row['owner_username'],

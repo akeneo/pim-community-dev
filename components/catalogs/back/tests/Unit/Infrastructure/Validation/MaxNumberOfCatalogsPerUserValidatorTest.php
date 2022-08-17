@@ -27,7 +27,7 @@ class MaxNumberOfCatalogsPerUserValidatorTest extends ConstraintValidatorTestCas
         parent::setUp();
     }
 
-    protected function createValidator()
+    protected function createValidator(): MaxNumberOfCatalogsPerUserValidator
     {
         return new MaxNumberOfCatalogsPerUserValidator($this->isCatalogsNumberLimitReachedQuery);
     }

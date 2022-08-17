@@ -18,7 +18,7 @@ class FindOneCatalogByIdQueryTest extends IntegrationTestCase
 {
     private ?FindOneCatalogByIdQuery $query;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

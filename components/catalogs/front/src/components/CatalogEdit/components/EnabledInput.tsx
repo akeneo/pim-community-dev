@@ -11,7 +11,7 @@ const Container = styled(Field)`
 
 type Props = {
     value: boolean;
-    error: string | null;
+    error: string | undefined;
 };
 
 const EnabledInput: FC<Props> = ({value, error}) => {
@@ -31,7 +31,7 @@ const EnabledInput: FC<Props> = ({value, error}) => {
                 yesLabel={translate('akeneo_catalogs.settings.inputs.yes')}
                 readOnly={false}
                 onChange={handleStatusChange}
-                invalid={error !== null}
+                invalid={error !== undefined}
             >
                 {error}
             </BooleanInput>

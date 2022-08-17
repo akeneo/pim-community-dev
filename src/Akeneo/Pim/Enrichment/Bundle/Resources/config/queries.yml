@@ -67,7 +67,7 @@ services:
     akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\FetchProductAndProductModelRows'
         arguments:
-            - '@akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers'
+            - '@akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_uuids'
             - '@akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes'
             - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_properties'
             - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_model_properties'
@@ -80,12 +80,13 @@ services:
             - '@akeneo.pim.enrichment.factory.write_value_collection'
             - '@akeneo.pim.enrichment.product.grid.query.product_model_images_from_codes'
 
-    akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromIdentifiers'
+    akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_uuids:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromUuids'
         arguments:
             - '@database_connection'
             - '@akeneo.pim.enrichment.factory.write_value_collection'
-            -
+            - '@pim_catalog.repository.attribute'
+
     akeneo.pim.enrichment.product.grid.query.add_additional_product_properties:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductPropertiesRegistry'
         arguments:

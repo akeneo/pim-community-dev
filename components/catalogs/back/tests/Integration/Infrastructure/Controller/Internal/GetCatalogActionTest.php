@@ -18,9 +18,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class GetCatalogActionTest extends IntegrationTestCase
 {
+    public ?object $tokenStorage;
     private ?CommandBus $commandBus;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -51,7 +52,7 @@ class GetCatalogActionTest extends IntegrationTestCase
         );
 
         $response = $client->getResponse();
-        $payload = \json_decode($response->getContent(), true);
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
 

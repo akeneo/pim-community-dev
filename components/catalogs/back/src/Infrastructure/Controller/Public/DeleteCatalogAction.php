@@ -40,7 +40,7 @@ final class DeleteCatalogAction
 
         try {
             $catalog = $this->queryBus->execute(new GetCatalogQuery($id));
-        } catch (ValidationFailedException $e) {
+        } catch (ValidationFailedException) {
             throw $this->notFound($id);
         }
 

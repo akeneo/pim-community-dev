@@ -14,14 +14,18 @@ test('it maps API errors to ProductSelection errors indexed by key', () => {
     const keys = ['a', 'b'];
     expect(mapProductSelectionCriteriaErrors(errors, keys)).toEqual({
         a: {
-            field: null,
-            operator: null,
+            field: undefined,
+            operator: undefined,
             value: 'Invalid.',
+            scope: undefined,
+            locale: undefined,
         },
         b: {
-            field: null,
-            operator: null,
-            value: null,
+            field: undefined,
+            operator: undefined,
+            value: undefined,
+            scope: undefined,
+            locale: undefined,
         },
     });
 });
