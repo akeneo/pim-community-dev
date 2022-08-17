@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.107 (2022-08-17)
+
 ## Bug fixes
 
 - PIM-10512: Fix empty group labels format for attribute endpoints
