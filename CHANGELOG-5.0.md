@@ -4,6 +4,7 @@
 
 - PIM-10512: Fix empty group labels format for attribute endpoints
 - PIM-10555 [Backport PIM-10462]: Fix ComputeFamilyVariantStructureChanges job not launched after import
+- PIM-10559 [Backport PIM-10478]: Disable compute_family_variant_structure_changes on familySave
 
 # 5.0.106 (2022-08-08)
 
