@@ -9,9 +9,10 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 type Props = {
     state: FamilyCriterionState;
     onChange: (state: FamilyCriterionState) => void;
+    isInvalid: boolean;
 };
 
-const FamilySelectInput: FC<Props> = ({state, onChange}) => {
+const FamilySelectInput: FC<Props> = ({state, onChange, isInvalid}) => {
     const translate = useTranslate();
     const [search, setSearch] = useState<string>();
     const {data: selection} = useFamiliesByCodes(state.value);
@@ -28,6 +29,7 @@ const FamilySelectInput: FC<Props> = ({state, onChange}) => {
             onChange={v => onChange({...state, value: v})}
             onNextPage={fetchNextPage}
             onSearchChange={setSearch}
+            invalid={isInvalid}
             data-testid='value'
         >
             {families.map(family => (

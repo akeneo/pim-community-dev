@@ -7,9 +7,10 @@ import {FamilyCriterionOperator, FamilyCriterionState} from './types';
 type Props = {
     state: FamilyCriterionState;
     onChange: (state: FamilyCriterionState) => void;
+    isInvalid: boolean;
 };
 
-const FamilyOperatorInput: FC<Props> = ({state, onChange}) => {
+const FamilyOperatorInput: FC<Props> = ({state, onChange, isInvalid}) => {
     const translateOperator = useOperatorTranslator();
 
     const handleChange = useCallback(
@@ -34,6 +35,7 @@ const FamilyOperatorInput: FC<Props> = ({state, onChange}) => {
             value={state.operator}
             onChange={handleChange}
             clearable={false}
+            invalid={isInvalid}
             data-testid='operator'
         >
             <SelectInput.Option value={Operator.IS_EMPTY} title={translateOperator(Operator.IS_EMPTY)}>

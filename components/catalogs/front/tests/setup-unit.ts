@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import {useEffect, useState} from 'react';
 import {useSessionStorageState, useTranslate} from '@akeneo-pim-community/shared';
 import automockDirectory from './automockDirectory';
+import fetchMock from 'jest-fetch-mock';
 
 jest.mock('@akeneo-pim-community/shared');
 require('jest-fetch-mock').enableMocks();
@@ -26,3 +27,7 @@ window.IntersectionObserver = jest.fn().mockImplementation(() => ({
     observe: jest.fn(),
     unobserve: jest.fn(),
 }));
+
+beforeEach(() => {
+    fetchMock.resetMocks()
+});
