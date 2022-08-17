@@ -6,7 +6,6 @@ import {ProductSelectionContext} from './contexts/ProductSelectionContext';
 import {Criterion} from './components/Criterion';
 import {Empty} from './components/Empty';
 import {ProductSelectionValues} from './models/ProductSelectionValues';
-import {CriterionErrors} from './models/CriterionErrors';
 import {AddCriterionDropdown} from './components/AddCriterionDropdown';
 import {ProductSelectionErrors} from './models/ProductSelectionErrors';
 
@@ -16,12 +15,6 @@ const Header = styled.div`
     justify-content: end;
     padding: 10px 0;
 `;
-
-const emptyErrors: CriterionErrors = {
-    value: null,
-    operator: null,
-    field: null,
-};
 
 type Props = {
     criteria: ProductSelectionValues;
@@ -39,7 +32,7 @@ const ProductSelection: FC<Props> = ({criteria, onChange, errors}) => {
     }, [criteria, values, onChange]);
 
     const rows = Object.keys(values).map(id => (
-        <Criterion key={id} id={id} state={values[id]} errors={errors[id] || emptyErrors} />
+        <Criterion key={id} id={id} state={values[id]} errors={errors[id] || {}} />
     ));
 
     return (

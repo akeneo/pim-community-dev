@@ -22,8 +22,8 @@ test('it returns the first error matching the property path', () => {
     expect(findFirstError(errors, 'bar')).toEqual('two');
 });
 
-test('it returns null if there is not matches', () => {
+test('it returns undefined if there is not matches', () => {
     const errors: CatalogFormErrors = [];
 
-    expect(findFirstError(errors, 'bar')).toBeNull();
+    expect(findFirstError(errors, 'bar')).toBeUndefined();
 });
