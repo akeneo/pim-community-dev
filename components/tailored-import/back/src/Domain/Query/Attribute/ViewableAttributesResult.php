@@ -15,18 +15,13 @@ namespace Akeneo\Platform\TailoredImport\Domain\Query\Attribute;
 
 class ViewableAttributesResult
 {
-    private int $offset;
-
-    /** @var Attribute[] */
-    private array $attributes;
-
     /**
      * @param Attribute[] $attributes
      */
-    public function __construct(int $offset, array $attributes)
-    {
-        $this->offset = $offset;
-        $this->attributes = $attributes;
+    public function __construct(
+        private int $offset,
+        private array $attributes,
+    ) {
     }
 
     /**

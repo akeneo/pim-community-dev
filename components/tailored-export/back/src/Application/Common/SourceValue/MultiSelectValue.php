@@ -17,16 +17,15 @@ use Webmozart\Assert\Assert;
 
 class MultiSelectValue implements SourceValueInterface
 {
-    /** @var string[] */
-    private array $optionCodes;
-    private array $mappedReplacementValues;
-
-    public function __construct(array $optionCodes, array $mappedReplacementValues = [])
-    {
+    /**
+     * @param string[] $optionCodes
+     * @param array<string, string> $mappedReplacementValues
+     */
+    public function __construct(
+        private array $optionCodes,
+        private array $mappedReplacementValues = []
+    ) {
         Assert::allString($optionCodes);
-
-        $this->optionCodes = $optionCodes;
-        $this->mappedReplacementValues = $mappedReplacementValues;
     }
 
     public function getOptionCodes(): array

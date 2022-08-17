@@ -48,6 +48,7 @@ lint-back: #Doc: launch all PHP linter tests
 	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-lint-back
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-lint-back
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-lint-back
+	PIM_CONTEXT=shared-catalog $(MAKE) shared-catalog-lint-back
 	PIM_CONTEXT=tailored-export $(MAKE) lint-back
 	PIM_CONTEXT=tailored-import $(MAKE) lint-back
 	PIM_CONTEXT=job-automation $(MAKE) lint-back

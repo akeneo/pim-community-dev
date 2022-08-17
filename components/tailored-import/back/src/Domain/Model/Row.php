@@ -32,7 +32,7 @@ class Row
     {
         Assert::keyExists($this->cells, $columnUuid);
 
-        if (0 === strlen($this->cells[$columnUuid])) {
+        if ('' === (string) $this->cells[$columnUuid]) {
             return new NullValue();
         }
 

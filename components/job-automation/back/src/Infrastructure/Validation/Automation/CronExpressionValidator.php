@@ -56,7 +56,7 @@ final class CronExpressionValidator extends ConstraintValidator
         }
 
         $isWeekly = '*' !== $weekDayNumber;
-        $isHourly = false !== strpos($hours, '/');
+        $isHourly = str_contains($hours, '/');
 
         if ($isWeekly && $isHourly) {
             $this->context->buildViolation(CronExpression::INVALID_FREQUENCY_OPTION)

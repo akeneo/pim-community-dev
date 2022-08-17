@@ -194,7 +194,7 @@ SQL;
             }
             $fakeCities[] = $this->generateFakeCity();
         }
-        if (count($fakeCities) > 0) {
+        if ($fakeCities !== []) {
             $update = sprintf($baseSql, implode(',', $fakeCities));
             $this->sqlConnection->executeStatement($update);
         }

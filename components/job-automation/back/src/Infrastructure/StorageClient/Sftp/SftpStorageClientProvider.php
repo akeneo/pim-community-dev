@@ -84,13 +84,11 @@ final class SftpStorageClientProvider implements RemoteStorageClientProviderInte
 
     private function getEncryptionKey(SftpStorage $storage): string
     {
-        $encryptionKey = sprintf(
+        return sprintf(
             '%s@%s:%s',
             $storage->getUsername(),
             $storage->getHost(),
             $storage->getPort(),
         );
-
-        return $encryptionKey;
     }
 }

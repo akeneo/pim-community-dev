@@ -24,25 +24,15 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class FindViewableAttributes implements FindViewableAttributesInterface
 {
-    private TokenStorageInterface $tokenStorage;
-    private FindFlattenAttributesInterface $findFlattenAttributes;
-    private GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser;
-    /** @var array<string> */
-    private array $attributeTypes;
-
     /**
      * @param array<string> $attributeTypes
      */
     public function __construct(
-        FindFlattenAttributesInterface $findFlattenAttributes,
-        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
-        TokenStorageInterface $tokenStorage,
-        array $attributeTypes,
+        private FindFlattenAttributesInterface $findFlattenAttributes,
+        private GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
+        private TokenStorageInterface $tokenStorage,
+        private array $attributeTypes,
     ) {
-        $this->findFlattenAttributes = $findFlattenAttributes;
-        $this->getViewableAttributeCodesForUser = $getViewableAttributeCodesForUser;
-        $this->tokenStorage = $tokenStorage;
-        $this->attributeTypes = $attributeTypes;
     }
 
     public function execute(

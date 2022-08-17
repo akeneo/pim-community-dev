@@ -39,9 +39,10 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysTo
     {
         $matrixLocalesPerChannels = $this->findActivatedLocalesPerChannels->findAll();
         $attributes = $this->attributeRepository->findByReferenceEntity($referenceEntityIdentifier);
-        $textAttributes = array_filter($attributes, function (AbstractAttribute $attribute) {
-            return $attribute->getType() === 'text';
-        });
+        $textAttributes = array_filter(
+            $attributes,
+            static fn (AbstractAttribute $attribute) => $attribute->getType() === 'text'
+        );
 
         $matrix = [];
         foreach ($matrixLocalesPerChannels as $channelCode => $locales) {

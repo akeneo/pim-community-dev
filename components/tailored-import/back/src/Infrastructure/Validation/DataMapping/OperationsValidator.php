@@ -88,9 +88,9 @@ final class OperationsValidator extends ConstraintValidator
 
         $missingRequiredOperationTypes = array_diff($requiredOperationTypes, $operationTypes);
 
-        if (0 < count($missingRequiredOperationTypes)) {
+        if (!empty($missingRequiredOperationTypes)) {
             $this->context->buildViolation(Operations::MISSING_REQUIRED_OPERATION)
-                ->setParameter('{{ missing_required_operations }}', join(',', $missingRequiredOperationTypes))
+                ->setParameter('{{ missing_required_operations }}', implode(',', $missingRequiredOperationTypes))
                 ->addViolation();
         }
     }

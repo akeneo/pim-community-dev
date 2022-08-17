@@ -32,7 +32,7 @@ namespace Akeneo\AssetManager\Domain\Query\Asset;
  */
 class PropertyAccessibleAsset
 {
-    public array $values;
+    public array $values = [];
 
     private const CODE_NAME = 'code';
 
@@ -40,7 +40,6 @@ class PropertyAccessibleAsset
         public string $code,
         array $values
     ) {
-        $this->values = [];
         foreach ($values as $key => $value) {
             $this->values[\strtolower($key)] = $value;
         }

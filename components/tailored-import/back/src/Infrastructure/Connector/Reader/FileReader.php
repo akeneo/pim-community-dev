@@ -30,7 +30,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
 class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface, FlushableInterface, TrackableItemReaderInterface
 {
-    private ?StepExecution $stepExecution;
+    private ?StepExecution $stepExecution = null;
     private ?FileIteratorInterface $fileIterator = null;
     private ?ColumnCollection $columnCollection = null;
 

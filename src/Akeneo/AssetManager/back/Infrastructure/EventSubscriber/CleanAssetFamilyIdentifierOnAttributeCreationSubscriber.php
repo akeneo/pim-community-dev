@@ -41,6 +41,8 @@ final class CleanAssetFamilyIdentifierOnAttributeCreationSubscriber implements E
 
     public function cleanAssetFamilyIdentifier(GenericEvent $event)
     {
+        $assetFamilyIdentifier = null;
+        $assetFamily = null;
         $attribute = $event->getSubject();
         if (!$attribute instanceof AttributeInterface) {
             return;

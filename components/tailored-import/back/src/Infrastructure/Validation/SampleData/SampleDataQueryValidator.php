@@ -39,7 +39,7 @@ class SampleDataQueryValidator extends ConstraintValidator
 
         $missingParams = array_filter($requiredParams, static fn ($param) => null === $value->get($param));
 
-        if (count($missingParams) > 0) {
+        if (!empty($missingParams)) {
             $this->context->buildViolation(
                 SampleDataQuery::MISSING_QUERY_PARAMS,
                 [

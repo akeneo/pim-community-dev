@@ -18,17 +18,14 @@ use Webmozart\Assert\Assert;
 
 class FindFamiliesResult
 {
-    private int $matchesCount;
-
-    /** @var FamilyWithLabels[] */
-    private array $items;
-
-    public function __construct(array $items, int $matchesCount)
-    {
+    /**
+     * @param $items FamilyWithLabels[]
+     */
+    public function __construct(
+        private array $items,
+        private int $matchesCount,
+    ) {
         Assert::allIsInstanceOf($items, FamilyWithLabels::class);
-
-        $this->items = $items;
-        $this->matchesCount = $matchesCount;
     }
 
     public function getMatchesCount(): int

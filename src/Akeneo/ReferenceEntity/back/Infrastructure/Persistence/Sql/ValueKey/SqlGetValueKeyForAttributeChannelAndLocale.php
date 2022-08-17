@@ -7,6 +7,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ValueKey;
 use Akeneo\Channel\API\Query\Channel;
 use Akeneo\Channel\API\Query\FindChannels;
 use Akeneo\Channel\API\Query\FindLocales;
+use Akeneo\Channel\API\Query\Locale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
@@ -53,7 +54,7 @@ class SqlGetValueKeyForAttributeChannelAndLocale implements GetValueKeyForAttrib
         );
 
         if (($scopable && null === $channel)
-            || ($localizable && null === $locale)
+            || ($localizable && !$locale instanceof Locale)
             || ($scopable && $localizable && !in_array($locale->getCode(), $channel->getLocaleCodes()))
         ) {
             $this->throwException($attributeIdentifier, $channelIdentifier, $localeIdentifier);

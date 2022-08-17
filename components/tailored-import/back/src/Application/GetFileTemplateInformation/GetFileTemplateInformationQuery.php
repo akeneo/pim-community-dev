@@ -17,5 +17,5 @@ final class GetFileTemplateInformationQuery
 {
     public string $fileKey;
 
-    public ?string $sheetName;
+    public ?string $sheetName = null;
 }

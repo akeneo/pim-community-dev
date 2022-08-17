@@ -39,9 +39,8 @@ class UploadStructureFileAction
             return new RedirectResponse('/');
         }
 
-        /** @var ?UploadedFile $uploadedFile */
         $uploadedFile = $request->files->get('file');
-        if (null === $uploadedFile) {
+        if (!$uploadedFile instanceof UploadedFile) {
             return new JsonResponse([], 400);
         }
 

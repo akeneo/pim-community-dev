@@ -2,6 +2,7 @@
 
 namespace Akeneo\SharedCatalog\Controller;
 
+use Akeneo\SharedCatalog\Model\SharedCatalog;
 use Akeneo\SharedCatalog\Query\FindProductUuidsQueryInterface;
 use Akeneo\SharedCatalog\Query\FindSharedCatalogQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +22,7 @@ class ProductUuidListAction
     public function __invoke(Request $request, string $sharedCatalogCode): JsonResponse
     {
         $sharedCatalog = $this->findSharedCatalogQuery->find($sharedCatalogCode);
-        if ($sharedCatalog === null) {
+        if (!$sharedCatalog instanceof SharedCatalog) {
             throw new NotFoundHttpException(\sprintf('Catalog "%s" does not exist', $sharedCatalogCode));
         }
 
