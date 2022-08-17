@@ -32,5 +32,4 @@ class AttributeOrder
     {
         return $this->order === $order->order;
     }
-
 }

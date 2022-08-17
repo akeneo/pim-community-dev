@@ -68,6 +68,5 @@ class Template
             'category_tree_identifier' => $this->categoryTreeId?->getId(),
             'attributes' => $this->attributeCollection->normalize()
         ];
-
     }
 }
