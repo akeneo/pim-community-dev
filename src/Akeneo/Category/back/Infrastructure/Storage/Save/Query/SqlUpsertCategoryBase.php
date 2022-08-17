@@ -49,7 +49,7 @@ class SqlUpsertCategoryBase implements UpsertCategoryBase
      */
     private function insertCategory(Category $categoryModel): void
     {
-        // TODO: At this stage of the development, because some columns have no default value,
+        // TODO: At this stage of development, because some columns have no default value,
         // TODO: the insert will use root=0 (then update to new generated id) and hardcoded values for lv, lft and rgt
         $query = <<< SQL
             INSERT INTO pim_catalog_category

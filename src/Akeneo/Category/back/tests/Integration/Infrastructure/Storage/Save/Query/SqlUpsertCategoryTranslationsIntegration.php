@@ -10,10 +10,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Save\Query;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTrait;
-use Akeneo\Category\Domain\Model\Category;
-use Akeneo\Category\Domain\ValueObject\CategoryId;
-use Akeneo\Category\Domain\ValueObject\Code;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Infrastructure\Storage\Save\Query\SqlUpsertCategoryTranslations;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -31,10 +27,10 @@ class SqlUpsertCategoryTranslationsIntegration extends TestCase
         $categoryCode = 'myCategory';
         $createdCategory = $this->createOrUpdateCategory(
             code: $categoryCode,
-            labels: ['en_US' => 'sausages']
+            labels: ['en_US' => 'socks']
         );
 
-        $createdCategory->setLabel('fr_FR', 'saucisses');
+        $createdCategory->setLabel('fr_FR', 'chaussettes');
 
         $upsertCategoryTranslationsQuery->execute($createdCategory);
         $translations = $this->getCategoryTranslationsDataByCategoryCode((string) $createdCategory->getCode());
@@ -57,36 +53,20 @@ class SqlUpsertCategoryTranslationsIntegration extends TestCase
         $this->assertEquals(SqlUpsertCategoryTranslations::class, $upsertCategoryTranslationsQuery::class);
 
         $categoryCode = 'myCategory';
-        $category = new Category(
-            null,
-            new Code($categoryCode),
-            LabelCollection::fromArray([]),
-            null
+        $createdCategory = $this->createOrUpdateCategory(
+            code: $categoryCode,
+            labels: ['en_US' => 'socks', 'fr_FR' => 'chaussettes']
         );
 
-        $categoryId = $upsertCategoryTranslationsQuery->execute($category);
-        $result = $this->getCategoryTranslationsDataByCategoryCode($categoryId);
+        $createdCategory->setLabel('en_US', 'shirts');
+        $createdCategory->setLabel('fr_FR', 'chemises');
 
-        $this->assertNotNull($result);
-        $this->assertSame((string) $category->getCode(), $result['code']);
+        $upsertCategoryTranslationsQuery->execute($createdCategory);
+        $translations = $this->getCategoryTranslationsDataByCategoryCode((string) $createdCategory->getCode());
 
-        $updatedCategory = new Category(
-            new CategoryId((int) $categoryId),
-            new Code('updatedCode'),
-            LabelCollection::fromArray([]),
-            null
-        );
-
-        $newCategoryId = $upsertCategoryTranslationsQuery->execute($updatedCategory);
-        $this->assertSame($categoryId, $newCategoryId);
-
-        $newResult = $this->getCategoryTranslationsDataByCategoryCode($categoryId);
-
-        $this->assertNotNull($newResult);
-        $this->assertSame((string) $updatedCategory->getCode(), $newResult['code']);
-        $this->assertSame($categoryId, (int) $newResult['id']);
-
-        // TODO on ajoute les tests sur les locales
+        $this->assertNotNull($translations);
+        $this->assertEquals('shirts', $translations['en_US']);
+        $this->assertEquals('chemises', $translations['fr_FR']);
     }
 
 

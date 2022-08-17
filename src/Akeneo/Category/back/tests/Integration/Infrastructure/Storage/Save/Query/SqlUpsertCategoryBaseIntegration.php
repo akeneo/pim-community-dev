@@ -15,9 +15,9 @@ use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Infrastructure\Storage\Save\Query\SqlUpsertCategoryBase;
+use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Doctrine\DBAL\Connection;
 
 class SqlUpsertCategoryBaseIntegration extends TestCase
 {
@@ -38,7 +38,8 @@ class SqlUpsertCategoryBaseIntegration extends TestCase
         );
 
         $upsertCategoryBaseQuery->execute($category);
-        $result = $this->getCategoryBaseDataByCode((string) $category->getCode());
+        $getCategory = $this->get(GetCategorySql::class);
+        $result = $getCategory->byCode((string) $category->getCode());
 
         $this->assertNotNull($result);
         $this->assertSame((string) $category->getCode(), $result['code']);
@@ -60,8 +61,8 @@ class SqlUpsertCategoryBaseIntegration extends TestCase
         );
 
         $upsertCategoryBaseQuery->execute($category);
-        $createdCategoryData = $this->getCategoryBaseDataByCode((string) $category->getCode());
-
+        $getCategory = $this->get(GetCategorySql::class);
+        $createdCategoryData = $getCategory->byCode((string) $category->getCode());
         $this->assertNotNull($createdCategoryData);
 
         $updatedCategory = new Category(
@@ -72,11 +73,12 @@ class SqlUpsertCategoryBaseIntegration extends TestCase
         );
 
         $upsertCategoryBaseQuery->execute($updatedCategory);
-        $editedCategoryData = $this->getCategoryBaseDataByCode((string) $updatedCategory->getCode());
+        $getCategory = $this->get(GetCategorySql::class);
+        $editedCategoryData = $getCategory->byCode((string) $category->getCode());
 
         $this->assertNotNull($editedCategoryData);
         $this->assertSame((string) $updatedCategory->getCode(), $editedCategoryData['code']);
-        $this->assertSame($updatedCategory->getParentId()->getValue(), (int) $editedCategoryData['parent_id']);
+        $this->assertSame($updatedCategory->getParentId()?->getValue(), (int) $editedCategoryData['parent_id']);
     }
 
     protected function getConfiguration(): Configuration

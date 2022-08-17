@@ -9,7 +9,6 @@ use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Doctrine\DBAL\Connection;
-use Webmozart\Assert\Assert;
 
 
 /**
