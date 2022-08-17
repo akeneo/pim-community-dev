@@ -22,7 +22,7 @@ use Akeneo\Category\Domain\ValueObject\LabelCollection;
  */
 class GetCategoryHandler
 {
-    public function __invoke(GetCategoryQuery $query): CategoryReadModel
+    public function __invoke(GetCategoryQuery $query): ?CategoryReadModel
     {
         $code = new Code('clothes');
         $labels = LabelCollection::fromArray([
@@ -84,6 +84,7 @@ class GetCategoryHandler
             $permissions,
             $attributeValues,
         );
+
         // returning the category as seen by the outside (whoever created and dispatched the query)
         return $readModel;
     }

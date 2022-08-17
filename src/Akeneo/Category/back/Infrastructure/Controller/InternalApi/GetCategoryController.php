@@ -11,6 +11,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -20,7 +21,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class GetCategoryController
 {
     public function __construct(
-        private SecurityFacade     $securityFacade,
+        private SecurityFacade $securityFacade,
         private GetCategoryHandler $handler
     ) {
     }
@@ -35,9 +36,11 @@ class GetCategoryController
 
         $query = new GetCategoryQuery(new CategoryId($id));
 
-        // LATER dispatch to query bus ?
-        $result = ($this->handler)($query);
+        $category = ($this->handler)($query);
+        if (null === $category) {
+            throw new NotFoundHttpException();
+        }
 
-        return new JsonResponse($result->normalize(), Response::HTTP_OK);
+        return new JsonResponse($category->normalize(), Response::HTTP_OK);
     }
 }
