@@ -194,4 +194,9 @@ interface FamilyInterface extends
      * @param Collection $familyVariants
      */
     public function setFamilyVariants(Collection $familyVariants): void;
+
+    /**
+     * @param AttributeInterface[] $attributes
+     */
+    public function updateAttributes(array $attributes): void;
 }

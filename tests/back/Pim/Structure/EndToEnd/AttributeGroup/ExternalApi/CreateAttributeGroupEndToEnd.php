@@ -138,7 +138,7 @@ JSON;
     "code": "an_attr_text",
     "type": "pim_catalog_text",
     "group": "new_group",
-    "group_labels": [],
+    "group_labels": {},
     "unique": false,
     "useable_as_grid_filter": false,
     "allowed_extensions": [],
