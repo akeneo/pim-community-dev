@@ -23,7 +23,7 @@ class MultiSelectValue implements SourceValueInterface
      */
     public function __construct(
         private array $optionCodes,
-        private array $mappedReplacementValues = []
+        private array $mappedReplacementValues = [],
     ) {
         Assert::allString($optionCodes);
     }

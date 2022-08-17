@@ -25,7 +25,6 @@ final class ExtractProducts
 
     private OutputInterface $output;
 
-    private array $mediaFileAttributes = [];
     private array $productModelsAttributes = [];
 
     public function __construct(AkeneoPimClientInterface $apiClient, OutputInterface $output)

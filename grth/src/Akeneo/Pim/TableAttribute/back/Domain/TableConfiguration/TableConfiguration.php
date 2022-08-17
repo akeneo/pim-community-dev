@@ -64,7 +64,7 @@ final class TableConfiguration
     }
 
     /**
-     * @return array<int, array>
+     * @return array<int, array<string, mixed>>
      */
     public function normalize(): array
     {

@@ -20,7 +20,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOption
 
 class WriteSelectOptionCollection
 {
-    /** @var array<string, SelectOption> */
+    /** @var array<string|int, SelectOption> */
     private array $options;
 
     /** @var array<int, Event> */

@@ -22,7 +22,7 @@ class ProcessedTailoredExport
      */
     public function __construct(
         private array $itemsToWrite,
-        private array $mediaToExport
+        private array $mediaToExport,
     ) {
     }
 
