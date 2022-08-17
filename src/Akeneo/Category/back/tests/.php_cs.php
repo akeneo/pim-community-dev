@@ -14,7 +14,8 @@ return (new PhpCsFixer\Config())
         ],
         'phpdoc_align' => [
             'align' => 'left',
-        ]
+        ],
+        'yoda_style' => false,
     ))
     ->setCacheFile('var/php_cs.cache')
     ->setFinder(
