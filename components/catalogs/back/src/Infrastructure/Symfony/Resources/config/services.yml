@@ -95,3 +95,7 @@ services:
     Akeneo\Catalogs\Infrastructure\Persistence\GetChannelsQuery:
         arguments:
             - '@pim_catalog.repository.channel'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesQuery:
+        arguments:
+            - '@pim_catalog.repository.locale'
