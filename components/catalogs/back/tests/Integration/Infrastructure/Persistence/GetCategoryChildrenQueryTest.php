@@ -10,6 +10,8 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Catalogs\Infrastructure\Persistence\GetCategoryChildrenQuery
  */
 class GetCategoryChildrenQueryTest extends IntegrationTestCase
 {
@@ -26,14 +28,14 @@ class GetCategoryChildrenQueryTest extends IntegrationTestCase
 
     public function testItGetsCategoryChildren(): void
     {
-        $parentCategory = $this->createCategory(['code' => 'parent_category']);
-        $child1 = $this->createCategory([
+        $this->createCategory(['code' => 'parent_category']);
+        $this->createCategory([
             'code' => 'child1',
             'parent' => 'parent_category',
             'labels' => ['en_US' => 'Child category']
         ]);
 
-        $child2 = $this->createCategory([
+        $this->createCategory([
             'code' => 'child2',
             'parent' => 'parent_category',
             'labels' => ['en_US' => 'Child 2 category']
@@ -42,21 +44,28 @@ class GetCategoryChildrenQueryTest extends IntegrationTestCase
         $this->createCategory(['code' => 'grand_child', 'parent' => 'child1']);
 
         $expectedChild1 = [
-            'id' => $child1->getId(),
             'code' => 'child1',
             'label' => 'Child category',
             'isLeaf' => false,
         ];
 
         $expectedChild2 = [
-            'id' => $child2->getId(),
             'code' => 'child2',
             'label' => 'Child 2 category',
             'isLeaf' => true,
         ];
 
-        $result = $this->query->execute($parentCategory->getId());
+        $result = $this->query->execute('parent_category');
 
         $this->assertEquals([$expectedChild1, $expectedChild2], $result);
+    }
+
+    public function testItReturnsAnEmptyArrayWithUnknownCategoryCode(): void
+    {
+        $this->createCategory(['code' => 'parent_category']);
+
+        $result = $this->query->execute('some_category_code');
+
+        $this->assertEmpty($result, 'Unknown category code should not have any children');
     }
 }

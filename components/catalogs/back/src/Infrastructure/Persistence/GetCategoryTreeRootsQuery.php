@@ -38,17 +38,14 @@ class GetCategoryTreeRootsQuery implements GetCategoryTreeRootsQueryInterface
     }
 
     /**
-     * @return array{id: int, code: string, label: string, isLeaf: bool}
+     * @return array{code: string, label: string, isLeaf: bool}
      */
     private function normalizeCategoryTree(CategoryTree $categoryTree, string $locale): array
     {
-        /** @var array{id: int, code: string, labels: array<string, string>} $normalizedTree */
-        $normalizedTree = $categoryTree->normalize();
-
-        $normalizedTree['isLeaf'] = false;
-        $normalizedTree['label'] = $normalizedTree['labels'][$locale] ?? "[{$normalizedTree['code']}]";
-        unset($normalizedTree['labels']);
-
-        return $normalizedTree;
+        return [
+            'code' => $categoryTree->code,
+            'label' => $categoryTree->labels[$locale] ?? "[{$categoryTree->code}]",
+            'isLeaf' => false,
+        ];
     }
 }

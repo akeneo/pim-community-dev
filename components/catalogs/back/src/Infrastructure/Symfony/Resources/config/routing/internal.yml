@@ -52,11 +52,9 @@ akeneo_catalogs_internal_get_locales:
     methods: [ GET ]
 
 akeneo_catalogs_internal_get_category_children:
-    path: '/rest/catalogs/categories/{categoryId}/children'
+    path: '/rest/catalogs/categories/{categoryCode}/children'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoryChildrenAction
     methods: [ GET ]
-    requirements:
-        categoryId: '\d+'
 
 akeneo_catalogs_internal_get_categories:
     path: '/rest/catalogs/categories'

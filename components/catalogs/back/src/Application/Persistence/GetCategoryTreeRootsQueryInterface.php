@@ -11,7 +11,7 @@ namespace Akeneo\Catalogs\Application\Persistence;
 interface GetCategoryTreeRootsQueryInterface
 {
     /**
-     * @return array<array-key, array{id: int, code: string, label: string, isLeaf: bool}>
+     * @return array<array-key, array{code: string, label: string, isLeaf: bool}>
      */
     public function execute(): array;
 }

@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence;
 use Akeneo\Catalogs\Application\Persistence\GetCategoryChildrenQueryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -21,9 +22,14 @@ class GetCategoryChildrenQuery implements GetCategoryChildrenQueryInterface
     /**
      * @inheritDoc
      */
-    public function execute(int $categoryId): array
+    public function execute(string $categoryCode): array
     {
-        $categories = $this->categoryRepository->getChildrenByParentId($categoryId);
+        $parentCategory = $this->getCategoryFromCode($categoryCode);
+        if ($parentCategory === null) {
+            return [];
+        }
+
+        $categories = $this->categoryRepository->getChildrenByParentId($parentCategory->getId());
 
         $children = [];
         /** @var CategoryInterface $category */
@@ -34,13 +40,20 @@ class GetCategoryChildrenQuery implements GetCategoryChildrenQueryInterface
         return $children;
     }
 
+    private function getCategoryFromCode(string $categoryCode): ?CategoryInterface
+    {
+        /** @var Collection<int, CategoryInterface> $categories */
+        $categories = $this->categoryRepository->getCategoriesByCodes([$categoryCode]);
+
+        return $categories->count() > 0 ? $categories[0] : null;
+    }
+
     /**
-     * @return array{id: int, code: string, label: string, isLeaf: bool}
+     * @return array{code: string, label: string, isLeaf: bool}
      */
     private function normalizeCategory(CategoryInterface $category): array
     {
         return [
-            'id' => $category->getId(),
             'code' => $category->getCode(),
             'label' => $category->getLabel(),
             'isLeaf' => $category->getRight() - $category->getLeft() === 1,

@@ -26,8 +26,8 @@ class GetCategoriesActionTest extends IntegrationTestCase
     {
         $client = $this->getAuthenticatedInternalApiClient();
 
-        $tshirtCategory = $this->createCategory(['code' => 'tshirt', 'labels' => ['en_US' => 'T-shirt']]);
-        $shoesCategory = $this->createCategory(['code' => 'shoes', 'labels' => ['en_US' => 'Shoes']]);
+        $this->createCategory(['code' => 'tshirt', 'labels' => ['en_US' => 'T-shirt']]);
+        $this->createCategory(['code' => 'shoes', 'labels' => ['en_US' => 'Shoes']]);
 
         $client->request(
             'GET',
@@ -45,14 +45,12 @@ class GetCategoriesActionTest extends IntegrationTestCase
         $categories = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedTshirtCategory = [
-            'id' => $tshirtCategory->getId(),
             'code' => 'tshirt',
             'label' => 'T-shirt',
             'isLeaf' => true,
         ];
 
         $expectedShoesCategory = [
-            'id' => $shoesCategory->getId(),
             'code' => 'shoes',
             'label' => 'Shoes',
             'isLeaf' => true,
@@ -65,13 +63,9 @@ class GetCategoriesActionTest extends IntegrationTestCase
     {
         $client = $this->getAuthenticatedInternalApiClient();
 
-        $masterCategory = $this->getCategory('master');
-        $tshirtCategory = $this->createCategory(['code' => 'tshirt', 'labels' => ['en_US' => 'T-shirt']]);
-        $this->createCategory([
-            'code' => 'tanktop',
-            'parent' => 'tshirt',
-            'labels' => ['en_US' => 'T-shirt']
-        ]);
+        // master category exists as part of the minimal catalog
+        $this->createCategory(['code' => 'tshirt', 'labels' => ['en_US' => 'T-shirt']]);
+        $this->createCategory(['code' => 'tanktop', 'parent' => 'tshirt']);
 
         $client->request(
             'GET',
@@ -89,16 +83,14 @@ class GetCategoriesActionTest extends IntegrationTestCase
         $categories = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedMasterCategory = [
-            'id' => $masterCategory->getId(),
             'code' => 'master',
             'label' => 'Master catalog',
             'isLeaf' => false,
         ];
 
         $expectedTshirtCategory = [
-            'id' => $tshirtCategory->getId(),
-            'code' => $tshirtCategory->getCode(),
-            'label' => $tshirtCategory->getLabel(),
+            'code' => 'tshirt',
+            'label' => 'T-shirt',
             'isLeaf' => false,
         ];
 
