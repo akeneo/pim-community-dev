@@ -10,6 +10,8 @@ use PHPUnit\Framework\Assert;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoriesAction
  */
 class GetCategoriesActionTest extends IntegrationTestCase
 {
@@ -20,7 +22,7 @@ class GetCategoriesActionTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItGetsCategories(): void
+    public function testItGetsCategoriesByCode(): void
     {
         $client = $this->getAuthenticatedInternalApiClient();
 
@@ -40,7 +42,7 @@ class GetCategoriesActionTest extends IntegrationTestCase
         $response = $client->getResponse();
         Assert::assertEquals(200, $response->getStatusCode());
 
-        $categories = \json_decode($response->getContent(), true);
+        $categories = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedTshirtCategory = [
             'id' => $tshirtCategory->getId(),
@@ -59,16 +61,22 @@ class GetCategoriesActionTest extends IntegrationTestCase
         Assert::assertEquals([$expectedShoesCategory, $expectedTshirtCategory], $categories);
     }
 
-    public function testItGetsAnEmptyListWhenNoCodesGiven(): void
+    public function testItGetsCategoryTreeRoots(): void
     {
-        $client = $this->getAuthenticatedInternalApiClient('admin');
+        $client = $this->getAuthenticatedInternalApiClient();
 
-        $this->createCategory(['code' => 'tshirt', 'labels' => ['en_US' => 'T-shirt']]);
+        $masterCategory = $this->getCategory('master');
+        $tshirtCategory = $this->createCategory(['code' => 'tshirt', 'labels' => ['en_US' => 'T-shirt']]);
+        $this->createCategory([
+            'code' => 'tanktop',
+            'parent' => 'tshirt',
+            'labels' => ['en_US' => 'T-shirt']
+        ]);
 
         $client->request(
             'GET',
             '/rest/catalogs/categories',
-            [],
+            ['is_root' => '1'],
             [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -78,8 +86,22 @@ class GetCategoriesActionTest extends IntegrationTestCase
         $response = $client->getResponse();
         Assert::assertEquals(200, $response->getStatusCode());
 
-        $categories = \json_decode($response->getContent(), true);
+        $categories = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        Assert::assertEmpty($categories, 'No categories should be returned');
+        $expectedMasterCategory = [
+            'id' => $masterCategory->getId(),
+            'code' => 'master',
+            'label' => 'Master catalog',
+            'isLeaf' => false,
+        ];
+
+        $expectedTshirtCategory = [
+            'id' => $tshirtCategory->getId(),
+            'code' => $tshirtCategory->getCode(),
+            'label' => $tshirtCategory->getLabel(),
+            'isLeaf' => false,
+        ];
+
+        Assert::assertEquals([$expectedMasterCategory, $expectedTshirtCategory], $categories);
     }
 }
