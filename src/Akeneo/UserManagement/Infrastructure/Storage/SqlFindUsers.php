@@ -33,9 +33,10 @@ final class SqlFindUsers implements FindUsers
      */
     public function __invoke(
         ?string $search = null,
-        int $limit = self::DEFAULT_LIMIT
+        ?int $limit = null,
+        ?int $offset = null
     ): array {
-        $query = $this->buildQuery();
+        $query = $this->buildQuery($search, $limit, $offset);
 
         $results = $this->connection->executeQuery($query)->fetchAllAssociative();
 
@@ -47,7 +48,7 @@ final class SqlFindUsers implements FindUsers
         );
     }
 
-    private function buildQuery(?string $search, $limit): string
+    private function buildQuery(?string $search, ?int $limit, ?int $offset): string
     {
         $searchSql = '';
         if (null !== $search) {
@@ -58,9 +59,15 @@ final class SqlFindUsers implements FindUsers
 
         $limitSql = '';
         if (null !== $limit) {
-            $limitSql = <<<SQL
-                LIMIT ${limit}
-            SQL;
+            if (null !== $offset) {
+                $limitSql = <<<SQL
+                    LIMIT ${limit},${offset}
+                SQL;
+            } else {
+                $limitSql = <<<SQL
+                    LIMIT ${limit}
+                SQL;
+            }
         }
 
         $type = User::TYPE_USER;

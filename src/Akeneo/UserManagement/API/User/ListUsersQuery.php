@@ -19,7 +19,8 @@ final class ListUsersQuery
 {
     public function __construct(
         private ?string $searchName = null,
-        private int $limit = FindUsers::DEFAULT_LIMIT,
+        private ?int $limit = null,
+        private ?int $offset = null
     ) {
     }
 
@@ -31,5 +32,10 @@ final class ListUsersQuery
     public function getLimit(): ?int
     {
         return $this->limit;
+    }
+
+    public function getOffset(): ?int
+    {
+        return $this->offset;
     }
 }

@@ -17,11 +17,10 @@ use Akeneo\UserManagement\Domain\Model\User;
 
 interface FindUsers
 {
-    public const DEFAULT_LIMIT = 25;
-
     /** @return User[] */
     public function __invoke(
         ?string $search = null,
-        int $limit = self::DEFAULT_LIMIT
+        ?int $limit = null,
+        ?int $offset = null
     ): array;
 }

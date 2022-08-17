@@ -31,6 +31,7 @@ final class ListUsersHandler
         return ($this->findUsers)(
             $query->getSearchName(),
             $query->getLimit(),
+            $query->getOffset()
         );
     }
 }
