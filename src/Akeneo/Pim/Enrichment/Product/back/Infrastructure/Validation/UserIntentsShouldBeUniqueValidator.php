@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -25,6 +26,10 @@ final class UserIntentsShouldBeUniqueValidator extends ConstraintValidator
 
         /** @var ValueUserIntent $valueUserIntent */
         foreach ($valueUserIntents as $valueUserIntent) {
+            if ($valueUserIntent instanceof SetPriceValue) {
+                continue;
+            }
+
             $intentLocale = $valueUserIntent->localeCode() ?? '<all_locales>';
             $intentChannel = $valueUserIntent->channelCode() ?? '<all_channels>';
             $intentAttributeCode = $valueUserIntent->attributeCode();

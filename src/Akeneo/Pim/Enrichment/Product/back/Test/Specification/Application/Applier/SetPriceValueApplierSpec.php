@@ -5,13 +5,13 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
-use Akeneo\Pim\Enrichment\Product\Application\Applier\SetPriceCollectionValueApplier;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
+use Akeneo\Pim\Enrichment\Product\Application\Applier\SetPriceValueApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 
-class SetPriceCollectionValueApplierSpec extends ObjectBehavior
+class SetPriceValueApplierSpec extends ObjectBehavior
 {
     function let(ObjectUpdaterInterface $updater)
     {
@@ -20,21 +20,18 @@ class SetPriceCollectionValueApplierSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(SetPriceCollectionValueApplier::class);
+        $this->shouldHaveType(SetPriceValueApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    function it_applies_set_price_collection_value_user_intent(ObjectUpdaterInterface $updater): void
+    function it_applies_set_price_value_user_intent(ObjectUpdaterInterface $updater): void
     {
         $product = new Product();
-        $setPriceValueIntent = new SetPriceCollectionValue(
+        $setPriceValueIntent = new SetPriceValue(
             'msrp',
             'ecommerce',
             'en_US',
-            [
-                new PriceValue(42, 'EUR'),
-                new PriceValue('45', 'USD'),
-            ]
+            new PriceValue(42, 'EUR'),
         );
 
         $updater->update(
@@ -50,10 +47,6 @@ class SetPriceCollectionValueApplierSpec extends ObjectBehavior
                                     'amount' => '42',
                                     'currency' => 'EUR',
                                 ],
-                                [
-                                    'amount' => '45',
-                                    'currency' => 'USD',
-                                ]
                             ],
                         ],
                     ],
