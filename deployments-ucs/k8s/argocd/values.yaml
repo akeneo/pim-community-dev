@@ -38,25 +38,29 @@ server:
   extraArgs:
     - --insecure
   ingress:
-    enabled: false
+    enabled: true
     annotations:
-      traefik.ingress.kubernetes.io/router.tls: "true"
-      traefik.ingress.kubernetes.io/router.tls.options: default
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      traefik.ingress.kubernetes.io/router.priority: "15"
-      kubernetes.io/ingress.class: traefik
+      # Static IP created manually
+      kubernetes.io/ingress.global-static-ip-name: "argocd-server"
+      #traefik.ingress.kubernetes.io/router.tls: "true"
+      #traefik.ingress.kubernetes.io/router.tls.options: default
+      #traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      #traefik.ingress.kubernetes.io/router.priority: "15"
+      #kubernetes.io/ingress.class: traefik
     labels:
       component: "argocd-ingress" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
       app.kubernetes.io/component: "argocd-ingress"
       app.kubernetes.io/instance: "argocd-ingress"
       role: "argocd-ingress"
-    tls:
-    - hosts:
-      - null
+    #tls:
+    #- hosts:
+    #    - argocd2.bh.akeneo.ch
     hosts:
-      - null
+      - argocd.pim-saas-dev.dev.cloud.akeneo.com
     paths:
       - /
+  service:
+    type: NodePort
 
 # helm-gcs plugin: https://argo-cd.readthedocs.io/en/stable/user-guide/helm/#using-initcontainers
 # Permissions to gcs bucket are granted with workload identity
