@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\UserManagement\Domain\Model;
+namespace Akeneo\UserManagement\back\Domain\Model;
 
 class Group
 {
@@ -41,7 +41,6 @@ class Group
 
     public static function createFromDatabase(array $data): self
     {
-        // @todo add some validation
         return new self(
             id: $data['id'],
             name: $data['name'],

@@ -4,8 +4,8 @@ namespace AkeneoTest\UserManagement\Integration\Infrastructure\Storage;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\UserManagement\Domain\Model\Group;
-use Akeneo\UserManagement\Infrastructure\Storage\SqlFindUserGroups;
+use Akeneo\UserManagement\back\Domain\Model\Group;
+use Akeneo\UserManagement\back\Infrastructure\Storage\SqlFindUserGroups;
 use PHPUnit\Framework\Assert;
 
 class SqlFindUserGroupsIntegration extends TestCase
