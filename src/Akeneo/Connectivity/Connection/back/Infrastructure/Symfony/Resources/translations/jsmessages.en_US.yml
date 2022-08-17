@@ -321,6 +321,9 @@ akeneo_connectivity.connection:
             type:
                 required: Connection type is required.
                 too_long: Connection type is too long. It should have 30 characters or less.
+            user_group:
+                must_exist: The user group was not found. Make sure the specified user group exists.
+
     flow_type:
         data_source: Data source | Data sources
         data_destination: Data destination | Data destinations
