@@ -20,12 +20,12 @@ class GetCategoryChildrenAction
     {
     }
 
-    public function __invoke(Request $request, int $categoryId): Response
+    public function __invoke(Request $request, string $categoryCode): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        return new JsonResponse($this->getCategoryChildrenQuery->execute($categoryId));
+        return new JsonResponse($this->getCategoryChildrenQuery->execute($categoryCode));
     }
 }

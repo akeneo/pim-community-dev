@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoryChildrenAction
  */
 class GetCategoryChildrenActionTest extends TestCase
 {
@@ -30,14 +32,14 @@ class GetCategoryChildrenActionTest extends TestCase
 
     public function testItRedirectsWhenRequestIsNotAXmlHttpRequest(): void
     {
-        self::assertInstanceOf(RedirectResponse::class, ($this->getCategoryChildrenAction)(new Request(), 12));
+        self::assertInstanceOf(RedirectResponse::class, ($this->getCategoryChildrenAction)(new Request(), 'master'));
     }
 
     public function testItReturnsCategoryChildrenFromTheQuery(): void
     {
         $this->getCategoryChildrenQuery
             ->method('execute')
-            ->with(12)
+            ->with('master')
             ->willReturn(['categoryA', 'categoryB', 'categoryC']);
 
         $response = ($this->getCategoryChildrenAction)(
@@ -46,7 +48,7 @@ class GetCategoryChildrenActionTest extends TestCase
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],
             ),
-            12
+            'master'
         );
 
         self::assertInstanceOf(JsonResponse::class, $response);

@@ -35,12 +35,11 @@ class GetCategoriesByCodeQuery implements GetCategoriesByCodeQueryInterface
     }
 
     /**
-     * @return array{id: int, code: string, label: string, isLeaf: bool}
+     * @return array{code: string, label: string, isLeaf: bool}
      */
     private function normalizeCategory(CategoryInterface $category): array
     {
         return [
-            'id' => $category->getId(),
             'code' => $category->getCode(),
             'label' => $category->getLabel(),
             'isLeaf' => $category->getRight() - $category->getLeft() === 1,

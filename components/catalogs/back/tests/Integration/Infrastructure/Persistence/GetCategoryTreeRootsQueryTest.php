@@ -10,6 +10,8 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Catalogs\Infrastructure\Persistence\GetCategoryTreeRootsQuery
  */
 class GetCategoryTreeRootsQueryTest extends IntegrationTestCase
 {
@@ -26,25 +28,19 @@ class GetCategoryTreeRootsQueryTest extends IntegrationTestCase
 
     public function testItGetsCategoryTreeRoots(): void
     {
-        $masterCategory = $this->getCategory('master');
-        $tshirtCategory = $this->createCategory(['code' => 'tshirt', 'labels' => ['en_US' => 'T-shirt']]);
-        $this->createCategory([
-            'code' => 'tanktop',
-            'parent' => 'tshirt',
-            'labels' => ['en_US' => 'T-shirt']
-        ]);
+        // master category exists as part of the minimal catalog
+        $this->createCategory(['code' => 'tshirt', 'labels' => ['en_US' => 'T-shirt']]);
+        $this->createCategory(['code' => 'tanktop', 'parent' => 'tshirt']);
 
         $expectedMasterCategory = [
-            'id' => $masterCategory->getId(),
             'code' => 'master',
             'label' => 'Master catalog',
             'isLeaf' => false,
         ];
 
         $expectedTshirtCategory = [
-            'id' => $tshirtCategory->getId(),
-            'code' => $tshirtCategory->getCode(),
-            'label' => $tshirtCategory->getLabel(),
+            'code' => 'tshirt',
+            'label' => 'T-shirt',
             'isLeaf' => false,
         ];
 

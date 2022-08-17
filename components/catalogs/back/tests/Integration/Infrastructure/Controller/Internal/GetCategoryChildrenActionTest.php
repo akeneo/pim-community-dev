@@ -10,6 +10,8 @@ use PHPUnit\Framework\Assert;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoryChildrenAction
  */
 class GetCategoryChildrenActionTest extends IntegrationTestCase
 {
@@ -24,14 +26,14 @@ class GetCategoryChildrenActionTest extends IntegrationTestCase
     {
         $client = $this->getAuthenticatedInternalApiClient();
 
-        $parentCategory = $this->createCategory(['code' => 'parent_category', 'parent' => 'master']);
-        $child1 = $this->createCategory([
+        $this->createCategory(['code' => 'parent_category', 'parent' => 'master']);
+        $this->createCategory([
             'code' => 'child1',
             'parent' => 'parent_category',
             'labels' => ['en_US' => 'Child category']
         ]);
 
-        $child2 = $this->createCategory([
+        $this->createCategory([
             'code' => 'child2',
             'parent' => 'parent_category',
             'labels' => ['en_US' => 'Child 2 category']
@@ -41,7 +43,7 @@ class GetCategoryChildrenActionTest extends IntegrationTestCase
 
         $client->request(
             'GET',
-            "/rest/catalogs/categories/{$parentCategory->getId()}/children",
+            "/rest/catalogs/categories/parent_category/children",
             [],
             [],
             [
@@ -52,17 +54,15 @@ class GetCategoryChildrenActionTest extends IntegrationTestCase
         $response = $client->getResponse();
         Assert::assertEquals(200, $response->getStatusCode());
 
-        $children = \json_decode($response->getContent(), true);
+        $children = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedChild1 = [
-            'id' => $child1->getId(),
             'code' => 'child1',
             'label' => 'Child category',
             'isLeaf' => false,
         ];
 
         $expectedChild2 = [
-            'id' => $child2->getId(),
             'code' => 'child2',
             'label' => 'Child 2 category',
             'isLeaf' => true,

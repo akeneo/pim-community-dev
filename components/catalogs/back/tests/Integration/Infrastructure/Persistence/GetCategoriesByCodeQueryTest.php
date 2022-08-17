@@ -10,6 +10,8 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Catalogs\Infrastructure\Persistence\GetCategoriesByCodeQuery
  */
 class GetCategoriesByCodeQueryTest extends IntegrationTestCase
 {
@@ -26,27 +28,24 @@ class GetCategoriesByCodeQueryTest extends IntegrationTestCase
 
     public function testItGetsCategoriesFromCodeList(): void
     {
-        $tshirtCategory = $this->createCategory(['code' => 'tshirt', 'labels' => ['en_US' => 'T-shirt']]);
-        $shoesCategory = $this->createCategory(['code' => 'shoes', 'labels' => ['en_US' => 'Shoes']]);
-        $pantsCategory = $this->createCategory(['code' => 'pants', 'labels' => ['en_US' => 'Pants']]);
+        $this->createCategory(['code' => 'tshirt', 'labels' => ['en_US' => 'T-shirt']]);
+        $this->createCategory(['code' => 'shoes', 'labels' => ['en_US' => 'Shoes']]);
+        $this->createCategory(['code' => 'pants', 'labels' => ['en_US' => 'Pants']]);
         $this->createCategory(['code' => 'shorts', 'parent' => 'pants']);
 
         $expectedTshirtCategory = [
-            'id' => $tshirtCategory->getId(),
             'code' => 'tshirt',
             'label' => 'T-shirt',
             'isLeaf' => true,
         ];
 
         $expectedShoesCategory = [
-            'id' => $shoesCategory->getId(),
             'code' => 'shoes',
             'label' => 'Shoes',
             'isLeaf' => true,
         ];
 
         $expectedPantsCategory = [
-            'id' => $pantsCategory->getId(),
             'code' => 'pants',
             'label' => 'Pants',
             'isLeaf' => false,

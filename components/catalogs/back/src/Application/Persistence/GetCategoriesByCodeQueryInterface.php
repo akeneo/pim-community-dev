@@ -12,7 +12,7 @@ interface GetCategoriesByCodeQueryInterface
 {
     /**
      * @param array<string> $categoryCodes
-     * @return array<array-key, array{id: int, code: string, label: string, isLeaf: bool}>
+     * @return array<array-key, array{code: string, label: string, isLeaf: bool}>
      */
     public function execute(array $categoryCodes): array;
 }

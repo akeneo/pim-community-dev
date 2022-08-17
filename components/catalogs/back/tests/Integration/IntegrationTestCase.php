@@ -260,22 +260,11 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_catalog.saver.family')->save($family);
     }
 
-    protected function createCategory(array $data = []): CategoryInterface
+    protected function createCategory(array $data = []): void
     {
+        /** @var CategoryInterface $category */
         $category = self::getContainer()->get('pim_catalog.factory.category')->create();
         self::getContainer()->get('pim_catalog.updater.category')->update($category, $data);
-        self::getContainer()->get('validator')->validate($category);
         self::getContainer()->get('pim_catalog.saver.category')->save($category);
-
-        return $category;
-    }
-
-    protected function getCategory(string $code): ?CategoryInterface
-    {
-        $repository = self::getContainer()->get('pim_catalog.repository.category');
-
-        $categories = $repository->getCategoriesByCodes([$code]);
-
-        return \count($categories) > 0 ? $categories[0] : null;
     }
 }
