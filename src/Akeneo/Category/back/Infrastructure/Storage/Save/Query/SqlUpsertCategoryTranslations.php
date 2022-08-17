@@ -58,15 +58,11 @@ class SqlUpsertCategoryTranslations implements UpsertCategoryTranslations
                         $count
                     );
 
-                    $this->updateParams[] = [
-                        'label_' . (string) $count => $label,
-                        'locale_' . (string) $count => $localeCode,
-                    ];
+                    $this->updateParams['label_' . $count] = $label;
+                    $this->updateParams['locale_' . $count] = $localeCode;
 
-                    $this->updateTypes[] = [
-                        'label_' . (string) $count => \PDO::PARAM_STR,
-                        'locale_' . (string) $count => \PDO::PARAM_STR,
-                    ];
+                    $this->updateTypes['label_' . $count] = \PDO::PARAM_STR;
+                    $this->updateTypes['locale_' . $count] = \PDO::PARAM_STR;
                 }
             } else {
                 $count = count($this->insertionQueries);
@@ -134,7 +130,6 @@ class SqlUpsertCategoryTranslations implements UpsertCategoryTranslations
         $this->updateParams['category_id'] = $categoryId;
         $this->updateTypes['category_id'] = \PDO::PARAM_INT;
 
-        // TODO validate data updated (just test by hand)
         $this->connection->executeQuery(
             $query,
             $this->updateParams,
@@ -173,9 +168,6 @@ class SqlUpsertCategoryTranslations implements UpsertCategoryTranslations
                 pcct.foreign_key=update_data.foreign_key
                 AND pcct.locale=update_data.locale
             SET pcct.label=update_data.label
-            WHERE
-                pcct.foreign_key=update_data.foreign_key
-                AND pcct.locale=update_data.locale
         SQL;
 
         return $query;
@@ -230,7 +222,7 @@ class SqlUpsertCategoryTranslations implements UpsertCategoryTranslations
             ]
         )->fetchAssociative();
 
-        return new CategoryId((int)$categoryData['id'] ?? null);
+        return new CategoryId((int)$categoryData['id'] ?: null);
     }
 
     /**
@@ -239,9 +231,7 @@ class SqlUpsertCategoryTranslations implements UpsertCategoryTranslations
      */
     private function localeAlreadyExists(string $locale): bool
     {
-        $result = \array_key_exists($locale, $this->cachedLocales);
-
-        return $result;
+        return \array_key_exists($locale, $this->cachedLocales);
     }
 
     /**
