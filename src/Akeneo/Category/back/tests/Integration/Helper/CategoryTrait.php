@@ -49,8 +49,10 @@ trait CategoryTrait
         $upsertCategoryBaseQuery->execute($categoryModelToCreate);
 
         // Get the data of the newly inserted category from pim_catalog_category
+        //TODO : use the getCategorySql query instead when it's been fixed when querying a category with no labels
+//        $getCategory = $this->get(GetCategorySql::class);
+//        $categoryBaseData = $getCategory->byCode((string) $categoryModelToCreate->getCode());
         $categoryBaseData = $this->getCategoryBaseDataByCode((string) $categoryModelToCreate->getCode());
-
         $parentId = (
             null === $categoryBaseData['parent_id']
                 ? null
@@ -81,7 +83,6 @@ trait CategoryTrait
     }
 
     /**
-     * @param int $id
      * @return array<string, string>
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
@@ -110,7 +111,6 @@ trait CategoryTrait
     }
 
     /**
-     * @param int $id
      * @return array<string, string>
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
@@ -144,6 +144,6 @@ trait CategoryTrait
             return [];
         }
 
-        return json_decode($result['translations'], true);
+        return json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR);
     }
 }
