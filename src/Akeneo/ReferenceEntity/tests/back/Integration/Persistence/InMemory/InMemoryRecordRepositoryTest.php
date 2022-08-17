@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
+use Akeneo\ReferenceEntity\Domain\Exception\RecordAlreadyExistsError;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -35,8 +36,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryRecordRepositoryTest extends TestCase
 {
-    /** @var InMemoryRecordRepository */
-    private $recordRepository;
+    private InMemoryRecordRepository $recordRepository;
 
     public function setUp(): void
     {
@@ -93,7 +93,7 @@ class InMemoryRecordRepositoryTest extends TestCase
         );
         $this->recordRepository->create($record);
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RecordAlreadyExistsError::class);
         $this->recordRepository->create($record);
     }
 
@@ -121,7 +121,7 @@ class InMemoryRecordRepositoryTest extends TestCase
             ValueCollection::fromValues([])
         );
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RecordAlreadyExistsError::class);
         $this->recordRepository->create($record);
     }
 

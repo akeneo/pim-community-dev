@@ -17,6 +17,7 @@ use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Connector\EditRecordCommandFactory;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
+use Akeneo\ReferenceEntity\Domain\Exception\RecordAlreadyExistsError;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
@@ -27,6 +28,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Record
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,7 +55,8 @@ class CreateOrUpdateRecordsAction
         private RecordValidator $recordStructureValidator,
         private RecordListValidator $recordListValidator,
         private int $maximumRecordsPerRequest,
-        private SecurityFacade $securityFacade
+        private SecurityFacade $securityFacade,
+        private LoggerInterface $logger
     ) {
     }
 
@@ -137,11 +140,11 @@ class CreateOrUpdateRecordsAction
             ];
         }
 
+        $responseStatusCode = Response::HTTP_NO_CONTENT;
         $recordCode = RecordCode::fromString($normalizedRecord['code']);
-        $shouldBeCreated = !$this->recordExists->withReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
         $createRecordCommand = null;
 
-        if ($shouldBeCreated) {
+        if (!$this->recordExists->withReferenceEntityAndCode($referenceEntityIdentifier, $recordCode)) {
             $createRecordCommand = new CreateRecordCommand(
                 $referenceEntityIdentifier->normalize(),
                 $normalizedRecord['code'],
@@ -161,15 +164,23 @@ class CreateOrUpdateRecordsAction
             throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
         }
 
-        if ($shouldBeCreated) {
-            ($this->createRecordHandler)($createRecordCommand);
+        if ($createRecordCommand !== null) {
+            try {
+                ($this->createRecordHandler)($createRecordCommand);
+                $responseStatusCode = Response::HTTP_CREATED;
+            } catch (RecordAlreadyExistsError) {
+                $this->logger->notice('Concurrent record creation call have been detected', [
+                    'reference_entity_identifier' => $referenceEntityIdentifier,
+                    'record_code' => $recordCode
+                ]);
+            }
         }
 
         ($this->editRecordHandler)($editRecordCommand);
 
         return [
             'code' => (string) $recordCode,
-            'status_code' => $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT,
+            'status_code' => $responseStatusCode,
         ];
     }
 

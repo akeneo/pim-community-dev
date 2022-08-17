@@ -166,7 +166,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_reference_entity.record.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":"designer","%code%":"starck"},"plural":null,"message":"The record code already exists for reference entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null,"groups":["other_constraints"]},"cause":null,"code":null}]'
+            '[{"messageTemplate":"pim_reference_entity.record.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":"designer","%code%":"starck"},"message":"The record code already exists for reference entity \u0022designer\u0022 and record code \u0022starck\u0022","propertyPath":"code"}]'
         );
     }
 

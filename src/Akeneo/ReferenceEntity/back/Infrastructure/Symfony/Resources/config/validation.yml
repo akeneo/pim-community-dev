@@ -55,7 +55,6 @@ Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand:
         labels:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\RecordCodeShouldBeUnique: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\ThereShouldBeLessRecordsThanLimit: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\CreateRecordLabel: { groups: [other_constraints] }
 

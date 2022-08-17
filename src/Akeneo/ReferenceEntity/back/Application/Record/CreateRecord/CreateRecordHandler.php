@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Application\Record\CreateRecord;
 
+use Akeneo\ReferenceEntity\Domain\Exception\RecordAlreadyExistsError;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -39,6 +40,9 @@ class CreateRecordHandler
     ) {
     }
 
+    /**
+     * @throws RecordAlreadyExistsError
+     */
     public function __invoke(CreateRecordCommand $createRecordCommand): void
     {
         $code = RecordCode::fromString($createRecordCommand->code);

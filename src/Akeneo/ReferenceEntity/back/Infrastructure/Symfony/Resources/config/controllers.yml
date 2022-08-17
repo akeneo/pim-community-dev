@@ -72,6 +72,7 @@ services:
             - '@serializer'
             - '@validator'
             - '@oro_security.security_facade'
+            - '@Akeneo\ReferenceEntity\Infrastructure\Normalizer\ErrorFacingFrontendNormalizer'
 
     akeneo_referenceentity.infrastructure.action.attribute.index:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Attribute\IndexAction
@@ -109,6 +110,7 @@ services:
             - '@reference_entity_serializer'
             - '@validator'
             - '@oro_security.security_facade'
+            - '@Akeneo\ReferenceEntity\Infrastructure\Normalizer\ErrorFacingFrontendNormalizer'
 
     akeneo_referenceentity.infrastructure.action.record.index:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\IndexAction
@@ -236,6 +238,7 @@ services:
             - '@akeneo_referenceentity.infrastructure.connector.api.record_validator'
             - '@validator'
             - '@oro_security.security_facade'
+            - '@logger'
 
     akeneo_referenceentity.infrastructure.connector.action.records.create_or_update:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\CreateOrUpdateRecordsAction
@@ -251,6 +254,7 @@ services:
             - '@akeneo_referenceentity.infrastructure.connector.api.record_list_validator'
             - '%reference_entity_connector_maximum_records_to_process_per_request%'
             - '@oro_security.security_facade'
+            - '@logger'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attributes.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorReferenceEntityAttributesAction

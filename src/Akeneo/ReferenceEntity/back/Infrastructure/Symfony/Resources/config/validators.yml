@@ -1,11 +1,4 @@
 services:
-    akeneo_referenceentity.infrastructure.validation.record.record_code_should_be_unique:
-        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\RecordCodeShouldBeUniqueValidator
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.record_is_unique' }
-
     akeneo_referenceentity.infrastructure.validation.reference_entity.reference_entity_code_should_be_unique:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityCodeShouldBeUniqueValidator
         arguments:
