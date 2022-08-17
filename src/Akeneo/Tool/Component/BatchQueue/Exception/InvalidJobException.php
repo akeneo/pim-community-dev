@@ -11,8 +11,7 @@ class InvalidJobException extends \RuntimeException
         string $jobCode,
         string $jobName,
         ConstraintViolationListInterface $violations,
-    )
-    {
+    ) {
         parent::__construct(sprintf(
             'Job instance "%s" running the job "%s" is invalid because of "%s"',
             $jobCode,

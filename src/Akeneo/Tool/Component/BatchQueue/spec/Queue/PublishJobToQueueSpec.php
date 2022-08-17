@@ -4,6 +4,7 @@ namespace spec\Akeneo\Tool\Component\BatchQueue\Queue;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+use Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\JobInstance as JobInstanceConstraint;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\Job;
@@ -61,6 +62,7 @@ class PublishJobToQueueSpec extends ObjectBehavior
 
     function it_publishes_a_job_to_the_execution_queue(
         DoctrineJobRepository $jobRepository,
+        ValidatorInterface $validator,
         JobRegistry $jobRegistry,
         JobParametersFactory $jobParametersFactory,
         EntityManagerInterface $entityManager,
@@ -86,6 +88,8 @@ class PublishJobToQueueSpec extends ObjectBehavior
         $jobParametersFactory->create($job, [])->willReturn($jobParameters);
 
         $entityManager->merge($jobInstance)->shouldBeCalled();
+        $validator->validate($jobInstance, Argument::any())
+            ->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])
                                ->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
         $entityManager->clear(get_class($jobInstance->getWrappedObject()))->shouldBeCalled();

@@ -24,7 +24,8 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
         private JobParametersFactory $jobParametersFactory,
         private JobRegistry $jobRegistry,
         private ClockInterface $clock,
-    ) { }
+    ) {
+    }
 
     /**
      * {@inheritdoc}

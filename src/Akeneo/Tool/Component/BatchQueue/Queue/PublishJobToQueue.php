@@ -45,7 +45,8 @@ class PublishJobToQueue
         private JobExecutionMessageFactory $jobExecutionMessageFactory,
         private EventDispatcherInterface $eventDispatcher,
         private BatchLogHandler $batchLogHandler
-    ) { }
+    ) {
+    }
 
     public function publish(
         string $jobInstanceCode,

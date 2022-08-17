@@ -72,11 +72,12 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
         ];
 
         $jobInstance->getAutomation()->willReturn($currentAutomation);
-        $clock->now()->willReturn(\DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2022-12-27 07:00:00'));
+        $clock->now()->willReturn(\DateTimeImmutable::createFromFormat(\DateTimeImmutable::ATOM, '2022-12-27T07:00:00+00:00'));
 
         $expectedUpdatedAutomation = [
             'cron_expression' => '0 0/4 * * *',
-            'setup_date' => '2022-12-27 07:00:00',
+            'setup_date' => '2022-12-27T07:00:00+00:00',
+            'last_execution_date' => null,
         ];
 
         $jobInstance->setAutomation($expectedUpdatedAutomation)->shouldBeCalled();
@@ -95,7 +96,8 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
     {
         $currentAutomation = [
             'cron_expression' => '0 0/4 * * *',
-            'setup_date' => '2022-12-27 07:00:00',
+            'setup_date' => '2022-12-27T07:00:00+00:00',
+            'last_execution_date' => null,
         ];
 
         $jobInstance->getAutomation()->willReturn($currentAutomation);
@@ -103,7 +105,8 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
 
         $expectedNotUpdatedAutomation = [
             'cron_expression' => '0 0/4 * * *',
-            'setup_date' => '2022-12-27 07:00:00',
+            'setup_date' => '2022-12-27T07:00:00+00:00',
+            'last_execution_date' => null,
         ];
 
         $jobInstance->setAutomation($expectedNotUpdatedAutomation)->shouldBeCalled();
