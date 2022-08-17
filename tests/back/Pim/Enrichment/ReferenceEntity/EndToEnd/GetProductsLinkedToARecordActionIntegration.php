@@ -104,7 +104,7 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
         }
 
         /* It's impossible to predict the uuid, generated at product creation. So, we drop them in expected and
-         * actual responses
+         * actual responses.
          */
         foreach ($expectedContent['items'] as $i => $item) {
             if ($item['document_type'] === 'product') {

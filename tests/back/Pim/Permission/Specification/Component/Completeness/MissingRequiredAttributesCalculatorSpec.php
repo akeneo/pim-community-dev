@@ -81,7 +81,7 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
         $values = new WriteValueCollection();
         $writeValueCollectionFactory->createFromStorageFormat(['the raw values'])->willReturn($values);
         $productCompletenessMask = new CompletenessProductMask(
-            '42', 'my_bag', 'accessories', [
+            '42', 'accessories', [
                 'name-ecommerce-en_US',
                 'name-ecommerce-fr_FR',
                 'desc-<all_channels>-<all_locales>',
@@ -89,7 +89,7 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
                 'size-ecommerce-en_US',
             ]
         );
-        $getCompletenessProductMasks->fromValueCollection(42, 'my_bag', 'accessories', $values)->willReturn(
+        $getCompletenessProductMasks->fromValueCollection(42, 'accessories', $values)->willReturn(
             $productCompletenessMask
         );
 
@@ -140,7 +140,7 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
         $writeValueCollectionFactory->createFromStorageFormat(['the raw values'])->willReturn($values);
 
         $productCompletenessMask = new CompletenessProductMask(
-            'df31ba3f-508d-424c-8bc4-446c6e2966e5', 'my_bag', 'accessories', [
+            'df31ba3f-508d-424c-8bc4-446c6e2966e5', 'accessories', [
                 'name-ecommerce-en_US',
                 'name-ecommerce-fr_FR',
                 'desc-<all_channels>-<all_locales>',
@@ -148,7 +148,7 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
                 'size-ecommerce-en_US',
             ]
         );
-        $getCompletenessProductMasks->fromValueCollection('df31ba3f-508d-424c-8bc4-446c6e2966e5', 'my_bag', 'accessories', $values)->willReturn(
+        $getCompletenessProductMasks->fromValueCollection('df31ba3f-508d-424c-8bc4-446c6e2966e5', 'accessories', $values)->willReturn(
             $productCompletenessMask
         );
 

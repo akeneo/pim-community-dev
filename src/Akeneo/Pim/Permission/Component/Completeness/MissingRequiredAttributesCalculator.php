@@ -66,7 +66,6 @@ final class MissingRequiredAttributesCalculator implements MissingRequiredAttrib
 
         $productMask = $this->getCompletenessProductMasks->fromValueCollection(
             $entityId,
-            $entityWithFamily->getIdentifier(),
             $familyCode,
             $valuesWithFullPermissions
         );
