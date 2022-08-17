@@ -233,6 +233,8 @@ akeneo_batch_job_instance | job_name | NO | varchar(50) |
 akeneo_batch_job_instance | status | NO | int |
 akeneo_batch_job_instance | connector | NO | varchar(255) |
 akeneo_batch_job_instance | raw_parameters | NO | longtext |
+akeneo_batch_job_instance | scheduled | NO | tinyint(1) | MUL
+akeneo_batch_job_instance | automation | YES | json |
 akeneo_batch_job_instance | type | NO | varchar(255) |
 akeneo_batch_step_execution | id | NO | int | PRI
 akeneo_batch_step_execution | job_execution_id | YES | int | MUL
@@ -618,6 +620,7 @@ pim_catalog_category | root | NO | int |
 pim_catalog_category | lvl | NO | int |
 pim_catalog_category | lft | NO | int | MUL
 pim_catalog_category | rgt | NO | int |
+pim_catalog_category | value_collection | YES | json |
 pim_catalog_category_product | product_uuid | NO | binary(16) | PRI
 pim_catalog_category_product | category_id | NO | int | PRI
 pim_catalog_category_product_model | product_model_id | NO | int | PRI
@@ -988,6 +991,7 @@ INDEX | akeneo_batch_job_execution | status_idx | status
 INDEX | akeneo_batch_job_execution | user_idx | user
 INDEX | akeneo_batch_job_instance | code_idx | code
 INDEX | akeneo_batch_job_instance | PRIMARY | id
+INDEX | akeneo_batch_job_instance | scheduled_idx | scheduled
 INDEX | akeneo_batch_job_instance | searchunique_idx | code
 INDEX | akeneo_batch_step_execution | IDX_BDE7D0925871C06B | job_execution_id
 INDEX | akeneo_batch_step_execution | PRIMARY | id

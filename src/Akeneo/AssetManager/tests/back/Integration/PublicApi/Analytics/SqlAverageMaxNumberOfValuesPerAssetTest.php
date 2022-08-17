@@ -99,10 +99,6 @@ class SqlAverageMaxNumberOfValuesPerAssetTest extends SqlIntegrationTestCase
         return $assetFamilyIdentifier;
     }
 
-    /**
-     * @return mixed
-     *
-     */
     private function randomString(): string
     {
         return str_replace('-', '_', Uuid::uuid4()->toString());

@@ -109,6 +109,23 @@ final class GetAvailableFieldsControllerIntegration extends ControllerIntegratio
         $this->assertResultsDoNotContainFilter('marketing', 'name', $filters);
     }
 
+    public function test_it_can_search_on_system_field_labels(): void
+    {
+        $response = $this->assertCallSuccess(10, 1, ['enabled'], null, 'statu');
+        $filters = \json_decode($response->getContent(), true);
+        $this->assertNotEmpty($filters);
+        $this->assertSame(1, count($filters));
+
+        $this->assertSame('system', $filters[0]['id']);
+        $this->assertSame('System', $filters[0]['text']);
+        $this->assertSame([
+            [
+                'id' => 'enabled',
+                'text' => 'Status',
+            ]
+        ], $filters[0]['children']);
+    }
+
     public function test_it_translates_the_labels(): void
     {
         $response = $this->assertCallSuccess(4, 1, ['family']);

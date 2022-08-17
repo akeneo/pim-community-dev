@@ -18,14 +18,17 @@ envVarsDeployPreprod: &envVarsDeployPreprod
   GOOGLE_COMPUTE_ZONE_NEXT: "europe-west3-b"
   CLUSTER_NAME_NEXT: "europe-west3-b"
 
-envVarsDeployUCS: &envVarsDeployUCS
+envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
   ENV_NAME: "dev"
+  GOOGLE_DOMAIN: "dev.akeneo.ch"
   GOOGLE_PROJECT_ID_PROD: "akeneo-cloud"
-  GOOGLE_PROJECT_ID: "akecld-blackhawk-sandbox"
+  GOOGLE_PROJECT_ID: "akecld-prd-pim-saas-dev"
+  GOOGLE_CLUSTER_REGION: "europe-west1"
   GOOGLE_COMPUTE_ZONE: "europe-west1-b"
-  CLUSTER_NAME: "bh-cluster-sandbox"
+  CLUSTER_NAME: "akecld-prd-pim-saas-dev-europe-west1"
+  GOOGLE_CLUSTER_REGION_NEXT: "europe-west1"
   GOOGLE_COMPUTE_ZONE_NEXT: "europe-west1-b"
-  CLUSTER_NAME_NEXT: "bh-cluster-sandbox"
+  CLUSTER_NAME_NEXT: "akecld-prd-pim-saas-dev-europe-west1"
 
 dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent # cloudDeployer version used in prod (used for lastest release deployement)
   docker:

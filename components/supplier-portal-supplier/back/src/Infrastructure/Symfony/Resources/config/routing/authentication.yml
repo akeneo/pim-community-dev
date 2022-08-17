@@ -2,26 +2,26 @@ supplier_portal_supplier_contributor_get_contributor_account:
     path: /contributor-account/{accessToken}
     defaults:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\GetContributorAccount
-        _feature: supplier_portal_contributor_authentication
+        _feature: supplier_portal
     methods: [GET]
 
 supplier_portal_supplier_contributor_set_up_password:
     path: /set-up-password
     defaults:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword
-        _feature: supplier_portal_contributor_authentication
+        _feature: supplier_portal
     methods: [PUT]
 
 supplier_portal_supplier_contributor_request_new_invitation:
     path: /contributor-account/request-new-invitation
     defaults:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\RequestNewInvitation
-        _feature: supplier_portal_contributor_authentication
+        _feature: supplier_portal
     methods: POST
 
 supplier_portal_supplier_contributor_reset_password:
     path: /contributor-account/reset-password
     defaults:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\ResetPassword
-        _feature: supplier_portal_contributor_authentication
+        _feature: supplier_portal
     methods: POST

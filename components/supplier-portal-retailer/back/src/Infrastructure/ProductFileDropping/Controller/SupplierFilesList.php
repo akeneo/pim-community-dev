@@ -12,21 +12,24 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class SupplierFilesList
 {
-    public function __construct(private GetSupplierFiles $getSupplierFiles, private GetSupplierFilesCount $getSupplierFilesCount)
-    {
+    public function __construct(
+        private GetSupplierFiles $getSupplierFiles,
+        private GetSupplierFilesCount $getSupplierFilesCount,
+    ) {
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request, string $supplierIdentifier): JsonResponse
     {
         $page = $request->query->getInt('page', 1);
-        $supplierFiles = ($this->getSupplierFiles)($page);
+
+        $supplierFiles = ($this->getSupplierFiles)($supplierIdentifier, $page);
 
         return new JsonResponse([
             'supplier_files' => array_map(
                 fn (SupplierFile $supplierFile) => $supplierFile->toArray(),
                 $supplierFiles,
             ),
-            'total' => ($this->getSupplierFilesCount)(),
+            'total' => ($this->getSupplierFilesCount)($supplierIdentifier),
             'items_per_page' => GetSupplierFiles::NUMBER_OF_SUPPLIER_FILES_PER_PAGE,
         ]);
     }

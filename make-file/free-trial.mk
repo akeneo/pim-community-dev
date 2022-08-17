@@ -1,4 +1,4 @@
-DATABASE_CATALOG_FREE_TRIAL ?= src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
+DATABASE_CATALOG_FREE_TRIAL ?= tria/src/Akeneo/FreeTrial/back/Infrastructure/Symfony/Resources/fixtures/free_trial_catalog
 
 .PHONY: trial-dev
 trial-dev: #Doc: run docker-compose up, clean symfony cache, run webpack dev & install free_trial_catalog database in dev environment

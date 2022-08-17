@@ -1,0 +1,4 @@
+services:
+  AkeneoEnterprise\Category\Infrastructure\Storage\Sql\EnterpriseGetCategorySql:
+    arguments:
+      - '@database_connection'

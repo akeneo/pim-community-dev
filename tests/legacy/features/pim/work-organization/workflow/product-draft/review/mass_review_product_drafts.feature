@@ -1,4 +1,4 @@
-@javascript @proposal-feature-enabled
+@javascript @proposal-feature-enabled @permission-feature-enabled
 Feature: Approve or refuse several product drafts at once
   In order to control which data should be applied to products
   As a product manager

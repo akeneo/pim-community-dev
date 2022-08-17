@@ -37,6 +37,12 @@ variable "enable_gke_backup" {
   type        = bool
 }
 
+variable "enable_config_connector" {
+  description = "True if the managed config connector is enabled"
+  default     = true
+  type        = bool
+}
+
 variable "node_pool_configs" {
   description = "List of the configs of node pools"
   type        = list(map(string))
@@ -78,6 +84,12 @@ variable "node_pools_taints" {
   }
 }
 
+variable "node_locations" {
+  description = "Map of zone location to place nodes of node pools by region"
+  type        = map(map(list(string)))
+  default     = null
+}
+
 
 variable "cluster_developers" {
   type        = list(string)
@@ -101,6 +113,12 @@ variable "default_region" {
 }
 
 variable "gke_sa_email" {
-  type = string
+  type        = string
   description = "Email of the gke service account"
+}
+
+variable "min_master_version" {
+  type        = string
+  description = "Minimum control plane version"
+  default     = "latest"
 }

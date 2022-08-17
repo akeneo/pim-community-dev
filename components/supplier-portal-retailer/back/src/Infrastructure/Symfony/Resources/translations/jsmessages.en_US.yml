@@ -88,6 +88,7 @@ supplier_portal:
                 contributor: Contributor
                 supplier: Supplier
                 status: Status
+                download: Download icon
             status:
                 downloaded: Downloaded
                 to_download: To download
@@ -95,10 +96,19 @@ supplier_portal:
                 error_loading_supplier_files:
                     title: We are not able to display the product files.
                     content: Sorry about this inconvenience, please try again in a few moments.
+        pim_notification:
+            button_label: See the product files
 
 pim_title:
     supplier_portal_retailer_supplier_list: Suppliers
     supplier_portal_retailer_supplier_edit: Edit a supplier
-    supplier_portal_supplier_files_list: Product files
+    supplier_portal_retailer_product_files_list: Product files
 
 batch_jobs.supplier_portal_xlsx_supplier_import.label: Supplier Portal Supplier import in XLSX
+
+pim_notification:
+    supplier_portal:
+        new_product_file:
+            button_label: See the product files
+    types:
+        new_product_file: New product file

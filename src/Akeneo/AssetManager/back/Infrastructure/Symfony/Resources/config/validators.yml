@@ -2,14 +2,6 @@ parameters:
     env(ALLOWED_NETWORK_ASSETS_WHITELIST): ''
 
 services:
-    akeneo_assetmanager.infrastructure.validation.asset.asset_code_should_be_unique:
-        class: Akeneo\AssetManager\Infrastructure\Validation\Asset\AssetCodeShouldBeUniqueValidator
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_exists'
-            - '%pim_job_product_batch_size%'
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.asset_is_unique' }
-
     akeneo_assetmanager.infrastructure.validation.asset_family.asset_family_identifier_should_be_unique:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyIdentifierShouldBeUniqueValidator
         arguments:

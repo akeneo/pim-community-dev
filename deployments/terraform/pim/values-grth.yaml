@@ -95,14 +95,6 @@ pim:
         requests:
           cpu: "100m"
           memory: "10Mi"
-    migrate-job-execution-warning-count:
-      enabled: true
-      pimCommand: "akeneo:batch:migrate-job-execution-warning-count --no-interaction"
-      schedule: "*/30 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     clean-completeness-evaluation-results:
       enabled: true
       pimCommand: "pim:data-quality-insights:clean-completeness-evaluation-results --no-interaction"

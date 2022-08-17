@@ -35,9 +35,9 @@ class ReferenceEntityCollectionValueNormalizer extends AbstractProductValueNorma
     protected function getNormalizedData(ValueInterface $value): array
     {
         $records = $value->getData();
-        $recordsCode = array_map(function (RecordCode $recordCode) {
+        $recordsCode = \array_values(array_map(function (RecordCode $recordCode) {
             return $recordCode->__toString();
-        }, $records);
+        }, $records));
 
         return $recordsCode;
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Integration\Infrastructure\ProductFileDropping\Repository\Sql;
 
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\SupplierFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\SupplierFileRepository;
 use Akeneo\SupplierPortal\Supplier\Test\Integration\SqlIntegrationTestCase;
@@ -17,10 +18,11 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $this->createSupplier();
         $repository = $this->get(SupplierFileRepository::class);
         $supplierFile = SupplierFile::create(
+            'b8b13d0b-496b-4a7c-a574-0d522ba90752',
             'product-file.xlsx',
             '1/2/3/4/product-file.xlsx',
             'contributor@example.com',
-            'ebdbd3f4-e7f8-4790-ab62-889ebd509ae7',
+            new Supplier('ebdbd3f4-e7f8-4790-ab62-889ebd509ae7', 'los_pollos_hermanos', 'Los Pollos Hermanos'),
         );
         $repository->save($supplierFile);
 
@@ -28,8 +30,8 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
 
         $this->assertSame($supplierFile->originalFilename(), $savedSupplierFile['original_filename']);
         $this->assertSame($supplierFile->path(), $savedSupplierFile['path']);
-        $this->assertSame($supplierFile->uploadedByContributor(), $savedSupplierFile['uploaded_by_contributor']);
-        $this->assertSame($supplierFile->uploadedBySupplier(), $savedSupplierFile['uploaded_by_supplier']);
+        $this->assertSame($supplierFile->contributorEmail(), $savedSupplierFile['uploaded_by_contributor']);
+        $this->assertSame($supplierFile->supplierIdentifier(), $savedSupplierFile['uploaded_by_supplier']);
         $this->assertFalse((bool) $savedSupplierFile['downloaded']);
     }
 

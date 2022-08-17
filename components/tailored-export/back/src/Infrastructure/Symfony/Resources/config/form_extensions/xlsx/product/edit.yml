@@ -126,6 +126,16 @@ extensions:
             jobType: export
             fileExtension: xlsx
 
+    pim-job-instance-xlsx-tailored-product-export-edit-properties-lines-per-file:
+        module: pim/job/common/edit/field/text
+        parent: pim-job-instance-xlsx-tailored-product-export-edit-global
+        position: 150
+        targetZone: properties
+        config:
+            fieldCode: configuration.linesPerFile
+            readOnly: false
+            label: pim_import_export.form.job_instance.tab.properties.lines_per_file.title
+
     pim-job-instance-xlsx-tailored-product-export-edit-properties-with-media:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-tailored-product-export-edit-global

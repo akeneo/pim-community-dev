@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\CLI;
 
 use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\FindAllAssetIdentifiers;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\RefreshAsset;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\CountAssets;
@@ -52,6 +53,7 @@ class RefreshAssetsCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
+        $verbose = $input->getOption('verbose') ?? false;
         $isIndexAll = $input->getOption('all');
         if (!$isIndexAll) {
             $output->writeln('Please use the flag --all to refresh all assets');
@@ -59,18 +61,28 @@ class RefreshAssetsCommand extends Command
 
         $totalAssets = $this->countAssets->all();
         $progressBar = new ProgressBar($output, $totalAssets);
-        $progressBar->start();
+        if ($verbose) {
+            $progressBar->start();
+        }
 
         $assetIdentifiers = $this->findAllAssetIdentifiers->fetch();
         $i = 0;
         foreach ($assetIdentifiers as $assetIdentifier) {
-            $this->refreshAsset->refresh($assetIdentifier);
-            if ($i % self::BULK_SIZE === 0) {
-                $progressBar->advance(self::BULK_SIZE);
+            try {
+                $this->refreshAsset->refresh($assetIdentifier);
+            } catch (AssetNotFoundException) {
+                continue;
+            } finally {
+                $i++;
+                if ($i % self::BULK_SIZE === 0 && $verbose) {
+                    $progressBar->advance(self::BULK_SIZE);
+                }
             }
-            $i++;
         }
-        $progressBar->finish();
+
+        if ($verbose) {
+            $progressBar->finish();
+        }
 
         return Command::SUCCESS;
     }

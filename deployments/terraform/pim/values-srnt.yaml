@@ -92,6 +92,14 @@ pim:
         requests:
           cpu: "200m"
           memory: "128Mi"
+    asset-manager-refresh-asset:
+      enabled: true
+      pimCommand: "akeneo:asset-manager:refresh-assets --all"
+      schedule: "0 23 * * *"
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "128Mi"
     sso-log-rotate:
       enabled: true
       pimCommand: "pimee:sso:rotate-log 30"
@@ -137,14 +145,6 @@ pim:
     reference-entity-migrate-records-index-mapping:
       enabled: true
       pimCommand: "akeneo:reference-entity:migrate-records-index-mapping --no-interaction"
-      schedule: "*/30 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
-    job-migrate-job-execution-warning-count:
-      enabled: true
-      pimCommand: "akeneo:batch:migrate-job-execution-warning-count --no-interaction"
       schedule: "*/30 * * * *"
       resources:
         requests:

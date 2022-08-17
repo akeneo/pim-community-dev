@@ -65,10 +65,10 @@ akeneo.tailored_import:
         title: Remplacement des catégories
         modal:
           title: Gérer les catégories
-          table:
-            header:
-              replacement: Catégories du PIM
-              source_values: Catégories de votre fichier source
+      family_replacement:
+        title: Remplacement des familles
+        modal:
+          title: Gérer les familles
       no_result: Aucune opération n'est disponible.
       no_source: Afin accéder aux opérations, veuillez d'abord ajouter une source de données.
       no_available:
@@ -93,7 +93,6 @@ akeneo.tailored_import:
               all: Toutes les valeurs
           table:
             header:
-              replacement: Options du PIM
               source_values: Valeurs de votre fichier source
           validation_error: Certaines valeurs de remplacement sont erronées. Afin de les corriger, veuillez vous référer aux messages d'erreur sous chaque champ.
       boolean_replacement:
@@ -166,7 +165,6 @@ akeneo.tailored_import:
       uuid:
         should_be_unique: Il existe déjà un mapping ciblant un attribut de type "Identifiant".
       sources:
-        count_mismatched: Vous n'avez besoin que d'une seule source pour ce mapping.
         at_least_one_required: Vous devez ajouter au moins une source à ce mapping.
         max_count_reached: Vous avez atteint la limite de {{ limit }} sources, vous ne pouvez plus ajouter de sources à ce mapping.
         should_be_unique: Cette source existe déjà, veuillez en saisir une nouvelle.

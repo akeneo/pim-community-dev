@@ -39,8 +39,7 @@ class AssetItem
 
     public array $image;
 
-    /** @var []|null */
-    public $values;
+    public array $values;
 
     public array $completeness;
 

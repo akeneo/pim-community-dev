@@ -3,4 +3,13 @@ services:
     class: Akeneo\Platform\JobAutomation\Application\StorageConnectionCheck\StorageConnectionCheckHandler
     arguments:
       - !tagged pim_import_export.storage_client_provider
-    
+
+  akeneo.job_automation.handler.get_user_groups:
+    class: Akeneo\Platform\JobAutomation\Application\GetUserGroups\GetUserGroupsHandler
+    arguments:
+      - '@akeneo.job_automation.query.get_user_groups'
+
+  akeneo.job_automation.handler.get_users:
+    class: Akeneo\Platform\JobAutomation\Application\GetUsers\GetUsersHandler
+    arguments:
+      - '@akeneo.job_automation.query.get_users'

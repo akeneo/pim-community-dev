@@ -15,7 +15,7 @@ class ListProductGridAvailableColumnGroupsIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(featureFlags: ['permission']);
     }
 
     public function test_fetch_available_column_groups(): void

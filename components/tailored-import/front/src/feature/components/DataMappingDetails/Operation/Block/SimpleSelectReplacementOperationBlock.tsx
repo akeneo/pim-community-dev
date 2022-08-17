@@ -73,6 +73,9 @@ const SimpleSelectReplacementOperationBlock = ({targetCode, operation, onChange,
           {isReplacementModalOpen && (
             <ReplacementModal
               title={translate('akeneo.tailored_import.data_mapping.operations.replacement.modal.options')}
+              replacedValuesHeader={translate(
+                'akeneo.tailored_import.data_mapping.operations.simple_select_replacement.option_labels'
+              )}
               replacementValueFilter={replacementValueFilter}
               onReplacementValueFilterChange={setReplacementValueFilter}
               values={attributeOptions}

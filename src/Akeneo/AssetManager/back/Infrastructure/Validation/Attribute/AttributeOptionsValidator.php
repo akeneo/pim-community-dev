@@ -111,7 +111,7 @@ class AttributeOptionsValidator extends ConstraintValidator
         foreach ($frequencies as $optionCode => $frequency) {
             if ($frequency > 1) {
                 $this->context->buildViolation(AttributeOptions::MESSAGE_OPTION_DUPLICATED)
-                    ->setParameter('%option_code%', $optionCode)
+                    ->setParameter('%option_code%', (string) $optionCode)
                     ->atPath((string)array_search($optionCode, array_reverse($optionCodes, true)))
                     ->addViolation();
             }

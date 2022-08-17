@@ -17,6 +17,11 @@ class InMemoryCountAssets implements CountAssetsInterface
         $this->inMemoryAssetRepository = $inMemoryAssetRepository;
     }
 
+    public function all(): int
+    {
+        return $this->inMemoryAssetRepository->count();
+    }
+
     public function forAssetFamily(AssetFamilyIdentifier $identifierToMatch): int
     {
         return $this->inMemoryAssetRepository->countByAssetFamily($identifierToMatch);

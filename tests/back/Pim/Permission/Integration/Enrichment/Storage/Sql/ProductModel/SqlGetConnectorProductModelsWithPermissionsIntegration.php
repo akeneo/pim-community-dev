@@ -371,7 +371,7 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog(featureFlags: ['permission']);
     }
 
     private function getRedactorUserId(): int
