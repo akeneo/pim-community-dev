@@ -1,23 +1,21 @@
-apiVersion: cloudfunctions.gcp.jet.crossplane.io/v1alpha1
-kind: Function
+apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
+kind: CloudFunctionsFunction
 metadata:
   name: {{ .Values.pim.cloudFunction.name }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: Replace=true
 spec:
-  forProvider:
-    availableMemoryMb: {{ .Values.pim.cloudFunction.memory }}
-    description: "transform command into pub/sub message"
-    entryPoint: "publishCommand"
-    name: {{ .Values.pim.cloudFunction.name }}
-    runtime: "nodejs16"
-    sourceArchiveBucket: "{{ .Values.pim.cloudFunction.bucket}}"
-    sourceArchiveObject: "{{ .Values.pim.cloudFunction.sourceCodeZip }}"
-    triggerHttp: true
-    region: "{{ .Values.common.region }}"
-    environmentVariables:
-      projectId: "{{ .Values.common.gcpProjectID }}"
-      tenantContext: "tenant_contexts"
-  providerConfigRef:
-    name: "provider-config-jet-gcp"
+  availableMemoryMb: {{ .Values.pim.cloudFunction.memory }}
+  description: "transform command into pub/sub message"
+  entryPoint: "publishCommand"
+  runtime: "nodejs16"
+  httpsTrigger:
+    securityLevel: SECURE_ALWAYS
+  projectRef:
+    external: "projects/{{ .Values.common.gcpProjectID }}"
+  sourceArchiveUrl: "gs://{{ .Values.pim.cloudFunction.bucket}}/{{ .Values.pim.cloudFunction.sourceCodeZip }}"
+  region: "{{ .Values.common.region }}"
+  environmentVariables:
+    projectId: "{{ .Values.common.gcpProjectID }}"
+    tenantContext: "tenant_contexts"
