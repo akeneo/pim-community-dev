@@ -85,7 +85,6 @@ services:
         decoration_inner_name: pim_catalog.updater.association_field_without_permission
         arguments:
             - '@pim_catalog.updater.association_field_without_permission'
-            - '@security.authorization_checker'
             - '@pim_catalog.repository.product_without_permission'
             - ['associations']
             - '@pim_catalog.repository.product_model_without_permission'
