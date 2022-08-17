@@ -10,6 +10,6 @@ pim_category_rest_get:
   path: /rest/{id}
   requirements: { 'id': '\d+' }
   defaults:
-    _controller: Akeneo\Category\back\Infrastructure\Controller\InternalAPI\GetCategoryController
+    _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController
     _feature: enriched_category
   methods: [GET]
