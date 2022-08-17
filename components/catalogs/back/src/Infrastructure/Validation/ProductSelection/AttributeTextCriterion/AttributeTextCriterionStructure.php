@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection;
+namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeTextCriterion;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
 
 /**
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class FamilyCriterion extends Compound
+class AttributeTextCriterionStructure extends Compound
 {
     /**
      * @param array<array-key, mixed> $options
@@ -24,15 +27,22 @@ class FamilyCriterion extends Compound
             new Assert\Collection([
                 'fields' => [
                     'field' => [
-                        new Assert\IdenticalTo('family'),
+                        new Assert\Type('string'),
+                        new Assert\NotBlank(),
                     ],
                     'operator' => [
                         new Assert\Type('string'),
-                        new Assert\Choice(['EMPTY', 'NOT EMPTY', 'IN', 'NOT IN']),
+                        new Assert\NotBlank(),
+                        new Assert\Choice(['=', '!=', 'CONTAINS', 'DOES NOT CONTAIN', 'STARTS WITH', 'EMPTY', 'NOT EMPTY']),
                     ],
                     'value' => [
-                        new Assert\Type('array'),
-                        new Assert\All(new Assert\Type('string')),
+                        new Assert\Type('string'),
+                    ],
+                    'scope' => [
+                        new Assert\Type('string'),
+                    ],
+                    'locale' => [
+                        new Assert\Type('string'),
                     ],
                 ],
                 'allowMissingFields' => false,

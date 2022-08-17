@@ -3,7 +3,10 @@ akeneo_catalogs:
         max_number_of_catalogs_per_user_message: You can create up to 15 catalogs
         product_selection:
             criteria:
+                channel:
+                    unknown: 'This channel has been deactivated. Please check your channel settings or remove this criterion.'
+                locale:
+                    unknown: 'This locale does not exist.'
+                    disabled: 'This locale is disabled for this channel. Please check your channel settings or remove this criterion.'
                 completeness:
                     value: 'Completeness value must be between 0 and 100 percent.'
-                    channel: 'This channel has been deactivated. Please check your channel settings or remove this criterion.'
-                    locale: 'This locale is disabled for this channel. Please check your channel settings or remove this criterion.'
