@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Validation\CatalogPayload;
+namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints\Compound;
 /**
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class EnabledFieldIsValid extends Compound
+class FamilyCriterion extends Compound
 {
     /**
      * @param array<array-key, mixed> $options
@@ -24,14 +24,15 @@ class EnabledFieldIsValid extends Compound
             new Assert\Collection([
                 'fields' => [
                     'field' => [
-                        new Assert\IdenticalTo('enabled'),
+                        new Assert\IdenticalTo('family'),
                     ],
                     'operator' => [
                         new Assert\Type('string'),
-                        new Assert\Choice(['=', '!=']),
+                        new Assert\Choice(['EMPTY', 'NOT EMPTY', 'IN', 'NOT IN']),
                     ],
                     'value' => [
-                        new Assert\Type('boolean'),
+                        new Assert\Type('array'),
+                        new Assert\All(new Assert\Type('string')),
                     ],
                 ],
                 'allowMissingFields' => false,

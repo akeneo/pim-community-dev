@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Application\Persistence\GetChannelLocalesQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Validation\CatalogPayload\CompletenessFieldIsValid;
-use Akeneo\Catalogs\Infrastructure\Validation\CatalogPayload\EnabledFieldIsValid;
-use Akeneo\Catalogs\Infrastructure\Validation\CatalogPayload\FamilyFieldIsValid;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\CompletenessCriterion;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\EnabledCriterion;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\FamilyCriterion;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -91,12 +91,12 @@ class UpdateCatalogPayloadIsValidValidator extends ConstraintValidator
         ];
     }
 
-    private function getFieldConstraints(?string $field): EnabledFieldIsValid|FamilyFieldIsValid|CompletenessFieldIsValid|null
+    private function getFieldConstraints(?string $field): EnabledCriterion|FamilyCriterion|CompletenessCriterion|null
     {
         return match ($field) {
-            'completeness' => new CompletenessFieldIsValid($this->getChannelLocalesQuery),
-            'enabled' => new EnabledFieldIsValid(),
-            'family' => new FamilyFieldIsValid(),
+            'completeness' => new CompletenessCriterion($this->getChannelLocalesQuery),
+            'enabled' => new EnabledCriterion(),
+            'family' => new FamilyCriterion(),
             default => null
         };
     }

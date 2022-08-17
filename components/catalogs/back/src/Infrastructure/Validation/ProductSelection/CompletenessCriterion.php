@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Validation\CatalogPayload;
+namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection;
 
 use Akeneo\Catalogs\Application\Persistence\GetChannelLocalesQueryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 /**
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class CompletenessFieldIsValid extends Compound
+class CompletenessCriterion extends Compound
 {
     public function __construct(private GetChannelLocalesQueryInterface $getChannelLocalesQuery)
     {
