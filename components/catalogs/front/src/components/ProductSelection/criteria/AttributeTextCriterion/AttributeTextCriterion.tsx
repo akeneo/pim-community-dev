@@ -3,24 +3,13 @@ import {CloseIcon, IconButton, List} from 'akeneo-design-system';
 import {CriterionModule} from '../../models/Criterion';
 import {AttributeTextCriterionState} from './types';
 import {useAttribute} from '../../hooks/useAttribute';
-import styled from 'styled-components';
 import {ErrorHelpers} from '../../components/ErrorHelpers';
 import {AttributeTextOperatorInput} from './AttributeTextOperatorInput';
 import {AttributeTextValueInput} from './AttributeTextValueInput';
 import {ScopeInput} from '../../components/ScopeInput';
 import {LocaleInput} from '../../components/LocaleInput';
-
-const Fields = styled.div`
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    flex-grow: 1;
-`;
-
-const Field = styled.div`
-    flex-basis: 200px;
-    flex-shrink: 0;
-`;
+import {CriterionFields, CriterionField} from '../../components/CriterionFields';
+import {Operator} from '../../models/Operator';
 
 const AttributeTextCriterion: FC<CriterionModule<AttributeTextCriterionState>> = ({
     state,
@@ -30,34 +19,43 @@ const AttributeTextCriterion: FC<CriterionModule<AttributeTextCriterionState>> =
 }) => {
     const {data: attribute} = useAttribute(state.field);
     const hasError = Object.values(errors).filter(n => n).length > 0;
+    const showValueInput = [
+        Operator.EQUALS,
+        Operator.NOT_EQUAL,
+        Operator.CONTAINS,
+        Operator.DOES_NOT_CONTAIN,
+        Operator.STARTS_WITH,
+    ].includes(state.operator);
 
     return (
         <List.Row>
             <List.TitleCell width={150}>{attribute?.label}</List.TitleCell>
             <List.Cell width='auto'>
-                <Fields>
-                    <Field>
+                <CriterionFields>
+                    <CriterionField>
                         <AttributeTextOperatorInput state={state} onChange={onChange} isInvalid={!!errors.operator} />
-                    </Field>
-                    <Field>
-                        <AttributeTextValueInput state={state} onChange={onChange} isInvalid={!!errors.value} />
-                    </Field>
+                    </CriterionField>
+                    {showValueInput && (
+                        <CriterionField>
+                            <AttributeTextValueInput state={state} onChange={onChange} isInvalid={!!errors.value} />
+                        </CriterionField>
+                    )}
                     {attribute?.scopable && (
-                        <Field>
+                        <CriterionField width={140}>
                             <ScopeInput state={state} onChange={onChange} isInvalid={!!errors.scope} />
-                        </Field>
+                        </CriterionField>
                     )}
                     {attribute?.localizable && (
-                        <Field>
+                        <CriterionField width={140}>
                             <LocaleInput
                                 state={state}
                                 onChange={onChange}
                                 isInvalid={!!errors.locale}
                                 isScopable={attribute.scopable}
                             />
-                        </Field>
+                        </CriterionField>
                     )}
-                </Fields>
+                </CriterionFields>
             </List.Cell>
             <List.RemoveCell>
                 <IconButton
