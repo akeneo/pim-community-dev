@@ -33,4 +33,12 @@ final class PermissionCollection
     {
         return '1' === $this->permissions['own_items'];
     }
+
+    /**
+     * @return array<string, array<int>>|null
+     */
+    public function normalize(): array|null
+    {
+        return $this->permissions;
+    }
 }

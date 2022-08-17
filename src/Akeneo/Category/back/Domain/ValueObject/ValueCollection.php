@@ -30,4 +30,12 @@ final class ValueCollection
     {
         return $this->values[sprintf('%s_%s', $attributeCode, $attributeIdentifier)];
     }
+
+    /**
+     * @return array<string, array<string, mixed>>
+     */
+    public function normalize(): array
+    {
+        return $this->values ?? [];
+    }
 }

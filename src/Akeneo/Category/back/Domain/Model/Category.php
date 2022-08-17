@@ -62,16 +62,24 @@ class Category
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array{
+     *     id: int,
+     *     code: string,
+     *     parent: int|null,
+     *     labels: array<string, string>,
+     *     values: array<string, array<string, mixed>>,
+     *     permissions: array<string, array<int>>|null
+     * }
      */
     public function normalize(): array
     {
         return [
-            'id' => (string) $this->getId(),
+            'id' => $this->getId()->getId(),
             'code' => (string) $this->getCode(),
             'labels' => $this->getLabelCollection()->normalize(),
-            'parent' => (string) $this->getParentId(),
-            'valueCollection' => $this->getValueCollection(),
+            'parent' => $this->getParentId()?->getId(),
+            'values' => $this->getValueCollection()->normalize(),
+            'permissions' => $this->getPermissionCollection()->normalize(),
         ];
     }
 }
