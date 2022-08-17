@@ -40,7 +40,6 @@ class PublishJobToQueueSpec extends ObjectBehavior
         BatchLogHandler $batchLogHandler
     ) {
         $this->beConstructedWith(
-            JobInstance::class,
             'prod',
             $jobRepository,
             $validator,

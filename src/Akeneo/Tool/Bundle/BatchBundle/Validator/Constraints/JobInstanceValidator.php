@@ -2,11 +2,13 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints;
 
+use Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\JobInstance as JobInstanceConstraint;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\UndefinedJobException;
-use Akeneo\Tool\Component\Batch\Model\JobInstance as JobInstanceModel;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Validator for job instance entity
@@ -17,36 +19,36 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class JobInstanceValidator extends ConstraintValidator
 {
-    /** @var JobRegistry */
-    protected $jobRegistry;
-
-    /**
-     * Constructor
-     *
-     * @param JobRegistry $jobRegistry
-     */
-    public function __construct(JobRegistry $jobRegistry)
-    {
-        $this->jobRegistry = $jobRegistry;
+    public function __construct(
+        private JobRegistry $jobRegistry
+    ) {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function validate($entity, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
-        if ($entity instanceof JobInstanceModel) {
+        if (!$constraint instanceof JobInstanceConstraint) {
+            throw new UnexpectedTypeException($constraint, JobInstanceConstraint::class);
+        }
+
+        if ($value instanceof JobInstance) {
             try {
-                $this->jobRegistry->get($entity->getJobName());
+                $this->jobRegistry->get($value->getJobName());
             } catch (UndefinedJobException $e) {
                 $this->context
                     ->buildViolation(
-                        $constraint->message,
-                        ['%job_type%' => $entity->getType()]
+                        JobInstanceConstraint::UNKNOWN_JOB_DEFINITION,
+                        ['%job_type%' => $value->getType()]
                     )
-                    ->atPath($constraint->property)
+                    ->atPath('jobName')
                     ->addViolation();
             }
+        }
+
+        if($constraint->isInScheduledContext() && !$value->isScheduled()) {
+            $this->context->buildViolation(JobInstanceConstraint::SCHEDULED_SHOULD_BE_ENABLED)->addViolation();
         }
     }
 }
