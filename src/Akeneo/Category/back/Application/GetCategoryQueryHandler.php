@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application;
 
-use Akeneo\Category\Api\Model\AttributeValues;
-use Akeneo\Category\Api\Model\Category\Category;
-use Akeneo\Category\Api\Model\CategoryReadModel;
-use Akeneo\Category\Api\Model\Permissions;
+use Akeneo\Category\Api\Model\read\Category as CategoryRead;
 use Akeneo\Category\Api\Query\GetCategoryQuery;
-use Akeneo\Category\Domain\Model\Category as CategoryFromDomain;
+use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\PermissionCollection;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
  * a GetCategoryHandler executes GetCategoryQuery queries.
@@ -20,29 +19,28 @@ use Akeneo\Category\Domain\ValueObject\LabelCollection;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetCategoryHandler
+class GetCategoryQueryHandler
 {
-    public function __invoke(GetCategoryQuery $query): ?CategoryReadModel
+    public function __invoke(GetCategoryQuery $query): ?CategoryRead
     {
-        $code = new Code('clothes');
-        $labels = LabelCollection::fromArray([
+        $code = 'clothes';
+        $labels = [
             'fr_FR' => 'Vêtements',
             'en_US' => 'Clothes',
             'de_DE' => 'Kleidung',
-        ]);
+        ];
 
         // the category as used internally
-        $domainCategory = new CategoryFromDomain($query->categoryId(), $code, $labels, new CategoryId(1));
+//        $domainCategory = new Category($query->categoryId(), $code, $labels, new CategoryId(1));
 
-        /* @var $permission Permissions */
-        $permissions = new Permissions([
+        // TODO : check ACL and Feature flag (see PR review)
+        $permissions = [
             'view' => [1],
             'edit' => [1, 2],
             'own' => [1, 2, 3],
-        ]);
+        ];
 
-        /* @var $attributeValues AttributeValues */
-        $attributeValues = new AttributeValues([
+        $attributeValues = [
             'description_87939c45-1d85-4134-9579-d594fff65030_en_US' => [
                 'data' => 'All the shoes you need!',
                 'locale' => 'en_US',
@@ -77,13 +75,18 @@ class GetCategoryHandler
                 'data' => 'Chaussures Tongues Espadrilles',
                 'locale' => 'fr_FR',
             ],
-        ]);
+        ];
 
-        $readModel = new CategoryReadModel(
-            Category::fromDomainModel($domainCategory),
-            $permissions,
-            $attributeValues,
+        $category = new Category(
+            id: $query->categoryId(),
+            code: new Code($code),
+            labelCollection: LabelCollection::fromArray($labels),
+            parentId: new CategoryId(1),
+            valueCollection: ValueCollection::fromArray($attributeValues),
+            permissionCollection: PermissionCollection::fromArray($permissions),
         );
+
+        $readModel = CategoryRead::fromDomain($category);
 
         // returning the category as seen by the outside (whoever created and dispatched the query)
         return $readModel;

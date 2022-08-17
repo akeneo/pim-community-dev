@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\Infrastructure\Controller\InternalAPI;
+namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Api\Query\GetCategoryQuery;
-use Akeneo\Category\Application\GetCategoryHandler;
+use Akeneo\Category\Application\GetCategoryQueryHandler;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,7 +22,7 @@ class GetCategoryController
 {
     public function __construct(
         private SecurityFacade $securityFacade,
-        private GetCategoryHandler $handler
+        private GetCategoryQueryHandler $handler
     ) {
     }
 

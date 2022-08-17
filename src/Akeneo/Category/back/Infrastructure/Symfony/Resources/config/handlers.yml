@@ -12,6 +12,6 @@ services:
   #
   # queries
   #
-  Akeneo\Category\Application\GetCategoryHandler:
+  Akeneo\Category\Application\GetCategoryQueryHandler:
     tags:
       - { name: 'akeneo.category.query.handler', query: 'Akeneo\Category\Api\Query\GetCategoryQuery'}
