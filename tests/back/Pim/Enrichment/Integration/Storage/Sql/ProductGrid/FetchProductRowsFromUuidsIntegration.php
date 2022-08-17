@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
@@ -16,7 +16,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
 
-class FetchProductRowsFromIdentifiersIntegration extends TestCase
+class FetchProductRowsFromUuidsIntegration extends TestCase
 {
     /**
      * {@inheritdoc}
@@ -28,16 +28,14 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
 
     public function test_fetch_products_from_identifiers()
     {
-        $userId = $this
-            ->get('database_connection')
-            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
+        $userId = $this->getUserId('admin');
 
         $fixturesLoader = $this->get('akeneo_integration_tests.loader.product_grid_fixtures_loader');
         $imagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
         [$product1, $product2] = $fixturesLoader->createProductAndProductModels($imagePath)['products'];
 
-        $query = $this->getFetchProductRowsFromIdentifiers();
-        $rows = $query(['baz', 'foo'], ['sku', 'a_localizable_image', 'a_scopable_image'], 'ecommerce', 'en_US', $userId);
+        $query = $this->getFetchProductRowsFromUuids();
+        $rows = $query([$product1->getUuid()->toString(), $product2->getUuid()->toString()], ['sku', 'a_localizable_image', 'a_scopable_image'], 'ecommerce', 'en_US', $userId);
 
         $akeneoImage = current($this
             ->get('akeneo_file_storage.repository.file_info')
@@ -68,7 +66,7 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
                 true,
                 $product2->getCreated(),
                 $product2->getUpdated(),
-                '[baz]',
+                "[baz]",
                 null,
                 null,
                 $product2->getUuid()->toString(),
@@ -90,9 +88,10 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
         $this->createFamilyVariant('family', 'familyVariant', ['a_simple_select']);
         $this->createProductModel('productModel', 'familyVariant');
         $this->createVariantProduct('productVariant', 'productModel');
+        $variantProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('productVariant');
 
-        $query = $this->getFetchProductRowsFromIdentifiers();
-        $result = $query(['productVariant'], ['a_simple_select'], 'ecommerce', 'en_US');
+        $query = $this->getFetchProductRowsFromUuids();
+        $result = $query([$variantProduct->getUuid()->toString()], ['a_simple_select'], 'ecommerce', 'en_US');
 
         Assert::count($result, 1);
         $row = $result[0];
@@ -121,9 +120,9 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function getFetchProductRowsFromIdentifiers(): FetchProductRowsFromIdentifiers
+    private function getFetchProductRowsFromUuids(): FetchProductRowsFromUuids
     {
-        return $this->get('akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers');
+        return $this->get('akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_uuids');
     }
 
     private function createFamily(string $familyCode, array $attributeCodes): void

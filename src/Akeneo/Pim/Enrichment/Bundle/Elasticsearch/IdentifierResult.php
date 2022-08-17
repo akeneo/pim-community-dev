@@ -20,19 +20,11 @@ use Ramsey\Uuid\Uuid;
  */
 class IdentifierResult
 {
-    /** @var string */
-    private $identifier;
-
+    private ?string $identifier;
     private string $id;
+    private string $type;
 
-    /** @var string */
-    private $type;
-
-    /**
-     * @param string $identifier
-     * @param string $type
-     */
-    public function __construct(string $identifier, string $type, string $id)
+    public function __construct(?string $identifier, string $type, string $id)
     {
         if ($type !== ProductInterface::class && $type !== ProductModelInterface::class) {
             throw new \InvalidArgumentException(
@@ -49,15 +41,19 @@ class IdentifierResult
             throw new \InvalidArgumentException(\sprintf("Product has an invalid uuid : %s", $id));
         }
 
-        $this->identifier = (string) $identifier;
+        if ($type === ProductModelInterface::class && null === $identifier) {
+            throw new \InvalidArgumentException('A product model should have an identifier defined');
+        }
+
+        $this->identifier = $identifier;
         $this->type = $type;
         $this->id = $id;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getIdentifier(): string
+    public function getIdentifier(): ?string
     {
         return $this->identifier;
     }

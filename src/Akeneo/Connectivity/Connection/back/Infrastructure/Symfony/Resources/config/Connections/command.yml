@@ -2,5 +2,6 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Connections\Command\CreateConnectionCommand:
         arguments:
             - '@Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
+            - '@translator'
         tags:
             - { name: 'console.command' }

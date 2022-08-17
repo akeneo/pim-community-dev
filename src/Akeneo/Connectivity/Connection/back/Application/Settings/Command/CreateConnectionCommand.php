@@ -11,28 +11,14 @@ namespace Akeneo\Connectivity\Connection\Application\Settings\Command;
  */
 class CreateConnectionCommand
 {
-    private string $code;
-
-    private string $label;
-
-    private string $flowType;
-
-    private bool $auditable;
-
-    private ?string $type;
-
     public function __construct(
-        string $code,
-        string $label,
-        string $flowType,
-        bool $auditable = false,
-        ?string $type = null
+        private string $code,
+        private string $label,
+        private string $flowType,
+        private bool $auditable = false,
+        private ?string $type = null,
+        private ?string $userGroup = null,
     ) {
-        $this->code = $code;
-        $this->label = $label;
-        $this->flowType = $flowType;
-        $this->auditable = $auditable;
-        $this->type = $type;
     }
 
     public function code(): string
@@ -58,5 +44,10 @@ class CreateConnectionCommand
     public function type(): ?string
     {
         return $this->type;
+    }
+
+    public function userGroup(): ?string
+    {
+        return $this->userGroup;
     }
 }

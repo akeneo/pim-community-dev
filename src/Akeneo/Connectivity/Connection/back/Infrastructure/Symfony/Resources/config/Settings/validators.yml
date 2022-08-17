@@ -16,3 +16,9 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\IsConnectionsNumberLimitReachedQuery'
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\UserGroupMustExistValidator:
+        arguments:
+            $groupRepository: '@pim_user.repository.group'
+        tags:
+            - { name: validator.constraint_validator }

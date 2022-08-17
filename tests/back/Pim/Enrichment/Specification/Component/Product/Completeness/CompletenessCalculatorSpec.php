@@ -26,7 +26,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         GetRequiredAttributesMasks $getRequiredAttributesMasks
     ) {
         $uuid = Uuid::fromString('3bf35583-c54e-4f8a-8bd9-5693c142a1cf');
-        $productCompleteness = new CompletenessProductMask($uuid, "michel", "tshirt", [
+        $productCompleteness = new CompletenessProductMask($uuid, "tshirt", [
             'name-ecommerce-en_US',
             'name-ecommerce-fr_FR',
             'desc-<all_channels>-<all_locales>',
@@ -55,7 +55,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         GetRequiredAttributesMasks $getRequiredAttributesMasks
     ) {
         $michelUuid = Uuid::fromString('3bf35583-c54e-4f8a-8bd9-5693c142a1cf');
-        $michelCompleteness = new CompletenessProductMask($michelUuid, "michel", "tshirt", [
+        $michelCompleteness = new CompletenessProductMask($michelUuid, "tshirt", [
             'name-ecommerce-en_US',
             'name-ecommerce-fr_FR',
             'desc-<all_channels>-<all_locales>',
@@ -63,7 +63,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
             'size-ecommerce-en_US'
         ]);
         $jeanUuid = Uuid::fromString('fbbee246-ba5b-4dd2-810c-f5669f887e64');
-        $anotherCompleteness = new CompletenessProductMask($jeanUuid, "jean", "tshirt", [
+        $anotherCompleteness = new CompletenessProductMask($jeanUuid, "tshirt", [
             'name-ecommerce-fr_FR',
             'price-tablet-fr_FR',
             'size-ecommerce-en_US'
@@ -96,7 +96,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         GetRequiredAttributesMasks $getRequiredAttributesMasks
     ) {
         $uuid = Uuid::fromString('3bf35583-c54e-4f8a-8bd9-5693c142a1cf');
-        $productCompleteness = new CompletenessProductMask($uuid, 'product_without_family', null, []);
+        $productCompleteness = new CompletenessProductMask($uuid, null, []);
         $getCompletenessProductMasks->fromProductUuids([$uuid])->willReturn([$productCompleteness]);
 
         $getRequiredAttributesMasks->fromFamilyCodes([])->willReturn([]);

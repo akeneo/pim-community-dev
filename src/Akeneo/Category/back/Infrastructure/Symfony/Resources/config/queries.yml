@@ -4,12 +4,11 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Domain\Query\GetCategoryInterface:
-    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql
+  Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql:
     arguments:
       - '@database_connection'
 
   Akeneo\Category\Application\Query\FindCategoryByCode:
-    class: Akeneo\Category\Infrastructure\Storage\SQL\SqlFindOneByCode
+    class: Akeneo\Category\Infrastructure\Storage\Sql\SqlFindOneByCode
     arguments:
       - '@database_connection'
