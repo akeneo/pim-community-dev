@@ -21,3 +21,8 @@ services:
             - { name: console.command }
 
     Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag: ~
+
+    Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\UpsertRunningUser:
+        arguments:
+            - '@Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface'
+            - '@pim_user.repository.role'
