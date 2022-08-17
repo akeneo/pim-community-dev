@@ -53,7 +53,6 @@ class PublishJobToQueue
         bool $noLog = false,
         ?string $username = null,
         ?string $email = null,
-        ?bool $scheduled = false,
     ): void {
         /** @var JobInstance $jobInstance */
         $jobInstance = $this->jobRepository
@@ -84,7 +83,7 @@ class PublishJobToQueue
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $jobParameters = $this->createJobParameters($job, $jobInstance, $config);
 
-        $this->validateJob($job, $jobInstance, $jobParameters, $jobInstanceCode, $scheduled);
+        $this->validateJob($job, $jobInstance, $jobParameters, $jobInstanceCode);
 
         $jobExecution = $this->jobRepository->createJobExecution($job, $jobInstance, $jobParameters);
 
@@ -115,37 +114,22 @@ class PublishJobToQueue
         return $this->jobParametersFactory->create($job, $rawParameters);
     }
 
-    private function validateJob(JobInterface $job, JobInstance $jobInstance, JobParameters $jobParameters, string $code, bool $scheduled) : void
+    private function validateJob(JobInterface $job, JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
     {
         // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation
         $this->entityManager->merge($jobInstance);
 
-        $jobInstanceViolations = $this->validator->validate($jobInstance, new JobInstanceConstraint($scheduled));
+        $jobInstanceViolations = $this->validator->validate($jobInstance, new JobInstanceConstraint());
 
         if (0 < $jobInstanceViolations->count()) {
-            throw new InvalidJobException(
-                sprintf(
-                    'Job instance "%s" running the job "%s" is invalid because of "%s"',
-                    $code,
-                    $job->getName(),
-                    $this->getErrorMessages($jobInstanceViolations)
-                )
-            );
+            throw new InvalidJobException($code, $job->getName(), $jobInstanceViolations);
         }
 
         $jobParametersViolations = $this->jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution']);
 
         if (0 < $jobParametersViolations->count()) {
-            throw new InvalidJobException(
-                sprintf(
-                    'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
-                    $code,
-                    $job->getName(),
-                    print_r($jobParameters->all(), true),
-                    $this->getErrorMessages($jobParametersViolations)
-                )
-            );
+            throw new InvalidJobException($code, $job->getName(), $jobParametersViolations);
         }
 
         $this->entityManager->clear(get_class($jobInstance));

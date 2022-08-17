@@ -14,27 +14,27 @@ use Symfony\Component\Validator\Constraint;
  */
 class JobInstance extends Constraint
 {
-    public const UNKNOWN_JOB_DEFINITION = 'akeneo_batch.job_instance.unknown_job_definition';
-    public const SCHEDULED_SHOULD_BE_ENABLED = 'akeneo_batch.job_instance.scheduled_should_be_enabled';
-    public const IMPORT_SHOULD_HAVE_STORAGE = 'akeneo_batch.job_instance.import_should_have_storage';
+    /**
+     * @var string
+     */
+    public $message = 'akeneo_batch.job_instance.unknown_job_definition';
 
-    public function __construct(
-        private bool $isInScheduledContext = false,
-    )
-    {
-        parent::__construct();
-    }
+    /**
+     * @var string
+     */
+    public $property = 'jobName';
 
-    public function isInScheduledContext(): bool
-    {
-        return $this->isInScheduledContext;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function validatedBy()
     {
         return 'akeneo_job_instance_validator';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;
