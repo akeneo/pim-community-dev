@@ -114,7 +114,7 @@ mysql:
   mysql:
     userPassword: ${MYSQL_USER_PASSWORD}
     rootPassword: ${MYSQL_ROOT_PASSWORD}
-    dataDiskSize: ${MYSQL_DISK_SIZE}Gi
+    dataDiskSize: ${MYSQL_DISK_SIZE}
     innodbBufferPoolSize: ${MYSQL_INNODB_BUFFER_POOL_SIZE}
     resources:
       limits:
