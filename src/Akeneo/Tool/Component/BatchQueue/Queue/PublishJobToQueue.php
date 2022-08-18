@@ -115,7 +115,7 @@ class PublishJobToQueue
         return $this->jobParametersFactory->create($job, $rawParameters);
     }
 
-    private function validateJob(JobInterface $job, JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
+    private function validateJob(JobInterface $job, JobInstance $jobInstance, JobParameters $jobParameters, string $code): void
     {
         // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation

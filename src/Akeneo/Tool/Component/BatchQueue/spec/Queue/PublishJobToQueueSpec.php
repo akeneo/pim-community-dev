@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PublishJobToQueueSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         DoctrineJobRepository $jobRepository,
         ValidatorInterface $validator,
         JobRegistry $jobRegistry,
@@ -39,7 +39,7 @@ class PublishJobToQueueSpec extends ObjectBehavior
         JobExecutionMessageFactory $jobExecutionMessageFactory,
         EventDispatcherInterface $eventDispatcher,
         BatchLogHandler $batchLogHandler
-    ) {
+    ): void {
         $this->beConstructedWith(
             'prod',
             $jobRepository,
@@ -55,12 +55,12 @@ class PublishJobToQueueSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(PublishJobToQueue::class);
     }
 
-    function it_publishes_a_job_to_the_execution_queue(
+    public function it_publishes_a_job_to_the_execution_queue(
         DoctrineJobRepository $jobRepository,
         ValidatorInterface $validator,
         JobRegistry $jobRegistry,
@@ -76,7 +76,7 @@ class PublishJobToQueueSpec extends ObjectBehavior
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobExecutionMessageFactory $jobExecutionMessageFactory
-    ) {
+    ): void {
         $jobInstance->getJobName()->willReturn('job-code');
         $jobInstance->getRawParameters()->willReturn([]);
 
