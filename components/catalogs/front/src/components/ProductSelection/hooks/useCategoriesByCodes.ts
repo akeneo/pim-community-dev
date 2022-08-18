@@ -5,12 +5,12 @@ import {Category, CategoryCode} from '../models/Category';
 type Cache = {
     [key: CategoryCode]: Category;
 };
-type Error = string | null;
+type ResultError = Error | null;
 type Result = {
     isLoading: boolean;
     isError: boolean;
     data: Category[];
-    error: Error;
+    error: ResultError;
 };
 
 const LIMIT = 20;
@@ -21,7 +21,7 @@ export const useCategoriesByCodes = (codes: CategoryCode[]): Result => {
     const unknownCodes = codes.filter(code => cachedCodes.indexOf(code) === -1);
     const slicedUnknownCodes = unknownCodes.slice(0, LIMIT);
 
-    const {data: categories, isLoading, isError, error} = useCategories(slicedUnknownCodes);
+    const {data: categories, isLoading, isError, error} = useCategories({codes: slicedUnknownCodes});
 
     useEffect(() => {
         if (categories === undefined) {
@@ -46,14 +46,15 @@ export const useCategoriesByCodes = (codes: CategoryCode[]): Result => {
         }
     }, [cachedCodes, categories, setCache]);
 
-    const categoriesFromCodes = codes.map(categoryCode => (
-        cache[categoryCode] ?? {
-            id: -1,
-            code: categoryCode,
-            label: `[${categoryCode}]`,
-            isLeaf: true,
-        }
-    ));
+    const categoriesFromCodes = codes.map(
+        categoryCode =>
+            cache[categoryCode] ?? {
+                id: -1,
+                code: categoryCode,
+                label: `[${categoryCode}]`,
+                isLeaf: true,
+            }
+    );
 
     return {
         isLoading: isLoading,
