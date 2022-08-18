@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Measurement;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Price;
 
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\SourceConfiguration\DecimalSeparator;
 use Symfony\Component\Validator\Constraint;
@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-final class MeasurementSourceConfigurationValidator extends ConstraintValidator
+final class PriceSourceConfigurationValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
@@ -29,7 +29,7 @@ final class MeasurementSourceConfigurationValidator extends ConstraintValidator
 
         $validator = $this->context->getValidator();
         $validator->inContext($this->context)->validate($value, new Collection([
-            'unit' => new Unit($constraint->getFamilyCode()),
+            'currency' => new Currency($constraint->getChannelCode()),
             'decimal_separator' => new DecimalSeparator(),
         ]));
     }

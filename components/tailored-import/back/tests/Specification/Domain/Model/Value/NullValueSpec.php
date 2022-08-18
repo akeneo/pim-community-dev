@@ -24,4 +24,12 @@ class NullValueSpec extends ObjectBehavior
     {
         $this->getValue()->shouldReturn(null);
     }
+
+    public function it_normalizes()
+    {
+        $this->normalize()->shouldReturn([
+            'type' => 'null',
+            'value' => null,
+        ]);
+    }
 }
