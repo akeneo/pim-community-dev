@@ -46,7 +46,11 @@ const getMinutesFromCronExpression = (cronExpression: CronExpression): string =>
 const getHoursFromCronExpression = (cronExpression: CronExpression): string => {
   const [, hours] = cronExpression.split(' ');
 
-  return hours.split('/')[0].padStart(2, '0');
+  if (hours.includes('/')) {
+    return '00';
+  }
+
+  return hours.padStart(2, '0');
 };
 
 const getCronExpressionFromFrequencyOption = (
@@ -62,11 +66,11 @@ const getCronExpressionFromFrequencyOption = (
     case 'weekly':
       return `${Number(minutes)} ${Number(hours)} * * 0`;
     case 'every_4_hours':
-      return '0 0/4 * * *';
+      return '0 */4 * * *';
     case 'every_8_hours':
-      return '0 0/8 * * *';
+      return '0 */8 * * *';
     case 'every_12_hours':
-      return '0 0/12 * * *';
+      return '0 */12 * * *';
     default:
       throw new Error(`Unsupported frequency option: "${frequencyOption}"`);
   }
