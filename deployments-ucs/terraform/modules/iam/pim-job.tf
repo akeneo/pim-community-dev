@@ -1,6 +1,6 @@
 resource "google_service_account" "pim_job_sa" {
   project      = var.project_id
-  account_id   = "pim-job"
+  account_id   = "pim-job-function"
   display_name = "PIM Job"
 }
 
@@ -17,9 +17,9 @@ resource "google_service_account_iam_binding" "pim_sa_usage" {
 }
 
 ##### PIM Deployment
-resource "google_service_account" "pim_depl_sa" {
+resource "google_service_account" "pim_job_depl_sa" {
   project      = var.project_id
-  account_id   = "pim-deployment"
+  account_id   = "pim-job-deployment"
   display_name = "PIM deployment SA"
 }
 
