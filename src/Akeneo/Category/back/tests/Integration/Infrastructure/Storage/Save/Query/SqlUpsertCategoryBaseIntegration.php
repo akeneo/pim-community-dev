@@ -38,8 +38,10 @@ class SqlUpsertCategoryBaseIntegration extends TestCase
         );
 
         $upsertCategoryBaseQuery->execute($category);
-        $getCategory = $this->get(GetCategorySql::class);
-        $result = $getCategory->byCode((string) $category->getCode());
+        $result = $this->getCategoryBaseDataByCode((string) $category->getCode());
+        //TODO : use the getCategorySql query instead when it's been fixed when querying a category with no labels
+//        $getCategory = $this->get(GetCategorySql::class);
+//        $result = $getCategory->byCode((string) $category->getCode());
 
         $this->assertNotNull($result);
         $this->assertSame((string) $category->getCode(), $result['code']);
@@ -61,8 +63,10 @@ class SqlUpsertCategoryBaseIntegration extends TestCase
         );
 
         $upsertCategoryBaseQuery->execute($category);
-        $getCategory = $this->get(GetCategorySql::class);
-        $createdCategoryData = $getCategory->byCode((string) $category->getCode());
+        $createdCategoryData = $this->getCategoryBaseDataByCode((string) $category->getCode());
+        //TODO : use the getCategorySql query instead when it's been fixed when querying a category with no labels
+//        $getCategory = $this->get(GetCategorySql::class);
+//        $createdCategoryData = $getCategory->byCode((string) $category->getCode());
         $this->assertNotNull($createdCategoryData);
 
         $updatedCategory = new Category(
@@ -73,8 +77,10 @@ class SqlUpsertCategoryBaseIntegration extends TestCase
         );
 
         $upsertCategoryBaseQuery->execute($updatedCategory);
-        $getCategory = $this->get(GetCategorySql::class);
-        $editedCategoryData = $getCategory->byCode((string) $category->getCode());
+        $editedCategoryData = $this->getCategoryBaseDataByCode((string) $updatedCategory->getCode());
+        //TODO : use the getCategorySql query instead when it's been fixed when querying a category with no labels
+//        $getCategory = $this->get(GetCategorySql::class);
+//        $editedCategoryData = $getCategory->byCode((string) $category->getCode());
 
         $this->assertNotNull($editedCategoryData);
         $this->assertSame((string) $updatedCategory->getCode(), $editedCategoryData['code']);
