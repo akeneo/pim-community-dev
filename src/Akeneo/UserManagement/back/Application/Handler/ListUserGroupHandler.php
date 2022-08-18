@@ -6,7 +6,7 @@ namespace Akeneo\UserManagement\Application\Handler;
 
 use Akeneo\UserManagement\Domain\Model\Group as DomainGroup;
 use Akeneo\UserManagement\Domain\Storage\FindUserGroups;
-use Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupHandlerInterface;
+use Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupInterface;
 use Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupQuery;
 use Akeneo\UserManagement\ServiceApi\UserGroup\UserGroup;
 
@@ -14,7 +14,7 @@ use Akeneo\UserManagement\ServiceApi\UserGroup\UserGroup;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ListUserGroupHandler implements ListUserGroupHandlerInterface
+class ListUserGroupHandler implements ListUserGroupInterface
 {
     public function __construct(
         private FindUserGroups $findUserGroups,
@@ -24,7 +24,7 @@ class ListUserGroupHandler implements ListUserGroupHandlerInterface
     /**
      * @return UserGroup[]
      */
-    public function __invoke(ListUserGroupQuery $query): array
+    public function fromQuery(ListUserGroupQuery $query): array
     {
         // @todo implement optional arguments in $query to allow research and pagination
         $result = ($this->findUserGroups)(

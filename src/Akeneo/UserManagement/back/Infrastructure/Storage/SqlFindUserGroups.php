@@ -28,12 +28,14 @@ class SqlFindUserGroups implements FindUserGroups
         $query = $this->buildQuery($search, $searchAfterId, $limit);
 
         $results = $this->connection->executeQuery(
-            $query
+            $query,
+            [
+                'search' => sprintf('%%%s%%', $search),
+                'searchAfterId' => $searchAfterId,
+            ]
         )->fetchAllAssociative();
 
-        return array_map(function ($data) {
-            return Group::createFromDatabase($data);
-        }, $results);
+        return array_map(static fn ($data) => Group::createFromDatabase($data), $results);
     }
 
     private function buildQuery(
@@ -41,40 +43,34 @@ class SqlFindUserGroups implements FindUserGroups
         ?int $searchAfterId,
         ?int $limit,
     ): string {
-        $searchSql = '';
+        $sqlWhereParts = [];
+        $sqlLimitPart = '';
+
         if (null !== $search) {
-            $searchSql = <<<SQL
-    AND oag.name LIKE '%${search}%'
-SQL;
+            $sqlWhereParts[] = 'oag.name LIKE :search';
         }
 
-        $searchAfterIdSql = '';
         if (null !== $searchAfterId) {
-            $searchAfterIdSql = <<<SQL
-    AND oag.id > ${searchAfterId}
-SQL;
+            $sqlWhereParts[] = 'oag.id > :searchAfterId';
         }
-        $limitSql = '';
+
         if (null !== $limit) {
-            $limitSql = <<<SQL
-    LIMIT ${limit}
-SQL;
+            $sqlLimitPart = sprintf('LIMIT %s', $limit);
         }
 
-        $query = <<<SQL
-SELECT 
-    oag.id,
-    oag.name, 
-    oag.type, 
-    oag.default_permissions
-FROM oro_access_group oag
-WHERE oag.type = 'default'
-${searchSql}
-${searchAfterIdSql}
-ORDER BY oag.id
-${limitSql} 
-SQL;
+        $sqlWherePart = empty($sqlWhereParts) ? '' : 'AND '.implode(' AND ', $sqlWhereParts);
 
-        return $query;
+        return <<<SQL
+            SELECT 
+                oag.id,
+                oag.name, 
+                oag.type, 
+                oag.default_permissions
+            FROM oro_access_group oag
+            WHERE oag.type = 'default'
+            ${sqlWherePart}
+            ORDER BY oag.id
+            ${sqlLimitPart} 
+        SQL;
     }
 }

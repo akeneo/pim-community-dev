@@ -1,5 +1,5 @@
 services:
-  Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupHandlerInterface:
+  Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupInterface:
     public: true
     class: Akeneo\UserManagement\Application\Handler\ListUserGroupHandler
     arguments:

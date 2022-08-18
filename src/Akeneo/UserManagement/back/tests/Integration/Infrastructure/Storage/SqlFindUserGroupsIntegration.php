@@ -12,7 +12,7 @@ class SqlFindUserGroupsIntegration extends TestCase
 {
     public function testItListsTheUserGroups(): void
     {
-        $userGroups = ($this->get(SqlFindUserGroups::class))();
+        $userGroups = $this->getQuery()();
 
         Assert::assertCount(4, $userGroups);
         Assert::containsOnlyInstancesOf(Group::class);
@@ -20,7 +20,7 @@ class SqlFindUserGroupsIntegration extends TestCase
 
     public function testItFiltersTheUserGroupsOnLabel(): void
     {
-        $userGroups = ($this->get(SqlFindUserGroups::class))('support');
+        $userGroups = $this->getQuery()('support');
 
         Assert::assertCount(1, $userGroups);
         Assert::containsOnlyInstancesOf(Group::class);
@@ -30,7 +30,7 @@ class SqlFindUserGroupsIntegration extends TestCase
 
     public function testItListsTheUserGroupsWithPagination(): void
     {
-        $userGroups = ($this->get(SqlFindUserGroups::class))(
+        $userGroups = $this->getQuery()(
             null,
             null,
             2
@@ -40,7 +40,7 @@ class SqlFindUserGroupsIntegration extends TestCase
         Assert::assertLessThan(2, $userGroups[0]->getId());
         Assert::assertEquals(2, $userGroups[1]->getId());
 
-        $userGroups = ($this->get(SqlFindUserGroups::class))(
+        $userGroups = $this->getQuery()(
             null,
             2,
             2
@@ -56,4 +56,8 @@ class SqlFindUserGroupsIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
+    private function getQuery()
+    {
+        return $this->get(SqlFindUserGroups::class);
+    }
 }

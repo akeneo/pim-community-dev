@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\ServiceApi\UserGroup;
 
-interface ListUserGroupHandlerInterface
+interface ListUserGroupInterface
 {
     /**
      * @return UserGroup[]
      */
-    public function __invoke(ListUserGroupQuery $query): array;
+    public function fromQuery(ListUserGroupQuery $query): array;
 }
