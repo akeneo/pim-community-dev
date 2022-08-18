@@ -21,12 +21,12 @@ final class DeleteSupplierHandlerTest extends TestCase
     /** @test */
     public function itDeletesASupplier(): void
     {
-        $identifier = Identifier::fromString(
+        $supplierIdentifier = Identifier::fromString(
             '01319d4c-81c4-4f60-a992-41ea3546824c',
         );
 
-        $spy = $this->createMock(Repository::class);
-        $spy->expects($this->once())->method('delete')->with($identifier);
+        $supplierRepositorySpy = $this->createMock(Repository::class);
+        $supplierRepositorySpy->expects($this->once())->method('delete')->with($supplierIdentifier);
 
         $supplier = Supplier::create(
             '01319d4c-81c4-4f60-a992-41ea3546824c',
@@ -40,18 +40,18 @@ final class DeleteSupplierHandlerTest extends TestCase
         $eventDispatcher = new StubEventDispatcher();
 
         $sut = new DeleteSupplierHandler(
-            $spy,
+            $supplierRepositorySpy,
             new InMemoryGetSupplierWithContributors($supplierRepository),
             $eventDispatcher,
             new NullLogger(),
         );
 
-        ($sut)(new DeleteSupplier((string) $identifier));
+        ($sut)(new DeleteSupplier((string) $supplierIdentifier));
 
         $this->assertEquals(
             [
-                new ContributorDeleted($identifier, 'contributor1@example.com'),
-                new ContributorDeleted($identifier, 'contributor2@example.com'),
+                new ContributorDeleted($supplierIdentifier, 'contributor1@example.com'),
+                new ContributorDeleted($supplierIdentifier, 'contributor2@example.com'),
             ],
             $eventDispatcher->getDispatchedEvents(),
         );

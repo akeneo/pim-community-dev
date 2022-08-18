@@ -23,6 +23,6 @@ final class SendGoodbyeEmailOnContributorAccountDeleted implements EventSubscrib
 
     public function sendGoodbyeEmail(ContributorAccountDeleted $event): void
     {
-        ($this->sendGoodbyeEmail)($event->email);
+        ($this->sendGoodbyeEmail)($event->contributorEmail);
     }
 }
