@@ -18,7 +18,9 @@ const AttributeTextOperatorInput: FC<Props> = ({state, onChange, isInvalid}) => 
             onChange({
                 ...state,
                 operator: operator as AttributeTextCriterionOperator,
-                value: [Operator.IS_EMPTY, Operator.IS_NOT_EMPTY].includes(operator as AttributeTextCriterionOperator) ? '' : state.value,
+                value: [Operator.IS_EMPTY, Operator.IS_NOT_EMPTY].includes(operator as AttributeTextCriterionOperator)
+                    ? ''
+                    : state.value,
             });
         },
         [state, onChange]
