@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductSelection;
+namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductSelection\AttributeCriterion;
 
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeTextCriterion;
-use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeTextCriterionTest extends IntegrationTestCase
+class AttributeTextCriterionTest extends AbstractAttributeCriterionTest
 {
     private ?ValidatorInterface $validator;
 
@@ -21,26 +20,21 @@ class AttributeTextCriterionTest extends IntegrationTestCase
         parent::setUp();
 
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
-
-        $this->purgeDataAndLoadMinimalCatalog();
     }
 
     /**
-     * @dataProvider validCriterionDataProvider
+     * @dataProvider validDataProvider
      */
-    public function testItValidates(array $attribute, array $criterion): void
+    public function testItReturnsNoViolation(array $attribute, array $criterion): void
     {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate(
-            $criterion,
-            new AttributeTextCriterion(),
-        );
+        $violations = $this->validator->validate($criterion, new AttributeTextCriterion());
 
         $this->assertEmpty($violations);
     }
 
-    public function validCriterionDataProvider(): array
+    public function validDataProvider(): array
     {
         return [
             'localizable and scopable attribute' => [
@@ -111,24 +105,31 @@ class AttributeTextCriterionTest extends IntegrationTestCase
     }
 
     /**
-     * @dataProvider invalidStructureDataProvider
+     * @dataProvider invalidDataProvider
      */
-    public function testItReturnsViolationsWhenAttributeTextCriterionStructureIsInvalid(
+    public function testItReturnsViolationsWhenInvalid(
+        array $attribute,
         array $criterion,
         string $expectedMessage
     ): void {
-        $violations = $this->validator->validate(
-            $criterion,
-            new AttributeTextCriterion(),
-        );
+        $this->createAttribute($attribute);
+
+        $violations = $this->validator->validate($criterion, new AttributeTextCriterion());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }
 
-    public function invalidStructureDataProvider(): array
+    public function invalidDataProvider(): array
     {
         return [
             'invalid field value' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
                 'criterion' => [
                     'field' => 42,
                     'operator' => '=',
@@ -139,6 +140,13 @@ class AttributeTextCriterionTest extends IntegrationTestCase
                 'expectedMessage' => 'This value should be of type string.',
             ],
             'invalid operator' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
                 'criterion' => [
                     'field' => 'name',
                     'operator' => 'IN',
@@ -149,6 +157,13 @@ class AttributeTextCriterionTest extends IntegrationTestCase
                 'expectedMessage' => 'The value you selected is not a valid choice.',
             ],
             'invalid value' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
                 'criterion' => [
                     'field' => 'name',
                     'operator' => '=',
@@ -159,6 +174,13 @@ class AttributeTextCriterionTest extends IntegrationTestCase
                 'expectedMessage' => 'This value should be of type string.',
             ],
             'invalid scope' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
                 'criterion' => [
                     'field' => 'name',
                     'operator' => '=',
@@ -169,6 +191,13 @@ class AttributeTextCriterionTest extends IntegrationTestCase
                 'expectedMessage' => 'This value should be of type string.',
             ],
             'invalid locale' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
                 'criterion' => [
                     'field' => 'name',
                     'operator' => '=',
@@ -178,30 +207,6 @@ class AttributeTextCriterionTest extends IntegrationTestCase
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidValuesDataProvider
-     */
-    public function testItReturnsViolationsWhenAttributeTextCriterionValuesAreInvalid(
-        array $attribute,
-        array $criterion,
-        string $expectedMessage
-    ): void {
-        $this->createAttribute($attribute);
-
-        $violations = $this->validator->validate(
-            $criterion,
-            new AttributeTextCriterion(),
-        );
-
-        $this->assertViolationsListContains($violations, $expectedMessage);
-    }
-
-    public function invalidValuesDataProvider(): array
-    {
-        return [
             'field with invalid locale for a channel' => [
                 'attribute' => [
                     'code' => 'name',
