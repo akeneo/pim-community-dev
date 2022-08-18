@@ -1,11 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\BatchQueue\Exception;
 
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class InvalidJobException extends \RuntimeException
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+final class InvalidJobException extends \RuntimeException
 {
     public function __construct(
         string $jobCode,
