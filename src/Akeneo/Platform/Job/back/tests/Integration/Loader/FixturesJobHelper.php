@@ -31,7 +31,7 @@ final class FixturesJobHelper
 
         $dataToInsert = array_merge($defaultData, $data);
         $dataToInsert['raw_parameters'] = serialize($dataToInsert['raw_parameters']);
-        if(array_key_exists('automation', $dataToInsert)) {
+        if (array_key_exists('automation', $dataToInsert)) {
             $dataToInsert['automation'] = json_encode($dataToInsert['automation']);
         }
 
