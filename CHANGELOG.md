@@ -65,6 +65,7 @@
 - PIM-10546: Fix DQI is not calculated on product models with table attribute all rows required for completeness
 - PIM-10548: Fix rule engine does not display an error message when imported file does not contain the root level
 - PIM-10579: Fix Reference entity and asset normalizers and factory to handle disordered indexed arrays
+- PIM-10578: Fix the search on system filters in the rule engine UI
 
 ## Improvements
 
