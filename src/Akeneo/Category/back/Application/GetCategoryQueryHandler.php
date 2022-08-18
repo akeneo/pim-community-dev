@@ -31,9 +31,7 @@ class GetCategoryQueryHandler
         ];
 
         // the category as used internally
-//        $domainCategory = new Category($query->categoryId(), $code, $labels, new CategoryId(1));
-
-        // TODO : check ACL and Feature flag (see PR review)
+        // TODO : check ACL and Feature flag
         $permissions = [
             'view' => [1],
             'edit' => [1, 2],
