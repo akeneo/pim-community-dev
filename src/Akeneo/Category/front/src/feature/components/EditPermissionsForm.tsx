@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from 'react';
-import {EditCategoryForm} from '../hooks';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
 import styled from 'styled-components';

@@ -1,10 +1,10 @@
 import {useCallback, useContext, useEffect, useState} from 'react';
 import {saveEditCategoryForm} from '../infrastructure';
 import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
-import {EditCategoryForm, useCategory} from './useCategory';
+import {useCategory} from './useCategory';
 import {EditCategoryContext} from '../components';
 import {computeNewEditPermissions, computeNewOwnPermissions, computeNewViewPermissions} from '../helpers';
-import {Category, EnrichCategory} from '../models';
+import {EnrichCategory} from '../models';
 
 // @todo Add unit tests
 const useEditCategoryForm = (categoryId: number) => {
