@@ -10,7 +10,6 @@ use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Doctrine\DBAL\Connection;
 
-
 /**
  * Save values from model into pim_catalog_category_translation table:
  * The values are inserted if the couple (foreign_key, locale) is new, they are updated if the couple already exists.

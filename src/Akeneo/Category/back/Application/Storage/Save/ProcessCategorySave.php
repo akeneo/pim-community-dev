@@ -19,7 +19,10 @@ use Akeneo\Category\Domain\Model\Category;
  */
 class ProcessCategorySave
 {
-    // List of expected savers: it also assures the order in which the savers will be executed
+    /**
+     * List of expected savers: it also ensures the order in which the savers will be executed
+     * @var array<string, mixed>
+     */
     private array $saversExecutionOrder = [
         'category' => null,
         'category_translation' => null,
@@ -27,8 +30,7 @@ class ProcessCategorySave
 
     public function __construct(
         private CategorySaverRegistry $categorySaverRegistry
-    )
-    {
+    ) {
     }
 
     /**
@@ -41,12 +43,12 @@ class ProcessCategorySave
         foreach ($userIntents as $userIntent) {
             $saver = $this->categorySaverRegistry->fromUserIntent($userIntent::class);
 
-            if ($saver instanceOf CategoryBaseSaver) {
+            if ($saver instanceof CategoryBaseSaver) {
                 $this->addSaverInOrderList('category', $saver);
                 continue;
             }
 
-            if ($saver instanceOf CategoryTranslationsSaver) {
+            if ($saver instanceof CategoryTranslationsSaver) {
                 $this->addSaverInOrderList('category_translation', $saver);
                 continue;
             }
@@ -54,8 +56,7 @@ class ProcessCategorySave
             throw new \LogicException(\sprintf('This saver was not expected: %s', $saver::class));
         }
 
-        foreach ($this->saversExecutionOrder as $saver)
-        {
+        foreach ($this->saversExecutionOrder as $saver) {
             /** @var CategorySaver $saver */
             $saver->save($categoryModel);
         }

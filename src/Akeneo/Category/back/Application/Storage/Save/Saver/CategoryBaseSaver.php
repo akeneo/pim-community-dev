@@ -16,11 +16,13 @@ use Akeneo\Category\Domain\Model\Category;
  */
 class CategoryBaseSaver implements CategorySaver
 {
+    /**
+     * @param string[] $supportedUserIntents
+     */
     public function __construct(
         private UpsertCategoryBase $upsertCategoryBase,
         private array $supportedUserIntents
-    )
-    {
+    ) {
     }
 
     public function save(Category $categoryModel): void

@@ -15,6 +15,7 @@ use Webmozart\Assert\Assert;
  */
 class CategorySaverRegistry
 {
+    /** @var array<string, CategorySaver>  */
     private array $categorySaverByUserIntent;
 
     /**
@@ -22,12 +23,11 @@ class CategorySaverRegistry
      */
     public function __construct(
         private array $categorySavers
-    )
-    {
+    ) {
         foreach ($this->categorySavers as $categorySaver) {
             Assert::isInstanceOf($categorySaver, CategorySaver::class);
             $supportedUserIntents = $categorySaver->getSupportedUserIntents();
-            foreach($supportedUserIntents as $userIntentName) {
+            foreach ($supportedUserIntents as $userIntentName) {
                 if (\array_key_exists($userIntentName, $this->categorySaverByUserIntent ?? [])) {
                     //TODO: this is to discuss with the team
                     throw new \LogicException(\sprintf('There cannot be more than one category saver supporting user intent: %s', $userIntentName));

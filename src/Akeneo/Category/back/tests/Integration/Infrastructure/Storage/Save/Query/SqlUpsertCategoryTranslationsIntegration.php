@@ -18,7 +18,7 @@ class SqlUpsertCategoryTranslationsIntegration extends TestCase
 {
     use CategoryTrait;
 
-    public function testInsertNewTranslationsInDatabase()
+    public function testInsertNewTranslationsInDatabase(): void
     {
         /** @var SqlUpsertCategoryTranslations $upsertCategoryTranslationsQuery */
         $upsertCategoryTranslationsQuery = $this->get(UpsertCategoryTranslations::class);
@@ -46,7 +46,7 @@ class SqlUpsertCategoryTranslationsIntegration extends TestCase
         );
     }
 
-    public function testUpdateExistingCategoryTranslationsInDatabase()
+    public function testUpdateExistingCategoryTranslationsInDatabase(): void
     {
         /** @var SqlUpsertCategoryTranslations $upsertCategoryTranslationsQuery */
         $upsertCategoryTranslationsQuery = $this->get(UpsertCategoryTranslations::class);

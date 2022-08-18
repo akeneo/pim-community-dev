@@ -16,11 +16,13 @@ use Akeneo\Category\Domain\Model\Category;
  */
 class CategoryTranslationsSaver implements CategorySaver
 {
+    /**
+     * @param string[] $supportedUserIntents
+     */
     public function __construct(
         private UpsertCategoryTranslations $upsertCategoryTranslations,
         private array $supportedUserIntents
-    )
-    {
+    ) {
     }
 
     public function save(Category $categoryModel): void

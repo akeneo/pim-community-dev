@@ -11,7 +11,6 @@ use Akeneo\Category\Domain\ValueObject\Code;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
-
 /**
  * Save values from model into pim_catolog_category table:
  * The values are inserted if the id is new, they are updated if the id already exists.

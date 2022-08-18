@@ -20,13 +20,17 @@ use Doctrine\DBAL\Connection;
 
 trait CategoryTrait
 {
+    /**
+     * @param array<string, string>|null $labels
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Doctrine\DBAL\Exception
+     */
     private function createOrUpdateCategory(
         string $code,
         ?int $id = null,
         ?array $labels = [],
         ?int $parentId = null
-    ): Category
-    {
+    ): Category {
         $categoryId = (null === $id ? null : new CategoryId($id));
         $parentId = (null === $parentId ? null : new CategoryId($parentId));
 
@@ -54,9 +58,10 @@ trait CategoryTrait
 //        $categoryBaseData = $getCategory->byCode((string) $categoryModelToCreate->getCode());
         $categoryBaseData = $this->getCategoryBaseDataByCode((string) $categoryModelToCreate->getCode());
         $parentId = (
-            null === $categoryBaseData['parent_id']
+            !isset($categoryBaseData['parent_id'])
                 ? null
-                : new CategoryId((int) $categoryBaseData['parent_id']))
+                : new CategoryId((int) $categoryBaseData['parent_id'])
+        )
         ;
         $categoryModelWithId = new Category(
             new CategoryId((int) $categoryBaseData['id']),
@@ -68,7 +73,8 @@ trait CategoryTrait
 
         $categoryTranslationsData = $this->getCategoryTranslationsDataByCategoryCode((string) $categoryModelToCreate->getCode());
 
-        $createdParentId = ($categoryBaseData['parent_id'] > 0 ?
+        $createdParentId = (
+            $categoryBaseData['parent_id'] > 0 ?
             new CategoryId((int) $categoryBaseData['parent_id'])
             : null
         );

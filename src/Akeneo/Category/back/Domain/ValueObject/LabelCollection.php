@@ -7,6 +7,7 @@ use Webmozart\Assert\Assert;
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @implements \IteratorAggregate<string, string>
  */
 final class LabelCollection implements \IteratorAggregate
 {
@@ -42,7 +43,10 @@ final class LabelCollection implements \IteratorAggregate
         return array_key_exists($localeCode, $this->translatedLabels);
     }
 
-    public function getIterator()
+    /**
+     * @return \ArrayIterator<string, string>
+     */
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->translatedLabels);
     }

@@ -23,7 +23,7 @@ class SqlUpsertCategoryBaseIntegration extends TestCase
 {
     use CategoryTrait;
 
-    public function testInsertNewCategoryInDatabase()
+    public function testInsertNewCategoryInDatabase(): void
     {
         /** @var SqlUpsertCategoryBase $upsertCategoryBaseQuery */
         $upsertCategoryBaseQuery = $this->get(UpsertCategoryBase::class);
@@ -46,7 +46,7 @@ class SqlUpsertCategoryBaseIntegration extends TestCase
         $this->assertSame($result['id'], $result['root']);
     }
 
-    public function testUpdateExistingCategoryInDatabase()
+    public function testUpdateExistingCategoryInDatabase(): void
     {
         /** @var SqlUpsertCategoryBase $upsertCategoryBaseQuery */
         $upsertCategoryBaseQuery = $this->get(UpsertCategoryBase::class);
