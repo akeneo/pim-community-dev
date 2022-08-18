@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Application\Handler;
 
-use Akeneo\UserManagement\API\User\ListUsersQuery;
-use Akeneo\UserManagement\API\UserGroup\ListUserGroupQuery;
-use Akeneo\UserManagement\API\UserGroup\UserGroup;
-use Akeneo\UserManagement\Domain\Model\User as DomainUser;
+use Akeneo\UserManagement\ServiceApi\User\ListUserHandlerInterface;
+use Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupQuery;
+use Akeneo\UserManagement\ServiceApi\UserGroup\UserGroup;
 use Akeneo\UserManagement\Domain\Storage\FindUsers;
+use Akeneo\UserManagement\ServiceApi\User\ListUsersQuery;
 
-final class ListUsersHandler
+final class ListUsersHandler implements ListUserHandlerInterface
 {
     public function __construct(
         private FindUsers $findUsers
@@ -30,8 +30,8 @@ final class ListUsersHandler
     {
         return ($this->findUsers)(
             $query->getSearchName(),
+            $query->getSearchAfterId(),
             $query->getLimit(),
-            $query->getOffset()
         );
     }
 }

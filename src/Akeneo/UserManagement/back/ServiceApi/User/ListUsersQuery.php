@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\UserManagement\API\User;
+namespace Akeneo\UserManagement\ServiceApi\User;
 
 use Akeneo\UserManagement\Domain\Storage\FindUsers;
 
@@ -19,8 +19,8 @@ final class ListUsersQuery
 {
     public function __construct(
         private ?string $searchName = null,
-        private ?int $limit = null,
-        private ?int $offset = null
+        private ?int $searchAfterId = null,
+        private int $limit = FindUsers::DEFAULT_LIMIT,
     ) {
     }
 
@@ -29,13 +29,13 @@ final class ListUsersQuery
         return $this->searchName;
     }
 
+    public function getSearchAfterId(): ?int
+    {
+        return $this->searchAfterId;
+    }
+
     public function getLimit(): ?int
     {
         return $this->limit;
-    }
-
-    public function getOffset(): ?int
-    {
-        return $this->offset;
     }
 }

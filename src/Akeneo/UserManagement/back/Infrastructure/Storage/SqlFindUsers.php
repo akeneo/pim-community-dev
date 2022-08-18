@@ -33,10 +33,10 @@ final class SqlFindUsers implements FindUsers
      */
     public function __invoke(
         ?string $search = null,
-        ?int $limit = null,
-        ?int $offset = null
+        ?int $searchAfterId = null,
+        int $limit = self::DEFAULT_LIMIT,
     ): array {
-        $query = $this->buildQuery($search, $limit, $offset);
+        $query = $this->buildQuery($search, $searchAfterId, $limit);
 
         $results = $this->connection->executeQuery($query)->fetchAllAssociative();
 
@@ -48,7 +48,7 @@ final class SqlFindUsers implements FindUsers
         );
     }
 
-    private function buildQuery(?string $search, ?int $limit, ?int $offset): string
+    private function buildQuery(?string $search, ?int $searchAfterId, ?int $limit): string
     {
         $searchSql = '';
         if (null !== $search) {
@@ -57,17 +57,18 @@ final class SqlFindUsers implements FindUsers
             SQL;
         }
 
+        $searchAfterIdSql = '';
+        if (null !== $searchAfterId) {
+            $searchAfterIdSql = <<<SQL
+                AND ou.id > ${searchAfterId}
+            SQL;
+        }
+
         $limitSql = '';
         if (null !== $limit) {
-            if (null !== $offset) {
-                $limitSql = <<<SQL
-                    LIMIT ${limit},${offset}
-                SQL;
-            } else {
-                $limitSql = <<<SQL
-                    LIMIT ${limit}
-                SQL;
-            }
+            $limitSql = <<<SQL
+                LIMIT ${limit}
+            SQL;
         }
 
         $type = User::TYPE_USER;
@@ -77,6 +78,7 @@ final class SqlFindUsers implements FindUsers
             FROM oro_user as ou
             WHERE ou.user_type=${type}
             ${searchSql}
+            ${searchAfterIdSql}
             ORDER BY ou.id
             ${limitSql} 
         SQL;
