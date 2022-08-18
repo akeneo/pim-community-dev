@@ -38,6 +38,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
             'Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',

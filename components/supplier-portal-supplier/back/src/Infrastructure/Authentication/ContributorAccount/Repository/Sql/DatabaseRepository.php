@@ -99,6 +99,14 @@ class DatabaseRepository implements ContributorAccountRepository
             ;
     }
 
+    public function deleteByEmail(string $email): void
+    {
+        $this->connection->delete(
+            'akeneo_supplier_portal_contributor_account',
+            ['email' => $email],
+        );
+    }
+
     private function hydrate(
         string $id,
         string $email,

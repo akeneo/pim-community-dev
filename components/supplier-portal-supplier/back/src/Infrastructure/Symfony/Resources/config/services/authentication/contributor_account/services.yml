@@ -34,6 +34,11 @@ services:
         tags:
             - 'kernel.event_subscriber'
 
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\DeleteContributorAccountOnContributorDeleted:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\DeleteContributorAccountHandler'
+        tags:
+            - 'kernel.event_subscriber'
     # Validators
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Validation\PasswordValidator:
         tags:
@@ -68,6 +73,11 @@ services:
 
     #Command handlers
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@event_dispatcher'
+
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\DeleteContributorAccountHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@event_dispatcher'

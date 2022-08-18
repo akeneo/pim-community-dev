@@ -96,6 +96,21 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         );
     }
 
+    /** @test */
+    public function itDeletesAContributorAccountByEmail(): void
+    {
+        $repository = $this->get(ContributorAccountRepository::class);
+        $repository->save(ContributorAccount::fromEmail('contributor1@example.com'));
+        $repository->save(ContributorAccount::fromEmail('contributor2@example.com'));
+        $repository->save(ContributorAccount::fromEmail('contributor3@example.com'));
+
+        $repository->deleteByEmail('contributor2@example.com');
+
+        $this->assertNull($this->findContributorAccount('contributor2@example.com'));
+        $this->assertIsArray($this->findContributorAccount('contributor1@example.com'));
+        $this->assertIsArray($this->findContributorAccount('contributor3@example.com'));
+    }
+
     private function findContributorAccount(string $email): ?array
     {
         $sql = <<<SQL
