@@ -100,6 +100,20 @@ services:
             - '@security.token_storage'
             - '@oro_security.security_facade'
 
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\CreateProductByUuidController:
+        public: true
+        arguments:
+            - '@router'
+            - '@event_dispatcher'
+            - '@pim_api.checker.duplicate_value'
+            - '@oro_security.security_facade'
+            - '@validator'
+            - '@database_connection'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_api.filter.product_attribute_filter'
+
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
         public: true
         arguments:
@@ -410,3 +424,8 @@ services:
             - '@pim_enrich.filter.product_attribute_filter'
             - '@pim_enrich.product.message_bus'
             - '@pim_enrich.product.query_message_bus'
+
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ExceptionFormatter:
+        arguments:
+            - '@pim_api.repository.attribute'
+            - '@database_connection'

@@ -60,10 +60,6 @@ class ProductAttributeFilter implements AttributeFilterInterface
      */
     public function filter(array $standardProduct): array
     {
-        if (!array_key_exists('identifier', $standardProduct)) {
-            throw new MissingOptionsException('The "identifier" key is missing');
-        }
-
         if (array_key_exists('values', $standardProduct) && is_array($standardProduct['values'])) {
             foreach ($standardProduct['values'] as $code => $value) {
                 if (null === $this->attributeRepository->findOneByIdentifier($code)) {
@@ -73,7 +69,13 @@ class ProductAttributeFilter implements AttributeFilterInterface
         }
 
         $parentProperty = $standardProduct['parent'] ?? null;
-        $product = $this->productRepository->findOneByIdentifier($standardProduct['identifier']);
+        if (isset($standardProduct['uuid'])) {
+            $product = $this->productRepository->find($standardProduct['uuid']);
+        } elseif (isset($standardProduct['identifier'])) {
+            $product = $this->productRepository->findOneByIdentifier($standardProduct['identifier']);
+        } else {
+            $product = null;
+        }
         if (null !== $product) {
             if ($product->isVariant() && null === $parentProperty) {
                 $standardProduct['parent'] = $product->getParent()->getCode();

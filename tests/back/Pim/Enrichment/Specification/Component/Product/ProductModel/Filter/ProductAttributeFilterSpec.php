@@ -334,7 +334,7 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('eu_shoes_size')->willReturn($euShoesSize);
         $attributeRepository->findOneByIdentifier('weight')->willReturn($weight);
 
-        $productRepository->findOneByIdentifier('shoes')->willReturn($product);
+        $productRepository->find('007209e8-433a-4ffe-a2eb-18869325ec16')->willReturn($product);
         $productModelRepository->findOneByIdentifier('brooksblue')->willReturn($productModel);
 
         $productModel->getFamilyVariant()->willreturn($familyVariant);
@@ -353,7 +353,7 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         $euShoesSize->getCode()->willReturn('eu_shoes_size');
 
         $this->filter([
-            'identifier' => 'shoes',
+            'uuid' => '007209e8-433a-4ffe-a2eb-18869325ec16',
             'parent' => 'brooksblue',
             'family' => 'shoes',
             'values' => [
