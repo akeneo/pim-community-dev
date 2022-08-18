@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount;
+namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount;
 
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\ContributorAccountDeleted;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
@@ -14,10 +14,10 @@ class DeleteContributorAccountHandler
     ) {
     }
 
-    public function __invoke(DeleteContributorAccount $command): void
+    public function __invoke(string $contributorEmail): void
     {
-        $this->contributorAccountRepository->deleteByEmail($command->contributorEmail);
+        $this->contributorAccountRepository->deleteByEmail($contributorEmail);
 
-        $this->eventDispatcher->dispatch(new ContributorAccountDeleted($command->contributorEmail));
+        $this->eventDispatcher->dispatch(new ContributorAccountDeleted($contributorEmail));
     }
 }

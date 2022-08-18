@@ -4,9 +4,8 @@ namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\Authentication\Co
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier;
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\DeleteContributorAccount;
-use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\DeleteContributorAccountHandler;
 use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\DeleteContributorAccountOnContributorDeleted;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\DeleteContributorAccountHandler;
 use PHPUnit\Framework\TestCase;
 
 class DeleteContributorAccountOnContributorDeletedTest extends TestCase
@@ -32,7 +31,7 @@ class DeleteContributorAccountOnContributorDeletedTest extends TestCase
         $createContributorAccountHandlerSpy
             ->expects($this->once())
             ->method('__invoke')
-            ->with(new DeleteContributorAccount('contrib1@example.com'));
+            ->with('contrib1@example.com');
 
         $sut = new DeleteContributorAccountOnContributorDeleted($createContributorAccountHandlerSpy);
 

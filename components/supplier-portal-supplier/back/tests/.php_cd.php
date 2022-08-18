@@ -28,6 +28,7 @@ $rules = [
 
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
+            'Symfony\Contracts\EventDispatcher\EventDispatcherInterface',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Domain'),
 
