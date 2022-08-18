@@ -64,7 +64,7 @@ class JobInstance
     /** @var bool */
     protected $scheduled = false;
 
-    /** @var array */
+    /** @var array|null */
     protected $automation;
 
     /** @var Collection|JobExecution[] */
@@ -268,7 +268,7 @@ class JobInstance
     }
 
     /**
-     * @param array $automation
+     * @param array|null $automation
      *
      * @return JobInstance
      */
@@ -280,7 +280,7 @@ class JobInstance
     }
 
     /**
-     * @return array
+     * @return array|null
      */
     public function getAutomation()
     {

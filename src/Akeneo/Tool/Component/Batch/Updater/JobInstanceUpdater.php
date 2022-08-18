@@ -65,7 +65,9 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
                 $jobInstance->setScheduled($data);
                 break;
             case 'automation':
-                $data = $this->updateAutomation($jobInstance, $data);
+                if(null !== $data) {
+                    $data = $this->updateAutomation($jobInstance, $data);
+                }
                 $jobInstance->setAutomation($data);
                 break;
             case 'configuration':
