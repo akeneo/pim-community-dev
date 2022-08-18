@@ -41,4 +41,12 @@ final class LabelCollection
     {
         return array_key_exists($localeCode, $this->translatedLabels);
     }
+
+    /**
+     * @return array<string,string>
+     */
+    public function normalize(): array
+    {
+        return $this->translatedLabels ?? [];
+    }
 }
