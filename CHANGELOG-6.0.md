@@ -1,8 +1,6 @@
 # 6.0.x
 
-## Bug fixes
-
-- PIM-10578: Fix the search on system filters in the rule engine UI
+# 6.0.38 (2022-08-17)
 
 # 6.0.37 (2022-07-27)
 
