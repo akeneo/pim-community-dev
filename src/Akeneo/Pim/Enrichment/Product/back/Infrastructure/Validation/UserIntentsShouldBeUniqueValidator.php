@@ -23,24 +23,34 @@ final class UserIntentsShouldBeUniqueValidator extends ConstraintValidator
         Assert::allImplementsInterface($valueUserIntents, ValueUserIntent::class);
 
         $existingIntents = [];
+        $existingPriceIntents = [];
 
         /** @var ValueUserIntent $valueUserIntent */
         foreach ($valueUserIntents as $valueUserIntent) {
-            if ($valueUserIntent instanceof SetPriceValue) {
-                continue;
-            }
-
             $intentLocale = $valueUserIntent->localeCode() ?? '<all_locales>';
             $intentChannel = $valueUserIntent->channelCode() ?? '<all_channels>';
             $intentAttributeCode = $valueUserIntent->attributeCode();
 
-            if (\in_array($intentAttributeCode, $existingIntents[$intentLocale][$intentChannel] ?? [])) {
-                $this->context
-                    ->buildViolation($constraint->message, ['{{ attributeCode }}' => $intentAttributeCode])
-                    ->addViolation();
+            if ($valueUserIntent instanceof SetPriceValue) {
+                $currency = $valueUserIntent->priceValue()->currency();
+                if (\in_array($intentAttributeCode, $existingPriceIntents[$intentLocale][$intentChannel][$currency] ?? [])) {
+                    $this->context
+                        ->buildViolation($constraint->message, ['{{ attributeCode }}' => $intentAttributeCode])
+                        ->addViolation();
+                } else {
+                    $existingPriceIntents[$intentLocale][$intentChannel][$currency][] = $intentAttributeCode;
+                }
             } else {
-                $existingIntents[$intentLocale][$intentChannel][] = $intentAttributeCode;
+                if (\in_array($intentAttributeCode, $existingIntents[$intentLocale][$intentChannel] ?? [])) {
+                    $this->context
+                        ->buildViolation($constraint->message, ['{{ attributeCode }}' => $intentAttributeCode])
+                        ->addViolation();
+                } else {
+                    $existingIntents[$intentLocale][$intentChannel][] = $intentAttributeCode;
+                }
             }
+
+
         }
     }
 }

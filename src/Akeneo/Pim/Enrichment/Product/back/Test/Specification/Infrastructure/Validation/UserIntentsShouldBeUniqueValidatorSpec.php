@@ -48,6 +48,20 @@ class UserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
         ], $constraint);
     }
 
+    function it_throws_an_exception_when_price_value_intents_collide(ConstraintViolationBuilderInterface $violationBuilder, ExecutionContext $context)
+    {
+        $constraint = new UserIntentsShouldBeUnique();
+        $context->buildViolation($constraint->message, ['{{ attributeCode }}' => 'a_price'])->shouldBeCalledOnce()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalledOnce();
+
+        $this->validate([
+            new SetPriceValue('a_price', 'a_channel', 'a_locale', new PriceValue('10', 'EUR')),
+            new SetPriceValue('another_price', 'a_channel', 'a_locale', new PriceValue('15', 'EUR')),
+            new SetPriceValue('a_price', 'a_channel', 'a_locale', new PriceValue('15', 'EUR')),
+            new SetPriceValue('a_price', null, null, new PriceValue('20', 'USD')),
+        ], $constraint);
+    }
+
     function it_does_nothing_when_the_value_intents_are_distinct(ExecutionContext $context)
     {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
@@ -60,7 +74,7 @@ class UserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
         ], new UserIntentsShouldBeUnique());
     }
 
-    function it_does_nothing_when_they_are_many_set_price_value(ExecutionContext $context)
+    function it_does_nothing_when_the_price_value_intents_are_distinct(ExecutionContext $context)
     {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 

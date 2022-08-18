@@ -1096,14 +1096,12 @@ final class UpsertProductIntegration extends TestCase
     public function it_updates_a_product_with_a_price_value(): void
     {
         $this->updateProduct(new SetPriceValue('a_price', null, null, new PriceValue('42', 'EUR')));
-
-        $product = $this->productRepository->findOneByIdentifier('identifier');
-        Assert::assertNotNull($product);
-        $value = $product->getValue('a_price', null, null)->getData()->toArray();
-
-        Assert::assertEqualsCanonicalizing([
-            new ProductPrice('42.00', 'EUR'),
-        ], $value);
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_price',
+            new PriceCollection([
+                new ProductPrice('42.00', 'EUR')
+            ])
+        );
     }
 
     /** @test */
@@ -1122,6 +1120,15 @@ final class UpsertProductIntegration extends TestCase
             'a_price',
             new PriceCollection([
                 new ProductPrice('42.00', 'EUR'),
+                new ProductPrice('50.00', 'USD'),
+            ]),
+        );
+
+        $this->updateProduct(new SetPriceValue('a_price', null, null, new PriceValue('50', 'EUR')));
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_price',
+            new PriceCollection([
+                new ProductPrice('50.00', 'EUR'),
                 new ProductPrice('50.00', 'USD'),
             ]),
         );

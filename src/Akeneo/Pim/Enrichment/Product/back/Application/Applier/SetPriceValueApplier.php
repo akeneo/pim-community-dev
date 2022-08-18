@@ -33,14 +33,14 @@ final class SetPriceValueApplier implements UserIntentApplier
             $userIntent->localeCode(),
             $userIntent->channelCode()
         );
-        $formerValueAsString = $formerValue ?
-            array_map(fn (ProductPrice $value) => [
+        $formerValueAsArray = $formerValue ?
+            array_map(static fn (ProductPrice $value) => [
                 'amount' => $value->getData(),
                 'currency' => $value->getCurrency(),
             ], $formerValue->getData()->toArray())
             : [];
 
-        $formerValueIndexedByCurrency = \array_column($formerValueAsString, null, 'currency');
+        $formerValueIndexedByCurrency = \array_column($formerValueAsArray, null, 'currency');
 
         $values = \array_replace($formerValueIndexedByCurrency, [
             $userIntent->priceValue()->currency() => [
