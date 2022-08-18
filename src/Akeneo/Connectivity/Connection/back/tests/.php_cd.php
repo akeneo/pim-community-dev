@@ -140,6 +140,7 @@ $rules = [
             'Akeneo\UserManagement\Component\Model\UserInterface',
             'Akeneo\UserManagement\Component\Model\RoleInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
+            'Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
@@ -244,6 +245,7 @@ $rules = [
         [
             'Akeneo\Connectivity\Connection\Domain\Settings',
             'Akeneo\Connectivity\Connection\Application\Settings',
+            'Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface',
 
             // Exceptions
             'Symfony\Component\Validator\Validator\ValidatorInterface',
@@ -251,7 +253,7 @@ $rules = [
             'Symfony\Component\Validator\ConstraintValidator',
             'Symfony\Component\Validator\Exception\UnexpectedTypeException',
         ]
-    )->in('Akeneo\Connectivity\Connection\Application\Settings'),
+    )->in('Akeneo\Connectiettings/Command/CreateConnectionHandler.php vity\Connection\Application\Settings'),
 
     $builder->only(
         [

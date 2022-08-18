@@ -16,7 +16,7 @@ final class Row
     private const PRODUCT_MODEL_TYPE = 'product_model';
 
     private function __construct(
-        private string $identifier,
+        private ?string $identifier,
         private ?string $familyCode,
         private array $groupCodes,
         private ?bool $enabled,
@@ -37,7 +37,7 @@ final class Row
     }
 
     public static function fromProduct(
-        string $identifier,
+        ?string $identifier,
         ?string $familyCode,
         array $groupCodes,
         ?bool $enabled,
@@ -129,17 +129,11 @@ final class Row
         );
     }
 
-    /**
-     * @return string
-     */
-    public function identifier(): string
+    public function identifier(): ?string
     {
         return $this->identifier;
     }
 
-    /**
-     * @return null|string
-     */
     public function familyCode(): ?string
     {
         return $this->familyCode;
@@ -153,33 +147,21 @@ final class Row
         return $this->groupCodes;
     }
 
-    /**
-     * @return bool|null
-     */
     public function enabled(): ?bool
     {
         return $this->enabled;
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
     public function created(): \DateTimeInterface
     {
         return $this->created;
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
     public function updated(): \DateTimeInterface
     {
         return $this->updated;
     }
 
-    /**
-     * @return string
-     */
     public function label(): string
     {
         return $this->label;
@@ -196,17 +178,11 @@ final class Row
         return $this->image;
     }
 
-    /**
-     * @return null|int
-     */
     public function completeness(): ?int
     {
         return $this->completeness;
     }
 
-    /**
-     * @return string
-     */
     public function documentType(): string
     {
         return $this->documentType;
@@ -217,17 +193,11 @@ final class Row
         return $this->technicalId;
     }
 
-    /**
-     * @return string
-     */
     public function searchId(): string
     {
         return $this->searchId;
     }
 
-    /**
-     * @return bool
-     */
     public function checked(): bool
     {
         return $this->checked;
@@ -241,25 +211,16 @@ final class Row
         return $this->childrenCompleteness;
     }
 
-    /**
-     * @return null|string
-     */
     public function parentCode(): ?string
     {
         return $this->parentCode;
     }
 
-    /**
-     * @return WriteValueCollection
-     */
     public function values(): WriteValueCollection
     {
         return $this->values;
     }
 
-    /**
-     * @return AdditionalProperties
-     */
     public function additionalProperties(): AdditionalProperties
     {
         return $this->additionalProperties;
