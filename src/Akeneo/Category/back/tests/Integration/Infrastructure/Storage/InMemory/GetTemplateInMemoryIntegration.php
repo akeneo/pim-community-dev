@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\InMemory;
+namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\InMemory;
 
 use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
