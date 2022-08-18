@@ -17,7 +17,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
-final class Version_7_0_20220802151250_add_automation_column_in_job_instance_integration extends TestCase
+final class Version_7_0_20220802151250_add_automation_column_in_job_instance_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
