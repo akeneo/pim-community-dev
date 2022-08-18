@@ -224,17 +224,6 @@ deploy_tenant_helm:
 	helm3 dependencies update $(DEPLOYMENT_DIR)/tenant/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
 	helm3 upgrade --debug --atomic --cleanup-on-fail --history-max 5 --install --wait --timeout 10m --create-namespace --namespace $(PFID) $(PFID) $(DEPLOYMENT_DIR)/tenant/ -f $(INSTANCE_DIR)/helm-tenant-values.yaml -f $(INSTANCE_DIR)/values.yaml
 
-.PHONY: deploy_tenant_go
-deploy_tenant_go:
-	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-create.go $(PFID) $(INSTANCE_NAME) $(MYSQL_USER_PASSWORD) $(MAILGUN_PASSWORD)
-
-## Cleanup tenants
-.PHONY: delete_tenant
-delete_tenant:
-	helm3 delete $(PFID) --namespace $(PFID)
-	kubectl delete ns $(PFID)
-	cd $(DEPLOYMENT_DIR)/timmy && go run timmy-remove.go $(PFID)
-
 ###################
 ### infra				###
 ###################
