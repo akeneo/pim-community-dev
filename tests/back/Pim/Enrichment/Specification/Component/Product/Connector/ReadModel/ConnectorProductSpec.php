@@ -76,6 +76,8 @@ class ConnectorProductSpec extends ObjectBehavior
                 ScalarValue::localizableValue('attribute_code_2', 'data', 'fr_FR'),
                 OptionValue::value('simple_select', 'Option_1'),
                 OptionsValue::value('multi_select', ['Option1', 'OPTION2']),
+                OptionValue::value('other_simple_select','42'),
+                OptionsValue::value('other_multi_select', ['30']),
             ]),
             null,
             null
@@ -333,6 +335,22 @@ class ConnectorProductSpec extends ObjectBehavior
                     'en_US' => null,
                     'fr_FR' => null,
                 ]
+            ],
+            'other_simple_select' => [
+                '42' => [
+                    'en_US' => '42',
+                    'fr_FR' => '42',
+                ]
+            ],
+            'other_multi_select' => [
+                '42' => [
+                    'en_US' => '42',
+                    'fr_FR' => '42',
+                ],
+                '30' => [
+                    'en_US' => '30',
+                    'fr_FR' => '30',
+                ]
             ]
         ]);
         $connectorProductWithLinkedData->shouldBeAnInstanceOf(ConnectorProduct::class);
@@ -377,6 +395,37 @@ class ConnectorProductSpec extends ObjectBehavior
                                 'en_US' => null,
                                 'fr_FR' => null,
                             ]
+                        ]
+                    ]
+                ),
+                new OptionValueWithLinkedData(
+                    'other_simple_select',
+                    '42',
+                    null,
+                    null,
+                    [
+                        'attribute' => 'other_simple_select',
+                        'code' => '42',
+                        'labels' => [
+                            'en_US' => '42',
+                            'fr_FR' => '42',
+                            ]
+
+                    ]
+                ),
+                new OptionsValueWithLinkedData(
+                    'other_multi_select',
+                    ['30'],
+                    null,
+                    null,
+                    [
+                        '30' => [
+                            'attribute' => 'other_multi_select',
+                            'code' => '30',
+                            'labels' => [
+                                'en_US' => '30',
+                                'fr_FR' => '30',
+                            ],
                         ]
                     ]
                 )

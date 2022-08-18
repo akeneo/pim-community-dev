@@ -18,33 +18,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface;
  */
 final class FetchProductAndProductModelRows implements Query\FetchProductAndProductModelRows
 {
-    /** @var Sql\ProductGrid\FetchProductRowsFromIdentifiers */
-    private $fetchProductRowsFromIdentifiers;
-
-    /** @var Sql\ProductGrid\FetchProductModelRowsFromCodes */
-    private $fetchProductModelRowsFromCodes;
-
-    /** @var Query\AddAdditionalProductPropertiesRegistry */
-    private $addAdditionalProductPropertiesRegistry;
-
-    /** @var Query\AddAdditionalProductModelPropertiesRegistry */
-    private $addAdditionalProductModelPropertiesRegistry;
-
-    /** @var ProductAndProductsModelDocumentTypeFacetFactory */
-    private $productAndProductsModelDocumentTypeFacetFactory;
-
     public function __construct(
-        Sql\ProductGrid\FetchProductRowsFromIdentifiers $fetchProductRowsFromIdentifiers,
-        Sql\ProductGrid\FetchProductModelRowsFromCodes $fetchProductModelRowsFromCodes,
-        Query\AddAdditionalProductPropertiesRegistry $addAdditionalProductProperties,
-        Query\AddAdditionalProductModelPropertiesRegistry $addAdditionalProductModelProperties,
-        ProductAndProductsModelDocumentTypeFacetFactory $productAndProductsModelDocumentTypeFacetFactory
+        private Sql\ProductGrid\FetchProductRowsFromUuids $fetchProductRowsFromUuids,
+        private Sql\ProductGrid\FetchProductModelRowsFromCodes $fetchProductModelRowsFromCodes,
+        private Query\AddAdditionalProductPropertiesRegistry $addAdditionalProductPropertiesRegistry,
+        private Query\AddAdditionalProductModelPropertiesRegistry $addAdditionalProductModelPropertiesRegistry,
+        private ProductAndProductsModelDocumentTypeFacetFactory $productAndProductsModelDocumentTypeFacetFactory
     ) {
-        $this->fetchProductRowsFromIdentifiers = $fetchProductRowsFromIdentifiers;
-        $this->fetchProductModelRowsFromCodes = $fetchProductModelRowsFromCodes;
-        $this->addAdditionalProductPropertiesRegistry = $addAdditionalProductProperties;
-        $this->addAdditionalProductModelPropertiesRegistry = $addAdditionalProductModelProperties;
-        $this->productAndProductsModelDocumentTypeFacetFactory = $productAndProductsModelDocumentTypeFacetFactory;
     }
 
     /**
@@ -55,19 +35,19 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
         $productAndProductModelIdentifiersCursor = $queryParameters->productQueryBuilder()->execute();
 
         $identifiers = iterator_to_array($productAndProductModelIdentifiersCursor);
-        $productIdentifiers = [];
+        $productSearchUuids = [];
         $productModelCodes = [];
 
         foreach ($identifiers as $identifier) {
             if ($identifier->getType() === ProductInterface::class) {
-                $productIdentifiers[] = $identifier->getIdentifier();
+                $productSearchUuids[] = $identifier->getId();
             } elseif ($identifier->getType() === ProductModelInterface::class) {
                 $productModelCodes[] = $identifier->getIdentifier();
             }
         }
 
-        $productRows = ($this->fetchProductRowsFromIdentifiers)(
-            $productIdentifiers,
+        $productRows = ($this->fetchProductRowsFromUuids)(
+            $productSearchUuids,
             $queryParameters->attributeCodes(),
             $queryParameters->channelCode(),
             $queryParameters->localeCode()
@@ -86,7 +66,7 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
         $sortedRows = [];
         foreach ($identifiers as $identifier) {
             foreach ($rows as $row) {
-                if ($identifier->getIdentifier() === $row->identifier()) {
+                if ($row->searchId() === $identifier->getId()) {
                     $sortedRows[] = $row;
                 }
             }

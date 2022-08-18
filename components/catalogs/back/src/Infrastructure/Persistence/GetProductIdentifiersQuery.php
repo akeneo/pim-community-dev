@@ -32,7 +32,7 @@ class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInterface
     public function execute(string $catalogId, ?string $searchAfter = null, int $limit = 100): array
     {
         $pqbOptions = [
-            'filters' => $this->findProductSelectionCriteria($catalogId),
+            'filters' => $this->getFilters($catalogId),
             'limit' => $limit,
         ];
 
@@ -101,5 +101,31 @@ class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInterface
         }
 
         return $criteria;
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    private function getFilters(string $catalogId): array
+    {
+        $filters = [];
+        /** @var array<array-key, array{field: string, operator: string, value?: mixed, scope?: string|null, locale?: string|null}> $productSelectionCriteria */
+        $productSelectionCriteria = $this->findProductSelectionCriteria($catalogId);
+        foreach ($productSelectionCriteria as $criterion) {
+            $filter = $criterion;
+
+            if (isset($criterion['scope'])) {
+                $filter['context']['scope'] = $criterion['scope'];
+            }
+
+            if (isset($criterion['locale'])) {
+                $filter['context']['locale'] = $criterion['locale'];
+            }
+
+            unset($filter['scope'], $filter['locale']);
+
+            $filters[] = $filter;
+        }
+        return $filters;
     }
 }

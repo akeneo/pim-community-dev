@@ -64,20 +64,22 @@ class UniqueProductEntityValidator extends ConstraintValidator
         /**
          * Then you check if it has not already been saved in the database
          */
-        $idFromDatabase = $this->findId->fromIdentifier($entity->getIdentifier());
-        if (null === $idFromDatabase) {
-            return;
-        }
+        if (null !== $entity->getIdentifier()) {
+            $uuidFromDatabase = $this->findId->fromIdentifier($entity->getIdentifier());
+            if (null === $uuidFromDatabase) {
+                return;
+            }
 
-        /**
-         * We don't want to validate a product identifier if we update a product because we have already validated the
-         * product identifier during the creation
-         */
-        if (!$entity->getUuid()->equals(Uuid::fromString($idFromDatabase))) {
-            $this->context->buildViolation($constraint->message, ['%identifier%' => $identifierValue->getData()])
-                          ->atPath('identifier')
-                          ->setCode(UniqueProductEntity::UNIQUE_PRODUCT_ENTITY)
-                          ->addViolation();
+            /**
+             * We don't want to validate a product identifier if we update a product because we have already validated the
+             * product identifier during the creation
+             */
+            if (!$entity->getUuid()->equals(Uuid::fromString($uuidFromDatabase))) {
+                $this->context->buildViolation($constraint->message, ['%identifier%' => $identifierValue->getData()])
+                              ->atPath('identifier')
+                              ->setCode(UniqueProductEntity::UNIQUE_PRODUCT_ENTITY)
+                              ->addViolation();
+            }
         }
     }
 

@@ -50,4 +50,12 @@ final class LabelCollection implements \IteratorAggregate
     {
         return new \ArrayIterator($this->translatedLabels);
     }
+
+    /**
+     * @return array<string,string>
+     */
+    public function normalize(): array
+    {
+        return $this->translatedLabels ?? [];
+    }
 }

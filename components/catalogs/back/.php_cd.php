@@ -61,6 +61,11 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
             'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
 
+            // @todo replace with the ones from service API when available
+            'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+            'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+            'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
+
             // @todo remove
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
             // @todo remove CXP-1186

@@ -12,3 +12,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\SqlFindOneByCode
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory
+    arguments:
+      - '@database_connection'
