@@ -118,6 +118,20 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
         ]);
     }
 
+    public function it_does_nothing_when_automation_is_null(
+        JobInstance $jobInstance,
+    ): void
+    {
+        $currentAutomation = null;
+
+        $jobInstance->getAutomation()->willReturn($currentAutomation);
+        $jobInstance->setAutomation($currentAutomation)->shouldBeCalled();
+
+        $this->update($jobInstance, [
+            'automation' => null,
+        ]);
+    }
+
     public function it_throw_an_exception_id_it_is_not_a_job_instance(): void
     {
         $this->shouldThrow(
