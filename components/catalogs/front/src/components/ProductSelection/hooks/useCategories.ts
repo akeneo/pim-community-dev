@@ -1,9 +1,12 @@
 import {useQuery} from 'react-query';
 import {Category, CategoryCode} from '../models/Category';
-import {useCallback} from 'react';
 
+type QueryParams = {
+    codes?: CategoryCode[];
+    isRoot?: boolean;
+};
 type Data = Category[];
-type ResultError = string | null;
+type ResultError = Error | null;
 type Result = {
     isLoading: boolean;
     isError: boolean;
@@ -11,17 +14,27 @@ type Result = {
     error: ResultError;
 };
 
-export const useCategories = (codes: CategoryCode[]): Result => {
-    const fetchCategories = useCallback(async () => {
-        const _codes = codes.join(',');
-        const response = await fetch(`/rest/catalogs/categories?codes=${_codes}`, {
+export const useCategories = ({codes = [], isRoot = false}: QueryParams): Result => {
+    return useQuery<Data, ResultError, Data>(['categories', {codes, isRoot}], async () => {
+        if (isRoot && codes.length > 0) {
+            throw new Error('Cannot use codes and root simultaneously to fetch categories');
+        }
+
+        if (!isRoot && codes.length === 0) {
+            return [];
+        }
+
+        const queryParameters = new URLSearchParams({
+            codes: codes.join(','),
+            is_root: isRoot ? '1' : '0',
+        }).toString();
+
+        const response = await fetch('/rest/catalogs/categories?' + queryParameters, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
             },
         });
 
         return await response.json();
-    }, [codes]);
-
-    return useQuery<Data, ResultError, Data>(['categories', codes], fetchCategories);
+    });
 };

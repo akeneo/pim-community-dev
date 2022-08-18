@@ -1,11 +1,12 @@
 jest.unmock('./useCategoryTreeRoots');
+jest.unmock('./useCategories');
 
 import fetchMock from 'jest-fetch-mock';
 import {renderHook} from '@testing-library/react-hooks';
 import {useCategoryTreeRoots} from './useCategoryTreeRoots';
 import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 
-test('It fetches the API response', async () => {
+test('It fetches category tree roots', async () => {
     const treeRoots = [
         {
             id: 1,
@@ -35,7 +36,6 @@ test('It fetches the API response', async () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/categories/tree-roots', expect.any(Object));
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,

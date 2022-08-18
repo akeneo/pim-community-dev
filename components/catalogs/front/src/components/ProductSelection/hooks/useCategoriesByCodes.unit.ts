@@ -11,23 +11,18 @@ test('it fetches categories', async () => {
         {
             id: 1,
             code: 'catA',
-            label: '[catA]',
+            label: 'Category A',
             isLeaf: false,
         },
         {
             id: 43,
             code: 'catB',
-            label: '[catB]',
+            label: 'Category B',
             isLeaf: true,
         },
     ];
 
-    fetchMock.mockResponses(
-        //call with catA and catB
-        JSON.stringify(categories),
-        //call with empty array
-        JSON.stringify([])
-    );
+    fetchMock.mockResponses(JSON.stringify(categories));
 
     const {result, waitForNextUpdate} = renderHook(() => useCategoriesByCodes(['catA', 'catB']), {
         wrapper: ReactQueryWrapper,
@@ -36,7 +31,20 @@ test('it fetches categories', async () => {
     expect(result.current).toMatchObject({
         isLoading: true,
         isError: false,
-        data: [],
+        data: [
+            {
+                id: -1,
+                code: 'catA',
+                label: '[catA]',
+                isLeaf: true,
+            },
+            {
+                id: -1,
+                code: 'catB',
+                label: '[catB]',
+                isLeaf: true,
+            },
+        ],
         error: null,
     });
 

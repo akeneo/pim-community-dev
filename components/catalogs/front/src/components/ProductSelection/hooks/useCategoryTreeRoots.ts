@@ -1,5 +1,7 @@
-import {useQuery, useQueryClient} from 'react-query';
+import {useQueryClient} from 'react-query';
 import {Category} from '../models/Category';
+import {useCategories} from './useCategories';
+import {useEffect} from 'react';
 
 type Data = Category[];
 type ResultError = Error | null;
@@ -12,22 +14,21 @@ type Result = {
 
 export const useCategoryTreeRoots = (): Result => {
     const queryClient = useQueryClient();
-    return useQuery<Data, ResultError, Data>(['category-tree-roots'], async () => {
-        const response = await fetch('/rest/catalogs/categories/tree-roots', {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        });
+    const categoryResult = useCategories({isRoot: true});
 
-        const responseJson = await response.json();
+    const categoryTreeRoots = categoryResult.data;
 
-        if (response.ok) {
-            const categoryTreeRoots = responseJson as Category[];
-            categoryTreeRoots.forEach(categoryTreeRoot => {
-                queryClient.setQueryData(['categories', [categoryTreeRoot.code]], [categoryTreeRoot]);
-            });
+    useEffect(() => {
+        if (categoryTreeRoots === undefined) {
+            return;
         }
+        categoryTreeRoots.forEach(categoryTreeRoot => {
+            queryClient.setQueryData(
+                ['categories', {codes: [categoryTreeRoot.code], isRoot: false}],
+                [categoryTreeRoot]
+            );
+        });
+    }, [categoryTreeRoots, queryClient]);
 
-        return responseJson;
-    });
+    return categoryResult;
 };
