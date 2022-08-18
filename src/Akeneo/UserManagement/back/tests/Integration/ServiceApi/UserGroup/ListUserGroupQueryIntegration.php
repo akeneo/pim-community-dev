@@ -7,15 +7,15 @@ namespace Akeneo\Test\UserManagement\Integration\ServiceApi\UserGroup;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupInterface;
-use Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupQuery;
 use Akeneo\UserManagement\ServiceApi\UserGroup\UserGroup;
+use Akeneo\UserManagement\ServiceApi\UserGroup\UserGroupQuery;
 use PHPUnit\Framework\Assert;
 
 class ListUserGroupQueryIntegration extends TestCase
 {
     public function testItListsTheUserGroups(): void
     {
-        $userGroups = $this->getHandler()->fromQuery(new ListUserGroupQuery());
+        $userGroups = $this->getHandler()->fromQuery(new UserGroupQuery());
 
         Assert::assertCount(4, $userGroups);
         Assert::containsOnlyInstancesOf(UserGroup::class);
@@ -23,7 +23,7 @@ class ListUserGroupQueryIntegration extends TestCase
 
     public function testItFiltersTheUserGroupsOnLabel(): void
     {
-        $userGroups = $this->getHandler()->fromQuery(new ListUserGroupQuery('support'));
+        $userGroups = $this->getHandler()->fromQuery(new UserGroupQuery('support'));
 
         Assert::assertCount(1, $userGroups);
         Assert::containsOnlyInstancesOf(UserGroup::class);
@@ -33,7 +33,7 @@ class ListUserGroupQueryIntegration extends TestCase
 
     public function testItListsTheUserGroupsWithPagination(): void
     {
-        $userGroups = $this->getHandler()->fromQuery(new ListUserGroupQuery(
+        $userGroups = $this->getHandler()->fromQuery(new UserGroupQuery(
             null,
             null,
             2
@@ -43,7 +43,7 @@ class ListUserGroupQueryIntegration extends TestCase
         Assert::assertLessThan(2, $userGroups[0]->getId());
         Assert::assertEquals(2, $userGroups[1]->getId());
 
-        $userGroups = $this->getHandler()->fromQuery(new ListUserGroupQuery(
+        $userGroups = $this->getHandler()->fromQuery(new UserGroupQuery(
             null,
             2,
             2

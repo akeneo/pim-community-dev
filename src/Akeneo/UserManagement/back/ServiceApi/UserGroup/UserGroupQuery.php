@@ -2,7 +2,7 @@
 
 namespace Akeneo\UserManagement\ServiceApi\UserGroup;
 
-class ListUserGroupQuery
+class UserGroupQuery
 {
     public const DEFAULT_LIMIT = 25;
 

@@ -18,5 +18,5 @@ interface ListUserGroupInterface
     /**
      * @return UserGroup[]
      */
-    public function fromQuery(ListUserGroupQuery $query): array;
+    public function fromQuery(UserGroupQuery $query): array;
 }
