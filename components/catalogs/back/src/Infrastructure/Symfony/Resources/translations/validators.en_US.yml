@@ -12,5 +12,5 @@ akeneo_catalogs:
                     value: 'Completeness value must be between 0 and 100 percent.'
                 attribute_text:
                     value:
-                        not_empty: 'The value must be empty'
-                        empty: 'The value must not be empty'
+                        not_empty: 'This value must be empty.'
+                        empty: 'This value must not be empty.'

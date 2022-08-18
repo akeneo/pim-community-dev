@@ -115,7 +115,7 @@ class CatalogUpdatePayloadValidator extends ConstraintValidator
 
         $attribute = $this->findOneAttributeByCodeQuery->execute($field);
 
-        return match ($attribute['type']) {
+        return match ($attribute['type'] ?? null) {
             'pim_catalog_text' => new Assert\Sequentially([
                 new AttributeTextCriterionStructure(),
                 new AttributeTextCriterionValues(),

@@ -16,7 +16,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @psalm-suppress PropertyNotSetInConstructor
+ * @psalm-suppress PropertyNotSetInConstructor *
+ * @phpstan-type AttributeTextCriterion array{field: string, operator: string, value: string, scope: string, locale: string}
  */
 class AttributeTextCriterionValuesValidator extends ConstraintValidator
 {
@@ -30,7 +31,7 @@ class AttributeTextCriterionValuesValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
-        /** @var array{field: string, operator: string, value: int, scope: string, locale: string} $value */
+        /** @var AttributeTextCriterion $value */
 
         if (!$constraint instanceof AttributeTextCriterionValues) {
             throw new UnexpectedTypeException($constraint, AttributeTextCriterionValues::class);
@@ -41,15 +42,15 @@ class AttributeTextCriterionValuesValidator extends ConstraintValidator
             throw new \LogicException('Attribute not found');
         }
 
-        if (true === $attribute['localizable'] && true === $attribute['scopable']) {
+        if ($attribute['localizable'] && $attribute['scopable']) {
             $this->validateScopeAndLocale($value);
         }
 
-        if (false === $attribute['localizable'] && true === $attribute['scopable']) {
+        if (!$attribute['localizable'] && $attribute['scopable']) {
             $this->validateScope($value);
         }
 
-        if (true === $attribute['localizable'] && false === $attribute['scopable']) {
+        if ($attribute['localizable'] && !$attribute['scopable']) {
             $this->validateLocale($value);
         }
 
@@ -68,6 +69,9 @@ class AttributeTextCriterionValuesValidator extends ConstraintValidator
         }
     }
 
+    /**
+     * @param AttributeTextCriterion $value
+     */
     private function validateScopeAndLocale(array $value): void
     {
         try {
@@ -96,6 +100,9 @@ class AttributeTextCriterionValuesValidator extends ConstraintValidator
         }
     }
 
+    /**
+     * @param AttributeTextCriterion $value
+     */
     private function validateScope(array $value): void
     {
         $channel = $this->getChannelQuery->execute($value['scope']);
@@ -108,13 +115,16 @@ class AttributeTextCriterionValuesValidator extends ConstraintValidator
         }
     }
 
+    /**
+     * @param AttributeTextCriterion $value
+     */
     private function validateLocale(array $value): void
     {
         $locales = $this->getLocalesQuery->execute();
 
-        $exists = count(array_filter($locales, static fn(array $locale) => $locale['code'] === $value['locale'])) > 0;
+        $exists = \count(\array_filter($locales, static fn (array $locale) => $locale['code'] === $value['locale'])) > 0;
 
-        if(false === $exists){
+        if (!$exists) {
             $this->context
                 ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.locale.unknown')
                 ->atPath('[locale]')
