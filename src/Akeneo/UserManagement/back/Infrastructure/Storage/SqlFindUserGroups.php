@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\UserManagement\back\Infrastructure\Storage;
+namespace Akeneo\UserManagement\Infrastructure\Storage;
 
-use Akeneo\UserManagement\back\Domain\Model\Group;
-use Akeneo\UserManagement\back\Domain\Storage\FindUserGroups;
+use Akeneo\UserManagement\Domain\Model\Group;
+use Akeneo\UserManagement\Domain\Storage\FindUserGroups;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 

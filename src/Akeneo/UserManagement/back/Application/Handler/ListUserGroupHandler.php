@@ -1,11 +1,11 @@
 <?php
 
-namespace Akeneo\UserManagement\back\Application\Handler;
+namespace Akeneo\UserManagement\Application\Handler;
 
-use Akeneo\UserManagement\back\Domain\Model\Group as DomainGroup;
-use Akeneo\UserManagement\back\Domain\Storage\FindUserGroups;
-use Akeneo\UserManagement\back\Infrastructure\ServiceApi\UserGroup\ListUserGroupQuery;
-use Akeneo\UserManagement\back\Infrastructure\ServiceApi\UserGroup\UserGroup;
+use Akeneo\UserManagement\Domain\Model\Group as DomainGroup;
+use Akeneo\UserManagement\Domain\Storage\FindUserGroups;
+use Akeneo\UserManagement\Infrastructure\ServiceApi\UserGroup\ListUserGroupQuery;
+use Akeneo\UserManagement\Infrastructure\ServiceApi\UserGroup\UserGroup;
 
 class ListUserGroupHandler
 {

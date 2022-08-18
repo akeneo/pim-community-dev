@@ -9,6 +9,6 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\UserManagement\back\Infrastructure\Storage\SqlFindUserGroups:
+    Akeneo\UserManagement\Infrastructure\Storage\SqlFindUserGroups:
         arguments:
             - '@database_connection'

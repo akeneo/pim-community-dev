@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\UserManagement\back\Infrastructure\ServiceApi\UserGroup;
+namespace Akeneo\UserManagement\Infrastructure\ServiceApi\UserGroup;
 
 class UserGroup
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\UserManagement\back\Domain\Storage;
+namespace Akeneo\UserManagement\Domain\Storage;
 
-use Akeneo\UserManagement\back\Domain\Model\Group;
+use Akeneo\UserManagement\Domain\Model\Group;
 
 interface FindUserGroups
 {

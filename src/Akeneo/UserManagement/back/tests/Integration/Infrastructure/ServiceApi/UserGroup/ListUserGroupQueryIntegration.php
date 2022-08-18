@@ -4,9 +4,9 @@ namespace Akeneo\Test\UserManagement\Integration\Infrastructure\ServiceApi\UserG
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\UserManagement\back\Application\Handler\ListUserGroupHandler;
-use Akeneo\UserManagement\back\Infrastructure\ServiceApi\UserGroup\ListUserGroupQuery;
-use Akeneo\UserManagement\back\Infrastructure\ServiceApi\UserGroup\UserGroup;
+use Akeneo\UserManagement\Application\Handler\ListUserGroupHandler;
+use Akeneo\UserManagement\Infrastructure\ServiceApi\UserGroup\ListUserGroupQuery;
+use Akeneo\UserManagement\Infrastructure\ServiceApi\UserGroup\UserGroup;
 use PHPUnit\Framework\Assert;
 
 class ListUserGroupQueryIntegration extends TestCase
