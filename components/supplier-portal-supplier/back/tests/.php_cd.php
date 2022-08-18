@@ -110,6 +110,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierFromContributorEmail',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',

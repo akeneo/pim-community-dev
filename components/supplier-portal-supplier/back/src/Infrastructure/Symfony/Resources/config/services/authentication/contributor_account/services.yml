@@ -28,6 +28,12 @@ services:
         tags:
             - 'kernel.event_subscriber'
 
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendGoodbyeEmailOnContributorAccountDeleted:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendGoodbyeEmail'
+        tags:
+            - 'kernel.event_subscriber'
+
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendResetPasswordEmailOnPasswordReset:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendResetPasswordEmail'
@@ -87,6 +93,11 @@ services:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail'
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail'
 
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendGoodbyeEmail:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildGoodbyeEmail'
+
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
@@ -115,6 +126,11 @@ services:
         arguments:
             - '@twig'
             - '%env(AKENEO_PIM_URL)%'
+
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildGoodbyeEmail:
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigGoodbyeEmail
+        arguments:
+            - '@twig'
 
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigResetPasswordEmail
