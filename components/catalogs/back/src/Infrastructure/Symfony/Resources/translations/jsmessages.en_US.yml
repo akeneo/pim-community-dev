@@ -46,6 +46,9 @@ akeneo_catalogs:
                 placeholder: Select your families
             completeness:
                 label: Completeness
+            yesNo:
+                yes: Yes
+                no: No
         operators:
             "STARTS WITH": starts with
             "ENDS WITH": ends with
