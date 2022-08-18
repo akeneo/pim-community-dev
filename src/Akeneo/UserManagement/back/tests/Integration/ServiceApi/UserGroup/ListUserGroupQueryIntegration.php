@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Test\UserManagement\Integration\ServiceApi\UserGroup;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\UserManagement\Application\Handler\ListUserGroupHandler;
+use Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupHandlerInterface;
 use Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupQuery;
 use Akeneo\UserManagement\ServiceApi\UserGroup\UserGroup;
 use PHPUnit\Framework\Assert;
@@ -13,7 +15,7 @@ class ListUserGroupQueryIntegration extends TestCase
 {
     public function testItListsTheUserGroups(): void
     {
-        $userGroups = ($this->get(ListUserGroupHandler::class))(new ListUserGroupQuery());
+        $userGroups = ($this->get(ListUserGroupHandlerInterface::class))(new ListUserGroupQuery());
 
         Assert::assertCount(4, $userGroups);
         Assert::containsOnlyInstancesOf(UserGroup::class);
@@ -21,7 +23,7 @@ class ListUserGroupQueryIntegration extends TestCase
 
     public function testItFiltersTheUserGroupsOnLabel(): void
     {
-        $userGroups = ($this->get(ListUserGroupHandler::class))(new ListUserGroupQuery('support'));
+        $userGroups = ($this->get(ListUserGroupHandlerInterface::class))(new ListUserGroupQuery('support'));
 
         Assert::assertCount(1, $userGroups);
         Assert::containsOnlyInstancesOf(UserGroup::class);
@@ -31,7 +33,7 @@ class ListUserGroupQueryIntegration extends TestCase
 
     public function testItListsTheUserGroupsWithPagination(): void
     {
-        $userGroups = ($this->get(ListUserGroupHandler::class))(new ListUserGroupQuery(
+        $userGroups = ($this->get(ListUserGroupHandlerInterface::class))(new ListUserGroupQuery(
             null,
             null,
             2
@@ -41,7 +43,7 @@ class ListUserGroupQueryIntegration extends TestCase
         Assert::assertLessThan(2, $userGroups[0]->getId());
         Assert::assertEquals(2, $userGroups[1]->getId());
 
-        $userGroups = ($this->get(ListUserGroupHandler::class))(new ListUserGroupQuery(
+        $userGroups = ($this->get(ListUserGroupHandlerInterface::class))(new ListUserGroupQuery(
             null,
             2,
             2

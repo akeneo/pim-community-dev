@@ -1,5 +1,6 @@
 services:
-  Akeneo\UserManagement\Application\Handler\ListUserGroupHandler:
+  Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupHandlerInterface:
     public: true
+    class: Akeneo\UserManagement\Application\Handler\ListUserGroupHandler
     arguments:
       $findUserGroups: '@Akeneo\UserManagement\Infrastructure\Storage\SqlFindUserGroups'
