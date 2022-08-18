@@ -7,8 +7,8 @@ namespace Akeneo\UserManagement\Application\Handler;
 use Akeneo\UserManagement\Domain\Model\Group as DomainGroup;
 use Akeneo\UserManagement\Domain\Storage\FindUserGroups;
 use Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupInterface;
-use Akeneo\UserManagement\ServiceApi\UserGroup\UserGroupQuery;
 use Akeneo\UserManagement\ServiceApi\UserGroup\UserGroup;
+use Akeneo\UserManagement\ServiceApi\UserGroup\UserGroupQuery;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
