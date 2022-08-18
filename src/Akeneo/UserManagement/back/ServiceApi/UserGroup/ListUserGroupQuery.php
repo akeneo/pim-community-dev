@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\UserManagement\Infrastructure\ServiceApi\UserGroup;
+namespace Akeneo\UserManagement\ServiceApi\UserGroup;
 
 class ListUserGroupQuery
 {
