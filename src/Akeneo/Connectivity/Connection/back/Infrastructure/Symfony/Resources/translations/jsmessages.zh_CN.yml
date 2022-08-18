@@ -53,6 +53,8 @@ akeneo_connectivity.connection:
         title_without_apps: '{0} 没有与您的 PIM 版本兼容的连接器。|{1} 有 {{ count }} 个连接器与您的 PIM 版本兼容。[2,Inf] 有 {{ count }} 个连接器与您的 PIM 版本兼容。'
         description: 这只是概览，还有更多内容，请探索 Akeneo App Store。
         link: 前往 Akeneo App Store
+      search:
+        total: '{0} 无结果|{1} 1 个结果|[2,Inf] {{ total }} 个结果'
       card:
         developed_by: '开发者：{{ author }}'
         read_more: 阅读更多
