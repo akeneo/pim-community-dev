@@ -43,3 +43,8 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Application\GetCategoryQueryHandler'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Application\Query\GetTemplate'

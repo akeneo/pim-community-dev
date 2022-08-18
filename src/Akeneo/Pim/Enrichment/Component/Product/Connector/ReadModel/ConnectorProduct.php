@@ -252,7 +252,7 @@ final class ConnectorProduct
                     $value->getLocaleCode(),
                     [
                         'attribute' => $value->getAttributeCode(),
-                        'code' => $optionCodeWithRightCase,
+                        'code' => (string)$optionCodeWithRightCase,
                         'labels' => $optionLabels[$value->getAttributeCode()][$optionCodeWithRightCase] ?? []
                     ],
                 );
@@ -265,7 +265,7 @@ final class ConnectorProduct
 
                     $linkedData[$optionCode] = [
                         'attribute' => $value->getAttributeCode(),
-                        'code' => $optionCodeWithRightCase,
+                        'code' => (string)$optionCodeWithRightCase,
                         'labels' => $optionLabels[$value->getAttributeCode()][$optionCodeWithRightCase] ?? [],
                     ];
                 }

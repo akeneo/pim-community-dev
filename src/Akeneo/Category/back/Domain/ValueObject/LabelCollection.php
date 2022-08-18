@@ -57,6 +57,6 @@ final class LabelCollection
      */
     public function normalize(): array
     {
-        return $this->translatedLabels;
+        return $this->translatedLabels ?? [];
     }
 }
