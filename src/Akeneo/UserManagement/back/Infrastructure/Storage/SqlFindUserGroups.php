@@ -12,11 +12,11 @@ class SqlFindUserGroups implements FindUserGroups
     public function __construct(
         private Connection $connection,
     ) {
-
     }
 
     /**
      * {@inheritDoc}
+     *
      * @throws Exception
      * @throws \Doctrine\DBAL\Driver\Exception
      */
@@ -24,8 +24,7 @@ class SqlFindUserGroups implements FindUserGroups
         ?string $search = null,
         ?int $searchAfterId = null,
         ?int $limit = self::DEFAULT_LIMIT,
-    ): array
-    {
+    ): array {
         $query = $this->buildQuery($search, $searchAfterId, $limit);
 
         $results = $this->connection->executeQuery(
@@ -41,23 +40,22 @@ class SqlFindUserGroups implements FindUserGroups
         ?string $search,
         ?int $searchAfterId,
         ?int $limit,
-    ): string
-    {
+    ): string {
         $searchSql = '';
-        if ($search !== null) {
+        if (null !== $search) {
             $searchSql = <<<SQL
     AND oag.name LIKE '%${search}%'
 SQL;
         }
 
         $searchAfterIdSql = '';
-        if ($searchAfterId !== null) {
+        if (null !== $searchAfterId) {
             $searchAfterIdSql = <<<SQL
     AND oag.id > ${searchAfterId}
 SQL;
         }
         $limitSql = '';
-        if ($limit !== null) {
+        if (null !== $limit) {
             $limitSql = <<<SQL
     LIMIT ${limit}
 SQL;
