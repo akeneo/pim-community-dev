@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeTextCriterion;
+namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\Compound;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class AttributeTextCriterionStructure extends Compound
+final class EnabledCriterion extends Compound
 {
     /**
      * @param array<array-key, mixed> $options
@@ -27,22 +27,14 @@ class AttributeTextCriterionStructure extends Compound
             new Assert\Collection([
                 'fields' => [
                     'field' => [
-                        new Assert\Type('string'),
-                        new Assert\NotBlank(),
+                        new Assert\IdenticalTo('enabled'),
                     ],
                     'operator' => [
                         new Assert\Type('string'),
-                        new Assert\NotBlank(),
-                        new Assert\Choice(['=', '!=', 'CONTAINS', 'DOES NOT CONTAIN', 'STARTS WITH', 'EMPTY', 'NOT EMPTY']),
+                        new Assert\Choice(['=', '!=']),
                     ],
                     'value' => [
-                        new Assert\Type('string'),
-                    ],
-                    'scope' => [
-                        new Assert\Type('string'),
-                    ],
-                    'locale' => [
-                        new Assert\Type('string'),
+                        new Assert\Type('boolean'),
                     ],
                 ],
                 'allowMissingFields' => false,

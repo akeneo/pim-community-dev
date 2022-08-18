@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeTextCriterion\AttributeTextCriterionStructure;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeTextCriterion\AttributeTextCriterionValues;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\CompletenessCriterion\CompletenessCriterionStructure;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\CompletenessCriterion\CompletenessCriterionValues;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\EnabledCriterion\EnabledCriterionStructure;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\FamilyCriterion\FamilyCriterionStructure;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeTextCriterion;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\CompletenessCriterion;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\EnabledCriterion;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\FamilyCriterion;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -23,7 +21,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class CatalogUpdatePayloadValidator extends ConstraintValidator
+final class CatalogUpdatePayloadValidator extends ConstraintValidator
 {
     public function __construct(
         private FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
@@ -71,11 +69,17 @@ class CatalogUpdatePayloadValidator extends ConstraintValidator
                                     return;
                                 }
 
-                                $constraints = $criterion['field'] ? $this->getCriterionConstraint(
-                                    $criterion['field']
-                                ) : null;
+                                if (!isset($criterion['field']) || !\is_string($criterion['field'])) {
+                                    $context->buildViolation('Missing field value')
+                                        ->atPath('[field]')
+                                        ->addViolation();
 
-                                if (null === $constraints) {
+                                    return;
+                                }
+
+                                $constraint = $this->getCriterionConstraint($criterion['field']);
+
+                                if (null === $constraint) {
                                     $context->buildViolation('Invalid field value')
                                         ->atPath('[field]')
                                         ->addViolation();
@@ -86,7 +90,7 @@ class CatalogUpdatePayloadValidator extends ConstraintValidator
                                 $context
                                     ->getValidator()
                                     ->inContext($this->context)
-                                    ->validate($criterion, $constraints);
+                                    ->validate($criterion, $constraint);
                             }),
                         ]),
                     ],
@@ -100,12 +104,9 @@ class CatalogUpdatePayloadValidator extends ConstraintValidator
     private function getCriterionConstraint(string $field): Constraint|null
     {
         $constraint = match ($field) {
-            'completeness' => new Assert\Sequentially([
-                new CompletenessCriterionStructure(),
-                new CompletenessCriterionValues(),
-            ]),
-            'enabled' => new EnabledCriterionStructure(),
-            'family' => new FamilyCriterionStructure(),
+            'completeness' => new CompletenessCriterion(),
+            'enabled' => new EnabledCriterion(),
+            'family' => new FamilyCriterion(),
             default => null
         };
 
@@ -116,10 +117,7 @@ class CatalogUpdatePayloadValidator extends ConstraintValidator
         $attribute = $this->findOneAttributeByCodeQuery->execute($field);
 
         return match ($attribute['type'] ?? null) {
-            'pim_catalog_text' => new Assert\Sequentially([
-                new AttributeTextCriterionStructure(),
-                new AttributeTextCriterionValues(),
-            ]),
+            'pim_catalog_text' => new AttributeTextCriterion(),
             default => null,
         };
     }

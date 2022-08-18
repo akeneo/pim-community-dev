@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductSelection;
 
-use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeTextCriterion\AttributeTextCriterionStructure;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeTextCriterion\AttributeTextCriterionValues;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeTextCriterion;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @covers    \Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeTextCriterion\
  */
 class AttributeTextCriterionTest extends IntegrationTestCase
 {
@@ -38,10 +34,7 @@ class AttributeTextCriterionTest extends IntegrationTestCase
 
         $violations = $this->validator->validate(
             $criterion,
-            new Assert\Sequentially([
-                new AttributeTextCriterionStructure(),
-                new AttributeTextCriterionValues(),
-            ])
+            new AttributeTextCriterion(),
         );
 
         $this->assertEmpty($violations);
@@ -126,7 +119,7 @@ class AttributeTextCriterionTest extends IntegrationTestCase
     ): void {
         $violations = $this->validator->validate(
             $criterion,
-            new AttributeTextCriterionStructure(),
+            new AttributeTextCriterion(),
         );
 
         $this->assertViolationsListContains($violations, $expectedMessage);
@@ -200,7 +193,7 @@ class AttributeTextCriterionTest extends IntegrationTestCase
 
         $violations = $this->validator->validate(
             $criterion,
-            new AttributeTextCriterionValues(),
+            new AttributeTextCriterion(),
         );
 
         $this->assertViolationsListContains($violations, $expectedMessage);
