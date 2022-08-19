@@ -25,7 +25,7 @@ class AttributeRichText extends Attribute
         AttributeOrder $order,
         AttributeIsLocalizable $isLocalizable,
         LabelCollection $labelCollection,
-        TemplateUuid $templateId
+        TemplateUuid $templateId,
     ) {
         parent::__construct(
             $uuid,
@@ -34,7 +34,7 @@ class AttributeRichText extends Attribute
             $order,
             $isLocalizable,
             $labelCollection,
-            $templateId
+            $templateId,
         );
     }
 
@@ -44,7 +44,7 @@ class AttributeRichText extends Attribute
         AttributeOrder $order,
         AttributeIsLocalizable $isLocalizable,
         LabelCollection $labelCollection,
-        TemplateUuid $templateId
+        TemplateUuid $templateId,
     ): self {
         return new self(
             $uuid,
@@ -53,7 +53,7 @@ class AttributeRichText extends Attribute
             $order,
             $isLocalizable,
             $labelCollection,
-            $templateId
+            $templateId,
         );
     }
 
@@ -72,7 +72,7 @@ class AttributeRichText extends Attribute
     {
         return array_merge(
             parent::normalize(),
-            []
+            [],
         );
     }
 }

@@ -21,11 +21,12 @@ class AttributeType
         self::TEXT,
         self::TEXTAREA,
         self::RICH_TEXT,
-        self::IMAGE
+        self::IMAGE,
     ];
 
     /**
      * @param string $attributeType The attribute type expected
+     *
      * @see AttributeType::ATTRIBUTE_TYPES
      */
     public function __construct(private string $attributeType)

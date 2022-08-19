@@ -1,6 +1,6 @@
 <?php
 
-namespace  Akeneo\Test\Category\EndToEnd\ExternalApi;
+namespace Akeneo\Test\Category\EndToEnd\ExternalApi;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Test\Integration\Configuration;
@@ -76,8 +76,6 @@ JSON;
 
     /**
      * @param array<string, mixed> $data
-     *
-     * @return CategoryInterface
      */
     protected function createCategory(array $data = []): CategoryInterface
     {
@@ -99,7 +97,7 @@ JSON;
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
 
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/categories?with_count=true&search=' . $search);
+        $client->request('GET', 'api/rest/v1/categories?with_count=true&search='.$search);
 
         $expected = <<<JSON
 {
@@ -190,7 +188,7 @@ JSON;
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
 
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/categories?limit=5&page=1&with_count=true&search=' . $search);
+        $client->request('GET', 'api/rest/v1/categories?limit=5&page=1&with_count=true&search='.$search);
 
         $expected = <<<JSON
 {
@@ -223,7 +221,6 @@ JSON;
 
         $client->request('GET', 'api/rest/v1/categories?limit=10&page=2');
 
-
         $expected = <<<JSON
 {
     "_links": {
@@ -247,7 +244,6 @@ JSON;
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
-
 
     public function testListCategoriesWithPosition(): void
     {
@@ -520,7 +516,6 @@ JSON;
 
     /**
      * @param array<string, mixed> $categories
-     * @return void
      */
     private function normalizeCategories(array &$categories): void
     {

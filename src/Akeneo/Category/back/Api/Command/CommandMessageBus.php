@@ -34,7 +34,7 @@ class CommandMessageBus implements MessageBusInterface
     public function dispatch(object $message, array $stamps = []): Envelope
     {
         $handler = $this->handlers[get_class($message)] ?? null;
-        if ($handler === null) {
+        if (null === $handler) {
             throw new UnknownCommandException(\sprintf('No configured handler for the "%s" command', get_class($message)));
         }
 

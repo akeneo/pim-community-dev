@@ -7,11 +7,13 @@ use Webmozart\Assert\Assert;
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @phpstan-type Locale string
+ * @phpstan-type LocalizedLabels array<Locale, string>
  */
 final class LabelCollection
 {
     /**
-     * @param array<string, string> $translatedLabels
+     * @param LocalizedLabels $translatedLabels
      */
     private function __construct(private ?array $translatedLabels)
     {
@@ -20,11 +22,19 @@ final class LabelCollection
     }
 
     /**
-     * @param array<string, string> $translatedLabels
+     * @param LocalizedLabels $translatedLabels
      */
     public static function fromArray(array $translatedLabels): self
     {
         return new self($translatedLabels);
+    }
+
+    /**
+     * @return LocalizedLabels
+     */
+    public function getLabels(): array
+    {
+        return $this->translatedLabels;
     }
 
     public function getLabel(string $localeCode): ?string
@@ -43,7 +53,7 @@ final class LabelCollection
     }
 
     /**
-     * @return array<string,string>
+     * @return LocalizedLabels
      */
     public function normalize(): array
     {

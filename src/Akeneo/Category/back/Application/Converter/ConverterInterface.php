@@ -12,6 +12,7 @@ interface ConverterInterface
 {
     /**
      * @param array<string, mixed> $data
+     *
      * @return array<string, mixed>
      */
     public function convert(array $data): array;

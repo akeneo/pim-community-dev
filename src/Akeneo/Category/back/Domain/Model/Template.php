@@ -21,7 +21,7 @@ class Template
         private TemplateCode $code,
         private LabelCollection $labelCollection,
         private ?CategoryId $categoryTreeId,
-        private AttributeCollection $attributeCollection
+        private AttributeCollection $attributeCollection,
     ) {
     }
 
@@ -66,7 +66,7 @@ class Template
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),
             'category_tree_identifier' => $this->categoryTreeId?->getId(),
-            'attributes' => $this->attributeCollection->normalize()
+            'attributes' => $this->attributeCollection->normalize(),
         ];
     }
 }

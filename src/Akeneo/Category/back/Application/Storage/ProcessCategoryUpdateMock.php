@@ -14,9 +14,7 @@ use Akeneo\Category\Domain\Model\Category;
 class ProcessCategoryUpdateMock
 {
     /**
-     * @param Category $category
      * @param array<UserIntent> $userIntents
-     * @return void
      */
     public function update(Category $category, array $userIntents): void
     {

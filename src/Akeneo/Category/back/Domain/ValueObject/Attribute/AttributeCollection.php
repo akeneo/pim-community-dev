@@ -40,6 +40,7 @@ class AttributeCollection
     public function addAttribute(Attribute $attribute): self
     {
         $this->attributes[] = $attribute;
+
         return new self($this->attributes);
     }
 
@@ -50,7 +51,7 @@ class AttributeCollection
     {
         return array_map(
             static fn (Attribute $attribute) => $attribute->normalize(),
-            $this->attributes
+            $this->attributes,
         );
     }
 }
