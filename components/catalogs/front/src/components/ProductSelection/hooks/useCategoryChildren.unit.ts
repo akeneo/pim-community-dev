@@ -34,7 +34,10 @@ test('It fetches the API response', async () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/categories/parent_code/children', expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith(
+        '/rest/catalogs/categories/parent_code/children?locale=en_US',
+        expect.any(Object)
+    );
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,

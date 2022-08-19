@@ -33,7 +33,10 @@ test('It fetches categories by code', async () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/categories?codes=catA%2CcatB&is_root=0', expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith(
+        '/rest/catalogs/categories?codes=catA%2CcatB&is_root=0&locale=en_US',
+        expect.any(Object)
+    );
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,
@@ -70,7 +73,10 @@ test('It fetches root categories', async () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/categories?codes=&is_root=1', expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith(
+        '/rest/catalogs/categories?codes=&is_root=1&locale=en_US',
+        expect.any(Object)
+    );
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,
