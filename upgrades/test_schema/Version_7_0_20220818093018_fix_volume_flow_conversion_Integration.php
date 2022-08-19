@@ -27,6 +27,8 @@ class Version_7_0_20220818093018_fix_volume_flow_conversion_Integration extends 
     /** @test */
     public function it_fixes_the_incorrect_volume_flow_conversion(): void
     {
+        $this->setIncorrectConversions();
+
         self::assertEquals('mul', $this->getConversionOperatorFor('LITER_PER_MINUTE'));
         self::assertEquals('mul', $this->getConversionOperatorFor('LITER_PER_HOUR'));
         self::assertEquals('mul', $this->getConversionOperatorFor('LITER_PER_DAY'));
@@ -89,5 +91,38 @@ class Version_7_0_20220818093018_fix_volume_flow_conversion_Integration extends 
 
         $updateQuery = "UPDATE akeneo_measurement SET units = :units WHERE code = 'VolumeFlow';";
         $this->connection->executeQuery($updateQuery, ['units' => \json_encode($newUnits)]);
+    }
+
+    private function setIncorrectConversions(): void
+    {
+        $this->updateConversionFor('LITER_PER_MINUTE', [
+            ['value' => '0.001', 'operator' => 'mul'],
+            ['value' => '60', 'operator' => 'mul'],
+        ]);
+
+        $this->updateConversionFor('LITER_PER_HOUR', [
+            ['value' => '0.001', 'operator' => 'mul'],
+            ['value' => '3600', 'operator' => 'mul'],
+        ]);
+
+        $this->updateConversionFor('LITER_PER_DAY', [
+            ['value' => '0.001', 'operator' => 'mul'],
+            ['value' => '86400', 'operator' => 'mul'],
+        ]);
+
+        $this->updateConversionFor('MILLILITER_PER_MINUTE', [
+            ['value' => '0.000001', 'operator' => 'mul'],
+            ['value' => '60', 'operator' => 'mul'],
+        ]);
+
+        $this->updateConversionFor('MILLILITER_PER_HOUR', [
+            ['value' => '0.000001', 'operator' => 'mul'],
+            ['value' => '3600', 'operator' => 'mul'],
+        ]);
+
+        $this->updateConversionFor('MILLILITER_PER_DAY', [
+            ['value' => '0.000001', 'operator' => 'mul'],
+            ['value' => '86400', 'operator' => 'mul'],
+        ]);
     }
 }
