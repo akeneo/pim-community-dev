@@ -17,7 +17,8 @@ const Login = () => {
 
     const isSubmitButtonDisabled = '' === email || '' === password;
 
-    const onSubmit = async () => {
+    const onSubmit = async (event: any) => {
+        event.preventDefault();
         const isSuccess = await login(email, password);
         setHasLoginFailed(!isSuccess);
     };
@@ -31,7 +32,7 @@ const Login = () => {
     return (
         <UnauthenticatedContainer>
             <SupplierPortalLogo width={213} />
-            <Content>
+            <Form method="POST" onSubmit={onSubmit} role="form">
                 <EmailInput label={intl.formatMessage({defaultMessage: 'Email', id: 'sy+pv5'})}>
                     <TextInput onChange={setEmail} value={email} invalid={hasLoginFailed} />
                 </EmailInput>
@@ -57,10 +58,10 @@ const Login = () => {
                         <FormattedMessage defaultMessage="Forgot your password?" id="cyRU1N" />
                     </Link>
                 </ForgotPasswordLink>
-                <Button type="button" disabled={isSubmitButtonDisabled} onClick={onSubmit} data-testid="submit-login">
+                <Button type="submit" disabled={isSubmitButtonDisabled} onClick={onSubmit} data-testid="submit-login">
                     <FormattedMessage defaultMessage="Login" id="AyGauy" />
                 </Button>
-            </Content>
+            </Form>
         </UnauthenticatedContainer>
     );
 };
@@ -69,7 +70,7 @@ const ForgotPasswordLink = styled.div`
     margin-bottom: 50px;
 `;
 
-const Content = styled.div`
+const Form = styled.form`
     margin-top: 30px;
 `;
 
