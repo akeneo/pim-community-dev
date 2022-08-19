@@ -117,6 +117,22 @@ services:
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids'
             - '@pim_catalog.repository.attribute'
 
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\UpdateProductByUuidController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@router'
+            - '@pim_catalog.comparator.filter.product'
+            - '@event_dispatcher'
+            - '@pim_api.checker.duplicate_value'
+            - '@oro_security.security_facade'
+            - '@validator'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_api.filter.product_attribute_filter'
+            - '@database_connection'
+
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
         public: true
         arguments:
