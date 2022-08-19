@@ -87,16 +87,19 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@event_dispatcher'
+            - '@monolog.logger.supplier_portal'
 
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail'
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail'
+            - '@monolog.logger.supplier_portal'
 
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendGoodbyeEmail:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail'
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildGoodbyeEmail'
+            - '@monolog.logger.supplier_portal'
 
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler:
         arguments:
@@ -119,6 +122,7 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail'
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail'
+            - '@monolog.logger.supplier_portal'
 
     # Email sending services
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail:

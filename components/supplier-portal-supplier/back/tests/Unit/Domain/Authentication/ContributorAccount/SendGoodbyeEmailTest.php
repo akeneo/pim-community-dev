@@ -9,11 +9,12 @@ use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Send
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 class SendGoodbyeEmailTest extends TestCase
 {
     /** @test */
-    public function itSendsAWelcomeEmail(): void
+    public function itSendsAGoodbyeEmail(): void
     {
         $contributorEmail = 'jeanjacques@example.com';
         $email = new Email(
@@ -36,7 +37,7 @@ class SendGoodbyeEmailTest extends TestCase
             ->method('__invoke')
             ->with($email);
 
-        $sut = new SendGoodbyeEmail($sendEmail, $buildGoodbyeEmail);
+        $sut = new SendGoodbyeEmail($sendEmail, $buildGoodbyeEmail, new NullLogger());
         ($sut)($contributorEmail);
     }
 }

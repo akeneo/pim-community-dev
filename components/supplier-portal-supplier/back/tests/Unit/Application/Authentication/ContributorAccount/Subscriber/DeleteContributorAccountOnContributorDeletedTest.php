@@ -20,20 +20,20 @@ class DeleteContributorAccountOnContributorDeletedTest extends TestCase
     }
 
     /** @test */
-    public function itDeletedAContributorAccountWhenAContributorIsDeleted(): void
+    public function itDeletesAContributorAccountWhenAContributorIsDeleted(): void
     {
         $contributorAddeDeletedEvent = new ContributorDeleted(
             Identifier::fromString('4ccdd6c6-a631-48fe-967c-269bcf04e8e0'),
             'contrib1@example.com',
         );
 
-        $createContributorAccountHandlerSpy = $this->createMock(DeleteContributorAccountHandler::class);
-        $createContributorAccountHandlerSpy
+        $deleteContributorAccountHandlerSpy = $this->createMock(DeleteContributorAccountHandler::class);
+        $deleteContributorAccountHandlerSpy
             ->expects($this->once())
             ->method('__invoke')
             ->with('contrib1@example.com');
 
-        $sut = new DeleteContributorAccountOnContributorDeleted($createContributorAccountHandlerSpy);
+        $sut = new DeleteContributorAccountOnContributorDeleted($deleteContributorAccountHandlerSpy);
 
         $sut->contributorDeleted($contributorAddeDeletedEvent);
     }

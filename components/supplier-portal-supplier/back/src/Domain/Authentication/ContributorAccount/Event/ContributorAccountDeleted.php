@@ -2,7 +2,7 @@
 
 namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event;
 
-class ContributorAccountDeleted
+final class ContributorAccountDeleted
 {
     public function __construct(public string $contributorEmail)
     {

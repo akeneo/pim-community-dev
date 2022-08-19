@@ -29,6 +29,7 @@ $rules = [
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
             'Symfony\Contracts\EventDispatcher\EventDispatcherInterface',
+            'Psr\Log\LoggerInterface',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Domain'),
 
@@ -74,7 +75,6 @@ $rules = [
 
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
-            'Psr\Log\LoggerInterface',
             'Symfony',
             'Twig\Environment',
             'Swift_Mailer',
