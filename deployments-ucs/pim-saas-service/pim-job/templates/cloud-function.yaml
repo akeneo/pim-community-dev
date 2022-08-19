@@ -12,7 +12,7 @@ spec:
   runtime: "nodejs16"
   httpsTrigger:
     securityLevel: SECURE_ALWAYS
-    ingressSettings: ALLOW_ALL
+  ingressSettings: ALLOW_ALL
   projectRef:
     external: "projects/{{ .Values.common.gcpProjectID }}"
   sourceArchiveUrl: "gs://{{ .Values.pim.cloudFunction.bucket}}/{{ .Values.pim.cloudFunction.sourceCodeZip }}"

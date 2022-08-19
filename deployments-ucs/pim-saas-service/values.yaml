@@ -312,4 +312,4 @@ pim:
     bucket: null # Generated
     sourceCodeZip: null # Generated
     timeZone: "Europe/Paris"
-    serviceAccountEmail: pim-job-function
+    serviceAccountEmail: pim-job-function@akecld-prd-pim-saas-dev.iam.gserviceaccount.com
