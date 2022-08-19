@@ -26,21 +26,21 @@ type Props = {
 export const CategoryTreeSelector: FC<Props> = ({selectedTree, onChange}) => {
     const translate = useTranslate();
     const [isOpen, setOpen] = useState<boolean>();
-    const treeRootsResult = useCategoryTreeRoots();
+    const {data: categoryTreeRoots, isLoading} = useCategoryTreeRoots();
 
     useEffect(() => {
-        if (selectedTree !== null || treeRootsResult.data === undefined) {
+        if (selectedTree !== null || categoryTreeRoots === undefined) {
             return;
         }
 
-        if (treeRootsResult.data.length === 0) {
+        if (categoryTreeRoots.length === 0) {
             throw new Error('No tree root found');
         }
 
-        onChange(treeRootsResult.data[0]);
-    }, [selectedTree, treeRootsResult.data, onChange]);
+        onChange(categoryTreeRoots[0]);
+    }, [selectedTree, categoryTreeRoots, onChange]);
 
-    if (treeRootsResult.isLoading || treeRootsResult.data === undefined) {
+    if (isLoading || categoryTreeRoots === undefined) {
         return null;
     }
 
@@ -56,9 +56,9 @@ export const CategoryTreeSelector: FC<Props> = ({selectedTree, onChange}) => {
                 {isOpen && (
                     <Dropdown.Overlay verticalPosition='down' horizontalPosition='left' onClose={() => setOpen(false)}>
                         <Dropdown.ItemCollection role='listbox'>
-                            {treeRootsResult.data.map(tree => (
+                            {categoryTreeRoots.map(tree => (
                                 <Dropdown.Item
-                                    key={tree.id}
+                                    key={tree.code}
                                     role='option'
                                     isActive={tree.code === selectedTree?.code}
                                     onClick={() => {

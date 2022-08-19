@@ -8,13 +8,11 @@ import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 test('It fetches categories by code', async () => {
     const categories = [
         {
-            id: 1,
             code: 'catA',
             label: '[catA]',
             isLeaf: false,
         },
         {
-            id: 43,
             code: 'catB',
             label: '[catB]',
             isLeaf: true,
@@ -47,13 +45,11 @@ test('It fetches categories by code', async () => {
 test('It fetches root categories', async () => {
     const categories = [
         {
-            id: 1,
             code: 'catA',
             label: '[catA]',
             isLeaf: false,
         },
         {
-            id: 43,
             code: 'catB',
             label: '[catB]',
             isLeaf: true,

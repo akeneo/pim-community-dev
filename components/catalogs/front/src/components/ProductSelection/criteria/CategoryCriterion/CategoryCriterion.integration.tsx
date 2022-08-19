@@ -15,32 +15,21 @@ const changeOperatorValueTo = (operator: string) => {
     fireEvent.click(screen.getByText(operator));
 };
 
-beforeEach(() => {
-    fetchMock.resetMocks();
-});
-
 test('it renders the selected categories', async () => {
     const categories = [
         {
-            id: 1,
             code: 'catA',
             label: '[catA]',
             isLeaf: false,
         },
         {
-            id: 43,
             code: 'catB',
             label: '[catB]',
             isLeaf: true,
         },
     ];
 
-    fetchMock.mockResponses(
-        //useCategories with catA and catB
-        JSON.stringify(categories),
-        //useCategories with an empty array
-        JSON.stringify([])
-    );
+    fetchMock.mockResponseOnce(JSON.stringify(categories));
 
     render(
         <ThemeProvider theme={pimTheme}>
@@ -49,11 +38,7 @@ test('it renders the selected categories', async () => {
                     state={{field: 'categories', operator: Operator.IN_LIST, value: ['catA', 'catB']}}
                     onChange={jest.fn()}
                     onRemove={jest.fn()}
-                    errors={{
-                        field: null,
-                        operator: null,
-                        value: null,
-                    }}
+                    errors={{}}
                 />
             </ReactQueryWrapper>
         </ThemeProvider>
@@ -62,13 +47,13 @@ test('it renders the selected categories', async () => {
     expect(screen.getByText('akeneo_catalogs.product_selection.criteria.category.label')).toBeInTheDocument();
     expect(screen.getByText(Operator.IN_LIST)).toBeInTheDocument();
 
-    expect(await screen.findByText('[catA]')).toBeInTheDocument();
+    await waitFor(() => screen.findByText('[catA]'));
+
+    expect(screen.getByText('[catA]')).toBeInTheDocument();
     expect(screen.getByText('[catB]')).toBeInTheDocument();
 });
 
 test('it renders inputs with validation errors', () => {
-    fetchMock.mockResponseOnce(JSON.stringify([]));
-
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
@@ -77,7 +62,6 @@ test('it renders inputs with validation errors', () => {
                     onChange={jest.fn()}
                     onRemove={jest.fn()}
                     errors={{
-                        field: null,
                         operator: 'Invalid operator.',
                         value: 'Invalid value.',
                     }}
@@ -91,8 +75,6 @@ test('it renders inputs with validation errors', () => {
 });
 
 test('it calls onRemove when criterion is removed', () => {
-    fetchMock.mockResponseOnce(JSON.stringify([]));
-
     const onRemove = jest.fn();
 
     render(
@@ -102,11 +84,7 @@ test('it calls onRemove when criterion is removed', () => {
                     state={{field: 'categories', operator: Operator.IN_LIST, value: ['catA', 'catB']}}
                     onChange={jest.fn()}
                     onRemove={onRemove}
-                    errors={{
-                        field: null,
-                        operator: null,
-                        value: null,
-                    }}
+                    errors={{}}
                 />
             </ReactQueryWrapper>
         </ThemeProvider>
@@ -120,25 +98,18 @@ test('it calls onRemove when criterion is removed', () => {
 test('it calls onChange when the operator changes', () => {
     const categories = [
         {
-            id: 1,
             code: 'catA',
             label: '[catA]',
             isLeaf: false,
         },
         {
-            id: 43,
             code: 'catB',
             label: '[catB]',
             isLeaf: true,
         },
     ];
 
-    fetchMock.mockResponses(
-        //useCategories with catA and catB
-        JSON.stringify(categories),
-        //useCategories with an empty array
-        JSON.stringify([])
-    );
+    fetchMock.mockResponseOnce(JSON.stringify(categories));
 
     const onChange = jest.fn();
 
@@ -149,11 +120,7 @@ test('it calls onChange when the operator changes', () => {
                     state={{field: 'categories', operator: Operator.IN_LIST, value: ['catA', 'catB']}}
                     onChange={onChange}
                     onRemove={jest.fn()}
-                    errors={{
-                        field: null,
-                        operator: null,
-                        value: null,
-                    }}
+                    errors={{}}
                 />
             </ReactQueryWrapper>
         </ThemeProvider>
@@ -171,26 +138,18 @@ test('it calls onChange when the operator changes', () => {
 test('it hides value field and resets selected value when operator value is unclassified', async () => {
     const categories = [
         {
-            id: 1,
             code: 'catA',
-            label: '[catA]',
+            label: 'Category A',
             isLeaf: false,
         },
         {
-            id: 43,
             code: 'catB',
-            label: '[catB]',
+            label: 'Category B',
             isLeaf: true,
         },
     ];
 
-    fetchMock.mockResponses(
-        //useCategories with catA and catB
-        JSON.stringify(categories),
-        //useCategories with an empty array
-        JSON.stringify([])
-    );
-
+    fetchMock.mockResponseOnce(JSON.stringify(categories));
     const onChange = jest.fn();
 
     render(
@@ -200,17 +159,13 @@ test('it hides value field and resets selected value when operator value is uncl
                     state={{field: 'categories', operator: Operator.IN_LIST, value: ['catA', 'catB']}}
                     onChange={onChange}
                     onRemove={jest.fn()}
-                    errors={{
-                        field: null,
-                        operator: null,
-                        value: null,
-                    }}
+                    errors={{}}
                 />
             </ReactQueryWrapper>
         </ThemeProvider>
     );
 
-    expect(await screen.findByText('[catA]')).toBeInTheDocument();
+    await waitFor(() => screen.findByText('Category A'));
 
     changeOperatorValueTo(Operator.UNCLASSIFIED);
 
@@ -224,32 +179,23 @@ test('it hides value field and resets selected value when operator value is uncl
 test('it calls onChange with remaining items when removing category from selection ', async () => {
     const categories = [
         {
-            id: 1,
             code: 'catA',
             label: '[catA]',
             isLeaf: false,
         },
         {
-            id: 43,
             code: 'catB',
             label: '[catB]',
             isLeaf: true,
         },
         {
-            id: 67,
             code: 'catC',
             label: '[catC]',
             isLeaf: false,
         },
     ];
 
-    fetchMock.mockResponses(
-        //useCategories with catA, catB, and catC
-        JSON.stringify(categories),
-        //useCategories with an empty array
-        JSON.stringify([])
-    );
-
+    fetchMock.mockResponseOnce(JSON.stringify(categories));
     const onChange = jest.fn();
 
     render(
@@ -259,17 +205,13 @@ test('it calls onChange with remaining items when removing category from selecti
                     state={{field: 'categories', operator: Operator.IN_LIST, value: ['catA', 'catB', 'catC']}}
                     onChange={onChange}
                     onRemove={jest.fn()}
-                    errors={{
-                        field: null,
-                        operator: null,
-                        value: null,
-                    }}
+                    errors={{}}
                 />
             </ReactQueryWrapper>
         </ThemeProvider>
     );
 
-    expect(await screen.findByText('[catB]')).toBeInTheDocument();
+    await waitFor(() => screen.findByText('[catB]'));
 
     const selectedCategory = screen.getByTestId('catB');
     const deleteIcon = within(selectedCategory).getByTitle(
@@ -288,13 +230,11 @@ test('it calls onChange with remaining items when removing category from selecti
 test('it calls onChange with categories selected from category tree selector ', async () => {
     const categories = [
         {
-            id: 1,
             code: 'catA',
             label: '[catA]',
             isLeaf: false,
         },
         {
-            id: 43,
             code: 'catB',
             label: '[catB]',
             isLeaf: true,
@@ -303,13 +243,11 @@ test('it calls onChange with categories selected from category tree selector ', 
 
     const categoryTree = [
         {
-            id: 2,
             code: 'master',
             label: '[master]',
             isLeaf: false,
         },
         {
-            id: 3,
             code: 'print',
             label: '[print]',
             isLeaf: false,
@@ -318,13 +256,11 @@ test('it calls onChange with categories selected from category tree selector ', 
 
     const masterChildren = [
         {
-            id: 4,
             code: 'childA',
             label: '[childA]',
             isLeaf: true,
         },
         {
-            id: 5,
             code: 'childB',
             label: '[childB]',
             isLeaf: false,
@@ -334,8 +270,6 @@ test('it calls onChange with categories selected from category tree selector ', 
     fetchMock.mockResponses(
         //useCategories with catA, catB, and catC
         JSON.stringify(categories),
-        //useCategories with an empty array
-        JSON.stringify([]),
         //useCategoryTrees
         JSON.stringify(categoryTree),
         //useChildren for master
@@ -351,17 +285,13 @@ test('it calls onChange with categories selected from category tree selector ', 
                     state={{field: 'categories', operator: Operator.IN_LIST, value: ['catA', 'catB']}}
                     onChange={onChange}
                     onRemove={jest.fn()}
-                    errors={{
-                        field: null,
-                        operator: null,
-                        value: null,
-                    }}
+                    errors={{}}
                 />
             </ReactQueryWrapper>
         </ThemeProvider>
     );
 
-    expect(await screen.findByText('[catB]')).toBeInTheDocument();
+    await waitFor(() => screen.findByText('[catB]'));
 
     const categorySelection = screen.getByTestId('category-selection');
     fireEvent.click(categorySelection);
@@ -386,13 +316,11 @@ test('it calls onChange with categories selected from category tree selector ', 
 test('it calls onChange with categories selected from a different tree selector ', async () => {
     const categories = [
         {
-            id: 1,
             code: 'catA',
             label: '[catA]',
             isLeaf: false,
         },
         {
-            id: 43,
             code: 'catB',
             label: '[catB]',
             isLeaf: true,
@@ -401,13 +329,11 @@ test('it calls onChange with categories selected from a different tree selector 
 
     const categoryTree = [
         {
-            id: 2,
             code: 'master',
             label: '[master]',
             isLeaf: false,
         },
         {
-            id: 3,
             code: 'print',
             label: '[print]',
             isLeaf: false,
@@ -416,13 +342,11 @@ test('it calls onChange with categories selected from a different tree selector 
 
     const masterChildren = [
         {
-            id: 4,
             code: 'childA',
             label: '[childA]',
             isLeaf: true,
         },
         {
-            id: 5,
             code: 'childB',
             label: '[childB]',
             isLeaf: false,
@@ -431,7 +355,6 @@ test('it calls onChange with categories selected from a different tree selector 
 
     const printChildren = [
         {
-            id: 9,
             code: 'childC',
             label: '[childC]',
             isLeaf: false,
@@ -441,8 +364,6 @@ test('it calls onChange with categories selected from a different tree selector 
     fetchMock.mockResponses(
         //useCategories with catA, catB, and catC
         JSON.stringify(categories),
-        //useCategories with an empty array
-        JSON.stringify([]),
         //useCategoryTrees
         JSON.stringify(categoryTree),
         //useChildren for master
@@ -460,17 +381,13 @@ test('it calls onChange with categories selected from a different tree selector 
                     state={{field: 'categories', operator: Operator.IN_LIST, value: ['catA', 'catB']}}
                     onChange={onChange}
                     onRemove={jest.fn()}
-                    errors={{
-                        field: null,
-                        operator: null,
-                        value: null,
-                    }}
+                    errors={{}}
                 />
             </ReactQueryWrapper>
         </ThemeProvider>
     );
 
-    expect(await screen.findByText('[catB]')).toBeInTheDocument();
+    await waitFor(() => screen.findByText('[catB]'));
 
     const categorySelection = screen.getByTestId('category-selection');
     fireEvent.click(categorySelection);

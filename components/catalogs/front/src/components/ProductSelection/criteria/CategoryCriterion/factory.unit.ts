@@ -14,12 +14,12 @@ test('it creates a CategoryCriterion state with default values', () => {
 test('it creates a CategoryCriterion state with given values', () => {
     expect(
         factory({
-            operator: Operator.UNCLASSIFIED,
-            value: [],
+            operator: Operator.IN_CHILDREN_LIST,
+            value: ['codeA', 'codeB'],
         })
     ).toMatchObject({
         field: 'categories',
-        operator: Operator.UNCLASSIFIED,
-        value: [],
+        operator: Operator.IN_CHILDREN_LIST,
+        value: ['codeA', 'codeB'],
     });
 });

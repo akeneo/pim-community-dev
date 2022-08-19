@@ -49,7 +49,6 @@ export const useCategoriesByCodes = (codes: CategoryCode[]): Result => {
     const categoriesFromCodes = codes.map(
         categoryCode =>
             cache[categoryCode] ?? {
-                id: -1,
                 code: categoryCode,
                 label: `[${categoryCode}]`,
                 isLeaf: true,
