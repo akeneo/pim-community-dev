@@ -311,5 +311,5 @@ pim:
     memory: 512
     bucket: null # Generated
     sourceCodeZip: null # Generated
-    timeZone: "EST"
+    timeZone: "Europe/Paris"
     serviceAccountEmail: pim-job-function
