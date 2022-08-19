@@ -4,6 +4,13 @@ resource "google_service_account" "pim_job_sa" {
   display_name = "PIM-Job Cloud Function"
 }
 
+resource "google_project_iam_member" "pim_sa_firestore" {
+  project      =    var.project_id
+  role         =    "roles/firebaserules.system"
+  member      =    "serviceAccount:pim-job-function@${var.project_id}.iam.gserviceaccount.com" 
+  
+}
+
 
 resource "google_service_account_iam_binding" "pim_sa_usage" {
   service_account_id = google_service_account.pim_job_sa.name
@@ -23,9 +30,3 @@ resource "google_service_account" "pim_job_depl_sa" {
   display_name = "PIM deployment SA"
 }
 
-
-resource "google_project_iam_member" "pim_depl_workload_identity" {
-  project = var.project_id
-  role    = "roles/iam.workloadIdentityUser"
-  member  = "serviceAccount:${var.project_id}.svc.id.goog[${var.pim_k8s_ns}/${var.pim_k8s_sa}]"
-}
