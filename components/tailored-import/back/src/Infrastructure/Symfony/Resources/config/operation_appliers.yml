@@ -15,6 +15,10 @@ services:
     tags:
       - { name: akeneo.tailored_import.operation_applier, priority: 101 }
 
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ConvertToPriceOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier, priority: 101 }
+
   Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\BooleanReplacementOperationApplier:
     tags:
       - { name: akeneo.tailored_import.operation_applier, priority: 101 }

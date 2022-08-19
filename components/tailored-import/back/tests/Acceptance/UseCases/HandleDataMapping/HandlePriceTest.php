@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
@@ -85,33 +86,14 @@ final class HandlePriceTest extends HandleDataMappingTestCase
                         OperationCollection::create([]),
                         [],
                     ),
-                    DataMapping::create(
-                        'b244c45c-d5ec-4993-8cff-7ccd04e82fec',
-                        AttributeTarget::create(
-                            'price',
-                            'pim_catalog_price_collection',
-                            'ecommerce',
-                            null,
-                            'add',
-                            'skip',
-                            [
-                                'currency' => 'USD',
-                                'decimal_separator' => ',',
-                            ],
-                        ),
-                        ['25621f5a-504f-4893-8f0c-da684dfa84f7'],
-                        OperationCollection::create([]),
-                        [],
-                    ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
                     new UpsertProductCommand(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         valueUserIntents: [
-                            new SetPriceValue('gross_price', null, null, '10.000000000000', 'EUR'),
-                            new SetPriceValue('net_price', 'ecommerce', 'fr_FR', '60.500000000000', 'USD'),
-                            new AddPriceValue('price', 'ecommerce', null, '6.000000000000', 'USD'),
+                            new SetPriceValue('gross_price', null, null, new PriceValue('10.000000000000', 'EUR')),
+                            new SetPriceValue('net_price', 'ecommerce', 'fr_FR', new PriceValue('60.500000000000', 'USD')),
                         ],
                     ),
                     [],
@@ -131,7 +113,7 @@ final class HandlePriceTest extends HandleDataMappingTestCase
                             'pim_catalog_price_collection',
                             null,
                             null,
-                            'add',
+                            'set',
                             'skip',
                             [
                                 'currency' => 'EUR',
@@ -149,7 +131,7 @@ final class HandlePriceTest extends HandleDataMappingTestCase
                             'pim_catalog_price_collection',
                             null,
                             null,
-                            'add',
+                            'set',
                             'skip',
                             [
                                 'currency' => 'USD',
@@ -166,8 +148,8 @@ final class HandlePriceTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         valueUserIntents: [
-                            new AddPriceValue('gross_price', null, null, '10.000000000000', 'EUR'),
-                            new AddPriceValue('gross_price', null, null, '60.000000000000', 'USD'),
+                            new SetPriceValue('gross_price', null, null, new PriceValue('10.000000000000', 'EUR')),
+                            new SetPriceValue('gross_price', null, null, new PriceValue('60.000000000000', 'USD')),
                         ],
                     ),
                     [],
@@ -241,7 +223,7 @@ final class HandlePriceTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         valueUserIntents: [
-                            new SetPriceValue('gross_price', null, null, '2022.000000000000', 'EUR'),
+                            new SetPriceValue('gross_price', null, null, new PriceValue('2022.000000000000', 'EUR')),
                         ],
                     ),
                     [

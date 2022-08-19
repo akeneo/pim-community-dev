@@ -11,25 +11,30 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Domain\Model\Value;
+namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
 use Webmozart\Assert\Assert;
 
-final class PriceValue implements ValueInterface
+final class ConvertToPriceOperation implements OperationInterface
 {
-    private const TYPE = 'price';
+    public const TYPE = 'convert_to_price';
 
     public function __construct(
-        private string $value,
+        private string $uuid,
+        private string $decimalSeparator,
         private string $currency,
     ) {
-        Assert::stringNotEmpty($value);
-        Assert::stringNotEmpty($currency);
+        Assert::uuid($uuid);
     }
 
-    public function getValue(): string
+    public function getUuid(): string
     {
-        return $this->value;
+        return $this->uuid;
+    }
+
+    public function getDecimalSeparator(): string
+    {
+        return $this->decimalSeparator;
     }
 
     public function getCurrency(): string
@@ -40,8 +45,9 @@ final class PriceValue implements ValueInterface
     public function normalize(): array
     {
         return [
+            'uuid' => $this->uuid,
             'type' => self::TYPE,
-            'value' => $this->value,
+            'decimal_separator' => $this->decimalSeparator,
             'currency' => $this->currency,
         ];
     }

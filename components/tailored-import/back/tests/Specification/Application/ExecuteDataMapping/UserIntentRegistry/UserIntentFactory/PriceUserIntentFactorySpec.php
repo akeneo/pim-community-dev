@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\PriceUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
@@ -35,7 +36,7 @@ class PriceUserIntentFactorySpec extends ObjectBehavior
         AttributeTarget $attributeTarget
     ) {
         $attributeTarget->getAttributeType()->willReturn('pim_catalog_textarea');
-        $value = new PriceValue('123');
+        $value = new PriceValue('123', 'EUR');
 
         $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_price_collection"'))
             ->during('create', [$attributeTarget, $value]);
@@ -56,7 +57,7 @@ class PriceUserIntentFactorySpec extends ObjectBehavior
             new \Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue('12.5', 'EUR'),
         );
 
-        $this->create($attributeTarget, new PriceValue('12', 'EUR'))->shouldBeLike($expected);
+        $this->create($attributeTarget, new PriceValue('12.5', 'EUR'))->shouldBeLike($expected);
     }
 
     public function it_supports_target_attribute_type_catalog_price_collection(

@@ -30,9 +30,9 @@ class PriceValueSpec extends ObjectBehavior
         $this->getValue()->shouldReturn('123');
     }
 
-    public function it_returns_currency_code()
+    public function it_returns_currency()
     {
-        $this->getCurrencyCode()->shouldReturn('EUR');
+        $this->getCurrency()->shouldReturn('EUR');
     }
 
     public function it_normalizes()
@@ -40,7 +40,7 @@ class PriceValueSpec extends ObjectBehavior
         $this->normalize()->shouldReturn([
             'type' => 'price',
             'value' => '123',
-            'currency_code' => 'EUR',
+            'currency' => 'EUR',
         ]);
     }
 

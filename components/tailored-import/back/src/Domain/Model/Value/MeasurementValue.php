@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Value;
 
 use Webmozart\Assert\Assert;
 
-class MeasurementValue implements ValueInterface
+final class MeasurementValue implements ValueInterface
 {
     private const TYPE = 'measurement';
 

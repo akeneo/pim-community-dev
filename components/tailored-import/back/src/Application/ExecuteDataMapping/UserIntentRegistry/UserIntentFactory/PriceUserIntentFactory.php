@@ -41,7 +41,7 @@ final class PriceUserIntentFactory implements UserIntentFactoryInterface
             $target->getCode(),
             $target->getChannel(),
             $target->getLocale(),
-            new \Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue($value->getValue(), $value->getCurrencyCode()),
+            new \Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue($value->getValue(), $value->getCurrency()),
         );
     }
 
