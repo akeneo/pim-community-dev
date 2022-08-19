@@ -27,7 +27,7 @@ final class InMemoryGetSupplierWithContributors implements GetSupplierWithContri
             $supplier->identifier(),
             $supplier->code(),
             $supplier->label(),
-            $supplier->contributors(),
+            array_map(fn (array $contributorEmail) => $contributorEmail['email'], $supplier->contributors()),
         );
     }
 }

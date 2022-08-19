@@ -67,10 +67,15 @@ final class DatabaseRepository implements Repository
 
     public function delete(Identifier $identifier): void
     {
+        $this->connection->beginTransaction();
+
+        $this->deleteContributors((string) $identifier);
         $this->connection->delete(
             'akeneo_supplier_portal_supplier',
             ['identifier' => (string) $identifier],
         );
+
+        $this->connection->commit();
     }
 
     private function deleteContributors(string $supplierIdentifier): void

@@ -65,4 +65,19 @@ final class InMemoryRepositoryTest extends TestCase
 
         static::assertNull($contributorAccount);
     }
+
+    /** @test */
+    public function itDeletesAContributorAccountByEmail(): void
+    {
+        $repository = new InMemoryRepository();
+        $repository->save(ContributorAccount::fromEmail('contributor1@example.com'));
+        $repository->save(ContributorAccount::fromEmail('contributor2@example.com'));
+        $repository->save(ContributorAccount::fromEmail('contributor3@example.com'));
+
+        $repository->deleteByEmail('contributor2@example.com');
+
+        $this->assertNull($repository->findByEmail(Email::fromString('contributor2@example.com')));
+        $this->assertInstanceOf(ContributorAccount::class, $repository->findByEmail(Email::fromString('contributor1@example.com')));
+        $this->assertInstanceOf(ContributorAccount::class, $repository->findByEmail(Email::fromString('contributor3@example.com')));
+    }
 }

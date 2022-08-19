@@ -37,4 +37,9 @@ class InMemoryRepository implements ContributorAccountRepository
 
         return null;
     }
+
+    public function deleteByEmail(string $email): void
+    {
+        unset($this->contributorAccounts[$email]);
+    }
 }

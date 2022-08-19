@@ -11,4 +11,5 @@ interface ContributorAccountRepository
     public function save(ContributorAccount $contributorAccount): void;
     public function find(Identifier $contributorAccountIdentifier): ?ContributorAccount;
     public function findByEmail(Email $email): ?ContributorAccount;
+    public function deleteByEmail(string $email): void;
 }

@@ -4,29 +4,29 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Domain\Authentication\ContributorAccount;
 
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail;
-use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildGoodbyeEmail;
+use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendGoodbyeEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
-class SendWelcomeEmailTest extends TestCase
+class SendGoodbyeEmailTest extends TestCase
 {
     /** @test */
-    public function itSendsAWelcomeEmail(): void
+    public function itSendsAGoodbyeEmail(): void
     {
         $contributorEmail = 'jeanjacques@example.com';
         $email = new Email(
-            'You\'ve received an invitation to contribute to Akeneo Supplier Portal',
+            'Goodbye email',
             'htmlContent',
             'textContent',
             'noreply@akeneo.com',
             $contributorEmail,
         );
 
-        $buildWelcomeEmail = $this->createMock(BuildWelcomeEmail::class);
-        $buildWelcomeEmail
+        $buildGoodbyeEmail = $this->createMock(BuildGoodbyeEmail::class);
+        $buildGoodbyeEmail
             ->expects($this->once())
             ->method('__invoke')
             ->willReturn($email);
@@ -37,7 +37,7 @@ class SendWelcomeEmailTest extends TestCase
             ->method('__invoke')
             ->with($email);
 
-        $sut = new SendWelcomeEmail($sendEmail, $buildWelcomeEmail, new NullLogger());
-        ($sut)($contributorEmail, 'access-token');
+        $sut = new SendGoodbyeEmail($sendEmail, $buildGoodbyeEmail, new NullLogger());
+        ($sut)($contributorEmail);
     }
 }

@@ -28,6 +28,8 @@ $rules = [
 
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
+            'Symfony\Contracts\EventDispatcher\EventDispatcherInterface',
+            'Psr\Log\LoggerInterface',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Domain'),
 
@@ -38,6 +40,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
             'Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
@@ -72,7 +75,6 @@ $rules = [
 
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
-            'Psr\Log\LoggerInterface',
             'Symfony',
             'Twig\Environment',
             'Swift_Mailer',
@@ -109,6 +111,7 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierFromContributorEmail',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository',
+            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',

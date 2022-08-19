@@ -7,21 +7,21 @@ namespace Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccoun
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
 use Psr\Log\LoggerInterface;
 
-class SendWelcomeEmail
+class SendGoodbyeEmail
 {
     public function __construct(
         private SendEmail $sendEmail,
-        private BuildWelcomeEmail $buildWelcomeEmail,
+        private BuildGoodbyeEmail $buildGoodbyeEmail,
         private LoggerInterface $logger,
     ) {
     }
 
-    public function __invoke(string $recipientEmail, string $accessToken): void
+    public function __invoke(string $recipientEmail): void
     {
-        $email = ($this->buildWelcomeEmail)($recipientEmail, $accessToken);
+        $email = ($this->buildGoodbyeEmail)($recipientEmail);
 
         ($this->sendEmail)($email);
 
-        $this->logger->info(sprintf('A welcome email has been sent to "%s"', $email->to));
+        $this->logger->info(sprintf('A goodbye email has been sent to "%s"', $email->to));
     }
 }
