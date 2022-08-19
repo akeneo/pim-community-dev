@@ -16,7 +16,6 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\T
 use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Price\Currency as CurrencyConstraint;
 use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\FindCurrency;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Currency;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
