@@ -16,7 +16,7 @@ use Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface;
 
 final class UpsertRunningUser
 {
-    private const AUTOMATED_USER_PREFIX = 'automated_';
+    private const AUTOMATED_USER_PREFIX = 'job_automated_';
 
     public function __construct(
         private UpsertUserHandlerInterface $upsertUserHandler,

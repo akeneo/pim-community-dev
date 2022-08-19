@@ -63,7 +63,7 @@ class JobInstance
 
     protected bool $scheduled = false;
 
-    protected array $automation;
+    protected ?array $automation = null;
 
     /** @var Collection|JobExecution[] */
     protected $jobExecutions;
@@ -272,7 +272,7 @@ class JobInstance
         return $this;
     }
 
-    public function getAutomation(): array
+    public function getAutomation(): ?array
     {
         return $this->automation;
     }

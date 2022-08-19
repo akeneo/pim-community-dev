@@ -40,9 +40,9 @@ class UpsertRunningUserSpec extends ObjectBehavior
         $userRole->getRole()->willReturn('ROLE_USER');
         $roleRepository->findAll()->willReturn([$administratorRole, $userRole]);
         $command = UpsertUserCommand::job(
-            'automated_my_job_name',
+            'job_automated_my_job_name',
             'fakepassword',
-            'automated_my_job_name@fake.com',
+            'job_automated_my_job_name@fake.com',
             'my_job_name',
             'Automated Job',
             ['ROLE_ADMINISTRATOR', 'ROLE_USER'],
