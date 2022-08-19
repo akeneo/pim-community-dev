@@ -89,7 +89,7 @@ class UpdateProductByUuidController
         $isCreation = false;
         if (null === $product) {
             $isCreation = true;
-            $product = $this->productBuilder->createProduct(identifier: $data['identifier'] ?? null, uuid: $data['uuid'] ?? null);
+            $product = $this->productBuilder->createProduct(identifier: $data['identifier'] ?? null, uuid: $uuid);
         }
 
         $this->validateUuidConsistency($uuid, $data);
