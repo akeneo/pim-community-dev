@@ -24,7 +24,8 @@
             "Akeneo\\Pim\\Structure\\Family\\": "src/Akeneo/Pim/Structure/Family/back",
             "Akeneo\\Channel\\": "src/Akeneo/Channel/back",
             "Akeneo\\Catalogs\\": "components/catalogs/back/src",
-            "Akeneo\\Category\\": "src/Akeneo/Category/back"
+            "Akeneo\\Category\\": "src/Akeneo/Category/back",
+            "Akeneo\\UserManagement\\": "src/Akeneo/UserManagement/back"
         }
     },
     "autoload-dev": {
@@ -48,7 +49,8 @@
             "Akeneo\\Test\\Pim\\Structure\\Family\\": "src/Akeneo/Pim/Structure/Family/back/Test",
             "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
             "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests",
-            "Akeneo\\Test\\Category\\": "src/Akeneo/Category/back/tests"
+            "Akeneo\\Test\\Category\\": "src/Akeneo/Category/back/tests",
+            "Akeneo\\Test\\UserManagement\\": "src/Akeneo/UserManagement/back/tests"
         }
     },
     "require": {
@@ -68,7 +70,7 @@
         "ext-zip": "*",
         "akeneo/oauth-server-bundle": "^2.0.0",
         "ass/xmlsecurity": "1.1.1",
-        "aws/aws-sdk-php": "3.172",
+        "aws/aws-sdk-php": "3.233.5",
         "box/spout": "^3.3.0",
         "doctrine/annotations": "^1.13.2",
         "doctrine/cache": "^1.12.1",
