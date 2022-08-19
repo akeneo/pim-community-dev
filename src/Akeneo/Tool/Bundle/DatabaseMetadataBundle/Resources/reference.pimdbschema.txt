@@ -697,7 +697,7 @@ pim_catalog_product | product_model_id | YES | int | MUL
 pim_catalog_product | family_variant_id | YES | int | MUL
 pim_catalog_product | id | NO | int | UNI
 pim_catalog_product | is_enabled | NO | tinyint(1) |
-pim_catalog_product | identifier | NO | varchar(255) | UNI
+pim_catalog_product | identifier | YES | varchar(255) | UNI
 pim_catalog_product | raw_values | NO | json |
 pim_catalog_product | created | NO | datetime |
 pim_catalog_product | updated | NO | datetime |
