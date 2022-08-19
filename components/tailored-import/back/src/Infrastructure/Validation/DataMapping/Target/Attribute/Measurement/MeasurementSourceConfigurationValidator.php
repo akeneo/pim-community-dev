@@ -23,8 +23,8 @@ final class MeasurementSourceConfigurationValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof PriceSourceConfiguration) {
-            throw new UnexpectedTypeException($constraint, PriceSourceConfiguration::class);
+        if (!$constraint instanceof MeasurementSourceConfiguration) {
+            throw new UnexpectedTypeException($constraint, MeasurementSourceConfiguration::class);
         }
 
         $validator = $this->context->getValidator();
