@@ -12,6 +12,7 @@ spec:
   runtime: "nodejs16"
   httpsTrigger:
     securityLevel: SECURE_ALWAYS
+    ingressSettings: ALLOW_ALL
   projectRef:
     external: "projects/{{ .Values.common.gcpProjectID }}"
   sourceArchiveUrl: "gs://{{ .Values.pim.cloudFunction.bucket}}/{{ .Values.pim.cloudFunction.sourceCodeZip }}"
@@ -19,3 +20,5 @@ spec:
   environmentVariables:
     projectId: "{{ .Values.common.gcpProjectID }}"
     tenantContext: "tenant_contexts"
+  serviceAccountRef:
+    external: "{{ .Values.pim.cloudFunction.serviceAccountEmail }}"
