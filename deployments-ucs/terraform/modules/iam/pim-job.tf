@@ -1,7 +1,7 @@
 resource "google_service_account" "pim_job_sa" {
   project      = var.project_id
   account_id   = "pim-job-function"
-  display_name = "PIM Job"
+  display_name = "PIM-Job Cloud Function"
 }
 
 

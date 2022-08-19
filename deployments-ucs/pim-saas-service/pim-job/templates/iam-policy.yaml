@@ -14,3 +14,6 @@ spec:
     - role: "roles/cloudfunctions.invoker"
       members:
         - "serviceAccount:{{ .Values.pim.cloudFunction.serviceAccountEmail }}"
+    - role: roles/firebaserules.system
+      members:
+        - "serviceAccount:{{ .Values.pim.cloudFunction.serviceAccountEmail }}"

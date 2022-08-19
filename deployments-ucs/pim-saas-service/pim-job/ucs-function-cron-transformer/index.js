@@ -29,7 +29,7 @@ firestore.collection(process.env.tenantContext).get()
       //read command and options jobs from the http request
       let commandJson=JSON.parse(JSON.stringify(command));
         let dataBuffer = Buffer.from(JSON.stringify(command));
-        const pubSubClient = new PubSub({ projectId: projectId });
+        const pubSubClient = new PubSub({ projectId: process.env.projectId });
         for(var i = 0; i < tenantIds.length; i++){
           let customAttributes = {
               tenant_id: tenantIds[i],
