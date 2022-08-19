@@ -32,10 +32,10 @@ final class ClearPriceValueApplier implements UserIntentApplier
             $userIntent->channelCode()
         )?->getData()->toArray() ?? [];
 
-        $newPriceCollection = array_filter(
+        $newPriceCollection = array_values(array_filter(
             $previousPriceCollection,
             static fn (ProductPrice $value) => $value->getCurrency() !== $userIntent->currencyCode()
-        );
+        ));
 
         $normalizedPriceCollection = array_map(static fn (ProductPrice $value) => [
             'amount' => $value->getData(),
