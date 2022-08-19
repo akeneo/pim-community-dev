@@ -1,4 +1,5 @@
 import {useQuery} from 'react-query';
+import {useUserContext} from '@akeneo-pim-community/shared';
 import {Category, CategoryCode} from '../models/Category';
 
 type QueryParams = {
@@ -15,6 +16,7 @@ type Result = {
 };
 
 export const useCategories = ({codes = [], isRoot = false}: QueryParams): Result => {
+    const locale = useUserContext().get('uiLocale');
     return useQuery<Data, ResultError, Data>(['categories', {codes, isRoot}], async () => {
         if (isRoot && codes.length > 0) {
             throw new Error('Cannot use codes and root simultaneously to fetch categories');
@@ -27,6 +29,7 @@ export const useCategories = ({codes = [], isRoot = false}: QueryParams): Result
         const queryParameters = new URLSearchParams({
             codes: codes.join(','),
             is_root: isRoot ? '1' : '0',
+            locale: locale,
         }).toString();
 
         const response = await fetch('/rest/catalogs/categories?' + queryParameters, {
