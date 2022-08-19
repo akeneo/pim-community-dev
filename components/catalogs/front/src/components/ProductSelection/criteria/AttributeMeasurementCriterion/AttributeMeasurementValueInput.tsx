@@ -92,25 +92,6 @@ const AttributeMeasurementValueInput: FC<Props> = ({state, onChange, isInvalid, 
     const [search, setSearch] = useState<string>('');
     const {data: measurements} = useMeasurements(measurementFamily);
 
-    // const measurements: Measurement[] = [
-    //     {
-    //         code: 'm',
-    //         label: 'Meters',
-    //     },
-    //     {
-    //         code: 'km',
-    //         label: 'Kilometers',
-    //     },
-    //     {
-    //         code: 'miles',
-    //         label: 'Miles',
-    //     },
-    //     {
-    //         code: 'ft',
-    //         label: 'Feet',
-    //     },
-    // ];
-
     const filteredMeasurements: Measurement[] = useMemo(() => {
         const regex = new RegExp(search, 'i');
 
@@ -159,6 +140,7 @@ const AttributeMeasurementValueInput: FC<Props> = ({state, onChange, isInvalid, 
                         readOnly={true}
                         title={findMeasurementLabelByCode(state.value?.unit)}
                         value={findMeasurementLabelByCode(state.value?.unit)}
+                        data-testid="unit"
                     />
                     <MeasurementInputArrowDownIcon size={16} />
                 </TextInputContainer>

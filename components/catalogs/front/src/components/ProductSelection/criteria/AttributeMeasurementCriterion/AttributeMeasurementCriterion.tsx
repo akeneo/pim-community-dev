@@ -13,11 +13,11 @@ import {Operator} from '../../models/Operator';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 const AttributeMeasurementCriterion: FC<CriterionModule<AttributeMeasurementCriterionState>> = ({
-                                                                                                    state,
-                                                                                                    errors,
-                                                                                                    onChange,
-                                                                                                    onRemove,
-                                                                                                }) => {
+    state,
+    errors,
+    onChange,
+    onRemove,
+}) => {
     const translate = useTranslate();
     const {data: attribute} = useAttribute(state.field);
     const hasError = Object.values(errors).filter(n => n).length > 0;
