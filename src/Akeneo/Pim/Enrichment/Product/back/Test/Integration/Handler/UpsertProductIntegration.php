@@ -1135,6 +1135,7 @@ final class UpsertProductIntegration extends TestCase
         );
     }
 
+    /** @test */
     public function it_create_a_price_value_on_a_product(): void
     {
         $this->updateProduct(new SetPriceCollectionValue('a_price', null, null, [
@@ -1144,14 +1145,14 @@ final class UpsertProductIntegration extends TestCase
 
         $this->assertProductHasCorrectValueByAttributeCode(
             'a_price',
-            new PriceCollection([new ProductPrice('42', 'EUR'), new ProductPrice('24', 'USD')])
+            new PriceCollection([new ProductPrice('42.00', 'EUR'), new ProductPrice('24.00', 'USD')])
         );
 
         $this->updateProduct(new ClearPriceValue('a_price', null, null, 'EUR'));
 
         $this->assertProductHasCorrectValueByAttributeCode(
             'a_price',
-            new PriceCollection([new ProductPrice('24', 'USD')])
+            new PriceCollection([new ProductPrice('24.00', 'USD')])
         );
     }
 

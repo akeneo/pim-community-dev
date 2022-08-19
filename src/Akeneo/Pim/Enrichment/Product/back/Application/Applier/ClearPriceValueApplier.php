@@ -30,12 +30,17 @@ final class ClearPriceValueApplier implements UserIntentApplier
             $userIntent->attributeCode(),
             $userIntent->localeCode(),
             $userIntent->channelCode()
-        ) ?? [];
+        )?->getData()->toArray() ?? [];
 
         $newPriceCollection = array_filter(
             $previousPriceCollection,
             static fn (ProductPrice $value) => $value->getCurrency() !== $userIntent->currencyCode()
         );
+
+        $normalizedPriceCollection = array_map(static fn (ProductPrice $value) => [
+            'amount' => $value->getData(),
+            'currency' => $value->getCurrency(),
+        ], $newPriceCollection);
 
         $this->productUpdater->update($product, [
             'values' => [
@@ -43,7 +48,7 @@ final class ClearPriceValueApplier implements UserIntentApplier
                     [
                         'scope' => $userIntent->channelCode(),
                         'locale' => $userIntent->localeCode(),
-                        'data' => $newPriceCollection,
+                        'data' => $normalizedPriceCollection,
                     ],
                 ],
             ],
