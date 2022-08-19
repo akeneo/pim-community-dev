@@ -30,7 +30,7 @@ class GetWarningCount
         $statement = $this->connection->executeQuery('
             SELECT COUNT(*)
             FROM akeneo_batch_step_execution s
-            LEFT JOIN akeneo_batch_warning w ON s.id = w.step_execution_id
+            JOIN akeneo_batch_warning w ON s.id = w.step_execution_id
             WHERE s.job_execution_id = :job_execution_id
         ', [
            'job_execution_id' => $jobExecutionId
