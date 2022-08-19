@@ -55,7 +55,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
         }
 
         $automation = $jobInstance->getAutomation();
-        $this->upsertRunningUser->execute($jobInstance->getCode(), $automation['running_user_groups']);
+        $this->upsertRunningUser->execute($jobInstance->getCode(), $automation['running_user_groups'] ?? []);
     }
 
     /**

@@ -57,7 +57,7 @@ class UserProvider implements UserProviderInterface
         }
 
         $reloadedUser = $this->userRepository->find($user->getId());
-        if (null === $reloadedUser || $reloadedUser->isApiUser()) {
+        if (null === $reloadedUser || $reloadedUser->isApiUser() || $reloadedUser->isJobUser()) {
             throw new UsernameNotFoundException(sprintf('User with id %d not found', $user->getId()));
         }
 

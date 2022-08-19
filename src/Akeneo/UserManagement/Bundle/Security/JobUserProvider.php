@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\UserManagement\Bundle\Security;
 
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
+use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -28,7 +29,7 @@ class JobUserProvider implements UserProviderInterface
         }
 
         if (!$user->isEnabled()) {
-            throw new UserNotFoundException('User account is disabled.');
+            throw new DisabledException('User account is disabled.');
         }
 
         return $user;

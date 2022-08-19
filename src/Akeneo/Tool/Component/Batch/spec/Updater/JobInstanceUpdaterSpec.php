@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Batch\Updater;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\UpsertRunningUser;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -14,9 +15,15 @@ use PhpSpec\ObjectBehavior;
 
 class JobInstanceUpdaterSpec extends ObjectBehavior
 {
-    function let(JobParametersFactory $jobParametersFactory, JobRegistry $jobRegistry)
-    {
-        $this->beConstructedWith($jobParametersFactory, $jobRegistry);
+    function let(
+        JobInstance $jobInstance,
+        JobParametersFactory $jobParametersFactory,
+        JobRegistry $jobRegistry,
+        UpsertRunningUser $upsertRunningUser
+    ) {
+        $jobInstance->getJobName()->willReturn('xlsx_product_import');
+
+        $this->beConstructedWith($jobParametersFactory, $jobRegistry, $upsertRunningUser);
     }
 
     function it_is_initializable()
@@ -70,5 +77,33 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
                 JobInstance::class
             )
         )->during('update', [new \stdClass(), []]);
+    }
+
+    function it_create_a_upsert_a_user_when_there_is_an_automation(
+        JobInstance $jobInstance,
+        UpsertRunningUser $upsertRunningUser
+    ) {
+        $upsertRunningUser->execute('xlsx_product_import', ['IT Support'])->shouldBeCalledOnce();
+        $this->update($jobInstance, [
+            'scheduled' => true,
+            'automation' => [
+                'cron_expression' => '0 */8 * * *',
+                'running_user_groups' => ['IT Support'],
+            ]
+        ]);
+    }
+
+    function it_does_not_create_a_user_when_there_is_an_automation(
+        JobInstance $jobInstance,
+        UpsertRunningUser $upsertRunningUser
+    ) {
+        $upsertRunningUser->execute('xlsx_product_import', ['IT Support'])->shouldNotBeCalled();
+        $this->update($jobInstance, [
+            'scheduled' => false,
+            'automation' => [
+                'cron_expression' => '0 */8 * * *',
+                'running_user_groups' => ['IT Support'],
+            ]
+        ]);
     }
 }
