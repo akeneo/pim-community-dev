@@ -3,8 +3,9 @@ import {MultiSelectInput} from 'akeneo-design-system';
 import {FamilyCriterionState} from './types';
 import {useInfiniteFamilies} from '../../hooks/useInfiniteFamilies';
 import {useFamiliesByCodes} from '../../hooks/useFamiliesByCodes';
-import {useUniqueFamilies} from '../../hooks/useUniqueFamilies';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {Family} from '../../models/Family';
+import {useUniqueEntitiesByCode} from '../../hooks/useUniqueEntitiesByCode';
 
 type Props = {
     state: FamilyCriterionState;
@@ -17,7 +18,7 @@ const FamilySelectInput: FC<Props> = ({state, onChange, isInvalid}) => {
     const [search, setSearch] = useState<string>();
     const {data: selection} = useFamiliesByCodes(state.value);
     const {data: results, fetchNextPage} = useInfiniteFamilies({search: search});
-    const families = useUniqueFamilies(selection, results);
+    const families = useUniqueEntitiesByCode<Family>(selection, results);
 
     return (
         <MultiSelectInput

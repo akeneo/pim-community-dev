@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation;
 
-use Akeneo\Catalogs\Application\Persistence\GetChannelLocalesQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Validation\CatalogPayload\CompletenessFieldIsValid;
-use Akeneo\Catalogs\Infrastructure\Validation\CatalogPayload\EnabledFieldIsValid;
-use Akeneo\Catalogs\Infrastructure\Validation\CatalogPayload\FamilyFieldIsValid;
+use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeTextCriterion\AttributeTextCriterionStructure;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeTextCriterion\AttributeTextCriterionValues;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\CompletenessCriterion\CompletenessCriterionStructure;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\CompletenessCriterion\CompletenessCriterionValues;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\EnabledCriterion\EnabledCriterionStructure;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\FamilyCriterion\FamilyCriterionStructure;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -20,16 +23,17 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class UpdateCatalogPayloadIsValidValidator extends ConstraintValidator
+class CatalogUpdatePayloadValidator extends ConstraintValidator
 {
-    public function __construct(private GetChannelLocalesQueryInterface $getChannelLocalesQuery)
-    {
+    public function __construct(
+        private FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
+    ) {
     }
 
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof UpdateCatalogPayloadIsValid) {
-            throw new UnexpectedTypeException($constraint, UpdateCatalogPayloadIsValid::class);
+        if (!$constraint instanceof CatalogUpdatePayload) {
+            throw new UnexpectedTypeException($constraint, CatalogUpdatePayload::class);
         }
 
         $this->context
@@ -67,7 +71,9 @@ class UpdateCatalogPayloadIsValidValidator extends ConstraintValidator
                                     return;
                                 }
 
-                                $constraints = $this->getFieldConstraints($criterion['field'] ? (string) $criterion['field'] : null);
+                                $constraints = $criterion['field'] ? $this->getCriterionConstraint(
+                                    $criterion['field']
+                                ) : null;
 
                                 if (null === $constraints) {
                                     $context->buildViolation('Invalid field value')
@@ -91,13 +97,30 @@ class UpdateCatalogPayloadIsValidValidator extends ConstraintValidator
         ];
     }
 
-    private function getFieldConstraints(?string $field): EnabledFieldIsValid|FamilyFieldIsValid|CompletenessFieldIsValid|null
+    private function getCriterionConstraint(string $field): Constraint|null
     {
-        return match ($field) {
-            'completeness' => new CompletenessFieldIsValid($this->getChannelLocalesQuery),
-            'enabled' => new EnabledFieldIsValid(),
-            'family' => new FamilyFieldIsValid(),
+        $constraint = match ($field) {
+            'completeness' => new Assert\Sequentially([
+                new CompletenessCriterionStructure(),
+                new CompletenessCriterionValues(),
+            ]),
+            'enabled' => new EnabledCriterionStructure(),
+            'family' => new FamilyCriterionStructure(),
             default => null
+        };
+
+        if (null !== $constraint) {
+            return $constraint;
+        }
+
+        $attribute = $this->findOneAttributeByCodeQuery->execute($field);
+
+        return match ($attribute['type'] ?? null) {
+            'pim_catalog_text' => new Assert\Sequentially([
+                new AttributeTextCriterionStructure(),
+                new AttributeTextCriterionValues(),
+            ]),
+            default => null,
         };
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation;
 
-use Akeneo\Catalogs\Infrastructure\Validation\UpdateCatalogPayloadIsValid;
+use Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -12,9 +12,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Validation\UpdateCatalogPayloadIsValid
+ * @covers \Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayload
  */
-class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
+class CatalogUpdatePayloadTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
 
@@ -48,14 +48,14 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'locale' => 'en_US',
                 ]
             ],
-        ], new UpdateCatalogPayloadIsValid());
+        ], new CatalogUpdatePayload());
 
         $this->assertEmpty($violations);
     }
 
     public function testItReturnsViolationsWithMissingValues(): void
     {
-        $violations = $this->validator->validate([], new UpdateCatalogPayloadIsValid());
+        $violations = $this->validator->validate([], new CatalogUpdatePayload());
 
         $this->assertViolationsListContains($violations, 'This field is missing.');
     }
@@ -71,7 +71,7 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
                     'value' => true,
                 ],
             ],
-        ], new UpdateCatalogPayloadIsValid());
+        ], new CatalogUpdatePayload());
 
         $this->assertViolationsListContains($violations, 'Invalid array structure.');
     }
@@ -89,7 +89,7 @@ class UpdateCatalogPayloadIsValidTest extends IntegrationTestCase
         $violations = $this->validator->validate([
             'enabled' => false,
             'product_selection_criteria' => [$criterion],
-        ], new UpdateCatalogPayloadIsValid());
+        ], new CatalogUpdatePayload());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

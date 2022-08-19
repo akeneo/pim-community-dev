@@ -1,19 +1,23 @@
 import React, {FC} from 'react';
 import {SelectInput} from 'akeneo-design-system';
-import {CompletenessCriterionState} from './types';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useInfiniteChannels} from '../../hooks/useInfiniteChannels';
-import {useChannel} from '../../hooks/useChannel';
-import {useUniqueEntitiesByCode} from '../../hooks/useUniqueEntitiesByCode';
-import {Channel} from '../../models/Channel';
+import {useInfiniteChannels} from '../hooks/useInfiniteChannels';
+import {useChannel} from '../hooks/useChannel';
+import {useUniqueEntitiesByCode} from '../hooks/useUniqueEntitiesByCode';
+import {Channel} from '../models/Channel';
+
+type ScopableCriterionState = {
+    scope: string | null;
+    locale: string | null;
+};
 
 type Props = {
-    state: CompletenessCriterionState;
-    onChange: (state: CompletenessCriterionState) => void;
+    state: ScopableCriterionState;
+    onChange: (state: ScopableCriterionState) => void;
     isInvalid: boolean;
 };
 
-const CompletenessScopeInput: FC<Props> = ({state, onChange, isInvalid}) => {
+const ScopeInput: FC<Props> = ({state, onChange, isInvalid}) => {
     const translate = useTranslate();
     const {data: selected} = useChannel(state.scope);
     const {data: results, fetchNextPage} = useInfiniteChannels();
@@ -40,4 +44,4 @@ const CompletenessScopeInput: FC<Props> = ({state, onChange, isInvalid}) => {
     );
 };
 
-export {CompletenessScopeInput};
+export {ScopeInput};

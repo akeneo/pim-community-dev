@@ -45,3 +45,8 @@ akeneo_catalogs_internal_get_channels:
     path: '/rest/catalogs/channels'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelsAction
     methods: [ GET ]
+
+akeneo_catalogs_internal_get_locales:
+    path: '/rest/catalogs/locales'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetLocalesAction
+    methods: [ GET ]

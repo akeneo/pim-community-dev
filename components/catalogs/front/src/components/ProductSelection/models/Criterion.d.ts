@@ -9,7 +9,8 @@ import {AttributeTextCriterionState} from '../criteria/AttributeTextCriterion';
 export type CriterionModule<State> = {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     state: State & any;
-    onChange: (state: State) => void;
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    onChange: (state: State & any) => void;
     onRemove: () => void;
     errors: CriterionErrors;
 };
