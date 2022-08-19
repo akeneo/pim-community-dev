@@ -1,16 +1,19 @@
 import React, {FC, useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {CloseIcon, Helper, IconButton, List} from 'akeneo-design-system';
+import {CloseIcon, IconButton, List} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
 import {CriterionModule} from '../../models/Criterion';
 import {CategoryCriterionState} from './types';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {CategoryOperatorInput} from './CategoryOperatorInput';
 import {CategorySelectInput} from './CategorySelectInput';
+import {ErrorHelpers} from '../ErrorHelpers';
 
 const Fields = styled.div`
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
+    flex-grow: 1;
 `;
 
 const Field = styled.div`
@@ -25,22 +28,15 @@ const LargeField = styled.div`
 
 const CategoryCriterion: FC<CriterionModule<CategoryCriterionState>> = ({state, errors, onChange, onRemove}) => {
     const translate = useTranslate();
+    const hasError = Object.values(errors).filter(n => n).length > 0;
     const [showCategories, setShowCategories] = useState<boolean>(false);
 
     useEffect(() => {
         setShowCategories(Operator.UNCLASSIFIED !== state.operator);
     }, [state.operator]);
 
-    const errorHelpers = Object.keys(errors).map(key =>
-        errors[key] === undefined || errors[key] === null ? null : (
-            <Helper key={key} level='error'>
-                {errors[key]}
-            </Helper>
-        )
-    );
-
     return (
-        <List.Row>
+        <List.Row isMultiline>
             <List.TitleCell width={150}>
                 {translate('akeneo_catalogs.product_selection.criteria.category.label')}
             </List.TitleCell>
@@ -65,7 +61,11 @@ const CategoryCriterion: FC<CriterionModule<CategoryCriterionState>> = ({state, 
                     onClick={onRemove}
                 />
             </List.RemoveCell>
-            {errorHelpers.length > 0 && <List.RowHelpers>{errorHelpers}</List.RowHelpers>}
+            {hasError && (
+                <List.RowHelpers>
+                    <ErrorHelpers errors={errors} />
+                </List.RowHelpers>
+            )}
         </List.Row>
     );
 };
