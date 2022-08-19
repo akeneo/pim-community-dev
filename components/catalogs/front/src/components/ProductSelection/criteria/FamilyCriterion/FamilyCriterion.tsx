@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC} from 'react';
 import {CloseIcon, IconButton, List} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
 import {CriterionModule} from '../../models/Criterion';
@@ -27,12 +27,8 @@ const LargeField = styled.div`
 
 const FamilyCriterion: FC<CriterionModule<FamilyCriterionState>> = ({state, errors, onChange, onRemove}) => {
     const translate = useTranslate();
-    const [showFamilies, setShowFamilies] = useState<boolean>(false);
+    const showFamilies = [Operator.IN_LIST, Operator.NOT_IN_LIST].includes(state.operator);
     const hasError = Object.values(errors).filter(n => n).length > 0;
-
-    useEffect(() => {
-        setShowFamilies([Operator.IN_LIST, Operator.NOT_IN_LIST].includes(state.operator));
-    }, [state.operator]);
 
     return (
         <List.Row isMultiline>
