@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
+use Akeneo\Pim\Permission\Component\Validator\GrantedQuantifiedAssociations;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -34,6 +35,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -290,6 +292,28 @@ class CreateProductByUuidController
     {
         $violations = $this->validator->validate($product, null, ['Default', 'api']);
         if (0 !== $violations->count()) {
+            foreach ($violations as $offset => $violation) {
+                /** @var ConstraintViolationInterface $violation */
+                if (GrantedQuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR === $violation->getCode()) {
+                    $parameters = $violation->getParameters();
+                    $uuid = $this->getUuidFromIdentifier($parameters['{{ values }}']);
+                    $parameters = ['{{values }}' => $uuid->toString()];
+                    $message = sprintf('The following products don\'t exist: %s. Please make sure the products haven\'t been deleted in the meantime.', $uuid->toString());
+
+                    $violations->set($offset, new ConstraintViolation(
+                        $message,
+                        $violation->getMessageTemplate(),
+                        $parameters,
+                        $violation->getRoot(),
+                        $violation->getPropertyPath(),
+                        $violation->getInvalidValue(),
+                        $violation->getPlural(),
+                        $violation->getCode(),
+                        $violation->getConstraint(),
+                        $violation->getCause()
+                    ));
+                }
+            }
             $this->eventDispatcher->dispatch(new ProductValidationErrorEvent($violations, $product));
 
             throw new ViolationHttpException($violations);
