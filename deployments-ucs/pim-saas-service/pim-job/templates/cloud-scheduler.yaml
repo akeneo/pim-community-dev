@@ -20,7 +20,7 @@ spec:
     oidcToken:
       audience: "https://{{ $tplCtx.Values.common.region }}-{{ $tplCtx.Values.common.gcpProjectID }}.cloudfunctions.net/{{ $tplCtx.Values.pim.cloudFunction.name }}"
       serviceAccountRef:
-        external: "{{ .Values.pim.cloudFunction.serviceAccountEmail }}"
+        external: "{{ $tplCtx.Values.pim.cloudFunction.serviceAccountEmail }}"
     body: {{ printf "{\"topicId\": \"%s\",\"code\":  \"%s\",\"env\": \"prod\",\"options\": \"%s\" }" $tplCtx.Values.pim.pubsub.topic_job_scheduler $jobName $jobOptions.pimJobOptions | squote |  replace "'" ""| b64enc }}
 ---
 {{ end }}
