@@ -9,13 +9,11 @@ import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 test('It fetches category tree roots', async () => {
     const treeRoots = [
         {
-            id: 1,
             code: 'catA',
             label: '[catA]',
             isLeaf: false,
         },
         {
-            id: 43,
             code: 'catB',
             label: '[catB]',
             isLeaf: false,

@@ -3,12 +3,11 @@ import {Category} from '../models/Category';
 import {useCategories} from './useCategories';
 import {useEffect} from 'react';
 
-type Data = Category[];
 type ResultError = Error | null;
 type Result = {
     isLoading: boolean;
     isError: boolean;
-    data: Data | undefined;
+    data: Category[] | undefined;
     error: ResultError;
 };
 
