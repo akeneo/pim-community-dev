@@ -16,6 +16,7 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
 {
     private const ALLOWED_TYPES = [
         'pim_catalog_text',
+        'pim_catalog_metric',
     ];
 
     public function __construct(
@@ -44,6 +45,8 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
                 'type' => $attribute->getType(),
                 'scopable' => $attribute->isScopable(),
                 'localizable' => $attribute->isLocalizable(),
+                'measurement_family' => $attribute->getMetricFamily(),
+                'default_measurement_unit' => $attribute->getDefaultMetricUnit(),
             ],
             $attributes
         );

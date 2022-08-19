@@ -46,6 +46,9 @@ akeneo_catalogs:
                 placeholder: Select your families
             completeness:
                 label: Completeness
+            metric:
+                search: select your unit
+                no_results: no matches found
         operators:
             "STARTS WITH": starts with
             "ENDS WITH": ends with

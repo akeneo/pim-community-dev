@@ -99,3 +99,7 @@ services:
     Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesQuery:
         arguments:
             - '@pim_catalog.repository.locale'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetMeasurementsFamilyQuery:
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'

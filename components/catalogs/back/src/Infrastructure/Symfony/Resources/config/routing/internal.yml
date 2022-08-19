@@ -50,3 +50,8 @@ akeneo_catalogs_internal_get_locales:
     path: '/rest/catalogs/locales'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetLocalesAction
     methods: [ GET ]
+
+akeneo_catalogs_internal_get_measurements_family_measurements:
+    path: '/rest/catalogs/measurements-families/{code}/measurements'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetMeasurementsFamilyMeasurementsAction
+    methods: [ GET ]
