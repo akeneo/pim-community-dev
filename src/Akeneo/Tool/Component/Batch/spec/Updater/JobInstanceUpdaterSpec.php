@@ -68,14 +68,14 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
     ): void
     {
         $currentAutomation = [
-            'cron_expression' => '0 0/8 * * *',
+            'cron_expression' => '0 */8 * * *',
         ];
 
         $jobInstance->getAutomation()->willReturn($currentAutomation);
         $clock->now()->willReturn(\DateTimeImmutable::createFromFormat(\DateTimeImmutable::ATOM, '2022-12-27T07:00:00+00:00'));
 
         $expectedUpdatedAutomation = [
-            'cron_expression' => '0 0/4 * * *',
+            'cron_expression' => '0 */4 * * *',
             'setup_date' => '2022-12-27T07:00:00+00:00',
             'last_execution_date' => null,
         ];
@@ -84,7 +84,7 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
 
         $this->update($jobInstance, [
             'automation' => [
-                'cron_expression' => '0 0/4 * * *',
+                'cron_expression' => '0 */4 * * *',
             ]
         ]);
     }
@@ -95,7 +95,7 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
     ): void
     {
         $currentAutomation = [
-            'cron_expression' => '0 0/4 * * *',
+            'cron_expression' => '0 */4 * * *',
             'setup_date' => '2022-12-27T07:00:00+00:00',
             'last_execution_date' => null,
         ];
@@ -104,7 +104,7 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
         $clock->now()->shouldNotBeCalled();
 
         $expectedNotUpdatedAutomation = [
-            'cron_expression' => '0 0/4 * * *',
+            'cron_expression' => '0 */4 * * *',
             'setup_date' => '2022-12-27T07:00:00+00:00',
             'last_execution_date' => null,
         ];
@@ -113,7 +113,7 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
 
         $this->update($jobInstance, [
             'automation' => [
-                'cron_expression' => '0 0/4 * * *',
+                'cron_expression' => '0 */4 * * *',
             ]
         ]);
     }

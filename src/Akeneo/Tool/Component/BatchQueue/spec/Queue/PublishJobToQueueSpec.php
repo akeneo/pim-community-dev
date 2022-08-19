@@ -88,7 +88,7 @@ class PublishJobToQueueSpec extends ObjectBehavior
         $jobParametersFactory->create($job, [])->willReturn($jobParameters);
 
         $entityManager->merge($jobInstance)->shouldBeCalled();
-        $validator->validate($jobInstance, Argument::any())
+        $validator->validate($jobInstance)
             ->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])
                                ->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
