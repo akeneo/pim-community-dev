@@ -17,3 +17,5 @@ akeneo_catalogs:
                     empty: 'This value must not be empty.'
                 completeness:
                     value: 'Completeness value must be between 0 and 100 percent.'
+                category:
+                    value: 'Some of the selected categories do not exist or have been selected. Please remove these categories.'
