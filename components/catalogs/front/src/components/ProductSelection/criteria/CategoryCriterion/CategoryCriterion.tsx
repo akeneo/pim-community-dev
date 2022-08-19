@@ -47,7 +47,7 @@ const CategoryCriterion: FC<CriterionModule<CategoryCriterionState>> = ({state, 
                     </Field>
                     {showCategories && (
                         <LargeField>
-                            <CategorySelectInput state={state} onChange={onChange} isInvalid={!!errors.state} />
+                            <CategorySelectInput state={state} onChange={onChange} isInvalid={!!errors.value} />
                         </LargeField>
                     )}
                 </Fields>

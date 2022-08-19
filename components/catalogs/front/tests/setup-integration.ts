@@ -1,7 +1,7 @@
 // Autoload the extend expect
 import '@testing-library/jest-dom';
 import {useEffect, useState} from 'react';
-import {useSessionStorageState, useTranslate} from '@akeneo-pim-community/shared';
+import {useSessionStorageState, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import fetchMock from 'jest-fetch-mock';
 
 jest.mock('@akeneo-pim-community/shared');
@@ -18,6 +18,9 @@ require('jest-fetch-mock').enableMocks();
 
     return [value, setValue];
 });
+(useUserContext as jest.Mock).mockImplementation(() => ({
+    get: (key: string) => key === 'uiLocale' ? 'en_US' : null,
+}));
 
 // to make DSM Tab usable with jest
 window.IntersectionObserver = jest.fn().mockImplementation(() => ({
