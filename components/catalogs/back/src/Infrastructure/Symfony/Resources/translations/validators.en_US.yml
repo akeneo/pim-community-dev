@@ -4,13 +4,16 @@ akeneo_catalogs:
         product_selection:
             criteria:
                 channel:
+                    not_empty: 'This channel must be empty.'
+                    empty: 'This channel must not be empty.'
                     unknown: 'This channel has been deactivated. Please check your channel settings or remove this criterion.'
                 locale:
+                    not_empty: 'This locale must be empty.'
+                    empty: 'This locale must not be empty.'
                     unknown: 'This locale does not exist.'
                     disabled: 'This locale is disabled for this channel. Please check your channel settings or remove this criterion.'
+                value:
+                    not_empty: 'This value must be empty.'
+                    empty: 'This value must not be empty.'
                 completeness:
                     value: 'Completeness value must be between 0 and 100 percent.'
-                attribute_text:
-                    value:
-                        not_empty: 'This value must be empty.'
-                        empty: 'This value must not be empty.'

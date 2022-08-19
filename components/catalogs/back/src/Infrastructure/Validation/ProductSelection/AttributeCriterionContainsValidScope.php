@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Validation;
+namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -12,6 +12,6 @@ use Symfony\Component\Validator\Constraint;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class CatalogUpdatePayload extends Constraint
+final class AttributeCriterionContainsValidScope extends Constraint
 {
 }
