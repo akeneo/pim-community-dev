@@ -95,6 +95,7 @@ class GrantedQuantifiedAssociationsValidator extends ConstraintValidator
                 ]
             )
                 ->atPath($propertyPath)
+                ->setCode(GrantedQuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR)
                 ->addViolation();
         }
     }
@@ -120,6 +121,7 @@ class GrantedQuantifiedAssociationsValidator extends ConstraintValidator
                 ]
             )
                 ->atPath($propertyPath)
+                ->setCode(GrantedQuantifiedAssociations::PRODUCT_MODELS_DO_NOT_EXIST_ERROR)
                 ->addViolation();
         }
     }
