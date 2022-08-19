@@ -54,7 +54,7 @@ final class AttributeYesNoCriterion extends Compound
                 ]),
                 new CriterionOperatorsRequireEmptyValue([
                     'EMPTY',
-                    'NOT_EMPTY',
+                    'NOT EMPTY',
                 ]),
                 new AttributeCriterionContainsValidScope(),
                 new AttributeCriterionContainsValidLocale(),
