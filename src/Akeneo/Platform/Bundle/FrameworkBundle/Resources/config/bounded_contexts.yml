@@ -4,6 +4,8 @@ parameters:
 
         'Akeneo\Catalogs': 'Catalogs'
 
+        'Akeneo\Category': 'Category'
+
         'Akeneo\Channel': 'Channel'
 
         'Akeneo\Connectivity': 'Connectivity'
