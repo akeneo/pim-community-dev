@@ -1,5 +1,6 @@
 import {useQuery, useQueryClient} from 'react-query';
-import {Category} from '../models/Category';
+import {Category, CategoryCode} from '../models/Category';
+import {useEffect} from 'react';
 
 type Data = Category[];
 type ResultError = Error | null;
@@ -10,10 +11,10 @@ type Result = {
     error: ResultError;
 };
 
-export const useCategoryChildren = (categoryId: number): Result => {
+export const useCategoryChildren = (categoryCode: CategoryCode): Result => {
     const queryClient = useQueryClient();
-    return useQuery<Data, ResultError, Data>(['category-children', categoryId], async () => {
-        const response = await fetch(`/rest/catalogs/categories/${categoryId}/children`, {
+    const queryResult = useQuery<Data, ResultError, Data>(['category-children', categoryCode], async () => {
+        const response = await fetch(`/rest/catalogs/categories/${categoryCode}/children`, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
             },
@@ -30,4 +31,16 @@ export const useCategoryChildren = (categoryId: number): Result => {
 
         return responseJson;
     });
+
+    const categoryChildren = queryResult.data;
+    useEffect(() => {
+        if (categoryChildren === undefined) {
+            return;
+        }
+        categoryChildren.forEach(child => {
+            queryClient.setQueryData(['categories', {codes: [child.code], isRoot: false}], [child]);
+        });
+    }, [categoryChildren, queryClient]);
+
+    return queryResult;
 };

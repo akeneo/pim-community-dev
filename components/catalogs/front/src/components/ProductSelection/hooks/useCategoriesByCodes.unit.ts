@@ -9,13 +9,11 @@ import {useCategoriesByCodes} from './useCategoriesByCodes';
 test('it fetches categories', async () => {
     const categories = [
         {
-            id: 1,
             code: 'catA',
             label: 'Category A',
             isLeaf: false,
         },
         {
-            id: 43,
             code: 'catB',
             label: 'Category B',
             isLeaf: true,
@@ -33,13 +31,11 @@ test('it fetches categories', async () => {
         isError: false,
         data: [
             {
-                id: -1,
                 code: 'catA',
                 label: '[catA]',
                 isLeaf: true,
             },
             {
-                id: -1,
                 code: 'catB',
                 label: '[catB]',
                 isLeaf: true,

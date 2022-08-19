@@ -1,16 +1,16 @@
 import React, {FC, useState} from 'react';
 import {Tree} from 'akeneo-design-system';
 import {useCategoryChildren} from '../../hooks/useCategoryChildren';
-import {Category} from '../../models/Category';
+import {Category, CategoryCode} from '../../models/Category';
 
 type NodeChildrenProps = {
-    id: number;
+    categoryCode: CategoryCode;
     selectedCategories: Category[];
     onChange: (values: Category[]) => void;
 };
 
-const NodeChildren = ({id, selectedCategories, onChange}: NodeChildrenProps) => {
-    const {data: childrenNodes, isLoading} = useCategoryChildren(id);
+const NodeChildren = ({categoryCode, selectedCategories, onChange}: NodeChildrenProps) => {
+    const {data: childrenNodes, isLoading} = useCategoryChildren(categoryCode);
 
     if (isLoading || childrenNodes === undefined) {
         return null;
@@ -19,7 +19,7 @@ const NodeChildren = ({id, selectedCategories, onChange}: NodeChildrenProps) => 
     const childrenList = childrenNodes.map(childNode => {
         return (
             <TreeNode
-                key={childNode.id}
+                key={childNode.code}
                 category={childNode}
                 onChange={onChange}
                 selectedCategories={selectedCategories}
@@ -61,8 +61,8 @@ export const TreeNode: FC<NodeProps> = ({category, selectedCategories, onChange,
         >
             {isOpen ? (
                 <NodeChildren
-                    key={category.id}
-                    id={category.id}
+                    key={category.code}
+                    categoryCode={category.code}
                     selectedCategories={selectedCategories}
                     onChange={onChange}
                 />
