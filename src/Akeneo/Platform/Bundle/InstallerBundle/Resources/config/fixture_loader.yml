@@ -54,3 +54,4 @@ services:
         arguments:
             - '@akeneo_batch.job_parameters_factory'
             - '@akeneo_batch.job.job_registry'
+            - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\UpsertRunningUser'

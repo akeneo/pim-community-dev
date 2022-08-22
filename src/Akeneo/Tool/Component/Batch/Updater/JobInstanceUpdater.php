@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\Batch\Updater;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\UpsertRunningUser;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -19,18 +20,11 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class JobInstanceUpdater implements ObjectUpdaterInterface
 {
-    protected JobParametersFactory $jobParametersFactory;
-
-    protected JobRegistry $jobRegistry;
-
-    /**
-     * @param JobParametersFactory $jobParametersFactory
-     * @param JobRegistry          $jobRegistry
-     */
-    public function __construct(JobParametersFactory $jobParametersFactory, JobRegistry $jobRegistry)
-    {
-        $this->jobParametersFactory = $jobParametersFactory;
-        $this->jobRegistry = $jobRegistry;
+    public function __construct(
+        private JobParametersFactory $jobParametersFactory,
+        private JobRegistry $jobRegistry,
+        private UpsertRunningUser $upsertRunningUser,
+    ) {
     }
 
     /**
@@ -50,6 +44,18 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
         foreach ($data as $field => $value) {
             $this->setData($jobInstance, $field, $value);
         }
+
+        $this->upsertRunningUser($jobInstance);
+    }
+
+    private function upsertRunningUser(JobInstance $jobInstance): void
+    {
+        if (!$jobInstance->isScheduled()) {
+            return;
+        }
+
+        $automation = $jobInstance->getAutomation();
+        $this->upsertRunningUser->execute($jobInstance->getCode(), $automation['running_user_groups'] ?? []);
     }
 
     /**

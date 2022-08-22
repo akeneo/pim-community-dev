@@ -5,31 +5,17 @@ declare(strict_types=1);
 namespace Akeneo\UserManagement\Bundle\Security;
 
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
-use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-/**
- * Implementation of Symfony UserProviderInterface
- *
- * @author    Pierre Jolly <pierre.jolly@akeneo.com>
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-class UserApiProvider implements UserProviderInterface
+class JobUserProvider implements UserProviderInterface
 {
-    /** @var UserRepositoryInterface */
-    protected $userRepository;
-
-    /**
-     * @param UserRepositoryInterface $userRepository
-     */
-    public function __construct(UserRepositoryInterface $userRepository)
-    {
-        $this->userRepository = $userRepository;
+    public function __construct(
+        private UserRepositoryInterface $userRepository,
+    ) {
     }
 
     /**
@@ -38,8 +24,8 @@ class UserApiProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         $user = $this->userRepository->findOneByIdentifier($username);
-        if (!$user || $user->isJobUser()) {
-            throw new UserNotFoundException(sprintf('User with username "%s" does not exist or is not a Api user.', $username));
+        if (!$user || $user->isApiUser()) {
+            throw new UserNotFoundException(sprintf('User with username "%s" does not exist or is not a Job user.', $username));
         }
 
         if (!$user->isEnabled()) {
@@ -54,14 +40,13 @@ class UserApiProvider implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user)
     {
-        $userClass = ClassUtils::getClass($user);
-        if (!$this->supportsClass($userClass)) {
-            throw new UnsupportedUserException(sprintf('User object of class "%s" is not supported.', $userClass));
+        if (!$this->supportsClass($user::class)) {
+            throw new UnsupportedUserException(sprintf('User object of class "%s" is not supported.', $user::class));
         }
 
         $reloadedUser = $this->userRepository->find($user->getId());
-        if (null === $reloadedUser || $reloadedUser->isJobUser()) {
-            throw new UserNotFoundException(sprintf('User with id %d does not exist or is not a Api user.', $user->getId()));
+        if (null === $reloadedUser || $reloadedUser->isApiUser()) {
+            throw new UserNotFoundException(sprintf('User with id %d does not exist or is not a Job user.', $user->getId()));
         }
 
         return $reloadedUser;
