@@ -11,7 +11,7 @@ class LocaleIdentifier
     private function __construct(
         private string $identifier
     ) {
-        Assert::notEmpty($identifier, 'Locale identifier should not be empty');
+        Assert::stringNotEmpty($identifier, 'Locale identifier should not be empty');
     }
 
     public static function fromCode(string $identifier): self

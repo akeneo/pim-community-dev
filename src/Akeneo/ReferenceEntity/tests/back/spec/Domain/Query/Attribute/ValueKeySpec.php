@@ -34,4 +34,10 @@ class ValueKeySpec extends ObjectBehavior
         $this->beConstructedThrough('createFromNormalized', ['']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
+
+    function it_can_be_created_when_string_is_0()
+    {
+        $this->beConstructedThrough('createFromNormalized', ['0']);
+        $this->shouldNotThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
 }
