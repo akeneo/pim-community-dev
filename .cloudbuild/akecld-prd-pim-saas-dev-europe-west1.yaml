@@ -20,11 +20,6 @@ steps:
         yq -i 'del(.server.ingress.hosts)' k8s/argocd/values.yaml
         GOOGLE_DOMAIN="argocd.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.hosts |= . + [env(GOOGLE_DOMAIN)] ' k8s/argocd/values.yaml
 
-        ## Crossplane
-        PROJECT_ID="${PROJECT_ID}" yq -i '.spec.projectID = env(PROJECT_ID)' k8s/crossplane/templates/provider-config-gcp.yaml
-        PROJECT_ID="${PROJECT_ID}" yq -i '.spec.projectID = env(PROJECT_ID)' k8s/crossplane/templates/provider-config-jet-gcp.yaml
-        CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64="$${CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64}" yq -i '.data.credentials = env(CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64)' k8s/crossplane/templates/gcp-authentication.yaml
-
         ## Datadog
         DATADOG_API_KEY="$${DATADOG_API_KEY}" yq -i '.datadog.apiKey = env(DATADOG_API_KEY)' k8s/datadog/values.yaml
         CLUSTER_NAME="${_CLUSTER_NAME}" yq -i '.datadog.clusterName = env(CLUSTER_NAME)' k8s/datadog/values.yaml
@@ -34,7 +29,6 @@ steps:
         helm repo add traefik https://helm.traefik.io/traefik
         helm repo add datadog https://helm.datadoghq.com
         helm repo add argo https://argoproj.github.io/argo-helm
-        helm repo add crossplane-stable https://charts.crossplane.io/stable
         helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
         helm repo update 2>&1
 
@@ -67,16 +61,7 @@ steps:
         helm upgrade --version 4.8.2 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
         kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
 
-        ## Crossplane
-        helm upgrade --version 1.8.1 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n crossplane-system crossplane crossplane-stable/crossplane
-        kubectl apply -f k8s/crossplane/templates/gcp-authentication.yaml
-        kubectl apply -f k8s/crossplane/templates/provider-jet-gcp.yaml
-        kubectl apply -f k8s/crossplane/templates/provider-gcp.yaml
-        for i in 1 2 3 4 5; do kubectl apply -f k8s/crossplane/templates/provider-config-jet-gcp.yaml && break || sleep 30; done
-        for i in 1 2 3 4 5; do kubectl apply -f k8s/crossplane/templates/provider-config-gcp.yaml && break || sleep 30; done
-
         ## Cloudconfig
-        kubectl delete ConfigConnector/configconnector.core.cnrm.cloud.google.com
         helm upgrade --debug --atomic --cleanup-on-fail --history-max 5 -i --wait configconnector k8s/cloudconfig --set gcpProjectId=${PROJECT_ID}
     secretEnv: ['ARGOCD_TOKEN', 'DATADOG_API_KEY', 'CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64']
 options:
@@ -87,8 +72,6 @@ availableSecrets:
     env: 'ARGOCD_TOKEN'
   - versionName: projects/${PROJECT_ID}/secrets/DATADOG_API_KEY/versions/1
     env: 'DATADOG_API_KEY'
-  - versionName: projects/${PROJECT_ID}/secrets/CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64/versions/1
-    env: 'CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64'
 substitutions:
   _CLUSTER_NAME: akecld-prd-pim-saas-dev-europe-west1
   _GOOGLE_CLUSTER_REGION: europe-west1
