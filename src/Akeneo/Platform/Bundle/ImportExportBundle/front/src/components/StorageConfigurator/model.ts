@@ -1,8 +1,9 @@
 import {FunctionComponent} from 'react';
 import {ValidationError, FeatureFlags} from '@akeneo-pim-community/shared';
-import {LocalStorage, SftpStorage, Storage, StorageType, remoteStorageIsEnabled, localStorageIsEnabled} from '../model';
+import {LocalStorage, SftpStorage, AmazonS3Storage, Storage, StorageType, remoteStorageIsEnabled, localStorageIsEnabled} from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
+import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
 
 type StorageConfiguratorProps = {
   storage: Storage;
@@ -28,6 +29,7 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags, jobCode: str
 
   if (remoteStorageIsEnabled(jobCode)) {
     enabledStorageConfigurators['sftp'] = SftpStorageConfigurator;
+    enabledStorageConfigurators['amazon_s3'] = AmazonS3StorageConfigurator;
   }
 
   return enabledStorageConfigurators;
@@ -57,5 +59,42 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
   );
 };
 
+const isAmazonS3Storage = (storage: Storage): storage is AmazonS3Storage => {
+  return (
+    'amazon_s3' === storage.type &&
+    'host' in storage &&
+    'file_path' in storage &&
+    'region' in storage &&
+    'bucket_name' in storage &&
+    'key' in storage &&
+    'secret' in storage
+  );
+};
+
+const isStorageFulfilled = (storage: Storage): boolean => {
+  if (isLocalStorage(storage)) {
+    return '' !== storage.file_path;
+  }
+
+  if (isSftpStorage(storage)) {
+    return '' !== storage.file_path &&
+      '' !== storage.host &&
+      !isNaN(storage.port) &&
+      '' !== storage.username &&
+      '' !== storage.password;
+  }
+
+  if (isAmazonS3Storage(storage)) {
+    return '' !== storage.file_path &&
+      '' !== storage.host &&
+      '' !== storage.region &&
+      '' !== storage.bucket_name &&
+      '' !== storage.key &&
+      '' !== storage.secret;
+  }
+
+  return false;
+}
+
 export type {StorageConfiguratorProps};
-export {isLocalStorage, isSftpStorage, getStorageConfigurator};
+export {isLocalStorage, isSftpStorage, isAmazonS3Storage, isStorageFulfilled, getStorageConfigurator};

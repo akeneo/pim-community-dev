@@ -7,12 +7,12 @@ declare(strict_types=1);
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\ManualUpload;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
 use League\Flysystem\FilesystemOperator;
 
-final class FileSystemStorageClient implements StorageClientInterface
+final class ManualUploadStorageClient implements StorageClientInterface
 {
     public function __construct(private FilesystemOperator $filesystemOperator)
     {

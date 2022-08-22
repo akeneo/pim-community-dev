@@ -12,6 +12,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\Local\LocalStorageClient;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 
 final class StorageClientProvider
@@ -29,6 +30,7 @@ final class StorageClientProvider
 
     public function getFromFileToTransfer(FileToTransfer $fileToTransfer): StorageClientInterface
     {
+        // TODO: AH.
         return new FileSystemStorageClient($this->filesystemProvider->getFilesystem($fileToTransfer->getStorage()));
     }
 
@@ -45,6 +47,6 @@ final class StorageClientProvider
 
     public function getLocalStorageClient(): StorageClientInterface
     {
-        return new FileSystemStorageClient($this->filesystemProvider->getFilesystem(self::LOCAL_FILESYSTEM_NAME));
+        return new LocalStorageClient($this->filesystemProvider->getFilesystem(self::LOCAL_FILESYSTEM_NAME));
     }
 }

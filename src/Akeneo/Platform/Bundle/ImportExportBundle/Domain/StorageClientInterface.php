@@ -27,4 +27,6 @@ interface StorageClientInterface
      * @return int file size in bytes
      */
     public function getFileSize(string $filePath): int;
+
+    public function connectionIsValid(): bool;
 }

@@ -12,7 +12,6 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileSystemStorageClient;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
 use League\Flysystem\FilesystemOperator;
 
@@ -29,7 +28,7 @@ final class ManualUploadStorageClientProvider implements StorageClientProviderIn
             throw new \InvalidArgumentException('The provider only support ManualUploadStorage');
         }
 
-        return new FileSystemStorageClient($this->jobFilesystemOperator);
+        return new ManualUploadStorageClient($this->jobFilesystemOperator);
     }
 
     public function supports(StorageInterface $storage): bool

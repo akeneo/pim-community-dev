@@ -12,7 +12,6 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileSystemStorageClient;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
@@ -27,7 +26,7 @@ final class LocalStorageClientProvider implements StorageClientProviderInterface
 
         $dirname = dirname($storage->getFilePath());
 
-        return new FileSystemStorageClient(new Filesystem(new LocalFilesystemAdapter($dirname)));
+        return new LocalStorageClient(new Filesystem(new LocalFilesystemAdapter($dirname)));
     }
 
     public function supports(StorageInterface $storage): bool

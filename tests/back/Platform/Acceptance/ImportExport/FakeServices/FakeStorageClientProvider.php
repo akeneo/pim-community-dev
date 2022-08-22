@@ -11,8 +11,8 @@ namespace AkeneoTest\Platform\Acceptance\ImportExport\FakeServices;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileSystemStorageClient;
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
+use Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\Sftp\LocalStorageClient;
+use Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\Sftp\StorageClientProviderInterface;
 use League\Flysystem\Filesystem;
 
 class FakeStorageClientProvider implements StorageClientProviderInterface
@@ -30,6 +30,6 @@ class FakeStorageClientProvider implements StorageClientProviderInterface
 
     public function getFromStorage(StorageInterface $storage): StorageClientInterface
     {
-        return new FileSystemStorageClient($this->fileSystem);
+        return new LocalStorageClient($this->fileSystem);
     }
 }

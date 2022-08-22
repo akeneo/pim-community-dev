@@ -1,8 +1,8 @@
 import {useEffect, useState} from 'react';
 import {useRoute} from '@akeneo-pim-community/shared';
-import {SftpStorage} from '../components';
+import { isStorageFulfilled, Storage } from 'components';
 
-const useCheckStorageConnection = (storage: SftpStorage) => {
+const useCheckStorageConnection = (storage: Storage) => {
   const [isValid, setValid] = useState<boolean | undefined>(undefined);
   const [isChecking, setIsChecking] = useState<boolean>(false);
   const route = useRoute('pimee_job_automation_get_storage_connection_check');
@@ -10,11 +10,7 @@ const useCheckStorageConnection = (storage: SftpStorage) => {
   const canCheckConnection =
     !isChecking &&
     !isValid &&
-    '' !== storage.file_path &&
-    '' !== storage.host &&
-    !isNaN(storage.port) &&
-    '' !== storage.username &&
-    '' !== storage.password;
+    isStorageFulfilled(storage);
 
   useEffect(() => {
     return () => {

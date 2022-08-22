@@ -16,14 +16,24 @@ type SftpStorage = {
   password: string;
 };
 
+type AmazonS3Storage = {
+  type: 'amazon_s3';
+  file_path: string;
+  host: string;
+  region: string;
+  bucket_name: string;
+  key: string;
+  secret: string;
+};
+
 type NoneStorage = {
   type: 'none';
   file_path: string;
 };
 
-type Storage = LocalStorage | SftpStorage | NoneStorage;
+type Storage = LocalStorage | SftpStorage | AmazonS3Storage | NoneStorage;
 
-type StorageType = 'none' | 'local' | 'sftp';
+type StorageType = 'none' | 'local' | 'sftp' | 'amazon_s3';
 
 const STORAGE_TYPES = ['none'];
 
@@ -51,6 +61,7 @@ const getEnabledStorageTypes = (featureFlags: FeatureFlags, jobCode: string): st
 
   if (remoteStorageIsEnabled(jobCode)) {
     enabledStorageTypes.push('sftp');
+    enabledStorageTypes.push('amazon_s3');
   }
 
   return enabledStorageTypes;
@@ -93,7 +104,7 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
   }
 };
 
-export type {JobType, Storage, StorageType, LocalStorage, SftpStorage, NoneStorage};
+export type {JobType, Storage, StorageType, LocalStorage, SftpStorage, AmazonS3Storage, NoneStorage};
 export {
   getDefaultStorage,
   isValidStorageType,
