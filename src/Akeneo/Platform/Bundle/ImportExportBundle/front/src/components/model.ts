@@ -94,6 +94,16 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
         username: '',
         password: '',
       };
+    case 'amazon_s3':
+      return {
+        type: 'amazon_s3',
+        file_path: getDefaultFilePath(jobType, fileExtension),
+        host: '',
+        region: '',
+        bucket_name: '',
+        key: '',
+        secret: '',
+      };
     case 'none':
       return {
         type: 'none',

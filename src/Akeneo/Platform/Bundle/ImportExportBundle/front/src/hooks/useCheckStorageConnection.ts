@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useRoute} from '@akeneo-pim-community/shared';
-import { isStorageFulfilled, Storage } from 'components';
+import { isStorageFulfilled, Storage } from '../components';
 
 const useCheckStorageConnection = (storage: Storage) => {
   const [isValid, setValid] = useState<boolean | undefined>(undefined);
