@@ -2,21 +2,21 @@ supplier_portal_upload_product_file:
     path: /upload-product-file
     defaults:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\UploadProductFile
-        _feature: supplier_portal_supplier_file_dropping
+        _feature: supplier_portal
     methods: POST
 
 supplier_portal_get_product_files:
     path: /product-files
     defaults:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\GetProductFiles
-        _feature: supplier_portal_supplier_file_dropping
+        _feature: supplier_portal
     methods: GET
 
 supplier_portal_supplier_download_file:
     path: /download-file/{identifier}
     defaults:
         _controller: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\DownloadProductFile
-        _feature: supplier_portal_supplier_file_dropping
+        _feature: supplier_portal
     requirements:
         identifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: GET

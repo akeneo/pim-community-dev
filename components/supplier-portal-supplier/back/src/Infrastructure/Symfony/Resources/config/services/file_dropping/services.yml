@@ -1,11 +1,4 @@
 services:
-    # Feature flag
-    akeneo.supplier_portal_supplier_file_dropping.feature:
-        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
-        arguments:
-            - '%env(bool:FLAG_SUPPLIER_PORTAL_SUPPLIER_FILE_DROPPING_ENABLED)%'
-        public: true
-
     # GCS Bucket services
     Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\StoreProductsFile:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\StoreProductsFileInGCSBucket
