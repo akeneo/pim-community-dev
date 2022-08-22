@@ -72,6 +72,7 @@
 - PIM-10571: Fix infinite scroll of attribute group selector in family edit form
 - PIM-10581: Fix attribute option code in linked data returned as an integer instead of a string
 - PIM-10529: Fix links on product grid
+- PIM-10595: Fix not being able to add record with code "0" on a product
 
 ## Improvements
 
