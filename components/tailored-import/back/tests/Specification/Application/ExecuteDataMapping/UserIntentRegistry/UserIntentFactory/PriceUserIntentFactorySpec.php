@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue as PriceValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\PriceUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
@@ -54,7 +55,7 @@ class PriceUserIntentFactorySpec extends ObjectBehavior
             'an_attribute_code',
             null,
             null,
-            new \Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue('12.5', 'EUR'),
+            new PriceValueUserIntent('12.5', 'EUR'),
         );
 
         $this->create($attributeTarget, new PriceValue('12.5', 'EUR'))->shouldBeLike($expected);

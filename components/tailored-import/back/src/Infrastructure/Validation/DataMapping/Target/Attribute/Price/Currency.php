@@ -24,4 +24,9 @@ final class Currency extends Constraint
     ) {
         parent::__construct();
     }
+
+    public function getChannelCode(): ?string
+    {
+        return $this->channelCode;
+    }
 }

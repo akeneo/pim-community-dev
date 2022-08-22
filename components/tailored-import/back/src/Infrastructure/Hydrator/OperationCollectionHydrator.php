@@ -126,10 +126,6 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
         $uuid = Uuid::uuid4()->toString();
 
         return [
-            new FormatFloatOperation(
-                $uuid,
-                $sourceConfiguration['decimal_separator'],
-            ),
             new ConvertToPriceOperation(
                 $uuid,
                 $sourceConfiguration['decimal_separator'],

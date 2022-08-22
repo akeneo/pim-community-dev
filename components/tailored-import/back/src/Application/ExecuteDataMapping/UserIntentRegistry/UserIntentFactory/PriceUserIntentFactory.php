@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue as PriceValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
@@ -41,7 +42,7 @@ final class PriceUserIntentFactory implements UserIntentFactoryInterface
             $target->getCode(),
             $target->getChannel(),
             $target->getLocale(),
-            new \Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue($value->getValue(), $value->getCurrency()),
+            new PriceValueUserIntent($value->getValue(), $value->getCurrency()),
         );
     }
 

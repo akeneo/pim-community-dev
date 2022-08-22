@@ -13,16 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Price;
 
-use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Price\Currency as CurrencyConstraint;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\FindCurrency;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 final class CurrencyValidator extends ConstraintValidator
 {
-    public function __construct(private FindCurrency $findCurrency)
+    public function __construct(private FindActivatedCurrenciesInterface $findActivatedCurrencies)
     {
     }
 
@@ -32,9 +31,11 @@ final class CurrencyValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, CurrencyConstraint::class);
         }
 
-        $currency = $this->findCurrency->byCode($currencyCode);
+        $currencies = (null === $constraint->getChannelCode())
+            ? $this->findActivatedCurrencies->forAllChannels()
+            : $this->findActivatedCurrencies->forChannel($constraint->getChannelCode());
 
-        if (!$currency instanceof CurrencyInterface) {
+        if (!isset($currencies[$currencyCode])) {
             $this->context->buildViolation(
                 CurrencyConstraint::CURRENCY_SHOULD_EXIST,
                 [
