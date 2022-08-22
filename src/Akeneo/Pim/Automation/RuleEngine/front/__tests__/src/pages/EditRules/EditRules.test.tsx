@@ -370,6 +370,8 @@ describe('EditRules', () => {
   });
 
   it('should render a fallback error', async () => {
+    const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+
     // Given
     fetchMock.mockResponse((request: Request) => {
       if (
@@ -400,7 +402,10 @@ describe('EditRules', () => {
     );
     // Then
     expect(await findByText('500')).toBeInTheDocument();
+
+    mockedConsole.mockRestore();
   });
+
   it('should render a non authorized page', async () => {
     dependencies.security = {
       isGranted: jest
