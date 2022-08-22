@@ -20,28 +20,12 @@ final class BuildTwigResetPasswordEmailTest extends TestCase
         $twig
             ->expects($this->exactly(2))
             ->method('render')
-            ->withConsecutive(
-                [
-                    '@AkeneoSupplierPortalSupplier/Email/contributor-reset-password.html.twig',
-                    [
-                        'contributorEmail' => $contributorEmail,
-                        'url' => 'http://wwww.example.com/supplier-portal/index.html#/set-up-password/foo',
-                    ],
-                ],
-                [
-                    '@AkeneoSupplierPortalSupplier/Email/contributor-reset-password.txt.twig',
-                    [
-                        'contributorEmail' => $contributorEmail,
-                        'url' => 'http://wwww.example.com/supplier-portal/index.html#/set-up-password/foo',
-                    ],
-                ],
-            )
             ->willReturnOnConsecutiveCalls(
                 'htmlContent',
                 'textContent',
             );
 
-        $sut = new BuildTwigResetPasswordEmail($twig, $domain);
+        $sut = new BuildTwigResetPasswordEmail($twig, $domain, '/assets');
         $email = ($sut)($contributorEmail, 'foo');
 
         static::assertSame('Reset your password', $email->subject);
@@ -49,5 +33,6 @@ final class BuildTwigResetPasswordEmailTest extends TestCase
         static::assertSame('textContent', $email->txtContent);
         static::assertSame('noreply@akeneo.com', $email->from);
         static::assertSame($contributorEmail, $email->to);
+        static::assertCount(1, $email->attachments);
     }
 }

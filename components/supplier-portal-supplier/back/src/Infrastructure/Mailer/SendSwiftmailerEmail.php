@@ -23,8 +23,12 @@ final class SendSwiftmailerEmail implements SendEmail
             ->setTo($email->to)
             ->setCharset('UTF-8')
             ->setContentType('text/html')
-            ->setBody($email->txtContent, 'text/plain')
-            ->addPart($email->htmlContent, 'text/html');
+            ->setBody($email->htmlContent, 'text/html')
+            ->addPart($email->txtContent, 'text/plain');
+
+        foreach ($email->attachments as $attachment) {
+            $message->embed($attachment);
+        }
 
         $this->mailer->send($message);
     }

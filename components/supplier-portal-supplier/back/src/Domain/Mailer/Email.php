@@ -12,6 +12,7 @@ final class Email
         public string $txtContent,
         public string $from,
         public string $to,
+        public array $attachments = [],
     ) {
     }
 }

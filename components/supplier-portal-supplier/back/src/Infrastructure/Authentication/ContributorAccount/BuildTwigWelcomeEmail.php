@@ -14,6 +14,7 @@ class BuildTwigWelcomeEmail implements BuildWelcomeEmail
     public function __construct(
         private Environment $twig,
         private string $domain,
+        private string $assetsPath,
     ) {
     }
 
@@ -21,11 +22,14 @@ class BuildTwigWelcomeEmail implements BuildWelcomeEmail
     {
         $setUpPasswordUrl = sprintf(SetUpPasswordUrl::VALUE, $this->domain, $accessToken);
 
+        $embededLogo = \Swift_Image::fromPath(sprintf('%s/%s', $this->assetsPath, 'images/supplier_portal_logo.png'));
+
         $htmlContent = $this->twig->render(
             '@AkeneoSupplierPortalSupplier/Email/contributor-invitation.html.twig',
             [
                 'contributorEmail' => $email,
                 'url' => $setUpPasswordUrl,
+                'logoCID' => $embededLogo->getId(),
             ],
         );
 
@@ -43,6 +47,7 @@ class BuildTwigWelcomeEmail implements BuildWelcomeEmail
             $textContent,
             'noreply@akeneo.com',
             $email,
+            [$embededLogo],
         );
     }
 }

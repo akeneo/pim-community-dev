@@ -20,28 +20,12 @@ final class BuildTwigWelcomeEmailTest extends TestCase
         $twig
             ->expects($this->exactly(2))
             ->method('render')
-            ->withConsecutive(
-                [
-                    '@AkeneoSupplierPortalSupplier/Email/contributor-invitation.html.twig',
-                    [
-                        'contributorEmail' => $contributorEmail,
-                        'url' => 'http://wwww.example.com/supplier-portal/index.html#/set-up-password/foo',
-                    ],
-                ],
-                [
-                    '@AkeneoSupplierPortalSupplier/Email/contributor-invitation.txt.twig',
-                    [
-                        'contributorEmail' => $contributorEmail,
-                        'url' => 'http://wwww.example.com/supplier-portal/index.html#/set-up-password/foo',
-                    ],
-                ],
-            )
             ->willReturnOnConsecutiveCalls(
                 'htmlContent',
                 'textContent',
             );
 
-        $sut = new BuildTwigWelcomeEmail($twig, $domain);
+        $sut = new BuildTwigWelcomeEmail($twig, $domain, '/assets');
         $email = ($sut)($contributorEmail, 'foo');
 
         static::assertSame("You've received an invitation to contribute to Akeneo Supplier Portal", $email->subject);
@@ -49,5 +33,6 @@ final class BuildTwigWelcomeEmailTest extends TestCase
         static::assertSame('textContent', $email->txtContent);
         static::assertSame('noreply@akeneo.com', $email->from);
         static::assertSame($contributorEmail, $email->to);
+        static::assertCount(1, $email->attachments);
     }
 }

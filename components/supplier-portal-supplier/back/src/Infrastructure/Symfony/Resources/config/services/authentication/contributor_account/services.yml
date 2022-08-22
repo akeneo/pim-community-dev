@@ -130,17 +130,20 @@ services:
         arguments:
             - '@twig'
             - '%env(AKENEO_PIM_URL)%'
+            - '%kernel.project_dir%/public/bundles/akeneosupplierportalsupplier'
 
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildGoodbyeEmail:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigGoodbyeEmail
         arguments:
             - '@twig'
+            - '%kernel.project_dir%/public/bundles/akeneosupplierportalsupplier'
 
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigResetPasswordEmail
         arguments:
             - '@twig'
             - '%env(AKENEO_PIM_URL)%'
+            - '%kernel.project_dir%/public/bundles/akeneosupplierportalsupplier'
 
     #Authentication
     Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccountProvider:
