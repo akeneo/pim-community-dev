@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion;
 
+use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\CriterionContainsScopeAndLocale;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,7 +34,12 @@ final class CompletenessCriterion extends Compound
                         ],
                         'operator' => [
                             new Assert\Type('string'),
-                            new Assert\Choice(['=', '!=', '<', '>']),
+                            new Assert\Choice([
+                                Operator::EQUALS,
+                                Operator::NOT_EQUAL,
+                                Operator::LOWER_THAN,
+                                Operator::GREATER_THAN,
+                            ]),
                         ],
                         'value' => [
                             new Assert\Type('int'),

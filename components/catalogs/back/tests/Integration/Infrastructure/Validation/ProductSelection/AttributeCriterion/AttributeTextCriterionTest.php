@@ -24,6 +24,7 @@ class AttributeTextCriterionTest extends AbstractAttributeCriterionTest
 
     /**
      * @dataProvider validDataProvider
+     * @dataProvider validOperatorsDataProvider
      */
     public function testItReturnsNoViolation(array $attribute, array $criterion): void
     {
@@ -97,6 +98,124 @@ class AttributeTextCriterionTest extends AbstractAttributeCriterionTest
                     'field' => 'name',
                     'operator' => '=',
                     'value' => 'blue',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+        ];
+    }
+
+    public function validOperatorsDataProvider(): array
+    {
+        return [
+            'field with EQUALS operator' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'criterion' => [
+                    'field' => 'name',
+                    'operator' => '=',
+                    'value' => 'blue',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+            'field with NOT_EQUAL operator' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'criterion' => [
+                    'field' => 'name',
+                    'operator' => '!=',
+                    'value' => 'blue',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+            'field with CONTAINS operator' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'criterion' => [
+                    'field' => 'name',
+                    'operator' => 'CONTAINS',
+                    'value' => 'blue',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+            'field with DOES_NOT_CONTAIN operator' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'criterion' => [
+                    'field' => 'name',
+                    'operator' => 'DOES NOT CONTAIN',
+                    'value' => 'blue',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+            'field with STARTS_WITH operator' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'criterion' => [
+                    'field' => 'name',
+                    'operator' => 'STARTS WITH',
+                    'value' => 'blue',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+            'field with IS_EMPTY operator' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'criterion' => [
+                    'field' => 'name',
+                    'operator' => 'EMPTY',
+                    'value' => '',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+            'field with IS_NOT_EMPTY operator' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'criterion' => [
+                    'field' => 'name',
+                    'operator' => 'NOT EMPTY',
+                    'value' => '',
                     'scope' => null,
                     'locale' => null,
                 ],
@@ -263,8 +382,8 @@ class AttributeTextCriterionTest extends AbstractAttributeCriterionTest
                     'code' => 'name',
                     'type' => 'pim_catalog_text',
                     'group' => 'other',
-                    'scopable' => 'ecommerce',
-                    'localizable' => 'en_US',
+                    'scopable' => true,
+                    'localizable' => true,
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -280,8 +399,8 @@ class AttributeTextCriterionTest extends AbstractAttributeCriterionTest
                     'code' => 'name',
                     'type' => 'pim_catalog_text',
                     'group' => 'other',
-                    'scopable' => 'ecommerce',
-                    'localizable' => 'en_US',
+                    'scopable' => true,
+                    'localizable' => true,
                 ],
                 'criterion' => [
                     'field' => 'name',

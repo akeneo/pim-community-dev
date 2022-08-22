@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion;
 
+use Akeneo\Catalogs\Domain\Operator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
@@ -31,7 +32,12 @@ final class FamilyCriterion extends Compound
                     ],
                     'operator' => [
                         new Assert\Type('string'),
-                        new Assert\Choice(['EMPTY', 'NOT EMPTY', 'IN', 'NOT IN']),
+                        new Assert\Choice([
+                            Operator::IS_EMPTY,
+                            Operator::IS_NOT_EMPTY,
+                            Operator::IN_LIST,
+                            Operator::NOT_IN_LIST,
+                        ]),
                     ],
                     'value' => [
                         new Assert\Type('array'),

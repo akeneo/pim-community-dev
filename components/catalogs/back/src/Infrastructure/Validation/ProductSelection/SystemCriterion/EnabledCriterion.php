@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion;
 
+use Akeneo\Catalogs\Domain\Operator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
@@ -31,7 +32,10 @@ final class EnabledCriterion extends Compound
                     ],
                     'operator' => [
                         new Assert\Type('string'),
-                        new Assert\Choice(['=', '!=']),
+                        new Assert\Choice([
+                            Operator::EQUALS,
+                            Operator::NOT_EQUAL,
+                        ]),
                     ],
                     'value' => [
                         new Assert\Type('boolean'),
