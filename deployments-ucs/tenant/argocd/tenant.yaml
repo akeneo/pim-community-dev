@@ -60,8 +60,6 @@ spec:
           value: dev.ph.akeneo.ch
         - name: common.workloadIdentityKSA
           value: ucs-test-ksa-workload-identity
-        - name: common.workloadIdentityKSANamespace
-          value: workload
         - name: common.workloadIdentityGSA
           value: main-service-account
         - name: pim.monitoring.authenticationToken

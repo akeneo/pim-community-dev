@@ -38,7 +38,7 @@ server:
   extraArgs:
     - --insecure
   ingress:
-    enabled: false
+    enabled: true
     annotations:
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.tls.options: default
