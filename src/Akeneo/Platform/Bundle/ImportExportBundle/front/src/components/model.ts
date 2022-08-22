@@ -19,7 +19,6 @@ type SftpStorage = {
 type AmazonS3Storage = {
   type: 'amazon_s3';
   file_path: string;
-  host: string;
   region: string;
   bucket_name: string;
   key: string;
@@ -98,7 +97,6 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
       return {
         type: 'amazon_s3',
         file_path: getDefaultFilePath(jobType, fileExtension),
-        host: '',
         region: '',
         bucket_name: '',
         key: '',

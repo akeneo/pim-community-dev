@@ -36,13 +36,6 @@ const AmazonS3StorageConfigurator = ({storage, validationErrors, onStorageChange
         errors={filterErrors(validationErrors, '[file_path]')}
       />
       <TextField
-        required={true}
-        value={storage.host}
-        label={translate('pim_import_export.form.job_instance.storage_form.host.label')}
-        onChange={host => onStorageChange({...storage, host})}
-        errors={filterErrors(validationErrors, '[host]')}
-      />
-      <TextField
         value={storage.region}
         required={true}
         label={translate('pim_import_export.form.job_instance.storage_form.region.label')}
