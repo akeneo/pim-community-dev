@@ -27,7 +27,7 @@ services:
             - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
 
-    Akeneo\Category\back\Infrastructure\Controller\InternalAPI\UpdateCategoryController:
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateCategoryController:
         public: true
         arguments:
             - '@category.command.message_bus'
@@ -37,3 +37,14 @@ services:
             - '@Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface'
             - '@Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter'
             - '@Akeneo\Category\Application\Query\FindCategoryByIdentifier'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Application\GetCategoryQueryHandler'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Application\Query\GetTemplate'

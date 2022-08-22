@@ -75,7 +75,6 @@ class CalculateProductModelCompleteness implements CalculateProductCompletenessI
 
         return $this->getCompletenessProductMasks->fromValueCollection(
             $productModel->getId(),
-            $productModel->getCode(),
             $productModel->getFamily()->getCode(),
             $productModel->getValues()
         );

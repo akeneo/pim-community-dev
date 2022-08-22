@@ -1,6 +1,6 @@
 <?php
 
-namespace  Akeneo\Test\Category\EndToEnd\ExternalApi;
+namespace Akeneo\Test\Category\EndToEnd\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -37,19 +37,19 @@ JSON;
 
         $expectedCategories = [
             'categoryA2' => [
-                'code'   => 'categoryA2',
+                'code' => 'categoryA2',
                 'parent' => 'categoryA',
                 'updated' => '2016-06-14T13:12:50+02:00',
                 'labels' => [
-                    'en_US' => 'category A2'
-                ]
+                    'en_US' => 'category A2',
+                ],
             ],
             'categoryD' => [
-                'code'   => 'categoryD',
+                'code' => 'categoryD',
                 'parent' => 'master',
                 'updated' => '2016-06-14T13:12:50+02:00',
-                'labels' => []
-            ]
+                'labels' => [],
+            ],
         ];
 
         $this->assertSameCategories($expectedCategories['categoryA2'], 'categoryA2');
@@ -84,7 +84,7 @@ JSON;
         $dataRows = [];
         $expectedContentRows = [];
 
-        for ($i = 0; $i < $maxNumberResources; $i++) {
+        for ($i = 0; $i < $maxNumberResources; ++$i) {
             $dataRows[] = sprintf('{"code": "my_code_%s"}', $i);
             $expectedContentRows[] = sprintf('{"line":%s,"code":"my_code_%s","status_code":201}', $i + 1, $i);
         }
@@ -107,7 +107,7 @@ JSON;
         $maxNumberResources = $this->getMaxNumberResources();
 
         $dataRows = [];
-        for ($i = 0; $i < $maxNumberResources + 1; $i++) {
+        for ($i = 0; $i < $maxNumberResources + 1; ++$i) {
             $dataRows[] = sprintf('{"identifier": "my_code_%s"}', $i);
         }
         $data = implode(PHP_EOL, $dataRows);
@@ -130,16 +130,16 @@ JSON;
     public function testPartialUpdateListWithInvalidAndTooLongLines(): void
     {
         $line = [
-            'invalid_json_1'  => str_repeat('a', $this->getBufferSize() - 1),
-            'invalid_json_2'  => str_repeat('a', $this->getBufferSize()),
-            'invalid_json_3'  => '',
-            'line_too_long_1' => '{"code":"foo"}' . str_repeat('a', $this->getBufferSize()),
-            'line_too_long_2' => '{"code":"foo"}' . str_repeat(' ', $this->getBufferSize()),
+            'invalid_json_1' => str_repeat('a', $this->getBufferSize() - 1),
+            'invalid_json_2' => str_repeat('a', $this->getBufferSize()),
+            'invalid_json_3' => '',
+            'line_too_long_1' => '{"code":"foo"}'.str_repeat('a', $this->getBufferSize()),
+            'line_too_long_2' => '{"code":"foo"}'.str_repeat(' ', $this->getBufferSize()),
             'line_too_long_3' => str_repeat('a', $this->getBufferSize() + 1),
             'line_too_long_4' => str_repeat('a', $this->getBufferSize() + 2),
             'line_too_long_5' => str_repeat('a', $this->getBufferSize() * 2),
             'line_too_long_6' => str_repeat('a', $this->getBufferSize() * 5),
-            'invalid_json_4'  => str_repeat('a', $this->getBufferSize()),
+            'invalid_json_4' => str_repeat('a', $this->getBufferSize()),
         ];
 
         $data =
@@ -172,7 +172,6 @@ JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/categories', [], [], [], $data);
         $httpResponse = $response['http_response'];
-
 
         $this->assertSame($expectedContent, $response['content']);
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -278,8 +277,8 @@ JSON;
     }
 
     /**
-     * @param array<string, mixed>  $expectedCategory normalized data of the category that should be created
-     * @param string $code             code of the category that should be created
+     * @param array<string, mixed> $expectedCategory normalized data of the category that should be created
+     * @param string $code code of the category that should be created
      */
     protected function assertSameCategories(array $expectedCategory, $code): void
     {

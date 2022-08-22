@@ -53,6 +53,8 @@ akeneo_connectivity.connection:
         title_without_apps: '{0} 사용 중인 PIM 버전과 호환되는 커넥터가 없습니다.|{1} 사용 중인 PIM 버전과 호환되는 커넥터가 {{ count }}개 있습니다.|[2,Inf] 사용 중인 PIM 버전과 호환되는 커넥터가 {{ count }}개 있습니다.'
         description: 이는 간단한 개요입니다. 자세한 정보는 Akeneo App Store에서 살펴보십시오.
         link: Akeneo App Store로 이동
+      search:
+        total: '{0} 결과 없음|{1} 1개 결과|[2,Inf] {{ total }}개 결과'
       card:
         developed_by: '개발자: {{ author }}'
         read_more: 더보기

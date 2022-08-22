@@ -82,7 +82,6 @@ SQL;
             function (array $row): array {
                 return [
                     'id' => $row['uuid'],
-                    'identifier' => $row['identifier'],
                     'familyCode' => $row['familyCode'],
                     'cleanedRawValues' => json_decode($row['rawValues'], true),
                 ];
@@ -102,14 +101,12 @@ SQL;
      */
     public function fromValueCollection(
         $id,
-        string $identifier,
         string $familyCode,
         WriteValueCollection $values
     ): CompletenessProductMask {
         Assert::true(\is_int($id) || \is_string($id));
         $row = [
             'id' => $id,
-            'identifier' => $identifier,
             'familyCode' => $familyCode,
             'cleanedRawValues' => $this->valuesNormalizer->normalize($values, 'storage'),
         ];
@@ -132,7 +129,6 @@ SQL;
         foreach ($rows as $row) {
             $result[] = new CompletenessProductMask(
                 (string) $row['id'],
-                $row['identifier'],
                 $row['familyCode'],
                 $this->getMask($row['cleanedRawValues'], $attributes)
             );

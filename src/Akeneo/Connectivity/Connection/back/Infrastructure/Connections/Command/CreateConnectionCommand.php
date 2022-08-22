@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -26,8 +27,10 @@ class CreateConnectionCommand extends Command
      */
     protected static $defaultName = 'akeneo:connectivity-connection:create';
 
-    public function __construct(private CreateConnectionHandler $createConnection)
-    {
+    public function __construct(
+        private CreateConnectionHandler $createConnection,
+        private TranslatorInterface $translator,
+    ) {
         parent::__construct();
     }
 
@@ -67,6 +70,13 @@ class CreateConnectionCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 'If you want the connection to be auditable.',
                 false
+            )
+            ->addOption(
+                'user-group',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'If you want the connection to be added to a user group.',
+                null
             );
     }
 
@@ -80,9 +90,10 @@ class CreateConnectionCommand extends Command
         $flowType = $input->getOption('flow-type');
         $auditable = /* --auditable */ null === $input->getOption('auditable')
             || /* --auditable=true|false */ false !== \filter_var($input->getOption('auditable'), FILTER_VALIDATE_BOOLEAN);
+        $userGroup = $input->getOption('user-group');
 
         try {
-            $command = new CreationCommand($code, $label, $flowType, $auditable);
+            $command = new CreationCommand($code, $label, $flowType, $auditable, null, $userGroup);
             $connectionWithCredentials = $this->createConnection->handle($command);
             $output->writeln([
                 '<info>A new connection has been created with the following settings:</info>',
@@ -95,7 +106,7 @@ class CreateConnectionCommand extends Command
             ]);
         } catch (ConstraintViolationListException $exceptionList) {
             foreach ($exceptionList->getConstraintViolationList() as $e) {
-                $output->writeln(\sprintf('<error>%s</error>', $e->getMessage()));
+                $output->writeln(\sprintf('<error>%s</error>', $this->translator->trans($e->getMessage(), [], 'jsmessages')));
             }
 
             return 1;

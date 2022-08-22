@@ -555,6 +555,12 @@ interface UserInterface extends BaseUserInterface, \Serializable, EntityUploaded
 
     public function defineAsApiUser(): void;
 
+    public function isJobUser(): bool;
+
+    public function defineAsJobUser(): void;
+
+    public function getType(): string;
+
     public function duplicate(): UserInterface;
 
     public function getConsecutiveAuthenticationFailureCounter(): int;

@@ -67,7 +67,6 @@ class GetCategoryEndToEnd extends ApiTestCase
         $this->assertSame('Category "not_found" does not exist.', $content['message']);
     }
 
-
     public function testGetACategoryWithPosition(): void
     {
         $client = $this->createAuthenticatedClient();
@@ -103,9 +102,9 @@ class GetCategoryEndToEnd extends ApiTestCase
         $this->assertSame(
             [
                 'code' => 400,
-                'message' => 'In order to search on category codes you must send an array of category codes as value, integer given. This value should be of type iterable.'
+                'message' => 'In order to search on category codes you must send an array of category codes as value, integer given. This value should be of type iterable.',
             ],
-            json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR)
+            json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR),
         );
     }
 

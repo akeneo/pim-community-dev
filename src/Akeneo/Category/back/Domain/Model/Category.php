@@ -7,6 +7,8 @@ namespace Akeneo\Category\Domain\Model;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\PermissionCollection;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -18,7 +20,9 @@ class Category
         private CategoryId $id,
         private Code $code,
         private LabelCollection $labelCollection,
-        private ?CategoryId $parentId,
+        private ?CategoryId $parentId = null,
+        private ?ValueCollection $valueCollection = null,
+        private ?PermissionCollection $permissionCollection = null,
     ) {
     }
 
@@ -42,21 +46,40 @@ class Category
         return $this->parentId;
     }
 
+    public function getValueCollection(): ?ValueCollection
+    {
+        return $this->valueCollection;
+    }
+
+    public function getPermissionCollection(): ?PermissionCollection
+    {
+        return $this->permissionCollection;
+    }
+
     public function setLabel(string $localeCode, string $label): void
     {
         $this->labelCollection->setLabel($localeCode, $label);
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array{
+     *     id: int,
+     *     code: string,
+     *     parent: int|null,
+     *     labels: array<string, string>,
+     *     values: array<string, array<string, mixed>>,
+     *     permissions: array<string, array<int>>|null
+     * }
      */
     public function normalize(): array
     {
         return [
-            'id' => $this->getId(),
-            'code' => $this->getCode(),
-            'labels' => $this->getLabelCollection(),
-            'parent' => $this->getParentId(),
+            'id' => $this->getId()->getId(),
+            'code' => (string) $this->getCode(),
+            'labels' => $this->getLabelCollection()->normalize(),
+            'parent' => $this->getParentId()?->getId(),
+            'values' => $this->getValueCollection()->normalize(),
+            'permissions' => $this->getPermissionCollection()->normalize(),
         ];
     }
 }

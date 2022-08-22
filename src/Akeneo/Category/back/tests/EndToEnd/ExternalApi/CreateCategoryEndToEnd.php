@@ -125,7 +125,7 @@ JSON;
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
-                'en_US' => 'US label'
+                'en_US' => 'US label',
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
@@ -191,7 +191,7 @@ JSON;
                 [
                     'property' => 'code',
                     'message' => 'This value is already used.',
-                ]
+                ],
             ],
         ];
 
@@ -248,7 +248,7 @@ JSON;
             'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
             '_links' => [
                 'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#post_categories'
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_categories',
                 ],
             ],
         ];
@@ -276,7 +276,7 @@ JSON;
             'message' => 'Property "labels" expects an array as data, "NULL" given. Check the expected format on the API documentation.',
             '_links' => [
                 'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#post_categories'
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_categories',
                 ],
             ],
         ];

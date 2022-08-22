@@ -19,6 +19,7 @@ class StandardFormatToUserIntents implements StandardFormatToUserIntentsInterfac
 
     /**
      * @param array<string, mixed> $standardFormat
+     *
      * @return UserIntent[]
      */
     public function convert(array $standardFormat): array

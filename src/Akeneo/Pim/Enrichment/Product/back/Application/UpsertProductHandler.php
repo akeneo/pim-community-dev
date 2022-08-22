@@ -70,9 +70,9 @@ final class UpsertProductHandler
         $this->productSaver->save($product);
 
         if ($isCreation) {
-            $this->eventDispatcher->dispatch(new ProductWasCreated($product->getIdentifier()));
+            $this->eventDispatcher->dispatch(new ProductWasCreated($product->getUuid()));
         } elseif ($isUpdate) {
-            $this->eventDispatcher->dispatch(new ProductWasUpdated($product->getIdentifier()));
+            $this->eventDispatcher->dispatch(new ProductWasUpdated($product->getUuid()));
         }
     }
 

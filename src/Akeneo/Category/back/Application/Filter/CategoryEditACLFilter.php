@@ -14,8 +14,8 @@ class CategoryEditACLFilter
 {
     /**
      * @param array<string, mixed> $collection
-     * @param string $type
      * @param array<string, mixed> $options
+     *
      * @return array<string, mixed>
      */
     public function filterCollection(array $collection, string $type, array $options = []): array
