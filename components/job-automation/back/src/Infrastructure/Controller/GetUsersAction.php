@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class GetUsersAction
 {
     public function __construct(
-        private ListUsersHandlerInterface $listUsersHandler
+        private ListUsersHandlerInterface $listUsersHandler,
     ) {
     }
 
@@ -36,7 +36,7 @@ final class GetUsersAction
 
         $users = \array_map(
             static fn (User $user) => $user->getUsername(),
-            $this->listUsersHandler->fromQuery(new ListUsersQuery())
+            $this->listUsersHandler->fromQuery(new ListUsersQuery()),
         );
 
         return new JsonResponse($users, Response::HTTP_OK);

@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class GetUserGroupsAction
 {
     public function __construct(
-        private ListUserGroupInterface $listUserGroup
+        private ListUserGroupInterface $listUserGroup,
     ) {
     }
 
@@ -36,7 +36,7 @@ final class GetUserGroupsAction
 
         $userGroups = array_map(
             static fn (UserGroup $userGroup) => $userGroup->getLabel(),
-            $this->listUserGroup->fromQuery(new UserGroupQuery())
+            $this->listUserGroup->fromQuery(new UserGroupQuery()),
         );
 
         return new JsonResponse($userGroups, Response::HTTP_OK);
