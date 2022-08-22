@@ -23,6 +23,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
     public function __construct(
         private JobParametersFactory $jobParametersFactory,
         private JobRegistry $jobRegistry,
+        private UpsertRunningUser $upsertRunningUser,
         private ClockInterface $clock,
     ) {
     }
@@ -44,6 +45,18 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
         foreach ($data as $field => $value) {
             $this->setData($jobInstance, $field, $value);
         }
+
+        $this->upsertRunningUser($jobInstance);
+    }
+
+    private function upsertRunningUser(JobInstance $jobInstance): void
+    {
+        if (!$jobInstance->isScheduled()) {
+            return;
+        }
+
+        $automation = $jobInstance->getAutomation();
+        $this->upsertRunningUser->execute($jobInstance->getCode(), $automation['running_user_groups'] ?? []);
     }
 
     private function setData(JobInstance $jobInstance, string $field, mixed $data): void

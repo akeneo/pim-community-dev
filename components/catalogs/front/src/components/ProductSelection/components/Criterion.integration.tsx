@@ -6,14 +6,14 @@ import {pimTheme} from 'akeneo-design-system';
 import {Criterion} from './Criterion';
 import {StatusCriterionState} from '../criteria/StatusCriterion';
 import {Operator} from '../models/Operator';
-import {useCriteriaRegistry} from '../hooks/useCriteriaRegistry';
+import {useFindCriterionByField} from '../hooks/useFindCriterionByField';
 import {AnyCriterion, AnyCriterionState, CriterionModule} from '../models/Criterion';
 import {ProductSelectionContext} from '../contexts/ProductSelectionContext';
 import {ProductSelectionActions} from '../reducers/ProductSelectionReducer';
 
-jest.mock('../hooks/useCriteriaRegistry');
+jest.mock('../hooks/useFindCriterionByField');
 
-const getCriterionByField = () =>
+const findCriterionByField = () =>
     Promise.resolve({
         component: (({state, onChange, onRemove}) => {
             const toggle = () => {
@@ -38,10 +38,7 @@ const getCriterionByField = () =>
         }),
     } as AnyCriterion);
 
-mocked(useCriteriaRegistry).mockImplementation(() => ({
-    system: [],
-    getCriterionByField: getCriterionByField,
-}));
+mocked(useFindCriterionByField).mockImplementation(() => findCriterionByField);
 
 const state: StatusCriterionState = {
     field: 'enabled',

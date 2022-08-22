@@ -21,7 +21,7 @@ class GetChannelsActionTest extends TestCase
     private ?GetChannelsAction $getChannelsAction;
     private ?GetChannelsQueryInterface $getChannelsQuery;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->getChannelsQuery = $this->createMock(GetChannelsQueryInterface::class);
         $this->getChannelsAction = new GetChannelsAction($this->getChannelsQuery);
@@ -30,6 +30,25 @@ class GetChannelsActionTest extends TestCase
     public function testItRedirectsWhenRequestIsNotAXmlHttpRequest(): void
     {
         self::assertInstanceOf(RedirectResponse::class, ($this->getChannelsAction)(new Request()));
+    }
+
+    public function testItCallsTheGetChannelsQueryWithDefaultValues(): void
+    {
+        $this->getChannelsQuery
+            ->method('execute')
+            ->with(1, 20)
+            ->willReturn(['channelA', 'channelB', 'channelC']);
+
+        $response = ($this->getChannelsAction)(
+            new Request(
+                query: [],
+                server: [
+                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                ],
+            )
+        );
+
+        self::assertSame(['channelA', 'channelB', 'channelC'], \json_decode($response->getContent(), null, 512, JSON_THROW_ON_ERROR));
     }
 
     /**
@@ -75,26 +94,33 @@ class GetChannelsActionTest extends TestCase
         ];
     }
 
-    public function testItReturnsChannelsFromTheQuery(): void
-    {
-        $this->getChannelsQuery
-            ->method('execute')
-            ->with(1, 20)
-            ->willReturn(['channelA', 'channelB', 'channelC']);
 
-        $response = ($this->getChannelsAction)(
+    /**
+     * @dataProvider queryWillNotThrowDataProvider
+     */
+    public function testItAnswersIfTheQueryIsValid(array $query): void
+    {
+        $this->expectNotToPerformAssertions();
+
+        ($this->getChannelsAction)(
             new Request(
-                query: [],
+                query: $query,
                 server: [
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 ],
             )
         );
+    }
 
-        self::assertInstanceOf(JsonResponse::class, $response);
-        self::assertJsonStringEqualsJsonString(
-            \json_encode(['channelA', 'channelB', 'channelC'], JSON_THROW_ON_ERROR),
-            $response->getContent()
-        );
+    public function queryWillNotThrowDataProvider(): array
+    {
+        return [
+            'limit and page are positive' => [
+                [
+                    'page' => 1,
+                    'limit' => 1,
+                ],
+            ],
+        ];
     }
 }

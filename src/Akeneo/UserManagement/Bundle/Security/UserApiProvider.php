@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\UserManagement\Bundle\Security;
 
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -36,8 +38,8 @@ class UserApiProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         $user = $this->userRepository->findOneByIdentifier($username);
-        if (!$user) {
-            throw new UsernameNotFoundException(sprintf('User with username "%s" does not exist.', $username));
+        if (!$user || $user->isJobUser()) {
+            throw new UserNotFoundException(sprintf('User with username "%s" does not exist or is not a Api user.', $username));
         }
 
         if (!$user->isEnabled()) {
@@ -58,8 +60,8 @@ class UserApiProvider implements UserProviderInterface
         }
 
         $reloadedUser = $this->userRepository->find($user->getId());
-        if (null === $reloadedUser) {
-            throw new UsernameNotFoundException(sprintf('User with id %d not found', $user->getId()));
+        if (null === $reloadedUser || $reloadedUser->isJobUser()) {
+            throw new UserNotFoundException(sprintf('User with id %d does not exist or is not a Api user.', $user->getId()));
         }
 
         return $reloadedUser;

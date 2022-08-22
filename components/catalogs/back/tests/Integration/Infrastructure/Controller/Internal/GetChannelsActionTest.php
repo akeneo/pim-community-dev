@@ -15,7 +15,7 @@ use PHPUnit\Framework\Assert;
  */
 class GetChannelsActionTest extends IntegrationTestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

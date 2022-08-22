@@ -4,7 +4,8 @@ import {CompletenessCriterionState} from './types';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useInfiniteChannels} from '../../hooks/useInfiniteChannels';
 import {useChannel} from '../../hooks/useChannel';
-import {useChannelsWithSelectedChannel} from '../../hooks/useChannelsWithSelectedChannel';
+import {useUniqueEntitiesByCode} from '../../hooks/useUniqueEntitiesByCode';
+import {Channel} from '../../models/Channel';
 
 type Props = {
     state: CompletenessCriterionState;
@@ -14,9 +15,9 @@ type Props = {
 
 const CompletenessScopeInput: FC<Props> = ({state, onChange, isInvalid}) => {
     const translate = useTranslate();
-    const {data: selectedChannel} = useChannel(state.scope);
+    const {data: selected} = useChannel(state.scope);
     const {data: results, fetchNextPage} = useInfiniteChannels();
-    const channels = useChannelsWithSelectedChannel(selectedChannel, results);
+    const channels = useUniqueEntitiesByCode<Channel>(selected ? [selected] : [], results);
 
     return (
         <SelectInput

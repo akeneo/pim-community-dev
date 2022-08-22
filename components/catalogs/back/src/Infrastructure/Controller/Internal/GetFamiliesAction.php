@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Infrastructure\Persistence\GetFamiliesByCodeQuery;
-use Akeneo\Catalogs\Infrastructure\Persistence\SearchFamilyQuery;
+use Akeneo\Catalogs\Application\Persistence\GetFamiliesByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\SearchFamilyQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +20,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class GetFamiliesAction
 {
     public function __construct(
-        private SearchFamilyQuery $searchFamilyQuery,
-        private GetFamiliesByCodeQuery $getFamiliesByCodeQuery,
+        private SearchFamilyQueryInterface $searchFamilyQuery,
+        private GetFamiliesByCodeQueryInterface $getFamiliesByCodeQuery,
     ) {
     }
 
