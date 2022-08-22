@@ -49,8 +49,6 @@ final class UserIntentsShouldBeUniqueValidator extends ConstraintValidator
                     $existingIntents[$intentLocale][$intentChannel][] = $intentAttributeCode;
                 }
             }
-
-
         }
     }
 }
