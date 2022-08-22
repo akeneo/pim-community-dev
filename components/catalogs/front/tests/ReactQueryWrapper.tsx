@@ -5,9 +5,12 @@ const ReactQueryWrapper: FC = ({children}) => {
     const queryClient = new QueryClient({
         defaultOptions: {
             queries: {
-                retry: false,
+                // by default, react query uses a back-off delay gradually applied to each retry attempt.
+                // Overriding the default value allows us to test its failing behavior without slowing down
+                // the tests.
+                retryDelay: 10,
             },
-        }
+        },
     });
 
     return (
