@@ -121,7 +121,7 @@ class PublishJobToQueue
         // in order to be able to have a working UniqueEntity validation
         $this->entityManager->merge($jobInstance);
 
-        $jobInstanceViolations = $this->validator->validate($jobInstance);
+        $jobInstanceViolations = $this->validator->validate($jobInstance, new JobInstanceConstraint());
 
         if (0 < $jobInstanceViolations->count()) {
             throw new InvalidJobException($code, $job->getName(), $jobInstanceViolations);
