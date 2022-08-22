@@ -53,13 +53,13 @@ func main() {
     email_password := os.Args[4]
     data := map[string]interface{}{
         "values": `{
-            "AKENEO_PIM_URL": "https://` + instance_name + `.pim-saas-dev.dev.cloud.akeneo.com",
+            "AKENEO_PIM_URL": "https://` + instance_name + `.dev.akeneo.ch",
             "APP_DATABASE_HOST": "pim-mysql.` + pfid + `.svc.cluster.local",
             "APP_INDEX_HOSTS": "elasticsearch-client.` + pfid + `.svc.cluster.local",
             "APP_TENANT_ID": "` + pfid + `",
             "MAILER_PASSWORD": "` + email_password + `",
-            "MAILER_URL": "smtp://smtp.mailgun.org:2525?encryption=tls&auth_mode=login&username=` + instance_name + `-akecld-prd-pim-saas-dev@mg.pim-saas-dev.dev.cloud.akeneo.com&password=` + email_password + `&sender_address=no-reply-` + pfid + `.pim-saas-dev.dev.cloud.akeneo.com",
-            "MAILER_USER": "` + instance_name + `-akecld-bh-sandbox@mg.pim-saas-dev.dev.cloud.akeneo.com",
+            "MAILER_URL": "smtp://smtp.mailgun.org:2525?encryption=tls&auth_mode=login&username=` + instance_name + `-akecld-prd-pim-saas-dev@mg.dev.akeneo.ch&password=` + email_password + `&sender_address=no-reply-` + pfid + `.dev.akeneo.ch",
+            "MAILER_USER": "` + instance_name + `-akecld-bh-sandbox@mg.dev.akeneo.ch",
             "MEMCACHED_SVC": "memcached.` + pfid + `.svc.cluster.local",
             "APP_DATABASE_PASSWORD": "` + mysql_password + `",
             "PFID": "` + pfid + `",

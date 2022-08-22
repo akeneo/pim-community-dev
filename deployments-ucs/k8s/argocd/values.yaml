@@ -56,7 +56,7 @@ server:
     #- hosts:
     #    - argocd2.bh.akeneo.ch
     hosts:
-      - argocd.pim-saas-dev.dev.cloud.akeneo.com
+      - argocd.dev.akeneo.ch
     paths:
       - /
   service:

@@ -20,9 +20,9 @@ envVarsDeployPreprod: &envVarsDeployPreprod
 
 envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
   ENV_NAME: "dev"
-  GOOGLE_DOMAIN: "pim-saas-dev.dev.cloud.akeneo.com"
-  GOOGLE_PROJECT_ID_PROD: "akeneo-cloud" 
-  GOOGLE_PROJECT_ID: "akecld-prd-pim-saas-dev" 
+  GOOGLE_DOMAIN: "dev.akeneo.ch"
+  GOOGLE_PROJECT_ID_PROD: "akeneo-cloud"
+  GOOGLE_PROJECT_ID: "akecld-prd-pim-saas-dev"
   GOOGLE_CLUSTER_REGION: "europe-west1"
   GOOGLE_COMPUTE_ZONE: "europe-west1-b"
   CLUSTER_NAME: "akecld-prd-pim-saas-dev-europe-west1"
