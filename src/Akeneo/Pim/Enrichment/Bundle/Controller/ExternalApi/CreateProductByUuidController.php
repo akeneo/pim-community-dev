@@ -13,8 +13,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException a
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
-use Akeneo\Pim\Permission\Component\Validator\GrantedQuantifiedAssociations;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -294,7 +294,7 @@ class CreateProductByUuidController
         if (0 !== $violations->count()) {
             foreach ($violations as $offset => $violation) {
                 /** @var ConstraintViolationInterface $violation */
-                if (GrantedQuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR === $violation->getCode()) {
+                if (QuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR === $violation->getCode()) {
                     $parameters = $violation->getParameters();
                     $uuid = $this->getUuidFromIdentifier($parameters['{{ values }}']);
                     $parameters = ['{{values }}' => $uuid->toString()];
