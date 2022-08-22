@@ -265,7 +265,7 @@ class JobInstance
         return $this->scheduled;
     }
 
-    public function setAutomation(array $automation): self
+    public function setAutomation(?array $automation): self
     {
         $this->automation = $automation;
 
