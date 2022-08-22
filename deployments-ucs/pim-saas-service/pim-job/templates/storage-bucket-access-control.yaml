@@ -1,0 +1,14 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  labels:
+    ucs-cron-job: {{ .Values.pim.cloudFunction.bucket }}
+  name: {{ .Values.pim.cloudFunction.bucket }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+    cnrm.cloud.google.com/project-id: {{ .Values.common.gcpProjectID }}
+spec:
+  bucketRef:
+    name: {{ .Values.pim.cloudFunction.bucket }}
+  entity: user-{{ .Values.common.workloadIdentityGSA }}@{{ .Values.common.gcpProjectID }}.iam.gserviceaccount.com
+  role: "OWNER"
