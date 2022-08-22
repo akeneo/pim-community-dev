@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Application\Handler;
 
-use Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface;
-use Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupQuery;
-use Akeneo\UserManagement\ServiceApi\UserGroup\UserGroup;
 use Akeneo\UserManagement\Domain\Storage\FindUsers;
+use Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface;
 use Akeneo\UserManagement\ServiceApi\User\ListUsersQuery;
 
 final class ListUsersHandler implements ListUsersHandlerInterface
