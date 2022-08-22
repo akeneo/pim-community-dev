@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Application\Handler;
 
-use Akeneo\UserManagement\ServiceApi\User\ListUserHandlerInterface;
+use Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface;
 use Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupQuery;
 use Akeneo\UserManagement\ServiceApi\UserGroup\UserGroup;
 use Akeneo\UserManagement\Domain\Storage\FindUsers;
 use Akeneo\UserManagement\ServiceApi\User\ListUsersQuery;
 
-final class ListUsersHandler implements ListUserHandlerInterface
+final class ListUsersHandler implements ListUsersHandlerInterface
 {
     public function __construct(
         private FindUsers $findUsers
     ) {
     }
 
-    public function __invoke(ListUsersQuery $query): array
+    public function fromQuery(ListUsersQuery $query): array
     {
         return ($this->findUsers)(
             $query->getSearchName(),

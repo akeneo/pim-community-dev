@@ -15,10 +15,10 @@ namespace Akeneo\UserManagement\ServiceApi\User;
 
 use Akeneo\UserManagement\Domain\Model\User;
 
-interface ListUserHandlerInterface
+interface ListUsersHandlerInterface
 {
     /**
      * @return User[]
      */
-    public function __invoke(ListUsersQuery $query): array;
+    public function fromQuery(ListUsersQuery $query): array;
 }
