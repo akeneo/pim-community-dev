@@ -35,7 +35,7 @@ final class CurrencyValidator extends ConstraintValidator
             ? $this->findActivatedCurrencies->forAllChannels()
             : $this->findActivatedCurrencies->forChannel($constraint->getChannelCode());
 
-        if (!isset($currencies[$currencyCode])) {
+        if (!in_array($currencyCode, $currencies)) {
             $this->context->buildViolation(
                 CurrencyConstraint::CURRENCY_SHOULD_EXIST,
                 [

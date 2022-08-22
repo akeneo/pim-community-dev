@@ -101,6 +101,12 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Price\CurrencyValidator:
+    arguments:
+      - '@pim_catalog.query.find_activated_currencies'
+    tags:
+      - { name: validator.constraint_validator }
+
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\ReadColumnsValidator:
     arguments:
       - '@akeneo.tailored_import.spout.remote_file_reader.factory'

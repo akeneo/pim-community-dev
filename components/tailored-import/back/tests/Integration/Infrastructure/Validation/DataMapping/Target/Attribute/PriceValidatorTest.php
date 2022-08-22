@@ -186,11 +186,11 @@ final class PriceValidatorTest extends AbstractValidationTest
             ],
             'a price data mapping with an invalid currency' => [
                 'akeneo.tailored_import.validation.target.source_configuration.currency_should_exist',
-                '[target][source_configuration][unit]',
+                '[target][source_configuration][currency]',
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
                     'target' => [
-                        'code' => 'a_metric',
+                        'code' => 'a_price',
                         'type' => 'attribute',
                         'attribute_type' => 'pim_catalog_price_collection',
                         'channel' => null,
