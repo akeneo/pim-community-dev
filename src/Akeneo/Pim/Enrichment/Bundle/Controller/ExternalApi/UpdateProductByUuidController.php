@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
 use Akeneo\Pim\Permission\Component\Validator\GrantedQuantifiedAssociations;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
@@ -59,7 +60,8 @@ class UpdateProductByUuidController
         private ProductBuilderInterface $productBuilder,
         private SaverInterface $saver,
         private AttributeFilterInterface $productAttributeFilter,
-        private Connection $connection
+        private Connection $connection,
+        private ValidatorInterface $productValidator,
     ) {
     }
 
@@ -99,6 +101,7 @@ class UpdateProductByUuidController
         }
 
         $data = $this->replaceUuidsByIdentifiers($data);
+
         $this->updateProduct($product, $data);
         $this->validateProduct($product);
         $this->saver->save($product);
@@ -263,11 +266,11 @@ class UpdateProductByUuidController
 
     private function validateProduct(ProductInterface $product): void
     {
-        $violations = $this->validator->validate($product, null, ['Default', 'api']);
+        $violations = $this->productValidator->validate($product, null, ['Default', 'api']);
         if (0 !== $violations->count()) {
             foreach ($violations as $offset => $violation) {
                 /** @var ConstraintViolationInterface $violation */
-                if (GrantedQuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR === $violation->getCode()) {
+                if (QuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR === $violation->getCode()) {
                     $parameters = $violation->getParameters();
                     $uuid = $this->getUuidFromIdentifier($parameters['{{ values }}']);
                     $parameters = ['{{values }}' => $uuid->toString()];
@@ -326,4 +329,6 @@ class UpdateProductByUuidController
 
         return $uuid ? Uuid::fromString($uuid) : null;
     }
+
+
 }
