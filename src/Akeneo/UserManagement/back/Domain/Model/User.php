@@ -20,11 +20,11 @@ final class User
         private string $email,
         private string $username,
         private string $userType,
-        private string $firstname,
-        private string $lastname,
-        private string $middleName,
-        private string $nameSuffix,
-        private string $image
+        private ?string $firstname,
+        private ?string $lastname,
+        private ?string $middleName,
+        private ?string $nameSuffix,
+        private ?string $image
     ) {
     }
 
@@ -76,12 +76,12 @@ final class User
     public static function createFromDatabase(array $data): self
     {
         return new self(
-            $data['id'],
+            (int) $data['id'],
             $data['email'],
             $data['username'],
             $data['user_type'],
-            $data['firstname'],
-            $data['lastname'],
+            $data['first_name'],
+            $data['last_name'],
             $data['middle_name'],
             $data['name_suffix'],
             $data['image']
