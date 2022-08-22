@@ -677,7 +677,7 @@ jobs:
               # FATA[0002] rpc error: code = FailedPrecondition desc = another operation is already in progress
               argocd app get ${CIRCLE_BRANCH_LOWER}-pim-argocd --hard-refresh --grpc-web
               argocd app terminate-op ${CIRCLE_BRANCH_LOWER}-pim-argocd --grpc-web || true
-              argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-argocd --grpc-web
+              argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-argocd --grpc-web --async
 
               echo "============================"
               echo "url : https://argocd.${GOOGLE_DOMAIN}"
