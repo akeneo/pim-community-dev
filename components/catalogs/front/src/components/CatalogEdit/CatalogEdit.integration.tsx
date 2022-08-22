@@ -8,6 +8,7 @@ import {CatalogFormActions} from './reducers/CatalogFormReducer';
 import {Operator} from '../ProductSelection';
 import {mocked} from 'ts-jest/utils';
 import {generateRandomId} from '../ProductSelection/utils/generateRandomId';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 jest.mock('../ProductSelection/utils/generateRandomId');
 
@@ -24,9 +25,11 @@ test('it can enable a catalog', () => {
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <CatalogFormContext.Provider value={dispatch}>
-                <CatalogEdit form={form} />
-            </CatalogFormContext.Provider>
+            <QueryClientProvider client={new QueryClient()}>
+                <CatalogFormContext.Provider value={dispatch}>
+                    <CatalogEdit form={form} />
+                </CatalogFormContext.Provider>
+            </QueryClientProvider>
         </ThemeProvider>
     );
 
@@ -50,9 +53,11 @@ test('it can change criteria in the product selection', async () => {
 
     render(
         <ThemeProvider theme={pimTheme}>
-            <CatalogFormContext.Provider value={dispatch}>
-                <CatalogEdit form={form} />
-            </CatalogFormContext.Provider>
+            <QueryClientProvider client={new QueryClient()}>
+                <CatalogFormContext.Provider value={dispatch}>
+                    <CatalogEdit form={form} />
+                </CatalogFormContext.Provider>
+            </QueryClientProvider>
         </ThemeProvider>
     );
 

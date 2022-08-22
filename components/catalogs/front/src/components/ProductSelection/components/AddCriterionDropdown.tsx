@@ -4,22 +4,24 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {AnyCriterionState} from '../models/Criterion';
 import {useProductSelectionContext} from '../contexts/ProductSelectionContext';
 import {ProductSelectionActions} from '../reducers/ProductSelectionReducer';
-import {useCriteriaRegistry} from '../hooks/useCriteriaRegistry';
+import {useSystemCriterionFactories} from '../hooks/useSystemCriterionFactories';
 import {generateRandomId} from '../utils/generateRandomId';
+import {useInfiniteAttributeCriterionFactories} from '../hooks/useInfiniteAttributeCriterionFactories';
+import {CriterionFactory} from '../models/CriterionFactory';
 
-type Factory = {
-    label: string;
-    factory: () => AnyCriterionState;
-};
-
-type SectionProps = {
-    label: string;
-    factories: Factory[];
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Section = React.forwardRef<HTMLDivElement, SectionProps>(({label, factories}, _ref) => {
+const AddCriterionDropdown: FC<{}> = () => {
+    const translate = useTranslate();
     const dispatch = useProductSelectionContext();
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [search, setSearch] = useState<string>('');
+    const systemCriterionFactories = useSystemCriterionFactories();
+    const {data: attributesCriterionFactories, fetchNextPage} = useInfiniteAttributeCriterionFactories({search});
+
+    const filteredSystemCriterionFactories: CriterionFactory[] = useMemo(() => {
+        const regex = new RegExp(search, 'i');
+
+        return systemCriterionFactories.filter(factory => factory.label.match(regex));
+    }, [systemCriterionFactories, search]);
 
     const handleNewCriterion = useCallback(
         (state: AnyCriterionState) => {
@@ -31,34 +33,6 @@ const Section = React.forwardRef<HTMLDivElement, SectionProps>(({label, factorie
         },
         [dispatch]
     );
-
-    if (0 === factories.length) {
-        return null;
-    }
-
-    return (
-        <>
-            <Dropdown.Section>{label}</Dropdown.Section>
-            {factories.map((factory, i) => (
-                <Dropdown.Item key={i} onClick={() => handleNewCriterion(factory.factory())}>
-                    {factory.label}
-                </Dropdown.Item>
-            ))}
-        </>
-    );
-});
-
-const AddCriterionDropdown: FC<{}> = () => {
-    const translate = useTranslate();
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [search, setSearch] = useState<string>('');
-    const {system} = useCriteriaRegistry();
-
-    const systemCriterionFactories: Factory[] = useMemo(() => {
-        const regex = new RegExp(search, 'i');
-
-        return system.filter(factory => factory.label.match(regex));
-    }, [system, search]);
 
     return (
         <Dropdown>
@@ -78,11 +52,30 @@ const AddCriterionDropdown: FC<{}> = () => {
                     <Dropdown.ItemCollection
                         noResultIllustration={<GroupsIllustration />}
                         noResultTitle={translate('akeneo_catalogs.product_selection.add_criteria.no_results')}
+                        onNextPage={fetchNextPage}
                     >
-                        <Section
-                            label={translate('akeneo_catalogs.product_selection.add_criteria.section_system')}
-                            factories={systemCriterionFactories}
-                        />
+                        {/* system */}
+                        {filteredSystemCriterionFactories.length > 0 && (
+                            <Dropdown.Section>
+                                {translate('akeneo_catalogs.product_selection.add_criteria.section_system')}
+                            </Dropdown.Section>
+                        )}
+                        {filteredSystemCriterionFactories?.map(factory => (
+                            <Dropdown.Item key={factory.id} onClick={() => handleNewCriterion(factory.factory())}>
+                                {factory.label}
+                            </Dropdown.Item>
+                        ))}
+                        {/* attributes */}
+                        {(attributesCriterionFactories?.length ?? 0) > 0 && (
+                            <Dropdown.Section>
+                                {translate('akeneo_catalogs.product_selection.add_criteria.section_attributes')}
+                            </Dropdown.Section>
+                        )}
+                        {attributesCriterionFactories?.map(factory => (
+                            <Dropdown.Item key={factory.id} onClick={() => handleNewCriterion(factory.factory())}>
+                                {factory.label}
+                            </Dropdown.Item>
+                        ))}
                     </Dropdown.ItemCollection>
                 </Dropdown.Overlay>
             )}

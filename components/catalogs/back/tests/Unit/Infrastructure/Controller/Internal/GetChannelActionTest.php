@@ -21,7 +21,7 @@ class GetChannelActionTest extends TestCase
     private ?GetChannelAction $getChannelAction;
     private ?GetChannelQueryInterface $getChannelQuery;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->getChannelQuery = $this->createMock(GetChannelQueryInterface::class);
         $this->getChannelAction = new GetChannelAction($this->getChannelQuery);

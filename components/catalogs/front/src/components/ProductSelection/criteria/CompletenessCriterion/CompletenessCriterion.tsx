@@ -8,7 +8,7 @@ import {CompletenessOperatorInput} from './CompletenessOperatorInput';
 import {CompletenessValueInput} from './CompletenessValueInput';
 import {CompletenessLocaleInput} from './CompletenessLocaleInput';
 import {CompletenessScopeInput} from './CompletenessScopeInput';
-import {ErrorHelpers} from '../ErrorHelpers';
+import {ErrorHelpers} from '../../components/ErrorHelpers';
 
 const Fields = styled.div`
     display: flex;

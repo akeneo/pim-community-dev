@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 /**
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class MaxNumberOfCatalogsPerUserValidator extends ConstraintValidator
+final class MaxNumberOfCatalogsPerUserValidator extends ConstraintValidator
 {
     public function __construct(
         private IsCatalogsNumberLimitReachedQueryInterface $isCatalogsNumberLimitReachedQuery,

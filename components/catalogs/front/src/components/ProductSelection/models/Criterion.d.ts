@@ -4,11 +4,13 @@ import {CriterionErrors} from './CriterionErrors';
 import {StatusCriterionState} from '../criteria/StatusCriterion';
 import {FamilyCriterionState} from '../criteria/FamilyCriterion';
 import {CompletenessCriterionState} from '../criteria/CompletenessCriterion';
+import {AttributeTextCriterionState} from '../criteria/AttributeTextCriterion';
 
 export type CriterionModule<State> = {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     state: State & any;
-    onChange: (state: State) => void;
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    onChange: (state: State & any) => void;
     onRemove: () => void;
     errors: CriterionErrors;
 };
@@ -27,8 +29,16 @@ export type Criterion<State extends CriterionState> = {
     factory: (state?: Partial<State>) => State;
 };
 
-export type AnyCriterionState = StatusCriterionState | FamilyCriterionState | CompletenessCriterionState;
+export type AnyCriterionState =
+    | StatusCriterionState
+    | FamilyCriterionState
+    | CompletenessCriterionState
+    | AttributeTextCriterionState;
+
+export type AnyAttributeCriterion = Criterion<AttributeTextCriterionState>;
+
 export type AnyCriterion =
     | Criterion<StatusCriterionState>
     | Criterion<FamilyCriterionState>
-    | Criterion<CompletenessCriterionState>;
+    | Criterion<CompletenessCriterionState>
+    | AnyAttributeCriterion;
