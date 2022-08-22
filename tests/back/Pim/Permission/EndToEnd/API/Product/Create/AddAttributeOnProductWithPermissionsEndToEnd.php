@@ -88,9 +88,7 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('my_product');
         $expectedProduct = [
-            'uuid' => $product->getUuid()->toString(),
             'identifier'    => 'my_product',
             'family'        => null,
             'parent'        => null,
@@ -168,9 +166,7 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('my_product');
         $expectedProduct = [
-            'uuid' => $product->getUuid()->toString(),
             'identifier'    => 'my_product',
             'family'        => null,
             'parent'        => null,
@@ -208,9 +204,7 @@ JSON;
         $client->request('POST', '/api/rest/v1/products', [], [], [], $data);
         $this->assertSame(Response::HTTP_CREATED, $client->getResponse()->getStatusCode());
 
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('my_product');
         $expectedProduct = [
-            'uuid' => $product->getUuid()->toString(),
             'identifier'    => 'my_product',
             'family'        => null,
             'parent'        => null,
