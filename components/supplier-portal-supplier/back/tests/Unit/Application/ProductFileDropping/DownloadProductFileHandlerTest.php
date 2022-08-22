@@ -42,7 +42,10 @@ final class DownloadProductFileHandlerTest extends TestCase
         ;
 
         $supplierFileNameAndResourceFile = ($sut)(
-            new DownloadProductFile('63c5e1d5-b804-4d24-b0b2-47c4aad3f536')
+            new DownloadProductFile(
+                '63c5e1d5-b804-4d24-b0b2-47c4aad3f536',
+                'contributor@example.com',
+            )
         );
 
         $this->assertSame(
@@ -69,7 +72,10 @@ final class DownloadProductFileHandlerTest extends TestCase
         $getProductFilePathAndFileNameMock->expects($this->once())->method('__invoke')->willReturn(null);
 
         $this->expectException(ProductFileDoesNotExist::class);
-        ($sut)(new DownloadProductFile('63c5e1d5-b804-4d24-b0b2-47c4aad3f536'));
+        ($sut)(new DownloadProductFile(
+            '63c5e1d5-b804-4d24-b0b2-47c4aad3f536',
+            'contributor@example.com',
+        ));
     }
 
     /** @test */
@@ -95,6 +101,9 @@ final class DownloadProductFileHandlerTest extends TestCase
         ;
 
         $this->expectException(ProductFileIsNotDownloadable::class);
-        ($sut)(new DownloadProductFile('63c5e1d5-b804-4d24-b0b2-47c4aad3f536'));
+        ($sut)(new DownloadProductFile(
+            '63c5e1d5-b804-4d24-b0b2-47c4aad3f536',
+            'contributor@example.com',
+        ));
     }
 }
