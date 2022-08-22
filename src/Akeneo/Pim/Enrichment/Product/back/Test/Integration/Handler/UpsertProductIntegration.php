@@ -7,6 +7,7 @@ namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
@@ -40,6 +41,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntity
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceDataValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
@@ -1073,7 +1075,7 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_updates_a_product_with_a_price_value(): void
+    public function it_updates_a_product_with_a_price_collection_value(): void
     {
         $this->updateProduct(new SetPriceCollectionValue('a_price', null, null, [
             new PriceValue('42', 'EUR'),
@@ -1088,6 +1090,48 @@ final class UpsertProductIntegration extends TestCase
             new ProductPrice('42.00', 'EUR'),
             new ProductPrice('24.00', 'USD'),
         ], $value);
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_a_price_value(): void
+    {
+        $this->updateProduct(new SetPriceValue('a_price', null, null, new PriceValue('42', 'EUR')));
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_price',
+            new PriceCollection([
+                new ProductPrice('42.00', 'EUR')
+            ])
+        );
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_an_add_price_value(): void
+    {
+        $this->updateProduct(new SetPriceValue('a_price', null, null, new PriceValue('42', 'EUR')));
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_price',
+            new PriceCollection([
+                new ProductPrice('42.00', 'EUR')
+            ])
+        );
+
+        $this->updateProduct(new SetPriceValue('a_price', null, null, new PriceValue('50', 'USD')));
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_price',
+            new PriceCollection([
+                new ProductPrice('42.00', 'EUR'),
+                new ProductPrice('50.00', 'USD'),
+            ]),
+        );
+
+        $this->updateProduct(new SetPriceValue('a_price', null, null, new PriceValue('50', 'EUR')));
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_price',
+            new PriceCollection([
+                new ProductPrice('50.00', 'EUR'),
+                new ProductPrice('50.00', 'USD'),
+            ]),
+        );
     }
 
     /** @test */
