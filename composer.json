@@ -104,7 +104,7 @@
         "monolog/monolog": "1.25.5",
         "ocramius/proxy-manager": "2.11.1",
         "oneup/flysystem-bundle": "^4.0.0",
-        "phpseclib/phpseclib": "2.0.31",
+        "phpseclib/phpseclib": "2.0.37",
         "psr/event-dispatcher": "^1.0.0",
         "ramsey/uuid": "^3.7",
         "ramsey/uuid-doctrine": "^1.8",
