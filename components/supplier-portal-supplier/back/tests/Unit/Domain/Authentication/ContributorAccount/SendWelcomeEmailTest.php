@@ -9,6 +9,7 @@ use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Send
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 class SendWelcomeEmailTest extends TestCase
 {
@@ -36,7 +37,7 @@ class SendWelcomeEmailTest extends TestCase
             ->method('__invoke')
             ->with($email);
 
-        $sut = new SendWelcomeEmail($sendEmail, $buildWelcomeEmail);
+        $sut = new SendWelcomeEmail($sendEmail, $buildWelcomeEmail, new NullLogger());
         ($sut)($contributorEmail, 'access-token');
     }
 }

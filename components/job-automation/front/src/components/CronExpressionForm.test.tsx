@@ -12,7 +12,7 @@ test('it can select a frequency option', () => {
   const onChange = jest.fn();
 
   renderWithProviders(
-    <CronExpressionForm cronExpression="0 0/12 * * *" validationErrors={[]} onCronExpressionChange={onChange} />
+    <CronExpressionForm cronExpression="0 */12 * * *" validationErrors={[]} onCronExpressionChange={onChange} />
   );
 
   expect(screen.getByText('akeneo.job_automation.scheduling.frequency.every_12_hours')).toBeInTheDocument();
@@ -40,7 +40,7 @@ test('it can update the frequency time on a daily cron expression', () => {
 
 test('it displays a helper when the frequency option is hourly', () => {
   renderWithProviders(
-    <CronExpressionForm cronExpression="0 0/8 * * *" validationErrors={[]} onCronExpressionChange={jest.fn()} />
+    <CronExpressionForm cronExpression="0 */8 * * *" validationErrors={[]} onCronExpressionChange={jest.fn()} />
   );
 
   expect(screen.getByText('akeneo.job_automation.scheduling.frequency.hourly_helper')).toBeInTheDocument();
@@ -59,7 +59,7 @@ test('it displays validation errors', () => {
 
   renderWithProviders(
     <CronExpressionForm
-      cronExpression="0 0/4 * * *"
+      cronExpression="0 */4 * * *"
       validationErrors={validationErrors}
       onCronExpressionChange={jest.fn()}
     />

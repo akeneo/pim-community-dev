@@ -28,12 +28,23 @@ services:
         tags:
             - 'kernel.event_subscriber'
 
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendGoodbyeEmailOnContributorAccountDeleted:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendGoodbyeEmail'
+        tags:
+            - 'kernel.event_subscriber'
+
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\SendResetPasswordEmailOnPasswordReset:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendResetPasswordEmail'
         tags:
             - 'kernel.event_subscriber'
 
+    Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Subscriber\DeleteContributorAccountOnContributorDeleted:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\DeleteContributorAccountHandler'
+        tags:
+            - 'kernel.event_subscriber'
     # Validators
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\Validation\PasswordValidator:
         tags:
@@ -72,10 +83,23 @@ services:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
             - '@event_dispatcher'
 
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\DeleteContributorAccountHandler:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+            - '@event_dispatcher'
+            - '@monolog.logger.supplier_portal'
+
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail'
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail'
+            - '@monolog.logger.supplier_portal'
+
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendGoodbyeEmail:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildGoodbyeEmail'
+            - '@monolog.logger.supplier_portal'
 
     Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount\UpdatePasswordHandler:
         arguments:
@@ -98,6 +122,7 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail'
             - '@Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail'
+            - '@monolog.logger.supplier_portal'
 
     # Email sending services
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildWelcomeEmail:
@@ -105,6 +130,11 @@ services:
         arguments:
             - '@twig'
             - '%env(AKENEO_PIM_URL)%'
+
+    Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildGoodbyeEmail:
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigGoodbyeEmail
+        arguments:
+            - '@twig'
 
     Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\BuildResetPasswordEmail:
         class: Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\BuildTwigResetPasswordEmail

@@ -13,3 +13,8 @@ services:
         class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
         tags:
             - { name: reference_entity_serializer.normalizer }
+
+    Akeneo\ReferenceEntity\Infrastructure\Normalizer\ErrorFacingFrontendNormalizer:
+        arguments:
+            - '@translator'
+        public: false

@@ -6,12 +6,11 @@ namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer;
 
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\Email;
 use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
-use Psr\Log\LoggerInterface;
 use Swift_Mailer;
 
 final class SendSwiftmailerEmail implements SendEmail
 {
-    public function __construct(private Swift_Mailer $mailer, private LoggerInterface $logger)
+    public function __construct(private Swift_Mailer $mailer)
     {
     }
 
@@ -28,7 +27,5 @@ final class SendSwiftmailerEmail implements SendEmail
             ->addPart($email->htmlContent, 'text/html');
 
         $this->mailer->send($message);
-
-        $this->logger->info(sprintf('A welcome email has been sent to "%s"', $email->to));
     }
 }

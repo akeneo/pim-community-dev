@@ -10,7 +10,7 @@ use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemo
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 
-final class InMemoryGetSupplierWithContributorTest extends TestCase
+final class InMemoryGetSupplierWithContributorsTest extends TestCase
 {
     /** @test */
     public function itReturnsNullIfThereIsNoSupplier(): void
@@ -41,7 +41,7 @@ final class InMemoryGetSupplierWithContributorTest extends TestCase
         static::assertSame('supplier_code', $supplier->code);
         static::assertSame('Supplier label', $supplier->label);
         static::assertCount(2, $supplier->contributors);
-        static::assertSame('foo@foo.bar', $supplier->contributors[0]['email']);
-        static::assertSame('foo2@foo2.bar', $supplier->contributors[1]['email']);
+        static::assertSame('foo@foo.bar', $supplier->contributors[0]);
+        static::assertSame('foo2@foo2.bar', $supplier->contributors[1]);
     }
 }

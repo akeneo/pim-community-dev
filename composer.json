@@ -67,6 +67,7 @@
             "Akeneo\\Test\\Pim\\Automation\\RuleEngine\\": "src/Akeneo/Pim/Automation/RuleEngine/tests/back",
             "Akeneo\\Onboarder\\Test\\": "vendor/akeneo/pim-onboarder/tests/",
             "spec\\Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back/spec",
+            "spec\\Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/tests/back/spec",
             "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/tests",
             "Specification\\Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/tests/Specification",
             "Akeneo\\Platform\\TailoredImport\\Test\\": "components/tailored-import/back/tests",

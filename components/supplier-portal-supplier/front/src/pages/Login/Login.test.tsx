@@ -3,11 +3,11 @@ import {fireEvent, screen, waitFor} from '@testing-library/react';
 import {renderWithProviders} from '../../tests';
 import {Login} from './Login';
 
+const mockLogin = jest.fn();
+
 jest.mock('./hooks/useAuthenticate', () => ({
     useAuthenticate: () => ({
-        login: async () => {
-            return false;
-        },
+        login: mockLogin,
     }),
 }));
 
@@ -44,6 +44,8 @@ test('it enables submit button when email and password are filled', () => {
 });
 
 test('it displays an error if credentials are wrong', async () => {
+    mockLogin.mockImplementationOnce(() => false);
+
     renderWithProviders(<Login />);
 
     fireEvent.change(screen.getByLabelText('Email'), {target: {value: 'burger@example.com'}});
@@ -53,4 +55,17 @@ test('it displays an error if credentials are wrong', async () => {
     await waitFor(() => {
         expect(screen.getByText('Your email or password seems to be wrong. Please, try again.')).toBeInTheDocument();
     });
+
+    expect(mockLogin).toHaveBeenCalled();
+});
+
+test('it allows the user to log by submitting the form with the enter key', () => {
+    renderWithProviders(<Login />);
+
+    fireEvent.change(screen.getByLabelText('Email'), {target: {value: 'burger@example.com'}});
+    fireEvent.change(screen.getByLabelText('Password'), {target: {value: 'mypassword'}});
+
+    fireEvent.submit(screen.getByRole('form'));
+
+    expect(mockLogin).toHaveBeenCalled();
 });

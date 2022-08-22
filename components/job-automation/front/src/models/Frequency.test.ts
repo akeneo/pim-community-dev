@@ -26,19 +26,19 @@ test('it can get a weekday from a cron expression', () => {
 
 test('it can get a cron expression from a given frequency option and existing expression', () => {
   expect(getCronExpressionFromFrequencyOption('daily', '0 0 * * 5')).toBe('0 0 * * *');
-  expect(getCronExpressionFromFrequencyOption('daily', '0 0/8 * * *')).toBe('0 0 * * *');
+  expect(getCronExpressionFromFrequencyOption('daily', '0 */8 * * *')).toBe('0 0 * * *');
 
   expect(getCronExpressionFromFrequencyOption('weekly', '0 0 * * 5')).toBe('0 0 * * 0');
-  expect(getCronExpressionFromFrequencyOption('weekly', '0 0/4 * * *')).toBe('0 0 * * 0');
+  expect(getCronExpressionFromFrequencyOption('weekly', '0 */4 * * *')).toBe('0 0 * * 0');
 
-  expect(getCronExpressionFromFrequencyOption('every_4_hours', '0 0 * * 5')).toBe('0 0/4 * * *');
-  expect(getCronExpressionFromFrequencyOption('every_4_hours', '43 9 * * 5')).toBe('0 0/4 * * *');
+  expect(getCronExpressionFromFrequencyOption('every_4_hours', '0 0 * * 5')).toBe('0 */4 * * *');
+  expect(getCronExpressionFromFrequencyOption('every_4_hours', '43 9 * * 5')).toBe('0 */4 * * *');
 
-  expect(getCronExpressionFromFrequencyOption('every_8_hours', '0 0 * * 5')).toBe('0 0/8 * * *');
-  expect(getCronExpressionFromFrequencyOption('every_8_hours', '43 9 * * *')).toBe('0 0/8 * * *');
+  expect(getCronExpressionFromFrequencyOption('every_8_hours', '0 0 * * 5')).toBe('0 */8 * * *');
+  expect(getCronExpressionFromFrequencyOption('every_8_hours', '43 9 * * *')).toBe('0 */8 * * *');
 
-  expect(getCronExpressionFromFrequencyOption('every_12_hours', '0 0 * * 5')).toBe('0 0/12 * * *');
-  expect(getCronExpressionFromFrequencyOption('every_12_hours', '43 9 * * *')).toBe('0 0/12 * * *');
+  expect(getCronExpressionFromFrequencyOption('every_12_hours', '0 0 * * 5')).toBe('0 */12 * * *');
+  expect(getCronExpressionFromFrequencyOption('every_12_hours', '43 9 * * *')).toBe('0 */12 * * *');
 
   expect(() => getCronExpressionFromFrequencyOption('unknown', '0 0 * * 7')).toThrowError(
     'Unsupported frequency option: "unknown"'

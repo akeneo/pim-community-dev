@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class CronExpressionValidator extends ConstraintValidator
 {
-    private const VALID_HOURLY_EXPRESSIONS = ['0 0/4 * * *', '0 0/8 * * *', '0 0/12 * * *'];
+    private const VALID_HOURLY_EXPRESSIONS = ['0 */4 * * *', '0 */8 * * *', '0 */12 * * *'];
     private const VALID_MINUTES = [0, 10, 20, 30, 40, 50];
     private const MIN_HOUR = 0;
     private const MAX_HOUR = 23;
@@ -65,14 +65,13 @@ class CronExpressionValidator extends ConstraintValidator
 
         if ($isHourly) {
             $this->validateHourlyExpression($value);
-            [$hours] = explode('/', $hours);
+        } else {
+            $this->validateTime($hours, $minutes);
         }
 
         if ($isWeekly) {
             $this->validateWeekDayNumber($weekDayNumber);
         }
-
-        $this->validateTime($hours, $minutes);
     }
 
     private function validateHourlyExpression(string $cronExpression): void
