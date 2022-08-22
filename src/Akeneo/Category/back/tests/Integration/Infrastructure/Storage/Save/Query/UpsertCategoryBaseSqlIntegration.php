@@ -9,25 +9,25 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Save\Query;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
-use Akeneo\Category\back\tests\Integration\Helper\CategoryTrait;
+use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Infrastructure\Storage\Save\Query\SqlUpsertCategoryBase;
+use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryBaseSql;
 use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-class SqlUpsertCategoryBaseIntegration extends TestCase
+class UpsertCategoryBaseSqlIntegration extends TestCase
 {
-    use CategoryTrait;
+    use CategoryTestCase;
 
     public function testInsertNewCategoryInDatabase(): void
     {
-        /** @var SqlUpsertCategoryBase $upsertCategoryBaseQuery */
+        /** @var UpsertCategoryBaseSql $upsertCategoryBaseQuery */
         $upsertCategoryBaseQuery = $this->get(UpsertCategoryBase::class);
-        $this->assertEquals(SqlUpsertCategoryBase::class, $upsertCategoryBaseQuery::class);
+        $this->assertEquals(UpsertCategoryBaseSql::class, $upsertCategoryBaseQuery::class);
 
         $categoryCode = 'myCategory';
         $category = new Category(
@@ -50,9 +50,9 @@ class SqlUpsertCategoryBaseIntegration extends TestCase
 
     public function testUpdateExistingCategoryInDatabase(): void
     {
-        /** @var SqlUpsertCategoryBase $upsertCategoryBaseQuery */
+        /** @var UpsertCategoryBaseSql $upsertCategoryBaseQuery */
         $upsertCategoryBaseQuery = $this->get(UpsertCategoryBase::class);
-        $this->assertEquals(SqlUpsertCategoryBase::class, $upsertCategoryBaseQuery::class);
+        $this->assertEquals(UpsertCategoryBaseSql::class, $upsertCategoryBaseQuery::class);
 
         $categoryCode = 'myCategory';
         $category = new Category(

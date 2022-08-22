@@ -1,5 +1,5 @@
 services:
-    Akeneo\Category\Application\Storage\Save\ProcessCategorySave:
+    Akeneo\Category\Application\Storage\Save\CategorySaverProcessor:
         arguments:
             - '@Akeneo\Category\Application\Storage\Save\CategorySaverRegistry'
 

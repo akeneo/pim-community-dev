@@ -9,20 +9,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Save\Query;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
-use Akeneo\Category\back\tests\Integration\Helper\CategoryTrait;
-use Akeneo\Category\Infrastructure\Storage\Save\Query\SqlUpsertCategoryTranslations;
+use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
+use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryTranslationsSql;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-class SqlUpsertCategoryTranslationsIntegration extends TestCase
+class UpsertCategoryTranslationsSqlIntegration extends TestCase
 {
-    use CategoryTrait;
+    use CategoryTestCase;
 
     public function testInsertNewTranslationsInDatabase(): void
     {
-        /** @var SqlUpsertCategoryTranslations $upsertCategoryTranslationsQuery */
+        /** @var UpsertCategoryTranslationsSql $upsertCategoryTranslationsQuery */
         $upsertCategoryTranslationsQuery = $this->get(UpsertCategoryTranslations::class);
-        $this->assertEquals(SqlUpsertCategoryTranslations::class, $upsertCategoryTranslationsQuery::class);
+        $this->assertEquals(UpsertCategoryTranslationsSql::class, $upsertCategoryTranslationsQuery::class);
 
         $categoryCode = 'myCategory';
         $createdCategory = $this->createOrUpdateCategory(
@@ -48,9 +48,9 @@ class SqlUpsertCategoryTranslationsIntegration extends TestCase
 
     public function testUpdateExistingCategoryTranslationsInDatabase(): void
     {
-        /** @var SqlUpsertCategoryTranslations $upsertCategoryTranslationsQuery */
+        /** @var UpsertCategoryTranslationsSql $upsertCategoryTranslationsQuery */
         $upsertCategoryTranslationsQuery = $this->get(UpsertCategoryTranslations::class);
-        $this->assertEquals(SqlUpsertCategoryTranslations::class, $upsertCategoryTranslationsQuery::class);
+        $this->assertEquals(UpsertCategoryTranslationsSql::class, $upsertCategoryTranslationsQuery::class);
 
         $categoryCode = 'myCategory';
         $createdCategory = $this->createOrUpdateCategory(

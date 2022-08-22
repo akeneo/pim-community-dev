@@ -12,6 +12,6 @@ services:
             - { name: 'pim.category.save.category_saver' }
 
     Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase:
-        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlUpsertCategoryBase'
+        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryBaseSql'
         arguments:
             - '@database_connection'

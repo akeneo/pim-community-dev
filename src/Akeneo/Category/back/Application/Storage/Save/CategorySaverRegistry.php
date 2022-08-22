@@ -15,14 +15,11 @@ use Webmozart\Assert\Assert;
  */
 class CategorySaverRegistry
 {
-    /** @var array<string, CategorySaver>  */
+    /** @var array<string, CategorySaverProcessor>  */
     private array $categorySaverByUserIntent;
 
-    /**
-     * @param CategorySaver[] $categorySavers
-     */
     public function __construct(
-        private array $categorySavers
+        private iterable $categorySavers
     ) {
         foreach ($this->categorySavers as $categorySaver) {
             Assert::isInstanceOf($categorySaver, CategorySaver::class);

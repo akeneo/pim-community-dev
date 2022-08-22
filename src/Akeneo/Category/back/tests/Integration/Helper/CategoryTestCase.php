@@ -14,11 +14,11 @@ use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Infrastructure\Storage\Save\Query\SqlUpsertCategoryBase;
-use Akeneo\Category\Infrastructure\Storage\Save\Query\SqlUpsertCategoryTranslations;
+use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryBaseSql;
+use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryTranslationsSql;
 use Doctrine\DBAL\Connection;
 
-trait CategoryTrait
+trait CategoryTestCase
 {
     /**
      * @param array<string, string>|null $labels
@@ -34,13 +34,13 @@ trait CategoryTrait
         $categoryId = (null === $id ? null : new CategoryId($id));
         $parentId = (null === $parentId ? null : new CategoryId($parentId));
 
-        /** @var SqlUpsertCategoryBase $upsertCategoryBaseQuery */
+        /** @var UpsertCategoryBaseSql $upsertCategoryBaseQuery */
         $upsertCategoryBaseQuery = $this->get(UpsertCategoryBase::class);
-        $this->assertEquals(SqlUpsertCategoryBase::class, $upsertCategoryBaseQuery::class);
+        $this->assertEquals(UpsertCategoryBaseSql::class, $upsertCategoryBaseQuery::class);
 
-        /** @var SqlUpsertCategoryTranslations $upsertCategoryTranslationsQuery */
+        /** @var UpsertCategoryTranslationsSql $upsertCategoryTranslationsQuery */
         $upsertCategoryTranslationsQuery = $this->get(UpsertCategoryTranslations::class);
-        $this->assertEquals(SqlUpsertCategoryTranslations::class, $upsertCategoryTranslationsQuery::class);
+        $this->assertEquals(UpsertCategoryTranslationsSql::class, $upsertCategoryTranslationsQuery::class);
 
         $categoryModelToCreate = new Category(
             id: $categoryId,
@@ -53,7 +53,7 @@ trait CategoryTrait
         $upsertCategoryBaseQuery->execute($categoryModelToCreate);
 
         // Get the data of the newly inserted category from pim_catalog_category
-        //TODO : use the getCategorySql query instead when it's been fixed when querying a category with no labels
+        //FIXME: GRF-273 use the getCategorySql query instead when it's been fixed when querying a category with no labels
 //        $getCategory = $this->get(GetCategorySql::class);
 //        $categoryBaseData = $getCategory->byCode((string) $categoryModelToCreate->getCode());
         $categoryBaseData = $this->getCategoryBaseDataByCode((string) $categoryModelToCreate->getCode());

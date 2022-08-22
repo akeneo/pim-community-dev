@@ -17,8 +17,6 @@ class CategoryId
         Assert::greaterThan($id, 0);
     }
 
-    // TODO: Je veux bien votre avis sur ce changement. Avant on devait faire $category->getId()->getId(),
-    // TODO: maintenant on peut faire $category->getId()->getValue()
     public function getValue(): int
     {
         return $this->id;

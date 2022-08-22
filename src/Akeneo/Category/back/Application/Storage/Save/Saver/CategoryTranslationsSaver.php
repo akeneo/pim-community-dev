@@ -27,10 +27,7 @@ class CategoryTranslationsSaver implements CategorySaver
 
     public function save(Category $categoryModel): void
     {
-        //TODO: Should we use try/catch ?
         $this->upsertCategoryTranslations->execute($categoryModel);
-
-        //TODO dispatch event of save ?
     }
 
     public function getSupportedUserIntents(): array

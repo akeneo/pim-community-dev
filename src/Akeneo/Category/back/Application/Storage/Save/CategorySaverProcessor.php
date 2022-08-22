@@ -6,7 +6,7 @@ namespace Akeneo\Category\Application\Storage\Save;
 
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryBaseSaver;
-use Akeneo\Category\Application\Storage\Save\Saver\CategorySaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategorySaver as CategorySaverInterface;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTranslationsSaver;
 use Akeneo\Category\Domain\Model\Category;
 
@@ -17,7 +17,7 @@ use Akeneo\Category\Domain\Model\Category;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProcessCategorySave
+class CategorySaverProcessor
 {
     /**
      * List of expected savers: it also ensures the order in which the savers will be executed
@@ -44,12 +44,12 @@ class ProcessCategorySave
             $saver = $this->categorySaverRegistry->fromUserIntent($userIntent::class);
 
             if ($saver instanceof CategoryBaseSaver) {
-                $this->addSaverInOrderList('category', $saver);
+                $this->sortExecutionSavers('category', $saver);
                 continue;
             }
 
             if ($saver instanceof CategoryTranslationsSaver) {
-                $this->addSaverInOrderList('category_translation', $saver);
+                $this->sortExecutionSavers('category_translation', $saver);
                 continue;
             }
 
@@ -57,14 +57,12 @@ class ProcessCategorySave
         }
 
         foreach ($this->saversExecutionOrder as $saver) {
-            /** @var CategorySaver $saver */
+            /** @var CategorySaverInterface $saver */
             $saver->save($categoryModel);
         }
-
-        // TODO: hydrate a Category Object with all the new data and return it ?
     }
 
-    private function addSaverInOrderList(string $key, CategorySaver $saver): void
+    private function sortExecutionSavers(string $key, CategorySaverInterface $saver): void
     {
         if (
             !\array_key_exists($key, $this->saversExecutionOrder)

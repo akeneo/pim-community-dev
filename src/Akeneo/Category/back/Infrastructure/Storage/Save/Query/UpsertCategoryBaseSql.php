@@ -18,7 +18,7 @@ use Doctrine\DBAL\Exception;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlUpsertCategoryBase implements UpsertCategoryBase
+class UpsertCategoryBaseSql implements UpsertCategoryBase
 {
     public function __construct(private Connection $connection)
     {
@@ -32,8 +32,6 @@ class SqlUpsertCategoryBase implements UpsertCategoryBase
      */
     public function execute(Category $categoryModel): void
     {
-        // TODO if the dev try to change code by passing an existing id, this updater won't change the code
-        // TODO BUT it also won't notify the user that the code has not been changed
         if ($this->categoryAlreadyExistsByCode($categoryModel->getCode())) {
             $this->updateCategory($categoryModel);
         } else {
@@ -48,8 +46,6 @@ class SqlUpsertCategoryBase implements UpsertCategoryBase
      */
     private function insertCategory(Category $categoryModel): void
     {
-        // TODO: At this stage of development, because some columns have no default value,
-        // TODO: the insert will use root=0 (then update to new generated id) and hardcoded values for lv, lft and rgt
         $query = <<< SQL
             INSERT INTO pim_catalog_category
                 (parent_id, code, created, root, lvl, lft, rgt)
@@ -79,7 +75,6 @@ class SqlUpsertCategoryBase implements UpsertCategoryBase
             ]
         );
 
-        // TODO: this is temporary until root value is well managed
         // We cannot access newly auto incremented id during the insert query. We have to update root in a second query
         $newCategoryId = $this->connection->lastInsertId();
         $this->connection->executeQuery(
@@ -106,8 +101,6 @@ class SqlUpsertCategoryBase implements UpsertCategoryBase
      */
     private function updateCategory(Category $categoryModel): void
     {
-        // TODO: At this stage of the development, because some columns have no default value,
-        // TODO: the update will set root=$categoryModel->getId()->getValue() and hardcoded values for lv, lft and rgt
         $query = <<< SQL
                 UPDATE pim_catalog_category
                 SET
