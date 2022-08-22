@@ -12,10 +12,10 @@ services:
     class: Akeneo\Platform\JobAutomation\Infrastructure\Controller\GetUserGroupsAction
     public: true
     arguments:
-      - '@akeneo.job_automation.handler.get_user_groups'
+      - '@Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupInterface'
 
   akeneo.job_automation.controllers.get_users_action:
     class: Akeneo\Platform\JobAutomation\Infrastructure\Controller\GetUsersAction
     public: true
     arguments:
-      - '@akeneo.job_automation.handler.get_users'
+      - '@Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface'
