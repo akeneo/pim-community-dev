@@ -53,6 +53,8 @@ akeneo_connectivity.connection:
         title_without_apps: '{0} お使いの PIM バージョンと互換性のあるコネクターがありません。|{1} お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。|[2,Inf] お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。'
         description: これは概要です。詳細については Akeneo App Store をご覧ください。
         link: Akeneo App Store に移動
+      search:
+        total: '{0} 結果がありません|{1} 1 件の結果|[2,Inf] {{ total }} 件の結果'
       card:
         developed_by: '開発者: {{ author }}'
         read_more: 続きを読む

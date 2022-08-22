@@ -54,6 +54,8 @@ class PimUserExtension extends Extension
         $loader->load('commands.yml');
         $loader->load('processors.yml');
 
+        $loader->load('service_api/queries.yml');
+
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         $container->setParameter('pim_user.reset.ttl', $config['reset']['ttl']);

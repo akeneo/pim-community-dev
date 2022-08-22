@@ -12,15 +12,19 @@ namespace Akeneo\Category\Api;
 interface GetCategoryChildrenCodesPerTreeInterface
 {
     /**
-     * For each category tree, return children codes of selected categories
+     * For each category tree, return children codes of selected categories.
+     *
      * @param array<string> $categoryCodes
+     *
      * @return array<string, string[]>
      */
     public function executeWithChildren(array $categoryCodes): array;
 
     /**
-     * For each category tree, return existing category codes of selected categories
+     * For each category tree, return existing category codes of selected categories.
+     *
      * @param array<string> $categoryCodes
+     *
      * @return array<string, string[]>
      */
     public function executeWithoutChildren(array $categoryCodes): array;

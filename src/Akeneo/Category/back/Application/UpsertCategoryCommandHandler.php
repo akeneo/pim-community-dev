@@ -29,7 +29,7 @@ class UpsertCategoryCommandHandler
         private FindCategoryByCode $findCategoryByCode,
         private UserIntentApplierRegistry $applierRegistry,
         private EventDispatcherInterface $eventDispatcher,
-        private ProcessCategorySave $saver
+        private ProcessCategorySave $saver,
     ) {
     }
 
@@ -44,7 +44,7 @@ class UpsertCategoryCommandHandler
 
         $isCreation = null === $category;
         if ($isCreation) {
-            throw new Exception("Command to create a category is in progress.");
+            throw new Exception('Command to create a category is in progress.');
         }
 
         $this->updateCategory($category, $command);
@@ -52,9 +52,9 @@ class UpsertCategoryCommandHandler
         $this->saver->save($category, $command->userIntents());
 
         if ($isCreation) {
-            $this->eventDispatcher->dispatch(new CategoryCreatedEvent((string)$category->getCode()));
+            $this->eventDispatcher->dispatch(new CategoryCreatedEvent((string) $category->getCode()));
         } else {
-            $this->eventDispatcher->dispatch(new CategoryUpdatedEvent((string)$category->getCode()));
+            $this->eventDispatcher->dispatch(new CategoryUpdatedEvent((string) $category->getCode()));
         }
     }
 
@@ -63,9 +63,7 @@ class UpsertCategoryCommandHandler
         foreach ($command->userIntents() as $userIntent) {
             $applier = $this->applierRegistry->getApplier($userIntent);
             if (null === $applier) {
-                throw new \InvalidArgumentException(
-                    \sprintf('The "%s" intent cannot be handled.', get_class($userIntent))
-                );
+                throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($userIntent)));
             }
 
             try {
@@ -78,7 +76,7 @@ class UpsertCategoryCommandHandler
                         parameters: [],
                         root: $command,
                         propertyPath: $applier::class,
-                        invalidValue: $userIntent
+                        invalidValue: $userIntent,
                     ),
                 ]);
 

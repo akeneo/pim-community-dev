@@ -12,7 +12,6 @@ namespace Akeneo\Category\Api;
  * @phpstan-type LocalizedLabels array<Locale, string>
  * @phpstan-type NormalizedCategoryTree array{id?:int, code?: string, labels?: LocalizedLabels}
  */
-
 class CategoryTree
 {
     public const ID = 'id';
@@ -22,7 +21,7 @@ class CategoryTree
     public int $id;
     public string $code;
     /**
-     * @var LocalizedLabels $labels
+     * @var LocalizedLabels
      */
     public array $labels = [];
 
@@ -34,7 +33,7 @@ class CategoryTree
         return [
             self::ID => $this->id,
             self::CODE => $this->code,
-            self::LABELS => $this->labels
+            self::LABELS => $this->labels,
         ];
     }
 }

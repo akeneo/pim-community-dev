@@ -11,7 +11,7 @@ namespace Akeneo\Category\Domain\ValueObject\Attribute;
 class AttributeIsLocalizable
 {
     private function __construct(
-        private bool $isLocalizable
+        private bool $isLocalizable,
     ) {
     }
 

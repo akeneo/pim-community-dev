@@ -8,7 +8,7 @@ use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Model\Category;
 
 /**
- * Interface meant for applying user intents on categories
+ * Interface meant for applying user intents on categories.
  *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)

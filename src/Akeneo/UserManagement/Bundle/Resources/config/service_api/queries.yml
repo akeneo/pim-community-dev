@@ -1,0 +1,15 @@
+services:
+  Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupInterface:
+    public: true
+    class: Akeneo\UserManagement\Application\Handler\ListUserGroupHandler
+    arguments:
+      $findUserGroups: '@Akeneo\UserManagement\Infrastructure\Storage\SqlFindUserGroups'
+
+  Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface:
+    class: Akeneo\UserManagement\Application\Handler\UpsertUserHandler
+    arguments:
+      - '@pim_user.repository.user'
+      - '@pim_user.updater.user'
+      - '@pim_user.factory.user'
+      - '@pim_user.saver.user'
+      - '@validator'

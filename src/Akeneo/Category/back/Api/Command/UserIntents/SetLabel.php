@@ -12,7 +12,7 @@ final class SetLabel implements UserIntent, LocalizeUserIntent
 {
     public function __construct(
         private ?string $localeCode,
-        private string $label
+        private string $label,
     ) {
     }
 

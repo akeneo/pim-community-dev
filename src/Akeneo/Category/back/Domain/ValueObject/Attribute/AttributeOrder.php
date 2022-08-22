@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
 class AttributeOrder
 {
     private function __construct(
-        private int $order
+        private int $order,
     ) {
         Assert::natural($order);
     }

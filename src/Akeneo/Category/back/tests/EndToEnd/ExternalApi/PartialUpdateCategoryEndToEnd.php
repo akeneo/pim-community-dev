@@ -1,6 +1,6 @@
 <?php
 
-namespace  Akeneo\Test\Category\EndToEnd\ExternalApi;
+namespace Akeneo\Test\Category\EndToEnd\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -65,7 +65,7 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('new_category_incompleted');
         $categoryStandard = [
-            'code'   => 'new_category_incompleted',
+            'code' => 'new_category_incompleted',
             'parent' => null,
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
@@ -91,7 +91,7 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('new_category_empty_content');
         $categoryStandard = [
-            'code'   => 'new_category_empty_content',
+            'code' => 'new_category_empty_content',
             'parent' => null,
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
@@ -129,7 +129,7 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryD');
         $categoryStandard = [
-            'code'   => 'categoryD',
+            'code' => 'categoryD',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
@@ -167,7 +167,7 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryD');
         $categoryStandard = [
-            'code'   => 'categoryD',
+            'code' => 'categoryD',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
@@ -196,7 +196,7 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA');
         $categoryStandard = [
-            'code'   => 'categoryA',
+            'code' => 'categoryA',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
@@ -233,7 +233,7 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA');
         $categoryStandard = [
-            'code'   => 'categoryA',
+            'code' => 'categoryA',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
@@ -270,7 +270,7 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA2');
         $categoryStandard = [
-            'code'   => 'categoryA2',
+            'code' => 'categoryA2',
             'parent' => 'categoryA1',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
@@ -305,7 +305,7 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA');
         $categoryStandard = [
-            'code'   => 'categoryA',
+            'code' => 'categoryA',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
@@ -328,7 +328,7 @@ JSON;
         $data = '';
 
         $expectedContent = [
-            'code'    => 400,
+            'code' => 400,
             'message' => 'Invalid json message received',
         ];
 
@@ -345,7 +345,7 @@ JSON;
         $data = '{';
 
         $expectedContent = [
-            'code'    => 400,
+            'code' => 400,
             'message' => 'Invalid json message received',
         ];
 
@@ -367,12 +367,12 @@ JSON;
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Validation failed.',
-            'errors'  => [
+            'errors' => [
                 [
                     'property' => 'code',
-                    'message'  => 'This property cannot be changed.',
+                    'message' => 'This property cannot be changed.',
                 ],
             ],
         ];
@@ -396,11 +396,11 @@ JSON;
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
-            '_links'  => [
+            '_links' => [
                 'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#patch_categories__code_'
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_categories__code_',
                 ],
             ],
         ];
@@ -424,11 +424,11 @@ JSON;
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Property "labels" expects an array as data, "NULL" given. Check the expected format on the API documentation.',
-            '_links'  => [
+            '_links' => [
                 'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#patch_categories__code_'
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_categories__code_',
                 ],
             ],
         ];
@@ -452,7 +452,7 @@ JSON;
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'The code "inconsistent_code2" provided in the request body must match the code "inconsistent_code1" provided in the url.',
         ];
 
@@ -484,11 +484,11 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/categories/master', [], [], [], '{"parent": "categoryA"}');
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'You can\'t move a category tree linked to a user. Check the expected format on the API documentation.',
-            '_links'  => [
+            '_links' => [
                 'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#patch_categories__code_'
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_categories__code_',
                 ],
             ],
         ];

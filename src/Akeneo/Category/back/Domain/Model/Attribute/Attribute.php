@@ -25,7 +25,7 @@ abstract class Attribute
         protected AttributeOrder $order,
         protected AttributeIsLocalizable $isLocalizable,
         protected LabelCollection $labelCollection,
-        protected TemplateUuid $templateId
+        protected TemplateUuid $templateId,
     ) {
     }
 
@@ -49,7 +49,7 @@ abstract class Attribute
             'order' => $this->order->intValue(),
             'is_localizable' => $this->isLocalizable->normalize(),
             'labels' => $this->labelCollection->normalize(),
-            'template_identifier' => (string) $this->templateId
+            'template_identifier' => (string) $this->templateId,
         ];
     }
 
