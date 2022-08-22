@@ -9,16 +9,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
-use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Akeneo\UserManagement\ServiceApi\User\UpsertUserCommand;
 use Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface;
-use League\Flysystem\FilesystemOperator;
 use PhpSpec\ObjectBehavior;
 
 class UpsertRunningUserSpec extends ObjectBehavior
@@ -30,11 +24,11 @@ class UpsertRunningUserSpec extends ObjectBehavior
         $this->beConstructedWith($upsertUserHandler, $roleRepository);
     }
 
-    public function it_call_upsert_the_user_through_user_management_public_api(
+    public function it_calls_upsert_user_through_user_management_public_api(
         UpsertUserHandlerInterface $upsertUserHandler,
         RoleRepositoryInterface $roleRepository,
         RoleInterface $administratorRole,
-        RoleInterface $userRole
+        RoleInterface $userRole,
     ) {
         $administratorRole->getRole()->willReturn('ROLE_ADMINISTRATOR');
         $userRole->getRole()->willReturn('ROLE_USER');

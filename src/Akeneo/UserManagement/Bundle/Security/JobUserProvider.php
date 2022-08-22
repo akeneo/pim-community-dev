@@ -25,7 +25,7 @@ class JobUserProvider implements UserProviderInterface
     {
         $user = $this->userRepository->findOneByIdentifier($username);
         if (!$user || $user->isApiUser()) {
-            throw new UserNotFoundException(sprintf('User with username "%s" does not exist.', $username));
+            throw new UserNotFoundException(sprintf('User with username "%s" does not exist or is not a Job user.', $username));
         }
 
         if (!$user->isEnabled()) {
@@ -46,7 +46,7 @@ class JobUserProvider implements UserProviderInterface
 
         $reloadedUser = $this->userRepository->find($user->getId());
         if (null === $reloadedUser || $reloadedUser->isApiUser()) {
-            throw new UserNotFoundException(sprintf('User with id %d not found', $user->getId()));
+            throw new UserNotFoundException(sprintf('User with id %d does not exist or is not a Job user.', $user->getId()));
         }
 
         return $reloadedUser;

@@ -14,7 +14,7 @@ use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Akeneo\UserManagement\ServiceApi\User\UpsertUserCommand;
 use Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface;
 
-final class UpsertRunningUser
+class UpsertRunningUser
 {
     private const AUTOMATED_USER_PREFIX = 'job_automated_';
 
@@ -32,7 +32,7 @@ final class UpsertRunningUser
         $upsertUserCommand = UpsertUserCommand::job(
             $username,
             'fakepassword',
-            sprintf('%s@fake.com', $username),
+            sprintf('%s@example.com', $username),
             $jobCode,
             'Automated Job',
             $allRoleCodes,
