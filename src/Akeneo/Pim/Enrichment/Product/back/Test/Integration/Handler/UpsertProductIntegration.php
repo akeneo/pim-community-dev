@@ -1083,14 +1083,13 @@ final class UpsertProductIntegration extends TestCase
             new PriceValue('24', 'USD'),
         ]));
 
-        $product = $this->productRepository->findOneByIdentifier('identifier');
-        Assert::assertNotNull($product);
-        $value = $product->getValue('a_price', null, null)->getData()->toArray();
-
-        Assert::assertEqualsCanonicalizing([
-            new ProductPrice('42.00', 'EUR'),
-            new ProductPrice('24.00', 'USD'),
-        ], $value);
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_price',
+            new PriceCollection([
+                new ProductPrice('42.00', 'EUR'),
+                new ProductPrice('24.00', 'USD'),
+            ])
+        );
     }
 
     /** @test */
