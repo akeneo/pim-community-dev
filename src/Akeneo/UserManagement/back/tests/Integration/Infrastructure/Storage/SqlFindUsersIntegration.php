@@ -15,7 +15,6 @@ namespace Akeneo\Test\UserManagement\Integration\Infrastructure\Storage;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Domain\Model\User;
 use Akeneo\UserManagement\Infrastructure\Storage\SqlFindUsers;
 use PHPUnit\Framework\Assert;
@@ -28,26 +27,23 @@ final class SqlFindUsersIntegration extends TestCase
         $this->userRepository = $this->get('pim_user.repository.user');
         $this->roleRepository = $this->get('pim_user.repository.role');
         $this->localeRepository = $this->get('pim_catalog.repository.locale');
+
+        $this->createUserWithGroupsAndRoles(1, 'test1', ['Redactor'], ['ROLE_USER']);
+        $this->createUserWithGroupsAndRoles(2, 'test2', ['Redactor'], ['ROLE_USER']);
+        $this->createUserWithGroupsAndRoles(3, 'test3', ['Redactor'], ['ROLE_USER']);
+        $this->createUserWithGroupsAndRoles(4, 'julia', ['Redactor'], ['ROLE_USER']);
     }
 
     public function testItListsTheUsers(): void
     {
-        $this->createUserWithGroupsAndRoles('test1', ['Redactor'], ['ROLE_USER']);
-        $this->createUserWithGroupsAndRoles('test2', ['Redactor'], ['ROLE_USER']);
-
         $users = ($this->get(SqlFindUsers::class))();
 
-        Assert::assertCount(2, $users);
+        Assert::assertCount(4, $users);
         Assert::containsOnlyInstancesOf(User::class);
     }
 
     public function testItFiltersTheUserOnUsername(): void
     {
-        $this->createUserWithGroupsAndRoles('test1', ['Redactor'], ['ROLE_USER']);
-        $this->createUserWithGroupsAndRoles('test2', ['Redactor'], ['ROLE_USER']);
-        $this->createUserWithGroupsAndRoles('test3', ['Redactor'], ['ROLE_USER']);
-        $this->createUserWithGroupsAndRoles('julia', ['Redactor'], ['ROLE_USER']);
-
         $user = ($this->get(SqlFindUsers::class))('julia');
 
         Assert::assertCount(1, $user);
@@ -55,34 +51,31 @@ final class SqlFindUsersIntegration extends TestCase
         Assert::assertEquals('julia', $user[0]->getUsername());
     }
 
-    /**
-    public function testItListsTheUserGroupsWithPagination(): void
+    public function testItListsTheUserWithPagination(): void
     {
-        $userGroups = ($this->get(SqlFindUserGroups::class))(
+        $users = ($this->get(SqlFindUsers::class))(
             null,
             null,
             2
         );
 
-        Assert::assertCount(2, $userGroups);
-        Assert::assertLessThan(2, $userGroups[0]->getId());
-        Assert::assertEquals(2, $userGroups[1]->getId());
+        Assert::assertCount(2, $users);
+        $lastId = $users[1]->getId();
 
-        $userGroups = ($this->get(SqlFindUserGroups::class))(
+        $users = ($this->get(SqlFindUsers::class))(
             null,
-            2,
+            $lastId,
             2
         );
 
-        Assert::assertCount(2, $userGroups);
-        Assert::assertGreaterThan(2, $userGroups[0]->getId());
-        Assert::assertGreaterThan(2, $userGroups[1]->getId());
+        Assert::assertCount(2, $users);
+        Assert::assertGreaterThan($lastId, $users[0]->getId());
     }
-     **/
-    private function createUserWithGroupsAndRoles(string $username, array $groupNames, array $stringRoles): UserInterface
+
+    private function createUserWithGroupsAndRoles(int $id, string $username, array $groupNames, array $stringRoles): void
     {
         $user = $this->get('pim_user.factory.user')->create();
-        $user->setId(uniqid());
+        $user->setId($id);
         $user->setUsername($username);
         $user->setEmail(sprintf('%s@example.com', uniqid()));
         $user->setPassword('fake');
@@ -104,17 +97,6 @@ final class SqlFindUsersIntegration extends TestCase
         }
 
         $this->get('pim_user.saver.user')->save($user);
-
-        return $user;
-    }
-
-    private function clearUser()
-    {
-        $connection = $this->get('doctrine.dbal.connection');
-        $sql = <<<SQL 
-            TRUNCATE TABLE oro_user
-        SQL;
-        $connection->executeQuery($sql)->fetch();
     }
 
     protected function getConfiguration(): Configuration
