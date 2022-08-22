@@ -678,7 +678,7 @@ jobs:
               argocd app get ${CIRCLE_BRANCH_LOWER}-pim-argocd --hard-refresh --grpc-web
               argocd app terminate-op ${CIRCLE_BRANCH_LOWER}-pim-argocd --grpc-web
               argocd app sync ${CIRCLE_BRANCH_LOWER}-pim-argocd --grpc-web
-             
+
               echo "============================"
               echo "url : https://argocd.${GOOGLE_DOMAIN}"
               echo "user : admin"
@@ -739,9 +739,9 @@ jobs:
             - run:
                   name: Change value file
                   command: |
-                    #  yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
+                      yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityKSA "${WORKLOAD_IDENTITY_KSA}"
                       yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityKSANamespace "${WORKLOAD_IDENTITY_KSA_NAMESPACE}"
-                    # yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityGSA "${WORKLOAD_IDENTITY_GSA}"
+                      yq w -i deployments-ucs/tenant/values.yaml common.workloadIdentityGSA "${WORKLOAD_IDENTITY_GSA}"
 
             - run:
                   name: Deploy PIM on kubernetes
