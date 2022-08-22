@@ -36,7 +36,7 @@ class UpsertRunningUserSpec extends ObjectBehavior
         $command = UpsertUserCommand::job(
             'job_automated_my_job_name',
             'fakepassword',
-            'job_automated_my_job_name@fake.com',
+            'job_automated_my_job_name@example.com',
             'my_job_name',
             'Automated Job',
             ['ROLE_ADMINISTRATOR', 'ROLE_USER'],

@@ -13,13 +13,7 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
-            'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
-            'Webmozart\Assert\Assert',
-        ],
-    )->in('Akeneo\Platform\Bundle\ImportExportBundle\Application'),
-    $builder->only(
-        [
-            /** We should not need to be coupled with Application layer */
+            // We should not need to be coupled with Application layer
             'Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer',
 
             'Webmozart\Assert\Assert',
@@ -27,12 +21,24 @@ $rules = [
     )->in('Akeneo\Platform\Bundle\ImportExportBundle\Domain'),
     $builder->only(
         [
-            'Akeneo\Tool',
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
-            'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
+            'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
 
+            'Webmozart\Assert\Assert',
+        ],
+    )->in('Akeneo\Platform\Bundle\ImportExportBundle\Application'),
+    $builder->only(
+        [
             'Akeneo\Platform\Bundle\ImportExportBundle\Application',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
+
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
+            'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
+            'Akeneo\UserManagement\ServiceApi',
+            'Akeneo\Tool',
+
+            // TODO RAB-981: remove this coupling
+            'Akeneo\UserManagement\Component\Model\RoleInterface',
+            'Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface',
 
             'League\Flysystem',
             'Symfony\Component',
