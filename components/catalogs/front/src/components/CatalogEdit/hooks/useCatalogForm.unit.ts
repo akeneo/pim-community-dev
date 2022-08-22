@@ -102,7 +102,8 @@ test('it calls the API when save is called', async () => {
     const [form, save, isDirty] = result.current;
 
     await act(async () => {
-        await save();
+        const isSaveSuccessful = await save();
+        expect(isSaveSuccessful).toBeTruthy();
     });
 
     expect(saveCatalog).toHaveBeenCalledWith({
@@ -154,7 +155,8 @@ test('it returns validation errors if the API call failed', async () => {
     const [form, save, isDirty] = result.current;
 
     await act(async () => {
-        await save();
+        const isSaveSuccessful = await save();
+        expect(isSaveSuccessful).toBeFalsy();
     });
 
     expect(result.current).toMatchObject([
