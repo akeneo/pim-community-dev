@@ -36,7 +36,6 @@ common:
   googleZone: null
   pimMasterDomain: null
   workloadIdentityKSA: null
-  workloadIdentityKSANamespace: null
   workloadIdentityGSA: null
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"

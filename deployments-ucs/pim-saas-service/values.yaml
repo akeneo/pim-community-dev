@@ -28,9 +28,9 @@ common:
   location: null # Generated example EU, US
   pimMasterDomain: null # Generated
   region: null # Generated
-  workloadIdentityKSANamespace: null # Generated
-  workloadIdentityKSA: "pim-job-deployment-sa"
-  workloadIdentityGSA: "pim-job-deployment"
+  workloadIdentityKSA: null # Generated
+  workloadIdentityGSA: null # Generated
+  # workloadIdentityGSA: "pim-job-deployment"
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "60"
