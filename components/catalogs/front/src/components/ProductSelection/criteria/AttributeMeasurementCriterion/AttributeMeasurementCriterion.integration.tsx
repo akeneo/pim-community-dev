@@ -117,7 +117,7 @@ test('it renders the scopable and localizable measurement attribute criterion', 
     expect(await screen.findByText('Weight')).toBeInTheDocument();
     expect(await screen.findByText(Operator.EQUALS)).toBeInTheDocument();
     expect(await screen.findByDisplayValue(17)).toBeInTheDocument();
-    expect(await screen.findByText('Gram')).toBeInTheDocument();
+    expect(await screen.findByDisplayValue('Gram')).toBeInTheDocument();
     expect(await screen.findByText('E-commerce')).toBeInTheDocument();
     expect(await screen.findByText('English')).toBeInTheDocument();
 });
@@ -148,7 +148,7 @@ test('it renders the scopable and non localizable measurement attribute criterio
     expect(await screen.findByText('Weight')).toBeInTheDocument();
     expect(await screen.findByText(Operator.EQUALS)).toBeInTheDocument();
     expect(await screen.findByDisplayValue(17)).toBeInTheDocument();
-    expect(await screen.findByText('Gram')).toBeInTheDocument();
+    expect(await screen.findByDisplayValue('Gram')).toBeInTheDocument();
     expect(await screen.findByText('E-commerce')).toBeInTheDocument();
     expect(screen.queryByTestId('locale')).not.toBeInTheDocument();
 });
@@ -179,7 +179,7 @@ test('it renders the non scopable and localizable measurement attribute criterio
     expect(await screen.findByText('Weight')).toBeInTheDocument();
     expect(await screen.findByText(Operator.EQUALS)).toBeInTheDocument();
     expect(await screen.findByDisplayValue(17)).toBeInTheDocument();
-    expect(await screen.findByText('Gram')).toBeInTheDocument();
+    expect(await screen.findByDisplayValue('Gram')).toBeInTheDocument();
     expect(screen.queryByTestId('scope')).not.toBeInTheDocument();
     expect(await screen.findByText('German')).toBeInTheDocument();
 });
@@ -364,7 +364,7 @@ test('it calls onChange when the value changes', () => {
     });
 });
 
-test('it calls onChange when the unit changes', () => {
+test('it calls onChange when the unit changes', async () => {
     const onChange = jest.fn();
 
     render(
@@ -390,7 +390,10 @@ test('it calls onChange when the unit changes', () => {
     );
 
     const input = screen.getByTestId('unit');
-    fireEvent.change(input, {target: {value: 'KILOGRAM'}});
+
+    fireEvent.click(input);
+    expect(await screen.findByText('Kilogram')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Kilogram'));
 
     expect(onChange).toHaveBeenCalledWith({
         field: 'weight_localizable_scopable',
