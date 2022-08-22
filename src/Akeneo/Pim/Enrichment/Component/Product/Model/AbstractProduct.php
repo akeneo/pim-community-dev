@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Abstract product
@@ -69,9 +70,10 @@ abstract class AbstractProduct implements ProductInterface
 
     protected bool $dirty = false;
 
-    public function __construct()
+    public function __construct(?string $uuid = null)
     {
-        $this->uuid = Uuid::uuid4();
+        Assert::nullOrUuid($uuid);
+        $this->uuid = $uuid ? Uuid::fromString($uuid) : Uuid::uuid4();
         $this->values = new WriteValueCollection();
         $this->categories = new ArrayCollection();
         $this->completenesses = new ArrayCollection();

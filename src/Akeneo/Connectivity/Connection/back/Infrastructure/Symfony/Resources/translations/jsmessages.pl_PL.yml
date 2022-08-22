@@ -53,6 +53,8 @@ akeneo_connectivity.connection:
         title_without_apps: '{0} Brak wtyczek kompatybilnych z twoją wersją PIM.|{1} Wtyczki kompatybilne z twoją wersją PIM: {{ count }}.|[2,Inf] Wtyczki kompatybilne z twoją wersją PIM: {{ count }}'
         description: To tylko podgląd. Aby uzyskać więcej szczegółów, zajrzyj do sklepu z aplikacjami Akeneo.
         link: Przejdź do sklepu z aplikacjami Akeneo
+      search:
+        total: '{0} Brak wyników|{1} 1 wynik|[2,Inf] {{ total }} wyników'
       card:
         developed_by: 'Autor: {{ author }}'
         read_more: czytaj więcej

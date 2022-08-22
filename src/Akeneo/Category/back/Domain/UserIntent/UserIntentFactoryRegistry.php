@@ -37,8 +37,6 @@ class UserIntentFactoryRegistry
     }
 
     /**
-     * @param string $fieldName
-     * @param mixed $data
      * @return UserIntent[]
      */
     public function fromStandardFormatField(string $fieldName, mixed $data): array

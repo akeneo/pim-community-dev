@@ -24,7 +24,8 @@
             "Akeneo\\Pim\\Structure\\Family\\": "src/Akeneo/Pim/Structure/Family/back",
             "Akeneo\\Channel\\": "src/Akeneo/Channel/back",
             "Akeneo\\Catalogs\\": "components/catalogs/back/src",
-            "Akeneo\\Category\\": "src/Akeneo/Category/back"
+            "Akeneo\\Category\\": "src/Akeneo/Category/back",
+            "Akeneo\\UserManagement\\": "src/Akeneo/UserManagement/back"
         }
     },
     "autoload-dev": {
@@ -48,7 +49,8 @@
             "Akeneo\\Test\\Pim\\Structure\\Family\\": "src/Akeneo/Pim/Structure/Family/back/Test",
             "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
             "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests",
-            "Akeneo\\Test\\Category\\": "src/Akeneo/Category/back/tests"
+            "Akeneo\\Test\\Category\\": "src/Akeneo/Category/back/tests",
+            "Akeneo\\Test\\UserManagement\\": "src/Akeneo/UserManagement/back/tests"
         }
     },
     "require": {
@@ -94,7 +96,7 @@
         "imagine/imagine": "1.2.4",
         "justinrainbow/json-schema": "^5.2",
         "khaled.alshamaa/ar-php": "^6.2",
-        "lcobucci/jwt": "^4.1",
+        "lcobucci/jwt": "~4.1.5",
         "league/flysystem": "^2.0",
         "league/flysystem-memory": "^2.0",
         "liip/imagine-bundle": "2.6.1",

@@ -1,0 +1,6 @@
+pim_category_template_rest_get:
+    path: /rest/{templateUuid}
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController
+        _feature: enriched_category
+    methods: [GET]
