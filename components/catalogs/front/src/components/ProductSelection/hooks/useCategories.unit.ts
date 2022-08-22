@@ -126,7 +126,7 @@ test('It throws an error when codes and isRoot are both used', async () => {
     /* eslint-disable-next-line no-console */
     (console.error as jest.Mock).mockImplementation(() => null);
 
-    const {result, waitForNextUpdate} = renderHook(() => useCategories({codes: ['catA'], isRoot: true}), {
+    const {result, waitForValueToChange} = renderHook(() => useCategories({codes: ['catA'], isRoot: true}), {
         wrapper: ReactQueryWrapper,
     });
 
@@ -137,7 +137,7 @@ test('It throws an error when codes and isRoot are both used', async () => {
         error: null,
     });
 
-    await waitForNextUpdate();
+    await waitForValueToChange(() => result.current.isError);
 
     expect(fetchMock).not.toHaveBeenCalled();
     expect(result.current).toMatchObject({
