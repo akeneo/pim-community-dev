@@ -81,7 +81,7 @@ class CreateConnectedAppQueryIntegration extends TestCase
     private function fetchApp(string $id): ?array
     {
         $query = <<<SQL
-SELECT *
+SELECT id, name, logo, author, partner, categories, certified, connection_code, scopes, user_group_name, has_outdated_scopes
 FROM akeneo_connectivity_connected_app
 WHERE id = :id
 SQL;
