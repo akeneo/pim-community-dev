@@ -61,10 +61,10 @@ final class HandleFamilyTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        familyUserIntent: new SetFamily('a_family'),
+                        userIntents: [new SetFamily('a_family')],
                     ),
                     [],
                 ),
@@ -88,10 +88,10 @@ final class HandleFamilyTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        familyUserIntent: new RemoveFamily(),
+                        userIntents: [new RemoveFamily()],
                     ),
                     [],
                 ),
@@ -119,10 +119,10 @@ final class HandleFamilyTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        familyUserIntent: new SetFamily('a_family'),
+                        userIntents: [new SetFamily('a_family')],
                     ),
                     [],
                 ),
@@ -150,10 +150,10 @@ final class HandleFamilyTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        familyUserIntent: new SetFamily('my_family'),
+                        userIntents: [new SetFamily('my_family')],
                     ),
                     [],
                 ),

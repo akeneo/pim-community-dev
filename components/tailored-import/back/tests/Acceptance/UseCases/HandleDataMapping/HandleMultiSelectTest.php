@@ -81,10 +81,10 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetMultiSelectValue('tshirt_style', null, null, ['vneck,long_sleeve,sportwear']),
                             new SetMultiSelectValue('collection', 'ecommerce', 'fr_FR', ['autumn_2021,summer_2022,winter_2022']),
                         ],
@@ -116,10 +116,10 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetMultiSelectValue('tshirt_style', null, null, ['vneck', 'long_sleeve']),
                         ],
                     ),
@@ -154,10 +154,10 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetMultiSelectValue('tshirt_style', null, null, ['adidas']),
                         ],
                     ),
@@ -198,10 +198,10 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetMultiSelectValue('tshirt_style', null, null, ['adidas', 'puma']),
                         ],
                     ),
@@ -233,10 +233,10 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetMultiSelectValue('tshirt_style', null, null, ['long_sleeve', 'short_sleeve']),
                         ],
                     ),
@@ -269,10 +269,10 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetMultiSelectValue('tshirt_style', null, null, ['vneck', 'long_sleeve', 'short_sleeve']),
                         ],
                     ),
@@ -315,10 +315,10 @@ final class HandleMultiSelectTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetMultiSelectValue('tshirt_style', null, null, [
                                 'vneck',
                                 'short_sleeve',

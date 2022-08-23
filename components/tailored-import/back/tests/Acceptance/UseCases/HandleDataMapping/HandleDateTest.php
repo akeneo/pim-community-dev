@@ -80,10 +80,10 @@ class HandleDateTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetDateValue('release_date', null, null, \DateTimeImmutable::createFromFormat(
                                 'Y-m-d\TH:i:s.uP',
                                 '2022-02-22T00:00:00.000000+0000',
@@ -122,10 +122,10 @@ class HandleDateTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [],
+                        userIntents: [],
                     ),
                     [
                         new InvalidValue('Cannot format date "this is not a date" with provided format "mm/dd/yyyy"'),

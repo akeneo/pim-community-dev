@@ -80,10 +80,10 @@ final class HandleTextTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetTextValue('name', null, null, 'this is a name'),
                             new SetTextValue('description', 'ecommerce', 'fr_FR', 'this is a description'),
                         ],
@@ -132,10 +132,10 @@ final class HandleTextTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetTextValue('name', null, null, 'i want this cleaned'),
                             new SetTextValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),
                         ],

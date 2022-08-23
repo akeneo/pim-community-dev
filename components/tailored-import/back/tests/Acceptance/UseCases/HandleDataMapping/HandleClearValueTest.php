@@ -64,10 +64,10 @@ final class HandleClearTest extends HandleDataMappingTestCase
                     )
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new ClearValue('name', null, null),
                         ],
                     ),

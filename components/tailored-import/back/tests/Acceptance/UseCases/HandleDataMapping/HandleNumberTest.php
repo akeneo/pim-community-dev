@@ -102,10 +102,10 @@ final class HandleNumberTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetNumberValue('year', null, null, '2022'),
                             new SetNumberValue('age', 'ecommerce', 'fr_FR', '12.5'),
                             new SetNumberValue('quantity', 'ecommerce', null, '6'),
@@ -169,10 +169,10 @@ final class HandleNumberTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetNumberValue('year', null, null, '2022'),
                         ],
                     ),

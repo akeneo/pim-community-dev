@@ -105,10 +105,10 @@ final class HandleMeasurementTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetMeasurementValue('size', null, null, '10', 'METER'),
                             new SetMeasurementValue('weight', 'ecommerce', 'fr_FR', '60.5', 'GRAM'),
                             new SetMeasurementValue('frequency', 'ecommerce', null, '6', 'HERTZ'),
@@ -181,10 +181,10 @@ final class HandleMeasurementTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetMeasurementValue('size', null, null, '2022', 'METER'),
                         ],
                     ),

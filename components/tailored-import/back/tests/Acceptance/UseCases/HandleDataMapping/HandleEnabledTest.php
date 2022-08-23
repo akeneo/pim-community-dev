@@ -63,10 +63,10 @@ final class HandleEnabledTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        enabledUserIntent: new SetEnabled(true),
+                        userIntents: [new SetEnabled(true)],
                     ),
                     [],
                 ),
@@ -92,10 +92,10 @@ final class HandleEnabledTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        enabledUserIntent: new SetEnabled(false),
+                        userIntents: [new SetEnabled(false)],
                     ),
                     [],
                 ),
@@ -121,9 +121,10 @@ final class HandleEnabledTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
+                        userIntents: []
                     ),
                     [
                         new InvalidValue('There is no mapped value for this source value: "nope"'),

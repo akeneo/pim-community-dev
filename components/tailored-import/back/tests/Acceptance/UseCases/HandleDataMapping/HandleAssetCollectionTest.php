@@ -81,10 +81,10 @@ final class HandleAssetCollectionTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetAssetValue('an_asset', null, null, ['this is an asset, this is another asset']),
                             new AddAssetValue('another_asset', 'ecommerce', 'fr_FR', ['asset1, asset2, asset3']),
                         ],
@@ -116,10 +116,10 @@ final class HandleAssetCollectionTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetAssetValue('an_asset', null, null, ['asset1', 'asset2']),
                         ],
                     ),
@@ -151,10 +151,10 @@ final class HandleAssetCollectionTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetAssetValue('an_asset', null, null, ['asset1', 'asset2']),
                         ],
                     ),
@@ -187,10 +187,10 @@ final class HandleAssetCollectionTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetAssetValue('an_asset', null, null, ['asset1', 'asset2', 'asset3']),
                         ],
                     ),
@@ -223,10 +223,10 @@ final class HandleAssetCollectionTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [],
+                        userIntents: [],
                     ),
                     [],
                 ),
