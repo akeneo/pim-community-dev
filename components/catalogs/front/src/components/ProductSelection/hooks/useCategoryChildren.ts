@@ -13,7 +13,7 @@ type Result = {
 };
 
 export const useCategoryChildren = (categoryCode: CategoryCode): Result => {
-    const locale = useUserContext().get('uiLocale');
+    const locale = useUserContext().get('catalogLocale');
     const queryClient = useQueryClient();
     const queryResult = useQuery<Data, ResultError, Data>(['category-children', categoryCode], async () => {
         const response = await fetch(`/rest/catalogs/categories/${categoryCode}/children?locale=${locale}`, {
@@ -40,7 +40,7 @@ export const useCategoryChildren = (categoryCode: CategoryCode): Result => {
             return;
         }
         categoryChildren.forEach(child => {
-            queryClient.setQueryData(['categories', {codes: [child.code], isRoot: false}], [child]);
+            queryClient.setQueryData(['categories', {codes: [child.code], isRoot: false, locale}], [child]);
         });
     }, [categoryChildren, queryClient]);
 
