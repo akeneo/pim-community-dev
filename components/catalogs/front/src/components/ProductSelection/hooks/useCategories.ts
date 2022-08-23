@@ -16,8 +16,8 @@ type Result = {
 };
 
 export const useCategories = ({codes = [], isRoot = false}: QueryParams): Result => {
-    const locale = useUserContext().get('uiLocale');
-    return useQuery<Data, ResultError, Data>(['categories', {codes, isRoot}], async () => {
+    const locale = useUserContext().get('catalogLocale');
+    return useQuery<Data, ResultError, Data>(['categories', {codes, isRoot, locale}], async () => {
         if (isRoot && codes.length > 0) {
             throw new Error('Cannot use codes and root simultaneously to fetch categories');
         }
@@ -39,5 +39,9 @@ export const useCategories = ({codes = [], isRoot = false}: QueryParams): Result
         });
 
         return await response.json();
-    });
+    },
+        {
+            staleTime: 60,
+        }
+    );
 };
