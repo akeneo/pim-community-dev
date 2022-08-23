@@ -6,6 +6,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Simple collection of {@see IdentifierResult}.
@@ -22,7 +24,7 @@ class IdentifierResults
     /** @var IdentifierResult[] */
     private array $identifierResults = [];
 
-    public function add(string $identifier, string $type, string $id): void
+    public function add(?string $identifier, string $type, string $id): void
     {
         $this->identifierResults[] = new IdentifierResult($identifier, $type, $id);
     }
@@ -35,6 +37,17 @@ class IdentifierResults
     public function getProductIdentifiers(): array
     {
         return $this->getIdentifiersByType(ProductInterface::class);
+    }
+
+    /**
+     * @return UuidInterface[]
+     */
+    public function getProductUuids(): array
+    {
+        return array_map(
+            fn(IdentifierResult $identifierResult) => Uuid::fromString(\str_replace('product_', '', $identifierResult->getId())),
+            array_filter($this->identifierResults, fn(IdentifierResult $identifierResult) => ProductInterface::class === $identifierResult->getType())
+        );
     }
 
     /**

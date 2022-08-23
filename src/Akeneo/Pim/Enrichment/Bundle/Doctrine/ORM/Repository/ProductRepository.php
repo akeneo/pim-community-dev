@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Product repository
@@ -24,11 +25,26 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getItemsFromIdentifiers(array $identifiers)
+    public function getItemsFromIdentifiers(array $identifiers): array
     {
         $qb = $this->createQueryBuilder('p')
             ->where('p.identifier IN (:identifiers)')
             ->setParameter('identifiers', $identifiers);
+
+        $query = $qb->getQuery();
+        $query->useQueryCache(false);
+
+        return $query->execute();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getItemsFromUuids(array $uuids): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.uuid IN (:uuids)')
+            ->setParameter('uuids', array_map(fn(UuidInterface $uuid) => $uuid->getBytes(), $uuids));
 
         $query = $qb->getQuery();
         $query->useQueryCache(false);
@@ -113,7 +129,7 @@ class ProductRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('p')
             ->select('COUNT(p.id)');
 
-        return (int) $qb
+        return (int)$qb
             ->getQuery()
             ->getSingleScalarResult();
     }
@@ -145,7 +161,6 @@ class ProductRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('p')
             ->orderBy('p.uuid', 'ASC')
             ->setMaxResults($limit);
-        ;
 
         if (null !== $product) {
             $qb->where('p.uuid > :productUuid')

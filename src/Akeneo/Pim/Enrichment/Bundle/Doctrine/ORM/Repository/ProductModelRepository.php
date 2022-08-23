@@ -130,6 +130,14 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getItemsFromUuids(array $uuids): array
+    {
+        throw new \LogicException("Product Models do not use Uuids.");
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function findByIdentifiers(array $codes): array

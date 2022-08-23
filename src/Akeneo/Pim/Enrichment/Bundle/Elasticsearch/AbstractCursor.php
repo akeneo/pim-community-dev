@@ -100,8 +100,9 @@ abstract class AbstractCursor implements CursorInterface
             return [];
         }
 
-        $hydratedProducts = $this->productRepository->getItemsFromIdentifiers(
-            $identifierResults->getProductIdentifiers()
+        // TODO: Implement getItemsFromUuids better or drop this idea ?
+        $hydratedProducts = $this->productRepository->getItemsFromUuids(
+            $identifierResults->getProductUuids()
         );
         $hydratedProductModels = $this->productModelRepository->getItemsFromIdentifiers(
             $identifierResults->getProductModelIdentifiers()
@@ -112,8 +113,9 @@ abstract class AbstractCursor implements CursorInterface
 
         foreach ($identifierResults->all() as $identifierResult) {
             foreach ($hydratedItems as $hydratedItem) {
+                // TODO: Add proper comparison method ?
                 if ($hydratedItem instanceof ProductInterface &&
-                    $identifierResult->isProductIdentifierEquals($hydratedItem->getIdentifier())
+                    $identifierResult->isProductIdEquals('product_' . $hydratedItem->getUuid()->toString())
                 ) {
                     $orderedItems[] = $hydratedItem;
                     break;

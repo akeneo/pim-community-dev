@@ -72,13 +72,13 @@ class IdentifierResult
     }
 
     /**
-     * @param string $identifier
+     * @param string $id
      *
      * @return bool
      */
-    public function isProductIdentifierEquals(string $identifier): bool
+    public function isProductIdEquals(string $id): bool
     {
-        return $identifier === $this->identifier && ProductInterface::class === $this->type;
+        return $id === $this->id && ProductInterface::class === $this->type;
     }
 
     /**

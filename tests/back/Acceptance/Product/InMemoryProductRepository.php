@@ -140,7 +140,7 @@ class InMemoryProductRepository implements
         throw new NotImplementedException(__METHOD__);
     }
 
-    public function getItemsFromIdentifiers(array $identifiers)
+    public function getItemsFromIdentifiers(array $identifiers): array
     {
         $items = [];
 
@@ -149,5 +149,13 @@ class InMemoryProductRepository implements
         }
 
         return $items;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getItemsFromUuids(array $uuids): array
+    {
+        throw new \LogicException("Todo: implement this method.");
     }
 }
