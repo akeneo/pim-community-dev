@@ -23,7 +23,7 @@ class GetCategoryChildrenQuery implements GetCategoryChildrenQueryInterface
     /**
      * @inheritDoc
      */
-    public function execute(string $categoryCode, string $locale): array
+    public function execute(string $categoryCode, string $locale = 'en_US'): array
     {
         $parentCategory = $this->getCategoryFromCode($categoryCode);
         if ($parentCategory === null) {

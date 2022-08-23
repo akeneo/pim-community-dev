@@ -34,7 +34,7 @@ class CategoriesCriterionContainsValidCategoriesValidator extends ConstraintVali
         /** @var array<array-key, string> $categoriesCodes */
         $categoriesCodes = $value['value'];
 
-        $existingCategories = $this->getCategoriesByCodeQuery->execute($categoriesCodes, 'en_US');
+        $existingCategories = $this->getCategoriesByCodeQuery->execute($categoriesCodes);
         $existingCategoryCodes = \array_column($existingCategories, 'code');
 
         $nonExistingCategoryCodes = \array_diff($categoriesCodes, $existingCategoryCodes);
