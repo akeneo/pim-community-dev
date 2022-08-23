@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
  */
 class V20220729171405CleanVersioningResourceUuidColumnForNonProductVersions implements ZddMigration
 {
-    public const BLOCKING_TRIGGER_NAME = 'pim_catalog_product_unique_data_uuid_insert';
+    public const BLOCKING_TRIGGER_NAME = 'pim_versioning_version_uuid_insert';
 
     public function __construct(private Connection $connection, private LoggerInterface $logger)
     {
@@ -39,9 +39,9 @@ class V20220729171405CleanVersioningResourceUuidColumnForNonProductVersions impl
     private function migrationToRemoveTriggersHasNotRun(): bool
     {
         $sql = <<<SQL
-SELECT 1 from information_schema.triggers WHERE TRIGGER_NAME = 'pim_catalog_product_unique_data_uuid_insert';
+SELECT 1 from information_schema.triggers WHERE TRIGGER_NAME = '%s';
 SQL;
-        return (bool) $this->connection->fetchOne($sql);
+        return (bool) $this->connection->fetchOne(sprintf($sql, self::BLOCKING_TRIGGER_NAME));
     }
 
     private function cleanVersioningResourceUuid(): void
