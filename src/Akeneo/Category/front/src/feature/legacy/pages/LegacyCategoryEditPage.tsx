@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {
   Breadcrumb,
@@ -28,7 +28,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import {CategoryToDelete, useDeleteCategory, useEditCategoryForm, useCountProductsBeforeDeleteCategory} from '../hooks';
 import {Category} from '../models';
-import {HistoryPimView, View} from './HistoryPimView';
+import {HistoryPimView, View} from '../../pages';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
 import {EditPermissionsForm, EditPropertiesForm} from '../components';
 
@@ -75,6 +75,7 @@ const LegacyCategoryEditPage: FC = () => {
     onChangeApplyPermissionsOnChildren,
     thereAreUnsavedChanges,
     saveCategory,
+    historyVersion,
   } = useEditCategoryForm(parseInt(categoryId));
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
@@ -94,6 +95,11 @@ const LegacyCategoryEditPage: FC = () => {
     setCategoryToDelete(null);
     closeDeleteCategoryModal();
   };
+
+  const onBuildHistoryView = useCallback(async (view: View) => {
+    view.setData({categoryId});
+    return view;
+  }, [categoryId])
 
   useEffect(() => {
     if (!category) {
@@ -240,11 +246,8 @@ const LegacyCategoryEditPage: FC = () => {
         {isCurrent(historyTabName) && (
           <HistoryPimView
             viewName="pim-category-edit-form-history"
-            onBuild={(view: View) => {
-              view.setData({categoryId});
-
-              return Promise.resolve(view);
-            }}
+            onBuild={onBuildHistoryView}
+            version={historyVersion}
           />
         )}
         {isCurrent(permissionTabName) && permissionsAreEnabled && (

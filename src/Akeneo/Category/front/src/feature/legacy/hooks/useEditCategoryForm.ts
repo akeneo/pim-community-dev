@@ -16,6 +16,7 @@ const useEditCategoryForm = (categoryId: number) => {
   const [originalFormData, setOriginalFormData] = useState<EditCategoryForm | null>(null);
   const [editedFormData, setEditedFormData] = useState<EditCategoryForm | null>(null);
   const [thereAreUnsavedChanges, setThereAreUnsavedChanges] = useState<boolean>(false);
+  const [historyVersion, setHistoryVersion] = useState<number>(0);
   const {setCanLeavePage} = useContext(EditCategoryContext);
 
   const haveLabelsBeenChanged = useCallback((): boolean => {
@@ -107,6 +108,7 @@ const useEditCategoryForm = (categoryId: number) => {
     const response = await saveEditCategoryForm(router, categoryData.category.id, editedFormData);
 
     if (response.success) {
+      setHistoryVersion((prevVersion: number) => prevVersion + 1)
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
       setOriginalFormData(response.form);
       setCategory(response.category);
@@ -165,6 +167,7 @@ const useEditCategoryForm = (categoryId: number) => {
     onChangeApplyPermissionsOnChildren,
     thereAreUnsavedChanges,
     saveCategory,
+    historyVersion
   };
 };
 
