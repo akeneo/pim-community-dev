@@ -36,6 +36,7 @@ class PurgeVersioningCommandIntegration extends TestCase
 
         $output = $this->runPurgeCommand();
         $result = $output->fetch();
+        $result = $output->fetch();
 
         Assert::assertStringContainsString(sprintf('Start purging versions of %s (1/1)', Family::class), $result);
         Assert::assertStringContainsString('Successfully deleted 18 versions', $result);

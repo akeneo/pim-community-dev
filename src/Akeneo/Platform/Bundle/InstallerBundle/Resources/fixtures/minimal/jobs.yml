@@ -151,3 +151,8 @@ jobs:
         alias:     versioning_refresh
         label:     Refresh versioning for any updated entities
         type:      scheduled_job
+    versioning_purge:
+        connector: internal
+        alias:     versioning_purge
+        label:     Purge versions of entities, except first and last versions
+        type:      scheduled_job
