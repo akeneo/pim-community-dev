@@ -96,14 +96,6 @@ abstract class AbstractProduct implements ProductInterface
         return $this->uuid;
     }
 
-    public function setUuid(UuidInterface $uuid): ProductInterface
-    {
-        Assert::same($uuid->getVersion(), 4);
-        $this->uuid = $uuid;
-
-        return $this;
-    }
-
     /**
      * {@inheritdoc}
      */
