@@ -82,7 +82,7 @@ class FilePresenter implements PresenterInterface
     {
         return sprintf(
             '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',
-            $this->generator->generate('pim_enrich_media_show', ['filename' => urlencode($fileKey)]),
+            $this->generator->generate('pim_enrich_media_download', ['filename' => urlencode($fileKey)]),
             $originalFilename
         );
     }

@@ -29,7 +29,7 @@ class FilePresenterSpec extends ObjectBehavior
     function it_does_not_presents_original_if_original_is_empty()
     {
         $this
-            ->present(null, ['data' => 'key/of/the/change.jpg'])
+            ->present(null, ['data' => 'key/of/the/change.pdf'])
             ->shouldReturn(['before' => '', 'after' => '']);
     }
 
@@ -45,41 +45,41 @@ class FilePresenterSpec extends ObjectBehavior
         FileInfoInterface $changedMedia,
         FileInfoRepositoryInterface $repository
     ) {
-        $repository->findOneByIdentifier('key/of/the/changed/media.jpg')->willReturn($changedMedia);
-        $changedMedia->getKey()->willReturn('key/of/the/changed/media.jpg');
+        $repository->findOneByIdentifier('key/of/the/changed/file.pdf')->willReturn($changedMedia);
+        $changedMedia->getKey()->willReturn('key/of/the/changed/file.pdf');
         $changedMedia->getHash()->willReturn('different_hash');
-        $changedMedia->getOriginalFilename()->willReturn('changed_media.jpg');
+        $changedMedia->getOriginalFilename()->willReturn('changed_file.pdf');
 
-        $media->getKey()->willReturn('key/of/the/original/media.jpg');
+        $media->getKey()->willReturn('key/of/the/original/file.pdf');
         $media->getHash()->willReturn('hash');
-        $media->getOriginalFilename()->willReturn('media.jpg');
+        $media->getOriginalFilename()->willReturn('file.pdf');
 
         $generator
             ->generate(
-                'pim_enrich_media_show',
-                ['filename' => urlencode('key/of/the/original/media.jpg')]
+                'pim_enrich_media_download',
+                ['filename' => urlencode('key/of/the/original/file.pdf')]
             )
-            ->willReturn('url/of/the/original/media.jpg');
+            ->willReturn('url/of/the/original/file.pdf');
 
         $generator
             ->generate(
-                'pim_enrich_media_show',
-                ['filename' => urlencode('key/of/the/changed/media.jpg')]
+                'pim_enrich_media_download',
+                ['filename' => urlencode('key/of/the/changed/file.pdf')]
             )
-            ->willReturn('url/of/the/changed/media.jpg');
+            ->willReturn('url/of/the/changed/file.pdf');
 
         $this
-            ->present($media, ['data' => 'key/of/the/changed/media.jpg'])
+            ->present($media, ['data' => 'key/of/the/changed/file.pdf'])
             ->shouldReturn([
                 'before' => sprintf(
                     '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',
-                    'url/of/the/original/media.jpg',
-                    'media.jpg'
+                    'url/of/the/original/file.pdf',
+                    'file.pdf'
                 ),
                 'after' => sprintf(
                     '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',
-                    'url/of/the/changed/media.jpg',
-                    'changed_media.jpg'
+                    'url/of/the/changed/file.pdf',
+                    'changed_file.pdf'
                 )
             ]);
     }
