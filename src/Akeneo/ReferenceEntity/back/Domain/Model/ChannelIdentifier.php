@@ -11,7 +11,7 @@ class ChannelIdentifier
     private function __construct(
         private string $identifier
     ) {
-        Assert::notEmpty($identifier, 'Channel identifier should not be empty');
+        Assert::stringNotEmpty($identifier, 'Channel identifier should not be empty');
     }
 
     public static function fromCode(string $identifier): self
