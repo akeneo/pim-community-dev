@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\UserManagement\Domain\Model;
+namespace Akeneo\UserManagement\ServiceApi\User;
 
 final class User
 {
-    private function __construct(
+    public function __construct(
         private int $id,
         private string $email,
         private string $username,
@@ -48,43 +48,28 @@ final class User
         return $this->userType;
     }
 
-    public function getFirstname(): string|null
+    public function getFirstname(): string
     {
         return $this->firstname;
     }
 
-    public function getLastname(): string|null
+    public function getLastname(): string
     {
         return $this->lastname;
     }
 
-    public function getMiddleName(): string|null
+    public function getMiddleName(): string
     {
         return $this->middleName;
     }
 
-    public function getNameSuffix(): string|null
+    public function getNameSuffix(): string
     {
         return $this->nameSuffix;
     }
 
-    public function getImage(): string|null
+    public function getImage(): string
     {
         return $this->image;
-    }
-
-    public static function createFromDatabase(array $data): self
-    {
-        return new self(
-            (int) $data['id'],
-            $data['email'],
-            $data['username'],
-            $data['user_type'],
-            $data['first_name'],
-            $data['last_name'],
-            $data['middle_name'],
-            $data['name_suffix'],
-            $data['image']
-        );
     }
 }

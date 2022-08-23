@@ -38,38 +38,38 @@ final class SqlFindUsers implements FindUsers
     ): array {
         $query = $this->buildQuery($search, $searchAfterId, $limit);
 
-        $results = $this->connection->executeQuery($query)->fetchAllAssociative();
+        $results = $this->connection->executeQuery(
+            $query,
+            [
+                'search' => sprintf('%%%s%%', $search),
+                'searchAfterId' => $searchAfterId,
+            ],
+        )->fetchAllAssociative();
 
         return array_map(
-            static function ($data) {
-                return ServiceAPiUser::createFromDatabase($data);
-            },
+            static fn ($data) => ServiceAPiUser::createFromDatabase($data),
             $results
         );
     }
 
     private function buildQuery(?string $search, ?int $searchAfterId, ?int $limit): string
     {
-        $searchSql = '';
+        $sqlWhereParts = [];
+        $sqlLimitPart = '';
+
         if (null !== $search) {
-            $searchSql = <<<SQL
-                AND (ou.username LIKE '%${search}%' OR ou.email LIKE '%${search}%' OR ou.first_name LIKE '%${search}%' OR ou.last_name LIKE '%${search}%')
-            SQL;
+            $sqlWhereParts[] = '(ou.username LIKE :search OR ou.email LIKE :search OR ou.first_name LIKE :search OR ou.last_name LIKE :search)';
         }
 
-        $searchAfterIdSql = '';
         if (null !== $searchAfterId) {
-            $searchAfterIdSql = <<<SQL
-                AND ou.id > ${searchAfterId}
-            SQL;
+            $sqlWhereParts[] = 'ou.id > :searchAfterId';
         }
 
-        $limitSql = '';
         if (null !== $limit) {
-            $limitSql = <<<SQL
-                LIMIT ${limit}
-            SQL;
+            $sqlLimitPart = sprintf('LIMIT %s', $limit);
         }
+
+        $sqlWhereParts = empty($sqlWhereParts) ? '' : 'AND '.implode(' AND ', $sqlWhereParts);
 
         $type = User::TYPE_USER;
 
@@ -77,10 +77,9 @@ final class SqlFindUsers implements FindUsers
             SELECT id, email, username, user_type, first_name, last_name, middle_name, name_suffix, image 
             FROM oro_user as ou
             WHERE ou.user_type='${type}'
-            ${searchSql}
-            ${searchAfterIdSql}
+            ${sqlWhereParts}
             ORDER BY ou.id
-            ${limitSql} 
+            ${sqlLimitPart} 
         SQL;
     }
 }

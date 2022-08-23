@@ -15,12 +15,12 @@ namespace Akeneo\Test\UserManagement\Integration\ServiceApi\User;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\UserManagement\Domain\Model\User;
+use Akeneo\UserManagement\ServiceApi\User\User;
 use Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface;
-use Akeneo\UserManagement\ServiceApi\User\ListUsersQuery;
+use Akeneo\UserManagement\ServiceApi\User\UsersQuery;
 use PHPUnit\Framework\Assert;
 
-final class ListUsersQueryIntegration extends TestCase
+final class ListUsersHandlerIntegration extends TestCase
 {
     protected function setUp(): void
     {
@@ -37,7 +37,7 @@ final class ListUsersQueryIntegration extends TestCase
 
     public function testItListsTheUsers(): void
     {
-        $users = $this->getHandler()->fromQuery(new ListUsersQuery());
+        $users = $this->getHandler()->fromQuery(new UsersQuery());
 
         Assert::assertCount(4, $users);
         Assert::containsOnlyInstancesOf(User::class);
@@ -45,7 +45,7 @@ final class ListUsersQueryIntegration extends TestCase
 
     public function testItFiltersTheUsersOnUsername(): void
     {
-        $users = $this->getHandler()->fromQuery(new ListUsersQuery('julia'));
+        $users = $this->getHandler()->fromQuery(new UsersQuery('julia'));
 
         Assert::assertCount(1, $users);
         Assert::containsOnlyInstancesOf(User::class);
@@ -54,7 +54,7 @@ final class ListUsersQueryIntegration extends TestCase
 
     public function testItListsTheUsersWithPagination(): void
     {
-        $users = $this->getHandler()->fromQuery(new ListUsersQuery(
+        $users = $this->getHandler()->fromQuery(new UsersQuery(
             null,
             null,
             2
@@ -63,7 +63,7 @@ final class ListUsersQueryIntegration extends TestCase
         Assert::assertCount(2, $users);
         $lastId = $users[1]->getId();
 
-        $users = $this->getHandler()->fromQuery(new ListUsersQuery(
+        $users = $this->getHandler()->fromQuery(new UsersQuery(
             null,
             $lastId,
             2

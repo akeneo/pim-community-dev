@@ -20,5 +20,5 @@ interface ListUsersHandlerInterface
     /**
      * @return User[]
      */
-    public function fromQuery(ListUsersQuery $query): array;
+    public function fromQuery(UsersQuery $query): array;
 }

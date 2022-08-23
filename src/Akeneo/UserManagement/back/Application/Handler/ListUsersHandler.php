@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Application\Handler;
 
+use Akeneo\UserManagement\Domain\Model\User as DomainUser;
 use Akeneo\UserManagement\Domain\Storage\FindUsers;
 use Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface;
-use Akeneo\UserManagement\ServiceApi\User\ListUsersQuery;
+use Akeneo\UserManagement\ServiceApi\User\User as ServiceApiUser;
+use Akeneo\UserManagement\ServiceApi\User\UsersQuery;
 
 final class ListUsersHandler implements ListUsersHandlerInterface
 {
@@ -24,12 +26,27 @@ final class ListUsersHandler implements ListUsersHandlerInterface
     ) {
     }
 
-    public function fromQuery(ListUsersQuery $query): array
+    public function fromQuery(UsersQuery $query): array
     {
-        return ($this->findUsers)(
+        $result = ($this->findUsers)(
             $query->getSearchName(),
             $query->getSearchAfterId(),
             $query->getLimit(),
+        );
+
+        return array_map(
+            static fn (DomainUser $user) => new ServiceApiUser(
+                $user->getId(),
+                $user->getEmail(),
+                $user->getUsername(),
+                $user->getUserType(),
+                $user->getFirstname(),
+                $user->getLastname(),
+                $user->getMiddleName(),
+                $user->getNameSuffix(),
+                $user->getImage()
+            ),
+            $result
         );
     }
 }

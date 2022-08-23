@@ -15,7 +15,7 @@ namespace Akeneo\UserManagement\ServiceApi\User;
 
 use Akeneo\UserManagement\Domain\Storage\FindUsers;
 
-final class ListUsersQuery
+final class UsersQuery
 {
     public function __construct(
         private ?string $searchName = null,
