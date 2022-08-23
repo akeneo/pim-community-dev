@@ -43,9 +43,11 @@ class AddQuantifiedAssociationsToVariantProductWithUuidEndToEnd extends Abstract
 
         $data = <<<JSON
 {
-    "identifier": "garden_table_set-black-gold",
     "parent": "garden_table_set-black",
-    "values": {"a_yes_no": [{"locale": null, "scope": null, "data": true}]},
+    "values": {
+        "sku": [{"locale": null, "scope": null, "data": "garden_table_set-black-gold"}],
+        "a_yes_no": [{"locale": null, "scope": null, "data": true}]
+    },
     "quantified_associations": {
         "PRODUCTSET": {
             "products": [

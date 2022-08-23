@@ -45,7 +45,11 @@ class AddQuantifiedAssociationsToProductWithUuidEndToEnd extends AbstractProduct
 
         $data = <<<JSON
 {
-    "identifier": "$identifier",
+    "values": {
+        "sku": [
+            {"data": "$identifier", "locale": null, "scope": null}
+        ]
+    },
     "quantified_associations": {
         "PRODUCTSET": {
             "products": [

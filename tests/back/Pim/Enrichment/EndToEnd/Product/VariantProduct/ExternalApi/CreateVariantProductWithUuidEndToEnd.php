@@ -33,10 +33,10 @@ class CreateVariantProductWithUuidEndToEnd extends AbstractProductTestCase
                 'family_variant' => 'familyVariantA1',
                 'values'  => [
                     'a_price'  => [
-                        'data' => ['data' => [['amount' => '50', 'currency' => 'EUR']], 'locale' => null, 'scope' => null],
+                        "data" => ["data" => [['amount' => '50', 'currency' => 'EUR']], "locale" => null, "scope" => null],
                     ],
-                    'a_number_float'  => [['data' => '12.5', 'locale' => null, 'scope' => null]],
-                    'a_localized_and_scopable_text_area'  => [['data' => 'my pink tshirt', 'locale' => 'en_US', 'scope' => 'ecommerce']],
+                    'a_number_float'  => [["data" => '12.5', "locale" => null, "scope" => null]],
+                    'a_localized_and_scopable_text_area'  => [["data" => 'my pink tshirt', "locale" => 'en_US', "scope" => 'ecommerce']],
                 ]
             ]
         );
@@ -48,7 +48,7 @@ class CreateVariantProductWithUuidEndToEnd extends AbstractProductTestCase
                 'family_variant' => 'familyVariantA1',
                 'values'  => [
                     'a_simple_select' => [
-                        ['locale' => null, 'scope' => null, 'data' => 'optionB'],
+                        ["locale" => null, "scope" => null, "data" => 'optionB'],
                     ],
                 ],
             ]
@@ -67,10 +67,12 @@ class CreateVariantProductWithUuidEndToEnd extends AbstractProductTestCase
         $data =
 <<<JSON
     {
-        "identifier": "product_variant_creation_family",
         "family": "familyA",
         "parent": "amor",
         "values": {
+          "sku": [
+              {"locale": null, "scope": null, "data": "product_variant_creation_family"}
+          ],
           "a_yes_no": [
             {
               "locale": null,
@@ -85,18 +87,18 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
-            'identifier'    => 'product_variant_creation_family',
+            'identifier' => 'product_variant_creation_family',
             'family'        => 'familyA',
             'parent'        => 'amor',
             'groups'        => [],
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_variant_creation_family'],
+                "sku" => [
+                    ["locale" => null, "scope" => null, "data" => 'product_variant_creation_family']
                 ],
                 'a_simple_select' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
+                    ["locale" => null, "scope" => null, "data" => 'optionB'],
                 ],
                 "a_price" => [
                     [
@@ -154,9 +156,11 @@ JSON;
         $data =
 <<<JSON
     {
-        "identifier": "product_variant_creation_family",
         "parent": "amor",
         "values": {
+          "sku": [
+            {"locale": null, "scope": null, "data": "product_variant_creation_family"}
+          ],
           "a_yes_no": [
             {
               "locale": null,
@@ -171,18 +175,18 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
-            'identifier'    => 'product_variant_creation_family',
+            'identifier' => 'product_variant_creation_family',
             'family'        => 'familyA',
             'parent'        => 'amor',
             'groups'        => [],
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_variant_creation_family'],
+                "sku" => [
+                    ["locale" => null, "scope" => null, "data" => 'product_variant_creation_family'],
                 ],
                 'a_simple_select' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
+                    ["locale" => null, "scope" => null, "data" => 'optionB'],
                 ],
                 "a_price" => [
                     [
@@ -238,10 +242,12 @@ JSON;
         $data =
 <<<JSON
     {
-        "identifier": "product_variant_creation_family",
         "parent": "amor",
         "family": null,
         "values": {
+          "sku": [
+            {"locale": null, "scope": null, "data": "product_variant_creation_family"}
+          ],
           "a_yes_no": [
             {
               "locale": null,
@@ -279,10 +285,12 @@ JSON;
         $data =
 <<<JSON
     {
-        "identifier": "product_variant_creation_family",
         "parent": "amor",
         "family": "familyA2",
         "values": {
+          "sku": [
+            {"locale": null, "scope": null, "data": "product_variant_creation_family"}
+          ],
           "a_yes_no": [
             {
               "locale": null,
@@ -320,10 +328,12 @@ JSON;
         $data =
 <<<JSON
     {
-        "identifier": "product_variant_creation_family",
         "parent": "invalid",
         "family": "familyA2",
         "values": {
+          "sku": [
+            {"locale": null, "scope": null, "data": "product_variant_creation_family"}
+          ],
           "a_yes_no": [
             {
               "locale": null,
@@ -356,10 +366,12 @@ JSON;
         $data =
 <<<JSON
     {
-        "identifier": "product_variant_creation",
         "parent": "amor",
         "family": "familyA",
         "values": {
+          "sku": [
+            {"locale": null, "scope": null, "data": "product_variant_creation"}
+          ],
           "a_yes_no": [
             {
               "locale": null,
@@ -396,10 +408,13 @@ JSON;
         $data =
 <<<JSON
     {
-        "identifier": "product_variant_creation_with_missing_axe",
         "parent": "amor",
         "family": "familyA",
-        "values": {}
+        "values": {
+          "sku": [
+            {"locale": null, "scope": null, "data": "product_variant_creation_with_missing_axe"}
+          ]
+        }
     }
 JSON;
 
@@ -428,10 +443,12 @@ JSON;
         $data =
 <<<JSON
     {
-        "identifier": "product_variant_creation_groups",
         "groups": ["groupA", "groupB"],
         "parent": "amor",
         "values": {
+          "sku": [
+            {"locale": null, "scope": null, "data": "product_variant_creation_groups"}
+          ],
           "a_yes_no": [
             {
               "locale": null,
@@ -446,18 +463,18 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
-            'identifier'    => 'product_variant_creation_groups',
+            'identifier' => 'product_variant_creation_groups',
             'family'        => "familyA",
             'parent'        => 'amor',
             'groups'        => ["groupA", "groupB"],
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_variant_creation_groups'],
+                "sku" => [
+                    ["locale" => null, "scope" => null, "data" => 'product_variant_creation_groups'],
                 ],
                 'a_simple_select' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
+                    ["locale" => null, "scope" => null, "data" => 'optionB'],
                 ],
                 "a_price" => [
                     [
@@ -513,10 +530,12 @@ JSON;
         $data =
 <<<JSON
     {
-        "identifier": "product_variant_creation_categories",
         "parent": "amor",
         "categories": ["master", "categoryA"],
         "values": {
+          "sku": [
+            {"locale": null, "scope": null, "data": "product_variant_creation_categories"}
+          ],
           "a_yes_no": [
             {
               "locale": null,
@@ -531,18 +550,18 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
-            'identifier'    => 'product_variant_creation_categories',
+            'identifier' => 'product_variant_creation_categories',
             'family'        => "familyA",
             'parent'        => "amor",
             'groups'        => [],
             'categories'    => ["categoryA", "master"],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_variant_creation_categories'],
+                "sku" => [
+                    ["locale" => null, "scope" => null, "data" => 'product_variant_creation_categories'],
                 ],
                 'a_simple_select' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
+                    ["locale" => null, "scope" => null, "data" => 'optionB'],
                 ],
                 "a_price" => [
                     [
@@ -597,9 +616,11 @@ JSON;
 
         $data = <<<JSON
 {
-    "identifier": "product_variant_creation_associations",
     "parent": "amor",
     "values": {
+        "sku": [
+            {"locale": null, "scope": null, "data": "product_variant_creation_associations"}
+        ],
         "a_yes_no": [
             {
                 "locale": null,
@@ -623,18 +644,18 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
-            'identifier'    => 'product_variant_creation_associations',
+            'identifier' => 'product_variant_creation_associations',
             'family'        => "familyA",
             'parent'        => "amor",
             'groups'        => [],
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_variant_creation_associations'],
+                "sku" => [
+                    ["locale" => null, "scope" => null, "data" => 'product_variant_creation_associations'],
                 ],
                 'a_simple_select' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
+                    ["locale" => null, "scope" => null, "data" => 'optionB'],
                 ],
                 "a_price" => [
                     [
@@ -717,12 +738,14 @@ JSON;
         $data =
 <<<JSON
     {
-        "identifier": "product_variant_creation_product_values",
         "groups": ["groupA", "groupB"],
         "parent": "amor",
         "family": "familyA",
         "categories": ["master", "categoryA"],
         "values": {
+            "sku": [
+                {"locale": null, "scope": null, "data": "product_variant_creation_product_values"}
+            ],
             "a_file": [{
                 "locale": null,
                 "scope": null,
@@ -899,36 +922,36 @@ JSON;
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
-            'identifier'    => 'product_variant_creation_product_values',
+            'identifier' => 'product_variant_creation_product_values',
             'family'        => 'familyA',
             'parent'        => "amor",
             'groups'        => ['groupA', 'groupB'],
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_variant_creation_product_values'],
+                "sku" => [
+                    ["locale" => null, "scope" => null, "data" => 'product_variant_creation_product_values'],
                 ],
                 'a_number_float' => [
-                    ['locale' => null, 'scope' => null, 'data' => '12.5000'],
+                    ["locale" => null, "scope" => null, "data" => '12.5000'],
                 ],
                 'a_price' => [
                     [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => [
+                        "locale" => null,
+                        "scope"  => null,
+                        "data"   => [
                             ['amount' => '50.00', 'currency' => 'EUR'],
                         ],
                     ],
                 ],
                 'a_simple_select' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
+                    ["locale" => null, "scope" => null, "data" => 'optionB'],
                 ],
                 'a_yes_no'                           => [
-                    ['locale' => null, 'scope' => null, 'data' => false],
+                    ["locale" => null, "scope" => null, "data" => false],
                 ],
                 'a_text_area'                           => [
-                    ['locale' => null, 'scope' => null, 'data' => 'this is a very very very very very long  text'],
+                    ["locale" => null, "scope" => null, "data" => 'this is a very very very very very long  text'],
                 ],
                 "a_localized_and_scopable_text_area" => [
                     [
@@ -958,9 +981,11 @@ JSON;
         $data =
 <<<JSON
     {
-        "identifier": "foo",
         "parent": "amor",
         "values": {
+           "sku": [
+               {"locale": null, "scope": null, "data": "foo"}
+           ],
           "a_simple_select": [
             {
               "locale": null,
@@ -982,18 +1007,18 @@ JSON;
 JSON;
 
         $expectedProduct = [
-            'identifier'    => 'foo',
+            'identifier' => 'foo',
             'family'        => "familyA",
             'parent'        => "amor",
             'groups'        => [],
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'foo'],
+                "sku" => [
+                    ["locale" => null, "scope" => null, "data" => 'foo'],
                 ],
                 'a_simple_select' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
+                    ["locale" => null, "scope" => null, "data" => 'optionB'],
                 ],
                 "a_price" => [
                     [
@@ -1063,10 +1088,12 @@ JSON;
         $product =
 <<<JSON
     {
-        "identifier": "apollon_option_b_true",
         "parent": "amor",
         "categories": ["master"],
         "values": {
+           "sku": [
+            {"locale": null, "scope": null, "data": "apollon_option_b_true"}
+           ],
             "a_yes_no": [
               {
                 "locale": null,
@@ -1104,9 +1131,11 @@ JSON;
         $data =
 <<<JSON
     {
-        "identifier": "new_product_variant",
         "parent": "test",
         "values": {
+           "sku": [
+            {"locale": null, "scope": null, "data": "new_product_variant"}
+           ],
           "a_simple_select": [
             {
               "locale": null,

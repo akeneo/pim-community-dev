@@ -812,56 +812,23 @@ JSON;
         $this->assertSame($this->getProductUuidFromIdentifier('foo')->toString(), 'a48ca2b8-656d-4b2c-b9cc-b2243e876ebf');
     }
 
-    public function testResponseWhenMissingIdentifierPropertyAndProvidedIdentifierInValues()
+    public function testResponseWhenIdentifierIsFilled()
     {
         $client = $this->createAuthenticatedClient();
 
-        $data =
-            <<<JSON
-    {
-        "values": {
-            "a_simple_select": [
-                {"locale": null, "scope": null, "data": "optionB"}
-            ]
-         }
-    }
-JSON;
+        $data = '{
+            "identifier": "foo"
+        }';
 
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property'   => 'identifier',
-                    'message' => 'The identifier attribute cannot be empty.',
-                ],
-            ],
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-
-    public function testResponseWhenIdentifierIsNotFilled()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data = '{}';
-
-        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
-
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'identifier',
-                    'message'  => 'The identifier attribute cannot be empty.',
-                ],
+            'message' => 'Property "identifier" does not exist. Check the expected format on the API documentation.',
+            '_links' => [
+                'documentation' => [
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_products'
+                ]
             ],
         ];
 
@@ -1171,7 +1138,7 @@ JSON;
      * @param array  $expectedProduct normalized data of the product that should be created
      * @param string $identifier identifier of the product that should be created
      */
-    protected function assertSameProducts(array $expectedProduct, $identifier)
+    protected function assertSameProducts(array $expectedProduct, $identifier): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
