@@ -90,6 +90,8 @@ $rules = [
             'Box\Spout\Writer\Common\Creator\WriterFactory',
             'Box\Spout\Writer\Exception\WriterNotOpenedException',
             'Doctrine\DBAL\Connection',
+            'League\Flysystem\FilesystemException',
+            'League\Flysystem\UnableToDeleteDirectory',
             'Psr\Log\LoggerInterface',
             'Symfony',
         ],

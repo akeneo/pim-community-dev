@@ -29,7 +29,7 @@ final class DatabaseGetProductFilePathsOfOldProductFiles implements GetProductFi
                     \DateInterval::createFromDateString(
                         sprintf(
                             '-%d days',
-                            SupplierFileRepository::NUMBER_OF_DAYS_AFTER_WHICH_THE_FILES_ARE_CONSIDERED_OLD,
+                            SupplierFileRepository::RETENTION_DURATION_IN_DAYS,
                         ),
                     ),
                 )->format('Y-m-d H:i:s'),

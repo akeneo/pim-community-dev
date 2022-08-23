@@ -28,6 +28,7 @@ services:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\DeleteProductFilesFromPathsInGCSBucket
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@monolog.logger.supplier_portal'
 
     # PIM Notification service
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier:

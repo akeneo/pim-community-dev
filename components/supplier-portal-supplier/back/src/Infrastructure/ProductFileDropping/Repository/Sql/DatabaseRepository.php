@@ -55,7 +55,7 @@ final class DatabaseRepository implements SupplierFileRepository
                     \DateInterval::createFromDateString(
                         sprintf(
                             '-%d days',
-                            self::NUMBER_OF_DAYS_AFTER_WHICH_THE_FILES_ARE_CONSIDERED_OLD,
+                            self::RETENTION_DURATION_IN_DAYS,
                         ),
                     ),
                 )->format('Y-m-d H:i:s'),
