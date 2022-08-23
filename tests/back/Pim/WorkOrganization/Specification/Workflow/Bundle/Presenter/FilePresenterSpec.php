@@ -27,7 +27,7 @@ class FilePresenterSpec extends ObjectBehavior
     function it_does_not_presents_original_if_original_is_empty()
     {
         $this
-            ->present(null, ['data' => 'key/of/the/change.jpg'])
+            ->present(null, ['data' => 'key/of/the/change.pdf'])
             ->shouldReturn(['before' => null, 'after' => null]);
     }
 
@@ -42,25 +42,25 @@ class FilePresenterSpec extends ObjectBehavior
         FileInfoInterface $changedMedia,
         FileInfoRepositoryInterface $repository
     ) {
-        $repository->findOneByIdentifier('key/of/the/changed/media.jpg')->willReturn($changedMedia);
-        $changedMedia->getKey()->willReturn('key/of/the/changed/media.jpg');
+        $repository->findOneByIdentifier('key/of/the/changed/file.pdf')->willReturn($changedMedia);
+        $changedMedia->getKey()->willReturn('key/of/the/changed/file.pdf');
         $changedMedia->getHash()->willReturn('different_hash');
-        $changedMedia->getOriginalFilename()->willReturn('changed_media.jpg');
+        $changedMedia->getOriginalFilename()->willReturn('changed_file.pdf');
 
-        $media->getKey()->willReturn('key/of/the/original/media.jpg');
+        $media->getKey()->willReturn('key/of/the/original/file.pdf');
         $media->getHash()->willReturn('hash');
-        $media->getOriginalFilename()->willReturn('media.jpg');
+        $media->getOriginalFilename()->willReturn('file.pdf');
 
         $this
-            ->present($media, ['data' => 'key/of/the/changed/media.jpg'])
+            ->present($media, ['data' => 'key/of/the/changed/file.pdf'])
             ->shouldReturn([
                 'before' => [
-                  'fileKey' => "key/of/the/original/media.jpg",
-                  'originalFileName' => "media.jpg",
+                  'fileKey' => "key/of/the/original/file.pdf",
+                  'originalFileName' => "file.pdf",
                 ],
                 'after' => [
-                  'fileKey' => "key/of/the/changed/media.jpg",
-                  'originalFileName' => "changed_media.jpg",
+                  'fileKey' => "key/of/the/changed/file.pdf",
+                  'originalFileName' => "changed_file.pdf",
                 ],
             ]);
     }
