@@ -56,18 +56,17 @@ class GetCategoryChildrenActionTest extends IntegrationTestCase
 
         $children = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        $expectedChild1 = [
-            'code' => 'child1',
-            'label' => 'Child category',
-            'isLeaf' => false,
-        ];
-
-        $expectedChild2 = [
-            'code' => 'child2',
-            'label' => 'Child 2 category',
-            'isLeaf' => true,
-        ];
-
-        Assert::assertEquals([$expectedChild1, $expectedChild2], $children);
+        Assert::assertEquals([
+            [
+                'code' => 'child1',
+                'label' => 'Child category',
+                'isLeaf' => false,
+            ],
+            [
+                'code' => 'child2',
+                'label' => 'Child 2 category',
+                'isLeaf' => true,
+            ]
+        ], $children);
     }
 }

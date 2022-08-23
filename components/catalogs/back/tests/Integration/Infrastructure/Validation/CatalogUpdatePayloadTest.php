@@ -243,6 +243,22 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                 ],
                 'expectedMessage' => 'This value should be of type array.',
             ],
+            'category field with non empty value while operator is unclassified' => [
+                'criterion' => [
+                    'field' => 'categories',
+                    'operator' => 'UNCLASSIFIED',
+                    'value' => ['master'],
+                ],
+                'expectedMessage' => 'This value must be empty.',
+            ],
+            'category field requires non empty value ' => [
+                'criterion' => [
+                    'field' => 'categories',
+                    'operator' => 'IN CHILDREN',
+                    'value' => null,
+                ],
+                'expectedMessage' => 'This value must not be empty.',
+            ],
             'category field value contains an item with bad value type' => [
                 'criterion' => [
                     'field' => 'categories',

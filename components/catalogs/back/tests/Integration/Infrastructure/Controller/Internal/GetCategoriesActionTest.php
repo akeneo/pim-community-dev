@@ -44,19 +44,18 @@ class GetCategoriesActionTest extends IntegrationTestCase
 
         $categories = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        $expectedTshirtCategory = [
-            'code' => 'tshirt',
-            'label' => 'T-shirt',
-            'isLeaf' => true,
-        ];
-
-        $expectedShoesCategory = [
-            'code' => 'shoes',
-            'label' => 'Shoes',
-            'isLeaf' => true,
-        ];
-
-        Assert::assertEquals([$expectedShoesCategory, $expectedTshirtCategory], $categories);
+        Assert::assertEquals([
+            [
+                'code' => 'shoes',
+                'label' => 'Shoes',
+                'isLeaf' => true,
+            ],
+            [
+                'code' => 'tshirt',
+                'label' => 'T-shirt',
+                'isLeaf' => true,
+            ]
+        ], $categories);
     }
 
     public function testItGetsCategoryTreeRoots(): void
@@ -82,18 +81,16 @@ class GetCategoriesActionTest extends IntegrationTestCase
 
         $categories = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        $expectedMasterCategory = [
-            'code' => 'master',
-            'label' => 'Master catalog',
-            'isLeaf' => false,
-        ];
-
-        $expectedTshirtCategory = [
-            'code' => 'tshirt',
-            'label' => 'T-shirt',
-            'isLeaf' => false,
-        ];
-
-        Assert::assertEquals([$expectedMasterCategory, $expectedTshirtCategory], $categories);
+        Assert::assertEquals([
+            [
+                'code' => 'master',
+                'label' => 'Master catalog',
+                'isLeaf' => false,
+            ],
+            [
+                'code' => 'tshirt',
+                'label' => 'T-shirt',
+                'isLeaf' => false,
+            ]], $categories);
     }
 }
