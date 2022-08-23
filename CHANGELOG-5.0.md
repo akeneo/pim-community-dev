@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.110 (2022-08-23)
+
 ## Bug fixes
 
 - PIM-10586: [Backport PIM-10436] Always process a IccStripOperation in AM transformation pipeline
