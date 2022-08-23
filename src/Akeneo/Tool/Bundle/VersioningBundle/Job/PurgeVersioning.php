@@ -5,8 +5,6 @@ namespace Akeneo\Tool\Bundle\VersioningBundle\Job;
 use Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Symfony\Bridge\Monolog\Logger;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Purge version of entities
@@ -19,11 +17,8 @@ class PurgeVersioning implements TaskletInterface
 {
     private StepExecution $stepExecution;
 
-    public function __construct(
-        private Logger $logger,
-        private VersionPurgerInterface $versionPurger,
-        EventSubscriberInterface $eventSubscriber,
-    ) {
+    public function __construct(private VersionPurgerInterface $versionPurger)
+    {
     }
 
     public function execute(): void
