@@ -62,6 +62,13 @@ services:
         tags:
             - { name: akeneo_assetmanager.transformation.operation_applier }
 
+    Akeneo\AssetManager\Infrastructure\Transformation\Operation\IccStripOperationApplier:
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@filesystem'
+        tags:
+            - { name: akeneo_assetmanager.transformation.operation_applier }
+
     # executor
     akeneo_assetmanager.infrastructure.transformation.file_transformer:
         class: Akeneo\AssetManager\Infrastructure\Transformation\FileTransformer

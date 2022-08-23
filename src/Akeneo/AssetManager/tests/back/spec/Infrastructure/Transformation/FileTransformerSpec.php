@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Transformation;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ScaleOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\IccStripOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
@@ -19,15 +23,18 @@ class FileTransformerSpec extends ObjectBehavior
 {
     function let(
         OperationApplier $scaleOperationApplier,
-        OperationApplier $thumbnailOperationApplier
+        OperationApplier $thumbnailOperationApplier,
+        OperationApplier $iccStripOperationApplier
     ) {
         // registry with 'scale' and 'thumbnail' operation appliers
-        $scaleOperationApplier->supports(Argument::type(Operation\ScaleOperation::class))->willReturn(true);
+        $scaleOperationApplier->supports(Argument::type(ScaleOperation::class))->willReturn(true);
         $scaleOperationApplier->supports(Argument::type(Operation::class))->willReturn(false);
-        $thumbnailOperationApplier->supports(Argument::type(Operation\ThumbnailOperation::class))->willReturn(true);
+        $thumbnailOperationApplier->supports(Argument::type(ThumbnailOperation::class))->willReturn(true);
         $thumbnailOperationApplier->supports(Argument::type(Operation::class))->willReturn(false);
+        $iccStripOperationApplier->supports(Argument::type(IccStripOperation::class))->willReturn(true);
+        $iccStripOperationApplier->supports(Argument::type(Operation::class))->willReturn(false);
         $applierRegistry = new OperationApplierRegistry(
-            [$scaleOperationApplier->getWrappedObject(), $thumbnailOperationApplier->getWrappedObject()]
+            [$iccStripOperationApplier->getWrappedObject(), $scaleOperationApplier->getWrappedObject(), $thumbnailOperationApplier->getWrappedObject()]
         );
 
         $this->beConstructedWith($applierRegistry);
@@ -39,11 +46,15 @@ class FileTransformerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_no_applier_was_found(
-        Transformation $transformation
+        Transformation $transformation,
+        OperationApplier $iccStripOperationApplier
     ) {
+        $file = new File('/my/file/path', false);
+        $iccStripOperationApplier->apply($file, IccStripOperation::create([]))->willReturn($file);
+
         $transformation->getOperationCollection()->willReturn(
             OperationCollection::create([
-                Operation\ColorspaceOperation::create(['colorspace' => 'grey'])
+                ColorspaceOperation::create(['colorspace' => 'grey'])
             ])
         );
 
@@ -59,11 +70,12 @@ class FileTransformerSpec extends ObjectBehavior
     function it_applies_a_transformation_to_a_file_and_uses_png_as_extension(
         OperationApplier $scaleOperationApplier,
         OperationApplier $thumbnailOperationApplier,
+        OperationApplier $iccStripOperationApplier,
         Transformation $transformation,
         File $file
     ) {
-        $scale = Operation\ScaleOperation::create(['ratio' => 50]);
-        $thumbnail = Operation\ThumbnailOperation::create(['height' => 100]);
+        $scale = ScaleOperation::create(['ratio' => 50]);
+        $thumbnail = ThumbnailOperation::create(['height' => 100]);
         $transformation->getOperationCollection()->willReturn(OperationCollection::create([$scale, $thumbnail]));
         $transformation->getFilenamePrefix()->willReturn('thumb_');
         $transformation->getFilenameSuffix()->willReturn('-42');
@@ -73,6 +85,7 @@ class FileTransformerSpec extends ObjectBehavior
         $file->getPath()->willReturn('/my/file');
         $file->getBasename('.jpg')->willReturn('jambon');
 
+        $iccStripOperationApplier->apply($file, IccStripOperation::create([]))->shouldBeCalled()->willReturn($file);
         $scaleOperationApplier->apply($file, $scale)->shouldBeCalled()->willReturn($file);
         $thumbnailOperationApplier->apply($file, $thumbnail)->shouldBeCalled()->willReturn($file);
 
