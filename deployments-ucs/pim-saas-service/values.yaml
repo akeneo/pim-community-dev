@@ -72,7 +72,7 @@ free_trial:
 
 image:
   pim:
-    repository: europe-west1.docker.pkg.dev/akecld-prd-pim-saas-dev/pim-enterprise-prod/pim-enterprise-dev
+    repository: europe-west1-docker.pkg.dev/akecld-prd-pim-saas-dev/pim-enterprise-prod/pim-enterprise-dev
     pullPolicy: IfNotPresent
     tag: master
   httpd:
@@ -84,9 +84,9 @@ image:
     pullPolicy: IfNotPresent
     tag: 392.0.0-alpine
   curljqzip:
-    repository: vgelot/alpine-curl-jq-zip
+    repository: europe-west1-docker.pkg.dev/akecld-prd-pim-saas-dev/curl/curl-jq-zip
     pullPolicy: IfNotPresent
-    tag: curl-7.83.1
+    tag: 1.0.0
 
 # Onboarder
 onboarder:
