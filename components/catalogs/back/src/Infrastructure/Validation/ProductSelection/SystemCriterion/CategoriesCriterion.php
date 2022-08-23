@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Validation\CatalogPayload;
+namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion;
 
-use Akeneo\Catalogs\Application\Persistence\GetCategoriesByCodeQueryInterface;
+use Akeneo\Catalogs\Domain\Operator;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\CategoriesCriterionContainsValidCategories;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\CriterionOperatorsRequireEmptyValue;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
@@ -16,13 +18,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class CategoriesFieldIsValid extends Compound
+class CategoriesCriterion extends Compound
 {
-    public function __construct(private GetCategoriesByCodeQueryInterface $getCategoriesByCodeQuery)
-    {
-        parent::__construct();
-    }
-
     /**
      * @param array<array-key, mixed> $options
      *
@@ -39,7 +36,14 @@ class CategoriesFieldIsValid extends Compound
                         ],
                         'operator' => [
                             new Assert\Type('string'),
-                            new Assert\Choice(['IN', 'NOT IN', 'IN CHILDREN', 'NOT IN CHILDREN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED']),
+                            new Assert\Choice([
+                                Operator::IN_LIST,
+                                Operator::NOT_IN_LIST,
+                                Operator::IN_CHILDREN_LIST,
+                                Operator::NOT_IN_CHILDREN_LIST,
+                                Operator::UNCLASSIFIED,
+                                Operator::IN_LIST_OR_UNCLASSIFIED,
+                            ]),
                         ],
                         'value' => [
                             new Assert\Type('array'),
@@ -49,21 +53,8 @@ class CategoriesFieldIsValid extends Compound
                     'allowMissingFields' => false,
                     'allowExtraFields' => false,
                 ]),
-                new Assert\Callback(function (array $criterion, ExecutionContextInterface $context): void {
-                    /** @var array<array-key, string> $categoryCodes */
-                    $categoryCodes = $criterion['value'];
-
-                    $existingCategories = $this->getCategoriesByCodeQuery->execute($categoryCodes, 'en_US');
-                    $existingCategoryCodes = \array_column($existingCategories, 'code');
-
-                    $nonExistingCategoryCodes = \array_diff($categoryCodes, $existingCategoryCodes);
-
-                    if ($nonExistingCategoryCodes !== []) {
-                        $context->buildViolation('akeneo_catalogs.validation.product_selection.criteria.category.value')
-                            ->atPath('[value]')
-                            ->addViolation();
-                    }
-                }),
+                new CriterionOperatorsRequireEmptyValue([Operator::UNCLASSIFIED]),
+                new CategoriesCriterionContainsValidCategories(),
             ]),
         ];
     }
