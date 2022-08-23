@@ -8,5 +8,8 @@ use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\Suppli
 
 interface SupplierFileRepository
 {
+    public const NUMBER_OF_DAYS_AFTER_WHICH_THE_FILES_ARE_CONSIDERED_OLD = 90;
+
     public function save(SupplierFile $supplierFile): void;
+    public function deleteOld(): void;
 }
