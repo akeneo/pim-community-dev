@@ -8,11 +8,35 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductEndToEnd extends AbstractProductTestCase
 {
     use AssertEventCountTrait;
+
+    private array $emptyAssociations = [
+        'PACK' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ],
+        'SUBSTITUTION' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ],
+        'UPSELL' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ],
+        'X_SELL' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ]
+    ];
 
     /**
      * {@inheritdoc}
@@ -69,15 +93,11 @@ JSON;
             'groups'        => [],
             'categories'    => [],
             'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_creation_family'],
-                ],
-            ],
+            'values'        => new \stdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->EMPTY_ASSOCIATIONS,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -110,15 +130,11 @@ JSON;
             'groups'        => ["groupA", "groupB"],
             'categories'    => [],
             'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_creation_groups'],
-                ],
-            ],
+            'values'        => new \stdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->EMPTY_ASSOCIATIONS,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -149,15 +165,11 @@ JSON;
             'groups'        => [],
             'categories'    => ["categoryA", "master"],
             'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_creation_categories'],
-                ],
-            ],
+            'values'        => new \stdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->EMPTY_ASSOCIATIONS,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -201,11 +213,7 @@ JSON;
             'groups'        => [],
             'categories'    => [],
             'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_creation_associations'],
-                ],
-            ],
+            'values'        => new \stdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
@@ -230,7 +238,7 @@ JSON;
                     "product_models" => [],
                 ],
             ],
-            'quantified_associations' => [],
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -243,13 +251,11 @@ JSON;
     public function testProductCreationWithProductValues()
     {
         $client = $this->createAuthenticatedClient();
-
         $files = [
             'akeneo_pdf' => $this->getFileInfoKey($this->getFixturePath('akeneo.pdf')),
             'akeneo_jpg' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
             'ziggy_png'  => $this->getFileInfoKey($this->getFixturePath('ziggy.png')),
         ];
-
         $data =
             <<<JSON
     {
@@ -435,7 +441,6 @@ JSON;
         }
     }
 JSON;
-
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
 
         $expectedProduct = [
@@ -446,14 +451,16 @@ JSON;
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_creation_product_values'],
-                ],
                 'a_file'                             => [
                     [
                         'locale' => null,
                         'scope'  => null,
                         'data'   => '4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_akeneo.txt',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_akeneo.txt/download'
+                            ]
+                        ]
                     ],
                 ],
                 'an_image'                           => [
@@ -461,6 +468,11 @@ JSON;
                         'locale' => null,
                         'scope'  => null,
                         'data'   => '1/5/7/5/15757827125efa686c1c0f1e7930ca0c528f1c2c_ziggy.png',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/4/d/e/b/15757827125efa686c1c0f1e7930ca0c528f1c2c_ziggy.png/download'
+                            ]
+                        ]
                     ],
                 ],
                 'a_date'                             => [
@@ -563,11 +575,21 @@ JSON;
                         'locale' => 'en_US',
                         'scope'  => 'ecommerce',
                         'data'   => '6/2/e/3/62e376e75300d27bfec78878db4d30ff1490bc53_ziggy_en_US.png',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/4/d/e/b/62e376e75300d27bfec78878db4d30ff1490bc53_ziggy_en_US.png/download'
+                            ]
+                        ]
                     ],
                     [
                         'locale' => 'fr_FR',
                         'scope'  => 'tablet',
                         'data'   => '0/f/5/0/0f5058de76f68446bb6b2371f19cd2234b245c00_akeneo_fr_FR.jpg',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/4/d/e/b/0f5058de76f68446bb6b2371f19cd2234b245c00_akeneo_fr_FR.jpg/download'
+                            ]
+                        ]
                     ],
                 ],
                 'a_scopable_price'                   => [
@@ -608,8 +630,8 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations'  => $this->EMPTY_ASSOCIATIONS,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -631,6 +653,7 @@ JSON;
         "updated": "2014-06-14T13:12:50+02:00"
     }
 JSON;
+        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'foo',
@@ -639,18 +662,12 @@ JSON;
             'groups'        => [],
             'categories'    => [],
             'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'foo'],
-                ],
-            ],
+            'values'        => new \stdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations' => $this->EMPTY_ASSOCIATIONS,
+            'quantified_associations' => new \stdClass(),
         ];
-
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -659,8 +676,14 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'foo');
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
-        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
+        $query = <<<SQL
+            SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE identifier = 'foo'
+        SQL;
+        $uuid = $this->get('database_connection')->executeQuery($query)->fetchOne();
+
+        $userId = $this->getUserId('admin');
+        $product = $this->get('akeneo.pim.enrichment.product.connector.get_product_from_uuids')->fromProductUuid(Uuid::fromString($uuid), $userId);
+        $standardizedProduct = $this->get('pim_api.normalizer.connector_products')->normalizeConnectorProduct($product);
 
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['created']);
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['updated']);
@@ -1010,21 +1033,6 @@ JSON;
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-    }
-
-    /**
-     * @param array  $expectedProduct normalized data of the product that should be created
-     * @param string $identifier identifier of the product that should be created
-     */
-    protected function assertSameProducts(array $expectedProduct, $identifier)
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
-
-        NormalizedProductCleaner::clean($standardizedProduct);
-        NormalizedProductCleaner::clean($expectedProduct);
-
-        $this->assertSame($expectedProduct, $standardizedProduct);
     }
 
     /**

@@ -69,14 +69,10 @@ JSON;
             'groups' => [],
             'categories' => [],
             'enabled' => true,
-            'values' => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => $identifier],
-                ],
-            ],
+            'values' => new \stdClass(),
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
-            'associations' => [],
+            'associations' => $this->EMPTY_ASSOCIATIONS,
             'quantified_associations' => [
                 'PRODUCTSET' => [
                     'products' => [

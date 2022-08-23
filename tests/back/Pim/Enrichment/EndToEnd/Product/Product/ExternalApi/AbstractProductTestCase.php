@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -18,6 +19,29 @@ use Symfony\Component\HttpFoundation\Response;
  */
 abstract class AbstractProductTestCase extends ApiTestCase
 {
+    public array $EMPTY_ASSOCIATIONS = [
+        'PACK' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ],
+        'SUBSTITUTION' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ],
+        'UPSELL' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ],
+        'X_SELL' => [
+            'groups' => [],
+            'product_models' => [],
+            'products' => [],
+        ]
+    ];
+
     /**
      * @param UserIntent[] $userIntents
      */
@@ -115,17 +139,22 @@ abstract class AbstractProductTestCase extends ApiTestCase
      * @param array  $expectedProduct normalized data of the product that should be created
      * @param string $identifier identifier of the product that should be created
      */
-    protected function assertSameProducts(array $expectedProduct, $identifier)
+    protected function assertSameProducts(array $expectedProduct, string $identifier)
     {
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+        $id = $this->getUserId('admin');
+        $query = <<<SQL
+            SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE identifier = :identifier
+        SQL;
+        $uuid = $this->get('database_connection')->executeQuery($query, ['identifier' => $identifier])->fetchOne();
+        // use same normalizer as in ExternalApi
+        $product = $this->get('akeneo.pim.enrichment.product.connector.get_product_from_uuids')
+            ->fromProductUuid(Uuid::fromString($uuid), intval($id));
+        $standardizedProduct = $this->get('pim_api.normalizer.connector_products')->normalizeConnectorProduct($product);
 
-        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
-
-        NormalizedProductCleaner::clean($expectedProduct);
         NormalizedProductCleaner::clean($standardizedProduct);
+        NormalizedProductCleaner::clean($expectedProduct);
 
-        Assert::assertSame($expectedProduct, $standardizedProduct);
+        $this->assertEquals($expectedProduct, $standardizedProduct);
     }
 
     protected function getUserId(string $username): int

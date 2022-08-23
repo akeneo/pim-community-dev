@@ -58,15 +58,11 @@ JSON;
                 'groups'        => [],
                 'categories'    => [],
                 'enabled'       => true,
-                'values'        => [
-                    'sku' => [
-                        ['locale' => null, 'scope' => null, 'data' => 'product_family'],
-                    ],
-                ],
+                'values'        => new \stdClass(),
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
-                'associations'  => [],
-                'quantified_associations' => [],
+                'associations'  => $this->EMPTY_ASSOCIATIONS,
+                'quantified_associations' => new \stdClass(),
             ],
             'my_identifier'  => [
                 'identifier'    => 'my_identifier',
@@ -75,15 +71,11 @@ JSON;
                 'groups'        => [],
                 'categories'    => [],
                 'enabled'       => true,
-                'values'        => [
-                    'sku' => [
-                        ['locale' => null, 'scope' => null, 'data' => 'my_identifier'],
-                    ],
-                ],
+                'values'        => new \stdClass(),
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
-                'associations'  => [],
-                'quantified_associations' => [],
+                'associations'  => $this->EMPTY_ASSOCIATIONS,
+                'quantified_associations' => new \stdClass(),
             ],
         ];
 

@@ -88,15 +88,11 @@ JSON;
             'groups'        => [],
             'categories'    => [],
             'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_creation_family'],
-                ],
-            ],
+            'values'        => new \stdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations'  => $this->EMPTY_ASSOCIATIONS,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -135,15 +131,11 @@ JSON;
             'groups'        => ["groupA", "groupB"],
             'categories'    => [],
             'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_creation_groups'],
-                ],
-            ],
+            'values'        => new \stdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations'  => $this->EMPTY_ASSOCIATIONS,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -180,15 +172,11 @@ JSON;
             'groups'        => [],
             'categories'    => ["categoryA", "master"],
             'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_creation_categories'],
-                ],
-            ],
+            'values'        => new \stdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations'  => $this->EMPTY_ASSOCIATIONS,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -245,12 +233,11 @@ JSON;
             'values' => [
                 'a_simple_select' => [['data' => 'optionB', 'locale' => null, 'scope' => null]],
                 'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]],
-                'sku' => [['data' => 'foo', 'locale' => null, 'scope' => null]],
             ],
             'created' => 'this is a date formatted to ISO-8601',
             'updated' => 'this is a date formatted to ISO-8601',
-            'associations' => [],
-            'quantified_associations' => [],
+            'associations' => $this->EMPTY_ASSOCIATIONS,
+            'quantified_associations' => new \stdClass(),
         ], 'foo');
     }
 
@@ -302,11 +289,7 @@ JSON;
             'groups'        => [],
             'categories'    => [],
             'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_creation_associations'],
-                ],
-            ],
+            'values'        => new \stdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
@@ -334,7 +317,7 @@ JSON;
             'quantified_associations' => [
                 'QUANTIFIEDASSOCIATION' => [
                     'products' => [[
-                        'uuid' => $this->getProductUuidFromIdentifier('simple')->toString(),
+                        'identifier' => 'simple',
                         'quantity' => 12,
                     ]],
                     'product_models' => [],
@@ -559,14 +542,16 @@ JSON;
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_creation_product_values'],
-                ],
                 'a_file'                             => [
                     [
                         'locale' => null,
                         'scope'  => null,
                         'data'   => '4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_akeneo.txt',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_akeneo.txt/download'
+                            ]
+                        ]
                     ],
                 ],
                 'an_image'                           => [
@@ -574,6 +559,11 @@ JSON;
                         'locale' => null,
                         'scope'  => null,
                         'data'   => '1/5/7/5/15757827125efa686c1c0f1e7930ca0c528f1c2c_ziggy.png',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_akeneo.txt/download'
+                            ]
+                        ]
                     ],
                 ],
                 'a_date'                             => [
@@ -676,11 +666,21 @@ JSON;
                         'locale' => 'en_US',
                         'scope'  => 'ecommerce',
                         'data'   => '6/2/e/3/62e376e75300d27bfec78878db4d30ff1490bc53_ziggy_en_US.png',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_akeneo.txt/download'
+                            ]
+                        ]
                     ],
                     [
                         'locale' => 'fr_FR',
                         'scope'  => 'tablet',
                         'data'   => '0/f/5/0/0f5058de76f68446bb6b2371f19cd2234b245c00_akeneo_fr_FR.jpg',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_akeneo.txt/download'
+                            ]
+                        ]
                     ],
                 ],
                 'a_scopable_price'                   => [
@@ -721,8 +721,8 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations'  => $this->EMPTY_ASSOCIATIONS,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $response = $client->getResponse();
@@ -758,15 +758,11 @@ JSON;
             'groups'        => [],
             'categories'    => [],
             'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'foo'],
-                ],
-            ],
+            'values'        => new \stdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-            'quantified_associations' => [],
+            'associations'  => $this->EMPTY_ASSOCIATIONS,
+            'quantified_associations' => new \stdClass(),
         ];
 
         $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
@@ -1135,21 +1131,6 @@ JSON;
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-    }
-
-    /**
-     * @param array  $expectedProduct normalized data of the product that should be created
-     * @param string $identifier identifier of the product that should be created
-     */
-    protected function assertSameProducts(array $expectedProduct, $identifier): void
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
-
-        NormalizedProductCleaner::clean($standardizedProduct);
-        NormalizedProductCleaner::clean($expectedProduct);
-
-        $this->assertSame($expectedProduct, $standardizedProduct);
     }
 
     /**
