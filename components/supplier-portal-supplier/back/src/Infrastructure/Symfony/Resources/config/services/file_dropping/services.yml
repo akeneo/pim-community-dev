@@ -46,6 +46,12 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePathsOfOldProductFiles:
+        public: true
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePathsOfOldProductFiles
+        arguments:
+            - '@database_connection'
+
     # Controllers
     Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\DownloadProductFile:
         public: true
