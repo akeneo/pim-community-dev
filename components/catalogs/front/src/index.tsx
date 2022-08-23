@@ -36,7 +36,14 @@ const routes = {
 
 DangerousMicrofrontendAutomaticAuthenticator.enable('admin', 'admin');
 
-const client = new QueryClient();
+const client = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 10 * 1000, // 10s
+            cacheTime: 5 * 60 * 1000, // 5m
+        },
+    },
+});
 
 ReactDOM.render(
     <React.StrictMode>

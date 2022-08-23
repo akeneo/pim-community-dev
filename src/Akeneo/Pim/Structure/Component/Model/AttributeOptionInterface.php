@@ -129,7 +129,7 @@ interface AttributeOptionInterface extends ReferableInterface, VersionableInterf
     /**
      * Get localized value
      *
-     * @return AttributeOptionValueInterface
+     * @return ?AttributeOptionValueInterface
      */
     public function getOptionValue();
 

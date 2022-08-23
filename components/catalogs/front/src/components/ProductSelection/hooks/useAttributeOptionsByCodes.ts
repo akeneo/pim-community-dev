@@ -1,22 +1,21 @@
 import {useState} from 'react';
-import {useInfiniteFamilies} from './useInfiniteFamilies';
-import {Family} from '../models/Family';
+import {AttributeOption} from '../models/AttributeOption';
+import {useInfiniteAttributeOptions} from './useInfiniteAttributeOptions';
 
 type Cache = {
-    [key: string]: Family;
+    [key: string]: AttributeOption;
 };
 
-type Error = string | null;
 type Result = {
     isLoading: boolean;
     isError: boolean;
-    data: Family[] | undefined;
-    error: Error;
+    data: AttributeOption[] | undefined;
+    error: Error | null;
 };
 
 const LIMIT = 20;
 
-export const useFamiliesByCodes = (codes: string[]): Result => {
+export const useAttributeOptionsByCodes = (attribute: string, codes: string[], locale = 'en_US'): Result => {
     const [cache, setCache] = useState<Cache>({});
 
     const cachedCodes = Object.keys(cache);
@@ -24,31 +23,33 @@ export const useFamiliesByCodes = (codes: string[]): Result => {
     const slicedUnknownCodes = unknownCodes.slice(0, LIMIT);
 
     const {
-        data: families,
+        data: options,
         isLoading,
         isError,
         error,
-    } = useInfiniteFamilies({
+    } = useInfiniteAttributeOptions({
+        attribute: attribute,
+        locale: locale,
         codes: slicedUnknownCodes,
         limit: LIMIT,
         enabled: slicedUnknownCodes.length > 0,
     });
 
-    if (families !== undefined) {
-        const newFamilies = families
-            .filter(family => !cachedCodes.includes(family.code))
+    if (options !== undefined) {
+        const newOptions = options
+            .filter(option => !cachedCodes.includes(option.code))
             .reduce(
-                (list, family) => ({
+                (list, option) => ({
                     ...list,
-                    [family.code]: family,
+                    [option.code]: option,
                 }),
                 {}
             );
 
-        if (Object.keys(newFamilies).length > 0) {
+        if (Object.keys(newOptions).length > 0) {
             setCache(cache => ({
                 ...cache,
-                ...newFamilies,
+                ...newOptions,
             }));
         }
     }

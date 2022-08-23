@@ -1,52 +1,60 @@
 import {useInfiniteQuery} from 'react-query';
 import {useCallback} from 'react';
-import {Family} from '../models/Family';
+import {AttributeOption} from '../models/AttributeOption';
 
 type PageParam = {
     number: number;
     search: string;
 };
 type Page = {
-    data: Family[];
+    data: AttributeOption[];
     page: PageParam;
 };
 
 type QueryParams = {
+    attribute: string;
+    locale: string;
     search?: string;
     codes?: string[];
     limit?: number;
     enabled?: boolean;
 };
-type Error = string | null;
 type Result = {
     isLoading: boolean;
     isError: boolean;
-    data: Family[] | undefined;
-    error: Error;
+    data: AttributeOption[] | undefined;
+    error: Error | null;
     hasNextPage: boolean;
     fetchNextPage: () => Promise<void>;
 };
 
-export const useInfiniteFamilies = ({
+export const useInfiniteAttributeOptions = ({
+    attribute,
+    locale,
     search = '',
     codes = [],
     limit = 20,
     enabled = true,
-}: QueryParams = {}): Result => {
-    const fetchFamilies = useCallback(
+}: QueryParams): Result => {
+    const fetchAttributeOptions = useCallback(
         async ({pageParam}: {pageParam?: PageParam}): Promise<Page> => {
             const _page = pageParam?.number || 1;
             const _search = search || pageParam?.search || '';
             const _codes = codes.join(',');
 
-            const response = await fetch(
-                `/rest/catalogs/families?page=${_page}&limit=${limit}&codes=${_codes}&search=${_search}`,
-                {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                }
-            );
+            const params = new URLSearchParams({
+                locale: locale,
+                codes: _codes,
+                search: _search,
+                page: _page.toString(),
+                limit: limit.toString(),
+            }).toString();
+
+            const response = await fetch(`/rest/catalogs/attributes/${attribute}/options?` + params, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
 
             return {
                 data: await response.json(),
@@ -56,12 +64,12 @@ export const useInfiniteFamilies = ({
                 },
             };
         },
-        [search, codes, limit]
+        [attribute, locale, search, codes, limit]
     );
 
-    const query = useInfiniteQuery<Page, Error, Page>(
-        ['families', {search: search, codes: codes, limit: limit}],
-        fetchFamilies,
+    const query = useInfiniteQuery<Page, Error | null, Page>(
+        ['attribute_options', {attribute: attribute, search: search, locale: locale, codes: codes, limit: limit}],
+        fetchAttributeOptions,
         {
             enabled: enabled,
             keepPreviousData: true,
@@ -80,7 +88,7 @@ export const useInfiniteFamilies = ({
     return {
         isLoading: query.isLoading,
         isError: query.isError,
-        data: query.data?.pages.reduce((list: Family[], page) => list.concat(page.data), []),
+        data: query.data?.pages.reduce((list: AttributeOption[], page) => list.concat(page.data), []),
         error: query.error,
         hasNextPage: hasNextPage,
         fetchNextPage: async () => {
