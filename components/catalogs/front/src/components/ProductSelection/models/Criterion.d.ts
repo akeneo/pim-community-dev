@@ -37,9 +37,7 @@ export type AnyCriterionState =
     | AttributeTextCriterionState
     | AttributeMetricCriterionState;
 
-export type AnyAttributeCriterion =
-    | Criterion<AttributeTextCriterionState>
-    | Criterion<AttributeMetricCriterionState>;
+export type AnyAttributeCriterion = Criterion<AttributeTextCriterionState> | Criterion<AttributeMetricCriterionState>;
 
 export type AnyCriterion =
     | Criterion<StatusCriterionState>

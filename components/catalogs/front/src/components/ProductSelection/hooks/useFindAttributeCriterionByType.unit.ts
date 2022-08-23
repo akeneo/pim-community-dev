@@ -3,7 +3,7 @@ jest.unmock('./useFindAttributeCriterionByType');
 import {renderHook} from '@testing-library/react-hooks';
 import {useFindAttributeCriterionByType} from './useFindAttributeCriterionByType';
 
-const types: string[] = ['pim_catalog_text'];
+const types: string[] = ['pim_catalog_text', 'pim_catalog_metric'];
 
 test.each(types)('it returns a criterion when searching for "%s"', field => {
     const {result} = renderHook(() => useFindAttributeCriterionByType());

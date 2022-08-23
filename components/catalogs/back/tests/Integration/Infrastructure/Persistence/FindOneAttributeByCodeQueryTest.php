@@ -41,6 +41,8 @@ class FindOneAttributeByCodeQueryTest extends IntegrationTestCase
             'type' => 'pim_catalog_text',
             'scopable' => false,
             'localizable' => false,
+            'measurement_family' => null,
+            'default_measurement_unit' => null,
         ], $result);
     }
 

@@ -33,7 +33,7 @@ const AttributeMeasurementCriterion: FC<CriterionModule<AttributeMeasurementCrit
     return (
         <List.Row>
             <List.TitleCell width={150}>{attribute?.label}</List.TitleCell>
-            <List.Cell width="auto">
+            <List.Cell width='auto'>
                 <CriterionFields>
                     <CriterionField>
                         <AttributeMeasurementOperatorInput
@@ -71,8 +71,8 @@ const AttributeMeasurementCriterion: FC<CriterionModule<AttributeMeasurementCrit
             </List.Cell>
             <List.RemoveCell>
                 <IconButton
-                    ghost="borderless"
-                    level="tertiary"
+                    ghost='borderless'
+                    level='tertiary'
                     icon={<CloseIcon />}
                     title={translate('akeneo_catalogs.product_selection.action.remove')}
                     onClick={onRemove}

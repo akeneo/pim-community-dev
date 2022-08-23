@@ -39,6 +39,17 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'type' => 'pim_catalog_text',
                 'scopable' => false,
                 'localizable' => false,
+                'measurement_family' => null,
+                'default_measurement_unit' => null,
+            ],
+            [
+                'code' => 'weight',
+                'label' => '[weight]',
+                'type' => 'pim_catalog_metric',
+                'scopable' => false,
+                'localizable' => false,
+                'measurement_family' => null,
+                'default_measurement_unit' => null,
             ],
         ], $result);
     }
@@ -63,6 +74,8 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'type' => 'pim_catalog_text',
                 'scopable' => false,
                 'localizable' => false,
+                'measurement_family' => null,
+                'default_measurement_unit' => null,
             ],
         ], $result);
     }

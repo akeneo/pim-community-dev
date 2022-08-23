@@ -18,8 +18,9 @@ const AttributeMeasurementOperatorInput: FC<Props> = ({state, onChange, isInvali
             onChange({
                 ...state,
                 operator: operator as AttributeMeasurementCriterionOperator,
-                value: [Operator.IS_EMPTY, Operator.IS_NOT_EMPTY]
-                    .includes(operator as AttributeMeasurementCriterionOperator)
+                value: [Operator.IS_EMPTY, Operator.IS_NOT_EMPTY].includes(
+                    operator as AttributeMeasurementCriterionOperator
+                )
                     ? null
                     : state.value,
             });
@@ -29,13 +30,13 @@ const AttributeMeasurementOperatorInput: FC<Props> = ({state, onChange, isInvali
 
     return (
         <SelectInput
-            emptyResultLabel=""
-            openLabel=""
+            emptyResultLabel=''
+            openLabel=''
             value={state.operator}
             onChange={handleChange}
             clearable={false}
             invalid={isInvalid}
-            data-testid="operator"
+            data-testid='operator'
         >
             {[
                 Operator.EQUALS,

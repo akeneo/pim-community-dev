@@ -1,4 +1,4 @@
-jest.unmock('./useMetrics');
+jest.unmock('./useMeasurements');
 
 import {renderHook} from '@testing-library/react-hooks';
 import {useMeasurements} from './useMeasurements';
@@ -30,7 +30,10 @@ test('it fetches the API response', async () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/metrics-families/length/metrics', expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith(
+        '/rest/catalogs/measurements-families/length/measurements?locale=en_US',
+        expect.any(Object)
+    );
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,

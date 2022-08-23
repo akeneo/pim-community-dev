@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion;
 
+use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterionContainsValidLocale;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterionContainsValidScope;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\CriterionOperatorsRequireEmptyValue;
@@ -37,7 +38,16 @@ final class AttributeMeasurementCriterion extends Compound
                         'operator' => [
                             new Assert\Type('string'),
                             new Assert\NotBlank(),
-                            new Assert\Choice(['=', '!=', '<', '<=', '>', '>=', 'EMPTY', 'NOT EMPTY']),
+                            new Assert\Choice([
+                                Operator::EQUALS,
+                                Operator::NOT_EQUAL,
+                                Operator::LOWER_THAN,
+                                Operator::LOWER_OR_EQUAL_THAN,
+                                Operator::GREATER_THAN,
+                                Operator::GREATER_OR_EQUAL_THAN,
+                                Operator::IS_EMPTY,
+                                Operator::IS_NOT_EMPTY,
+                            ]),
                         ],
                         'value' => [
                             new Assert\Collection([
@@ -66,8 +76,8 @@ final class AttributeMeasurementCriterion extends Compound
                     'allowExtraFields' => false,
                 ]),
                 new CriterionOperatorsRequireEmptyValue([
-                    'EMPTY',
-                    'NOT_EMPTY',
+                    Operator::IS_EMPTY,
+                    Operator::IS_NOT_EMPTY,
                 ]),
                 new AttributeCriterionContainsValidScope(),
                 new AttributeCriterionContainsValidLocale(),

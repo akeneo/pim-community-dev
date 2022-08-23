@@ -32,14 +32,19 @@ final class GetMeasurementsFamilyQuery implements GetMeasurementsFamilyQueryInte
 
         $normalizedMeasurementFamily = $measurementFamily->normalize();
 
-        $unitNormalizer = fn (array $unit) => [
-            'code' => $unit['code'],
-            'label' => $unit['labels'][$locale] ?? \sprintf('[%s]', $unit['code']),
+        $unitNormalizer = static fn (array $unit): array => [
+            'code' => (string) $unit['code'],
+            'label' => (string) ($unit['labels'][$locale] ?? \sprintf('[%s]', (string) $unit['code'])),
         ];
 
+        /** @var array<array-key, mixed> $units */
+        $units = $normalizedMeasurementFamily['units'];
+
+        $measurements = \array_map($unitNormalizer, $units);
+
         return [
-            'code' => $normalizedMeasurementFamily['code'],
-            'measurements' => \array_map($unitNormalizer, $normalizedMeasurementFamily['units']),
+            'code' => (string) $normalizedMeasurementFamily['code'],
+            'measurements' => $measurements,
         ];
     }
 }

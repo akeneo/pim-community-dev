@@ -101,7 +101,7 @@ test('it renders the scopable and localizable measurement attribute criterion', 
                         operator: Operator.EQUALS,
                         value: {
                             amount: 17,
-                            unit: 'GRAM'
+                            unit: 'GRAM',
                         },
                         locale: 'en_US',
                         scope: 'ecommerce',
@@ -132,7 +132,7 @@ test('it renders the scopable and non localizable measurement attribute criterio
                         operator: Operator.EQUALS,
                         value: {
                             amount: 17,
-                            unit: 'GRAM'
+                            unit: 'GRAM',
                         },
                         locale: null,
                         scope: 'ecommerce',
@@ -163,7 +163,7 @@ test('it renders the non scopable and localizable measurement attribute criterio
                         operator: Operator.EQUALS,
                         value: {
                             amount: 17,
-                            unit: 'GRAM'
+                            unit: 'GRAM',
                         },
                         locale: 'de_DE',
                         scope: null,
@@ -194,7 +194,7 @@ test('it renders criterion with validation errors', () => {
                         operator: Operator.EQUALS,
                         value: {
                             amount: 17,
-                            unit: 'GRAM'
+                            unit: 'GRAM',
                         },
                         locale: 'en_US',
                         scope: 'ecommerce',
@@ -231,7 +231,7 @@ test('it calls onRemove', () => {
                         operator: Operator.EQUALS,
                         value: {
                             amount: 17,
-                            unit: 'GRAM'
+                            unit: 'GRAM',
                         },
                         locale: 'en_US',
                         scope: 'ecommerce',
@@ -261,7 +261,7 @@ test('it calls onChange when the operator changes', () => {
                         operator: Operator.EQUALS,
                         value: {
                             amount: 17,
-                            unit: 'GRAM'
+                            unit: 'GRAM',
                         },
                         locale: 'en_US',
                         scope: 'ecommerce',
@@ -281,7 +281,7 @@ test('it calls onChange when the operator changes', () => {
         operator: Operator.NOT_EQUAL,
         value: {
             amount: 17,
-            unit: 'GRAM'
+            unit: 'GRAM',
         },
         locale: 'en_US',
         scope: 'ecommerce',
@@ -300,7 +300,7 @@ test('it resets value when the operator changes to IS_EMPTY', () => {
                         operator: Operator.EQUALS,
                         value: {
                             amount: 17,
-                            unit: 'GRAM'
+                            unit: 'GRAM',
                         },
                         locale: 'en_US',
                         scope: 'ecommerce',
@@ -336,7 +336,7 @@ test('it calls onChange when the value changes', () => {
                         operator: Operator.EQUALS,
                         value: {
                             amount: 17,
-                            unit: 'GRAM'
+                            unit: 'GRAM',
                         },
                         locale: 'en_US',
                         scope: 'ecommerce',
@@ -357,7 +357,7 @@ test('it calls onChange when the value changes', () => {
         operator: Operator.EQUALS,
         value: {
             amount: 18.5,
-            unit: 'GRAM'
+            unit: 'GRAM',
         },
         locale: 'en_US',
         scope: 'ecommerce',
@@ -376,7 +376,7 @@ test('it calls onChange when the unit changes', async () => {
                         operator: Operator.EQUALS,
                         value: {
                             amount: 17,
-                            unit: 'GRAM'
+                            unit: 'GRAM',
                         },
                         locale: 'en_US',
                         scope: 'ecommerce',
@@ -400,7 +400,7 @@ test('it calls onChange when the unit changes', async () => {
         operator: Operator.EQUALS,
         value: {
             amount: 17,
-            unit: 'KILOGRAM'
+            unit: 'KILOGRAM',
         },
         locale: 'en_US',
         scope: 'ecommerce',
@@ -419,7 +419,7 @@ test('it calls onChange when the channel changes', async () => {
                         operator: Operator.EQUALS,
                         value: {
                             amount: 17,
-                            unit: 'GRAM'
+                            unit: 'GRAM',
                         },
                         locale: 'en_US',
                         scope: 'ecommerce',
@@ -441,7 +441,7 @@ test('it calls onChange when the channel changes', async () => {
         operator: Operator.EQUALS,
         value: {
             amount: 17,
-            unit: 'GRAM'
+            unit: 'GRAM',
         },
         locale: null,
         scope: 'print',
@@ -460,7 +460,7 @@ test('it calls onChange when the locale changes', async () => {
                         operator: Operator.EQUALS,
                         value: {
                             amount: 17,
-                            unit: 'GRAM'
+                            unit: 'GRAM',
                         },
                         locale: 'en_US',
                         scope: 'ecommerce',
@@ -482,7 +482,7 @@ test('it calls onChange when the locale changes', async () => {
         operator: Operator.EQUALS,
         value: {
             amount: 17,
-            unit: 'GRAM'
+            unit: 'GRAM',
         },
         locale: 'fr_FR',
         scope: 'ecommerce',

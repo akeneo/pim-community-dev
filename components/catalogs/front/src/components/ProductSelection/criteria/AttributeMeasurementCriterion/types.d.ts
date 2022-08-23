@@ -14,7 +14,8 @@ export type AttributeMeasurementCriterionOperator =
 type MeasurementValue = {
     amount: number | null;
     unit: string | null;
-}
+};
+
 export type AttributeMeasurementCriterionState = {
     field: string;
     operator: AttributeMeasurementCriterionOperator;

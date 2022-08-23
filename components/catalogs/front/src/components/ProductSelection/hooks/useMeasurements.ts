@@ -13,20 +13,26 @@ type Result = {
 export const useMeasurements = (measurementsFamilyCode: string | null): Result => {
     const locale = useUserContext().get('uiLocale');
 
-    return useQuery<Measurement[], ResultError, Measurement[]>(['measurements', measurementsFamilyCode, {locale: locale}], async () => {
-        if (null === measurementsFamilyCode) {
-            return [];
+    return useQuery<Measurement[], ResultError, Measurement[]>(
+        ['measurements', measurementsFamilyCode, {locale: locale}],
+        async () => {
+            if (null === measurementsFamilyCode) {
+                return [];
+            }
+            const queryParameters = new URLSearchParams({
+                locale: locale,
+            }).toString();
+
+            const response = await fetch(
+                '/rest/catalogs/measurements-families/' + measurementsFamilyCode + '/measurements?' + queryParameters,
+                {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                }
+            );
+
+            return await response.json();
         }
-        const queryParameters = new URLSearchParams({
-            locale: locale,
-        }).toString();
-
-        const response = await fetch('/rest/catalogs/measurements-families/' + measurementsFamilyCode + '/measurements?' + queryParameters, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        });
-
-        return await response.json();
-    });
+    );
 };
