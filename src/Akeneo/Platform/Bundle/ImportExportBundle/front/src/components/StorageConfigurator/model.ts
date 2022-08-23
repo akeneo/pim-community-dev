@@ -1,9 +1,19 @@
 import {FunctionComponent} from 'react';
 import {ValidationError, FeatureFlags} from '@akeneo-pim-community/shared';
-import {LocalStorage, SftpStorage, AmazonS3Storage, Storage, StorageType, remoteStorageIsEnabled, localStorageIsEnabled} from '../model';
+import {
+  LocalStorage,
+  SftpStorage,
+  AmazonS3Storage,
+  Storage,
+  StorageType,
+  remoteStorageIsEnabled,
+  localStorageIsEnabled,
+  AzureBlobStorage
+} from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
+import {AzureBlobStorageConfigurator} from "./AzureBlobStorageConfigurator";
 
 type StorageConfiguratorProps = {
   storage: Storage;
@@ -30,6 +40,7 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags, jobCode: str
   if (remoteStorageIsEnabled(jobCode)) {
     enabledStorageConfigurators['sftp'] = SftpStorageConfigurator;
     enabledStorageConfigurators['amazon_s3'] = AmazonS3StorageConfigurator;
+    enabledStorageConfigurators['azure_blob'] = AzureBlobStorageConfigurator;
   }
 
   return enabledStorageConfigurators;
@@ -70,6 +81,16 @@ const isAmazonS3Storage = (storage: Storage): storage is AmazonS3Storage => {
   );
 };
 
+const isAzureBlobStorage = (storage: Storage): storage is AzureBlobStorage => {
+  return (
+    'azure_blob' === storage.type &&
+    'file_path' in storage &&
+    'connection_string' in storage &&
+    'key' in storage &&
+    'container_name' in storage
+  );
+};
+
 const isStorageFulfilled = (storage: Storage): boolean => {
   if (isLocalStorage(storage)) {
     return '' !== storage.file_path;
@@ -91,8 +112,15 @@ const isStorageFulfilled = (storage: Storage): boolean => {
       '' !== storage.secret;
   }
 
+  if (isAzureBlobStorage(storage)) {
+    return '' !== storage.file_path &&
+      '' !== storage.connection_string &&
+      '' !== storage.key &&
+      '' !== storage.container_name;
+  }
+
   return false;
 }
 
 export type {StorageConfiguratorProps};
-export {isLocalStorage, isSftpStorage, isAmazonS3Storage, isStorageFulfilled, getStorageConfigurator};
+export {isLocalStorage, isSftpStorage, isAmazonS3Storage, isAzureBlobStorage, isStorageFulfilled, getStorageConfigurator};
