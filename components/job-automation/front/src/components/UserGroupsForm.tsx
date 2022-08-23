@@ -20,23 +20,24 @@ const UserGroupsForm = ({
   disabledHelperMessage,
 }: UserGroupsFormProps) => {
   const translate = useTranslate();
-  const availableUserGroups = useUserGroups();
+  const {availableUserGroups, loadNextPage} = useUserGroups();
   const {isGranted} = useSecurity();
 
   return (
     <Field label={label}>
       <MultiSelectInput
-        value={filterDefaultUserGroup(userGroups)}
+        value={userGroups}
         onChange={onUserGroupsChange}
+        onNextPage={loadNextPage}
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
         removeLabel={translate('pim_common.remove')}
         readOnly={!isGranted('pim_user_group_index')}
         invalid={0 < validationErrors.length}
       >
-        {filterDefaultUserGroup(availableUserGroups).map(availableUserGroup => (
-          <SelectInput.Option value={availableUserGroup} key={availableUserGroup}>
-            {availableUserGroup}
+        {filterDefaultUserGroup(availableUserGroups).map((userGroupLabel: string) => (
+          <SelectInput.Option value={userGroupLabel} key={userGroupLabel}>
+            {userGroupLabel}
           </SelectInput.Option>
         ))}
       </MultiSelectInput>

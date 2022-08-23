@@ -34,9 +34,13 @@ final class GetUserGroupsAction
             return new RedirectResponse('/');
         }
 
+        $searchAfterId = $request->query->get('search_after_id');
+
         $userGroups = array_map(
-            static fn (UserGroup $userGroup) => $userGroup->getLabel(),
-            $this->listUserGroup->fromQuery(new UserGroupQuery()),
+            static fn (UserGroup $userGroup) => ['id' => $userGroup->getId(), 'label' => $userGroup->getLabel()],
+            $this->listUserGroup->fromQuery(new UserGroupQuery(
+                searchAfterId: null !== $searchAfterId ? (int) $searchAfterId : null
+            )),
         );
 
         return new JsonResponse($userGroups, Response::HTTP_OK);
