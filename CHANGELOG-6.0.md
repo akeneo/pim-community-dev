@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-10578: Fix the search on system filters in the rule engine UI
+- PIM-10585: Error when downloading file attribute from the proposals screen
 
 # 6.0.38 (2022-08-17)
 
