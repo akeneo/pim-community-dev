@@ -33,7 +33,7 @@ final class ClearPriceValue implements ValueUserIntent
         return $this->localeCode;
     }
 
-    public function currencyCode(): ?string
+    public function currencyCode(): string
     {
         return $this->currencyCode;
     }

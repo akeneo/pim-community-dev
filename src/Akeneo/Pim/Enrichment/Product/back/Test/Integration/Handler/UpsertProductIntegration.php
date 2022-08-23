@@ -1076,7 +1076,7 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_updates_a_product_with_a_price_collection_value(): void
+    public function it_create_a_product_with_a_price_collection_value(): void
     {
         $this->updateProduct(new SetPriceCollectionValue('a_price', null, null, [
             new PriceValue('42', 'EUR'),
@@ -1135,7 +1135,7 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_create_a_price_value_on_a_product(): void
+    public function it_creates_a_price_value_on_a_product(): void
     {
         $this->updateProduct(new SetPriceCollectionValue('a_price', null, null, [
             new PriceValue('42', 'EUR'),
