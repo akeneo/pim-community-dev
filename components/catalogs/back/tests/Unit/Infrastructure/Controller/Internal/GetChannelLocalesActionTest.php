@@ -23,7 +23,7 @@ class GetChannelLocalesActionTest extends TestCase
     private ?GetChannelQueryInterface $getChannelQuery;
     private ?GetChannelLocalesQueryInterface $getChannelLocalesQuery;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->getChannelQuery = $this->createMock(GetChannelQueryInterface::class);
         $this->getChannelLocalesQuery = $this->createMock(GetChannelLocalesQueryInterface::class);

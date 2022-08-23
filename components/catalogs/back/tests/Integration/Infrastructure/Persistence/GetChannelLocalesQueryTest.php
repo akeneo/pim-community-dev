@@ -17,7 +17,7 @@ class GetChannelLocalesQueryTest extends IntegrationTestCase
 {
     private ?GetChannelLocalesQuery $query;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

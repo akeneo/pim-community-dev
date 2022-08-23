@@ -17,7 +17,7 @@ class GetChannelQueryTest extends IntegrationTestCase
 {
     private ?GetChannelQuery $query;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

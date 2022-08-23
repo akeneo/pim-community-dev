@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Enrichment\Product\Application\Applier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Webmozart\Assert\Assert;

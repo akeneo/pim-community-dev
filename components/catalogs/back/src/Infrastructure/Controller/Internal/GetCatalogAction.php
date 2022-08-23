@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Persistence\FindCatalogProductSelectionCriteriaQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\GetCatalogProductSelectionCriteriaQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +21,7 @@ final class GetCatalogAction
 {
     public function __construct(
         private FindOneCatalogByIdQueryInterface $findOneCatalogByIdQuery,
-        private FindCatalogProductSelectionCriteriaQueryInterface $findCatalogProductSelectionCriteriaQuery,
+        private GetCatalogProductSelectionCriteriaQueryInterface $findCatalogProductSelectionCriteriaQuery,
         private NormalizerInterface $normalizer,
     ) {
     }
