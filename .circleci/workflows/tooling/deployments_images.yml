@@ -1,18 +1,25 @@
 workflows:
-    pim_deployer:
-        when:
-            not:
-                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-        jobs:
-            - ready_to_build?:
-                  type: approval
-                  filters:
-                      branches:
-                          only:
-                              - /TOOL-.*/
-            - checkout:
-                  requires:
-                      - ready_to_build?
-            - build_and_push_pim_deployer:
-                  requires:
-                      - checkout
+    images_creation:
+      when:
+          not:
+              equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+      jobs:
+          - checkout:
+              filters:
+                branches:
+                  only:
+                    - /TOOL-.*/
+          - ready_to_build_pim_deployer?:
+                type: approval
+                requires:
+                    - checkout
+          - build_and_push_pim_deployer:
+                requires:
+                    - ready_to_build_pim_deployer?
+          - ready_to_build_curl_jq_zip?:
+                type: approval
+                requires:
+                    - checkout
+          - build_and_push_curl_jq_zip:
+                requires:
+                    - ready_to_build_curl_jq_zip?

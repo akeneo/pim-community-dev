@@ -18,7 +18,7 @@ jobs:
       - run:
           name: Check if image already exists
           command: |
-            REGEX_RELEASE_CHANGELOG='^# (\d+\.\d+\.\d+)$'
+            REGEX_RELEASE_CHANGELOG='^# (.*)$'
 
             if [[ "$(head -n 1 deployments-ucs/tooling/pim-deployer/CHANGELOG.md)" =~ $REGEX_RELEASE_CHANGELOG ]]; then
                 RELEASE_CHANGELOG="${BASH_REMATCH[1]}"
@@ -27,11 +27,45 @@ jobs:
                 exit 1
             fi
             echo export RELEASE_CHANGELOG=${RELEASE_CHANGELOG} >> $BASH_ENV
-
-            docker manifest inspect ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/pim-deployer/pim-deployer:${RELEASE_CHANGELOG} &> /dev/null && echo release tag ${RELEASE_CHANGELOG} alredy exist && exit 1
       - run:
           name: Build and push the image
           command: |
+            docker manifest inspect ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/pim-deployer/pim-deployer:${RELEASE_CHANGELOG} &> /dev/null && echo release tag ${RELEASE_CHANGELOG} alredy exist && exit 0
+
             cd deployments-ucs/tooling/pim-deployer
             docker build . --tag ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/pim-deployer/pim-deployer:${RELEASE_CHANGELOG}
             docker push ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/pim-deployer/pim-deployer:${RELEASE_CHANGELOG}
+
+  # Description :
+  #    Build image for curl_jq_zip
+  build_and_push_curl_jq_zip:
+    environment:
+        <<: *envVarsDeployPIMSaaSDev
+    machine:
+        image: *executor-machine
+    resource_class: medium
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+            at: ~/
+      - set_gcloud_config_pim_saas_dev
+      - run:
+          name: Check if image already exists
+          command: |
+            REGEX_RELEASE_CHANGELOG='^# (.*)$'
+
+            if [[ "$(head -n 1 deployments-ucs/tooling/curl-jq-zip/CHANGELOG.md)" =~ $REGEX_RELEASE_CHANGELOG ]]; then
+                RELEASE_CHANGELOG="${BASH_REMATCH[1]}"
+            else
+                echo "Release version number is missing from the first line of CHANGELOG.md"
+                exit 1
+            fi
+            echo export RELEASE_CHANGELOG=${RELEASE_CHANGELOG} >> $BASH_ENV
+      - run:
+          name: Build and push the image
+          command: |
+            docker manifest inspect ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/curl/curl-jq-zip:${RELEASE_CHANGELOG} &> /dev/null && echo release tag ${RELEASE_CHANGELOG} alredy exist && exit 0
+
+            cd deployments-ucs/tooling/curl-jq-zip
+            docker build . --tag ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/curl/curl-jq-zip:${RELEASE_CHANGELOG}
+            docker push ${GOOGLE_CLUSTER_REGION}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/curl/curl-jq-zip:${RELEASE_CHANGELOG}
