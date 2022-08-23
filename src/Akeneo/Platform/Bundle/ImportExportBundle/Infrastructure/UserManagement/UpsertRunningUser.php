@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement;
 
-use Akeneo\UserManagement\Component\Model\RoleInterface;
-use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Akeneo\UserManagement\ServiceApi\User\UpsertUserCommand;
 use Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface;
+use Akeneo\UserManagement\ServiceApi\UserRole\ListUserRoleInterface;
+use Akeneo\UserManagement\ServiceApi\UserRole\UserRole;
 
 class UpsertRunningUser
 {
@@ -20,14 +20,14 @@ class UpsertRunningUser
 
     public function __construct(
         private UpsertUserHandlerInterface $upsertUserHandler,
-        private RoleRepositoryInterface $roleRepository,
+        private ListUserRoleInterface $listUserRole,
     ) {
     }
 
     public function execute(string $jobCode, array $userGroupCodes): void
     {
         $username = sprintf('%s%s', self::AUTOMATED_USER_PREFIX, $jobCode);
-        $allRoleCodes = array_map(static fn (RoleInterface $role) => $role->getRole(), $this->roleRepository->findAll());
+        $allRoleCodes = array_map(static fn (UserRole $role) => $role->getRole(), $this->listUserRole->all());
 
         $upsertUserCommand = UpsertUserCommand::job(
             $username,
