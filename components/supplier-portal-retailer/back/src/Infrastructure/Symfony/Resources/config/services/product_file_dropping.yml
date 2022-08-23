@@ -24,7 +24,7 @@ services:
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
 
-    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\DeleteProductFilesFromPaths:
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteProductFilesFromPaths:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\DeleteProductFilesFromPathsInGCSBucket
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'

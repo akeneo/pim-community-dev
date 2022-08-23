@@ -27,15 +27,4 @@ final class InMemoryRepository implements SupplierFileRepository
 
         return null;
     }
-
-    public function deleteOld(): void
-    {
-        foreach ($this->supplierFiles as $supplierFile) {
-            if (self::RETENTION_DURATION_IN_DAYS <
-                (new \DateTimeImmutable($supplierFile->uploadedAt()))->diff(new \DateTimeImmutable())->days
-            ) {
-                unset($this->supplierFiles[$supplierFile->identifier()]);
-            }
-        }
-    }
 }

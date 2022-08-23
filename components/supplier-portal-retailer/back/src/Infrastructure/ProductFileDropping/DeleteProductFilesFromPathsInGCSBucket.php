@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\DeleteProductFilesFromPaths;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteProductFilesFromPaths;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemException;
-use League\Flysystem\UnableToDeleteDirectory;
+use League\Flysystem\UnableToDeleteFile;
 use Psr\Log\LoggerInterface;
 
 final class DeleteProductFilesFromPathsInGCSBucket implements DeleteProductFilesFromPaths
@@ -24,7 +24,7 @@ final class DeleteProductFilesFromPathsInGCSBucket implements DeleteProductFiles
         foreach ($productFilePaths as $productFilePath) {
             try {
                 $fileSystem->delete($productFilePath);
-            } catch (UnableToDeleteDirectory | FilesystemException $e) {
+            } catch (UnableToDeleteFile | FilesystemException $e) {
                 $this->logger->error('Product file could not be deleted.', [
                     'data' => [
                         'path' => $productFilePath,

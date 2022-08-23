@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write;
+namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping;
 
 interface DeleteProductFilesFromPaths
 {

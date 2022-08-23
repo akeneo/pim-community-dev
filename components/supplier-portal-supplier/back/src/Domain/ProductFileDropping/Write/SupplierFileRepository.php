@@ -8,8 +8,5 @@ use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\Suppli
 
 interface SupplierFileRepository
 {
-    public const RETENTION_DURATION_IN_DAYS = 90;
-
     public function save(SupplierFile $supplierFile): void;
-    public function deleteOld(): void;
 }

@@ -5,24 +5,22 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql;
 
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\DeleteOldProductFiles;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePathsOfOldProductFiles;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetProductFilePathsOfOldProductFiles implements GetProductFilePathsOfOldProductFiles
+final class DatabaseDeleteOldProductFiles implements DeleteOldProductFiles
 {
     public function __construct(private Connection $connection)
     {
     }
 
-    public function __invoke(): array
+    public function __invoke(): void
     {
         $sql = <<<SQL
-            SELECT path
-            FROM `akeneo_supplier_portal_supplier_file`
+            DELETE FROM akeneo_supplier_portal_supplier_file
             WHERE uploaded_at < :retentionLimit
         SQL;
 
-        return array_map(fn (array $supplierFile) => $supplierFile['path'], $this->connection->executeQuery(
+        $this->connection->executeStatement(
             $sql,
             [
                 'retentionLimit' => (new \DateTimeImmutable())->add(
@@ -34,6 +32,6 @@ final class DatabaseGetProductFilePathsOfOldProductFiles implements GetProductFi
                     ),
                 )->format('Y-m-d H:i:s'),
             ],
-        )->fetchAllAssociative());
+        );
     }
 }

@@ -40,26 +40,4 @@ final class DatabaseRepository implements SupplierFileRepository
             ],
         );
     }
-
-    public function deleteOld(): void
-    {
-        $sql = <<<SQL
-            DELETE FROM akeneo_supplier_portal_supplier_file
-            WHERE uploaded_at < :uploadedAt
-        SQL;
-
-        $this->connection->executeStatement(
-            $sql,
-            [
-                'uploadedAt' => (new \DateTimeImmutable())->add(
-                    \DateInterval::createFromDateString(
-                        sprintf(
-                            '-%d days',
-                            self::RETENTION_DURATION_IN_DAYS,
-                        ),
-                    ),
-                )->format('Y-m-d H:i:s'),
-            ],
-        );
-    }
 }

@@ -52,6 +52,12 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\DeleteOldProductFiles:
+        public: true
+        class: Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Query\Sql\DatabaseDeleteOldProductFiles
+        arguments:
+            - '@database_connection'
+
     # Controllers
     Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\DownloadProductFile:
         public: true
