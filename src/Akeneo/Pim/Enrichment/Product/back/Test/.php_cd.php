@@ -83,6 +83,8 @@ $rules = [
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
         'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+        'Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface',
+        'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
 
         // Symfony, Doctrine DBAL and other libs
         'Webmozart\Assert\Assert',
