@@ -8,6 +8,7 @@ use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\PasswordReset;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendResetPasswordEmail;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 final class SendResetPasswordEmailOnPasswordResetTest extends TestCase
 {
@@ -31,7 +32,7 @@ final class SendResetPasswordEmailOnPasswordResetTest extends TestCase
             ->method('__invoke')
             ->with('test@example.com', 'foo');
 
-        $sut = new SendResetPasswordEmailOnPasswordReset($sendResetPasswordEmail);
+        $sut = new SendResetPasswordEmailOnPasswordReset($sendResetPasswordEmail, new NullLogger());
 
         $sut->sendResetPasswordEmail($event);
     }

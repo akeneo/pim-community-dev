@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer;
 
-use Akeneo\SupplierPortal\Supplier\Domain\Mailer\Email;
-use Akeneo\SupplierPortal\Supplier\Domain\Mailer\SendEmail;
 use Swift_Mailer;
 
-final class SendSwiftmailerEmail implements SendEmail
+class SendSwiftmailerEmail
 {
     public function __construct(private Swift_Mailer $mailer)
     {
     }
 
-    public function __invoke(Email $email): void
+    public function __invoke(SwiftEmail $email): void
     {
         $message = $this->mailer->createMessage();
 

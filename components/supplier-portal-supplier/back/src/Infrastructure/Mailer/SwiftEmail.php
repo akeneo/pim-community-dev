@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Supplier\Domain\Mailer;
+namespace Akeneo\SupplierPortal\Supplier\Infrastructure\Mailer;
 
-final class Email
+final class SwiftEmail
 {
     public function __construct(
         public string $subject,
@@ -12,6 +12,7 @@ final class Email
         public string $txtContent,
         public string $from,
         public string $to,
+        /** @var \Swift_Image[] $attachments */
         public array $attachments = [],
     ) {
     }
