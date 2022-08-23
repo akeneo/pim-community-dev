@@ -33,10 +33,6 @@ class LRUCacheGetProductUuids implements GetProductUuids, CachedQueryInterface
 
     public function fromIdentifiers(array $identifiers): array
     {
-        if (empty($identifiers)) {
-            return [];
-        }
-
         $fetchNonFoundIdentifiers = function (array $identifiersNotFound): array {
             return $this->getProductUuids->fromIdentifiers($identifiersNotFound);
         };

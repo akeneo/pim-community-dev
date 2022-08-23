@@ -28,6 +28,10 @@ class SqlGetProductUuids implements GetProductUuids
 
     public function fromIdentifiers(array $identifiers): array
     {
+        if (empty($identifiers)) {
+            return [];
+        }
+
         $result = $this->connection->fetchAllAssociative(
             'SELECT BIN_TO_UUID(uuid) as uuid, identifier FROM pim_catalog_product WHERE identifier in (:identifiers)',
             ['identifiers' => $identifiers],
