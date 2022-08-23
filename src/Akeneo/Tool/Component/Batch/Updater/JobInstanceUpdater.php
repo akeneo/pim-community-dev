@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\Batch\Updater;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\UpsertRunningUser;
 use Akeneo\Tool\Component\Batch\Clock\ClockInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
