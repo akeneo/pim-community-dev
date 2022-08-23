@@ -46,7 +46,7 @@ final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase
             ];
         }
 
-        static::assertSame(sprintf('%s/%s-%s', 'supplier_a', $fileIdentifier, 'products.xlsx'), (string) $path);
+        static::assertSame(sprintf('%s/%s-%s', 'supplier_a', $fileIdentifier, 'products.xlsx'), $path);
         static::assertSame($expectedContents, $actualContents);
     }
 
