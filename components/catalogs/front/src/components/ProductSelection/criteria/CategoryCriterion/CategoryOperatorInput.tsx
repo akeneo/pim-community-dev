@@ -34,30 +34,18 @@ const CategoryOperatorInput: FC<Props> = ({state, onChange, isInvalid}) => {
             invalid={isInvalid}
             data-testid='operator'
         >
-            <SelectInput.Option value={Operator.IN_LIST} title={translateOperator(Operator.IN_LIST)}>
-                {translateOperator(Operator.IN_LIST)}
-            </SelectInput.Option>
-            <SelectInput.Option value={Operator.NOT_IN_LIST} title={translateOperator(Operator.NOT_IN_LIST)}>
-                {translateOperator(Operator.NOT_IN_LIST)}
-            </SelectInput.Option>
-            <SelectInput.Option value={Operator.IN_CHILDREN_LIST} title={translateOperator(Operator.IN_CHILDREN_LIST)}>
-                {translateOperator(Operator.IN_CHILDREN_LIST)}
-            </SelectInput.Option>
-            <SelectInput.Option
-                value={Operator.NOT_IN_CHILDREN_LIST}
-                title={translateOperator(Operator.NOT_IN_CHILDREN_LIST)}
-            >
-                {translateOperator(Operator.NOT_IN_CHILDREN_LIST)}
-            </SelectInput.Option>
-            <SelectInput.Option value={Operator.UNCLASSIFIED} title={translateOperator(Operator.UNCLASSIFIED)}>
-                {translateOperator(Operator.UNCLASSIFIED)}
-            </SelectInput.Option>
-            <SelectInput.Option
-                value={Operator.IN_LIST_OR_UNCLASSIFIED}
-                title={translateOperator(Operator.IN_LIST_OR_UNCLASSIFIED)}
-            >
-                {translateOperator(Operator.IN_LIST_OR_UNCLASSIFIED)}
-            </SelectInput.Option>
+            {[
+                Operator.IN_LIST,
+                Operator.NOT_IN_LIST,
+                Operator.IN_CHILDREN_LIST,
+                Operator.NOT_IN_CHILDREN_LIST,
+                Operator.UNCLASSIFIED,
+                Operator.IN_LIST_OR_UNCLASSIFIED,
+            ].map(operator => (
+                <SelectInput.Option key={operator} value={operator} title={translateOperator(operator)}>
+                    {translateOperator(operator)}
+                </SelectInput.Option>
+            ))}
         </SelectInput>
     );
 };

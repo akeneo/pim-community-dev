@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components';
 import {CloseIcon, IconButton, List} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
@@ -7,7 +7,7 @@ import {CategoryCriterionState} from './types';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {CategoryOperatorInput} from './CategoryOperatorInput';
 import {CategorySelectInput} from './CategorySelectInput';
-import {ErrorHelpers} from '../ErrorHelpers';
+import {ErrorHelpers} from '../../components/ErrorHelpers';
 
 const Fields = styled.div`
     display: flex;
@@ -29,11 +29,7 @@ const LargeField = styled.div`
 const CategoryCriterion: FC<CriterionModule<CategoryCriterionState>> = ({state, errors, onChange, onRemove}) => {
     const translate = useTranslate();
     const hasError = Object.values(errors).filter(n => n).length > 0;
-    const [showCategories, setShowCategories] = useState<boolean>(false);
-
-    useEffect(() => {
-        setShowCategories(Operator.UNCLASSIFIED !== state.operator);
-    }, [state.operator]);
+    const showCategories = Operator.UNCLASSIFIED !== state.operator;
 
     return (
         <List.Row isMultiline>
