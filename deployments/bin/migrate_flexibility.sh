@@ -143,7 +143,8 @@ yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.source' "../../terraf
 
 # Copy the main.tf.json file to be use when applying monitoring module
 cp ${DESTINATION_PATH}/main.tf.json /tmp/main.tf.json
-
+# Delete the module.storage-backup to be able to import MySQL disk (cf. terraform import issues that should be fixed in next versions)
+yq d -P -j -i ${DESTINATION_PATH}/main.tf.json "module.storage-backup"
 
 echo "#########################################################################"
 echo "- Generate kubeconfig -"
