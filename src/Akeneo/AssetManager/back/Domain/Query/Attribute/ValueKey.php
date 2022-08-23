@@ -31,7 +31,7 @@ class ValueKey implements \Stringable
 {
     private function __construct(private string $key)
     {
-        Assert::notEmpty($key, 'Key should not be empty');
+        Assert::stringNotEmpty($key, 'Key should not be empty');
     }
 
     public static function create(

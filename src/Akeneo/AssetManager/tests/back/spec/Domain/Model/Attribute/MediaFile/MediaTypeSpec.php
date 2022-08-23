@@ -1,15 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\AssetManager\Domain\Model\Attribute\MediaLink;
+namespace spec\Akeneo\AssetManager\Domain\Model\Attribute\MediaFile;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use PhpSpec\ObjectBehavior;
 
-
 /**
- * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  */
 class MediaTypeSpec extends ObjectBehavior
 {
