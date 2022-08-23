@@ -11,7 +11,7 @@ type UsersFormProps = {
 
 const UsersForm = ({users, validationErrors, onUsersChange}: UsersFormProps) => {
   const translate = useTranslate();
-  const availableUsers = useUsers();
+  const {availableUsers, loadNextPage} = useUsers();
   const {isGranted} = useSecurity();
 
   return (
@@ -19,6 +19,7 @@ const UsersForm = ({users, validationErrors, onUsersChange}: UsersFormProps) => 
       <MultiSelectInput
         value={users}
         onChange={onUsersChange}
+        onNextPage={loadNextPage}
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
         removeLabel={translate('pim_common.remove')}
@@ -26,8 +27,8 @@ const UsersForm = ({users, validationErrors, onUsersChange}: UsersFormProps) => 
         invalid={0 < validationErrors.length}
       >
         {availableUsers.map(availableUser => (
-          <SelectInput.Option value={availableUser} key={availableUser}>
-            {availableUser}
+          <SelectInput.Option value={availableUser.username} key={availableUser.username}>
+            {availableUser.username}
           </SelectInput.Option>
         ))}
       </MultiSelectInput>
