@@ -1,5 +1,13 @@
 # 5.0.x
 
+# 5.0.109 (2022-08-23)
+
+# 5.0.108 (2022-08-22)
+
+## Bug fixes
+
+- PIM-10587: Fix warnings count in process tracker
+
 # 5.0.107 (2022-08-17)
 
 ## Bug fixes
