@@ -55,11 +55,11 @@ class GetCategorySql implements GetCategoryInterface
                 category.id,
                 category.code, 
                 category.parent_id,
-                translation.translations,
+                COALESCE(translation.translations, JSON_ARRAY()) as translations,
                 category.value_collection
             FROM 
                 pim_catalog_category category
-                JOIN translation ON translation.code = category.code
+                LEFT JOIN translation ON translation.code = category.code
             WHERE $sqlWhere
         SQL;
 
@@ -76,7 +76,7 @@ class GetCategorySql implements GetCategoryInterface
         return new Category(
             new CategoryId((int)$result['id']),
             new Code($result['code']),
-            LabelCollection::fromArray(json_decode($result['translations'], true)),
+            LabelCollection::fromArray(json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR)),
             $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null,
             $result['value_collection'] ?
                 ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null,
