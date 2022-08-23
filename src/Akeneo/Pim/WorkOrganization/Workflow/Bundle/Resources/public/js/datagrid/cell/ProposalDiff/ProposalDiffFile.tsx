@@ -17,12 +17,15 @@ const ProposalDiffFile: React.FC<ProposalDiffFileProps> = ({accessor, change, ..
   const router = useRouter();
 
   if (change[accessor]) {
+    const data = change[accessor] as File;
+    const encodedFileName = encodeURIComponent(data.fileKey);
+
     return (
       <ImageCard
-        filePath={(change[accessor] as File).fileKey}
-        originalFilename={(change[accessor] as File).originalFileName}
+        filePath={data.fileKey}
+        originalFilename={data.originalFileName}
         downloadUrl={router.generate('pim_enrich_media_download', {
-          filename: (change[accessor] as File).fileKey,
+          filename: encodedFileName,
         })}
         state={accessor === 'before' ? 'removed' : 'added'}
         {...rest}
