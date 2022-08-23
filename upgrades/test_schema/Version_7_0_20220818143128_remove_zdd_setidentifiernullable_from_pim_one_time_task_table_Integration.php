@@ -14,7 +14,7 @@ use Pim\Upgrade\Schema\Tests\ExecuteMigrationTrait;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class Version_7_0_20221808143128_remove_zdd_setidentifiernullable_from_pim_one_time_task_table_Integration extends TestCase
+final class Version_7_0_20220818143128_remove_zdd_setidentifiernullable_from_pim_one_time_task_table_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
@@ -29,7 +29,7 @@ final class Version_7_0_20221808143128_remove_zdd_setidentifiernullable_from_pim
     public function test_it_deletes_the_zdd_migration()
     {
         $this->givenZddMigrationHasBeenPlayed();
-        $this->reExecuteMigration('_7_0_20221808143128_remove_zdd_setidentifiernullable_from_pim_one_time_task_table');
+        $this->reExecuteMigration('_7_0_20220818143128_remove_zdd_setidentifiernullable_from_pim_one_time_task_table');
         $this->assertZddMigrationRemoved();
     }
 

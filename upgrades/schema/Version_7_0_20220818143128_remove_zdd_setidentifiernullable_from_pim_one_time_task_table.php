@@ -11,7 +11,7 @@ use Doctrine\Migrations\AbstractMigration;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class Version_7_0_20221808143128_remove_zdd_setidentifiernullable_from_pim_one_time_task_table extends AbstractMigration
+final class Version_7_0_20220818143128_remove_zdd_setidentifiernullable_from_pim_one_time_task_table extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
