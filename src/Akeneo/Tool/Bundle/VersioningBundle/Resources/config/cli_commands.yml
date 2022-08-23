@@ -3,7 +3,6 @@ services:
         arguments:
             - '@logger'
             - '@pim_versioning.purger.version'
-            - '@pim_versioning.event_subscriber.purge_progress_bar_advancer'
         tags:
             - { name: console.command }
 

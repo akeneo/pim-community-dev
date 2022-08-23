@@ -13,7 +13,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Purge version of entities
@@ -28,25 +27,11 @@ class PurgeCommand extends Command
 
     const DEFAULT_MORE_THAN_DAYS = 90;
 
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var VersionPurgerInterface */
-    private $versionPurger;
-
-    /** @var EventSubscriberInterface */
-    private $eventSubscriber;
-
     public function __construct(
-        LoggerInterface $logger,
-        VersionPurgerInterface $versionPurger,
-        EventSubscriberInterface $eventSubscriber
+        private LoggerInterface $logger,
+        private VersionPurgerInterface $versionPurger,
     ) {
         parent::__construct();
-
-        $this->logger = $logger;
-        $this->versionPurger = $versionPurger;
-        $this->eventSubscriber = $eventSubscriber;
     }
 
     /**
