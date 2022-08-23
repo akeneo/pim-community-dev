@@ -27,7 +27,7 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
     ) {
         $jobInstance->getJobName()->willReturn('xlsx_product_import');
 
-        $this->beConstructedWith($jobParametersFactory, $jobRegistry, $upsertRunningUser);
+        $this->beConstructedWith($jobParametersFactory, $jobRegistry, $upsertRunningUser, $clock);
     }
 
     public function it_is_initializable(): void
@@ -82,6 +82,7 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
             'cron_expression' => '0 */8 * * *',
         ];
 
+        $jobInstance->isScheduled()->willReturn(false);
         $jobInstance->getAutomation()->willReturn($currentAutomation);
         $clock->now()->willReturn(\DateTimeImmutable::createFromFormat(\DateTimeImmutable::ATOM, '2022-12-27T07:00:00+00:00'));
 
@@ -111,6 +112,7 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
             'last_execution_date' => null,
         ];
 
+        $jobInstance->isScheduled()->willReturn(false);
         $jobInstance->getAutomation()->willReturn($currentAutomation);
         $clock->now()->shouldNotBeCalled();
 
@@ -135,6 +137,7 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
     {
         $currentAutomation = null;
 
+        $jobInstance->isScheduled()->willReturn(false);
         $jobInstance->getAutomation()->willReturn($currentAutomation);
         $jobInstance->setAutomation($currentAutomation)->shouldBeCalled();
 
@@ -159,6 +162,8 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
     ) {
         $automation = [
             'cron_expression' => '0 */8 * * *',
+            'setup_date' => '2022-12-27T07:00:00+00:00',
+            'last_execution_date' => null,
             'running_user_groups' => ['IT Support'],
         ];
 
@@ -178,15 +183,20 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
     function it_does_not_upsert_an_user_when_job_is_not_scheduled(
         JobInstance $jobInstance,
         UpsertRunningUser $upsertRunningUser,
+        ClockInterface $clock
     ) {
         $automation = [
             'cron_expression' => '0 */8 * * *',
+            'setup_date' => '2022-12-27T07:00:00+00:00',
+            'last_execution_date' => null,
             'running_user_groups' => ['IT Support'],
         ];
 
         $jobInstance->setScheduled(false)->shouldBeCalled();
         $jobInstance->setAutomation($automation)->shouldBeCalled();
         $jobInstance->isScheduled()->willReturn(false);
+        $jobInstance->getAutomation()->willReturn($automation);
+        $clock->now()->willReturn(\DateTimeImmutable::createFromFormat(\DateTimeImmutable::ATOM, '2022-12-27T07:00:00+00:00'));
         $upsertRunningUser->execute('xlsx_product_import', ['IT Support'])->shouldNotBeCalled();
 
         $this->update($jobInstance, [
