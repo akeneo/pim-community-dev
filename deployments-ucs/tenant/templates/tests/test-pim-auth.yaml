@@ -11,7 +11,7 @@ metadata:
 spec:
   containers:
   - name: test-pim-auth
-    image: curlimages/curl
+    image: {{ .Values.image.curl.repository }}:{{ .Values.image.curl.tag }}
     env:
       - name: TARGET
         value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
