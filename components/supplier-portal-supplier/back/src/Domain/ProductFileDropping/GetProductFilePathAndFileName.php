@@ -9,5 +9,5 @@ use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\
 
 interface GetProductFilePathAndFileName
 {
-    public function __invoke(Identifier $productFileIdentifier): ?ProductFilePathAndFileName;
+    public function __invoke(Identifier $productFileIdentifier, string $contributorEmail): ?ProductFilePathAndFileName;
 }

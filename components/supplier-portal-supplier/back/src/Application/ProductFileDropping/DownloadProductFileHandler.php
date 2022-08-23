@@ -24,7 +24,8 @@ final class DownloadProductFileHandler
     public function __invoke(DownloadProductFile $query): SupplierFileNameAndResourceFile
     {
         $productFilePathAndFileName = ($this->getProductFilePathAndFileName)(
-            Identifier::fromString($query->productFileIdentifier)
+            Identifier::fromString($query->productFileIdentifier),
+            $query->contributorEmail
         );
 
         if (empty($productFilePathAndFileName->path)) {

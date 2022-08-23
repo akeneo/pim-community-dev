@@ -51,6 +51,7 @@ services:
         public: true
         arguments:
             - '@Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\DownloadProductFileHandler'
+            - '@security.token_storage'
 
     Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\UploadProductFile:
         public: true
