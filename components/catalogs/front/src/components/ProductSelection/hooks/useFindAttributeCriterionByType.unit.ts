@@ -2,16 +2,19 @@ jest.unmock('./useFindAttributeCriterionByType');
 
 import {renderHook} from '@testing-library/react-hooks';
 import {useFindAttributeCriterionByType} from './useFindAttributeCriterionByType';
+import {AnyAttributeCriterion} from '../models/Criterion';
+import AttributeTextCriterion from '../criteria/AttributeTextCriterion';
+import AttributeSimpleSelectCriterion from '../criteria/AttributeSimpleSelectCriterion';
 
-const types: string[] = ['pim_catalog_text'];
+const criterions: [string, AnyAttributeCriterion][] = [
+    ['pim_catalog_text', AttributeTextCriterion],
+    ['pim_catalog_simpleselect', AttributeSimpleSelectCriterion],
+];
 
-test.each(types)('it returns a criterion when searching for "%s"', field => {
+test.each(criterions)('it returns a criterion when searching for "%s"', (field, criterion) => {
     const {result} = renderHook(() => useFindAttributeCriterionByType());
 
-    expect(result.current(field)).toMatchObject({
-        component: expect.any(Function),
-        factory: expect.any(Function),
-    });
+    expect(result.current(field)).toMatchObject(criterion);
 });
 
 test('it throws when searching for an unknown type', () => {
