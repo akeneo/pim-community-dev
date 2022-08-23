@@ -22,7 +22,7 @@ class GetCategoryTreeRootsQuery implements GetCategoryTreeRootsQueryInterface
     /**
      * @inheritDoc
      */
-    public function execute(string $locale): array
+    public function execute(string $locale = 'en_US'): array
     {
         $categoryTrees = $this->findCategoryTrees->execute();
 

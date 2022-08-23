@@ -22,7 +22,7 @@ class GetCategoriesByCodeQuery implements GetCategoriesByCodeQueryInterface
     /**
      * @inheritDoc
      */
-    public function execute(array $categoryCodes, string $locale): array
+    public function execute(array $categoryCodes, string $locale = 'en_US'): array
     {
         $categories = $this->categoryRepository->getCategoriesByCodes($categoryCodes);
 
