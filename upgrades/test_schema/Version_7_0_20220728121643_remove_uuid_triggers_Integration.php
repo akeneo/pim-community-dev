@@ -18,36 +18,8 @@ final class Version_7_0_20220728121643_remove_uuid_triggers_Integration extends 
     use ExecuteMigrationTrait;
     private const MIGRATION_LABEL = '_7_0_20220728121643_remove_uuid_triggers';
     public const TRIGGERS_TO_REMOVE = [
-        'pim_catalog_association_uuid_insert',
-        'pim_catalog_association_uuid_update',
-        'pim_catalog_association_product_uuid_insert',
-        'pim_catalog_association_product_uuid_update',
-        'pim_catalog_association_product_model_to_product_uuid_insert',
-        'pim_catalog_association_product_model_to_product_uuid_update',
-        'pim_catalog_category_product_uuid_insert',
-        'pim_catalog_category_product_uuid_update',
-        'pim_catalog_group_product_uuid_insert',
-        'pim_catalog_group_product_uuid_update',
-        'pim_catalog_product_unique_data_uuid_insert',
-        'pim_catalog_product_unique_data_uuid_update',
-        'pim_catalog_completeness_uuid_insert',
-        'pim_catalog_completeness_uuid_update',
-        'pim_dqi_product_criteria_evaluation_uuid_insert',
-        'pim_dqi_product_criteria_evaluation_uuid_update',
-        'pim_dqi_product_score_uuid_insert',
-        'pim_dqi_product_score_uuid_update',
         'pim_versioning_version_uuid_insert',
         'pim_versioning_version_uuid_update',
-        'pim_comment_comment_uuid_insert',
-        'pim_comment_comment_uuid_update',
-        'pimee_workflow_product_draft_uuid_insert',
-        'pimee_workflow_product_draft_uuid_update',
-        'pimee_workflow_published_product_uuid_insert',
-        'pimee_workflow_published_product_uuid_update',
-        'pimee_twa_completeness_per_attribute_group_uuid_insert',
-        'pimee_twa_completeness_per_attribute_group_uuid_update',
-        'pimee_twa_project_product_uuid_insert',
-        'pimee_twa_project_product_uuid_update',
     ];
 
     private Connection $connection;
