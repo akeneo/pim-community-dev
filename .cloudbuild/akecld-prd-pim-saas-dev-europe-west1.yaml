@@ -25,6 +25,9 @@ steps:
         CLUSTER_NAME="${_CLUSTER_NAME}" yq -i '.datadog.clusterName = env(CLUSTER_NAME)' k8s/datadog/values.yaml
         TAGS="cloud_env:${_CLUSTER_NAME} cloud_service:ucs" yq -i '.datadog.tags = env(TAGS)' k8s/datadog/values.yaml
 
+        ## ConfigConnector
+        GSA="ucs-cloudconfig-account@${PROJECT_ID}.iam.gserviceaccount.com" yq -i '.spec.googleServiceAccount = env(GSA)' k8s/configconnector/configconnector.yaml
+
         # Use helm repo
         helm repo add traefik https://helm.traefik.io/traefik
         helm repo add datadog https://helm.datadoghq.com
@@ -36,6 +39,10 @@ steps:
         ## Secret manager_csi
         helm upgrade --debug --atomic --cleanup-on-fail --history-max 5 -i --wait -n kube-system csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver --set-string enableSecretRotation=true --set-string secretObjects=true
         kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/secrets-store-csi-driver-provider-gcp/release-1.1/deploy/provider-gcp-plugin.yaml
+
+        ## StorageClass
+        # Will be managed by terraform later
+        kubectl apply -f k8s/kubernetes/StorageClass/
 
         ## Traefik
         rm -Rf "./traefik-chart"
@@ -61,16 +68,16 @@ steps:
         helm upgrade --version 4.8.2 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
         kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
 
-        ## Cloudconfig
-        helm upgrade --debug --atomic --cleanup-on-fail --history-max 5 -i --wait configconnector k8s/cloudconfig --set gcpProjectId=${PROJECT_ID}
-    secretEnv: ['ARGOCD_TOKEN', 'DATADOG_API_KEY', 'CROSSPLANE_SERVICE_ACCOUNT_KEY_BASE64']
+        ## ConfigConnector
+        kubectl apply -f k8s/configconnector/configconnector.yaml
+    secretEnv: ['ARGOCD_TOKEN', 'DATADOG_API_KEY']
 options:
   logging: CLOUD_LOGGING_ONLY
 availableSecrets:
   secretManager:
-  - versionName: projects/${PROJECT_ID}/secrets/ARGOCD_TOKEN/versions/1
+  - versionName: projects/${PROJECT_ID}/secrets/ARGOCD_TOKEN/versions/latest
     env: 'ARGOCD_TOKEN'
-  - versionName: projects/${PROJECT_ID}/secrets/DATADOG_API_KEY/versions/1
+  - versionName: projects/${PROJECT_ID}/secrets/DATADOG_API_KEY/versions/latest
     env: 'DATADOG_API_KEY'
 substitutions:
   _CLUSTER_NAME: akecld-prd-pim-saas-dev-europe-west1
