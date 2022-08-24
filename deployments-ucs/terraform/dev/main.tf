@@ -6,6 +6,7 @@ locals {
   admins          = ["group:phoenix-squad@akeneo.com"]
   viewers         = ["group:phoenix-squad@akeneo.com"]
   regions         = ["europe-west1"]
+  public_zone     = "pim-saas-dev.dev.cloud.akeneo.com"
   private_zone    = "pim-saas-dev.dev.local"
 }
 
@@ -75,6 +76,12 @@ module "gke" {
     }
   }
 
+}
+
+module "public_dns" {
+  source     = "../modules/public-dns"
+  project_id = local.project_id
+  zone_name  = local.public_zone
 }
 
 module "private_dns" {
