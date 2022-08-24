@@ -151,7 +151,71 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'sample_data' => [],
                     ],
                 ],
-            ]
+            ],
+            'valid data mapping on the same attribute but on different currency' => [
+                [
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'target' => [
+                            'code' => 'sku',
+                            'type' => 'attribute',
+                            'attribute_type' => 'pim_catalog_identifier',
+                            'channel' => null,
+                            'locale' => null,
+                            'action_if_not_empty' => 'set',
+                            'action_if_empty' => 'skip',
+                            'source_configuration' => null,
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
+                        ],
+                        'operations' => [],
+                        'sample_data' => [],
+                    ],
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd1',
+                        'target' => [
+                            'code' => 'a_price',
+                            'type' => 'attribute',
+                            'attribute_type' => 'pim_catalog_price_collection',
+                            'channel' => null,
+                            'locale' => null,
+                            'action_if_not_empty' => 'set',
+                            'action_if_empty' => 'skip',
+                            'source_configuration' => [
+                                'decimal_separator' => '.',
+                                'currency' => 'USD',
+                            ],
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
+                        ],
+                        'operations' => [],
+                        'sample_data' => [],
+                    ],
+                    [
+                        'uuid' => 'ca37e4ad-a637-441c-8b88-7675dd83806e',
+                        'target' => [
+                            'code' => 'a_price',
+                            'type' => 'attribute',
+                            'attribute_type' => 'pim_catalog_price_collection',
+                            'channel' => null,
+                            'locale' => null,
+                            'action_if_not_empty' => 'set',
+                            'action_if_empty' => 'skip',
+                            'source_configuration' => [
+                                'decimal_separator' => '.',
+                                'currency' => 'EUR',
+                            ],
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
+                        ],
+                        'operations' => [],
+                        'sample_data' => [],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -371,6 +435,72 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'operations' => [],
                         'sample_data' => [],
                     ]
+                ],
+            ],
+            'invalid data mapping on the same attribute and same currency' => [
+                'akeneo.tailored_import.validation.data_mappings.target_should_unique',
+                '[ca37e4ad-a637-441c-8b88-7675dd83806e][target][code]',
+                [
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'target' => [
+                            'code' => 'sku',
+                            'type' => 'attribute',
+                            'attribute_type' => 'pim_catalog_identifier',
+                            'channel' => null,
+                            'locale' => null,
+                            'action_if_not_empty' => 'set',
+                            'action_if_empty' => 'skip',
+                            'source_configuration' => null,
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
+                        ],
+                        'operations' => [],
+                        'sample_data' => [],
+                    ],
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd1',
+                        'target' => [
+                            'code' => 'a_price',
+                            'type' => 'attribute',
+                            'attribute_type' => 'pim_catalog_price_collection',
+                            'channel' => null,
+                            'locale' => null,
+                            'action_if_not_empty' => 'set',
+                            'action_if_empty' => 'skip',
+                            'source_configuration' => [
+                                'decimal_separator' => '.',
+                                'currency' => 'USD',
+                            ],
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
+                        ],
+                        'operations' => [],
+                        'sample_data' => [],
+                    ],
+                    [
+                        'uuid' => 'ca37e4ad-a637-441c-8b88-7675dd83806e',
+                        'target' => [
+                            'code' => 'a_price',
+                            'type' => 'attribute',
+                            'attribute_type' => 'pim_catalog_price_collection',
+                            'channel' => null,
+                            'locale' => null,
+                            'action_if_not_empty' => 'set',
+                            'action_if_empty' => 'skip',
+                            'source_configuration' => [
+                                'decimal_separator' => '.',
+                                'currency' => 'USD',
+                            ],
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
+                        ],
+                        'operations' => [],
+                        'sample_data' => [],
+                    ],
                 ],
             ],
         ];
