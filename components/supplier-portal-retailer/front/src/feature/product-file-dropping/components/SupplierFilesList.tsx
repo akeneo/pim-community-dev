@@ -1,6 +1,6 @@
 import React from 'react';
-import {Badge, DownloadIcon, IconButton, Pagination, Table, getColor} from 'akeneo-design-system';
-import {useDateFormatter, useTranslate, useRouter} from '@akeneo-pim-community/shared';
+import {DownloadIcon, getColor, IconButton, Pagination, Table} from 'akeneo-design-system';
+import {useDateFormatter, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {EmptySupplierFilesList} from './EmptySupplierFilesList';
 import {SupplierFileRow} from '../models/SupplierFileRow';
@@ -64,9 +64,6 @@ const SupplierFilesList = ({
                                     {translate('supplier_portal.product_file_dropping.supplier_files.columns.supplier')}
                                 </Table.HeaderCell>
                             )}
-                            <Table.HeaderCell>
-                                {translate('supplier_portal.product_file_dropping.supplier_files.columns.status')}
-                            </Table.HeaderCell>
                             <Table.HeaderCell></Table.HeaderCell>
                         </Table.Header>
                         <Table.Body>
@@ -87,22 +84,6 @@ const SupplierFilesList = ({
                                                 {supplierFile.hasOwnProperty('supplier') && supplierFile.supplier}
                                             </Table.Cell>
                                         )}
-                                        <Table.Cell>
-                                            {'Downloaded' === supplierFile.status && (
-                                                <Badge level="primary">
-                                                    {translate(
-                                                        'supplier_portal.product_file_dropping.supplier_files.status.downloaded'
-                                                    )}
-                                                </Badge>
-                                            )}
-                                            {'To download' === supplierFile.status && (
-                                                <Badge level="warning">
-                                                    {translate(
-                                                        'supplier_portal.product_file_dropping.supplier_files.status.to_download'
-                                                    )}
-                                                </Badge>
-                                            )}
-                                        </Table.Cell>
                                         <DownloadCell>
                                             <StyledIconButton
                                                 data-testid="Download icon"

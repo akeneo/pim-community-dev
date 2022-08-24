@@ -67,17 +67,14 @@ final class DatabaseGetAllSupplierFilesIntegration extends SqlIntegrationTestCas
 
         $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
         $this->createSupplierFile('path/to/file/file1.xlsx', $file1Date);
-        $this->createSupplierFile('path/to/file/file2.xlsx', $file2Date, true);
+        $this->createSupplierFile('path/to/file/file2.xlsx', $file2Date);
 
         $supplierFiles = $this->get(GetAllSupplierFiles::class)();
 
         static::assertSame('path/to/file/file1.xlsx', $supplierFiles[0]->path);
-        static::assertSame(false, $supplierFiles[0]->downloaded);
         static::assertSame('contributor@megasupplier.com', $supplierFiles[0]->uploadedByContributor);
         static::assertSame('Supplier 1', $supplierFiles[0]->uploadedBySupplier);
         static::assertSame($file1Date->format('Y-m-d H:i:s'), $supplierFiles[0]->uploadedAt);
-
-        static::assertSame(true, $supplierFiles[1]->downloaded);
     }
 
     private function createSupplier(string $identifier, string $code, string $label): void
@@ -97,11 +94,11 @@ final class DatabaseGetAllSupplierFilesIntegration extends SqlIntegrationTestCas
         );
     }
 
-    private function createSupplierFile(string $path, \DateTimeImmutable $uploadedAt, bool $downloaded = false): void
+    private function createSupplierFile(string $path, \DateTimeImmutable $uploadedAt): void
     {
         $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier_file` (identifier, original_filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at, downloaded)
-            VALUES (:identifier, :original_filename, :path, :contributorEmail, :supplierIdentifier, :uploadedAt, :downloaded)
+            INSERT INTO `akeneo_supplier_portal_supplier_file` (identifier, original_filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at)
+            VALUES (:identifier, :original_filename, :path, :contributorEmail, :supplierIdentifier, :uploadedAt)
         SQL;
 
         $this->get(Connection::class)->executeQuery(
@@ -113,7 +110,6 @@ final class DatabaseGetAllSupplierFilesIntegration extends SqlIntegrationTestCas
                 'contributorEmail' => 'contributor@megasupplier.com',
                 'supplierIdentifier' => '44ce8069-8da1-4986-872f-311737f46f00',
                 'uploadedAt' => $uploadedAt->format('Y-m-d H:i:s'),
-                'downloaded' => (int) $downloaded,
             ],
         );
     }

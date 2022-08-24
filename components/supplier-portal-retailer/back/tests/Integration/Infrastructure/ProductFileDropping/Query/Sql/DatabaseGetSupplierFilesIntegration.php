@@ -83,16 +83,13 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
 
         $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
         $this->createSupplierFile('path/to/file/file1.xlsx', $file1Date, '44ce8069-8da1-4986-872f-311737f46f00');
-        $this->createSupplierFile('path/to/file/file2.xlsx', $file2Date, '44ce8069-8da1-4986-872f-311737f46f00', true);
+        $this->createSupplierFile('path/to/file/file2.xlsx', $file2Date, '44ce8069-8da1-4986-872f-311737f46f00');
 
         $supplierFiles = $this->get(GetSupplierFiles::class)('44ce8069-8da1-4986-872f-311737f46f00');
 
         static::assertSame('path/to/file/file1.xlsx', $supplierFiles[0]->path);
-        static::assertSame(false, $supplierFiles[0]->downloaded);
         static::assertSame('contributor@megasupplier.com', $supplierFiles[0]->uploadedByContributor);
         static::assertSame($file1Date->format('Y-m-d H:i:s'), $supplierFiles[0]->uploadedAt);
-
-        static::assertSame(true, $supplierFiles[1]->downloaded);
     }
 
     private function createSupplier(string $identifier, string $code, string $label): void
@@ -112,11 +109,11 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
         );
     }
 
-    private function createSupplierFile(string $path, \DateTimeImmutable $uploadedAt, string $supplierIdentifier, bool $downloaded = false): void
+    private function createSupplierFile(string $path, \DateTimeImmutable $uploadedAt, string $supplierIdentifier): void
     {
         $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier_file` (identifier, original_filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at, downloaded)
-            VALUES (:identifier, :originalFilename, :path, :contributorEmail, :supplierIdentifier, :uploadedAt, :downloaded)
+            INSERT INTO `akeneo_supplier_portal_supplier_file` (identifier, original_filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at)
+            VALUES (:identifier, :originalFilename, :path, :contributorEmail, :supplierIdentifier, :uploadedAt)
         SQL;
 
         $this->get(Connection::class)->executeQuery(
@@ -128,7 +125,6 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
                 'contributorEmail' => 'contributor@megasupplier.com',
                 'supplierIdentifier' => $supplierIdentifier,
                 'uploadedAt' => $uploadedAt->format('Y-m-d H:i:s'),
-                'downloaded' => (int) $downloaded,
             ],
         );
     }

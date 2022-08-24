@@ -3,5 +3,4 @@ export type SupplierFileRow = {
     uploadedAt: string;
     contributor: string;
     supplier?: string;
-    status: 'To download' | 'Downloaded';
 };
