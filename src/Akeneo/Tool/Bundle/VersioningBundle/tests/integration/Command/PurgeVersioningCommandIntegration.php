@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\VersioningBundle\tests\integration\Command;
 
 use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\DBAL\Connection;
@@ -24,6 +25,35 @@ class PurgeVersioningCommandIntegration extends TestCase
      */
     public function it_purges_versions_but_keeps_the_first_and_last_version_of_a_family(): void
     {
+        $expectedOriginalVersionsCount = 25;
+        $this->initializeVersions($expectedOriginalVersionsCount);
+
+        $output = $this->runPurgeCommand();
+        $result = $output->fetch();
+
+        $expectedDeletedVersionsCount = 18;
+
+        $this->assertPurgeResult($result, $expectedOriginalVersionsCount, $expectedDeletedVersionsCount, 0);
+    }
+
+    /**
+     * @test
+     */
+    public function it_purges_versions_older_than_5_days(): void
+    {
+        $expectedOriginalVersionsCount = 25;
+        $this->initializeVersions($expectedOriginalVersionsCount);
+
+        $output = $this->runPurgeCommand(['--more-than-days' => 5,]);
+        $result = $output->fetch();
+
+        $expectedDeletedVersionsCount = 10;
+
+        $this->assertPurgeResult($result, $expectedOriginalVersionsCount, $expectedDeletedVersionsCount, 5);
+    }
+
+    private function initializeVersions(int $expectedOriginalVersionsCount): void
+    {
         $limitDate = new \DateTime('now');
 
         $this->givenFamilyVersionsOlderThan($limitDate, 8, 35);
@@ -31,24 +61,49 @@ class PurgeVersioningCommandIntegration extends TestCase
         $this->givenFamilyVersionsAtLeastAsYoungAs($limitDate, 2, 35, 9);
         $this->givenFamilyVersionsAtLeastAsYoungAs($limitDate, 3, 44, 13);
 
-        $versionsCount = $this->getConnection()->executeQuery('SELECT count(*) FROM pim_versioning_version')->fetchOne();
-        Assert::assertEquals(25, $versionsCount);
+        Assert::assertEquals($expectedOriginalVersionsCount, $this->countVersions());
+    }
 
-        $output = $this->runPurgeCommand();
-        $result = $output->fetch();
-        $result = $output->fetch();
+    private function countVersions(): int
+    {
+        return (int)$this->getConnection()
+            ->executeQuery('SELECT count(*) FROM pim_versioning_version')
+            ->fetchOne();
+    }
 
-        Assert::assertStringContainsString(sprintf('Start purging versions of %s (1/1)', Family::class), $result);
-        Assert::assertStringContainsString('Successfully deleted 18 versions', $result);
+    private function assertPurgeResult(
+        string $commandOutput,
+        int $expectedOriginalVersionsCount,
+        int $expectedDeletedVersionsCount,
+        int $purgeDaysNumber,
+    ): void {
+        Assert::assertStringContainsString(
+            sprintf('You are about to process versions of %s older than %d days', Family::class, $purgeDaysNumber),
+            $commandOutput
+        );
 
-        $versionsCount = $this->getConnection()->executeQuery('SELECT count(*) FROM pim_versioning_version')->fetchOne();
-        Assert::assertEquals(7, $versionsCount);
+        Assert::assertStringContainsString(
+            sprintf('Start purging versions of %s (1/1)', Family::class),
+            $commandOutput
+        );
+        Assert::assertStringContainsString(
+            sprintf('Versions count = %d', $expectedOriginalVersionsCount),
+            $commandOutput
+        );
+        Assert::assertStringContainsString(
+            sprintf('Successfully deleted %s versions', $expectedDeletedVersionsCount),
+            $commandOutput
+        );
+
+        $expectedRemainingVersionsCount = $expectedOriginalVersionsCount - $expectedDeletedVersionsCount;
+        $versionsCount = $this->countVersions();
+        Assert::assertEquals($expectedRemainingVersionsCount, $versionsCount);
     }
 
     /**
      * @inheritDoc
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }
@@ -65,33 +120,35 @@ class PurgeVersioningCommandIntegration extends TestCase
         $this->getConnection()->executeQuery('DELETE FROM pim_versioning_version');
     }
 
-    private function givenFamilyVersionsAtLeastAsYoungAs(\DateTime $limitDate, int $count, int $resourceId, int $startingVersion): array
-    {
+    private function givenFamilyVersionsAtLeastAsYoungAs(
+        \DateTime $limitDate,
+        int $count,
+        int $resourceId,
+        int $startingVersion
+    ): void {
         $loggedAt = clone $limitDate;
-        $versionIds = [];
         for ($i = 0; $i < $count; $i++) {
-            $versionIds[] = $this->createVersion(Family::class, $resourceId, $loggedAt, $startingVersion);
+            $this->createVersion(Family::class, $resourceId, $loggedAt, $startingVersion);
             $loggedAt->modify('+1 DAY');
             $startingVersion++;
         }
-
-        return $versionIds;
     }
 
-    private function givenFamilyVersionsOlderThan(\DateTime $limitDate, int $count, int $resourceId): array
+    private function givenFamilyVersionsOlderThan(\DateTime $limitDate, int $count, int $resourceId): void
     {
-        $versionIds = [];
         for ($i = $count; $i > 0; $i--) {
             $loggedAt = clone $limitDate;
             $loggedAt->modify(sprintf('-%d DAY', $i));
-            $versionIds[] = $this->createVersion(Family::class, $resourceId, $loggedAt, $i);
+            $this->createVersion(Family::class, $resourceId, $loggedAt, $i);
         }
-
-        return $versionIds;
     }
 
-    private function createVersion(string $resourceName, int $resourceId, \DateTime $loggedAt, int $versionNumber = 1): int
-    {
+    private function createVersion(
+        string $resourceName,
+        int $resourceId,
+        \DateTime $loggedAt,
+        int $versionNumber = 1
+    ): int {
         $entityManager = $this->get('doctrine.orm.default_entity_manager');
 
         $version = new Version($resourceName, $resourceId, null, 'system');
@@ -114,6 +171,9 @@ class PurgeVersioningCommandIntegration extends TestCase
         return $version->getId();
     }
 
+    /**
+     * Launchthe purge command in verbose mode to test output
+     */
     private function runPurgeCommand(array $arrayInput = []): BufferedOutput
     {
         $application = new Application(static::$kernel);
@@ -124,6 +184,7 @@ class PurgeVersioningCommandIntegration extends TestCase
             'entity' => Family::class,
             '--more-than-days' => 0,
             '--force' => null,
+            '-vv',
         ];
 
         $arrayInput = array_merge($defaultArrayInput, $arrayInput);
