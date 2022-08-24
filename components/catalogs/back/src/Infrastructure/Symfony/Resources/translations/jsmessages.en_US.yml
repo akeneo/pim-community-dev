@@ -22,7 +22,7 @@ akeneo_catalogs:
         more_information: Check out our Help center for more information.
         add_criteria:
             label: add selection criteria
-            search: search criterion
+            search: Search criterion
             no_results: no matches found
             section_system: system
             section_attributes: attributes
