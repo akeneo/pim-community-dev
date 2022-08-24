@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-10601 [Backport PIM-9718]: Fix format of integer values for number attributes with decimals allowed
+- PIM-10577: Fix copy/paste on wysiwyg textarea links
 
 # 5.0.110 (2022-08-23)
 
