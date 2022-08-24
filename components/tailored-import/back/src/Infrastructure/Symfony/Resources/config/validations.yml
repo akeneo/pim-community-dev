@@ -6,6 +6,7 @@ parameters:
     pim_catalog_metric: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Measurement\Measurement'
     pim_catalog_multiselect: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\MultiSelect\MultiSelect'
     pim_catalog_number: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Number\Number'
+    pim_catalog_price_collection: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Price\Price'
     pim_catalog_simpleselect: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\SimpleSelect\SimpleSelect'
     pim_catalog_text: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Text\Text'
     pim_catalog_textarea: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Text\Text'
@@ -97,6 +98,12 @@ services:
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Measurement\UnitValidator:
     arguments:
       - '@akeneo_measurement.public_api.find_unit'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Price\CurrencyValidator:
+    arguments:
+      - '@pim_catalog.query.find_activated_currencies'
     tags:
       - { name: validator.constraint_validator }
 

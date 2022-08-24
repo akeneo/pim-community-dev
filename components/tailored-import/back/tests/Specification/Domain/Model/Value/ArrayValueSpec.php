@@ -29,4 +29,12 @@ class ArrayValueSpec extends ObjectBehavior
     {
         $this->getValue()->shouldReturn(['a_value']);
     }
+
+    public function it_normalizes()
+    {
+        $this->normalize()->shouldReturn([
+            'type' => 'array',
+            'value' => ['a_value'],
+        ]);
+    }
 }

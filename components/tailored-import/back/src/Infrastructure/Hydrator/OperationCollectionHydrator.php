@@ -20,6 +20,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToDateOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToPriceOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\EnabledReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\FamilyReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
@@ -77,11 +78,22 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
     private function getAttributeRequiredOperations(array $normalizedTarget): array
     {
         return match ($normalizedTarget['attribute_type']) {
+            'pim_catalog_date' => $this->getDateRequiredOperations($normalizedTarget['source_configuration']),
             'pim_catalog_metric' => $this->getMeasurementRequiredOperations($normalizedTarget['source_configuration']),
             'pim_catalog_number' => $this->getNumberRequiredOperations($normalizedTarget['source_configuration']),
-            'pim_catalog_date' => $this->getDateRequiredOperations($normalizedTarget['source_configuration']),
+            'pim_catalog_price_collection' => $this->getPriceRequiredOperations($normalizedTarget['source_configuration']),
             default => [],
         };
+    }
+
+    private function getDateRequiredOperations(array $sourceConfiguration): array
+    {
+        return [
+            new ConvertToDateOperation(
+                Uuid::uuid4()->toString(),
+                $sourceConfiguration['date_format'],
+            ),
+        ];
     }
 
     private function getMeasurementRequiredOperations(array $sourceConfiguration): array
@@ -109,12 +121,15 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
         ];
     }
 
-    private function getDateRequiredOperations(array $sourceConfiguration): array
+    private function getPriceRequiredOperations(array $sourceConfiguration): array
     {
+        $uuid = Uuid::uuid4()->toString();
+
         return [
-            new ConvertToDateOperation(
-                Uuid::uuid4()->toString(),
-                $sourceConfiguration['date_format'],
+            new ConvertToPriceOperation(
+                $uuid,
+                $sourceConfiguration['decimal_separator'],
+                $sourceConfiguration['currency'],
             ),
         ];
     }

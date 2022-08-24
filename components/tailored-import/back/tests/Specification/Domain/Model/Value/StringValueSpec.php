@@ -30,6 +30,14 @@ class StringValueSpec extends ObjectBehavior
         $this->getValue()->shouldReturn('a_string_value');
     }
 
+    public function it_normalizes()
+    {
+        $this->normalize()->shouldReturn([
+            'type' => 'string',
+            'value' => 'a_string_value',
+        ]);
+    }
+
     public function it_does_not_support_empty_string_value()
     {
         $this->beConstructedWith('');

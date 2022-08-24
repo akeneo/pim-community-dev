@@ -15,16 +15,16 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Value;
 
 use Webmozart\Assert\Assert;
 
-final class MeasurementValue implements ValueInterface
+final class PriceValue implements ValueInterface
 {
-    private const TYPE = 'measurement';
+    private const TYPE = 'price';
 
     public function __construct(
         private string $value,
-        private string $unit,
+        private string $currency,
     ) {
         Assert::stringNotEmpty($value);
-        Assert::stringNotEmpty($unit);
+        Assert::stringNotEmpty($currency);
     }
 
     public function getValue(): string
@@ -32,9 +32,9 @@ final class MeasurementValue implements ValueInterface
         return $this->value;
     }
 
-    public function getUnit(): string
+    public function getCurrency(): string
     {
-        return $this->unit;
+        return $this->currency;
     }
 
     public function normalize(): array
@@ -42,7 +42,7 @@ final class MeasurementValue implements ValueInterface
         return [
             'type' => self::TYPE,
             'value' => $this->value,
-            'unit' => $this->unit,
+            'currency' => $this->currency,
         ];
     }
 }

@@ -93,6 +93,7 @@ class DataMappingsValidator extends ConstraintValidator
                 'type' => $dataMapping['target']['type'],
                 'channel' => $dataMapping['target']['channel'] ?? null,
                 'locale' => $dataMapping['target']['locale'] ?? null,
+                'currency_code' => $dataMapping['target']['source_configuration']['currency'] ?? null,
             ];
 
             if (\in_array($target, $targetList, true)) {
@@ -108,6 +109,7 @@ class DataMappingsValidator extends ConstraintValidator
                 'type' => $dataMapping['target']['type'],
                 'channel' => $dataMapping['target']['channel'] ?? null,
                 'locale' => $dataMapping['target']['locale'] ?? null,
+                'currency_code' => $dataMapping['target']['source_configuration']['currency'] ?? null,
             ];
 
             if (\in_array($target, $duplicatedValues, true)) {
