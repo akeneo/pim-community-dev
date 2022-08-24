@@ -7,6 +7,7 @@ use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Even
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 class SendWelcomeEmailOnContributorAccountCreatedTest extends TestCase
 {
@@ -31,7 +32,7 @@ class SendWelcomeEmailOnContributorAccountCreatedTest extends TestCase
             ->method('__invoke')
             ->with($contributorAccount->email(), $contributorAccount->accessToken());
 
-        $sut = new SendWelcomeEmailOnContributorAccountCreated($sendWelcomeEmailSpy);
+        $sut = new SendWelcomeEmailOnContributorAccountCreated($sendWelcomeEmailSpy, new NullLogger());
 
         $sut->sendWelcomeEmail($event);
     }

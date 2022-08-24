@@ -6,11 +6,12 @@ namespace Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorA
 
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\ContributorAccountDeleted;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendGoodbyeEmail;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class SendGoodbyeEmailOnContributorAccountDeleted implements EventSubscriberInterface
 {
-    public function __construct(private SendGoodbyeEmail $sendGoodbyeEmail)
+    public function __construct(private SendGoodbyeEmail $sendGoodbyeEmail, private LoggerInterface $logger)
     {
     }
 
@@ -24,5 +25,7 @@ final class SendGoodbyeEmailOnContributorAccountDeleted implements EventSubscrib
     public function sendGoodbyeEmail(ContributorAccountDeleted $event): void
     {
         ($this->sendGoodbyeEmail)($event->contributorEmail);
+
+        $this->logger->info(sprintf('A goodbye email has been sent to "%s"', $event->contributorEmail));
     }
 }

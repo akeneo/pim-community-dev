@@ -6,6 +6,7 @@ use Akeneo\SupplierPortal\Supplier\Application\Authentication\ContributorAccount
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\Event\ContributorAccountDeleted;
 use Akeneo\SupplierPortal\Supplier\Domain\Authentication\ContributorAccount\SendGoodbyeEmail;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 class SendGoodbyeEmailOnContributorAccountDeletedTest extends TestCase
 {
@@ -29,7 +30,7 @@ class SendGoodbyeEmailOnContributorAccountDeletedTest extends TestCase
             ->method('__invoke')
             ->with('jeanjacques@example.com');
 
-        $sut = new SendGoodbyeEmailOnContributorAccountDeleted($sendGoodbyeEmailSpy);
+        $sut = new SendGoodbyeEmailOnContributorAccountDeleted($sendGoodbyeEmailSpy, new NullLogger());
 
         $sut->sendGoodbyeEmail($event);
     }
