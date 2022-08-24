@@ -16,10 +16,8 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearPriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
@@ -132,7 +130,7 @@ class ExecuteDataMappingHandler
 
     private function getClearIfEmptyUserIntent(TargetInterface $target): UserIntent
     {
-        if ($target instanceof AttributeTarget && $target->getAttributeType() === 'pim_catalog_price_collection') {
+        if ($target instanceof AttributeTarget && 'pim_catalog_price_collection' === $target->getAttributeType()) {
             return new ClearPriceValue(
                 $target->getCode(),
                 $target->getChannel(),
