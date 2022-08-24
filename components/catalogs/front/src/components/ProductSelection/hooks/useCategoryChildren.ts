@@ -42,7 +42,7 @@ export const useCategoryChildren = (categoryCode: CategoryCode): Result => {
         categoryChildren.forEach(child => {
             queryClient.setQueryData(['categories', {codes: [child.code], isRoot: false, locale}], [child]);
         });
-    }, [categoryChildren, queryClient]);
+    }, [categoryChildren, queryClient, locale]);
 
     return queryResult;
 };
