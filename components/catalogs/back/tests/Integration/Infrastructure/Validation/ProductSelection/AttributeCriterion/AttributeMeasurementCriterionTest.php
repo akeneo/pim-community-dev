@@ -31,6 +31,8 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
     {
         $this->createAttribute($attribute);
 
+        $this->createMeasurementsFamily($attribute);
+
         $violations = $this->validator->validate($criterion, new AttributeMeasurementCriterion());
 
         $this->assertEmpty($violations);
@@ -280,6 +282,8 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
     ): void {
         $this->createAttribute($attribute);
 
+        $this->createMeasurementsFamily($attribute);
+
         $violations = $this->validator->validate($criterion, new AttributeMeasurementCriterion());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
@@ -338,6 +342,26 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'locale' => null,
                 ],
                 'expectedMessage' => 'This value should be of type array|(Traversable&ArrayAccess).',
+            ],
+            'invalid unit' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_metric',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'criterion' => [
+                    'field' => 'name',
+                    'operator' => Operator::EQUALS,
+                    'value' => [
+                        'amount' => 42,
+                        'unit' => 'invalid_measurement_code',
+                    ],
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'The unit of the field "name" is not valid.',
             ],
             'invalid scope' => [
                 'attribute' => [

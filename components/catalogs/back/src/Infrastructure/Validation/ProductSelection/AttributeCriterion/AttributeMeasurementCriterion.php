@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCr
 
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterionContainsValidLocale;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterionContainsValidMeasurement;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterionContainsValidScope;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\CriterionOperatorsRequireEmptyValue;
 use Symfony\Component\Validator\Constraint;
@@ -81,6 +82,7 @@ final class AttributeMeasurementCriterion extends Compound
                 ]),
                 new AttributeCriterionContainsValidScope(),
                 new AttributeCriterionContainsValidLocale(),
+                new AttributeCriterionContainsValidMeasurement(),
             ]),
         ];
     }
