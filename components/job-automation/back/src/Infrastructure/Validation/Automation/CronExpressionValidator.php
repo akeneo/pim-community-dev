@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class CronExpressionValidator extends ConstraintValidator
+final class CronExpressionValidator extends ConstraintValidator
 {
     private const VALID_HOURLY_EXPRESSIONS = ['0 */4 * * *', '0 */8 * * *', '0 */12 * * *'];
     private const VALID_MINUTES = [0, 10, 20, 30, 40, 50];

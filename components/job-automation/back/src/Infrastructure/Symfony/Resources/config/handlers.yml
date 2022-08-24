@@ -13,3 +13,15 @@ services:
     class: Akeneo\Platform\JobAutomation\Application\GetUsers\GetUsersHandler
     arguments:
       - '@akeneo.job_automation.query.get_users'
+
+  akeneo.job_automation.handler.get_due_job_instances:
+    class: Akeneo\Platform\JobAutomation\Application\GetDueJobInstances\GetDueJobInstancesHandler
+    arguments:
+      - '@akeneo.job_automation.query.get_scheduled_job_instances'
+      - '@Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances'
+
+  akeneo.job_automation.handler.update_scheduled_job_instance:
+    class: Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler
+    arguments:
+      - '@Akeneo\Platform\JobAutomation\Domain\ClockInterface'
+      - '@akeneo.job_automation.query.update_job_instance_automation_last_execution_date'

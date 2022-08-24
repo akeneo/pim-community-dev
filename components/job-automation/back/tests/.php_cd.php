@@ -28,19 +28,28 @@ $rules = [
     )->in('Akeneo\Platform\JobAutomation\Application'),
     $builder->only(
         [
+            'Cron\CronExpression',
             'Webmozart\Assert\Assert',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model',
         ],
     )->in('Akeneo\Platform\JobAutomation\Domain'),
     $builder->only(
         [
+            'Doctrine\DBAL\Connection',
             'Symfony\Component',
 
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
             'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure',
             'Akeneo\Platform\JobAutomation\Domain',
             'Akeneo\Platform\JobAutomation\Application',
+            'Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\Automation',
+            'Akeneo\Tool\Component\Batch\Event\EventInterface',
+            'Akeneo\Tool\Component\Batch\Event\JobExecutionEvent',
             'Akeneo\Tool\Component\Batch\Job',
+            'Akeneo\Tool\Component\Batch\Model\JobInstance',
+            'Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException',
+            'Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue',
 
             'League\Flysystem\Filesystem',
             'League\Flysystem\PhpseclibV2',

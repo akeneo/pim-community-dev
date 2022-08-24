@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Connector;
 
-use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation\Automation;
+use Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\Automation;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;

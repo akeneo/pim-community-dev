@@ -11,10 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp;
+namespace Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\StorageConstraint;
-
-final class SftpStorage extends StorageConstraint
+interface UpdateJobInstanceAutomationLastExecutionDateInterface
 {
+    public function forJobInstanceCode(string $jobInstanceCode, \DateTimeImmutable $lastExecutionDate): void;
 }

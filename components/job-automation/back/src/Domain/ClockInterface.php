@@ -11,10 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation;
+namespace Akeneo\Platform\JobAutomation\Domain;
 
-use Symfony\Component\Validator\Constraint;
-
-class Automation extends Constraint
+interface ClockInterface
 {
+    public function now(): \DateTimeImmutable;
 }

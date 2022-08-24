@@ -98,6 +98,14 @@ pim:
         requests:
           cpu: "100m"
           memory: "10Mi"
+    job-automation-push-scheduled-jobs-to-queue:
+      enabled: true
+      pimCommand: 'pim:job-automation:push-scheduled-jobs-to-queue'
+      schedule: "*/10 * * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
 
 # Free Trial
 free_trial:

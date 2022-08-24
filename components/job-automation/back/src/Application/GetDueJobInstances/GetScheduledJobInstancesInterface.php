@@ -11,10 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp;
+namespace Akeneo\Platform\JobAutomation\Application\GetDueJobInstances;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\StorageConstraint;
+use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 
-final class SftpStorage extends StorageConstraint
+interface GetScheduledJobInstancesInterface
 {
+    /**
+     * @return ScheduledJobInstance[]
+     */
+    public function all(): array;
 }

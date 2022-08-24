@@ -13,14 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation;
 
+use Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\Automation;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class AutomationValidator extends ConstraintValidator
+final class AutomationValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
@@ -30,7 +34,6 @@ class AutomationValidator extends ConstraintValidator
 
         $this->context->getValidator()->inContext($this->context)->validate($value, new Collection([
             'fields' => [
-                'is_enabled' => new Type('boolean'),
                 'cron_expression' => new CronExpression(),
                 'running_user_groups' => [
                     new All(new Type('string')),
@@ -44,6 +47,8 @@ class AutomationValidator extends ConstraintValidator
                     new All(new Type('string')),
                     new Type('array'),
                 ],
+                'setup_date' => new Optional([new NotBlank(), new DateTime(['format' => DATE_ATOM])]),
+                'last_execution_date' => new Optional([new DateTime(['format' => DATE_ATOM])]),
             ],
         ]));
     }

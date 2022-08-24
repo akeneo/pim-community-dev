@@ -11,10 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp;
+namespace Akeneo\Platform\JobAutomation\Domain;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\StorageConstraint;
+use Akeneo\Platform\JobAutomation\Domain\Model\CronExpression;
 
-final class SftpStorage extends StorageConstraint
+class CronExpressionFactory
 {
+    public function fromExpression(string $expression): CronExpression
+    {
+        return new CronExpression($expression);
+    }
 }

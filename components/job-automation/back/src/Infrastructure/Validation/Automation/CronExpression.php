@@ -15,7 +15,7 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation;
 
 use Symfony\Component\Validator\Constraint;
 
-class CronExpression extends Constraint
+final class CronExpression extends Constraint
 {
     public const INVALID_FREQUENCY_OPTION = 'akeneo.job_automation.validation.invalid_frequency_option';
     public const INVALID_WEEK_DAY = 'akeneo.job_automation.validation.invalid_week_day';

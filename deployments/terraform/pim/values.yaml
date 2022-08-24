@@ -350,6 +350,14 @@ pim:
         requests:
           cpu: "350m"
           memory: "350Mi"
+    job-automation-push-scheduled-jobs-to-queue:
+      enabled: true
+      pimCommand: 'pim:job-automation:push-scheduled-jobs-to-queue'
+      schedule: "*/10 * * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
   supplier_portal:
     settings:
       enabled: false

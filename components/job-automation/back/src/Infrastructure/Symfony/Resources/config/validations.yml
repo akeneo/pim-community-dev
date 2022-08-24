@@ -2,3 +2,12 @@ services:
   Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage:
     tags:
       - { name: 'akeneo.import_export.validation.storage_constraint', key: 'sftp' }
+
+  akeneo_batch.validator.job_instance.automation:
+    class: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Automation\AutomationValidator'
+    tags:
+      - { name: validator.constraint_validator, alias: akeneo_job_instance_automation_validator }
+
+  Akeneo\Platform\JobAutomation\Infrastructure\Validation\ScheduledJobInstanceValidator:
+    tags:
+      - { name: validator.constraint_validator }
