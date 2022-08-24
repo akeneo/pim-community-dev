@@ -33,7 +33,6 @@ const useSupplierFiles = (supplierIdentifier: string, page: number): [SupplierFi
                 identifier: item.identifier,
                 uploadedAt: item.uploadedAt,
                 contributor: item.uploadedByContributor,
-                status: item.downloaded ? 'Downloaded' : 'To download',
             };
         });
         setSupplierFiles(supplierFiles);

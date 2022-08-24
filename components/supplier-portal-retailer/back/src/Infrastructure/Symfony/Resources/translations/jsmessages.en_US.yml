@@ -89,9 +89,6 @@ supplier_portal:
                 supplier: Supplier
                 status: Status
                 download: Download icon
-            status:
-                downloaded: Downloaded
-                to_download: To download
             notification:
                 error_loading_supplier_files:
                     title: We are not able to display the product files.

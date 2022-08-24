@@ -19,7 +19,7 @@ final class DatabaseGetAllSupplierFiles implements GetAllSupplierFiles
         $page = max($page, 1);
 
         $sql = <<<SQL
-            SELECT supplier_file.identifier, path, uploaded_by_contributor, supplier.label AS supplier, uploaded_at, downloaded
+            SELECT supplier_file.identifier, path, uploaded_by_contributor, supplier.label AS supplier, uploaded_at
             FROM akeneo_supplier_portal_supplier_file supplier_file
             INNER JOIN akeneo_supplier_portal_supplier supplier on supplier_file.uploaded_by_supplier = supplier.identifier
             ORDER BY uploaded_at DESC 
@@ -30,7 +30,6 @@ final class DatabaseGetAllSupplierFiles implements GetAllSupplierFiles
         return array_map(fn (array $file) => new SupplierFile(
             $file['identifier'],
             $file['path'],
-            (bool) $file['downloaded'],
             $file['uploaded_by_contributor'],
             $file['supplier'],
             $file['uploaded_at'],

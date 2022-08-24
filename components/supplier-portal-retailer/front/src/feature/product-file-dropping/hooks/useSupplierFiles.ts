@@ -32,7 +32,6 @@ const useSupplierFiles = (page: number): [SupplierFileRow[], number] => {
                 uploadedAt: item.uploadedAt,
                 contributor: item.uploadedByContributor,
                 supplier: item.uploadedBySupplier,
-                status: item.downloaded ? 'Downloaded' : 'To download',
             };
         });
         setSupplierFiles(supplierFiles);
