@@ -24,19 +24,19 @@ class UpsertProductCommandCleanerSpec extends ObjectBehavior
 {
     public function it_cleans_value_user_intents(): void
     {
-        $invalidUpsertProductCommand = new UpsertProductCommand(
+        $invalidUpsertProductCommand = UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'identifier',
-            valueUserIntents: [
+            userIntents: [
                 new SetTextValue('name', null, null, value: 'A name'),
                 new SetTextValue('description', null, null, 'A description with error'),
             ]
         );
 
-        $expectedUpsertProductCommand = new UpsertProductCommand(
+        $expectedUpsertProductCommand = UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'identifier',
-            valueUserIntents: [
+            userIntents: [
                 new SetTextValue('name', null, null, value: 'A name'),
             ]
         );
@@ -46,15 +46,16 @@ class UpsertProductCommandCleanerSpec extends ObjectBehavior
 
     public function it_cleans_category_user_intent(): void
     {
-        $invalidUpsertProductCommand = new UpsertProductCommand(
+        $invalidUpsertProductCommand = UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'identifier',
-            categoryUserIntent: new SetCategories(['unknown_category'])
+            userIntents: [new SetCategories(['unknown_category'])]
         );
 
-        $expectedUpsertProductCommand = new UpsertProductCommand(
+        $expectedUpsertProductCommand = UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'identifier',
+            userIntents: []
         );
 
         $this::removeInvalidUserIntents(['categoryUserIntent'], $invalidUpsertProductCommand)->shouldBeLike($expectedUpsertProductCommand);
@@ -62,15 +63,16 @@ class UpsertProductCommandCleanerSpec extends ObjectBehavior
 
     public function it_cleans_family_user_intent(): void
     {
-        $invalidUpsertProductCommand = new UpsertProductCommand(
+        $invalidUpsertProductCommand = UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'identifier',
-            familyUserIntent: new SetFamily('a_family'),
+            userIntents: [new SetFamily('a_family')]
         );
 
-        $expectedUpsertProductCommand = new UpsertProductCommand(
+        $expectedUpsertProductCommand = UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'identifier',
+            userIntents: []
         );
 
         $this::removeInvalidUserIntents(['familyUserIntent'], $invalidUpsertProductCommand)->shouldBeLike($expectedUpsertProductCommand);
@@ -78,15 +80,16 @@ class UpsertProductCommandCleanerSpec extends ObjectBehavior
 
     public function it_cleans_enabled_user_intent(): void
     {
-        $invalidUpsertProductCommand = new UpsertProductCommand(
+        $invalidUpsertProductCommand = UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'identifier',
-            enabledUserIntent: new SetEnabled(true),
+            userIntents: [new SetEnabled(true)],
         );
 
-        $expectedUpsertProductCommand = new UpsertProductCommand(
+        $expectedUpsertProductCommand = UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'identifier',
+            userIntents: []
         );
 
         $this::removeInvalidUserIntents(['enabledUserIntent'], $invalidUpsertProductCommand)->shouldBeLike($expectedUpsertProductCommand);

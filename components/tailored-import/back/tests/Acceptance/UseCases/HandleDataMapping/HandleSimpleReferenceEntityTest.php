@@ -79,10 +79,10 @@ final class HandleSimpleReferenceEntityTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetSimpleReferenceEntityValue('color', null, null, 'this_is_a_color'),
                             new SetSimpleReferenceEntityValue('designer', 'ecommerce', 'fr_FR', 'this_is_a_designer'),
                         ],

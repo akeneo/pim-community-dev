@@ -78,7 +78,7 @@ class ProductWriterSpec extends ObjectBehavior
     public function it_executes_an_upsert_command_without_user_intent(
         MessageBusInterface $messageBus,
     ) {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: []);
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(1, 'ref1', []);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $this->rowPayload->setInvalidValues([]);
 
@@ -90,7 +90,7 @@ class ProductWriterSpec extends ObjectBehavior
     public function it_executes_an_upsert_command_with_value_user_intent(
         MessageBusInterface $messageBus,
     ) {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(1, 'ref1', [
             new SetTextValue('name', null, null, 'Produit 1'),
         ]);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
@@ -104,7 +104,7 @@ class ProductWriterSpec extends ObjectBehavior
     public function it_executes_an_upsert_command_with_category_user_intent(
         MessageBusInterface $messageBus,
     ) {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', categoryUserIntent: new AddCategories(['clothes', 'shoes']));
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(1, 'ref1', [new AddCategories(['clothes', 'shoes'])]);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $this->rowPayload->setInvalidValues([]);
 
@@ -116,7 +116,7 @@ class ProductWriterSpec extends ObjectBehavior
     public function it_executes_an_upsert_command_with_family_user_intent(
         MessageBusInterface $messageBus,
     ) {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', familyUserIntent: new SetFamily('a_family'));
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(1, 'ref1', [new SetFamily('a_family')]);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $this->rowPayload->setInvalidValues([]);
 
@@ -130,7 +130,7 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         ConstraintViolation $constraintViolation,
     ) {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(1, 'ref1', [
             new SetTextValue('name', null, null, 'Produit 1'),
         ]);
 
@@ -154,7 +154,7 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         ConstraintViolation $constraintViolation,
     ) {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(1, 'ref1', [
             new SetTextValue('name', null, null, 'Produit 1'),
         ]);
 
@@ -179,7 +179,7 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         ConstraintViolation $constraintViolation,
     ) {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(1, 'ref1', [
             new SetTextValue('name', null, null, 'Produit 1'),
             new SetTextValue('reference', null, null, 'ref1'),
         ]);
@@ -195,7 +195,7 @@ class ProductWriterSpec extends ObjectBehavior
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
 
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(1, 'ref1', [
             new SetTextValue('reference', null, null, 'ref1'),
         ]);
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
@@ -208,12 +208,14 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         ConstraintViolation $constraintViolation,
     ) {
-        $upsertProductCommand = new UpsertProductCommand(
-            userId: 1,
-            productIdentifier: 'ref1',
-            familyUserIntent: new SetFamily('a_family'),
-            categoryUserIntent: new SetCategories(['clothes', 'shoes']),
-            valueUserIntents: [new SetTextValue('name', null, null, 'Produit 1')],
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(
+            1,
+            'ref1',
+            [
+                new SetFamily('a_family'),
+                new SetCategories(['clothes', 'shoes']),
+                new SetTextValue('name', null, null, 'Produit 1')
+            ],
         );
 
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
@@ -227,11 +229,10 @@ class ProductWriterSpec extends ObjectBehavior
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
 
-        $upsertProductCommand = new UpsertProductCommand(
-            userId: 1,
-            productIdentifier: 'ref1',
-            familyUserIntent: new SetFamily('a_family'),
-            valueUserIntents: [new SetTextValue('name', null, null, 'Produit 1')],
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(
+            1,
+            'ref1',
+            [new SetFamily('a_family'), new SetTextValue('name', null, null, 'Produit 1')],
         );
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
 
@@ -243,12 +244,14 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         ConstraintViolation $constraintViolation,
     ) {
-        $upsertProductCommand = new UpsertProductCommand(
-            userId: 1,
-            productIdentifier: 'ref1',
-            familyUserIntent: new SetFamily('a_family'),
-            categoryUserIntent: new SetCategories(['clothes', 'shoes']),
-            valueUserIntents: [new SetTextValue('name', null, null, 'Produit 1')],
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(
+            1,
+            'ref1',
+            [
+                new SetTextValue('name', null, null, 'Produit 1'),
+                new SetFamily('a_family'),
+                new SetCategories(['clothes', 'shoes']),
+            ],
         );
 
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
@@ -262,11 +265,13 @@ class ProductWriterSpec extends ObjectBehavior
 
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
 
-        $upsertProductCommand = new UpsertProductCommand(
-            userId: 1,
-            productIdentifier: 'ref1',
-            categoryUserIntent: new SetCategories(['clothes', 'shoes']),
-            valueUserIntents: [new SetTextValue('name', null, null, 'Produit 1')],
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(
+            1,
+            'ref1',
+            [
+                new SetTextValue('name', null, null, 'Produit 1'),
+                new SetCategories(['clothes', 'shoes']),
+            ],
         );
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
 
@@ -280,12 +285,14 @@ class ProductWriterSpec extends ObjectBehavior
         ConstraintViolation $categoryConstraintViolation,
         ConstraintViolation $familyConstraintViolation,
     ) {
-        $upsertProductCommand = new UpsertProductCommand(
-            userId: 1,
-            productIdentifier: 'ref1',
-            familyUserIntent: new SetFamily('a_family'),
-            categoryUserIntent: new SetCategories(['clothes', 'shoes']),
-            valueUserIntents: [new SetTextValue('name', null, null, 'Produit 1')],
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(
+            1,
+            'ref1',
+            [
+                new SetFamily('a_family'),
+                new SetCategories(['clothes', 'shoes']),
+                new SetTextValue('name', null, null, 'Produit 1')
+            ],
         );
 
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
@@ -335,7 +342,7 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         ConstraintViolation $constraintViolation
     ) {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(1, 'ref1', [
             new SetTextValue('name', null, null, 'Produit 1'),
             new SetTextValue('reference', null, null, 'ref1'),
         ]);
@@ -361,7 +368,7 @@ class ProductWriterSpec extends ObjectBehavior
         MessageBusInterface $messageBus,
         StepExecution $stepExecution,
     ) {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+        $upsertProductCommand = UpsertProductCommand::createFromCollection(1, 'ref1', [
             new SetTextValue('name', null, null, 'Produit 1'),
         ]);
 

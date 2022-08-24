@@ -85,10 +85,10 @@ final class HandleBooleanTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetBooleanValue('auto_exposure', null, null, true),
                             new SetBooleanValue('auto_focus', 'ecommerce', 'fr_FR', false),
                         ],
@@ -139,10 +139,10 @@ final class HandleBooleanTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetBooleanValue('auto_focus', 'ecommerce', 'fr_FR', false),
                         ],
                     ),

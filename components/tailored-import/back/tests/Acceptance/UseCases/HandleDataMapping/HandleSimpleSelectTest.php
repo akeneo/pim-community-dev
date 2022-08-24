@@ -81,10 +81,10 @@ final class HandleSimpleSelectTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetSimpleSelectValue('brand', null, null, 'this is a brand'),
                             new SetSimpleSelectValue('color', 'ecommerce', 'fr_FR', 'this is a color'),
                         ],
@@ -121,10 +121,10 @@ final class HandleSimpleSelectTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetSimpleSelectValue('brand', null, null, 'adidas'),
                         ],
                     ),

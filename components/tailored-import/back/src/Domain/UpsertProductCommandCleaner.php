@@ -34,13 +34,14 @@ class UpsertProductCommandCleaner
         $familyUserIntent = self::processFamilyUserIntent($violationPropertyPaths, $upsertProductCommand->familyUserIntent());
         $enabledUserIntent = self::processEnabledUserIntent($violationPropertyPaths, $upsertProductCommand->enabledUserIntent());
 
-        return new UpsertProductCommand(
+        return UpsertProductCommand::createFromCollection(
             userId: $upsertProductCommand->userId(),
             productIdentifier: $upsertProductCommand->productIdentifier(),
-            familyUserIntent: $familyUserIntent,
-            categoryUserIntent: $categoryUserIntent,
-            enabledUserIntent: $enabledUserIntent,
-            valueUserIntents: $valueUserIntents,
+            userIntents: \array_merge([
+                $familyUserIntent,
+                $categoryUserIntent,
+                $enabledUserIntent,
+            ], $valueUserIntents),
         );
     }
 

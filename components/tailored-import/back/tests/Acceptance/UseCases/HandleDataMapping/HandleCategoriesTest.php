@@ -63,10 +63,10 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        categoryUserIntent: new SetCategories(['shoes']),
+                        userIntents: [new SetCategories(['shoes'])],
                     ),
                     [],
                 ),
@@ -91,10 +91,10 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        categoryUserIntent: new AddCategories(['shoes']),
+                        userIntents: [new AddCategories(['shoes'])],
                     ),
                     [],
                 ),
@@ -119,10 +119,10 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        categoryUserIntent: new SetCategories(['shoes', 'clothing']),
+                        userIntents: [new SetCategories(['shoes', 'clothing'])],
                     ),
                     [],
                 ),
@@ -148,10 +148,10 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        categoryUserIntent: new SetCategories(['shoes', 'clothing']),
+                        userIntents: [new SetCategories(['shoes', 'clothing'])],
                     ),
                     [],
                 ),
@@ -178,10 +178,10 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        categoryUserIntent: new SetCategories(['shoes', 'women', 'clothing', 'men']),
+                        userIntents: [new SetCategories(['shoes', 'women', 'clothing', 'men'])],
                     ),
                     [],
                 ),
@@ -205,10 +205,10 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        categoryUserIntent: new SetCategories([]),
+                        userIntents: [new SetCategories([])],
                     ),
                     [],
                 ),
@@ -237,10 +237,10 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        categoryUserIntent: new SetCategories(['adidas']),
+                        userIntents: [new SetCategories(['adidas'])],
                     ),
                     [],
                 ),
@@ -275,10 +275,10 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        categoryUserIntent: new SetCategories(['adidas', 'puma']),
+                        userIntents: [new SetCategories(['adidas', 'puma'])],
                     ),
                     [],
                 ),
@@ -315,17 +315,17 @@ final class HandleCategoriesTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        categoryUserIntent: new SetCategories([
+                        userIntents: [new SetCategories([
                             'vneck',
                             'short_sleeve',
                             'adidas',
                             'broussaille',
                             'puma',
                             'women',
-                        ]),
+                        ])],
                     ),
                     [],
                 ),

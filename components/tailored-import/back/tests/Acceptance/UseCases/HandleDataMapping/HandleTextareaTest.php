@@ -80,10 +80,10 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetTextareaValue('textarea_attribute', null, null, 'this is a textarea attribute'),
                             new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'this is a description'),
                         ],
@@ -132,10 +132,10 @@ final class HandleTextareaTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetTextareaValue('name', null, null, 'i want this cleaned'),
                             new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'but not <h2>this</h2>'),
                         ],
