@@ -122,7 +122,7 @@ const webpackConfig = {
         ],
       },
       {
-        test: /node_modules\/summernote\/dist\/summernote.js/,
+        test: /public\/bundles\/pimui\/lib\/summernote\/summernote.js/,
         use: [
           {
             loader: 'imports-loader',
