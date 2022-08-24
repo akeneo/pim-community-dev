@@ -45,7 +45,7 @@ class AttributeCollection
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<int, mixed>
      */
     public function normalize(): array
     {
