@@ -7,3 +7,4 @@ akeneo.category:
             duplicated_localize_user_intents: The value for the locale {{ locale }} is being updated multiple times.
             value:
                 textarea_too_long: The value cannot be longer than {{ limit }} characters
+                richtext_too_long: The value cannot be longer than {{ limit }} characters

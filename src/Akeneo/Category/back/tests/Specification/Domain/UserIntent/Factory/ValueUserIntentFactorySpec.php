@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Domain\UserIntent\Factory;
 
+use Akeneo\Category\Api\Command\UserIntents\SetRichText;
 use Akeneo\Category\Api\Command\UserIntents\SetTextArea;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
@@ -46,11 +47,17 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
         $data = [
             'attribute_codes' => [
                 'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d',
+                'description|840fcd1a-f66b-4f0c-9bbd-596629732950',
             ],
             'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d|en_US' => [
                 'data' => 'Meta shoes',
                 'locale' => 'en_US',
                 'attribute_code' => 'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d'
+            ],
+            'description|840fcd1a-f66b-4f0c-9bbd-596629732950|en_US' => [
+                'data' => 'Description',
+                'locale' => 'en_US',
+                'attribute_code' => 'description|840fcd1a-f66b-4f0c-9bbd-596629732950'
             ]
         ];
 
@@ -62,6 +69,14 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeOrder::fromInteger(4),
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'SEO Meta Description']),
+                $templateUuid
+            ),
+            AttributeRichText::create(
+                AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
+                new AttributeCode('description'),
+                AttributeOrder::fromInteger(1),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => 'Description']),
                 $templateUuid
             )
         ]);
@@ -78,6 +93,11 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d',
                 'en_US',
                 'Meta shoes'
+            ),
+            new SetRichText(
+                'description|840fcd1a-f66b-4f0c-9bbd-596629732950',
+                'en_US',
+                'Description'
             )
         ]);
     }

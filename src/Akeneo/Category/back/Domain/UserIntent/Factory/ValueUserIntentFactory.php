@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Domain\UserIntent\Factory;
 
+use Akeneo\Category\Api\Command\UserIntents\SetRichText;
 use Akeneo\Category\Api\Command\UserIntents\SetTextArea;
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Query\GetAttribute;
@@ -104,6 +105,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
     {
         return match ($attributeType) {
             AttributeType::TEXTAREA => new SetTextArea($value['attribute_code'], $value['locale'], $value['data']),
+            AttributeType::RICH_TEXT => new SetRichText($value['attribute_code'], $value['locale'], $value['data']),
             default => throw new \InvalidArgumentException('Not implemented')
         };
     }
