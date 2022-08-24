@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearPriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearPriceValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
@@ -89,10 +89,10 @@ final class HandlePriceTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetPriceValue('gross_price', null, null, new PriceValue('10', 'EUR')),
                             new SetPriceValue('net_price', 'ecommerce', 'fr_FR', new PriceValue('60.5', 'USD')),
                         ],
@@ -145,10 +145,10 @@ final class HandlePriceTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetPriceValue('gross_price', null, null, new PriceValue('10', 'EUR')),
                             new SetPriceValue('gross_price', null, null, new PriceValue('60', 'USD')),
                         ],
@@ -220,10 +220,10 @@ final class HandlePriceTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new SetPriceValue('gross_price', null, null, new PriceValue('2022', 'EUR')),
                         ],
                     ),
@@ -259,10 +259,10 @@ final class HandlePriceTest extends HandleDataMappingTestCase
                     ),
                 ],
                 'expected' => new ExecuteDataMappingResult(
-                    new UpsertProductCommand(
+                    UpsertProductCommand::createFromCollection(
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
-                        valueUserIntents: [
+                        userIntents: [
                             new ClearPriceValue('gross_price', null, null, 'EUR'),
                         ],
                     ),
