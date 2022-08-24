@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10601 [Backport PIM-9718]: Fix format of integer values for number attributes with decimals allowed
+
 # 5.0.110 (2022-08-23)
 
 # 5.0.109 (2022-08-23)
