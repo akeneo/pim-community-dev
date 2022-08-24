@@ -86,6 +86,7 @@ common:
   gcpProjectID: ${GOOGLE_PROJECT_ID}
   googleZone: ${GOOGLE_CLUSTER_ZONE}
   pimMasterDomain: ${FQDN}
+  dnsCloudDomain: ${GOOGLE_MANAGED_ZONE_DNS}
 
 backup:
   projectId: ${GOOGLE_PROJECT_ID}

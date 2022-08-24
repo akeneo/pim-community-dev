@@ -27,10 +27,10 @@ common:
   googleZone: null # Generated
   location: null # Generated example EU, US
   pimMasterDomain: null # Generated
+  dnsCloudDomain: null # Generated
   region: null # Generated
   workloadIdentityKSA: null # Generated
   workloadIdentityGSA: null # Generated
-  # workloadIdentityGSA: "pim-job-deployment"
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "60"

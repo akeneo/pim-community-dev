@@ -114,6 +114,8 @@ spec:
               value: localhost
             - name: CONTAINER_NAME
               value: httpd
+            - name: DOMAIN_ESCAPED
+              value: {{ template "pim.DomainEscaped" . }}
           volumeMounts:
             - name: web-src
               mountPath: /srv/pim/public

@@ -35,6 +35,7 @@ common:
   gcpProjectID: null
   googleZone: null
   pimMasterDomain: null
+  dnsCloudDomain: null
   workloadIdentityKSA: null
   workloadIdentityGSA: null
   phpConfFPM:

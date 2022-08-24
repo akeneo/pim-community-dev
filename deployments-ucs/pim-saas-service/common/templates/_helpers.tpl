@@ -85,3 +85,10 @@ product_reference: onboarder
 product_version: "{{ .Chart.Version | replace "+" "_" }}"
 heritage: "{{ .Release.Service }}" # Deprecated
 {{- end }}
+
+{{/*
+Create pim.DomainEscaped
+*/}}
+{{- define "pim.DomainEscaped" -}}
+{{- printf "%s" .Values.common.dnsCloudDomain | replace "." "\\." | quote -}}
+{{- end -}}
