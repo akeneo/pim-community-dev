@@ -1,4 +1,5 @@
 envVarsDeployDev: &envVarsDeployDev
+dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent
 dockerCloudDeployerNext: &dockerCloudDeployerNext
 executor-machine: &executor-machine
 
@@ -18,7 +19,7 @@ jobs:
                 default: false
         environment:
             <<: *envVarsDeployDev
-        <<: *dockerCloudDeployerNext
+        <<: *dockerCloudDeployerCurrent
         resource_class: small
         steps:
             - attach_workspace:

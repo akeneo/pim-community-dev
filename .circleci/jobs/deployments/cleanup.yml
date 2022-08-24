@@ -1,5 +1,6 @@
 envVarsDeployDev: &envVarsDeployDev
 envVarsDeployPIMSaaSDev: &envVarsDeployPIMSaaSDev
+dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent
 dockerCloudDeployerNext: &dockerCloudDeployerNext
 dockerCloudDeployerUCS: &dockerCloudDeployerUCS
 executor-machine: &executor-machine
@@ -12,7 +13,7 @@ jobs:
                 default: ""
         environment:
             <<: *envVarsDeployDev
-        <<: *dockerCloudDeployerNext
+        <<: *dockerCloudDeployerCurrent
         resource_class: small
         steps:
             - attach_workspace:
@@ -40,7 +41,7 @@ jobs:
                 default: ""
         environment:
             <<: *envVarsDeployDev
-        <<: *dockerCloudDeployerNext
+        <<: *dockerCloudDeployerCurrent
         resource_class: small
         steps:
             - attach_workspace:
@@ -128,14 +129,13 @@ jobs:
                       kubectl delete ns ${CIRCLE_BRANCH_LOWER}-pim-argocd
 
     delete_environments_hourly:
-        <<: *dockerCloudDeployerNext
         parameters:
             PRODUCT_TYPE:
                 type: string
                 default: ""
         environment:
             <<: *envVarsDeployDev
-        <<: *dockerCloudDeployerNext
+        <<: *dockerCloudDeployerCurrent
         resource_class: small
         steps:
             - attach_workspace:
@@ -173,7 +173,7 @@ jobs:
     remove_unused_resources:
         environment:
             <<: *envVarsDeployDev
-        <<: *dockerCloudDeployerNext
+        <<: *dockerCloudDeployerCurrent
         resource_class: small
         steps:
             - attach_workspace:

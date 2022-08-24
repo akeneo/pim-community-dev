@@ -1,4 +1,5 @@
 envVarsDeployDev: &envVarsDeployDev
+dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent
 dockerCloudDeployerNext: &dockerCloudDeployerNext
 executor-machine: &executor-machine
 
@@ -106,7 +107,7 @@ jobs:
                 default: ""
         environment:
             <<: *envVarsDeployDev
-        <<: *dockerCloudDeployerNext
+        <<: *dockerCloudDeployerCurrent
         resource_class: small
         steps:
             - attach_workspace:
@@ -186,7 +187,7 @@ jobs:
             default: "srnt"
         environment:
           <<: *envVarsDeployDev
-        <<: *dockerCloudDeployerNext
+        <<: *dockerCloudDeployerCurrent
         resource_class: small
         steps:
           - attach_workspace:
@@ -209,7 +210,7 @@ jobs:
           default: "srnt"
       environment:
         <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
+      <<: *dockerCloudDeployerCurrent
       resource_class: small
       steps:
         - attach_workspace:
@@ -220,7 +221,7 @@ jobs:
             name: Launch data referential integrity validation command
             command: |
               POD_DAEMON=$(kubectl get pods --no-headers --namespace=${TYPE}-${INSTANCE_NAME} -l component=pim-daemon-webhook-consumer-process | awk 'NR==1{print $1}')
-              kubectl exec -it -n ${TYPE}-${INSTANCE_NAME} ${POD_DAEMON} -- /bin/bash -c 'bin/console pimee:database:inspect -f && bin/console pimee:database:diff'                
+              kubectl exec -it -n ${TYPE}-${INSTANCE_NAME} ${POD_DAEMON} -- /bin/bash -c 'bin/console pimee:database:inspect -f && bin/console pimee:database:diff'
 
     validate_indexing_diff:
       parameters:
@@ -232,7 +233,7 @@ jobs:
           default: "srnt"
       environment:
         <<: *envVarsDeployDev
-      <<: *dockerCloudDeployerNext
+      <<: *dockerCloudDeployerCurrent
       resource_class: small
       steps:
         - attach_workspace:
@@ -243,4 +244,4 @@ jobs:
             name: Launch data referential integrity validation command
             command: |
               POD_DAEMON=$(kubectl get pods --no-headers --namespace=${TYPE}-${INSTANCE_NAME} -l component=pim-daemon-webhook-consumer-process | awk 'NR==1{print $1}')
-              kubectl exec -it -n ${TYPE}-${INSTANCE_NAME} ${POD_DAEMON} -- /bin/bash -c 'bin/console pimee:database:indexing-diff'                
+              kubectl exec -it -n ${TYPE}-${INSTANCE_NAME} ${POD_DAEMON} -- /bin/bash -c 'bin/console pimee:database:indexing-diff'

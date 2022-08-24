@@ -1,4 +1,5 @@
 envVarsDeployDev: &envVarsDeployDev
+dockerCloudDeployerCurrent: &dockerCloudDeployerCurrent
 dockerCloudDeployerNext: &dockerCloudDeployerNext
 
 jobs:
@@ -16,7 +17,7 @@ jobs:
                 default: ""
         environment:
             <<: *envVarsDeployDev
-        <<: *dockerCloudDeployerNext
+        <<: *dockerCloudDeployerCurrent
         resource_class: small
         steps:
             - attach_workspace:
@@ -95,7 +96,7 @@ jobs:
                 default: ""
         environment:
             <<: *envVarsDeployDev
-        <<: *dockerCloudDeployerNext
+        <<: *dockerCloudDeployerCurrent
         resource_class: small
         steps:
             - attach_workspace:

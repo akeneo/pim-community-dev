@@ -18,7 +18,7 @@ jobs:
                 default: false
         environment:
             <<: *envVarsDeployDev
-        <<: *dockerCloudDeployerNext
+        <<: *dockerCloudDeployerCurrent
         resource_class: small
         steps:
             - attach_workspace:
@@ -195,7 +195,7 @@ jobs:
                 default: "srnt"
         environment:
             <<: *envVarsDeployDev
-        <<: *dockerCloudDeployerNext
+        <<: *dockerCloudDeployerCurrent
         resource_class: small
         steps:
             - attach_workspace:
@@ -287,7 +287,7 @@ jobs:
                 default: false
         environment:
             <<: *envVarsDeployDev
-        <<: *dockerCloudDeployerNext
+        <<: *dockerCloudDeployerCurrent
         resource_class: small
         steps:
             - attach_workspace:
@@ -403,7 +403,7 @@ jobs:
                 default: "srnt"
         environment:
             <<: *envVarsDeployDev
-        <<: *dockerCloudDeployerNext
+        <<: *dockerCloudDeployerCurrent
         resource_class: small
         steps:
             - attach_workspace:
