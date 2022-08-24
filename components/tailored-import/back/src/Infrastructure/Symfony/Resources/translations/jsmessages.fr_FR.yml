@@ -202,3 +202,8 @@ akeneo.tailored_import:
     operations:
       incompatible_operation_type: Le type d'opération {{ operation_type }} est incompatible avec votre attribut utilisé en tant que destination.
       missing_required_operations: "Une ou plusieurs opérations sont manquantes : {{ missing_required_operations }}"
+pim_information:
+  import:
+    title: Découvrez le mapping avec l'import sur mesure
+    text: "Ce nouveau profil d'import vous permet de personnaliser votre structure d'import de produits via un mapping de données. Vous pourrez ainsi facilement définir les sources de votre fichier, les associer aux attributs de votre PIM, et effectuer des opérations afin de transformer automatiquement vos données."
+    link.text: Cliquez ici pour en savoir plus.

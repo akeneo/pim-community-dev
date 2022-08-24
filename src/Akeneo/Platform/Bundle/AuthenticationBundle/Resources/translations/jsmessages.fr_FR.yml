@@ -33,7 +33,7 @@ authentication:
           label: URL de déconnexion
         certificate:
           label: Certificat
-          expiration_warning: Ce certificat expire le {{date}}.
+          expiration_warning: Ce certificat expire le {{ date }}.
         private_key:
           label: Clé privée
         metadata_url:
