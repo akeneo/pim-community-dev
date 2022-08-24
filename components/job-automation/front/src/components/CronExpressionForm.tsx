@@ -16,10 +16,22 @@ import {
   WeeklyFrequencyConfigurator,
 } from './FrequencyConfigurator';
 
-const Content = styled.div`
+const FormField = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+const FrequencyFields = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
+  max-width: 460px;
+`;
+
+const FixedWidthField = styled(Field)`
+  min-width: 160px;
+  flex-grow: 1;
 `;
 
 const frequencyConfigurators: {[frequencyOption: string]: FunctionComponent<FrequencyConfiguratorProps>} = {
@@ -50,28 +62,30 @@ const CronExpressionForm = ({cronExpression, validationErrors, onCronExpressionC
   }
 
   return (
-    <Field label={translate('akeneo.job_automation.scheduling.frequency.title')}>
-      <Content>
-        <SelectInput
-          value={frequencyOption}
-          onChange={handleFrequencyOptionChange}
-          emptyResultLabel={translate('pim_common.no_result')}
-          openLabel={translate('pim_common.open')}
-          clearable={false}
-          invalid={0 < getErrorsForPath(validationErrors, '').length}
-        >
-          {availableFrequencyOptions.map(frequencyOption => (
-            <SelectInput.Option value={frequencyOption} key={frequencyOption}>
-              {translate(`akeneo.job_automation.scheduling.frequency.${frequencyOption}`)}
-            </SelectInput.Option>
-          ))}
-        </SelectInput>
+    <FormField>
+      <FrequencyFields>
+        <FixedWidthField label={translate('akeneo.job_automation.scheduling.frequency.title')}>
+          <SelectInput
+            value={frequencyOption}
+            onChange={handleFrequencyOptionChange}
+            emptyResultLabel={translate('pim_common.no_result')}
+            openLabel={translate('pim_common.open')}
+            clearable={false}
+            invalid={0 < getErrorsForPath(validationErrors, '').length}
+          >
+            {availableFrequencyOptions.map(frequencyOption => (
+              <SelectInput.Option value={frequencyOption} key={frequencyOption}>
+                {translate(`akeneo.job_automation.scheduling.frequency.${frequencyOption}`)}
+              </SelectInput.Option>
+            ))}
+          </SelectInput>
+        </FixedWidthField>
         <FrequencyComponent
           cronExpression={cronExpression}
           validationErrors={validationErrors}
           onCronExpressionChange={onCronExpressionChange}
         />
-      </Content>
+      </FrequencyFields>
       {isHourlyFrequency(frequencyOption) ? (
         <Helper inline={true} level="info">
           {translate('akeneo.job_automation.scheduling.frequency.hourly_helper')}
@@ -86,7 +100,7 @@ const CronExpressionForm = ({cronExpression, validationErrors, onCronExpressionC
           {translate(error.messageTemplate, error.parameters)}
         </Helper>
       ))}
-    </Field>
+    </FormField>
   );
 };
 

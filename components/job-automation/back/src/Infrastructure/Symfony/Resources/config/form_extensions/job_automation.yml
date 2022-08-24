@@ -3,7 +3,7 @@ extensions:
     module: akeneojobautomation/js/job/job-automation-form
     parent: pim-job-instance-xlsx-product-export-edit-properties
     position: 130
-    targetZone: properties
+    targetZone: additional-properties
     config:
       tabCode: pim-job-instance-properties
     feature: job_automation
@@ -12,7 +12,7 @@ extensions:
     module: akeneojobautomation/js/job/job-automation-form
     parent: pim-job-instance-xlsx-product-import-edit-properties
     position: 130
-    targetZone: properties
+    targetZone: additional-properties
     config:
       tabCode: pim-job-instance-properties
     feature: job_automation
@@ -21,7 +21,7 @@ extensions:
     module: akeneojobautomation/js/job/job-automation-form
     parent: pim-job-instance-xlsx-tailored-product-export-edit-properties
     position: 130
-    targetZone: properties
+    targetZone: additional-properties
     config:
       tabCode: pim-job-instance-properties
     feature: job_automation
@@ -30,7 +30,7 @@ extensions:
     module: akeneojobautomation/js/job/job-automation-form
     parent: pim-job-instance-xlsx-tailored-product-import-edit-properties
     position: 130
-    targetZone: properties
+    targetZone: additional-properties
     config:
       tabCode: pim-job-instance-properties
     feature: job_automation

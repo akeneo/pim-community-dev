@@ -102,7 +102,7 @@ extensions:
         module: pimimportexport/js/job/common/edit/storage-form
         parent: pim-job-instance-xlsx-reference-entity-record-export-edit-properties
         position: 120
-        targetZone: properties
+        targetZone: additional-properties
         config:
             tabCode: pim-job-instance-properties
             jobType: export
