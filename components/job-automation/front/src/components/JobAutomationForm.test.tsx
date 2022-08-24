@@ -12,27 +12,47 @@ const automation: Automation = {
   notification_users: ['admin'],
 };
 
+const intersectionObserverMock = () => ({
+    observe: () => null,
+    unobserve: () => null
+})
+window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+
 jest.mock('../hooks/useUserGroups', () => ({
   useUserGroups: () => {
-    return [
-      'IT Support',
-      'Manager',
-      'Furniture manager',
-      'Clothes manager',
-      'Redactor',
-      'English translator',
-      'SAP Connection',
-      'Alkemics Connection',
-      'Translations.com Connection',
-      'Magento Connection',
-    ];
-  },
+      return {
+          availableUserGroups: [
+              {id: 1, label: 'IT Support'},
+              {id: 2, label: 'Manager'},
+              {id: 3, label: 'Furniture manager'},
+              {id: 4, label: 'Clothes manager'},
+              {id: 5, label: 'Redactor'},
+              {id: 6, label: 'English translator'},
+              {id: 7, label: 'SAP Connection'},
+              {id: 8, label: 'Alkemics Connection'},
+              {id: 9, label: 'Translations.com Connection'},
+              {id: 10, label: 'Magento Connection'},
+          ],
+          loadNextPage: () => [],
+      }
+  }
 }));
 
 jest.mock('../hooks/useUsers', () => ({
-  useUsers: () => {
-    return ['admin', 'julia', 'julien', 'mary', 'pamela', 'peter', 'sandra'];
-  },
+    useUsers: () => {
+        return {
+            availableUsers: [
+                {id: 1, username: 'admin'},
+                {id: 2, username: 'julia'},
+                {id: 3, username: 'julien'},
+                {id: 4, username: 'mary'},
+                {id: 5, username: 'pamela'},
+                {id: 6, username: 'peter'},
+                {id: 7, username: 'sandra'},
+            ],
+            loadNextPage: () => []
+        }
+    }
 }));
 
 let mockedFeatureFlags = ['permission'];
@@ -78,6 +98,7 @@ test('it renders the job automation form', () => {
   expect(screen.getByText('akeneo.job_automation.notification.users.label')).toBeInTheDocument();
   expect(screen.getByText('IT Support')).toBeInTheDocument();
 });
+
 
 test('it hides the running user group input if the permission is not enabled', () => {
   mockedFeatureFlags = [];
@@ -240,3 +261,4 @@ test('it displays validation errors', () => {
 
   expect(screen.getByText('error.key.a_type_error')).toBeInTheDocument();
 });
+

@@ -6,6 +6,12 @@ import {UserGroupsForm} from './UserGroupsForm';
 
 let mockedGrantedACL = ['pim_user_group_index'];
 
+const intersectionObserverMock = () => ({
+  observe: () => null,
+  unobserve: () => null
+})
+window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+
 jest.mock('@akeneo-pim-community/shared/lib/hooks/useSecurity', () => ({
   useSecurity: () => ({
     isGranted: (acl: string) => {
@@ -16,8 +22,22 @@ jest.mock('@akeneo-pim-community/shared/lib/hooks/useSecurity', () => ({
 
 jest.mock('../hooks/useUserGroups', () => ({
   useUserGroups: () => {
-    return ['IT Support', 'Manager', 'Furniture manager', 'Clothes manager', 'Redactor', 'All'];
-  },
+    return {
+      availableUserGroups: [
+        {id: 1, label: 'IT Support'},
+        {id: 2, label: 'Manager'},
+        {id: 3, label: 'Furniture manager'},
+        {id: 4, label: 'Clothes manager'},
+        {id: 5, label: 'Redactor'},
+        {id: 6, label: 'English translator'},
+        {id: 7, label: 'SAP Connection'},
+        {id: 8, label: 'Alkemics Connection'},
+        {id: 9, label: 'Translations.com Connection'},
+        {id: 10, label: 'Magento Connection'},
+      ],
+      loadNextPage: () => [],
+    }
+  }
 }));
 
 beforeEach(() => {
