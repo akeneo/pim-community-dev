@@ -13,6 +13,4 @@ interface ValueUserIntent extends UserIntent
     public function attributeCode(): string;
 
     public function localeCode(): ?string;
-
-    public function channelCode(): ?string;
 }

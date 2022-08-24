@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Category\Infrastructure\Validation;
 
 use Akeneo\Category\Api\Command\UserIntents\SetLabel;
-use Akeneo\Category\Infrastructure\Validation\LocalizeUserIntentsShouldBeUnique;
-use Akeneo\Category\Infrastructure\Validation\LocalizeUserIntentsShouldBeUniqueValidator;
+use Akeneo\Category\Api\Command\UserIntents\SetTextArea;
+use Akeneo\Category\Infrastructure\Validation\LocalizeValueUserIntentsShouldBeUnique;
+use Akeneo\Category\Infrastructure\Validation\LocalizeValueUserIntentsShouldBeUniqueValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\Type;
@@ -18,7 +19,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class LocalizeUserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
+class LocalizeValueUserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
 {
     function let(ExecutionContext $context)
     {
@@ -27,7 +28,7 @@ class LocalizeUserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(LocalizeUserIntentsShouldBeUniqueValidator::class);
+        $this->shouldHaveType(LocalizeValueUserIntentsShouldBeUniqueValidator::class);
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
@@ -36,29 +37,33 @@ class LocalizeUserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringValidate(1, new Type([]));
     }
 
-    function it_does_nothing_when_the_localize_intents_are_distinct(ExecutionContext $context)
+    function it_does_nothing_when_the_localize_value_intents_are_distinct(ExecutionContext $context)
     {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate([
             new SetLabel('fr_FR', 'libelle'),
-            new SetLabel('en_US', 'label')
-        ], new LocalizeUserIntentsShouldBeUnique());
+            new SetLabel('en_US', 'label'),
+            new SetTextArea('code', 'en_US', 'value'),
+            new SetTextArea('title', 'en_US', 'Title'),
+        ], new LocalizeValueUserIntentsShouldBeUnique());
     }
 
-    function it_throw_an_exception_when_the_localize_intents_are_not_distinct(ExecutionContext $context, ConstraintViolationBuilderInterface $violationBuilder)
+    function it_throws_an_exception_when_the_localize_value_intents_are_not_distinct(ExecutionContext $context, ConstraintViolationBuilderInterface $violationBuilder)
     {
-        $constraint = new LocalizeUserIntentsShouldBeUnique();
+        $constraint = new LocalizeValueUserIntentsShouldBeUnique();
         $context
-            ->buildViolation($constraint->message, ['{{ locale }}' => 'same_local'])
+            ->buildViolation($constraint->message, ['{{ locale }}' => 'same_code_locale'])
             ->shouldBeCalledOnce()
             ->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate([
             new SetLabel('locale', 'libelle'),
-            new SetLabel('same_local', 'label'),
-            new SetLabel('same_local', 'title'),
-        ], new LocalizeUserIntentsShouldBeUnique());
+            new SetLabel('locale', 'label'),
+            new SetTextArea('code', 'same_code_locale', 'value'),
+            new SetTextArea('title', 'en_US', 'Title'),
+            new SetTextArea('code', 'same_code_locale', 'other value'),
+        ], new LocalizeValueUserIntentsShouldBeUnique());
     }
 }
