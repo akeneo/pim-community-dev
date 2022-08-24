@@ -29,7 +29,7 @@ final class ListUsersHandler implements ListUsersHandlerInterface
     public function fromQuery(UsersQuery $query): array
     {
         $result = ($this->findUsers)(
-            $query->getSearchName(),
+            $query->getSearch(),
             $query->getSearchAfterId(),
             $query->getLimit(),
         );

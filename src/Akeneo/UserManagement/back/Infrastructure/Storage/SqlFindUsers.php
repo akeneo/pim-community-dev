@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\UserManagement\Infrastructure\Storage;
 
 use Akeneo\UserManagement\Component\Model\User;
-use Akeneo\UserManagement\Domain\Model\User as ServiceAPiUser;
+use Akeneo\UserManagement\Domain\Model\User as ServiceApiUser;
 use Akeneo\UserManagement\Domain\Storage\FindUsers;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Exception as DriverException;
@@ -47,7 +47,7 @@ final class SqlFindUsers implements FindUsers
         )->fetchAllAssociative();
 
         return array_map(
-            static fn ($data) => ServiceAPiUser::createFromDatabase($data),
+            static fn ($data) => ServiceApiUser::createFromDatabase($data),
             $results
         );
     }

@@ -54,11 +54,7 @@ final class ListUsersHandlerIntegration extends TestCase
 
     public function testItListsTheUsersWithPagination(): void
     {
-        $users = $this->getHandler()->fromQuery(new UsersQuery(
-            null,
-            null,
-            2
-        ));
+        $users = $this->getHandler()->fromQuery(new UsersQuery(limit: 2));
 
         Assert::assertCount(2, $users);
         $lastId = $users[1]->getId();

@@ -48,27 +48,27 @@ final class User
         return $this->userType;
     }
 
-    public function getFirstname(): string|null
+    public function getFirstname(): ?string
     {
         return $this->firstname;
     }
 
-    public function getLastname(): string|null
+    public function getLastname(): ?string
     {
         return $this->lastname;
     }
 
-    public function getMiddleName(): string|null
+    public function getMiddleName(): ?string
     {
         return $this->middleName;
     }
 
-    public function getNameSuffix(): string|null
+    public function getNameSuffix(): ?string
     {
         return $this->nameSuffix;
     }
 
-    public function getImage(): string|null
+    public function getImage(): ?string
     {
         return $this->image;
     }

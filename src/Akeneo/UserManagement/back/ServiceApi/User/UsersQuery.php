@@ -18,15 +18,15 @@ use Akeneo\UserManagement\Domain\Storage\FindUsers;
 final class UsersQuery
 {
     public function __construct(
-        private ?string $searchName = null,
+        private ?string $search = null,
         private ?int $searchAfterId = null,
         private int $limit = FindUsers::DEFAULT_LIMIT,
     ) {
     }
 
-    public function getSearchName(): ?string
+    public function getSearch(): ?string
     {
-        return $this->searchName;
+        return $this->search;
     }
 
     public function getSearchAfterId(): ?int
