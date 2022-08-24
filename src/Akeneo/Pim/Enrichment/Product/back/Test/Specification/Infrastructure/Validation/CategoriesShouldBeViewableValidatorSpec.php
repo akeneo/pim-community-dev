@@ -32,7 +32,7 @@ class CategoriesShouldBeViewableValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_with_a_wrong_constraint()
     {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'foo');
+        $command = UpsertProductCommand::createFromCollection(userId: 1, productIdentifier: 'foo', userIntents: []);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [$command, new Type([])]);
     }
@@ -49,10 +49,10 @@ class CategoriesShouldBeViewableValidatorSpec extends ObjectBehavior
     ) {
         $categoryUserIntent = new SetCategories(['master', 'print', 'ecommerce']);
 
-        $context->getRoot()->willReturn(new UpsertProductCommand(
+        $context->getRoot()->willReturn(UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'foo',
-            categoryUserIntent: $categoryUserIntent
+            userIntents: [$categoryUserIntent]
         ));
         $getViewableCategories->forUserId(['master', 'print', 'ecommerce'], 1)->willReturn(['master', 'print', 'ecommerce']);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -67,10 +67,10 @@ class CategoriesShouldBeViewableValidatorSpec extends ObjectBehavior
     ) {
         $categoryUserIntent = new SetCategories(['master', 'print', 'ecommerce']);
 
-        $context->getRoot()->willReturn(new UpsertProductCommand(
+        $context->getRoot()->willReturn(UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'foo',
-            categoryUserIntent: $categoryUserIntent
+            userIntents: [$categoryUserIntent]
         ));
         $getViewableCategories->forUserId(['master', 'print', 'ecommerce'], 1)->willReturn(['master', 'ecommerce']);
 
@@ -90,10 +90,10 @@ class CategoriesShouldBeViewableValidatorSpec extends ObjectBehavior
     ) {
         $categoryUserIntent = new SetCategories(['master', 'print', 'ecommerce', 'print']);
 
-        $context->getRoot()->willReturn(new UpsertProductCommand(
+        $context->getRoot()->willReturn(UpsertProductCommand::createFromCollection(
             userId: 1,
             productIdentifier: 'foo',
-            categoryUserIntent: $categoryUserIntent
+            userIntents: [$categoryUserIntent]
         ));
         $getViewableCategories->forUserId(['master', 'print', 'ecommerce'], 1)->willReturn(['master']);
 
