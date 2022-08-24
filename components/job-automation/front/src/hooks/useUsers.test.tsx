@@ -7,14 +7,20 @@ const {act} = TestRenderer;
 test('it return fetched users', async () => {
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: true,
-    json: async () => [{'id': 1, 'username': 'Admin'}, {'id': 2, 'username': 'Julia'}],
+    json: async () => [
+      {id: 1, username: 'Admin'},
+      {id: 2, username: 'Julia'},
+    ],
   }));
 
   const {result, waitForNextUpdate} = renderHookWithProviders(() => useUsers());
 
   await waitForNextUpdate();
 
-  expect(result.current.availableUsers).toEqual([{'id': 1, 'username': 'Admin'}, {'id': 2, 'username': 'Julia'}]);
+  expect(result.current.availableUsers).toEqual([
+    {id: 1, username: 'Admin'},
+    {id: 2, username: 'Julia'},
+  ]);
   expect(global.fetch).toBeCalledWith('pimee_job_automation_get_users', {
     headers: {
       'Content-Type': 'application/json',
@@ -27,7 +33,10 @@ test('it return fetched users', async () => {
 test('it load next page', async () => {
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: true,
-    json: async () => [{'id': 1, 'username': 'Admin'}, {'id': 2, 'username': 'Julia'}],
+    json: async () => [
+      {id: 1, username: 'Admin'},
+      {id: 2, username: 'Julia'},
+    ],
   }));
 
   const {result, waitForNextUpdate} = renderHookWithProviders(() => useUsers());
@@ -35,16 +44,19 @@ test('it load next page', async () => {
 
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: true,
-    json: async () => [{'id': 3, 'username': 'Jean'}, {'id': 4, 'username': 'Michel'}],
+    json: async () => [
+      {id: 3, username: 'Jean'},
+      {id: 4, username: 'Michel'},
+    ],
   }));
 
   const loadNexPage = result.current.loadNextPage;
   await act(async () => await loadNexPage());
 
   expect(result.current.availableUsers).toEqual([
-    {'id': 1, 'username': 'Admin'},
-    {'id': 2, 'username': 'Julia'},
-    {'id': 3, 'username': 'Jean'},
-    {'id': 4, 'username': 'Michel'},
+    {id: 1, username: 'Admin'},
+    {id: 2, username: 'Julia'},
+    {id: 3, username: 'Jean'},
+    {id: 4, username: 'Michel'},
   ]);
-})
+});

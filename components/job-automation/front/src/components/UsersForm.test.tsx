@@ -8,8 +8,8 @@ let mockedGrantedACL = ['pim_user_user_index'];
 
 const intersectionObserverMock = () => ({
   observe: () => null,
-  unobserve: () => null
-})
+  unobserve: () => null,
+});
 window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
 jest.mock('@akeneo-pim-community/shared/lib/hooks/useSecurity', () => ({
@@ -32,9 +32,9 @@ jest.mock('../hooks/useUsers', () => ({
         {id: 6, username: 'peter'},
         {id: 7, username: 'sandra'},
       ],
-      loadNextPage: () => []
-    }
-  }
+      loadNextPage: () => [],
+    };
+  },
 }));
 
 beforeEach(() => {

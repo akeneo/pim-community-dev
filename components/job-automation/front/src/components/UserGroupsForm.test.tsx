@@ -8,8 +8,8 @@ let mockedGrantedACL = ['pim_user_group_index'];
 
 const intersectionObserverMock = () => ({
   observe: () => null,
-  unobserve: () => null
-})
+  unobserve: () => null,
+});
 window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
 jest.mock('@akeneo-pim-community/shared/lib/hooks/useSecurity', () => ({
@@ -36,8 +36,8 @@ jest.mock('../hooks/useUserGroups', () => ({
         {id: 10, label: 'Magento Connection'},
       ],
       loadNextPage: () => [],
-    }
-  }
+    };
+  },
 }));
 
 beforeEach(() => {

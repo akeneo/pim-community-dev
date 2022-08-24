@@ -9,10 +9,6 @@ type Automation = {
 };
 
 const filterDefaultUserGroup = (userGroups: UserGroup[]) =>
-  userGroups
-      .filter((userGroup: UserGroup) => userGroup.label !== 'All')
-      .map((userGroup: UserGroup) => userGroup.label)
-;
-
+  userGroups.filter((userGroup: UserGroup) => userGroup.label !== 'All').map((userGroup: UserGroup) => userGroup.label);
 export type {Automation};
 export {filterDefaultUserGroup};
