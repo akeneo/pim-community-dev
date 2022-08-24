@@ -52,6 +52,11 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'operator' => 'IN',
                     'value' => ['master'],
                 ],
+                [
+                    'field' => 'categories',
+                    'operator' => 'UNCLASSIFIED',
+                    'value' => [],
+                ],
             ],
         ], new CatalogUpdatePayload());
 
@@ -255,7 +260,7 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                 'criterion' => [
                     'field' => 'categories',
                     'operator' => 'IN CHILDREN',
-                    'value' => null,
+                    'value' => [],
                 ],
                 'expectedMessage' => 'This value must not be empty.',
             ],
