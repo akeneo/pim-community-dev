@@ -1,11 +1,12 @@
 locals {
-  host_project_id = "akecld-prd-shared-vpc-dev"
-  shared_vpc_name = "akecld-prd-shared-vpc-dev-xpn"
+  host_project_id = "akecld-prd-shared-infra"
+  shared_vpc_name = "akecld-prd-shared-infra-dev-xpn"
   project_id      = "akecld-prd-pim-saas-dev"
   ci_sa           = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
   admins          = ["group:phoenix-squad@akeneo.com"]
   viewers         = ["group:phoenix-squad@akeneo.com"]
   regions         = ["europe-west1"]
+  private_zone    = "pim-saas-dev.dev.local"
 }
 
 module "iam" {
@@ -74,6 +75,14 @@ module "gke" {
     }
   }
 
+}
+
+module "private_dns" {
+  source     = "../modules/private-dns"
+  project_id = local.project_id
+  zone_name  = local.private_zone
+  networks   = []
+  #networks   = [data.google_compute_network.vpc.id]
 }
 
 terraform {
