@@ -30,6 +30,7 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
     return <></>;
   }
 
+
   return (
     <FormContainer>
       {/*{formData.errors.map((errorMessage, key) => {*/}
@@ -48,7 +49,7 @@ const EditPropertiesForm = ({category, formData, onChangeLabel}: Props) => {
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_common.label')}</SectionTitle.Title>
       </SectionTitle>
-      {Object.entries(formData.labels).map(([locale, labelField]) => (
+      {Object.entries(formData.labels || {}).map(([locale, labelField]) => (
         <Field label={labelField} key={locale}>
           <TextInput
             name={`${labelField}-${locale}`}

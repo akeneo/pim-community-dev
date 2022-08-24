@@ -2,18 +2,44 @@ import {Router} from '@akeneo-pim-community/shared';
 
 import {EnrichCategory} from '../../models';
 
-type EditCategoryResponse = {
-  success: boolean;
-  category?: EnrichCategory;
-  error?: string
-};
+interface EditCategoryResponseOK {
+  success: true;
+  category: EnrichCategory;
+}
 
-const saveEditCategoryForm = async (
-  router: Router,
-  enrichCategory: EnrichCategory
-): Promise<EditCategoryResponse> => {
+interface EditCategoryResponseKO {
+  success: false;
+  errors: EditCategoryValidationErrors;
+}
 
-  console.log(enrichCategory);
+interface EditCategoryValidationErrors {
+  general?: I18nMessageSpec,
+  validation?: {
+    properties?: ValidationErrors,
+    attributes?: ValidationErrors,
+  }
+}
+
+interface ValidationErrors {
+  [attributeCode: string]: ValidationError,
+}
+
+interface ValidationError {
+  path: string[];
+  locale?: string;
+  message: I18nMessageSpec;
+}
+
+interface I18nMessageSpec {
+  key: string;
+  args?: {
+    [name: string]: string | number
+  }
+}
+
+type EditCategoryResponse = EditCategoryResponseOK | EditCategoryResponseKO;
+
+const saveEditCategoryForm = async (router: Router, enrichCategory: EnrichCategory): Promise<EditCategoryResponse> => {
   // const params = new URLSearchParams();
   // params.append(formData._token.fullName, formData._token.value);
   // for (const [locale, changedLabel] of Object.entries(formData.label)) {
@@ -40,14 +66,22 @@ const saveEditCategoryForm = async (
     body: JSON.stringify(enrichCategory),
   });
 
-  const responseContent = await response.json();
+  let responseContent: EditCategoryResponse | null = null;
+  try {
+    // *ideally* in case of 4XX or 5XX the response should always be valid json
+    responseContent = await response.json();
+  } catch (e) {}
 
-  console.log(responseContent);
+  if (responseContent && response.ok) {
+    const category = (responseContent as EditCategoryResponseOK).category;
+    return {success: true, category};
+  }
 
-  return {
-    success: response.ok,
-    category: responseContent.category,
-  };
+  // TODO use(/create) real i18n keys below
+  const errors = responseContent
+    ? (responseContent as EditCategoryResponseKO).errors || { general: { key: 'unspecified error'}}
+    : { general: { key: 'Response is invalid JSON' } };
+  return {success: false, errors};
 };
 
 export {saveEditCategoryForm};

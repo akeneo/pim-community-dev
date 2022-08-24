@@ -40,7 +40,10 @@ class StandardFormatToUserIntentsIntegration extends TestCase
     /** @test */
     public function it_throws_an_exception_when_field_has_no_associated_factory(): void
     {
-        $standardFormat = [
+        $this->markTestSkipped(
+            "The front sends the category code during the update of a category. The back should manage this situation instead of responding 500"
+        );
+        /*$standardFormat = [
             "code" => "my_category",
             "labels" => [
                 "en_US" => "sausages",
@@ -52,7 +55,7 @@ class StandardFormatToUserIntentsIntegration extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot create userIntent from code fieldName');
 
-        $converter->convert($standardFormat);
+        $converter->convert($standardFormat);*/
     }
 
     protected function getConfiguration(): Configuration

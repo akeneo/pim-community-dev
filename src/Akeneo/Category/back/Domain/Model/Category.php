@@ -72,7 +72,7 @@ class Category
      *     code: string,
      *     parent: int|null,
      *     labels: array<string, string>,
-     *     values: array<string, array<string, mixed>>,
+     *     values: array<string, array<string, mixed>> | null,
      *     permissions: array<string, array<int>>|null
      * }
      */
@@ -83,8 +83,8 @@ class Category
             'code' => (string) $this->getCode(),
             'labels' => $this->getLabelCollection()->normalize(),
             'parent' => $this->getParentId()?->getValue(),
-            'values' => $this->getValueCollection()->normalize(),
-            'permissions' => $this->getPermissionCollection()->normalize(),
+            'values' => $this->getValueCollection()?->normalize(),
+            'permissions' => $this->getPermissionCollection()?->normalize(),
         ];
     }
 }

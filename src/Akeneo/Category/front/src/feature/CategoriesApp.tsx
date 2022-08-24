@@ -11,7 +11,6 @@ type Props = {
 
 const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
   const featureFlags = useFeatureFlags();
-  console.log(featureFlags.isEnabled('enriched_category'));
 
   return (
     <Router basename="/enrich/product-category-tree">

@@ -1,7 +1,6 @@
 import {FetchStatus, useFetch, useRoute} from '@akeneo-pim-community/shared';
 import {EnrichCategory} from '../models';
 import type {EditCategoryForm} from '../models';
-import {useCallback, useState} from 'react';
 
 const useCategory = (
   categoryId: number
@@ -21,13 +20,12 @@ const useCategory = (
   // const [error] = useState<string | null>(null);
 
   //TODO: get token
-  const url = useRoute('pim_enrich_category_rest_get', {
+  const url = useRoute('pim_category_rest_get', {
     id: categoryId.toString(),
   });
-
+  
   const [categoryData, load, status, error] = useFetch<any>(url);
 
-  console.log(categoryData);
 
   // const data = {
   //   id: categoryId,

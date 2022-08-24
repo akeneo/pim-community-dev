@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useEffect} from 'react';
 import {useIsMounted, useViewBuilder, View} from '@akeneo-pim-community/shared';
 
 type Props = {

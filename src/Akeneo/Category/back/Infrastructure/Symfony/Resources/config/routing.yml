@@ -4,8 +4,8 @@ external_api_category:
 
 internal_api_category_legacy:
     resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/category_legacy.yml'
-    prefix: /category
+    prefix: /category/legacy
 
 internal_api_category:
     resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/category.yml'
-    prefix: /enrich/category
+    prefix: /category
