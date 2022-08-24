@@ -104,6 +104,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []);
         $product = new Product();
         $product->setIdentifier('identifier1');
+        $product->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $tokenStorage->getToken()->willReturn($token);
@@ -133,6 +134,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
     ) {
         $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []);
         $product->getIdentifier()->willReturn('identifier1');
+        $product->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
         $product->isDirty()->willReturn(false);
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
@@ -248,6 +250,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $setTextUserIntent = new SetTextValue('name', null, null, 'Lorem Ipsum');
         $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: [$userIntent, $setTextUserIntent]);
         $product = new Product();
+        $product->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
         $product->setIdentifier('identifier1');
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());

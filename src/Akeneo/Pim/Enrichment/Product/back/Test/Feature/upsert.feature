@@ -25,10 +25,6 @@ Feature: Upsert a product
     When an unknown user tries to upsert the "foo" product
     Then there is a violation saying the user is unknown
 
-  Scenario: Create an empty product with empty string identifier
-    When the "julia" user upserts the "" product
-    Then there is a violation with message: The product identifier requires a non empty string
-
   Scenario: Create a product with text attribute value
     Given a set text value intent on the "a_text" attribute with the "test" text value
     When the "julia" user upserts the "foo" product with the previous intent

@@ -10,6 +10,7 @@ services:
         arguments:
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
             - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids'
         tags:
             - { name: validator.constraint_validator }
 
@@ -18,6 +19,7 @@ services:
             - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes'
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids'
         tags:
             - { name: validator.constraint_validator }
 

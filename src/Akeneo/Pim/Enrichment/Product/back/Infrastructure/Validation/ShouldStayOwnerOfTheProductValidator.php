@@ -10,10 +10,12 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -30,7 +32,8 @@ final class ShouldStayOwnerOfTheProductValidator extends ConstraintValidator
     public function __construct(
         private GetOwnedCategories $getOwnedCategories,
         private GetNonViewableCategoryCodes $getNonViewableCategoryCodes,
-        private GetCategoryCodes $getCategoryCodes
+        private GetCategoryCodes $getCategoryCodes,
+        private GetProductUuids $getProductUuids,
     ) {
     }
 
@@ -42,18 +45,29 @@ final class ShouldStayOwnerOfTheProductValidator extends ConstraintValidator
 
         Assert::implementsInterface($categoryUserIntent, CategoryUserIntent::class);
         Assert::isInstanceOf($constraint, ShouldStayOwnerOfTheProduct::class);
+        /** @var UpsertProductCommand $command */
         $command = $this->context->getRoot();
         Assert::isInstanceOf($command, UpsertProductCommand::class);
 
+        $uuid = null;
+        if ($command->productIdentifierOrUuid() instanceof ProductIdentifier) {
+            $uuid = $this->getProductUuids->fromIdentifier($command->productIdentifierOrUuid()->identifier());
+        } elseif ($command->productIdentifierOrUuid() instanceof ProductUuid) {
+            $uuid = $command->productIdentifierOrUuid()->uuid();
+        }
+
+        if (null === $uuid) {
+            // TODO CPM-716: do an early return when in creation mode
+            return;
+        }
+
         if ($categoryUserIntent instanceof SetCategories) {
-            $nonViewableCategoryCodes = $this->getNonViewableCategoryCodes->fromProductIdentifiers([
-                ProductIdentifier::fromString($command->productIdentifier()),
-            ], $command->userId())[$command->productIdentifier()] ?? [];
+            $nonViewableCategoryCodes = $this->getNonViewableCategoryCodes->fromProductUuids([
+                $uuid
+            ], $command->userId())[$uuid->toString()] ?? [];
             $newCategoryCodes = \array_merge($categoryUserIntent->categoryCodes(), $nonViewableCategoryCodes);
         } elseif ($categoryUserIntent instanceof RemoveCategories) {
-            $productCategoryCodes = $this->getCategoryCodes->fromProductIdentifiers([
-                ProductIdentifier::fromString($command->productIdentifier()),
-            ])[$command->productIdentifier()] ?? [];
+            $productCategoryCodes = $this->getCategoryCodes->fromProductUuids([$uuid])[$uuid->toString()] ?? [];
             $newCategoryCodes = \array_values(\array_diff($productCategoryCodes, $categoryUserIntent->categoryCodes()));
         } else {
             throw new \LogicException('Not implemented');
