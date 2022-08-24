@@ -17,29 +17,31 @@ type Result = {
 
 export const useCategories = ({codes = [], isRoot = false}: QueryParams): Result => {
     const locale = useUserContext().get('catalogLocale');
-    return useQuery<Data, ResultError, Data>(['categories', {codes, isRoot, locale}], async () => {
-        if (isRoot && codes.length > 0) {
-            throw new Error('Cannot use codes and root simultaneously to fetch categories');
-        }
+    return useQuery<Data, ResultError, Data>(
+        ['categories', {codes, isRoot, locale}],
+        async () => {
+            if (isRoot && codes.length > 0) {
+                throw new Error('Cannot use codes and root simultaneously to fetch categories');
+            }
 
-        if (!isRoot && codes.length === 0) {
-            return [];
-        }
+            if (!isRoot && codes.length === 0) {
+                return [];
+            }
 
-        const queryParameters = new URLSearchParams({
-            codes: codes.join(','),
-            is_root: isRoot ? '1' : '0',
-            locale: locale,
-        }).toString();
+            const queryParameters = new URLSearchParams({
+                codes: codes.join(','),
+                is_root: isRoot ? '1' : '0',
+                locale: locale,
+            }).toString();
 
-        const response = await fetch('/rest/catalogs/categories?' + queryParameters, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        });
+            const response = await fetch('/rest/catalogs/categories?' + queryParameters, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
 
-        return await response.json();
-    },
+            return await response.json();
+        },
         {
             staleTime: 60,
         }

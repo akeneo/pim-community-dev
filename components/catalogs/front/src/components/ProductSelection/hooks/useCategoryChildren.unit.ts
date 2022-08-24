@@ -6,21 +6,32 @@ import {renderHook} from '@testing-library/react-hooks';
 import {useCategoryChildren} from './useCategoryChildren';
 import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 
-test('It fetches the API response', async () => {
-    const childrenCategories = [
-        {
-            code: 'catA',
-            label: '[catA]',
-            isLeaf: false,
-        },
-        {
-            code: 'catB',
-            label: '[catB]',
-            isLeaf: true,
-        },
-    ];
-    fetchMock.mockResponseOnce(JSON.stringify(childrenCategories));
+beforeEach(() => {
+    fetchMock.mockResponse(req => {
+        switch (req.url) {
+            // fetch children of parent_code
+            case '/rest/catalogs/categories/parent_code/children?locale=en_US':
+                return Promise.resolve(
+                    JSON.stringify([
+                        {
+                            code: 'catA',
+                            label: '[catA]',
+                            isLeaf: false,
+                        },
+                        {
+                            code: 'catB',
+                            label: '[catB]',
+                            isLeaf: true,
+                        },
+                    ])
+                );
+            default:
+                throw Error(req.url);
+        }
+    });
+});
 
+test('It fetches the API response', async () => {
     const {result, waitForNextUpdate} = renderHook(() => useCategoryChildren('parent_code'), {
         wrapper: ReactQueryWrapper,
     });
@@ -28,8 +39,8 @@ test('It fetches the API response', async () => {
     expect(result.current).toMatchObject({
         isLoading: true,
         isError: false,
-        data: undefined,
         error: null,
+        data: undefined,
     });
 
     await waitForNextUpdate();
@@ -41,7 +52,18 @@ test('It fetches the API response', async () => {
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,
-        data: childrenCategories,
         error: null,
+        data: [
+            {
+                code: 'catA',
+                label: '[catA]',
+                isLeaf: false,
+            },
+            {
+                code: 'catB',
+                label: '[catB]',
+                isLeaf: true,
+            },
+        ],
     });
 });

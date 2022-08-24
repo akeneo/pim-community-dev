@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useState} from 'react';
 import styled from 'styled-components';
 import {Dropdown, SwitcherButton} from 'akeneo-design-system';
 import {Category} from '../../models/Category';
@@ -19,7 +19,7 @@ const SelectorButton = styled(SwitcherButton)`
 `;
 
 type Props = {
-    selectedTree: Category | null;
+    selectedTree: Category;
     onChange: (tree: Category) => void;
 };
 
@@ -27,18 +27,6 @@ export const CategoryTreeSelector: FC<Props> = ({selectedTree, onChange}) => {
     const translate = useTranslate();
     const [isOpen, setOpen] = useState<boolean>();
     const {data: categoryTreeRoots, isLoading} = useCategoryTreeRoots();
-
-    useEffect(() => {
-        if (selectedTree !== null || categoryTreeRoots === undefined) {
-            return;
-        }
-
-        if (categoryTreeRoots.length === 0) {
-            throw new Error('No tree root found');
-        }
-
-        onChange(categoryTreeRoots[0]);
-    }, [selectedTree, categoryTreeRoots, onChange]);
 
     if (isLoading || categoryTreeRoots === undefined) {
         return null;
@@ -50,7 +38,7 @@ export const CategoryTreeSelector: FC<Props> = ({selectedTree, onChange}) => {
                 label={translate('akeneo_catalogs.product_selection.criteria.category.category_tree')}
                 onClick={() => setOpen(true)}
             >
-                {selectedTree?.label}
+                {selectedTree.label}
             </SelectorButton>
             <Dropdown>
                 {isOpen && (

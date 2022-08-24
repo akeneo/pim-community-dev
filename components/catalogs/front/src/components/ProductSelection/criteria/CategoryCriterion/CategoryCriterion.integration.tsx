@@ -15,22 +15,96 @@ const changeOperatorValueTo = (operator: string) => {
     fireEvent.click(screen.getByText(operator));
 };
 
+beforeEach(() => {
+    fetchMock.mockResponse(req => {
+        switch (req.url) {
+            // useCategoryTreeRoots
+            case '/rest/catalogs/categories?codes=&is_root=1&locale=en_US':
+                return Promise.resolve(
+                    JSON.stringify([
+                        {
+                            code: 'master',
+                            label: '[master]',
+                            isLeaf: false,
+                        },
+                        {
+                            code: 'print',
+                            label: '[print]',
+                            isLeaf: false,
+                        },
+                    ])
+                );
+            // useCategoryChildren master children
+            case '/rest/catalogs/categories/master/children?locale=en_US':
+                return Promise.resolve(
+                    JSON.stringify([
+                        {
+                            code: 'childA',
+                            label: '[childA]',
+                            isLeaf: true,
+                        },
+                        {
+                            code: 'childB',
+                            label: '[childB]',
+                            isLeaf: false,
+                        },
+                    ])
+                );
+            // useCategoryChildren print children
+            case '/rest/catalogs/categories/print/children?locale=en_US':
+                return Promise.resolve(
+                    JSON.stringify([
+                        {
+                            code: 'childC',
+                            label: '[childC]',
+                            isLeaf: false,
+                        },
+                    ])
+                );
+            // useCategories: catA, catB
+            case '/rest/catalogs/categories?codes=catA%2CcatB&is_root=0&locale=en_US':
+                return Promise.resolve(
+                    JSON.stringify([
+                        {
+                            code: 'catA',
+                            label: '[catA]',
+                            isLeaf: false,
+                        },
+                        {
+                            code: 'catB',
+                            label: '[catB]',
+                            isLeaf: true,
+                        },
+                    ])
+                );
+            // useCategories: catA, catB, catC
+            case '/rest/catalogs/categories?codes=catA%2CcatB%2CcatC&is_root=0&locale=en_US':
+                return Promise.resolve(
+                    JSON.stringify([
+                        {
+                            code: 'catA',
+                            label: '[catA]',
+                            isLeaf: false,
+                        },
+                        {
+                            code: 'catB',
+                            label: '[catB]',
+                            isLeaf: true,
+                        },
+                        {
+                            code: 'catC',
+                            label: '[catC]',
+                            isLeaf: false,
+                        },
+                    ])
+                );
+            default:
+                throw Error(req.url);
+        }
+    });
+});
+
 test('it renders the selected categories', async () => {
-    const categories = [
-        {
-            code: 'catA',
-            label: '[catA]',
-            isLeaf: false,
-        },
-        {
-            code: 'catB',
-            label: '[catB]',
-            isLeaf: true,
-        },
-    ];
-
-    fetchMock.mockResponseOnce(JSON.stringify(categories));
-
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
@@ -96,21 +170,6 @@ test('it calls onRemove when criterion is removed', () => {
 });
 
 test('it calls onChange when the operator changes', () => {
-    const categories = [
-        {
-            code: 'catA',
-            label: '[catA]',
-            isLeaf: false,
-        },
-        {
-            code: 'catB',
-            label: '[catB]',
-            isLeaf: true,
-        },
-    ];
-
-    fetchMock.mockResponseOnce(JSON.stringify(categories));
-
     const onChange = jest.fn();
 
     render(
@@ -136,20 +195,6 @@ test('it calls onChange when the operator changes', () => {
 });
 
 test('it hides value field and resets selected value when operator value is unclassified', async () => {
-    const categories = [
-        {
-            code: 'catA',
-            label: 'Category A',
-            isLeaf: false,
-        },
-        {
-            code: 'catB',
-            label: 'Category B',
-            isLeaf: true,
-        },
-    ];
-
-    fetchMock.mockResponseOnce(JSON.stringify(categories));
     const onChange = jest.fn();
 
     render(
@@ -165,7 +210,7 @@ test('it hides value field and resets selected value when operator value is uncl
         </ThemeProvider>
     );
 
-    await waitFor(() => screen.findByText('Category A'));
+    await waitFor(() => screen.findByText('[catA]'));
 
     changeOperatorValueTo(Operator.UNCLASSIFIED);
 
@@ -228,54 +273,6 @@ test('it calls onChange with remaining items when removing category from selecti
 });
 
 test('it calls onChange with categories selected from category tree selector ', async () => {
-    const categories = [
-        {
-            code: 'catA',
-            label: '[catA]',
-            isLeaf: false,
-        },
-        {
-            code: 'catB',
-            label: '[catB]',
-            isLeaf: true,
-        },
-    ];
-
-    const categoryTree = [
-        {
-            code: 'master',
-            label: '[master]',
-            isLeaf: false,
-        },
-        {
-            code: 'print',
-            label: '[print]',
-            isLeaf: false,
-        },
-    ];
-
-    const masterChildren = [
-        {
-            code: 'childA',
-            label: '[childA]',
-            isLeaf: true,
-        },
-        {
-            code: 'childB',
-            label: '[childB]',
-            isLeaf: false,
-        },
-    ];
-
-    fetchMock.mockResponses(
-        //useCategories with catA, catB, and catC
-        JSON.stringify(categories),
-        //useCategoryTrees
-        JSON.stringify(categoryTree),
-        //useChildren for master
-        JSON.stringify(masterChildren)
-    );
-
     const onChange = jest.fn();
 
     render(
@@ -314,64 +311,6 @@ test('it calls onChange with categories selected from category tree selector ', 
 });
 
 test('it calls onChange with categories selected from a different tree selector ', async () => {
-    const categories = [
-        {
-            code: 'catA',
-            label: '[catA]',
-            isLeaf: false,
-        },
-        {
-            code: 'catB',
-            label: '[catB]',
-            isLeaf: true,
-        },
-    ];
-
-    const categoryTree = [
-        {
-            code: 'master',
-            label: '[master]',
-            isLeaf: false,
-        },
-        {
-            code: 'print',
-            label: '[print]',
-            isLeaf: false,
-        },
-    ];
-
-    const masterChildren = [
-        {
-            code: 'childA',
-            label: '[childA]',
-            isLeaf: true,
-        },
-        {
-            code: 'childB',
-            label: '[childB]',
-            isLeaf: false,
-        },
-    ];
-
-    const printChildren = [
-        {
-            code: 'childC',
-            label: '[childC]',
-            isLeaf: false,
-        },
-    ];
-
-    fetchMock.mockResponses(
-        //useCategories with catA, catB, and catC
-        JSON.stringify(categories),
-        //useCategoryTrees
-        JSON.stringify(categoryTree),
-        //useChildren for master
-        JSON.stringify(masterChildren),
-        //useChildren for print
-        JSON.stringify(printChildren)
-    );
-
     const onChange = jest.fn();
 
     render(

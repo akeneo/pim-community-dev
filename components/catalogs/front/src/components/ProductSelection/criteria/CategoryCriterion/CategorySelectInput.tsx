@@ -7,6 +7,7 @@ import {Category} from '../../models/Category';
 import {CategorySelector} from './CategorySelector';
 import {useCategoriesByCodes} from '../../hooks/useCategoriesByCodes';
 import {Dropdown} from 'akeneo-design-system';
+import {useSelectedTree} from '../../hooks/useSelectedTree';
 
 const TreeDropdown = styled(Dropdown.Overlay)`
     margin-top: 0;
@@ -25,9 +26,9 @@ type Props = {
 
 const CategorySelectInput: FC<Props> = ({state, onChange, isInvalid}) => {
     const [isOpen, setOpen] = useState<boolean>();
-    const [selectedTree, setSelectedTree] = useState<Category | null>(null);
     const dropdownParentRef = useRef<HTMLDivElement>(null);
     const {data: selectedCategories, isLoading} = useCategoriesByCodes(state.value);
+    const [selectedTree, setSelectedTree] = useSelectedTree();
 
     if (isLoading || selectedCategories === undefined) {
         return null;
@@ -46,16 +47,16 @@ const CategorySelectInput: FC<Props> = ({state, onChange, isInvalid}) => {
                 onEmptySpaceClick={() => setOpen(true)}
             />
             <DropdownParent ref={dropdownParentRef} />
-            {isOpen && (
+            {isOpen && selectedTree && (
                 <TreeDropdown verticalPosition='down' onClose={() => setOpen(false)} parentRef={dropdownParentRef}>
                     <CategoryTreeSelector selectedTree={selectedTree} onChange={setSelectedTree} />
-                    {selectedTree && (
+                    {
                         <CategorySelector
                             root={selectedTree}
                             selectedCategories={selectedCategories}
                             onCategorySelect={handleCategorySelection}
                         />
-                    )}
+                    }
                 </TreeDropdown>
             )}
         </>
