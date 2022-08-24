@@ -27,7 +27,7 @@ export const useCategoryTreeRoots = (): Result => {
                 [categoryTreeRoot]
             );
         });
-    }, [categoryTreeRoots, queryClient]);
+    }, [categoryTreeRoots, queryClient, locale]);
 
     return {
         isLoading,

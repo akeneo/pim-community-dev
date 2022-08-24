@@ -6,22 +6,32 @@ import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 import fetchMock from 'jest-fetch-mock';
 import {useCategoriesByCodes} from './useCategoriesByCodes';
 
+beforeEach(() => {
+    fetchMock.mockResponse(req => {
+        switch (req.url) {
+            // useCategories: catA, catB
+            case '/rest/catalogs/categories?codes=catA%2CcatB&is_root=0&locale=en_US':
+                return Promise.resolve(
+                    JSON.stringify([
+                        {
+                            code: 'catA',
+                            label: 'Category A',
+                            isLeaf: false,
+                        },
+                        {
+                            code: 'catB',
+                            label: 'Category B',
+                            isLeaf: true,
+                        },
+                    ])
+                );
+            default:
+                throw Error(req.url);
+        }
+    });
+});
+
 test('it fetches categories', async () => {
-    const categories = [
-        {
-            code: 'catA',
-            label: 'Category A',
-            isLeaf: false,
-        },
-        {
-            code: 'catB',
-            label: 'Category B',
-            isLeaf: true,
-        },
-    ];
-
-    fetchMock.mockResponses(JSON.stringify(categories));
-
     const {result, waitForNextUpdate} = renderHook(() => useCategoriesByCodes(['catA', 'catB']), {
         wrapper: ReactQueryWrapper,
     });
@@ -29,6 +39,7 @@ test('it fetches categories', async () => {
     expect(result.current).toMatchObject({
         isLoading: true,
         isError: false,
+        error: null,
         data: [
             {
                 code: 'catA',
@@ -41,7 +52,6 @@ test('it fetches categories', async () => {
                 isLeaf: true,
             },
         ],
-        error: null,
     });
 
     await waitForNextUpdate();
@@ -49,7 +59,18 @@ test('it fetches categories', async () => {
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,
-        data: categories,
         error: null,
+        data: [
+            {
+                code: 'catA',
+                label: 'Category A',
+                isLeaf: false,
+            },
+            {
+                code: 'catB',
+                label: 'Category B',
+                isLeaf: true,
+            },
+        ],
     });
 });
