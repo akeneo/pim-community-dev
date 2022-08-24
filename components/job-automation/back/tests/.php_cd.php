@@ -51,7 +51,6 @@ $rules = [
             'Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException',
             'Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue',
             'Akeneo\UserManagement\ServiceApi',
-            'Akeneo\UserManagement\Domain\Model',
 
             'League\Flysystem\Filesystem',
             'League\Flysystem\PhpseclibV2',
