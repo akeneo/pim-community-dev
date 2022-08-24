@@ -1,0 +1,10 @@
+apiVersion: v2
+name: external-dns
+description: External DNS
+icon: https://raw.githubusercontent.com/akeneo/pim-community-dev/master/public/favicon.ico
+version: 0.0.0
+appVersion: 6.7.5
+dependencies:
+  - name: external-dns
+    version: 6.7.5
+    repository: https://charts.bitnami.com/bitnami

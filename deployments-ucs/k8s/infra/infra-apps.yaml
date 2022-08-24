@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: infra-apps
+  namespace: argocd
+spec:
+  project: infra
+  source:
+    repoURL: https://github.com/akeneo/pim-enterprise-dev.git
+    path: deployments-ucs/k8s/infra/apps
+    targetRevision: master
+    helm:
+      parameters:
+        - name: spec.source.targetRevision
+          value: $ARGOCD_APP_SOURCE_TARGET_REVISION
+  destination:
+    server: "https://kubernetes.default.svc"

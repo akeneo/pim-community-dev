@@ -1,0 +1,11 @@
+resources:
+  requests:
+    memory: 64mi
+    cpu: 100m
+  limits:
+    memory: 128mi
+    cpu: 200m
+
+labelFilter: kubernetes.io/ingress.class in (nginx-internal)
+nodeSelector:
+  iam.gke.io/gke-metadata-server-enabled: true
