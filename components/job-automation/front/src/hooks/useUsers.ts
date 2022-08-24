@@ -27,7 +27,7 @@ const useUsers = () => {
     if (availableUsers.length !== 0) {
       setAvailableUsers(response.ok ? [...availableUsers, ...data] : availableUsers);
     }
-  }, [availableUsers]);
+  }, [availableUsers, route]);
 
   useEffect(() => {
     const fetchUsers = async () => {

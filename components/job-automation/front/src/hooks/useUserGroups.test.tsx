@@ -1,6 +1,5 @@
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
 import {useUserGroups} from './useUserGroups';
-import {useUsers} from './useUsers';
 import TestRenderer from 'react-test-renderer';
 
 const {act} = TestRenderer;

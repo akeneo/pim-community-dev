@@ -27,7 +27,7 @@ const useUserGroups = () => {
     if (availableUserGroups.length !== 0) {
       setAvailableUserGroups(response.ok ? [...availableUserGroups, ...data] : availableUserGroups);
     }
-  }, [availableUserGroups]);
+  }, [availableUserGroups, route]);
 
   useEffect(() => {
     const fetchUserGroups = async (searchAfterId: number | null) => {
@@ -45,7 +45,7 @@ const useUserGroups = () => {
     };
 
     void fetchUserGroups(null);
-  }, []);
+  }, [route]);
 
   return {availableUserGroups, loadNextPage};
 };
