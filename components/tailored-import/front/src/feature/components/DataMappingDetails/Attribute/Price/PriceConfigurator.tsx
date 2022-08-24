@@ -1,6 +1,5 @@
 import React from 'react';
-import {Field, Helper, SelectInput} from 'akeneo-design-system';
-import {filterErrors, useTranslate, getLabel, useUserContext} from '@akeneo-pim-community/shared';
+import {filterErrors, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
 import {isPriceTarget, PriceSourceConfiguration} from './model';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
@@ -22,8 +21,6 @@ const PriceConfigurator = ({
     throw new InvalidAttributeTargetError(`Invalid target data "${dataMapping.target.code}" for price configurator`);
   }
 
-  const catalogLocale = useUserContext().get('catalogLocale');
-  const translate = useTranslate();
   const decimalSeparatorErrors = filterErrors(validationErrors, '[target][decimal_separator]');
   const currencyErrors = filterErrors(validationErrors, '[target][currency]');
 
