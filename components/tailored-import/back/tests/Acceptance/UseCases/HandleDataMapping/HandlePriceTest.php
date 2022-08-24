@@ -92,8 +92,8 @@ final class HandlePriceTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         valueUserIntents: [
-                            new SetPriceValue('gross_price', null, null, new PriceValue('10.000000000000', 'EUR')),
-                            new SetPriceValue('net_price', 'ecommerce', 'fr_FR', new PriceValue('60.500000000000', 'USD')),
+                            new SetPriceValue('gross_price', null, null, new PriceValue('10', 'EUR')),
+                            new SetPriceValue('net_price', 'ecommerce', 'fr_FR', new PriceValue('60.5', 'USD')),
                         ],
                     ),
                     [],
@@ -148,8 +148,8 @@ final class HandlePriceTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         valueUserIntents: [
-                            new SetPriceValue('gross_price', null, null, new PriceValue('10.000000000000', 'EUR')),
-                            new SetPriceValue('gross_price', null, null, new PriceValue('60.000000000000', 'USD')),
+                            new SetPriceValue('gross_price', null, null, new PriceValue('10', 'EUR')),
+                            new SetPriceValue('gross_price', null, null, new PriceValue('60', 'USD')),
                         ],
                     ),
                     [],
@@ -223,7 +223,7 @@ final class HandlePriceTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         valueUserIntents: [
-                            new SetPriceValue('gross_price', null, null, new PriceValue('2022.000000000000', 'EUR')),
+                            new SetPriceValue('gross_price', null, null, new PriceValue('2022', 'EUR')),
                         ],
                     ),
                     [
