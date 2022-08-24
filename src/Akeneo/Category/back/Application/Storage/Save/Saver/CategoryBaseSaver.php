@@ -21,7 +21,7 @@ class CategoryBaseSaver implements CategorySaver
      */
     public function __construct(
         private UpsertCategoryBase $upsertCategoryBase,
-        private array $supportedUserIntents
+        private array $supportedUserIntents,
     ) {
     }
 

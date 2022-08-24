@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -16,12 +17,14 @@ use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryBaseSql;
 use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryTranslationsSql;
+use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
 use Doctrine\DBAL\Connection;
 
 trait CategoryTestCase
 {
     /**
      * @param array<string, string>|null $labels
+     *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */
@@ -29,7 +32,7 @@ trait CategoryTestCase
         string $code,
         ?int $id = null,
         ?array $labels = [],
-        ?int $parentId = null
+        ?int $parentId = null,
     ): Category {
         $categoryId = (null === $id ? null : new CategoryId($id));
         $parentId = (null === $parentId ? null : new CategoryId($parentId));
@@ -46,78 +49,50 @@ trait CategoryTestCase
             id: $categoryId,
             code: new Code($code),
             labelCollection: LabelCollection::fromArray($labels),
-            parentId: $parentId
+            parentId: $parentId,
         );
 
         // Insert the category in pim_catalog_category
         $upsertCategoryBaseQuery->execute($categoryModelToCreate);
 
         // Get the data of the newly inserted category from pim_catalog_category
-        //FIXME: GRF-273 use the getCategorySql query instead when it's been fixed when querying a category with no labels
-//        $getCategory = $this->get(GetCategorySql::class);
-//        $categoryBaseData = $getCategory->byCode((string) $categoryModelToCreate->getCode());
-        $categoryBaseData = $this->getCategoryBaseDataByCode((string) $categoryModelToCreate->getCode());
+        $getCategory = $this->get(GetCategorySql::class);
+        /** @var Category $categoryBase */
+        $categoryBase = $getCategory->byCode((string) $categoryModelToCreate->getCode());
         $parentId = (
-            !isset($categoryBaseData['parent_id'])
+            $categoryBase->getParentId() === null
                 ? null
-                : new CategoryId((int) $categoryBaseData['parent_id'])
+                : new CategoryId($categoryBase->getParentId()->getValue())
         )
         ;
         $categoryModelWithId = new Category(
-            new CategoryId((int) $categoryBaseData['id']),
-            new Code($categoryBaseData['code']),
+            new CategoryId($categoryBase->getId()->getValue()),
+            new Code((string) $categoryBase->getCode()),
             $categoryModelToCreate->getLabelCollection(),
-            $parentId
+            $parentId,
         );
         $upsertCategoryTranslationsQuery->execute($categoryModelWithId);
 
         $categoryTranslationsData = $this->getCategoryTranslationsDataByCategoryCode((string) $categoryModelToCreate->getCode());
 
         $createdParentId = (
-            $categoryBaseData['parent_id'] > 0 ?
-            new CategoryId((int) $categoryBaseData['parent_id'])
+            $categoryBase->getParentId()->getValue() > 0 ?
+            new CategoryId($categoryBase->getParentId()->getValue())
             : null
         );
 
         // Instantiate a new Category model based on data fetched in database
         return new Category(
-            new CategoryId((int) $categoryBaseData['id']),
-            new Code($categoryBaseData['code']),
+            new CategoryId($categoryBase->getId()->getValue()),
+            new Code((string) $categoryBase->getCode()),
             LabelCollection::fromArray($categoryTranslationsData),
-            $createdParentId
+            $createdParentId,
         );
     }
 
     /**
      * @return array<string, string>
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
-     */
-    private function getCategoryBaseDataByCode(string $code): array
-    {
-        // TODO use dedicated GetCategory class when checking 'root' properties in Category model will be possible
-        /** @var Connection $connection */
-        $connection = $this->get('database_connection');
-
-        $query = <<< SQL
-            SELECT * 
-            FROM pim_catalog_category
-            WHERE code=:category_code
-        SQL;
-
-        return $connection->executeQuery(
-            $query,
-            [
-                'category_code' => $code,
-            ],
-            [
-                'category_code' => \PDO::PARAM_STR,
-            ]
-        )->fetchAssociative();
-    }
-
-    /**
-     * @return array<string, string>
+     *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */
@@ -143,7 +118,7 @@ trait CategoryTestCase
             ],
             [
                 'category_code' => \PDO::PARAM_STR,
-            ]
+            ],
         )->fetchAssociative();
 
         if (false === $result || empty($result['translations'])) {

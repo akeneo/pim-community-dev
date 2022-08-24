@@ -21,7 +21,7 @@ class CategoryTranslationsSaver implements CategorySaver
      */
     public function __construct(
         private UpsertCategoryTranslations $upsertCategoryTranslations,
-        private array $supportedUserIntents
+        private array $supportedUserIntents,
     ) {
     }
 

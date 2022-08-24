@@ -15,23 +15,16 @@ use Webmozart\Assert\Assert;
  */
 class CategorySaverRegistry
 {
-    /** @var array<string, CategorySaverProcessor>  */
+    /** @var array<string, CategorySaver> */
     private array $categorySaverByUserIntent;
 
+    /**
+     * @param iterable<string, CategorySaver> $categorySavers
+     */
     public function __construct(
-        private iterable $categorySavers
+        private iterable $categorySavers,
     ) {
-        foreach ($this->categorySavers as $categorySaver) {
-            Assert::isInstanceOf($categorySaver, CategorySaver::class);
-            $supportedUserIntents = $categorySaver->getSupportedUserIntents();
-            foreach ($supportedUserIntents as $userIntentName) {
-                if (\array_key_exists($userIntentName, $this->categorySaverByUserIntent ?? [])) {
-                    //TODO: this is to discuss with the team
-                    throw new \LogicException(\sprintf('There cannot be more than one category saver supporting user intent: %s', $userIntentName));
-                }
-                $this->categorySaverByUserIntent[$userIntentName] = $categorySaver;
-            }
-        }
+        $this->sortCategorySaversByUserIntent($this->categorySavers);
     }
 
     public function fromUserIntent(string $userIntentClassName): CategorySaver
@@ -42,5 +35,22 @@ class CategorySaverRegistry
         }
 
         return $saver;
+    }
+
+    /**
+     * @param iterable<string, CategorySaver> $categorySavers
+     */
+    private function sortCategorySaversByUserIntent(iterable $categorySavers): void
+    {
+        foreach ($this->categorySavers as $categorySaver) {
+            Assert::isInstanceOf($categorySaver, CategorySaver::class);
+            $supportedUserIntents = $categorySaver->getSupportedUserIntents();
+            foreach ($supportedUserIntents as $userIntentName) {
+                if (\array_key_exists($userIntentName, $this->categorySaverByUserIntent ?? [])) {
+                    throw new \LogicException(\sprintf('There cannot be more than one category saver supporting user intent: %s', $userIntentName));
+                }
+                $this->categorySaverByUserIntent[$userIntentName] = $categorySaver;
+            }
+        }
     }
 }

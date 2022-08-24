@@ -27,16 +27,16 @@ class CategorySaverRegistrySpec extends ObjectBehavior
     }
 
     function it_returns_the_saver_related_to_a_user_intent(
-        \Akeneo\Category\Application\Storage\Save\Saver\CategoryBaseSaver         $baseSaver,
-        \Akeneo\Category\Application\Storage\Save\Saver\CategoryTranslationsSaver $translationsSaver,
+        CategoryBaseSaver $baseSaver,
+        CategoryTranslationsSaver $translationsSaver,
     ) {
         $this->fromUserIntent(SetCode::class)->shouldReturn($baseSaver);
         $this->fromUserIntent(SetLabel::class)->shouldReturn($translationsSaver);
     }
 
     function it_should_throw_an_exception_when_the_same_user_intent_has_more_than_one_related_saver(
-        CategoryBaseSaver                                                         $baseSaver,
-        \Akeneo\Category\Application\Storage\Save\Saver\CategoryTranslationsSaver $translationsSaver,
+        CategoryBaseSaver $baseSaver,
+        CategoryTranslationsSaver $translationsSaver,
     )
     {
         $baseSaver->getSupportedUserIntents()->willReturn([SetCode::class]);
@@ -47,7 +47,7 @@ class CategorySaverRegistrySpec extends ObjectBehavior
     }
 
     function it_should_throw_an_exception_when_the_user_intent_has_no_related_saver(
-        \Akeneo\Category\Application\Storage\Save\Saver\CategoryTranslationsSaver $translationsSaver,
+        CategoryTranslationsSaver $translationsSaver,
     )
     {
         $translationsSaver->getSupportedUserIntents()->willReturn([SetLabel::class]);

@@ -6,7 +6,6 @@ namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Domain\Model\Category;
-use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -25,8 +24,6 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     }
 
     /**
-     * @param Category $categoryModel
-     * @return void
      * @throws Exception
      * @throws \Doctrine\DBAL\Driver\Exception
      */
@@ -40,8 +37,6 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     }
 
     /**
-     * @param Category $categoryModel
-     * @return void
      * @throws Exception
      */
     private function insertCategory(Category $categoryModel): void
@@ -54,7 +49,6 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
             ;
         SQL;
 
-        // Note: root value has no meaning yet, it will be updated after insert query is executed
         $this->connection->executeQuery(
             $query,
             [
@@ -95,8 +89,6 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     }
 
     /**
-     * @param Category $categoryModel
-     * @return void
      * @throws Exception
      */
     private function updateCategory(Category $categoryModel): void
@@ -137,8 +129,6 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     }
 
     /**
-     * @param Code $code
-     * @return bool
      * @throws Exception
      * @throws \Doctrine\DBAL\Driver\Exception
      */

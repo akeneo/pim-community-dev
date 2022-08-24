@@ -74,10 +74,10 @@ class Category
     public function normalize(): array
     {
         return [
-            'id' => $this->getId()->getId(),
+            'id' => $this->getId()->getValue(),
             'code' => (string) $this->getCode(),
             'labels' => $this->getLabelCollection()->normalize(),
-            'parent' => $this->getParentId()?->getId(),
+            'parent' => $this->getParentId()?->getValue(),
             'values' => $this->getValueCollection()->normalize(),
             'permissions' => $this->getPermissionCollection()->normalize(),
         ];

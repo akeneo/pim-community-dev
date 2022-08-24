@@ -25,11 +25,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UpsertCategoryCommandHandler
 {
     public function __construct(
-        private ValidatorInterface        $validator,
-        private FindCategoryByCode        $findCategoryByCode,
+        private ValidatorInterface $validator,
+        private FindCategoryByCode $findCategoryByCode,
         private UserIntentApplierRegistry $applierRegistry,
-        private EventDispatcherInterface  $eventDispatcher,
-        private CategorySaverProcessor    $saver,
+        private EventDispatcherInterface $eventDispatcher,
+        private CategorySaverProcessor $saver,
     ) {
     }
 

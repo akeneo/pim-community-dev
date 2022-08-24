@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -12,9 +13,5 @@ use Akeneo\Category\Domain\Model\Category;
 
 interface UpsertCategoryBase
 {
-    /**
-     * @param Category $categoryModel
-     * @return void
-     */
     public function execute(Category $categoryModel): void;
 }

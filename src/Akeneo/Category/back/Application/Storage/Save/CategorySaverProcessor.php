@@ -20,7 +20,8 @@ use Akeneo\Category\Domain\Model\Category;
 class CategorySaverProcessor
 {
     /**
-     * List of expected savers: it also ensures the order in which the savers will be executed
+     * List of expected savers: it also ensures the order in which the savers will be executed.
+     *
      * @var array<string, mixed>
      */
     private array $saversExecutionOrder = [
@@ -29,14 +30,12 @@ class CategorySaverProcessor
     ];
 
     public function __construct(
-        private CategorySaverRegistry $categorySaverRegistry
+        private CategorySaverRegistry $categorySaverRegistry,
     ) {
     }
 
     /**
-     * @param Category $categoryModel
      * @param UserIntent[] $userIntents
-     * @return void
      */
     public function save(Category $categoryModel, array $userIntents): void
     {
@@ -57,7 +56,7 @@ class CategorySaverProcessor
         }
 
         foreach ($this->saversExecutionOrder as $saver) {
-            /** @var CategorySaverInterface $saver */
+            /* @var CategorySaverInterface $saver */
             $saver->save($categoryModel);
         }
     }
@@ -68,7 +67,7 @@ class CategorySaverProcessor
             !\array_key_exists($key, $this->saversExecutionOrder)
             || null !== $this->saversExecutionOrder[$key]
         ) {
-            throw new \LogicException(\sprintf("The saver has already been set for execution: %s", $saver::class));
+            throw new \LogicException(\sprintf('The saver has already been set for execution: %s', $saver::class));
         }
 
         $this->saversExecutionOrder[$key] = $saver;

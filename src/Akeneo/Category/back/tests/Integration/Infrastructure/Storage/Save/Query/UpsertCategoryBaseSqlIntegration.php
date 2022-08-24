@@ -21,8 +21,6 @@ use Akeneo\Test\Integration\TestCase;
 
 class UpsertCategoryBaseSqlIntegration extends TestCase
 {
-    use CategoryTestCase;
-
     public function testInsertNewCategoryInDatabase(): void
     {
         /** @var UpsertCategoryBaseSql $upsertCategoryBaseQuery */
@@ -38,14 +36,12 @@ class UpsertCategoryBaseSqlIntegration extends TestCase
         );
 
         $upsertCategoryBaseQuery->execute($category);
-        $result = $this->getCategoryBaseDataByCode((string) $category->getCode());
-        //TODO : use the getCategorySql query instead when it's been fixed when querying a category with no labels
-//        $getCategory = $this->get(GetCategorySql::class);
-//        $result = $getCategory->byCode((string) $category->getCode());
+        $getCategory = $this->get(GetCategorySql::class);
+        /** @var Category $result */
+        $result = $getCategory->byCode((string) $category->getCode());
 
         $this->assertNotNull($result);
-        $this->assertSame((string) $category->getCode(), $result['code']);
-        $this->assertSame($result['id'], $result['root']);
+        $this->assertSame((string) $category->getCode(), (string) $result->getCode());
     }
 
     public function testUpdateExistingCategoryInDatabase(): void
@@ -63,28 +59,26 @@ class UpsertCategoryBaseSqlIntegration extends TestCase
         );
 
         $upsertCategoryBaseQuery->execute($category);
-        $createdCategoryData = $this->getCategoryBaseDataByCode((string) $category->getCode());
-        //TODO : use the getCategorySql query instead when it's been fixed when querying a category with no labels
-//        $getCategory = $this->get(GetCategorySql::class);
-//        $createdCategoryData = $getCategory->byCode((string) $category->getCode());
-        $this->assertNotNull($createdCategoryData);
+        $getCategory = $this->get(GetCategorySql::class);
+        /** @var Category $createdCategory */
+        $createdCategory = $getCategory->byCode((string) $category->getCode());
+        $this->assertNotNull($createdCategory);
 
         $updatedCategory = new Category(
             null,
             new Code('updatedCode'),
             LabelCollection::fromArray([]),
-            new CategoryId((int) $createdCategoryData['id'])
+            new CategoryId($createdCategory->getId()->getValue())
         );
 
         $upsertCategoryBaseQuery->execute($updatedCategory);
-        $editedCategoryData = $this->getCategoryBaseDataByCode((string) $updatedCategory->getCode());
-        //TODO : use the getCategorySql query instead when it's been fixed when querying a category with no labels
-//        $getCategory = $this->get(GetCategorySql::class);
-//        $editedCategoryData = $getCategory->byCode((string) $category->getCode());
+        $getCategory = $this->get(GetCategorySql::class);
+        /** @var Category $editedCategoryData */
+        $editedCategoryData = $getCategory->byCode((string) $updatedCategory->getCode());
 
         $this->assertNotNull($editedCategoryData);
-        $this->assertSame((string) $updatedCategory->getCode(), $editedCategoryData['code']);
-        $this->assertSame($updatedCategory->getParentId()?->getValue(), (int) $editedCategoryData['parent_id']);
+        $this->assertSame((string) $updatedCategory->getCode(), (string) $editedCategoryData->getCode());
+        $this->assertSame($updatedCategory->getParentId()?->getValue(), (int) $editedCategoryData->getParentId()->getValue());
     }
 
     protected function getConfiguration(): Configuration
