@@ -6,6 +6,12 @@ import {UsersForm} from './UsersForm';
 
 let mockedGrantedACL = ['pim_user_user_index'];
 
+const intersectionObserverMock = () => ({
+  observe: () => null,
+  unobserve: () => null,
+});
+window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+
 jest.mock('@akeneo-pim-community/shared/lib/hooks/useSecurity', () => ({
   useSecurity: () => ({
     isGranted: (acl: string) => {
@@ -16,7 +22,18 @@ jest.mock('@akeneo-pim-community/shared/lib/hooks/useSecurity', () => ({
 
 jest.mock('../hooks/useUsers', () => ({
   useUsers: () => {
-    return ['admin', 'julia', 'julien', 'mary', 'pamela', 'peter', 'sandra'];
+    return {
+      availableUsers: [
+        {id: 1, username: 'admin'},
+        {id: 2, username: 'julia'},
+        {id: 3, username: 'julien'},
+        {id: 4, username: 'mary'},
+        {id: 5, username: 'pamela'},
+        {id: 6, username: 'peter'},
+        {id: 7, username: 'sandra'},
+      ],
+      loadNextPage: () => [],
+    };
   },
 }));
 

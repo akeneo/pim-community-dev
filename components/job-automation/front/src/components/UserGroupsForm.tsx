@@ -1,7 +1,7 @@
 import React from 'react';
-import {Field, SelectInput, Helper, MultiSelectInput} from 'akeneo-design-system';
+import {Field, SelectInput, Helper, MultiSelectInput, useDebounce} from 'akeneo-design-system';
 import {useSecurity, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {filterDefaultUserGroup} from '../models';
+import {removeDefaultUserGroup} from '../models';
 import {useUserGroups} from '../hooks';
 
 type UserGroupsFormProps = {
@@ -20,23 +20,26 @@ const UserGroupsForm = ({
   disabledHelperMessage,
 }: UserGroupsFormProps) => {
   const translate = useTranslate();
-  const availableUserGroups = useUserGroups();
+  const {availableUserGroups, loadNextPage, searchName} = useUserGroups();
   const {isGranted} = useSecurity();
+  const debouncedLoadNextPage = useDebounce(loadNextPage);
 
   return (
     <Field label={label}>
       <MultiSelectInput
-        value={filterDefaultUserGroup(userGroups)}
+        value={userGroups}
         onChange={onUserGroupsChange}
+        onNextPage={debouncedLoadNextPage}
+        onSearchChange={searchName}
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
         removeLabel={translate('pim_common.remove')}
         readOnly={!isGranted('pim_user_group_index')}
         invalid={0 < validationErrors.length}
       >
-        {filterDefaultUserGroup(availableUserGroups).map(availableUserGroup => (
-          <SelectInput.Option value={availableUserGroup} key={availableUserGroup}>
-            {availableUserGroup}
+        {removeDefaultUserGroup(availableUserGroups).map((userGroupLabel: string) => (
+          <SelectInput.Option value={userGroupLabel} key={userGroupLabel}>
+            {userGroupLabel}
           </SelectInput.Option>
         ))}
       </MultiSelectInput>

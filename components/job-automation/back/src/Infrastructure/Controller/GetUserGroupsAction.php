@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Controller;
 
-use Akeneo\Platform\JobAutomation\Application\GetUserGroups\GetUserGroupsHandler;
+use Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupInterface;
+use Akeneo\UserManagement\ServiceApi\UserGroup\UserGroup;
+use Akeneo\UserManagement\ServiceApi\UserGroup\UserGroupQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class GetUserGroupsAction
 {
     public function __construct(
-        private GetUserGroupsHandler $getUserGroupsHandler,
+        private ListUserGroupInterface $listUserGroup,
     ) {
     }
 
@@ -32,6 +34,17 @@ final class GetUserGroupsAction
             return new RedirectResponse('/');
         }
 
-        return new JsonResponse($this->getUserGroupsHandler->handle(), Response::HTTP_OK);
+        $searchAfterId = $request->query->get('search_after_id');
+        $searchName = $request->query->get('search_name');
+
+        $userGroups = array_map(
+            static fn (UserGroup $userGroup) => ['id' => $userGroup->getId(), 'label' => $userGroup->getLabel()],
+            $this->listUserGroup->fromQuery(new UserGroupQuery(
+                searchName: null !== $searchName ? $searchName : null,
+                searchAfterId: null !== $searchAfterId ? (int) $searchAfterId : null,
+            )),
+        );
+
+        return new JsonResponse($userGroups, Response::HTTP_OK);
     }
 }

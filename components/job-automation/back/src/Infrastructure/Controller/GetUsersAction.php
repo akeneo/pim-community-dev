@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Controller;
 
-use Akeneo\Platform\JobAutomation\Application\GetUsers\GetUsersHandler;
+use Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface;
+use Akeneo\UserManagement\ServiceApi\User\User;
+use Akeneo\UserManagement\ServiceApi\User\UsersQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class GetUsersAction
 {
     public function __construct(
-        private GetUsersHandler $getUsersHandler,
+        private ListUsersHandlerInterface $listUsersHandler,
     ) {
     }
 
@@ -32,6 +34,17 @@ final class GetUsersAction
             return new RedirectResponse('/');
         }
 
-        return new JsonResponse($this->getUsersHandler->handle(), Response::HTTP_OK);
+        $searchAfterId = $request->query->get('search_after_id');
+        $search = $request->query->get('search');
+
+        $users = \array_map(
+            static fn (User $user) => ['id' => $user->getId(), 'username' => $user->getUsername()],
+            $this->listUsersHandler->fromQuery(new UsersQuery(
+                search: null !== $search ? $search : null,
+                searchAfterId: null !== $searchAfterId ? (int) $searchAfterId : null,
+            )),
+        );
+
+        return new JsonResponse($users, Response::HTTP_OK);
     }
 }

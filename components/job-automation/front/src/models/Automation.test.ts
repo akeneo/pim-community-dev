@@ -1,8 +1,18 @@
-import {filterDefaultUserGroup} from './Automation';
+import {removeDefaultUserGroup} from './Automation';
 
 test('it remove the default user group', async () => {
-  expect(filterDefaultUserGroup([])).toEqual([]);
-  expect(filterDefaultUserGroup(['All'])).toEqual([]);
-  expect(filterDefaultUserGroup(['All', 'Support IT'])).toEqual(['Support IT']);
-  expect(filterDefaultUserGroup(['Manager', 'Support IT'])).toEqual(['Manager', 'Support IT']);
+  expect(removeDefaultUserGroup([])).toEqual([]);
+  expect(removeDefaultUserGroup([{id: 1, label: 'All'}])).toEqual([]);
+  expect(
+    removeDefaultUserGroup([
+      {id: 1, label: 'All'},
+      {id: 2, label: 'Support IT'},
+    ])
+  ).toEqual(['Support IT']);
+  expect(
+    removeDefaultUserGroup([
+      {id: 3, label: 'Manager'},
+      {id: 2, label: 'Support IT'},
+    ])
+  ).toEqual(['Manager', 'Support IT']);
 });
