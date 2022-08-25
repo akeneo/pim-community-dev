@@ -33,9 +33,9 @@ final class Version_7_0_20220823150400_add_supplier_portal_supplier_product_file
     }
 
     /** @test */
-    public function it_does_not_add_an_instance_of_the_supplier_portal_supplier_product_files_clean_job_if_present()
+    public function it_does_not_fail_if_an_instance_of_the_supplier_portal_supplier_product_files_clean_job_already_exists()
     {
-        $this->assertFalse($this->jobInstanceExists());
+        $this->createJobInstance();
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         $this->assertTrue($this->jobInstanceExists());
     }
@@ -45,7 +45,34 @@ final class Version_7_0_20220823150400_add_supplier_portal_supplier_product_file
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function deleteJobInstance()
+    private function createJobInstance(): void
+    {
+        $sql = <<<SQL
+            INSERT INTO akeneo_batch_job_instance
+                (`code`, `label`, `job_name`, `status`, `connector`, `raw_parameters`, `type`)
+            VALUES
+            (
+                :code,
+                :label,
+                :code,
+                0,
+                'Supplier Portal',
+                :raw_parameters,
+                'scheduled_job'
+            );
+        SQL;
+
+        $this->connection->executeStatement(
+            $sql,
+            [
+                'code' => 'supplier_portal_supplier_product_files_clean',
+                'label' => 'Clean old supplier product files',
+                'raw_parameters' => \serialize([])
+            ]
+        );
+    }
+
+    private function deleteJobInstance(): void
     {
         $this->connection->executeStatement(
             "DELETE FROM akeneo_batch_job_instance WHERE code = :job_instance_code",
