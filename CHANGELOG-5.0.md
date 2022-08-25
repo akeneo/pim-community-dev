@@ -1,5 +1,13 @@
 # 5.0.x
 
+# 5.0.111 (2022-08-25)
+
+# 5.0.110 (2022-08-23)
+
+## Bug fixes
+
+- PIM-10586: [Backport PIM-10436] Always process a IccStripOperation in AM transformation pipeline
+
 # 5.0.109 (2022-08-23)
 
 # 5.0.108 (2022-08-22)
@@ -36,11 +44,15 @@
 
 # 5.0.99 (2022-06-21)
 
+## Bug fixes
+
 - PIM-10489: Fix code cast on proposals
 
 # 5.0.98 (2022-06-08)
 
 # 5.0.97 (2022-05-30)
+
+## Bug fixes
 
 - PIM-10469: Fix code cast on forCode in EntityWithValuesDraftBuilder
 
@@ -54,11 +66,14 @@
 
 # 5.0.92 (2022-04-28)
 
+## Bug fixes
+
 - PIM-10415: [Backport PIM-10227] Fix filter not applied properly on the Asset manager grid
 
 # 5.0.91 (2022-04-13)
 
 ## Bug fixes
+
 - PIM-10397: Performance issues when patching products with many records via API
 
 # 5.0.90 (2022-04-06)
