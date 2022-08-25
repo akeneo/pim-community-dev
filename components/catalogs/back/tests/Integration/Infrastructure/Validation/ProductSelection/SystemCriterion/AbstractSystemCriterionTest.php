@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductSelection\SystemCriterion;
 
+use Akeneo\Catalogs\Application\Persistence\GetChannelLocalesQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\GetChannelQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetFamiliesByCodeQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelLocalesQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetFamiliesByCodeQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
@@ -14,20 +18,67 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 abstract class AbstractSystemCriterionTest extends IntegrationTestCase
 {
-    protected ?GetFamiliesByCodeQueryInterface $getFamiliesByCodeQuery;
+    protected ?GetChannelQueryInterface $getChannelQuery = null;
+    protected ?GetChannelLocalesQueryInterface $getChannelLocalesQuery = null;
+    protected ?GetFamiliesByCodeQueryInterface $getFamiliesByCodeQuery = null;
 
+    private array $channels = [];
+    private array $channelLocales = [];
     private array $families = [];
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->setupChannels();
+        $this->setupChannelLocales();
+        $this->setupFamilies();
+    }
+
+    protected function createFamily(array $familyData): void
+    {
+        $this->families[$familyData['code']] = $familyData;
+    }
+
+    private function setupChannels(): void
+    {
+        $this->channels = [
+            'ecommerce' => [
+                'code' => 'ecommerce',
+                'label' => 'E-commerce',
+            ],
+        ];
+
+        $this->getChannelQuery = $this->createMock(GetChannelQueryInterface::class);
+        $this->getChannelQuery
+            ->method('execute')
+            ->willReturnCallback(fn ($code) => $this->channels[$code] ?? null);
+        self::getContainer()->set(GetChannelQuery::class, $this->getChannelQuery);
+    }
+
+    private function setupChannelLocales(): void
+    {
+        $this->channelLocales = [
+            'ecommerce' => [
+                ['code' => 'en_US', 'label' => 'English'],
+            ],
+        ];
+
+        $this->getChannelLocalesQuery = $this->createMock(GetChannelLocalesQueryInterface::class);
+        $this->getChannelLocalesQuery
+            ->method('execute')
+            ->willReturnCallback(fn ($code) => $this->channelLocales[$code] ?? throw new \LogicException());
+        self::getContainer()->set(GetChannelLocalesQuery::class, $this->getChannelLocalesQuery);
+    }
+
+    private function setupFamilies(): void
+    {
         $this->families = [];
 
         $this->getFamiliesByCodeQuery = $this->createMock(GetFamiliesByCodeQueryInterface::class);
         $this->getFamiliesByCodeQuery
             ->method('execute')
-            ->willReturnCallback(function (array $codes, int $page = 1, int $limit = 20) : array {
+            ->willReturnCallback(function (array $codes, int $page = 1, int $limit = 20): array {
                 $filteredFamilies = \array_filter(
                     $this->families,
                     static fn (array $family) => \in_array($family['code'], $codes, true)
@@ -35,10 +86,5 @@ abstract class AbstractSystemCriterionTest extends IntegrationTestCase
                 return \array_slice($filteredFamilies, ($page - 1) * $limit, $limit);
             });
         self::getContainer()->set(GetFamiliesByCodeQuery::class, $this->getFamiliesByCodeQuery);
-    }
-
-    protected function createFamily(array $familyData): void
-    {
-        $this->families[$familyData['code']] = $familyData;
     }
 }
