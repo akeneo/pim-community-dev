@@ -44,7 +44,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
 
     private function addSupplierPortalXlsxSupplierImportJob(): void
     {
-        if ($this->SupplierPortalXlsxSupplierImportJobExists()) {
+        if ($this->supplierPortalXlsxSupplierImportJobExists()) {
             return;
         }
 
@@ -65,7 +65,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
         );
     }
 
-    private function SupplierPortalXlsxSupplierImportJobExists(): bool
+    private function supplierPortalXlsxSupplierImportJobExists(): bool
     {
         $sql = <<<SQL
             SELECT COUNT(*)
