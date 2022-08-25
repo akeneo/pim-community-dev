@@ -1,13 +1,13 @@
 locals {
   host_project_id = "akecld-prd-shared-infra"
   shared_vpc_name = "akecld-prd-shared-infra-dev-xpn"
-  project_id      = "akecld-prd-pim-saas-dev"
+  project_id      = "akecld-prd-pim-saas-sandbox"
   ci_sa           = "main-service-account@${local.project_id}.iam.gserviceaccount.com"
   admins          = ["group:phoenix-squad@akeneo.com"]
   viewers         = ["group:phoenix-squad@akeneo.com"]
   regions         = ["europe-west1"]
-  public_zone     = "pim-saas-dev.dev.cloud.akeneo.com"
-  private_zone    = "pim-saas-dev.dev.local"
+  public_zone     = "pim-saas-sandbox.dev.cloud.akeneo.com"
+  private_zone    = "pim-saas-sandbox.dev.local"
 }
 
 module "iam" {
@@ -35,7 +35,7 @@ module "gke" {
   viewer_members         = local.viewers
   admin_members          = local.admins
   min_master_version     = "1.23.7"
-  master_ipv4_cidr_block = "192.168.224.0/28"
+  master_ipv4_cidr_block = "192.168.224.16/28"
 
   node_pool_configs = [
     {
@@ -95,8 +95,8 @@ module "private_dns" {
 
 terraform {
   backend "gcs" {
-    bucket = "akecld-terraform-pim-saas-dev"
-    prefix = "infra/pim-saas/akecld-prd-pim-saas-dev"
+    bucket = "akecld-terraform-pim-saas-sandbox"
+    prefix = "infra/pim-saas/akecld-prd-pim-saas-sandbox"
   }
   required_version = "= 1.1.3"
 }

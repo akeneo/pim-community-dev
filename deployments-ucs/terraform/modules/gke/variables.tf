@@ -122,3 +122,8 @@ variable "min_master_version" {
   description = "Minimum control plane version"
   default     = "latest"
 }
+
+variable "master_ipv4_cidr_block" {
+  type = string
+  description = "Master subnet, to be removed"
+}

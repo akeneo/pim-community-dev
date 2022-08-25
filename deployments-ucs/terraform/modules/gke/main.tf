@@ -38,7 +38,7 @@ resource "google_container_cluster" "gke" {
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false
-    master_ipv4_cidr_block  = "192.168.224.0/28" ## TODO: replace when fixed
+    master_ipv4_cidr_block  = var.master_ipv4_cidr_block ## TODO: replace when fixed
     #master_ipv4_cidr_block = jsondecode(
     #  data.google_secret_manager_secret_version.network_config.secret_data
     #)[each.value].extra_ranges.gke

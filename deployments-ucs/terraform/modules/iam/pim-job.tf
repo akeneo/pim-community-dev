@@ -18,8 +18,6 @@ resource "google_service_account_iam_binding" "pim_sa_usage" {
 
   members = [
     "serviceAccount:${google_service_account.cloudconfig.email}",
-    "serviceAccount:${google_service_account.crossplane.email}",
-    "serviceAccount:ucs-crossplane-test-account@${var.project_id}.iam.gserviceaccount.com" ## To be removed
   ]
 }
 
