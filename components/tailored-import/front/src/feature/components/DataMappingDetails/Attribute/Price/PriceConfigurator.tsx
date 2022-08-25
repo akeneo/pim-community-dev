@@ -1,5 +1,5 @@
 import React from 'react';
-import {filterErrors, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {filterErrors} from '@akeneo-pim-community/shared';
 import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
 import {isPriceTarget, PriceSourceConfiguration} from './model';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
