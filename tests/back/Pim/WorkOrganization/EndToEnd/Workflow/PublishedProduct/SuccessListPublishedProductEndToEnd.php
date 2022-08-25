@@ -1120,6 +1120,44 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
+    public function testListPublishedProductWithAssociatedPublishedProduct(): void {
+        $product = $this->createProduct('published_product_with_associated_published_product', [
+            'associations'=> [
+                'X_SELL' => [
+                    'products' => ['simple']
+                ]
+            ]
+        ]);
+        $this->publishProduct($product);
+
+        $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/published-products');
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href": "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10"},
+        "first" : {"href": "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+		"items": [
+            {$standardizedPublishedProducts['simple']},
+            {$standardizedPublishedProducts['localizable']},
+            {$standardizedPublishedProducts['scopable']},
+            {$standardizedPublishedProducts['localizable_and_scopable']},
+            {$standardizedPublishedProducts['product_china']},
+            {$standardizedPublishedProducts['product_without_category2']},
+            {$standardizedPublishedProducts['published_product_with_associated_published_product']}
+		]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
     /**
      * @return array
      */
@@ -1336,6 +1374,26 @@ JSON;
     "updated": "2017-03-11T10:39:38+01:00",
     "associations": {},
     "quantified_associations": []
+}
+JSON;
+
+        $standardizedPublishedProducts['published_product_with_associated_published_product'] = <<<JSON
+{
+   "_links": {
+       "self": {
+           "href": "http://localhost/api/rest/v1/published-products/published_product_with_associated_published_product"
+       }
+   },
+   "identifier": "published_product_with_associated_published_product",
+   "family": null,
+   "groups": [],
+   "categories": [],
+   "enabled": true,
+   "values": {},
+   "created": "2017-03-11T10:39:38+01:00",
+   "updated": "2017-03-11T10:39:38+01:00",
+   "associations": {"PACK":{"groups":[],"products":[],"product_models":[]},"SUBSTITUTION":{"groups":[],"products":[],"product_models":[]},"UPSELL":{"groups":[],"products":[],"product_models":[]},"X_SELL":{"groups":[],"products":["simple"],"product_models":[]}},
+   "quantified_associations": []
 }
 JSON;
 
