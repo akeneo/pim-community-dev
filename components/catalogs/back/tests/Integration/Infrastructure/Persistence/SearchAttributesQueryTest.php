@@ -40,6 +40,13 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'scopable' => false,
                 'localizable' => false,
             ],
+            [
+                'code' => 'certified',
+                'label' => '[certified]',
+                'type' => 'pim_catalog_boolean',
+                'scopable' => false,
+                'localizable' => false,
+            ],
         ], $result);
     }
 

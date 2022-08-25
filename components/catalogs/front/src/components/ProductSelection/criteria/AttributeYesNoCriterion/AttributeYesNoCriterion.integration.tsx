@@ -102,7 +102,7 @@ test('it renders the scopable and localizable text attribute criterion', async (
 
     expect(await screen.findByText('Name')).toBeInTheDocument();
     expect(await screen.findByText(Operator.EQUALS)).toBeInTheDocument();
-    expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.yesNo.yes')).toBeInTheDocument();
+    expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.yes_no.yes')).toBeInTheDocument();
     expect(await screen.findByText('E-commerce')).toBeInTheDocument();
     expect(await screen.findByText('English')).toBeInTheDocument();
 });
@@ -129,7 +129,7 @@ test('it renders the scopable and non localizable text attribute criterion', asy
 
     expect(await screen.findByText('Name')).toBeInTheDocument();
     expect(await screen.findByText(Operator.NOT_EQUAL)).toBeInTheDocument();
-    expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.yesNo.no')).toBeInTheDocument();
+    expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.yes_no.no')).toBeInTheDocument();
     expect(await screen.findByText('E-commerce')).toBeInTheDocument();
     expect(screen.queryByTestId('locale')).not.toBeInTheDocument();
 });
@@ -156,7 +156,7 @@ test('it renders the non scopable and localizable text attribute criterion', asy
 
     expect(await screen.findByText('Name')).toBeInTheDocument();
     expect(await screen.findByText(Operator.EQUALS)).toBeInTheDocument();
-    expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.yesNo.yes')).toBeInTheDocument();
+    expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.yes_no.yes')).toBeInTheDocument();
     expect(screen.queryByTestId('scope')).not.toBeInTheDocument();
     expect(await screen.findByText('German')).toBeInTheDocument();
 });
@@ -308,7 +308,7 @@ test('it calls onChange when the value changes', () => {
         </ThemeProvider>
     );
 
-    changeInputTo('akeneo_catalogs.product_selection.criteria.yesNo.no');
+    changeInputTo('akeneo_catalogs.product_selection.criteria.yes_no.no');
 
     expect(onChange).toHaveBeenCalledWith({
         field: 'name_localizable_scopable',

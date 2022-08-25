@@ -46,7 +46,7 @@ akeneo_catalogs:
                 placeholder: Select your families
             completeness:
                 label: Completeness
-            yesNo:
+            yes_no:
                 yes: Yes
                 no: No
         operators:

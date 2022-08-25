@@ -23,10 +23,10 @@ const AttributeYesNoValueInput: FC<Props> = ({state, onChange, isInvalid}) => {
             data-testid='value'
         >
             <SelectInput.Option value='true'>
-                {translate('akeneo_catalogs.product_selection.criteria.yesNo.yes')}
+                {translate('akeneo_catalogs.product_selection.criteria.yes_no.yes')}
             </SelectInput.Option>
             <SelectInput.Option value='false'>
-                {translate('akeneo_catalogs.product_selection.criteria.yesNo.no')}
+                {translate('akeneo_catalogs.product_selection.criteria.yes_no.no')}
             </SelectInput.Option>
         </SelectInput>
     );

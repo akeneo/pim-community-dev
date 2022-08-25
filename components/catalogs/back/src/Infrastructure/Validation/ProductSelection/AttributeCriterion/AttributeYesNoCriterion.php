@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion;
 
+use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterionContainsValidLocale;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterionContainsValidScope;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\CriterionOperatorsRequireEmptyValue;
@@ -37,7 +38,12 @@ final class AttributeYesNoCriterion extends Compound
                         'operator' => [
                             new Assert\Type('string'),
                             new Assert\NotBlank(),
-                            new Assert\Choice(['=', '!=', 'EMPTY', 'NOT EMPTY']),
+                            new Assert\Choice([
+                                Operator::EQUALS,
+                                Operator::NOT_EQUAL,
+                                Operator::IS_EMPTY,
+                                Operator::IS_NOT_EMPTY
+                            ]),
                         ],
                         'value' => [
                             new Assert\Type('boolean'),
@@ -53,8 +59,8 @@ final class AttributeYesNoCriterion extends Compound
                     'allowExtraFields' => false,
                 ]),
                 new CriterionOperatorsRequireEmptyValue([
-                    'EMPTY',
-                    'NOT EMPTY',
+                    Operator::IS_EMPTY,
+                    Operator::IS_NOT_EMPTY,
                 ]),
                 new AttributeCriterionContainsValidScope(),
                 new AttributeCriterionContainsValidLocale(),

@@ -9,7 +9,7 @@ export default (state?: Partial<AttributeYesNoCriterionState>): AttributeYesNoCr
     return {
         field: state.field,
         operator: state?.operator ?? Operator.EQUALS,
-        value: state?.value ?? null,
+        value: state?.value ?? false,
         locale: state?.locale ?? null,
         scope: state?.scope ?? null,
     };
