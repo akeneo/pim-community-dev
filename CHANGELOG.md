@@ -66,6 +66,7 @@
 - PIM-10548: Fix rule engine does not display an error message when imported file does not contain the root level
 - PIM-10579: Fix Reference entity and asset normalizers and factory to handle disordered indexed arrays
 - PIM-10578: Fix the search on system filters in the rule engine UI
+- PIM-10592: Fix DQI score showing "In Progress" - data_quality_insights_evaluations returns an error
 
 ## Improvements
 
