@@ -57,7 +57,7 @@ export const useAttributeOptionsByCodes = (attribute: string, codes: string[], l
     return {
         isLoading: isLoading,
         isError: isError,
-        data: Object.values(cache),
+        data: Object.values(cache).filter(option => codes.includes(option.code)),
         error: error,
     };
 };
