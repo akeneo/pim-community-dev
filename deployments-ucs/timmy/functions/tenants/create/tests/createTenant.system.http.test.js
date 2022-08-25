@@ -11,7 +11,7 @@ const FUNCTION_URL = process.env.FUNCTION_URL || 'http://localhost:8080';
 
 describe('Test to create a new tenant', () => {
   it('createTenant: should create the new tenant', async() => {
-    const instanceName = "test"
+    const instanceName = "test2"
     const response = await request({
       url: FUNCTION_URL,
       method: 'POST',
@@ -32,7 +32,7 @@ describe('Test to create a new tenant', () => {
         }
       }
     });
-    assert.strictEqual(response.data, `The new tenant "${instanceName}" is successfully created!`)
+    assert.strictEqual(response.data, `The new tenant ${instanceName} is successfully created!`)
   })
 });
 
