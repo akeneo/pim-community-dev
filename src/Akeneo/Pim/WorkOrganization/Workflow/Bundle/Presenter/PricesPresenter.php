@@ -54,8 +54,7 @@ class PricesPresenter extends AbstractProductValuePresenter
 
         foreach ($value as $currency => $price) {
             if (isset($change[$currency]) && $price === $change[$currency]) {
-                unset($change[$currency]);
-                unset($value[$currency]);
+                return implode(', ', $change);
             }
         }
 
@@ -73,7 +72,7 @@ class PricesPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeData($data)
     {
-        if (! is_iterable($data)) {
+        if (!is_iterable($data)) {
             return [];
         }
 
