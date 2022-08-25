@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapp
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearPriceValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
@@ -230,6 +231,42 @@ final class HandlePriceTest extends HandleDataMappingTestCase
                         new InvalidValue('Cannot convert "12,5" to a number with separator "."'),
                         new InvalidValue('Cannot convert "6;5" to a number with separator ","'),
                     ],
+                ),
+            ],
+            'it handles clear if empty price attribute target' => [
+                'row' => [
+                    '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
+                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => '',
+                ],
+                'data_mappings' => [
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
+                        AttributeTarget::create(
+                            'gross_price',
+                            'pim_catalog_price_collection',
+                            null,
+                            null,
+                            'set',
+                            'clear',
+                            [
+                                'currency' => 'EUR',
+                                'decimal_separator' => '.',
+                            ],
+                        ),
+                        ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
+                        OperationCollection::create([]),
+                        [],
+                    ),
+                ],
+                'expected' => new ExecuteDataMappingResult(
+                    new UpsertProductCommand(
+                        userId: 1,
+                        productIdentifier: 'this-is-a-sku',
+                        valueUserIntents: [
+                            new ClearPriceValue('gross_price', null, null, 'EUR'),
+                        ],
+                    ),
+                    [],
                 ),
             ],
         ];
