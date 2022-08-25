@@ -48,13 +48,13 @@ class ProductAttributeFilter implements AttributeFilterInterface
         }
 
         $parentProperty = $standardProduct['parent'] ?? null;
+        $product = null;
         if (isset($standardProduct['uuid'])) {
             $product = $this->productRepository->find($standardProduct['uuid']);
         } elseif (isset($standardProduct['identifier'])) {
             $product = $this->productRepository->findOneByIdentifier($standardProduct['identifier']);
-        } else {
-            $product = null;
         }
+
         if (null !== $product) {
             if ($product->isVariant() && null === $parentProperty) {
                 $standardProduct['parent'] = $product->getParent()->getCode();

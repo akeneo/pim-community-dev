@@ -15,8 +15,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\VariantProductParent;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -60,6 +62,7 @@ class CreateProductByUuidController
         private AttributeFilterInterface $productAttributeFilter,
         private ProductRepositoryInterface $productRepository,
         private GetProductUuids $getProductUuids,
+        private AttributeRepositoryInterface $attributeRepository,
     ) {
     }
 
@@ -90,7 +93,12 @@ class CreateProductByUuidController
             $this->throwDocumentedHttpException($e->getMessage(), $e);
         }
 
-        $product = $this->productBuilder->createProduct(identifier: $data['values']['identifier'] ?? null, uuid: $data['uuid'] ?? null);
+        if (isset($data['parent'])) {
+            $identifierCode = $this->attributeRepository->getIdentifierCode();
+            $product = $this->productBuilder->createProduct(identifier: $data['values'][$identifierCode][0]['data'] ?? null, uuid: $data['uuid'] ?? null);
+        } else {
+            $product = $this->productBuilder->createProduct(identifier: null, uuid: $data['uuid'] ?? null);
+        }
 
         $data = $this->replaceUuidsByIdentifiers($data);
         $this->updateProduct($product, $data);
@@ -109,8 +117,10 @@ class CreateProductByUuidController
 
             $this->updater->update($product, $data);
         } catch (PropertyException $exception) {
+            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
             $message = $exception->getMessage();
             $matches = [];
+            // TODO: CPM-715
             if (preg_match('/^Property "associations" expects a valid product identifier. The product does not exist, "(?P<identifier>.*)" given.$/', $message, $matches)) {
                 $message = sprintf(
                     'Property "associations" expects a valid product uuid. The product does not exist, "%s" given.',
@@ -124,19 +134,21 @@ class CreateProductByUuidController
                 $exception
             );
         } catch (TwoWayAssociationWithTheSameProductException $exception) {
+            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
             throw new DocumentedHttpException(
                 TwoWayAssociationWithTheSameProductException::TWO_WAY_ASSOCIATIONS_HELP_URL,
                 TwoWayAssociationWithTheSameProductException::TWO_WAY_ASSOCIATIONS_ERROR_MESSAGE,
                 $exception
             );
         } catch (InvalidArgumentException | ProductInvalidArgumentException $exception) {
+            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
             throw new AccessDeniedHttpException($exception->getMessage(), $exception);
+        } catch (DomainErrorInterface $exception) {
+            $this->eventDispatcher->dispatch(new ProductDomainErrorEvent($exception, $product));
+
+            throw $exception;
         } catch (\Exception $exception) {
-            if ($exception instanceof DomainErrorInterface) {
-                $this->eventDispatcher->dispatch(new ProductDomainErrorEvent($exception, $product));
-            } else {
-                $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
-            }
+            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
 
             throw $exception;
         }
@@ -202,6 +214,7 @@ class CreateProductByUuidController
 
     private function throwDocumentedHttpException(string $message, \Exception $previousException = null)
     {
+        // TODO: CPM-711
         throw new DocumentedHttpException(
             Documentation::URL . 'post_products',
             sprintf('%s Check the expected format on the API documentation.', $message),
@@ -276,7 +289,7 @@ class CreateProductByUuidController
                 if (QuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR === $violation->getCode()) {
                     $parameters = $violation->getParameters();
                     $uuid = $this->getProductUuids->fromIdentifier($parameters['{{ values }}']);
-                    $parameters = ['{{values }}' => $uuid->toString()];
+                    $parameters = ['{{ values }}' => $uuid->toString()];
                     $message = sprintf('The following products don\'t exist: %s. Please make sure the products haven\'t been deleted in the meantime.', $uuid->toString());
 
                     $violations->set($offset, new ConstraintViolation(

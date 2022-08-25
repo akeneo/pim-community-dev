@@ -115,6 +115,7 @@ services:
             - '@pim_api.filter.product_attribute_filter'
             - '@pim_catalog.repository.product'
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids'
+            - '@pim_catalog.repository.attribute'
 
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
         public: true

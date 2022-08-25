@@ -14,7 +14,7 @@ class AddQuantifiedAssociationsToVariantProductWithUuidEndToEnd extends Abstract
     /**
      * @test
      */
-    public function it_add_quantified_associations_to_a_variant_product(): void
+    public function it_adds_quantified_associations_to_a_variant_product(): void
     {
         $client = $this->createAuthenticatedClient();
         $this->createQuantifiedAssociationType('PRODUCTSET');

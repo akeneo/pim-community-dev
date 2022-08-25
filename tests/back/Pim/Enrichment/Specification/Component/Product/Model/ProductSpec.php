@@ -40,13 +40,6 @@ class ProductSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instanciated_with_wrong_uuid_version()
-    {
-        $this->beConstructedWith(Uuid::uuid1());
-        $this->shouldThrow(new \InvalidArgumentException('Uuid version should be 4, 1 provided'))->duringInstantiation();
-    }
-
-
     function it_generates_a_uuid()
     {
         $this->beConstructedWith(null);

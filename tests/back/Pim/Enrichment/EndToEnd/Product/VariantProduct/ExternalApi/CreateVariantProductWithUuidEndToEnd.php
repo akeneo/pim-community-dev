@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -147,6 +148,46 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'product_variant_creation_family');
 
         $this->assertEventCount(1, ProductCreated::class);
+    }
+
+    public function testProductVariantCreationWithFamilyAndWithoutIdentifier()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "family": "familyA",
+        "parent": "amor",
+        "values": {
+          "a_yes_no": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": true
+            }
+          ]
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'property'   => 'identifier',
+                    'message' => 'The identifier attribute cannot be empty.',
+                ],
+            ],
+        ];
+
+        $response = $client->getResponse();
+
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
     public function testProductVariantCreationWithFamilyNotSpecifiedInSentData()
@@ -1162,7 +1203,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'parent',
-                    'message'  => 'The variant product "new_product_variant" cannot have product model "test" as parent, (this product model can only have other product models as children)',
+                    'message'  => 'The variant product cannot have product model "test" as parent, (this product model can only have other product models as children)',
                 ],
                 [
                     'property' => 'attribute',

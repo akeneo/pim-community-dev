@@ -73,15 +73,8 @@ abstract class AbstractProduct implements ProductInterface
     public function __construct(?string $uuid = null)
     {
         Assert::nullOrUuid($uuid);
-        if (null !== $uuid) {
-            $this->uuid = Uuid::fromString($uuid);
-            Assert::true(
-                $this->uuid->getVersion() === 4,
-                \sprintf('Uuid version should be 4, %d provided', $this->uuid->getVersion())
-            );
-        } else {
-            $this->uuid = Uuid::uuid4();
-        }
+        // TODO: CPM-713
+        $this->uuid = $uuid ? Uuid::fromString($uuid) : Uuid::uuid4();
         $this->values = new WriteValueCollection();
         $this->categories = new ArrayCollection();
         $this->completenesses = new ArrayCollection();

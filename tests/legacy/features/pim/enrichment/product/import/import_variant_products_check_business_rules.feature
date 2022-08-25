@@ -84,7 +84,7 @@ Feature: Import variant products
     And I wait for the "csv_catalog_modeling_product_import" job to finish
     Then I should see job execution status "COMPLETED"
     And I should see the text "skipped 1"
-    And I should see the text "The variant product \"apollon_blue_medium\" cannot have product model \"apollon\" as parent, (this product model can only have other product models as children)"
+    And I should see the text "The variant product cannot have product model \"apollon\" as parent, (this product model can only have other product models as children)"
     And the invalid data file of "csv_catalog_modeling_product_import" should contain:
       """
       parent;family;categories;ean;sku;weight;weight-unit;size
