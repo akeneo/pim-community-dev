@@ -1,5 +1,15 @@
 # 5.0.x
 
+# 5.0.111 (2022-08-25)
+
+## Bug fixes
+
+- PIM-10601 [Backport PIM-9718]: Fix format of integer values for number attributes with decimals allowed
+- PIM-10577: Fix copy/paste on wysiwyg textarea links
+- PIM-10580 [Backport PIM-10499]: Fix MySQL's out of sort memory errors on variant product and product model edit form
+
+# 5.0.110 (2022-08-23)
+
 # 5.0.109 (2022-08-23)
 
 # 5.0.108 (2022-08-22)
@@ -261,6 +271,7 @@
 ## Bug fixes
 
 - PIM-10040: Fix longtext types instead of json type in old catalogs
+- PIM-10053: Changed category tree to open node on label click on Product Export
 - PIM-10121: Fix metric to string converter to remove trailing 0
 
 # 5.0.51 (2021-10-18)
@@ -321,6 +332,7 @@
 ## Bug fixes
 
 - PIM-9944: Fix attribute group grid search
+- PIM-9945: Fix displayed number of elements in attribute group, locale and measurement family grids
 
 # 5.0.37 (2021-07-01)
 

@@ -456,6 +456,7 @@ config:
     jquery.select2.placeholder:    pimui/lib/select2/select2-placeholder
     bootstrap:                     pimui/lib/bootstrap/js/bootstrap
     bootstrap-modal:               pimui/lib/bootstrap-modal/bootstrap-modal
+    summernote:                    pimui/lib/summernote/summernote
     oro/app:                       pimui/js/oro-app
     oro/error:                     pimui/js/error
     oro/init-layout:               pimui/js/init-layout
