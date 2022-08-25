@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
@@ -12,12 +14,12 @@ use PhpSpec\ObjectBehavior;
 
 class ClearValueApplierSpec extends ObjectBehavior
 {
-    function let(ObjectUpdaterInterface $updater)
+    function let(ObjectUpdaterInterface $updater): void
     {
         $this->beConstructedWith($updater);
     }
 
-    function it_is_initializable()
+    function it_is_initializable(): void
     {
         $this->shouldHaveType(ClearValueApplier::class);
         $this->shouldImplement(UserIntentApplier::class);

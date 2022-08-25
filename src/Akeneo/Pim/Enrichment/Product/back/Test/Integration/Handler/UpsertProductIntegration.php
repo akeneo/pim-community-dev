@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearPriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\RemoveFromGroups;
@@ -1075,21 +1076,20 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_updates_a_product_with_a_price_collection_value(): void
+    public function it_create_a_product_with_a_price_collection_value(): void
     {
         $this->updateProduct(new SetPriceCollectionValue('a_price', null, null, [
             new PriceValue('42', 'EUR'),
             new PriceValue('24', 'USD'),
         ]));
 
-        $product = $this->productRepository->findOneByIdentifier('identifier');
-        Assert::assertNotNull($product);
-        $value = $product->getValue('a_price', null, null)->getData()->toArray();
-
-        Assert::assertEqualsCanonicalizing([
-            new ProductPrice('42.00', 'EUR'),
-            new ProductPrice('24.00', 'USD'),
-        ], $value);
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_price',
+            new PriceCollection([
+                new ProductPrice('42.00', 'EUR'),
+                new ProductPrice('24.00', 'USD'),
+            ])
+        );
     }
 
     /** @test */
@@ -1131,6 +1131,27 @@ final class UpsertProductIntegration extends TestCase
                 new ProductPrice('50.00', 'EUR'),
                 new ProductPrice('50.00', 'USD'),
             ]),
+        );
+    }
+
+    /** @test */
+    public function it_creates_a_price_value_on_a_product(): void
+    {
+        $this->updateProduct(new SetPriceCollectionValue('a_price', null, null, [
+            new PriceValue('42', 'EUR'),
+            new PriceValue('24', 'USD'),
+        ]));
+
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_price',
+            new PriceCollection([new ProductPrice('42.00', 'EUR'), new ProductPrice('24.00', 'USD')])
+        );
+
+        $this->updateProduct(new ClearPriceValue('a_price', null, null, 'EUR'));
+
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_price',
+            new PriceCollection([new ProductPrice('24.00', 'USD')])
         );
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearPriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -59,6 +60,24 @@ class UserIntentsShouldBeUniqueValidatorSpec extends ObjectBehavior
             new SetPriceValue('another_price', 'a_channel', 'a_locale', new PriceValue('15', 'EUR')),
             new SetPriceValue('a_price', 'a_channel', 'a_locale', new PriceValue('15', 'EUR')),
             new SetPriceValue('a_price', null, null, new PriceValue('20', 'USD')),
+        ], $constraint);
+    }
+
+    function it_throws_an_exception_when_price_value_is_set_and_clear(
+        ConstraintViolationBuilderInterface $violationBuilder,
+        ExecutionContext $context
+    ) {
+        $constraint = new UserIntentsShouldBeUnique();
+        $context
+            ->buildViolation($constraint->message, ['{{ attributeCode }}' => 'a_price'])
+            ->shouldBeCalledOnce()
+            ->willReturn($violationBuilder);
+
+        $violationBuilder->addViolation()->shouldBeCalledOnce();
+
+        $this->validate([
+            new SetPriceValue('a_price', 'a_channel', 'a_locale', new PriceValue('10', 'EUR')),
+            new ClearPriceValue('a_price', 'a_channel', 'a_locale', 'EUR'),
         ], $constraint);
     }
 
