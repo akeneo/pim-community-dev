@@ -179,23 +179,18 @@ function loadEnvironmentVariable(key) {
 exports.createTenant = (req, res) => {
   logger.info('Starting function for tenant creation');
 
-  let ARGOCD_URL = null;
-  let GOOGLE_ZONE = null;
-  let GCP_PROJECT_ID = null;
-  let INSTANCE_DNS_ZONE = null;
-
-  if(process.env.NODE_ENV == 'development') {
-    ARGOCD_URL = 'https://argocd2.pim-saas-dev.dev.cloud.akeneo.com';
-    GOOGLE_ZONE = 'europe-west1-b';
-    GCP_PROJECT_ID = 'akecld-prd-pim-saas-dev';
-    INSTANCE_DNS_ZONE = 'pim-saas-dev.dev.cloud.akeneo.com'
-  } else {
-    // For local development
-    ARGOCD_URL = new URL(loadEnvironmentVariable("ARGOCD_URL")).toString();
-    GOOGLE_ZONE = loadEnvironmentVariable("GOOGLE_ZONE");
-    GCP_PROJECT_ID = loadEnvironmentVariable("GCP_PROJECT_ID");
-    INSTANCE_DNS_ZONE = loadEnvironmentVariable("INSTANCE_DNS_ZONE");
+  if(process.env.NODE_ENV === 'development') {
+    process.env.ARGOCD_URL = 'https://argocd.pim-saas-dev.dev.cloud.akeneo.com/';
+    process.env.GOOGLE_ZONE = 'europe-west1-b';
+    process.env.GCP_PROJECT_ID = 'akecld-prd-pim-saas-dev';
+    process.env.GOOGLE_MANAGED_ZONE_DNS = 'dev.akeneo.ch'
   }
+
+  // For local development
+  const ARGOCD_URL = new URL(loadEnvironmentVariable("ARGOCD_URL")).toString();
+  const GOOGLE_ZONE = loadEnvironmentVariable("GOOGLE_ZONE");
+  const GCP_PROJECT_ID = loadEnvironmentVariable("GCP_PROJECT_ID");
+  const GOOGLE_MANAGED_ZONE_DNS = loadEnvironmentVariable("GOOGLE_MANAGED_ZONE_DNS");
 
   // Ensure the json object in the http request body respects the expected schema
   logger.info('Validating the request body schema');
@@ -210,6 +205,7 @@ exports.createTenant = (req, res) => {
 
 
   const instanceName = req.body.instanceName;
+  const pimMasterDomain = `${instanceName}.${GOOGLE_MANAGED_ZONE_DNS}`;
   const extraLabelType = 'ucs'
   const pfid = `${extraLabelType}-${instanceName}`;
 
@@ -221,7 +217,8 @@ exports.createTenant = (req, res) => {
     common: {
       gcpProjectID: GCP_PROJECT_ID,
       googleZone: GOOGLE_ZONE,
-      pimMasterDomain: INSTANCE_DNS_ZONE,
+      pimMasterDomain: pimMasterDomain,
+      dnsCloudDomain: 'dev.akeneo.ch',
       workloadIdentityGSA: 'main-service-account',
       workloadIdentityKSA: `${pfid}-ksa-workload-identity`,
     },
@@ -229,8 +226,8 @@ exports.createTenant = (req, res) => {
       extraLabels: {
         instanceName: instanceName,
         pfid: pfid,
-        instance_dns_zone: INSTANCE_DNS_ZONE,
-        instance_dns_record: `${instanceName}.${INSTANCE_DNS_ZONE}`,
+        instance_dns_zone: GOOGLE_MANAGED_ZONE_DNS,
+        instance_dns_record: pimMasterDomain,
         papo_project_code: instanceName,
         papo_project_code_truncated: instanceName,
         papo_project_code_hashed: instanceName,

@@ -33,7 +33,7 @@ Execute the test to create the HTTP request:
 ```
 $ FUNCTION_URL=http://localhost:8080
 $ MAILER_API_KEY=<replace>
-$ mocha test/sample.system.http.test.js --timeout 10000000
+$ mocha tests/createTenant.system.http.test.js --timeout 10000000
 ```
 
 Ensure the tenant is deleted in ArgoCD during your tests and after.
