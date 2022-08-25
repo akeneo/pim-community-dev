@@ -25,6 +25,14 @@ resource "google_artifact_registry_repository" "pim_enterprise_repo" {
   format        = "DOCKER"
 }
 
+resource "google_artifact_registry_repository" "curl_repo" {
+  provider      = google-beta
+  project       = var.project_id
+  location      = var.registry_region
+  repository_id = "curl"
+  description   = "cURL docker registry"
+  format        = "DOCKER"
+}
 
 resource "google_artifact_registry_repository_iam_binding" "binding_admin" {
   provider   = google-beta
@@ -76,6 +84,24 @@ resource "google_artifact_registry_repository_iam_binding" "binding_viewer_pim_e
   project    = google_artifact_registry_repository.pim_enterprise_repo.project
   location   = google_artifact_registry_repository.pim_enterprise_repo.location
   repository = google_artifact_registry_repository.pim_enterprise_repo.name
+  role       = "roles/artifactregistry.reader"
+  members    = var.viewer_members
+}
+
+resource "google_artifact_registry_repository_iam_binding" "binding_admin_curl" {
+  provider   = google-beta
+  project    = google_artifact_registry_repository.curl_repo.project
+  location   = google_artifact_registry_repository.curl_repo.location
+  repository = google_artifact_registry_repository.curl_repo.name
+  role       = "roles/artifactregistry.repoAdmin"
+  members    = var.admin_members
+}
+
+resource "google_artifact_registry_repository_iam_binding" "binding_viewer_pim_curl" {
+  provider   = google-beta
+  project    = google_artifact_registry_repository.curl_repo.project
+  location   = google_artifact_registry_repository.curl_repo.location
+  repository = google_artifact_registry_repository.curl_repo.name
   role       = "roles/artifactregistry.reader"
   members    = var.viewer_members
 }
