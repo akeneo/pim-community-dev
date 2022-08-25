@@ -38,3 +38,42 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+
+    Akeneo\Tool\Bundle\VersioningBundle\Job\PurgeVersioning:
+        arguments:
+            - '@pim_versioning.purger.version'
+            - '@pim_versioning.event_subscriber.purge_progress_bar_advancer'
+        public: false
+
+    pim_versioning.job.versioning_purge:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'versioning_purge'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_versioning.step.versioning_purge'
+            - false
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'internal'
+                type: 'scheduled_job'
+
+    pim_versioning.step.versioning_purge:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'versioning_purge'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Tool\Bundle\VersioningBundle\Job\PurgeVersioning'
+        public: false
+
+    pim_versioning.job.job_parameters.default_values_provider.versioning_purge:
+        class: 'Akeneo\Tool\Bundle\VersioningBundle\Job\JobParameters\PurgeVersioning'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
