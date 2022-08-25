@@ -11,7 +11,7 @@ type UsersFormProps = {
 
 const UsersForm = ({users, validationErrors, onUsersChange}: UsersFormProps) => {
   const translate = useTranslate();
-  const {availableUsers, loadNextPage} = useUsers();
+  const {availableUsers, loadNextPage, search} = useUsers();
   const {isGranted} = useSecurity();
 
   return (
@@ -20,6 +20,7 @@ const UsersForm = ({users, validationErrors, onUsersChange}: UsersFormProps) => 
         value={users}
         onChange={onUsersChange}
         onNextPage={loadNextPage}
+        onSearchChange={search}
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
         removeLabel={translate('pim_common.remove')}

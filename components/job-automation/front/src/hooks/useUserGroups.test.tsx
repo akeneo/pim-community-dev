@@ -60,3 +60,53 @@ test('it load next page', async () => {
     {id: 4, label: 'QA'},
   ]);
 });
+
+test('it give result when search match', async () => {
+  global.fetch = jest.fn().mockImplementation(async () => ({
+    ok: true,
+    json: async () => [
+      {id: 1, label: 'IT Support'},
+      {id: 2, label: 'Manager'},
+    ],
+  }));
+
+  const {result, waitForNextUpdate} = renderHookWithProviders(() => useUserGroups());
+  await waitForNextUpdate();
+
+  global.fetch = jest.fn().mockImplementation(async () => ({
+    ok: true,
+    json: async () => [
+      {id: 2, label: 'Manager'},
+    ],
+  }));
+
+  const searchName = result.current.searchName;
+  await act(async () => await searchName('M'));
+
+  expect(result.current.availableUserGroups).toEqual([
+    {id: 2, label: 'Manager'},
+  ]);
+})
+
+test('it display no result when search does not match', async () => {
+  global.fetch = jest.fn().mockImplementation(async () => ({
+    ok: true,
+    json: async () => [
+      {id: 1, label: 'IT Support'},
+      {id: 2, label: 'Manager'},
+    ],
+  }));
+
+  const {result, waitForNextUpdate} = renderHookWithProviders(() => useUserGroups());
+  await waitForNextUpdate();
+
+  global.fetch = jest.fn().mockImplementation(async () => ({
+    ok: true,
+    json: async () => [],
+  }));
+
+  const searchName = result.current.searchName;
+  await act(async () => await searchName('Z'));
+
+  expect(result.current.availableUserGroups).toEqual([]);
+})

@@ -6,6 +6,26 @@ const useUserGroups = () => {
   const route = useRoute('pimee_job_automation_get_user_groups');
   const [availableUserGroups, setAvailableUserGroups] = useState<UserGroup[]>([]);
 
+  const searchName = useCallback(async (name: string) => {
+        let url = `${route}?search_name=${name}`
+
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        });
+
+        const data = await response.json();
+
+        if (data) {
+          setAvailableUserGroups(response.ok ? data : {});
+        }
+      },
+      [route],
+  );
+
   const loadNextPage = useCallback(async () => {
     let url = route;
     const searchAfterId = availableUserGroups[availableUserGroups.length - 1].id;
@@ -47,7 +67,7 @@ const useUserGroups = () => {
     void fetchUserGroups(null);
   }, [route]);
 
-  return {availableUserGroups, loadNextPage};
+  return {availableUserGroups, loadNextPage, searchName};
 };
 
 export {useUserGroups};

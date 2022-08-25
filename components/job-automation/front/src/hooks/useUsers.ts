@@ -6,6 +6,27 @@ const useUsers = () => {
   const route = useRoute('pimee_job_automation_get_users');
   const [availableUsers, setAvailableUsers] = useState<User[]>([]);
 
+  const search = useCallback(async (search: string) => {
+        let url = `${route}?search=${search}`
+
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        });
+
+        const data = await response.json();
+
+        if (data) {
+          setAvailableUsers(response.ok ? data : {});
+        }
+      },
+      [route],
+  );
+
+
   const loadNextPage = useCallback(async () => {
     let url = route;
     const searchAfterId = availableUsers[availableUsers.length - 1].id;
@@ -47,7 +68,7 @@ const useUsers = () => {
     void fetchUsers();
   }, [route]);
 
-  return {availableUsers, loadNextPage};
+  return {availableUsers, loadNextPage, search};
 };
 
 export {useUsers};

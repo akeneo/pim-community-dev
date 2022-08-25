@@ -20,7 +20,7 @@ const UserGroupsForm = ({
   disabledHelperMessage,
 }: UserGroupsFormProps) => {
   const translate = useTranslate();
-  const {availableUserGroups, loadNextPage} = useUserGroups();
+  const {availableUserGroups, loadNextPage, searchName} = useUserGroups();
   const {isGranted} = useSecurity();
 
   return (
@@ -29,6 +29,7 @@ const UserGroupsForm = ({
         value={userGroups}
         onChange={onUserGroupsChange}
         onNextPage={loadNextPage}
+        onSearchChange={searchName}
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
         removeLabel={translate('pim_common.remove')}
