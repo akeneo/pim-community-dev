@@ -7,7 +7,7 @@ test('it creates a AttributeYesNoCriterion state with default values', () => {
     expect(factory({field: 'name'})).toMatchObject({
         field: 'name',
         operator: Operator.EQUALS,
-        value: null,
+        value: false,
         locale: null,
         scope: null,
     });
