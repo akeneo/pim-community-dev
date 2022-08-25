@@ -138,6 +138,7 @@ class PurgeVersioningCommandWithPublishedProductsIntegration extends TestCase
             'entity' => Product::class,
             '--more-than-days' => 0,
             '--force' => null,
+            '-vv',
         ];
 
         $arrayInput = array_merge($defaultArrayInput, $arrayInput);
