@@ -23,6 +23,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 class ProductSpec extends ObjectBehavior
@@ -38,6 +39,13 @@ class ProductSpec extends ObjectBehavior
         $this->beConstructedWith('invalid_uuid');
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
+
+    function it_cannot_be_instanciated_with_wrong_uuid_version()
+    {
+        $this->beConstructedWith(Uuid::uuid1());
+        $this->shouldThrow(new \InvalidArgumentException('Uuid version should be 4, 1 provided'))->duringInstantiation();
+    }
+
 
     function it_generates_a_uuid()
     {
