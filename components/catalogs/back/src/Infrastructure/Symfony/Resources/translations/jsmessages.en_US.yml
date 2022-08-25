@@ -46,7 +46,7 @@ akeneo_catalogs:
                 placeholder: Select your families
             completeness:
                 label: Completeness
-            metric:
+            measurement:
                 search: select your unit
                 no_results: no matches found
         operators:

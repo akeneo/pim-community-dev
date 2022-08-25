@@ -54,12 +54,12 @@ final class AttributeMeasurementCriterion extends Compound
                             new Assert\Collection([
                                 'fields' => [
                                     'amount' => [
-                                        new Assert\Type('numeric'),
                                         new Assert\NotBlank(),
+                                        new Assert\Type('numeric'),
                                     ],
                                     'unit' => [
                                         new Assert\Type('string'),
-                                        new Assert\NotBlank(),
+                                        new Assert\NotBlank(null, 'akeneo_catalogs.validation.product_selection.criteria.measurement.unit.not_empty'),
                                     ],
                                 ],
                                 'allowMissingFields' => false,

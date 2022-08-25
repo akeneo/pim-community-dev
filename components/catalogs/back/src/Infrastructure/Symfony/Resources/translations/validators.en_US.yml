@@ -18,4 +18,6 @@ akeneo_catalogs:
                 completeness:
                     value: 'Completeness value must be between 0 and 100 percent.'
                 measurement:
-                    unit: 'The unit of the field "{field}" is not valid.'
+                    unit:
+                        not_exist: 'The unit of the field "{field}" does not exist.'
+                        not_empty: 'The unit must not be empty.'

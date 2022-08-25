@@ -44,7 +44,7 @@ final class AttributeCriterionContainsValidMeasurementValidator extends Constrai
 
             if (!\in_array($value['value']['unit'], $measurementCodes, true)) {
                 $this->context
-                    ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.measurement.unit', [
+                    ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.measurement.unit.not_exist', [
                         '{field}' => $value['field'],
                     ])
                     ->atPath('[locale]')

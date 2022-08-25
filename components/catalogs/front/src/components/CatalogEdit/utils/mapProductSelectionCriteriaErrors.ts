@@ -1,6 +1,7 @@
 import {CatalogFormErrors} from '../models/CatalogFormErrors';
 import {ProductSelectionErrors} from '../../ProductSelection';
 import {findFirstError} from './findFirstError';
+import {findFirstErrorWithFields} from './findFirstErrorWithFields';
 
 export const mapProductSelectionCriteriaErrors = (
     errors: CatalogFormErrors,
@@ -12,7 +13,7 @@ export const mapProductSelectionCriteriaErrors = (
         map[key] = {
             field: findFirstError(errors, `[product_selection_criteria][${index}][field]`),
             operator: findFirstError(errors, `[product_selection_criteria][${index}][operator]`),
-            value: findFirstError(errors, `[product_selection_criteria][${index}][value]`),
+            value: findFirstErrorWithFields(errors, `[product_selection_criteria][${index}][value]`),
             locale: findFirstError(errors, `[product_selection_criteria][${index}][locale]`),
             scope: findFirstError(errors, `[product_selection_criteria][${index}][scope]`),
         };

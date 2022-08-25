@@ -361,7 +361,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'scope' => null,
                     'locale' => null,
                 ],
-                'expectedMessage' => 'The unit of the field "name" is not valid.',
+                'expectedMessage' => 'The unit of the field "name" does not exist.',
             ],
             'invalid scope' => [
                 'attribute' => [

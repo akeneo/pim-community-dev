@@ -5,6 +5,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {Measurement} from '../../models/Measurement';
 import {useMeasurements} from '../../hooks/useMeasurements';
+import {parseInputNumberValue} from '../../utils/parseInputNumberValue';
 
 const InputsContainer = styled.div`
     display: flex;
@@ -109,7 +110,7 @@ const AttributeMeasurementValueInput: FC<Props> = ({state, onChange, isInvalid, 
     };
 
     const handleNewMeasurement = (measurement: Measurement) => {
-        onChange({...state, value: {amount: state.value?.amount ?? null, unit: measurement.code}});
+        onChange({...state, value: {amount: state.value?.amount ?? 0, unit: measurement.code}});
         setIsOpen(false);
     };
 
@@ -121,12 +122,12 @@ const AttributeMeasurementValueInput: FC<Props> = ({state, onChange, isInvalid, 
                         onChange({
                             ...state,
                             value: {
-                                amount: parseFloat(event.currentTarget.value) || 0,
+                                amount: parseInputNumberValue(event.currentTarget.value),
                                 unit: state.value?.unit ?? null,
                             },
                         })
                     }
-                    value={state.value?.amount ? state.value.amount.toString() : ''}
+                    value={null === state.value ? '' : state.value.amount}
                     invalid={isInvalid}
                     data-testid='value'
                 />
@@ -140,6 +141,7 @@ const AttributeMeasurementValueInput: FC<Props> = ({state, onChange, isInvalid, 
                         title={findMeasurementLabelByCode(state.value?.unit)}
                         value={findMeasurementLabelByCode(state.value?.unit)}
                         data-testid='unit'
+                        invalid={isInvalid}
                     />
                     <MeasurementInputArrowDownIcon size={16} />
                 </TextInputContainer>
