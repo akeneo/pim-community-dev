@@ -2,7 +2,7 @@ const assert = require('assert');
 const {request} = require('gaxios');
 
 const INSTANCE_NAME = process.env.INSTANCE_NAME || 'test';
-const FUNCTION_URL = process.env.FUNCTION_URL || 'http://localhost:8080';
+const FUNCTION_URL = process.env.FUNCTION_URL || 'http://localhost:8081';
 
 describe('Test to delete a tenant', () => {
   it('deleteTenant: should delete the tenant', async() => {
@@ -12,6 +12,6 @@ describe('Test to delete a tenant', () => {
       method: 'DELETE',
       data: {}
     });
-    assert.strictEqual(response.data, `The tenant "${instanceName}" is deleted!`)
+    assert.strictEqual(response.data, `The tenant "${INSTANCE_NAME}" is deleted!`)
   });
 });
