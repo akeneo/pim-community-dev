@@ -102,10 +102,11 @@ $rules = [
         [
             // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\Install\AddSupplierPortalJobs',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
-            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // Supplier Portal Supplier coupling
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // PIM coupling
             'Akeneo\Tool\Component\Batch\Job\JobParameters',

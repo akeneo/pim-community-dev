@@ -10,15 +10,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class InstallSupplierPortalTables implements EventSubscriberInterface
 {
-    public const SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA = [
-        'code' => 'supplier_portal_xlsx_supplier_import',
-        'label' => 'Supplier Portal XLSX Supplier Import',
-        'job_name' => 'supplier_portal_xlsx_supplier_import',
-        'connector' => 'Supplier Portal',
-        'raw_parameters' => 'a:0:{}',
-        'type' => 'import',
-    ];
-
     public function __construct(private Connection $connection)
     {
     }
@@ -33,7 +24,6 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
         $this->addSupplierTable();
         $this->addSupplierContributorTable();
         $this->addContributorAccountTable();
-        $this->addSupplierPortalXlsxSupplierImportJob();
         $this->addSupplierFileTable();
     }
 
@@ -91,44 +81,6 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
         SQL;
 
         $this->connection->executeStatement($sql);
-    }
-
-    private function addSupplierPortalXlsxSupplierImportJob(): void
-    {
-        if ($this->SupplierPortalXlsxSupplierImportJobExists()) {
-            return;
-        }
-
-        $sql = <<<SQL
-            INSERT INTO akeneo_batch_job_instance (code, label, job_name, status, connector, raw_parameters, type)
-            VALUES (:code, :label, :code, 0, :connector, :rawParameters, :type);
-        SQL;
-
-        $this->connection->executeStatement(
-            $sql,
-            [
-                'code' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['code'],
-                'label' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['label'],
-                'connector' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['connector'],
-                'rawParameters' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['raw_parameters'],
-                'type' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['type'],
-            ],
-        );
-    }
-
-    private function SupplierPortalXlsxSupplierImportJobExists(): bool
-    {
-        $sql = <<<SQL
-            SELECT COUNT(*)
-            FROM `akeneo_batch_job_instance`
-            WHERE code = :code
-        SQL;
-
-        return 1 === (int) $this
-            ->connection
-            ->executeQuery($sql, ['code' => self::SUPPLIER_PORTAL_XLSX_SUPPLIER_IMPORT_JOB_DATA['code']])
-            ->fetchOne()
-        ;
     }
 
     private function addSupplierFileTable(): void

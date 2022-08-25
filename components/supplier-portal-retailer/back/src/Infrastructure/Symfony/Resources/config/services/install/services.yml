@@ -4,3 +4,9 @@ services:
             - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\Install\AddSupplierPortalJobs:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
