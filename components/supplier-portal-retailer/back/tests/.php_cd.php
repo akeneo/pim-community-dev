@@ -59,14 +59,19 @@ $rules = [
             'Akeneo\SupplierPortal\Retailer\Application',
 
             // Supplier Portal Supplier coupling
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\DeleteOldProductFiles',
+            'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePathsOfOldProductFiles',
             'Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage',
 
             // PIM coupling
+            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler',
+            'Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler',
             'Akeneo\Tool\Component\Batch\Event\EventInterface',
             'Akeneo\Tool\Component\Batch\Event\InvalidItemEvent',
             'Akeneo\Tool\Component\Batch\Item\FileInvalidItem',
             'Akeneo\Tool\Component\Batch\Item\InvalidItemException',
             'Akeneo\Tool\Component\Batch\Item\ItemReaderInterface',
+            'Akeneo\Tool\Component\Batch\Job\ExitStatus',
             'Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface',
             'Akeneo\Tool\Component\Batch\Model\StepExecution',
             'Akeneo\Tool\Component\Batch\Model\Warning',
@@ -103,6 +108,7 @@ $rules = [
             // Supplier Portal Retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Install\AddSupplierPortalJobs',
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\DeleteUnknownSupplierDirectoriesInGCSBucket',
             'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder',
 
             // Supplier Portal Supplier coupling
