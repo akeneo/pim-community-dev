@@ -45,8 +45,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
 
         $supplierFile = $this->get(Connection::class)
             ->executeQuery($sql, ['original_filename' => $originalFilename])
-            ->fetchAssociative()
-        ;
+            ->fetchAssociative();
 
         return $supplierFile ?: null;
     }

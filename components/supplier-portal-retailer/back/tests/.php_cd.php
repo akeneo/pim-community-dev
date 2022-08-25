@@ -90,6 +90,7 @@ $rules = [
             'Box\Spout\Writer\Common\Creator\WriterFactory',
             'Box\Spout\Writer\Exception\WriterNotOpenedException',
             'Doctrine\DBAL\Connection',
+            'League\Flysystem',
             'Psr\Log\LoggerInterface',
             'Symfony',
         ],

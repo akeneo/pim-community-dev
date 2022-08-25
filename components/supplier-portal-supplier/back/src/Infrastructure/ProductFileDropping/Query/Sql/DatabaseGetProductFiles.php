@@ -42,7 +42,7 @@ final class DatabaseGetProductFiles implements GetProductFiles
 
         $supplierFileRows = $this->connection->executeQuery(
             $sql,
-            ['contributorEmail' => (string) $contributorEmail],
+            ['contributorEmail' => $contributorEmail],
         )->fetchAllAssociative();
 
         $supplierFiles = [];
