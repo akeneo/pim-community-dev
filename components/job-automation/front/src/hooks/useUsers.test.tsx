@@ -51,8 +51,8 @@ test('it load next page', async () => {
     ],
   }));
 
-  const loadNexPage = result.current.loadNextPage;
-  await act(async () => await loadNexPage());
+  const loadNextPage = result.current.loadNextPage;
+  await act(async () => await loadNextPage());
 
   expect(result.current.availableUsers).toEqual([
     {id: 1, username: 'Admin'},

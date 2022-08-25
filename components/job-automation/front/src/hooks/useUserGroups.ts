@@ -1,15 +1,18 @@
 import {useEffect, useState, useCallback} from 'react';
-import {useRoute} from '@akeneo-pim-community/shared';
 import {UserGroup} from '../models/UserGroup';
+import {useRouter} from "@akeneo-pim-community/shared";
 
 const useUserGroups = () => {
-  const route = useRoute('pimee_job_automation_get_user_groups');
+  const router = useRouter();
   const [availableUserGroups, setAvailableUserGroups] = useState<UserGroup[]>([]);
 
   const searchName = useCallback(async (name: string) => {
-        let url = `${route}?search_name=${name}`
 
-        const response = await fetch(url, {
+        const response = await fetch(router.generate(
+            'pimee_job_automation_get_user_groups',
+                {'search_name': name}
+        ),
+        {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -19,22 +22,19 @@ const useUserGroups = () => {
 
         const data = await response.json();
 
-        if (data) {
-          setAvailableUserGroups(response.ok ? data : {});
-        }
+        setAvailableUserGroups(response.ok ? data : {});
       },
-      [route],
+      [router],
   );
 
   const loadNextPage = useCallback(async () => {
-    let url = route;
-    const searchAfterId = availableUserGroups[availableUserGroups.length - 1].id;
+    const searchAfterId = availableUserGroups.length > 0 ? availableUserGroups[availableUserGroups.length - 1].id : null;
 
-    if (searchAfterId) {
-      url += `?search_after_id=${searchAfterId}`;
-    }
-
-    const response = await fetch(url, {
+    const response = await fetch(router.generate(
+        'pimee_job_automation_get_user_groups',
+        {'search_after_id': searchAfterId}
+        ),
+    {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -44,14 +44,12 @@ const useUserGroups = () => {
 
     const data = await response.json();
 
-    if (availableUserGroups.length !== 0) {
-      setAvailableUserGroups(response.ok ? [...availableUserGroups, ...data] : availableUserGroups);
-    }
-  }, [availableUserGroups, route]);
+    setAvailableUserGroups(response.ok ? [...availableUserGroups, ...data] : availableUserGroups);
+  }, [availableUserGroups, router]);
 
   useEffect(() => {
     const fetchUserGroups = async (searchAfterId: number | null) => {
-      const response = await fetch(route, {
+      const response = await fetch(router.generate('pimee_job_automation_get_user_groups'), {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +63,7 @@ const useUserGroups = () => {
     };
 
     void fetchUserGroups(null);
-  }, [route]);
+  }, [router]);
 
   return {availableUserGroups, loadNextPage, searchName};
 };

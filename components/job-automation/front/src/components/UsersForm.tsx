@@ -1,5 +1,5 @@
 import React from 'react';
-import {Field, SelectInput, Helper, MultiSelectInput} from 'akeneo-design-system';
+import {Field, SelectInput, Helper, MultiSelectInput, useDebounce} from 'akeneo-design-system';
 import {useSecurity, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {useUsers} from '../hooks';
 
@@ -13,13 +13,14 @@ const UsersForm = ({users, validationErrors, onUsersChange}: UsersFormProps) => 
   const translate = useTranslate();
   const {availableUsers, loadNextPage, search} = useUsers();
   const {isGranted} = useSecurity();
+  const debouncedLoadNextPage = useDebounce(loadNextPage);
 
   return (
     <Field label={translate('akeneo.job_automation.notification.users.label')}>
       <MultiSelectInput
         value={users}
         onChange={onUsersChange}
-        onNextPage={loadNextPage}
+        onNextPage={debouncedLoadNextPage}
         onSearchChange={search}
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
