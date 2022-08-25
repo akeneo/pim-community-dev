@@ -34,6 +34,19 @@ resource "google_project_iam_member" "argocd_workload_identity" {
   member = "serviceAccount:${var.project_id}.svc.id.goog[argocd/argocd-repo-server]"
 }
 
+resource "google_secret_manager_secret" "argocd_username" {
+  project   = var.project_id
+  secret_id = "ARGOCD_USERNAME"
+
+  labels = {
+    usage = "argocd"
+  }
+
+  replication {
+    automatic = true
+  }
+}
+
 resource "google_secret_manager_secret_iam_binding" "argocd_username" {
   project   = var.project_id
   secret_id = google_secret_manager_secret.argocd_username.secret_id
@@ -50,9 +63,9 @@ resource "google_secret_manager_secret_iam_binding" "admin_argocd_username" {
   members   = var.secrets_admins
 }
 
-resource "google_secret_manager_secret" "argocd_username" {
+resource "google_secret_manager_secret" "argocd_password" {
   project   = var.project_id
-  secret_id = "ARGOCD_USERNAME"
+  secret_id = "ARGOCD_PASSWORD"
 
   labels = {
     usage = "argocd"
@@ -79,9 +92,9 @@ resource "google_secret_manager_secret_iam_binding" "admin_argocd_password" {
   members   = var.secrets_admins
 }
 
-resource "google_secret_manager_secret" "argocd_password" {
+resource "google_secret_manager_secret" "argocd_token" {
   project   = var.project_id
-  secret_id = "ARGOCD_PASSWORD"
+  secret_id = "ARGOCD_TOKEN"
 
   labels = {
     usage = "argocd"
@@ -90,4 +103,20 @@ resource "google_secret_manager_secret" "argocd_password" {
   replication {
     automatic = true
   }
+}
+
+resource "google_secret_manager_secret_iam_binding" "argocd_token" {
+  project   = var.project_id
+  secret_id = google_secret_manager_secret.argocd_token.secret_id
+  role      = "roles/secretmanager.secretAccessor"
+  members   = [
+    "serviceAccount:main-service-account@${var.project_id}.iam.gserviceaccount.com",
+  ]
+}
+
+resource "google_secret_manager_secret_iam_binding" "argocd_token" {
+  project   = var.project_id
+  secret_id = google_secret_manager_secret.argocd_token.secret_id
+  role      = "roles/secretmanager.secretVersionManager"
+  members   = var.secrets_admins
 }
