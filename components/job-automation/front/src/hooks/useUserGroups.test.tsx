@@ -75,18 +75,14 @@ test('it give result when search match', async () => {
 
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: true,
-    json: async () => [
-      {id: 2, label: 'Manager'},
-    ],
+    json: async () => [{id: 2, label: 'Manager'}],
   }));
 
   const searchName = result.current.searchName;
   await act(async () => await searchName('M'));
 
-  expect(result.current.availableUserGroups).toEqual([
-    {id: 2, label: 'Manager'},
-  ]);
-})
+  expect(result.current.availableUserGroups).toEqual([{id: 2, label: 'Manager'}]);
+});
 
 test('it display no result when search does not match', async () => {
   global.fetch = jest.fn().mockImplementation(async () => ({
@@ -109,4 +105,4 @@ test('it display no result when search does not match', async () => {
   await act(async () => await searchName('Z'));
 
   expect(result.current.availableUserGroups).toEqual([]);
-})
+});
