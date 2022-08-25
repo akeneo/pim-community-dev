@@ -52,13 +52,12 @@ final class AttributeCriterionContainsValidAttributeOptionsValidator extends Con
             return;
         }
 
-        $page = 1;
-        $limit = 50;
+        $chunks = \array_chunk($options, 50);
 
-        while (\count($slice = \array_slice($options, ($page - 1) * $limit, $limit)) > 0) {
-            $page++;
+        foreach ($chunks as $codes) {
+            $existingCodes = $this->getAttributeOptionsByCodeQuery->execute($value['field'], $codes);
 
-            if (\count($this->getAttributeOptionsByCodeQuery->execute($value['field'], $slice)) != \count($slice)) {
+            if (\count($existingCodes) !== \count($codes)) {
                 $this->context
                     ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.attribute_option.unknown')
                     ->atPath('[value]')
