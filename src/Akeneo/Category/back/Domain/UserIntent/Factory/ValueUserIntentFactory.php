@@ -10,6 +10,7 @@ use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Domain\Query\GetAttribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStd;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
@@ -86,7 +87,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
         $attribute = array_filter(
             $attributeCollection->normalize(),
             static function ($attribute) use ($value) {
-                $identifier = implode('|', [$attribute['code'], $attribute['identifier']]);
+                $identifier = implode(ValueCollection::SEPARATOR, [$attribute['code'], $attribute['identifier']]);
 
                 return $identifier == $value['attribute_code'];
             },
@@ -103,9 +104,16 @@ final class ValueUserIntentFactory implements UserIntentFactory
      */
     private function addValueUserIntent(string $attributeType, array $value): UserIntent
     {
+        $identifiers = explode(ValueCollection::SEPARATOR, $value['attribute_code']);
+        if (count($identifiers) !== 2) {
+            throw new \InvalidArgumentException(sprintf('Cannot set value user intent %s : no identifier found', $attributeType));
+        }
+        $uuid = $identifiers[1];
+        $code = $identifiers[0];
+
         return match ($attributeType) {
-            AttributeType::TEXTAREA => new SetTextArea($value['attribute_code'], $value['locale'], $value['data']),
-            AttributeType::RICH_TEXT => new SetRichText($value['attribute_code'], $value['locale'], $value['data']),
+            AttributeType::TEXTAREA => new SetTextArea($uuid, $code, $value['locale'], $value['data']),
+            AttributeType::RICH_TEXT => new SetRichText($uuid, $code, $value['locale'], $value['data']),
             default => throw new \InvalidArgumentException('Not implemented')
         };
     }

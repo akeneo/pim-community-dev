@@ -90,12 +90,14 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
             $data
         )->shouldBeLike([
             new SetTextArea(
-                'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d',
+                '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                'seo_meta_description',
                 'en_US',
                 'Meta shoes'
             ),
             new SetRichText(
-                'description|840fcd1a-f66b-4f0c-9bbd-596629732950',
+                '840fcd1a-f66b-4f0c-9bbd-596629732950',
+                'description',
                 'en_US',
                 'Description'
             )

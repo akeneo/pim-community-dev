@@ -6,6 +6,7 @@ namespace Akeneo\Category\Infrastructure\Validation;
 
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Api\Command\UserIntents\ValueUserIntent;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -19,8 +20,6 @@ final class LocalizeValueUserIntentsShouldBeUniqueValidator extends ConstraintVa
 
     /**
      * @param array<UserIntent> $value
-     * @param Constraint $constraint
-     * @return void
      */
     public function validate($value, Constraint $constraint): void
     {
@@ -33,8 +32,6 @@ final class LocalizeValueUserIntentsShouldBeUniqueValidator extends ConstraintVa
 
     /**
      * @param UserIntent[] $value
-     * @param Constraint $constraint
-     * @return void
      */
     private function validUniqueConstraint(array $value, Constraint $constraint): void
     {
@@ -46,15 +43,15 @@ final class LocalizeValueUserIntentsShouldBeUniqueValidator extends ConstraintVa
         $existingIntents = [];
         foreach ($localizeUserIntents as $localizeIntent) {
             $className = get_class($localizeIntent);
-            $code = $localizeIntent->attributeCode();
+            $identifier = $localizeIntent->attributeCode() . ValueCollection::SEPARATOR . $localizeIntent->attributeUuid();
             $intentLocale = $localizeIntent->localeCode() ?? '<all_locales>';
 
-            if (\in_array($intentLocale, $existingIntents[$className][$code] ?? [])) {
+            if (\in_array($intentLocale, $existingIntents[$className][$identifier] ?? [])) {
                 $this->context
                     ->buildViolation($constraint->message, ['{{ locale }}' => $intentLocale])
                     ->addViolation();
             } else {
-                $existingIntents[$className][$code][] = $intentLocale;
+                $existingIntents[$className][$identifier][] = $intentLocale;
             }
         }
     }
