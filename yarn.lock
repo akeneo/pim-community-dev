@@ -13343,11 +13343,6 @@ stylehacks@^4.0.0:
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
 
-summernote@0.6.16:
-  version "0.6.16"
-  resolved "https://registry.yarnpkg.com/summernote/-/summernote-0.6.16.tgz#2f53b9d9cb058c7b25c171306849e14e556c17e3"
-  integrity sha1-L1O52csFjHslwXEwaEnhTlVsF+M=
-
 supports-color@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
