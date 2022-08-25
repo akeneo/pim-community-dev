@@ -8,34 +8,20 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Doctrine\ORM\EntityManager;
 
 /**
- * Job execution manager
- *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
 class JobExecutionManager
 {
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(protected EntityManager $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     /**
-     * Check if the given JoExecution is still running using his PID
-     * @param JobExecution $jobExecution
-     *
-     * @return bool
+     * Check if the given JobExecution is still running using his PID
      */
-    public function checkRunningStatus(JobExecution $jobExecution)
+    public function checkRunningStatus(JobExecution $jobExecution): bool
     {
         if (BatchStatus::STARTING !== $jobExecution->getStatus()->getValue() &&
             $jobExecution->getExitStatus()->isRunning()
@@ -48,11 +34,8 @@ class JobExecutionManager
 
     /**
      * Test if the process is still running
-     * @param JobExecution $jobExecution
-     *
-     * @return bool
      */
-    protected function processIsRunning(JobExecution $jobExecution)
+    protected function processIsRunning(JobExecution $jobExecution): bool
     {
         $pid = intval($jobExecution->getPid());
 
@@ -67,9 +50,8 @@ class JobExecutionManager
 
     /**
      * Mark a job execution as failed
-     * @param JobExecution $jobExecution
      */
-    public function markAsFailed(JobExecution $jobExecution)
+    public function markAsFailed(JobExecution $jobExecution): void
     {
         $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED));
         $jobExecution->setExitStatus(new ExitStatus(ExitStatus::FAILED));

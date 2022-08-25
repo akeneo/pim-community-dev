@@ -43,7 +43,16 @@ services:
     Akeneo\Tool\Bundle\VersioningBundle\Job\PurgeVersioning:
         arguments:
             - '@pim_versioning.purger.version'
-            - '@pim_versioning.event_subscriber.purge_progress_bar_advancer'
+        public: false
+
+    pim_versioning.tasklet.unicity_check.versioning_purge:
+        class: Akeneo\Tool\Bundle\BatchBundle\Tasklet\CheckUniqueJobExecutionTasklet
+        arguments:
+            - 'versioning_purge'
+            - '@Akeneo\Tool\Component\Batch\Query\SqlGetRunningJobExecution'
+            - '@akeneo_batch.manager.job_execution'
+            - '@pim_enrich.repository.job_execution'
+            - '@logger'
         public: false
 
     pim_versioning.job.versioning_purge:
@@ -53,6 +62,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@pim_versioning.step.unicity_check.versioning_purge'
                 - '@pim_versioning.step.versioning_purge'
             - false
             - false
@@ -62,6 +72,15 @@ services:
                 name: akeneo_batch.job
                 connector: 'internal'
                 type: 'scheduled_job'
+
+    pim_versioning.step.unicity_check.versioning_purge:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'versioning_purge'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_versioning.tasklet.unicity_check.versioning_purge'
+        public: false
 
     pim_versioning.step.versioning_purge:
         class: '%pim_connector.step.tasklet.class%'

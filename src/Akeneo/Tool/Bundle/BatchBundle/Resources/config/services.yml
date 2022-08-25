@@ -139,3 +139,8 @@ services:
 
     Akeneo\Tool\Component\Batch\Clock\ClockInterface:
         class: Akeneo\Tool\Component\Batch\Clock\SystemClock
+
+    Akeneo\Tool\Component\Batch\Query\SqlGetRunningJobExecution:
+        arguments:
+            - '@database_connection'
+
