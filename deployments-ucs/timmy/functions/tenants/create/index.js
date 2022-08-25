@@ -224,7 +224,6 @@ exports.createTenant = (req, res) => {
       pimMasterDomain: INSTANCE_DNS_ZONE,
       workloadIdentityGSA: 'main-service-account',
       workloadIdentityKSA: `${pfid}-ksa-workload-identity`,
-      workloadIdentityKSANamespace: 'workload',
     },
     global: {
       extraLabels: {
