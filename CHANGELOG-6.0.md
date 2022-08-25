@@ -1,5 +1,11 @@
 # 6.0.x
 
+# 6.0.40 (2022-08-25)
+
+## Bug fixes
+
+- PIM-10590: Fix capitalizing every first letter of attribute label in Data Quality Insights tab
+
 # 6.0.39 (2022-08-23)
 
 - OCT-107: Lock lcobucci/jwt version to ~4.1.5
