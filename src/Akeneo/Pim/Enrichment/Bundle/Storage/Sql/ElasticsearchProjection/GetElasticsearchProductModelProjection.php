@@ -7,37 +7,31 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductModelProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class GetElasticsearchProductModelProjection implements GetElasticsearchProductModelProjectionInterface
 {
-    private Connection $connection;
-    private ReadValueCollectionFactory $readValueCollectionFactory;
-    private NormalizerInterface $valueCollectionNormalizer;
-    /** @var GetAdditionalPropertiesForProductModelProjectionInterface[] */
-    private iterable $additionalDataProviders;
-
+    /**
+     * @param GetAdditionalPropertiesForProductModelProjectionInterface[] $additionalDataProviders
+     */
     public function __construct(
-        Connection $connection,
-        ReadValueCollectionFactory $readValueCollectionFactory,
-        NormalizerInterface $valueCollectionNormalizer,
-        iterable $additionalDataProviders = []
+        private Connection $connection,
+        private ReadValueCollectionFactory $readValueCollectionFactory,
+        private NormalizerInterface $valueCollectionNormalizer,
+        private LoggerInterface $logger,
+        private iterable $additionalDataProviders = []
     ) {
-        $this->connection = $connection;
-        $this->readValueCollectionFactory = $readValueCollectionFactory;
-        $this->valueCollectionNormalizer = $valueCollectionNormalizer;
-        $this->additionalDataProviders = $additionalDataProviders;
     }
 
     public function fromProductModelCodes(array $productModelCodes): iterable
@@ -53,9 +47,7 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
 
         $diffCodes = \array_diff($productModelCodes, $rowCodes);
         if (\count($diffCodes) > 0) {
-            throw new ObjectNotFoundException(
-                \sprintf('Product model codes "%s" were not found.', \implode(',', $diffCodes))
-            );
+            $this->logger->warning(\sprintf('Trying to get ES product model projection from product model codes "%s" which does not exist', \implode(',', $diffCodes)));
         }
 
         $context = ['value_collections' => \array_map(
