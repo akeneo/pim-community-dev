@@ -4,6 +4,7 @@
 
 - PIM-10601 [Backport PIM-9718]: Fix format of integer values for number attributes with decimals allowed
 - PIM-10577: Fix copy/paste on wysiwyg textarea links
+- PIM-10580 [Backport PIM-10499]: Fix MySQL's out of sort memory errors on variant product and product model edit form
 
 # 5.0.110 (2022-08-23)
 
