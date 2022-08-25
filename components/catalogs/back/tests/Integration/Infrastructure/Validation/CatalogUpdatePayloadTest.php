@@ -40,11 +40,6 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'value' => true,
                 ],
                 [
-                    'field' => 'family',
-                    'operator' => 'IN',
-                    'value' => ['familyA', 'familyB'],
-                ],
-                [
                     'field' => 'completeness',
                     'operator' => '>',
                     'value' => 80,
@@ -93,7 +88,6 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
     /**
      * @dataProvider invalidFieldDataProvider
      * @dataProvider invalidEnabledCriterionDataProvider
-     * @dataProvider invalidFamilyCriterionDataProvider
      * @dataProvider invalidCompletenessCriterionDataProvider
      * @dataProvider invalidCategoryCriterionDataProvider
      */
@@ -141,28 +135,6 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'value' => 56,
                 ],
                 'expectedMessage' => 'This value should be of type boolean.',
-            ],
-        ];
-    }
-
-    public function invalidFamilyCriterionDataProvider(): array
-    {
-        return [
-            'family field with invalid operator' => [
-                'criterion' => [
-                    'field' => 'family',
-                    'operator' => '>',
-                    'value' => ['familyA', 'familyB'],
-                ],
-                'expectedMessage' => 'The value you selected is not a valid choice.',
-            ],
-            'family field with invalid value' => [
-                'criterion' => [
-                    'field' => 'family',
-                    'operator' => 'IN',
-                    'value' => ['familyA', 2, 'familyB'],
-                ],
-                'expectedMessage' => 'This value should be of type string.',
             ],
         ];
     }
