@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration;
 
+use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -38,6 +39,12 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
     {
         $connectionCloser = $this->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
+        $filesystemProvider = $this->get('akeneo_file_storage.file_storage.filesystem_provider');
+        $fileSystem = $filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
+
+        foreach ($fileSystem->listContents('./') as $supplierDirectory) {
+            $fileSystem->deleteDirectory($supplierDirectory->path());
+        }
 
         $this->ensureKernelShutdown();
     }
