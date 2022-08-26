@@ -18,6 +18,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -46,18 +47,18 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
     {
         $data = [
             'attribute_codes' => [
-                'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d',
-                'description|840fcd1a-f66b-4f0c-9bbd-596629732950',
+                'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950',
             ],
-            'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d|en_US' => [
+            'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . ValueCollection::SEPARATOR . 'en_US' => [
                 'data' => 'Meta shoes',
                 'locale' => 'en_US',
-                'attribute_code' => 'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d'
+                'attribute_code' => 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
             ],
-            'description|840fcd1a-f66b-4f0c-9bbd-596629732950|en_US' => [
+            'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . ValueCollection::SEPARATOR . 'en_US' => [
                 'data' => 'Description',
                 'locale' => 'en_US',
-                'attribute_code' => 'description|840fcd1a-f66b-4f0c-9bbd-596629732950'
+                'attribute_code' => 'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
             ]
         ];
 
@@ -102,5 +103,43 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 'Description'
             )
         ]);
+    }
+
+    function it_does_not_add_value_user_intent_when_corresponding_attribute_type_no_found(GetAttribute $getAttribute): void
+    {
+        $data = [
+            'attribute_codes' => [
+                'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950',
+            ],
+            'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . ValueCollection::SEPARATOR . 'en_US' => [
+                'data' => 'Meta shoes',
+                'locale' => 'en_US',
+                'attribute_code' => 'seo_meta_description' . ValueCollection::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d'
+            ],
+            'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . ValueCollection::SEPARATOR . 'en_US' => [
+                'data' => 'Description',
+                'locale' => 'en_US',
+                'attribute_code' => 'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
+            ]
+        ];
+
+        $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
+        $valueCollection = AttributeCollection::fromArray([
+            AttributeTextArea::create(
+                AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
+                new AttributeCode('seo_meta_description'),
+                AttributeOrder::fromInteger(4),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => 'SEO Meta Description']),
+                $templateUuid
+            )
+        ]);
+
+        $getAttribute->byIdentifiers($data['attribute_codes'])
+            ->shouldBeCalledOnce()
+            ->willReturn($valueCollection);
+
+        $this->create('values', $data)->shouldHaveCount(1);
     }
 }

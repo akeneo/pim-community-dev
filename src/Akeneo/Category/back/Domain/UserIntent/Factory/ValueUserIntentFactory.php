@@ -82,27 +82,17 @@ final class ValueUserIntentFactory implements UserIntentFactory
     /**
      * @param array{data: string, locale: string|null, attribute_code: string} $value
      */
-    private function getAttributeType(AttributeCollection $attributeCollection, array $value): ?string
+    private function getAttributeType(AttributeCollection $attributeCollection, array $value): ?AttributeType
     {
-        $attribute = array_filter(
-            $attributeCollection->normalize(),
-            static function ($attribute) use ($value) {
-                $identifier = implode(ValueCollection::SEPARATOR, [$attribute['code'], $attribute['identifier']]);
+        $attribute = $attributeCollection->getAttributeByIdentifier($value['attribute_code']);
 
-                return $identifier == $value['attribute_code'];
-            },
-        );
-        if (empty($attribute) || count($attribute) > 1) {
-            return null;
-        }
-
-        return (current($attribute))['type'];
+        return $attribute?->getType();
     }
 
     /**
      * @param array{data: string, locale: string|null, attribute_code: string} $value
      */
-    private function addValueUserIntent(string $attributeType, array $value): UserIntent
+    private function addValueUserIntent(AttributeType $attributeType, array $value): UserIntent
     {
         $identifiers = explode(ValueCollection::SEPARATOR, $value['attribute_code']);
         if (count($identifiers) !== 2) {
@@ -111,7 +101,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
         $uuid = $identifiers[1];
         $code = $identifiers[0];
 
-        return match ($attributeType) {
+        return match ((string) $attributeType) {
             AttributeType::TEXTAREA => new SetTextArea($uuid, $code, $value['locale'], $value['data']),
             AttributeType::RICH_TEXT => new SetRichText($uuid, $code, $value['locale'], $value['data']),
             default => throw new \InvalidArgumentException('Not implemented')
