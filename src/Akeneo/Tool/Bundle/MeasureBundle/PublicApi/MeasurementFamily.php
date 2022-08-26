@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Onboarder;
+namespace Akeneo\Tool\Bundle\MeasureBundle\PublicApi;
 
-use \Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily as MeasurementFamilyAggregate;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily as MeasurementFamilyAggregate;
 
 /**
  * Read model dedicated to onboarder synchronization
