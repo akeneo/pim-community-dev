@@ -14,6 +14,9 @@ global:
     papo_project_code_hashed: null
   monitoring:
     enabled: false
+  externalGateway:
+    name: external-http
+    namespace: default
 
 backup:
   enabled: true
@@ -306,6 +309,7 @@ pim:
   extraLabels: {}
   secret: null # Generate me with `uuidgen`
   web:
+    namespace: null # Fill me
     replicas: 2
     defaultTenantName: default
     fpm:
@@ -323,6 +327,7 @@ pim:
           cpu: "1m"
           memory: "40Mi"
   api:
+    namespace: null # Fill me
     ratelimit:
       enabled: true
       average: 100

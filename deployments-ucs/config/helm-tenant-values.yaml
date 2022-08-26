@@ -100,6 +100,10 @@ mailer:
   api_key: ${MAILGUN_API_KEY}
 
 pim:
+  web:
+    namespace: ${PIM_WEB_NS}
+  api:
+    namespace: ${PIM_API_NS}
   firestore:
     collection: ${FIRESTORE_COLLECTION}
     documentId: ${PFID}

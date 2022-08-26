@@ -715,6 +715,7 @@ jobs:
                   command: |
                       INSTANCE_NAME_PREFIX=ucs
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                      CIRCLE_BRANCH_LOWER=$(echo "${CIRCLE_BRANCH}" | awk '{print tolower($0)}')
 
                       WORKLOAD_IDENTITY_KSA="${INSTANCE_NAME}-ksa-workload-identity"
                       # Waiting the new SA
@@ -726,6 +727,8 @@ jobs:
                       echo export WORKLOAD_IDENTITY_KSA=${WORKLOAD_IDENTITY_KSA} >> $BASH_ENV
                       echo export WORKLOAD_IDENTITY_GSA=${WORKLOAD_IDENTITY_GSA} >> $BASH_ENV
                       echo export GOOGLE_ZONE=${GOOGLE_ZONE} >> $BASH_ENV
+                      echo export PIM_WEB_NS=${CIRCLE_BRANCH_LOWER}-pim-web >> $BASH_ENV
+                      echo export PIM_API_NS=${CIRCLE_BRANCH_LOWER}-pim-api >> $BASH_ENV
 
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"

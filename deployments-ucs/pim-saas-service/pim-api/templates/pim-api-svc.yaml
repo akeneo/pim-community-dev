@@ -4,6 +4,8 @@ metadata:
   name: pim-api
   labels:
     {{- include "pim.extraLabels" . | indent 4 }}
+  annotations:
+    cloud.google.com/backend-config: '{"default": "pim-api-backendconfig"}'
 spec:
   type: ClusterIP
   selector:

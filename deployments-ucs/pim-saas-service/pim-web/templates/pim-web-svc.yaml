@@ -6,6 +6,7 @@ metadata:
   labels:
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
+    cloud.google.com/backend-config: '{"default": "pim-web-backendconfig"}'
     ad.datadoghq.com/service.check_names: '["http_check"]'
     ad.datadoghq.com/service.init_configs: '[{}]'
     ad.datadoghq.com/service.instances: |
