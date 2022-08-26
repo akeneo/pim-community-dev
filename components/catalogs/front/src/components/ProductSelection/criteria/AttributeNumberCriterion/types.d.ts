@@ -14,7 +14,7 @@ export type AttributeNumberCriterionOperator =
 export type AttributeNumberCriterionState = {
     field: string;
     operator: AttributeNumberCriterionOperator;
-    value: number | null;
+    value: number | string | null;
     locale: string | null;
     scope: string | null;
 };

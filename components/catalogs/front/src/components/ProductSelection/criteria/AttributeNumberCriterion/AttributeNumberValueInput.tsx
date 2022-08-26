@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {TextInput} from 'akeneo-design-system';
 import {AttributeNumberCriterionState} from './types';
-import {parseInputNumberValue} from '../../utils/parseInputNumberValue';
+import {useNumberValue} from '../../hooks/useNumberValue';
 
 type Props = {
     state: AttributeNumberCriterionState;
@@ -10,14 +10,9 @@ type Props = {
 };
 
 const AttributeNumberValueInput: FC<Props> = ({state, onChange, isInvalid}) => {
-    return (
-        <TextInput
-            onChange={v => onChange({...state, value: parseInputNumberValue(v)})}
-            value={state.value?.toString()}
-            invalid={isInvalid}
-            data-testid='value'
-        />
-    );
+    const [value, onValueChange] = useNumberValue(state.value, value => onChange({...state, value: value}));
+
+    return <TextInput onChange={onValueChange} value={value} invalid={isInvalid} data-testid='value' />;
 };
 
 export {AttributeNumberValueInput};
