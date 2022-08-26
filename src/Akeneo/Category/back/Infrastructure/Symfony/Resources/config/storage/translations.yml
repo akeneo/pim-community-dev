@@ -15,3 +15,4 @@ services:
         class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryTranslationsSql'
         arguments:
             - '@database_connection'
+            - '@Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql'

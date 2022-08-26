@@ -6,8 +6,7 @@ namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
 use Akeneo\Category\Domain\Model\Category;
-use Akeneo\Category\Domain\ValueObject\CategoryId;
-use Akeneo\Category\Domain\ValueObject\Code;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -19,228 +18,58 @@ use Doctrine\DBAL\Connection;
  */
 class UpsertCategoryTranslationsSql implements UpsertCategoryTranslations
 {
-    /** @var array<string, string> $cachedLocales */
-    private array $cachedLocales = [];
-
-    // All data needed to build the insert query
-    /** @var array<string> $insertionQueries */
-    private array $insertionQueries = [];
-    /** @var array<string, mixed> $insertionParams */
-    private array $insertionParams = [];
-    /** @var array<string, int> $insertionTypes */
-    private array $insertionTypes = [];
-
-    // All data needed to build the update query
-    /** @var array<string> $updateQueries */
-    private array $updateQueries = [];
-    /** @var array<array<string, mixed>> $updateParams */
-    private array $updateParams = [];
-    /** @var array<array<string, int>> $updateTypes */
-    private array $updateTypes = [];
-
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection,
+        private GetCategoryInterface $getCategory,
+    ) {
     }
 
     public function execute(Category $categoryModel): void
     {
-        $this->fetchExistingTranslationsByCategoryCode($categoryModel->getCode());
+        $categoryId = $categoryModel->getId()->getValue();
+        $queries = '';
+        $params = ['category_id' => $categoryId];
+        $types = ['category_id' => \PDO::PARAM_INT];
+        $loopIndex = 0;
+        foreach ($categoryModel->getLabelCollection() as $localeCode => $label){
+            if (!$this->labelIsIdentical($categoryModel, $localeCode, $label))
+            {
+                $queries .= $this->buildUpsertQuery($loopIndex);
 
-        foreach ($categoryModel->getLabelCollection() as $localeCode => $label) {
-            if ($this->localeAlreadyExists($localeCode)) {
-                if (!$this->labelIsTheSame($localeCode, $label)) {
-                    $count = count($this->updateQueries);
-                    $this->updateQueries[] = \sprintf(
-                        'SELECT :category_id AS foreign_key, :label_%d AS label, :locale_%d AS locale',
-                        $count,
-                        $count
-                    );
+                $params['label' . $loopIndex] = $label;
+                $params['locale' . $loopIndex] = $localeCode;
 
-                    $this->updateParams['label_' . $count] = $label;
-                    $this->updateParams['locale_' . $count] = $localeCode;
+                $types['label' . $loopIndex] = \PDO::PARAM_STR;
+                $types['locale' . $loopIndex] = \PDO::PARAM_STR;
 
-                    $this->updateTypes['label_' . $count] = \PDO::PARAM_STR;
-                    $this->updateTypes['locale_' . $count] = \PDO::PARAM_STR;
-                }
-            } else {
-                $count = count($this->insertionQueries);
-                $this->insertionQueries[] = \sprintf(
-                    '(:category_id, :label_%d, :locale_%d)',
-                    $count,
-                    $count
-                );
-
-                $this->insertionParams['label_' . (string) $count] = $label;
-                $this->insertionParams['locale_' . (string) $count] = $localeCode;
-
-                $this->insertionTypes['label_' . (string) $count] = \PDO::PARAM_STR;
-                $this->insertionTypes['locale_' . (string) $count] = \PDO::PARAM_STR;
+                ++$loopIndex;
             }
         }
-
-        if (!empty($this->insertionQueries)) {
-            $this->insertCategoryTranslations($categoryModel->getCode());
-        }
-
-        if (!empty($this->updateQueries)) {
-            $this->updateCategoryTranslations($categoryModel->getCode());
-        }
-
-        $this->insertionParams = [];
-        $this->insertionTypes = [];
-        $this->insertionQueries = [];
-    }
-
-    /**
-     * @param Code $categoryCode
-     * @return void
-     * @throws \Doctrine\DBAL\Exception
-     */
-    private function insertCategoryTranslations(Code $categoryCode): void
-    {
-        // First we retrieve the category id
-        $categoryId = $this->getCategoryIdFromCode($categoryCode)->getValue();
-
-        // Then we insert the labels
-        $query = $this->buildInsertQuery();
-        $this->insertionParams['category_id'] = $categoryId;
-        $this->insertionTypes['category_id'] = \PDO::PARAM_INT;
-
         $this->connection->executeQuery(
-            $query,
-            $this->insertionParams,
-            $this->insertionTypes,
+                    $queries,
+                    $params,
+                    $types,
         );
     }
 
-    /**
-     * @param Code $categoryCode
-     * @return void
-     * @throws \Doctrine\DBAL\Exception
-     */
-    private function updateCategoryTranslations(Code $categoryCode): void
+    private function buildUpsertQuery(int $loopIndex): string
     {
-        // First we retrieve the category id
-        $categoryId = $this->getCategoryIdFromCode($categoryCode)->getValue();
-
-        // Then we update the translations
-        $query = $this->buildUpdateQuery();
-        $this->updateParams['category_id'] = $categoryId;
-        $this->updateTypes['category_id'] = \PDO::PARAM_INT;
-
-        $this->connection->executeQuery(
-            $query,
-            $this->updateParams,
-            $this->updateTypes,
-        );
+        return <<<SQL
+            INSERT INTO pim_catalog_category_translation (foreign_key, label, locale)
+            VALUES (:category_id, :label$loopIndex, :locale$loopIndex)
+            ON DUPLICATE KEY UPDATE label = :label$loopIndex;
+        
+SQL;
     }
 
-    private function buildInsertQuery(): string
+    private function labelIsIdentical(Category $category ,string $localeCode, string $label): bool
     {
-        $query = <<<SQL
-            INSERT INTO pim_catalog_category_translation
-                (foreign_key, label, locale)
-            VALUES
-                
-        SQL;
+        $existingLabels = $this->getCategory
+            ->byCode((string) $category->getCode())
+            ?->getLabelCollection()->getLabels();
 
-        $query .= \implode(', ', $this->insertionQueries);
-
-        $query .= ';';
-
-        return $query;
-    }
-
-    private function buildUpdateQuery(): string
-    {
-        $query = <<< SQL
-            UPDATE pim_catalog_category_translation pcct 
-                JOIN( 
-        SQL;
-
-        $query .= \implode(' UNION ALL ', $this->updateQueries);
-
-        $query .= <<< SQL
-            ) update_data
-            ON
-                pcct.foreign_key=update_data.foreign_key
-                AND pcct.locale=update_data.locale
-            SET pcct.label=update_data.label
-        SQL;
-
-        return $query;
-    }
-
-    /**
-     * @param Code $categoryCode
-     * @return void
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
-     */
-    private function fetchExistingTranslationsByCategoryCode(Code $categoryCode): void
-    {
-        $this->cachedLocales = [];
-        $result = $this->connection->executeQuery(
-            <<< SQL
-                SELECT
-                    code,
-                    label,
-                    locale 
-                FROM pim_catalog_category_translation category_translation
-                JOIN pim_catalog_category category ON category.id=category_translation.foreign_key
-                WHERE 
-                    code=:category_code
-            SQL,
-            [
-                'category_code' => (string) $categoryCode,
-            ],
-            [
-                'category_code' => \PDO::PARAM_STR,
-            ]
-        )->fetchAllAssociative();
-
-        foreach ($result as $data) {
-            $this->cachedLocales[$data['locale']] = $data['label'];
-        }
-    }
-
-    private function getCategoryIdFromCode(Code $code): CategoryId
-    {
-        $selectQuery = <<< SQL
-            SELECT id FROM pim_catalog_category WHERE code=:category_code LIMIT 1
-        SQL;
-
-        $categoryData = $this->connection->executeQuery(
-            $selectQuery,
-            [
-                'category_code' => (string) $code,
-            ],
-            [
-                'category_code' => \PDO::PARAM_STR,
-            ]
-        )->fetchAssociative();
-
-        return new CategoryId((int)$categoryData['id'] ?: null);
-    }
-
-    /**
-     * @param string $locale
-     * @return bool
-     */
-    private function localeAlreadyExists(string $locale): bool
-    {
-        return \array_key_exists($locale, $this->cachedLocales);
-    }
-
-    /**
-     * @param string $locale
-     * @param string $label
-     * @return bool
-     */
-    private function labelIsTheSame(string $locale, string $label): bool
-    {
-        if (\array_key_exists($locale, $this->cachedLocales)) {
-            return ($this->cachedLocales[$locale] === $label);
+        if (\array_key_exists($localeCode, $existingLabels)){
+            return ($existingLabels[$localeCode] === $label);
         }
         return false;
     }

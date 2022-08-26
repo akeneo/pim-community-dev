@@ -18,7 +18,6 @@ use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryBaseSql;
 use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryTranslationsSql;
 use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
-use Doctrine\DBAL\Connection;
 
 trait CategoryTestCase
 {
@@ -73,58 +72,21 @@ trait CategoryTestCase
         );
         $upsertCategoryTranslationsQuery->execute($categoryModelWithId);
 
-        $categoryTranslationsData = $this->getCategoryTranslationsDataByCategoryCode((string) $categoryModelToCreate->getCode());
+        $getCategory = $this->get(GetCategorySql::class);
+        $categoryTranslations = $getCategory->byCode((string) $categoryModelToCreate->getCode())->getLabelCollection()->getLabels();
 
         $createdParentId = (
-            $categoryBase->getParentId()->getValue() > 0 ?
-            new CategoryId($categoryBase->getParentId()->getValue())
+            $categoryBase->getParentId()?->getValue() > 0
+            ? new CategoryId($categoryBase->getParentId()->getValue())
             : null
         );
 
-        // Instantiate a new Category model based on data fetched in database
+        // Instantiates a new Category model based on data fetched in database
         return new Category(
             new CategoryId($categoryBase->getId()->getValue()),
             new Code((string) $categoryBase->getCode()),
-            LabelCollection::fromArray($categoryTranslationsData),
+            LabelCollection::fromArray($categoryTranslations),
             $createdParentId,
         );
-    }
-
-    /**
-     * @return array<string, string>
-     *
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
-     */
-    private function getCategoryTranslationsDataByCategoryCode(string $code): array
-    {
-        // TODO use dedicated GetCategory class when checking 'root' properties in Category model will be possible
-        /** @var Connection $connection */
-        $connection = $this->get('database_connection');
-
-        $query = <<< SQL
-            SELECT
-                code,
-                JSON_OBJECTAGG(translation.locale, translation.label) as translations
-            FROM pim_catalog_category_translation translation
-            JOIN pim_catalog_category category ON translation.foreign_key = category.id
-            WHERE  code=:category_code
-        SQL;
-
-        $result = $connection->executeQuery(
-            $query,
-            [
-                'category_code' => $code,
-            ],
-            [
-                'category_code' => \PDO::PARAM_STR,
-            ],
-        )->fetchAssociative();
-
-        if (false === $result || empty($result['translations'])) {
-            return [];
-        }
-
-        return json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR);
     }
 }

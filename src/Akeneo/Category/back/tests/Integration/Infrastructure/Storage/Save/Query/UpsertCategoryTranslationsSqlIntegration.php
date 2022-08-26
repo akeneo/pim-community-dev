@@ -11,6 +11,7 @@ namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Save\Que
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryTranslationsSql;
+use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -18,7 +19,16 @@ class UpsertCategoryTranslationsSqlIntegration extends TestCase
 {
     use CategoryTestCase;
 
-    public function testInsertNewTranslationsInDatabase(): void
+    private GetCategorySql $getCategory;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->getCategory = $this->get(GetCategorySql::class);
+
+    }
+
+    public function testInsertTranslationsInDatabase(): void
     {
         /** @var UpsertCategoryTranslationsSql $upsertCategoryTranslationsQuery */
         $upsertCategoryTranslationsQuery = $this->get(UpsertCategoryTranslations::class);
@@ -31,9 +41,8 @@ class UpsertCategoryTranslationsSqlIntegration extends TestCase
         );
 
         $createdCategory->setLabel('fr_FR', 'chaussettes');
-
         $upsertCategoryTranslationsQuery->execute($createdCategory);
-        $translations = $this->getCategoryTranslationsDataByCategoryCode((string) $createdCategory->getCode());
+        $translations = $this->getCategory->byCode((string) $createdCategory->getCode())->getLabelCollection()->getLabels();
 
         $this->assertNotNull($translations);
         $this->assertEqualsCanonicalizing(
@@ -46,7 +55,7 @@ class UpsertCategoryTranslationsSqlIntegration extends TestCase
         );
     }
 
-    public function testUpdateExistingCategoryTranslationsInDatabase(): void
+    public function testUpdateCategoryTranslationsInDatabase(): void
     {
         /** @var UpsertCategoryTranslationsSql $upsertCategoryTranslationsQuery */
         $upsertCategoryTranslationsQuery = $this->get(UpsertCategoryTranslations::class);
@@ -60,9 +69,8 @@ class UpsertCategoryTranslationsSqlIntegration extends TestCase
 
         $createdCategory->setLabel('en_US', 'shirts');
         $createdCategory->setLabel('fr_FR', 'chemises');
-
         $upsertCategoryTranslationsQuery->execute($createdCategory);
-        $translations = $this->getCategoryTranslationsDataByCategoryCode((string) $createdCategory->getCode());
+        $translations = $this->getCategory->byCode((string) $createdCategory->getCode())->getLabelCollection()->getLabels();
 
         $this->assertNotNull($translations);
         $this->assertEquals('shirts', $translations['en_US']);
