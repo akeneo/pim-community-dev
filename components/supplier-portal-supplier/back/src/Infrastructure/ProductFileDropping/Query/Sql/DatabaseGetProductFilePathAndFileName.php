@@ -20,22 +20,10 @@ final class DatabaseGetProductFilePathAndFileName implements GetProductFilePathA
         $sql = <<<SQL
             WITH supplier_identifier AS (
                 SELECT supplier.identifier
-                FROM akeneo_supplier_portal_contributor_account contributor_account
-                    INNER JOIN akeneo_supplier_portal_supplier_contributor contributor
-                        ON contributor_account.email = contributor.email
+                FROM akeneo_supplier_portal_supplier_contributor contributor
                     INNER JOIN akeneo_supplier_portal_supplier supplier
                         ON contributor.supplier_identifier = supplier.identifier
-                WHERE contributor_account.email = :email
-            ),
-            contributor_identifiers_of_the_same_supplier AS (
-                SELECT contributor_account.id
-                FROM akeneo_supplier_portal_contributor_account contributor_account
-                INNER JOIN akeneo_supplier_portal_supplier_contributor contributor
-                    ON contributor_account.email = contributor.email
-                WHERE contributor.supplier_identifier IN (
-                    SELECT identifier
-                    FROM supplier_identifier
-                )
+                WHERE contributor.email = :email
             )
             SELECT path, original_filename
             FROM akeneo_supplier_portal_supplier_file supplier_file
@@ -43,12 +31,10 @@ final class DatabaseGetProductFilePathAndFileName implements GetProductFilePathA
                     ON supplier_file.uploaded_by_supplier = supplier.identifier
                 INNER JOIN akeneo_supplier_portal_supplier_contributor contributor
                     ON supplier_file.uploaded_by_contributor = contributor.email
-                INNER JOIN akeneo_supplier_portal_contributor_account contributor_account
-                    ON contributor.email = contributor_account.email
             WHERE supplier_file.identifier = :productFileIdentifier
-            AND contributor_account.id IN (
-                SELECT id
-                FROM contributor_identifiers_of_the_same_supplier
+            AND supplier_file.uploaded_by_supplier IN (
+                SELECT identifier
+                FROM supplier_identifier
             )
         SQL;
 

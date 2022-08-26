@@ -16,7 +16,6 @@ final class DatabaseGetProductFilePathAndFileNameIntegration extends SqlIntegrat
     {
         $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
         $this->createContributor(
-            'b98d8e88-b8e0-48f6-8be3-06b329318420',
             'contributor@example.com',
             '44ce8069-8da1-4986-872f-311737f46f00',
             1,
@@ -36,13 +35,11 @@ final class DatabaseGetProductFilePathAndFileNameIntegration extends SqlIntegrat
         $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
         $this->createSupplier('bb2241e8-5242-4dbb-9d20-5e4e38514566', 'supplier_2', 'Supplier 2');
         $this->createContributor(
-            'b98d8e88-b8e0-48f6-8be3-06b329318420',
             'contributor@example.com',
             '44ce8069-8da1-4986-872f-311737f46f00',
             1,
         );
         $this->createContributor(
-            '11f8b2e3-c15d-470c-9fcb-a8bdab0990c8',
             'contributor+supplier2@example.com',
             'bb2241e8-5242-4dbb-9d20-5e4e38514566',
             2,
@@ -75,7 +72,6 @@ final class DatabaseGetProductFilePathAndFileNameIntegration extends SqlIntegrat
     {
         $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
         $this->createContributor(
-            'b98d8e88-b8e0-48f6-8be3-06b329318420',
             'contributor@example.com',
             '44ce8069-8da1-4986-872f-311737f46f00',
             1,
@@ -156,29 +152,10 @@ final class DatabaseGetProductFilePathAndFileNameIntegration extends SqlIntegrat
     }
 
     private function createContributor(
-        string $contributorIdentifier,
         string $contributorEmail,
         string $supplierIdentifier,
         int $contributorId,
     ): void {
-        $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_contributor_account` (
-                id,
-                email,
-                created_at
-            )
-            VALUES (:id, :email,:createdAt)
-        SQL;
-
-        $this->get(Connection::class)->executeQuery(
-            $sql,
-            [
-                'id' => $contributorIdentifier,
-                'email' => $contributorEmail,
-                'createdAt' => (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
-            ],
-        );
-
         $sql = <<<SQL
             INSERT INTO `akeneo_supplier_portal_supplier_contributor` (
                 id,
