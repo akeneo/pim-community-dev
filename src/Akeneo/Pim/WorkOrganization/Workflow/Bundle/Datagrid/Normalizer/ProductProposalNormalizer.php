@@ -148,7 +148,7 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
 
         $changes = $proposal->getChanges();
         foreach ($changes['values'] as $code => $changeset) {
-            $attribute = $this->getAttributesQuery->forCode($code);
+            $attribute = $this->getAttributesQuery->forCode((string) $code);
             foreach ($changeset as $index => $change) {
                 if ($attribute->type() === AttributeTypes::PRICE_COLLECTION) {
                     $prices = $this->pricesPresenter->normalizeChange($change);

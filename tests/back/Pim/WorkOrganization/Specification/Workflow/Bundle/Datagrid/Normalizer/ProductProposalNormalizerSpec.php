@@ -12,6 +12,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PricesPresenter;
 
 class ProductProposalNormalizerSpec extends ObjectBehavior
 {
@@ -19,9 +20,10 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         NormalizerInterface $standardNormalizer,
         NormalizerInterface $datagridNormalizer,
         ValueFactory $valueFactory,
-        GetAttributes $getAttributes
+        GetAttributes $getAttributes,
+        PricesPresenter $pricesPresenter
     ) {
-        $this->beConstructedWith($standardNormalizer, $datagridNormalizer, $valueFactory, $getAttributes);
+        $this->beConstructedWith($standardNormalizer, $datagridNormalizer, $valueFactory, $getAttributes, $pricesPresenter);
     }
 
     function it_should_implement()
