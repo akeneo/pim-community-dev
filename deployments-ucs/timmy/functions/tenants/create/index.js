@@ -72,17 +72,17 @@ async function getArgoCdToken(url, username, password) {
     .catch(function (error) {
       const msgPrefix = 'Authentication to ArgoCD server failed'
       if (error.response) {
-        return Promise.reject(Error(`${msgPrefix} with status code ${error.response.status}: ${error.response.data.message}`));
+        return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status}: ${error.response.data.message}`));
       } else if (error.request) {
-        return Promise.reject(Error(`${msgPrefix} with status code ${error.response.status} due to error in the request : ${error.request}`))
+        return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status} due to error in the request : ${error.request}`))
       } else {
-        return Promise.reject(Error(`${msgPrefix} due to error in the setting up of the request: ${error.message}`));
+        return Promise.reject(new Error(`${msgPrefix} due to error in the setting up of the request: ${error.message}`));
       }
     });
 
   const token = await resp.data.token;
   if (typeof (token) === undefined || token === null) {
-    return Promise.reject(Error('Retrieved token from ArgoCD server is undefined'));
+    return Promise.reject(new Error('Retrieved token from ArgoCD server is undefined'));
   }
 
   logger.info(`Successfully authenticated with ${username} user to ArgoCD server and got a token`);
@@ -147,15 +147,15 @@ async function createArgoCdApp(url, token, payload) {
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        return new Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status} and following message: ${error.response.data.message}`))
+        return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status} and following message: ${error.response.data.message}`))
       } else if (error.request) {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-        return new Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status} to error in request: ${error.request}`))
+        return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status} to error in request: ${error.request}`))
       } else {
         // Something happened in setting up the request that triggered an Error
-        return new Promise.reject(new Error(`${msgPrefix} due to error in the setting up of the HTTP request: ${error.message}`))
+        return Promise.reject(new Error(`${msgPrefix} due to error in the setting up of the HTTP request: ${error.message}`))
       }
     });
 }
@@ -203,13 +203,13 @@ async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries=60, retr
 
     if(healthStatus === DEGRADED_STATUS) {
       const msg = resp.data.status.operationState.message;
-      return new Promise.reject(Error(`The ArgoCD application health is degraded: ${msg}`));
+      return Promise.reject(new Error(`The ArgoCD application health is degraded: ${msg}`));
     }
 
     currentRetry++;
   }
 
-  return new Promise.reject(Error('The maximum number of attempts has been exceeded to verify the deletion. Please check the status of the ArgoCD application'));
+  return Promise.reject(new Error('The maximum number of attempts has been exceeded to verify the deletion. Please check the status of the ArgoCD application'));
 }
 
 /**
@@ -228,12 +228,12 @@ async function getGoogleSecret(gcpProjectId, secretName, secretVersion = 'latest
 
     const data = version.payload.data;
     if (data === 'undefined' || data === null) {
-      return Promise.reject(Error(`Failed to retrieved ${secretVersion} ${secretName} secret version from Google Secret Manager. The value is undefined or null`));
+      return Promise.reject(new Error(`Failed to retrieved ${secretVersion} ${secretName} secret version from Google Secret Manager. The value is undefined or null`));
     }
     return version.payload.data.toString('utf-8');
 
   } catch (err) {
-    return new Promise.reject(Error(`Failed to retrieve ${secretVersion} ${secretName} secret version from Google Secret Manager`))
+    return Promise.reject(new Error(`Failed to retrieve ${secretVersion} ${secretName} secret version from Google Secret Manager`))
   }
 }
 
@@ -341,6 +341,7 @@ exports.createTenant = (req, res) => {
       res.status(200).send(msg);
     })
     .catch((error) => {
+      logger.error(error);
       res.status(500).send(error);
     });
 }

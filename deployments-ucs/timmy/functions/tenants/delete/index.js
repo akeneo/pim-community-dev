@@ -77,17 +77,17 @@ async function getArgoCdToken(url, username, password) {
       .catch(function (error) {
         const msgPrefix = 'Authentication to ArgoCD server failed'
         if (error.response) {
-          return Promise.reject(Error(`${msgPrefix} with status code ${error.response.status}: ${error.response.data.message}`));
+          return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status}: ${error.response.data.message}`));
         } else if (error.request) {
-          return Promise.reject(Error(`${msgPrefix} with status code ${error.response.status} due to error in the request : ${error.request}`))
+          return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status} due to error in the request : ${error.request}`))
         } else {
-          return Promise.reject(Error(`${msgPrefix} due to error in the setting up of the request: ${error.message}`));
+          return Promise.reject(new Error(`${msgPrefix} due to error in the setting up of the request: ${error.message}`));
         }
       });
 
     const token = await resp.data.token;
     if (typeof (token) === undefined || token === null) {
-      return Promise.reject(Error('Retrieved token from ArgoCD server is undefined'));
+      return Promise.reject(new Error('Retrieved token from ArgoCD server is undefined'));
     }
 
     logger.info(`Successfully authenticated with ${username} user to ArgoCD server and got a token`);
@@ -112,11 +112,11 @@ async function terminateArgoCdAppOperation(url, token, appName) {
     .catch(function (error) {
       const msgPrefix = 'Termination of the ArgoCD application operation failed'
       if (error.response) {
-        return Promise.reject(Error(`${msgPrefix} with status code ${error.response.status}: ${error.response.data.message}`));
+        return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status}: ${error.response.data.message}`));
       } else if (error.request) {
-        return Promise.reject(Error(`${msgPrefix} with status code ${error.response.status} due to error in the request: ${error.request}`));
+        return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status} due to error in the request: ${error.request}`));
       } else {
-        return Promise.reject(Error(`${msgPrefix} due to error in the setting up of the request: ${error.message}`));
+        return Promise.reject(new Error(`${msgPrefix} due to error in the setting up of the request: ${error.message}`));
       }
     });
 
@@ -134,11 +134,11 @@ async function getArgoCdApp(url, token, appName) {
     .catch(function (error) {
       const msgPrefix = 'The recovery of information of the ArgoCD application has failed'
       if (error.response) {
-        return Promise.reject(Error(`${msgPrefix} with a status code ${error.response.status}: ${error.response.data.message}`));
+        return Promise.reject(new Error(`${msgPrefix} with a status code ${error.response.status}: ${error.response.data.message}`));
       } else if (error.request) {
-        return Promise.reject(Error(`${msgPrefix} with status code ${error.response.status} due to error in the request: ${error.request}`));
+        return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status} due to error in the request: ${error.request}`));
       } else {
-        return Promise.reject(Error(`${msgPrefix} due to error in the setting up of the request: ${error.message}`))
+        return Promise.reject(new Error(`${msgPrefix} due to error in the setting up of the request: ${error.message}`))
       }
     });
 
@@ -165,11 +165,11 @@ async function deleteArgoCdApp(url, token, appName) {
     .catch(function (error) {
       const msgPrefix = 'The request to remove the application from the ArgoCD server failed';
       if (error.response) {
-        return new Promise.reject(Error(`${msgPrefix} with status code ${error.response.status} and following message: ${error.response.data.message}`));
+        return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status} and following message: ${error.response.data.message}`));
       } else if (error.request) {
-        return new Promise.reject(Error(`${msgPrefix} with status code ${error.response.status} to error in request: ${error.request}`))
+        return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status} to error in request: ${error.request}`))
       } else {
-        return new Promise.reject(Error(`${msgPrefix} due to error in the setting up of the HTTP request: ${error.message}`))
+        return Promise.reject(new Error(`${msgPrefix} due to error in the setting up of the HTTP request: ${error.message}`))
       }
     });
   logger.info('The request for deletion of the application has been transmitted to the ArgoCD server');
@@ -196,7 +196,7 @@ async function getGoogleSecret(gcpProjectId, secretName, secretVersion = 'latest
     return version.payload.data.toString('utf-8');
 
   } catch (err) {
-    return new Promise.reject(Error(`Failed to retrieve ${secretVersion} ${secretName} secret version from Google Secret Manager`))
+    return Promise.reject(new Error(`Failed to retrieve ${secretVersion} ${secretName} secret version from Google Secret Manager`))
   }
 }
 
@@ -239,7 +239,7 @@ async function ensureArgoCdAppIsDeleted(url, token, appName, maxRetries = 30, re
     currentRetry++;
   }
 
-  return new Promise.reject(Error('The maximum number of attempts has been exceeded to verify the deletion. Please check the status of the ArgoCD application'));
+  return Promise.reject(new Error('The maximum number of attempts has been exceeded to verify the deletion. Please check the status of the ArgoCD application'));
 }
 
 exports.deleteTenant = (req, res) => {
