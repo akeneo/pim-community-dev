@@ -1,0 +1,3 @@
+services:
+  akeneo.tailored_import.normalizer.file_constraint_violation_list:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Normalizer\FileConstraintViolationListNormalizer
