@@ -18,4 +18,9 @@ final class Scheduling extends Constraint
     {
         return 'akeneo_job_instance_scheduling_validator';
     }
+
+    public function getTargets(): string
+    {
+        return self::CLASS_CONSTRAINT;
+    }
 }
