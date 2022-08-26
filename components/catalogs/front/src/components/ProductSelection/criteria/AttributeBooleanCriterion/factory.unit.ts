@@ -3,7 +3,7 @@ jest.unmock('./factory');
 import factory from './factory';
 import {Operator} from '../../models/Operator';
 
-test('it creates a AttributeYesNoCriterion state with default values', () => {
+test('it creates a AttributeBooleanCriterion state with default values', () => {
     expect(factory({field: 'name'})).toMatchObject({
         field: 'name',
         operator: Operator.EQUALS,
@@ -13,7 +13,7 @@ test('it creates a AttributeYesNoCriterion state with default values', () => {
     });
 });
 
-test('it creates a AttributeYesNoCriterion state with given values', () => {
+test('it creates a AttributeBooleanCriterion state with given values', () => {
     expect(
         factory({
             field: 'name',

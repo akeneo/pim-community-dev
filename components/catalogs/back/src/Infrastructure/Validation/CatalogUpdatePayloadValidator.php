@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeBooleanCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeTextCriterion;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeYesNoCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\CompletenessCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\EnabledCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\FamilyCriterion;
@@ -119,7 +119,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
 
         return match ($attribute['type'] ?? null) {
             'pim_catalog_text' => new AttributeTextCriterion(),
-            'pim_catalog_boolean' => new AttributeYesNoCriterion(),
+            'pim_catalog_boolean' => new AttributeBooleanCriterion(),
             default => null,
         };
     }

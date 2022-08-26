@@ -1,7 +1,7 @@
-import {AttributeYesNoCriterionState} from './types';
+import {AttributeBooleanCriterionState} from './types';
 import {Operator} from '../../models/Operator';
 
-export default (state?: Partial<AttributeYesNoCriterionState>): AttributeYesNoCriterionState => {
+export default (state?: Partial<AttributeBooleanCriterionState>): AttributeBooleanCriterionState => {
     if (!state?.field) {
         throw Error('You need to specific the attribute code when calling the attribute criterion factory');
     }

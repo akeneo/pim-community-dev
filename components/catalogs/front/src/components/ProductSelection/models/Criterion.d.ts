@@ -5,7 +5,7 @@ import {StatusCriterionState} from '../criteria/StatusCriterion';
 import {FamilyCriterionState} from '../criteria/FamilyCriterion';
 import {CompletenessCriterionState} from '../criteria/CompletenessCriterion';
 import {AttributeTextCriterionState} from '../criteria/AttributeTextCriterion';
-import {AttributeYesNoCriterionState} from '../criteria/AttributeYesNoCriterion';
+import {AttributeBooleanCriterionState} from '../criteria/AttributeBooleanCriterion';
 
 export type CriterionModule<State> = {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -35,9 +35,9 @@ export type AnyCriterionState =
     | FamilyCriterionState
     | CompletenessCriterionState
     | AttributeTextCriterionState
-    | AttributeYesNoCriterionState;
+    | AttributeBooleanCriterionState;
 
-export type AnyAttributeCriterion = Criterion<AttributeTextCriterionState> | Criterion<AttributeYesNoCriterionState>;
+export type AnyAttributeCriterion = Criterion<AttributeTextCriterionState> | Criterion<AttributeBooleanCriterionState>;
 
 export type AnyCriterion =
     | Criterion<StatusCriterionState>

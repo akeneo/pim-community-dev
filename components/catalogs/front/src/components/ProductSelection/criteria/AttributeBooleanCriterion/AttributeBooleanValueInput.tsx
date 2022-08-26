@@ -1,15 +1,15 @@
 import React, {FC} from 'react';
 import {SelectInput} from 'akeneo-design-system';
-import {AttributeYesNoCriterionState} from './types';
+import {AttributeBooleanCriterionState} from './types';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 type Props = {
-    state: AttributeYesNoCriterionState;
-    onChange: (state: AttributeYesNoCriterionState) => void;
+    state: AttributeBooleanCriterionState;
+    onChange: (state: AttributeBooleanCriterionState) => void;
     isInvalid: boolean;
 };
 
-const AttributeYesNoValueInput: FC<Props> = ({state, onChange, isInvalid}) => {
+const AttributeBooleanValueInput: FC<Props> = ({state, onChange, isInvalid}) => {
     const translate = useTranslate();
 
     return (
@@ -23,13 +23,13 @@ const AttributeYesNoValueInput: FC<Props> = ({state, onChange, isInvalid}) => {
             data-testid='value'
         >
             <SelectInput.Option value='true'>
-                {translate('akeneo_catalogs.product_selection.criteria.yes_no.yes')}
+                {translate('akeneo_catalogs.product_selection.criteria.boolean.yes')}
             </SelectInput.Option>
             <SelectInput.Option value='false'>
-                {translate('akeneo_catalogs.product_selection.criteria.yes_no.no')}
+                {translate('akeneo_catalogs.product_selection.criteria.boolean.no')}
             </SelectInput.Option>
         </SelectInput>
     );
 };
 
-export {AttributeYesNoValueInput};
+export {AttributeBooleanValueInput};

@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints\Compound;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class AttributeYesNoCriterion extends Compound
+final class AttributeBooleanCriterion extends Compound
 {
     /**
      * @param array<array-key, mixed> $options

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductSelection\AttributeCriterion;
 
-use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeYesNoCriterion;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeBooleanCriterion;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeYesNoCriterionTest extends AbstractAttributeCriterionTest
+class AttributeBooleanCriterionTest extends AbstractAttributeCriterionTest
 {
     private ?ValidatorInterface $validator;
 
@@ -29,7 +29,7 @@ class AttributeYesNoCriterionTest extends AbstractAttributeCriterionTest
     {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($criterion, new AttributeYesNoCriterion());
+        $violations = $this->validator->validate($criterion, new AttributeBooleanCriterion());
 
         $this->assertEmpty($violations);
     }
@@ -114,7 +114,7 @@ class AttributeYesNoCriterionTest extends AbstractAttributeCriterionTest
     ): void {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($criterion, new AttributeYesNoCriterion());
+        $violations = $this->validator->validate($criterion, new AttributeBooleanCriterion());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

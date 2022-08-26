@@ -7,7 +7,7 @@ import {pimTheme} from 'akeneo-design-system';
 import {ReactQueryWrapper} from '../../../../../tests/ReactQueryWrapper';
 import fetchMock from 'jest-fetch-mock';
 import {Operator} from '../../models/Operator';
-import {AttributeYesNoCriterion} from './AttributeYesNoCriterion';
+import {AttributeBooleanCriterion} from './AttributeBooleanCriterion';
 
 const localeUS = {code: 'en_US', label: 'English'};
 const localeFR = {code: 'fr_FR', label: 'French'};
@@ -80,11 +80,11 @@ beforeEach(() => {
     });
 });
 
-test('it renders the scopable and localizable text attribute criterion', async () => {
+test('it renders the scopable and localizable boolean attribute criterion', async () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
-                <AttributeYesNoCriterion
+                <AttributeBooleanCriterion
                     state={{
                         field: 'name_localizable_scopable',
                         operator: Operator.EQUALS,
@@ -102,16 +102,16 @@ test('it renders the scopable and localizable text attribute criterion', async (
 
     expect(await screen.findByText('Name')).toBeInTheDocument();
     expect(await screen.findByText(Operator.EQUALS)).toBeInTheDocument();
-    expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.yes_no.yes')).toBeInTheDocument();
+    expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.boolean.yes')).toBeInTheDocument();
     expect(await screen.findByText('E-commerce')).toBeInTheDocument();
     expect(await screen.findByText('English')).toBeInTheDocument();
 });
 
-test('it renders the scopable and non localizable text attribute criterion', async () => {
+test('it renders the scopable and non localizable boolean attribute criterion', async () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
-                <AttributeYesNoCriterion
+                <AttributeBooleanCriterion
                     state={{
                         field: 'name_scopable',
                         operator: Operator.NOT_EQUAL,
@@ -129,16 +129,16 @@ test('it renders the scopable and non localizable text attribute criterion', asy
 
     expect(await screen.findByText('Name')).toBeInTheDocument();
     expect(await screen.findByText(Operator.NOT_EQUAL)).toBeInTheDocument();
-    expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.yes_no.no')).toBeInTheDocument();
+    expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.boolean.no')).toBeInTheDocument();
     expect(await screen.findByText('E-commerce')).toBeInTheDocument();
     expect(screen.queryByTestId('locale')).not.toBeInTheDocument();
 });
 
-test('it renders the non scopable and localizable text attribute criterion', async () => {
+test('it renders the non scopable and localizable boolean attribute criterion', async () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
-                <AttributeYesNoCriterion
+                <AttributeBooleanCriterion
                     state={{
                         field: 'name_localizable',
                         operator: Operator.EQUALS,
@@ -156,7 +156,7 @@ test('it renders the non scopable and localizable text attribute criterion', asy
 
     expect(await screen.findByText('Name')).toBeInTheDocument();
     expect(await screen.findByText(Operator.EQUALS)).toBeInTheDocument();
-    expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.yes_no.yes')).toBeInTheDocument();
+    expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.boolean.yes')).toBeInTheDocument();
     expect(screen.queryByTestId('scope')).not.toBeInTheDocument();
     expect(await screen.findByText('German')).toBeInTheDocument();
 });
@@ -165,7 +165,7 @@ test('it renders criterion with validation errors', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
-                <AttributeYesNoCriterion
+                <AttributeBooleanCriterion
                     state={{
                         field: 'name_localizable_scopable',
                         operator: Operator.CONTAINS,
@@ -199,7 +199,7 @@ test('it calls onRemove', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
-                <AttributeYesNoCriterion
+                <AttributeBooleanCriterion
                     state={{
                         field: 'name_localizable_scopable',
                         operator: Operator.EQUALS,
@@ -226,7 +226,7 @@ test('it calls onChange when the operator changes', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
-                <AttributeYesNoCriterion
+                <AttributeBooleanCriterion
                     state={{
                         field: 'name_localizable_scopable',
                         operator: Operator.EQUALS,
@@ -259,7 +259,7 @@ test('it resets value when the operator changes to IS_EMPTY', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
-                <AttributeYesNoCriterion
+                <AttributeBooleanCriterion
                     state={{
                         field: 'name_localizable_scopable',
                         operator: Operator.EQUALS,
@@ -292,7 +292,7 @@ test('it calls onChange when the value changes', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
-                <AttributeYesNoCriterion
+                <AttributeBooleanCriterion
                     state={{
                         field: 'name_localizable_scopable',
                         operator: Operator.EQUALS,
@@ -308,7 +308,7 @@ test('it calls onChange when the value changes', () => {
         </ThemeProvider>
     );
 
-    changeInputTo('akeneo_catalogs.product_selection.criteria.yes_no.no');
+    changeInputTo('akeneo_catalogs.product_selection.criteria.boolean.no');
 
     expect(onChange).toHaveBeenCalledWith({
         field: 'name_localizable_scopable',
@@ -325,7 +325,7 @@ test('it calls onChange when the channel changes', async () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
-                <AttributeYesNoCriterion
+                <AttributeBooleanCriterion
                     state={{
                         field: 'name_localizable_scopable',
                         operator: Operator.EQUALS,
@@ -360,7 +360,7 @@ test('it calls onChange when the locale changes', async () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
-                <AttributeYesNoCriterion
+                <AttributeBooleanCriterion
                     state={{
                         field: 'name_localizable_scopable',
                         operator: Operator.EQUALS,
