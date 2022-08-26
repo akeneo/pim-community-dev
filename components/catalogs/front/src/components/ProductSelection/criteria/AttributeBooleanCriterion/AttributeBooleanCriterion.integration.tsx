@@ -80,7 +80,7 @@ beforeEach(() => {
     });
 });
 
-test('it renders the scopable and localizable text attribute criterion', async () => {
+test('it renders the scopable and localizable boolean attribute criterion', async () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
@@ -107,7 +107,7 @@ test('it renders the scopable and localizable text attribute criterion', async (
     expect(await screen.findByText('English')).toBeInTheDocument();
 });
 
-test('it renders the scopable and non localizable text attribute criterion', async () => {
+test('it renders the scopable and non localizable boolean attribute criterion', async () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
@@ -134,7 +134,7 @@ test('it renders the scopable and non localizable text attribute criterion', asy
     expect(screen.queryByTestId('locale')).not.toBeInTheDocument();
 });
 
-test('it renders the non scopable and localizable text attribute criterion', async () => {
+test('it renders the non scopable and localizable boolean attribute criterion', async () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <ReactQueryWrapper>
