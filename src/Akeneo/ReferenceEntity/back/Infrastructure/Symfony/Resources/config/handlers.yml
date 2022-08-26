@@ -74,7 +74,6 @@ services:
             arguments:
                 - '@akeneo_referenceentity.application.registry.edit_record.record_value_updater.record_value_updater_registry'
                 - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
-                - '@akeneo_file_storage.file_storage.file.file_storer'
 
     akeneo_referenceentity.application.record.delete_record_handler:
         class: Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler
