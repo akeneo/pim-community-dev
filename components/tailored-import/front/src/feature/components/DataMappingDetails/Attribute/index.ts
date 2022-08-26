@@ -13,6 +13,8 @@ export * from './MultiSelect/model';
 export * from './MultiSelect/MultiSelectConfigurator';
 export * from './Number/model';
 export * from './Number/NumberConfigurator';
+export * from './Price/model';
+export * from './Price/PriceConfigurator';
 export * from './SimpleReferenceEntity/model';
 export * from './SimpleReferenceEntity/SimpleReferenceEntityConfigurator';
 export * from './SimpleSelect/model';

@@ -7,6 +7,7 @@ import {
   getDefaultMultiReferenceEntityTarget,
   getDefaultMultiSelectTarget,
   getDefaultNumberTarget,
+  getDefaultPriceTarget,
   getDefaultSimpleReferenceEntityTarget,
   getDefaultSimpleSelectTarget,
   getDefaultTextTarget,
@@ -15,6 +16,7 @@ import {
   MultiReferenceEntityTarget,
   MultiSelectTarget,
   NumberTarget,
+  PriceTarget,
   SimpleReferenceEntityTarget,
   SimpleSelectTarget,
   TextTarget,
@@ -33,6 +35,7 @@ type AttributeTarget =
   | MultiReferenceEntityTarget
   | MultiSelectTarget
   | NumberTarget
+  | PriceTarget
   | SimpleReferenceEntityTarget
   | SimpleSelectTarget
   | TextTarget;
@@ -52,28 +55,30 @@ const createAttributeTarget = (
   locale: LocaleReference
 ): AttributeTarget => {
   switch (attribute.type) {
-    case 'akeneo_reference_entity':
-      return getDefaultSimpleReferenceEntityTarget(attribute, channel, locale);
-    case 'akeneo_reference_entity_collection':
-      return getDefaultMultiReferenceEntityTarget(attribute, channel, locale);
-    case 'pim_catalog_metric':
-      return getDefaultMeasurementTarget(attribute, channel, locale);
-    case 'pim_catalog_number':
-      return getDefaultNumberTarget(attribute, channel, locale);
+    case 'pim_catalog_asset_collection':
+      return getDefaultAssetCollectionTarget(attribute, channel, locale);
+    case 'pim_catalog_boolean':
+      return getDefaultBooleanTarget(attribute, channel, locale);
     case 'pim_catalog_date':
       return getDefaultDateTarget(attribute, channel, locale);
+    case 'pim_catalog_metric':
+      return getDefaultMeasurementTarget(attribute, channel, locale);
+    case 'akeneo_reference_entity_collection':
+      return getDefaultMultiReferenceEntityTarget(attribute, channel, locale);
+    case 'pim_catalog_multiselect':
+      return getDefaultMultiSelectTarget(attribute, channel, locale);
+    case 'pim_catalog_number':
+      return getDefaultNumberTarget(attribute, channel, locale);
+    case 'pim_catalog_price_collection':
+      return getDefaultPriceTarget(attribute, channel, locale);
+    case 'akeneo_reference_entity':
+      return getDefaultSimpleReferenceEntityTarget(attribute, channel, locale);
+    case 'pim_catalog_simpleselect':
+      return getDefaultSimpleSelectTarget(attribute, channel, locale);
     case 'pim_catalog_identifier':
     case 'pim_catalog_textarea':
     case 'pim_catalog_text':
       return getDefaultTextTarget(attribute, channel, locale);
-    case 'pim_catalog_simpleselect':
-      return getDefaultSimpleSelectTarget(attribute, channel, locale);
-    case 'pim_catalog_multiselect':
-      return getDefaultMultiSelectTarget(attribute, channel, locale);
-    case 'pim_catalog_boolean':
-      return getDefaultBooleanTarget(attribute, channel, locale);
-    case 'pim_catalog_asset_collection':
-      return getDefaultAssetCollectionTarget(attribute, channel, locale);
     default:
       throw new Error(`Invalid attribute target "${attribute.type}"`);
   }

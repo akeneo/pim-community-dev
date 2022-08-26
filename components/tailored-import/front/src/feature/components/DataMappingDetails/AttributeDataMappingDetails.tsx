@@ -11,17 +11,18 @@ import {
 } from '../../models';
 import {useAttribute} from '../../hooks';
 import {
+  AssetCollectionConfigurator,
+  BooleanConfigurator,
+  DateConfigurator,
   IdentifierConfigurator,
   MeasurementConfigurator,
-  NumberConfigurator,
-  SimpleReferenceEntityConfigurator,
-  SimpleSelectConfigurator,
   MultiSelectConfigurator,
   MultiReferenceEntityConfigurator,
-  BooleanConfigurator,
+  NumberConfigurator,
+  PriceConfigurator,
+  SimpleReferenceEntityConfigurator,
+  SimpleSelectConfigurator,
   TextConfigurator,
-  DateConfigurator,
-  AssetCollectionConfigurator,
 } from './Attribute';
 import {AttributeDoesNotExist} from './AttributeDoesNotExist';
 import {ErrorBoundary} from './ErrorBoundary';
@@ -38,6 +39,7 @@ const attributeDataMappingConfigurators: {
   pim_catalog_metric: MeasurementConfigurator,
   pim_catalog_multiselect: MultiSelectConfigurator,
   pim_catalog_number: NumberConfigurator,
+  pim_catalog_price_collection: PriceConfigurator,
   pim_catalog_simpleselect: SimpleSelectConfigurator,
   pim_catalog_text: TextConfigurator,
   pim_catalog_textarea: TextConfigurator,
