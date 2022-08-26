@@ -26,6 +26,7 @@ services:
             - '@pim_datagrid_serializer'
             - '@akeneo.pim.enrichment.factory.value'
             - '@akeneo.pim.structure.query.get_attributes'
+            -  '@pimee_workflow.presenter.prices'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
         lazy: true
