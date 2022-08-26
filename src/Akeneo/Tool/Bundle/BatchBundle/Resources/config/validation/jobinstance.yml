@@ -4,7 +4,7 @@ Akeneo\Tool\Component\Batch\Model\JobInstance:
         # TODO move this constraint!
         - Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\JobInstance:
             property: jobName
-        - Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\Scheduled: ~
+        - Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\Scheduling: ~
     properties:
         code:
             - NotBlank: ~
