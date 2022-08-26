@@ -1,18 +1,18 @@
 import React, {FC} from 'react';
 import {CloseIcon, IconButton, List} from 'akeneo-design-system';
 import {CriterionModule} from '../../models/Criterion';
-import {AttributeYesNoCriterionState} from './types';
+import {AttributeBooleanCriterionState} from './types';
 import {useAttribute} from '../../hooks/useAttribute';
 import {ErrorHelpers} from '../../components/ErrorHelpers';
-import {AttributeYesNoOperatorInput} from './AttributeYesNoOperatorInput';
-import {AttributeYesNoValueInput} from './AttributeYesNoValueInput';
+import {AttributeBooleanOperatorInput} from './AttributeBooleanOperatorInput';
+import {AttributeBooleanValueInput} from './AttributeBooleanValueInput';
 import {ScopeInput} from '../../components/ScopeInput';
 import {LocaleInput} from '../../components/LocaleInput';
 import {CriterionFields, CriterionField} from '../../components/CriterionFields';
 import {Operator} from '../../models/Operator';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
-const AttributeYesNoCriterion: FC<CriterionModule<AttributeYesNoCriterionState>> = ({
+const AttributeBooleanCriterion: FC<CriterionModule<AttributeBooleanCriterionState>> = ({
     state,
     errors,
     onChange,
@@ -29,11 +29,15 @@ const AttributeYesNoCriterion: FC<CriterionModule<AttributeYesNoCriterionState>>
             <List.Cell width='auto'>
                 <CriterionFields>
                     <CriterionField>
-                        <AttributeYesNoOperatorInput state={state} onChange={onChange} isInvalid={!!errors.operator} />
+                        <AttributeBooleanOperatorInput
+                            state={state}
+                            onChange={onChange}
+                            isInvalid={!!errors.operator}
+                        />
                     </CriterionField>
                     {showValueInput && (
                         <CriterionField>
-                            <AttributeYesNoValueInput state={state} onChange={onChange} isInvalid={!!errors.value} />
+                            <AttributeBooleanValueInput state={state} onChange={onChange} isInvalid={!!errors.value} />
                         </CriterionField>
                     )}
                     {attribute?.scopable && (
@@ -71,4 +75,4 @@ const AttributeYesNoCriterion: FC<CriterionModule<AttributeYesNoCriterionState>>
     );
 };
 
-export {AttributeYesNoCriterion};
+export {AttributeBooleanCriterion};

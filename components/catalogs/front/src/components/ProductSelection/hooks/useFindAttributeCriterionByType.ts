@@ -1,7 +1,7 @@
 import {useCallback} from 'react';
 import {AnyAttributeCriterion} from '../models/Criterion';
 import AttributeTextCriterion from '../criteria/AttributeTextCriterion';
-import AttributeYesNoCriterion from '../criteria/AttributeYesNoCriterion';
+import AttributeBooleanCriterion from '../criteria/AttributeBooleanCriterion';
 
 type Return = (type: string) => AnyAttributeCriterion;
 
@@ -11,7 +11,7 @@ export const useFindAttributeCriterionByType = (): Return => {
             case 'pim_catalog_text':
                 return AttributeTextCriterion;
             case 'pim_catalog_boolean':
-                return AttributeYesNoCriterion;
+                return AttributeBooleanCriterion;
         }
 
         throw Error('Unknown attribute type');

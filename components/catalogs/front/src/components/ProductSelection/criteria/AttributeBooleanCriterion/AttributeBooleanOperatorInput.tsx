@@ -2,23 +2,25 @@ import React, {FC, useCallback} from 'react';
 import {SelectInput} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
 import {useOperatorTranslator} from '../../hooks/useOperatorTranslator';
-import {AttributeYesNoCriterionOperator, AttributeYesNoCriterionState} from './types';
+import {AttributeBooleanCriterionOperator, AttributeBooleanCriterionState} from './types';
 
 type Props = {
-    state: AttributeYesNoCriterionState;
-    onChange: (state: AttributeYesNoCriterionState) => void;
+    state: AttributeBooleanCriterionState;
+    onChange: (state: AttributeBooleanCriterionState) => void;
     isInvalid: boolean;
 };
 
-const AttributeYesNoOperatorInput: FC<Props> = ({state, onChange, isInvalid}) => {
+const AttributeBooleanOperatorInput: FC<Props> = ({state, onChange, isInvalid}) => {
     const translateOperator = useOperatorTranslator();
 
     const handleChange = useCallback(
         (operator: string) => {
             onChange({
                 ...state,
-                operator: operator as AttributeYesNoCriterionOperator,
-                value: [Operator.IS_EMPTY, Operator.IS_NOT_EMPTY].includes(operator as AttributeYesNoCriterionOperator)
+                operator: operator as AttributeBooleanCriterionOperator,
+                value: [Operator.IS_EMPTY, Operator.IS_NOT_EMPTY].includes(
+                    operator as AttributeBooleanCriterionOperator
+                )
                     ? null
                     : state.value,
             });
@@ -45,4 +47,4 @@ const AttributeYesNoOperatorInput: FC<Props> = ({state, onChange, isInvalid}) =>
     );
 };
 
-export {AttributeYesNoOperatorInput};
+export {AttributeBooleanOperatorInput};
