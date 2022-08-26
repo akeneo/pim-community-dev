@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage;
 
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\GetAllSupplierCodes;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Storage;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\GetAllSupplierCodes;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\UnableToDeleteFile;

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Supplier\Test\Integration\Infrastructure\ProductFileDropping;
+namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\GoogleCloudStorage;
 
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\DownloadStoredProductFile;
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage;
-use Akeneo\SupplierPortal\Supplier\Test\Integration\SqlIntegrationTestCase;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Storage;
+use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 
-final class DownloadStoredProductFileInGCSBucketIntegration extends SqlIntegrationTestCase
+final class DownloadStoredProductFileFromGCSBucketIntegration extends SqlIntegrationTestCase
 {
     /** @test */
     public function itDownloadsAProductsFileInAGCSBucket(): void

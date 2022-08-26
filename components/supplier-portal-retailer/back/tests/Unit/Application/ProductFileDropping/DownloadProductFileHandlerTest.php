@@ -6,9 +6,9 @@ namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDroppi
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFile;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFilePathAndFileName;
@@ -58,7 +58,7 @@ final class DownloadProductFileHandlerTest extends TestCase
         ;
 
         $productFileNameAndResourceFile = ($sut)(
-            new DownloadProductFile('1ed45c7b-6c61-4862-a11c-00c9580a8710', 1)
+            new DownloadProductFile('1ed45c7b-6c61-4862-a11c-00c9580a8710')
         );
         $this->assertSame(
             'file.xlsx',
@@ -98,8 +98,8 @@ final class DownloadProductFileHandlerTest extends TestCase
 
         $getProductFilePathAndFileNameMock->expects($this->once())->method('__invoke')->willReturn(null);
 
-        $this->expectException(SupplierFileDoesNotExist::class);
-        ($sut)(new DownloadProductFile('file-identifier', 1));
+        $this->expectException(ProductFileDoesNotExist::class);
+        ($sut)(new DownloadProductFile('file-identifier'));
     }
 
     /** @test */
@@ -133,7 +133,7 @@ final class DownloadProductFileHandlerTest extends TestCase
         ;
 
         $this->expectException(ProductFileIsNotDownloadable::class);
-        ($sut)(new DownloadProductFile('file-identifier', 1));
+        ($sut)(new DownloadProductFile('file-identifier'));
 
         $this->assertEmpty($eventDispatcher->getDispatchedEvents());
     }

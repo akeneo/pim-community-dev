@@ -36,6 +36,77 @@ final class DatabaseGetProductFilePathAndFileNameIntegration extends SqlIntegrat
         $this->assertNull($this->get(GetProductFilePathAndFileName::class)('unknown-file'));
     }
 
+    /** @test */
+    public function itDoesNotGetTheFilenameAndThePathIfTheSupplierFileIdentifierHasNotBeenUploadedByOneOfTheContributorsOfTheSupplierTheContributorConnectedBelongsTo(): void
+    {
+        $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
+        $this->createSupplier('bb2241e8-5242-4dbb-9d20-5e4e38514566', 'supplier_2', 'Supplier 2');
+        $this->createContributor(
+            'contributor@example.com',
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            1,
+        );
+        $this->createContributor(
+            'contributor+supplier2@example.com',
+            'bb2241e8-5242-4dbb-9d20-5e4e38514566',
+            2,
+        );
+        $this->createProductFile(
+            'ad54830a-aeae-4b57-8313-679a2327c5f7',
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            'supplier1/e6949a68-177e-4451-ad62-4debf90df079-products_file_1.xlsx',
+            'products_file_1.xlsx',
+            'contributor@example.com',
+        );
+        $this->createProductFile(
+            'd943f1dd-adc7-440d-9b4d-5a4b71073e04',
+            'bb2241e8-5242-4dbb-9d20-5e4e38514566',
+            'supplier2/a8051bf5-c948-4f78-862c-71aa4268f5f4-products_file_2.xlsx',
+            'products_file_2.xlsx',
+            'contributor+supplier2@example.com',
+        );
+
+        static::assertNull(
+            ($this->get(GetProductFilePathAndFileName::class))(
+                Identifier::fromString('ad54830a-aeae-4b57-8313-679a2327c5f7'),
+                'contributor+supplier2@example.com'
+            ),
+        );
+    }
+
+    /** @test */
+    public function itGetsTheFilenameAndThePathFromAFileIdentifier(): void
+    {
+        $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
+        $this->createContributor(
+            'contributor@example.com',
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            1,
+        );
+
+        $this->createProductFile(
+            'ad54830a-aeae-4b57-8313-679a2327c5f7',
+            '44ce8069-8da1-4986-872f-311737f46f00',
+            'supplier1/e6949a68-177e-4451-ad62-4debf90df079-products_file_1.xlsx',
+            'products_file_1.xlsx',
+            'contributor@example.com',
+        );
+
+        $productFile = ($this->get(GetProductFilePathAndFileName::class))(
+            Identifier::fromString('ad54830a-aeae-4b57-8313-679a2327c5f7'),
+            'contributor@example.com'
+        );
+
+        static::assertSame(
+            'products_file_1.xlsx',
+            $productFile->originalFilename,
+        );
+        static::assertSame(
+            'supplier1/e6949a68-177e-4451-ad62-4debf90df079-products_file_1.xlsx',
+            $productFile->path,
+        );
+    }
+
     private function createSupplier(string $identifier, string $code, string $label): void
     {
         $sql = <<<SQL

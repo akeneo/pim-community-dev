@@ -28,7 +28,7 @@ final class DownloadProductFileHandler
     //@phpstan-ignore-next-line
     public function __invoke(DownloadProductFile $query)
     {
-        $productFilePathAndFileName = ($this->getProductFilePathAndFileName)($query->supplierFileIdentifier);
+        $productFilePathAndFileName = ($this->getProductFilePathAndFileName)($query->productFileIdentifier);
         if (null === $productFilePathAndFileName) {
             throw new ProductFileDoesNotExist();
         }
@@ -39,7 +39,7 @@ final class DownloadProductFileHandler
         } catch (\Throwable $e) {
             $this->logger->error('Supplier file could not be downloaded', [
                 'data' => [
-                    'fileIdentifier' => $query->supplierFileIdentifier,
+                    'fileIdentifier' => $query->productFileIdentifier,
                     'filename' => $productFilePathAndFileName->originalFilename,
                     'path' => $productFilePathAndFileName->path,
                     'error' => $e->getMessage(),
@@ -48,16 +48,16 @@ final class DownloadProductFileHandler
             throw new ProductFileIsNotDownloadable();
         }
 
-        $supplierCode = ($this->getSupplierCodeFromSupplierFileIdentifier)($query->supplierFileIdentifier);
+        $supplierCode = ($this->getSupplierCodeFromSupplierFileIdentifier)($query->productFileIdentifier);
 
         if (null === $supplierCode) {
             return null;
         }
 
         $this->eventDispatcher->dispatch(new ProductFileDownloaded(
-            $query->supplierFileIdentifier,
+            $query->productFileIdentifier,
             $supplierCode,
-            $query->userId,
+            $query->userId, // @todo Will be moved to the Infrastructure layer
         ));
 
         return new ProductFileNameAndResourceFile($productFilePathAndFileName->originalFilename, $productFileStream);

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\SupplierPortal\Supplier\Test\Unit\Application\ProductFileDropping;
+namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Application\ProductFileDropping;
 
-use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\DownloadProductFile;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFile;
 use PHPUnit\Framework\TestCase;
 
 final class DownloadProductFileTest extends TestCase
@@ -15,13 +15,9 @@ final class DownloadProductFileTest extends TestCase
         $downloadProductFileReflectionClass = new \ReflectionClass(DownloadProductFile::class);
         $properties = $downloadProductFileReflectionClass->getProperties();
 
-        $sut = new DownloadProductFile(
-            '9c89942b-4be9-463b-90d8-69c9f000500c',
-            'contributor@example.com',
-        );
+        $sut = new DownloadProductFile('9c89942b-4be9-463b-90d8-69c9f000500c');
 
-        static::assertCount(2, $properties);
+        static::assertCount(1, $properties);
         static::assertSame('9c89942b-4be9-463b-90d8-69c9f000500c', $sut->productFileIdentifier);
-        static::assertSame('contributor@example.com', $sut->contributorEmail);
     }
 }

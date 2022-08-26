@@ -14,17 +14,35 @@ final class DatabaseGetProductFilePathAndFileName implements GetProductFilePathA
     {
     }
 
-    public function __invoke(string $productFileIdentifier): ?ProductFilePathAndFileName
+    public function __invoke(string $productFileIdentifier, string $contributorEmail): ?ProductFilePathAndFileName
     {
         $sql = <<<SQL
+            WITH supplier_identifier AS (
+                SELECT supplier.identifier
+                FROM akeneo_supplier_portal_supplier_contributor contributor
+                    INNER JOIN akeneo_supplier_portal_supplier supplier
+                        ON contributor.supplier_identifier = supplier.identifier
+                WHERE contributor.email = :email
+            )
             SELECT path, original_filename
-            FROM akeneo_supplier_portal_supplier_file
-            WHERE identifier = :identifier;
+            FROM akeneo_supplier_portal_supplier_file supplier_file
+                INNER JOIN akeneo_supplier_portal_supplier supplier
+                    ON supplier_file.uploaded_by_supplier = supplier.identifier
+                INNER JOIN akeneo_supplier_portal_supplier_contributor contributor
+                    ON supplier_file.uploaded_by_contributor = contributor.email
+            WHERE supplier_file.identifier = :productFileIdentifier
+            AND supplier_file.uploaded_by_supplier IN (
+                SELECT identifier
+                FROM supplier_identifier
+            )
         SQL;
 
         $productFile = $this->connection->executeQuery(
             $sql,
-            ['identifier' => $productFileIdentifier],
+            [
+                'productFileIdentifier' => $productFileIdentifier,
+                'email' => $contributorEmail,
+            ],
         )->fetchAssociative();
 
         if (false === $productFile) {
