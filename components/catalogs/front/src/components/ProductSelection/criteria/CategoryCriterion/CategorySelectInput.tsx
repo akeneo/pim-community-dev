@@ -50,13 +50,11 @@ const CategorySelectInput: FC<Props> = ({state, onChange, isInvalid}) => {
             {isOpen && selectedTree && (
                 <TreeDropdown verticalPosition='down' onClose={() => setOpen(false)} parentRef={dropdownParentRef}>
                     <CategoryTreeSelector selectedTree={selectedTree} onChange={setSelectedTree} />
-                    {
-                        <CategorySelector
-                            root={selectedTree}
-                            selectedCategories={selectedCategories}
-                            onCategorySelect={handleCategorySelection}
-                        />
-                    }
+                    <CategorySelector
+                        root={selectedTree}
+                        selectedCategories={selectedCategories}
+                        onCategorySelect={handleCategorySelection}
+                    />
                 </TreeDropdown>
             )}
         </>

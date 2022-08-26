@@ -22,16 +22,7 @@ export const useCategoryChildren = (categoryCode: CategoryCode): Result => {
             },
         });
 
-        const responseJson = await response.json();
-
-        if (response.ok) {
-            const children = responseJson as Category[];
-            children.forEach(child => {
-                queryClient.setQueryData(['categories', [child.code]], [child]);
-            });
-        }
-
-        return responseJson;
+        return await response.json();
     });
 
     const categoryChildren = queryResult.data;
