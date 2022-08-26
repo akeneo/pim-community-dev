@@ -75,6 +75,7 @@
 - PIM-10529: Fix links on product grid
 - PIM-10595: Fix not being able to add record with code "0" on a product
 - PIM-10588: Add potentially missing `remove_completeness_for_channel_and_locale` job instance
+- PIM-10568: Fix error when running Version_7_0_20220629142647_dqi_update_pk_on_product_score during On-Premise/Flex to Serenity migration
 
 ## Improvements
 
