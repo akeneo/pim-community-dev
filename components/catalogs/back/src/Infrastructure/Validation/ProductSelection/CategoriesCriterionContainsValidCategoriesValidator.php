@@ -41,7 +41,10 @@ class CategoriesCriterionContainsValidCategoriesValidator extends ConstraintVali
 
         if ($nonExistingCategoryCodes !== []) {
             $this->context
-                ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.category.value')
+                ->buildViolation(
+                    'akeneo_catalogs.validation.product_selection.criteria.category.value',
+                    ['{{ codes }}' => \implode(', ', $nonExistingCategoryCodes)],
+                )
                 ->atPath('[value]')
                 ->addViolation();
         }

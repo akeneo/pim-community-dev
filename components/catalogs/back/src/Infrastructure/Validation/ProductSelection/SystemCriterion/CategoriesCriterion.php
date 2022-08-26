@@ -35,7 +35,6 @@ class CategoriesCriterion extends Compound
                             new Assert\IdenticalTo('categories'),
                         ],
                         'operator' => [
-                            new Assert\Type('string'),
                             new Assert\Choice([
                                 Operator::IN_LIST,
                                 Operator::NOT_IN_LIST,
