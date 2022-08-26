@@ -21,7 +21,7 @@ final class FindMeasurementFamiliesIntegration extends TestCase
     {
         parent::setUp();
         $this->findMeasurementFamilies = $this->get(
-            'akeneo_measurement.public_api.onboarder.find_measurement_families'
+            'akeneo_measurement.public_api.find_measurement_families'
         );
     }
 
@@ -43,10 +43,9 @@ final class FindMeasurementFamiliesIntegration extends TestCase
     public function it_finds_measurement_family_by_code(): void
     {
         $result = $this->findMeasurementFamilies->getByCode('Angle');
-        $actualMeasurementFamily = current($result);
 
         self::assertNotEmpty($result, 'Expect to find one measurement family');
-        self::assertEquals('Angle', $actualMeasurementFamily->code);
+        self::assertEquals('Angle', $result->code);
     }
 
     /** @test
@@ -54,7 +53,7 @@ final class FindMeasurementFamiliesIntegration extends TestCase
      */
     public function it_throws_an_exception_if_code_doesnt_exist(): void
     {
-        $this->expectException('MeasurementFamilyNotFoundException');
+        $this->expectException(MeasurementFamilyNotFoundException::class);
         $this->findMeasurementFamilies->getByCode('ABC');
     }
 
