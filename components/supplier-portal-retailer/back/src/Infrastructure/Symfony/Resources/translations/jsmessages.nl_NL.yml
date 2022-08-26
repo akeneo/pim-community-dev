@@ -87,9 +87,6 @@ supplier_portal:
         contributor: Bijdrager
         supplier: Leverancier
         status: Status
-      status:
-        downloaded: Gedownload
-        to_download: Nog te downloaden
       notification:
         error_loading_supplier_files:
           title: We kunnen de productbestanden niet weergeven.

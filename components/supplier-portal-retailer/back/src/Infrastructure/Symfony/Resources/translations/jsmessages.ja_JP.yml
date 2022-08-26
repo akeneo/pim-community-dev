@@ -87,9 +87,6 @@ supplier_portal:
         contributor: コントリビューター
         supplier: サプライヤー
         status: ステータス
-      status:
-        downloaded: ダウンロード済み
-        to_download: ダウンロード
       notification:
         error_loading_supplier_files:
           title: 商品ファイルを表示できません。
