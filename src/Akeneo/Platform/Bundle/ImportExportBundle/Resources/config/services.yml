@@ -25,4 +25,4 @@ services:
     Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\UpsertRunningUser:
         arguments:
             - '@Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface'
-            - '@pim_user.repository.role'
+            - '@Akeneo\UserManagement\ServiceApi\UserRole\ListUserRoleInterface'
