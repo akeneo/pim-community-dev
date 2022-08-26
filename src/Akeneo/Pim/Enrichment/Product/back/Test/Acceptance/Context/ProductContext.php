@@ -73,10 +73,10 @@ final class ProductContext implements Context
      */
     public function theUserUpsertsAProductWithTheIdentifier(string $username, string $identifier): void
     {
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId($username),
             productIdentifier: $identifier,
-            valueUserIntents: $this->valueUserIntents,
+            userIntents: $this->valueUserIntents,
         );
         $this->valueUserIntents = [];
         $this->upsertProduct($command);
@@ -87,7 +87,7 @@ final class ProductContext implements Context
      */
     public function anUnknownUserTriesToUpsertAProductWithTheIdentifier(string $identifier): void
     {
-        $command = new UpsertProductCommand(userId: -10, productIdentifier: $identifier);
+        $command = UpsertProductCommand::createFromCollection(userId: -10, productIdentifier: $identifier, userIntents: []);
         $this->upsertProduct($command);
     }
 

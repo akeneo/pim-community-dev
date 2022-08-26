@@ -44,9 +44,10 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         GetNonViewableCategoryCodes $getNonViewableCategoryCodes,
         ExecutionContext $context
     ) {
-        $context->getRoot()->willReturn(new UpsertProductCommand(
+        $context->getRoot()->willReturn(UpsertProductCommand::createFromCollection(
             userId: 10,
-            productIdentifier: 'foo'
+            productIdentifier: 'foo',
+            userIntents: []
         ));
         $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
             ->willReturn(['foo' => ['categoryA']])
@@ -61,9 +62,10 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         GetNonViewableCategoryCodes $getNonViewableCategoryCodes,
         ExecutionContext $context
     ) {
-        $context->getRoot()->willReturn(new UpsertProductCommand(
+        $context->getRoot()->willReturn(UpsertProductCommand::createFromCollection(
             userId: 10,
-            productIdentifier: 'foo'
+            productIdentifier: 'foo',
+            userIntents: []
         ));
         $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
             ->willReturn(['foo' => []])
@@ -80,9 +82,10 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $constraint = new ShouldStayOwnerOfTheProduct();
-        $context->getRoot()->willReturn(new UpsertProductCommand(
+        $context->getRoot()->willReturn(UpsertProductCommand::createFromCollection(
             userId: 10,
-            productIdentifier: 'foo'
+            productIdentifier: 'foo',
+            userIntents: []
         ));
         $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
             ->willReturn(['foo' => ['categoryA']])
@@ -102,9 +105,10 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $constraint = new ShouldStayOwnerOfTheProduct();
-        $context->getRoot()->willReturn(new UpsertProductCommand(
+        $context->getRoot()->willReturn(UpsertProductCommand::createFromCollection(
             userId: 10,
-            productIdentifier: 'foo'
+            productIdentifier: 'foo',
+            userIntents: []
         ));
         $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')])
             ->willReturn(['foo' => ['categoryA', 'categoryB', 'categoryC']])

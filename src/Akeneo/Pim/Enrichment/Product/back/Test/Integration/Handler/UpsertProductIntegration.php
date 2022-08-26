@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearPriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\RemoveFromGroups;
@@ -90,7 +91,7 @@ final class UpsertProductIntegration extends TestCase
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNull($product);
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: []);
         $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
@@ -102,7 +103,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_a_product_with_a_text_value(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -123,7 +124,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_a_product_with_a_number_value(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [
             new SetNumberValue('a_number_integer', null, null, '10'),
         ]);
         $this->messageBus->dispatch($command);
@@ -143,7 +144,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_a_product_with_a_textarea_value(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [
             new SetTextareaValue('a_text_area', null, null, self::TEXT_AREA_VALUE),
         ]);
         $this->messageBus->dispatch($command);
@@ -197,14 +198,14 @@ final class UpsertProductIntegration extends TestCase
     public function it_updates_a_product_with_a_measurement_value(): void
     {
         // Creates empty product
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: []);
         $this->messageBus->dispatch($command);
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         // Update product with number value
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [
             new SetMeasurementValue('a_metric', null, null, '100', 'KILOWATT'),
         ]);
         $this->messageBus->dispatch($command);
@@ -224,7 +225,7 @@ final class UpsertProductIntegration extends TestCase
     {
         $this->expectException(LegacyViolationsException::class);
         $this->expectExceptionMessage('Please specify a valid metric unit');
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [
             new SetMeasurementValue('a_metric', null, null, '1275', 'unknown'),
         ]);
         $this->messageBus->dispatch($command);
@@ -236,7 +237,7 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The a_text attribute does not require a locale, "en_US" was detected');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [
             new SetTextValue('a_text', null, 'en_US', 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -248,7 +249,7 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The "0" user does not exist');
 
-        $command = new UpsertProductCommand(userId: 0, productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: 0, productIdentifier: 'identifier', userIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -260,7 +261,7 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The product identifier requires a non empty string');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: '', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: '', userIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -292,7 +293,7 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNotNull($product->getValue('a_text', null, null));
 
         // Update product with clear values
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [
             new ClearValue('a_date', null, null),
             new ClearValue('a_file', null, null),
             new ClearValue('a_metric', null, null),
@@ -349,7 +350,7 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNotNull($product->getValue('packshot_attr', null, null));
 
         // Update product with clear values
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'product_with_asset', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'product_with_asset', userIntents: [
             new ClearValue('packshot_attr', null, null),
         ]);
 
@@ -398,7 +399,7 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNotNull($product->getValue('a_reference_entity_attribute', null, null));
 
         // Update product with clear values
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'product_with_ref_entities', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'product_with_ref_entities', userIntents: [
             new ClearValue('a_reference_entity_attribute', null, null),
             new ClearValue('a_reference_entity_collection_attribute', null, null),
         ]);
@@ -414,7 +415,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_a_product_with_a_boolean_value(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [
             new SetBooleanValue('a_yes_no', null, null, true),
         ]);
         $this->messageBus->dispatch($command);
@@ -482,7 +483,7 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The value for attribute a_text is being updated multiple times');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
             new SetTextValue('a_text', null, null, 'bar'),
         ]);
@@ -492,7 +493,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_a_product_with_a_date_value(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [
             new SetDateValue('a_date', null, null, new \DateTime("2022-03-04T09:35:24")),
         ]);
         $this->messageBus->dispatch($command);
@@ -552,10 +553,10 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The unknown family does not exist in your PIM.');
 
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            familyUserIntent: new SetFamily('unknown')
+            userIntents: [new SetFamily('unknown')]
         );
         $this->messageBus->dispatch($command);
     }
@@ -566,10 +567,10 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The family code requires a non empty string');
 
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            familyUserIntent: new SetFamily('')
+            userIntents: [new SetFamily('')]
         );
         $this->messageBus->dispatch($command);
     }
@@ -590,7 +591,7 @@ final class UpsertProductIntegration extends TestCase
         );
         $this->createRecords('brand', ['Akeneo']);
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [
             new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'Akeneo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -641,10 +642,10 @@ final class UpsertProductIntegration extends TestCase
         );
         $this->createRecords('brand', ['Akeneo', 'Ziggy']);
 
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            valueUserIntents: [new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'Unknown')]
+            userIntents: [new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'Unknown')]
         );
         $this->messageBus->dispatch($command);
     }
@@ -672,10 +673,10 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_adds_categories_to_a_product(): void
     {
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            categoryUserIntent: new SetCategories(['categoryA'])
+            userIntents: [new SetCategories(['categoryA'])]
         );
         $this->messageBus->dispatch($command);
         $this->updateProduct(new AddCategories(['categoryA', 'categoryB', 'categoryC']));
@@ -689,10 +690,10 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_throws_exception_when_trying_to_add_unexisting_category(): void
     {
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            categoryUserIntent: new SetCategories(['categoryA'])
+            userIntents: [new SetCategories(['categoryA'])]
         );
         $this->messageBus->dispatch($command);
 
@@ -705,10 +706,10 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_removes_categories_of_a_product(): void
     {
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            categoryUserIntent: new SetCategories(['categoryA', 'categoryB', 'categoryC'])
+            userIntents: [new SetCategories(['categoryA', 'categoryB', 'categoryC'])]
         );
         $this->messageBus->dispatch($command);
 
@@ -721,10 +722,10 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_throws_exception_when_trying_to_remove_unexisting_categories(): void
     {
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            categoryUserIntent: new SetCategories(['categoryA', 'categoryB'])
+            userIntents: [new SetCategories(['categoryA', 'categoryB'])]
         );
         $this->messageBus->dispatch($command);
 
@@ -750,10 +751,10 @@ final class UpsertProductIntegration extends TestCase
         );
         $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
 
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            valueUserIntents: [new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo'])]
+            userIntents: [new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo'])]
         );
         $this->messageBus->dispatch($command);
 
@@ -786,10 +787,10 @@ final class UpsertProductIntegration extends TestCase
         );
         $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
 
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            valueUserIntents: [new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy'])]
+            userIntents: [new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy'])]
         );
         $this->messageBus->dispatch($command);
 
@@ -908,7 +909,7 @@ final class UpsertProductIntegration extends TestCase
     {
         $this->loadAssetFixtures();
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [
             new SetAssetValue('packshot_attr', null, null, ['packshot1'])
         ]);
         $this->messageBus->dispatch($command);
@@ -976,10 +977,10 @@ final class UpsertProductIntegration extends TestCase
 
         // create product 'identifier'
         $aFilePath = $this->getFileInfoKey($this->getFixturePath('akeneo.pdf'));
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            valueUserIntents: [new SetFileValue('a_file', null, null, $aFilePath)]
+            userIntents: [new SetFileValue('a_file', null, null, $aFilePath)]
         );
         $this->messageBus->dispatch($command);
 
@@ -1011,10 +1012,10 @@ final class UpsertProductIntegration extends TestCase
 
         // create product 'identifier'
         $anImagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.png'));
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            valueUserIntents: [new SetFileValue('a_file', null, null, $anImagePath)]
+            userIntents: [new SetFileValue('a_file', null, null, $anImagePath)]
         );
         $this->messageBus->dispatch($command);
 
@@ -1029,10 +1030,10 @@ final class UpsertProductIntegration extends TestCase
 
         // create product 'identifier'
         $anImagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.png'));
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            valueUserIntents: [new SetImageValue('an_image', null, null, $anImagePath)]
+            userIntents: [new SetImageValue('an_image', null, null, $anImagePath)]
         );
         $this->messageBus->dispatch($command);
 
@@ -1064,10 +1065,10 @@ final class UpsertProductIntegration extends TestCase
 
         // create product 'identifier'
         $anImagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.txt'));
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            valueUserIntents: [new SetImageValue('an_image', null, null, $anImagePath)]
+            userIntents: [new SetImageValue('an_image', null, null, $anImagePath)]
         );
         $this->messageBus->dispatch($command);
 
@@ -1075,21 +1076,20 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_updates_a_product_with_a_price_collection_value(): void
+    public function it_create_a_product_with_a_price_collection_value(): void
     {
         $this->updateProduct(new SetPriceCollectionValue('a_price', null, null, [
             new PriceValue('42', 'EUR'),
             new PriceValue('24', 'USD'),
         ]));
 
-        $product = $this->productRepository->findOneByIdentifier('identifier');
-        Assert::assertNotNull($product);
-        $value = $product->getValue('a_price', null, null)->getData()->toArray();
-
-        Assert::assertEqualsCanonicalizing([
-            new ProductPrice('42.00', 'EUR'),
-            new ProductPrice('24.00', 'USD'),
-        ], $value);
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_price',
+            new PriceCollection([
+                new ProductPrice('42.00', 'EUR'),
+                new ProductPrice('24.00', 'USD'),
+            ])
+        );
     }
 
     /** @test */
@@ -1131,6 +1131,27 @@ final class UpsertProductIntegration extends TestCase
                 new ProductPrice('50.00', 'EUR'),
                 new ProductPrice('50.00', 'USD'),
             ]),
+        );
+    }
+
+    /** @test */
+    public function it_creates_a_price_value_on_a_product(): void
+    {
+        $this->updateProduct(new SetPriceCollectionValue('a_price', null, null, [
+            new PriceValue('42', 'EUR'),
+            new PriceValue('24', 'USD'),
+        ]));
+
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_price',
+            new PriceCollection([new ProductPrice('42.00', 'EUR'), new ProductPrice('24.00', 'USD')])
+        );
+
+        $this->updateProduct(new ClearPriceValue('a_price', null, null, 'EUR'));
+
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_price',
+            new PriceCollection([new ProductPrice('24.00', 'USD')])
         );
     }
 
@@ -1179,10 +1200,10 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNull($product);
 
         // create product 'identifier'
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            valueUserIntents: [
+            userIntents: [
                 new SetTableValue(
                     'a_table',
                     null,
@@ -1270,10 +1291,10 @@ final class UpsertProductIntegration extends TestCase
         $this->expectExceptionMessage('The "origin" column does not exist');
 
         // create product 'identifier'
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            valueUserIntents: [
+            userIntents: [
                 new SetTableValue(
                     'a_table',
                     null,
@@ -1301,10 +1322,10 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNull($product);
 
         // create product 'identifier'
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            valueUserIntents: [
+            userIntents: [
                 new SetSimpleReferenceDataValue('color_ref_data', null, null, 'red'),
             ]
         );
@@ -1345,10 +1366,10 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNull($product);
 
         // create product 'identifier'
-        $command = new UpsertProductCommand(
+        $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            valueUserIntents: [
+            userIntents: [
                 new SetMultiReferenceDataValue('color_ref_data', null, null, ['red', 'yellow']),
             ]
         );
@@ -1449,7 +1470,7 @@ final class UpsertProductIntegration extends TestCase
         $product = $this->productRepository->findOneByIdentifier('identifier');
         if (null === $product) {
             // Creates empty product
-            $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
+            $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: []);
             $this->messageBus->dispatch($command);
             $product = $this->productRepository->findOneByIdentifier('identifier');
             Assert::assertNotNull($product);

@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Component\Batch\Updater;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\UpsertRunningUser;
+use Akeneo\Tool\Component\Batch\Clock\ClockInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -24,6 +25,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
         private JobParametersFactory $jobParametersFactory,
         private JobRegistry $jobRegistry,
         private UpsertRunningUser $upsertRunningUser,
+        private ClockInterface $clock,
     ) {
     }
 
@@ -32,7 +34,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
      *
      * @param JobInstance $jobInstance
      */
-    public function update($jobInstance, array $data, array $options = [])
+    public function update($jobInstance, array $data, array $options = []): void
     {
         if (!$jobInstance instanceof JobInstance) {
             throw InvalidObjectException::objectExpected(
@@ -58,12 +60,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
         $this->upsertRunningUser->execute($jobInstance->getCode(), $automation['running_user_groups'] ?? []);
     }
 
-    /**
-     * @param JobInstance $jobInstance
-     * @param string      $field
-     * @param mixed       $data
-     */
-    protected function setData(JobInstance $jobInstance, $field, $data)
+    private function setData(JobInstance $jobInstance, string $field, mixed $data): void
     {
         switch ($field) {
             case 'connector':
@@ -82,6 +79,9 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
                 $jobInstance->setScheduled($data);
                 break;
             case 'automation':
+                if (null !== $data) {
+                    $data = $this->updateAutomation($jobInstance, $data);
+                }
                 $jobInstance->setAutomation($data);
                 break;
             case 'configuration':
@@ -94,5 +94,26 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
                 $jobInstance->setCode($data);
                 break;
         }
+    }
+
+    private function updateAutomation(JobInstance $jobInstance, array $newAutomation): array
+    {
+        $currentAutomation = $jobInstance->getAutomation() ?? [];
+
+        $currentCronExpression = $currentAutomation['cron_expression'] ?? null;
+        $newCronExpression = $newAutomation['cron_expression'] ?? null;
+
+        $cronExpressionChanged = $newCronExpression !== null && $newCronExpression !== $currentCronExpression;
+
+        if ($cronExpressionChanged) {
+            $now = $this->clock->now();
+            $newAutomation['setup_date'] = $now->format(DATE_ATOM);
+        }
+
+        if (!array_key_exists('last_execution_date', $currentAutomation)) {
+            $newAutomation['last_execution_date'] = null;
+        }
+
+        return array_merge($currentAutomation, $newAutomation);
     }
 }

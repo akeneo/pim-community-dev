@@ -5,6 +5,11 @@ services:
     arguments:
       $findUserGroups: '@Akeneo\UserManagement\Infrastructure\Storage\SqlFindUserGroups'
 
+  Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface:
+    class: Akeneo\UserManagement\Application\Handler\ListUsersHandler
+    arguments:
+      - '@Akeneo\UserManagement\Infrastructure\Storage\SqlFindUsers'
+
   Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface:
     class: Akeneo\UserManagement\Application\Handler\UpsertUserHandler
     arguments:
