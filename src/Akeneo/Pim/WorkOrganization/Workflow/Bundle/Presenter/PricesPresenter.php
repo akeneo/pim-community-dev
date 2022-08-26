@@ -71,7 +71,7 @@ class PricesPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function normalizeData($data)
+    protected function normalizeData($data)
     {
         if (!is_iterable($data)) {
             return [];
