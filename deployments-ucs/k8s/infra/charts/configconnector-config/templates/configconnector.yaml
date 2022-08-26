@@ -7,4 +7,4 @@ metadata:
   name: configconnector.core.cnrm.cloud.google.com
 spec:
  mode: cluster
- googleServiceAccount: null
+ googleServiceAccount: {{ .Values.configconnector.gsa }}

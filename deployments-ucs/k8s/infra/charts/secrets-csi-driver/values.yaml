@@ -1,0 +1,5 @@
+plugin:
+  serviceAccount:
+    name: secrets-store-csi-driver-provider-gcp
+secrets-store-csi-driver:
+  enableSecretRotation: true

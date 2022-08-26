@@ -3,18 +3,6 @@ variable "project_id" {
   type        = string
 }
 
-variable "crossplane_k8s_ns" {
-  description = "Crossplane kubernetess namespace"
-  type        = string
-  default     = "crossplane-system"
-}
-
-variable "crossplane_k8s_sa" {
-  description = "Crossplane kubernetess service account name"
-  type        = string
-  default     = "crossplane"
-}
-
 variable "secrets_admins" {
   description = "Secrets version managers"
   type        = list(string)
@@ -50,4 +38,28 @@ variable "pim_k8s_sa" {
   description = "PIM deployment K8S service account"
   type        = string
   default     = "pim-deployment-sa"
+}
+
+variable "external_dns_k8s_ns" {
+  description = "External DNS kubernetess namespace"
+  type        = string
+  default     = "external-dns"
+}
+
+variable "external_dns_k8s_sa" {
+  description = "External DNS kubernetess service account name"
+  type        = string
+  default     = "external-dns"
+}
+
+variable "custom_metrics_k8s_ns" {
+  description = "custom_metrics kubernetess namespace"
+  type        = string
+  default     = "custom-metrics"
+}
+
+variable "custom_metrics_k8s_sa" {
+  description = "custom_metrics kubernetess service account name"
+  type        = string
+  default     = "custom-metrics-stackdriver-adapter"
 }

@@ -19,30 +19,24 @@ steps:
         HOST="*.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.tls[0].hosts |= . + [env(HOST)] ' k8s/argocd/values.yaml
         yq -i 'del(.server.ingress.hosts)' k8s/argocd/values.yaml
         GOOGLE_DOMAIN="argocd.${_GOOGLE_DOMAIN}" yq -i e '.server.ingress.hosts |= . + [env(GOOGLE_DOMAIN)] ' k8s/argocd/values.yaml
+        # Set target revision to current branch
+        yq -i '.configs.additionalApplications[0].source.targetRevision = env(BRANCH_NAME)' k8s/argocd/values.yaml
+        VALUES="values-${PROJECT_ID}" yq -i '.configs.additionalApplications[0].helm.valueFiles[0] = env(VALUES)' k8s/argocd/values.yaml
+        VALUES="values-${PROJECT_ID}" yq -i '.spec.source.helm.valueFiles[0] = env(VALUES)' k8s/infra/infra-apps.yaml
 
         ## Datadog
-        DATADOG_API_KEY="$${DATADOG_API_KEY}" yq -i '.datadog.apiKey = env(DATADOG_API_KEY)' k8s/datadog/values.yaml
-        CLUSTER_NAME="${_CLUSTER_NAME}" yq -i '.datadog.clusterName = env(CLUSTER_NAME)' k8s/datadog/values.yaml
-        TAGS="cloud_env:${_CLUSTER_NAME} cloud_service:ucs" yq -i '.datadog.tags = env(TAGS)' k8s/datadog/values.yaml
-
-        ## ConfigConnector
-        GSA="ucs-cloudconfig-account@${PROJECT_ID}.iam.gserviceaccount.com" yq -i '.spec.googleServiceAccount = env(GSA)' k8s/configconnector/configconnector.yaml
+        DATADOG_API_SECRET_NAME=datadog-api-secret
+        kubectl create secret generic $DATADOG_API_SECRET_NAME --from-literal api-key="$DATADOG_API_KEY"
 
         # Use helm repo
         helm repo add traefik https://helm.traefik.io/traefik
-        helm repo add datadog https://helm.datadoghq.com
         helm repo add argo https://argoproj.github.io/argo-helm
-        helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
         helm repo update 2>&1
 
         # Install prerequisite
-        ## Secret manager_csi
-        helm upgrade --debug --atomic --cleanup-on-fail --history-max 5 -i --wait -n kube-system csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver --set-string enableSecretRotation=true --set-string secretObjects=true
-        kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/secrets-store-csi-driver-provider-gcp/release-1.1/deploy/provider-gcp-plugin.yaml
-
-        ## StorageClass
-        # Will be managed by terraform later
-        kubectl apply -f k8s/kubernetes/StorageClass/
+        ## ArgoCD
+        helm upgrade --version 4.8.2 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
+        kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
 
         ## Traefik
         rm -Rf "./traefik-chart"
@@ -61,15 +55,8 @@ steps:
          -n=traefik-v2 \
          -f "old/traefik/static-configuration.yaml"
 
-        ## Datadog
-        helm upgrade --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n default datadog-agent datadog/datadog -f k8s/datadog/values.yaml
+        
 
-        ## ArgoCD
-        helm upgrade --version 4.8.2 --debug --atomic --cleanup-on-fail --history-max 5 -i --wait --create-namespace -n argocd argocd argo/argo-cd -f k8s/argocd/values.yaml
-        kubectl apply -f k8s/argocd/templates/argocd-cm.yaml
-
-        ## ConfigConnector
-        kubectl apply -f k8s/configconnector/configconnector.yaml
     secretEnv: ['ARGOCD_TOKEN', 'DATADOG_API_KEY']
 options:
   logging: CLOUD_LOGGING_ONLY

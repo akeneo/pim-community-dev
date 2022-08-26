@@ -7,6 +7,8 @@ resource "google_project_iam_member" "gke_container_dev" {
 
 resource "google_project_service" "services" {
   for_each = toset([
+    "secretmanager.googleapis.com",
+    "certificatemanager.googleapis.com",
     "multiclusterservicediscovery.googleapis.com",
     "multiclusteringress.googleapis.com",
     "gkehub.googleapis.com",

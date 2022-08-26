@@ -34,6 +34,42 @@ configs:
       name: pim-enterprise-dev
       url: https://github.com/akeneo/pim-enterprise-dev
 
+  additionalProjects:
+  - name: infra
+    namespace: argocd
+    sourceRepos:
+    - '*'
+    destinations:
+    - namespace: '*'
+      server: '*'
+    clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+
+  additionalApplications:
+  - name: infra-apps
+    namespace: argocd
+    additionalAnnotations:
+      argocd.argoproj.io/sync-wave: "-1"
+    finalizers:
+    - resources-finalizer.argocd.argoproj.io
+    syncPolicy:
+      automated: {}
+    project: infra
+    source:
+      repoURL: https://github.com/akeneo/pim-enterprise-dev.git
+      path: deployments-ucs/k8s/infra/apps
+      targetRevision: master
+    destination:
+      server: "https://kubernetes.default.svc"
+    helm:
+      parameters:
+        - name: spec.source.targetRevision
+          value: $ARGOCD_APP_SOURCE_TARGET_REVISION
+      valueFiles:
+       - values.yaml # To be changed by values-project.yaml
+  
+
 server:
   extraArgs:
     - --insecure

@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: infra-apps
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: infra
   source:
@@ -13,5 +15,7 @@ spec:
       parameters:
         - name: spec.source.targetRevision
           value: $ARGOCD_APP_SOURCE_TARGET_REVISION
+      valueFiles:
+      - values.yaml # To be changed by values-project.yaml
   destination:
     server: "https://kubernetes.default.svc"
