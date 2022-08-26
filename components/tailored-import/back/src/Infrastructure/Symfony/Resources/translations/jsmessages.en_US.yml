@@ -135,9 +135,12 @@ akeneo.tailored_import:
           comma: Comma (,)
           dot: Dot (.)
           arabic_comma: Arabic decimal separator (٫)
+        date_format: Date format
         measurement_unit:
           title: Unit
-        date_format: Date format
+        price_currency:
+          title: Currency
+          placeholder: Choose a currency
       invalid:
         attribute: This attribute has been deleted and recreated with another type, please remove this data mapping and add it again.
         property: This property is invalid, please remove this data mapping and add it again.

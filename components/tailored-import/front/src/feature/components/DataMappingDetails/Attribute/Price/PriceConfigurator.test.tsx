@@ -204,7 +204,7 @@ test('it should display a price currency selector', async () => {
   });
 
   expect(
-    screen.getByLabelText('akeneo.tailored_import.data_mapping.target.parameters.price.currency.title')
+    screen.getByLabelText('akeneo.tailored_import.data_mapping.target.parameters.price_currency.title')
   ).toBeInTheDocument();
 });
 
@@ -230,7 +230,7 @@ test('it defines the price currency of the target', async () => {
     await flushPromises();
   });
 
-  userEvent.click(screen.getByLabelText('akeneo.tailored_import.data_mapping.target.parameters.price.currency.title'));
+  userEvent.click(screen.getByLabelText('akeneo.tailored_import.data_mapping.target.parameters.price_currency.title'));
   userEvent.click(screen.getByText('USD'));
 
   expect(onTargetChange).toHaveBeenCalledWith({

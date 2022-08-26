@@ -21,10 +21,10 @@ const CurrencySelector = ({value, onChange, channelReference, validationErrors}:
   const currencyCodes = getCurrencyCodesFromChannelReference(channels, channelReference);
 
   return (
-    <Field label={translate('akeneo.tailored_import.data_mapping.target.parameters.price.currency.title')}>
+    <Field label={translate('akeneo.tailored_import.data_mapping.target.parameters.price_currency.title')}>
       <SelectInput
         value={value}
-        placeholder={translate('akeneo.tailored_import.data_mapping.target.parameters.price.currency.placeholder')}
+        placeholder={translate('akeneo.tailored_import.data_mapping.target.parameters.price_currency.placeholder')}
         onChange={onChange}
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
