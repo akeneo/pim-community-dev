@@ -16,3 +16,7 @@ services:
     Akeneo\UserManagement\Infrastructure\Storage\SqlFindUsers:
         arguments:
             - '@database_connection'
+
+    Akeneo\UserManagement\Infrastructure\Storage\SqlFindAllUserRoles:
+        arguments:
+            - '@database_connection'
