@@ -140,7 +140,7 @@ akeneo.tailored_import:
           title: Unit
         price_currency:
           title: Currency
-          placeholder: Choose a currency
+          placeholder: Select a currency
       invalid:
         attribute: This attribute has been deleted and recreated with another type, please remove this data mapping and add it again.
         property: This property is invalid, please remove this data mapping and add it again.
