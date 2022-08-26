@@ -1,7 +1,6 @@
-import BaseView = require('pimui/js/view/base');
-import {GlobalSettings} from '@akeneo-pim-enterprise/tailored-import';
 import {formatParameters, getErrorsForPath, ValidationError} from '@akeneo-pim-community/shared';
-import {GlobalSettingsTab, GlobalSettingsTabProps} from '@akeneo-pim-enterprise/tailored-import';
+import {GlobalSettings, GlobalSettingsTabProps, GlobalSettingsTab} from '@akeneo-pim-enterprise/tailored-import';
+import BaseView from 'pimui/js/view/base';
 
 const __ = require('oro/translator');
 
@@ -38,7 +37,7 @@ class GlobalSettingsView extends BaseView {
       }
     });
 
-    return BaseView.prototype.configure.apply(this, arguments);
+    return BaseView.prototype.configure.apply(this);
   }
 
   setValidationErrors(validationErrors: ValidationError[]) {

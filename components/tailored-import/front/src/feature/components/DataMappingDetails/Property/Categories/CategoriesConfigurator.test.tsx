@@ -102,6 +102,7 @@ test('it throws an error if we setup this component with a wrong target', async 
     await renderWithProviders(
       <CategoriesConfigurator
         columns={[]}
+        // @ts-expect-error invalid target
         dataMapping={dataMapping}
         onOperationsChange={jest.fn()}
         onRefreshSampleData={jest.fn()}

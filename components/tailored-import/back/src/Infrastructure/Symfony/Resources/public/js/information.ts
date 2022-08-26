@@ -1,7 +1,7 @@
 import {createElement} from 'react';
 import {Information, JuliaIllustration, Link} from 'akeneo-design-system';
-import BaseView = require('pimui/js/view/base');
 const translate = require('oro/translator');
+import BaseView from 'pimui/js/view/base';
 
 type InformationConfig = {
   title: string;
@@ -18,7 +18,7 @@ class InformationView extends BaseView {
   constructor(options: {config: InformationConfig}) {
     super(options);
 
-    this.config = {...this.config, ...options.config};
+    this.config = options.config;
   }
 
   /**

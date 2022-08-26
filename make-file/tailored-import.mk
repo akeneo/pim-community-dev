@@ -31,8 +31,15 @@ else
 	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c components/tailored-import/back/tests/phpunit-ee.xml --testsuite TailoredImport_Acceptance_Test $(O)
 endif
 
+.PHONY: lint-front
 lint-front:
 	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-import lint:check
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-import tsc --noEmit --strict --incremental false
+	$(YARN_RUN) tsc -p components/tailored-import/back/tests/tsconfig.json
+
+.PHONY: lint-fix-front
+lint-fix-front:
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-import lint:fix
 
 .PHONY: unit-front
 unit-front:
@@ -42,9 +49,7 @@ unit-front:
 ci-back: lint-back coupling-back unit-back acceptance-back integration-back
 
 .PHONY: ci-front
-ci-front:
-	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-import lint:check
-	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-import test:unit:run
+ci-front: lint-front unit-front
 
 .PHONY: ci
 ci: ci-back ci-front

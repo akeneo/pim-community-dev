@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
-import BaseView = require('pimui/js/view/base');
 import {
   Attribute,
   FetcherContext,
@@ -13,6 +12,7 @@ import {
 import {pimTheme} from 'akeneo-design-system';
 import {Channel, filterErrors, formatParameters, ValidationError} from '@akeneo-pim-community/shared';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import BaseView from 'pimui/js/view/base';
 
 const __ = require('oro/translator');
 const fetcherRegistry = require('pim/fetcher-registry');
@@ -50,7 +50,7 @@ class ColumnView extends BaseView {
       }
     });
 
-    return BaseView.prototype.configure.apply(this, arguments);
+    return BaseView.prototype.configure.apply(this);
   }
 
   setValidationErrors(validationErrors: ValidationError[]) {
@@ -127,7 +127,7 @@ class ColumnView extends BaseView {
                 },
               },
             },
-            React.createElement(ImportStructureTab, props)
+            React.createElement<ImportStructureTabProps>(ImportStructureTab, props)
           )
         )
       ),
