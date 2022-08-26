@@ -8,9 +8,9 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProdu
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileIsNotDownloadable;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\StubEventDispatcher;
@@ -132,7 +132,7 @@ final class DownloadProductFileHandlerTest extends TestCase
             ->willThrowException(new \RuntimeException())
         ;
 
-        $this->expectException(SupplierFileIsNotDownloadable::class);
+        $this->expectException(ProductFileIsNotDownloadable::class);
         ($sut)(new DownloadProductFile('file-identifier', 1));
 
         $this->assertEmpty($eventDispatcher->getDispatchedEvents());

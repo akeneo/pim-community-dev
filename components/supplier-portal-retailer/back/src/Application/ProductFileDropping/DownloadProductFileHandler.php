@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping;
 
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
+use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileDoesNotExist;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Exception\SupplierFileIsNotDownloadable;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFileNameAndResourceFile;
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier;
 use Psr\Log\LoggerInterface;
@@ -30,7 +30,7 @@ final class DownloadProductFileHandler
     {
         $productFilePathAndFileName = ($this->getProductFilePathAndFileName)($query->supplierFileIdentifier);
         if (null === $productFilePathAndFileName) {
-            throw new SupplierFileDoesNotExist();
+            throw new ProductFileDoesNotExist();
         }
 
         try {
@@ -45,7 +45,7 @@ final class DownloadProductFileHandler
                     'error' => $e->getMessage(),
                 ],
             ]);
-            throw new SupplierFileIsNotDownloadable();
+            throw new ProductFileIsNotDownloadable();
         }
 
         $supplierCode = ($this->getSupplierCodeFromSupplierFileIdentifier)($query->supplierFileIdentifier);

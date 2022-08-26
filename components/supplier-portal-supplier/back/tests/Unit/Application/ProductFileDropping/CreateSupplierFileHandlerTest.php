@@ -11,7 +11,7 @@ use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemo
 use Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as SupplierInMemoryRepository;
 use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\CreateSupplierFile;
 use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\CreateSupplierFileHandler;
-use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\Exception\InvalidSupplierFile;
+use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\Exception\InvalidProductFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\StoreProductsFile;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Event\SupplierFileAdded;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\Model\SupplierFile;
@@ -211,7 +211,7 @@ final class CreateSupplierFileHandlerTest extends TestCase
             new NullLogger(),
         );
 
-        static::expectException(InvalidSupplierFile::class);
+        static::expectException(InvalidProductFile::class);
         ($sut)(
             new CreateSupplierFile(
                 $uploadedSupplierFile,

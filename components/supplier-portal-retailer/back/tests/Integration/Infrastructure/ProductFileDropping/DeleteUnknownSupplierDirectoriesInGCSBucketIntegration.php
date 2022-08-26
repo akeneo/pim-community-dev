@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping;
 
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\DeleteUnknownSupplierDirectoriesInGCSBucket;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\DeleteUnknownSupplierDirectoriesInGCSBucket;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage;
 use Doctrine\DBAL\Connection;

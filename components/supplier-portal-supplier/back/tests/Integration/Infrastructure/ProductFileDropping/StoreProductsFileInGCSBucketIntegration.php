@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Supplier\Test\Integration\Infrastructure\ProductFileDropping;
 
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\GoogleCloudStorage\StoreProductsFileInGCSBucket;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Filename;
 use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Write\ValueObject\Identifier;
-use Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\StoreProductsFileInGCSBucket;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class StoreProductsFileInGCSBucketIntegration extends KernelTestCase

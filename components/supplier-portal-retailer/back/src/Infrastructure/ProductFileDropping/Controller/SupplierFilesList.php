@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFiles;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFilesCount;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetSupplierFilesCount;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\SupplierFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,8 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 final class SupplierFilesList
 {
     public function __construct(
-        private GetSupplierFiles $getSupplierFiles,
-        private GetSupplierFilesCount $getSupplierFilesCount,
+        private ListProductFilesForSupplier $getSupplierFiles,
+        private GetSupplierFilesCount       $getSupplierFilesCount,
     ) {
     }
 
@@ -30,7 +30,7 @@ final class SupplierFilesList
                 $supplierFiles,
             ),
             'total' => ($this->getSupplierFilesCount)($supplierIdentifier),
-            'items_per_page' => GetSupplierFiles::NUMBER_OF_SUPPLIER_FILES_PER_PAGE,
+            'items_per_page' => ListProductFilesForSupplier::NUMBER_OF_SUPPLIER_FILES_PER_PAGE,
         ]);
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetSupplierFiles;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier;
 use Akeneo\SupplierPortal\Retailer\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
@@ -14,7 +14,7 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itReturnsAnEmptyArrayIfThereIsNoFile(): void
     {
-        static::assertCount(0, ($this->get(GetSupplierFiles::class))('44ce8069-8da1-4986-872f-311737f46f00'));
+        static::assertCount(0, ($this->get(ListProductFilesForSupplier::class))('44ce8069-8da1-4986-872f-311737f46f00'));
     }
 
     /** @test */
@@ -30,7 +30,7 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
             $this->createSupplierFile('path/to/file/file.xlsx', new \DateTimeImmutable(), 'a20576cd-840f-4124-9900-14d581491387');
         }
 
-        static::assertCount(15, $this->get(GetSupplierFiles::class)('44ce8069-8da1-4986-872f-311737f46f00'));
+        static::assertCount(15, $this->get(ListProductFilesForSupplier::class)('44ce8069-8da1-4986-872f-311737f46f00'));
     }
 
     /** @test */
@@ -42,7 +42,7 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
             $this->createSupplierFile('path/to/file/file.xlsx', new \DateTimeImmutable(), '44ce8069-8da1-4986-872f-311737f46f00');
         }
 
-        static::assertCount(25, $this->get(GetSupplierFiles::class)('44ce8069-8da1-4986-872f-311737f46f00'));
+        static::assertCount(25, $this->get(ListProductFilesForSupplier::class)('44ce8069-8da1-4986-872f-311737f46f00'));
     }
 
     /** @test */
@@ -54,7 +54,7 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
             $this->createSupplierFile('path/to/file/file.xlsx', new \DateTimeImmutable(), '44ce8069-8da1-4986-872f-311737f46f00');
         }
 
-        $supplierFiles = $this->get(GetSupplierFiles::class)('44ce8069-8da1-4986-872f-311737f46f00', 2);
+        $supplierFiles = $this->get(ListProductFilesForSupplier::class)('44ce8069-8da1-4986-872f-311737f46f00', 2);
 
         static::assertCount(5, $supplierFiles);
     }
@@ -68,7 +68,7 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
         $this->createSupplierFile('path/to/file/file2.xlsx', new \DateTimeImmutable(), '44ce8069-8da1-4986-872f-311737f46f00');
         $this->createSupplierFile('path/to/file/file3.xlsx', (new \DateTimeImmutable())->modify('-2 DAY'), '44ce8069-8da1-4986-872f-311737f46f00');
 
-        $supplierFiles = $this->get(GetSupplierFiles::class)('44ce8069-8da1-4986-872f-311737f46f00');
+        $supplierFiles = $this->get(ListProductFilesForSupplier::class)('44ce8069-8da1-4986-872f-311737f46f00');
 
         static::assertSame('path/to/file/file2.xlsx', $supplierFiles[0]->path);
         static::assertSame('path/to/file/file3.xlsx', $supplierFiles[1]->path);
@@ -85,7 +85,7 @@ final class DatabaseGetSupplierFilesIntegration extends SqlIntegrationTestCase
         $this->createSupplierFile('path/to/file/file1.xlsx', $file1Date, '44ce8069-8da1-4986-872f-311737f46f00');
         $this->createSupplierFile('path/to/file/file2.xlsx', $file2Date, '44ce8069-8da1-4986-872f-311737f46f00');
 
-        $supplierFiles = $this->get(GetSupplierFiles::class)('44ce8069-8da1-4986-872f-311737f46f00');
+        $supplierFiles = $this->get(ListProductFilesForSupplier::class)('44ce8069-8da1-4986-872f-311737f46f00');
 
         static::assertSame('path/to/file/file1.xlsx', $supplierFiles[0]->path);
         static::assertSame('contributor@megasupplier.com', $supplierFiles[0]->uploadedByContributor);

@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Cont
 
 use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\CreateSupplierFile;
 use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\CreateSupplierFileHandler;
-use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\Exception\InvalidSupplierFile;
+use Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\Exception\InvalidProductFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +40,7 @@ final class UploadProductFile
 
         try {
             ($this->createSupplierFileHandler)($createSupplierFile);
-        } catch (InvalidSupplierFile $e) {
+        } catch (InvalidProductFile $e) {
             return new JsonResponse(
                 [
                     'error' => 0 < count($e->violations()) ? $e->violations()[0]->getMessage() : null,
