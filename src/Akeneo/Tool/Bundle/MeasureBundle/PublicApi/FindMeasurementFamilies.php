@@ -41,7 +41,8 @@ class FindMeasurementFamilies
      * @return MeasurementFamily
      * @throws MeasurementFamilyNotFoundException
      */
-    public function getByCode(string $code): MeasurementFamily {
+    public function getByCode(string $code): MeasurementFamily
+    {
         try {
             $measurementFamily = $this->measurementFamilyRepository->getByCode(MeasurementFamilyCode::fromString($code));
         } catch (MeasurementFamilyNotFoundException $e) {

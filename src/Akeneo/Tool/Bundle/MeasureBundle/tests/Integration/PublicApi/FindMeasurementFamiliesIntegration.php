@@ -26,7 +26,7 @@ final class FindMeasurementFamiliesIntegration extends TestCase
     }
 
     /** @test */
-    public function it_finds_all_measurements_families_for_onboarder()
+    public function it_finds_all_measurements_families_for_onboarder(): void
     {
         $result = $this->findMeasurementFamilies->all();
         $actualMeasurementFamily = current($result);
@@ -40,7 +40,7 @@ final class FindMeasurementFamiliesIntegration extends TestCase
 
     /** @test
      */
-    public function it_finds_measurement_family_by_code()
+    public function it_finds_measurement_family_by_code(): void
     {
         $result = $this->findMeasurementFamilies->getByCode('Angle');
         $actualMeasurementFamily = current($result);
@@ -52,7 +52,7 @@ final class FindMeasurementFamiliesIntegration extends TestCase
     /** @test
      * @throws MeasurementFamilyNotFoundException
      */
-    public function it_throws_an_exception_if_code_doesnt_exist()
+    public function it_throws_an_exception_if_code_doesnt_exist(): void
     {
         $this->expectException('MeasurementFamilyNotFoundException');
         $this->findMeasurementFamilies->getByCode('ABC');
