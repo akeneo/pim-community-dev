@@ -8,10 +8,6 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\TableDiff;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
-use Pim\Upgrade\Schema\Version_7_0_20220823121643_remove_uuid_triggers;
 
 /**
  * Remove triggers added in the UUID migration which add triggers on foreign uuid column.
@@ -79,8 +75,8 @@ final class Version_7_0_20220823121643_remove_uuid_triggers_Integration extends 
 
     public function test_it_removes_the_triggers_and_the_product_id_columns(): void
     {
-        $this->createDummyTriggersToBeRemoved();
         $this->createDummyColumnsToBeRemoved();
+        $this->createDummyTriggersToBeRemoved();
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
@@ -135,7 +131,7 @@ SQL;
     {
         foreach (self::TABLES_TO_UPDATE as $table => $productIdColumnName) {
             if ($this->connection->getSchemaManager()->tablesExist($table)) {
-                $query = sprintf('ALTER TABLE %s ADD COLUMN %s VARCHAR(255)', $table, $productIdColumnName);
+                $query = sprintf('ALTER TABLE %s ADD COLUMN %s INT, ADD CONSTRAINT FOREIGN KEY(%s) REFERENCES pim_catalog_product(id);', $table, $productIdColumnName, $productIdColumnName);
                 $this->connection->executeStatement($query);
             }
         }

@@ -48,9 +48,7 @@ final class Version_7_0_20220823121643_remove_uuid_triggers extends AbstractMigr
         'pimee_twa_project_product_uuid_update',
     ];
     private const TABLES_TO_UPDATE = [
-        'pim_catalog_association' => 'owner_id',
-        'pim_catalog_association_product' => 'product_id',
-        'pim_catalog_association_product_model_to_product' => 'product_id',
+
         'pim_catalog_category_product' => 'product_id',
         'pim_catalog_group_product' => 'product_id',
         'pim_catalog_product_unique_data' => 'product_id',
@@ -61,6 +59,9 @@ final class Version_7_0_20220823121643_remove_uuid_triggers extends AbstractMigr
         'pimee_teamwork_assistant_project_product' => 'product_id',
         'pimee_workflow_product_draft' => 'product_id',
         'pimee_workflow_published_product' => 'original_product_id',
+        'pim_catalog_association' => 'owner_id',
+        'pim_catalog_association_product' => 'product_id',
+        'pim_catalog_association_product_model_to_product' => 'product_id',
     ];
 
     public function getDescription(): string
@@ -90,7 +91,8 @@ final class Version_7_0_20220823121643_remove_uuid_triggers extends AbstractMigr
     {
         foreach (self::TABLES_TO_UPDATE as $table => $column) {
             if ($this->columnExists($table, $column)) {
-                $this->addSql(sprintf('ALTER TABLE %s DROP COLUMN %s', $table, $column));
+                $this->dropForeignKeys($table, $column);
+                $this->dropColumn($table, $column);
             }
         }
     }
@@ -101,6 +103,23 @@ final class Version_7_0_20220823121643_remove_uuid_triggers extends AbstractMigr
             static fn(Column $column) => $column->getName(),
             $this->connection->getSchemaManager()->listTableColumns($table)
         );
+
         return in_array($columnName, $tableColumnNames);
+    }
+
+    public function dropForeignKeys(string $table, string $column): void
+    {
+        $tableDetails = $this->connection->getSchemaManager()->listTableDetails($table);
+        $foreignKeys = $tableDetails->getForeignKeys();
+        foreach ($foreignKeys as $foreignKey) {
+            if (in_array($column, $foreignKey->getLocalColumns())) {
+                $this->addSql(sprintf('ALTER TABLE %s DROP FOREIGN KEY %s;', $table, $foreignKey->getName()));
+            }
+        }
+    }
+
+    private function dropColumn(string $table, string $column): void
+    {
+        $this->addSql(sprintf('ALTER TABLE %s DROP COLUMN %s', $table, $column));
     }
 }
