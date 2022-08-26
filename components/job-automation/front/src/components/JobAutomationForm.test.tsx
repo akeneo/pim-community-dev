@@ -237,6 +237,26 @@ test('it can update the scheduling', () => {
   });
 });
 
+test('it can save default automation values when enabling scheduling', () => {
+  const onAutomationChange = jest.fn();
+
+  renderWithProviders(
+    <JobAutomationForm
+      scheduled={false}
+      automation={automation}
+      validationErrors={[]}
+      onScheduledChange={jest.fn()}
+      onAutomationChange={onAutomationChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('pim_common.yes'));
+
+  expect(onAutomationChange).toBeCalledWith({
+    ...automation,
+  });
+});
+
 test('it displays validation errors', () => {
   const validationErrors: ValidationError[] = [
     {

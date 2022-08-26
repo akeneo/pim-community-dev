@@ -35,7 +35,10 @@ const JobAutomationForm = ({
     onAutomationChange({...automation, notification_user_groups: userGroups});
   const handleNotificationUsersChange = (users: string[]) =>
     onAutomationChange({...automation, notification_users: users});
-  const handleScheduledChange = (isEnabled: boolean) => onScheduledChange(isEnabled);
+  const handleScheduledChange = (isEnabled: boolean) => {
+    onScheduledChange(isEnabled);
+    if (isEnabled) onAutomationChange({...automation});
+  };
 
   const handleCronExpressionChange = (cronExpression: CronExpression) =>
     onAutomationChange({
