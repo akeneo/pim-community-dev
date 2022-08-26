@@ -26,7 +26,11 @@ class UpsertCategoryTranslationsSql implements UpsertCategoryTranslations
 
     public function execute(Category $categoryModel): void
     {
-        $categoryId = $categoryModel->getId()->getValue();
+        $categoryId = $categoryModel->getId()?->getValue();
+        if (null === $categoryId) {
+            throw new \InvalidArgumentException('Cannot upsert category translations on null id.');
+        }
+
         $queries = '';
         $params = ['category_id' => $categoryId];
         $types = ['category_id' => \PDO::PARAM_INT];

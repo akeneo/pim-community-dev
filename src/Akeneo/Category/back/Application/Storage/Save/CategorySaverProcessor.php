@@ -22,7 +22,7 @@ class CategorySaverProcessor
     /**
      * List of expected savers: it also ensures the order in which the savers will be executed.
      *
-     * @var array<string, mixed>
+     * @var array<string, ?CategorySaverInterface>
      */
     private array $saversExecutionOrder = [
         'category' => null,
@@ -42,34 +42,15 @@ class CategorySaverProcessor
         foreach ($userIntents as $userIntent) {
             $saver = $this->categorySaverRegistry->fromUserIntent($userIntent::class);
 
-            if ($saver instanceof CategoryBaseSaver) {
-                $this->sortExecutionSavers('category', $saver);
-                continue;
-            }
-
-            if ($saver instanceof CategoryTranslationsSaver) {
-                $this->sortExecutionSavers('category_translation', $saver);
-                continue;
-            }
-
-            throw new \LogicException(\sprintf('This saver was not expected: %s', $saver::class));
+            match (true) {
+                $saver instanceof CategoryBaseSaver => $this->saversExecutionOrder['category'] = $saver,
+                $saver instanceof CategoryTranslationsSaver => $this->saversExecutionOrder['category_translation'] = $saver,
+                default => throw new \LogicException(\sprintf('This saver was not expected: %s', $saver::class))
+            };
         }
 
         foreach ($this->saversExecutionOrder as $saver) {
-            /* @var CategorySaverInterface $saver */
-            $saver->save($categoryModel);
+            $saver?->save($categoryModel);
         }
-    }
-
-    private function sortExecutionSavers(string $key, CategorySaverInterface $saver): void
-    {
-        if (
-            !\array_key_exists($key, $this->saversExecutionOrder)
-            || null !== $this->saversExecutionOrder[$key]
-        ) {
-            throw new \LogicException(\sprintf('The saver has already been set for execution: %s', $saver::class));
-        }
-
-        $this->saversExecutionOrder[$key] = $saver;
     }
 }

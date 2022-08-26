@@ -7,7 +7,8 @@ declare(strict_types=1);
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Save\Query;
+namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Save\Query;
+
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Category;
@@ -38,10 +39,10 @@ class UpsertCategoryBaseSqlIntegration extends TestCase
         $upsertCategoryBaseQuery->execute($category);
         $getCategory = $this->get(GetCategorySql::class);
         /** @var Category $result */
-        $result = $getCategory->byCode((string) $category->getCode());
+        $result = $getCategory->byCode((string)$category->getCode());
 
         $this->assertNotNull($result);
-        $this->assertSame((string) $category->getCode(), (string) $result->getCode());
+        $this->assertSame((string)$category->getCode(), (string)$result->getCode());
     }
 
     public function testUpdateExistingCategoryInDatabase(): void
@@ -61,7 +62,7 @@ class UpsertCategoryBaseSqlIntegration extends TestCase
         $upsertCategoryBaseQuery->execute($category);
         $getCategory = $this->get(GetCategorySql::class);
         /** @var Category $createdCategory */
-        $createdCategory = $getCategory->byCode((string) $category->getCode());
+        $createdCategory = $getCategory->byCode((string)$category->getCode());
         $this->assertNotNull($createdCategory);
 
         $updatedCategory = new Category(
@@ -74,11 +75,11 @@ class UpsertCategoryBaseSqlIntegration extends TestCase
         $upsertCategoryBaseQuery->execute($updatedCategory);
         $getCategory = $this->get(GetCategorySql::class);
         /** @var Category $editedCategoryData */
-        $editedCategoryData = $getCategory->byCode((string) $updatedCategory->getCode());
+        $editedCategoryData = $getCategory->byCode((string)$updatedCategory->getCode());
 
         $this->assertNotNull($editedCategoryData);
-        $this->assertSame((string) $updatedCategory->getCode(), (string) $editedCategoryData->getCode());
-        $this->assertSame($updatedCategory->getParentId()?->getValue(), (int) $editedCategoryData->getParentId()->getValue());
+        $this->assertSame((string)$updatedCategory->getCode(), (string)$editedCategoryData->getCode());
+        $this->assertSame($updatedCategory->getParentId()?->getValue(), (int)$editedCategoryData->getParentId()->getValue());
     }
 
     protected function getConfiguration(): Configuration

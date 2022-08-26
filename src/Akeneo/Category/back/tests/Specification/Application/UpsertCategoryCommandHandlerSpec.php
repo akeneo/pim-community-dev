@@ -14,6 +14,7 @@ use Akeneo\Category\Application\Applier\UserIntentApplier;
 use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Category\Application\Query\FindCategoryByCode;
 use Akeneo\Category\Application\Storage\ProcessCategoryUpdateMock;
+use Akeneo\Category\Application\Storage\Save\CategorySaverProcessor;
 use Akeneo\Category\Application\UpsertCategoryCommandHandler;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
@@ -39,7 +40,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         FindCategoryByCode $findCategoryByCode,
         UserIntentApplierRegistry $applierRegistry,
         EventDispatcherInterface $eventDispatcher,
-        ProcessCategoryUpdateMock $saver
+        CategorySaverProcessor $saver
     ) {
         $this->beConstructedWith(
             $validator,
@@ -59,7 +60,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         FindCategoryByCode $findCategoryByCode,
         EventDispatcherInterface $eventDispatcher,
         ValidatorInterface $validator,
-        ProcessCategoryUpdateMock $saver
+        CategorySaverProcessor $saver
     ) {
         $command = new UpsertCategoryCommand('code');
         $category = new Category(
@@ -72,7 +73,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
 
         $findCategoryByCode->__invoke('code')->shouldBeCalledOnce()->willReturn($category);
-        $saver->update($category, $command->userIntents())->shouldBeCalledOnce();
+        $saver->save($category, $command->userIntents())->shouldBeCalledOnce();
         $eventDispatcher->dispatch($event)->shouldBeCalledOnce()->willReturn($event);
 
         $this->__invoke($command);
@@ -81,7 +82,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
     function it_creates_and_saves_a_category(
         FindCategoryByCode $findCategoryByCode,
         ValidatorInterface $validator,
-        ProcessCategoryUpdateMock $saver
+        CategorySaverProcessor $saver
     ) {
         $command = new UpsertCategoryCommand('code');
         $category = new Category(
@@ -92,7 +93,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         );
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $findCategoryByCode->__invoke('code')->shouldBeCalledOnce()->willReturn(null);
-        $saver->update($category, $command->userIntents())->shouldNotBeCalled();
+        $saver->save($category, $command->userIntents())->shouldNotBeCalled();
 
         $this->shouldThrow(new Exception("Command to create a category is in progress."))->during__invoke($command);
     }
@@ -102,7 +103,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         FindCategoryByCode $findCategoryByCode,
         UserIntentApplierRegistry $applierRegistry,
         EventDispatcherInterface $eventDispatcher,
-        ProcessCategoryUpdateMock $saver
+        CategorySaverProcessor $saver
     ) {
         $command = new UpsertCategoryCommand('');
         $violations = new ConstraintViolationList([
@@ -112,7 +113,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         $validator->validate($command)->shouldBeCalledOnce()->willReturn($violations);
         $findCategoryByCode->__invoke('')->shouldNotBeCalled();
         $applierRegistry->getApplier(Argument::type(UserIntent::class))->shouldNotBeCalled();
-        $saver->update(Argument::type(Category::class), Argument::cetera())->shouldNotBeCalled();
+        $saver->save(Argument::type(Category::class), Argument::cetera())->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::type(CategoryUpdatedEvent::class))->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::type(CategoryCreatedEvent::class))->shouldNotBeCalled();
 
@@ -125,7 +126,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         UserIntentApplier $userIntentApplier,
         EventDispatcherInterface $eventDispatcher,
         ValidatorInterface $validator,
-        ProcessCategoryUpdateMock $saver
+        CategorySaverProcessor $saver
     ) {
         $setLabelUserIntent = new SetLabel('en_US', 'The label');
         $command = new UpsertCategoryCommand('code', [$setLabelUserIntent]);
@@ -140,7 +141,7 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         $applierRegistry->getApplier($setLabelUserIntent)->willReturn($userIntentApplier);
         $userIntentApplier->apply($setLabelUserIntent, $category)->willThrow(InvalidArgumentException::class);
 
-        $saver->update($category, $command->userIntents())->shouldNotBeCalled();
+        $saver->save($category, $command->userIntents())->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::type(CategoryUpdatedEvent::class))->shouldNotBeCalled();
         $this->shouldThrow(ViolationsException::class)->during__invoke($command);
     }
