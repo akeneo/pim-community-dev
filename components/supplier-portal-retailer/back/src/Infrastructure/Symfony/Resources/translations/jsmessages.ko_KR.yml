@@ -87,9 +87,6 @@ supplier_portal:
         contributor: 기여자
         supplier: 제공업체
         status: 상태
-      status:
-        downloaded: 다운로드됨
-        to_download: 다운로드 예정
       notification:
         error_loading_supplier_files:
           title: 제품 파일을 표시할 수 없습니다.

@@ -87,9 +87,6 @@ supplier_portal:
         contributor: 贡献者
         supplier: 供应商
         status: 状态
-      status:
-        downloaded: 已下载
-        to_download: 待下载
       notification:
         error_loading_supplier_files:
           title: 我们无法显示产品文件。

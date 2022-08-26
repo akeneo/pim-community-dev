@@ -87,9 +87,6 @@ supplier_portal:
         contributor: Colaborador
         supplier: Proveedor
         status: Estado
-      status:
-        downloaded: Descargado
-        to_download: Para descargar
       notification:
         error_loading_supplier_files:
           title: No podemos mostrar los archivos del producto.
