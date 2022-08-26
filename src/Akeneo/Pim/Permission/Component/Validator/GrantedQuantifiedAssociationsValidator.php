@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Component\Validator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations;
 use Akeneo\Pim\Permission\Component\Query\ProductCategoryAccessQueryInterface;
 use Akeneo\Pim\Permission\Component\Query\ProductModelCategoryAccessQueryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -95,7 +96,7 @@ class GrantedQuantifiedAssociationsValidator extends ConstraintValidator
                 ]
             )
                 ->atPath($propertyPath)
-                ->setCode(GrantedQuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR)
+                ->setCode(QuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_ERROR)
                 ->addViolation();
         }
     }
@@ -121,7 +122,7 @@ class GrantedQuantifiedAssociationsValidator extends ConstraintValidator
                 ]
             )
                 ->atPath($propertyPath)
-                ->setCode(GrantedQuantifiedAssociations::PRODUCT_MODELS_DO_NOT_EXIST_ERROR)
+                ->setCode(QuantifiedAssociations::PRODUCT_MODELS_DO_NOT_EXIST_ERROR)
                 ->addViolation();
         }
     }

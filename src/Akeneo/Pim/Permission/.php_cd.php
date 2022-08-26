@@ -260,12 +260,13 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculatorInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface',
 
         // category bounded context
         'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
-        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
+        'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface'
     ])->in('Akeneo\Pim\Permission\Component'),
 ];
 

@@ -31,7 +31,6 @@ class ClassifyCategoryOnProductWithUuidAndPermissionsEndToEnd extends AbstractPr
         );
     }
 
-    // TODO ShouldStayOwnerOfTheProductValidator
     public function testSuccessProductWithOnlyViewableCategory()
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
@@ -50,7 +49,6 @@ class ClassifyCategoryOnProductWithUuidAndPermissionsEndToEnd extends AbstractPr
         );
     }
 
-    // TODO ShouldStayOwnerOfTheProductValidator
     public function testSuccessProductWithEditableCategory()
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
