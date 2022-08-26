@@ -1,5 +1,5 @@
 import BaseView = require('pimui/js/view/base');
-import {ValidationError, formatParameters, filterErrors} from '@akeneo-pim-community/shared';
+import {ValidationError, formatParameters} from '@akeneo-pim-community/shared';
 import {JobAutomationForm, JobAutomationFormProps, Automation} from '@akeneo-pim-enterprise/job-automation';
 const userContext = require('pim/user-context');
 
@@ -22,7 +22,7 @@ class JobAutomationFormController extends BaseView {
     });
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', event => {
-      const errors = formatParameters(filterErrors(event.response.normalized_errors, '[automation]'));
+      const errors = formatParameters(event.response.normalized_errors);
       this.setValidationErrors(errors);
 
       if (errors.length > 0) {

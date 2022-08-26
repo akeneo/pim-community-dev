@@ -264,7 +264,7 @@ test('it displays validation errors', () => {
       invalidValue: '',
       message: 'this is a type error',
       parameters: {},
-      propertyPath: '[running_user_groups]',
+      propertyPath: '[automation][running_user_groups]',
     },
     {
       messageTemplate: 'error.key.a_scheduled_error',

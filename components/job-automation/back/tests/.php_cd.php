@@ -45,6 +45,7 @@ $rules = [
             'Akeneo\Platform\JobAutomation\Domain',
             'Akeneo\Platform\JobAutomation\Application',
             'Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\Automation',
+            'Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\Scheduling',
             'Akeneo\Tool\Component\Batch\Event\EventInterface',
             'Akeneo\Tool\Component\Batch\Event\JobExecutionEvent',
             'Akeneo\Tool\Component\Batch\Job',
