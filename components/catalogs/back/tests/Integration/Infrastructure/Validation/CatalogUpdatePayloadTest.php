@@ -79,6 +79,18 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'operator' => '=',
                     'value' => true,
                 ],
+                [
+                    'field' => 'family',
+                    'operator' => 'EMPTY',
+                    'value' => [],
+                ],
+                [
+                    'field' => 'completeness',
+                    'operator' => '>',
+                    'value' => 80,
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
             ],
         ], new CatalogUpdatePayload());
 
