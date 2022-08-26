@@ -74,7 +74,7 @@ class CreateRecordHandler
 
         $labelValues = [];
         foreach ($createRecordCommand->labels as $locale => $label) {
-            if (empty($label)) {
+            if ('' === $label) {
                 continue;
             }
 

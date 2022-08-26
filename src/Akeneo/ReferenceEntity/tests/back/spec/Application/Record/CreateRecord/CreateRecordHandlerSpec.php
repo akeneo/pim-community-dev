@@ -33,23 +33,23 @@ use Webmozart\Assert\Assert;
 
 class CreateRecordHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         RecordRepositoryInterface $recordRepository,
         FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel
-    ) {
+    ): void {
         $this->beConstructedWith($recordRepository, $findAttributeAsLabel);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(CreateRecordHandler::class);
     }
 
-    function it_creates_and_save_a_new_record(
+    public function it_creates_and_save_a_new_record(
         RecordRepositoryInterface $recordRepository,
         CreateRecordCommand $createRecordCommand,
         FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel
-    ) {
+    ): void {
         $createRecordCommand->code = 'intel';
         $createRecordCommand->referenceEntityIdentifier = 'brand';
         $createRecordCommand->labels = [
@@ -104,11 +104,11 @@ class CreateRecordHandlerSpec extends ObjectBehavior
         $this->__invoke($createRecordCommand);
     }
 
-    function it_creates_and_save_a_new_record_and_ignores_empty_labels(
+    public function it_creates_and_save_a_new_record_and_ignores_empty_labels(
         RecordRepositoryInterface $recordRepository,
         CreateRecordCommand $createRecordCommand,
         FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel
-    ) {
+    ): void {
         $createRecordCommand->code = 'intel';
         $createRecordCommand->referenceEntityIdentifier = 'brand';
         $createRecordCommand->labels = [
@@ -143,6 +143,65 @@ class CreateRecordHandlerSpec extends ObjectBehavior
                 $record->getUpdatedAt(),
             ), $record);
 
+            return true;
+        }))->shouldBeCalled();
+
+        $this->__invoke($createRecordCommand);
+    }
+
+    public function it_creates_and_save_a_new_record_with_0_as_code_and_label(
+        RecordRepositoryInterface $recordRepository,
+        CreateRecordCommand $createRecordCommand,
+        FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel
+    ): void {
+        $createRecordCommand->code = '0';
+        $createRecordCommand->referenceEntityIdentifier = 'brand';
+        $createRecordCommand->labels = [
+            'en_US' => '0',
+            'fr_FR' => 'zéro',
+        ];
+
+        $recordIdentifier = RecordIdentifier::fromString('brand_0_a1677570-a278-444b-ab46-baa1db199392');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($createRecordCommand->referenceEntityIdentifier);
+        $labelAttributeReference = AttributeAsLabelReference::createFromNormalized('label_brand_fingerprint');
+
+        $findAttributeAsLabel
+            ->find(Argument::type(ReferenceEntityIdentifier::class))
+            ->willReturn($labelAttributeReference);
+
+        $recordRepository->nextIdentifier(
+            Argument::type(ReferenceEntityIdentifier::class),
+            Argument::type(RecordCode::class)
+        )->willReturn($recordIdentifier);
+
+        $recordRepository->create(Argument::that(function ($record) use (
+            $recordIdentifier,
+            $referenceEntityIdentifier,
+            $labelAttributeReference
+        ) {
+            $expectedRecord = Record::fromState(
+                $recordIdentifier,
+                $referenceEntityIdentifier,
+                RecordCode::fromString('0'),
+                ValueCollection::fromValues([
+                    Value::create(
+                        $labelAttributeReference->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::createFromNormalized('en_US'),
+                        TextData::createFromNormalize('0')
+                    ),
+                    Value::create(
+                        $labelAttributeReference->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::createFromNormalized('fr_FR'),
+                        TextData::createFromNormalize('zéro')
+                    ),
+                ]),
+                $record->getCreatedAt(),
+                $record->getUpdatedAt(),
+            );
+
+            Assert::eq($expectedRecord, $record);
             return true;
         }))->shouldBeCalled();
 

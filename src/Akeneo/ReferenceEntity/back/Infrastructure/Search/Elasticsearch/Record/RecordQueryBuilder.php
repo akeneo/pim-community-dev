@@ -76,7 +76,7 @@ class RecordQueryBuilder implements RecordQueryBuilderInterface
             $query['sort'] = ['code' => 'asc'];
         }
 
-        if (null !== $fullTextFilter && !empty($fullTextFilter['value'])) {
+        if (null !== $fullTextFilter && '' !== $fullTextFilter['value']) {
             $terms = $this->getTerms($fullTextFilter);
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'query_string' => [
@@ -90,7 +90,7 @@ class RecordQueryBuilder implements RecordQueryBuilderInterface
             ];
         }
 
-        if (null !== $codeLabelFilter && !empty($codeLabelFilter['value'])) {
+        if (null !== $codeLabelFilter && '' !== ($codeLabelFilter['value'])) {
             $terms = $this->getTerms($codeLabelFilter);
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'query_string' => [
