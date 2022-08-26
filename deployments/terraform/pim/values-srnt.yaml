@@ -182,3 +182,11 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
+    supplier-portal-clean-supplier-product-files:
+      enabled: true
+      pimCommand: 'akeneo:supplier-portal:clean-supplier-product-files'
+      schedule: "0 5 * * *"
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "100Mi"
