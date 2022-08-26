@@ -43,7 +43,8 @@ export const useCategories = ({codes = [], isRoot = false}: QueryParams): Result
             return await response.json();
         },
         {
-            staleTime: 60,
+            staleTime: 10 * 1000, // 10s
+            cacheTime: 5 * 60 * 1000, // 5m
         }
     );
 };
