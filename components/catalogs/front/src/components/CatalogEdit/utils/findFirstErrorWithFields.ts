@@ -2,7 +2,7 @@ import {CatalogFormErrors} from '../models/CatalogFormErrors';
 
 export const findFirstErrorWithFields = (errors: CatalogFormErrors, path: string): string | undefined => {
     // the path is transformed in a regex, ex : \[product_selection_criteria\]\[0\]\[value\]\[(.*)\]
-    const regex = path.replaceAll('[', '\\[').replaceAll(']', '\\]') + '\\[(.*)\\]';
+    const regex = (path + '[(.*)]').replace(/(\[|\])/g, '\\$1');
     const search = new RegExp(regex);
 
     return (
