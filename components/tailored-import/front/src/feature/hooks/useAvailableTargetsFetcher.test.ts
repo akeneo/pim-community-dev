@@ -11,7 +11,10 @@ test('It fetch the available target', async () => {
   const {result} = renderHookWithProviders(() => useAvailableTargetsFetcher('search', 'fr_FR'));
   const availableTargetsFetcher = result.current;
 
-  availableTargetsFetcher(1);
+  availableTargetsFetcher({
+    system: 1,
+    attribute: 2,
+  });
 
   expect(global.fetch).toBeCalledWith('pimee_tailored_import_get_grouped_targets_action', {
     headers: {'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest'},

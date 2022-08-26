@@ -11,8 +11,8 @@ import {OperationPreviewData} from 'feature/models';
 
 const operationPreviewData: OperationPreviewData = {
   [expect.any(String)]: [
-    {type: 'boolean', value: '1'},
-    {type: 'boolean', value: '0'},
+    {type: 'boolean', value: true},
+    {type: 'boolean', value: false},
   ],
 };
 
