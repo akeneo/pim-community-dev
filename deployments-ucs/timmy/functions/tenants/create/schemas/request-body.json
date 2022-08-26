@@ -48,6 +48,45 @@
       "description": "The PIM configuration for the tenant",
       "type": "object",
       "properties": {
+        "defaultAdminUser": {
+          "description": "The PIM admin user",
+          "type": "object",
+          "properties": {
+            "login": {
+              "description": "The login for PIM admin user",
+              "type": "string"
+            },
+            "firstName": {
+              "description": "The firstname of the PIM admin user",
+              "type": "string"
+            },
+            "lastName": {
+              "description": "The lastname of the PIM admin user",
+              "type": "string"
+            },
+            "email": {
+              "description": "The email of the PIM admin user",
+              "type": "string",
+              "format": "email"
+            },
+            "password": {
+              "description": "The password of the PIM admin user",
+              "type": "string"
+            },
+            "uiLocale": {
+              "description": "The ui locale of the PIM admin user",
+              "type": "string"
+            }
+          },
+          "required": [
+            "login",
+            "firstName",
+            "lastName",
+            "email",
+            "password",
+            "uiLocale"
+          ]
+        },
         "monitoring": {
           "description": "The monitoring configuration for the PIM",
           "type": "object",
@@ -63,7 +102,8 @@
         }
       },
       "required": [
-        "monitoring"
+        "monitoring",
+        "defaultAdminUser"
       ]
     }
   },

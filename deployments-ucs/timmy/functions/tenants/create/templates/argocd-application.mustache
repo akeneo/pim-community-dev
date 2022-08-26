@@ -37,10 +37,6 @@ spec:
           value: {{{global.extraLabels.papo_project_code_truncated}}}
         - name: global.extraLabels.papo_project_code_hashed
           value: {{{global.extraLabels.papo_project_code_hashed}}}
-        - name: pim.storage.bucketName
-          value: {{{pim.storage.bucketName}}}
-        - name: pim.secret
-          value: {{{pim.secret}}}
         - name: mailer.login
           value: {{{mailer.login}}}
         - name: mailer.password
@@ -65,8 +61,28 @@ spec:
           value: {{{common.workloadIdentityKSA}}}
         - name: common.workloadIdentityGSA
           value: {{{common.workloadIdentityGSA}}}
+        - name: image.pim.repository
+          value: {{{image.pim.repository}}}
+        - name: image.pim.tag
+          value: {{{image.pim.tag}}}
+        - name: pim.defaultAdminUser.login
+          value: {{{pim.defaultAdminUser.login}}}
+        - name: pim.defaultAdminUser.firstName
+          value: {{{pim.defaultAdminUser.firstName}}}
+        - name: pim.defaultAdminUser.lastName
+          value: {{{pim.defaultAdminUser.lastName}}}
+        - name: pim.defaultAdminUser.email
+          value: {{{pim.defaultAdminUser.email}}}
+        - name: pim.defaultAdminUser.password
+          value: {{{pim.defaultAdminUser.password}}}
+        - name: pim.defaultAdminUser.uiLocale
+          value: {{{pim.defaultAdminUser.uiLocale}}}
         - name: pim.monitoring.authenticationToken
           value: {{{pim.monitoring.authenticationToken}}}
+        - name: pim.secret
+          value: {{{pim.secret}}}
+        - name: pim.storage.bucketName
+          value: {{{pim.storage.bucketName}}}
         - name: mysql.common.persistentDisks.0
           value: {{{mysql.common.persistentDisks.0}}}
   destination:

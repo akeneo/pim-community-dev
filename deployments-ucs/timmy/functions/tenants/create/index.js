@@ -9,7 +9,7 @@
 
 const axios = require('axios');
 const fs = require('fs');
-const yaml = require('js-yaml')
+const yaml = require('js-yaml');
 const Mustache = require('mustache');
 const merge = require('deepmerge-json');
 const {SecretManagerServiceClient} = require('@google-cloud/secret-manager');
@@ -24,24 +24,37 @@ const schema = require('./schemas/request-body.json');
 
 const secretManagerClient = new SecretManagerServiceClient();
 
-const logger = createLogger({
-  level: 'info',
-  defaultMeta: {service: 'ucs-tenant-creation'},
-  format: format.combine(
-    format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
-    format.printf(info => {
-      return `${info.timestamp} [${info.level}]: ${JSON.stringify(info.message)}`;
-    }),
-  ),
-  transports: [
-    new transports.Console({
-      handleExceptions: true,
-      handleRejections: true
-    }),
-    loggingWinston,
-  ],
-  exitOnError: false,
-});
+let logger = null;
+
+function initializeLogger(gcpProjectId, instanceName) {
+  logger = createLogger({
+    level: 'info',
+    defaultMeta: {
+      function: 'ucs-tenant-creation',
+      gcpProjectId: gcpProjectId,
+      tenant: instanceName
+    },
+    format: format.combine(
+      format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
+      format.printf(info => {
+        return `${info.timestamp} ${info.level}: ${JSON.stringify({
+          function: info.function,
+          gcpProjectId: info.gcpProjectId,
+          message: info.message,
+          tenant: info.tenant
+        })}`;
+      }),
+    ),
+    transports: [
+      new transports.Console({
+        handleExceptions: true,
+        handleRejections: true
+      }),
+      loggingWinston,
+    ],
+    exitOnError: false,
+  });
+}
 
 /**
  * Retrieve a token from the ArgoCD server
@@ -51,22 +64,29 @@ const logger = createLogger({
  * @returns {Promise<string|number>} a token
  */
 async function getArgoCdToken(url, username, password) {
-  try {
-    logger.info(`Getting ArgoCD token from ${url} for ${username} user`);
-    const resourceUrl = new URL('/api/v1/session', url)
+  logger.info(`Authenticating with ${username} username to ArgoCD server ${url} to get a token`);
+  const resourceUrl = new URL('/api/v1/session', url);
 
-    const payload = JSON.stringify({username: username, password: password});
-    const resp = await axios.post(resourceUrl.toString(), payload, {headers: {'Content-Type': 'application/json'}})
+  const payload = JSON.stringify({username: username, password: password});
+  const resp = await axios.post(resourceUrl.toString(), payload, {headers: {'Content-Type': 'application/json'}})
+    .catch(function (error) {
+      const msgPrefix = 'Authentication to ArgoCD server failed'
+      if (error.response) {
+        return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status}: ${error.response.data.message}`));
+      } else if (error.request) {
+        return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status} due to error in the request : ${error.request}`))
+      } else {
+        return Promise.reject(new Error(`${msgPrefix} due to error in the setting up of the request: ${error.message}`));
+      }
+    });
 
-    const token = await resp.data.token;
-    if (typeof (token) === undefined || token === null) {
-      throw new Error('Retrieved token from ArgoCD server is undefined');
-    }
-    logger.info('Retrieved token from the ArgoCD server');
-    return token;
-  } catch (err) {
-    throw new Error(`Failed to get token from ArgoCD server: ${err}`);
+  const token = await resp.data.token;
+  if (typeof (token) === undefined || token === null) {
+    return Promise.reject(new Error('Retrieved token from ArgoCD server is undefined'));
   }
+
+  logger.info(`Successfully authenticated with ${username} user to ArgoCD server and got a token`);
+  return token;
 }
 
 /**
@@ -76,16 +96,16 @@ async function getArgoCdToken(url, username, password) {
  */
 function templateArgoCdManifest(params) {
   try {
-    logger.info('Templating ArgoCD application manifest for the new tenant');
+    logger.info('Template of the manifest of the ArgoCD application for the new tenant');
+
     const template = fs.readFileSync("templates/argocd-application.mustache").toString();
     const rendered = Mustache.render(template, params);
-    logger.debug(`The rendered ArgoCD YAML manifest: ${rendered}`);
-    logger.info('Templated ArgoCD application manifest for the new tenant');
+
+    logger.debug(`Rendered ArgoCD YAML manifest: ${rendered}`);
+    logger.info('The ArgoCD application manifest has been templated for the new tenant');
     return rendered;
-  } catch (err) {
-    const msg = 'Failed to template the ArgoCD application manifest'
-    logger.error(`${msg}: ${err}`);
-    throw new Error(msg);
+  } catch (error) {
+    throw new Error(`The templating of the ArgoCD application manifest failed: ${error}`);
   }
 }
 
@@ -96,16 +116,14 @@ function templateArgoCdManifest(params) {
  */
 function castYamlToJson(content) {
   try {
-    logger.info('Casting templated YAML manifest into JSON');
+    logger.info('Cast the ArgoCD application manifest as a json document');
     const renderedManifestYaml = yaml.load(content);
     const payload = JSON.stringify(renderedManifestYaml, null, 2);
-    logger.info('ArgoCD application manifest is casted into JSON');
-    logger.debug(`Content of the JSON document: ${payload}`);
-    return payload
+    logger.info('The ArgoCD application manifest has been converted to a JSON document');
+    logger.debug(`The ArgoCD JSON document: ${payload}`);
+    return payload;
   } catch (err) {
-    const msg = 'Failed to cast the ArgoCD application manifest to JSON'
-    logger.error(`${msg}: ${err}`);
-    throw new Error(msg);
+    throw new Error(`Failed to cast the ArgoCD application manifest to JSON: ${err}`);
   }
 }
 
@@ -117,69 +135,166 @@ function castYamlToJson(content) {
  * @returns {Promise<*>}
  */
 async function createArgoCdApp(url, token, payload) {
-  logger.info('Creating ArgoCD app for the new tenant');
-  const resourceUrl = new URL('/api/v1/applications', url)
+  logger.info('Creating of the ArgoCD application for the new tenant');
+  const resourceUrl = new URL('/api/v1/applications', url);
   const headers = {
     headers: {Authorization: `Bearer ${token}`, 'Content-Type': 'application/json'}
   };
-  logger.info('Creating ArgoCD application for the new tenant. Waiting...');
 
   await axios.post(resourceUrl.toString(), payload, headers)
     .catch(function (error) {
+      const msgPrefix = 'The creation of the ArgoCD application for the tenant has failed';
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        logger.error(`ArgoCD app creation failed with status code ${error.response.status} and following message: ${error.response.data.message}`)
-        throw new Error('Failed to create the ArgoCD app. HTTP response returned an error');
+        return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status} and following message: ${error.response.data.message}`))
       } else if (error.request) {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-        logger.error(`ArgoCD app creation failed with status code ${error.response.status} to error in request: ${error.request}`)
-        throw new Error('Failed to create the ArgoCD app due to HTTP request');
+        return Promise.reject(new Error(`${msgPrefix} with status code ${error.response.status} to error in request: ${error.request}`))
       } else {
         // Something happened in setting up the request that triggered an Error
-        logger.error(`Failed to create the ArgoCD app due to error in the setting up of the HTTP request: ${error.message}`);
-        throw new Error('Failed to create the ArgoCD app due to error in the setting up of the HTTP request')
+        return Promise.reject(new Error(`${msgPrefix} due to error in the setting up of the HTTP request: ${error.message}`))
       }
     });
-  ;
 }
 
-async function getGoogleSecret(gcpProjectId, secretName) {
+/**
+ * Ensure the ArgoCD application is healthy
+ * @param url the ArgoCD server base url
+ * @param token a token to authenticate to the ArgoCD server
+ * @param appName the ArgoCD application name
+ * @param maxRetries the maximum number of attempts
+ * @param retryInterval time between each attempt
+ * @returns {Promise<unknown>}
+ */
+async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries = 60, retryInterval = 10) {
+  const resourceUrl = new URL(`/api/v1/applications/${appName}`, url).toString();
+  const headers = {
+    headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}
+  };
+
+  const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  };
+
+  const HEALTH_STATUS = {
+    HEALTHY: 'Healthy',
+    DEGRADED: 'Degraded'
+  };
+
+  let currentRetry = 1;
+
+  logger.info('Verify that the the ArgoCD application is healthy');
+  let resp = await axios.get(resourceUrl, headers);
+
+  let healthStatus = resp['data']['status']['health']['status'];
+
+  while (healthStatus !== HEALTH_STATUS.HEALTHY && currentRetry <= maxRetries) {
+    logger.info(`The ArgoCD application is being created and not healthy (HEALTH_STATUS: ${healthStatus}). Next check in ${retryInterval} seconds (${currentRetry}/${maxRetries} retries)`);
+    await sleep(retryInterval * 1000);
+
+    resp = await axios.get(resourceUrl, headers);
+    healthStatus = resp['data']['status']['health']['status'];
+
+    if (healthStatus === HEALTH_STATUS.HEALTHY) {
+      logger.info('The ArgoCD application is healthy');
+      return;
+    }
+
+    if (healthStatus === HEALTH_STATUS.DEGRADED) {
+      const msg = resp['data']['status']['operationState']['message'];
+      return Promise.reject(new Error(`The ArgoCD application health is degraded: ${msg}. Please check the ArgoCD application`));
+    }
+
+    currentRetry++;
+  }
+
+  return Promise.reject(new Error('The maximum number of attempts has been exceeded to verify the deletion. Please check the status of the ArgoCD application'));
+}
+
+async function ensureArgoCdAppIsSynced(url, token, appName, maxRetries = 20, retryInterval = 10) {
+  const resourceUrl = new URL(`/api/v1/applications/${appName}`, url).toString();
+  const headers = {
+    headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}
+  };
+
+  const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  };
+
+  const SYNC_STATUS = {
+    SYNCED: 'Synced',
+    OUT_OF_SYNC: 'OutOfSync'
+  }
+
+  let currentRetry = 1;
+
+  logger.info('Verify that the the ArgoCD application is fully synced');
+  let resp = await axios.get(resourceUrl, headers);
+
+  let syncStatus = resp['data']['status']['sync']['status'];
+
+  while (syncStatus !== SYNC_STATUS.SYNCED && currentRetry <= maxRetries) {
+    logger.info(`The ArgoCD application is not fully synced (SYNC_STATUS: ${syncStatus}). Next check in ${retryInterval} seconds (${currentRetry}/${maxRetries} retries)`);
+    await sleep(retryInterval * 1000);
+
+    resp = await axios.get(resourceUrl, headers);
+    syncStatus = resp['data']['status']['sync']['status'];
+
+    if (syncStatus === syncStatus.SYNCED) {
+      logger.info('The ArgoCD application is fully synced');
+      return;
+    }
+
+    currentRetry++;
+  }
+
+  return Promise.reject(new Error('The maximum number of attempts has been exceeded to verify the ArgoCD application synchronization. Please check the ArgoCD application'));
+}
+
+/**
+ * Retrieve a secret value from Google Secret Manager
+ * @param gcpProjectId the project id where the secret is
+ * @param secretName the name of the secret to retrieve
+ * @param secretVersion the version of the secret to retrieve
+ * @returns {Promise<string>}
+ */
+async function getGoogleSecret(gcpProjectId, secretName, secretVersion = 'latest') {
   try {
-    logger.info(`Retrieving secret "${secretName}" from the ${gcpProjectId} GCP project`)
+    logger.info(`Retrieving ${secretVersion} ${secretName} secret version from Google Secret Manager`);
     const [version] = await secretManagerClient.accessSecretVersion({
-      name: `projects/${gcpProjectId}/secrets/${secretName}/versions/latest`
+      name: `projects/${gcpProjectId}/secrets/${secretName}/versions/${secretVersion}`
     });
 
+    const data = version.payload.data;
+    if (data === 'undefined' || data === null) {
+      return Promise.reject(new Error(`Failed to retrieved ${secretVersion} ${secretName} secret version from Google Secret Manager. The value is undefined or null`));
+    }
     return version.payload.data.toString('utf-8');
 
   } catch (err) {
-    logger.error(`Error when retrieving Google secret ${secretName} from the ${gcpProjectId} GCP project`)
-    throw new Error(`Failed to retrieved Google Secret ${secretName}`);
+    return Promise.reject(new Error(`Failed to retrieve ${secretVersion} ${secretName} secret version from Google Secret Manager`))
   }
 }
 
 /**
  * Ensure environment variable is not missing or undefined
- * @param key The name of the environment variable
+ * @param name The name of the environment variable
  * @returns {string} The value of the environment variable
  */
-function loadEnvironmentVariable(key) {
-  if (typeof process.env[key] === "undefined" || process.env[key] === null) {
-    logger.error(`The environment variable ${key} is missing or undefined`);
-    throw new Error('Expected environment variable missing');
-
+function loadEnvironmentVariable(name) {
+  if (typeof process.env[name] === "undefined" || process.env[name] === null) {
+    throw new Error('The environment variable ${name} is missing or undefined');
   }
-  return process.env[key]
+  return process.env[name];
 }
 
 
 exports.createTenant = (req, res) => {
-  logger.info('Starting function for tenant creation');
 
-  if(process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     process.env.ARGOCD_URL = 'https://argocd.pim-saas-dev.dev.cloud.akeneo.com/';
     process.env.GOOGLE_ZONE = 'europe-west1-b';
     process.env.GCP_PROJECT_ID = 'akecld-prd-pim-saas-dev';
@@ -192,16 +307,18 @@ exports.createTenant = (req, res) => {
   const GCP_PROJECT_ID = loadEnvironmentVariable("GCP_PROJECT_ID");
   const GOOGLE_MANAGED_ZONE_DNS = loadEnvironmentVariable("GOOGLE_MANAGED_ZONE_DNS");
 
+  initializeLogger(GCP_PROJECT_ID, req.body.instanceName);
+
   // Ensure the json object in the http request body respects the expected schema
-  logger.info('Validating the request body schema');
-  logger.debug(`HTTP request body: ${req.body}`);
+  logger.info('Validation of the JSON schema of the request body');
+  logger.debug(`HTTP request JSON body: ${req.body}`);
   const schemaCheck = v.validate(req.body, schema);
   if (schemaCheck.valid === false) {
     const msg = schemaCheck.errors[0].message;
-    logger.error(`The request body schema is not valid: ${msg}`);
-    throw new ValidationError(`Invalid JSON schema for the request body: ${msg}. It must respect this schema: ${JSON.stringify(schema)}`);
+    res.status(400).send('Bad JSON schema in the request http body');
+    throw new Error(`The JSON schema of the received http body is not valid: ${msg}`);
   }
-  logger.info('Request body data is valid');
+  logger.info('The JSON schema of the http body of the request is valid');
 
 
   const instanceName = req.body.instanceName;
@@ -234,17 +351,23 @@ exports.createTenant = (req, res) => {
         type: extraLabelType,
       }
     },
+    image: {
+      pim: {        // TODO : temporary value to test need to be variabilized
+        repository: 'europe-west1-docker.pkg.dev/akecld-prd-pim-saas-dev/pim-enterprise-dev/pim-enterprise-dev',
+        tag: 'v20220822000000'
+      }
+    },
     mysql: {
       common: {
         persistentDisks: [
-          `projects/${GCP_PROJECT_ID}/zones/${GOOGLE_ZONE}/disks/${instanceName}-mysql`
+          `projects/${GCP_PROJECT_ID}/zones/${GOOGLE_ZONE}/disks/${pfid}-mysql`
         ]
       }
     },
     pim: {
       storage: {
         bucketName: pfid
-      }
+      },
     }
   });
 
@@ -256,15 +379,18 @@ exports.createTenant = (req, res) => {
     const payload = castYamlToJson(manifest);
     const token = await getArgoCdToken(ARGOCD_URL, ARGOCD_USERNAME, ARGOCD_PASSWORD);
     const resp = await createArgoCdApp(ARGOCD_URL, token, payload);
+    await ensureArgoCdAppIsHealthy(ARGOCD_URL, token, instanceName);
+    await ensureArgoCdAppIsSynced(ARGOCD_URL, token, instanceName);
   }
 
   createTenant()
     .then((resp) => {
-      const msg = `The new tenant "${instanceName}" is successfully created!`
+      const msg = `The new tenant ${instanceName} is successfully created!`
       logger.info(msg);
-      res.status(200).send(msg)
+      res.status(200).send(msg);
     })
-    .catch((err) => {
-      throw new Error("exception: " + err);
+    .catch((error) => {
+      logger.error(error);
+      res.status(500).send(error);
     });
 }
