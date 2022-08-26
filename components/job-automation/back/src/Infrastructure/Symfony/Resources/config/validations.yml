@@ -8,6 +8,7 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: akeneo_job_instance_automation_validator }
 
-  Akeneo\Platform\JobAutomation\Infrastructure\Validation\ScheduledJobInstanceValidator:
+  akeneo_batch.validator.job_instance.scheduling:
+    class: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\SchedulingValidator'
     tags:
-      - { name: validator.constraint_validator }
+      - { name: validator.constraint_validator, alias: akeneo_job_instance_scheduling_validator }

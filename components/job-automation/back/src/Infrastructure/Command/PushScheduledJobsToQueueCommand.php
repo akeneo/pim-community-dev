@@ -19,14 +19,12 @@ use Akeneo\Platform\JobAutomation\Application\NotifyUsers\NotifyUsersInvalidJobI
 use Akeneo\Platform\JobAutomation\Application\NotifyUsers\NotifyUsersInvalidJobInstanceHandler;
 use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler;
 use Akeneo\Platform\JobAutomation\Infrastructure\EventSubscriber\RefreshScheduledJobInstanceAfterJobPublished;
-use Akeneo\Platform\JobAutomation\Infrastructure\Validation\ScheduledJobInstance as ScheduledJobInstanceConstraint;
 use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class PushScheduledJobsToQueueCommand extends Command
 {
@@ -37,7 +35,6 @@ final class PushScheduledJobsToQueueCommand extends Command
         private GetDueJobInstancesHandler $getDueJobInstancesHandler,
         private UpdateScheduledJobInstanceLastExecutionHandler $updateScheduledJobInstanceLastExecutionHandler,
         private PublishJobToQueue $publishJobToQueue,
-        private ValidatorInterface $validator,
         private EventDispatcherInterface $eventDispatcher,
         private NotifyUsersInvalidJobInstanceHandler $emailNotifyUsersHandler,
     ) {
@@ -56,10 +53,8 @@ final class PushScheduledJobsToQueueCommand extends Command
 
         foreach ($dueJobInstances as $dueJobInstance) {
             try {
-                $scheduledViolations = $this->validator->validate($dueJobInstance, new ScheduledJobInstanceConstraint());
-
-                if (0 < $scheduledViolations->count()) {
-                    throw new InvalidJobException($dueJobInstance->code, $dueJobInstance->jobName, $scheduledViolations);
+                if (!$dueJobInstance->isScheduled) {
+                    continue;
                 }
 
                 $this->publishJobToQueue->publish(

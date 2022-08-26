@@ -266,6 +266,13 @@ test('it displays validation errors', () => {
       parameters: {},
       propertyPath: '[running_user_groups]',
     },
+    {
+      messageTemplate: 'error.key.a_scheduled_error',
+      invalidValue: '',
+      message: 'this is a scheduled error',
+      parameters: {},
+      propertyPath: '[scheduled]',
+    },
   ];
 
   renderWithProviders(
@@ -279,4 +286,5 @@ test('it displays validation errors', () => {
   );
 
   expect(screen.getByText('error.key.a_type_error')).toBeInTheDocument();
+  expect(screen.getByText('error.key.a_scheduled_error')).toBeInTheDocument();
 });

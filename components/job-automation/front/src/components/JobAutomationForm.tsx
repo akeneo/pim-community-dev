@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {SectionTitle, Field, BooleanInput} from 'akeneo-design-system';
+import {SectionTitle, Field, BooleanInput, Helper} from 'akeneo-design-system';
 import {Section, useTranslate, ValidationError, filterErrors, useFeatureFlags} from '@akeneo-pim-community/shared';
 import {Automation, CronExpression} from '../models';
 import {UserGroupsForm} from './UserGroupsForm';
@@ -59,6 +59,11 @@ const JobAutomationForm = ({
           readOnly={false}
           onChange={handleScheduledChange}
         />
+        {filterErrors(validationErrors, '[scheduled]').map((error, index) => (
+          <Helper key={index} inline={true} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
       </Field>
       {scheduled && (
         <>

@@ -14,35 +14,34 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
+use Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\Scheduling;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-final class ScheduledJobInstanceValidator extends ConstraintValidator
+final class SchedulingValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof ScheduledJobInstance) {
-            throw new UnexpectedTypeException($constraint, ScheduledJobInstance::class);
+        if (!$constraint instanceof Scheduling) {
+            throw new UnexpectedTypeException($constraint, Scheduling::class);
         }
 
-        if (!$value->isScheduled) {
-            $this->context->buildViolation(ScheduledJobInstance::SCHEDULED_SHOULD_BE_ENABLED)->addViolation();
+        if (!$value instanceof JobInstance) {
+            throw new UnexpectedTypeException($value, JobInstance::class);
         }
 
-        if (0 < $this->context->getViolations()->count()) {
+        if (JobInstance::TYPE_EXPORT === $value->getType()) {
             return;
         }
 
-        if (JobInstance::TYPE_EXPORT === $value->type) {
-            return;
-        }
-
-        $storage = $value->rawParameters['storage'];
-
-        if (NoneStorage::TYPE === $storage['type']) {
-            $this->context->buildViolation(ScheduledJobInstance::IMPORT_SHOULD_HAVE_STORAGE)->addViolation();
+        if ($value->isScheduled()
+            && NoneStorage::TYPE === $value->getRawParameters()['storage']['type']
+        ) {
+            $this->context->buildViolation(Scheduling::IMPORT_SHOULD_HAVE_STORAGE)
+                ->atPath('[scheduled]')
+                ->addViolation();
         }
     }
 }
