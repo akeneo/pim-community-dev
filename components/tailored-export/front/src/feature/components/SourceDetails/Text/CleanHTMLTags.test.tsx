@@ -32,6 +32,7 @@ test('it can check if something is a valid clean HTML tags operation', () => {
 test('it can check is something is a default clean HTML tags operation', () => {
   expect(
     isDefaultCleanHTMLTagsOperation({
+      // @ts-expect-error invalid operations
       what: 'ever',
     })
   ).toBe(false);

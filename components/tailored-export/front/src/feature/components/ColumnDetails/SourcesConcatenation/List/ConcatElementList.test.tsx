@@ -44,6 +44,7 @@ const sources: Source[] = [
 
 const format: Format = {
   type: 'concat',
+  space_between: true,
   elements: [
     {
       type: 'source',

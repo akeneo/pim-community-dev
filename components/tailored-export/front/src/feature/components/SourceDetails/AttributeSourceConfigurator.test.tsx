@@ -12,7 +12,7 @@ test('it displays source configurator', async () => {
     type: 'attribute',
     locale: null,
     channel: null,
-    operations: [],
+    operations: {},
     selection: {
       type: 'code',
     },
@@ -32,7 +32,7 @@ test('it displays locale dropdown when attribute is localizable', async () => {
     type: 'attribute',
     locale: 'fr_FR',
     channel: null,
-    operations: [],
+    operations: {},
     selection: {
       type: 'code',
     },
@@ -53,7 +53,7 @@ test('it displays a filtered locale dropdown when attribute is localizable and l
     type: 'attribute',
     locale: 'de_DE',
     channel: null,
-    operations: [],
+    operations: {},
     selection: {
       type: 'code',
     },
@@ -76,7 +76,7 @@ test('it displays a channel dropdown when attribute is scopable', async () => {
     type: 'attribute',
     locale: null,
     channel: 'ecommerce',
-    operations: [],
+    operations: {},
     selection: {
       type: 'code',
     },
@@ -97,7 +97,7 @@ test('it displays a channel dropdown when attribute is scopable and localizable'
     type: 'attribute',
     locale: 'fr_FR',
     channel: 'ecommerce',
-    operations: [],
+    operations: {},
     selection: {
       type: 'code',
     },
@@ -119,7 +119,7 @@ test('it calls handler when channel is changed', async () => {
     type: 'attribute',
     locale: 'fr_FR',
     channel: 'ecommerce',
-    operations: [],
+    operations: {},
     selection: {
       type: 'code',
     },
@@ -143,7 +143,7 @@ test('it calls handler when locale is changed', async () => {
     type: 'attribute',
     locale: 'fr_FR',
     channel: 'ecommerce',
-    operations: [],
+    operations: {},
     selection: {
       type: 'code',
     },
@@ -167,7 +167,7 @@ test('it displays attribute errors when attribute is not found', async () => {
     type: 'attribute',
     locale: 'fr_FR',
     channel: 'ecommerce',
-    operations: [],
+    operations: {},
     selection: {
       type: 'code',
     },
@@ -200,7 +200,7 @@ test('it displays attribute errors when attribute is found', async () => {
     type: 'attribute',
     locale: 'fr_FR',
     channel: 'ecommerce',
-    operations: [],
+    operations: {},
     selection: {
       type: 'code',
     },

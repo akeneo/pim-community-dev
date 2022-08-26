@@ -21,7 +21,7 @@ test('Fetch association type needs to be implemented', () => {
   const {result} = renderHookWithProviders(() => useFetchers());
 
   expect(() => {
-    result.current.associationType.fetchByCodes();
+    result.current.associationType.fetchByCodes([]);
   }).toThrowError('Fetch association types by codes needs to be implemented');
 });
 

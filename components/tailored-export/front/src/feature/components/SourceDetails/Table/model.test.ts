@@ -1,7 +1,8 @@
-import {isTableSource} from './model';
+import {isTableSource, TableSource} from './model';
+import {Source} from '../../../models';
 
 describe('it validates a Table source', () => {
-  const tableSourceWithoutOperation = {
+  const tableSourceWithoutOperation: Source = {
     uuid: '123',
     code: 'a code',
     type: 'attribute',
@@ -16,7 +17,7 @@ describe('it validates a Table source', () => {
   });
 
   test('it validates a Table source with default value operation', () => {
-    const tableSourceWithDefaultValueOperation = {
+    const tableSourceWithDefaultValueOperation: Source = {
       ...tableSourceWithoutOperation,
       operations: {
         default_value: {
@@ -30,9 +31,10 @@ describe('it validates a Table source', () => {
   });
 
   test('it invalidates a Table source with invalid operation', () => {
-    const tableSourceWithInvalidOperation = {
+    const tableSourceWithInvalidOperation: TableSource = {
       ...tableSourceWithoutOperation,
       operations: {
+        // @ts-expect-error invalid operations
         foo: 'bar',
       },
     };

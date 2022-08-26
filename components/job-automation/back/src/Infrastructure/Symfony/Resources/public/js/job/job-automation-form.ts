@@ -12,7 +12,7 @@ class JobAutomationFormController extends BaseView {
   constructor(options: {config: JobAutomationFormControllerConfig}) {
     super(options);
 
-    this.config = {...this.config, ...options.config};
+    this.config = options.config;
   }
 
   configure() {
@@ -33,7 +33,7 @@ class JobAutomationFormController extends BaseView {
       }
     });
 
-    return BaseView.prototype.configure.apply(this, arguments);
+    return BaseView.prototype.configure.apply(this);
   }
 
   setValidationErrors(validationErrors: ValidationError[]) {

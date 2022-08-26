@@ -1,7 +1,8 @@
-import {isTextSource} from './model';
+import {isTextSource, TextSource} from './model';
+import {Source} from '../../../models';
 
 describe('it validates a text source', () => {
-  const textSourceWithoutOperation = {
+  const textSourceWithoutOperation: TextSource = {
     uuid: '123',
     code: 'a code',
     type: 'attribute',
@@ -16,7 +17,7 @@ describe('it validates a text source', () => {
   });
 
   test('it validates a text source with default value operation', () => {
-    const textSourceWithDefaultValueOperation = {
+    const textSourceWithDefaultValueOperation: Source = {
       ...textSourceWithoutOperation,
       operations: {
         default_value: {
@@ -30,7 +31,7 @@ describe('it validates a text source', () => {
   });
 
   test('it validates a text source with clean HTML tags operation', () => {
-    const textSourceWithCleanHTMLTagsOperation = {
+    const textSourceWithCleanHTMLTagsOperation: TextSource = {
       ...textSourceWithoutOperation,
       operations: {
         clean_html_tags: {
@@ -44,9 +45,10 @@ describe('it validates a text source', () => {
   });
 
   test('it invalidates a text source with not valid operation', () => {
-    const textSourceWithInvalidOperation = {
+    const textSourceWithInvalidOperation: TextSource = {
       ...textSourceWithoutOperation,
       operations: {
+        // @ts-expect-error invalid operation
         foo: 'bar',
       },
     };

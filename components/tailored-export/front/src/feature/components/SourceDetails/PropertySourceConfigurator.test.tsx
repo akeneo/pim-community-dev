@@ -48,8 +48,8 @@ test('it renders nothing if the configurator is unknown', () => {
 
   renderWithProviders(
     <PropertySourceConfigurator
-      // @ts-expect-error unknown source
       source={{
+        // @ts-expect-error unknown source
         code: 'nothing',
         uuid: 'unique_id',
         type: 'property',
@@ -77,7 +77,6 @@ test('it renders an invalid property placeholder when the source is invalid', ()
 
   renderWithProviders(
     <PropertySourceConfigurator
-      // @ts-expect-error unknown selection type
       source={{
         code: 'enabled',
         uuid: 'unique_id',
@@ -85,6 +84,7 @@ test('it renders an invalid property placeholder when the source is invalid', ()
         locale: null,
         channel: null,
         operations: {},
+        // @ts-expect-error unknown selection type
         selection: {type: 'path'},
       }}
       validationErrors={[]}

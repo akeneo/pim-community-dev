@@ -239,4 +239,4 @@ const renderWithProviders = async (children: ReactNode) =>
 const renderHookWithProviders = <P, R>(hook: (props: P) => R, initialProps?: P): RenderHookResult<P, R> =>
   renderHook(hook, {wrapper: Wrapper, initialProps});
 
-export {renderWithProviders, renderHookWithProviders};
+export {fetchers, channels, renderWithProviders, renderHookWithProviders};
