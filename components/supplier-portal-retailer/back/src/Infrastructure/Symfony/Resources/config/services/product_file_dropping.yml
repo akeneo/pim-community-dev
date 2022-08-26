@@ -30,6 +30,12 @@ services:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@monolog.logger.supplier_portal'
 
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\DeleteUnknownSupplierDirectoriesInGCSBucket:
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\GetAllSupplierCodes'
+            - '@monolog.logger.supplier_portal'
+
     # PIM Notification service
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Notifier:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\PIMNotifier
@@ -70,3 +76,55 @@ services:
             - '@monolog.logger.supplier_portal'
         tags:
             - { name: kernel.event_subscriber }
+
+    # Jobs
+    supplier_portal.job.clean_supplier_product_files:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'supplier_portal_supplier_product_files_clean'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@supplier_portal.job.step.clean_supplier_product_files'
+            - false
+            - false
+        tags:
+            - { name: akeneo_batch.job, connector: 'Supplier Portal', type: 'scheduled_job' }
+
+    supplier_portal.job.step.clean_supplier_product_files:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'generate_dictionary'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Job\CleanSupplierProductFiles'
+
+    supplier_portal.job_parameters.default_values_provider.clean_supplier_product_files:
+        class: Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyDefaultValuesProvider
+        arguments:
+            - [ 'supplier_portal_supplier_product_files_clean' ]
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    supplier_portal.job_parameters.constraint_collection_provider.clean_supplier_product_files:
+        class: Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintCollectionProvider
+        arguments:
+            - [ 'supplier_portal_supplier_product_files_clean' ]
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Job\CleanSupplierProductFiles:
+        arguments:
+            - '@Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\GetProductFilePathsOfOldProductFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DeleteProductFilesFromPaths'
+            - '@Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\DeleteOldProductFiles'
+            - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\DeleteUnknownSupplierDirectoriesInGCSBucket'
+            - '@monolog.logger.supplier_portal'
+
+    # Command
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Command\CleanSupplierProductFilesCommand:
+        arguments:
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
+        tags:
+            - { name: console.command }
