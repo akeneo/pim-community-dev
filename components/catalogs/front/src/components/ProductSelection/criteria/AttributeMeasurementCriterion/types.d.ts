@@ -12,7 +12,7 @@ export type AttributeMeasurementCriterionOperator =
     | typeof Operator.IS_NOT_EMPTY;
 
 type MeasurementValue = {
-    amount: number | null;
+    amount: number | string | null;
     unit: string | null;
 };
 

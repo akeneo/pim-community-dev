@@ -5,7 +5,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {Measurement} from '../../models/Measurement';
 import {useMeasurements} from '../../hooks/useMeasurements';
-import {parseInputNumberValue} from '../../utils/parseInputNumberValue';
+import {useNumberValue} from '../../hooks/useNumberValue';
 
 const InputsContainer = styled.div`
     display: flex;
@@ -114,20 +114,22 @@ const AttributeMeasurementValueInput: FC<Props> = ({state, onChange, isInvalid, 
         setIsOpen(false);
     };
 
+    const [value, onValueChange] = useNumberValue(state.value?.amount ?? null, value =>
+        onChange({
+            ...state,
+            value: {
+                amount: value,
+                unit: state.value?.unit ?? null,
+            },
+        })
+    );
+
     return (
         <InputsContainer>
             <TextInputContainer>
                 <ValueInput
-                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        onChange({
-                            ...state,
-                            value: {
-                                amount: parseInputNumberValue(event.currentTarget.value),
-                                unit: state.value?.unit ?? null,
-                            },
-                        })
-                    }
-                    value={null === state.value ? '' : state.value.amount}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => onValueChange(event.currentTarget.value)}
+                    value={value}
                     invalid={isInvalid}
                     data-testid='value'
                 />
