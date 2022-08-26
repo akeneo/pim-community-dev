@@ -14,10 +14,40 @@ class SqlFindAllUserRolesIntegration extends TestCase
 {
     public function testItListsAllTheUserRoles(): void
     {
+        $this->removeAllUserRoles();
+        $this->insertUserRole('first role');
+        $this->insertUserRole('second role');
+        $this->insertUserRole('third role');
+
         $userRoles = $this->getQuery()();
 
-        Assert::assertCount(5, $userRoles);
+        Assert::assertCount(3, $userRoles);
         Assert::containsOnlyInstancesOf(UserRole::class);
+    }
+
+    private function removeAllUserRoles(): void
+    {
+        $deleteSql = <<<SQL
+            DELETE FROM `oro_access_role`
+        SQL;
+
+        $this->get('database_connection')->executeQuery($deleteSql);
+    }
+
+    private function insertUserRole(string $roleCode): void
+    {
+        $insertSql = <<<SQL
+            INSERT INTO `oro_access_role` (`role`, `label`, `type`) VALUES (:roleCode, :roleLabel, :roleType)
+        SQL;
+
+        $this->get('database_connection')->executeQuery(
+            $insertSql,
+            [
+                'roleCode' => $roleCode,
+                'roleLabel' => $roleCode,
+                'roleType' => 'default',
+            ],
+        );
     }
 
     protected function getConfiguration(): Configuration
