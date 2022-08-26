@@ -276,9 +276,9 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                 'criterion' => [
                     'field' => 'categories',
                     'operator' => 'IN',
-                    'value' => ['master', 'random_code'],
+                    'value' => ['unknown_code_1', 'master', 'unknown_code_2'],
                 ],
-                'expectedMessage' => 'Some of the selected categories do not exist or have been selected. Please remove these categories.',
+                'expectedMessage' => 'The following categories do not exist anymore: unknown_code_1, unknown_code_2. Please remove them from the criterion value.',
             ],
         ];
     }

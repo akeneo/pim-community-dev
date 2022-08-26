@@ -18,4 +18,4 @@ akeneo_catalogs:
                 completeness:
                     value: 'Completeness value must be between 0 and 100 percent.'
                 category:
-                    value: 'Some of the selected categories do not exist or have been selected. Please remove these categories.'
+                    value: 'The following categories do not exist anymore: {{ codes }}. Please remove them from the criterion value.'

@@ -43,7 +43,7 @@ class GetCategoryChildrenActionTest extends IntegrationTestCase
 
         $client->request(
             'GET',
-            "/rest/catalogs/categories/parent_category/children",
+            '/rest/catalogs/categories/parent_category/children',
             [],
             [],
             [
