@@ -169,7 +169,7 @@ async function createArgoCdApp(url, token, payload) {
  * @param retryInterval
  * @returns {Promise<unknown>}
  */
-async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries=60, retryInterval=10) {
+async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries = 60, retryInterval = 10) {
   const resourceUrl = new URL(`/api/v1/applications/${appName}`, url).toString();
   const headers = {
     headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}
@@ -196,12 +196,12 @@ async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries=60, retr
     resp = await axios.get(resourceUrl, headers);
     healthStatus = resp.data.status.health.status;
 
-    if(healthStatus === HEALTHY_STATUS) {
+    if (healthStatus === HEALTHY_STATUS) {
       logger.info('The ArgoCD application is created and healthy');
       return new Promise(resolve => resolve);
     }
 
-    if(healthStatus === DEGRADED_STATUS) {
+    if (healthStatus === DEGRADED_STATUS) {
       const msg = resp.data.status.operationState.message;
       return Promise.reject(new Error(`The ArgoCD application health is degraded: ${msg}`));
     }
@@ -252,7 +252,7 @@ function loadEnvironmentVariable(name) {
 
 exports.createTenant = (req, res) => {
 
-  if(process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     process.env.ARGOCD_URL = 'https://argocd.pim-saas-dev.dev.cloud.akeneo.com/';
     process.env.GOOGLE_ZONE = 'europe-west1-b';
     process.env.GCP_PROJECT_ID = 'akecld-prd-pim-saas-dev';
@@ -274,7 +274,7 @@ exports.createTenant = (req, res) => {
   if (schemaCheck.valid === false) {
     const msg = schemaCheck.errors[0].message;
     logger.error(`The JSON schema of the received http body is not valid: ${msg}`);
-    res.send(400).send('Bad JSON schema in the request http body');
+    res.status(400).send('Bad JSON schema in the request http body');
   }
   logger.info('The JSON schema of the http body of the request is valid');
 
@@ -309,17 +309,23 @@ exports.createTenant = (req, res) => {
         type: extraLabelType,
       }
     },
+    image: {
+      pim: {        // TODO : temporary value to test need to be variabilized
+        repository: 'europe-west1-docker.pkg.dev/akecld-prd-pim-saas-dev/pim-enterprise-dev/pim-enterprise-dev',
+        tag: 'v20220822000000'
+      }
+    },
     mysql: {
       common: {
         persistentDisks: [
-          `projects/${GCP_PROJECT_ID}/zones/${GOOGLE_ZONE}/disks/${instanceName}-mysql`
+          `projects/${GCP_PROJECT_ID}/zones/${GOOGLE_ZONE}/disks/${pfid}-mysql`
         ]
       }
     },
     pim: {
       storage: {
         bucketName: pfid
-      }
+      },
     }
   });
 
