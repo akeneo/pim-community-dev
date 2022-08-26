@@ -43,7 +43,7 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_with_a_wrong_constraint()
     {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'foo');
+        $command = UpsertProductCommand::createFromCollection(userId: 1, productIdentifier: 'foo', userIntents: []);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [$command, new Type([])]);
     }
@@ -56,7 +56,7 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
 
     function it_does_nothing_when_product_does_not_exist(ExecutionContext $context)
     {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'unknown');
+        $command = UpsertProductCommand::createFromCollection(userId: 1, productIdentifier: 'unknown', userIntents: []);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($command, new IsUserOwnerOfTheProduct());
@@ -64,7 +64,7 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
 
     function it_validates_when_the_product_does_not_have_any_category(ExecutionContext $context)
     {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_without_category');
+        $command = UpsertProductCommand::createFromCollection(userId: 1, productIdentifier: 'product_without_category', userIntents: []);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($command, new IsUserOwnerOfTheProduct());
@@ -74,7 +74,7 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
         GetOwnedCategories $getOwnedCategories,
         ExecutionContext $context
     ) {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_with_category');
+        $command = UpsertProductCommand::createFromCollection(userId: 1, productIdentifier: 'product_with_category', userIntents: []);
         $getOwnedCategories->forUserId(['master', 'print'], 1)->willReturn(['master']);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
@@ -88,7 +88,7 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
     ) {
         $constraint = new IsUserOwnerOfTheProduct();
 
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_with_category');
+        $command = UpsertProductCommand::createFromCollection(userId: 1, productIdentifier: 'product_with_category', userIntents: []);
         $getOwnedCategories->forUserId(['master', 'print'], 1)->willReturn([]);
         $context->buildViolation($constraint->message)->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('userId')->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);

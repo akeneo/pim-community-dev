@@ -24,7 +24,7 @@ const changeSelectValueTo = (selector: string, value: string) => {
     fireEvent.click(screen.getByText(value));
 };
 
-test('it renders the completeness criteria', async () => {
+test('it renders the completeness criterion', async () => {
     fetchMock.mockResponses(
         // useChannel
         JSON.stringify(channelPrint),
@@ -64,7 +64,7 @@ test('it renders the completeness criteria', async () => {
     expect(await screen.findByText('English')).toBeInTheDocument();
 });
 
-test('it renders criteria with validation errors', () => {
+test('it renders criterion with validation errors', () => {
     fetchMock.mockResponses(
         // useChannel
         JSON.stringify(channelPrint),

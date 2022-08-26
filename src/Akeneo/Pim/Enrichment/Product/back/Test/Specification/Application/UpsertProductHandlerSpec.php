@@ -72,7 +72,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user
     ) {
-        $command = new UpsertProductCommand(1, 'identifier1');
+        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []);
         $product = new Product();
         $product->setIdentifier('identifier1');
 
@@ -101,7 +101,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user
     ) {
-        $command = new UpsertProductCommand(1, 'identifier1');
+        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []);
         $product = new Product();
         $product->setIdentifier('identifier1');
 
@@ -131,7 +131,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
     ) {
-        $command = new UpsertProductCommand(1, 'identifier1');
+        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []);
         $product->getIdentifier()->willReturn('identifier1');
         $product->isDirty()->willReturn(false);
 
@@ -157,7 +157,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
     ) {
-        $command = new UpsertProductCommand(1, 'identifier1');
+        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []);
         $product = new Product();
         $product->setIdentifier('identifier1');
         $violations = new ConstraintViolationList([
@@ -182,7 +182,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
     ) {
-        $command = new UpsertProductCommand(1, 'identifier1');
+        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: []);
         $product = new Product();
         $product->setIdentifier('identifier1');
         $violations = new ConstraintViolationList([
@@ -212,7 +212,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         UserInterface $user,
     ) {
         $setTextUserIntent = new SetTextValue('name', null, null, 'foo');
-        $command = new UpsertProductCommand(1, 'identifier1', valueUserIntents: [$setTextUserIntent]);
+        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: [$setTextUserIntent]);
         $product = new Product();
         $product->setIdentifier('identifier1');
 
@@ -246,7 +246,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
     ) {
         $userIntent = new SetEnabled(true);
         $setTextUserIntent = new SetTextValue('name', null, null, 'Lorem Ipsum');
-        $command = new UpsertProductCommand(1, 'identifier1', enabledUserIntent: $userIntent, valueUserIntents: [$setTextUserIntent]);
+        $command = UpsertProductCommand::createFromCollection(1, 'identifier1', userIntents: [$userIntent, $setTextUserIntent]);
         $product = new Product();
         $product->setIdentifier('identifier1');
 
@@ -297,7 +297,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
                 return null;
             }
         };
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: [
+        $command = UpsertProductCommand::createFromCollection(userId: 1, productIdentifier: 'identifier', userIntents: [
             $unknownUserIntent
         ]);
 
@@ -326,7 +326,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
     ) {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: []);
+        $command = UpsertProductCommand::createFromCollection(userId: 1, productIdentifier: 'identifier', userIntents: []);
 
         $product = new Product();
         $product->setIdentifier('identifier1');

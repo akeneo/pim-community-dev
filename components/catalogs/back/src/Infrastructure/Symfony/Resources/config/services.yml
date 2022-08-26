@@ -76,6 +76,14 @@ services:
         arguments:
             - '@pim_enrich.repository.family.search'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\SearchAttributesQuery:
+        arguments:
+            - '@pim_enrich.repository.attribute.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\FindOneAttributeByCodeQuery:
+        arguments:
+            $repository: '@pim_catalog.repository.attribute'
+
     Akeneo\Catalogs\Infrastructure\Persistence\GetChannelLocalesQuery:
         arguments:
             - '@pim_catalog.repository.channel'
@@ -87,3 +95,7 @@ services:
     Akeneo\Catalogs\Infrastructure\Persistence\GetChannelsQuery:
         arguments:
             - '@pim_catalog.repository.channel'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesQuery:
+        arguments:
+            - '@pim_catalog.repository.locale'

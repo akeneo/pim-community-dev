@@ -61,11 +61,9 @@ class JobInstance
     /** @var array */
     protected $rawParameters = [];
 
-    /** @var bool */
-    protected $scheduled = false;
+    protected bool $scheduled = false;
 
-    /** @var string */
-    protected $automation;
+    protected ?array $automation = null;
 
     /** @var Collection|JobExecution[] */
     protected $jobExecutions;
@@ -267,22 +265,14 @@ class JobInstance
         return $this->scheduled;
     }
 
-    /**
-     * @param string $automation
-     *
-     * @return JobInstance
-     */
-    public function setAutomation($automation)
+    public function setAutomation(?array $automation): self
     {
         $this->automation = $automation;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getAutomation()
+    public function getAutomation(): ?array
     {
         return $this->automation;
     }

@@ -59,7 +59,7 @@ SQL;
                     ],
                     "locale" => null,
                 ]
-            ]),
+            ], JSON_THROW_ON_ERROR),
             'code' => $this->category->getCode()
         ]);
     }
@@ -145,6 +145,25 @@ SQL;
                 '8587cda6-58c8-47fa-9278-033e1d8c735c'
             )
         );
+    }
+
+    public function testGetCategoryWithNoRelatedTranslations(): void
+    {
+        $this->createCategory([
+            'code' => 'ties',
+        ]);
+
+        $this->category = $this->createCategory([
+            'code' => 'hats',
+            'labels' => []
+        ]);
+        $tiesCategory = $this->get(GetCategorySql::class)->byCode('ties');
+        $this->assertInstanceOf(Category::class, $tiesCategory);
+        $this->assertEmpty($tiesCategory->getLabelCollection()->getLabels());
+
+        $hatsCategory = $this->get(GetCategorySql::class)->byCode('hats');
+        $this->assertInstanceOf(Category::class, $hatsCategory);
+        $this->assertEmpty($hatsCategory->getLabelCollection()->getLabels());
     }
 
     protected function getConfiguration(): Configuration

@@ -29,7 +29,8 @@ final class UpdateConnectedAppDescriptionQuery implements UpdateConnectedAppDesc
             author = :author,
             categories = :categories,
             certified = :certified,
-            partner = :partner
+            partner = :partner,
+            updated = NOW()
         WHERE id = :id
         SQL;
 

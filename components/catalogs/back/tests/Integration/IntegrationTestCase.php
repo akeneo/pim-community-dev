@@ -11,7 +11,6 @@ use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
@@ -232,6 +231,13 @@ abstract class IntegrationTestCase extends WebTestCase
         );
     }
 
+    protected function createAttribute(array $data): void
+    {
+        $attribute = self::getContainer()->get('pim_catalog.factory.attribute')->create();
+        self::getContainer()->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        self::getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
+    }
+
     protected function createChannel(string $code, array $locales = []): void
     {
         /** @var ChannelInterface $channel */
@@ -243,14 +249,6 @@ abstract class IntegrationTestCase extends WebTestCase
             'category_tree' => 'master',
         ]);
         self::getContainer()->get('pim_catalog.saver.channel')->save($channel);
-    }
-
-    protected function createAttribute(array $attributeData): void
-    {
-        /** @var AttributeInterface $attribute */
-        $attribute = self::getContainer()->get('pim_catalog.factory.attribute')->create();
-        self::getContainer()->get('pim_catalog.updater.attribute')->update($attribute, $attributeData);
-        self::getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
     protected function createFamily(array $familyData): void

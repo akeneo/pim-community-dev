@@ -6,7 +6,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use PhpSpec\ObjectBehavior;
 
