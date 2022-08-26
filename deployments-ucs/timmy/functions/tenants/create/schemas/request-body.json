@@ -97,13 +97,13 @@
             }
           },
           "required": [
-            "authenticationToken",
-            "defaultAdminUser"
+            "authenticationToken"
           ]
         }
       },
       "required": [
-        "monitoring"
+        "monitoring",
+        "defaultAdminUser"
       ]
     }
   },

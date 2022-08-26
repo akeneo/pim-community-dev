@@ -161,12 +161,12 @@ async function createArgoCdApp(url, token, payload) {
 }
 
 /**
- *
- * @param url
- * @param token
- * @param appName
- * @param maxRetries
- * @param retryInterval
+ * Ensure the ArgoCD application is healthy
+ * @param url the ArgoCD server base url
+ * @param token a token to authenticate to the ArgoCD server
+ * @param appName the ArgoCD application name
+ * @param maxRetries the maximum number of attempts
+ * @param retryInterval time between each attempt
  * @returns {Promise<unknown>}
  */
 async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries = 60, retryInterval = 10) {
@@ -179,37 +179,79 @@ async function ensureArgoCdAppIsHealthy(url, token, appName, maxRetries = 60, re
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   };
 
-  const HEALTHY_STATUS = 'Healthy';
-  const DEGRADED_STATUS = 'Degraded';
+  const HEALTH_STATUS = {
+    HEALTHY: 'Healthy',
+    DEGRADED: 'Degraded'
+  };
 
   let currentRetry = 1;
 
   logger.info('Verify that the the ArgoCD application is healthy');
   let resp = await axios.get(resourceUrl, headers);
 
-  let healthStatus = resp.data.status.health.status;
+  let healthStatus = resp['data']['status']['health']['status'];
 
-  while (healthStatus !== HEALTHY_STATUS && currentRetry <= maxRetries) {
-    logger.info(`The ArgoCD application is being created and not healthy yet (health status: ${healthStatus}). Next check in ${retryInterval} seconds (${currentRetry}/${maxRetries} retries)`);
+  while (healthStatus !== HEALTH_STATUS.HEALTHY && currentRetry <= maxRetries) {
+    logger.info(`The ArgoCD application is being created and not healthy (HEALTH_STATUS: ${healthStatus}). Next check in ${retryInterval} seconds (${currentRetry}/${maxRetries} retries)`);
     await sleep(retryInterval * 1000);
 
     resp = await axios.get(resourceUrl, headers);
-    healthStatus = resp.data.status.health.status;
+    healthStatus = resp['data']['status']['health']['status'];
 
-    if (healthStatus === HEALTHY_STATUS) {
-      logger.info('The ArgoCD application is created and healthy');
-      return new Promise(resolve => resolve);
+    if (healthStatus === HEALTH_STATUS.HEALTHY) {
+      logger.info('The ArgoCD application is healthy');
+      return;
     }
 
-    if (healthStatus === DEGRADED_STATUS) {
-      const msg = resp.data.status.operationState.message;
-      return Promise.reject(new Error(`The ArgoCD application health is degraded: ${msg}`));
+    if (healthStatus === HEALTH_STATUS.DEGRADED) {
+      const msg = resp['data']['status']['operationState']['message'];
+      return Promise.reject(new Error(`The ArgoCD application health is degraded: ${msg}. Please check the ArgoCD application`));
     }
 
     currentRetry++;
   }
 
   return Promise.reject(new Error('The maximum number of attempts has been exceeded to verify the deletion. Please check the status of the ArgoCD application'));
+}
+
+async function ensureArgoCdAppIsSynced(url, token, appName, maxRetries = 20, retryInterval = 10) {
+  const resourceUrl = new URL(`/api/v1/applications/${appName}`, url).toString();
+  const headers = {
+    headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}
+  };
+
+  const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  };
+
+  const SYNC_STATUS = {
+    SYNCED: 'Synced',
+    OUT_OF_SYNC: 'OutOfSync'
+  }
+
+  let currentRetry = 1;
+
+  logger.info('Verify that the the ArgoCD application is fully synced');
+  let resp = await axios.get(resourceUrl, headers);
+
+  let syncStatus = resp['data']['status']['sync']['status'];
+
+  while (syncStatus !== SYNC_STATUS.SYNCED && currentRetry <= maxRetries) {
+    logger.info(`The ArgoCD application is not fully synced (SYNC_STATUS: ${syncStatus}). Next check in ${retryInterval} seconds (${currentRetry}/${maxRetries} retries)`);
+    await sleep(retryInterval * 1000);
+
+    resp = await axios.get(resourceUrl, headers);
+    syncStatus = resp['data']['status']['sync']['status'];
+
+    if (syncStatus === syncStatus.SYNCED) {
+      logger.info('The ArgoCD application is fully synced');
+      return;
+    }
+
+    currentRetry++;
+  }
+
+  return Promise.reject(new Error('The maximum number of attempts has been exceeded to verify the ArgoCD application synchronization. Please check the ArgoCD application'));
 }
 
 /**
@@ -273,8 +315,8 @@ exports.createTenant = (req, res) => {
   const schemaCheck = v.validate(req.body, schema);
   if (schemaCheck.valid === false) {
     const msg = schemaCheck.errors[0].message;
-    logger.error(`The JSON schema of the received http body is not valid: ${msg}`);
     res.status(400).send('Bad JSON schema in the request http body');
+    throw new Error(`The JSON schema of the received http body is not valid: ${msg}`);
   }
   logger.info('The JSON schema of the http body of the request is valid');
 
@@ -338,6 +380,7 @@ exports.createTenant = (req, res) => {
     const token = await getArgoCdToken(ARGOCD_URL, ARGOCD_USERNAME, ARGOCD_PASSWORD);
     const resp = await createArgoCdApp(ARGOCD_URL, token, payload);
     await ensureArgoCdAppIsHealthy(ARGOCD_URL, token, instanceName);
+    await ensureArgoCdAppIsSynced(ARGOCD_URL, token, instanceName);
   }
 
   createTenant()

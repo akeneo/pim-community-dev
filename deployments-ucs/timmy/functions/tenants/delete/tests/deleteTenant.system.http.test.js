@@ -12,6 +12,6 @@ describe('Test to delete a tenant', () => {
       method: 'DELETE',
       data: {}
     });
-    assert.strictEqual(response.data, `The tenant "${INSTANCE_NAME}" is deleted!`)
+    assert.strictEqual(response.data, `The tenant ${INSTANCE_NAME} is deleted!`)
   });
 });
