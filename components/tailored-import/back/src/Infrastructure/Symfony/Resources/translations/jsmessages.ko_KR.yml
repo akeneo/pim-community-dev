@@ -127,9 +127,9 @@ akeneo.tailored_import:
           comma: 쉼표(,)
           dot: 마침표(.)
           arabic_comma: 아라비아 소수점 구분 기호(٫)
+        date_format: 날짜 형식
         measurement_unit:
           title: 단위
-        date_format: 날짜 형식
       invalid:
         attribute: 이 특성은 삭제되었으며 다른 유형으로 재생성되었습니다. 이 데이터 매핑을 제거하고 다시 추가하십시오.
         property: 이 속성은 유효하지 않습니다. 이 데이터 매핑을 제거하고 다시 추가하십시오.
