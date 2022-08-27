@@ -74,7 +74,7 @@ pim_importexport:
       index: Näytä tuontiprofiilien lista
       create: Tuontiprofiilin luonti
       show: Näytä tuontiprofiili
-      edit: Editoi tuontiprofiilia
+      edit: Muokkaa tuontiprofiilia
       remove: Poista tuontiprofiili
       launch: Käynnistä tuontiprofiili
       history: Näytä tuontiprofiilin historia
