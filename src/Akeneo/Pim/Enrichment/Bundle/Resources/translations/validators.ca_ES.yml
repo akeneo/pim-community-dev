@@ -65,8 +65,6 @@ pim_catalog:
     variant_product_invalid_family: 'La variant de la família de producte ha de ser igual que el seu pare'
     php_int_max_reached: 'El nombre màxim ha de ser inferior a %php_int_max%.'
     not_null_family: La família no pot ser "nul·la" perquè el vostre producte amb l'identificador %sku% és un producte variant.
-    variant_product_has_parent: 'La variant de producte "%variant_product%" ha de tenir un pare'
-    invalid_variant_product_parent: 'La variant de producte %variant_product% no pot tenir model de producte %product_model% com a pare (aquest model de producte només pot tenir un altre model de producte com a fill)'
     modified_variant_axis_value: 'Els variants d''eixos "%variant_axis%" no poden ser modificats, "%provided_value%" donats'
     family_variant_attributes_unique: Els atributs han de ser únics, "%attributes%" s'utilitzen diverses vegades en la configuració de variants d'atributs
     family_variant_axes_unique: Els variants d'eixos han de ser únics, "%attributes%" s'utilitzen diverses vegades en la configuració de variants d'atributs
