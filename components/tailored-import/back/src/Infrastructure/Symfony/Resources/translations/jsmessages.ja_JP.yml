@@ -127,9 +127,9 @@ akeneo.tailored_import:
           comma: コンマ (,)
           dot: ドット (.)
           arabic_comma: アラビア文字の小数点記号 (٫)
+        date_format: 日付フォーマット
         measurement_unit:
           title: 単位
-        date_format: 日付フォーマット
       invalid:
         attribute: この属性は削除され、別のタイプで再作成されました。このデータマッピングを削除して、もう一度追加してください。
         property: このプロパティは無効です。このデータマッピング削除して、もう一度追加してください。

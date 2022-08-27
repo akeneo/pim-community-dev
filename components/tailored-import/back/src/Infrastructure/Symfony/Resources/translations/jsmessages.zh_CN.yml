@@ -127,9 +127,9 @@ akeneo.tailored_import:
           comma: 逗号 (,)
           dot: 点 (.)
           arabic_comma: 阿拉伯小数分隔符 (٫)
+        date_format: 日期格式
         measurement_unit:
           title: 单位
-        date_format: 日期格式
       invalid:
         attribute: 该属性已被删除并采用另一种类型重新创建，请移除此数据映射并重新添加。
         property: 此属性无效，请移除此数据映射并再次添加。

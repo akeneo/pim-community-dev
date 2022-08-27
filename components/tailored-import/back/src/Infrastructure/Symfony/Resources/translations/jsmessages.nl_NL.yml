@@ -127,9 +127,9 @@ akeneo.tailored_import:
           comma: Komma (,)
           dot: Punt (.)
           arabic_comma: Decimaal scheidingsteken voor Arabisch (٫)
+        date_format: Datumnotatie
         measurement_unit:
           title: Eenheid
-        date_format: Datumnotatie
       invalid:
         attribute: Dit attribuut is verwijderd en opnieuw aangemaakt met een ander type. Verwijder deze gegevenstoewijzing en voeg het opnieuw toe.
         property: Deze eigenschap is ongeldig. Verwijder deze gegevenstoewijzing en voeg de eigenschap opnieuw toe.

@@ -127,9 +127,9 @@ akeneo.tailored_import:
           comma: Virgola (,)
           dot: Punto (.)
           arabic_comma: Separatore decimali arabo (٫)
+        date_format: Formato data
         measurement_unit:
           title: Unità
-        date_format: Formato data
       invalid:
         attribute: Questo attributo è stato eliminato e ricreato con un altro tipo; elimina questa mappatura e aggiungila nuovamente.
         property: Questa proprietà non è valida; elimina questa mappatura e aggiungila nuovamente.

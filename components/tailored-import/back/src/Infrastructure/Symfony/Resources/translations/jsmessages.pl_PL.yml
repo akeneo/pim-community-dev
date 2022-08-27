@@ -127,9 +127,9 @@ akeneo.tailored_import:
           comma: Przecinek (,)
           dot: Kropka (.)
           arabic_comma: Arabski separator dziesiętny (٫)
+        date_format: Format daty
         measurement_unit:
           title: Jednostka
-        date_format: Format daty
       invalid:
         attribute: Ten atrybut został usunięty i odtworzony za pomocą innego typu. Usuń to mapowanie danych i dodaj je ponownie.
         property: Ta właściwość jest nieprawidłowa. Usuń to mapowanie danych i dodaj je ponownie.
