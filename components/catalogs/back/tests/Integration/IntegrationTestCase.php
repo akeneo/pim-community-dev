@@ -241,15 +241,19 @@ abstract class IntegrationTestCase extends WebTestCase
      * @param array{
      *     code: string,
      *     type: string,
-     *     available_locales: array<string>,
-     *     group: string,
+     *     available_locales?: array<string>,
+     *     group?: string,
      *     scopable: bool,
      *     localizable: bool,
-     *     options: array<string>
+     *     options?: array<string>,
      * } $data
      */
     protected function createAttribute(array $data): void
     {
+        $data = \array_merge([
+            'group' => 'other',
+        ], $data);
+
         $options = $data['options'] ?? [];
         unset($data['options']);
 
