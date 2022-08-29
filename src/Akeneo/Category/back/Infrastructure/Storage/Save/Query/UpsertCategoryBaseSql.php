@@ -7,6 +7,7 @@ namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\Code;
+use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
@@ -19,8 +20,10 @@ use Doctrine\DBAL\Exception;
  */
 class UpsertCategoryBaseSql implements UpsertCategoryBase
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection,
+        private GetCategorySql $getCategory,
+    ) {
     }
 
     /**
@@ -29,7 +32,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
      */
     public function execute(Category $categoryModel): void
     {
-        if ($this->categoryAlreadyExistsByCode($categoryModel->getCode())) {
+        if ($this->getCategory->byCode((string) $categoryModel->getCode())) {
             $this->updateCategory($categoryModel);
         } else {
             $this->insertCategory($categoryModel);
@@ -126,28 +129,5 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 'rgt' => \PDO::PARAM_INT,
             ]
         );
-    }
-
-    /**
-     * @throws Exception
-     * @throws \Doctrine\DBAL\Driver\Exception
-     */
-    private function categoryAlreadyExistsByCode(Code $code): bool
-    {
-        $query = <<< SQL
-            SELECT code
-            FROM pim_catalog_category
-            WHERE code=:category_code
-        SQL;
-
-        return $this->connection->executeQuery(
-            $query,
-            [
-                'category_code' => (string) $code
-            ],
-            [
-                'category_code' => \PDO::PARAM_STR
-            ],
-        )->fetchOne();
     }
 }
