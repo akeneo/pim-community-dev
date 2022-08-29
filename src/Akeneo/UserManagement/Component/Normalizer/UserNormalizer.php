@@ -77,6 +77,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
             'email_notifications'       => $user->isEmailNotifications(),
             'timezone'                  => $user->getTimezone(),
             'groups'                    => $user->getGroupNames(),
+            'group_ids'                 => $user->getGroupsIds(),
             'roles'                     => $this->getRoleNames($user),
             'product_grid_filters'      => $user->getProductGridFilters(),
             'profile'                   => $user->getProfile(),
