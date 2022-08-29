@@ -68,6 +68,7 @@ services:
             - '%kernel.cache_dir%/sql-dump/'
             - '%index_hosts%'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
+            - '@Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper'
 
     akeneo_integration_tests.loader.category_tree_loader:
         class: 'AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\CategoryTree\CategoryTreeFixturesLoader'
@@ -306,3 +307,9 @@ services:
         class: 'Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper'
         arguments:
             - '@router'
+
+    Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper:
+        arguments:
+            - '@doctrine'
+            - '@akeneo_integration_tests.loader.database_schema_handler'
+            - '%env(bool:EXPERIMENTAL_TEST_DATABASE)%'

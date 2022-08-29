@@ -12,6 +12,7 @@ use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
@@ -65,6 +66,7 @@ class FixturesLoader implements FixturesLoaderInterface
     private EventDispatcherInterface $eventDispatcher;
     private JobLauncher $jobLauncher;
     private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler;
+    private ExperimentalTransactionHelper $experimentalTransactionHelper;
 
     public function __construct(
         KernelInterface $kernel,
@@ -89,7 +91,8 @@ class FixturesLoader implements FixturesLoaderInterface
         string $databasePassword,
         string $sqlDumpDirectory,
         string $elasticsearchHost,
-        GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler
+        GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler,
+        ExperimentalTransactionHelper $experimentalTransactionHelper,
     ) {
         $this->databaseSchemaHandler = $databaseSchemaHandler;
         $this->systemUserAuthenticator = $systemUserAuthenticator;
@@ -119,6 +122,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->eventDispatcher = $eventDispatcher;
         $this->jobLauncher = $jobLauncher;
         $this->generateAsymmetricKeysHandler = $generateAsymmetricKeysHandler;
+        $this->experimentalTransactionHelper = $experimentalTransactionHelper;
     }
 
     public function __destruct()
@@ -131,7 +135,6 @@ class FixturesLoader implements FixturesLoaderInterface
     public function load(Configuration $configuration): void
     {
         $this->deleteAllDocumentsInElasticsearch();
-        $this->databaseSchemaHandler->reset();
 
         $this->resetFilesystem();
 
@@ -139,10 +142,15 @@ class FixturesLoader implements FixturesLoaderInterface
         $fixturesHash = $this->getHashForFiles($files);
         $dumpFile = $this->sqlDumpDirectory . $fixturesHash . '.sql';
         if (file_exists($dumpFile)) {
+            if (!$this->experimentalTransactionHelper->isEnabled()) {
+                $this->databaseSchemaHandler->reset();
+            }
             $this->restoreDatabase($dumpFile);
             $this->indexProductModels();
             $this->indexProducts();
         } else {
+            $this->experimentalTransactionHelper->abortTransactions();
+            $this->databaseSchemaHandler->reset();
             $this->loadData($configuration);
             $this->dumpDatabase($dumpFile);
             $this->purgeMessengerEvents();
@@ -389,7 +397,22 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function restoreDatabase($filepath): void
     {
-        $this->dbConnection->exec(file_get_contents($filepath));
+        try {
+            $this->dbConnection->exec(file_get_contents($filepath));
+        } catch (\Doctrine\DBAL\Exception $e) {
+            // The database is not empty, an integrity constraint violation was thrown on an unique key.
+            // When using the experimental test database, it's because the test was not started from an empty
+            // database as it should have. It happens when the previous test exited early.
+            // We assume it will happen only once, so we truncate all tables and insert again.
+            if ('23000' === $e->getPrevious()?->getCode()) {
+                $this->experimentalTransactionHelper->abortTransactions();
+                $this->databaseSchemaHandler->reset();
+                $this->experimentalTransactionHelper->beginTransactions();
+                $this->dbConnection->exec(file_get_contents($filepath));
+            } else {
+                throw $e;
+            }
+        }
     }
 
     /**
