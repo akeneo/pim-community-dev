@@ -15,11 +15,8 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\Operation;
 
 class ReplacementOperation implements OperationInterface
 {
-    private array $mapping;
-
-    public function __construct(array $mapping)
+    public function __construct(private array $mapping)
     {
-        $this->mapping = $mapping;
     }
 
     public function getMapping(): array

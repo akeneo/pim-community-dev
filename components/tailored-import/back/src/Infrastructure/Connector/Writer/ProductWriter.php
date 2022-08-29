@@ -36,7 +36,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
 {
     private const WARNING_BATCH_SIZE = 100;
 
-    private ?StepExecution $stepExecution;
+    private ?StepExecution $stepExecution = null;
     private array $warnings = [];
 
     public function __construct(
@@ -77,7 +77,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
 
     private function upsertProduct(RowPayload $rowPayload): void
     {
-        if (0 < count($rowPayload->getInvalidValues())) {
+        if (!empty($rowPayload->getInvalidValues())) {
             $this->stepExecution->incrementSummaryInfo('skip');
             $this->addInvalidValuesWarning($rowPayload);
 

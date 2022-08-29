@@ -59,13 +59,11 @@ final class SftpCredentialsEncrypter implements CredentialsEncrypter
 
     private function getEncryptionKey(array $storage): string
     {
-        $encryptionKey = sprintf(
+        return sprintf(
             '%s@%s:%s',
             $storage['username'],
             $storage['host'],
             $storage['port'],
         );
-
-        return $encryptionKey;
     }
 }

@@ -63,6 +63,13 @@ asset-manager-lint-back: #Doc: launch PHP linter for the asset-manager
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/AssetManager/tests/back/phpstan.neon.dist
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/AssetManager/back
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/Enrichment/AssetManager/
+	${PHP_RUN} vendor/bin/rector process --dry-run --config=src/Akeneo/AssetManager/tests/back/rector.php
+
+.PHONY: asset-manager-lint-fix-back
+asset-manager-lint-fix-back: #Doc: launch PHP lint fixer for the asset-manager
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=.php_cs.php src/Akeneo/AssetManager/back
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=.php_cs.php src/Akeneo/Pim/Enrichment/AssetManager/
+	${PHP_RUN} vendor/bin/rector process --config=src/Akeneo/AssetManager/tests/back/rector.php
 
 .PHONY: asset-manager-static-back
 asset-manager-static-back: #Doc: launch PHP static analyzer for the asset manager

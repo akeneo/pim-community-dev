@@ -26,7 +26,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
@@ -117,7 +117,7 @@ final class ProductTableValues implements ItemWriterInterface, StepExecutionAwar
                 }
                 $this->stepExecution->addWarning(
                     \implode(', ', \array_map(
-                        fn (ConstraintViolation $constraintViolation): string => $constraintViolation->getMessage(),
+                        fn (ConstraintViolationInterface $constraintViolation): string => $constraintViolation->getMessage(),
                         \iterator_to_array($violations)
                     )),
                     [],

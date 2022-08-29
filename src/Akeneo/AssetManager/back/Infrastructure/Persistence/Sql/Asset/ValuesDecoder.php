@@ -36,11 +36,9 @@ final class ValuesDecoder
     }
 
     /**
-     * @param mixed $data
-     *
      * @return mixed
      */
-    private static function sanitizeData($data)
+    private static function sanitizeData(mixed $data)
     {
         if (!is_string($data)) {
             return $data;

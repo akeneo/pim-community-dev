@@ -2,6 +2,12 @@
 lint-back: #Doc: launch PHPStan for tailored export
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/tailored-export/back/tests/phpstan-ee.neon
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/tailored-export/back/tests/.php_cs.php components/tailored-export/back/src
+	${PHP_RUN} vendor/bin/rector process --dry-run --config=components/tailored-export/back/tests/rector.php
+
+.PHONY: lint-fix-back
+lint-fix-back: #Doc: launch PHPStan for tailored export
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/tailored-export/back/tests/.php_cs.php components/tailored-export/back/src
+	${PHP_RUN} vendor/bin/rector process --config=components/tailored-export/back/tests/rector.php
 
 .PHONY: coupling-back
 coupling-back: #Doc: launch coupling detector for tailored export

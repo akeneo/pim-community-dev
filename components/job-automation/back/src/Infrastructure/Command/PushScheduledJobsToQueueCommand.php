@@ -64,7 +64,7 @@ final class PushScheduledJobsToQueueCommand extends Command
                     config: [],
                     username: 'admin',
                 );
-            } catch (InvalidJobException|\Exception $exception) {
+            } catch (InvalidJobException|\Exception) {
                 // TODO RAB-929 Handle invalid job notifications before a job is launched
                 continue;
             }

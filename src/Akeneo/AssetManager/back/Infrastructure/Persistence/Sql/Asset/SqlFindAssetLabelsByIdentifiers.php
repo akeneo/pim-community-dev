@@ -80,7 +80,7 @@ SQL;
 
         foreach ($activatedLocaleCodes as $activatedLocaleCode) {
             $key = sprintf('%s_%s', $asset['attribute_as_label'], $activatedLocaleCode);
-            $labels[$activatedLocaleCode] = key_exists($key, $values)
+            $labels[$activatedLocaleCode] = array_key_exists($key, $values)
                 ? $values[$key]['data']
                 : null;
         }

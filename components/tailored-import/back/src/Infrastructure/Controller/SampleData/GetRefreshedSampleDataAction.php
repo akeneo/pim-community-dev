@@ -48,7 +48,7 @@ final class GetRefreshedSampleDataAction
         $query->fileKey = $request->get('file_key');
         $query->columnIndices = array_map('intval', $request->get('column_indices'));
         $query->sheetName = $request->get('sheet_name');
-        $query->productLine = intval($request->get('product_line'));
+        $query->productLine = (int) $request->get('product_line');
 
         $getRefreshedSampleDataResult = $this->getRefreshedSampleDataHandler->handle($query);
 

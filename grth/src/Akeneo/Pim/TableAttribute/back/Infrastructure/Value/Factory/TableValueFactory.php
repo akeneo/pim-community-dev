@@ -200,7 +200,7 @@ class TableValueFactory implements ValueFactory
                 $valueIndex = array_search(
                     \strtolower((string) $value),
                     \array_map('strtolower', $filteredRecordCodes)
-                ) ?? null;
+                );
 
                 if (\is_integer($valueIndex) && $valueIndex >= 0) {
                     $data[$rowIndex][$columnId] = $filteredRecordCodes[$valueIndex];

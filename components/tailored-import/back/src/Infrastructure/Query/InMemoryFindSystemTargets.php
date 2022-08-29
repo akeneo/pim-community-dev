@@ -18,13 +18,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InMemoryFindSystemTargets implements FindSystemTargetsInterface
 {
-    private array $fields;
-    private TranslatorInterface $translator;
-
-    public function __construct(array $fields, TranslatorInterface $translator)
-    {
-        $this->fields = $fields;
-        $this->translator = $translator;
+    public function __construct(
+        private array $fields,
+        private TranslatorInterface $translator,
+    ) {
     }
 
     /**

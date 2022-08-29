@@ -14,6 +14,7 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\Channel\API\Query\Channel;
 use Akeneo\Channel\API\Query\FindChannels;
 use Akeneo\Channel\API\Query\FindLocales;
+use Akeneo\Channel\API\Query\Locale;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -37,7 +38,7 @@ class SqlGetValueKeyForAttributeChannelAndLocale implements GetValueKeyForAttrib
 
         try {
             $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        } catch (AttributeNotFoundException $e) {
+        } catch (AttributeNotFoundException) {
             $this->throwException($attributeIdentifier, $channelIdentifier, $localeIdentifier);
         }
 
@@ -53,7 +54,7 @@ class SqlGetValueKeyForAttributeChannelAndLocale implements GetValueKeyForAttrib
         );
 
         if (($scopable && null === $channel)
-            || ($localizable && null === $locale)
+            || ($localizable && !$locale instanceof Locale)
             || ($scopable && $localizable && !in_array($locale->getCode(), $channel->getLocaleCodes()))
         ) {
             $this->throwException($attributeIdentifier, $channelIdentifier, $localeIdentifier);

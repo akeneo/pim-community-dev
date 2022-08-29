@@ -15,17 +15,12 @@ namespace Akeneo\Platform\TailoredImport\Domain\Query\Attribute;
 
 class Attribute
 {
-    private string $code;
-    private string $label;
-    private string $attributeGroupCode;
-    private string $attributeGroupLabel;
-
-    public function __construct(string $code, string $label, string $attributeGroupCode, string $attributeGroupLabel)
-    {
-        $this->code = $code;
-        $this->label = $label;
-        $this->attributeGroupCode = $attributeGroupCode;
-        $this->attributeGroupLabel = $attributeGroupLabel;
+    public function __construct(
+        private string $code,
+        private string $label,
+        private string $attributeGroupCode,
+        private string $attributeGroupLabel,
+    ) {
     }
 
     public function getCode(): string

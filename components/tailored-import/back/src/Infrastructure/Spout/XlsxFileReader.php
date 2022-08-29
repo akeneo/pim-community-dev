@@ -127,6 +127,9 @@ class XlsxFileReader implements XlsxFileReaderInterface
         throw new SheetNotFoundException($sheetName);
     }
 
+    /**
+     * @param array<int, string[]> $rows
+     */
     private function padRowsToTheLongestRow(array $rows): array
     {
         if (empty($rows)) {

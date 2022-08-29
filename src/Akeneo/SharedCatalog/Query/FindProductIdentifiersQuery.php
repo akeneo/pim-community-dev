@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\SharedCatalog\Model\SharedCatalog;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterface
@@ -31,7 +32,7 @@ class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterfac
         if (null !== $searchAfterProductIdentifier) {
             $searchAfterProductUUid = $this->getProductUuidFromProductIdentifierQuery->execute($searchAfterProductIdentifier);
 
-            if (null === $searchAfterProductUUid) {
+            if (!$searchAfterProductUUid instanceof UuidInterface) {
                 throw new \InvalidArgumentException(sprintf(
                     'Product with identifier "%s" not found',
                     $searchAfterProductIdentifier

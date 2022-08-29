@@ -44,11 +44,10 @@ class ExtrapolatedAttributeValidator
      * - has not one value per channel
      * - has not one value per locale
      *
-     * @param mixed  $fieldValue
      *
      */
     public function checkAttribute(
-        $fieldValue,
+        mixed $fieldValue,
         string $assetFamilyIdentifier,
         array $supportedTypes
     ): ConstraintViolationListInterface {

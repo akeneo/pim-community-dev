@@ -17,15 +17,13 @@ use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractedMedia;
 
 class ProcessedTailoredExport
 {
-    private array $itemsToWrite;
-
-    /** @var ExtractedMedia[] */
-    private array $mediaToExport;
-
-    public function __construct(array $itemsToWrite, array $mediaToExport)
-    {
-        $this->itemsToWrite = $itemsToWrite;
-        $this->mediaToExport = $mediaToExport;
+    /**
+     * @param ExtractedMedia[] $mediaToExport
+     */
+    public function __construct(
+        private array $itemsToWrite,
+        private array $mediaToExport,
+    ) {
     }
 
     public function getItems(): array

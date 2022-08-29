@@ -40,7 +40,7 @@ final class GetUsersAction
         $users = \array_map(
             static fn (User $user) => ['id' => $user->getId(), 'username' => $user->getUsername()],
             $this->listUsersHandler->fromQuery(new UsersQuery(
-                search: null !== $search ? $search : null,
+                search: $search,
                 searchAfterId: null !== $searchAfterId ? (int) $searchAfterId : null,
             )),
         );

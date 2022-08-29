@@ -16,11 +16,10 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFa
 class CreateAttributeCommandFactoryRegistry implements CreateAttributeCommandFactoryRegistryInterface
 {
     /** @var CreateAttributeCommandFactoryInterface[] */
-    private array $factories;
+    private array $factories = [];
 
     public function __construct()
     {
-        $this->factories = [];
     }
 
     public function register(CreateAttributeCommandFactoryInterface $factory): void

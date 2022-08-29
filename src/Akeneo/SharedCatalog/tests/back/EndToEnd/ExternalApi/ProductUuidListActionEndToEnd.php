@@ -12,7 +12,7 @@ class ProductUuidListActionEndToEnd extends ApiTestCase
     use CreateJobInstance;
     use CreateProduct;
 
-    private $sortedProductUuids = [];
+    private array $sortedProductUuids = [];
 
     protected function setUp(): void
     {

@@ -55,7 +55,7 @@ final class GetStorageConnectionCheckAction
             ));
 
             return new JsonResponse([], Response::HTTP_OK);
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
     }

@@ -134,9 +134,12 @@ class DataMappingsValidator extends ConstraintValidator
         $countByTargetCode = array_count_values($attributeTargetCodes);
 
         $targetedAttributes = $this->getAttributes->forCodes($attributeTargetCodes);
-        $targetedIdentifierAttribute = current(array_filter($targetedAttributes, function (?Attribute $attribute) {
-            return null !== $attribute && self::IDENTIFIER_ATTRIBUTE_TYPE === $attribute->type();
-        }));
+        $targetedIdentifierAttribute = current(
+            array_filter(
+                $targetedAttributes,
+                fn (?Attribute $attribute) => null !== $attribute && self::IDENTIFIER_ATTRIBUTE_TYPE === $attribute->type(),
+            ),
+        );
 
         $dataMappingTargetingAnIdentifierCount = $targetedIdentifierAttribute ? $countByTargetCode[$targetedIdentifierAttribute->code()] : 0;
 

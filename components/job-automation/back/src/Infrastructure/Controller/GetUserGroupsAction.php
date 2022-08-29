@@ -40,7 +40,7 @@ final class GetUserGroupsAction
         $userGroups = array_map(
             static fn (UserGroup $userGroup) => ['id' => $userGroup->getId(), 'label' => $userGroup->getLabel()],
             $this->listUserGroup->fromQuery(new UserGroupQuery(
-                searchName: null !== $searchName ? $searchName : null,
+                searchName: $searchName,
                 searchAfterId: null !== $searchAfterId ? (int) $searchAfterId : null,
             )),
         );

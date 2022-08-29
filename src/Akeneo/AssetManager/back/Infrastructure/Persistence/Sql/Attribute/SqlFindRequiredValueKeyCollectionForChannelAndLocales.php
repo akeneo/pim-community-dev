@@ -49,9 +49,10 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocales implements FindRequi
         $channel = $this->getChannel($channelIdentifier);
         $channelLocaleCodes = array_map(fn (string $localeCode) => strtolower($localeCode), $channel->getLocaleCodes());
 
-        $localeIdentifiers = array_filter($localeIdentifierCollection->normalize(), function (string $localeIdentifier) use ($channelLocaleCodes) {
-            return in_array(strtolower($localeIdentifier), $channelLocaleCodes);
-        });
+        $localeIdentifiers = array_filter(
+            $localeIdentifierCollection->normalize(),
+            static fn (string $localeIdentifier) => in_array(strtolower($localeIdentifier), $channelLocaleCodes)
+        );
 
         $valueKeys = $this->generateValueKeys($attributes, $channel, $localeIdentifiers);
 
