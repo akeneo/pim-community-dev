@@ -2,9 +2,9 @@
 
 namespace Akeneo\UserManagement\Component\Normalizer;
 
+use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\UserManagement\Domain\Model\Group;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -169,7 +169,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     /** @return int[] */
     private function getVisibleGroupIds(UserInterface $user): array
     {
-        $visibleGroups = array_filter($user->getGroups()->toArray(), static fn (Group $group) => !$group->isDefault());
+        $visibleGroups = array_filter($user->getGroups()->toArray(), static fn (Group $group) => $group->getType() !== Group::TYPE_DEFAULT);
 
         return array_map(static fn (Group $group) => $group->getId(), $visibleGroups);
     }
