@@ -192,7 +192,7 @@ class NonExistentTableValueFilter implements NonExistentValuesFilter
                 $valueIndex = array_search(
                     strtolower($value),
                     array_map('strtolower', $filteredRecordCodes)
-                ) ?? null;
+                );
 
                 if (is_integer($valueIndex) && $valueIndex >= 0) {
                     $rawTableValue[$rowIndex][$columnId] = $filteredRecordCodes[$valueIndex];
