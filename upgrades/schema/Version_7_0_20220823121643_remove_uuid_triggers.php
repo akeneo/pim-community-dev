@@ -92,6 +92,7 @@ final class Version_7_0_20220823121643_remove_uuid_triggers extends AbstractMigr
         foreach (self::TABLES_TO_UPDATE as $table => $column) {
             if ($this->columnExists($table, $column)) {
                 $this->dropForeignKeys($table, $column);
+                $this->dropUniqueConstraints($table, $column);
                 $this->dropColumn($table, $column);
             }
         }
@@ -113,9 +114,21 @@ final class Version_7_0_20220823121643_remove_uuid_triggers extends AbstractMigr
         $foreignKeys = $tableDetails->getForeignKeys();
         foreach ($foreignKeys as $foreignKey) {
             if (in_array($column, $foreignKey->getLocalColumns())) {
-                $this->addSql(sprintf('ALTER TABLE %s DROP FOREIGN KEY %s;', $table, $foreignKey->getName()));
+                $this->addSql(sprintf('ALTER TABLE %s DROP FOREIGN KEY %s', $table, $foreignKey->getName()));
             }
         }
+    }
+
+    private function dropUniqueConstraints(string $table, string $column): void
+    {
+        $tableDetails = $this->connection->getSchemaManager()->listTableDetails($table);
+        $indexes = $tableDetails->getIndexes();
+        foreach ($indexes as $index) {
+            if (in_array($column, $index->getColumns())) {
+                $this->addSql(sprintf('DROP INDEX %s ON %s', $index->getName(), $table));
+            }
+        }
+
     }
 
     private function dropColumn(string $table, string $column): void
