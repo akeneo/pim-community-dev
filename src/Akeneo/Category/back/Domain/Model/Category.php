@@ -83,8 +83,8 @@ class Category
             'code' => (string) $this->getCode(),
             'labels' => $this->getLabelCollection()->normalize(),
             'parent' => $this->getParentId()?->getId(),
-            'values' => $this->getValueCollection()->normalize(),
-            'permissions' => $this->getPermissionCollection()->normalize(),
+            'values' => $this->getValueCollection()?->normalize(),
+            'permissions' => $this->getPermissionCollection()?->normalize(),
         ];
     }
 }

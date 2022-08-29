@@ -44,6 +44,7 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('factories.yml');
         $loader->load('subscribers.yml');
         $loader->load('validators.yml');
+        $loader->load('service_api/handler.yml');
 
         //TODO: delete the mock one when updater will ready to merge (GRF-221)
         $loader->load('storage/update_mock.yml');
