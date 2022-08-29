@@ -3,7 +3,6 @@
 namespace Specification\Akeneo\Platform\JobAutomation\Infrastructure\Command;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\JobAutomation\Application\GetDueJobInstances\GetDueJobInstancesHandler;
 use Akeneo\Platform\JobAutomation\Application\NotifyUsers\NotifyUsersInvalidJobInstanceHandler;
 use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler;
@@ -15,7 +14,6 @@ use Prophecy\Argument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
 {
@@ -24,7 +22,6 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
         GetDueJobInstancesHandler $getDueJobInstancesHandler,
         UpdateScheduledJobInstanceLastExecutionHandler $refreshScheduledJobInstancesHandler,
         PublishJobToQueue $publishJobToQueue,
-        ValidatorInterface $validator,
         EventDispatcherInterface $eventDispatcher,
         NotifyUsersInvalidJobInstanceHandler $emailNotifyUsersHandler,
     ): void {
@@ -32,7 +29,6 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
             $getDueJobInstancesHandler,
             $refreshScheduledJobInstancesHandler,
             $publishJobToQueue,
-            $validator,
             $eventDispatcher,
             $emailNotifyUsersHandler
         );
