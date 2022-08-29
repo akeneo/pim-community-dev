@@ -615,6 +615,84 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                 ],
                 'expectedMessage' => 'This value must be empty.',
             ],
+            'value with extra field' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_metric',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
+                ],
+                'criterion' => [
+                    'field' => 'name',
+                    'operator' => Operator::IS_EMPTY,
+                    'value' => [
+                        'amount' => 42,
+                        'unit' => 'GRAM',
+                        'extra_field' => 'new_value',
+                    ],
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                ],
+                'expectedMessage' => 'This field was not expected.',
+            ],
+            'value with missing field' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_metric',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
+                ],
+                'criterion' => [
+                    'field' => 'name',
+                    'operator' => Operator::IS_EMPTY,
+                    'value' => [
+                        'amount' => 42,
+                    ],
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'value with wrong type' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_metric',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
+                ],
+                'criterion' => [
+                    'field' => 'name',
+                    'operator' => Operator::IS_EMPTY,
+                    'value' => [
+                        'amount' => true,
+                        'unit' => 'GRAM',
+                    ],
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                ],
+                'expectedMessage' => 'This value should be of type numeric.',
+            ],
         ];
     }
 }
