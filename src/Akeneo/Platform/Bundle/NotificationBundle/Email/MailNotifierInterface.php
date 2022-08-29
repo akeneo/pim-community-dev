@@ -16,5 +16,11 @@ interface MailNotifierInterface
      */
     public function notify(array $users, $subject, $txtBody, $htmlBody = null, array $options = []);
 
-    public function notifyByEmail(string $email, string $subject, string $txtBody, $htmlBody = null, array $options = []);
+    public function notifyByEmail(
+        string $recipient,
+        string $subject,
+        string $txtBody,
+        $htmlBody = null,
+        array $options = []
+    );
 }
