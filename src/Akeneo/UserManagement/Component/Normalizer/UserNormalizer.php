@@ -169,7 +169,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     /** @return int[] */
     private function getVisibleGroupIds(UserInterface $user): array
     {
-        $visibleGroups = array_filter($user->getGroups()->toArray(), static fn (Group $group) => $group->getType() !== Group::TYPE_DEFAULT);
+        $visibleGroups = array_filter($user->getGroups()->toArray(), static fn (Group $group) => $group->getName() !== 'All');
 
         return array_map(static fn (Group $group) => $group->getId(), $visibleGroups);
     }
