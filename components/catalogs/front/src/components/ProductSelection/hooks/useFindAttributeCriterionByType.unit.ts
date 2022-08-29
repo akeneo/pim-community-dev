@@ -5,10 +5,12 @@ import {useFindAttributeCriterionByType} from './useFindAttributeCriterionByType
 import {AnyAttributeCriterion} from '../models/Criterion';
 import AttributeTextCriterion from '../criteria/AttributeTextCriterion';
 import AttributeSimpleSelectCriterion from '../criteria/AttributeSimpleSelectCriterion';
+import AttributeNumberCriterion from '../criteria/AttributeNumberCriterion';
 
 const critera: [string, AnyAttributeCriterion][] = [
     ['pim_catalog_text', AttributeTextCriterion],
     ['pim_catalog_simpleselect', AttributeSimpleSelectCriterion],
+    ['pim_catalog_number', AttributeNumberCriterion],
 ];
 
 test.each(critera)('it returns a criterion when searching for "%s"', (field, criterion) => {

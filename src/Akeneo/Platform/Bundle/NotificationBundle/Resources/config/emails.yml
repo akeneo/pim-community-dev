@@ -4,3 +4,4 @@ services:
         arguments:
             - '@mailer'
             - '%mailer_url%'
+            - '@logger'

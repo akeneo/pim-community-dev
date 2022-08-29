@@ -21,4 +21,9 @@ interface FixturesLoaderInterface
      * @param Configuration $configuration
      */
     public function load(Configuration $configuration): void;
+
+    /**
+     * Remove all data from all storages
+     */
+    public function purge(): void;
 }
