@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\PublicApi;
+namespace Akeneo\Tool\Bundle\MeasureBundle\ServiceApi;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily as MeasurementFamilyAggregate;
@@ -16,11 +16,8 @@ use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInte
  */
 class FindMeasurementFamilies
 {
-    private MeasurementFamilyRepositoryInterface $measurementFamilyRepository;
-
-    public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
+    public function __construct(private MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
     {
-        $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
     /**
@@ -36,17 +33,12 @@ class FindMeasurementFamilies
         );
     }
 
-    /**
-     * @param string $code
-     * @return MeasurementFamily
-     * @throws MeasurementFamilyNotFoundException
-     */
-    public function getByCode(string $code): MeasurementFamily
+    public function byCode(string $code): ?MeasurementFamily
     {
         try {
             $measurementFamily = $this->measurementFamilyRepository->getByCode(MeasurementFamilyCode::fromString($code));
         } catch (MeasurementFamilyNotFoundException $e) {
-            throw new MeasurementFamilyNotFoundException();
+            return null;
         }
 
         return MeasurementFamily::fromAggregate($measurementFamily);

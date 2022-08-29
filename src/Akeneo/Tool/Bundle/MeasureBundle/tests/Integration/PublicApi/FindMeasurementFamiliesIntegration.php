@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\PublicApi;
+namespace Akeneo\Tool\Bundle\MeasureBundle\ServiceApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -21,7 +21,7 @@ final class FindMeasurementFamiliesIntegration extends TestCase
     {
         parent::setUp();
         $this->findMeasurementFamilies = $this->get(
-            'akeneo_measurement.public_api.find_measurement_families'
+            'akeneo_measurement.service_api.find_measurement_families'
         );
     }
 
