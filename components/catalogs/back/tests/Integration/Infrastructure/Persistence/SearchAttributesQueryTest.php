@@ -47,6 +47,13 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'scopable' => false,
                 'localizable' => false,
             ],
+            [
+                'code' => 'number_battery_cells',
+                'label' => '[number_battery_cells]',
+                'type' => 'pim_catalog_number',
+                'scopable' => false,
+                'localizable' => false,
+            ],
         ], $result);
     }
 
@@ -99,7 +106,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
             'type' => 'pim_catalog_price_collection',
         ]);
         $this->createAttribute([
-            'code' => 'parts',
+            'code' => 'number_battery_cells',
             'type' => 'pim_catalog_number',
         ]);
         $this->createAttribute([

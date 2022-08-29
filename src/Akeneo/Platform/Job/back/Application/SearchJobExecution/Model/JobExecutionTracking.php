@@ -23,12 +23,10 @@ final class JobExecutionTracking
 
     public function hasError(): bool
     {
-        return 0 < count(
-            array_filter(
-                $this->steps,
-                static fn (StepExecutionTracking $step) => $step->hasError()
-            )
-        );
+        return !empty(array_filter(
+            $this->steps,
+            static fn (StepExecutionTracking $step) => $step->hasError()
+        ));
     }
 
     public function getWarningCount(): int

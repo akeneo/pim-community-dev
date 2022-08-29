@@ -8,6 +8,7 @@ use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTable;
 use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTracking;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler;
+use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
 use Akeneo\Platform\Job\Domain\Model\Status;
 use Akeneo\Platform\Job\Test\Acceptance\AcceptanceTestCase;
@@ -20,8 +21,8 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
 
     protected function setUp(): void
     {
-        $this->searchJobExecution = $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface');
-        $this->handler = $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler');
+        $this->searchJobExecution = $this->get(SearchJobExecutionInterface::class);
+        $this->handler = $this->get(SearchJobExecutionHandler::class);
         static::bootKernel(['debug' => false]);
     }
 
