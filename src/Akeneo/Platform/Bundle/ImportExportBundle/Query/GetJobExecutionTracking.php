@@ -132,10 +132,10 @@ class GetJobExecutionTracking
         return $stepsExecutionTracking;
     }
 
-    // TODO: RAB-875: Remove this method and the check
+    // TODO RAB-875: Remove this method and the check
     private function shouldSkipStep(string $stepName, \DateTime $createdTime): bool
     {
-        $downloadUploadStepsMergeDate = \DateTime::createFromFormat('Y-m-d', '2022-08-29');
+        $downloadUploadStepsMergeDate = \DateTime::createFromFormat('Y-m-d', '2022-08-30');
 
         return in_array($stepName, ['download_files', 'upload_files']) && $createdTime < $downloadUploadStepsMergeDate;
     }
