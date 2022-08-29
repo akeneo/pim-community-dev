@@ -11,7 +11,7 @@ services:
     arguments:
       - '@akeneo.tailored_import.handler.upload_structure_file'
       - '@validator'
-      - '@akeneo.tailored_import.normalizer.file_constraint_violation_list'
+      - '@akeneo.tailored_import.normalizer.internal_constraint_violation_list'
 
   akeneo.tailored_import.controller.read_columns_action:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\ReadColumnsAction

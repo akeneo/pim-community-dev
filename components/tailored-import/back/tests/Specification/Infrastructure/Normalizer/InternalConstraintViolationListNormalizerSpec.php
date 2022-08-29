@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 
-class FileConstraintViolationListNormalizerSpec extends ObjectBehavior
+class InternalConstraintViolationListNormalizerSpec extends ObjectBehavior
 {
     public function it_normalizes_a_constraint_violation_list(): void
     {

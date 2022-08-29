@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class FileConstraintViolationListNormalizer implements NormalizerInterface
+class InternalConstraintViolationListNormalizer implements NormalizerInterface
 {
     /**
      * @param ConstraintViolationListInterface $object
@@ -24,10 +24,6 @@ class FileConstraintViolationListNormalizer implements NormalizerInterface
      */
     public function normalize($object, string $format = null, array $context = []): array
     {
-        if (0 === $object->count()) {
-            return [];
-        }
-
         return array_map(
             static fn (ConstraintViolationInterface $violation) => [
                 'propertyPath' => $violation->getPropertyPath(),
