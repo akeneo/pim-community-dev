@@ -125,10 +125,10 @@ final class Version_7_0_20220823121643_remove_uuid_triggers extends AbstractMigr
         $indexes = $tableDetails->getIndexes();
         foreach ($indexes as $index) {
             if (in_array($column, $index->getColumns())) {
-                $this->addSql(sprintf('DROP INDEX %s ON %s', $index->getName(), $table));
+                $dropIndexQuery = sprintf('DROP INDEX %s ON %s', $index->getName(), $table);
+                $this->addSql($dropIndexQuery);
             }
         }
-
     }
 
     private function dropColumn(string $table, string $column): void

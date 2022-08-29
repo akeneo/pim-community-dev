@@ -129,9 +129,17 @@ SQL;
 
     private function createDummyColumnsToBeRemoved(): void
     {
+        $addColumnQuery = <<<SQL
+ALTER TABLE %s
+    ADD COLUMN dummy INT,
+    ADD COLUMN %s INT,
+    ADD CONSTRAINT UNIQUE (%s, dummy),
+    ADD CONSTRAINT FOREIGN KEY(%s) REFERENCES pim_catalog_product(id)
+    ;
+SQL;
         foreach (self::TABLES_TO_UPDATE as $table => $productIdColumnName) {
             if ($this->connection->getSchemaManager()->tablesExist($table)) {
-                $query = sprintf('ALTER TABLE %s ADD COLUMN %s INT, ADD CONSTRAINT FOREIGN KEY(%s) REFERENCES pim_catalog_product(id);', $table, $productIdColumnName, $productIdColumnName);
+                $query = sprintf($addColumnQuery, $table, $productIdColumnName, $productIdColumnName, $productIdColumnName);
                 $this->connection->executeStatement($query);
             }
         }
