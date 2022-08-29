@@ -79,7 +79,7 @@ class Category
     public function normalize(): array
     {
         return [
-            'id' => $this->getId()->getValue(),
+            'id' => $this->getId()?->getValue(),
             'code' => (string) $this->getCode(),
             'labels' => $this->getLabelCollection()->normalize(),
             'parent' => $this->getParentId()?->getValue(),
