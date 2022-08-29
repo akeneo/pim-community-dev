@@ -47,7 +47,7 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
 
         $diffCodes = \array_diff($productModelCodes, $rowCodes);
         if (\count($diffCodes) > 0) {
-            $this->logger->warning(\sprintf('Trying to get ES product model projection from product model codes "%s" which does not exist', \implode(',', $diffCodes)));
+            $this->logger->warning(\sprintf('Trying to get ES product model projection from product model codes "%s" which do not exist', \implode(',', $diffCodes)));
         }
 
         $context = ['value_collections' => \array_map(
