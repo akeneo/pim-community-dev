@@ -25,6 +25,7 @@ parameters:
     family_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
     boolean_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\BooleanReplacementOperation'
     enabled_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\BooleanReplacementOperation'
+    change_case: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ChangeCaseOperation'
 
 services:
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidAttributeValidator:

@@ -42,7 +42,6 @@ const propertyDataMapping: DataMapping = {
     type: 'property',
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
-    source_configuration: null,
   },
   sources: ['288d85cb-3ffb-432d-a422-d2c6810113ab'],
   operations: [],

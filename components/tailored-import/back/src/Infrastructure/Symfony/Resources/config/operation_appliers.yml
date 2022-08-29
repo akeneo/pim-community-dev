@@ -50,3 +50,7 @@ services:
   Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\FamilyReplacementOperationApplier:
     tags:
       - { name: akeneo.tailored_import.operation_applier, priority: 101 }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ChangeCaseOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier, priority: 101 }
