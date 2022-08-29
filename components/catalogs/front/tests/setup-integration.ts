@@ -23,9 +23,6 @@ const user = {
 
     return [value, setValue];
 });
-(useUserContext as jest.Mock).mockImplementation(() => ({
-    get: (key: string) => key === 'catalogLocale' ? 'en_US' : null,
-}));
 
 // to make DSM Tab usable with jest
 window.IntersectionObserver = jest.fn().mockImplementation(() => ({
