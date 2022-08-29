@@ -7,10 +7,11 @@ use Webmozart\Assert\Assert;
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @implements \IteratorAggregate<string, string>
  * @phpstan-type Locale string
  * @phpstan-type LocalizedLabels array<Locale, string>
  */
-final class LabelCollection
+final class LabelCollection implements \IteratorAggregate
 {
     /**
      * @param LocalizedLabels $translatedLabels
@@ -50,6 +51,14 @@ final class LabelCollection
     public function hasLabel(string $localeCode): bool
     {
         return array_key_exists($localeCode, $this->translatedLabels);
+    }
+
+    /**
+     * @return \ArrayIterator<string, string>
+     */
+    public function getIterator(): \ArrayIterator
+    {
+        return new \ArrayIterator($this->translatedLabels);
     }
 
     /**

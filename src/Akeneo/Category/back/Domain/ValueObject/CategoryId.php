@@ -17,7 +17,7 @@ class CategoryId
         Assert::greaterThan($id, 0);
     }
 
-    public function getId(): int
+    public function getValue(): int
     {
         return $this->id;
     }

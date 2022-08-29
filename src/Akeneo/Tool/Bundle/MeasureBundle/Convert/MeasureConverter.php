@@ -109,11 +109,7 @@ class MeasureConverter
             return '0';
         }
 
-        if (is_float($value)) {
-            $processedValue = \number_format($value, static::SCALE, '.', '');
-        } else {
-            $processedValue = (string) $value;
-        }
+        $processedValue = is_float($value) ? \number_format($value, static::SCALE, '.', '') : (string) $value;
 
         switch ($operator) {
             case "div":

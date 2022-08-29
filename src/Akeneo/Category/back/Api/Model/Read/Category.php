@@ -34,10 +34,10 @@ class Category
     public static function fromDomain(CategoryDomain $category): self
     {
         return new self(
-            id: $category->getId()->getId(),
+            id: $category->getId()->getValue(),
             code: (string) $category->getCode(),
             labels: $category->getLabelCollection()->normalize(),
-            parentId: $category->getParentId()?->getId(),
+            parentId: $category->getParentId()?->getValue(),
             values: $category->getValueCollection()->normalize(),
             permissions: $category->getPermissionCollection()?->normalize(),
         );

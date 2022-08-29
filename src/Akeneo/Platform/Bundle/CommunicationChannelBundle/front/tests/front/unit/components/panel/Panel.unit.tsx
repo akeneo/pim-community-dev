@@ -20,6 +20,19 @@ afterEach(() => {
   document.body.removeChild(container);
 });
 
+test('it check if it has new announcements when the component is mounted', async () => {
+  usePimVersion.mockReturnValue({
+    data: {edition: 'Serenity', version: '192939349'},
+    hasError: false,
+  });
+  const handleHasNewAnnouncements = jest.fn();
+  useHasNewAnnouncements.mockReturnValue(handleHasNewAnnouncements);
+
+  await act(async () => renderDOMWithProviders(<Panel />, container));
+
+  expect(handleHasNewAnnouncements).toBeCalledTimes(1);
+});
+
 test('it displays a panel of announcements', async () => {
   useHasNewAnnouncements.mockReturnValue(jest.fn());
   usePimVersion.mockReturnValue({
@@ -38,7 +51,6 @@ test('it displays a panel of announcements', async () => {
   await act(async () => renderDOMWithProviders(<Panel />, container as HTMLElement));
 
   expect(getByText(container, 'akeneo_communication_channel.panel.title')).toBeInTheDocument();
-  expect(getByText(container, 'akeneo_communication_channel.panel.list.empty')).toBeInTheDocument();
 });
 
 test('it displays an error when it does not get the PIM Version data', async () => {
