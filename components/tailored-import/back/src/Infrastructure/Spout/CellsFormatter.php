@@ -38,7 +38,7 @@ class CellsFormatter
                 }
 
                 return $cell;
-            case is_integer($cell):
+            case is_int($cell):
                 return (string) $cell;
             case is_float($cell):
                 return rtrim((string) number_format($cell, decimals: MeasureConverter::SCALE, thousands_separator: ''), '0');
