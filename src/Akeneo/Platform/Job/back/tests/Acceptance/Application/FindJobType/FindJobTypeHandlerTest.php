@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Test\Acceptance\Application\FindJobType;
 
 use Akeneo\Platform\Job\Application\FindJobType\FindJobTypeHandler;
+use Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface;
 use Akeneo\Platform\Job\Test\Acceptance\AcceptanceTestCase;
 use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryFindJobType;
 
@@ -15,8 +16,8 @@ class FindJobTypeHandlerTest extends AcceptanceTestCase
 
     protected function setUp(): void
     {
-        $this->findJobType = $this->get('Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface');
-        $this->handler = $this->get('Akeneo\Platform\Job\Application\FindJobType\FindJobTypeHandler');
+        $this->findJobType = $this->get(FindJobTypeInterface::class);
+        $this->handler = $this->get(FindJobTypeHandler::class);
         static::bootKernel(['debug' => false]);
     }
 
