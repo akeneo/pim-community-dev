@@ -482,6 +482,16 @@ class Family implements FamilyInterface
             $attributeCodesToRemove = array_diff($formerAttributeCodes, $newAttributeCodes);
             $attributeCodesToAdd = array_diff($newAttributeCodes, $formerAttributeCodes);
 
+            if (\count($attributeCodesToRemove) > 0) {
+                $familyVariants = $this->getFamilyVariants();
+                /** @var FamilyVariant $familyVariant */
+                foreach ($familyVariants as $familyVariant) {
+                    // for every family variants, we want to inform subscribers that the levels of product variants
+                    // and product models have been updated
+                    $familyVariant->addEvent(FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL);
+                }
+            }
+
             // removes attributes only from former attributes list
             foreach ($this->getAttributes() as $attribute) {
                 if (\in_array($attribute->getCode(), $attributeCodesToRemove)) {
