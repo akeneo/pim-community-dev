@@ -16,7 +16,7 @@ class SqlGetRunningJobExecution
         $this->connection = $connection;
     }
 
-    public function getByJobCode(string $jobCode): ?array
+    public function getByJobCode(string $jobCode): array
     {
         $sql = <<<SQL
             SELECT job_execution.id, job_execution.status, job_execution.updated_time
@@ -33,7 +33,7 @@ class SqlGetRunningJobExecution
         )->fetchAssociative();
 
         if (false === $result) {
-            return null;
+            return [];
         }
 
         return $result;

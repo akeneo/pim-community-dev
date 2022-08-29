@@ -49,10 +49,7 @@ services:
         class: Akeneo\Tool\Bundle\BatchBundle\Tasklet\CheckUniqueJobExecutionTasklet
         arguments:
             - 'versioning_purge'
-            - '@Akeneo\Tool\Component\Batch\Query\SqlGetRunningJobExecution'
-            - '@akeneo_batch.manager.job_execution'
-            - '@pim_enrich.repository.job_execution'
-            - '@logger'
+            - '@Akeneo\Tool\Bundle\BatchBundle\Job\IsJobExecutionUnique'
         public: false
 
     pim_versioning.job.versioning_purge:
