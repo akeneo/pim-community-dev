@@ -28,7 +28,9 @@ class IsJobExecutionUnique
 
     public function __invoke(string $jobCode): bool
     {
-        foreach ($this->getRunningJobExecution->getByJobCode($jobCode) as $jobExecutionData) {
+        $runningExecutions = $this->getRunningJobExecution->getByJobCode($jobCode);
+
+        foreach ($runningExecutions as $jobExecutionData) {
             // In case of an old job execution that has not been marked as failed.
             if (null !== $jobExecutionData['updated_time']
                 && new \DateTime($jobExecutionData['updated_time']) < new \DateTime(self::OUTDATED_JOB_EXECUTION_TIME)
@@ -40,7 +42,8 @@ class IsJobExecutionUnique
                 $this->executionManager->markAsFailed(
                     $this->jobExecutionRepository->find((int)$jobExecutionData['id'])
                 );
-            } else {
+            } elseif (new \DateTime($jobExecutionData['start_time']) > new \DateTime(self::OUTDATED_JOB_EXECUTION_TIME)
+            ) {
                 return false;
             }
         }
