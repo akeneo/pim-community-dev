@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
@@ -48,6 +49,7 @@ final class PayloadFormatValidator extends ConstraintValidator
             new Collection([
                 'allowExtraFields' => true,
                 'fields' => [
+                    'uuid' => new Optional([new Uuid()]),
                     'values' => new Optional([
                         new Collection([
                             'allowExtraFields' => true,

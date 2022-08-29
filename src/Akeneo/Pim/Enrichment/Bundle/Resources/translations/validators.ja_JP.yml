@@ -66,8 +66,6 @@ pim_catalog:
     variant_product_invalid_family: '商品バリエーションのファミリーは同じ上位に属する必要があります'
     php_int_max_reached: '最大数値は%php_int_max%より小さく指定してください'
     not_null_family: '%sku% 識別子を持つ商品はバリエーション商品であるため、ファミリーは「null」にはできません。'
-    variant_product_has_parent: '商品バリエーション「%variant_product%」は上位を持つ必要があります'
-    invalid_variant_product_parent: '商品バリエーション「%variant_product%」は、商品モデル「%product_model%」を上位にすることはできません(この商品モデルは別の商品モデルを下位にすることのみ可能です)'
     modified_variant_axis_value: '軸のバリエーション「%variant_axis%」は変更できず、「%provided_value%」に固定されいます'
     family_variant_attributes_unique: 属性は固有でなければなりません。「%attributes%」は属性セットのバリエーションで複数回使用されます
     family_variant_axes_unique: 軸のバリエーションは固有でなければなりません。「%attributes%」は属性セットのバリエーションで複数回使用されます

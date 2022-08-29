@@ -7,12 +7,18 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateProductEndToEnd extends AbstractProductTestCase
+class CreateProductWithUuidEndToEnd extends AbstractProductTestCase
 {
     use AssertEventCountTrait;
+    use QuantifiedAssociationsTestCaseTrait;
+
+    private UuidInterface $existingUuid;
 
     /**
      * {@inheritdoc}
@@ -21,7 +27,7 @@ class CreateProductEndToEnd extends AbstractProductTestCase
     {
         parent::setUp();
 
-        $this->createProduct('simple', []);
+        $this->existingUuid = $this->createProduct('simple', [])->getUuid();
     }
 
     public function testHttpHeadersInResponseWhenAProductIsCreated()
@@ -31,18 +37,25 @@ class CreateProductEndToEnd extends AbstractProductTestCase
         $data =
             <<<JSON
     {
-        "identifier": "product_create_headers"
+        "values": {
+            "sku": [
+                {"locale": null, "scope": null, "data": "product_create_headers"}
+            ]
+        }
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame(
-            'http://localhost/api/rest/v1/products/product_create_headers',
+            sprintf(
+                'http://localhost/api/rest/v1/products-uuid/%s',
+                $this->getProductUuidFromIdentifier('product_create_headers')
+            ),
             $response->headers->get('location')
         );
         $this->assertSame('', $response->getContent());
@@ -55,12 +68,18 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_creation_family",
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "product_creation_family"
+            }]
+        },
         "family": "familyA"
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_creation_family',
@@ -96,12 +115,18 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_creation_groups",
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "product_creation_groups"
+            }]
+        },
         "groups": ["groupA", "groupB"]
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_creation_groups',
@@ -135,12 +160,18 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_creation_categories",
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "product_creation_categories"
+            }]
+        },
         "categories": ["master", "categoryA"]
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_creation_categories',
@@ -167,8 +198,66 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'product_creation_categories');
     }
 
+    public function testItCreatesAProductWithParent()
+    {
+        $this->createProductModel([
+            'code' => 'a_product_model',
+            'family_variant' => 'familyVariantA1',
+            'values'  => [],
+        ]);
+        $this->createProductModel([
+            'code' => 'a_sub_product_model',
+            'parent' => 'a_product_model',
+            'family_variant' => 'familyVariantA1',
+            'values' => [
+                'a_simple_select' => [['locale' => null, 'scope' => null, 'data' => 'optionB']],
+            ],
+        ]);
+
+        $client = $this->createAuthenticatedClient();
+        $data = <<<JSON
+{
+    "values": {
+        "sku": [
+            {"locale": null, "scope": null, "data": "foo"}
+        ],
+        "a_yes_no": [
+            { "locale": null, "scope": null, "data": true }
+        ]
+    },
+    "parent": "a_sub_product_model"
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
+        $response = $client->getResponse();
+
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+
+        $this->assertSameProducts([
+            'identifier' => 'foo',
+            'family' => 'familyA',
+            'parent' => 'a_sub_product_model',
+            'groups' => [],
+            'categories' => [],
+            'enabled' => true,
+            'values' => [
+                'a_simple_select' => [['data' => 'optionB', 'locale' => null, 'scope' => null]],
+                'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]],
+                'sku' => [['data' => 'foo', 'locale' => null, 'scope' => null]],
+            ],
+            'created' => 'this is a date formatted to ISO-8601',
+            'updated' => 'this is a date formatted to ISO-8601',
+            'associations' => [],
+            'quantified_associations' => [],
+        ], 'foo');
+    }
+
     public function testProductCreationWithAssociations()
     {
+        $this->createQuantifiedAssociationType('QUANTIFIEDASSOCIATION');
+
         $this->createProductModel([
             'code' => 'a_product_model',
             'family_variant' => 'familyVariantA1',
@@ -176,23 +265,35 @@ JSON;
         ]);
 
         $client = $this->createAuthenticatedClient();
+        $simpleUuid = $this->getProductUuidFromIdentifier('simple')->toString();
 
         $data = <<<JSON
 {
-    "identifier": "product_creation_associations",
+    "values": {
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "product_creation_associations"
+        }]
+    },
     "associations": {
         "UPSELL": {
             "product_models": ["a_product_model"]
         },
         "X_SELL": {
             "groups": ["groupA"],
-            "products": ["simple"]
+            "products": ["$simpleUuid"]
+        }
+    },
+    "quantified_associations": {
+        "QUANTIFIEDASSOCIATION": {
+            "products": [{"quantity": 12, "uuid": "$simpleUuid"}]
         }
     }
 }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_creation_associations',
@@ -230,7 +331,12 @@ JSON;
                     "product_models" => [],
                 ],
             ],
-            'quantified_associations' => [],
+            'quantified_associations' => [
+                'QUANTIFIEDASSOCIATION' => [
+                    'products' => [['identifier' => 'simple', 'quantity' => 12]],
+                    'product_models' => [],
+                ]
+            ],
         ];
 
         $response = $client->getResponse();
@@ -253,11 +359,15 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_creation_product_values",
         "groups": ["groupA", "groupB"],
         "family": "familyA",
         "categories": ["master", "categoryA"],
         "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "product_creation_product_values"
+            }],
             "a_file": [{
                 "locale": null,
                 "scope": null,
@@ -436,7 +546,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedProduct = [
             'identifier'    => 'product_creation_product_values',
@@ -626,7 +736,13 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "foo",
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "foo"
+            }]
+        },
         "created": "2014-06-14T13:12:50+02:00",
         "updated": "2014-06-14T13:12:50+02:00"
     }
@@ -650,7 +766,7 @@ JSON;
             'quantified_associations' => [],
         ];
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -666,94 +782,85 @@ JSON;
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['updated']);
     }
 
-    public function testProductCreationWithIdenticalIdentifiers()
+    public function testItCreatesWithUuid()
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
             <<<JSON
     {
-        "identifier": "same_identifier",
+        "uuid": "a48ca2b8-656d-4b2c-b9cc-b2243e876ebf",
         "values": {
-            "sku": [{
-                "locale": null,
-                "scope": null,
-                "data": "same_identifier"
-            }]
-         }
+            "sku": [
+                {"locale": null, "scope": null, "data": "foo"}
+            ]
+        }
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
-
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
         $response = $client->getResponse();
 
+        $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame(
-            'http://localhost/api/rest/v1/products/same_identifier',
+            'http://localhost/api/rest/v1/products-uuid/a48ca2b8-656d-4b2c-b9cc-b2243e876ebf',
             $response->headers->get('location')
         );
-        $this->assertSame('', $response->getContent());
+
+        $this->assertSame($this->getProductUuidFromIdentifier('foo')->toString(), 'a48ca2b8-656d-4b2c-b9cc-b2243e876ebf');
     }
 
-    public function testResponseWhenIdentifierPropertyNotEqualsToIdentifierInValues()
+    public function testResponseWhenIdentifierIsFilled()
     {
         $client = $this->createAuthenticatedClient();
 
-        $data =
-            <<<JSON
-    {
-        "identifier": "different",
-        "values": {
-            "sku": [{
-                "locale": null,
-                "scope": null,
-                "data": "foo"
-            }]
-         }
-    }
-JSON;
+        $data = '{
+            "identifier": "foo"
+        }';
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Property "identifier" does not exist. Check the expected format on the API documentation.',
+            '_links' => [
+                'documentation' => [
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_products'
+                ]
+            ],
+        ];
 
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
-        $this->assertArrayHasKey('location', $response->headers->all());
-        $this->assertSame(
-            'http://localhost/api/rest/v1/products/different',
-            $response->headers->get('location')
-        );
-        $this->assertSame('', $response->getContent());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    public function testResponseWhenMissingIdentifierPropertyAndProvidedIdentifierInValues()
+    public function testResponseWhenUuidAlreadyExists()
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
             <<<JSON
     {
-        "values": {
-            "sku": [{
-                "locale": null,
-                "scope": null,
-                "data": "foo"
-            }]
-         }
+        "uuid": "{$this->existingUuid->toString()}"
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedContent = [
             'code'    => 422,
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'property'   => 'identifier',
-                    'message' => 'The identifier attribute cannot be empty.',
+                    'property' => 'uuid',
+                    'message'  => \sprintf(
+                        'The %s uuid is already used for another product.',
+                        $this->existingUuid->toString()
+                    ),
                 ],
             ],
         ];
@@ -764,43 +871,24 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    public function testResponseWhenIdentifierIsNotFilled()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data = '{}';
-
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
-
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'identifier',
-                    'message'  => 'The identifier attribute cannot be empty.',
-                ],
-            ],
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-
-    public function testResponseWhenProductAlreadyExists()
+    public function testResponseWhenIdentifierAlreadyExists()
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
             <<<JSON
     {
-        "identifier": "simple"
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "simple"
+            }]
+        }
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $expectedContent = [
             'code'    => 422,
@@ -826,11 +914,18 @@ JSON;
         $data =
             <<<JSON
     {
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "foo"
+            }]
+        },
         "extra_property": "foo"
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
@@ -853,11 +948,15 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "foo",
         "family": null,
         "groups": ["groupA"],
         "categories": ["master"],
         "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "foo"
+            }],
             "unknown_attribute":[{
                 "locale": null,
                 "scope": null,
@@ -869,7 +968,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
             'message' => 'The unknown_attribute attribute does not exist in your PIM. Check the expected format on the API documentation.',
@@ -885,44 +984,6 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    public function testProductCreationWithVariantGroupAttribute()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-    {
-        "identifier": "foo",
-        "family": null,
-        "variant_group": "group_variant",
-        "groups": ["groupA"],
-        "categories": ["master"],
-        "associations": {
-        }
-    }
-JSON;
-
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
-        $message = addslashes('Property "variant_group" does not exist anymore. Check the link below to understand why.');
-        $link = addslashes('http://api.akeneo.com/documentation/products-with-variants.html');
-
-        $expected = <<<JSON
-{
-    "code":422,
-    "message":"${message}",
-    "_links":{
-        "documentation":{
-            "href": "${link}"
-        }
-    }
-}
-JSON;
-
-        $response = $client->getResponse();
-        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-
     /**
      * @jira https://akeneo.atlassian.net/browse/PIM-6876
      */
@@ -933,8 +994,12 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "foo",
         "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "foo"
+            }],
             "a_text":[
                 {"locale": null, "scope": null, "data": "15\u001fm"}
             ]
@@ -942,14 +1007,17 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', '/api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/products-uuid', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertEmpty($response->getContent());
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        $client->request('GET', '/api/rest/v1/products/foo');
+        $client->request('GET', sprintf(
+            '/api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('foo')
+        ));
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
@@ -959,13 +1027,61 @@ JSON;
         $this->assertSame('15' . chr(31) . 'm', $product->getRawValues()['a_text']['<all_channels>']['<all_locales>']);
     }
 
+    public function testResponseWhenAssociatingToNonExistingProduct()
+    {
+        $client = $this->createAuthenticatedClient();
+        $nonExistingUuid = Uuid::uuid4();
+
+        $data = <<<JSON
+{
+    "values": {
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "foo"
+        }]
+    },
+    "associations": {
+        "X_SELL": {
+            "products": ["$nonExistingUuid"]
+        }
+    }
+}
+JSON;
+
+        $expected = <<<JSON
+{
+    "code": 422,
+    "message": "Property \"associations\" expects a valid product uuid. The product does not exist, \"$nonExistingUuid\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_products"
+        }
+    }
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
     public function testResponseWhenAssociatingToNonExistingProductModel()
     {
         $client = $this->createAuthenticatedClient();
 
         $data = <<<JSON
 {
-    "identifier": "a_product",
+    "values": {
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "foo"
+        }]
+    },
     "associations": {
         "X_SELL": {
             "product_models": ["a_non_exiting_product_model"]
@@ -986,7 +1102,7 @@ JSON;
 }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -1002,11 +1118,17 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "foo"
+        "values": {
+            "sku": [{
+                "locale": null,
+                "scope": null,
+                "data": "foo"
+            }]
+        }
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
@@ -1016,7 +1138,7 @@ JSON;
      * @param array  $expectedProduct normalized data of the product that should be created
      * @param string $identifier identifier of the product that should be created
      */
-    protected function assertSameProducts(array $expectedProduct, $identifier)
+    protected function assertSameProducts(array $expectedProduct, $identifier): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
@@ -1033,5 +1155,12 @@ JSON;
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function getProductUuidFromIdentifier(string $productIdentifier): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = ?', [$productIdentifier]
+        ));
     }
 }
