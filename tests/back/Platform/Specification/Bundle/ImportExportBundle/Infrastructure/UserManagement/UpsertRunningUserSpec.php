@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveRunningUsername;
 use Akeneo\UserManagement\ServiceApi\User\UpsertUserCommand;
 use Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface;
 use Akeneo\UserManagement\ServiceApi\UserRole\ListUserRoleInterface;
@@ -20,16 +21,19 @@ class UpsertRunningUserSpec extends ObjectBehavior
     public function let(
         UpsertUserHandlerInterface $upsertUserHandler,
         ListUserRoleInterface $listUserRole,
+        ResolveRunningUsername $resolveRunningUsername,
     ) {
-        $this->beConstructedWith($upsertUserHandler, $listUserRole);
+        $this->beConstructedWith($upsertUserHandler, $listUserRole, $resolveRunningUsername);
     }
 
     public function it_calls_upsert_user_through_user_management_public_api(
         UpsertUserHandlerInterface $upsertUserHandler,
         ListUserRoleInterface $listUserRole,
+        ResolveRunningUsername $resolveRunningUsername,
         UserRole $administratorRole,
         UserRole $userRole,
-    ) {
+    ): void {
+        $resolveRunningUsername->fromJobCode('my_job_name')->shouldBeCalled()->willReturn('job_automated_my_job_name');
         $administratorRole->getRole()->willReturn('ROLE_ADMINISTRATOR');
         $userRole->getRole()->willReturn('ROLE_USER');
         $listUserRole->all()->willReturn([$administratorRole, $userRole]);
