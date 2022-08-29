@@ -23,8 +23,6 @@ $rules = [
     $builder->only(
         [
             // Supplier Portal retailer coupling
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier',
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
 
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
@@ -37,9 +35,6 @@ $rules = [
         [
             // Supplier Portal retailer coupling
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail',
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
-            'Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted',
 
             // Supplier Portal supplier coupling
@@ -55,22 +50,18 @@ $rules = [
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
             'Symfony\Contracts\EventDispatcher\EventDispatcherInterface',
-            'Symfony\Component\HttpFoundation\File\UploadedFile',
-            'Ramsey\Uuid\Uuid',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Application'),
 
     $builder->only(
         [
             // Supplier Portal retailer coupling
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
             'Akeneo\SupplierPortal\Supplier\Application',
 
             // PIM coupling
-            'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
             'Akeneo\Tool\Component\FileStorage\StreamedFileResponse',
 
             // External dependencies coupling
@@ -86,8 +77,6 @@ $rules = [
     $builder->only(
         [
             // Supplier Portal retailer coupling
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier',
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
@@ -95,7 +84,6 @@ $rules = [
 
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
-            'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
     )->in('Akeneo\SupplierPortal\Supplier\Test\Integration'),
@@ -103,14 +91,8 @@ $rules = [
     $builder->only(
         [
             // Supplier Portal retailer coupling
-            'Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\ContributorDoesNotExist',
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\Model\Supplier',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorAdded',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Identifier',
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Model\Supplier',
-            'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code',
-            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierFromContributorEmail',
-            'Akeneo\SupplierPortal\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository',
             'Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\Event\ContributorDeleted',
 
             // Supplier Portal supplier coupling
@@ -123,12 +105,7 @@ $rules = [
             // External dependencies coupling
             'PHPUnit\Framework',
             'Psr\Log\NullLogger',
-            'Psr\Log\Test\TestLogger',
-            'Ramsey\Uuid\Uuid',
-            'Ramsey\Uuid\UuidFactoryInterface',
-            'Ramsey\Uuid\UuidInterface',
             'Twig\Environment',
-            'Symfony\Component\HttpFoundation\File\UploadedFile',
             'Symfony\Component\HttpFoundation\Request',
             'Symfony\Component\HttpFoundation\Response',
             'Symfony\Component\Security\Http\Event\LogoutEvent',
