@@ -12,7 +12,7 @@ namespace Akeneo\Platform;
 class CommunityVersion
 {
     /** @staticvar string */
-    public const VERSION = '6.0.40';
+    public const VERSION = '6.0.41';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Bully for Bugs';
