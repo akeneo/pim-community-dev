@@ -2,3 +2,7 @@ services:
   Akeneo\Category\Infrastructure\Validation\LocalizeUserIntentsShouldBeUniqueValidator:
       tags:
         - { name: validator.constraint_validator }
+
+  Akeneo\Category\Infrastructure\Validation\LocalizeValueUserIntentsShouldBeUniqueValidator:
+    tags:
+      - { name: validator.constraint_validator }

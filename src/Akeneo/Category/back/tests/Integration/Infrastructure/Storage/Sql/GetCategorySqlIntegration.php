@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
 use Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql;
 use Akeneo\Test\Integration\Configuration;
@@ -37,18 +38,18 @@ SQL;
         $this->get('database_connection')->executeQuery($query, [
             'value_collection' => json_encode([
                 "attribute_codes" => [
-                    "title_87939c45-1d85-4134-9579-d594fff65030",
-                    "photo_8587cda6-58c8-47fa-9278-033e1d8c735c",
+                    "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030",
+                    "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
                 ],
-                "title_87939c45-1d85-4134-9579-d594fff65030_en_US" => [
+                "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . ValueCollection::SEPARATOR . "en_US" => [
                     "data" => "All the shoes you need!",
                     "locale" => "en_US",
                 ],
-                "title_87939c45-1d85-4134-9579-d594fff65030_fr_FR" => [
+                "title" . ValueCollection::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030" . ValueCollection::SEPARATOR . "fr_FR" => [
                     "data" => "Les chaussures dont vous avez besoin !",
                     "locale" => "fr_FR",
                 ],
-                "photo_8587cda6-58c8-47fa-9278-033e1d8c735c" => [
+                "photo" . ValueCollection::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c" => [
                     "data" => [
                         "size" => 168107,
                         "extension" => "jpg",
