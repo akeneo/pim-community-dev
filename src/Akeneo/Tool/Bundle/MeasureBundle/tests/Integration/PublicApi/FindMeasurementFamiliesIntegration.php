@@ -51,10 +51,9 @@ final class FindMeasurementFamiliesIntegration extends TestCase
     /** @test
      * @throws MeasurementFamilyNotFoundException
      */
-    public function it_throws_an_exception_if_code_doesnt_exist(): void
+    public function it_returns_null_if_code_doesnt_exist(): void
     {
-        $this->expectException(MeasurementFamilyNotFoundException::class);
-        $this->findMeasurementFamilies->byCode('ABC');
+        self::assertNull($this->findMeasurementFamilies->byCode('ABC'));
     }
 
     protected function getConfiguration(): Configuration
