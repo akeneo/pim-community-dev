@@ -15,6 +15,7 @@ type QueryParams = {
     search?: string;
     codes?: string[];
     limit?: number;
+    enabled?: boolean;
 };
 type Error = string | null;
 type Result = {
@@ -26,7 +27,12 @@ type Result = {
     fetchNextPage: () => Promise<void>;
 };
 
-export const useInfiniteFamilies = ({search = '', codes = [], limit = 20}: QueryParams = {}): Result => {
+export const useInfiniteFamilies = ({
+    search = '',
+    codes = [],
+    limit = 20,
+    enabled = true,
+}: QueryParams = {}): Result => {
     const fetchFamilies = useCallback(
         async ({pageParam}: {pageParam?: PageParam}): Promise<Page> => {
             const _page = pageParam?.number || 1;
@@ -57,6 +63,7 @@ export const useInfiniteFamilies = ({search = '', codes = [], limit = 20}: Query
         ['families', {search: search, codes: codes, limit: limit}],
         fetchFamilies,
         {
+            enabled: enabled,
             keepPreviousData: true,
             getNextPageParam: last =>
                 last.data.length >= limit

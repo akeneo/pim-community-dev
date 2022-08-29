@@ -40,6 +40,13 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'scopable' => false,
                 'localizable' => false,
             ],
+            [
+                'code' => 'clothing_size',
+                'label' => '[clothing_size]',
+                'type' => 'pim_catalog_simpleselect',
+                'scopable' => false,
+                'localizable' => false,
+            ],
         ], $result);
     }
 
@@ -84,7 +91,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
             'type' => 'pim_catalog_multiselect',
         ]);
         $this->createAttribute([
-            'code' => 'size',
+            'code' => 'clothing_size',
             'type' => 'pim_catalog_simpleselect',
         ]);
         $this->createAttribute([

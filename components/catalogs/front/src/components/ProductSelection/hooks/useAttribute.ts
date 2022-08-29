@@ -10,19 +10,13 @@ type Result = {
 };
 
 export const useAttribute = (code: string): Result => {
-    return useQuery<Attribute, Error, Attribute>(
-        ['attribute', code],
-        async () => {
-            const response = await fetch(`/rest/catalogs/attributes/${code}`, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-            });
+    return useQuery<Attribute, Error, Attribute>(['attribute', code], async () => {
+        const response = await fetch(`/rest/catalogs/attributes/${code}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        });
 
-            return await response.json();
-        },
-        {
-            staleTime: 60,
-        }
-    );
+        return await response.json();
+    });
 };

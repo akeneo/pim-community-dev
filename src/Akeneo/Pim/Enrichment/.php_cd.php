@@ -36,6 +36,8 @@ $rules = [
         // TODO: dependencies related to the front end, remove twig screens
         'Twig',
         'Akeneo\Pim\Enrichment\Product\API',
+        // TODO: CPM-714
+        'Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids',
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',

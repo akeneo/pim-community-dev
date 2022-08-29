@@ -17,3 +17,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Domain\Query\GetAttribute:
+    class: Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory
+    arguments:
+      - '@database_connection'

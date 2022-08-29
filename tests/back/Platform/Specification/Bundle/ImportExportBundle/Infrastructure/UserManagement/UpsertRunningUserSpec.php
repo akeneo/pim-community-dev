@@ -9,30 +9,30 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement;
 
-use Akeneo\UserManagement\Component\Model\RoleInterface;
-use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Akeneo\UserManagement\ServiceApi\User\UpsertUserCommand;
 use Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface;
+use Akeneo\UserManagement\ServiceApi\UserRole\ListUserRoleInterface;
+use Akeneo\UserManagement\ServiceApi\UserRole\UserRole;
 use PhpSpec\ObjectBehavior;
 
 class UpsertRunningUserSpec extends ObjectBehavior
 {
     public function let(
         UpsertUserHandlerInterface $upsertUserHandler,
-        RoleRepositoryInterface $roleRepository,
+        ListUserRoleInterface $listUserRole,
     ) {
-        $this->beConstructedWith($upsertUserHandler, $roleRepository);
+        $this->beConstructedWith($upsertUserHandler, $listUserRole);
     }
 
     public function it_calls_upsert_user_through_user_management_public_api(
         UpsertUserHandlerInterface $upsertUserHandler,
-        RoleRepositoryInterface $roleRepository,
-        RoleInterface $administratorRole,
-        RoleInterface $userRole,
+        ListUserRoleInterface $listUserRole,
+        UserRole $administratorRole,
+        UserRole $userRole,
     ) {
         $administratorRole->getRole()->willReturn('ROLE_ADMINISTRATOR');
         $userRole->getRole()->willReturn('ROLE_USER');
-        $roleRepository->findAll()->willReturn([$administratorRole, $userRole]);
+        $listUserRole->all()->willReturn([$administratorRole, $userRole]);
         $command = UpsertUserCommand::job(
             'job_automated_my_job_name',
             'fakepassword',
