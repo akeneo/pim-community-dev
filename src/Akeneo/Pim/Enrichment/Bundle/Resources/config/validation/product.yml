@@ -17,6 +17,8 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
         - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\OnlyExpectedAttributes: ~
 
     properties:
+        uuid:
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsUuid4: ~
         identifier:
             - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotBlank:
                 attributeCode: 'identifier'
