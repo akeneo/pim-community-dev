@@ -16,6 +16,7 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
 {
     private const ALLOWED_TYPES = [
         'pim_catalog_text',
+        'pim_catalog_simpleselect',
     ];
 
     public function __construct(

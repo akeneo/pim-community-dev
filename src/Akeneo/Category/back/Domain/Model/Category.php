@@ -61,6 +61,11 @@ class Category
         $this->labelCollection->setLabel($localeCode, $label);
     }
 
+    public function setValueCollection(ValueCollection $values): void
+    {
+        $this->valueCollection = $values;
+    }
+
     /**
      * @return array{
      *     id: int,

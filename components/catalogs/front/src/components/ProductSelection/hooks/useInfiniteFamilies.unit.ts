@@ -151,3 +151,13 @@ test('it stops fetching if there is no more pages', async () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
 });
+
+test('it can be disabled', async () => {
+    const {result} = renderHook(() => useInfiniteFamilies({enabled: false}), {
+        wrapper: ReactQueryWrapper,
+    });
+
+    await result.current.fetchNextPage();
+
+    expect(fetchMock).toHaveBeenCalledTimes(0);
+});

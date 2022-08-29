@@ -926,7 +926,7 @@ JSON;
     /**
      * @jira https://akeneo.atlassian.net/browse/PIM-6876
      */
-    public function testSuccessfullyToCreateProductWithControlCaracter()
+    public function testSuccessfullyToCreateProductWithControlCharacter()
     {
         $client = $this->createAuthenticatedClient();
 

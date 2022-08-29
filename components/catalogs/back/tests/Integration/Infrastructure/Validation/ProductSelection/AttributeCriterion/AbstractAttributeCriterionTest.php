@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductSelection\AttributeCriterion;
 
 use Akeneo\Catalogs\Application\Persistence\FindOneAttributeByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\GetAttributeOptionsByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetChannelLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetChannelQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\GetLocalesQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Persistence\FindOneAttributeByCodeQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\GetAttributeOptionsByCodeQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelLocalesQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetChannelQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesQuery;
@@ -21,20 +23,30 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
 {
     protected ?FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery;
+    protected ?GetAttributeOptionsByCodeQueryInterface $getAttributeOptionsByCodeQuery;
     protected ?GetChannelQueryInterface $getChannelQuery;
     protected ?GetLocalesQueryInterface $getLocalesQuery;
     protected ?GetChannelLocalesQueryInterface $getChannelLocalesQuery;
 
     private array $attributes = [];
+    private array $attributeOptions = [];
     private array $channels = [];
     private array $channelLocales = [];
     private array $locales = [];
+
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        self::purgeData();
+    }
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->attributes = [];
+        $this->attributeOptions = [];
         $this->channels = [
             'ecommerce' => [
                 'code' => 'ecommerce',
@@ -65,6 +77,24 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
             ->willReturnCallback(fn ($code) => $this->attributes[$code] ?? null);
         self::getContainer()->set(FindOneAttributeByCodeQuery::class, $this->findOneAttributeByCodeQuery);
 
+        $this->getAttributeOptionsByCodeQuery = $this->createMock(GetAttributeOptionsByCodeQueryInterface::class);
+        $this->getAttributeOptionsByCodeQuery
+            ->method('execute')
+            ->willReturnCallback(
+                function ($code, $options): array {
+                    $intersection = \array_filter(
+                        $this->attributeOptions[$code] ?? [],
+                        static fn ($option) => \in_array($option, $options)
+                    );
+
+                    return \array_map(static fn ($option) => [
+                        'code' => $option,
+                        'label' => '['.$option.']',
+                    ], $intersection);
+                }
+            );
+        self::getContainer()->set(GetAttributeOptionsByCodeQuery::class, $this->getAttributeOptionsByCodeQuery);
+
         $this->getChannelQuery = $this->createMock(GetChannelQueryInterface::class);
         $this->getChannelQuery
             ->method('execute')
@@ -92,6 +122,9 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
 
     protected function createAttribute(array $data): void
     {
+        $this->attributeOptions[$data['code']] = $data['options'] ?? [];
+        unset($data['options']);
+
         $this->attributes[$data['code']] = $data;
     }
 
