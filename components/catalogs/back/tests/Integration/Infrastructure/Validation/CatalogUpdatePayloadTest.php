@@ -25,6 +25,8 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
 
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
+
+        $this->purgeDataAndLoadMinimalCatalog();
     }
 
     public function testItValidates(): void
