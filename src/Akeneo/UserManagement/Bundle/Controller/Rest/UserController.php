@@ -159,6 +159,7 @@ class UserController
 
         //code is useful to reach the route, cannot forget it in the query
         unset($data['code']);
+        unset($data['visible_group_ids']);
 
         if (!$this->securityFacade->isGranted('pim_user_role_edit')) {
             unset($data['roles']);
