@@ -355,11 +355,11 @@ change-terraform-source-version: #Doc: change terraform pim and monitoring sourc
 
 $(CLOUD_CUSTOMERS_DEV_DIR):
 	mkdir -p $(CLOUD_CUSTOMERS_DEV_DIR)
-	git clone git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+	git clone --depth 1 -b master --single-branch git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: pull-cloud-customer-dev
 pull-cloud-customer-dev: $(CLOUD_CUSTOMERS_DEV_DIR)
-	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --ff-only
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --rebase
 
 .PHONY: commit-instance
 commit-instance: pull-cloud-customer-dev
@@ -367,8 +367,8 @@ commit-instance: pull-cloud-customer-dev
 	cp -r $(INSTANCE_DIR) $(shell readlink -m $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/..)
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_creation"
-	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
-	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -m "Created instance $(PFID)" && git push) || \
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR) && git commit -m "Created instance $(PFID)"
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --rebase  && git push) || \
 	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: uncommit-instance
@@ -386,16 +386,15 @@ endif
 	cp -r $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR) $(INSTANCE_DIR)
 endif
 	make delete
-	rm -rf $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_deletion"
-	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
-	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -m "Deleted instance $(PFID)" && git push) || \
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git rm -rf $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR) && git commit -m "Deleted instance $(PFID)"
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --rebase && git push) || \
 	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: upgrade-instance
 upgrade-instance:
-	git clone git@operation-tools:akeneo/operation-tools.git $(OPERATIONS_TOOLS_DIR)
+	git clone --depth 1 git@operation-tools:akeneo/operation-tools.git $(OPERATIONS_TOOLS_DIR)
 	cd $(OPERATIONS_TOOLS_DIR) && git checkout $(OPERATIONS_TOOLS_BRANCH)
 	cp $(OPERATIONS_TOOLS_DIR)/jenkins.yaml /usr/share/jenkins/ref/casc/jenkins.yaml
 	mkdir -p /workspace && cp ${HOME}/gcloud-service-key.json /workspace/pim_ci.json

@@ -18,7 +18,7 @@ GITHUB_DIR=$1
 NUM=${RETRY_NUM}
 
 cd ${GITHUB_DIR}
-until (git pull --no-edit && git push)
+until (git pull --rebase && git push)
 do
   1>&2 echo "failure ... retrying ${NUM} more times"
   sleep ${RETRY_EVERY}
@@ -26,7 +26,7 @@ do
 
   if [ ${NUM} -eq 0 ]
   then
-    1>&2 echo "git pull --no-edit && git push was not successful after ${RETRY_NUM} tries"
+    1>&2 echo "git pull --rebase && git push was not successful after ${RETRY_NUM} tries"
     exit 1
   fi
 done
