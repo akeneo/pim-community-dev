@@ -16,7 +16,7 @@ initContainer:
     pullPolicy: Always
 
 nameOverride: ""
-fullnameOverride: "mocked-portal"
+fullnameOverride: ""
 
 service:
   name: wiremock

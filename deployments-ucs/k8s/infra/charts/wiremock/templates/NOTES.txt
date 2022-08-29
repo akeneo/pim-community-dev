@@ -16,5 +16,5 @@
   export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "wiremock.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
   kubectl port-forward --namespace {{ .Release.Namespace }} $POD_NAME 8080:{{ .Values.service.internalPort}}
   echo "Visit http://127.0.0.1:8080/__admin/webapp to use your application"
-  run "curl -X POST http://127.0.0.1:8080/v1/hello"
+  run "curl -X POST http://127.0.0.1:8080/auth/realms/connect/protocol/openid-connect/token" to test CLI
 {{- end }}
