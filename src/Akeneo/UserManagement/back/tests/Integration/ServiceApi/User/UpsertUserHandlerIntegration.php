@@ -36,7 +36,7 @@ class UpsertUserHandlerIntegration  extends TestCase
             email: 'another_email@gmail.com',
             firstName: 'Another first name',
             lastName: 'Another last name',
-            groupCodes: ['IT support'],
+            groupIds: [1],
             roleCodes: ['ROLE_ADMINISTRATOR']
         );
 
@@ -65,7 +65,7 @@ class UpsertUserHandlerIntegration  extends TestCase
     public function testItThrowsAnExceptionWhenGroupCodeDoesNotExist()
     {
         $this->expectException(ViolationsException::class);
-        $this->upsertUser(groupCodes: ['does not exist']);
+        $this->upsertUser(groupIds: [999]);
     }
 
     private function assertUserDoesNotExist(): void
@@ -99,7 +99,7 @@ class UpsertUserHandlerIntegration  extends TestCase
         string $email = 'a_user@gmail.com',
         string $firstName = 'John',
         string $lastName = 'Doe',
-        array $groupCodes = [],
+        array $groupIds = [],
         array $roleCodes = ['ROLE_USER']
     ) {
         $this->getHandler()->handle(
@@ -110,7 +110,7 @@ class UpsertUserHandlerIntegration  extends TestCase
                 $firstName,
                 $lastName,
                 $roleCodes,
-                $groupCodes
+                $groupIds
             )
         );
     }
@@ -119,7 +119,7 @@ class UpsertUserHandlerIntegration  extends TestCase
         string $email = 'a_user@gmail.com',
         string $firstName = 'John',
         string $lastName = 'Doe',
-        array $groupCodes = [],
+        array $groupIds = [],
         array $roleCodes = ['ROLE_USER']
     ) {
         $this->getHandler()->handle(
@@ -130,7 +130,7 @@ class UpsertUserHandlerIntegration  extends TestCase
                 $firstName,
                 $lastName,
                 $roleCodes,
-                $groupCodes
+                $groupIds
             )
         );
     }
