@@ -194,6 +194,7 @@ class UserController
         unset($data['code']);
         unset($data['roles']);
         unset($data['groups']);
+        unset($data['visible_group_ids']);
 
         return $this->updateUser($user, $data);
     }
