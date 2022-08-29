@@ -42,7 +42,7 @@ final class FindMeasurementFamiliesIntegration extends TestCase
      */
     public function it_finds_measurement_family_by_code(): void
     {
-        $result = $this->findMeasurementFamilies->getByCode('Angle');
+        $result = $this->findMeasurementFamilies->byCode('Angle');
 
         self::assertNotEmpty($result, 'Expect to find one measurement family');
         self::assertEquals('Angle', $result->code);
@@ -54,7 +54,7 @@ final class FindMeasurementFamiliesIntegration extends TestCase
     public function it_throws_an_exception_if_code_doesnt_exist(): void
     {
         $this->expectException(MeasurementFamilyNotFoundException::class);
-        $this->findMeasurementFamilies->getByCode('ABC');
+        $this->findMeasurementFamilies->byCode('ABC');
     }
 
     protected function getConfiguration(): Configuration
