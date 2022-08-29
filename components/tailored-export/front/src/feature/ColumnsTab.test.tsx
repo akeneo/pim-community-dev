@@ -60,6 +60,7 @@ test('It opens the source panel related to the column selected', async () => {
 
   await renderWithProviders(
     <ColumnsTab
+      entityType="product"
       columnsConfiguration={columnsConfiguration}
       validationErrors={[]}
       onColumnsConfigurationChange={jest.fn()}
@@ -99,6 +100,7 @@ test('It creates a column when user enter a text in last input', async () => {
 
   await renderWithProviders(
     <ColumnsTab
+      entityType="product"
       columnsConfiguration={columnsConfiguration}
       validationErrors={[]}
       onColumnsConfigurationChange={handleColumnsConfigurationChange}
@@ -154,6 +156,7 @@ test('It updates column when user change value input', async () => {
 
   await renderWithProviders(
     <ColumnsTab
+      entityType="product"
       columnsConfiguration={columnsConfiguration}
       validationErrors={[]}
       onColumnsConfigurationChange={handleColumnsConfigurationChange}
@@ -200,6 +203,7 @@ test('It deletes column when user click on delete button', async () => {
 
   await renderWithProviders(
     <ColumnsTab
+      entityType="product"
       columnsConfiguration={columnsConfiguration}
       validationErrors={[]}
       onColumnsConfigurationChange={handleColumnsConfigurationChange}
@@ -230,6 +234,7 @@ test('It adds source when user click on add source', async () => {
 
   await renderWithProviders(
     <ColumnsTab
+      entityType="product"
       columnsConfiguration={columnsConfiguration}
       validationErrors={[]}
       onColumnsConfigurationChange={handleColumnsConfigurationChange}

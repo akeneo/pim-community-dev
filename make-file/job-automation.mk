@@ -26,6 +26,8 @@ acceptance-back: #Doc: launch PHPUnit acceptance tests for job automation
 .PHONY: lint-front
 lint-front:
 	$(YARN_RUN) workspace @akeneo-pim-enterprise/job-automation lint:check
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/job-automation tsc --noEmit --strict --incremental false
+	$(YARN_RUN) tsc -p components/job-automation/back/tests/tsconfig.json
 
 .PHONY: lint-fix-front
 lint-fix-front:

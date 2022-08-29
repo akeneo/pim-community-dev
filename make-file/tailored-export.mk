@@ -30,10 +30,18 @@ ci-back: lint-back coupling-back unit-back acceptance-back integration-back
 unit-front:
 	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-export test:unit:run $(O)
 
-.PHONY: ci-front
-ci-front:
+.PHONY: lint-front
+lint-front:
 	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-export lint:check
-	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-export test:unit:run
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-export tsc --noEmit --strict --incremental false
+	$(YARN_RUN) tsc -p components/tailored-export/back/tests/tsconfig.json
+
+.PHONY: lint-fix-front
+lint-fix-front:
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-export lint:fix
+
+.PHONY: ci-front
+ci-front: lint-front unit-front
 
 .PHONY: ci
 ci: ci-back ci-front

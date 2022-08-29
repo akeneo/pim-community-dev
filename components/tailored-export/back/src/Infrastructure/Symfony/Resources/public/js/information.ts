@@ -18,7 +18,7 @@ class InformationView extends BaseView {
   constructor(options: {config: InformationConfig}) {
     super(options);
 
-    this.config = {...this.config, ...options.config};
+    this.config = options.config;
   }
 
   /**

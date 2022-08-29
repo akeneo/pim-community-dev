@@ -1,7 +1,6 @@
-import {Source} from '../../../models';
-import {isBooleanSource} from './model';
+import {BooleanSource, isBooleanSource} from './model';
 
-const source: Source = {
+const source: BooleanSource = {
   uuid: '123',
   code: 'a code',
   type: 'attribute',
@@ -41,12 +40,13 @@ test('it validates that something is a boolean source', () => {
     })
   ).toEqual(true);
 
-  expect(
-    isBooleanSource({
-      ...source,
-      operations: {
-        foo: 'bar',
-      },
-    })
-  ).toEqual(false);
+  const invalidSource: BooleanSource = {
+    ...source,
+    operations: {
+      // @ts-expect-error invalid operations
+      foo: 'bar',
+    },
+  };
+
+  expect(isBooleanSource(invalidSource)).toEqual(false);
 });
