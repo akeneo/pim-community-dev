@@ -82,4 +82,9 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
             ->where('groups = :group')
             ->setParameter('group', $group);
     }
+
+    public function findOneById(int $id): ?GroupInterface
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
 }

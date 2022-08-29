@@ -21,13 +21,13 @@ final class UpsertUserCommand
         public string $firstName,
         public string $lastName,
         public array $roleCodes,
-        public array $groupCodes = [],
+        public array $groupIds = [],
     ) {
     }
 
     /**
      * @param string[] $roleCodes
-     * @param string[] $groupCodes
+     * @param string[] $groupIds
      */
     public static function api(
         string $username,
@@ -36,7 +36,7 @@ final class UpsertUserCommand
         string $firstName,
         string $lastName,
         array $roleCodes,
-        array $groupCodes = [],
+        array $groupIds = [],
     ): self {
         return new self(
             $username,
@@ -46,13 +46,13 @@ final class UpsertUserCommand
             $firstName,
             $lastName,
             $roleCodes,
-            $groupCodes,
+            $groupIds,
         );
     }
 
     /**
      * @param string[] $roleCodes
-     * @param string[] $groupCodes
+     * @param string[] $groupIds
      */
     public static function job(
         string $username,
@@ -61,7 +61,7 @@ final class UpsertUserCommand
         string $firstName,
         string $lastName,
         array $roleCodes,
-        array $groupCodes = [],
+        array $groupIds = [],
     ): self {
         return new self(
             $username,
@@ -71,13 +71,13 @@ final class UpsertUserCommand
             $firstName,
             $lastName,
             $roleCodes,
-            $groupCodes,
+            $groupIds,
         );
     }
 
     /**
      * @param string[] $roleCodes
-     * @param string[] $groupCodes
+     * @param string[] $groupIds
      */
     public static function user(
         string $username,
@@ -86,7 +86,7 @@ final class UpsertUserCommand
         string $firstName,
         string $lastName,
         array $roleCodes,
-        array $groupCodes = [],
+        array $groupIds = [],
     ): self {
         return new self(
             $username,
@@ -96,7 +96,7 @@ final class UpsertUserCommand
             $firstName,
             $lastName,
             $roleCodes,
-            $groupCodes,
+            $groupIds,
         );
     }
 }
