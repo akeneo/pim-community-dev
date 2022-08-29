@@ -48,6 +48,6 @@ final class CriterionOperatorsRequireEmptyValueValidator extends ConstraintValid
 
     private function isEmpty(mixed $value): bool
     {
-        return null === $value || (\is_string($value) && '' === $value);
+        return null === $value || (\is_string($value) && '' === $value) || (\is_array($value) && [] === $value);
     }
 }
