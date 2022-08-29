@@ -43,7 +43,9 @@ class UpdateQuantifiedAssociationsInProductWithUuidEndToEnd extends AbstractProd
         $data = <<<JSON
 {
     "uuid": "{$baseProductUuid->toString()}",
-    "identifier": "garden_table_set",
+    "values": {
+        "sku": [{"locale": null, "scope": null, "data": "garden_table_set" }]
+    },
     "quantified_associations": {
         "PRODUCTSET_A": {
             "products": [

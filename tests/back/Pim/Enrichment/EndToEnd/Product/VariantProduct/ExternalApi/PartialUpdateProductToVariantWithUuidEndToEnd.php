@@ -27,7 +27,8 @@ class PartialUpdateProductToVariantWithUuidEndToEnd extends AbstractProductTestC
         $data =
 <<<JSON
     {
-        "parent": "amor"
+        "parent": "amor",
+        "values": {}
     }
 JSON;
         $client->request('PATCH', "api/rest/v1/products-uuid/{$this->productUuid->toString()}", [], [], [], $data);
@@ -56,7 +57,7 @@ JSON;
         ];
 
         $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertEventCount(1, ProductUpdated::class);
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_family_variant');
@@ -79,17 +80,23 @@ JSON;
         $data =
 <<<JSON
     {
-        "parent": "mayonnaise"
+        "parent": "mayonnaise",
+        "values": {}
     }
 JSON;
-        $client->request('PATCH', 'api/rest/v1/products/product_family_variant', [], [], [], $data);
+        $client->request('PATCH', "api/rest/v1/products-uuid/{$this->productUuid->toString()}", [], [], [], $data);
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertSame(
             [
                 'code' => 422,
-                'message' => 'The given product model "mayonnaise" does not exist'
+                'message' => 'Property "parent" expects a valid parent code. The parent product model does not exist, "mayonnaise" given. Check the expected format on the API documentation.',
+                '_links' => [
+                    'documentation' => [
+                        'href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'
+                    ]
+                ]
             ],
             json_decode($response->getContent(), true)
         );
@@ -101,10 +108,11 @@ JSON;
         $data =
 <<<JSON
     {
-        "parent": "test"
+        "parent": "test",
+        "values": {}
     }
 JSON;
-        $client->request('PATCH', 'api/rest/v1/products/product_family_variant', [], [], [], $data);
+        $client->request('PATCH', "api/rest/v1/products-uuid/{$this->productUuid->toString()}", [], [], [], $data);
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -120,7 +128,7 @@ JSON;
                     ],
                     [
                         'property' => 'parent',
-                        'message' => 'The variant product "product_family_variant" cannot have product model ' .
+                        'message' => 'The variant product cannot have product model ' .
                             '"test" as parent, (this product model can only have other product models as children)'
                     ],
                     [
@@ -137,20 +145,21 @@ JSON;
     {
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
-        $this->createProduct('product_familyA3', [
+        $uuid = $this->createProduct('product_familyA3', [
             new SetFamily('familyA3'),
             new SetCategories(['master']),
             new SetBooleanValue('a_yes_no', null, null, true)
-        ]);
+        ])->getUuid();
         $client = $this->createAuthenticatedClient();
         $data =
 <<<JSON
     {
-        "parent": "amor"
+        "parent": "amor",
+        "values": {}
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_familyA3', [], [], [], $data);
+        $client->request('PATCH', "api/rest/v1/products-uuid/{$uuid->toString()}", [], [], [], $data);
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -181,19 +190,20 @@ JSON;
             ]
         );
 
-        $this->createProduct('product_no_value', [
+        $uuid = $this->createProduct('product_no_value', [
             new SetFamily('familyA'),
             new SetCategories(['categoryA2']),
-        ]);
+        ])->getUuid();
         $client = $this->createAuthenticatedClient();
         $data =
 <<<JSON
     {
-        "parent": "parent_product_no_value"
+        "parent": "parent_product_no_value",
+        "values": {}
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products/product_no_value', [], [], [], $data);
+        $client->request('PATCH', "api/rest/v1/products-uuid/{$uuid->toString()}", [], [], [], $data);
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -241,6 +251,7 @@ JSON;
                 'a_simple_select' => [['locale' => null, 'scope' => null, 'data' => 'optionB']]
             ],
         ]);
+
         $this->productUuid = $this->createProduct('product_family_variant', [
             new SetFamily('familyA'),
             new SetCategories(['categoryA2']),

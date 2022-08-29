@@ -57,7 +57,6 @@ class UpdateQuantifiedAssociationsInVariantProductWithUuidEndToEnd extends Abstr
         $data = <<<JSON
 {
     "uuid": "{$uuid->toString()}",
-    "identifier": "garden_table_set-black-gold",
     "values": {},
     "quantified_associations": {
         "PRODUCTSET": {

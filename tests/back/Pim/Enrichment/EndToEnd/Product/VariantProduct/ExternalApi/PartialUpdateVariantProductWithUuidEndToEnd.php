@@ -91,7 +91,6 @@ class PartialUpdateVariantProductWithUuidEndToEnd extends AbstractProductTestCas
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "product_variant_create_with_identifier",
         "family": "familyA",
         "parent": "amor",
         "values": {
@@ -101,7 +100,8 @@ class PartialUpdateVariantProductWithUuidEndToEnd extends AbstractProductTestCas
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "product_variant_create_with_identifier" }]
         }
     }
 JSON;
@@ -182,7 +182,6 @@ JSON;
         $data =
             <<<JSON
     {
-        "identifier": "product_variant_create_with_identifier",
         "family": "familyA",
         "parent": "amor",
         "values": {
@@ -192,7 +191,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "product_variant_create_with_identifier" }]
         }
     }
 JSON;
@@ -275,7 +275,6 @@ JSON;
             <<<JSON
             {
                 "uuid": "{$otherUuid->toString()}",
-                "identifier": "product_variant_create_with_identifier",
                 "family": "familyA",
                 "parent": "amor",
                 "values": {
@@ -285,7 +284,8 @@ JSON;
                       "scope": null,
                       "data": false
                     }
-                  ]
+                  ],
+                  "sku": [{"locale": null, "scope": null, "data": "product_variant_create_with_identifier" }]
                 }
             }
             JSON;
@@ -311,7 +311,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "family": "familyA2",
         "parent": "amor",
         "values": {
@@ -321,7 +320,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         }
     }
 JSON;
@@ -354,7 +354,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "parent": "amor",
         "family": null,
         "values": {
@@ -364,7 +363,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         }
     }
 JSON;
@@ -397,7 +397,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "family": null,
         "parent": "amor",
         "values": {
@@ -407,7 +406,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         }
     }
 JSON;
@@ -440,7 +440,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "groups": ["groupB", "groupA"],
         "parent": "amor",
         "values": {
@@ -450,7 +449,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         }
     }
 JSON;
@@ -528,7 +528,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "groups": [],
         "parent": "amor",
         "values": {
@@ -538,7 +537,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         }
     }
 JSON;
@@ -616,7 +616,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "groups": [],
         "parent": "amor",
         "categories": ["categoryA"],
@@ -627,7 +626,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         }
     }
 JSON;
@@ -705,7 +705,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "groups": [],
         "parent": "amor",
         "categories": [],
@@ -716,7 +715,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         }
     }
 JSON;
@@ -794,7 +794,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "groups": [],
         "parent": "amor",
         "categories": [],
@@ -805,7 +804,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         },
         "associations": {
             "PACK": {
@@ -913,7 +913,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "groups": [],
         "parent": "amor",
         "categories": [],
@@ -924,7 +923,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         },
         "associations": {
             "X_SELL": {
@@ -1011,7 +1011,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "groups": [],
         "parent": "amor",
         "categories": [],
@@ -1022,7 +1021,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         },
         "associations": {
         "X_SELL": {
@@ -1111,7 +1111,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "enabled": false,
         "groups": [],
         "parent": "amor",
@@ -1123,7 +1122,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         }
     }
 JSON;
@@ -1203,7 +1203,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "groups": [],
         "parent": "amor",
         "categories": [],
@@ -1219,7 +1218,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         }
     }
 JSON;
@@ -1297,7 +1297,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "groups": [],
         "parent": "amor",
         "categories": [],
@@ -1308,7 +1307,8 @@ JSON;
               "scope": null,
               "data": null
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         }
     }
 JSON;
@@ -1347,7 +1347,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "parent": "amor",
         "groups": ["groupA", "groupB"],
         "family": "familyA",
@@ -1425,7 +1424,8 @@ JSON;
                 "locale": "fr_FR",
                 "scope": "tablet",
                 "data": "une zone de texte pour les tablettes en fran\u00e7ais"
-            }]
+            }],
+            "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         }
     }
 JSON;
@@ -1508,11 +1508,11 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "groups": ["groupA", "groupB"],
         "family": "familyA",
         "categories": ["master", "categoryA"],
         "values": {
+            "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }],
             "a_metric": [{
                 "locale": null,
                 "scope": null,
@@ -1662,7 +1662,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "parent": "amor",
         "values": {
           "a_yes_no": [
@@ -1671,7 +1670,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         },
         "created": "2014-06-14T13:12:50+02:00",
         "updated": "2014-06-14T13:12:50+02:00"
@@ -1757,7 +1757,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "parent": "amor",
         "values": {
             "sku": [{
@@ -1771,7 +1770,8 @@ JSON;
               "scope": null,
               "data": false
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
          }
     }
 JSON;
@@ -1798,7 +1798,6 @@ JSON;
             <<<JSON
     {
         "uuid": "{$uuid->toString()}",
-        "identifier": "apollon_optionb_false",
         "family": "familyA",
         "parent": "apollon",
         "values": {
@@ -1808,7 +1807,8 @@ JSON;
               "scope": null,
               "data": "optionB"
             }
-          ]
+          ],
+          "sku": [{"locale": null, "scope": null, "data": "apollon_optionb_false" }]
         }
     }
 JSON;
