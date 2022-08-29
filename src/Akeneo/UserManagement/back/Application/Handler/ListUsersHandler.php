@@ -31,6 +31,8 @@ final class ListUsersHandler implements ListUsersHandlerInterface
         $result = ($this->findUsers)(
             $query->getSearch(),
             $query->getSearchAfterId(),
+            $query->getIncludeIds(),
+            $query->getIncludeGroupIds(),
             $query->getLimit(),
         );
 
