@@ -6,6 +6,7 @@ import {FamilyCriterionState} from '../criteria/FamilyCriterion';
 import {CompletenessCriterionState} from '../criteria/CompletenessCriterion';
 import {AttributeTextCriterionState} from '../criteria/AttributeTextCriterion';
 import {AttributeSimpleSelectCriterionState} from '../criteria/AttributeSimpleSelectCriterion';
+import {AttributeNumberCriterionState} from '../criteria/AttributeNumberCriterion';
 
 export type CriterionModule<State> = {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -35,11 +36,13 @@ export type AnyCriterionState =
     | FamilyCriterionState
     | CompletenessCriterionState
     | AttributeTextCriterionState
-    | AttributeSimpleSelectCriterionState;
+    | AttributeSimpleSelectCriterionState
+    | AttributeNumberCriterionState;
 
 export type AnyAttributeCriterion =
     | Criterion<AttributeTextCriterionState>
-    | Criterion<AttributeSimpleSelectCriterionState>;
+    | Criterion<AttributeSimpleSelectCriterionState>
+    | Criterion<AttributeNumberCriterionState>;
 
 export type AnyCriterion =
     | Criterion<StatusCriterionState>
