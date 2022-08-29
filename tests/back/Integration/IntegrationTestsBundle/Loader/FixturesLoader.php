@@ -33,4 +33,9 @@ class FixturesLoader implements FixturesLoaderInterface
             $this->permissionCleaner->cleanPermission();
         }
     }
+
+    public function purge(): void
+    {
+        $this->baseFixturesLoader->purge();
+    }
 }
