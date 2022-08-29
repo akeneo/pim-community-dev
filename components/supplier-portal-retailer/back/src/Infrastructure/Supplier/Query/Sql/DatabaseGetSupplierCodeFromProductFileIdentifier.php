@@ -19,7 +19,7 @@ final class DatabaseGetSupplierCodeFromProductFileIdentifier implements GetSuppl
             <<<SQL
                 SELECT supplier.code
                 FROM `akeneo_supplier_portal_supplier` supplier
-                INNER JOIN akeneo_supplier_portal_supplier_file supplier_file 
+                INNER JOIN akeneo_supplier_portal_supplier_product_file supplier_file 
                     ON supplier_file.uploaded_by_supplier = supplier.identifier 
                 WHERE supplier_file.identifier = :productFileIdentifier
             SQL

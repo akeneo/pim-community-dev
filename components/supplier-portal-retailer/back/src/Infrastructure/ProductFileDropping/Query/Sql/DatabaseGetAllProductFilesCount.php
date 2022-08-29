@@ -18,7 +18,7 @@ final class DatabaseGetAllProductFilesCount implements GetAllProductFilesCount
         return (int) $this->connection->executeQuery(
             <<<SQL
             SELECT COUNT(*)
-            FROM `akeneo_supplier_portal_supplier_file`
+            FROM `akeneo_supplier_portal_supplier_product_file`
         SQL,
         )->fetchOne();
     }

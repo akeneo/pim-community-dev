@@ -86,7 +86,7 @@ final class InstallSupplierPortalTables implements EventSubscriberInterface
     private function addProductFileTable(): void
     {
         $sql = <<<SQL
-            CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_supplier_file` (
+            CREATE TABLE IF NOT EXISTS `akeneo_supplier_portal_supplier_product_file` (
                 `identifier` char(36) NOT NULL,
                 `original_filename` varchar(255) NOT NULL,
                 `path` text NOT NULL,     

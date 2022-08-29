@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\GetProductFilePathAndFileName;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFilePathAndFileName;
 use Doctrine\DBAL\Connection;
 
@@ -18,15 +18,13 @@ final class DatabaseGetProductFilePathAndFileName implements GetProductFilePathA
     {
         $sql = <<<SQL
             SELECT path, original_filename
-            FROM akeneo_supplier_portal_supplier_file supplier_file
-            WHERE supplier_file.identifier = :productFileIdentifier
+            FROM akeneo_supplier_portal_supplier_product_file
+            WHERE identifier = :identifier;
         SQL;
 
         $productFile = $this->connection->executeQuery(
             $sql,
-            [
-                'productFileIdentifier' => $productFileIdentifier,
-            ],
+            ['identifier' => $productFileIdentifier],
         )->fetchAssociative();
 
         if (false === $productFile) {

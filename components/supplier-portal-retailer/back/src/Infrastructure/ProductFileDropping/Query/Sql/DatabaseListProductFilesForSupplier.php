@@ -18,7 +18,7 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
     {
         $sql = <<<SQL
             SELECT supplier_file.identifier, original_filename, uploaded_by_contributor, uploaded_at
-            FROM akeneo_supplier_portal_supplier_file supplier_file
+            FROM akeneo_supplier_portal_supplier_product_file supplier_file
             where uploaded_by_supplier = :supplierIdentifier
             ORDER BY uploaded_at DESC 
             LIMIT :limit

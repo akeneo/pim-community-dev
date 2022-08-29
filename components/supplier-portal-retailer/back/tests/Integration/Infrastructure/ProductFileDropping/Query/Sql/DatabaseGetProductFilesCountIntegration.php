@@ -53,7 +53,7 @@ final class DatabaseGetProductFilesCountIntegration extends SqlIntegrationTestCa
     private function createProductFile(string $supplierIdentifier): void
     {
         $sql = <<<SQL
-            INSERT INTO `akeneo_supplier_portal_supplier_file` (identifier, original_filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at, downloaded)
+            INSERT INTO `akeneo_supplier_portal_supplier_product_file` (identifier, original_filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at, downloaded)
             VALUES (:identifier, :originalFilename, :path, :contributorEmail, :supplierIdentifier, :uploadedAt, :downloaded)
         SQL;
 
