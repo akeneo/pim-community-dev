@@ -88,7 +88,7 @@ class ValidateSchedulingTest extends AbstractValidationTest
                     'notified_users' => [],
                     'notified_user_groups' => [],
                 ],
-                'akeneo.job_automation.validation.import_should_have_storage',
+                'No storage has been configured in the Properties tab of your import profile.',
                 '[scheduled]',
             ],
         ];
