@@ -13,25 +13,27 @@ final class PermissionCollection
     {
     }
 
-    // @phpstan-ignore-next-line
+    /**
+     * @param array<string, array<int>>|null $permissions
+     */
     public static function fromArray(array $permissions): self
     {
         return new self($permissions);
     }
 
-    public function isViewable(): bool
+    public function getViewUserGroups(): array
     {
-        return '1' === $this->permissions['view_items'];
+        return $this->permissions['view'];
     }
 
-    public function isEditable(): bool
+    public function getEditUserGroups(): array
     {
-        return '1' === $this->permissions['edit_items'];
+        return $this->permissions['edit'];
     }
 
-    public function isOwned(): bool
+    public function getOwnUserGroups(): array
     {
-        return '1' === $this->permissions['own_items'];
+        return $this->permissions['own'];
     }
 
     /**
