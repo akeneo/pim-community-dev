@@ -13,5 +13,5 @@ interface GetMeasurementsFamilyQueryInterface
     /**
      * @return array{code: string, units: array<array{code: string, label: string}>}|null
      */
-    public function execute(string $code, string $locale): ?array;
+    public function execute(string $code, string $locale = 'en_US'): ?array;
 }
