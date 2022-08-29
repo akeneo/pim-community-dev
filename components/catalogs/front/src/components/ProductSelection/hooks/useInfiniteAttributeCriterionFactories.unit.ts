@@ -16,8 +16,6 @@ test('it fetches attributes & paginates criterion factories', async () => {
             type: 'pim_catalog_text',
             scopable: false,
             localizable: false,
-            measurement_family: null,
-            default_measurement_unit: null,
         },
         {
             code: 'description',
@@ -25,8 +23,6 @@ test('it fetches attributes & paginates criterion factories', async () => {
             type: 'pim_catalog_text',
             scopable: false,
             localizable: false,
-            measurement_family: null,
-            default_measurement_unit: null,
         },
         {
             code: 'ean',
@@ -34,8 +30,6 @@ test('it fetches attributes & paginates criterion factories', async () => {
             type: 'pim_catalog_text',
             scopable: false,
             localizable: false,
-            measurement_family: null,
-            default_measurement_unit: null,
         },
     ];
 
@@ -119,8 +113,6 @@ test('it returns a custom factory with the attribute code as field', async () =>
             type: 'pim_catalog_text',
             scopable: false,
             localizable: false,
-            measurement_family: null,
-            default_measurement_unit: null,
         },
     ];
 

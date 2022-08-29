@@ -30,7 +30,7 @@ class GetMeasurementsFamilyMeasurementsActionTest extends TestCase
         $this->getMeasurementsFamilyQuery->expects($this->once())
             ->method('execute')
             ->with('Weight', 'en_US')
-            ->willReturn(['measurements' => []]);
+            ->willReturn(['units' => []]);
 
         ($this->getMeasurementsFamilyMeasurementsAction)(
             new Request(

@@ -11,7 +11,7 @@ namespace Akeneo\Catalogs\Application\Persistence;
 interface GetMeasurementsFamilyQueryInterface
 {
     /**
-     * @return array{code: string, measurements: array<array{code: string, label: string}>}|null
+     * @return array{code: string, units: array<array{code: string, label: string}>}|null
      */
     public function execute(string $code, string $locale): ?array;
 }

@@ -19,7 +19,7 @@ final class FindOneAttributeByCodeQuery implements FindOneAttributeByCodeQueryIn
     }
 
     /**
-     * @return array{code: string, label: string, type: string, scopable: bool, localizable: bool}
+     * @return array{code: string, label: string, type: string, scopable: bool, localizable: bool, measurement_family?: string, default_measurement_unit?: string}|null
      */
     public function execute(string $code): ?array
     {
@@ -30,14 +30,19 @@ final class FindOneAttributeByCodeQuery implements FindOneAttributeByCodeQueryIn
             return null;
         }
 
-        return [
+        $normalizedAttribute = [
             'code' => $attribute->getCode(),
             'label' => $attribute->getLabel(),
             'type' => $attribute->getType(),
             'scopable' => $attribute->isScopable(),
             'localizable' => $attribute->isLocalizable(),
-            'measurement_family' => $attribute->getMetricFamily(),
-            'default_measurement_unit' => $attribute->getDefaultMetricUnit(),
         ];
+
+        if ('pim_catalog_metric' === $attribute->getType()) {
+            $normalizedAttribute['measurement_family'] = $attribute->getMetricFamily();
+            $normalizedAttribute['default_measurement_unit'] = $attribute->getDefaultMetricUnit();
+        }
+
+        return $normalizedAttribute;
     }
 }

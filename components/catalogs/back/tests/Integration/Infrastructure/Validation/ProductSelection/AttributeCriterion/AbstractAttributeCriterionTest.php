@@ -33,7 +33,6 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
     private array $channelLocales = [];
     private array $locales = [];
     private array $measurementsFamily = [];
-    private array $measurements = [];
 
     protected function setUp(): void
     {
@@ -61,17 +60,6 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
             'de_DE' => [
                 'code' => 'de_DE',
                 'label' => 'German',
-            ],
-        ];
-
-        $this->measurements = [
-            [
-                'code' => 'GRAM',
-                'label' => 'Gram',
-            ],
-            [
-                'code' => 'MILLIGRAM',
-                'label' => 'Milligram',
             ],
         ];
 
@@ -130,7 +118,7 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
     {
         $this->measurementsFamily[$data['code']] = [
             'code' => $data['code'],
-            'measurements' => $this->measurements,
+            'units' => $data['units'],
         ];
     }
 }

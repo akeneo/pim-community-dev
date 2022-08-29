@@ -39,15 +39,22 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
         );
 
         return \array_map(
-            static fn (AttributeInterface $attribute) => [
-                'code' => $attribute->getCode(),
-                'label' => $attribute->getLabel(),
-                'type' => $attribute->getType(),
-                'scopable' => $attribute->isScopable(),
-                'localizable' => $attribute->isLocalizable(),
-                'measurement_family' => $attribute->getMetricFamily(),
-                'default_measurement_unit' => $attribute->getDefaultMetricUnit(),
-            ],
+            static function (AttributeInterface $attribute): array {
+                $normalizedAttribute = [
+                    'code' => $attribute->getCode(),
+                    'label' => $attribute->getLabel(),
+                    'type' => $attribute->getType(),
+                    'scopable' => $attribute->isScopable(),
+                    'localizable' => $attribute->isLocalizable(),
+                ];
+
+                if ('pim_catalog_metric' === $attribute->getType()) {
+                    $normalizedAttribute['measurement_family'] = $attribute->getMetricFamily();
+                    $normalizedAttribute['default_measurement_unit'] = $attribute->getDefaultMetricUnit();
+                }
+
+                return $normalizedAttribute;
+            },
             $attributes
         );
     }

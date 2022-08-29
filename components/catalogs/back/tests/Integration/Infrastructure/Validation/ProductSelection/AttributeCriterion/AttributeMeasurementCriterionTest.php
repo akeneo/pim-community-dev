@@ -43,14 +43,20 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
         return [
             'localizable and scopable attribute' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 12.3,
@@ -67,6 +73,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -86,6 +98,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => true,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -95,7 +113,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                         'unit' => 'GRAM'
                     ],
                     'scope' => null,
-                    'locale' => 'en_US',
+                    'locale' => 'en_US'
                 ],
             ],
             'non localizable and non scopable attribute' => [
@@ -105,6 +123,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -130,6 +154,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -149,6 +179,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -168,6 +204,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -187,6 +229,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -206,6 +254,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -225,6 +279,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -244,6 +304,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -260,6 +326,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -299,6 +371,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 42,
@@ -316,6 +394,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -333,6 +417,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -350,6 +440,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'KILOGRAM',
+                            'label' => 'Kilogram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -370,6 +466,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -390,6 +492,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -410,6 +518,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -430,6 +544,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => false,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -450,6 +570,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => true,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',
@@ -470,6 +596,12 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'units' => [
+                        [
+                            'code' => 'GRAM',
+                            'label' => 'Gram',
+                        ],
+                    ],
                 ],
                 'criterion' => [
                     'field' => 'name',

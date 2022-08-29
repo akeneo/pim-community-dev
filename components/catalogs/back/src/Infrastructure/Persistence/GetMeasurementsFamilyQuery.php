@@ -40,11 +40,11 @@ final class GetMeasurementsFamilyQuery implements GetMeasurementsFamilyQueryInte
         /** @var array<array-key, mixed> $units */
         $units = $normalizedMeasurementFamily['units'];
 
-        $measurements = \array_map($unitNormalizer, $units);
+        $normalizedUnits = \array_map($unitNormalizer, $units);
 
         return [
             'code' => (string) $normalizedMeasurementFamily['code'],
-            'measurements' => $measurements,
+            'units' => $normalizedUnits,
         ];
     }
 }

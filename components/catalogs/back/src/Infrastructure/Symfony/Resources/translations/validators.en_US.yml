@@ -19,5 +19,6 @@ akeneo_catalogs:
                     value: 'Completeness value must be between 0 and 100 percent.'
                 measurement:
                     unit:
+                        measurement_family_unknown: 'The measurement family of the field "{{ field }}" does not exist.'
                         not_exist: 'The unit of the field "{{ field }}" does not exist.'
                         not_empty: 'The unit must not be empty.'

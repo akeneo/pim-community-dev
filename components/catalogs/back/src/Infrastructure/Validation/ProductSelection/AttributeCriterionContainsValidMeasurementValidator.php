@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductSelection;
 
 use Akeneo\Catalogs\Application\Persistence\GetMeasurementsFamilyQueryInterface;
-use Akeneo\Catalogs\Domain\Operator;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -27,29 +25,42 @@ final class AttributeCriterionContainsValidMeasurementValidator extends Constrai
     ) {
     }
 
+    /**
+     * @param mixed $value
+     */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof AttributeCriterionContainsValidMeasurement) {
             throw new UnexpectedTypeException($constraint, AttributeCriterionContainsValidMeasurement::class);
         }
 
-        if (!\in_array($value['operator'], [Operator::IS_EMPTY, Operator::IS_NOT_EMPTY], true)) {
-            /** @var array{code: string, measurements: array<array{code: string, label: string}>}|null $measurementFamily */
-            $measurementFamily = $this->getMeasurementsFamilyQuery->execute($value['field'], 'en_US');
+        /** @var array{field: string, value: array{unit: string}|null}|null $value */
+        if (null === $value || null === $value['value']) {
+            return;
+        }
 
-            if (null === $measurementFamily) {
-                throw new NotFoundHttpException('The measurements family is not found');
-            }
-            $measurementCodes = \array_map(static fn (array $row) => $row['code'], $measurementFamily['measurements']);
+        /** @var array{code: string, units: array<array{code: string, label: string}>}|null $measurementFamily */
+        $measurementFamily = $this->getMeasurementsFamilyQuery->execute($value['field'], 'en_US');
 
-            if (!\in_array($value['value']['unit'], $measurementCodes, true)) {
-                $this->context
-                    ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.measurement.unit.not_exist', [
-                        '{{ field }}' => $value['field'],
-                    ])
-                    ->atPath('[locale]')
-                    ->addViolation();
-            }
+        if (null === $measurementFamily) {
+            $this->context
+                ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.measurement.unit.measurement_family_unknown', [
+                    '{{ field }}' => $value['field'],
+                ])
+                ->atPath('[locale]')
+                ->addViolation();
+            return;
+        }
+
+        $measurementCodes = \array_map(static fn (array $row) => $row['code'], $measurementFamily['units']);
+
+        if (!\in_array($value['value']['unit'], $measurementCodes, true)) {
+            $this->context
+                ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.measurement.unit.not_exist', [
+                    '{{ field }}' => $value['field'],
+                ])
+                ->atPath('[locale]')
+                ->addViolation();
         }
     }
 }

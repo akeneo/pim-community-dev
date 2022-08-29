@@ -41,6 +41,6 @@ class GetMeasurementsFamilyMeasurementsAction
             throw new NotFoundHttpException(\sprintf('measurements family "%s" does not exist.', $code));
         }
 
-        return new JsonResponse($measurementFamily['measurements']);
+        return new JsonResponse($measurementFamily['units']);
     }
 }

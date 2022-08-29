@@ -32,7 +32,7 @@ class GetMeasurementsFamilyQueryTest extends IntegrationTestCase
 
         $expected = [
             'code' => 'Weight',
-            'measurements' => [
+            'units' => [
                 ["code" => "MICROGRAM", "label" => "Microgram"],
                 ["code" => "MILLIGRAM", "label" => "Milligram"],
                 ["code" => "GRAM", "label" => "Gram"],

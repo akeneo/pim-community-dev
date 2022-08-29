@@ -48,8 +48,6 @@ class GetAttributeActionTest extends IntegrationTestCase
             'type',
             'scopable',
             'localizable',
-            'measurement_family',
-            'default_measurement_unit',
         ], \array_keys($attribute));
     }
 }
