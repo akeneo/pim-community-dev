@@ -72,26 +72,10 @@ class GetFamiliesActionTest extends IntegrationTestCase
         Assert::assertArrayHasKey('label', $families[0]);
     }
 
-    public function testItPaginatesAndSearchesForFamilies(): void
+    public function testItPaginatesSearchResults(): void
     {
         $client = $this->getAuthenticatedInternalApiClient('admin');
         $this->insertFamilies(['GuitarFolk', 'ClassicGuitar', 'ElectricGuitarSomething', 'Piano']);
-
-        $client->request(
-            'GET',
-            '/rest/catalogs/families',
-            ['search' => 'Guitar', 'page' => 1, 'limit' => 2],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ],
-        );
-
-        $firstPageResponse = $client->getResponse();
-        Assert::assertEquals(200, $firstPageResponse->getStatusCode());
-
-        $firstPageFamilies = \json_decode($firstPageResponse->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        Assert::assertCount(2, $firstPageFamilies);
 
         $client->request(
             'GET',
