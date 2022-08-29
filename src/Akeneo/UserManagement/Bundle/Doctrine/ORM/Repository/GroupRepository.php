@@ -85,6 +85,6 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
 
     public function findOneById(int $id): ?GroupInterface
     {
-        return $this->findOneBy(['id' => $id]);
+        return $this->find($id);
     }
 }
