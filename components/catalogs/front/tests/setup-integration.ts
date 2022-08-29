@@ -8,6 +8,11 @@ jest.mock('@akeneo-pim-community/shared');
 require('jest-fetch-mock').enableMocks();
 
 (useTranslate as jest.Mock).mockImplementation(() => (key: string) => key);
+const user = {
+    get: jest.fn().mockReturnValue('en_US'),
+    set: jest.fn(),
+};
+(useUserContext as jest.Mock).mockImplementation(() => user);
 (useSessionStorageState as jest.Mock).mockImplementation((defaultValue: any, key: string) => {
     const storageValue = sessionStorage.getItem(key) as string;
     const [value, setValue] = useState<any>(null !== storageValue ? JSON.parse(storageValue) : defaultValue);
@@ -29,5 +34,5 @@ window.IntersectionObserver = jest.fn().mockImplementation(() => ({
 }));
 
 beforeEach(() => {
-    fetchMock.resetMocks()
+    fetchMock.resetMocks();
 });

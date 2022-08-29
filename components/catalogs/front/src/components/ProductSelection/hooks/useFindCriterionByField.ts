@@ -41,7 +41,6 @@ export const useFindCriterionByField = (): Return => {
                     },
                     {
                         retry: false,
-                        staleTime: 60,
                     }
                 );
 

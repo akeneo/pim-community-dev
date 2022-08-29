@@ -46,6 +46,9 @@ akeneo_catalogs:
                 placeholder: Select your families
             completeness:
                 label: Completeness
+            attribute_option:
+                no_matches: No matches found
+                placeholder: Select your options
             category:
                 label: Category
                 remove: Remove category

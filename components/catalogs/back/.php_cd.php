@@ -75,6 +75,7 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
 
             // @todo replace with the ones from category service API when available
             'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',

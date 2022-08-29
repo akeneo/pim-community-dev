@@ -9,7 +9,14 @@ import {OpenAppPage} from '../connect/pages/OpenAppPage';
 import {QueryClientProvider, QueryClient} from 'react-query';
 import {ConnectedAppCatalogPage} from '../connect/pages/ConnectedAppCatalogPage';
 
-const client = new QueryClient();
+const client = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 10 * 1000, // 10s
+            cacheTime: 5 * 60 * 1000, // 5m
+        },
+    },
+});
 
 export const ConnectedApps = withDependencies(() => (
     <StrictMode>

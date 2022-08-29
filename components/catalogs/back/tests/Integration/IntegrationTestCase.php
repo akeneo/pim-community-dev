@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration;
 
+use Akeneo\Catalogs\Application\Persistence\GetLocalesQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
@@ -12,6 +13,9 @@ use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
@@ -40,7 +44,7 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
-    protected function purgeData(): void
+    protected static function purgeData(): void
     {
         $fixturesLoader = self::getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->purge();
@@ -117,6 +121,8 @@ abstract class IntegrationTestCase extends WebTestCase
         ConstraintViolationListInterface $violations,
         string $expectedMessage,
     ): void {
+        $this->addToAssertionCount(1);
+
         if (0 === $violations->count()) {
             $this->fail('There is no violations but expected at least one.');
         }
@@ -232,11 +238,58 @@ abstract class IntegrationTestCase extends WebTestCase
         );
     }
 
+    /**
+     * @param array{
+     *     code: string,
+     *     type: string,
+     *     available_locales: array<string>,
+     *     group: string,
+     *     scopable: bool,
+     *     localizable: bool,
+     *     options: array<string>
+     * } $data
+     */
     protected function createAttribute(array $data): void
     {
+        $options = $data['options'] ?? [];
+        unset($data['options']);
+
         $attribute = self::getContainer()->get('pim_catalog.factory.attribute')->create();
         self::getContainer()->get('pim_catalog.updater.attribute')->update($attribute, $data);
         self::getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
+
+        if ([] !== $options) {
+            $this->createAttributeOptions($attribute, $options);
+        }
+    }
+
+    private function createAttributeOptions(AttributeInterface $attribute, array $codes): void
+    {
+        $factory = self::getContainer()->get('pim_catalog.factory.attribute_option');
+        $locales = \array_map(static fn ($locale) => $locale['code'], self::getContainer()->get(GetLocalesQueryInterface::class)->execute());
+
+        $options = [];
+
+        foreach ($codes as $i => $code) {
+            /** @var AttributeOptionInterface $option */
+            $option = $factory->create();
+            $option->setCode(\strtolower(\trim(\preg_replace('/[^A-Za-z0-9-]+/', '_', $code))));
+            $option->setAttribute($attribute);
+            $option->setSortOrder($i);
+
+            foreach ($locales as $locale) {
+                $value = new AttributeOptionValue();
+                $value->setOption($option);
+                $value->setLocale($locale);
+                $value->setLabel($code);
+
+                $option->addOptionValue($value);
+            }
+
+            $options[] = $option;
+        }
+
+        self::getContainer()->get('pim_catalog.saver.attribute_option')->saveAll($options);
     }
 
     protected function createChannel(string $code, array $locales = []): void

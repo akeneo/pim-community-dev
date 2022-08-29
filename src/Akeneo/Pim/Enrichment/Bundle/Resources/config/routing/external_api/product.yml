@@ -61,3 +61,11 @@ pim_api_product_uuid_get:
     methods: [GET]
     requirements:
         uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+
+pim_api_product_uuid_create:
+    path: /products-uuid
+    defaults:
+        _controller: Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\CreateProductByUuidController
+        _format: json
+        _list_in_root_endpoint: false
+    methods: [POST]
