@@ -11,7 +11,7 @@ type Result = {
 };
 
 export const useMeasurements = (measurementsFamilyCode: string | null): Result => {
-    const locale = useUserContext().get('uiLocale');
+    const locale = useUserContext().get('catalogLocale');
 
     return useQuery<Measurement[], ResultError, Measurement[]>(
         ['measurements', measurementsFamilyCode, {locale: locale}],

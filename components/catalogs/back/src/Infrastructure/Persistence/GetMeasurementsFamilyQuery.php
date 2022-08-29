@@ -22,7 +22,7 @@ final class GetMeasurementsFamilyQuery implements GetMeasurementsFamilyQueryInte
     /**
      * @inheritDoc
      */
-    public function execute(string $code, string $locale): ?array
+    public function execute(string $code, string $locale = 'en_US'): ?array
     {
         try {
             $measurementFamily = $this->measurementFamilyRepository->getByCode(MeasurementFamilyCode::fromString($code));

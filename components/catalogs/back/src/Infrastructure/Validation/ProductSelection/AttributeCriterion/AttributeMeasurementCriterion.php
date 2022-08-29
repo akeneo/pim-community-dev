@@ -37,8 +37,6 @@ final class AttributeMeasurementCriterion extends Compound
                             new Assert\NotBlank(),
                         ],
                         'operator' => [
-                            new Assert\Type('string'),
-                            new Assert\NotBlank(),
                             new Assert\Choice([
                                 Operator::EQUALS,
                                 Operator::NOT_EQUAL,
