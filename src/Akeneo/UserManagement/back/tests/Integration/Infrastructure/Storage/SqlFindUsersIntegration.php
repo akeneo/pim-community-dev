@@ -38,11 +38,11 @@ final class SqlFindUsersIntegration extends TestCase
         $this->groupRepository = $this->get('pim_user.repository.group');
         $this->localeRepository = $this->get('pim_catalog.repository.locale');
 
-        $this->userTest1Id = $this->createUserWithGroupsAndRoles(1, 'test1', ['Redactor'], ['ROLE_USER']);
-        $this->createUserWithGroupsAndRoles(2, 'test2', ['Redactor'], ['ROLE_USER']);
-        $this->userTest3Id = $this->createUserWithGroupsAndRoles(3, 'test3', ['Redactor'], ['ROLE_USER']);
-        $this->createUserWithGroupsAndRoles(4, 'julia', ['Redactor'], ['ROLE_USER']);
-        $this->createUserWithGroupsAndRoles(5, 'marie', ['IT support'], ['ROLE_USER']);
+        $this->userTest1Id = $this->createUserWithGroupsAndRoles('test1', ['Redactor'], ['ROLE_USER']);
+        $this->createUserWithGroupsAndRoles('test2', ['Redactor'], ['ROLE_USER']);
+        $this->userTest3Id = $this->createUserWithGroupsAndRoles('test3', ['Redactor'], ['ROLE_USER']);
+        $this->createUserWithGroupsAndRoles('julia', ['Redactor'], ['ROLE_USER']);
+        $this->createUserWithGroupsAndRoles('marie', ['IT support'], ['ROLE_USER']);
     }
 
     public function testItListsTheUsers(): void
@@ -92,10 +92,9 @@ final class SqlFindUsersIntegration extends TestCase
         return $this->get(SqlFindUsers::class);
     }
 
-    private function createUserWithGroupsAndRoles(int $id, string $username, array $groupNames, array $stringRoles): int
+    private function createUserWithGroupsAndRoles(string $username, array $groupNames, array $stringRoles): int
     {
         $user = $this->get('pim_user.factory.user')->create();
-        $user->setId($id);
         $user->setUsername($username);
         $user->setEmail(sprintf('%s@example.com', uniqid()));
         $user->setPassword('fake');
