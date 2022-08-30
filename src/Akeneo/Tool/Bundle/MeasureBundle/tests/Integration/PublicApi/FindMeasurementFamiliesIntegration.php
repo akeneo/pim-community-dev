@@ -2,32 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Onboarder;
+namespace Akeneo\Tool\Bundle\MeasureBundle\ServiceApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class FindAllMeasurementFamiliesIntegration extends TestCase
+final class FindMeasurementFamiliesIntegration extends TestCase
 {
-    private FindAllMeasurementFamilies $findAllMeasurementFamilies;
+    private FindMeasurementFamilies $findMeasurementFamilies;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->findAllMeasurementFamilies = $this->get(
-            'akeneo_measurement.public_api.onboarder.find_all_measurement_families'
+        $this->findMeasurementFamilies = $this->get(
+            'akeneo_measurement.service_api.find_measurement_families'
         );
     }
 
     /** @test */
-    public function it_finds_all_measurements_families_for_onboarder()
+    public function it_finds_all_measurements_families_for_onboarder(): void
     {
-        $result = $this->findAllMeasurementFamilies->execute();
+        $result = $this->findMeasurementFamilies->all();
         $actualMeasurementFamily = current($result);
 
         self::assertNotEmpty($result, 'Expect to find at least the standard measurement families');
@@ -35,6 +36,24 @@ final class FindAllMeasurementFamiliesIntegration extends TestCase
         self::assertEquals($this->expectedAngleLabels(), $actualMeasurementFamily->labels);
         self::assertEquals('RADIAN', $actualMeasurementFamily->standardUnitCode);
         self::assertEqualsCanonicalizing($this->expectedAngleUnits(), $actualMeasurementFamily->units);
+    }
+
+    /** @test
+     */
+    public function it_finds_measurement_family_by_code(): void
+    {
+        $result = $this->findMeasurementFamilies->byCode('Angle');
+
+        self::assertNotEmpty($result, 'Expect to find one measurement family');
+        self::assertEquals('Angle', $result->code);
+    }
+
+    /** @test
+     * @throws MeasurementFamilyNotFoundException
+     */
+    public function it_returns_null_if_code_doesnt_exist(): void
+    {
+        self::assertNull($this->findMeasurementFamilies->byCode('ABC'));
     }
 
     protected function getConfiguration(): Configuration
