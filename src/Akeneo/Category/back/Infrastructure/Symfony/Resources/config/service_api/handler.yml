@@ -1,6 +1,6 @@
 services:
     Akeneo\Category\ServiceApi\CategoryInterface:
         public: true
-        class: Akeneo\Category\Application\Handler\CategoryHandler
+        class: Akeneo\Category\Application\Handler\CategoryQueryHandler
         arguments:
             $getCategory: '@Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql'

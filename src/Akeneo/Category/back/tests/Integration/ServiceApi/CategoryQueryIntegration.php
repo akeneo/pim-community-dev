@@ -5,26 +5,23 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Integration\ServiceApi;
 
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
 use Akeneo\Category\ServiceApi\Category;
-use Akeneo\Category\ServiceApi\CategoryInterface;
+use Akeneo\Category\ServiceApi\CategoryQueryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CategoryQueryIntegration extends TestCase
 {
-    public function testItGetCategory(): void
+    private CategoryDoctrine $category;
+
+    protected function setUp(): void
     {
-        $this->insertCategory();
+        parent::setUp();
 
-        $category = $this->getHandler()->byCode('socks');
-
-        Assert::assertInstanceOf(Category::class, $category);
-    }
-
-    private function insertCategory(): void
-    {
-        $category = $this->createCategory([
+        $this->category = $this->createCategory([
             'code' => 'socks',
             'labels' => [
                 'fr_FR' => 'Chaussettes',
@@ -61,8 +58,36 @@ SQL;
                     "locale" => null,
                 ]
             ], JSON_THROW_ON_ERROR),
-            'code' => $category->getCode()
+            'code' => $this->category->getCode()
         ]);
+    }
+
+    public function testItGetCategoryById(): void
+    {
+        $category = $this->getHandler()->byId($this->category->getId());
+
+        Assert::assertInstanceOf(Category::class, $category);
+    }
+
+    public function testItDoNotGetCategoryById(): void
+    {
+        $this->expectException(NotFoundHttpException::class);
+
+        $this->getHandler()->byId(999);
+    }
+
+    public function testItGetCategoryByCode(): void
+    {
+        $category = $this->getHandler()->byCode('socks');
+
+        Assert::assertInstanceOf(Category::class, $category);
+    }
+
+    public function testItDoNotGetCategoryByCode(): void
+    {
+        $this->expectException(NotFoundHttpException::class);
+
+        $this->getHandler()->byCode('wrong_code');
     }
 
     protected function getConfiguration(): Configuration
@@ -70,8 +95,8 @@ SQL;
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function getHandler(): CategoryInterface
+    private function getHandler(): CategoryQueryInterface
     {
-        return $this->get(CategoryInterface::class);
+        return $this->get(CategoryQueryInterface::class);
     }
 }

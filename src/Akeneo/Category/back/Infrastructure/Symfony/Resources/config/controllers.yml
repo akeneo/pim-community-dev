@@ -42,7 +42,7 @@ services:
         public: true
         arguments:
             - '@oro_security.security_facade'
-            - '@Akeneo\Category\Application\GetCategoryQueryHandler'
+            - '@Akeneo\Category\ServiceApi\CategoryQueryInterface'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:
         arguments:
