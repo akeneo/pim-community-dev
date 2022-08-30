@@ -48,6 +48,10 @@ final class SqlFindUsers implements FindUsers
                 'includeIds' => $includeIds,
                 'includeGroupIds' => $includeGroupIds,
             ],
+            [
+                'includeIds' => Connection::PARAM_STR_ARRAY,
+                'includeGroupIds' => Connection::PARAM_STR_ARRAY,
+            ]
         )->fetchAllAssociative();
 
         return array_map(
