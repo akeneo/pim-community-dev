@@ -18,6 +18,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegi
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use PhpSpec\ObjectBehavior;
 
 class NumberUserIntentFactorySpec extends ObjectBehavior
@@ -32,18 +33,8 @@ class NumberUserIntentFactorySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(UserIntentFactoryInterface::class);
     }
 
-    public function it_throws_an_exception_when_target_type_is_invalid(
-        AttributeTarget $attributeTarget
-    ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_text');
-        $value = new NumberValue('2');
-
-        $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_number"'))
-            ->during('create', [$attributeTarget, $value]);
-    }
-
     public function it_creates_a_set_number_value_object(
-        AttributeTarget $attributeTarget
+        AttributeTarget $attributeTarget,
     ) {
         $attributeTarget->getAttributeType()->willReturn('pim_catalog_number');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
@@ -54,25 +45,26 @@ class NumberUserIntentFactorySpec extends ObjectBehavior
             'an_attribute_code',
             null,
             null,
-            '123.5'
+            '123.5',
         );
 
         $this->create($attributeTarget, new NumberValue('123.5'))->shouldBeLike($expectedSetNumberValue);
     }
 
-    public function it_supports_target_attribute_type_catalog_number(
-        AttributeTarget $attributeTarget
+    public function it_only_supports_number_target_and_number_value(
+        AttributeTarget $validTarget,
+        AttributeTarget $invalidTarget,
     ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_number');
+        $validTarget->getAttributeType()->willReturn('pim_catalog_number');
+        $invalidTarget->getAttributeType()->willReturn('pim_catalog_asset_collection');
 
-        $this->supports($attributeTarget)->shouldReturn(true);
-    }
+        $validValue = new NumberValue('4');
+        $invalidValue = new StringValue('5');
 
-    public function it_does_not_support_others_target_attribute_type(
-        AttributeTarget $attributeTarget
-    ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_text');
+        $this->supports($validTarget, $validValue)->shouldReturn(true);
 
-        $this->supports($attributeTarget)->shouldReturn(false);
+        $this->supports($invalidTarget, $validValue)->shouldReturn(false);
+
+        $this->supports($validTarget, $invalidValue)->shouldReturn(false);
     }
 }

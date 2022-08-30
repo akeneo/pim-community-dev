@@ -21,5 +21,5 @@ interface UserIntentFactoryInterface
 {
     public function create(TargetInterface $target, ValueInterface $value): UserIntent;
 
-    public function supports(TargetInterface $target): bool;
+    public function supports(TargetInterface $target, ValueInterface $value): bool;
 }

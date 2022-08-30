@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\BooleanUserIntentFactory;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\DateUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\DateValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use PhpSpec\ObjectBehavior;
 
-class BooleanUserIntentFactorySpec extends ObjectBehavior
+class DateUserIntentFactorySpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType(BooleanUserIntentFactory::class);
+        $this->shouldHaveType(DateUserIntentFactory::class);
     }
 
     public function it_implements_user_intent_factory_interface()
@@ -33,32 +33,42 @@ class BooleanUserIntentFactorySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(UserIntentFactoryInterface::class);
     }
 
-    public function it_creates_a_set_boolean_value_object(
+    public function it_creates_a_set_date_value_object(
         AttributeTarget $attributeTarget,
     ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_boolean');
+        $attributeTarget->getAttributeType()->willReturn('pim_catalog_date');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
         $attributeTarget->getChannel()->willReturn(null);
         $attributeTarget->getLocale()->willReturn(null);
+        $date = \DateTimeImmutable::createFromFormat(
+            'Y-m-d\TH:i:s.uP',
+            '2022-02-22T00:00:00.000000+0000',
+            new \DateTimeZone('UTC'),
+        );
 
-        $expected = new SetBooleanValue(
+        $expected = new SetDateValue(
             'an_attribute_code',
             null,
             null,
-            true
+            $date,
         );
 
-        $this->create($attributeTarget, new BooleanValue(true))->shouldBeLike($expected);
+        $this->create($attributeTarget, new DateValue($date))->shouldBeLike($expected);
     }
 
-    public function it_only_supports_boolean_target_and_boolean_value(
+    public function it_only_supports_date_target_and_date_value(
         AttributeTarget $validTarget,
         AttributeTarget $invalidTarget,
     ) {
-        $validTarget->getAttributeType()->willReturn('pim_catalog_boolean');
+        $validTarget->getAttributeType()->willReturn('pim_catalog_date');
         $invalidTarget->getAttributeType()->willReturn('pim_catalog_number');
+        $date = \DateTimeImmutable::createFromFormat(
+            'Y-m-d\TH:i:s.uP',
+            '2022-02-22T00:00:00.000000+0000',
+            new \DateTimeZone('UTC'),
+        );
 
-        $validValue = new BooleanValue(false);
+        $validValue = new DateValue($date);
         $invalidValue = new NumberValue('5');
 
         $this->supports($validTarget, $validValue)->shouldReturn(true);

@@ -16,7 +16,6 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
@@ -26,38 +25,23 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 final class CategoriesUserIntentFactory implements UserIntentFactoryInterface
 {
-    /**
-     * @param PropertyTarget $target
-     */
     public function create(TargetInterface $target, ValueInterface $value): CategoryUserIntent
     {
-        if (!$this->supports($target)) {
-            throw new \InvalidArgumentException('The target must be a PropertyTarget and be of type "categories"');
-        }
-
-        if (!$value instanceof ArrayValue
-            && !$value instanceof StringValue
-        ) {
-            throw new UnexpectedValueException($value, [ArrayValue::class, StringValue::class], self::class);
-        }
-
         if ($value instanceof StringValue) {
             $value = new ArrayValue([$value->getValue()]);
         }
 
         return match ($target->getActionIfNotEmpty()) {
-            TargetInterface::ACTION_ADD => new AddCategories(
-                $value->getValue(),
-            ),
-            TargetInterface::ACTION_SET => new SetCategories(
-                $value->getValue(),
-            ),
+            TargetInterface::ACTION_ADD => new AddCategories($value->getValue()),
+            TargetInterface::ACTION_SET => new SetCategories($value->getValue()),
             default => throw new \LogicException('Unknown action if not empty'),
         };
     }
 
-    public function supports(TargetInterface $target): bool
+    public function supports(TargetInterface $target, ValueInterface $value): bool
     {
-        return $target instanceof PropertyTarget && 'categories' === $target->getCode();
+        return $target instanceof PropertyTarget
+            && 'categories' === $target->getCode()
+            && ($value instanceof ArrayValue || $value instanceof StringValue);
     }
 }

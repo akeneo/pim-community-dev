@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
@@ -30,28 +30,31 @@ final class MultiReferenceEntityUserIntentFactory implements UserIntentFactoryIn
      */
     public function create(TargetInterface $target, ValueInterface $value): UserIntent
     {
-        if (!$this->supports($target)) {
-            throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "akeneo_reference_entity_collection"');
-        }
-
-        if (!$value instanceof ArrayValue && !$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, [ArrayValue::class, StringValue::class], self::class);
-        }
-
         if ($value instanceof StringValue) {
             $value = new ArrayValue([$value->getValue()]);
         }
 
-        return new SetMultiReferenceEntityValue(
-            $target->getCode(),
-            $target->getChannel(),
-            $target->getLocale(),
-            $value->getValue(),
-        );
+        return match ($target->getActionIfNotEmpty()) {
+            TargetInterface::ACTION_ADD => new AddMultiReferenceEntityValue(
+                $target->getCode(),
+                $target->getChannel(),
+                $target->getLocale(),
+                $value->getValue(),
+            ),
+            TargetInterface::ACTION_SET => new SetMultiReferenceEntityValue(
+                $target->getCode(),
+                $target->getChannel(),
+                $target->getLocale(),
+                $value->getValue(),
+            ),
+            default => throw new \LogicException('Unknown action if not empty'),
+        };
     }
 
-    public function supports(TargetInterface $target): bool
+    public function supports(TargetInterface $target, ValueInterface $value): bool
     {
-        return $target instanceof AttributeTarget && 'akeneo_reference_entity_collection' === $target->getAttributeType();
+        return $target instanceof AttributeTarget
+            && 'akeneo_reference_entity_collection' === $target->getAttributeType()
+            && ($value instanceof ArrayValue || $value instanceof StringValue);
     }
 }

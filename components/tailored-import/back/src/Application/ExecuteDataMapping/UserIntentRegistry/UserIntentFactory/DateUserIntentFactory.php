@@ -28,14 +28,6 @@ final class DateUserIntentFactory implements UserIntentFactoryInterface
      */
     public function create(TargetInterface $target, ValueInterface $value): ValueUserIntent
     {
-        if (!$this->supports($target)) {
-            throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_date"');
-        }
-
-        if (!$value instanceof DateValue) {
-            throw new \InvalidArgumentException(sprintf('DateUserFactory only supports Date value, %s given', $value::class));
-        }
-
         return new SetDateValue(
             $target->getCode(),
             $target->getChannel(),
@@ -44,8 +36,10 @@ final class DateUserIntentFactory implements UserIntentFactoryInterface
         );
     }
 
-    public function supports(TargetInterface $target): bool
+    public function supports(TargetInterface $target, ValueInterface $value): bool
     {
-        return $target instanceof AttributeTarget && 'pim_catalog_date' === $target->getAttributeType();
+        return $target instanceof AttributeTarget
+            && 'pim_catalog_date' === $target->getAttributeType()
+            && $value instanceof DateValue;
     }
 }

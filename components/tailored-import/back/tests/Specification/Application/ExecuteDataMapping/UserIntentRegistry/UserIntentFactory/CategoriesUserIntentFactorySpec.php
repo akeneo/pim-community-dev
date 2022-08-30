@@ -19,6 +19,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegi
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use PhpSpec\ObjectBehavior;
 
@@ -32,19 +33,6 @@ class CategoriesUserIntentFactorySpec extends ObjectBehavior
     public function it_implements_user_intent_factory_interface()
     {
         $this->shouldBeAnInstanceOf(UserIntentFactoryInterface::class);
-    }
-
-    public function it_throws_an_exception_when_target_type_is_invalid()
-    {
-        $propertyTarget = PropertyTarget::create(
-            'families',
-            PropertyTarget::ACTION_ADD,
-            PropertyTarget::IF_EMPTY_CLEAR
-        );
-        $value = new ArrayValue(['t-shirt']);
-
-        $this->shouldThrow(new \InvalidArgumentException('The target must be a PropertyTarget and be of type "categories"'))
-            ->during('create', [$propertyTarget, $value]);
     }
 
     public function it_creates_a_set_categories_object()
@@ -79,25 +67,23 @@ class CategoriesUserIntentFactorySpec extends ObjectBehavior
         $this->create($propertyTarget, new ArrayValue(['a_category']))->shouldBeLike($expected);
     }
 
-    public function it_supports_target_type_categories()
-    {
-        $propertyTarget = PropertyTarget::create(
-            'categories',
-            PropertyTarget::ACTION_ADD,
-            PropertyTarget::IF_EMPTY_CLEAR
-        );
+    public function it_only_supports_categories_target_and_array_and_string_values(
+        PropertyTarget $validTarget,
+        PropertyTarget $invalidTarget,
+    ) {
+        $validTarget->getCode()->willReturn('categories');
+        $invalidTarget->getCode()->willReturn('family');
 
-        $this->supports($propertyTarget)->shouldReturn(true);
-    }
+        $validValue = new ArrayValue(['coucou']);
+        $anotherValidValue = new StringValue('coucou');
+        $invalidValue = new NumberValue('5');
 
-    public function it_does_not_support_others_target_type()
-    {
-        $propertyTarget = PropertyTarget::create(
-            'families',
-            PropertyTarget::ACTION_ADD,
-            PropertyTarget::IF_EMPTY_CLEAR
-        );
+        $this->supports($validTarget, $validValue)->shouldReturn(true);
+        $this->supports($validTarget, $anotherValidValue)->shouldReturn(true);
 
-        $this->supports($propertyTarget)->shouldReturn(false);
+        $this->supports($invalidTarget, $validValue)->shouldReturn(false);
+        $this->supports($invalidTarget, $anotherValidValue)->shouldReturn(false);
+
+        $this->supports($validTarget, $invalidValue)->shouldReturn(false);
     }
 }

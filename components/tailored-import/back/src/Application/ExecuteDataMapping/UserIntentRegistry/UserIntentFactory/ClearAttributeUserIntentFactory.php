@@ -13,33 +13,30 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
-final class BooleanUserIntentFactory implements UserIntentFactoryInterface
+final class ClearAttributeUserIntentFactory implements UserIntentFactoryInterface
 {
     /**
      * @param AttributeTarget $target
      */
-    public function create(TargetInterface $target, ValueInterface $value): ValueUserIntent
+    public function create(TargetInterface $target, ValueInterface $value): UserIntent
     {
-        return new SetBooleanValue(
+        return new ClearValue(
             $target->getCode(),
             $target->getChannel(),
             $target->getLocale(),
-            $value->getValue(),
         );
     }
 
     public function supports(TargetInterface $target, ValueInterface $value): bool
     {
-        return $target instanceof AttributeTarget
-            && 'pim_catalog_boolean' === $target->getAttributeType()
-            && $value instanceof BooleanValue;
+        return $target instanceof AttributeTarget && $value instanceof NullValue;
     }
 }

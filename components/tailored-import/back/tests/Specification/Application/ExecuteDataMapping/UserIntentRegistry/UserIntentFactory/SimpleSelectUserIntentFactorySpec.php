@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\SimpleSelectUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use PhpSpec\ObjectBehavior;
 
@@ -32,18 +33,8 @@ class SimpleSelectUserIntentFactorySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(UserIntentFactoryInterface::class);
     }
 
-    public function it_throws_an_exception_when_target_type_is_invalid(
-        AttributeTarget $attributeTarget
-    ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_text');
-        $value = new StringValue('f');
-
-        $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_simpleselect"'))
-            ->during('create', [$attributeTarget, $value]);
-    }
-
-    public function it_create_a_set_simple_select_value_object(
-        AttributeTarget $attributeTarget
+    public function it_creates_a_set_simple_select_value_object(
+        AttributeTarget $attributeTarget,
     ) {
         $attributeTarget->getAttributeType()->willReturn('pim_catalog_simpleselect');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
@@ -54,25 +45,26 @@ class SimpleSelectUserIntentFactorySpec extends ObjectBehavior
             'an_attribute_code',
             null,
             null,
-            'a_value'
+            'a_value',
         );
 
         $this->create($attributeTarget, new StringValue('a_value'))->shouldBeLike($expected);
     }
 
-    public function it_supports_target_attribute_type_catalog_simpleselect(
-        AttributeTarget $attributeTarget
+    public function it_only_supports_simple_select_target_and_string_value(
+        AttributeTarget $validTarget,
+        AttributeTarget $invalidTarget,
     ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $validTarget->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $invalidTarget->getAttributeType()->willReturn('pim_catalog_number');
 
-        $this->supports($attributeTarget)->shouldReturn(true);
-    }
+        $validValue = new StringValue('coucou');
+        $invalidValue = new NumberValue('5');
 
-    public function it_does_not_support_others_target_attribute_type(
-        AttributeTarget $attributeTarget
-    ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_number');
+        $this->supports($validTarget, $validValue)->shouldReturn(true);
 
-        $this->supports($attributeTarget)->shouldReturn(false);
+        $this->supports($invalidTarget, $validValue)->shouldReturn(false);
+
+        $this->supports($validTarget, $invalidValue)->shouldReturn(false);
     }
 }

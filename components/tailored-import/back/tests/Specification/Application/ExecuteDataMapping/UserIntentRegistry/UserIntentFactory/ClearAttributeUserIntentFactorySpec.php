@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\BooleanUserIntentFactory;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\ClearAttributeUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use PhpSpec\ObjectBehavior;
 
-class BooleanUserIntentFactorySpec extends ObjectBehavior
+class ClearAttributeUserIntentFactorySpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType(BooleanUserIntentFactory::class);
+        $this->shouldHaveType(ClearAttributeUserIntentFactory::class);
     }
 
     public function it_implements_user_intent_factory_interface()
@@ -33,38 +33,26 @@ class BooleanUserIntentFactorySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(UserIntentFactoryInterface::class);
     }
 
-    public function it_creates_a_set_boolean_value_object(
+    public function it_creates_a_clear_value_user_intent(
         AttributeTarget $attributeTarget,
     ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_boolean');
+        $attributeTarget->getAttributeType()->willReturn('pim_catalog_text');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
         $attributeTarget->getChannel()->willReturn(null);
         $attributeTarget->getLocale()->willReturn(null);
 
-        $expected = new SetBooleanValue(
-            'an_attribute_code',
-            null,
-            null,
-            true
-        );
+        $expected = new ClearValue('an_attribute_code', null, null);
 
-        $this->create($attributeTarget, new BooleanValue(true))->shouldBeLike($expected);
+        $this->create($attributeTarget, new NullValue())->shouldBeLike($expected);
     }
 
-    public function it_only_supports_boolean_target_and_boolean_value(
+    public function it_only_supports_null_value(
         AttributeTarget $validTarget,
-        AttributeTarget $invalidTarget,
     ) {
-        $validTarget->getAttributeType()->willReturn('pim_catalog_boolean');
-        $invalidTarget->getAttributeType()->willReturn('pim_catalog_number');
-
-        $validValue = new BooleanValue(false);
+        $validValue = new NullValue(false);
         $invalidValue = new NumberValue('5');
 
         $this->supports($validTarget, $validValue)->shouldReturn(true);
-
-        $this->supports($invalidTarget, $validValue)->shouldReturn(false);
-
         $this->supports($validTarget, $invalidValue)->shouldReturn(false);
     }
 }

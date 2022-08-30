@@ -13,24 +13,22 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
-final class EnabledUserIntentFactory implements UserIntentFactoryInterface
+final class ClearFamilyUserIntentFactory implements UserIntentFactoryInterface
 {
-    public function create(TargetInterface $target, ValueInterface $value): SetEnabled
+    public function create(TargetInterface $target, ValueInterface $value): UserIntent
     {
-        return new SetEnabled($value->getValue());
+        return new RemoveFamily();
     }
 
     public function supports(TargetInterface $target, ValueInterface $value): bool
     {
-        return $target instanceof PropertyTarget
-            && 'enabled' === $target->getCode()
-            && $value instanceof BooleanValue;
+        return 'family' === $target->getCode() && $value instanceof NullValue;
     }
 }

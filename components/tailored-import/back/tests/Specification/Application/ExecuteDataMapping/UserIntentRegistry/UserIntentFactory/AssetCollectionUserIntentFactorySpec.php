@@ -19,6 +19,8 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegi
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use PhpSpec\ObjectBehavior;
 
 class AssetCollectionUserIntentFactorySpec extends ObjectBehavior
@@ -33,18 +35,8 @@ class AssetCollectionUserIntentFactorySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(UserIntentFactoryInterface::class);
     }
 
-    public function it_throws_an_exception_when_target_type_is_invalid(
-        AttributeTarget $attributeTarget
-    ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_textarea');
-        $value = new ArrayValue(['f']);
-
-        $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_asset_collection"'))
-            ->during('create', [$attributeTarget, $value]);
-    }
-
     public function it_creates_a_set_asset_collection_value_object(
-        AttributeTarget $attributeTarget
+        AttributeTarget $attributeTarget,
     ) {
         $attributeTarget->getAttributeType()->willReturn('pim_catalog_asset_collection');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
@@ -56,14 +48,14 @@ class AssetCollectionUserIntentFactorySpec extends ObjectBehavior
             'an_attribute_code',
             null,
             null,
-            ['a_value']
+            ['a_value'],
         );
 
         $this->create($attributeTarget, new ArrayValue(['a_value']))->shouldBeLike($expected);
     }
 
     public function it_creates_an_add_asset_collection_value_object(
-        AttributeTarget $attributeTarget
+        AttributeTarget $attributeTarget,
     ) {
         $attributeTarget->getAttributeType()->willReturn('pim_catalog_asset_collection');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
@@ -75,25 +67,29 @@ class AssetCollectionUserIntentFactorySpec extends ObjectBehavior
             'an_attribute_code',
             null,
             null,
-            ['a_value']
+            ['a_value'],
         );
 
         $this->create($attributeTarget, new ArrayValue(['a_value']))->shouldBeLike($expected);
     }
 
-    public function it_supports_target_attribute_type_asset_collection(
-        AttributeTarget $attributeTarget
+    public function it_only_supports_asset_collection_target_and_array_and_string_values(
+        AttributeTarget $validTarget,
+        AttributeTarget $invalidTarget,
     ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_asset_collection');
+        $validTarget->getAttributeType()->willReturn('pim_catalog_asset_collection');
+        $invalidTarget->getAttributeType()->willReturn('pim_catalog_number');
 
-        $this->supports($attributeTarget)->shouldReturn(true);
-    }
+        $validValue = new ArrayValue(['coucou']);
+        $anotherValidValue = new StringValue('coucou');
+        $invalidValue = new NumberValue('5');
 
-    public function it_does_not_support_others_target_attribute_type(
-        AttributeTarget $attributeTarget
-    ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_number');
+        $this->supports($validTarget, $validValue)->shouldReturn(true);
+        $this->supports($validTarget, $anotherValidValue)->shouldReturn(true);
 
-        $this->supports($attributeTarget)->shouldReturn(false);
+        $this->supports($invalidTarget, $validValue)->shouldReturn(false);
+        $this->supports($invalidTarget, $anotherValidValue)->shouldReturn(false);
+
+        $this->supports($validTarget, $invalidValue)->shouldReturn(false);
     }
 }

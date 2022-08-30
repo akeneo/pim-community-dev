@@ -15,7 +15,6 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
@@ -26,17 +25,10 @@ final class MeasurementUserIntentFactory implements UserIntentFactoryInterface
 {
     /**
      * @param AttributeTarget $target
+     * @param MeasurementValue $value
      */
     public function create(TargetInterface $target, ValueInterface $value): ValueUserIntent
     {
-        if (!$this->supports($target)) {
-            throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_metric"');
-        }
-
-        if (!$value instanceof MeasurementValue) {
-            throw new UnexpectedValueException($value, MeasurementValue::class, self::class);
-        }
-
         return new SetMeasurementValue(
             $target->getCode(),
             $target->getChannel(),
@@ -46,8 +38,10 @@ final class MeasurementUserIntentFactory implements UserIntentFactoryInterface
         );
     }
 
-    public function supports(TargetInterface $target): bool
+    public function supports(TargetInterface $target, ValueInterface $value): bool
     {
-        return $target instanceof AttributeTarget && 'pim_catalog_metric' === $target->getAttributeType();
+        return $target instanceof AttributeTarget
+            && 'pim_catalog_metric' === $target->getAttributeType()
+            && $value instanceof MeasurementValue;
     }
 }

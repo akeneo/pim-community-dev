@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Target;
 
 use Webmozart\Assert\Assert;
 
-final class PropertyTarget implements TargetInterface
+class PropertyTarget implements TargetInterface
 {
     public const TYPE = 'property';
 

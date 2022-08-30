@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingResult;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
@@ -55,7 +56,7 @@ final class HandleMultiReferenceEntityTest extends HandleDataMappingTestCase
                             'akeneo_reference_entity_collection',
                             null,
                             null,
-                            'set',
+                            'add',
                             'skip',
                             null,
                         ),
@@ -84,7 +85,7 @@ final class HandleMultiReferenceEntityTest extends HandleDataMappingTestCase
                         userId: 1,
                         productIdentifier: 'this-is-a-sku',
                         userIntents: [
-                            new SetMultiReferenceEntityValue('tshirt_style', null, null, ['vneck,long_sleeve,sportwear']),
+                            new AddMultiReferenceEntityValue('tshirt_style', null, null, ['vneck,long_sleeve,sportwear']),
                             new SetMultiReferenceEntityValue('collection', 'ecommerce', 'fr_FR', ['autumn_2021,summer_2022,winter_2022']),
                         ],
                     ),

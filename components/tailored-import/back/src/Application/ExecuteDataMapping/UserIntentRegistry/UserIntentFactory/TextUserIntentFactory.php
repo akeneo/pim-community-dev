@@ -15,7 +15,6 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
@@ -29,14 +28,6 @@ final class TextUserIntentFactory implements UserIntentFactoryInterface
      */
     public function create(TargetInterface $target, ValueInterface $value): ValueUserIntent
     {
-        if (!$this->supports($target)) {
-            throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_text"');
-        }
-
-        if (!$value instanceof StringValue) {
-            throw new UnexpectedValueException($value, StringValue::class, self::class);
-        }
-
         return new SetTextValue(
             $target->getCode(),
             $target->getChannel(),
@@ -45,8 +36,10 @@ final class TextUserIntentFactory implements UserIntentFactoryInterface
         );
     }
 
-    public function supports(TargetInterface $target): bool
+    public function supports(TargetInterface $target, ValueInterface $value): bool
     {
-        return $target instanceof AttributeTarget && 'pim_catalog_text' === $target->getAttributeType();
+        return $target instanceof AttributeTarget
+            && 'pim_catalog_text' === $target->getAttributeType()
+            && $value instanceof StringValue;
     }
 }

@@ -16,7 +16,6 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue as PriceValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
@@ -27,17 +26,10 @@ final class PriceUserIntentFactory implements UserIntentFactoryInterface
 {
     /**
      * @param AttributeTarget $target
+     * @param PriceValue $value
      */
     public function create(TargetInterface $target, ValueInterface $value): ValueUserIntent
     {
-        if (!$this->supports($target)) {
-            throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_price_collection"');
-        }
-
-        if (!$value instanceof PriceValue) {
-            throw new UnexpectedValueException($value, PriceValue::class, self::class);
-        }
-
         return new SetPriceValue(
             $target->getCode(),
             $target->getChannel(),
@@ -46,8 +38,10 @@ final class PriceUserIntentFactory implements UserIntentFactoryInterface
         );
     }
 
-    public function supports(TargetInterface $target): bool
+    public function supports(TargetInterface $target, ValueInterface $value): bool
     {
-        return $target instanceof AttributeTarget && 'pim_catalog_price_collection' === $target->getAttributeType();
+        return $target instanceof AttributeTarget
+            && 'pim_catalog_price_collection' === $target->getAttributeType()
+            && $value instanceof PriceValue;
     }
 }

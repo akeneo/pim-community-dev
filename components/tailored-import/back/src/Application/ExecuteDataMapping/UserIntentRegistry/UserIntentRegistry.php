@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry;
 
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 final class UserIntentRegistry
 {
@@ -24,10 +25,10 @@ final class UserIntentRegistry
     {
     }
 
-    public function getUserIntentFactory(TargetInterface $target): UserIntentFactoryInterface
+    public function getUserIntentFactory(TargetInterface $target, ValueInterface $value): UserIntentFactoryInterface
     {
         foreach ($this->factories as $factory) {
-            if ($factory->supports($target)) {
+            if ($factory->supports($target, $value)) {
                 return $factory;
             }
         }

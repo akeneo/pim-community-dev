@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\BooleanUserIntentFactory;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearPriceValue;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\ClearPriceUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\PriceValue;
 use PhpSpec\ObjectBehavior;
 
-class BooleanUserIntentFactorySpec extends ObjectBehavior
+class ClearPriceUserIntentFactorySpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType(BooleanUserIntentFactory::class);
+        $this->shouldHaveType(ClearPriceUserIntentFactory::class);
     }
 
     public function it_implements_user_intent_factory_interface()
@@ -33,33 +33,29 @@ class BooleanUserIntentFactorySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(UserIntentFactoryInterface::class);
     }
 
-    public function it_creates_a_set_boolean_value_object(
+    public function it_creates_a_clear_price_user_intent(
         AttributeTarget $attributeTarget,
     ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_boolean');
+        $attributeTarget->getAttributeType()->willReturn('pim_catalog_price_collection');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
         $attributeTarget->getChannel()->willReturn(null);
         $attributeTarget->getLocale()->willReturn(null);
+        $attributeTarget->getSourceConfiguration()->willReturn(['currency' => 'USD']);
 
-        $expected = new SetBooleanValue(
-            'an_attribute_code',
-            null,
-            null,
-            true
-        );
+        $expected = new ClearPriceValue('an_attribute_code', null, null, 'USD');
 
-        $this->create($attributeTarget, new BooleanValue(true))->shouldBeLike($expected);
+        $this->create($attributeTarget, new NullValue())->shouldBeLike($expected);
     }
 
-    public function it_only_supports_boolean_target_and_boolean_value(
+    public function it_only_supports_price_target_and_null_value(
         AttributeTarget $validTarget,
         AttributeTarget $invalidTarget,
     ) {
-        $validTarget->getAttributeType()->willReturn('pim_catalog_boolean');
+        $validTarget->getAttributeType()->willReturn('pim_catalog_price_collection');
         $invalidTarget->getAttributeType()->willReturn('pim_catalog_number');
 
-        $validValue = new BooleanValue(false);
-        $invalidValue = new NumberValue('5');
+        $validValue = new NullValue();
+        $invalidValue = new PriceValue('5', 'USD');
 
         $this->supports($validTarget, $validValue)->shouldReturn(true);
 

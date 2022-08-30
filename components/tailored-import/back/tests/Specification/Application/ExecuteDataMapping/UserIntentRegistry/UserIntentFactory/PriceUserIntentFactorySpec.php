@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\PriceUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\PriceValue;
 use PhpSpec\ObjectBehavior;
 
@@ -33,18 +34,8 @@ class PriceUserIntentFactorySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(UserIntentFactoryInterface::class);
     }
 
-    public function it_throws_an_exception_when_target_type_is_invalid(
-        AttributeTarget $attributeTarget
-    ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_textarea');
-        $value = new PriceValue('123', 'EUR');
-
-        $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_price_collection"'))
-            ->during('create', [$attributeTarget, $value]);
-    }
-
-    public function it_create_a_set_price_value_object(
-        AttributeTarget $attributeTarget
+    public function it_creates_a_set_price_value_object(
+        AttributeTarget $attributeTarget,
     ) {
         $attributeTarget->getAttributeType()->willReturn('pim_catalog_price_collection');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
@@ -61,19 +52,20 @@ class PriceUserIntentFactorySpec extends ObjectBehavior
         $this->create($attributeTarget, new PriceValue('12.5', 'EUR'))->shouldBeLike($expected);
     }
 
-    public function it_supports_target_attribute_type_catalog_price_collection(
-        AttributeTarget $attributeTarget
+    public function it_only_supports_price_target_and_price_value(
+        AttributeTarget $validTarget,
+        AttributeTarget $invalidTarget,
     ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $validTarget->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $invalidTarget->getAttributeType()->willReturn('pim_catalog_number');
 
-        $this->supports($attributeTarget)->shouldReturn(true);
-    }
+        $validValue = new PriceValue('3', 'USD');
+        $invalidValue = new NumberValue('5');
 
-    public function it_does_not_support_others_target_attribute_type(
-        AttributeTarget $attributeTarget
-    ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_number');
+        $this->supports($validTarget, $validValue)->shouldReturn(true);
 
-        $this->supports($attributeTarget)->shouldReturn(false);
+        $this->supports($invalidTarget, $validValue)->shouldReturn(false);
+
+        $this->supports($validTarget, $invalidValue)->shouldReturn(false);
     }
 }

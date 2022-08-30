@@ -1,4 +1,24 @@
 services:
+  akeneo.tailored_import.user_intent_factory.clear_price:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\ClearPriceUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory, priority: 101 }
+
+  akeneo.tailored_import.user_intent_factory.clear_categories:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\ClearCategoriesUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory, priority: 101 }
+
+  akeneo.tailored_import.user_intent_factory.clear_family:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\ClearFamilyUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory, priority: 101 }
+
+  akeneo.tailored_import.user_intent_factory.clear_attribute:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\ClearAttributeUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory, priority: 100 }
+
   akeneo.tailored_import.user_intent_factory.asset:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\AssetCollectionUserIntentFactory
     tags:

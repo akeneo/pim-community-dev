@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\FamilyUserIntentFactory;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\EnabledUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use PhpSpec\ObjectBehavior;
 
-class FamilyUserIntentFactorySpec extends ObjectBehavior
+class EnabledUserIntentFactorySpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType(FamilyUserIntentFactory::class);
+        $this->shouldHaveType(EnabledUserIntentFactory::class);
     }
 
     public function it_implements_user_intent_factory_interface()
@@ -33,27 +33,27 @@ class FamilyUserIntentFactorySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(UserIntentFactoryInterface::class);
     }
 
-    public function it_creates_a_set_family_object()
+    public function it_creates_a_set_enabled_object()
     {
         $propertyTarget = PropertyTarget::create(
-            'family',
+            'enabled',
             PropertyTarget::ACTION_SET,
             PropertyTarget::IF_EMPTY_CLEAR,
         );
 
-        $expected = new SetFamily('a_family');
+        $expected = new SetEnabled(true);
 
-        $this->create($propertyTarget, new StringValue('a_family'))->shouldBeLike($expected);
+        $this->create($propertyTarget, new BooleanValue(true))->shouldBeLike($expected);
     }
 
-    public function it_only_supports_family_target_and_string_value(
+    public function it_only_supports_enabled_target_and_boolean_value(
         PropertyTarget $validTarget,
         PropertyTarget $invalidTarget,
     ) {
-        $validTarget->getCode()->willReturn('family');
+        $validTarget->getCode()->willReturn('enabled');
         $invalidTarget->getCode()->willReturn('categories');
 
-        $validValue = new StringValue('coucou');
+        $validValue = new BooleanValue(false);
         $invalidValue = new NumberValue('5');
 
         $this->supports($validTarget, $validValue)->shouldReturn(true);

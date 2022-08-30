@@ -13,19 +13,21 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\FamilyUserIntentFactory;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\ClearCategoriesUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use PhpSpec\ObjectBehavior;
 
-class FamilyUserIntentFactorySpec extends ObjectBehavior
+class ClearCategoriesUserIntentFactorySpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType(FamilyUserIntentFactory::class);
+        $this->shouldHaveType(ClearCategoriesUserIntentFactory::class);
     }
 
     public function it_implements_user_intent_factory_interface()
@@ -33,27 +35,24 @@ class FamilyUserIntentFactorySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(UserIntentFactoryInterface::class);
     }
 
-    public function it_creates_a_set_family_object()
-    {
-        $propertyTarget = PropertyTarget::create(
-            'family',
-            PropertyTarget::ACTION_SET,
-            PropertyTarget::IF_EMPTY_CLEAR,
-        );
+    public function it_creates_a_clear_categories_user_intent(
+        PropertyTarget $target,
+    ) {
+        $target->getCode()->willReturn('categories');
 
-        $expected = new SetFamily('a_family');
+        $expected = new SetCategories([]);
 
-        $this->create($propertyTarget, new StringValue('a_family'))->shouldBeLike($expected);
+        $this->create($target, new NullValue())->shouldBeLike($expected);
     }
 
-    public function it_only_supports_family_target_and_string_value(
+    public function it_only_supports_categories_target_and_null_value(
         PropertyTarget $validTarget,
         PropertyTarget $invalidTarget,
     ) {
-        $validTarget->getCode()->willReturn('family');
-        $invalidTarget->getCode()->willReturn('categories');
+        $validTarget->getCode()->willReturn('categories');
+        $invalidTarget->getCode()->willReturn('family');
 
-        $validValue = new StringValue('coucou');
+        $validValue = new NullValue(['coucou']);
         $invalidValue = new NumberValue('5');
 
         $this->supports($validTarget, $validValue)->shouldReturn(true);

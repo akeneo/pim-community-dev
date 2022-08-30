@@ -14,11 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearPriceValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
@@ -66,18 +61,12 @@ class ExecuteDataMappingHandler
 
             if ($value instanceof InvalidValue) {
                 $invalidValues[] = $value;
+
                 continue;
             }
 
-            if ($value instanceof NullValue) {
-                $userIntents[] = $this->getClearIfEmptyUserIntent($target);
-            } else {
-                $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target);
-                $userIntents[] = $userIntentFactory->create(
-                    $target,
-                    $value,
-                );
-            }
+            $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target, $value);
+            $userIntents[] = $userIntentFactory->create($target, $value);
         }
 
         if (null === $productIdentifier) {
@@ -126,31 +115,5 @@ class ExecuteDataMappingHandler
         $uniqueValues = array_filter(array_values(array_unique($values)));
 
         return empty($uniqueValues) ? new NullValue() : new ArrayValue($uniqueValues);
-    }
-
-    private function getClearIfEmptyUserIntent(TargetInterface $target): UserIntent
-    {
-        if ($target instanceof AttributeTarget && 'pim_catalog_price_collection' === $target->getAttributeType()) {
-            return new ClearPriceValue(
-                $target->getCode(),
-                $target->getChannel(),
-                $target->getLocale(),
-                $target->getSourceConfiguration()['currency'],
-            );
-        }
-
-        if ($target instanceof AttributeTarget) {
-            return new ClearValue(
-                $target->getCode(),
-                $target->getChannel(),
-                $target->getLocale(),
-            );
-        }
-
-        return match ($target->getCode()) {
-            'family' => new RemoveFamily(),
-            'categories' => new SetCategories([]),
-            default => throw new \Exception(sprintf('Unhandled "Clear if empty" action on property target "%s"', $target->getCode())),
-        };
     }
 }

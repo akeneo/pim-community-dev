@@ -18,6 +18,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegi
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\MeasurementValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use PhpSpec\ObjectBehavior;
 
 class MeasurementUserIntentFactorySpec extends ObjectBehavior
@@ -32,18 +33,8 @@ class MeasurementUserIntentFactorySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(UserIntentFactoryInterface::class);
     }
 
-    public function it_throws_an_exception_when_target_type_is_invalid(
-        AttributeTarget $attributeTarget
-    ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_text');
-        $value = new MeasurementValue('1', 'GRAM');
-
-        $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_metric"'))
-            ->during('create', [$attributeTarget, $value]);
-    }
-
     public function it_creates_a_set_measurement_value_object(
-        AttributeTarget $attributeTarget
+        AttributeTarget $attributeTarget,
     ) {
         $attributeTarget->getAttributeType()->willReturn('pim_catalog_metric');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
@@ -62,19 +53,20 @@ class MeasurementUserIntentFactorySpec extends ObjectBehavior
         $this->create($attributeTarget, new MeasurementValue('123.5', 'METER'))->shouldBeLike($expected);
     }
 
-    public function it_supports_target_attribute_type_catalog_metric(
-        AttributeTarget $attributeTarget
+    public function it_only_supports_measurement_target_and_measurement_value(
+        AttributeTarget $validTarget,
+        AttributeTarget $invalidTarget,
     ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_metric');
+        $validTarget->getAttributeType()->willReturn('pim_catalog_metric');
+        $invalidTarget->getAttributeType()->willReturn('pim_catalog_number');
 
-        $this->supports($attributeTarget)->shouldReturn(true);
-    }
+        $validValue = new MeasurementValue('123.5', 'METER');
+        $invalidValue = new NumberValue('5');
 
-    public function it_does_not_support_others_target_attribute_type(
-        AttributeTarget $attributeTarget
-    ) {
-        $attributeTarget->getAttributeType()->willReturn('pim_catalog_text');
+        $this->supports($validTarget, $validValue)->shouldReturn(true);
 
-        $this->supports($attributeTarget)->shouldReturn(false);
+        $this->supports($invalidTarget, $validValue)->shouldReturn(false);
+
+        $this->supports($validTarget, $invalidValue)->shouldReturn(false);
     }
 }
