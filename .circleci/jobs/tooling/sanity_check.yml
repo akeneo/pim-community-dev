@@ -22,7 +22,7 @@ jobs:
             - attach_workspace:
                   at: ~/
             - checkout
-            - install_yq
+            - install_yq_v3
             - run:
                   name: Configure cypress deployment validation for <<parameters.PRODUCT_TYPE>>
                   command: |

@@ -76,15 +76,15 @@ commands:
                       echo export CLUSTER_NAME=${CLUSTER_NAME} >> $BASH_ENV
                       echo export GOOGLE_CLUSTER_ZONE=${GOOGLE_CLUSTER_ZONE} >> $BASH_ENV
 
-    install_yq:
-        description: "Install yq"
+    install_yq_v3:
+        description: "Install yq (v3)"
         steps:
             - run:
-                  name: Install yq
+                  name: Install yq (v3)
                   command: |
-                      wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
-                      sudo mv yq_linux_386 /usr/local/bin/yq
-                      echo "e7fa464149a450d068311a244f403757408a745b  /usr/local/bin/yq" > /tmp/checksum
+                      wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64
+                      sudo mv yq_linux_amd64 /usr/local/bin/yq
+                      echo "2cc8897984d1ab43b6799aff5eca905d37552fdf  /usr/local/bin/yq" > /tmp/checksum
                       sha1sum -c /tmp/checksum
                       sudo chmod +x /usr/local/bin/yq
 
@@ -146,7 +146,7 @@ commands:
         - run:
             name: DATADOG migration logs
             command: |
-              if [ "$USE_EDITION_FLAG" = true ] ; then TYPE=srnt ; fi
+              [ "$USE_EDITION_FLAG" = true ] && TYPE=srnt
               FROM_TS="$(date -d '1 hour ago' '+%Y-%m-%dT%H:%M:%S%z' | cut -c1-22):00"
               TO_TS="$(date -d '3 hours' '+%Y-%m-%dT%H:%M:%S%z' | cut -c1-22):00"
               LOGS=$(curl --location -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request POST "<<parameters.dd_domain>>/api/v2/logs/events/search" --data-raw '{"filter": {"query": "kube_namespace:'"<<parameters.pfid>>"' component:hook-upgrader container_name:pim-upgrade took","indexes": ["main"],"from": "'"${FROM_TS}"'","to": "'"${TO_TS}"'"},"sort": "timestamp","page": {"limit": 100}}')
@@ -166,3 +166,14 @@ commands:
               name: skip if asked
               command:   |
                   [ "<< parameters.skip >>" = "true" ] && circleci step halt || echo "Skipping parameter received:  << parameters.skip >>"
+
+    set_docker_gcp_mirror:
+        description: "Configure GCP Docker registry mirrors"
+        steps:
+          - run:
+              name: Set GCP Docker registry mirror
+              command:   |
+                # see https://cloud.google.com/container-registry/docs/pulling-cached-images#configure
+                [ ! -f /etc/docker/daemon.json ] && sudo touch /etc/docker/daemon.json
+                sudo yq w -jPi /etc/docker/daemon.json "registry-mirrors[+]" "https://mirror.gcr.io"
+                sudo service docker restart

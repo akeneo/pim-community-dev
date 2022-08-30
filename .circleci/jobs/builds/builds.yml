@@ -20,11 +20,12 @@ jobs:
                     name: Install cUrl
                     command: apk --no-cache add curl
             -   run:
-                    name: Install yq
+                    name: Install yq (v3)
                     command: |
-                        wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
-                        mv yq_linux_386 /usr/local/bin/yq
-                        echo "e7fa464149a450d068311a244f403757408a745b  /usr/local/bin/yq" > /tmp/checksum
+                        # Same as alias define in commamd>yml without sudo because of alpine/git docker image
+                        wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64
+                        mv yq_linux_amd64 /usr/local/bin/yq
+                        echo "2cc8897984d1ab43b6799aff5eca905d37552fdf  /usr/local/bin/yq" > /tmp/checksum
                         sha1sum -c /tmp/checksum
                         chmod +x /usr/local/bin/yq
             -   run:
@@ -92,6 +93,8 @@ jobs:
         steps:
             - attach_workspace:
                   at: ~/
+            - install_yq_v3
+            - set_docker_gcp_mirror
             - run:
                   name: Copy docker-compose.override.yml.dist
                   command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
@@ -271,6 +274,8 @@ jobs:
                       - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             - change_pim_onboarder_branch_steps
             - set_gcloud_config_dev
+            - install_yq_v3
+            - set_docker_gcp_mirror
             - run:
                   name: Define value for next steps
                   command: |
@@ -382,7 +387,8 @@ jobs:
                   fingerprints:
                       - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             - set_gcloud_config_dev
-            - install_yq
+            - install_yq_v3
+            - set_docker_gcp_mirror
             - when:
                   condition:
                       not:
@@ -486,7 +492,8 @@ jobs:
                   fingerprints:
                       - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             - set_gcloud_config_dev
-            - install_yq
+            - install_yq_v3
+            - set_docker_gcp_mirror
             - when:
                   condition:
                       not:
@@ -594,7 +601,8 @@ jobs:
                       - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             - change_pim_onboarder_branch_steps
             - set_gcloud_config_dev
-            - install_yq
+            - install_yq_v3
+            - set_docker_gcp_mirror
             - run:
                   name: Define value for next steps
                   command: |
@@ -658,6 +666,8 @@ jobs:
                       - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             - change_pim_onboarder_branch_steps
             - set_gcloud_config_pim_saas_dev
+            - install_yq_v3
+            - set_docker_gcp_mirror
             - run:
                   name: Define value for next steps
                   command: |
@@ -718,6 +728,8 @@ jobs:
             - attach_workspace:
                   at: ~/
             - set_gcloud_config_pim_saas_dev
+            - install_yq_v3
+            - set_docker_gcp_mirror
             - run:
                   name: Define value for next steps
                   command: |

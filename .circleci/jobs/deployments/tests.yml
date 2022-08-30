@@ -64,7 +64,7 @@ jobs:
                   at: ~/
             - set_gcloud_config_dev
             - restore_persisted_env_vars
-            - install_yq
+            - install_yq_v3
             - run:
                   name: Test Cronjob jobs exists
                   command: make -C deployments/ test-helm-cronjob
