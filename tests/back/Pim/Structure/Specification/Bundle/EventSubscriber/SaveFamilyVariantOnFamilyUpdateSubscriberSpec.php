@@ -74,7 +74,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
 
         $bulkFamilyVariantSaver->saveAll(
             [$familyVariants1, $familyVariants2],
-            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]
+            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => false]
         )->shouldBeCalled();
 
         $event->getSubject()->willReturn($family);
@@ -109,7 +109,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
 
         $bulkFamilyVariantSaver->saveAll(
             [$familyVariants3],
-            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]
+            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => false]
         )->shouldBeCalled();
 
         $event->getSubject()->willReturn($family);
@@ -252,7 +252,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $constraintViolationList->count()->willReturn(0);
         $bulkFamilyVariantSaver->saveAll(
             [$familyVariants1, $familyVariants2],
-            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]
+            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => false]
         )->shouldBeCalled();
 
         $this->onUnitarySave($event);
