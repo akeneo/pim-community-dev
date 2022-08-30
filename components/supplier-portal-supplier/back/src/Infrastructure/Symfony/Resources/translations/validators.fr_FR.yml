@@ -1,0 +1,14 @@
+supplier_portal:
+  supplier:
+    contributor_account:
+      validation:
+        min_password_length: Le mot de passe doit avoir au moins 8 caractères.
+        max_password_length: Le mot de passe ne doit pas dépasser 255 caractères.
+        must_contain_an_uppercase_letter: Le mot de passe doit inclure au moins une lettre majuscule.
+        must_contain_a_lowercase_letter: Le mot de passe doit inclure au moins une lettre minuscule.
+        must_contain_a_digit: Le mot de passe doit contenir au moins un chiffre.
+    product_file_dropping:
+      validation:
+        max_uploaded_filename_length: Le mot de passe ne doit pas dépasser 255 caractères.
+        max_uploaded_file_size: La taille du fichier ne doit pas dépasser 50 MB.
+        must_be_an_xlsx_file: Veuillez importer un fichier xlsx valide.
