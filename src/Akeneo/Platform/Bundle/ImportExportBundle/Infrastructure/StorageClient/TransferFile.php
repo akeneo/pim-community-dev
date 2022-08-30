@@ -36,7 +36,8 @@ final class TransferFile
         $destinationFilesystem->move($temporaryDestinationFilePath, $destinationFilePath);
     }
 
-    private function getTemporaryDestinationFilePath(string $destinationFilePath): string {
+    private function getTemporaryDestinationFilePath(string $destinationFilePath): string
+    {
         $destinationFilePathInfo = pathinfo($destinationFilePath);
 
         $dirname = '.' !== $destinationFilePathInfo['dirname'] ? $destinationFilePathInfo['dirname'] : '';
