@@ -22,10 +22,10 @@ services:
 
     Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag: ~
 
-    Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveRunningUsername: ~
+    Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername: ~
 
     Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\UpsertRunningUser:
         arguments:
             - '@Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface'
             - '@Akeneo\UserManagement\ServiceApi\UserRole\ListUserRoleInterface'
-            - '@Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveRunningUsername'
+            - '@Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername'

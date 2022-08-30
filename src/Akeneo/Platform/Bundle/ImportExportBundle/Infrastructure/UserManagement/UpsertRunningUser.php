@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveRunningUsername;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername;
 use Akeneo\UserManagement\ServiceApi\User\UpsertUserCommand;
 use Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface;
 use Akeneo\UserManagement\ServiceApi\UserRole\ListUserRoleInterface;
@@ -20,13 +20,13 @@ class UpsertRunningUser
     public function __construct(
         private UpsertUserHandlerInterface $upsertUserHandler,
         private ListUserRoleInterface $listUserRole,
-        private ResolveRunningUsername $resolveRunningUsername,
+        private ResolveScheduledJobRunningUsername $resolveScheduledJobRunningUsername,
     ) {
     }
 
     public function execute(string $jobCode, array $userGroupCodes): void
     {
-        $username = $this->resolveRunningUsername->fromJobCode($jobCode);
+        $username = $this->resolveScheduledJobRunningUsername->fromJobCode($jobCode);
         $allRoleCodes = array_map(static fn (UserRole $role) => $role->getRole(), $this->listUserRole->all());
 
         $upsertUserCommand = UpsertUserCommand::job(

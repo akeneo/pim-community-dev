@@ -11,7 +11,7 @@ namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Domain;
 
 use PhpSpec\ObjectBehavior;
 
-class ResolveRunningUsernameSpec extends ObjectBehavior
+class ResolveScheduledJobRunningUsernameSpec extends ObjectBehavior
 {
     public function it_resolves_running_username_from_job_code(): void
     {

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Domain;
 
-class ResolveRunningUsername
+class ResolveScheduledJobRunningUsername
 {
     private const AUTOMATED_USER_PREFIX = 'job_automated_';
 
