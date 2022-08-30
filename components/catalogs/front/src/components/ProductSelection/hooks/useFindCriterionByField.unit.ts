@@ -9,11 +9,13 @@ import {AnyCriterion} from '../models/Criterion';
 import StatusCriterion from '../criteria/StatusCriterion';
 import FamilyCriterion from '../criteria/FamilyCriterion';
 import CompletenessCriterion from '../criteria/CompletenessCriterion';
+import CategoryCriterion from '../criteria/CategoryCriterion';
 
 const criterions: [string, AnyCriterion][] = [
     ['enabled', StatusCriterion],
     ['family', FamilyCriterion],
     ['completeness', CompletenessCriterion],
+    ['categories', CategoryCriterion],
 ];
 
 test.each(criterions)('it returns a criterion when searching for "%s"', async (field, criterion) => {

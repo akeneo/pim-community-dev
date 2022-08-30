@@ -107,3 +107,15 @@ services:
     Akeneo\Catalogs\Infrastructure\Persistence\GetLocalesQuery:
         arguments:
             - '@pim_catalog.repository.locale'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetCategoriesByCodeQuery:
+        arguments:
+            - '@pim_catalog.repository.category'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetCategoryTreeRootsQuery:
+        arguments:
+            - '@akeneo.enrichment.public_api.find_category_trees'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\GetCategoryChildrenQuery:
+        arguments:
+            - '@pim_catalog.repository.category'
