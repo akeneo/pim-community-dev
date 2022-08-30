@@ -3,7 +3,7 @@ import {ArrowDownIcon, Dropdown, getColor, getFontSize, GroupsIllustration, Sear
 import {AttributeMeasurementCriterionState} from './types';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {Measurement} from '../../models/Measurement';
+import {MeasurementUnit} from '../../models/Measurement';
 import {useMeasurements} from '../../hooks/useMeasurements';
 import {useNumberValue} from '../../hooks/useNumberValue';
 
@@ -93,7 +93,7 @@ const AttributeMeasurementValueInput: FC<Props> = ({state, onChange, isInvalid, 
     const [search, setSearch] = useState<string>('');
     const {data: measurements} = useMeasurements(measurementFamily);
 
-    const filteredMeasurements: Measurement[] = useMemo(() => {
+    const filteredMeasurements: MeasurementUnit[] = useMemo(() => {
         const regex = new RegExp(search, 'i');
 
         return measurements ? measurements.filter(measurement => measurement.label.match(regex)) : [];
@@ -109,7 +109,7 @@ const AttributeMeasurementValueInput: FC<Props> = ({state, onChange, isInvalid, 
         return result ? result.label : '';
     };
 
-    const handleNewMeasurement = (measurement: Measurement) => {
+    const handleNewMeasurement = (measurement: MeasurementUnit) => {
         onChange({...state, value: {amount: state.value?.amount ?? 0, unit: measurement.code}});
         setIsOpen(false);
     };

@@ -1,19 +1,19 @@
 import {useQuery} from 'react-query';
-import {Measurement} from '../models/Measurement';
+import {MeasurementUnit} from '../models/Measurement';
 import {useUserContext} from '@akeneo-pim-community/shared';
 
 type ResultError = Error | null;
 type Result = {
     isLoading: boolean;
     isError: boolean;
-    data: Measurement[] | undefined;
+    data: MeasurementUnit[] | undefined;
     error: ResultError;
 };
 
 export const useMeasurements = (measurementsFamilyCode: string | null): Result => {
     const locale = useUserContext().get('catalogLocale');
 
-    return useQuery<Measurement[], ResultError, Measurement[]>(
+    return useQuery<MeasurementUnit[], ResultError, MeasurementUnit[]>(
         ['measurements', measurementsFamilyCode, {locale: locale}],
         async () => {
             if (null === measurementsFamilyCode) {

@@ -1,4 +1,4 @@
-export type Measurement = {
+export type MeasurementUnit = {
     label: string;
     code: string;
 };
