@@ -5,6 +5,7 @@ import {HeaderPanel} from './Header';
 import {AnnouncementList} from './AnnouncementList';
 import {EmptyAnnouncementList} from './announcement';
 import {formatCampaign} from '../../tools/formatCampaign';
+import {useHasNewAnnouncements} from '../../hooks/useHasNewAnnouncements';
 
 const Panel = (): JSX.Element => {
   const __ = useTranslate();
@@ -12,10 +13,15 @@ const Panel = (): JSX.Element => {
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const [campaign, setCampaign] = useState<string>('');
   const pimVersion = usePimVersion();
+  const handleHasNewAnnouncements = useHasNewAnnouncements();
 
   const onClosePanel = () => {
     mediator.trigger('communication-channel:panel:close');
   };
+
+  useEffect(() => {
+    handleHasNewAnnouncements();
+  }, []);
 
   useEffect(() => {
     /* istanbul ignore next: can't test the callback function */
@@ -46,7 +52,7 @@ const Panel = (): JSX.Element => {
   return (
     <>
       <HeaderPanel title={__('akeneo_communication_channel.panel.title')} onClickCloseButton={onClosePanel} />
-      <AnnouncementList campaign={campaign} panelIsClosed={!isOpened} />
+      {isOpened && <AnnouncementList campaign={campaign} panelIsClosed={!isOpened} />}
     </>
   );
 };

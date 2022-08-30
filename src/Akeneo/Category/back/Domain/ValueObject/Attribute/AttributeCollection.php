@@ -37,6 +37,26 @@ class AttributeCollection
         return $this->attributes;
     }
 
+    /**
+     * Retrieve an Attribute by his identifier.
+     *
+     * @param string $identifier format expected : 'code|uuid' (example : title|69e251b3-b876-48b5-9c09-92f54bfb528d)
+     */
+    public function getAttributeByIdentifier(string $identifier): ?Attribute
+    {
+        $attribute = array_filter(
+            $this->attributes,
+            static function ($attribute) use ($identifier) {
+                return $attribute->getIdentifier() === $identifier;
+            },
+        );
+        if (empty($attribute) || count($attribute) > 1) {
+            return null;
+        }
+
+        return reset($attribute);
+    }
+
     public function addAttribute(Attribute $attribute): self
     {
         $this->attributes[] = $attribute;
@@ -45,7 +65,7 @@ class AttributeCollection
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<int, mixed>
      */
     public function normalize(): array
     {

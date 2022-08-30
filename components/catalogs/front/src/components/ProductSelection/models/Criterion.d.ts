@@ -5,6 +5,8 @@ import {StatusCriterionState} from '../criteria/StatusCriterion';
 import {FamilyCriterionState} from '../criteria/FamilyCriterion';
 import {CompletenessCriterionState} from '../criteria/CompletenessCriterion';
 import {AttributeTextCriterionState} from '../criteria/AttributeTextCriterion';
+import {AttributeSimpleSelectCriterionState} from '../criteria/AttributeSimpleSelectCriterion';
+import {AttributeNumberCriterionState} from '../criteria/AttributeNumberCriterion';
 import {AttributeBooleanCriterionState} from '../criteria/AttributeBooleanCriterion';
 
 export type CriterionModule<State> = {
@@ -35,9 +37,15 @@ export type AnyCriterionState =
     | FamilyCriterionState
     | CompletenessCriterionState
     | AttributeTextCriterionState
+    | AttributeSimpleSelectCriterionState
+    | AttributeNumberCriterionState
     | AttributeBooleanCriterionState;
 
-export type AnyAttributeCriterion = Criterion<AttributeTextCriterionState> | Criterion<AttributeBooleanCriterionState>;
+export type AnyAttributeCriterion =
+    | Criterion<AttributeTextCriterionState>
+    | Criterion<AttributeSimpleSelectCriterionState>
+    | Criterion<AttributeNumberCriterionState>
+    | Criterion<AttributeBooleanCriterionState>;
 
 export type AnyCriterion =
     | Criterion<StatusCriterionState>

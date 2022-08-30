@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Component\StorageUtils\Saver;
 
+use Akeneo\Tool\Component\StorageUtils\Exception\DuplicateObjectException;
+
 /**
  * Saver interface, provides a minimal contract to save a single business object
  *
@@ -18,6 +20,7 @@ interface SaverInterface
      * @param array $options The saving options
      *
      * @throws \InvalidArgumentException
+     * @throws DuplicateObjectException
      */
     public function save($object, array $options = []);
 }

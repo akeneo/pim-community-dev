@@ -26,6 +26,7 @@ const DependenciesProvider = ({children, ...dependencies}: PropsWithChildren<Pro
     <DependenciesContext.Provider
         value={{
             translate: dependencies.translate as SharedTranslate,
+            user: dependencies.user,
         }}
     >
         <RouterContext.Provider value={dependencies.router}>

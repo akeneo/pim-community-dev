@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Infrastructure\Validation;
 
-use Akeneo\Category\Api\Command\UserIntents\SetCode;
 use Akeneo\Category\Api\Command\UserIntents\SetLabel;
-use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Infrastructure\Validation\LocalizeUserIntentsShouldBeUnique;
 use Akeneo\Category\Infrastructure\Validation\LocalizeUserIntentsShouldBeUniqueValidator;
 use PhpSpec\ObjectBehavior;

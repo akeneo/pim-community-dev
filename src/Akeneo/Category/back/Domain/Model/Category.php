@@ -17,7 +17,7 @@ use Akeneo\Category\Domain\ValueObject\ValueCollection;
 class Category
 {
     public function __construct(
-        private CategoryId $id,
+        private ?CategoryId $id,
         private Code $code,
         private LabelCollection $labelCollection,
         private ?CategoryId $parentId = null,
@@ -26,7 +26,7 @@ class Category
     ) {
     }
 
-    public function getId(): CategoryId
+    public function getId(): ?CategoryId
     {
         return $this->id;
     }
@@ -61,6 +61,11 @@ class Category
         $this->labelCollection->setLabel($localeCode, $label);
     }
 
+    public function setValueCollection(ValueCollection $values): void
+    {
+        $this->valueCollection = $values;
+    }
+
     /**
      * @return array{
      *     id: int,
@@ -74,10 +79,10 @@ class Category
     public function normalize(): array
     {
         return [
-            'id' => $this->getId()->getId(),
+            'id' => $this->getId()?->getValue(),
             'code' => (string) $this->getCode(),
             'labels' => $this->getLabelCollection()->normalize(),
-            'parent' => $this->getParentId()?->getId(),
+            'parent' => $this->getParentId()?->getValue(),
             'values' => $this->getValueCollection()->normalize(),
             'permissions' => $this->getPermissionCollection()->normalize(),
         ];

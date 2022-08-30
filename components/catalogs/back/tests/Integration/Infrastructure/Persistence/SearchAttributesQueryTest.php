@@ -41,6 +41,20 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'localizable' => false,
             ],
             [
+                'code' => 'clothing_size',
+                'label' => '[clothing_size]',
+                'type' => 'pim_catalog_simpleselect',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
+                'code' => 'number_battery_cells',
+                'label' => '[number_battery_cells]',
+                'type' => 'pim_catalog_number',
+                'scopable' => false,
+                'localizable' => false,
+            ],
+            [
                 'code' => 'certified',
                 'label' => '[certified]',
                 'type' => 'pim_catalog_boolean',
@@ -91,7 +105,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
             'type' => 'pim_catalog_multiselect',
         ]);
         $this->createAttribute([
-            'code' => 'size',
+            'code' => 'clothing_size',
             'type' => 'pim_catalog_simpleselect',
         ]);
         $this->createAttribute([
@@ -99,7 +113,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
             'type' => 'pim_catalog_price_collection',
         ]);
         $this->createAttribute([
-            'code' => 'parts',
+            'code' => 'number_battery_cells',
             'type' => 'pim_catalog_number',
         ]);
         $this->createAttribute([

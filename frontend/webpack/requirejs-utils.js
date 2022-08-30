@@ -81,7 +81,6 @@ const utils = {
             baseDir,
             './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
           ),
-          summernote: path.resolve(baseDir, 'node_modules/summernote/dist/summernote.js'),
           jquery: require.resolve('jquery'),
           underscore: require.resolve('underscore'),
         });

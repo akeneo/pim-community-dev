@@ -78,6 +78,7 @@ class UserNormalizerSpec extends ObjectBehavior
             'email_notifications'       => false,
             'timezone'                  => 'UTC',
             'groups'                    => [],
+            'visible_group_ids'         => [],
             'roles'                     => [],
             'product_grid_filters'      => [],
             'profile'                   => null,

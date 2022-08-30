@@ -117,7 +117,7 @@ JSON;
                     ],
                     [
                         'property' => 'parent',
-                        'message' => 'The variant product "product_family_variant" cannot have product model ' .
+                        'message' => 'The variant product cannot have product model ' .
                             '"test" as parent, (this product model can only have other product models as children)'
                     ],
                     [

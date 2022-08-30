@@ -36,10 +36,6 @@ $rules = [
             'Akeneo\UserManagement\ServiceApi',
             'Akeneo\Tool',
 
-            // TODO RAB-981: remove this coupling
-            'Akeneo\UserManagement\Component\Model\RoleInterface',
-            'Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface',
-
             'League\Flysystem',
             'Symfony\Component',
             'Symfony\Contracts',

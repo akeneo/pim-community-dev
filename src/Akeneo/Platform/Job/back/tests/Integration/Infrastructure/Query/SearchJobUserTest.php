@@ -16,7 +16,7 @@ class SearchJobUserTest extends IntegrationTestCase
     {
         parent::setUp();
 
-        $this->query = $this->get('Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserInterface');
+        $this->query = $this->get(SearchJobUserInterface::class);
 
         $jobInstances = [
             'a_product_import' => $this->fixturesJobHelper->createJobInstance([

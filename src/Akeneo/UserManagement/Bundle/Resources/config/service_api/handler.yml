@@ -5,6 +5,17 @@ services:
     arguments:
       $findUserGroups: '@Akeneo\UserManagement\Infrastructure\Storage\SqlFindUserGroups'
 
+  Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface:
+    class: Akeneo\UserManagement\Application\Handler\ListUsersHandler
+    arguments:
+      - '@Akeneo\UserManagement\Infrastructure\Storage\SqlFindUsers'
+
+  Akeneo\UserManagement\ServiceApi\UserRole\ListUserRoleInterface:
+    public: true
+    class: Akeneo\UserManagement\Application\Handler\ListUserRoleHandler
+    arguments:
+      $findAllUserRoles: '@Akeneo\UserManagement\Infrastructure\Storage\SqlFindAllUserRoles'
+
   Akeneo\UserManagement\ServiceApi\User\UpsertUserHandlerInterface:
     class: Akeneo\UserManagement\Application\Handler\UpsertUserHandler
     arguments:
