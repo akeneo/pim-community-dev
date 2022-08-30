@@ -41,7 +41,7 @@ final class SplitOperationApplier implements OperationApplierInterface
             array_values(
                 array_filter(
                     array_map('trim', explode($operation->getSeparator(), $value->getValue())),
-                    static fn (String $value) => '' !== $value
+                    static fn (String $value) => '' !== $value,
                 ),
             )
         );
