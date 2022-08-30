@@ -8,10 +8,12 @@ use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel\FetchUserRi
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductModel;
+use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductUuid;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Ramsey\Uuid\Uuid;
 
 class RowActionsConfiguratorSpec extends ObjectBehavior
 {
@@ -50,8 +52,10 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_is_possible_for_the_user_to_view_the_product($productRow, $fetchUserRightsOnProduct)
     {
-        $fetchUserRightsOnProduct->fetchByIdentifier('product_identifier', 1)->willReturn(
-            new UserRightsOnProduct('product_identifier', 1, 0, 0, 1, 1)
+        $productUuid = Uuid::uuid4();
+        $productRow->getValue('id')->willReturn($productUuid->toString());
+        $fetchUserRightsOnProduct->fetchByUuid($productUuid, 1)->willReturn(
+            new UserRightsOnProductUuid($productUuid, 1, 0, 0, 1, 1)
         );
         $closure = $this->getActionConfigurationClosure();
         $closure($productRow)->shouldReturn(
@@ -68,8 +72,10 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_is_possible_for_the_user_to_apply_a_draft_on_product_or_to_enrich_the_product($productRow, $fetchUserRightsOnProduct)
     {
-        $fetchUserRightsOnProduct->fetchByIdentifier('product_identifier', 1)->willReturn(
-            new UserRightsOnProduct('product_identifier', 1, 1, 0, 1, 1)
+        $productUuid = Uuid::uuid4();
+        $productRow->getValue('id')->willReturn($productUuid->toString());
+        $fetchUserRightsOnProduct->fetchByUuid($productUuid, 1)->willReturn(
+            new UserRightsOnProductUuid($productUuid, 1, 1, 0, 1, 1)
         );
         $closure = $this->getActionConfigurationClosure();
         $closure($productRow)->shouldReturn(
@@ -86,8 +92,10 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_is_possible_for_the_user_to_categorize_the_product($productRow, $fetchUserRightsOnProduct)
     {
-        $fetchUserRightsOnProduct->fetchByIdentifier('product_identifier', 1)->willReturn(
-            new UserRightsOnProduct('product_identifier', 1, 1, 1, 1, 1)
+        $productUuid = Uuid::uuid4();
+        $productRow->getValue('id')->willReturn($productUuid->toString());
+        $fetchUserRightsOnProduct->fetchByUuid($productUuid, 1)->willReturn(
+            new UserRightsOnProductUuid($productUuid, 1, 1, 1, 1, 1)
         );
         $closure = $this->getActionConfigurationClosure();
         $closure($productRow)->shouldReturn(
@@ -104,8 +112,10 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_is_possible_for_the_user_to_delete_the_product($productRow, $fetchUserRightsOnProduct)
     {
-        $fetchUserRightsOnProduct->fetchByIdentifier('product_identifier', 1)->willReturn(
-            new UserRightsOnProduct('product_identifier', 1, 1, 1, 1, 1)
+        $productUuid = Uuid::uuid4();
+        $productRow->getValue('id')->willReturn($productUuid->toString());
+        $fetchUserRightsOnProduct->fetchByUuid($productUuid, 1)->willReturn(
+            new UserRightsOnProductUuid($productUuid, 1, 1, 1, 1, 1)
         );
         $closure = $this->getActionConfigurationClosure();
         $closure($productRow)->shouldReturn(
@@ -122,8 +132,10 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_is_possible_for_the_user_to_disable_or_enable_the_product($productRow, $fetchUserRightsOnProduct)
     {
-        $fetchUserRightsOnProduct->fetchByIdentifier('product_identifier', 1)->willReturn(
-            new UserRightsOnProduct('product_identifier', 1, 1, 1, 1, 1)
+        $productUuid = Uuid::uuid4();
+        $productRow->getValue('id')->willReturn($productUuid->toString());
+        $fetchUserRightsOnProduct->fetchByUuid($productUuid, 1)->willReturn(
+            new UserRightsOnProductUuid($productUuid, 1, 1, 1, 1, 1)
         );
         $closure = $this->getActionConfigurationClosure();
         $closure($productRow)->shouldReturn(
