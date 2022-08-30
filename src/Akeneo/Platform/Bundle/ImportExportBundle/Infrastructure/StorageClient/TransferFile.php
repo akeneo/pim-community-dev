@@ -13,6 +13,8 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
 
 final class TransferFile
 {
+    private const TMP_DESTINATION_FILE_PATH_PREFIX = '.tmp-';
+
     public function transfer(
         StorageClientInterface $sourceFilesystem,
         StorageClientInterface $destinationFilesystem,
@@ -29,6 +31,23 @@ final class TransferFile
             throw new \RuntimeException('File is not readable.');
         }
 
-        $destinationFilesystem->writeStream($destinationFilePath, $stream);
+        $tmpDestinationFilePath = $this->getTmpDestinationFilePath($destinationFilePath);
+        $destinationFilesystem->writeStream($tmpDestinationFilePath, $stream);
+        $destinationFilesystem->move($tmpDestinationFilePath, $destinationFilePath);
+    }
+
+    private function getTmpDestinationFilePath(string $destinationFilePath): string {
+        $destinationFilePathInfo = pathinfo($destinationFilePath);
+
+        $dirname = '.' !== $destinationFilePathInfo['dirname'] ? $destinationFilePathInfo['dirname'] : '';
+        $separator = '' !== $dirname ? '/' : '';
+        $basename = sprintf('%s%s', self::TMP_DESTINATION_FILE_PATH_PREFIX, $destinationFilePathInfo['basename']);
+
+        return sprintf(
+            '%s%s%s',
+            $dirname,
+            $separator,
+            $basename,
+        );
     }
 }
