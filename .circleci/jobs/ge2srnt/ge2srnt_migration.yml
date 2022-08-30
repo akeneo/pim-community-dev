@@ -43,7 +43,7 @@ jobs:
                   command: |
                         #Constant
                         OPERATIONS_TOOLS_DIR="/tmp/operation-tools"
-                        OPERATIONS_TOOLS_BRANCH="SDO-86"
+                        OPERATIONS_TOOLS_BRANCH=master
 
                         # Manage Inputs from different workflow
                         # INSTANCE
