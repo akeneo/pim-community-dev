@@ -347,7 +347,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'scope' => null,
                     'locale' => null,
                 ],
-                'expectedMessage' => 'This value should be of type array|(Traversable&ArrayAccess).',
+                'expectedMessage' => 'This value should be of type array.',
             ],
             'invalid unit' => [
                 'attribute' => [

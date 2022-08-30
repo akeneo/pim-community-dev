@@ -49,6 +49,7 @@ final class AttributeMeasurementCriterion extends Compound
                             ]),
                         ],
                         'value' => [
+                            new Assert\Type('array'),
                             new Assert\Collection([
                                 'fields' => [
                                     'amount' => [
