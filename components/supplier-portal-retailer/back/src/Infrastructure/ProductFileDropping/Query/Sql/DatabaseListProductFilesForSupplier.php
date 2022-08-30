@@ -15,7 +15,7 @@ final class DatabaseListProductFilesForSupplier implements ListProductFilesForSu
     }
 
     public function __invoke(
-        string $supplierIdentifier, // @todo Create a query that gets the supplier identifier from a contributor email
+        string $supplierIdentifier,
         int $page = 1,
         int $numberOfSupplierFilesPerPage = ListProductFilesForSupplier::NUMBER_OF_SUPPLIER_FILES_PER_PAGE,
     ): array {

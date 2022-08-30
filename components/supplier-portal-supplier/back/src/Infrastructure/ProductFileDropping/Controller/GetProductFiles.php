@@ -17,12 +17,8 @@ final class GetProductFiles
     {
     }
 
-    public function __invoke(#[CurrentUser] ?ContributorAccount $user): JsonResponse
+    public function __invoke(#[CurrentUser] ContributorAccount $user): JsonResponse
     {
-        if (!$user instanceof ContributorAccount) {
-            return new JsonResponse(null, Response::HTTP_UNAUTHORIZED);
-        }
-
         $productFiles = ($this->getProductFiles)($user->getUserIdentifier());
 
         return new JsonResponse(

@@ -3,8 +3,7 @@ services:
     Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\DownloadProductFile:
         public: true
         arguments:
-            - '@Akeneo\SupplierPortal\Supplier\Application\ProductFileDropping\DownloadProductFileHandler'
-            - '@security.token_storage'
+            - '@Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\DownloadProductFile'
 
     Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Controller\UploadProductFile:
         public: true

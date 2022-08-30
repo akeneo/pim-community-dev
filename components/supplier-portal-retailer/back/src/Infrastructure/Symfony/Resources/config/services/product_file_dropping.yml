@@ -4,7 +4,7 @@ services:
         public: true
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler'
-            - '@security.token_storage'
+            - '@event_dispatcher'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\AllSupplierFilesList:
         public: true
@@ -64,13 +64,23 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName'
             - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile'
-            - '@event_dispatcher'
-            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier'
+            - '@monolog.logger.supplier_portal'
+
+    Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandlerForSupplier:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileNameForSupplier'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile'
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail'
             - '@monolog.logger.supplier_portal'
 
     # Queries
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName:
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePathAndFileName
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileNameForSupplier:
+        class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Query\Sql\DatabaseGetProductFilePathAndFileNameForSupplier
         arguments:
             - '@database_connection'
 
@@ -120,6 +130,7 @@ services:
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\SuccessMetrics\Subscriber\LogOnProductFileDownloaded:
         arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier'
             - '@monolog.logger.supplier_portal'
         tags:
             - { name: kernel.event_subscriber }
@@ -175,10 +186,15 @@ services:
             - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler'
         tags:
             - { name: console.command }
-        
+
     # Repositories
     Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Write\SupplierFileRepository:
         public: true
         class: Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Repository\Sql\DatabaseRepository
         arguments:
             - '@database_connection'
+
+    # Service API
+    Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\DownloadProductFile:
+        arguments:
+            - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandlerForSupplier'

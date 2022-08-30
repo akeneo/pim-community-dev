@@ -6,24 +6,33 @@ namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping;
 
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
+use Akeneo\SupplierPortal\Retailer\Application\Supplier\Exception\SupplierDoesNotExist;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileNameForSupplier;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFileNameAndResourceFile;
+use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContributorEmail;
 use Psr\Log\LoggerInterface;
 
-final class DownloadProductFileHandler
+final class DownloadProductFileHandlerForSupplier
 {
     public function __construct(
-        private GetProductFilePathAndFileName $getProductFilePathAndFileName,
+        private GetProductFilePathAndFileNameForSupplier $getProductFilePathAndFileName,
         private DownloadStoredProductFile $downloadStoredProductFile,
+        private GetSupplierFromContributorEmail $getSupplierFromContributorEmail,
         private LoggerInterface $logger,
     ) {
     }
 
     //@phpstan-ignore-next-line
-    public function __invoke(DownloadProductFile $query)
+    public function __invoke(DownloadProductFileForSupplier $query)
     {
-        $productFilePathAndFileName = ($this->getProductFilePathAndFileName)($query->productFileIdentifier);
+        $supplier = ($this->getSupplierFromContributorEmail)($query->contributorEmail);
+
+        if ($supplier === null) {
+            throw new SupplierDoesNotExist();
+        }
+
+        $productFilePathAndFileName = ($this->getProductFilePathAndFileName)($query->productFileIdentifier, $supplier->identifier);
         if (null === $productFilePathAndFileName) {
             throw new ProductFileDoesNotExist();
         }
