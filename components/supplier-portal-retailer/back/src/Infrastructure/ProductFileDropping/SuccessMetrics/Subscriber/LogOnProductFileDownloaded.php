@@ -13,9 +13,8 @@ final class LogOnProductFileDownloaded implements EventSubscriberInterface
 {
     public function __construct(
         private GetSupplierCodeFromSupplierFileIdentifier $getSupplierCodeFromSupplierFileIdentifier,
-        private LoggerInterface $logger
-    )
-    {
+        private LoggerInterface $logger,
+    ) {
     }
 
     public static function getSubscribedEvents(): array

@@ -18,7 +18,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-final class CreateSupplierFileHandler
+final class CreateProductFileHandler
 {
     public function __construct(
         private GetSupplierFromContributorEmail $getSupplierFromContributorEmail,
@@ -30,31 +30,31 @@ final class CreateSupplierFileHandler
     ) {
     }
 
-    public function __invoke(CreateSupplierFile $createSupplierFile): void
+    public function __invoke(CreateProductFile $createProductFile): void
     {
-        $violations = $this->validator->validate($createSupplierFile);
+        $violations = $this->validator->validate($createProductFile);
         if (0 < $violations->count()) {
             throw new InvalidProductFile($violations);
         }
 
-        $supplier = ($this->getSupplierFromContributorEmail)($createSupplierFile->uploadedByContributor);
+        $supplier = ($this->getSupplierFromContributorEmail)($createProductFile->uploadedByContributor);
         if (null === $supplier) {
             throw new ContributorDoesNotExist();
         }
 
         $storedProductFilePath = ($this->storeProductsFile)(
             Code::fromString($supplier->code),
-            Filename::fromString($createSupplierFile->originalFilename),
+            Filename::fromString($createProductFile->uploadedFile->getClientOriginalName()),
             Identifier::fromString(Uuid::uuid4()->toString()),
-            $createSupplierFile->uploadedFile->getPathname(),
+            $createProductFile->uploadedFile->getPathname(),
         );
 
-        $supplierFileIdentifier = Identifier::fromString(Uuid::uuid4()->toString());
+        $productFileIdentifier = Identifier::fromString(Uuid::uuid4()->toString());
         $supplierFile = SupplierFile::create(
-            (string) $supplierFileIdentifier,
-            $createSupplierFile->originalFilename,
+            (string) $productFileIdentifier,
+            $createProductFile->uploadedFile->getClientOriginalName(),
             $storedProductFilePath,
-            $createSupplierFile->uploadedByContributor,
+            $createProductFile->uploadedByContributor,
             $supplier,
         );
 
@@ -65,15 +65,15 @@ final class CreateSupplierFileHandler
         }
 
         $this->logger->info(
-            sprintf('Supplier file "%s" created.', $createSupplierFile->originalFilename),
+            sprintf('Product file "%s" created.', $createProductFile->uploadedFile->getClientOriginalName()),
             [
                 'data' => [
-                    'identifier' => (string) $supplierFileIdentifier,
+                    'identifier' => (string) $productFileIdentifier,
                     'supplier_identifier' => $supplier->identifier,
                     'supplier_code' => $supplier->code,
-                    'filename' => $createSupplierFile->originalFilename,
+                    'filename' => $createProductFile->uploadedFile->getClientOriginalName(),
                     'path' => $storedProductFilePath,
-                    'uploaded_by_contributor' => $createSupplierFile->uploadedByContributor,
+                    'uploaded_by_contributor' => $createProductFile->uploadedByContributor,
                     'metric_key' => 'supplier_file_dropped',
                 ],
             ],

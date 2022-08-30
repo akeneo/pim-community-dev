@@ -29,7 +29,6 @@ final class DownloadProductFile
             $productFileNameAndResourceFile = ($this->downloadProductFileHandler)(
                 new DownloadProductFileCommand($identifier)
             );
-
         } catch (ProductFileDoesNotExist | ProductFileIsNotDownloadable) {
             return new Response(null, Response::HTTP_NOT_FOUND);
         }

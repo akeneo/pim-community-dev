@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Unit\Domain\ProductFileDropping\Read\Model;
 
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\SupplierFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
 use PHPUnit\Framework\TestCase;
 
 final class SupplierFileTest extends TestCase
@@ -12,7 +12,7 @@ final class SupplierFileTest extends TestCase
     /** @test */
     public function itCanBeNormalized(): void
     {
-        $sut = new SupplierFile(
+        $sut = new ProductFile(
             'b8b13d0b-496b-4a7c-a574-0d522ba90752',
             'supplier-file.xlsx',
             'path/to/supplier-file.xlsx',

@@ -6,14 +6,16 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Cont
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllSupplierFiles;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetAllSupplierFilesCount;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\SupplierFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 final class AllSupplierFilesList
 {
-    public function __construct(private GetAllSupplierFiles $getSupplierFiles, private GetAllSupplierFilesCount $getSupplierFilesCount)
-    {
+    public function __construct(
+        private GetAllSupplierFiles $getSupplierFiles,
+        private GetAllSupplierFilesCount $getSupplierFilesCount,
+    ) {
     }
 
     public function __invoke(Request $request): JsonResponse
@@ -23,7 +25,7 @@ final class AllSupplierFilesList
 
         return new JsonResponse([
             'supplier_files' => array_map(
-                fn (SupplierFile $supplierFile) => $supplierFile->toArray(),
+                fn (ProductFile $supplierFile) => $supplierFile->toArray(),
                 $supplierFiles,
             ),
             'total' => ($this->getSupplierFilesCount)(),

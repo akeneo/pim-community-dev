@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model;
 
-final class SupplierFile
+final class ProductFile
 {
     public function __construct(
         public string $identifier,
         public string $originalFilename,
-        public string $path,
         public ?string $uploadedByContributor,
         public string $uploadedBySupplier,
         public ?string $uploadedAt,

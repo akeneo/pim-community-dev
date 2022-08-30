@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Supplier\Infrastructure\ProductFileDropping\Cont
 
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\DownloadProductFile as DownloadProductFileServiceAPI;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\DownloadProductFileQuery;
-use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\Exceptions\ProductFileNotFound;
+use Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI\DownloadProductFile\Exception\ProductFileNotFound;
 use Akeneo\SupplierPortal\Supplier\Infrastructure\Authentication\ContributorAccount\Security\ContributorAccount;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Symfony\Component\HttpFoundation\Response;

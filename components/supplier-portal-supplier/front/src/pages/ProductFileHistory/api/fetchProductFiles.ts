@@ -8,7 +8,6 @@ const fetchProductFiles = async (): Promise<ProductFile[]> => {
         return {
             identifier: item.identifier,
             filename: item.originalFilename,
-            path: item.path,
             contributor: item.uploadedByContributor,
             uploadedAt: item.uploadedAt,
         };

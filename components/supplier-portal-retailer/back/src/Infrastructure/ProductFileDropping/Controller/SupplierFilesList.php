@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller;
 
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetSupplierFilesCount;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFiles;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\ListProductFilesForSupplier;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\SupplierFile;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 final class SupplierFilesList
 {
     public function __construct(
-        private ListProductFilesForSupplier $getSupplierFiles,
-        private GetSupplierFilesCount       $getSupplierFilesCount,
+        private ListProductFiles $getSupplierFiles,
+        private GetSupplierFilesCount $getSupplierFilesCount,
     ) {
     }
 
@@ -26,11 +27,11 @@ final class SupplierFilesList
 
         return new JsonResponse([
             'supplier_files' => array_map(
-                fn (SupplierFile $supplierFile) => $supplierFile->toArray(),
+                fn (ProductFile $supplierFile) => $supplierFile->toArray(),
                 $supplierFiles,
             ),
             'total' => ($this->getSupplierFilesCount)($supplierIdentifier),
-            'items_per_page' => ListProductFilesForSupplier::NUMBER_OF_SUPPLIER_FILES_PER_PAGE,
+            'items_per_page' => ListProductFilesForSupplier::NUMBER_OF_PRODUCT_FILES,
         ]);
     }
 }

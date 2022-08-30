@@ -28,7 +28,7 @@ final class DownloadProductFileHandlerForSupplier
     {
         $supplier = ($this->getSupplierFromContributorEmail)($query->contributorEmail);
 
-        if ($supplier === null) {
+        if (null === $supplier) {
             throw new SupplierDoesNotExist();
         }
 

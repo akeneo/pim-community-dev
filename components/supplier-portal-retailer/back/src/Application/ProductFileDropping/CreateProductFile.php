@@ -6,11 +6,10 @@ namespace Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-final class CreateSupplierFile
+final class CreateProductFile
 {
     public function __construct(
         public UploadedFile $uploadedFile,
-        public string $originalFilename,
         public string $uploadedByContributor,
     ) {
     }

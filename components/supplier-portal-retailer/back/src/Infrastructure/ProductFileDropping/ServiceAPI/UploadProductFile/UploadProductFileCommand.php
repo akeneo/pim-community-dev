@@ -6,7 +6,7 @@ namespace Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Serv
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-final class UploadProductFileQuery
+final class UploadProductFileCommand
 {
     public function __construct(public UploadedFile $uploadedFile, public string $contributorEmail)
     {
