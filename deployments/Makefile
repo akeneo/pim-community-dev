@@ -164,21 +164,12 @@ render-helm-templates:
 	cd $(INSTANCE_DIR) ;\
 	mkdir -p helm-render ;\
 	helm3 template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
-ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
-	cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
-	mkdir -p helm-render ;\
-	helm3 template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
-endif
 
 .PHONY: delete
 delete:
 	if [ -f "$(INSTANCE_DIR)/main.tf.json" ]; then \
 		cd $(INSTANCE_DIR) ;\
 		echo "Destroying $(INSTANCE_DIR) ..." ;\
-		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(DEPLOYMENT_DIR)/bin/delete_instance.sh ;\
-	elif [ -f "$(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf" ]; then \
-		cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
-		echo "Destroying $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ..." ;\
 		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(DEPLOYMENT_DIR)/bin/delete_instance.sh ;\
 	fi
 
@@ -196,48 +187,26 @@ create-ci-values: $(INSTANCE_DIR)
 	@echo "=========================================================="
 	if [ ! -f $(INSTANCE_DIR)/values.yaml ]; then cp $(DEPLOYMENT_DIR)/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml; fi
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
 ifeq ($(TYPE),srnt)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
 ifeq ($(TYPE),grth)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
+endif
+ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr-ge)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
-
-ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200211172331"
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200401020139"
-endif
-ifeq ($(INSTANCE_NAME),pimci-helpdesk)
+# Tricks to use OR like statement in ifeq -> https://stackoverflow.com/questions/7656425/makefile-ifeq-logical-or
+ifneq (,$(filter $(INSTANCE_NAME_PREFIX),pimci-helpdesk pimci-helpdesk-ge))
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
 endif
-ifeq ($(INSTANCE_NAME),pimci-helpdesk-ge)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
-endif
-
-ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
-ifeq ($(TYPE),srnt)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-endif
-ifeq ($(TYPE),grth)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-endif
-ifeq ($(TYPE),tria)
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-endif
-endif
-
-ifeq ($(INSTANCE_NAME_PREFIX),beta)
+ifneq (,$(filter $(INSTANCE_NAME_PREFIX),beta pimup))
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
@@ -250,7 +219,6 @@ endif
 ifeq (${USE_ONBOARDER_CATALOG},true)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog "vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder"
 endif
-
 ifeq ($(TYPE),tria)
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_entity_id "https://connect-sandbox.ip.akeneo.com/auth/realms/trial"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.akeneo_connect_saml_signin_url "https://connect-sandbox.ip.akeneo.com/auth/realms/trial/protocol/saml"
@@ -267,7 +235,6 @@ ifeq ($(USE_EDITION_FLAG),true)
 ifeq ($(INSTANCE_NAME_PREFIX),pimci)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
 endif
-# Tricks to use OR like statement in ifeq -> https://stackoverflow.com/questions/7656425/makefile-ifeq-logical-or
 ifneq (,$(filter $(INSTANCE_NAME_PREFIX),pimup pimci-pr pimci-pr-ge pimci-pr-ft))
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
