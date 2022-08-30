@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer;
 
 use Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\ACLMeasurementUnitExists;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnit;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Unit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\GetUnit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\Unit;
 use PhpSpec\ObjectBehavior;
 
 class ACLMeasurementUnitExistsSpec extends ObjectBehavior

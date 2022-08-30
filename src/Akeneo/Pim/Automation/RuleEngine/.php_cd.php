@@ -58,7 +58,7 @@ $rules = [
         'Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException',
         'Akeneo\Tool\Component\FileStorage\Exception\FileTransferException',
         'Webmozart\Assert\Assert',
-        'Akeneo\Tool\Bundle\MeasureBundle\PublicApi',
+        'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
 
         // TODO RUL-28: check if we can use another component

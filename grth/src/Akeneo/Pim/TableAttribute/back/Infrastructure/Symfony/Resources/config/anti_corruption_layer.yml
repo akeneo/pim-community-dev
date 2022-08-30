@@ -21,7 +21,7 @@ services:
     Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\MeasurementUnitExists:
         class: Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\ACLMeasurementUnitExists
         arguments:
-            - '@?akeneo_measurement.public_api.get_unit'
+            - '@?akeneo_measurement.service_api.get_unit'
 
     Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\AclMeasureConverter:
         arguments:

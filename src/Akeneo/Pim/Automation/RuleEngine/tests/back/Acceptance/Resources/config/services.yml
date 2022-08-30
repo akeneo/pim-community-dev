@@ -76,7 +76,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
-    akeneo_measurement.public_api.get_unit_translations:
+    akeneo_measurement.service_api.get_unit_translations:
         class: AkeneoTest\Acceptance\MeasurementFamily\InMemoryGetUnitTranslations
 
     # In EE GrantedCategoryFieldSetter is used in place of CategoryFieldSetter.

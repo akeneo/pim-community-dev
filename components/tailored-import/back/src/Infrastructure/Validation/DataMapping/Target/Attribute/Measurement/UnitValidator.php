@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Measurement;
 
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Measurement\Unit as UnitConstraint;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\FindUnit;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Unit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\FindUnit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\Unit;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

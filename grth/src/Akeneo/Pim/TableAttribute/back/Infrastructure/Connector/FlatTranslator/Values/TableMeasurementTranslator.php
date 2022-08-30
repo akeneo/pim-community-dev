@@ -15,7 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Valu
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\GetUnitTranslations;
 use Webmozart\Assert\Assert;
 
 class TableMeasurementTranslator implements TableValueTranslator

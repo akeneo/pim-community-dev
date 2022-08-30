@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\MeasurementUnitExists;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\GetUnit;
 use Webmozart\Assert\Assert;
 
 final class ACLMeasurementUnitExists implements MeasurementUnitExists

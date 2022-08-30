@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement;
 
 use Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement\FindUnitSymbol;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnit;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Unit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\GetUnit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\Unit;
 use PhpSpec\ObjectBehavior;
 
 class FindUnitSymbolSpec extends ObjectBehavior

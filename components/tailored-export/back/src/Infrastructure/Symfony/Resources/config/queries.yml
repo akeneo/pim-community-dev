@@ -27,12 +27,12 @@ services:
     Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface:
         class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement\FindUnitLabel
         arguments:
-            - '@akeneo_measurement.public_api.get_unit_translations'
+            - '@akeneo_measurement.service_api.get_unit_translations'
 
     Akeneo\Platform\TailoredExport\Domain\Query\FindUnitSymbolInterface:
         class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement\FindUnitSymbol
         arguments:
-            - '@akeneo_measurement.public_api.get_unit'
+            - '@akeneo_measurement.service_api.get_unit'
 
     Akeneo\Platform\TailoredExport\Domain\Query\MeasurementConverterInterface:
         class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement\MeasurementConverter

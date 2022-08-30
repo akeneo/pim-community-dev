@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\GetUnitTranslations;
 use Webmozart\Assert\Assert;
 
 /**

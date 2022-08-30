@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement;
 
 use Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement\FindUnitLabel;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\GetUnitTranslations;
 use PhpSpec\ObjectBehavior;
 
 class FindUnitLabelSpec extends ObjectBehavior

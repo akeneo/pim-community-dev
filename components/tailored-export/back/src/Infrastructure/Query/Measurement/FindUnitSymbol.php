@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement;
 
 use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitSymbolInterface;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\GetUnit;
 
 class FindUnitSymbol implements FindUnitSymbolInterface
 {

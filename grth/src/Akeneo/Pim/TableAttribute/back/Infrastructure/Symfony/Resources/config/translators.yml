@@ -31,7 +31,7 @@ services:
 
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableMeasurementTranslator:
         arguments:
-            - '@akeneo_measurement.public_api.get_unit_translations'
+            - '@akeneo_measurement.service_api.get_unit_translations'
         tags:
             - { name: pim_table_attribute.translator.value_translator }
 

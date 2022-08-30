@@ -133,7 +133,7 @@ $rules = [
             'Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface',
 
             // Measurements
-            'Akeneo\Tool\Bundle\MeasureBundle\PublicApi',
+            'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi',
             'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException',
             'Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException',
             'Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily',

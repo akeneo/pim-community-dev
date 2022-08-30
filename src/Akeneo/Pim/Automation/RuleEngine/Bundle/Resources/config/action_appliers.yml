@@ -104,7 +104,7 @@ services:
 
     Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\MetricValueStringifier:
         arguments:
-            - '@akeneo_measurement.public_api.get_unit_translations'
+            - '@akeneo_measurement.service_api.get_unit_translations'
             -
                 - 'pim_catalog_metric'
         tags:
