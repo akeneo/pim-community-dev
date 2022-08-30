@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10608 [Backport PIM-10584]: Fix measurement values for volume flow conversion 
+
 # 5.0.111 (2022-08-25)
 
 ## Bug fixes
