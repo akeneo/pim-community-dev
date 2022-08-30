@@ -63,11 +63,9 @@ abstract class AbstractCursor implements CursorInterface
      */
     public function valid()
     {
-        if (null === $this->items) {
-            $this->rewind();
-        }
+        $key = key($this->items);
 
-        return !empty($this->items);
+        return false !== $key && null !== $key;
     }
 
     /**
@@ -100,8 +98,7 @@ abstract class AbstractCursor implements CursorInterface
             return [];
         }
 
-        // TODO: Implement getItemsFromUuids better or drop this idea ?
-        $hydratedProducts = $this->productRepository->getItemsFromUuids(
+        $hydratedProducts = $this->productRepository->getItemsFromIdentifiers(
             $identifierResults->getProductUuids()
         );
         $hydratedProductModels = $this->productModelRepository->getItemsFromIdentifiers(

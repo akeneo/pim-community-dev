@@ -68,7 +68,7 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
 
         // Since we can't rely on product id anymore, we add a sort on the identifier
         if (!$this->getQueryBuilder()->hasSort('identifier') && !$this->getQueryBuilder()->hasSort('id')) {
-            $this->addSorter('identifier', Directions::ASCENDING);
+            $this->addSorter('id', Directions::ASCENDING);
         }
 
         return $this->cursorFactory->createCursor($this->getQueryBuilder()->getQuery(), $cursorOptions);

@@ -6,11 +6,11 @@ services:
         alias: doctrine.orm.entity_manager
 
     pim_catalog.factory.product_cursor:
-        class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\CursorFactory'
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_catalog.repository.product'
-            - '%akeneo_elasticsearch.cursor.cursor.class%'
+            - '@pim_catalog.repository.product_model'
             - '%pim_job_product_batch_size%'
 
     pim_catalog.factory.product_and_product_model_identifier_cursor:

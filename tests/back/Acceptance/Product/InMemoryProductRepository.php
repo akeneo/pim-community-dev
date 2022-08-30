@@ -150,12 +150,4 @@ class InMemoryProductRepository implements
 
         return $items;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getItemsFromUuids(array $uuids): array
-    {
-        throw new \LogicException("Todo: implement this method.");
-    }
 }

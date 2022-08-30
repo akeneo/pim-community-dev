@@ -51,14 +51,6 @@ class InMemoryProductModelRepository implements IdentifiableObjectRepositoryInte
         throw new NotImplementedException(__METHOD__);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getItemsFromUuids(array $uuids): array
-    {
-        throw new \LogicException("Product Models do not use Uuids.");
-    }
-
     public function find($id)
     {
         throw new NotImplementedException(__METHOD__);

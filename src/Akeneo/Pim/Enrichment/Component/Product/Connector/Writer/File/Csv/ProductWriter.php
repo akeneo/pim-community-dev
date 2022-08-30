@@ -152,6 +152,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
      */
     protected function getItemIdentifier(array $product): string
     {
-        return $product['identifier'];
+        // TODO : Remove before tests (This allows to make sure the whole export goes well, waiting on CPM-591 to fix)
+        return $product['identifier'] ?? 'This product has no identifier';
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Akeneo\Tool\Component\StorageUtils\Repository;
 
-use Ramsey\Uuid\UuidInterface;
-
 /**
  * Interface for cursorable repositories
  *
@@ -14,16 +12,9 @@ use Ramsey\Uuid\UuidInterface;
 interface CursorableRepositoryInterface
 {
     /**
-     * @param string[] $identifiers
+     * @param array $identifiers
      *
      * @return array
      */
     public function getItemsFromIdentifiers(array $identifiers): array;
-
-    /**
-     * @param UuidInterface[] $uuids
-     *
-     * @return array
-     */
-    public function getItemsFromUuids(array $uuids): array;
 }

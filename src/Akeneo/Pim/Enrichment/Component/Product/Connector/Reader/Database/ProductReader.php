@@ -23,37 +23,15 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
  */
 class ProductReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface, TrackableItemReaderInterface
 {
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $pqbFactory;
+    protected StepExecution $stepExecution;
+    protected CursorInterface $products;
+    private bool $firstRead = true;
 
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var MetricConverter */
-    protected $metricConverter;
-
-    /** @var StepExecution */
-    protected $stepExecution;
-
-    /** @var CursorInterface */
-    protected $products;
-
-    /** @var bool */
-    private $firstRead = true;
-
-    /**
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param ChannelRepositoryInterface          $channelRepository
-     * @param MetricConverter                     $metricConverter
-     */
     public function __construct(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        ChannelRepositoryInterface $channelRepository,
-        MetricConverter $metricConverter
+        protected ProductQueryBuilderFactoryInterface $pqbFactory,
+        protected ChannelRepositoryInterface $channelRepository,
+        protected MetricConverter $metricConverter
     ) {
-        $this->pqbFactory = $pqbFactory;
-        $this->channelRepository = $channelRepository;
-        $this->metricConverter = $metricConverter;
     }
 
     /**
@@ -80,6 +58,10 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
                 $this->products->next();
             }
             $product = $this->products->current();
+        }
+
+        if (false === $product) {
+            $product = null;
         }
 
         if (null !== $product) {
@@ -164,12 +146,12 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     }
 
     /**
-     * @param array            $filters
-     * @param ChannelInterface $channel
+     * @param array             $filters
+     * @param ?ChannelInterface $channel
      *
      * @return CursorInterface
      */
-    protected function getProductsCursor(array $filters, ChannelInterface $channel = null)
+    protected function getProductsCursor(array $filters, ?ChannelInterface $channel = null)
     {
         $options = null !== $channel ? ['default_scope' => $channel->getCode()] : [];
 

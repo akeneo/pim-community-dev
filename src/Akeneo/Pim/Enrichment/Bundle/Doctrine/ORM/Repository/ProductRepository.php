@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Ramsey\Uuid\UuidInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Product repository
@@ -25,23 +26,10 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getItemsFromIdentifiers(array $identifiers): array
+    public function getItemsFromIdentifiers(array $uuids): array
     {
-        $qb = $this->createQueryBuilder('p')
-            ->where('p.identifier IN (:identifiers)')
-            ->setParameter('identifiers', $identifiers);
+        Assert::allIsInstanceOf($uuids, UuidInterface::class);
 
-        $query = $qb->getQuery();
-        $query->useQueryCache(false);
-
-        return $query->execute();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getItemsFromUuids(array $uuids): array
-    {
         $qb = $this->createQueryBuilder('p')
             ->where('p.uuid IN (:uuids)')
             ->setParameter('uuids', array_map(fn(UuidInterface $uuid) => $uuid->getBytes(), $uuids));
@@ -49,7 +37,9 @@ class ProductRepository extends EntityRepository implements
         $query = $qb->getQuery();
         $query->useQueryCache(false);
 
-        return $query->execute();
+        $result = $query->execute();
+
+        return $result;
     }
 
     /**
