@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Test\Integration;
 use Akeneo\Catalogs\Application\Persistence\GetLocalesQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
@@ -314,5 +315,13 @@ abstract class IntegrationTestCase extends WebTestCase
         $family = self::getContainer()->get('pim_catalog.factory.family')->create();
         self::getContainer()->get('pim_catalog.updater.family')->update($family, $familyData);
         self::getContainer()->get('pim_catalog.saver.family')->save($family);
+    }
+
+    protected function createCategory(array $data = []): void
+    {
+        /** @var CategoryInterface $category */
+        $category = self::getContainer()->get('pim_catalog.factory.category')->create();
+        self::getContainer()->get('pim_catalog.updater.category')->update($category, $data);
+        self::getContainer()->get('pim_catalog.saver.category')->save($category);
     }
 }

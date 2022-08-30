@@ -9,6 +9,7 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterio
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeNumberCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeSimpleSelectCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\AttributeCriterion\AttributeTextCriterion;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\CategoriesCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\CompletenessCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\EnabledCriterion;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductSelection\SystemCriterion\FamilyCriterion;
@@ -107,6 +108,7 @@ final class CatalogUpdatePayloadValidator extends ConstraintValidator
     private function getCriterionConstraint(string $field): Constraint|null
     {
         $constraint = match ($field) {
+            'categories' => new CategoriesCriterion(),
             'completeness' => new CompletenessCriterion(),
             'enabled' => new EnabledCriterion(),
             'family' => new FamilyCriterion(),

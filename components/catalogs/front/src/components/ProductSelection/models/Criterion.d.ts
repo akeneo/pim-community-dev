@@ -4,6 +4,7 @@ import {CriterionErrors} from './CriterionErrors';
 import {StatusCriterionState} from '../criteria/StatusCriterion';
 import {FamilyCriterionState} from '../criteria/FamilyCriterion';
 import {CompletenessCriterionState} from '../criteria/CompletenessCriterion';
+import {CategoryCriterionState} from '../criteria/CategoryCriterion';
 import {AttributeTextCriterionState} from '../criteria/AttributeTextCriterion';
 import {AttributeSimpleSelectCriterionState} from '../criteria/AttributeSimpleSelectCriterion';
 import {AttributeNumberCriterionState} from '../criteria/AttributeNumberCriterion';
@@ -36,6 +37,7 @@ export type AnyCriterionState =
     | StatusCriterionState
     | FamilyCriterionState
     | CompletenessCriterionState
+    | CategoryCriterionState
     | AttributeTextCriterionState
     | AttributeSimpleSelectCriterionState
     | AttributeNumberCriterionState
@@ -51,4 +53,5 @@ export type AnyCriterion =
     | Criterion<StatusCriterionState>
     | Criterion<FamilyCriterionState>
     | Criterion<CompletenessCriterionState>
+    | Criterion<CategoryCriterionState>
     | AnyAttributeCriterion;

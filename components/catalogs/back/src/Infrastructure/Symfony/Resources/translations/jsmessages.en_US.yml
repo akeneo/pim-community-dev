@@ -22,7 +22,7 @@ akeneo_catalogs:
         more_information: Check out our Help center for more information.
         add_criteria:
             label: add selection criteria
-            search: search criterion
+            search: Search criterion
             no_results: no matches found
             section_system: system
             section_attributes: attributes
@@ -49,6 +49,10 @@ akeneo_catalogs:
             attribute_option:
                 no_matches: No matches found
                 placeholder: Select your options
+            category:
+                label: Category
+                remove: Remove category
+                category_tree: Category tree
             boolean:
                 yes: Yes
                 no: No

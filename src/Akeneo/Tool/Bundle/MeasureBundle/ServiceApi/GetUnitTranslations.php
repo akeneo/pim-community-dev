@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\PublicApi;
+namespace Akeneo\Tool\Bundle\MeasureBundle\ServiceApi;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>

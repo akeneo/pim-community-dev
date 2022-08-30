@@ -15,6 +15,7 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetChannelsQueryTest extends IntegrationTestCase
 {
+    public ?object $connection;
     private ?GetChannelsQuery $query;
 
     protected function setUp(): void
