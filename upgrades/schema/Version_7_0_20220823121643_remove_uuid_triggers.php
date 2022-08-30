@@ -48,7 +48,6 @@ final class Version_7_0_20220823121643_remove_uuid_triggers extends AbstractMigr
         'pimee_twa_project_product_uuid_update',
     ];
     private const TABLES_TO_UPDATE = [
-
         'pim_catalog_category_product' => 'product_id',
         'pim_catalog_group_product' => 'product_id',
         'pim_catalog_product_unique_data' => 'product_id',
@@ -121,11 +120,11 @@ final class Version_7_0_20220823121643_remove_uuid_triggers extends AbstractMigr
 
     private function dropUniqueConstraints(string $table, string $column): void
     {
-        $tableDetails = $this->connection->getSchemaManager()->listTableDetails($table);
-        $indexes = $tableDetails->getIndexes();
+        $showIndexesQuery = sprintf('SHOW INDEXES FROM %s;', $table);
+        $indexes = $this->connection->executeQuery($showIndexesQuery)->fetchAllAssociative();
         foreach ($indexes as $index) {
-            if (in_array($column, $index->getColumns())) {
-                $dropIndexQuery = sprintf('DROP INDEX %s ON %s', $index->getName(), $table);
+            if ($column === $index['Column_name']) {
+                $dropIndexQuery = sprintf('DROP INDEX %s ON %s', $index['Key_name'], $table);
                 $this->addSql($dropIndexQuery);
             }
         }

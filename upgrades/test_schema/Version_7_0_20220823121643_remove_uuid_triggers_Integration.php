@@ -131,8 +131,8 @@ SQL;
     {
         $addColumnQuery = <<<SQL
 ALTER TABLE %s
-    ADD COLUMN dummy INT,
     ADD COLUMN %s INT,
+    ADD COLUMN dummy INT,
     ADD CONSTRAINT UNIQUE (%s, dummy),
     ADD CONSTRAINT FOREIGN KEY(%s) REFERENCES pim_catalog_product(id)
     ;
