@@ -33,6 +33,7 @@ import {
   SplitOperationBlock,
 } from './Operation';
 import {usePreviewData} from '../../hooks';
+import {CHANGE_CASE_OPERATION_TYPE, ChangeCaseOperationBlock} from './Operation/Block/ChangeCaseOperationBlock';
 
 const OperationsContainer = styled.div`
   display: flex;
@@ -57,6 +58,7 @@ const operationBlocks: {
   [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,
   [SPLIT_OPERATION_TYPE]: SplitOperationBlock,
   [FAMILY_REPLACEMENT_OPERATION_TYPE]: FamilyReplacementOperationBlock,
+  [CHANGE_CASE_OPERATION_TYPE]: ChangeCaseOperationBlock,
 };
 
 type OperationsProps = {

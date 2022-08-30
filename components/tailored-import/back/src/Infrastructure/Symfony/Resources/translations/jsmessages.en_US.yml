@@ -52,6 +52,12 @@ akeneo.tailored_import:
         collapse: Collapse
       clean_html_tags:
         title: Clean HTML tags
+      change_case:
+        title: Change case
+        select: Select your case
+        uppercase: Uppercase
+        lowercase: Lowercase
+        capitalize: First letter uppercase
       split:
         title: Split
         separator: Select the separator

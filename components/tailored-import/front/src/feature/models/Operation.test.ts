@@ -23,6 +23,11 @@ test('it can get the default operation for each type', () => {
     type: 'family_replacement',
     mapping: {},
   });
+  expect(getDefaultOperation('change_case')).toEqual({
+    uuid: expect.any(String),
+    type: 'change_case',
+    mode: 'uppercase',
+  });
   // @ts-expect-error invalid type
   expect(() => getDefaultOperation('unknown')).toThrowError('Invalid operation type: "unknown"');
 });

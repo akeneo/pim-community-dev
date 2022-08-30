@@ -4,7 +4,7 @@ import {isTextTarget} from './model';
 import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
-import {CLEAN_HTML_TAGS_OPERATION_TYPE} from '../../Operation';
+import {CHANGE_CASE_OPERATION_TYPE, CLEAN_HTML_TAGS_OPERATION_TYPE} from '../../Operation';
 import {ClearIfEmpty} from '../../common/ClearIfEmpty';
 
 const TextConfigurator = ({
@@ -42,7 +42,7 @@ const TextConfigurator = ({
       />
       <Operations
         dataMapping={dataMapping}
-        compatibleOperations={[CLEAN_HTML_TAGS_OPERATION_TYPE]}
+        compatibleOperations={[CLEAN_HTML_TAGS_OPERATION_TYPE, CHANGE_CASE_OPERATION_TYPE]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
         validationErrors={filterErrors(validationErrors, '[operations]')}

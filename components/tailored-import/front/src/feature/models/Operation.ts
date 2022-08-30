@@ -1,18 +1,14 @@
 import {
-  CATEGORIES_REPLACEMENT_OPERATION_TYPE,
-  CLEAN_HTML_TAGS_OPERATION_TYPE,
-  FAMILY_REPLACEMENT_OPERATION_TYPE,
-  MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
-  SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
-  SPLIT_OPERATION_TYPE,
   BooleanReplacementOperation,
+  CATEGORIES_REPLACEMENT_OPERATION_TYPE,
   CategoriesReplacementOperation,
+  CHANGE_CASE_OPERATION_TYPE,
+  ChangeCaseOperation,
+  CLEAN_HTML_TAGS_OPERATION_TYPE,
   CleanHTMLTagsOperation,
   EnabledReplacementOperation,
+  FAMILY_REPLACEMENT_OPERATION_TYPE,
   FamilyReplacementOperation,
-  MultiSelectReplacementOperation,
-  SimpleSelectReplacementOperation,
-  SplitOperation,
   getDefaultBooleanReplacementOperation,
   getDefaultCategoriesReplacementOperation,
   getDefaultCleanHTMLTagsOperation,
@@ -21,6 +17,13 @@ import {
   getDefaultMultiSelectReplacementOperation,
   getDefaultSimpleSelectReplacementOperation,
   getDefaultSplitOperation,
+  getDefaultChangeCaseOperation,
+  MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
+  MultiSelectReplacementOperation,
+  SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
+  SimpleSelectReplacementOperation,
+  SPLIT_OPERATION_TYPE,
+  SplitOperation,
 } from '../components/DataMappingDetails/Operation';
 import {Attribute} from './Attribute';
 
@@ -32,8 +35,8 @@ type Operation =
   | MultiSelectReplacementOperation
   | SimpleSelectReplacementOperation
   | FamilyReplacementOperation
-  | SplitOperation;
-
+  | SplitOperation
+  | ChangeCaseOperation;
 type OperationType = Operation['type'];
 
 const getAttributeRequiredOperations = (attribute: Attribute): Operation[] => {
@@ -68,6 +71,8 @@ const getDefaultOperation = (operationType: OperationType): Operation => {
       return getDefaultCategoriesReplacementOperation();
     case FAMILY_REPLACEMENT_OPERATION_TYPE:
       return getDefaultFamilyReplacementOperation();
+    case CHANGE_CASE_OPERATION_TYPE:
+      return getDefaultChangeCaseOperation();
     default:
       throw new Error(`Invalid operation type: "${operationType}"`);
   }
