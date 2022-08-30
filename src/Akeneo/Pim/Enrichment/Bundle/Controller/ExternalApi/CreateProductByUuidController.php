@@ -11,11 +11,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException as ProductInvalidArgumentException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAssociatedProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\VariantProductParent;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetProductUuids;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -116,23 +116,17 @@ class CreateProductByUuidController
             }
 
             $this->updater->update($product, $data);
+        } catch (UnknownAssociatedProductException $exception) {
+            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
+            $message = sprintf(
+                UnknownAssociatedProductException::EXCEPTION_BY_UUID,
+                $this->getProductUuids->fromIdentifier($exception->getIdentifier())
+            );
+            $this->throwDocumentedHttpException($message, $exception);
         } catch (PropertyException $exception) {
             $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
             $message = $exception->getMessage();
-            $matches = [];
-            // TODO: CPM-715
-            if (preg_match('/^Property "associations" expects a valid product identifier. The product does not exist, "(?P<identifier>.*)" given.$/', $message, $matches)) {
-                $message = sprintf(
-                    'Property "associations" expects a valid product uuid. The product does not exist, "%s" given.',
-                    $this->getProductUuids->fromIdentifier($matches['identifier'])
-                );
-            }
-
-            throw new DocumentedHttpException(
-                Documentation::URL . 'post_products',
-                sprintf('%s Check the expected format on the API documentation.', $message),
-                $exception
-            );
+            $this->throwDocumentedHttpException($message, $exception);
         } catch (TwoWayAssociationWithTheSameProductException $exception) {
             $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
             throw new DocumentedHttpException(
