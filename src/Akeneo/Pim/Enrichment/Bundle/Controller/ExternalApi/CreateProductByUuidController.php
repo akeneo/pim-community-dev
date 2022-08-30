@@ -11,7 +11,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException as ProductInvalidArgumentException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAssociatedProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -100,7 +99,8 @@ class CreateProductByUuidController
             $product = $this->productBuilder->createProduct(identifier: null, uuid: $data['uuid'] ?? null);
         }
 
-        $data = $this->replaceUuidsByIdentifiers($data);
+        $data = $this->formatAssociatedProductUuids($data);
+        $data = $this->replaceUuidsByIdentifiersInQuantifiedAssociations($data);
         $this->updateProduct($product, $data);
         $this->validateProduct($product);
         $this->saver->save($product);
@@ -116,17 +116,9 @@ class CreateProductByUuidController
             }
 
             $this->updater->update($product, $data);
-        } catch (UnknownAssociatedProductException $exception) {
-            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
-            $message = sprintf(
-                UnknownAssociatedProductException::EXCEPTION_BY_UUID,
-                $this->getProductUuids->fromIdentifier($exception->getIdentifier())
-            );
-            $this->throwDocumentedHttpException($message, $exception);
         } catch (PropertyException $exception) {
             $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
-            $message = $exception->getMessage();
-            $this->throwDocumentedHttpException($message, $exception);
+            $this->throwDocumentedHttpException($exception->getMessage(), $exception);
         } catch (TwoWayAssociationWithTheSameProductException $exception) {
             $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
             throw new DocumentedHttpException(
@@ -226,18 +218,43 @@ class CreateProductByUuidController
     }
 
     /**
-     * This method is temporary until AssociationFieldSetter manages UUIDS
+     * The API expects associations like:
+     * {
+     *     "XSELL": {
+     *         "products": ["525365d0-8462-43e3-92dd-b02db13ba468", "2f68b3ff-6862-43c5-b4a8-78d0ed90cb75"],
+     *     }
+     * }
+     *
+     * But the standard format expects associations like:
+     * {
+     *     "XSELL": {
+     *         "products_uuid": ["525365d0-8462-43e3-92dd-b02db13ba468", "2f68b3ff-6862-43c5-b4a8-78d0ed90cb75"],
+     *     }
+     * }
+     *
+     * This method only replace the key 'products' with 'products_uuid'.
+     */
+    private function formatAssociatedProductUuids(array $data): array
+    {
+        if (isset($data['associations'])) {
+            foreach ($data['associations'] as $associationCode => $associations) {
+                if (isset($associations['products'])) {
+                    $data['associations'][$associationCode]['products_uuid'] = $associations['products'];
+                    unset($data['associations'][$associationCode]['products']);
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * This method is temporary until Quantified associations manages UUIDS
      * @TODO CPM-697
      * @param array $data
      * @return array
      * Expected data output format :
-     * {   "associations": {
-     *         "XSELL": {
-     *             "groups": ["group1", "group2"],
-     *             "products": ["AKN_TS1", "AKN_TSH2"],
-     *             "product_models": ["MODEL_AKN_TS1", "MODEL_AKN_TSH2"]
-     *         }
-     *     },
+     * {
      *     "quantified_associations": {
      *         "QUANTIFIED": {
      *             "products": [{"identifier": "AKN_TS1", quantity: 1}, {"identifier": "AKN_TSH2", "quantity": 2}],
@@ -246,16 +263,8 @@ class CreateProductByUuidController
      *     }
      * }
      */
-    private function replaceUuidsByIdentifiers(array $data): array
+    private function replaceUuidsByIdentifiersInQuantifiedAssociations(array $data): array
     {
-        if (isset($data['associations'])) {
-            foreach ($data['associations'] as $associationCode => $associations) {
-                if (isset($associations['products'])) {
-                    $data['associations'][$associationCode]['products'] = \array_values($this->getProductIdentifierFromUuids($associations['products'], 'associations'));
-                }
-            }
-        }
-
         if (isset($data['quantified_associations'])) {
             foreach ($data['quantified_associations'] as $associationCode => $associations) {
                 if (isset($associations['products'])) {

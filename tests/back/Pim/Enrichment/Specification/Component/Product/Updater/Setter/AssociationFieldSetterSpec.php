@@ -5,14 +5,13 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
@@ -30,7 +29,7 @@ use Prophecy\Argument;
 class AssociationFieldSetterSpec extends ObjectBehavior
 {
     function let(
-        IdentifiableObjectRepositoryInterface $productRepository,
+        ProductRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder,
