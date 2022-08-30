@@ -47,7 +47,7 @@ beforeEach(() => {
 test('it renders the users form', () => {
   renderWithProviders(
     <UserGroupsForm
-      userGroups={['IT Support']}
+      userGroups={[1]}
       validationErrors={[]}
       onUserGroupsChange={jest.fn()}
       label={'user_groups.label'}
@@ -64,7 +64,7 @@ test('it disables the user groups input if the user cannot list the user groups'
 
   renderWithProviders(
     <UserGroupsForm
-      userGroups={['IT Support']}
+      userGroups={[1]}
       validationErrors={[]}
       onUserGroupsChange={jest.fn()}
       label={'user_groups.label'}
@@ -81,7 +81,7 @@ test('it does not display the user groups "all"', () => {
 
   renderWithProviders(
     <UserGroupsForm
-      userGroups={['IT Support']}
+      userGroups={[1]}
       validationErrors={[]}
       onUserGroupsChange={onUserGroupsChange}
       label={'user_groups.label'}
@@ -98,7 +98,7 @@ test('it can change the users', () => {
 
   renderWithProviders(
     <UserGroupsForm
-      userGroups={['IT Support']}
+      userGroups={[1]}
       validationErrors={[]}
       onUserGroupsChange={onUserGroupsChange}
       label={'user_groups.label'}
@@ -108,7 +108,7 @@ test('it can change the users', () => {
 
   userEvent.click(screen.getByLabelText('user_groups.label'));
   userEvent.click(screen.getByText('Redactor'));
-  expect(onUserGroupsChange).toBeCalledWith(['IT Support', 'Redactor']);
+  expect(onUserGroupsChange).toBeCalledWith([1, 5]);
 });
 
 test('it displays validation errors', () => {
@@ -124,7 +124,7 @@ test('it displays validation errors', () => {
 
   renderWithProviders(
     <UserGroupsForm
-      userGroups={['IT Support']}
+      userGroups={[1]}
       validationErrors={validationErrors}
       onUserGroupsChange={jest.fn()}
       label={'user_groups.label'}

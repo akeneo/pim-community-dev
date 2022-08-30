@@ -36,15 +36,15 @@ final class AutomationValidator extends ConstraintValidator
             'fields' => [
                 'cron_expression' => new CronExpression(),
                 'running_user_groups' => [
-                    new All(new Type('string')),
+                    new All(new Type('int')),
                     new Type('array'),
                 ],
                 'notification_user_groups' => [
-                    new All(new Type('string')),
+                    new All(new Type('int')),
                     new Type('array'),
                 ],
                 'notification_users' => [
-                    new All(new Type('string')),
+                    new All(new Type('int')),
                     new Type('array'),
                 ],
                 'setup_date' => new Optional([new NotBlank(), new DateTime(['format' => DATE_ATOM])]),

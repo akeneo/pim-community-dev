@@ -29,12 +29,12 @@ const JobAutomationForm = ({
   const translate = useTranslate();
   const {isEnabled} = useFeatureFlags();
 
-  const handleRunningUserGroupsChange = (userGroups: string[]) =>
-    onAutomationChange({...automation, running_user_groups: userGroups});
-  const handleNotificationUserGroupsChange = (userGroups: string[]) =>
-    onAutomationChange({...automation, notification_user_groups: userGroups});
-  const handleNotificationUsersChange = (users: string[]) =>
-    onAutomationChange({...automation, notification_users: users});
+  const handleRunningUserGroupsChange = (userGroupIds: number[]) =>
+    onAutomationChange({...automation, running_user_groups: userGroupIds});
+  const handleNotificationUserGroupsChange = (userGroupIds: number[]) =>
+    onAutomationChange({...automation, notification_user_groups: userGroupIds});
+  const handleNotificationUsersChange = (userIds: number[]) =>
+    onAutomationChange({...automation, notification_users: userIds});
   const handleScheduledChange = (isEnabled: boolean) => {
     onScheduledChange(isEnabled);
     if (isEnabled) onAutomationChange({...automation});

@@ -8,11 +8,14 @@ test('it remove the default user group', async () => {
       {id: 1, label: 'All'},
       {id: 2, label: 'Support IT'},
     ])
-  ).toEqual(['Support IT']);
+  ).toEqual([{id: 2, label: 'Support IT'}]);
   expect(
     removeDefaultUserGroup([
       {id: 3, label: 'Manager'},
       {id: 2, label: 'Support IT'},
     ])
-  ).toEqual(['Manager', 'Support IT']);
+  ).toEqual([
+    {id: 3, label: 'Manager'},
+    {id: 2, label: 'Support IT'},
+  ]);
 });

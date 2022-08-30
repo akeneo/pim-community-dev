@@ -7,9 +7,9 @@ import {Automation} from '../models';
 
 const automation: Automation = {
   cron_expression: '0 0 * * *',
-  running_user_groups: ['IT Support'],
-  notification_user_groups: ['Manager'],
-  notification_users: ['admin'],
+  running_user_groups: [1],
+  notification_user_groups: [2],
+  notification_users: [1],
 };
 
 const intersectionObserverMock = () => ({
@@ -149,7 +149,7 @@ test('it can change the running user groups', () => {
   userEvent.click(screen.getByText('Clothes manager'));
   expect(onAutomationChange).toBeCalledWith({
     ...automation,
-    running_user_groups: ['IT Support', 'Clothes manager'],
+    running_user_groups: [1, 4],
   });
 });
 
@@ -170,7 +170,7 @@ test('it can change the notification user groups', () => {
   userEvent.click(screen.getByText('Clothes manager'));
   expect(onAutomationChange).toBeCalledWith({
     ...automation,
-    notification_user_groups: ['Manager', 'Clothes manager'],
+    notification_user_groups: [2, 4],
   });
 });
 
@@ -191,7 +191,7 @@ test('it can change the notification users', () => {
   userEvent.click(screen.getByText('julia'));
   expect(onAutomationChange).toBeCalledWith({
     ...automation,
-    notification_users: ['admin', 'julia'],
+    notification_users: [1, 2],
   });
 });
 

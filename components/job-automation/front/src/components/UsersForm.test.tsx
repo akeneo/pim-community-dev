@@ -42,7 +42,7 @@ beforeEach(() => {
 });
 
 test('it renders the users form', () => {
-  renderWithProviders(<UsersForm users={['admin']} validationErrors={[]} onUsersChange={jest.fn()} />);
+  renderWithProviders(<UsersForm users={[1]} validationErrors={[]} onUsersChange={jest.fn()} />);
 
   expect(screen.getByText('akeneo.job_automation.notification.users.label')).toBeInTheDocument();
   expect(screen.getByText('admin')).toBeInTheDocument();
@@ -51,7 +51,7 @@ test('it renders the users form', () => {
 test('it disables the users input if the user cannot list the users', () => {
   mockedGrantedACL = [];
 
-  renderWithProviders(<UsersForm users={['admin']} validationErrors={[]} onUsersChange={jest.fn()} />);
+  renderWithProviders(<UsersForm users={[1]} validationErrors={[]} onUsersChange={jest.fn()} />);
 
   expect(screen.getByLabelText('akeneo.job_automation.notification.users.label')).toBeDisabled();
   expect(screen.getByText('akeneo.job_automation.notification.users.disabled_helper')).toBeInTheDocument();
@@ -60,11 +60,11 @@ test('it disables the users input if the user cannot list the users', () => {
 test('it can change the users', () => {
   const onUsersChange = jest.fn();
 
-  renderWithProviders(<UsersForm users={['admin']} validationErrors={[]} onUsersChange={onUsersChange} />);
+  renderWithProviders(<UsersForm users={[1]} validationErrors={[]} onUsersChange={onUsersChange} />);
 
   userEvent.click(screen.getByLabelText('akeneo.job_automation.notification.users.label'));
   userEvent.click(screen.getByText('julia'));
-  expect(onUsersChange).toBeCalledWith(['admin', 'julia']);
+  expect(onUsersChange).toBeCalledWith([1, 2]);
 });
 
 test('it displays validation errors', () => {
@@ -78,7 +78,7 @@ test('it displays validation errors', () => {
     },
   ];
 
-  renderWithProviders(<UsersForm users={['admin']} validationErrors={validationErrors} onUsersChange={jest.fn()} />);
+  renderWithProviders(<UsersForm users={[1]} validationErrors={validationErrors} onUsersChange={jest.fn()} />);
 
   expect(screen.getByText('error.key.a_type_error')).toBeInTheDocument();
 });

@@ -3,11 +3,12 @@ import {Field, SelectInput, Helper, MultiSelectInput, useDebounce} from 'akeneo-
 import {useSecurity, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {removeDefaultUserGroup} from '../models';
 import {useUserGroups} from '../hooks';
+import {UserGroup} from '../models/UserGroup';
 
 type UserGroupsFormProps = {
-  userGroups: string[];
+  userGroups: number[];
   validationErrors: ValidationError[];
-  onUserGroupsChange: (userGroups: string[]) => void;
+  onUserGroupsChange: (userGroups: number[]) => void;
   label: string;
   disabledHelperMessage: string;
 };
@@ -24,11 +25,15 @@ const UserGroupsForm = ({
   const {isGranted} = useSecurity();
   const debouncedLoadNextPage = useDebounce(loadNextPage);
 
+  const handleUserGroupsChange = (userGroups: string[]) => {
+    onUserGroupsChange(userGroups.map(userGroup => parseInt(userGroup)));
+  };
+
   return (
     <Field label={label}>
       <MultiSelectInput
-        value={userGroups}
-        onChange={onUserGroupsChange}
+        value={userGroups.map(userGroup => userGroup.toString())}
+        onChange={handleUserGroupsChange}
         onNextPage={debouncedLoadNextPage}
         onSearchChange={searchName}
         emptyResultLabel={translate('pim_common.no_result')}
@@ -37,9 +42,9 @@ const UserGroupsForm = ({
         readOnly={!isGranted('pim_user_group_index')}
         invalid={0 < validationErrors.length}
       >
-        {removeDefaultUserGroup(availableUserGroups).map((userGroupLabel: string) => (
-          <SelectInput.Option value={userGroupLabel} key={userGroupLabel}>
-            {userGroupLabel}
+        {removeDefaultUserGroup(availableUserGroups).map((userGroup: UserGroup) => (
+          <SelectInput.Option value={userGroup.id.toString()} key={userGroup.id}>
+            {userGroup.label}
           </SelectInput.Option>
         ))}
       </MultiSelectInput>

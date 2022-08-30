@@ -4,9 +4,9 @@ import {useSecurity, useTranslate, ValidationError} from '@akeneo-pim-community/
 import {useUsers} from '../hooks';
 
 type UsersFormProps = {
-  users: string[];
+  users: number[];
   validationErrors: ValidationError[];
-  onUsersChange: (users: string[]) => void;
+  onUsersChange: (users: number[]) => void;
 };
 
 const UsersForm = ({users, validationErrors, onUsersChange}: UsersFormProps) => {
@@ -15,11 +15,15 @@ const UsersForm = ({users, validationErrors, onUsersChange}: UsersFormProps) => 
   const {isGranted} = useSecurity();
   const debouncedLoadNextPage = useDebounce(loadNextPage);
 
+  const handleUsersChange = (users: string[]) => {
+    onUsersChange(users.map(user => parseInt(user)));
+  };
+
   return (
     <Field label={translate('akeneo.job_automation.notification.users.label')}>
       <MultiSelectInput
-        value={users}
-        onChange={onUsersChange}
+        value={users.map(user => user.toString())}
+        onChange={handleUsersChange}
         onNextPage={debouncedLoadNextPage}
         onSearchChange={search}
         emptyResultLabel={translate('pim_common.no_result')}
@@ -29,7 +33,7 @@ const UsersForm = ({users, validationErrors, onUsersChange}: UsersFormProps) => 
         invalid={0 < validationErrors.length}
       >
         {availableUsers.map(availableUser => (
-          <SelectInput.Option value={availableUser.username} key={availableUser.username}>
+          <SelectInput.Option value={availableUser.id.toString()} key={availableUser.id}>
             {availableUser.username}
           </SelectInput.Option>
         ))}
