@@ -11,7 +11,7 @@ use Akeneo\Category\Application\Converter\ConverterInterface;
 use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface;
 use Akeneo\Category\Application\Filter\CategoryEditACLFilter;
 use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
-use Akeneo\Category\Application\Query\FindCategoryByIdentifier;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStd;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,7 +35,7 @@ class UpdateCategoryController
         private CategoryEditACLFilter $ACLFilter,
         private StandardFormatToUserIntentsInterface $standardFormatToUserIntents,
         private CategoryEditUserIntentFilter $categoryUserIntentFilter,
-        private FindCategoryByIdentifier $findCategoryByIdentifier,
+        private GetCategoryInterface $getCategory,
     ) {
     }
 
@@ -45,7 +45,7 @@ class UpdateCategoryController
             throw new AccessDeniedException();
         }
 
-        $category = ($this->findCategoryByIdentifier)($id);
+        $category = $this->getCategory->byId($id);
         if ($category === null) {
             throw new NotFoundHttpException('Category not found');
         }
@@ -68,7 +68,7 @@ class UpdateCategoryController
             //Todo: Handle violations exceptions when all stubbed services have been replaced by real ones
             return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
-        $category = ($this->findCategoryByIdentifier)($id);
+        $category = $this->getCategory->byId($id);
         if ($category === null) {
             throw new NotFoundHttpException('Category not found');
         }

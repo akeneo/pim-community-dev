@@ -15,4 +15,4 @@ services:
         class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryBaseSql'
         arguments:
             - '@database_connection'
-            - '@Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql'
+            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'

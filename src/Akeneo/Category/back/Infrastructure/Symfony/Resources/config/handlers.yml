@@ -2,7 +2,7 @@ services:
   Akeneo\Category\Application\UpsertCategoryCommandHandler:
     arguments:
       - '@validator'
-      - '@Akeneo\Category\Application\Query\FindCategoryByCode'
+      - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
       - '@Akeneo\Category\Application\Applier\UserIntentApplierRegistry'
       - '@event_dispatcher'
       - '@Akeneo\Category\Application\Storage\Save\CategorySaverProcessor'
