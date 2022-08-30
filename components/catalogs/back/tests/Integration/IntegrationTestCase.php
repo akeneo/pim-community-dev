@@ -87,6 +87,8 @@ abstract class IntegrationTestCase extends WebTestCase
         $connectionCloser->closeConnections();
 
         $this->ensureKernelShutdown();
+
+        parent::tearDown();
     }
 
     protected function logAs(string $username): TokenInterface
