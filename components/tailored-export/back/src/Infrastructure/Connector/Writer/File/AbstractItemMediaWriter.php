@@ -115,15 +115,10 @@ abstract class AbstractItemMediaWriter implements ItemWriterInterface, Initializ
         $jobParameters = $this->getStepExecution()->getJobParameters();
         $jobExecution = $this->getStepExecution()->getJobExecution();
 
-        // TODO RAB-907: Remove this condition
-        if ($jobParameters->has('storage') && isset($jobParameters->get('storage')['file_path'])) {
-            $storage = $jobParameters->get('storage');
-            $filePath = LocalStorage::TYPE === $storage['type']
-                ? $storage['file_path']
-                : sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
-        } else {
-            $filePath = $jobParameters->get('filePath');
-        }
+        $storage = $jobParameters->get('storage');
+        $filePath = LocalStorage::TYPE === $storage['type']
+            ? $storage['file_path']
+            : sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
 
         if (str_contains($filePath, '%')) {
             $jobLabel = '';

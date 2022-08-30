@@ -94,11 +94,7 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
     private function createFileIterator(): FileIteratorInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-
-        // TODO RAB-907: Remove this condition
-        $filePath = $jobParameters->has('storage') && isset($jobParameters->get('storage')['file_path'])
-            ? $jobParameters->get('storage')['file_path']
-            : $jobParameters->get('filePath');
+        $filePath = $jobParameters->get('storage')['file_path'];
 
         $fileIterator = $this->flatFileIteratorFactory->create(
             $this->fileType,
@@ -117,10 +113,7 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
         $columnCount = count($productLine);
 
         if ($headerCount < count($productLine)) {
-            // TODO RAB-907: Remove this condition
-            $filePath = $jobParameters->has('storage') && isset($jobParameters->get('storage')['file_path'])
-                ? $jobParameters->get('storage')['file_path']
-                : $jobParameters->get('filePath');
+            $filePath = $jobParameters->get('storage')['file_path'];
 
             throw new InvalidItemException('pim_connector.steps.file_reader.invalid_item_columns_count', new FileInvalidItem($productLine, ($this->stepExecution->getSummaryInfo('item_position'))), ['%totalColumnsCount%' => $headerCount, '%itemColumnsCount%' => $columnCount, '%filePath%' => $filePath, '%lineno%' => $this->fileIterator->key()]);
         }
