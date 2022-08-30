@@ -13,7 +13,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
 
 final class TransferFile
 {
-    private const TMP_DESTINATION_FILE_PATH_PREFIX = '.tmp-';
+    private const TEMPORARY_DESTINATION_FILE_PATH_PREFIX = '.tmp-';
 
     public function transfer(
         StorageClientInterface $sourceFilesystem,
@@ -31,17 +31,17 @@ final class TransferFile
             throw new \RuntimeException('File is not readable.');
         }
 
-        $tmpDestinationFilePath = $this->getTmpDestinationFilePath($destinationFilePath);
-        $destinationFilesystem->writeStream($tmpDestinationFilePath, $stream);
-        $destinationFilesystem->move($tmpDestinationFilePath, $destinationFilePath);
+        $temporaryDestinationFilePath = $this->getTemporaryDestinationFilePath($destinationFilePath);
+        $destinationFilesystem->writeStream($temporaryDestinationFilePath, $stream);
+        $destinationFilesystem->move($temporaryDestinationFilePath, $destinationFilePath);
     }
 
-    private function getTmpDestinationFilePath(string $destinationFilePath): string {
+    private function getTemporaryDestinationFilePath(string $destinationFilePath): string {
         $destinationFilePathInfo = pathinfo($destinationFilePath);
 
         $dirname = '.' !== $destinationFilePathInfo['dirname'] ? $destinationFilePathInfo['dirname'] : '';
         $separator = '' !== $dirname ? '/' : '';
-        $basename = sprintf('%s%s', self::TMP_DESTINATION_FILE_PATH_PREFIX, $destinationFilePathInfo['basename']);
+        $basename = sprintf('%s%s', self::TEMPORARY_DESTINATION_FILE_PATH_PREFIX, $destinationFilePathInfo['basename']);
 
         return sprintf(
             '%s%s%s',
