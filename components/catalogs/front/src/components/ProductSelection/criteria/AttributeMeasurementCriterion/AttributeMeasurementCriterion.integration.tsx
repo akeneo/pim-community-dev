@@ -392,8 +392,7 @@ test('it calls onChange when the unit changes', async () => {
     const input = screen.getByTestId('unit');
 
     fireEvent.click(input);
-    expect(await screen.findByText('Kilogram')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Kilogram'));
+    fireEvent.click(await screen.getByText('Kilogram'));
 
     expect(onChange).toHaveBeenCalledWith({
         field: 'weight_localizable_scopable',
