@@ -83,7 +83,7 @@ beforeEach(() => {
             case '/rest/catalogs/channels?page=1&limit=20':
                 return Promise.resolve(JSON.stringify([channelEcommerce, channelPrint]));
             // useMeasurements
-            case '/rest/catalogs/measurements-families/weight/measurements?locale=en_US':
+            case '/rest/catalogs/measurement-families/weight/units?locale=en_US':
                 return Promise.resolve(JSON.stringify([weightKg, weightG]));
             default:
                 throw Error(req.url);

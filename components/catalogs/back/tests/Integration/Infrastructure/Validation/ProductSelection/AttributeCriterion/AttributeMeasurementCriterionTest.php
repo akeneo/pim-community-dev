@@ -21,6 +21,16 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
         parent::setUp();
 
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
+
+        $this->createMeasurementsFamily([
+            'code' => 'Weight',
+            'units' => [
+                [
+                    'code' => 'GRAM',
+                    'label' => 'Gram',
+                ],
+            ],
+        ]);
     }
 
     /**
@@ -30,8 +40,6 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
     public function testItReturnsNoViolation(array $attribute, array $criterion): void
     {
         $this->createAttribute($attribute);
-
-        $this->createMeasurementsFamily($attribute);
 
         $violations = $this->validator->validate($criterion, new AttributeMeasurementCriterion());
 
@@ -48,12 +56,6 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
                     'field' => 'Weight',
@@ -68,20 +70,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'scopable attribute' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 12.3,
@@ -93,20 +89,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'localizable attribute' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => true,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 12.3,
@@ -118,20 +108,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'non localizable and non scopable attribute' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 12.3,
@@ -149,20 +133,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
         return [
             'field with EQUALS operator' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 12.3,
@@ -174,20 +152,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'field with NOT_EQUAL operator' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::NOT_EQUAL,
                     'value' => [
                         'amount' => 12.3,
@@ -199,20 +171,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'field with LOWER_THAN operator' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::LOWER_THAN,
                     'value' => [
                         'amount' => 12.3,
@@ -224,20 +190,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'field with LOWER_OR_EQUAL_THAN operator' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::LOWER_OR_EQUAL_THAN,
                     'value' => [
                         'amount' => 12.3,
@@ -249,20 +209,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'field with GREATER_THAN operator' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::GREATER_THAN,
                     'value' => [
                         'amount' => 12.3,
@@ -274,20 +228,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'field with GREATER_OR_EQUAL_THAN operator' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::GREATER_OR_EQUAL_THAN,
                     'value' => [
                         'amount' => 12.3,
@@ -299,20 +247,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'field with IS_EMPTY operator' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::IS_EMPTY,
                     'value' => null,
                     'scope' => null,
@@ -321,20 +263,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'field with IS_NOT_EMPTY operator' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::IS_NOT_EMPTY,
                     'value' => null,
                     'scope' => null,
@@ -354,8 +290,6 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
     ): void {
         $this->createAttribute($attribute);
 
-        $this->createMeasurementsFamily($attribute);
-
         $violations = $this->validator->validate($criterion, new AttributeMeasurementCriterion());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
@@ -366,17 +300,11 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
         return [
             'invalid field value' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
                     'field' => 42,
@@ -389,20 +317,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'invalid operator' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::IN_LIST,
                     'value' => null,
                     'scope' => null,
@@ -412,20 +334,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'invalid value' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::EQUALS,
                     'value' => 42,
                     'scope' => null,
@@ -435,20 +351,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'invalid unit' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'KILOGRAM',
-                            'label' => 'Kilogram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 42,
@@ -457,24 +367,18 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
                     'scope' => null,
                     'locale' => null,
                 ],
-                'expectedMessage' => 'The unit of the field "name" does not exist.',
+                'expectedMessage' => 'The unit of the field "Weight" does not exist.',
             ],
             'invalid scope' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 42,
@@ -487,20 +391,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'invalid locale' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 42,
@@ -513,20 +411,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'field with invalid locale for a channel' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 42,
@@ -539,20 +431,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'field with invalid scope' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => false,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 42,
@@ -565,20 +451,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'field with invalid locale' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => true,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::EQUALS,
                     'value' => [
                         'amount' => 42,
@@ -591,20 +471,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'field with EMPTY operator has a non empty value' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::IS_EMPTY,
                     'value' => [
                         'amount' => 42,
@@ -617,20 +491,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'value with extra field' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::IS_EMPTY,
                     'value' => [
                         'amount' => 42,
@@ -644,20 +512,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'value with missing field' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::IS_EMPTY,
                     'value' => [
                         'amount' => 42,
@@ -669,20 +531,14 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
             ],
             'value with wrong type' => [
                 'attribute' => [
-                    'code' => 'name',
+                    'code' => 'Weight',
                     'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
-                    'units' => [
-                        [
-                            'code' => 'GRAM',
-                            'label' => 'Gram',
-                        ],
-                    ],
                 ],
                 'criterion' => [
-                    'field' => 'name',
+                    'field' => 'Weight',
                     'operator' => Operator::IS_EMPTY,
                     'value' => [
                         'amount' => true,

@@ -30,7 +30,7 @@ class GetMeasurementsFamilyMeasurementsActionTest extends IntegrationTestCase
 
         $client->request(
             'GET',
-            '/rest/catalogs/measurements-families/Weight/measurements',
+            '/rest/catalogs/measurement-families/Weight/units',
             [],
             [],
             [
@@ -53,7 +53,7 @@ class GetMeasurementsFamilyMeasurementsActionTest extends IntegrationTestCase
 
         $client->request(
             'GET',
-            '/rest/catalogs/measurements-families/WrongCode/measurements',
+            '/rest/catalogs/measurement-families/WrongCode/units',
             [],
             [],
             [

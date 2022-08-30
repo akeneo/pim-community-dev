@@ -14,8 +14,4 @@ use Symfony\Component\Validator\Constraint;
  */
 final class AttributeCriterionContainsValidMeasurement extends Constraint
 {
-    public function getTargets(): string
-    {
-        return self::CLASS_CONSTRAINT;
-    }
 }

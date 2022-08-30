@@ -31,7 +31,7 @@ test('it fetches the API response', async () => {
     await waitForNextUpdate();
 
     expect(fetchMock).toHaveBeenCalledWith(
-        '/rest/catalogs/measurements-families/length/measurements?locale=en_US',
+        '/rest/catalogs/measurement-families/length/units?locale=en_US',
         expect.any(Object)
     );
     expect(result.current).toMatchObject({

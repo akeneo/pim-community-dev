@@ -24,7 +24,7 @@ export const useMeasurements = (measurementsFamilyCode: string | null): Result =
             }).toString();
 
             const response = await fetch(
-                '/rest/catalogs/measurements-families/' + measurementsFamilyCode + '/measurements?' + queryParameters,
+                '/rest/catalogs/measurement-families/' + measurementsFamilyCode + '/units?' + queryParameters,
                 {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
