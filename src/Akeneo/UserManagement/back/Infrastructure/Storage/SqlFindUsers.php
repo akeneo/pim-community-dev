@@ -34,16 +34,24 @@ final class SqlFindUsers implements FindUsers
     public function __invoke(
         ?string $search = null,
         ?int $searchAfterId = null,
+        ?array $includeIds = null,
+        ?array $includeGroupIds = null,
         int $limit = self::DEFAULT_LIMIT,
     ): array {
-        $query = $this->buildQuery($search, $searchAfterId, $limit);
+        $query = $this->buildQuery($search, $searchAfterId, $includeIds, $includeGroupIds, $limit);
 
         $results = $this->connection->executeQuery(
             $query,
             [
                 'search' => sprintf('%%%s%%', $search),
                 'searchAfterId' => $searchAfterId,
+                'includeIds' => $includeIds,
+                'includeGroupIds' => $includeGroupIds,
             ],
+            [
+                'includeIds' => Connection::PARAM_STR_ARRAY,
+                'includeGroupIds' => Connection::PARAM_STR_ARRAY,
+            ]
         )->fetchAllAssociative();
 
         return array_map(
@@ -52,7 +60,7 @@ final class SqlFindUsers implements FindUsers
         );
     }
 
-    private function buildQuery(?string $search, ?int $searchAfterId, ?int $limit): string
+    private function buildQuery(?string $search, ?int $searchAfterId, ?array $includeIds, ?array $includeGroupIds, ?int $limit): string
     {
         $sqlWhereParts = [];
         $sqlLimitPart = '';
@@ -63,6 +71,14 @@ final class SqlFindUsers implements FindUsers
 
         if (null !== $searchAfterId) {
             $sqlWhereParts[] = 'ou.id > :searchAfterId';
+        }
+
+        if (null !== $includeIds) {
+            $sqlWhereParts[] = 'ou.id IN (:includeIds)';
+        }
+
+        if (null !== $includeGroupIds) {
+            $sqlWhereParts[] = 'ou.id IN (SELECT user_id FROM oro_user_access_group WHERE group_id IN (:includeGroupIds))';
         }
 
         if (null !== $limit) {

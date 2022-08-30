@@ -45,16 +45,10 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
     {
         $parameters = $this->stepExecution->getJobParameters();
         $jobExecution = $this->stepExecution->getJobExecution();
-
-        // TODO RAB-907: Remove this condition
-        if ($parameters->has('storage') && isset($parameters->get('storage')['file_path'])) {
-            $storage = $parameters->get('storage');
-            $filePath = LocalStorage::TYPE === $storage['type']
-                ? $storage['file_path']
-                : sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
-        } else {
-            $filePath = $parameters->get('filePath');
-        }
+        $storage = $parameters->get('storage');
+        $filePath = LocalStorage::TYPE === $storage['type']
+            ? $storage['file_path']
+            : sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
 
         if (false !== strpos($filePath, '%')) {
             $datetime = $this->stepExecution->getStartTime()->format($this->datetimeFormat);

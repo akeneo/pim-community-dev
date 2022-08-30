@@ -19,7 +19,7 @@ test('it returns families', async () => {
         },
     ];
 
-    fetchMock.mockResponseOnce(JSON.stringify(families));
+    fetchMock.mockResponses(JSON.stringify(families), JSON.stringify([]));
 
     const {result, waitForNextUpdate} = renderHook(() => useFamiliesByCodes(['foo', 'bar']), {
         wrapper: ReactQueryWrapper,

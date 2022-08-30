@@ -56,6 +56,16 @@ akeneo_catalogs_internal_get_locales:
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetLocalesAction
     methods: [ GET ]
 
+akeneo_catalogs_internal_get_category_children:
+    path: '/rest/catalogs/categories/{categoryCode}/children'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoryChildrenAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_categories:
+    path: '/rest/catalogs/categories'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoriesAction
+    methods: [ GET ]
+
 akeneo_catalogs_internal_get_measurements_family_measurements:
     path: '/rest/catalogs/measurement-families/{code}/units'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetMeasurementsFamilyMeasurementsAction

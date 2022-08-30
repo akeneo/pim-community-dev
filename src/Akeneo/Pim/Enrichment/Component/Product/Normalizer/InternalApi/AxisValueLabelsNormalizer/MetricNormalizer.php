@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\MetricNormalizer as StandardMetricNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\GetUnitTranslations;
 use Webmozart\Assert\Assert;
 
 /**
