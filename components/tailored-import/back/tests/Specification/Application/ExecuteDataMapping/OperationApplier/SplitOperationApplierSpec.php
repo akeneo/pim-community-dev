@@ -39,6 +39,15 @@ class SplitOperationApplierSpec extends ObjectBehavior
         $this->applyOperation($operation, $value)
             ->shouldBeLike(new ArrayValue(['value1', 'value2', 'value3']));
     }
+    
+    public function it_filter_duplicate_separator_values(): void
+    {
+        $operation = new SplitOperation($this->uuid, ',');
+        $value = new StringValue('foo,,bar');
+
+        $this->applyOperation($operation, $value)
+            ->shouldBeLike(new ArrayValue(['foo', 'bar']));
+    }
 
     public function it_throws_an_exception_when_value_type_is_invalid(): void
     {
