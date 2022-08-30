@@ -9,7 +9,7 @@ export default (state?: Partial<AttributeBooleanCriterionState>): AttributeBoole
     return {
         field: state.field,
         operator: state?.operator ?? Operator.EQUALS,
-        value: state?.value ?? false,
+        value: state?.value ?? true,
         locale: state?.locale ?? null,
         scope: state?.scope ?? null,
     };

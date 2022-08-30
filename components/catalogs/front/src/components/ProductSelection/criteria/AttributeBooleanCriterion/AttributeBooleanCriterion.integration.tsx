@@ -30,31 +30,31 @@ beforeEach(() => {
     fetchMock.mockResponse(req => {
         switch (req.url) {
             // useAttribute
-            case '/rest/catalogs/attributes/name_localizable_scopable':
+            case '/rest/catalogs/attributes/display_color_localizable_scopable':
                 return Promise.resolve(
                     JSON.stringify({
-                        label: 'Name',
-                        code: 'name',
+                        label: 'Display Color',
+                        code: 'display_color',
                         type: 'pim_catalog_boolean',
                         scopable: true,
                         localizable: true,
                     })
                 );
-            case '/rest/catalogs/attributes/name_scopable':
+            case '/rest/catalogs/attributes/display_color_scopable':
                 return Promise.resolve(
                     JSON.stringify({
-                        label: 'Name',
-                        code: 'name',
+                        label: 'Display Color',
+                        code: 'display_color',
                         type: 'pim_catalog_boolean',
                         scopable: true,
                         localizable: false,
                     })
                 );
-            case '/rest/catalogs/attributes/name_localizable':
+            case '/rest/catalogs/attributes/display_color_localizable':
                 return Promise.resolve(
                     JSON.stringify({
-                        label: 'Name',
-                        code: 'name',
+                        label: 'Display Color',
+                        code: 'display_color',
                         type: 'pim_catalog_boolean',
                         scopable: false,
                         localizable: true,
@@ -86,7 +86,7 @@ test('it renders the scopable and localizable boolean attribute criterion', asyn
             <ReactQueryWrapper>
                 <AttributeBooleanCriterion
                     state={{
-                        field: 'name_localizable_scopable',
+                        field: 'display_color_localizable_scopable',
                         operator: Operator.EQUALS,
                         value: true,
                         locale: 'en_US',
@@ -100,7 +100,7 @@ test('it renders the scopable and localizable boolean attribute criterion', asyn
         </ThemeProvider>
     );
 
-    expect(await screen.findByText('Name')).toBeInTheDocument();
+    expect(await screen.findByText('Display Color')).toBeInTheDocument();
     expect(await screen.findByText(Operator.EQUALS)).toBeInTheDocument();
     expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.boolean.yes')).toBeInTheDocument();
     expect(await screen.findByText('E-commerce')).toBeInTheDocument();
@@ -113,7 +113,7 @@ test('it renders the scopable and non localizable boolean attribute criterion', 
             <ReactQueryWrapper>
                 <AttributeBooleanCriterion
                     state={{
-                        field: 'name_scopable',
+                        field: 'display_color_scopable',
                         operator: Operator.NOT_EQUAL,
                         value: false,
                         locale: null,
@@ -127,7 +127,7 @@ test('it renders the scopable and non localizable boolean attribute criterion', 
         </ThemeProvider>
     );
 
-    expect(await screen.findByText('Name')).toBeInTheDocument();
+    expect(await screen.findByText('Display Color')).toBeInTheDocument();
     expect(await screen.findByText(Operator.NOT_EQUAL)).toBeInTheDocument();
     expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.boolean.no')).toBeInTheDocument();
     expect(await screen.findByText('E-commerce')).toBeInTheDocument();
@@ -140,7 +140,7 @@ test('it renders the non scopable and localizable boolean attribute criterion', 
             <ReactQueryWrapper>
                 <AttributeBooleanCriterion
                     state={{
-                        field: 'name_localizable',
+                        field: 'display_color_localizable',
                         operator: Operator.EQUALS,
                         value: true,
                         locale: 'de_DE',
@@ -154,7 +154,7 @@ test('it renders the non scopable and localizable boolean attribute criterion', 
         </ThemeProvider>
     );
 
-    expect(await screen.findByText('Name')).toBeInTheDocument();
+    expect(await screen.findByText('Display Color')).toBeInTheDocument();
     expect(await screen.findByText(Operator.EQUALS)).toBeInTheDocument();
     expect(await screen.findByText('akeneo_catalogs.product_selection.criteria.boolean.yes')).toBeInTheDocument();
     expect(screen.queryByTestId('scope')).not.toBeInTheDocument();
@@ -167,7 +167,7 @@ test('it renders criterion with validation errors', () => {
             <ReactQueryWrapper>
                 <AttributeBooleanCriterion
                     state={{
-                        field: 'name_localizable_scopable',
+                        field: 'display_color_localizable_scopable',
                         operator: Operator.CONTAINS,
                         value: 'blue',
                         locale: 'kz_KZ',
@@ -201,7 +201,7 @@ test('it calls onRemove', () => {
             <ReactQueryWrapper>
                 <AttributeBooleanCriterion
                     state={{
-                        field: 'name_localizable_scopable',
+                        field: 'display_color_localizable_scopable',
                         operator: Operator.EQUALS,
                         value: true,
                         locale: 'en_US',
@@ -228,7 +228,7 @@ test('it calls onChange when the operator changes', () => {
             <ReactQueryWrapper>
                 <AttributeBooleanCriterion
                     state={{
-                        field: 'name_localizable_scopable',
+                        field: 'display_color_localizable_scopable',
                         operator: Operator.EQUALS,
                         value: true,
                         locale: 'en_US',
@@ -245,7 +245,7 @@ test('it calls onChange when the operator changes', () => {
     changeOperatorTo(Operator.NOT_EQUAL);
 
     expect(onChange).toHaveBeenCalledWith({
-        field: 'name_localizable_scopable',
+        field: 'display_color_localizable_scopable',
         operator: Operator.NOT_EQUAL,
         value: true,
         locale: 'en_US',
@@ -261,7 +261,7 @@ test('it resets value when the operator changes to IS_EMPTY', () => {
             <ReactQueryWrapper>
                 <AttributeBooleanCriterion
                     state={{
-                        field: 'name_localizable_scopable',
+                        field: 'display_color_localizable_scopable',
                         operator: Operator.EQUALS,
                         value: true,
                         locale: 'en_US',
@@ -278,7 +278,7 @@ test('it resets value when the operator changes to IS_EMPTY', () => {
     changeOperatorTo(Operator.IS_EMPTY);
 
     expect(onChange).toHaveBeenCalledWith({
-        field: 'name_localizable_scopable',
+        field: 'display_color_localizable_scopable',
         operator: Operator.IS_EMPTY,
         value: null,
         locale: 'en_US',
@@ -294,7 +294,7 @@ test('it calls onChange when the value changes', () => {
             <ReactQueryWrapper>
                 <AttributeBooleanCriterion
                     state={{
-                        field: 'name_localizable_scopable',
+                        field: 'display_color_localizable_scopable',
                         operator: Operator.EQUALS,
                         value: true,
                         locale: 'en_US',
@@ -311,7 +311,7 @@ test('it calls onChange when the value changes', () => {
     changeInputTo('akeneo_catalogs.product_selection.criteria.boolean.no');
 
     expect(onChange).toHaveBeenCalledWith({
-        field: 'name_localizable_scopable',
+        field: 'display_color_localizable_scopable',
         operator: Operator.EQUALS,
         value: false,
         locale: 'en_US',
@@ -327,7 +327,7 @@ test('it calls onChange when the channel changes', async () => {
             <ReactQueryWrapper>
                 <AttributeBooleanCriterion
                     state={{
-                        field: 'name_localizable_scopable',
+                        field: 'display_color_localizable_scopable',
                         operator: Operator.EQUALS,
                         value: true,
                         locale: 'en_US',
@@ -346,7 +346,7 @@ test('it calls onChange when the channel changes', async () => {
     changeChannelTo('Print');
 
     expect(onChange).toHaveBeenCalledWith({
-        field: 'name_localizable_scopable',
+        field: 'display_color_localizable_scopable',
         operator: Operator.EQUALS,
         value: true,
         locale: null,
@@ -362,7 +362,7 @@ test('it calls onChange when the locale changes', async () => {
             <ReactQueryWrapper>
                 <AttributeBooleanCriterion
                     state={{
-                        field: 'name_localizable_scopable',
+                        field: 'display_color_localizable_scopable',
                         operator: Operator.EQUALS,
                         value: true,
                         locale: 'en_US',
@@ -381,7 +381,7 @@ test('it calls onChange when the locale changes', async () => {
     changeLocaleTo('French');
 
     expect(onChange).toHaveBeenCalledWith({
-        field: 'name_localizable_scopable',
+        field: 'display_color_localizable_scopable',
         operator: Operator.EQUALS,
         value: true,
         locale: 'fr_FR',
