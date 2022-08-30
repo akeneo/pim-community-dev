@@ -1590,21 +1590,24 @@ JSON;
         {
             "code": "CUBIC_CENTIMETER_PER_MINUTE",
             "convert": {
-                "mul": "60"
+                "mul": "0.000001",
+                "div": "60"
             },
             "symbol": "cm³/min"
         },
         {
             "code": "CUBIC_CENTIMETER_PER_HOUR",
             "convert": {
-                "mul": "3600"
+                "mul": "0.000001",
+                "div": "3600"
             },
             "symbol": "cm³/h"
         },
         {
             "code": "CUBIC_CENTIMETER_PER_DAY",
             "convert": {
-                "mul": "86400"
+                "mul": "0.000001",
+                "div": "86400"
             },
             "symbol": "cm³/d"
         },
@@ -1632,21 +1635,24 @@ JSON;
         {
             "code": "LITER_PER_MINUTE",
             "convert": {
-                "mul": "60"
+                "mul": "0.001",
+                "div": "60"
             },
             "symbol": "l/min"
         },
         {
             "code": "LITER_PER_HOUR",
             "convert": {
-                "mul": "3600"
+                "mul": "0.001",
+                "div": "3600"
             },
             "symbol": "l/h"
         },
         {
             "code": "LITER_PER_DAY",
             "convert": {
-                "mul": "86400"
+                "mul": "0.001",
+                "div": "86400"
             },
             "symbol": "l/d"
         },

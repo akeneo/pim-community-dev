@@ -4374,7 +4374,7 @@
                 },
                 "convert_from_standard": [
                     {
-                        "operator": "mul",
+                        "operator": "div",
                         "value": "60"
                     }
                 ],
@@ -4388,7 +4388,7 @@
                 },
                 "convert_from_standard": [
                     {
-                        "operator": "mul",
+                        "operator": "div",
                         "value": "3600"
                     }
                 ],
@@ -4402,7 +4402,7 @@
                 },
                 "convert_from_standard": [
                     {
-                        "operator": "mul",
+                        "operator": "div",
                         "value": "86400"
                     }
                 ],
@@ -4606,7 +4606,7 @@
                         "value": "0.001"
                     },
                     {
-                        "operator": "mul",
+                        "operator": "div",
                         "value": "60"
                     }
                 ],
@@ -4624,7 +4624,7 @@
                         "value": "0.001"
                     },
                     {
-                        "operator": "mul",
+                        "operator": "div",
                         "value": "3600"
                     }
                 ],
@@ -4642,7 +4642,7 @@
                         "value": "0.001"
                     },
                     {
-                        "operator": "mul",
+                        "operator": "div",
                         "value": "86400"
                     }
                 ],
