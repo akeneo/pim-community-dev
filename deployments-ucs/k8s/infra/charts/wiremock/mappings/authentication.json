@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/auth/realms/connect/protocol/openid-connect/token"
+  },
+  "response":{
+    "status": 200,
+    "bodyFileName":"responses/authentication.json",
+    "headers":{
+      "Content-Type":"application/json"
+    }
+  }
+}
