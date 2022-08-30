@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Query;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername;
 use Akeneo\Platform\JobAutomation\Application\GetDueJobInstances\GetScheduledJobInstancesInterface;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Doctrine\DBAL\Connection;
@@ -21,6 +22,7 @@ final class GetScheduledJobInstancesQuery implements GetScheduledJobInstancesInt
 {
     public function __construct(
         private Connection $connection,
+        private ResolveScheduledJobRunningUsername $resolveScheduledJobRunningUsername,
     ) {
     }
 
@@ -53,6 +55,7 @@ SQL;
                     $automation['cron_expression'],
                     $setupDate,
                     $lastExecutionDate,
+                    $this->resolveScheduledJobRunningUsername->fromJobCode($result['code']),
                 );
             },
             $results,

@@ -22,12 +22,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
 {
     public function let(
-        FeatureFlag                                    $jobAutomationFeatureFlag,
-        GetDueJobInstancesHandler                      $getDueJobInstancesHandler,
+        FeatureFlag $jobAutomationFeatureFlag,
+        GetDueJobInstancesHandler $getDueJobInstancesHandler,
         UpdateScheduledJobInstanceLastExecutionHandler $refreshScheduledJobInstancesHandler,
-        PublishJobToQueue                              $publishJobToQueue,
-        ValidatorInterface                             $validator,
-        EventDispatcherInterface                       $eventDispatcher,
+        PublishJobToQueue $publishJobToQueue,
+        ValidatorInterface $validator,
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith($jobAutomationFeatureFlag,
             $getDueJobInstancesHandler,
@@ -38,8 +38,12 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
         );
     }
 
-    public function it_early_returns_if_feature_flag_is_not_enabled(InputInterface $input, OutputInterface $output,
-                                                                    FeatureFlag $jobAutomationFeatureFlag, EventDispatcherInterface $eventDispatcher): void {
+    public function it_early_returns_if_feature_flag_is_not_enabled(
+        InputInterface $input,
+        OutputInterface $output,
+        FeatureFlag $jobAutomationFeatureFlag,
+        EventDispatcherInterface $eventDispatcher,
+    ): void {
         $jobAutomationFeatureFlag->isEnabled()->shouldBeCalled()->willReturn(false);
         $eventDispatcher->addSubscriber(Argument::any())->shouldNotBeCalled();
 
@@ -64,8 +68,8 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
         $validator->validate($scheduledJobInstance1, Argument::any())->shouldBeCalled()->willReturn($emptyViolations);
         $validator->validate($scheduledJobInstance2, Argument::any())->shouldBeCalled()->willReturn($emptyViolations);
 
-        $publishJobToQueue->publish($scheduledJobInstance1->code, [], false,'admin')->shouldBeCalled();
-        $publishJobToQueue->publish($scheduledJobInstance2->code, [], false,'admin')->shouldBeCalled();
+        $publishJobToQueue->publish($scheduledJobInstance1->code, ['is_user_authenticated' => true], false,'job_automated_job1')->shouldBeCalled();
+        $publishJobToQueue->publish($scheduledJobInstance2->code, ['is_user_authenticated' => true], false,'job_automated_job2')->shouldBeCalled();
 
         $this->run($input, $output)->shouldReturn(0);
     }
@@ -89,8 +93,8 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
         $validator->validate($scheduledJobInstance1, Argument::any())->shouldBeCalled()->willReturn($emptyViolations);
         $validator->validate($scheduledJobInstance2, Argument::any())->shouldBeCalled()->willReturn($violation);
 
-        $publishJobToQueue->publish($scheduledJobInstance1->code, [], false,'admin')->shouldBeCalled();
-        $publishJobToQueue->publish($scheduledJobInstance2->code, [], false,'admin')->shouldNotBeCalled();
+        $publishJobToQueue->publish($scheduledJobInstance1->code, ['is_user_authenticated' => true], false,'job_automated_job1')->shouldBeCalled();
+        $publishJobToQueue->publish($scheduledJobInstance2->code, ['is_user_authenticated' => true], false,'job_automated_job2')->shouldNotBeCalled();
 
         $this->run($input, $output)->shouldReturn(0);
     }
@@ -113,15 +117,23 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
         $validator->validate($scheduledJobInstance1, Argument::any())->shouldBeCalled()->willReturn($emptyViolations);
         $validator->validate($scheduledJobInstance2, Argument::any())->shouldBeCalled()->willReturn($emptyViolations);
 
-        $publishJobToQueue->publish($scheduledJobInstance1->code, [], false,'admin')->willThrow(InvalidJobException::class);
-        $publishJobToQueue->publish($scheduledJobInstance2->code, [], false,'admin')->shouldBeCalled();
+        $publishJobToQueue->publish($scheduledJobInstance1->code, ['is_user_authenticated' => true], false,'job_automated_job1')->willThrow(InvalidJobException::class);
+        $publishJobToQueue->publish($scheduledJobInstance2->code, ['is_user_authenticated' => true], false,'job_automated_job2')->shouldBeCalled();
 
         $this->run($input, $output)->shouldReturn(0);
     }
 
     private function createScheduledJobInstance(string $code): ScheduledJobInstance {
-        return new ScheduledJobInstance($code, 'dummy', 'import', [], true, '* * * * *',
-            new \DateTimeImmutable('2022-10-30 00:00'), null
+        return new ScheduledJobInstance(
+            $code,
+            'dummy',
+            'import',
+            [],
+            true,
+            '* * * * *',
+            new \DateTimeImmutable('2022-10-30 00:00'),
+            null,
+            sprintf('job_automated_%s', $code),
         );
     }
 }

@@ -31,6 +31,7 @@ class GetScheduledJobInstancesQueryTest extends IntegrationTestCase
                 '* * 0 0 0',
                 new \DateTimeImmutable('2022-08-10T10:00:00+00:00'),
                 null,
+                'job_automated_a_product_import',
             ),
             new ScheduledJobInstance(
                 'another_product_import',
@@ -41,6 +42,7 @@ class GetScheduledJobInstancesQueryTest extends IntegrationTestCase
                 '* * 0 0 0',
                 new \DateTimeImmutable('2022-08-10T10:00:00+00:00'),
                 new \DateTimeImmutable('2022-08-10T10:00:00+00:00'),
+                'job_automated_another_product_import',
             )
         ];
 

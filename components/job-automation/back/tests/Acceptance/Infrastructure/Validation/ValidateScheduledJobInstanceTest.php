@@ -111,6 +111,7 @@ class ValidateScheduledJobInstanceTest extends AbstractValidationTest
             '* * * * *',
             new \DateTimeImmutable(),
             null,
+            'job_automated_my_job',
         );
     }
 }

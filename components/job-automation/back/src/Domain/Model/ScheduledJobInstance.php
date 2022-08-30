@@ -24,6 +24,7 @@ final class ScheduledJobInstance
         public string $cronExpression,
         public \DateTimeImmutable $setupDate,
         public ?\DateTimeImmutable $lastExecutionDate,
+        public string $runningUsername,
     ) {
     }
 }

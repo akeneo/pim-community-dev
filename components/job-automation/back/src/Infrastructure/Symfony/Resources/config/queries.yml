@@ -9,6 +9,7 @@ services:
     class: Akeneo\Platform\JobAutomation\Infrastructure\Query\GetScheduledJobInstancesQuery
     arguments:
       - '@database_connection'
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername'
 
   akeneo.job_automation.query.update_job_instance_automation_last_execution_date:
     class: Akeneo\Platform\JobAutomation\Infrastructure\Query\UpdateJobInstanceAutomationLastExecutionDateQuery

@@ -61,8 +61,10 @@ final class PushScheduledJobsToQueueCommand extends Command
 
                 $this->publishJobToQueue->publish(
                     jobInstanceCode: $dueJobInstance->code,
-                    config: [],
-                    username: 'admin',
+                    config: [
+                        'is_user_authenticated' => true,
+                    ],
+                    username: $dueJobInstance->runningUsername,
                 );
             } catch (InvalidJobException|\Exception) {
                 // TODO RAB-929 Handle invalid job notifications before a job is launched
