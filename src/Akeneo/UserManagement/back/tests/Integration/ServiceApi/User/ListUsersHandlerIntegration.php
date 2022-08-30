@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\UserManagement\Integration\ServiceApi\User;
 
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
+use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Akeneo\UserManagement\ServiceApi\User\User;
 use Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface;
 use Akeneo\UserManagement\ServiceApi\User\UsersQuery;
@@ -22,11 +25,15 @@ use PHPUnit\Framework\Assert;
 
 final class ListUsersHandlerIntegration extends TestCase
 {
+    private RoleRepositoryInterface $roleRepository;
+    private GroupRepositoryInterface $groupRepository;
+    private LocaleRepositoryInterface $localeRepository;
+
     protected function setUp(): void
     {
         parent::setUp();
-        $this->userRepository = $this->get('pim_user.repository.user');
         $this->roleRepository = $this->get('pim_user.repository.role');
+        $this->groupRepository = $this->get('pim_user.repository.group');
         $this->localeRepository = $this->get('pim_catalog.repository.locale');
 
         $this->createUserWithGroupsAndRoles(1, 'test1', ['Redactor'], ['ROLE_USER']);
@@ -60,9 +67,8 @@ final class ListUsersHandlerIntegration extends TestCase
         $lastId = $users[1]->getId();
 
         $users = $this->getHandler()->fromQuery(new UsersQuery(
-            null,
-            $lastId,
-            2
+            searchAfterId: $lastId,
+            limit: 2
         ));
 
         Assert::assertCount(2, $users);
@@ -79,14 +85,14 @@ final class ListUsersHandlerIntegration extends TestCase
         $user->setUILocale($this->localeRepository->findOneByIdentifier('de_DE'));
         $user->setCatalogLocale($this->localeRepository->findOneByIdentifier('en_US'));
 
-        $groups = $this->get('pim_user.repository.group')->findAll();
+        $groups = $this->groupRepository->findAll();
         foreach ($groups as $group) {
             if (in_array($group->getName(), $groupNames)) {
                 $user->addGroup($group);
             }
         }
 
-        $roles = $this->get('pim_user.repository.role')->findAll();
+        $roles = $this->roleRepository->findAll();
         foreach ($roles as $role) {
             if (in_array($role->getRole(), $stringRoles)) {
                 $user->addRole($role);
