@@ -64,6 +64,7 @@ class MeasurementInstallerIntegration extends SqlIntegrationTestCase
 
     private function assertMeasurementTableHasColumns(array $expectedColumnsAndTypes)
     {
+        $actualColumnsAndTypes = [];
         /** @var AbstractSchemaManager $schemaManager */
         $schemaManager = $this->get('database_connection')->getSchemaManager();
         $tableColumns = $schemaManager->listTableColumns('akeneo_measurement');

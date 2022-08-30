@@ -78,6 +78,7 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 

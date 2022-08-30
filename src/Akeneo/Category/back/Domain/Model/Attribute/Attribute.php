@@ -11,6 +11,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -86,5 +87,13 @@ abstract class Attribute
     public function getTemplateId(): TemplateUuid
     {
         return $this->templateId;
+    }
+
+    /**
+     * @return string example: title|69e251b3-b876-48b5-9c09-92f54bfb528d
+     */
+    public function getIdentifier(): string
+    {
+        return $this->getCode().ValueCollection::SEPARATOR.$this->getUuid();
     }
 }

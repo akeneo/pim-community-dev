@@ -17,6 +17,8 @@ akeneo_catalogs:
                     empty: 'This value must not be empty.'
                 completeness:
                     value: 'Completeness value must be between 0 and 100 percent.'
+                attribute_option:
+                    unknown: 'At least one selected option does not exists.'
                 measurement:
                     unit:
                         measurement_family_unknown: 'The measurement family of the field "{{ field }}" does not exist.'

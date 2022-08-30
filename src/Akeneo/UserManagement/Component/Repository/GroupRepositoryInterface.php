@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Component\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -17,4 +18,6 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
      * @return null|object
      */
     public function getDefaultUserGroup();
+
+    public function findOneById(int $id): ?GroupInterface;
 }

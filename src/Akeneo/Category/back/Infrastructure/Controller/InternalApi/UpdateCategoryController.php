@@ -12,6 +12,7 @@ use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface;
 use Akeneo\Category\Application\Filter\CategoryEditACLFilter;
 use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
 use Akeneo\Category\Application\Query\FindCategoryByIdentifier;
+use Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStd;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type StandardInternalApi from InternalAPIToStd
  */
 class UpdateCategoryController
 {
@@ -46,7 +49,10 @@ class UpdateCategoryController
         if ($category === null) {
             throw new NotFoundHttpException('Category not found');
         }
+
+        // Transform request to a user intent list
         $data = $request->toArray();
+        /** @var  StandardInternalApi $formattedData */
         $formattedData = $this->internalApiToStandardConverter->convert($data);
         $filteredData = $this->ACLFilter->filterCollection($formattedData, 'category', []);
         $userIntents = $this->standardFormatToUserIntents->convert($filteredData);

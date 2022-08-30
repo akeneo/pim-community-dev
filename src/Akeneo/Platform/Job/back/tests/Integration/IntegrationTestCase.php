@@ -21,9 +21,9 @@ abstract class IntegrationTestCase extends WebTestCase
         parent::setUp();
         static::bootKernel(['debug' => false]);
 
-        $this->fixturesJobHelper = $this->get('Akeneo\Platform\Job\Test\Integration\Loader\FixturesJobHelper');
-        $this->fixturesUserHelper = $this->get('Akeneo\Platform\Job\Test\Integration\Loader\FixturesUserHelper');
-        $this->fixturesLoader = $this->get('Akeneo\Platform\Job\Test\Integration\Loader\FixturesLoader');
+        $this->fixturesJobHelper = $this->get(FixturesJobHelper::class);
+        $this->fixturesUserHelper = $this->get(FixturesUserHelper::class);
+        $this->fixturesLoader = $this->get(FixturesLoader::class);
         $this->fixturesLoader->resetFixtures();
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();

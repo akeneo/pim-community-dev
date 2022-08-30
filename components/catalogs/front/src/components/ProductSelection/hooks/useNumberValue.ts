@@ -6,19 +6,16 @@ type OnChange = (value: NewValue) => void;
 type OnInputChange = (value: string) => void;
 type Return = [string, OnInputChange];
 
-const filterValue = (value: string): string => {
-    return (
-        value
-            // remove when starting with a dot (not supported)
-            .replace(/^\.+/g, '')
-            // remove forbidden characters
-            .replace(/[^0-9.]+/g, '')
-            // keep only one dot
-            .split('.')
-            .slice(0, 2)
-            .join('.')
-    );
-};
+const filterValue = (value: string): string =>
+    value
+        // remove when starting with a dot (not supported)
+        .replace(/^\.+/g, '')
+        // remove forbidden characters
+        .replace(/[^0-9.]+/g, '')
+        // keep only one dot
+        .split('.')
+        .slice(0, 2)
+        .join('.');
 
 const numberizeValue = (value: string): NewValue => {
     const decimals = value.includes('.') ? value.split('.')[1].length : 0;

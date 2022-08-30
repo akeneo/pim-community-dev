@@ -39,6 +39,7 @@ class BaseView extends Backbone.View<any> implements View {
 
     this.extensions = {};
     this.zones = {};
+    this.position = 0;
     this.targetZone = '';
     this.configured = false;
   }
@@ -321,12 +322,10 @@ class BaseView extends Backbone.View<any> implements View {
   /**
    * Trigger event on each child extensions and their childs
    */
-  triggerExtensions() {
-    const options = Object.values(arguments);
-
+  triggerExtensions(eventName: string, ...args: any[]) {
     Object.values(this.extensions).forEach(extension => {
-      extension.trigger.apply(extension, options);
-      extension.triggerExtensions.apply(extension, options);
+      extension.trigger.apply(extension, [eventName, ...args]);
+      extension.triggerExtensions.apply(extension, [eventName, ...args]);
     });
   }
 

@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useInfiniteFamilies} from './useInfiniteFamilies';
 import {Family} from '../models/Family';
 
@@ -31,13 +31,10 @@ export const useFamiliesByCodes = (codes: string[]): Result => {
     } = useInfiniteFamilies({
         codes: slicedUnknownCodes,
         limit: LIMIT,
+        enabled: slicedUnknownCodes.length > 0,
     });
 
-    useEffect(() => {
-        if (families === undefined) {
-            return;
-        }
-
+    if (families !== undefined) {
         const newFamilies = families
             .filter(family => !cachedCodes.includes(family.code))
             .reduce(
@@ -54,7 +51,7 @@ export const useFamiliesByCodes = (codes: string[]): Result => {
                 ...newFamilies,
             }));
         }
-    }, [cachedCodes, families, setCache]);
+    }
 
     return {
         isLoading: isLoading,
