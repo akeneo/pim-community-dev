@@ -19,13 +19,10 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  */
 class EditIsRequiredCommand extends AbstractEditAttributeCommand
 {
-    /** @var bool|null */
-    public $isRequired;
-
-    public function __construct(string $identifier, ?bool $isRequired)
-    {
+    public function __construct(
+        string $identifier,
+        public ?bool $isRequired
+    ) {
         parent::__construct($identifier);
-
-        $this->isRequired = $isRequired;
     }
 }

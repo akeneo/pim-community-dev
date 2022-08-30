@@ -19,13 +19,10 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  */
 class EditDecimalsAllowedCommand extends AbstractEditAttributeCommand
 {
-    /** @var bool|null */
-    public $decimalsAllowed;
-
-    public function __construct(string $identifier, ?bool $decimalsAllowed)
-    {
+    public function __construct(
+        string $identifier,
+        public ?bool $decimalsAllowed
+    ) {
         parent::__construct($identifier);
-
-        $this->decimalsAllowed = $decimalsAllowed;
     }
 }

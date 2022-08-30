@@ -59,10 +59,7 @@ class LabelCollectionValidator extends ConstraintValidator
         $this->validateActivatedLocales($labels);
     }
 
-    /**
-     * @param mixed $localeCode
-     */
-    private function validateLocaleCode(ValidatorInterface $validator, $localeCode): void
+    private function validateLocaleCode(ValidatorInterface $validator, mixed $localeCode): void
     {
         $violations = $validator->validate($localeCode, [
             new NotBlank(),
@@ -79,10 +76,7 @@ class LabelCollectionValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param mixed $label
-     */
-    private function validateLabelForLocale(ValidatorInterface $validator, $localeCode, $label): void
+    private function validateLabelForLocale(ValidatorInterface $validator, mixed $localeCode, mixed $label): void
     {
         $violations = $validator->validate($label, [
             new NotNull(),

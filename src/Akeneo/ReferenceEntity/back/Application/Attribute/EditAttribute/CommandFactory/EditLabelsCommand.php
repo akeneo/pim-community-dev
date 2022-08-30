@@ -19,13 +19,10 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  */
 class EditLabelsCommand extends AbstractEditAttributeCommand
 {
-    /** @var array */
-    public $labels;
-
-    public function __construct(string $identifier, array $labels)
-    {
+    public function __construct(
+        string $identifier,
+        public array $labels
+    ) {
         parent::__construct($identifier);
-
-        $this->labels = $labels;
     }
 }

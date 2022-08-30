@@ -15,27 +15,11 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption;
 
 class AppendAttributeOptionCommand
 {
-    /**@var string */
-    public $referenceEntityIdentifier;
-
-    /**@var string */
-    public $attributeCode;
-
-    /**@var string */
-    public $optionCode;
-
-    /** @var array|null */
-    public $labels;
-
     public function __construct(
-        string $referenceEntityIdentifier,
-        string $attributeCode,
-        string $optionCode,
-        ?array $labels
+        public string $referenceEntityIdentifier,
+        public string $attributeCode,
+        public string $optionCode,
+        public ?array $labels
     ) {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $this->attributeCode = $attributeCode;
-        $this->optionCode = $optionCode;
-        $this->labels = $labels;
     }
 }

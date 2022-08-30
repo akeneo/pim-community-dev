@@ -38,7 +38,7 @@ class SqlGetValueKeyForAttributeChannelAndLocale implements GetValueKeyForAttrib
 
         try {
             $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
-        } catch (AttributeNotFoundException $e) {
+        } catch (AttributeNotFoundException) {
             $this->throwException($attributeIdentifier, $channelIdentifier, $localeIdentifier);
         }
 

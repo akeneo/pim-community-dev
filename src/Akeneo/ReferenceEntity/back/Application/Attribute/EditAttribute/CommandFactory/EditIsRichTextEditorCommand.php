@@ -10,13 +10,10 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  */
 class EditIsRichTextEditorCommand extends AbstractEditAttributeCommand
 {
-    /** @var bool|null */
-    public $isRichTextEditor;
-
-    public function __construct(string $identifier, ?bool $isRichTextEditor)
-    {
+    public function __construct(
+        string $identifier,
+        public ?bool $isRichTextEditor
+    ) {
         parent::__construct($identifier);
-
-        $this->isRichTextEditor = $isRichTextEditor;
     }
 }
