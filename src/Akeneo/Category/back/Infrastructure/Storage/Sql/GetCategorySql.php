@@ -55,7 +55,7 @@ class GetCategorySql implements GetCategoryInterface
                 category.id,
                 category.code, 
                 category.parent_id,
-                COALESCE(translation.translations, JSON_ARRAY()) as translations,
+                translation.translations,
                 category.value_collection
             FROM 
                 pim_catalog_category category
