@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\SupplierPortal\Retailer\Test\Integration;
 
-use Akeneo\SupplierPortal\Supplier\Domain\ProductFileDropping\Storage;
+use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Storage;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

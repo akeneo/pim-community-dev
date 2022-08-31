@@ -23,7 +23,7 @@ final class DatabaseGetAllSupplierFilesIntegration extends SqlIntegrationTestCas
         $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
 
         for ($i = 1; 30 >= $i; $i++) {
-            $this->createSupplierFile('path/to/file/file.xlsx', new \DateTimeImmutable());
+            $this->createProductFile('file.xlsx', new \DateTimeImmutable());
         }
 
         static::assertCount(25, $this->get(GetAllSupplierFiles::class)());
@@ -35,7 +35,7 @@ final class DatabaseGetAllSupplierFilesIntegration extends SqlIntegrationTestCas
         $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
 
         for ($i = 1; 30 >= $i; $i++) {
-            $this->createSupplierFile('path/to/file/file.xlsx', new \DateTimeImmutable());
+            $this->createProductFile('file.xlsx', new \DateTimeImmutable());
         }
 
         $supplierFiles = $this->get(GetAllSupplierFiles::class)(2);
@@ -48,15 +48,15 @@ final class DatabaseGetAllSupplierFilesIntegration extends SqlIntegrationTestCas
     {
         $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
 
-        $this->createSupplierFile('path/to/file/file1.xlsx', (new \DateTimeImmutable())->modify('-10 DAY'));
-        $this->createSupplierFile('path/to/file/file2.xlsx', new \DateTimeImmutable());
-        $this->createSupplierFile('path/to/file/file3.xlsx', (new \DateTimeImmutable())->modify('-2 DAY'));
+        $this->createProductFile('file1.xlsx', (new \DateTimeImmutable())->modify('-10 DAY'));
+        $this->createProductFile('file2.xlsx', new \DateTimeImmutable());
+        $this->createProductFile('file3.xlsx', (new \DateTimeImmutable())->modify('-2 DAY'));
 
         $supplierFiles = $this->get(GetAllSupplierFiles::class)();
 
-        static::assertSame('path/to/file/file2.xlsx', $supplierFiles[0]->path);
-        static::assertSame('path/to/file/file3.xlsx', $supplierFiles[1]->path);
-        static::assertSame('path/to/file/file1.xlsx', $supplierFiles[2]->path);
+        static::assertSame('file2.xlsx', $supplierFiles[0]->originalFilename);
+        static::assertSame('file3.xlsx', $supplierFiles[1]->originalFilename);
+        static::assertSame('file1.xlsx', $supplierFiles[2]->originalFilename);
     }
 
     /** @test */
@@ -66,12 +66,12 @@ final class DatabaseGetAllSupplierFilesIntegration extends SqlIntegrationTestCas
         $file2Date = (new \DateTimeImmutable())->modify('-2 DAY');
 
         $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
-        $this->createSupplierFile('path/to/file/file1.xlsx', $file1Date);
-        $this->createSupplierFile('path/to/file/file2.xlsx', $file2Date);
+        $this->createProductFile('file1.xlsx', $file1Date);
+        $this->createProductFile('file2.xlsx', $file2Date);
 
         $supplierFiles = $this->get(GetAllSupplierFiles::class)();
 
-        static::assertSame('path/to/file/file1.xlsx', $supplierFiles[0]->path);
+        static::assertSame('file1.xlsx', $supplierFiles[0]->originalFilename);
         static::assertSame('contributor@megasupplier.com', $supplierFiles[0]->uploadedByContributor);
         static::assertSame('Supplier 1', $supplierFiles[0]->uploadedBySupplier);
         static::assertSame($file1Date->format('Y-m-d H:i:s'), $supplierFiles[0]->uploadedAt);
@@ -94,7 +94,7 @@ final class DatabaseGetAllSupplierFilesIntegration extends SqlIntegrationTestCas
         );
     }
 
-    private function createSupplierFile(string $path, \DateTimeImmutable $uploadedAt): void
+    private function createProductFile(string $filename, \DateTimeImmutable $uploadedAt): void
     {
         $sql = <<<SQL
             INSERT INTO `akeneo_supplier_portal_supplier_file` (identifier, original_filename, path, uploaded_by_contributor, uploaded_by_supplier, uploaded_at)
@@ -106,7 +106,7 @@ final class DatabaseGetAllSupplierFilesIntegration extends SqlIntegrationTestCas
             [
                 'identifier' => Uuid::uuid4()->toString(),
                 'original_filename' => 'file.xlsx',
-                'path' => $path,
+                'path' => sprintf('path/to/%s', $filename),
                 'contributorEmail' => 'contributor@megasupplier.com',
                 'supplierIdentifier' => '44ce8069-8da1-4986-872f-311737f46f00',
                 'uploadedAt' => $uploadedAt->format('Y-m-d H:i:s'),
