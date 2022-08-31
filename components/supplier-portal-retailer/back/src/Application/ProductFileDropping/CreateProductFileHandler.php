@@ -15,8 +15,8 @@ use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierFromContribut
 use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Write\ValueObject\Code;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class CreateProductFileHandler
 {

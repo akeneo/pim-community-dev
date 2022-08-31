@@ -56,6 +56,7 @@ $rules = [
     $builder->only(
         [
             // Supplier Portal retailer coupling
+            'Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\ServiceAPI',
 
             // Supplier Portal supplier coupling
             'Akeneo\SupplierPortal\Supplier\Domain',
