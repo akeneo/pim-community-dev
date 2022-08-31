@@ -16,21 +16,24 @@ final class PermissionCollection
     /**
      * @param array<string, array<int>>|null $permissions
      */
-    public static function fromArray(array $permissions): self
+    public static function fromArray(?array $permissions): self
     {
         return new self($permissions);
     }
 
+    /** @return array<int> */
     public function getViewUserGroups(): array
     {
         return $this->permissions['view'];
     }
 
+    /** @return array<int> */
     public function getEditUserGroups(): array
     {
         return $this->permissions['edit'];
     }
 
+    /** @return array<int> */
     public function getOwnUserGroups(): array
     {
         return $this->permissions['own'];
@@ -39,7 +42,7 @@ final class PermissionCollection
     /**
      * @return array<string, array<int>>|null
      */
-    public function normalize(): array|null
+    public function normalize(): ?array
     {
         return $this->permissions;
     }
