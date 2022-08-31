@@ -1,4 +1,5 @@
 import {Router} from '@akeneo-pim-community/shared';
+import {set} from 'lodash/fp';
 
 import {EnrichCategory} from '../../models';
 
@@ -13,15 +14,15 @@ interface EditCategoryResponseKO {
 }
 
 interface EditCategoryValidationErrors {
-  general?: I18nMessageSpec,
+  general?: I18nMessageSpec;
   validation?: {
-    properties?: ValidationErrors,
-    attributes?: ValidationErrors,
-  }
+    properties?: ValidationErrors;
+    attributes?: ValidationErrors;
+  };
 }
 
 interface ValidationErrors {
-  [attributeCode: string]: ValidationError,
+  [attributeCode: string]: ValidationError;
 }
 
 interface ValidationError {
@@ -33,13 +34,21 @@ interface ValidationError {
 interface I18nMessageSpec {
   key: string;
   args?: {
-    [name: string]: string | number
-  }
+    [name: string]: string | number;
+  };
 }
 
 type EditCategoryResponse = EditCategoryResponseOK | EditCategoryResponseKO;
 
-const saveEditCategoryForm = async (router: Router, enrichCategory: EnrichCategory): Promise<EditCategoryResponse> => {
+interface SaveOptions {
+  applyPermissionsOnChildren: boolean;
+}
+
+const saveEditCategoryForm = async (
+  router: Router,
+  category: EnrichCategory,
+  options: SaveOptions
+): Promise<EditCategoryResponse> => {
   // const params = new URLSearchParams();
   // params.append(formData._token.fullName, formData._token.value);
   // for (const [locale, changedLabel] of Object.entries(formData.label)) {
@@ -57,13 +66,17 @@ const saveEditCategoryForm = async (router: Router, enrichCategory: EnrichCatego
   //   formData.permissions.own.value.map(value => params.append(permissions.own.fullName, value));
   // }
 
-  const response = await fetch(router.generate('pim_category_rest_update', {id: enrichCategory.id}), {
+  // this is for keeping compatibility at the moment, ideally it should not go into the category data
+  // because it is a modality for saving, not a part of a category state
+  const payload = set(['permissions', 'apply_on_children'], options.applyPermissionsOnChildren, category);
+
+  const response = await fetch(router.generate('pim_category_rest_update', {id: category.id}), {
     method: 'POST',
     headers: [
       ['Content-type', 'application/json'],
       ['X-Requested-With', 'XMLHttpRequest'],
     ],
-    body: JSON.stringify(enrichCategory),
+    body: JSON.stringify(payload),
   });
 
   let responseContent: EditCategoryResponse | null = null;
@@ -79,8 +92,8 @@ const saveEditCategoryForm = async (router: Router, enrichCategory: EnrichCatego
 
   // TODO use(/create) real i18n keys below
   const errors = responseContent
-    ? (responseContent as EditCategoryResponseKO).errors || { general: { key: 'unspecified error'}}
-    : { general: { key: 'Response is invalid JSON' } };
+    ? (responseContent as EditCategoryResponseKO).errors || {general: {key: 'unspecified error'}}
+    : {general: {key: 'Response is invalid JSON'}};
   return {success: false, errors};
 };
 

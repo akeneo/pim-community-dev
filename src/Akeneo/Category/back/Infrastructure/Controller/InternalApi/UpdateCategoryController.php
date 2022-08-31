@@ -98,27 +98,27 @@ class UpdateCategoryController
         }
         $normalizedCategory = $category->normalize();
 
-        return new JsonResponse(
-            [
-                'success' => false,
-                'errors' => [
-                    [
-                        'properties' => [
-                            'path' => ['label'],
-                            'locale' => 'fr_FR',
-                            'message' => [
-                                'key' => 'i18nkey of error message, arg : {{a}}',
-                                'args' => [
-                                    'a' => '1234'
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ],
-            Response::HTTP_BAD_REQUEST
-        );
+        // return new JsonResponse(
+        //     [
+        //         'success' => false,
+        //         'errors' => [
+        //             [
+        //                 'properties' => [
+        //                     'path' => ['label'],
+        //                     'locale' => 'fr_FR',
+        //                     'message' => [
+        //                         'key' => 'i18nkey of error message, arg : {{a}}',
+        //                         'args' => [
+        //                             'a' => '1234'
+        //                         ]
+        //                     ]
+        //                 ]
+        //             ]
+        //         ]
+        //     ],
+        //     Response::HTTP_BAD_REQUEST
+        // );
 
-        //return new JsonResponse(['success' => true, 'category' => $normalizedCategory], Response::HTTP_OK);
+        return new JsonResponse(['success' => true, 'category' => $normalizedCategory], Response::HTTP_OK);
     }
 }

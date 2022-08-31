@@ -6,7 +6,6 @@ import {EditCategoryContext} from '../components';
 import {computeNewEditPermissions, computeNewOwnPermissions, computeNewViewPermissions} from '../helpers';
 import {Category} from '../models';
 
-// @todo Add unit tests
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
   const notify = useNotify();
@@ -108,7 +107,7 @@ const useEditCategoryForm = (categoryId: number) => {
     const response = await saveEditCategoryForm(router, categoryData.category.id, editedFormData);
 
     if (response.success) {
-      setHistoryVersion((prevVersion: number) => prevVersion + 1)
+      setHistoryVersion((prevVersion: number) => prevVersion + 1);
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
       setOriginalFormData(response.form);
       setCategory(response.category);
@@ -167,7 +166,7 @@ const useEditCategoryForm = (categoryId: number) => {
     onChangeApplyPermissionsOnChildren,
     thereAreUnsavedChanges,
     saveCategory,
-    historyVersion
+    historyVersion,
   };
 };
 

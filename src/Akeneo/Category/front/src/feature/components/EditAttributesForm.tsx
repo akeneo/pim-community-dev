@@ -1,9 +1,20 @@
-import React, {useState} from 'react';
-import {Field, MediaFileInput, SectionTitle, TextAreaInput, TextInput} from 'akeneo-design-system';
-import {LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
+import React, {useCallback, useMemo, useState} from 'react';
 import styled from 'styled-components';
 
-const locales = [
+import {Field, FileInfo, MediaFileInput, SectionTitle, TextAreaInput, TextInput} from 'akeneo-design-system';
+import {Locale, LocaleSelector, useTranslate} from '@akeneo-pim-community/shared';
+
+import {
+  CategoryAttribute,
+  CategoryAttributeCode,
+  CategoryAttributeValueData,
+  CategoryImageAttributeValueData,
+  CATEGORY_ATTRIBUTE_TYPE_IMAGE,
+  CATEGORY_ATTRIBUTE_TYPE_TEXT,
+  EnrichCategory,
+} from '../models';
+
+const locales: Locale[] = [
   {
     code: 'en_US',
     label: 'English (United States)',
@@ -18,9 +29,15 @@ const locales = [
   },
 ];
 
-interface Props {}
+interface Props {
+  attributes: EnrichCategory['attributes'];
+  onAttributeValueChange: (
+    attribute: CategoryAttribute,
+    locale: string | null,
+    attributeValue: CategoryAttributeValueData
+  ) => void;
+}
 
-const dumbHandler = (value: any) => value;
 const dumbUploader = async (file: File, onProgress: (ratio: number) => void) => ({
   filePath: 'foo',
   originalFilename: 'bar',
@@ -38,9 +55,67 @@ const Field960 = styled(Field)`
   max-width: 960px;
 `;
 
-export const EditAttributesForm = (props: Props) => {
+export const EditAttributesForm = ({onAttributeValueChange}: Props) => {
   const [locale, setLocale] = useState('en_US');
   const translate = useTranslate();
+
+  // mocked attributes
+  // TODO use attribute coming from GET template via props
+  const attributes = useMemo<{[attributeCode: CategoryAttributeCode]: CategoryAttribute}>(
+    () => ({
+      description: {
+        uuid: '87939c45-1d85-4134-9579-d594fff65030',
+        code: 'description',
+        type: CATEGORY_ATTRIBUTE_TYPE_TEXT,
+      },
+      banner: {
+        uuid: '8587cda6-58c8-47fa-9278-033e1d8c735c',
+        code: 'banner',
+        type: CATEGORY_ATTRIBUTE_TYPE_IMAGE,
+      },
+      seo_meta_title: {
+        uuid: 'ebdf744c-17e0-11ed-835e-0b2d6a7798db',
+        code: 'description',
+        type: CATEGORY_ATTRIBUTE_TYPE_TEXT,
+      },
+      seo_meta_description: {
+        uuid: 'ef7ace80-17e0-11ed-9ac6-2feec2ba2321',
+        code: 'description',
+        type: CATEGORY_ATTRIBUTE_TYPE_TEXT,
+      },
+      seo_keywords: {
+        uuid: '54f6725a-17e1-11ed-a002-73412755f3bd',
+        code: 'seo_keywords',
+        type: CATEGORY_ATTRIBUTE_TYPE_TEXT,
+      },
+    }),
+    []
+  );
+
+  const handleTextChange = useCallback(
+    (attribute: CategoryAttribute) => (value: string) => {
+      onAttributeValueChange(attribute, locale, value);
+    },
+    [locale, onAttributeValueChange]
+  );
+
+  const handleImageChange = useCallback(
+    (attribute: CategoryAttribute) => (value: FileInfo | null) => {
+      // TODO handle value===null
+      if (!value || !value.size || !value.mimeType || !value.extension) {
+        return;
+      }
+      const data: CategoryImageAttributeValueData = {
+        size: value.size,
+        file_path: value.filePath,
+        mime_type: value.mimeType,
+        extension: value.extension,
+        original_filename: value.originalFilename,
+      };
+      onAttributeValueChange(attribute, locale, data);
+    },
+    [locale, onAttributeValueChange]
+  );
 
   return (
     <FormContainer>
@@ -50,12 +125,12 @@ export const EditAttributesForm = (props: Props) => {
         <LocaleSelector value={locale} values={locales} onChange={setLocale} />
       </SectionTitle>
       <Field960 label="Description" locale={locale}>
-        <TextAreaInput isRichText name="description" value="" onChange={dumbHandler} />
+        <TextAreaInput isRichText name="description" value="" onChange={handleTextChange(attributes['description'])} />
       </Field960>
       <Field label="Banner Image">
         <MediaFileInput
           value={null}
-          onChange={dumbHandler}
+          onChange={handleImageChange(attributes['banner'])}
           placeholder="Drag and drop to upload or click here"
           uploadingLabel="Uploading..."
           uploadErrorLabel="An error occurred during upload"
@@ -65,13 +140,17 @@ export const EditAttributesForm = (props: Props) => {
         />
       </Field>
       <Field label="SEO Meta Title" locale={locale}>
-        <TextInput name="seo_meta_title" value="" onChange={dumbHandler} />
+        <TextInput name="seo_meta_title" value="" onChange={handleTextChange(attributes['seo_meta_title'])} />
       </Field>
       <Field label="SEO Meta Description" locale={locale}>
-        <TextAreaInput name="seo_meta_description" value="" onChange={dumbHandler} />
+        <TextAreaInput
+          name="seo_meta_description"
+          value=""
+          onChange={handleTextChange(attributes['seo_meta_description'])}
+        />
       </Field>
       <Field label="SEO Keywords" locale={locale}>
-        <TextAreaInput name="seo_keywords" value="" onChange={dumbHandler} />
+        <TextAreaInput name="seo_keywords" value="" onChange={handleTextChange(attributes['seo_keywords'])} />
       </Field>
     </FormContainer>
   );

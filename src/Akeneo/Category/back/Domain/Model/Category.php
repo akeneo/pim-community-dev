@@ -21,8 +21,8 @@ class Category
         private Code $code,
         private LabelCollection $labelCollection,
         private ?CategoryId $parentId = null,
-        private ?ValueCollection $valueCollection = null,
-        private ?PermissionCollection $permissionCollection = null,
+        private ?ValueCollection $attributes = null,
+        private ?PermissionCollection $permissions = null,
     ) {
     }
 
@@ -48,12 +48,12 @@ class Category
 
     public function getValueCollection(): ?ValueCollection
     {
-        return $this->valueCollection;
+        return $this->attributes;
     }
 
     public function getPermissionCollection(): ?PermissionCollection
     {
-        return $this->permissionCollection;
+        return $this->permissions;
     }
 
     public function setLabel(string $localeCode, string $label): void
@@ -72,7 +72,7 @@ class Category
      *     code: string,
      *     parent: int|null,
      *     labels: array<string, string>,
-     *     values: array<string, array<string, mixed>> | null,
+     *     attributes: array<string, array<string, mixed>> | null,
      *     permissions: array<string, array<int>>|null
      * }
      */
@@ -82,8 +82,8 @@ class Category
             'id' => $this->getId()?->getValue(),
             'code' => (string) $this->getCode(),
             'labels' => $this->getLabelCollection()->normalize(),
-            'parent' => $this->getParentId()?->getValue(),
-            'values' => $this->getValueCollection()?->normalize(),
+            'parent' => $this->getParentId()?->getId(),
+            'attributes' => $this->getValueCollection()?->normalize(),
             'permissions' => $this->getPermissionCollection()?->normalize(),
         ];
     }

@@ -1,87 +1,68 @@
-import {EditCategoryForm} from 'feature/models';
-import {computeNewEditPermissions, computeNewOwnPermissions, computeNewViewPermissions} from './permissionsHelper';
+import {alterPermissionsConsistently, ensureSubset, ensureSuperset} from './permissionsHelper';
 
 describe('permissionsHelper', () => {
-  //This test is only to have a better idea of the default state before each test
-  test('it ensures the default state is OK', () => {
-    expect(formData.permissions?.view.value).toStrictEqual(['1', '2', '5']);
-    expect(formData.permissions?.edit.value).toStrictEqual(['1', '2']);
-    expect(formData.permissions?.own.value).toStrictEqual(['1', '2']);
+  test.each`
+    a1           | a2           | expected
+    ${[]}        | ${[]}        | ${[]}
+    ${[1]}       | ${[]}        | ${[]}
+    ${[1, 2]}    | ${[]}        | ${[]}
+    ${[1]}       | ${[1]}       | ${[1]}
+    ${[1]}       | ${[1, 2]}    | ${[1]}
+    ${[1, 2]}    | ${[1]}       | ${[1]}
+    ${[2]}       | ${[1]}       | ${[]}
+    ${[2, 3]}    | ${[1, 2]}    | ${[2]}
+    ${[2, 3, 1]} | ${[7, 3, 2]} | ${[2, 3]}
+    ${[3, 4]}    | ${[1, 2]}    | ${[]}
+  `('the biggest subset of $a2 build from $a1 is $expected', ({a1, a2, expected}) => {
+    const sortedResult = ensureSubset(a1, a2).sort();
+    const sortedExpected = expected.sort();
+    expect(sortedResult).toEqual(sortedExpected);
   });
 
-  test('it removes a view permission that does not exist in other levels', () => {
-    const newFormData = computeNewViewPermissions(formData, ['1', '2']);
-
-    expect(newFormData.permissions?.view.value).toStrictEqual(['1', '2']);
-    expect(newFormData.permissions?.edit.value).toStrictEqual(['1', '2']);
-    expect(newFormData.permissions?.own.value).toStrictEqual(['1', '2']);
+  test.each`
+    a1        | a2        | expected
+    ${[]}     | ${[]}     | ${[]}
+    ${[1]}    | ${[]}     | ${[1]}
+    ${[]}     | ${[1]}    | ${[1]}
+    ${[1]}    | ${[2]}    | ${[1, 2]}
+    ${[1, 2]} | ${[2]}    | ${[1, 2]}
+    ${[1, 2]} | ${[1, 2]} | ${[1, 2]}
+    ${[1, 2]} | ${[2, 3]} | ${[3, 2, 1]}
+    ${[1, 2]} | ${[3, 4]} | ${[1, 2, 3, 4]}
+  `('the smallest superset of $a2 build from $a1 is $expected', ({a1, a2, expected}) => {
+    const sortedResult = ensureSuperset(a1, a2).sort();
+    const sortedExpected = expected.sort();
+    expect(sortedResult).toEqual(sortedExpected);
   });
 
-  test('it removes with cascade a view permission', () => {
-    const newFormData = computeNewViewPermissions(formData, ['1', '5']);
+  test.each`
+    permissions                                  | changes                           | expectedConsistentPermissions
+    ${{view: [], edit: [], own: []}}             | ${{type: 'view', values: []}}     | ${{view: [], edit: [], own: []}}
+    ${{view: [], edit: [], own: []}}             | ${{type: 'view', values: [1]}}    | ${{view: [1], edit: [], own: []}}
+    ${{view: [], edit: [], own: []}}             | ${{type: 'edit', values: [1]}}    | ${{view: [1], edit: [1], own: []}}
+    ${{view: [], edit: [], own: []}}             | ${{type: 'own', values: [1]}}     | ${{view: [1], edit: [1], own: [1]}}
+    ${{view: [1], edit: [2], own: [2]}}          | ${{type: 'view', values: [2]}}    | ${{view: [2], edit: [2], own: [2]}}
+    ${{view: [1], edit: [2], own: [2]}}          | ${{type: 'view', values: [1, 2]}} | ${{view: [2, 1], edit: [2], own: [2]}}
+    ${{view: [1], edit: [2], own: [2]}}          | ${{type: 'view', values: [1]}}    | ${{view: [1], edit: [], own: []}}
+    ${{view: [1, 2], edit: [1], own: []}}        | ${{type: 'view', values: [1, 3]}} | ${{view: [1, 3], edit: [1], own: []}}
+    ${{view: [1, 2], edit: [1], own: []}}        | ${{type: 'edit', values: [3]}}    | ${{view: [1, 2, 3], edit: [3], own: []}}
+    ${{view: [1, 2], edit: [1, 2], own: [1, 2]}} | ${{type: 'edit', values: [1, 3]}} | ${{view: [1, 2, 3], edit: [1, 3], own: [1]}}
+    ${{view: [1], edit: [1], own: [1]}}          | ${{type: 'own', values: [1, 2]}}  | ${{view: [1, 2], edit: [1, 2], own: [1, 2]}}
+    ${{view: [1], edit: [1, 2], own: [1]}}       | ${{type: 'own', values: [3]}}     | ${{view: [1, 2, 3], edit: [1, 2, 3], own: [3]}}
+  `(
+    'consistent permissions build from {view:$permissions.view,edit:$permissions.edit,own:$permissions.own} by applying changes {type:$changes.type, values:$changes.values} is : {view:$expectedConsistentPermissions.view,edit:$expectedConsistentPermissions.edit,own:$expectedConsistentPermissions.own}',
+    ({permissions, changes, expectedConsistentPermissions}) => {
+      const result = alterPermissionsConsistently(permissions, changes);
+      result.view.sort();
+      result.edit.sort();
+      result.own.sort();
+      expectedConsistentPermissions.view.sort();
+      expectedConsistentPermissions.edit.sort();
+      expectedConsistentPermissions.own.sort();
 
-    expect(newFormData.permissions?.view.value).toStrictEqual(['1', '5']);
-    expect(newFormData.permissions?.edit.value).toStrictEqual(['1']);
-    expect(newFormData.permissions?.own.value).toStrictEqual(['1']);
-  });
-
-  test('it removes with cascade an edit permission', () => {
-    const newFormData = computeNewEditPermissions(formData, ['2']);
-
-    expect(newFormData.permissions?.view.value).toStrictEqual(['1', '2', '5']);
-    expect(newFormData.permissions?.edit.value).toStrictEqual(['2']);
-    expect(newFormData.permissions?.own.value).toStrictEqual(['2']);
-  });
-
-  test('it adds with cascade an edit permission', () => {
-    const newFormData = computeNewEditPermissions(formData, ['1', '2', '8']);
-
-    expect(newFormData.permissions?.view.value).toStrictEqual(['1', '2', '5', '8']);
-    expect(newFormData.permissions?.edit.value).toStrictEqual(['1', '2', '8']);
-    expect(newFormData.permissions?.own.value).toStrictEqual(['1', '2']);
-  });
-
-  test('it adds with cascade an own permission', () => {
-    const newFormData = computeNewOwnPermissions(formData, ['1', '2', '8']);
-
-    expect(newFormData.permissions?.view.value).toStrictEqual(['1', '2', '5', '8']);
-    expect(newFormData.permissions?.edit.value).toStrictEqual(['1', '2', '8']);
-    expect(newFormData.permissions?.own.value).toStrictEqual(['1', '2', '8']);
-  });
+      expect(result.view).toEqual(expectedConsistentPermissions.view);
+      expect(result.edit).toEqual(expectedConsistentPermissions.edit);
+      expect(result.own).toEqual(expectedConsistentPermissions.own);
+    }
+  );
 });
-
-const formData: EditCategoryForm = {
-  label: {
-    en_US: {
-      value: 'Cameras',
-      fullName: 'pim_category[label][en_US]',
-      label: 'English (United States)',
-    },
-  },
-  errors: [],
-  _token: {
-    value: 'XFC_DnwJvzF5TsnB2-MbiPUjKqmUtZTJt0O1CTQLqMs',
-    fullName: 'pim_category[_token]',
-  },
-  permissions: {
-    view: {
-      value: ['1', '2', '5'],
-      fullName: 'pim_category[permissions][view][]',
-      choices: [],
-    },
-    edit: {
-      value: ['1', '2'],
-      fullName: 'pim_category[permissions][edit][]',
-      choices: [],
-    },
-    own: {
-      value: ['1', '2'],
-      fullName: 'pim_category[permissions][own][]',
-      choices: [],
-    },
-    apply_on_children: {
-      value: '1',
-      fullName: 'pim_category[permissions][apply_on_children]',
-    },
-  },
-};

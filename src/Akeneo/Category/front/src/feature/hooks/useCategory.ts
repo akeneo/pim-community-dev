@@ -2,50 +2,41 @@ import {FetchStatus, useFetch, useRoute} from '@akeneo-pim-community/shared';
 import {EnrichCategory} from '../models';
 import type {EditCategoryForm} from '../models';
 
-const useCategory = (
-  categoryId: number
-): [data: EnrichCategory | null, fetch: () => Promise<void>, status: FetchStatus, error: string | null] => {
-  // const [data] = useState<EnrichCategory | null>({
-  //   id: categoryId,
-  //   code: 'toto',
-  //   labels: {
-  //     'en_US': 'socks',
-  //     'fr_FR': 'chaussettes',
-  //   },
-  //   attributes: [],
-  //   permissions: null
-  // });
-  // const load = useCallback(async () => {}, []);
-  // const [status] = useState<FetchStatus>('fetched');
-  // const [error] = useState<string | null>(null);
+interface UseCategoryResponseCommon {
+  load: () => Promise<void>;
+  status: FetchStatus;
+}
+export interface UseCategoryResponseOK extends UseCategoryResponseCommon {
+  category: EnrichCategory;
+  status: 'fetched';
+}
 
-  //TODO: get token
+export interface UseCategoryResponsePending extends UseCategoryResponseCommon {
+  status: 'idle' | 'fetching';
+}
+
+export interface UseCategoryResponseKO extends UseCategoryResponseCommon {
+  status: 'error';
+  error: string;
+}
+
+export type UseCategoryResponse = UseCategoryResponsePending | UseCategoryResponseOK | UseCategoryResponseKO;
+
+const useCategory = (categoryId: number): UseCategoryResponse => {
   const url = useRoute('pim_category_rest_get', {
     id: categoryId.toString(),
   });
-  
-  const [categoryData, load, status, error] = useFetch<any>(url);
 
+  const [category, load, status, error] = useFetch<any>(url);
 
-  // const data = {
-  //   id: categoryId,
-  //   code: 'toto',
-  //   labels: {
-  //     'en_US': 'socks',
-  //     'fr_FR': 'chaussettes',
-  //   },
-  //   attributes: [],
-  //   permissions: null
-  // }
+  switch (status) {
+    case 'fetched':
+      return {load, status, category};
+    case 'error':
+      return {load, status, error: error!};
+  }
 
-  // TODO: get token
-  // const url = useRoute('pim_enrich_categorytree_edit', {
-  //   id: categoryId.toString(),
-  // });
-
-  // const [categoryData, load, status, error] = useFetch<EditCategoryData>(url);
-
-  return [categoryData, load, status, error];
+  return {load, status};
 };
 
 export {useCategory};

@@ -1,5 +1,6 @@
-import {LabelCollection} from '@akeneo-pim-community/shared';
+import {LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
 import {TreeNode} from './Tree';
+import {isEqual, sortBy} from 'lodash';
 
 export type Category = {
   id: number;
@@ -9,19 +10,38 @@ export type Category = {
 };
 
 export type EnrichCategory = {
-  id: number,
-  code: string,
-  labels: LabelCollection,
-  attributes: any,
-  permissions: CategoryPermissions | null,
-}
+  id: number;
+  code: string;
+  labels: LabelCollection;
+  attributes: CategoryAttributes;
+  permissions: CategoryPermissions;
+};
 
 export type CategoryPermissions = {
   view: number[];
   edit: number[];
   own: number[];
-  apply_on_children: '0' | '1';
 };
+
+interface CategoryAttributes {
+  [funnyKey: string]: CategoryAttributeValueWrapper;
+}
+
+export interface CategoryAttributeValueWrapper {
+  data: CategoryAttributeValueData;
+  locale: LocaleCode | null;
+}
+
+type CategoryTextAttributeValueData = string;
+export interface CategoryImageAttributeValueData {
+  size: number;
+  file_path: string;
+  mime_type: string;
+  extension: string;
+  original_filename: string;
+}
+
+export type CategoryAttributeValueData = CategoryTextAttributeValueData | CategoryImageAttributeValueData;
 
 export type BackendCategoryTree = {
   attr: {
@@ -101,4 +121,34 @@ const buildTreeNodeFromCategoryTree = (
   };
 };
 
-export {convertToCategoryTree, buildTreeNodeFromCategoryTree};
+function labelsAreEqual(l1: LabelCollection, l2: LabelCollection): boolean {
+  // maybe too strict of simplistic, to adjust
+  return isEqual(l1, l2);
+}
+
+function isEqualUnordered(a1: number[], a2: number[]): boolean {
+  return isEqual(sortBy(a1), sortBy(a2));
+}
+
+function permissionsAreEqual(cp1: CategoryPermissions, cp2: CategoryPermissions): boolean {
+  return (
+    isEqualUnordered(cp1.view, cp2.view) && isEqualUnordered(cp1.edit, cp2.edit) && isEqualUnordered(cp1.own, cp2.own)
+  );
+}
+
+function attributesAreEqual(a1: CategoryAttributes, a2: CategoryAttributes): boolean {
+  // maybe too strict of simplistic, to adjust
+  return isEqual(a1, a2);
+}
+
+function categoriesAreEqual(c1: EnrichCategory, c2: EnrichCategory): boolean {
+  return (
+    c1.id === c2.id &&
+    c1.code === c2.code &&
+    labelsAreEqual(c1.labels, c2.labels) &&
+    permissionsAreEqual(c1.permissions, c2.permissions) &&
+    attributesAreEqual(c1.attributes, c2.attributes)
+  );
+}
+
+export {convertToCategoryTree, buildTreeNodeFromCategoryTree, categoriesAreEqual, permissionsAreEqual};

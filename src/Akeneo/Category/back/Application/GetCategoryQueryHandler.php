@@ -33,9 +33,9 @@ class GetCategoryQueryHandler
         // the category as used internally
         // TODO : check ACL and Feature flag
         $permissions = [
-            'view' => [1],
+            'view' => [1,2,3],
             'edit' => [1, 2],
-            'own' => [1, 2, 3],
+            'own' => [1],
         ];
 
         $attributeValues = [
@@ -80,8 +80,8 @@ class GetCategoryQueryHandler
             code: new Code($code),
             labelCollection: LabelCollection::fromArray($labels),
             parentId: new CategoryId(1),
-            valueCollection: ValueCollection::fromArray($attributeValues),
-            permissionCollection: PermissionCollection::fromArray($permissions),
+            attributes: ValueCollection::fromArray($attributeValues),
+            permissions: PermissionCollection::fromArray($permissions),
         );
 
         // returning the category as seen by the outside (whoever created and dispatched the query)
