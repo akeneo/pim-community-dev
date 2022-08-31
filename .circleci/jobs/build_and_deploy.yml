@@ -225,6 +225,8 @@ jobs:
         steps:
             - attach_workspace:
                   at: ~/
+            - install_yq_v3
+            - set_docker_gcp_mirror
             - run:
                   name: Copy docker-compose.override.yml.dist
                   command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
