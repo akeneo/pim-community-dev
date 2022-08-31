@@ -1,10 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
+namespace Specification\Akeneo\Test\Pim\Enrichment\Product\Acceptance\InMemory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetProductUuids;
+use Akeneo\Test\Pim\Enrichment\Product\Acceptance\InMemory\InMemoryGetProductUuids;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;

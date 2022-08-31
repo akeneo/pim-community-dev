@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
+namespace Akeneo\Test\Pim\Enrichment\Product\Acceptance\InMemory;
 
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes;
 use Webmozart\Assert\Assert;

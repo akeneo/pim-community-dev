@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Test\Integration\StandardFormat;
+namespace Akeneo\Test\Pim\Enrichment\Product\Integration\StandardFormat;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
@@ -25,7 +25,6 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use PHPUnit\Framework\Assert;
-use Prophecy\Argument;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 /**

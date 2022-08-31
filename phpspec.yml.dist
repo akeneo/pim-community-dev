@@ -47,8 +47,8 @@ suites:
 
     ## Enrichment context
     EnrichmentProductAcceptance:
-        namespace: Akeneo\Pim\Enrichment\Product\Test\Acceptance
-        psr4_prefix: Akeneo\Pim\Enrichment\Product\Test\Acceptance
+        namespace: Akeneo\Test\Pim\Enrichment\Product\Acceptance
+        psr4_prefix: Akeneo\Test\Pim\Enrichment\Product\Acceptance
         src_path: src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance
         spec_path: src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance
         spec_prefix: Specification

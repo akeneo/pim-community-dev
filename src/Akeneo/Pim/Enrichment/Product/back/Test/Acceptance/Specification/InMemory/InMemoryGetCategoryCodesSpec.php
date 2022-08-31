@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
+namespace Specification\Akeneo\Test\Pim\Enrichment\Product\Acceptance\InMemory;
 
 use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
-use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetCategoryCodes;
+use Akeneo\Test\Pim\Enrichment\Product\Acceptance\InMemory\InMemoryGetCategoryCodes;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 

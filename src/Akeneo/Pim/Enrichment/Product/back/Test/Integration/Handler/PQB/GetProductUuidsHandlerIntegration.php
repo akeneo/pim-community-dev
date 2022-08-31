@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Test\Integration\Handler\PQB;
+namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler\PQB;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;

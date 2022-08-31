@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context;
+namespace Akeneo\Test\Pim\Enrichment\Product\Acceptance\Context;
 
-use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetAttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
+use Akeneo\Test\Pim\Enrichment\Product\Acceptance\InMemory\InMemoryGetAttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;

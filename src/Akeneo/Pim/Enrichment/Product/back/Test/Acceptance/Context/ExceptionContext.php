@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context;
+namespace Akeneo\Test\Pim\Enrichment\Product\Acceptance\Context;
 
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
+namespace Specification\Akeneo\Test\Pim\Enrichment\Product\Acceptance\InMemory;
 
-use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetAttributeTypes;
+use Akeneo\Test\Pim\Enrichment\Product\Acceptance\InMemory\InMemoryGetAttributeTypes;
 use PhpSpec\ObjectBehavior;
 
 class InMemoryGetAttributeTypesSpec extends ObjectBehavior
