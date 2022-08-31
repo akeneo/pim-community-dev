@@ -8,8 +8,7 @@ Akeneo\SupplierPortal\Retailer\Application\Supplier\UpdateSupplier:
     contributorEmails:
       - Unique: ~
       - All:
-          - Email: ~
-          - Length:
-              max: 255
+          - Email:
+              mode: 'strict'
           - Akeneo\SupplierPortal\Retailer\Application\Supplier\Validation\UniqueContributorEmail: ~
 
