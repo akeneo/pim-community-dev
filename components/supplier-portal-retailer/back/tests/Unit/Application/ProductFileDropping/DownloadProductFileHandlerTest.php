@@ -10,9 +10,7 @@ use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\Pro
 use Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\Exception\ProductFileIsNotDownloadable;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\DownloadStoredProductFile;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\GetProductFilePathAndFileName;
-use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\ProductFileDownloaded;
 use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Model\ProductFilePathAndFileName;
-use Akeneo\SupplierPortal\Retailer\Domain\Supplier\Read\GetSupplierCodeFromSupplierFileIdentifier;
 use Akeneo\SupplierPortal\Retailer\Infrastructure\StubEventDispatcher;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -24,15 +22,10 @@ final class DownloadProductFileHandlerTest extends TestCase
     {
         $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileName::class);
         $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
-        $getSupplierCodeFromSupplierFileIdentifier = $this->createMock(
-            GetSupplierCodeFromSupplierFileIdentifier::class,
-        );
-        $eventDispatcher = new StubEventDispatcher();
+
         $sut = new DownloadProductFileHandler(
             $getProductFilePathAndFileNameMock,
             $downloadStoredProductFileMock,
-            $eventDispatcher,
-            $getSupplierCodeFromSupplierFileIdentifier,
             new NullLogger(),
         );
 
@@ -50,12 +43,6 @@ final class DownloadProductFileHandlerTest extends TestCase
             ->with('path/to/file.xlsx')
             ->willReturn($fakeResource)
         ;
-        $getSupplierCodeFromSupplierFileIdentifier
-            ->expects($this->once())
-            ->method('__invoke')
-            ->with('1ed45c7b-6c61-4862-a11c-00c9580a8710')
-            ->willReturn('supplier_code')
-        ;
 
         $productFileNameAndResourceFile = ($sut)(
             new DownloadProductFile('1ed45c7b-6c61-4862-a11c-00c9580a8710')
@@ -68,16 +55,6 @@ final class DownloadProductFileHandlerTest extends TestCase
             $fakeResource,
             $productFileNameAndResourceFile->file,
         );
-        $this->assertEquals(
-            [
-                new ProductFileDownloaded(
-                    '1ed45c7b-6c61-4862-a11c-00c9580a8710',
-                    'supplier_code',
-                    1,
-                ),
-            ],
-            $eventDispatcher->getDispatchedEvents(),
-        );
     }
 
     /** @test */
@@ -85,14 +62,10 @@ final class DownloadProductFileHandlerTest extends TestCase
     {
         $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileName::class);
         $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
-        $getSupplierCodeFromSupplierFileIdentifier = $this->createMock(
-            GetSupplierCodeFromSupplierFileIdentifier::class,
-        );
+
         $sut = new DownloadProductFileHandler(
             $getProductFilePathAndFileNameMock,
             $downloadStoredProductFileMock,
-            new StubEventDispatcher(),
-            $getSupplierCodeFromSupplierFileIdentifier,
             new NullLogger(),
         );
 
@@ -107,15 +80,11 @@ final class DownloadProductFileHandlerTest extends TestCase
     {
         $getProductFilePathAndFileNameMock = $this->createMock(GetProductFilePathAndFileName::class);
         $downloadStoredProductFileMock = $this->createMock(DownloadStoredProductFile::class);
-        $getSupplierCodeFromSupplierFileIdentifier = $this->createMock(
-            GetSupplierCodeFromSupplierFileIdentifier::class,
-        );
+
         $eventDispatcher = new StubEventDispatcher();
         $sut = new DownloadProductFileHandler(
             $getProductFilePathAndFileNameMock,
             $downloadStoredProductFileMock,
-            $eventDispatcher,
-            $getSupplierCodeFromSupplierFileIdentifier,
             new NullLogger(),
         );
 
