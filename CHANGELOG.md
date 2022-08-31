@@ -76,6 +76,7 @@
 - PIM-10529: Fix links on product grid
 - PIM-10595: Fix not being able to add record with code "0" on a product
 - PIM-10588: Add potentially missing `remove_completeness_for_channel_and_locale` job instance
+- PIM-10606: Fix computeFamilyVariantStructureChange on attribute removal
 
 ## Improvements
 

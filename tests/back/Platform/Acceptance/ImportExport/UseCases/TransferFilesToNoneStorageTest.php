@@ -7,11 +7,12 @@ declare(strict_types=1);
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace AkeneoTest\Platform\Acceptance\ImportExport;
+namespace AkeneoTest\Platform\Acceptance\ImportExport\UseCases;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageCommand;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler;
+use AkeneoTest\Platform\Acceptance\ImportExport\AcceptanceTestCase;
 
 class TransferFilesToNoneStorageTest extends AcceptanceTestCase
 {

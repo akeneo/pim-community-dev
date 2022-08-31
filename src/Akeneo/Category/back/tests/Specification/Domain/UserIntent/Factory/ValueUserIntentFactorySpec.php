@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Category\Domain\UserIntent\Factory;
 
 use Akeneo\Category\Api\Command\UserIntents\SetRichText;
+use Akeneo\Category\Api\Command\UserIntents\SetText;
 use Akeneo\Category\Api\Command\UserIntents\SetTextArea;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
+use Akeneo\Category\Domain\Model\Attribute\AttributeText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Query\GetAttribute;
 use Akeneo\Category\Domain\UserIntent\Factory\UserIntentFactory;
@@ -27,18 +29,18 @@ use PhpSpec\ObjectBehavior;
  */
 class ValueUserIntentFactorySpec extends ObjectBehavior
 {
-    public function let(GetAttribute $getAttribute)
+    function let(GetAttribute $getAttribute)
     {
         $this->beConstructedWith($getAttribute);
     }
 
-    function it_is_initializable()
+    function it_is_initializable(): void
     {
         $this->shouldHaveType(ValueUserIntentFactory::class);
         $this->shouldImplement(UserIntentFactory::class);
     }
 
-    function it_manage_only_expected_field_names()
+    function it_manage_only_expected_field_names(): void
     {
         $this->getSupportedFieldNames()->shouldReturn(['values']);
     }
@@ -59,6 +61,11 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 'data' => 'Description',
                 'locale' => 'en_US',
                 'attribute_code' => 'description' . ValueCollection::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950'
+            ],
+            'color' . ValueCollection::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af' . ValueCollection::SEPARATOR . 'en_US' => [
+                'data' => 'red',
+                'locale' => 'en_US',
+                'attribute_code' => 'color' . ValueCollection::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af'
             ]
         ];
 
@@ -79,7 +86,15 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'Description']),
                 $templateUuid
-            )
+            ),
+            AttributeText::create(
+                AttributeUuid::fromString('38439aaf-66a2-4b24-854e-29d7a467c7af'),
+                new AttributeCode('color'),
+                AttributeOrder::fromInteger(2),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => 'red']),
+                $templateUuid
+            ),
         ]);
 
         $getAttribute->byIdentifiers($data['attribute_codes'])
@@ -101,6 +116,12 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 'description',
                 'en_US',
                 'Description'
+            ),
+            new SetText(
+                '38439aaf-66a2-4b24-854e-29d7a467c7af',
+                'color',
+                'en_US',
+                'red'
             )
         ]);
     }
