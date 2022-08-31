@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Application\Applier;
 
-use Akeneo\Category\Api\Command\UserIntents\SetTextArea;
+use Akeneo\Category\Api\Command\UserIntents\SetText;
+use Akeneo\Category\Application\Applier\SetTextApplier;
 use Akeneo\Category\Application\Applier\SetTextAreaApplier;
+use Akeneo\Category\Application\Applier\UserIntentApplier;
 use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
@@ -15,17 +17,18 @@ use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 
 /**
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetTextAreaApplierSpec extends ObjectBehavior
+class SetTextApplierSpec extends ObjectBehavior
 {
     function it_is_initializable(): void
     {
-        $this->shouldHaveType(SetTextAreaApplier::class);
+        $this->shouldHaveType(SetTextApplier::class);
+        $this->shouldImplement(UserIntentApplier::class);
     }
 
-    function it_updates_category_value_collection(): void
+    function it_applies_set_text_user_intent(): void
     {
         $valueKey = 'attribute_code'
             . ValueCollection::SEPARATOR . 'uuid' .
@@ -48,7 +51,7 @@ class SetTextAreaApplierSpec extends ObjectBehavior
             valueCollection: $valueCollection
         );
 
-        $userIntent = new SetTextArea(
+        $userIntent = new SetText(
             'uuid',
             'attribute_code',
             'locale_code',
@@ -78,5 +81,4 @@ class SetTextAreaApplierSpec extends ObjectBehavior
             $category->getValueCollection()
         );
     }
-
 }
