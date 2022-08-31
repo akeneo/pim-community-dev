@@ -30,7 +30,7 @@ final class DeleteUserHandler implements DeleteUserHandlerInterface
         $user = $this->userRepository->findOneBy(['username' => $deleteUserCommand->username]);
 
         if (null === $user) {
-             throw new UserNotFoundException();
+            throw new UserNotFoundException();
         }
 
         $this->userManager->deleteUser($user);
