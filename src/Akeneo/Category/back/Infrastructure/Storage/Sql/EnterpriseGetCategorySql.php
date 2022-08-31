@@ -47,29 +47,48 @@ class EnterpriseGetCategorySql implements GetCategoryInterface
 
         $sqlQuery = <<<SQL
             WITH translation as (
-                SELECT category.code, JSON_OBJECTAGG(translation.locale, translation.label) as translations
+                SELECT category.code, JSON_OBJECTAGG(category_translation.locale, category_translation.label) as translations
                 FROM pim_catalog_category category
-                JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
+                JOIN pim_catalog_category_translation category_translation ON category_translation.foreign_key = category.id
                 WHERE $sqlWhere
             ),
-            permissions as (
-                SELECT pca.category_id, pca.view_items, pca.edit_items, pca.own_items
+            permissions_view as (
+                SELECT pca.category_id, JSON_ARRAYAGG(pca.user_group_id) as user_groups
                 FROM pim_catalog_category category
                 JOIN pimee_security_product_category_access pca ON pca.category_id = category.id
-                WHERE $sqlWhere
+                WHERE pca.view_items = 1
+                AND $sqlWhere
+            ),
+            permissions_edit as (
+                SELECT pca.category_id, JSON_ARRAYAGG(pca.user_group_id) as user_groups
+                FROM pim_catalog_category category
+                JOIN pimee_security_product_category_access pca ON pca.category_id = category.id
+                WHERE pca.edit_items = 1
+                AND $sqlWhere
+            ),
+            permissions_own as (
+                SELECT pca.category_id, JSON_ARRAYAGG(pca.user_group_id) as user_groups
+                FROM pim_catalog_category category
+                JOIN pimee_security_product_category_access pca ON pca.category_id = category.id
+                WHERE pca.own_items = 1
+                AND $sqlWhere
             )
             SELECT
                 category.id, 
                 category.code, 
                 category.parent_id, 
                 translation.translations,
-                category.value_collection, 
-                permissions.view_items, 
-                permissions.edit_items, 
-                permissions.own_items
+                category.value_collection,
+                JSON_OBJECT(
+                    'view', permissions_view.user_groups, 
+                    'edit', permissions_edit.user_groups, 
+                    'own', permissions_own.user_groups
+                ) as permissions
             FROM pim_catalog_category category
-            JOIN translation ON translation.code = category.code
-            JOIN permissions ON permissions.category_id = category.id
+            LEFT JOIN translation ON translation.code = category.code
+            LEFT JOIN permissions_view ON permissions_view.category_id = category.id
+            LEFT JOIN permissions_edit ON permissions_edit.category_id = category.id
+            LEFT JOIN permissions_own ON permissions_own.category_id = category.id
             WHERE $sqlWhere
         SQL;
 
@@ -86,15 +105,20 @@ class EnterpriseGetCategorySql implements GetCategoryInterface
         return new Category(
             new CategoryId((int)$result['id']),
             new Code($result['code']),
-            LabelCollection::fromArray(json_decode($result['translations'], true)),
+            $result['translations'] ?
+                LabelCollection::fromArray(
+                    json_decode(
+                        $result['translations'],
+                        true,
+                        512,
+                        JSON_THROW_ON_ERROR
+                    )
+                ) : null,
             $result['parent_id'] ? new CategoryId((int)$result['parent_id']) : null,
             $result['value_collection'] ?
                 ValueCollection::fromArray(json_decode($result['value_collection'], true)) : null,
-            PermissionCollection::fromArray([
-                'view_items' => $result['view_items'],
-                'edit_items' => $result['edit_items'],
-                'own_items' => $result['own_items']
-            ])
+            $result['permissions'] ?
+                PermissionCollection::fromArray(json_decode($result['permissions'], true)) : null
         );
     }
 }
