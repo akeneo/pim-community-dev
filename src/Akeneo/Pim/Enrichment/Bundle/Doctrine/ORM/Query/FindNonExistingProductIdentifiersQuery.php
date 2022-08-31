@@ -6,6 +6,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductIdentifiersQueryInterface;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class FindNonExistingProductIdentifiersQuery implements FindNonExistingProductIdentifiersQueryInterface
 {
@@ -33,8 +35,27 @@ SQL;
             ['product_identifiers' => Connection::PARAM_STR_ARRAY]
         )->fetchFirstColumn();
 
-        $nonExistingProductIdentifiers = array_values(array_diff($productIdentifiers, $results));
+        return array_values(array_diff($productIdentifiers, $results));
+    }
 
-        return $nonExistingProductIdentifiers;
+    public function executeByUuid(array $productUuids): array
+    {
+        if (empty($productUuids)) {
+            return [];
+        }
+
+        $productUuidsAsBytes = \array_map(fn (string $uuid): string => Uuid::fromString($uuid)->getBytes(), $productUuids);
+
+        $query = <<<SQL
+        SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE uuid IN (:product_uuids)
+SQL;
+
+        $results = $this->connection->executeQuery(
+            $query,
+            ['product_uuids' => $productUuidsAsBytes],
+            ['product_uuids' => Connection::PARAM_STR_ARRAY]
+        )->fetchFirstColumn();
+
+        return array_values(array_diff($productUuids, $results));
     }
 }

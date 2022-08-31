@@ -133,21 +133,32 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 
     private function validateProductsExist(array $quantifiedLinks, string $propertyPath): void
     {
-        $productIdentifiers = array_map(
-            function ($quantifiedLink) {
-                return $quantifiedLink['identifier'];
-            },
-            $quantifiedLinks
-        );
+        $productIdentifiers = [];
+        $productUuids = [];
+        foreach ($quantifiedLinks as $quantifiedLink) {
+            if (isset($quantifiedLink['identifier'])) {
+                $productIdentifiers[] = $quantifiedLink['identifier'];
+            } else {
+                $productUuids[] = $quantifiedLink['uuid'];
+            }
+        }
 
+        // TODO Rename this service to manage identifiers or uuids
         $nonExistingProductIdentifiers = $this->findNonExistingProductIdentifiersQuery->execute(
             $productIdentifiers
         );
-        if (count($nonExistingProductIdentifiers) > 0) {
+
+        $nonExistingProductUuids = $this->findNonExistingProductIdentifiersQuery->executeByUuid(
+            $productUuids
+        );
+
+        $nonExistingProducts = array_merge($nonExistingProductIdentifiers, $nonExistingProductUuids);
+
+        if (count($nonExistingProducts) > 0) {
             $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::PRODUCTS_DO_NOT_EXIST_MESSAGE,
                 [
-                    '{{ values }}' => implode(', ', $nonExistingProductIdentifiers),
+                    '{{ values }}' => implode(', ', $nonExistingProducts),
                 ]
             )
                 ->atPath($propertyPath)
