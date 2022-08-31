@@ -317,7 +317,8 @@ class QuantifiedAssociationCollection
         $sortByIdentifiers = fn (
             array $quantifiedLinkA,
             array $quantifiedLinkB
-        ): int => $quantifiedLinkA['identifier'] <=> $quantifiedLinkB['identifier'];
+        ): int => ($quantifiedLinkA['identifier'] ?? $quantifiedLinkA['uuid'] ?? '')
+            <=> ($quantifiedLinkB['identifier'] ?? $quantifiedLinkB['uuid'] ?? '');
 
         $normalized = $this->normalize();
         ksort($normalized);
