@@ -19,3 +19,5 @@ akeneo_catalogs:
                     value: 'Completeness value must be between 0 and 100 percent.'
                 attribute_option:
                     unknown: 'At least one selected option does not exists.'
+                category:
+                    value: 'The following categories do not exist anymore: {{ codes }}. Please remove them from the criterion value.'

@@ -7,10 +7,11 @@ declare(strict_types=1);
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace AkeneoTest\Platform\Acceptance\ImportExport;
+namespace AkeneoTest\Platform\Acceptance\ImportExport\UseCases;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageCommand;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageHandler;
+use AkeneoTest\Platform\Acceptance\ImportExport\AcceptanceTestCase;
 use League\Flysystem\Filesystem;
 
 class DownloadFileFromManualStorageTest extends AcceptanceTestCase
