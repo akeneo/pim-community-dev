@@ -6,6 +6,8 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutio
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Connector\LogKey;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -33,18 +35,27 @@ class JobExecutionController
     /** @var NormalizerInterface */
     private $normalizer;
 
+    // @todo pull-up-to-6.0 remove these line
+    /** @var FilesystemInterface|null */
+    private $logFileSystem;
+
     public function __construct(
         TranslatorInterface $translator,
         JobExecutionArchivist $archivist,
         JobExecutionManager $jobExecutionManager,
         JobExecutionRepository $jobExecutionRepo,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        FilesystemInterface $logFilesystem,
+        // @todo pull-up-to-6.0 remove this line
+        ?FilesystemInterface $logFileSystem = null
     ) {
         $this->translator = $translator;
         $this->archivist = $archivist;
         $this->jobExecutionManager = $jobExecutionManager;
         $this->jobExecutionRepo = $jobExecutionRepo;
         $this->normalizer = $normalizer;
+        // @todo pull-up-to-6.0 remove this line
+        $this->logFileSystem = $logFilesystem;
     }
 
     public function getAction($identifier): JsonResponse
@@ -60,8 +71,16 @@ class JobExecutionController
 
         $jobResponse = $this->normalizer->normalize($jobExecution, 'internal_api', $context);
 
+        // @todo pull-up-to-6.0 remove these line
+        if (null === $this->logFileSystem) {
+            $logExists = file_exists($jobExecution->getLogFile());
+        } else {
+            $logExists = !empty($jobExecution->getLogFile()) && $this->logFileSystem->has(new LogKey($jobExecution));
+        }
+
         $jobResponse['meta'] = [
-            'logExists' => file_exists($jobExecution->getLogFile()),
+            // @todo pull-up-to-6.0 remove this line
+            'logExists' => $logExists,
             'archives' => $this->archives($jobExecution),
             'id' => $identifier,
         ];
