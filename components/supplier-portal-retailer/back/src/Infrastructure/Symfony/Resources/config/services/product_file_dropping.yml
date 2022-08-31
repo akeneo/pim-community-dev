@@ -5,6 +5,7 @@ services:
         arguments:
             - '@Akeneo\SupplierPortal\Retailer\Application\ProductFileDropping\DownloadProductFileHandler'
             - '@event_dispatcher'
+            - '@security.token_storage'
 
     Akeneo\SupplierPortal\Retailer\Infrastructure\ProductFileDropping\Controller\AllSupplierFilesList:
         public: true

@@ -12,19 +12,27 @@ use Akeneo\SupplierPortal\Retailer\Domain\ProductFileDropping\Read\Event\Product
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class DownloadProductFile
 {
     public function __construct(
         private DownloadProductFileHandler $downloadProductFileHandler,
         private EventDispatcherInterface $eventDispatcher,
+        private TokenStorageInterface $tokenStorage,
     ) {
     }
 
-    public function __invoke(#[CurrentUser] User $user, string $identifier): Response
+    public function __invoke(string $identifier): Response
     {
+        /** @var ?User $user */
+        $user = $this->tokenStorage->getToken()?->getUser();
+        if (null === $user) {
+            return new JsonResponse(null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         try {
             $productFileNameAndResourceFile = ($this->downloadProductFileHandler)(
                 new DownloadProductFileCommand($identifier)
