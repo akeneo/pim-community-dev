@@ -44,10 +44,7 @@ class FindProductToImport
         }
 
         if (null === $product) {
-            $product = $this->productBuilder->createProduct($productIdentifierCode, $familyCode);
-            if (null !== $uuid) {
-                $product->setUuid(Uuid::fromString($uuid));
-            }
+            $product = $this->productBuilder->createProduct($productIdentifierCode, $familyCode, $uuid);
         }
 
         return $product;
