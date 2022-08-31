@@ -85,7 +85,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
     }
-    
+
     public function testCreateProductWithSameUuid()
     {
         $client = $this->createAuthenticatedClient();
@@ -659,7 +659,6 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'product_associations');
 
         $this->assertEventCount(1, ProductUpdated::class);
-
     }
 
     public function testProductPartialUpdateWithTheAssociationsDeletedOnGroups()
@@ -770,6 +769,48 @@ JSON;
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_associations');
         $this->assertEventCount(1, ProductUpdated::class);
+    }
+
+    /**
+     * @group ce
+     */
+    public function testProductPartialUpdateWithInvalidAssociatedUuids()
+    {
+        $client = $this->createAuthenticatedClient();
+        $uuid1 = $this->createProduct('associatedProduct1', [])->getUuid()->toString();
+
+        $data = <<<JSON
+{
+    "associations": {
+        "PACK": {
+            "groups": ["groupA"],
+            "products": ["{$uuid1}", "invalid_uuid"]
+        },
+        "SUBSTITUTION": {}
+    },
+    "values": {"sku": [{"locale": null, "scope": null, "data": "product_associations" }]}
+}
+JSON;
+
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $this->getProductUuidFromIdentifier('product_associations')->toString()
+        ), [], [], [], $data);
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Property "associations" expects a valid product uuid, "invalid_uuid" given. Check the expected format on the API documentation.',
+            '_links'  => [
+                'documentation' => [
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'
+                ],
+            ],
+        ];
+
+        $response = $client->getResponse();
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+
     }
 
     public function testProductPartialUpdateWithProductDisable()

@@ -92,7 +92,7 @@ class UpdateProductByUuidController
         $isUpdate = true;
         if (null === $product) {
             $isUpdate = false;
-            $product = $this->productBuilder->createProduct(identifier: $data['identifier'] ?? null, uuid: $uuid);
+            $product = $this->productBuilder->createProduct(uuid: $uuid);
         }
 
         $this->validateUuidConsistency($uuid, $data);
@@ -292,6 +292,17 @@ class UpdateProductByUuidController
 
     private function getProductIdentifierFromUuids(array $uuidAsStrings, string $association): array
     {
+        foreach ($uuidAsStrings as $uuid) {
+            if (!Uuid::isValid($uuid)) {
+                $this->throwDocumentedHttpException(
+                    sprintf(
+                        'Property "%s" expects a valid product uuid, "%s" given.',
+                        $association,
+                        $uuid
+                    )
+                );
+            }
+        }
         $uuidsAsBytes = array_map(fn (string $uuid): string => Uuid::fromString($uuid)->getBytes(), $uuidAsStrings);
 
         $result = $this->connection->fetchAllKeyValue(
