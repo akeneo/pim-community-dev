@@ -261,6 +261,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations',
+        'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface',
 
