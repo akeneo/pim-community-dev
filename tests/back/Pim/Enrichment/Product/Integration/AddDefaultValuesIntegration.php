@@ -27,7 +27,8 @@ class AddDefaultValuesIntegration extends TestCase
      */
     public function it_does_not_add_default_values_when_duplicating_a_product()
     {
-        $command = new DuplicateProduct('original', 'duplicated', -1);
+        $originalProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('original');
+        $command = new DuplicateProduct($originalProduct->getUuid(), 'duplicated', -1);
         $this->get('pimee_enrich.product.duplicate_product_handler')->handle($command);
 
         $duplicatedProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('duplicated');
