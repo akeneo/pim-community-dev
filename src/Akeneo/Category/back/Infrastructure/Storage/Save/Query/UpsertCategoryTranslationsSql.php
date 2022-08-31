@@ -48,6 +48,12 @@ class UpsertCategoryTranslationsSql implements UpsertCategoryTranslations
                 ++$loopIndex;
             }
         }
+
+        if (empty($queries)) {
+            // no label changed
+            return;
+        }
+
         $this->connection->executeQuery(
             $queries,
             $params,

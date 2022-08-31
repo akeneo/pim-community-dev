@@ -49,26 +49,11 @@ const saveEditCategoryForm = async (
   category: EnrichCategory,
   options: SaveOptions
 ): Promise<EditCategoryResponse> => {
-  // const params = new URLSearchParams();
-  // params.append(formData._token.fullName, formData._token.value);
-  // for (const [locale, changedLabel] of Object.entries(formData.label)) {
-  //   params.append(formData.label[locale].fullName, changedLabel.value);
-  // }
-  //
-  //
-  // if (formData.permissions) {
-  //   const permissions = formData.permissions;
-  //   if (permissions.apply_on_children.value === '1') {
-  //     params.append(permissions.apply_on_children.fullName, permissions.apply_on_children.value);
-  //   }
-  //   formData.permissions.view.value.map(value => params.append(permissions.view.fullName, value));
-  //   formData.permissions.edit.value.map(value => params.append(permissions.edit.fullName, value));
-  //   formData.permissions.own.value.map(value => params.append(permissions.own.fullName, value));
-  // }
-
   // this is for keeping compatibility at the moment, ideally it should not go into the category data
   // because it is a modality for saving, not a part of a category state
-  const payload = set(['permissions', 'apply_on_children'], options.applyPermissionsOnChildren, category);
+  let payload = set(['permissions', 'apply_on_children'], options.applyPermissionsOnChildren, category);
+
+  payload = set(['attributes', 'attribute_codes'], Object.keys(payload.attributes), payload);
 
   const response = await fetch(router.generate('pim_category_rest_update', {id: category.id}), {
     method: 'POST',
@@ -87,6 +72,9 @@ const saveEditCategoryForm = async (
 
   if (responseContent && response.ok) {
     const category = (responseContent as EditCategoryResponseOK).category;
+    if (category.permissions === null) {
+      category.permissions = {view: [], edit: [], own: []};
+    }
     return {success: true, category};
   }
 

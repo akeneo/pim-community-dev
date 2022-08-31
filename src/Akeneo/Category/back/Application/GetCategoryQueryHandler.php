@@ -42,10 +42,12 @@ class GetCategoryQueryHandler
             'description_87939c45-1d85-4134-9579-d594fff65030_en_US' => [
                 'data' => 'All the shoes you need!',
                 'locale' => 'en_US',
+                'attribute_code' => 'description_87939c45-1d85-4134-9579-d594fff65030'
             ],
             'description_87939c45-1d85-4134-9579-d594fff65030_fr_FR' => [
                 'data' => 'Les chaussures dont vous avez besoin !',
                 'locale' => 'fr_FR',
+                'attribute_code' => 'description_87939c45-1d85-4134-9579-d594fff65030'
             ],
             'banner_8587cda6-58c8-47fa-9278-033e1d8c735c' => [
                 'data' => [
@@ -56,22 +58,27 @@ class GetCategoryQueryHandler
                     'original_filename' => 'shoes.jpg',
                 ],
                 'locale' => null,
+                'attribute_code' => 'banner_8587cda6-58c8-47fa-9278-033e1d8c735c'
             ],
             'seo_meta_title_ebdf744c-17e0-11ed-835e-0b2d6a7798db' => [
                 'data' => 'Shoes at will',
                 'locale' => null,
+                'attribute_code' => 'seo_meta_title_ebdf744c-17e0-11ed-835e-0b2d6a7798db'
             ],
             'seo_meta-description_ef7ace80-17e0-11ed-9ac6-2feec2ba2321_en_US' => [
                 'data' => "At cheapshoes we have tons of shoes for everyone\nYou dream of a shoe, we have it.",
                 'locale' => 'en_US',
+                'attribute_code' => 'seo_meta-description_ef7ace80-17e0-11ed-9ac6-2feec2ba2321'
             ], // no fr_FR
             'seo_keywords_54f6725a-17e1-11ed-a002-73412755f3bd_en_US' => [
                 'data' => 'Shoes Slippers Sneakers',
                 'locale' => 'en_US',
+                'attribute_code' => 'seo_keywords_54f6725a-17e1-11ed-a002-73412755f3bd'
             ],
             'seo_keywords_54f6725a-17e1-11ed-a002-73412755f3bd_fr_FR' => [
                 'data' => 'Chaussures Tongues Espadrilles',
                 'locale' => 'fr_FR',
+                'attribute_code' => 'seo_keywords_54f6725a-17e1-11ed-a002-73412755f3bd'
             ],
         ];
 

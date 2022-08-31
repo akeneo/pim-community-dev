@@ -61,9 +61,9 @@ class Category
         $this->labelCollection->setLabel($localeCode, $label);
     }
 
-    public function setValueCollection(ValueCollection $values): void
+    public function setValueCollection(ValueCollection $attributes): void
     {
-        $this->valueCollection = $values;
+        $this->attributes = $attributes;
     }
 
     /**

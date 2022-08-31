@@ -1,11 +1,3 @@
-pim_category_rest_get:
-  path: /rest/{id}
-  requirements: {'id': '\d+'}
-  defaults:
-    _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController
-    _feature: enriched_category
-  methods: [GET]
-
 pim_category_rest_update:
   path: /rest/{id}
   requirements: {'id': '\d+'}
@@ -13,3 +5,11 @@ pim_category_rest_update:
     _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateCategoryController
     _feature: enriched_category
   methods: [POST]
+
+pim_category_rest_get:
+  path: /rest/{id}
+  requirements: {'id': '\d+'}
+  defaults:
+    _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController
+    _feature: enriched_category
+  methods: [GET]

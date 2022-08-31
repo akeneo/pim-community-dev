@@ -1,9 +1,12 @@
 import {useCallback, useContext, useEffect, useState} from 'react';
-import {saveEditCategoryForm} from '../infrastructure';
+import {set, cloneDeep} from 'lodash/fp';
 import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
+
+import {saveEditCategoryForm} from '../infrastructure';
 import {useCategory} from './useCategory';
 import {EditCategoryContext} from '../components';
 import {
+  buildCompositionKey,
   categoriesAreEqual,
   CategoryAttribute,
   CategoryAttributeValueData,
@@ -11,7 +14,6 @@ import {
   EnrichCategory,
 } from '../models';
 import {alterPermissionsConsistently} from '../helpers';
-import {set, cloneDeep} from 'lodash/fp';
 
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
@@ -83,7 +85,7 @@ const useEditCategoryForm = (categoryId: number) => {
         return;
       }
 
-      setCategoryEdited(set(['labels', localeCode], label, categoryEdited));
+      setCategoryEdited(set(['properties', 'labels', localeCode], label, categoryEdited));
     },
     [categoryEdited]
   );
@@ -107,21 +109,16 @@ const useEditCategoryForm = (categoryId: number) => {
       return;
     }
 
-    const {code, uuid} = attribute;
-
-    const funnyKeyComponents = [code, uuid];
-    if (localeCode) {
-      funnyKeyComponents.push(localeCode);
-    }
-
-    const funnyKey = funnyKeyComponents.join('_');
+    const compositeKey = buildCompositionKey(attribute, localeCode);
+    const compositeKeyWithoutLocale = buildCompositionKey(attribute);
 
     const value = {
       data: attributeValue,
       locale: localeCode,
+      attribute_code: compositeKeyWithoutLocale,
     };
 
-    setCategoryEdited(set(['attributes', funnyKey], value, categoryEdited));
+    setCategoryEdited(set(['attributes', compositeKey], value, categoryEdited));
   };
 
   return {

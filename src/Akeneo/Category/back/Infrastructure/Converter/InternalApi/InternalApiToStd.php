@@ -93,8 +93,8 @@ class InternalApiToStd implements ConverterInterface
      */
     private function checkProperties(array $properties): void
     {
-        $this->fieldsChecker->checkFieldsExist(['code', 'labels'], $properties);
-        $this->fieldsChecker->checkFieldsNotEmpty(['code'], $properties);
+        $this->fieldsChecker->checkFieldsExist($properties, ['code', 'labels']);
+        $this->fieldsChecker->checkFieldsNotEmpty($properties, ['code']);
     }
 
     /**

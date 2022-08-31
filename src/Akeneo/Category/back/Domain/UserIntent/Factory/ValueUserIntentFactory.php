@@ -12,7 +12,7 @@ use Akeneo\Category\Domain\Query\GetAttribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
-use Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStd;
+use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalAPIToStd;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**

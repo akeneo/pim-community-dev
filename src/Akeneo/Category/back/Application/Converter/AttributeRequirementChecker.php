@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Converter;
 
-use Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStd;
+use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalAPIToStd;
 use Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException;
 use Webmozart\Assert\Assert;
 
@@ -25,7 +25,7 @@ class AttributeRequirementChecker
         $keys = array_keys($attributeValues);
 
         foreach ($expectedKeys as $expectedKey) {
-            $pattern = '/^'.$expectedKey.'(\w+)/i';
+            $pattern = '/^'.$expectedKey.'(\w*)/i';
             if (empty(preg_grep($pattern, $keys))) {
                 throw new StructureArrayConversionException(sprintf('Field "%s" is expected, provided fields are "%s"', $expectedKey, implode(', ', $keys)));
             }

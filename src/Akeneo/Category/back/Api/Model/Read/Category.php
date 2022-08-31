@@ -18,7 +18,7 @@ class Category
     /**
      * @param array<string, string> $labels
      * @param int|null $parentId
-     * @param array<string, array<string, mixed>> $values
+     * @param array<string, array<string, mixed>>|null $values
      * @param array<string, array<int>>|null $permissions
      */
     private function __construct(
@@ -26,7 +26,7 @@ class Category
         private string $code,
         private array $labels,
         private ?int $parentId,
-        private array $values,
+        private ?array $values,
         private ?array $permissions,
     ) {
     }
@@ -38,7 +38,7 @@ class Category
             code: (string) $category->getCode(),
             labels: $category->getLabelCollection()->normalize(),
             parentId: $category->getParentId()?->getValue(),
-            values: $category->getValueCollection()->normalize(),
+            values: $category->getValueCollection()?->normalize(),
             permissions: $category->getPermissionCollection()?->normalize(),
         );
     }
@@ -67,9 +67,9 @@ class Category
     }
 
     /**
-     * @return array<string, array<string, mixed>>
+     * @return array<string, array<string, mixed>> | null
      */
-    public function getValues(): array
+    public function getValues(): ?array
     {
         return $this->values;
     }
@@ -85,9 +85,8 @@ class Category
     /**
      * @return array{
      *     id: int,
-     *     code: string,
      *     parent: int|null,
-     *     labels: array<string, string>,
+     *     properties: array{code: string, labels: array<string, string>},
      *     attributes: array<string, array<string, mixed>>,
      *     permissions: array<string, array<int>>|null
      * }
@@ -96,9 +95,11 @@ class Category
     {
         return [
             'id' => $this->getId(),
-            'code' => $this->getCode(),
             'parent' => $this->getParentId(),
-            'labels' => $this->getLabels(),
+            'properties'=> [
+                'code' => $this->getCode(),
+                'labels' => $this->getLabels(),
+            ],
             'attributes' => $this->getValues(),
             'permissions' => $this->getPermissions(),
         ];

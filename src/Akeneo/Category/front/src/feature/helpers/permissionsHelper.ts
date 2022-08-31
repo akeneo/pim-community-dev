@@ -64,8 +64,6 @@ export function alterPermissionsConsistently(
       consistentPermissions.view = ensureSuperset(permissions['view'], consistentPermissions.edit);
       break;
   }
-  // console.log('------');
-  // console.log(permissions);
-  // console.log(consistentPermissions);
+
   return consistentPermissions;
 }

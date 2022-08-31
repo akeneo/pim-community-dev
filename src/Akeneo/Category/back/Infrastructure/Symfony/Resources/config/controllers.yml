@@ -36,7 +36,7 @@ services:
             - '@Akeneo\Category\Application\Filter\CategoryEditACLFilter'
             - '@Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface'
             - '@Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter'
-            - '@Akeneo\Category\Application\Query\FindCategoryByIdentifier'
+            - '@Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController:
         public: true

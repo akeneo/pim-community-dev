@@ -8,16 +8,20 @@ import {set} from 'lodash/fp';
 
 const aCategory: EnrichCategory = {
   id: 6,
-  code: 'clothes',
-  labels: {fr_FR: 'V\u00eatements', en_US: 'Clothes', de_DE: 'Kleidung'},
+  properties: {
+    code: 'clothes',
+    labels: {fr_FR: 'V\u00eatements', en_US: 'Clothes', de_DE: 'Kleidung'},
+  },
   attributes: {
     'description_87939c45-1d85-4134-9579-d594fff65030_en_US': {
       data: 'All the shoes you need!',
       locale: 'en_US',
+      attribute_code: 'description_87939c45-1d85-4134-9579-d594fff65030',
     },
     'description_87939c45-1d85-4134-9579-d594fff65030_fr_FR': {
       data: 'Les chaussures dont vous avez besoin !',
       locale: 'fr_FR',
+      attribute_code: 'description_87939c45-1d85-4134-9579-d594fff65030',
     },
     'banner_8587cda6-58c8-47fa-9278-033e1d8c735c': {
       data: {
@@ -28,22 +32,27 @@ const aCategory: EnrichCategory = {
         original_filename: 'shoes.jpg',
       },
       locale: null,
+      attribute_code: 'banner_8587cda6-58c8-47fa-9278-033e1d8c735c',
     },
     'seo_meta_title_ebdf744c-17e0-11ed-835e-0b2d6a7798db': {
       data: 'Shoes at will',
       locale: null,
+      attribute_code: 'seo_meta_title_ebdf744c-17e0-11ed-835e-0b2d6a7798db',
     },
     'seo_meta-description_ef7ace80-17e0-11ed-9ac6-2feec2ba2321_en_US': {
       data: 'At cheapshoes we have tons of shoes for everyone\nYou dream of a shoe, we have it.',
       locale: 'en_US',
+      attribute_code: 'seo_meta-description_ef7ace80-17e0-11ed-9ac6-2feec2ba2321',
     },
     'seo_keywords_54f6725a-17e1-11ed-a002-73412755f3bd_en_US': {
       data: 'Shoes Slippers Sneakers',
       locale: 'en_US',
+      attribute_code: 'seo_keywords_54f6725a-17e1-11ed-a002-73412755f3bd',
     },
     'seo_keywords_54f6725a-17e1-11ed-a002-73412755f3bd_fr_FR': {
       data: 'Chaussures Tongues Espadrilles',
       locale: 'fr_FR',
+      attribute_code: 'seo_keywords_54f6725a-17e1-11ed-a002-73412755f3bd',
     },
   },
   permissions: {view: [1, 2, 3], edit: [1, 2], own: [1]},
@@ -96,10 +105,10 @@ describe('useEditCategoryForm', () => {
     });
 
     expect(result.current.isModified).toBe(true);
-    expect(result.current.category).toStrictEqual(set(['labels', 'en_US'], 'Foo', aCategory));
+    expect(result.current.category).toStrictEqual(set(['properties', 'labels', 'en_US'], 'Foo', aCategory));
 
     act(() => {
-      result.current.onChangeCategoryLabel('en_US', aCategory.labels.en_US);
+      result.current.onChangeCategoryLabel('en_US', aCategory.properties.labels.en_US);
     });
 
     expect(result.current.isModified).toBe(false);
@@ -255,7 +264,7 @@ describe('useEditCategoryForm', () => {
       errors: {},
     });
 
-    const modifiedCategory: EnrichCategory = set(['labels', 'en_US'], 'Foo', aCategory);
+    const modifiedCategory: EnrichCategory = set(['properties', 'labels', 'en_US'], 'Foo', aCategory);
 
     const {result} = renderUseEditCategoryForm(42);
 

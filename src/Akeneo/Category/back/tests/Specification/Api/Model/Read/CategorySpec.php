@@ -33,9 +33,11 @@ class CategorySpec extends ObjectBehavior
 
         $expectedNormalizedCategory = [
             'id' => 1,
-            'code' => 'code',
             'parent' => 2,
-            'labels' => ['fr_FR' => 'Vêtements'],
+            'properties' => [
+                'code' => 'code',
+                'labels' => ['fr_FR' => 'Vêtements'],
+            ],
             'attributes' => [
                 'description_87939c45-1d85-4134-9579-d594fff65030_en_US' => [
                     'data' => 'All the shoes you need!',
@@ -47,9 +49,9 @@ class CategorySpec extends ObjectBehavior
                 ]
             ],
             'permissions' => [
-                'view' => [1],
+                'view' => [1, 2, 3],
                 'edit' => [1, 2],
-                'own' => [1, 2, 3],
+                'own' => [1],
             ],
         ];
         $this->normalize()->shouldReturn($expectedNormalizedCategory);
@@ -62,7 +64,7 @@ class CategorySpec extends ObjectBehavior
             code: new Code('code'),
             labelCollection: LabelCollection::fromArray(['fr_FR' => 'Vêtements']),
             parentId: new CategoryId(2),
-            valueCollection: ValueCollection::fromArray([
+            attributes: ValueCollection::fromArray([
                 'description_87939c45-1d85-4134-9579-d594fff65030_en_US' => [
                     'data' => 'All the shoes you need!',
                     'locale' => 'en_US',
@@ -72,10 +74,10 @@ class CategorySpec extends ObjectBehavior
                     'locale' => 'fr_FR',
                 ]
             ]),
-            permissionCollection: PermissionCollection::fromArray([
-                'view' => [1],
+            permissions: PermissionCollection::fromArray([
+                'view' => [1, 2, 3],
                 'edit' => [1, 2],
-                'own' => [1, 2, 3],
+                'own' => [1],
             ]),
         );
     }

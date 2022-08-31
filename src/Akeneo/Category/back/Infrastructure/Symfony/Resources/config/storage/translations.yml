@@ -6,7 +6,7 @@ services:
         arguments:
             - '@Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations'
             - [
-                pim.category.api.user_intent.set_label.class,
+                '%pim.category.api.user_intent.set_label.class%'
             ]
         tags:
             - { name: 'pim.category.save.category_saver' }

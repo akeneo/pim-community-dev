@@ -31,7 +31,7 @@ class SetTextAreaApplierSpec extends ObjectBehavior
             . ValueCollection::SEPARATOR . 'uuid' .
             ValueCollection::SEPARATOR . 'locale_code';
 
-        $valueCollection = ValueCollection::fromArray(
+        $attributes = ValueCollection::fromArray(
             [
                 $valueKey => [
                     'data' => 'value',
@@ -45,7 +45,7 @@ class SetTextAreaApplierSpec extends ObjectBehavior
             id: new CategoryId(1),
             code: new Code('code'),
             labelCollection: LabelCollection::fromArray([]),
-            valueCollection: $valueCollection
+            attributes: $attributes
         );
 
         $userIntent = new SetTextArea(
@@ -55,7 +55,7 @@ class SetTextAreaApplierSpec extends ObjectBehavior
             'updated_value'
         );
 
-        $expectedValueCollection = ValueCollection::fromArray(
+        $expectedAttributes = ValueCollection::fromArray(
             [
                 $valueKey => [
                     'data' => 'updated_value',
@@ -69,7 +69,7 @@ class SetTextAreaApplierSpec extends ObjectBehavior
             id: new CategoryId(1),
             code: new Code('code'),
             labelCollection: LabelCollection::fromArray([]),
-            valueCollection: $expectedValueCollection
+            attributes: $expectedAttributes
         );
 
         $this->apply($userIntent, $category);

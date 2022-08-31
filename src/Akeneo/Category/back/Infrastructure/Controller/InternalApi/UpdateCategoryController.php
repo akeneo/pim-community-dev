@@ -7,12 +7,14 @@ namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Api\Command\UpsertCategoryCommand;
+use Akeneo\Category\Api\Model\Read\Category as ReadCategory;
 use Akeneo\Category\Application\Converter\ConverterInterface;
 use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface;
 use Akeneo\Category\Application\Filter\CategoryEditACLFilter;
 use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
 use Akeneo\Category\Application\Query\FindCategoryByIdentifier;
-use Akeneo\Category\Infrastructure\Converter\InternalAPI\InternalAPIToStd;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalAPIToStd;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +37,7 @@ class UpdateCategoryController
         private CategoryEditACLFilter $ACLFilter,
         private StandardFormatToUserIntentsInterface $standardFormatToUserIntents,
         private CategoryEditUserIntentFilter $categoryUserIntentFilter,
-        private FindCategoryByIdentifier $findCategoryByIdentifier,
+        private GetCategoryInterface $getCategory,
     ) {
     }
 
@@ -45,7 +47,7 @@ class UpdateCategoryController
             throw new AccessDeniedException();
         }
 
-        $category = ($this->findCategoryByIdentifier)($id);
+        $category = $this->getCategory->byId($id);
         if ($category === null) {
             throw new NotFoundHttpException('Category not found');
         }
@@ -92,11 +94,13 @@ class UpdateCategoryController
                 Response::HTTP_BAD_REQUEST
             );
         }
-        $category = ($this->findCategoryByIdentifier)($id);
+        $category = $this->getCategory->byId($id);
         if ($category === null) {
             throw new NotFoundHttpException('Category not found');
         }
-        $normalizedCategory = $category->normalize();
+        $readCategory = ReadCategory::fromDomain($category);
+
+        $normalizedCategory = $readCategory->normalize();
 
         // return new JsonResponse(
         //     [

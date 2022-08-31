@@ -1,6 +1,7 @@
+import {isEqual, sortBy} from 'lodash';
 import {LabelCollection, LocaleCode} from '@akeneo-pim-community/shared';
 import {TreeNode} from './Tree';
-import {isEqual, sortBy} from 'lodash';
+import {CompositeKey, CompositeKeyWithoutLocale} from './CompositeKey';
 
 export type Category = {
   id: number;
@@ -11,10 +12,14 @@ export type Category = {
 
 export type EnrichCategory = {
   id: number;
-  code: string;
-  labels: LabelCollection;
+  properties: CategoryProperties;
   attributes: CategoryAttributes;
   permissions: CategoryPermissions;
+};
+
+export type CategoryProperties = {
+  code: string;
+  labels: LabelCollection;
 };
 
 export type CategoryPermissions = {
@@ -24,12 +29,13 @@ export type CategoryPermissions = {
 };
 
 interface CategoryAttributes {
-  [funnyKey: string]: CategoryAttributeValueWrapper;
+  [key: CompositeKey]: CategoryAttributeValueWrapper;
 }
 
 export interface CategoryAttributeValueWrapper {
   data: CategoryAttributeValueData;
   locale: LocaleCode | null;
+  attribute_code: CompositeKeyWithoutLocale;
 }
 
 type CategoryTextAttributeValueData = string;
@@ -141,11 +147,14 @@ function attributesAreEqual(a1: CategoryAttributes, a2: CategoryAttributes): boo
   return isEqual(a1, a2);
 }
 
+function propertiesAreEqual(p1: CategoryProperties, p2: CategoryProperties): boolean {
+  return p1.code === p2.code && labelsAreEqual(p1.labels, p2.labels);
+}
+
 function categoriesAreEqual(c1: EnrichCategory, c2: EnrichCategory): boolean {
   return (
     c1.id === c2.id &&
-    c1.code === c2.code &&
-    labelsAreEqual(c1.labels, c2.labels) &&
+    propertiesAreEqual(c1.properties, c2.properties) &&
     permissionsAreEqual(c1.permissions, c2.permissions) &&
     attributesAreEqual(c1.attributes, c2.attributes)
   );

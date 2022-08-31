@@ -48,8 +48,12 @@ const EditPropertiesForm = ({category, onChangeLabel}: Props) => {
     return <span>'Could not load information about languages, please reload the page'</span>;
   }
 
+  const {
+    properties: {code: categoryCode, labels: categoryLabels},
+  } = category;
+
   // we consider the PIM activated locales as well as the locales already present in the labels
-  const localeCodes = new Set([...Object.keys(locales), ...Object.keys(category.labels)]);
+  const localeCodes = new Set([...Object.keys(locales), ...Object.keys(categoryLabels)]);
 
   // sorting locale code by their display names
   const sortedLocaleCodes = [...localeCodes.values()];
@@ -61,7 +65,7 @@ const EditPropertiesForm = ({category, onChangeLabel}: Props) => {
 
   const labelsFields: ReactNode[] = sortedLocaleCodes.map(function (localeCode) {
     const localeName = findLocaleName(localeCode);
-    const value = category.labels[localeCode] || '';
+    const value = categoryLabels[localeCode] || '';
 
     return (
       <Field label={localeName} key={localeCode}>
@@ -88,7 +92,7 @@ const EditPropertiesForm = ({category, onChangeLabel}: Props) => {
         <SectionTitle.Title>{translate('pim_common.code')}</SectionTitle.Title>
       </SectionTitle>
       <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
-        <TextInput name="code" readOnly={true} value={category.code} />
+        <TextInput name="code" readOnly={true} value={categoryCode} />
       </Field>
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_common.label')}</SectionTitle.Title>

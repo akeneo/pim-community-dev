@@ -48,6 +48,10 @@ const EditPermissionsForm = ({
       id: 3,
       label: 'Furniture manager',
     },
+    {
+      id:7,
+      label: 'All'
+    }
   ]);
 
   const handleChangePermissions = useCallback(

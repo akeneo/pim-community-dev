@@ -117,7 +117,7 @@ const CategoryEditPage: FC = () => {
     const catalogLocale = userContext.get('catalogLocale');
     // TODO: https://akeneo.atlassian.net/browse/GRF-237
     // const rootCategory = category.root ? category.root : category;
-    const rootCategory = {
+    const rootCategory: Category = {
       id: 1,
       code: 'master',
       labels: {
@@ -126,7 +126,7 @@ const CategoryEditPage: FC = () => {
       root: null,
     };
 
-    setCategoryLabel(getLabel(category.labels, catalogLocale, category.code));
+    setCategoryLabel(getLabel(category.properties.labels, catalogLocale, category.properties.code));
     setTreeLabel(getLabel(rootCategory.labels, catalogLocale, rootCategory.code));
     setTree(rootCategory);
     sessionStorage.setItem(
@@ -189,10 +189,13 @@ const CategoryEditPage: FC = () => {
                       onClick={() => {
                         countProductsBeforeDeleteCategory((nbProducts: number) => {
                           const identifier = parseInt(categoryId);
-                          if (category && isCategoryDeletionPossible(category.labels[uiLocale], nbProducts)) {
+                          if (
+                            category &&
+                            isCategoryDeletionPossible(category.properties.labels[uiLocale], nbProducts)
+                          ) {
                             setCategoryToDelete({
                               identifier,
-                              label: category.labels[uiLocale],
+                              label: category.properties.labels[uiLocale],
                               onDelete: followCategoryTree,
                             });
                             openDeleteCategoryModal();
