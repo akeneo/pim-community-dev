@@ -37,11 +37,7 @@ class CsvInvalidItemWriter extends AbstractInvalidItemWriter
      */
     protected function getInputFileIterator(JobParameters $jobParameters): FileIteratorInterface
     {
-        // TODO RAB-907: Remove this condition
-        $filePath = $jobParameters->has('storage') && isset($jobParameters->get('storage')['file_path'])
-            ? $jobParameters->get('storage')['file_path']
-            : $jobParameters->get('filePath');
-
+        $filePath = $jobParameters->get('storage')['file_path'];
         $delimiter = $jobParameters->get('delimiter');
         $enclosure = $jobParameters->get('enclosure');
         $fileIterator = $this->fileIteratorFactory->create($filePath, [

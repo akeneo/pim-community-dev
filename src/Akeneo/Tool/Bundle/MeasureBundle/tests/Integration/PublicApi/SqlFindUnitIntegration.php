@@ -6,8 +6,8 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Integration\PublicApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\SqlFindUnit;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Unit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\SqlFindUnit;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\Unit;
 
 final class SqlFindUnitIntegration extends TestCase
 {
@@ -50,6 +50,6 @@ final class SqlFindUnitIntegration extends TestCase
 
     private function getQuery(): SqlFindUnit
     {
-        return $this->get('akeneo_measurement.public_api.find_unit');
+        return $this->get('akeneo_measurement.service_api.find_unit');
     }
 }

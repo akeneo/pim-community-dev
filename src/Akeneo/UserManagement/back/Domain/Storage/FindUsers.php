@@ -19,10 +19,17 @@ interface FindUsers
 {
     public const DEFAULT_LIMIT = 25;
 
-    /** @return User[] */
+    /**
+     * @param int[]|null $includeIds
+     * @param int[]|null $includeGroupIds
+     *
+     * @return User[]
+     */
     public function __invoke(
         ?string $search = null,
         ?int $searchAfterId = null,
+        ?array $includeIds = null,
+        ?array $includeGroupIds = null,
         int $limit = self::DEFAULT_LIMIT,
     ): array;
 }

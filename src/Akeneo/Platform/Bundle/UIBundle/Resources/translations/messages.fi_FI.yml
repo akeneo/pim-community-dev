@@ -158,7 +158,7 @@ pim_enrich:
     group_type:
       index: Listaa ryhmätyypit
       create: Luo ryhmätyyppi
-      edit: Editoi ryhmätyyppiä
+      edit: Muokkaa ryhmätyyppiä
       remove: Poista ryhmätyyppi
     association_type:
       index: Listaa tuoteliitostyypit

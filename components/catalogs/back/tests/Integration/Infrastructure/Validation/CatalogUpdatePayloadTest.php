@@ -46,7 +46,17 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'value' => 80,
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
-                ]
+                ],
+                [
+                    'field' => 'categories',
+                    'operator' => 'IN',
+                    'value' => ['master'],
+                ],
+                [
+                    'field' => 'categories',
+                    'operator' => 'UNCLASSIFIED',
+                    'value' => [],
+                ],
             ],
         ], new CatalogUpdatePayload());
 
@@ -81,6 +91,7 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
      * @dataProvider invalidEnabledCriterionDataProvider
      * @dataProvider invalidFamilyCriterionDataProvider
      * @dataProvider invalidCompletenessCriterionDataProvider
+     * @dataProvider invalidCategoryCriterionDataProvider
      */
     public function testItReturnsViolationsWhenProductSelectionCriterionIsInvalid(
         array $criterion,
@@ -214,6 +225,60 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
                     'locale' => 'kz_KZ',
                 ],
                 'expectedMessage' => 'This locale is disabled for this channel. Please check your channel settings or remove this criterion.',
+            ],
+        ];
+    }
+
+    public function invalidCategoryCriterionDataProvider(): array
+    {
+        return [
+            'category field with invalid operator' => [
+                'criterion' => [
+                    'field' => 'categories',
+                    'operator' => '>',
+                    'value' => ['master'],
+                ],
+                'expectedMessage' => 'The value you selected is not a valid choice.',
+            ],
+            'category field with invalid value' => [
+                'criterion' => [
+                    'field' => 'categories',
+                    'operator' => 'IN',
+                    'value' => 123,
+                ],
+                'expectedMessage' => 'This value should be of type array.',
+            ],
+            'category field with non empty value while operator is unclassified' => [
+                'criterion' => [
+                    'field' => 'categories',
+                    'operator' => 'UNCLASSIFIED',
+                    'value' => ['master'],
+                ],
+                'expectedMessage' => 'This value must be empty.',
+            ],
+            'category field requires non empty value ' => [
+                'criterion' => [
+                    'field' => 'categories',
+                    'operator' => 'IN CHILDREN',
+                    'value' => [],
+                ],
+                'expectedMessage' => 'This value must not be empty.',
+            ],
+            'category field value contains an item with bad value type' => [
+                'criterion' => [
+                    'field' => 'categories',
+                    'operator' => 'IN',
+                    'value' => ['master', 432],
+                ],
+                'expectedMessage' => 'This value should be of type string.',
+            ],
+            'category field value contains an item with unknown category code' => [
+                'criterion' => [
+                    'field' => 'categories',
+                    'operator' => 'IN',
+                    'value' => ['unknown_code_1', 'master', 'unknown_code_2'],
+                ],
+                'expectedMessage' => 'The following categories do not exist anymore: unknown_code_1, unknown_code_2. Please remove them from the criterion value.',
             ],
         ];
     }
