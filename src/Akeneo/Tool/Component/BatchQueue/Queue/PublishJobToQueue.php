@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class PublishJobToQueue
 {
@@ -53,33 +53,10 @@ class PublishJobToQueue
         array $config,
         bool $noLog = false,
         ?string $username = null,
-        ?string $email = null,
+        ?array $emails = [],
     ): void {
-        /** @var JobInstance $jobInstance */
-        $jobInstance = $this->jobRepository
-            ->getJobManager()
-            ->getRepository(JobInstance::class)
-            ->findOneBy(['code' => $jobInstanceCode]);
-
-        if (null === $jobInstance) {
-            throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $jobInstanceCode));
-        }
-
-        $options = ['env' => $this->kernelEnv];
-
-        if (null !== $email) {
-            $errors = $this->validator->validate($email, new Assert\Email());
-            if (count($errors) > 0) {
-                throw new \RuntimeException(
-                    sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
-                );
-            }
-            $options['email'] = $email;
-        }
-
-        if (true === $noLog) {
-            $options['no-log'] = true;
-        }
+        $jobInstance = $this->getJobInstance($jobInstanceCode);
+        $options = $this->getOptions($noLog, $emails);
 
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $jobParameters = $this->createJobParameters($job, $jobInstance, $config);
@@ -88,7 +65,7 @@ class PublishJobToQueue
 
         $jobExecution = $this->jobRepository->createJobExecution($job, $jobInstance, $jobParameters);
 
-        $this->batchLogHandler->setSubDirectory((string)$jobExecution->getId());
+        $this->batchLogHandler->setSubDirectory((string) $jobExecution->getId());
 
         if (null !== $username) {
             $jobExecution->setUser($username);
@@ -104,6 +81,46 @@ class PublishJobToQueue
         $this->jobExecutionQueue->publish($jobExecutionMessage);
 
         $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_CREATED, $jobExecution);
+    }
+
+    private function getJobInstance(string $jobInstanceCode): JobInstance
+    {
+        $jobInstance = $this->jobRepository
+            ->getJobManager()
+            ->getRepository(JobInstance::class)
+            ->findOneBy(['code' => $jobInstanceCode]);
+
+        if (null === $jobInstance) {
+            throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $jobInstanceCode));
+        }
+
+        return $jobInstance;
+    }
+
+    private function getOptions(bool $noLog, array $emails): array
+    {
+        if (0 < count($emails)) {
+            $errors = $this->validator->validate(
+                $emails,
+                new Assert\All([new Assert\Email()]),
+            );
+
+            if (0 < count($errors)) {
+                throw new \RuntimeException(
+                    sprintf(
+                        'Emails "%s" are invalid: %s',
+                        join(', ', $emails),
+                        $this->getErrorMessages($errors),
+                    )
+                );
+            }
+        }
+
+        return [
+            'env' => $this->kernelEnv,
+            'email' => $emails,
+            'no-log' => $noLog,
+        ];
     }
 
     private function createJobParameters(JobInterface $job, JobInstance $jobInstance, array $config): JobParameters

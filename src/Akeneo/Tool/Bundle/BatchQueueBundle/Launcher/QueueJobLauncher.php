@@ -68,7 +68,7 @@ class QueueJobLauncher implements JobLauncherInterface
     {
         $options = ['env' => $this->environment];
         if (isset($configuration['send_email']) && $user && method_exists($user, 'getEmail')) {
-            $options['email'] = $user->getEmail();
+            $options['email'] = [$user->getEmail()];
             unset($configuration['send_email']);
         }
 
