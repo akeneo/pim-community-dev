@@ -94,8 +94,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'red']),
                 $templateUuid
-            )
-            //Todo : Add test for AttributeText
+            ),
         ]);
 
         $getAttribute->byIdentifiers($data['attribute_codes'])
