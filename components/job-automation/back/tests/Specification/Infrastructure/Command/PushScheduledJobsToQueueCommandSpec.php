@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Platform\JobAutomation\Infrastructure\Command;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\JobAutomation\Application\GetDueJobInstances\GetDueJobInstancesHandler;
+use Akeneo\Platform\JobAutomation\Application\NotifyUsers\NotifyUsersInvalidJobInstanceHandler;
 use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler;
 use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 use Akeneo\Tool\Component\BatchQueue\Exception\InvalidJobException;
@@ -28,13 +29,15 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
         PublishJobToQueue $publishJobToQueue,
         ValidatorInterface $validator,
         EventDispatcherInterface $eventDispatcher,
+        NotifyUsersInvalidJobInstanceHandler $emailNotifyUsersHandler,
     ): void {
         $this->beConstructedWith($jobAutomationFeatureFlag,
             $getDueJobInstancesHandler,
             $refreshScheduledJobInstancesHandler,
             $publishJobToQueue,
             $validator,
-            $eventDispatcher
+            $eventDispatcher,
+            $emailNotifyUsersHandler
         );
     }
 
@@ -128,6 +131,8 @@ class PushScheduledJobsToQueueCommandSpec extends ObjectBehavior
             $code,
             'dummy',
             'import',
+            [],
+            [],
             [],
             true,
             '* * * * *',

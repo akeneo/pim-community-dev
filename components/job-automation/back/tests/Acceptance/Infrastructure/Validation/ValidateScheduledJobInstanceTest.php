@@ -52,6 +52,8 @@ class ValidateScheduledJobInstanceTest extends AbstractValidationTest
                         ],
                         'delimiter' => ';',
                     ],
+                    'notified_users' => [],
+                    'notified_user_groups' => [],
                 ],
             ],
             'valid scheduled import job instance with storage' => [
@@ -64,6 +66,8 @@ class ValidateScheduledJobInstanceTest extends AbstractValidationTest
                             'file_path' => 'a_path.xlsx'
                         ],
                     ],
+                    'notified_users' => [],
+                    'notified_user_groups' => [],
                 ],
             ],
         ];
@@ -81,6 +85,8 @@ class ValidateScheduledJobInstanceTest extends AbstractValidationTest
                             'type' => 'none'
                         ],
                     ],
+                    'notified_users' => [],
+                    'notified_user_groups' => [],
                 ],
                 'akeneo.job_automation.validation.scheduled_should_be_enabled',
                 '',
@@ -94,6 +100,8 @@ class ValidateScheduledJobInstanceTest extends AbstractValidationTest
                             'type' => 'none'
                         ],
                     ],
+                    'notified_users' => [],
+                    'notified_user_groups' => [],
                 ],
                 'akeneo.job_automation.validation.import_should_have_storage',
                 '',
@@ -107,6 +115,8 @@ class ValidateScheduledJobInstanceTest extends AbstractValidationTest
             'my_job',
             $normalizedScheduledJobInstance['type'],
             $normalizedScheduledJobInstance['raw_parameters'],
+            $normalizedScheduledJobInstance['notified_users'],
+            $normalizedScheduledJobInstance['notified_user_groups'],
             $normalizedScheduledJobInstance['scheduled'],
             '* * * * *',
             new \DateTimeImmutable(),

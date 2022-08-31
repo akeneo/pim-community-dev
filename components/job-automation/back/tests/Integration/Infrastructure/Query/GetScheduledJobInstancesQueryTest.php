@@ -27,6 +27,8 @@ class GetScheduledJobInstancesQueryTest extends IntegrationTestCase
                 'a_product_import',
                 'import',
                 ['storage' => ['type' => 'local', 'file_path' => 'test.xlsx']],
+                [],
+                [],
                 true,
                 '* * 0 0 0',
                 new \DateTimeImmutable('2022-08-10T10:00:00+00:00'),
@@ -38,6 +40,8 @@ class GetScheduledJobInstancesQueryTest extends IntegrationTestCase
                 'another_product_import',
                 'import',
                 ['storage' => ['type' => 'local', 'file_path' => 'test.xlsx']],
+                [],
+                [],
                 true,
                 '* * 0 0 0',
                 new \DateTimeImmutable('2022-08-10T10:00:00+00:00'),
@@ -60,7 +64,9 @@ class GetScheduledJobInstancesQueryTest extends IntegrationTestCase
             'automation' => [
                 'cron_expression' => '* * 0 0 0',
                 'last_execution_date' => null,
-                'setup_date' => '2022-08-10T10:00:00+00:00'
+                'setup_date' => '2022-08-10T10:00:00+00:00',
+                'notification_users' => [],
+                'notification_user_groups' => [],
             ],
             'raw_parameters' => ['storage' => ['type' => 'local', 'file_path' => 'test.xlsx']]
         ]);
@@ -74,7 +80,9 @@ class GetScheduledJobInstancesQueryTest extends IntegrationTestCase
             'automation' => [
                 'cron_expression' => '* * 0 0 0',
                 'last_execution_date' => '2022-08-10T10:00:00+00:00',
-                'setup_date' => '2022-08-10T10:00:00+00:00'
+                'setup_date' => '2022-08-10T10:00:00+00:00',
+                'notification_users' => [],
+                'notification_user_groups' => [],
             ],
             'raw_parameters' => ['storage' => ['type' => 'local', 'file_path' => 'test.xlsx']]
         ]);

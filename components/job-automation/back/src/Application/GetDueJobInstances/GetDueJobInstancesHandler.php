@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\JobAutomation\Application\GetDueJobInstances;
 
 use Akeneo\Platform\JobAutomation\Domain\FilterDueJobInstances;
+use Akeneo\Platform\JobAutomation\Domain\Model\ScheduledJobInstance;
 
 class GetDueJobInstancesHandler
 {
@@ -23,6 +24,9 @@ class GetDueJobInstancesHandler
     ) {
     }
 
+    /**
+     * @return ScheduledJobInstance[]
+     */
     public function handle(): array
     {
         $scheduledJobs = $this->getScheduledJobs->all();

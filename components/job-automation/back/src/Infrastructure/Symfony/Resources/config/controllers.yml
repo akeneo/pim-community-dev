@@ -18,4 +18,4 @@ services:
     class: Akeneo\Platform\JobAutomation\Infrastructure\Controller\GetUsersAction
     public: true
     arguments:
-      - '@Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface'
+      - '@akeneo.job_automation.infrastructure.public_api.list_users_handler'

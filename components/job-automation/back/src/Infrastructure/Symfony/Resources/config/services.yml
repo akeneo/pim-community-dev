@@ -46,3 +46,10 @@ services:
 
     Akeneo\Platform\JobAutomation\Domain\ClockInterface:
         class: Akeneo\Platform\JobAutomation\Infrastructure\Clock\SystemClock
+
+    Akeneo\Platform\JobAutomation\Infrastructure\Email\MailNotifier:
+        arguments:
+            - '@pim_notification.email.email_notifier'
+
+    akeneo.job_automation.infrastructure.public_api.list_users_handler:
+        alias: Akeneo\UserManagement\ServiceApi\User\ListUsersHandlerInterface

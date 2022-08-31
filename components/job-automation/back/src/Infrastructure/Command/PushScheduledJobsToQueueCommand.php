@@ -15,6 +15,8 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\Command;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Platform\JobAutomation\Application\GetDueJobInstances\GetDueJobInstancesHandler;
+use Akeneo\Platform\JobAutomation\Application\NotifyUsers\NotifyUsersInvalidJobInstanceCommand;
+use Akeneo\Platform\JobAutomation\Application\NotifyUsers\NotifyUsersInvalidJobInstanceHandler;
 use Akeneo\Platform\JobAutomation\Application\UpdateScheduledJobInstanceLastExecution\UpdateScheduledJobInstanceLastExecutionHandler;
 use Akeneo\Platform\JobAutomation\Infrastructure\EventSubscriber\RefreshScheduledJobInstanceAfterJobPublished;
 use Akeneo\Platform\JobAutomation\Infrastructure\Validation\ScheduledJobInstance as ScheduledJobInstanceConstraint;
@@ -37,6 +39,7 @@ final class PushScheduledJobsToQueueCommand extends Command
         private PublishJobToQueue $publishJobToQueue,
         private ValidatorInterface $validator,
         private EventDispatcherInterface $eventDispatcher,
+        private NotifyUsersInvalidJobInstanceHandler $emailNotifyUsersHandler,
     ) {
         parent::__construct();
     }
@@ -66,8 +69,16 @@ final class PushScheduledJobsToQueueCommand extends Command
                     ],
                     username: $dueJobInstance->runningUsername,
                 );
-            } catch (InvalidJobException|\Exception) {
-                // TODO RAB-929 Handle invalid job notifications before a job is launched
+            } catch (InvalidJobException|\Exception $exception) {
+                $command = new NotifyUsersInvalidJobInstanceCommand(
+                    $exception->getMessage(),
+                    $dueJobInstance,
+                    $dueJobInstance->notifiedUserGroups,
+                    $dueJobInstance->notifiedUsers,
+                );
+
+                $this->emailNotifyUsersHandler->handle($command);
+
                 continue;
             }
         }

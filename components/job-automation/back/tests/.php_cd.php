@@ -41,6 +41,7 @@ $rules = [
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
             'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure',
+            'Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifierInterface',
             'Akeneo\Platform\JobAutomation\Domain',
             'Akeneo\Platform\JobAutomation\Application',
             'Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\Automation',

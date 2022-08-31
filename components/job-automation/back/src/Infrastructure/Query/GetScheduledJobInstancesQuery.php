@@ -51,6 +51,8 @@ SQL;
                     $result['job_name'],
                     $result['type'],
                     $rawParameters,
+                    $automation['notification_users'],
+                    $automation['notification_user_groups'],
                     $isScheduled,
                     $automation['cron_expression'],
                     $setupDate,

@@ -20,6 +20,8 @@ final class ScheduledJobInstance
         public string $jobName,
         public string $type,
         public array $rawParameters,
+        public array $notifiedUsers,
+        public array $notifiedUserGroups,
         public bool $isScheduled,
         public string $cronExpression,
         public \DateTimeImmutable $setupDate,

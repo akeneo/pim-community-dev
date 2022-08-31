@@ -1,9 +1,13 @@
 services:
-  akeneo.job_automation.query.get_user_groups:
-    class: Akeneo\Platform\JobAutomation\Infrastructure\Query\GetUserGroupsQuery
+  akeneo.job_automation.query.find_users_by_id:
+    class: Akeneo\Platform\JobAutomation\Infrastructure\Query\FindUsersByIdQuery
+    arguments:
+      - '@akeneo.job_automation.infrastructure.public_api.list_users_handler'
 
-  akeneo.job_automation.query.get_users:
-    class: Akeneo\Platform\JobAutomation\Infrastructure\Query\GetUsersQuery
+  akeneo.job_automation.query.find_users_by_usergroup_id:
+    class: Akeneo\Platform\JobAutomation\Infrastructure\Query\FindUsersByUserGroupIdQuery
+    arguments:
+      - '@akeneo.job_automation.infrastructure.public_api.list_users_handler'
 
   akeneo.job_automation.query.get_scheduled_job_instances:
     class: Akeneo\Platform\JobAutomation\Infrastructure\Query\GetScheduledJobInstancesQuery
