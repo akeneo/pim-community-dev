@@ -9,9 +9,9 @@ use Akeneo\Category\Api\Command\UpsertCategoryCommand;
 use Akeneo\Category\Api\Event\CategoryCreatedEvent;
 use Akeneo\Category\Api\Event\CategoryUpdatedEvent;
 use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
-use Akeneo\Category\Application\Query\FindCategoryByCode;
 use Akeneo\Category\Application\Storage\Save\CategorySaverProcessor;
 use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -26,7 +26,7 @@ class UpsertCategoryCommandHandler
 {
     public function __construct(
         private ValidatorInterface $validator,
-        private FindCategoryByCode $findCategoryByCode,
+        private GetCategoryInterface $getCategory,
         private UserIntentApplierRegistry $applierRegistry,
         private EventDispatcherInterface $eventDispatcher,
         private CategorySaverProcessor $saver,
@@ -40,7 +40,7 @@ class UpsertCategoryCommandHandler
     {
         $this->validateCommand($command);
 
-        $category = ($this->findCategoryByCode)($command->categoryCode());
+        $category = $this->getCategory->byCode($command->categoryCode());
 
         $isCreation = null === $category;
         if ($isCreation) {
