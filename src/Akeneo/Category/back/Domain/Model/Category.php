@@ -19,7 +19,7 @@ class Category
     public function __construct(
         private ?CategoryId $id,
         private Code $code,
-        private LabelCollection $labelCollection,
+        private ?LabelCollection $labelCollection = null,
         private ?CategoryId $parentId = null,
         private ?ValueCollection $valueCollection = null,
         private ?PermissionCollection $permissionCollection = null,
@@ -36,7 +36,7 @@ class Category
         return $this->code;
     }
 
-    public function getLabelCollection(): LabelCollection
+    public function getLabelCollection(): ?LabelCollection
     {
         return $this->labelCollection;
     }
@@ -71,7 +71,7 @@ class Category
      *     id: int,
      *     code: string,
      *     parent: int|null,
-     *     labels: array<string, string>,
+     *     labels: array<string, string>|null,
      *     values: array<string, array<string, mixed>>,
      *     permissions: array<string, array<int>>|null
      * }
@@ -81,10 +81,10 @@ class Category
         return [
             'id' => $this->getId()?->getValue(),
             'code' => (string) $this->getCode(),
-            'labels' => $this->getLabelCollection()->normalize(),
+            'labels' => $this->getLabelCollection()?->normalize(),
             'parent' => $this->getParentId()?->getValue(),
-            'values' => $this->getValueCollection()->normalize(),
-            'permissions' => $this->getPermissionCollection()->normalize(),
+            'values' => $this->getValueCollection()?->normalize(),
+            'permissions' => $this->getPermissionCollection()?->normalize(),
         ];
     }
 }
