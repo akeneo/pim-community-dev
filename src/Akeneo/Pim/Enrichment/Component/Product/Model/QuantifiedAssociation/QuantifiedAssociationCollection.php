@@ -96,7 +96,7 @@ class QuantifiedAssociationCollection
                         $productAssociation['quantity']
                     );
                     $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
-                } else if (isset($productAssociation['uuid'])) {
+                } elseif (isset($productAssociation['uuid'])) {
                     // TODO Should we check that the product with this uuid exists?
                     $quantifiedLink = QuantifiedLink::fromUuid(
                         $productAssociation['uuid'],
@@ -111,7 +111,7 @@ class QuantifiedAssociationCollection
                 Assert::keyExists($productModelAssociation, 'quantity');
 
                 if ($mappedProductModelIds->hasIdentifier($productModelAssociation['id'])) {
-                    $quantifiedLink = new QuantifiedLink(
+                    $quantifiedLink = QuantifiedLink::fromIdentifier(
                         $mappedProductModelIds->getIdentifier($productModelAssociation['id']),
                         $productModelAssociation['quantity']
                     );

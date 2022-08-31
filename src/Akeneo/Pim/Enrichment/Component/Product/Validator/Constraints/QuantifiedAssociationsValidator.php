@@ -3,8 +3,8 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductModelCodesQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductsQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations as QuantifiedAssociationsConstraint;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -26,23 +26,11 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
     const MIN_QUANTITY = 1;
     const MAX_QUANTITY = 2147483647;
 
-    /** @var AssociationTypeRepositoryInterface */
-    private $associationTypeRepository;
-
-    /** @var FindNonExistingProductIdentifiersQueryInterface */
-    private $findNonExistingProductIdentifiersQuery;
-
-    /** @var FindNonExistingProductModelCodesQueryInterface */
-    private $findNonExistingProductModelCodesQuery;
-
     public function __construct(
-        AssociationTypeRepositoryInterface $associationTypeRepository,
-        FindNonExistingProductIdentifiersQueryInterface $findNonExistingProductIdentifiersQuery,
-        FindNonExistingProductModelCodesQueryInterface $findNonExistingProductModelCodesQuery
+        private AssociationTypeRepositoryInterface $associationTypeRepository,
+        private FindNonExistingProductsQueryInterface $findNonExistingProductsQuery,
+        private FindNonExistingProductModelCodesQueryInterface $findNonExistingProductModelCodesQuery
     ) {
-        $this->associationTypeRepository = $associationTypeRepository;
-        $this->findNonExistingProductIdentifiersQuery = $findNonExistingProductIdentifiersQuery;
-        $this->findNonExistingProductModelCodesQuery = $findNonExistingProductModelCodesQuery;
     }
 
     public function validate($value, Constraint $constraint)
@@ -143,12 +131,11 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             }
         }
 
-        // TODO Rename this service to manage identifiers or uuids
-        $nonExistingProductIdentifiers = $this->findNonExistingProductIdentifiersQuery->execute(
+        $nonExistingProductIdentifiers = $this->findNonExistingProductsQuery->byProductIdentifiers(
             $productIdentifiers
         );
 
-        $nonExistingProductUuids = $this->findNonExistingProductIdentifiersQuery->executeByUuid(
+        $nonExistingProductUuids = $this->findNonExistingProductsQuery->byProductUuids(
             $productUuids
         );
 

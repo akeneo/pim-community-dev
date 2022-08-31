@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductIdentifiersQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductsQueryInterface;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
-class FindNonExistingProductIdentifiersQuery implements FindNonExistingProductIdentifiersQueryInterface
+class FindNonExistingProductsQuery implements FindNonExistingProductsQueryInterface
 {
     /** @var Connection */
     private $connection;
@@ -19,7 +18,7 @@ class FindNonExistingProductIdentifiersQuery implements FindNonExistingProductId
         $this->connection = $connection;
     }
 
-    public function execute(array $productIdentifiers): array
+    public function byProductIdentifiers(array $productIdentifiers): array
     {
         if (empty($productIdentifiers)) {
             return [];
@@ -38,7 +37,7 @@ SQL;
         return array_values(array_diff($productIdentifiers, $results));
     }
 
-    public function executeByUuid(array $productUuids): array
+    public function byProductUuids(array $productUuids): array
     {
         if (empty($productUuids)) {
             return [];

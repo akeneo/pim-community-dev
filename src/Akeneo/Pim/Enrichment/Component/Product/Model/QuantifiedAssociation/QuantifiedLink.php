@@ -19,12 +19,9 @@ class QuantifiedLink
     private const IDENTIFIER_KEY = 'identifier';
     private const UUID_KEY = 'uuid';
 
-    /**
-     * @deprecated TODO Set this construct private
-     */
-    public function __construct(
+    private function __construct(
+        private int $quantity,
         private ?string $identifier = null,
-        private ?int $quantity = null,
         private ?UuidInterface $uuid = null,
     ) {
     }
@@ -33,7 +30,7 @@ class QuantifiedLink
     {
         Assert::stringNotEmpty($identifier);
 
-        return new self($identifier, $quantity);
+        return new self($quantity, $identifier, null);
     }
 
     public static function fromUuid(string $uuid, int $quantity)
@@ -43,7 +40,7 @@ class QuantifiedLink
             sprintf('The associated product "%s" is not a valid uuid', $uuid)
         );
 
-        return new self(null, $quantity, Uuid::fromString($uuid));
+        return new self($quantity, null, Uuid::fromString($uuid));
     }
 
     public function identifier(): ?string
