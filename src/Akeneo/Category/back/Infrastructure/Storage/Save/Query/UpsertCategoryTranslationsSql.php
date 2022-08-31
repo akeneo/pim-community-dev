@@ -48,6 +48,7 @@ class UpsertCategoryTranslationsSql implements UpsertCategoryTranslations
                 ++$loopIndex;
             }
         }
+
         $this->connection->executeQuery(
             $queries,
             $params,
@@ -67,13 +68,12 @@ SQL;
 
     private function isIdenticalLabel(Category $category, string $localeCode, string $label): bool
     {
-        $existingLabels = $this->getCategory
-            ->byCode((string) $category->getCode())
-            ?->getLabelCollection()->getLabels();
+        $existingLabels = $this->getCategory->byCode((string) $category->getCode())?->getLabelCollection()?->getLabels();
 
-        if (\array_key_exists($localeCode, $existingLabels)) {
-            return ($existingLabels[$localeCode] === $label);
+        if ($existingLabels === null || !array_key_exists($localeCode, $existingLabels)) {
+            return false;
         }
-        return false;
+
+        return $existingLabels[$localeCode] === $label;
     }
 }

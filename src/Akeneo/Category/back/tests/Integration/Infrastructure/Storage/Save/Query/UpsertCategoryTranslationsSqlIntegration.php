@@ -12,7 +12,6 @@ namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Save\Query;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryTranslationsSql;
 use Akeneo\Test\Integration\Configuration;
 
 class UpsertCategoryTranslationsSqlIntegration extends CategoryTestCase
