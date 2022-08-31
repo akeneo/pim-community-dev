@@ -15,31 +15,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class GetMeasurementsFamilyMeasurementsActionTest extends TestCase
 {
     private ?GetMeasurementsFamilyMeasurementsAction $getMeasurementsFamilyMeasurementsAction;
-    private ?GetMeasurementsFamilyQueryInterface $getMeasurementsFamilyQuery;
 
     protected function setUp(): void
     {
-        $this->getMeasurementsFamilyQuery = $this->createMock(GetMeasurementsFamilyQueryInterface::class);
+        $getMeasurementsFamilyQuery = $this->createMock(GetMeasurementsFamilyQueryInterface::class);
         $this->getMeasurementsFamilyMeasurementsAction = new GetMeasurementsFamilyMeasurementsAction(
-            $this->getMeasurementsFamilyQuery
-        );
-    }
-
-    public function testItCallsTheSearchQueryWhenCodesIsEmpty(): void
-    {
-        $this->getMeasurementsFamilyQuery->expects($this->once())
-            ->method('execute')
-            ->with('Weight', 'en_US')
-            ->willReturn(['units' => []]);
-
-        ($this->getMeasurementsFamilyMeasurementsAction)(
-            new Request(
-                query: [],
-                server: [
-                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                ],
-            ),
-            'Weight'
+            $getMeasurementsFamilyQuery
         );
     }
 
@@ -66,21 +47,6 @@ class GetMeasurementsFamilyMeasurementsActionTest extends TestCase
                 ],
             ),
             'code'
-        );
-    }
-
-    public function testItThrowsANotFoundHttpException(): void
-    {
-        $this->expectException(NotFoundHttpException::class);
-
-        ($this->getMeasurementsFamilyMeasurementsAction)(
-            new Request(
-                query: [],
-                server: [
-                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                ],
-            ),
-            'not_existing_code'
         );
     }
 }

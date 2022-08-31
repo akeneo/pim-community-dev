@@ -39,8 +39,8 @@ class AttributeCriterionContainsValidMeasurementValidatorTest extends Constraint
             ->willReturn([
                 'code' => 'Weight',
                 'units' => [
-                    ["code" => "MICROGRAM", "label" => "Microgram"],
-                    ["code" => "MILLIGRAM", "label" => "Milligram"],
+                    ['code' => 'MICROGRAM', 'label' => 'Microgram'],
+                    ['code' => 'MILLIGRAM', 'label' => 'Milligram'],
                 ]
             ]);
 
@@ -64,8 +64,8 @@ class AttributeCriterionContainsValidMeasurementValidatorTest extends Constraint
             ->willReturn([
                 'code' => 'Weight',
                 'units' => [
-                    ["code" => "MICROGRAM", "label" => "Microgram"],
-                    ["code" => "MILLIGRAM", "label" => "Milligram"],
+                    ['code' => 'MICROGRAM', 'label' => 'Microgram'],
+                    ['code' => 'MILLIGRAM', 'label' => 'Milligram'],
                 ]
             ]);
 
