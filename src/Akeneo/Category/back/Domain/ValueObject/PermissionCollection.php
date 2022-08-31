@@ -39,9 +39,7 @@ final class PermissionCollection
         return $this->permissions['own'];
     }
 
-    /**
-     * @return array<string, array<int>>|null
-     */
+    /** @return array<string, array<int>>|null */
     public function normalize(): ?array
     {
         return $this->permissions;

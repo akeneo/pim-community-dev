@@ -10,6 +10,14 @@ namespace Akeneo\Category\ServiceApi;
  */
 class Category
 {
+    /**
+     * @param int $id
+     * @param string $code
+     * @param array<string, string> $labels
+     * @param int|null $parent
+     * @param array<string, array<string, mixed>>|null $values
+     * @param array<string, array<int>>|null $permissions
+     */
     public function __construct(
         private int $id,
         private string $code,
@@ -30,6 +38,7 @@ class Category
         return $this->code;
     }
 
+    /** @return array<string, string> */
     public function getLabels(): array
     {
         return $this->labels;
@@ -40,11 +49,13 @@ class Category
         return $this->parent;
     }
 
+    /** @return array<string, array<string, mixed>>|null */
     public function getValues(): ?array
     {
         return $this->values;
     }
 
+    /** @return array<string, array<int>>|null */
     public function getPermissions(): ?array
     {
         return $this->permissions;
