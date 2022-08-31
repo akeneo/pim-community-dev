@@ -153,10 +153,11 @@ SQL;
             'code' => 'ties',
         ]);
 
-        $this->category = $this->createCategory([
+        $this->createCategory([
             'code' => 'hats',
             'labels' => []
         ]);
+
         $tiesCategory = $this->get(GetCategoryInterface::class)->byCode('ties');
         $this->assertInstanceOf(Category::class, $tiesCategory);
         $this->assertEmpty($tiesCategory->getLabelCollection()->getLabels());
