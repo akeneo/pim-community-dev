@@ -36,13 +36,12 @@ class QuantifiedLinkSpec extends ObjectBehavior
         $this->identifier()->shouldReturn($entityWithAssociationIdentifier);
     }
 
-    // TODO This test is failing
-    function tit_throws_if_the_identifier_is_empty()
+    function it_throws_if_the_identifier_is_empty()
     {
         $emptyIdentifier = '';
 
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('fromIdentifier', [$emptyIdentifier, 1]);
+        $this->beConstructedThrough('fromIdentifier', [$emptyIdentifier, 1]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
     function it_is_created_with_a_uuid()
