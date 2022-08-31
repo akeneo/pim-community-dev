@@ -17,9 +17,9 @@ use Akeneo\UserManagement\ServiceApi\User\DeleteUserCommand;
 use Akeneo\UserManagement\ServiceApi\User\DeleteUserHandlerInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
-class DeleteUserHandlerIntegration  extends TestCase
+class DeleteUserHandlerIntegration extends TestCase
 {
-    public function testItDeleteAUser()
+    public function testItDeleteAUser(): void
     {
         $username = 'a_user';
 
@@ -29,7 +29,7 @@ class DeleteUserHandlerIntegration  extends TestCase
         $this->assertUserDoesNotExist($username);
     }
 
-    public function testItThrowsAnExceptionUserDoesNotExist()
+    public function testItThrowsAnExceptionUserDoesNotExist(): void
     {
         $this->expectException(UserNotFoundException::class);
         $this->deleteUser('another_user');
@@ -38,7 +38,7 @@ class DeleteUserHandlerIntegration  extends TestCase
     private function deleteUser(string $username): void
     {
         $this->getHandler()->handle(
-            DeleteUserCommand::delete($username)
+            new DeleteUserCommand($username)
         );
     }
 

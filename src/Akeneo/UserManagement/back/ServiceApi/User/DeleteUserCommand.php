@@ -11,16 +11,8 @@ namespace Akeneo\UserManagement\ServiceApi\User;
 
 final class DeleteUserCommand
 {
-    private function __construct(
+    public function __construct(
         public string $username,
     ) {
-    }
-
-    public static function delete(
-        string $username,
-    ): self {
-        return new self(
-            $username,
-        );
     }
 }
