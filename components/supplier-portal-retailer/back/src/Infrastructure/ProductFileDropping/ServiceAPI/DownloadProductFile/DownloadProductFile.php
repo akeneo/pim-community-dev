@@ -18,7 +18,7 @@ final class DownloadProductFile
     ) {
     }
 
-    public function __invoke(DownloadProductFileQuery $downloadProductFileQuery)
+    public function __invoke(DownloadProductFileQuery $downloadProductFileQuery): ProductFile
     {
         try {
             $supplierFileNameAndResourceFile = ($this->downloadProductFileHandler)(

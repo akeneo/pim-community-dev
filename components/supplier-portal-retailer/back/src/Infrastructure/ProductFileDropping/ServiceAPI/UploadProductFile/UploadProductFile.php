@@ -16,7 +16,7 @@ final class UploadProductFile
     {
     }
 
-    public function __invoke(UploadProductFileCommand $uploadProductFileCommand)
+    public function __invoke(UploadProductFileCommand $uploadProductFileCommand): void
     {
         try {
             ($this->createProductFileHandler)(
