@@ -13,3 +13,8 @@ services:
         class: 'Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\DummyAutomationValidator'
         tags:
             - { name: validator.constraint_validator, alias: akeneo_job_instance_automation_validator }
+
+    akeneo_batch.validator.job_instance.scheduling:
+        class: 'Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\DummySchedulingValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: akeneo_job_instance_scheduling_validator }

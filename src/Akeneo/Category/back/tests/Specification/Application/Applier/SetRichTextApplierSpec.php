@@ -20,12 +20,12 @@ use PHPUnit\Framework\Assert;
  */
 class SetRichTextApplierSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    function it_is_initializable(): void
     {
         $this->shouldHaveType(SetRichTextApplier::class);
     }
 
-    function it_updates_category_value_collection()
+    function it_updates_category_value_collection(): void
     {
         $valueKey = 'attribute_code'
             . ValueCollection::SEPARATOR . 'uuid' .
