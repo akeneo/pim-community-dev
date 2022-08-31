@@ -35,8 +35,6 @@ interface ProductInterface extends
 {
     public function getUuid(): UuidInterface;
 
-    public function setUuid(UuidInterface $uuid): void;
-
     /**
      * @param string|null $identifierValue
      *
