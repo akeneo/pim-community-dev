@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssociations;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductModelCodesQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingFromProductIdentifiersQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -21,7 +20,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 final class ComputeEntitySubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        protected GetIdMappingFromProductIdentifiersQueryInterface $getIdMappingFromProductIdentifiers,
         protected GetUuidMappingFromProductIdentifiersQueryInterface $getUuidMappingFromProductIdentifiers,
         protected GetIdMappingFromProductModelCodesQueryInterface $getIdMappingFromProductModelCodes
     ) {
@@ -48,14 +46,13 @@ final class ComputeEntitySubscriber implements EventSubscriberInterface
         }
 
         $productIdentifiers = $subject->getQuantifiedAssociationsProductIdentifiers();
+        $productUuids = $subject->getQuantifiedAssociationsProductUuids();
         $productModelCodes = $subject->getQuantifiedAssociationsProductModelCodes();
 
-        $mappedProductIdentifiers = $this->getIdMappingFromProductIdentifiers->execute($productIdentifiers);
-        $uuidMappedProductIdentifiers = $this->getUuidMappingFromProductIdentifiers->execute($productIdentifiers);
+        $uuidMappedProductIdentifiers = $this->getUuidMappingFromProductIdentifiers->execute($productIdentifiers, $productUuids);
         $mappedProductModelCodes = $this->getIdMappingFromProductModelCodes->execute($productModelCodes);
 
         $subject->updateRawQuantifiedAssociations(
-            $mappedProductIdentifiers,
             $uuidMappedProductIdentifiers,
             $mappedProductModelCodes
         );

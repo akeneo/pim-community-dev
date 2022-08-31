@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation;
 
-use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -128,14 +127,27 @@ class QuantifiedAssociationCollection
     public function getQuantifiedAssociationsProductIdentifiers(): array
     {
         $result = [];
-        foreach ($this->quantifiedAssociations as $associationType => $associations) {
+        foreach ($this->quantifiedAssociations as $associations) {
             /** @var QuantifiedLink $quantifiedLink */
             foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
                 $result[] = $quantifiedLink->identifier();
             }
         }
 
-        return array_unique($result);
+        return array_unique(array_filter($result));
+    }
+
+    public function getQuantifiedAssociationsProductUuids(): array
+    {
+        $result = [];
+        foreach ($this->quantifiedAssociations as $associations) {
+            /** @var QuantifiedLink $quantifiedLink */
+            foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
+                $result[] = $quantifiedLink->uuid();
+            }
+        }
+
+        return array_unique(array_filter($result));
     }
 
     public function getQuantifiedAssociationsProductModelCodes(): array
@@ -175,13 +187,11 @@ class QuantifiedAssociationCollection
     }
 
     /**
-     * @param IdMapping $mappedProductIdentifiers
      * @param UuidMapping $uuidMappedProductIdentifiers
      * @param IdMapping $mappedProductModelIdentifiers
      * @return array
      */
     public function normalizeWithMapping(
-        IdMapping $mappedProductIdentifiers,
         UuidMapping $uuidMappedProductIdentifiers,
         IdMapping $mappedProductModelIdentifiers
     ) {
@@ -196,14 +206,20 @@ class QuantifiedAssociationCollection
             /** @var QuantifiedLink $quantifiedLink */
             foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
                 if (null !== $quantifiedLink->uuid()) {
+                    // The link is done by uuid
                     $normalizedQuantifiedLink = $quantifiedLink->normalize();
-                    $result[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $normalizedQuantifiedLink;
+                    $result[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = [
+                        'id' => $uuidMappedProductIdentifiers->getIdFromUuid($normalizedQuantifiedLink['uuid']),
+                        'uuid' => $normalizedQuantifiedLink['uuid'],
+                        'quantity' => $normalizedQuantifiedLink['quantity'],
+                    ];
                 } else {
+                    // The link is done by identifier
                     $normalizedQuantifiedLink = $quantifiedLink->normalize();
                     if ($uuidMappedProductIdentifiers->hasUuid($normalizedQuantifiedLink['identifier'])) {
-                        $uuid = $uuidMappedProductIdentifiers->getUuid($normalizedQuantifiedLink['identifier']);
+                        $uuid = $uuidMappedProductIdentifiers->getUuidFromIdentifier($normalizedQuantifiedLink['identifier']);
                         $result[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = [
-                            'id' => $mappedProductIdentifiers->getId($normalizedQuantifiedLink['identifier']),
+                            'id' => $uuidMappedProductIdentifiers->getIdFromIdentifier($normalizedQuantifiedLink['identifier']),
                             'uuid' => $uuid->toString(),
                             'quantity' => $normalizedQuantifiedLink['quantity']
                         ];

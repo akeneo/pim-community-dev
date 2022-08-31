@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\UuidMapping;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Provides uuid mapping from product identifiers
@@ -16,8 +17,9 @@ interface GetUuidMappingFromProductIdentifiersQueryInterface
 {
     /**
      * @param string[] $productIdentifiers
+     * @param UuidInterface[] $productUuids
      *
      * @return UuidMapping
      */
-    public function execute(array $productIdentifiers): UuidMapping;
+    public function execute(array $productIdentifiers, array $productUuids): UuidMapping;
 }

@@ -147,6 +147,18 @@ trait EntityWithQuantifiedAssociationTrait
     /**
      * @inheritDoc
      */
+    public function getQuantifiedAssociationsProductUuids(): array
+    {
+        if (null === $this->quantifiedAssociationCollection) {
+            return [];
+        }
+
+        return $this->quantifiedAssociationCollection->getQuantifiedAssociationsProductUuids();
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getQuantifiedAssociationsProductModelCodes(): array
     {
         if (null === $this->quantifiedAssociationCollection) {
@@ -160,7 +172,6 @@ trait EntityWithQuantifiedAssociationTrait
      * @inheritDoc
      */
     public function updateRawQuantifiedAssociations(
-        IdMapping $mappedProductIdentifiers,
         UuidMapping $uuidMappedProductIdentifiers,
         IdMapping $mappedProductModelIdentifiers
     ): void {
@@ -169,7 +180,6 @@ trait EntityWithQuantifiedAssociationTrait
         }
 
         $normalized = $this->quantifiedAssociationCollection->normalizeWithMapping(
-            $mappedProductIdentifiers,
             $uuidMappedProductIdentifiers,
             $mappedProductModelIdentifiers
         );

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\UuidMapping;
-use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingFromProductIdentifiersQueryInterface;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -20,24 +19,25 @@ class GetUuidMappingFromProductIdentifiersQuery implements GetUuidMappingFromPro
     {
     }
 
-    public function execute(array $productIdentifiers): UuidMapping
+    public function execute(array $productIdentifiers, array $productUuids): UuidMapping
     {
-        if (empty($productIdentifiers)) {
+        if (empty($productIdentifiers) && empty($productUuids)) {
             return UuidMapping::createFromMapping([]);
         }
 
         $query = <<<SQL
-            SELECT BIN_TO_UUID(uuid) as uuid, identifier
+            SELECT BIN_TO_UUID(uuid) as uuid, id, identifier
             FROM pim_catalog_product
-            WHERE identifier IN (:product_identifiers)
-            AND uuid IS NOT NULL
+            WHERE identifier IN (:product_identifiers) OR uuid IN (:product_uuids)
         SQL;
 
-        $mapping = array_column($this->connection->executeQuery(
+        $productUuidsAsBytes = \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
+
+        $mapping = $this->connection->executeQuery(
             $query,
-            ['product_identifiers' => $productIdentifiers],
-            ['product_identifiers' => Connection::PARAM_STR_ARRAY]
-        )->fetchAllAssociative(), 'identifier', 'uuid');
+            ['product_identifiers' => $productIdentifiers, 'product_uuids' => $productUuidsAsBytes],
+            ['product_identifiers' => Connection::PARAM_STR_ARRAY, 'product_uuids' => Connection::PARAM_STR_ARRAY]
+        )->fetchAllAssociative();
 
         return UuidMapping::createFromMapping($mapping);
     }

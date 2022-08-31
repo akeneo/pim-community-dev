@@ -15,21 +15,34 @@ use Webmozart\Assert\Assert;
 final class UuidMapping
 {
     /** @var array<string, string> */
-    private array $uuidsToIdentifiers;
+    private array $uuidsToIdentifiers = [];
 
     /** @var array<string, string> */
-    private array $identifiersToUuids;
+    private array $identifiersToUuids = [];
+
+    /** @var array<string, int> */
+    private array $identifiersToIds = [];
+
+    /** @var array<string, int> */
+    private array $uuidsToIds = [];
 
     private function __construct(array $mapping)
     {
-        foreach ($mapping as $uuid => $identifier) {
-            Assert::string($uuid);
-            Assert::true(Uuid::isValid($uuid), sprintf('Invalid uuid "%s"', $uuid));
-            Assert::stringNotEmpty($identifier);
-        }
+        foreach ($mapping as $line) {
+            Assert::stringNotEmpty($line['uuid']);
+            Assert::string($line['identifier']);
+            Assert::numeric($line['id']);
+            Assert::notNull($line['id']);
+            Assert::true(Uuid::isValid($line['uuid']), sprintf('Invalid uuid "%s"', $line['uuid']));
 
-        $this->uuidsToIdentifiers = $mapping;
-        $this->identifiersToUuids = array_map(fn (string $uuidAsStr): UuidInterface => Uuid::fromString($uuidAsStr), array_flip($mapping));
+            $this->uuidsToIdentifiers[$line['uuid']] = $line['identifier'];
+            $this->uuidsToIds[$line['uuid']] = $line['id'];
+
+            if (null !== $line['identifier']) {
+                $this->identifiersToUuids[$line['identifier']] = Uuid::fromString($line['uuid']);
+                $this->identifiersToIds[$line['identifier']] = $line['id'];
+            }
+        }
     }
 
     public static function createFromMapping(array $mapping): self
@@ -37,7 +50,7 @@ final class UuidMapping
         return new self($mapping);
     }
 
-    public function getUuid(string $identifier): UuidInterface
+    public function getUuidFromIdentifier(string $identifier): UuidInterface
     {
         Assert::keyExists($this->identifiersToUuids, $identifier);
 
@@ -59,5 +72,15 @@ final class UuidMapping
     public function hasIdentifier(UuidInterface $uuid): bool
     {
         return isset($this->uuidsToIdentifiers[$uuid->toString()]);
+    }
+
+    public function getIdFromIdentifier(string $identifier): int
+    {
+        return $this->identifiersToIds[$identifier];
+    }
+
+    public function getIdFromUuid(string $uuid): int
+    {
+        return $this->uuidsToIds[$uuid];
     }
 }

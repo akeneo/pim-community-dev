@@ -38,7 +38,7 @@ class GetUuidMappingFromProductIdentifiersQueryIntegration extends TestCase
 
         $expectedUuid = $this->getProductUuid($productIdentifier);
         Assert::assertTrue($idMapping->hasUuid($productIdentifier));
-        $actualUuid = $idMapping->getUuid($productIdentifier);
+        $actualUuid = $idMapping->getUuidFromIdentifier($productIdentifier);
 
         self::assertEquals($expectedUuid->toString(), $actualUuid->toString());
     }

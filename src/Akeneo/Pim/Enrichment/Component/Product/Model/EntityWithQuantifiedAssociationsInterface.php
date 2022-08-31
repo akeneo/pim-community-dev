@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\UuidMapping;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Interface to implement for any entity that should be aware of any quantified associations it is holding.
@@ -70,6 +71,13 @@ interface EntityWithQuantifiedAssociationsInterface
     public function getQuantifiedAssociationsProductIdentifiers(): array;
 
     /**
+     * Get all associated product uuids
+     *
+     * @return UuidInterface[]
+     */
+    public function getQuantifiedAssociationsProductUuids(): array;
+
+    /**
      * Get all associated product model codes
      *
      * @return string[]
@@ -79,12 +87,10 @@ interface EntityWithQuantifiedAssociationsInterface
     /**
      * Update raw quantified associations from quantified associations
      *
-     * @param IdMapping $mappedProductIdentifiers
      * @param UuidMapping $uuidMappedProductIdentifiers
      * @param IdMapping $mappedProductModelIdentifiers
      */
     public function updateRawQuantifiedAssociations(
-        IdMapping $mappedProductIdentifiers,
         UuidMapping $uuidMappedProductIdentifiers,
         IdMapping $mappedProductModelIdentifiers
     ): void;
