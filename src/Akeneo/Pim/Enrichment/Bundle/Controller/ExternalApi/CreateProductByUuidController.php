@@ -117,21 +117,7 @@ class CreateProductByUuidController
             $this->updater->update($product, $data);
         } catch (PropertyException $exception) {
             $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
-            $message = $exception->getMessage();
-            $matches = [];
-            // TODO: CPM-715
-            if (preg_match('/^Property "associations" expects a valid product identifier. The product does not exist, "(?P<identifier>.*)" given.$/', $message, $matches)) {
-                $message = sprintf(
-                    'Property "associations" expects a valid product uuid. The product does not exist, "%s" given.',
-                    $this->getProductUuids->fromIdentifier($matches['identifier'])
-                );
-            }
-
-            throw new DocumentedHttpException(
-                Documentation::URL . 'post_products',
-                sprintf('%s Check the expected format on the API documentation.', $message),
-                $exception
-            );
+            $this->throwDocumentedHttpException($exception->getMessage());
         } catch (TwoWayAssociationWithTheSameProductException $exception) {
             $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
             throw new DocumentedHttpException(
