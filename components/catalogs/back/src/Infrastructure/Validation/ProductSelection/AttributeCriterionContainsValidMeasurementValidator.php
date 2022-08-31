@@ -52,9 +52,9 @@ final class AttributeCriterionContainsValidMeasurementValidator extends Constrai
             return;
         }
 
-        $measurementCodes = \array_map(static fn (array $row) => $row['code'], $measurementFamily['units']);
+        $units = \array_map(static fn (array $row) => $row['code'], $measurementFamily['units']);
 
-        if (!\in_array($value['value']['unit'], $measurementCodes, true)) {
+        if (!\in_array($value['value']['unit'], $units, true)) {
             $this->context
                 ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.measurement.unit.not_exist', [
                     '{{ field }}' => $value['field'],

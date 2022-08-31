@@ -66,7 +66,7 @@ akeneo_catalogs_internal_get_categories:
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoriesAction
     methods: [ GET ]
 
-akeneo_catalogs_internal_get_measurements_family_measurements:
+akeneo_catalogs_internal_get_measurements_family_units:
     path: '/rest/catalogs/measurement-families/{code}/units'
-    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetMeasurementsFamilyMeasurementsAction
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetMeasurementsFamilyUnitsAction
     methods: [ GET ]

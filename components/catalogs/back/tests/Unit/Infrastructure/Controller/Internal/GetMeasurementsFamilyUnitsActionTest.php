@@ -5,21 +5,20 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Application\Persistence\GetMeasurementsFamilyQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetMeasurementsFamilyMeasurementsAction;
+use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetMeasurementsFamilyUnitsAction;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class GetMeasurementsFamilyMeasurementsActionTest extends TestCase
+class GetMeasurementsFamilyUnitsActionTest extends TestCase
 {
-    private ?GetMeasurementsFamilyMeasurementsAction $getMeasurementsFamilyMeasurementsAction;
+    private ?GetMeasurementsFamilyUnitsAction $getMeasurementsFamilyMeasurementsAction;
 
     protected function setUp(): void
     {
         $getMeasurementsFamilyQuery = $this->createMock(GetMeasurementsFamilyQueryInterface::class);
-        $this->getMeasurementsFamilyMeasurementsAction = new GetMeasurementsFamilyMeasurementsAction(
+        $this->getMeasurementsFamilyMeasurementsAction = new GetMeasurementsFamilyUnitsAction(
             $getMeasurementsFamilyQuery
         );
     }

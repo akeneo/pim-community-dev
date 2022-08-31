@@ -5,26 +5,21 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
 /**
- * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetMeasurementsFamilyMeasurementsAction
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetMeasurementsFamilyUnitsAction
  */
-class GetMeasurementsFamilyMeasurementsActionTest extends IntegrationTestCase
+class GetMeasurementsFamilyUnitsActionTest extends IntegrationTestCase
 {
-    private ?Connection $connection;
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->connection = self::getContainer()->get(Connection::class);
-
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItGetsMeasurementsFamiliesMeasurements(): void
+    public function testItGetsMeasurementsFamiliesUnits(): void
     {
         $client = $this->getAuthenticatedInternalApiClient('admin');
 
