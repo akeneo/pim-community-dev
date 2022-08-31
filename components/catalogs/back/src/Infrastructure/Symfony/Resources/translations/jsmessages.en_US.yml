@@ -11,6 +11,7 @@ akeneo_catalogs:
             settings: Catalog settings
             product_selection: Product selection
             more: More
+            filter_values: Filter the values
     settings:
         fields:
             enabled: Enabled

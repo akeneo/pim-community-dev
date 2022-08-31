@@ -5,6 +5,7 @@ import {Pill, TabBar as StyledTabBar} from 'akeneo-design-system';
 enum Tabs {
     SETTINGS = '#catalog-settings',
     PRODUCT_SELECTION = '#catalog-product-selection',
+    FILTER_VALUES = '#catalog-filter-values',
 }
 
 type Props = {
@@ -31,6 +32,10 @@ const TabBar: FC<PropsWithChildren<Props>> = ({isCurrent, switchTo, invalid}) =>
                 >
                     {translate('akeneo_catalogs.catalog_edit.tabs.product_selection')}
                     {invalid[Tabs.PRODUCT_SELECTION] && <Pill level='danger' />}
+                </StyledTabBar.Tab>
+                <StyledTabBar.Tab isActive={isCurrent(Tabs.FILTER_VALUES)} onClick={() => switchTo(Tabs.FILTER_VALUES)}>
+                    {translate('akeneo_catalogs.catalog_edit.tabs.filter_values')}
+                    {invalid[Tabs.FILTER_VALUES] && <Pill level='danger' />}
                 </StyledTabBar.Tab>
             </StyledTabBar>
         </>

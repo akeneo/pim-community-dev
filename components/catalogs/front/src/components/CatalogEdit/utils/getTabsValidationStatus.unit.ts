@@ -10,6 +10,7 @@ const tests: {errors: CatalogFormErrors; result: {[key in Tabs]: boolean}}[] = [
         result: {
             [Tabs.SETTINGS]: false,
             [Tabs.PRODUCT_SELECTION]: false,
+            [Tabs.FILTER_VALUES]: false,
         },
     },
     {
@@ -22,6 +23,7 @@ const tests: {errors: CatalogFormErrors; result: {[key in Tabs]: boolean}}[] = [
         result: {
             [Tabs.SETTINGS]: true,
             [Tabs.PRODUCT_SELECTION]: false,
+            [Tabs.FILTER_VALUES]: false,
         },
     },
     {
@@ -34,6 +36,20 @@ const tests: {errors: CatalogFormErrors; result: {[key in Tabs]: boolean}}[] = [
         result: {
             [Tabs.SETTINGS]: false,
             [Tabs.PRODUCT_SELECTION]: true,
+            [Tabs.FILTER_VALUES]: false,
+        },
+    },
+    {
+        errors: [
+            {
+                propertyPath: '[filter_values][0][value]',
+                message: 'Invalid.',
+            },
+        ],
+        result: {
+            [Tabs.SETTINGS]: false,
+            [Tabs.PRODUCT_SELECTION]: false,
+            [Tabs.FILTER_VALUES]: true,
         },
     },
 ];
