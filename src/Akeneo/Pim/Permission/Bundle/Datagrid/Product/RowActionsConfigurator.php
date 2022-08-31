@@ -18,6 +18,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Row actions configurator for product grid
@@ -106,7 +107,8 @@ class RowActionsConfigurator implements ConfiguratorInterface
     protected function getProductRights(ResultRecordInterface $record): array
     {
         $user = $this->userContext->getUser();
-        $userRight = $this->fetchUserRightsOnProduct->fetchByIdentifier($record->getValue('identifier'), $user->getId());
+        $productUuid = Uuid::fromString($record->getValue('id'));
+        $userRight = $this->fetchUserRightsOnProduct->fetchByUuid($productUuid, $user->getId());
         $isEditableOrisAllowedToDraft = $userRight->canApplyDraftOnProduct() || $userRight->isProductEditable();
 
         return [
