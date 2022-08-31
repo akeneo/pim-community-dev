@@ -18,7 +18,7 @@ class QuantifiedLinkSpec extends ObjectBehavior
         $entityWithAssociationIdentifier = 'entity_with_association_identifier';
         $quantity = 10;
 
-        $this->beConstructedWith($entityWithAssociationIdentifier, $quantity);
+        $this->beConstructedThrough('fromIdentifier', [$entityWithAssociationIdentifier, $quantity]);
 
         $this->normalize()->shouldReturn([
             'identifier' => $entityWithAssociationIdentifier,
@@ -30,7 +30,7 @@ class QuantifiedLinkSpec extends ObjectBehavior
     {
         $entityWithAssociationIdentifier = 'entity_with_association_identifier';
 
-        $this->beConstructedWith($entityWithAssociationIdentifier, 10);
+        $this->beConstructedThrough('fromIdentifier', [$entityWithAssociationIdentifier, 10]);
 
         $this->identifier()->shouldReturn($entityWithAssociationIdentifier);
     }
@@ -40,6 +40,8 @@ class QuantifiedLinkSpec extends ObjectBehavior
         $emptyIdentifier = '';
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__construct', [$emptyIdentifier, 1]);
+            ->during('fromIdentifier', [$emptyIdentifier, 1]);
     }
+
+    // TODO Add specs
 }

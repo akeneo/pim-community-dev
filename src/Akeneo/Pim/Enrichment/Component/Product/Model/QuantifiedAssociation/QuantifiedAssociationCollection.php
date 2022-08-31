@@ -84,12 +84,26 @@ class QuantifiedAssociationCollection
             ];
 
             foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] ?? [] as $productAssociation) {
-                Assert::keyExists($productAssociation, 'uuid');
+                Assert::isArray($productAssociation);
+                if (!array_key_exists('id', $productAssociation) && !array_key_exists('uuid', $productAssociation)) {
+                    throw new \InvalidArgumentException('Expected one of the keys "id" or "uuid" to exist.');
+                }
                 Assert::keyExists($productAssociation, 'quantity');
 
-                // TODO Check the product still exists
-                $quantifiedLink = QuantifiedLink::fromUuid($productAssociation['uuid'], $productAssociation['quantity']);
-                $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
+                if (isset($productAssociation['id']) && $mappedProductIds->hasIdentifier($productAssociation['id'])) {
+                    $quantifiedLink = QuantifiedLink::fromIdentifier(
+                        $mappedProductIds->getIdentifier($productAssociation['id']),
+                        $productAssociation['quantity']
+                    );
+                    $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
+                } else if (isset($productAssociation['uuid'])) {
+                    // TODO Should we check that the product with this uuid exists?
+                    $quantifiedLink = QuantifiedLink::fromUuid(
+                        $productAssociation['uuid'],
+                        $productAssociation['quantity']
+                    );
+                    $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
+                }
             }
 
             foreach ($associations[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] ?? [] as $productModelAssociation) {
@@ -208,11 +222,14 @@ class QuantifiedAssociationCollection
                 if (null !== $quantifiedLink->uuid()) {
                     // The link is done by uuid
                     $normalizedQuantifiedLink = $quantifiedLink->normalize();
-                    $result[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = [
-                        'id' => $uuidMappedProductIdentifiers->getIdFromUuid($normalizedQuantifiedLink['uuid']),
-                        'uuid' => $normalizedQuantifiedLink['uuid'],
-                        'quantity' => $normalizedQuantifiedLink['quantity'],
-                    ];
+                    $id = $uuidMappedProductIdentifiers->getIdFromUuid($normalizedQuantifiedLink['uuid']);
+                    if (null !== $id) {
+                        $result[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = [
+                            'id' => $id,
+                            'uuid' => $normalizedQuantifiedLink['uuid'],
+                            'quantity' => $normalizedQuantifiedLink['quantity'],
+                        ];
+                    }
                 } else {
                     // The link is done by identifier
                     $normalizedQuantifiedLink = $quantifiedLink->normalize();
@@ -225,7 +242,6 @@ class QuantifiedAssociationCollection
                         ];
                     }
                 }
-
             }
 
             /** @var QuantifiedLink $quantifiedLink */

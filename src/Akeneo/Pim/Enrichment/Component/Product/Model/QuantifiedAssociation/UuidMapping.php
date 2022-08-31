@@ -29,8 +29,11 @@ final class UuidMapping
     private function __construct(array $mapping)
     {
         foreach ($mapping as $line) {
+            Assert::keyExists($line, 'uuid');
+            Assert::keyExists($line, 'identifier');
+            Assert::keyExists($line, 'id');
             Assert::stringNotEmpty($line['uuid']);
-            Assert::string($line['identifier']);
+            Assert::nullOrStringNotEmpty($line['identifier']);
             Assert::numeric($line['id']);
             Assert::notNull($line['id']);
             Assert::true(Uuid::isValid($line['uuid']), sprintf('Invalid uuid "%s"', $line['uuid']));
@@ -74,13 +77,13 @@ final class UuidMapping
         return isset($this->uuidsToIdentifiers[$uuid->toString()]);
     }
 
-    public function getIdFromIdentifier(string $identifier): int
+    public function getIdFromIdentifier(string $identifier): ?int
     {
-        return $this->identifiersToIds[$identifier];
+        return $this->identifiersToIds[$identifier] ?? null;
     }
 
-    public function getIdFromUuid(string $uuid): int
+    public function getIdFromUuid(string $uuid): ?int
     {
-        return $this->uuidsToIds[$uuid];
+        return $this->uuidsToIds[$uuid] ?? null;
     }
 }
