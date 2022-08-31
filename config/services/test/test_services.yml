@@ -7,6 +7,7 @@ parameters:
     akeneo_integration_tests.security.system_user_authenticator.class: Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator
     akeneo_integration_tests.launcher.job_launcher.class: Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher
     akeneo_integration_tests.launcher.job_execution_observer.class: Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver
+    env(EXPERIMENTAL_TEST_DATABASE): false
 
 imports:
     # Akeneo/Connectivity/Connection
@@ -71,6 +72,7 @@ services:
             - '%kernel.cache_dir%/sql-dump/'
             - '%index_hosts%'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
+            - '@Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper'
 
     akeneo_integration_tests.loader.category_tree_loader:
         class: 'AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\CategoryTree\CategoryTreeFixturesLoader'
@@ -309,6 +311,12 @@ services:
         class: 'Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper'
         arguments:
             - '@router'
+
+    Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper:
+        arguments:
+            - '@doctrine'
+            - '@akeneo_integration_tests.loader.database_schema_handler'
+            - '%env(bool:EXPERIMENTAL_TEST_DATABASE)%'
 
     akeneo_ee_integration_tests.loader.fixtures_loader:
         class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\FixturesLoader'
