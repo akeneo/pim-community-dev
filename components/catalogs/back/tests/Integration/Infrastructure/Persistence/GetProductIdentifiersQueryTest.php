@@ -7,9 +7,7 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Infrastructure\Persistence\GetProductIdentifiersQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Doctrine\DBAL\Connection;
 
